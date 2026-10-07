@@ -6,102 +6,19 @@
 // hover/focus and keeps drifting slowly for everyone (owner's choice).
 // ════════════════════════════════════════════════════════════════════════════════
 
-import React from 'react';
 import { Link } from 'react-router-dom';
+import { TEAM_MENTORS } from '../../utils/teamMentors';
 
-const COLUMN_1_CREATORS = [
-  {
-    handle: 'ganesh_balakrishnan',
-    name: 'Ganesh Balakrishnan',
-    role: 'Shark Tank India',
-    badge: 'Aurm',
-    image: '/images/mentors/ganesh_balakrishnan.jpg',
-  },
-  {
-    handle: 'vijay_chandola',
-    name: 'Vijay Chandola',
-    role: 'Your Product Career Coach',
-    badge: 'Product Coach',
-    image: '/images/mentors/vijay_chandola.jpg',
-  },
-  {
-    handle: 'melissa_chapman',
-    name: 'Melissa (Chapman)',
-    role: 'PMP eBook Author',
-    badge: 'Chaucer',
-    image: '/images/mentors/melissa_chapman.jpg',
-  },
-  {
-    handle: 'ananya_harvard',
-    name: 'Ananya Deshmukh',
-    role: 'Harvard Kennedy School • MPP',
-    badge: 'Harvard',
-    image: '/images/mentors/ananya_harvard.jpg',
-  },
-  {
-    handle: 'aarav_tum',
-    name: 'Aarav Sharma',
-    role: 'M.Sc. Informatics @ TU Munich',
-    badge: 'TU Munich',
-    image: '/images/mentors/aarav_tum.jpg',
-  },
-  {
-    handle: 'priyanka_europe',
-    name: 'Priyanka',
-    role: 'Your Europe Move Mentor',
-    badge: 'Europe Move',
-    image: '/images/mentors/priyanka_europe.jpg',
-  }
-];
-
-const COLUMN_2_CREATORS = [
-  {
-    handle: 'prakriti_ashish',
-    name: 'Prakriti & Ashish',
-    role: 'Travelers',
-    badge: 'Travelers',
-    image: '/images/mentors/prakriti_ashish.jpg',
-  },
-  {
-    handle: 'kartik_kapoor',
-    name: 'Kartik Kapoor',
-    role: 'Build Your Airbnb Business',
-    badge: 'Airbnb Host',
-    image: '/images/mentors/kartik_kapoor.jpg',
-  },
-  {
-    handle: 'chiradeep_patra',
-    name: 'Chiradeep Patra',
-    role: 'Life Coach (ICF - CCE)',
-    badge: 'I Listen Space',
-    image: '/images/mentors/chiradeep_patra.jpg',
-  },
-  {
-    handle: 'technomanagers',
-    name: 'Technomanagers',
-    role: 'Crack Your Dream PM Role',
-    badge: 'Product Lead',
-    image: '/images/mentors/technomanagers.jpg',
-  },
-  {
-    handle: 'priya_oxford',
-    name: 'Priya Patel',
-    role: 'Oxford CS Scholar • Ex-Goldman',
-    badge: 'Oxford',
-    image: '/images/mentors/priya_oxford.jpg',
-  },
-  {
-    handle: 'ayush_singh',
-    name: 'Ayush Singh',
-    role: 'Data Science & AI Mentor',
-    badge: 'AI Mentor',
-    image: '/images/mentors/ayush_singh.jpg',
-  }
-];
+const FEATURED_MENTORS = TEAM_MENTORS.map((mentor) => ({
+  name: mentor.name,
+  role: mentor.role,
+  badge: mentor.country,
+  image: mentor.portrait,
+}));
 
 const CreatorCard = ({ item, tabIndex }) => (
   <Link
-    to={`/@${item.handle}`}
+    to="/events"
     tabIndex={tabIndex}
     className="bg-white rounded-[22px] p-3 sm:p-3.5 border border-slate-200/90 shadow-[0_4px_16px_rgba(0,0,0,0.06)] hover:shadow-xl transition-all duration-300 hover:scale-[1.02] cursor-pointer block text-left group shrink-0"
   >
@@ -159,10 +76,10 @@ export const InteractiveCreatorMasonry = () => {
       {/* 2-Column Marquee Grid — left drifts up, right drifts down */}
       <div className="grid grid-cols-2 gap-3.5 sm:gap-4.5 items-start h-full">
         <div className="overflow-hidden">
-          <CreatorTrack items={COLUMN_1_CREATORS} direction="up" prefix="col1" />
+          <CreatorTrack items={FEATURED_MENTORS} direction="up" prefix="col1" />
         </div>
         <div className="overflow-hidden">
-          <CreatorTrack items={COLUMN_2_CREATORS} direction="down" prefix="col2" />
+          <CreatorTrack items={FEATURED_MENTORS} direction="down" prefix="col2" />
         </div>
       </div>
 

@@ -4,18 +4,21 @@ export const TEAM_MENTORS = [
   {
     name: 'Prachi',
     role: 'Cyber Security Expert · Ireland',
+    country: 'Ireland',
     src: '/images/mentors/thumbs/prachi_cybersecurity.webp',
     portrait: '/images/mentors/prachi_portrait.webp',
   },
   {
     name: 'Rishi',
     role: 'Career Guide Expert · Ireland',
+    country: 'Ireland',
     src: '/images/mentors/thumbs/rishi_ireland_career.webp',
     portrait: '/images/mentors/rishi_portrait.webp',
   },
   {
     name: 'Manan',
     role: 'Australia Expert',
+    country: 'Australia',
     src: '/images/mentors/thumbs/manan_australia.webp',
     portrait: '/images/mentors/manan_portrait.webp',
   },

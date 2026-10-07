@@ -1,46 +1,25 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { getPublicMentorsDirectory } from '../api/unicoachApi';
 import { useScrollToHash } from '../hooks/useScrollToHash';
 import { StudentHeroSection } from '../components/StudentHeroSection';
 import { StudentFlashSection } from '../components/StudentFlashSection';
 import { StudentTestimonialSection } from '../components/StudentTestimonialSection';
 import { BecomeMentorCTA } from '../components/BecomeMentorCTA';
+import { TEAM_MENTORS } from '../../utils/teamMentors';
 import { 
-  Search, 
+  Search,
   ShieldCheck, 
-  GraduationCap, 
-  Star, 
-  Video, 
-  FileText, 
-  MessageSquare, 
-  SlidersHorizontal, 
-  Loader2, 
-  Globe,
-  Download,
-  Award,
   ArrowUpRight
 } from 'lucide-react';
 
-const COUNTRIES = [
-  { label: 'All Destinations', value: 'ALL', flagCode: null },
-  { label: 'Germany', value: 'Germany', flagCode: 'de' },
-  { label: 'United States', value: 'USA', flagCode: 'us' },
-  { label: 'United Kingdom', value: 'UK', flagCode: 'gb' },
-  { label: 'Canada', value: 'Canada', flagCode: 'ca' },
-  { label: 'Australia', value: 'Australia', flagCode: 'au' },
-  { label: 'Ireland', value: 'Ireland', flagCode: 'ie' },
-  { label: 'France', value: 'France', flagCode: 'fr' },
-  { label: 'Netherlands', value: 'Netherlands', flagCode: 'nl' }
-];
-
-const SERVICE_TYPES = [
-  { label: 'All Services', value: 'ALL', icon: null },
-  { label: '1:1 Video Calls', value: 'ONE_ON_ONE', icon: Video },
-  { label: 'SOP & Resume Review', value: 'SOP_REVIEW', icon: FileText },
-  { label: 'Priority DMs', value: 'PRIORITY_DM', icon: MessageSquare },
-  { label: 'Digital Guides', value: 'DIGITAL_ASSET', icon: Download }
-];
+const FEATURED_MENTORS = TEAM_MENTORS.map((mentor) => ({
+  _id: mentor.name,
+  name: mentor.name,
+  headline: mentor.role,
+  country: mentor.country,
+  avatarUrl: mentor.portrait,
+  startingPriceINR: 0,
+}));
 
 const EXPERT_CATEGORIES = [
   { id: 'top_cohorts', label: 'Top Cohorts' },
@@ -74,48 +53,20 @@ const getCountryFlagCode = (country) => {
 const UnicoachMarketplacePage = () => {
   // /unicoach#mentors-grid (e.g. the homepage "Mentors" card) opens straight at the mentor directory
   useScrollToHash('mentors-grid');
-  const [mentors, setMentors] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
 
   // Filters State
   const [selectedCategory, setSelectedCategory] = useState('top_cohorts');
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedCountry, setSelectedCountry] = useState('ALL');
-  const [selectedService, setSelectedService] = useState('ALL');
-
-  const fetchDirectory = async () => {
-    setLoading(true);
-    setError(null);
-    try {
-      const res = await getPublicMentorsDirectory({
-        search: searchQuery.trim(),
-        country: selectedCountry,
-        serviceType: selectedService
-      });
-      setMentors(res.mentors || []);
-    } catch (err) {
-      console.error('Failed to load mentors directory:', err);
-      setError(err.message || 'Could not load verified mentors. Please try again.');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      fetchDirectory();
-    }, 250);
-    return () => clearTimeout(timer);
-  }, [searchQuery, selectedCountry, selectedService]);
 
   // Client-side category matching for instant responsiveness
-  const filteredMentors = mentors.filter((m) => {
+  const filteredMentors = FEATURED_MENTORS.filter((m) => {
+    const query = searchQuery.trim().toLowerCase();
+    const text = `${m.name} ${m.headline || ''} ${m.country || ''}`.toLowerCase();
+    if (query && !text.includes(query)) return false;
+
     if (selectedCategory === 'top_cohorts' || selectedCategory === 'others') {
       return true;
     }
-
-    const text = `${m.name} ${m.headline || ''} ${m.bio || ''} ${m.university || ''} ${m.course || ''} ${m.country || ''} ${(m.badges || []).join(' ')}`.toLowerCase();
 
     switch (selectedCategory) {
       case 'career':
@@ -123,7 +74,7 @@ const UnicoachMarketplacePage = () => {
       case 'data_ai':
         return /data|ai|agent|informatics|machine learning|analytics|spark|python/i.test(text);
       case 'study_abroad':
-        return /germany|usa|uk|canada|harvard|tum|munich|toronto|oxford|berlin|visa|sop|admit|master|study abroad|scholarship/i.test(text);
+        return /ireland|australia|germany|usa|uk|canada|harvard|tum|munich|toronto|oxford|berlin|visa|sop|admit|master|study abroad|scholarship/i.test(text);
       case 'software':
         return /software|cs|computer|engineer|tech|code|system|data|informatics|distributed/i.test(text);
       case 'hr':
@@ -157,10 +108,10 @@ const UnicoachMarketplacePage = () => {
         {/* Section Headline */}
         <div className="text-center max-w-3xl mx-auto mb-7 sm:mb-8">
           <h2 className="font-outfit text-3xl sm:text-4xl lg:text-[44px] font-black text-[#111111] tracking-tight leading-tight mb-3">
-            The Go-To Platform for Experts
+            Meet Our Featured Mentors
           </h2>
           <p className="text-slate-600 text-sm sm:text-base font-normal max-w-xl mx-auto leading-relaxed">
-            Experts from every niche use UniCoach to build trust, grow revenue, and stay booked.
+            Get guidance from Prachi, Rishi, and Manan — our featured UniCoach mentors.
           </p>
         </div>
 
@@ -194,7 +145,7 @@ const UnicoachMarketplacePage = () => {
 
             <input
               type="text"
-              placeholder="Search by mentor name, university, or niche..."
+              placeholder="Search by mentor name, expertise, or country..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="w-full pl-12 pr-28 py-3 sm:py-3.5 rounded-full bg-white border border-slate-200/90 text-xs sm:text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-4 focus:ring-orange-500/10 focus:border-[#DE5C2B] transition-all shadow-xs"
@@ -216,31 +167,8 @@ const UnicoachMarketplacePage = () => {
           </div>
         </div>
 
-        {/* Loading State */}
-        {loading && (
-          <div className="py-24 text-center bg-white rounded-3xl border border-slate-200/80 shadow-xs">
-            <Loader2 className="w-10 h-10 animate-spin text-[#DE5C2B] mx-auto mb-3" />
-            <p className="text-sm font-bold text-slate-800">Loading verified experts...</p>
-            <p className="text-xs text-slate-400 mt-1">Fetching live admits & verified coaches from directory</p>
-          </div>
-        )}
-
-        {/* Error State */}
-        {!loading && error && (
-          <div className="p-8 rounded-3xl bg-rose-50/90 border border-rose-200 text-center my-6">
-            <p className="text-sm text-rose-700 font-bold mb-3">{error}</p>
-            <button
-              type="button"
-              onClick={fetchDirectory}
-              className="px-5 py-2.5 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs shadow-md transition-all cursor-pointer"
-            >
-              Retry Loading
-            </button>
-          </div>
-        )}
-
         {/* Empty State */}
-        {!loading && !error && filteredMentors.length === 0 && (
+        {filteredMentors.length === 0 && (
           <div className="bg-white rounded-3xl border border-slate-200/90 p-12 sm:p-16 text-center my-6 shadow-sm">
             <div className="w-16 h-16 rounded-2xl bg-orange-50 text-[#DE5C2B] flex items-center justify-center mx-auto mb-4 font-bold text-2xl shadow-inner border border-orange-200">
               🔍
@@ -249,7 +177,7 @@ const UnicoachMarketplacePage = () => {
               No mentors found in this category
             </h3>
             <p className="text-xs sm:text-sm text-slate-500 max-w-md mx-auto mb-6">
-              Try resetting your search query or selecting <strong>&ldquo;Top Cohorts&rdquo;</strong> to view all active experts.
+              Try resetting your search or selecting <strong>&ldquo;Top Cohorts&rdquo;</strong> to view our featured mentors.
             </p>
             <div className="flex flex-wrap items-center justify-center gap-3">
               <button
@@ -257,8 +185,6 @@ const UnicoachMarketplacePage = () => {
                 onClick={() => {
                   setSearchQuery('');
                   setSelectedCategory('top_cohorts');
-                  setSelectedCountry('ALL');
-                  setSelectedService('ALL');
                 }}
                 className="px-5 py-2.5 rounded-full bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold transition-all cursor-pointer shadow-sm"
               >
@@ -275,8 +201,8 @@ const UnicoachMarketplacePage = () => {
         )}
 
         {/* ════════ COMPACT 5-COLUMN MENTORS CARDS GRID (REFERENCE ALIGNED) ════════ */}
-        {!loading && !error && filteredMentors.length > 0 && (
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3.5 sm:gap-4.5 lg:gap-5">
+        {filteredMentors.length > 0 && (
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 max-w-[1000px] mx-auto gap-3.5 sm:gap-4.5 lg:gap-5">
             {filteredMentors.map((m) => {
               const flagCode = getCountryFlagCode(m.country);
               const avatarSrc = m.avatarUrl || m.coverImageUrl;
@@ -284,7 +210,7 @@ const UnicoachMarketplacePage = () => {
               return (
                 <Link
                   key={m._id}
-                  to={`/@${m.handle}`}
+                  to="/events"
                   className="bg-white rounded-[22px] p-3 sm:p-3.5 border border-slate-200/80 hover:border-[#DE5C2B]/40 shadow-[0_2px_8px_rgba(0,0,0,0.03)] hover:shadow-[0_12px_28px_-6px_rgba(222,92,43,0.14)] transition-all duration-300 hover:-translate-y-1 flex flex-col justify-between group cursor-pointer select-none"
                 >
                   {/* Portrait Photo Container */}
@@ -294,10 +220,6 @@ const UnicoachMarketplacePage = () => {
                         src={avatarSrc}
                         alt={m.name}
                         className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500"
-                        onError={(e) => {
-                          e.target.onerror = null;
-                          e.target.src = 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&auto=format&fit=crop&q=80';
-                        }}
                       />
                     ) : (
                       <div className="w-full h-full bg-gradient-to-br from-[#DE5C2B] to-[#EAB308] text-white font-black text-2xl sm:text-3xl flex items-center justify-center">
@@ -316,12 +238,6 @@ const UnicoachMarketplacePage = () => {
                         <span className="leading-none">{m.country}</span>
                       </div>
                     )}
-
-                    {/* Rating Pill (Top-Right) */}
-                    <div className="absolute top-2 right-2 flex items-center gap-0.5 bg-white/95 backdrop-blur-md px-1.5 py-0.5 rounded-full text-[10px] font-black text-slate-800 border border-black/5 shadow-2xs">
-                      <Star className="w-2.5 h-2.5 fill-amber-400 text-amber-400" />
-                      <span>{m.rating || '5.0'}</span>
-                    </div>
 
                     {/* Verified Blue Checkmark (Bottom-Right) */}
                     <div
@@ -342,16 +258,9 @@ const UnicoachMarketplacePage = () => {
 
                       {/* Mentor Tagline / Role (Reference: "Your Europe Move Mentor") */}
                       <p className="text-[11.5px] sm:text-xs text-slate-500 font-medium truncate mt-0.5">
-                        {m.headline || (m.university ? `${m.university}${m.course ? ` • ${m.course}` : ''}` : 'Admitted Senior')}
+                        {m.headline}
                       </p>
 
-                      {/* University micro-badge if university exists */}
-                      {m.university && (
-                        <div className="flex items-center gap-1 text-[11px] text-slate-600 font-semibold truncate mt-1">
-                          <GraduationCap className="w-3 h-3 text-[#DE5C2B] flex-shrink-0" />
-                          <span className="truncate">{m.university}</span>
-                        </div>
-                      )}
                     </div>
 
                     {/* Bottom Pricing & CTA Strip */}
@@ -366,7 +275,7 @@ const UnicoachMarketplacePage = () => {
                       </div>
 
                       <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-[#111111] group-hover:bg-[#DE5C2B] text-white text-[11px] font-bold transition-all shadow-2xs">
-                        <span>Book</span>
+                        <span>View Sessions</span>
                         <ArrowUpRight className="w-3 h-3 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
                       </span>
                     </div>

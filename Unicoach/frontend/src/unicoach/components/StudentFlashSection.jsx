@@ -8,6 +8,7 @@
 
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { motion, AnimatePresence, MotionConfig, useInView } from 'framer-motion';
+import { TEAM_MENTORS } from '../../utils/teamMentors';
 import {
   ChevronDown,
   Search,
@@ -30,7 +31,7 @@ const STEPS = [
     number: '01',
     title: 'Browse Verified Seniors',
     shortDesc: 'Filter by university, country, degree, or service type — every mentor is admin-verified.',
-    fullDesc: 'Search through seniors admitted to TU Munich, Oxford, Harvard, UBC and 50+ top universities. Filter by destination country, course, or the type of help you need — 1:1 calls, SOP reviews, priority DMs, or digital guides.'
+    fullDesc: 'Explore Prachi, Rishi, and Manan, and find guidance by mentor name, expertise, or destination country.'
   },
   {
     id: 1,
@@ -52,23 +53,18 @@ const STEPS = [
 const STEP_DURATION_MS = 7000;
 
 const COUNTRIES = [
-  { flag: '🇩🇪', label: 'Germany' },
-  { flag: '🇺🇸', label: 'USA' },
-  { flag: '🇬🇧', label: 'UK' },
-  { flag: '🇨🇦', label: 'Canada' }
+  { flag: '🇮🇪', label: 'Ireland' },
+  { flag: '🇦🇺', label: 'Australia' }
 ];
 
-// Illustrative sample profiles for the demo panel only
-const DEMO_MENTORS = [
-  { name: 'Aarav Sharma', uni: 'TU Munich', course: 'M.Sc. Informatics', country: 'Germany', gradient: 'from-[#DE5C2B] to-amber-500' },
-  { name: 'Rohit Verma', uni: 'RWTH Aachen', course: 'M.Sc. Mechanical', country: 'Germany', gradient: 'from-sky-500 to-indigo-500' },
-  { name: 'Ishaan Gupta', uni: 'Carnegie Mellon', course: 'MS Computer Science', country: 'USA', gradient: 'from-rose-500 to-orange-400' },
-  { name: 'Ananya Deshmukh', uni: 'Harvard University', course: 'MPP', country: 'USA', gradient: 'from-red-600 to-rose-400' },
-  { name: 'Priya Patel', uni: 'Univ. of Oxford', course: 'MSc Economics', country: 'UK', gradient: 'from-purple-500 to-pink-500' },
-  { name: 'Karan Mehta', uni: 'Imperial College', course: 'MSc Data Science', country: 'UK', gradient: 'from-teal-500 to-emerald-500' },
-  { name: 'Meera Nair', uni: 'UBC Vancouver', course: 'MEng Civil', country: 'Canada', gradient: 'from-emerald-500 to-lime-500' },
-  { name: 'Arjun Rao', uni: 'Univ. of Toronto', course: 'MBA (Rotman)', country: 'Canada', gradient: 'from-blue-600 to-cyan-500' }
-];
+const FEATURED_MENTORS = TEAM_MENTORS.map((mentor) => ({
+  ...mentor,
+  uni: mentor.role,
+  course: mentor.country,
+  gradient: 'from-[#DE5C2B] to-amber-500',
+  photo: mentor.portrait,
+}));
+const PRIMARY_MENTOR = FEATURED_MENTORS[0];
 
 const SERVICES = [
   { id: 'call', icon: Video, label: '1:1 Video Call (30 min)', price: '₹499', iconClass: 'text-[#DE5C2B]' },
@@ -109,14 +105,18 @@ const Avatar = ({ mentor, size = 'w-9 h-9 text-sm' }) => (
     className={`${size} rounded-xl bg-gradient-to-br ${mentor.gradient} text-white font-bold flex items-center justify-center shrink-0`}
     aria-hidden="true"
   >
-    {mentor.name.charAt(0)}
+    {mentor.photo ? (
+      <img src={mentor.photo} alt="" className="w-full h-full object-cover rounded-[inherit]" />
+    ) : (
+      mentor.name.charAt(0)
+    )}
   </div>
 );
 
 // ── STEP 1 DEMO: search + country chips filtering mentor cards ──
 const BrowseDemo = ({ autoPlay, paused, onInteract }) => {
   const [query, setQuery] = useState('');
-  const [country, setCountry] = useState('Germany');
+  const [country, setCountry] = useState('Ireland');
 
   // While auto-playing, gently cycle the country chips to show the filter in action
   useEffect(() => {
@@ -132,8 +132,8 @@ const BrowseDemo = ({ autoPlay, paused, onInteract }) => {
 
   const results = useMemo(() => {
     const q = query.trim().toLowerCase();
-    if (!q) return DEMO_MENTORS.filter((m) => m.country === country);
-    return DEMO_MENTORS.filter((m) =>
+    if (!q) return FEATURED_MENTORS.filter((m) => m.country === country);
+    return FEATURED_MENTORS.filter((m) =>
       [m.name, m.uni, m.course, m.country].some((field) => field.toLowerCase().includes(q))
     ).slice(0, 4);
   }, [query, country]);
@@ -144,7 +144,7 @@ const BrowseDemo = ({ autoPlay, paused, onInteract }) => {
       <div className="bg-white rounded-2xl p-3 sm:p-4 shadow-md border border-orange-100/60">
         <label className="flex items-center gap-3 bg-slate-50 rounded-xl px-4 py-2.5 border border-slate-200/80 focus-within:border-[#DE5C2B] focus-within:ring-2 focus-within:ring-orange-100 transition-colors">
           <Search className="w-4 h-4 text-slate-400 shrink-0" aria-hidden="true" />
-          <span className="sr-only">Search demo mentors</span>
+          <span className="sr-only">Search mentors</span>
           <input
             type="text"
             value={query}
@@ -170,7 +170,7 @@ const BrowseDemo = ({ autoPlay, paused, onInteract }) => {
       </div>
 
       {/* Country chips */}
-      <div className="flex items-center gap-2 flex-wrap px-1" role="group" aria-label="Filter demo mentors by country">
+      <div className="flex items-center gap-2 flex-wrap px-1" role="group" aria-label="Filter mentors by country">
         {COUNTRIES.map((c) => {
           const isOn = !query && country === c.label;
           return (
@@ -213,7 +213,7 @@ const BrowseDemo = ({ autoPlay, paused, onInteract }) => {
                 <Avatar mentor={m} />
                 <div className="min-w-0">
                   <div className="text-xs font-bold text-slate-900 truncate">{m.name}</div>
-                  <div className="text-[10px] text-slate-400 truncate">{m.uni}</div>
+                  <div className="text-[10px] text-slate-400 truncate">{m.role}</div>
                 </div>
               </div>
               <div className="flex items-center gap-1 text-[10px] font-bold">
@@ -221,14 +221,14 @@ const BrowseDemo = ({ autoPlay, paused, onInteract }) => {
                   <ShieldCheck className="w-3 h-3" aria-hidden="true" />
                   Verified
                 </span>
-                <span className="text-slate-400 font-medium truncate">{m.course}</span>
+                <span className="text-slate-400 font-medium truncate">{m.country}</span>
               </div>
             </motion.div>
           ))}
         </AnimatePresence>
         {results.length === 0 && (
           <div className="col-span-2 text-center text-xs text-slate-500 bg-white/70 rounded-2xl border border-dashed border-orange-200 py-6">
-            No match in this demo — try “Oxford”, “Canada” or “MBA”.
+            No featured mentor matches this search.
           </div>
         )}
       </div>
@@ -274,10 +274,10 @@ const BookDemo = ({ autoPlay, onInteract }) => {
       {/* Mentor header */}
       <div className="flex items-center justify-between gap-2 mb-3.5">
         <div className="flex items-center gap-2 min-w-0">
-          <Avatar mentor={DEMO_MENTORS[0]} size="w-10 h-10 text-sm" />
+          <Avatar mentor={PRIMARY_MENTOR} size="w-10 h-10 text-sm" />
           <div className="min-w-0">
-            <div className="text-sm font-bold text-slate-900 truncate">Aarav Sharma</div>
-            <div className="text-[10px] text-slate-400 font-medium truncate">M.Sc. Informatics • TU Munich</div>
+            <div className="text-sm font-bold text-slate-900 truncate">{PRIMARY_MENTOR.name}</div>
+            <div className="text-[10px] text-slate-400 font-medium truncate">{PRIMARY_MENTOR.role}</div>
           </div>
         </div>
         <span className="shrink-0 inline-flex items-center gap-1 text-[10px] font-bold text-[#C2410C] bg-orange-50 px-2 py-0.5 rounded-md border border-orange-200">
@@ -421,7 +421,7 @@ const GuidanceDemo = () => (
       <div className="flex items-center justify-between gap-2 mb-3">
         <div className="flex items-center gap-2 min-w-0">
           <CalendarCheck className="w-5 h-5 text-emerald-600 shrink-0" aria-hidden="true" />
-          <span className="text-sm font-bold text-slate-900 truncate">Session with Aarav Sharma</span>
+          <span className="text-sm font-bold text-slate-900 truncate">Session with {PRIMARY_MENTOR.name}</span>
         </div>
         <span className="shrink-0 inline-flex items-center gap-1.5 text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-200">
           <span className="relative flex w-1.5 h-1.5">
