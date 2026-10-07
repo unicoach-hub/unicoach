@@ -1,0 +1,32 @@
+# Files Docker must NOT copy into the frontend build (build context = frontend/).
+
+# Dependencies are installed inside the image with `npm ci`; dist is rebuilt there too
+node_modules
+dist
+dist-ssr
+npm-debug.log*
+*.log
+
+# Local env files: VITE_* values come from Coolify build variables only
+.env
+.env.*
+*.local
+
+# Tests, QA reports and screenshots (not needed to build the site)
+e2e
+playwright-report
+test-results
+blob-report
+coverage
+verify_*.png
+
+# Editor / OS / VCS
+.vscode
+.idea
+.DS_Store
+.git
+.gitignore
+
+# Build files themselves (nginx.conf IS needed, keep it)
+Dockerfile
+.dockerignore

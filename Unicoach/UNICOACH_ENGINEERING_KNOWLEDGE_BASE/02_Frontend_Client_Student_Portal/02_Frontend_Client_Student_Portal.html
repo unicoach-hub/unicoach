@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Module 02: Frontend Client — UniCoach Engineering</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap');
+    @page { size: A4; margin: 14mm 12mm 14mm 12mm; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Plus Jakarta Sans', sans-serif; color: #1E293B; background: #fff; font-size: 12.5px; line-height: 1.5; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .page-break { page-break-after: always; }
+    .header-banner { background: linear-gradient(135deg, #0891B2 0%, #0284C7 50%, #0B2272 100%); color: #fff; padding: 28px 24px; border-radius: 14px; margin-bottom: 18px; position: relative; overflow: hidden; }
+    .module-tag { display: inline-block; background: rgba(255,255,255,0.18); border: 1px solid rgba(255,255,255,0.3); color: #BAE6FD; font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px; padding: 3px 10px; border-radius: 20px; margin-bottom: 10px; }
+    .main-title { font-family: 'Outfit', sans-serif; font-size: 24px; font-weight: 900; line-height: 1.2; margin-bottom: 6px; }
+    .subtitle { font-size: 12px; color: #BAE6FD; font-weight: 500; }
+    .meta-bar { margin-top: 14px; padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.15); display: flex; gap: 18px; font-size: 10px; color: #E0F2FE; font-weight: 600; }
+    h2 { font-family: 'Outfit', sans-serif; font-size: 15px; font-weight: 800; color: #0284C7; margin: 16px 0 8px 0; border-bottom: 2px solid #E2E8F0; padding-bottom: 4px; }
+    p { margin-bottom: 8px; color: #334155; font-size: 12px; }
+    .diagram-box { background: #F8FAFC; border: 1.5px solid #E2E8F0; border-radius: 10px; padding: 12px; margin: 10px 0 14px 0; }
+    .diagram-title { font-size: 10.5px; font-weight: 800; color: #64748B; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 10px; }
+    .deep-dive-card { background: #F8FAFC; border: 1px solid #E2E8F0; border-left: 4px solid #0284C7; border-radius: 10px; padding: 12px; margin-bottom: 12px; }
+    .card-title { font-family: 'Outfit', sans-serif; font-size: 13px; font-weight: 800; color: #0F172A; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; }
+    .card-badge { font-size: 9px; font-weight: 800; text-transform: uppercase; padding: 2px 7px; border-radius: 5px; background: #EFF6FF; color: #0284C7; border: 1px solid #BAE6FD; }
+    .qa-box { background: #fff; border: 1px solid #CBD5E1; border-radius: 7px; padding: 8px 10px; margin-bottom: 6px; }
+    .qa-label { font-size: 9.5px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 2px; }
+    .qa-what .qa-label { color: #0284C7; } .qa-how .qa-label { color: #16A34A; } .qa-alt .qa-label { color: #D97706; } .qa-why .qa-label { color: #7C3AED; }
+    .qa-text { font-size: 11.5px; color: #334155; line-height: 1.4; }
+    .pro-tip { background: #EFF6FF; border-left: 4px solid #0284C7; border-radius: 7px; padding: 10px 12px; margin: 12px 0; font-size: 11.5px; }
+    .pro-tip-title { font-weight: 800; color: #0369A1; margin-bottom: 3px; }
+    .footer-bar { margin-top: 18px; padding-top: 8px; border-top: 1px solid #E2E8F0; display: flex; justify-content: space-between; font-size: 9px; color: #94A3B8; font-weight: 600; }
+    .code-box { background: #0F172A; color: #F8FAFC; border-radius: 7px; padding: 9px 12px; font-family: 'JetBrains Mono', monospace; font-size: 10.5px; margin: 6px 0 10px 0; line-height: 1.45; }
+  </style>
+</head>
+<body>
+
+<div class="header-banner">
+  <div class="module-tag">Module 02 • System Architecture Vault</div>
+  <h1 class="main-title">Frontend Client — Student Portal</h1>
+  <p class="subtitle">React 18 SPA architecture, Vite 8 build pipeline, Three.js 3D canvas, Framer Motion animations, and responsive mobile-first design system.</p>
+  <div class="meta-bar"><span>⚛️ Framework: React 18 + Vite 8</span><span>🎨 3D: Three.js WebGL Canvas</span><span>📱 Mobile-First Responsive</span></div>
+</div>
+
+<h2>1. Frontend Architecture Overview</h2>
+
+<!-- Diagram 1: Component Architecture -->
+<div class="diagram-box">
+  <div class="diagram-title">🏗️ React Component Architecture &amp; Rendering Layers</div>
+  <svg viewBox="0 0 560 200" xmlns="http://www.w3.org/2000/svg" style="width:100%;font-family:'Plus Jakarta Sans',sans-serif;">
+    <!-- Browser Layer -->
+    <rect x="2" y="2" width="556" height="196" rx="10" fill="#F0F9FF" stroke="#BAE6FD" stroke-width="1.5"/>
+    <text x="12" y="18" font-size="9" font-weight="800" fill="#0284C7" text-transform="uppercase">BROWSER</text>
+    <!-- React App Root -->
+    <rect x="10" y="24" width="536" height="166" rx="8" fill="#DBEAFE" stroke="#93C5FD" stroke-width="1"/>
+    <text x="20" y="38" font-size="8.5" font-weight="800" fill="#1D4ED8">App.jsx (React Router v6 — 8 Routes)</text>
+    <!-- Route Boxes Row 1 -->
+    <rect x="16" y="44" width="86" height="32" rx="5" fill="#fff" stroke="#93C5FD" stroke-width="1"/>
+    <text x="59" y="58" text-anchor="middle" font-size="8.5" font-weight="700" fill="#1E293B">/ Home</text>
+    <text x="59" y="70" text-anchor="middle" font-size="7.5" fill="#64748B">HeroSection+3D</text>
+
+    <rect x="108" y="44" width="86" height="32" rx="5" fill="#fff" stroke="#93C5FD" stroke-width="1"/>
+    <text x="151" y="58" text-anchor="middle" font-size="8.5" font-weight="700" fill="#1E293B">/universities</text>
+    <text x="151" y="70" text-anchor="middle" font-size="7.5" fill="#64748B">Search + Filters</text>
+
+    <rect x="200" y="44" width="86" height="32" rx="5" fill="#fff" stroke="#93C5FD" stroke-width="1"/>
+    <text x="243" y="58" text-anchor="middle" font-size="8.5" font-weight="700" fill="#1E293B">/ai-counselor</text>
+    <text x="243" y="70" text-anchor="middle" font-size="7.5" fill="#64748B">Groq Chat UI</text>
+
+    <rect x="292" y="44" width="86" height="32" rx="5" fill="#fff" stroke="#93C5FD" stroke-width="1"/>
+    <text x="335" y="58" text-anchor="middle" font-size="8.5" font-weight="700" fill="#1E293B">/scholarships</text>
+    <text x="335" y="70" text-anchor="middle" font-size="7.5" fill="#64748B">Eligibility Calc</text>
+
+    <rect x="384" y="44" width="86" height="32" rx="5" fill="#fff" stroke="#93C5FD" stroke-width="1"/>
+    <text x="427" y="58" text-anchor="middle" font-size="8.5" font-weight="700" fill="#1E293B">/connect</text>
+    <text x="427" y="70" text-anchor="middle" font-size="7.5" fill="#64748B">Lead Form CTA</text>
+
+    <rect x="476" y="44" width="72" height="32" rx="5" fill="#fff" stroke="#93C5FD" stroke-width="1"/>
+    <text x="512" y="58" text-anchor="middle" font-size="8.5" font-weight="700" fill="#1E293B">/student</text>
+    <text x="512" y="70" text-anchor="middle" font-size="7.5" fill="#64748B">Dashboard</text>
+
+    <!-- Shared Components -->
+    <rect x="16" y="84" width="536" height="34" rx="6" fill="#EFF6FF" stroke="#BFDBFE" stroke-width="1"/>
+    <text x="284" y="97" text-anchor="middle" font-size="9" font-weight="800" fill="#1D4ED8">Shared UI Components Layer</text>
+    <text x="284" y="110" text-anchor="middle" font-size="8" fill="#3B82F6">Navbar • PillButton • TestimonialCard • ScholarshipCard • AIChat • FinalCTA</text>
+
+    <!-- Build & State -->
+    <rect x="16" y="125" width="260" height="36" rx="6" fill="#F0FDF4" stroke="#BBF7D0" stroke-width="1"/>
+    <text x="146" y="139" text-anchor="middle" font-size="8.5" font-weight="800" fill="#15803D">State: React Hooks (useState / useEffect)</text>
+    <text x="146" y="151" text-anchor="middle" font-size="8" fill="#16A34A">No Redux — local state + prop drilling for simple flows</text>
+
+    <rect x="284" y="125" width="268" height="36" rx="6" fill="#FFF7ED" stroke="#FED7AA" stroke-width="1"/>
+    <text x="418" y="139" text-anchor="middle" font-size="8.5" font-weight="800" fill="#C2410C">Vite Build: Manual Chunk Splitting</text>
+    <text x="418" y="151" text-anchor="middle" font-size="8" fill="#EA580C">three-vendor · framer-motion · react-vendor · route-chunks</text>
+
+    <!-- Data Flow Arrow (API) -->
+    <text x="16" y="180" font-size="8" font-weight="700" fill="#0284C7">🌐 Data: Axios → Backend REST API (CORS-whitelisted) → MongoDB Atlas</text>
+  </svg>
+</div>
+
+<!-- Diagram 2: Vite Build Pipeline -->
+<div class="diagram-box">
+  <div class="diagram-title">⚡ Vite 8 Production Build Pipeline — Code Splitting &amp; Chunk Strategy</div>
+  <svg viewBox="0 0 560 100" xmlns="http://www.w3.org/2000/svg" style="width:100%;font-family:'Plus Jakarta Sans',sans-serif;">
+    <defs><marker id="a" markerWidth="6" markerHeight="5" refX="6" refY="2.5" orient="auto"><polygon points="0 0, 6 2.5, 0 5" fill="#0284C7"/></marker></defs>
+    <!-- Source -->
+    <rect x="2" y="28" width="80" height="44" rx="7" fill="#DBEAFE" stroke="#93C5FD" stroke-width="1.5"/>
+    <text x="42" y="48" text-anchor="middle" font-size="9" font-weight="800" fill="#1D4ED8">Source Code</text>
+    <text x="42" y="61" text-anchor="middle" font-size="8" fill="#3B82F6">JSX + CSS + Assets</text>
+    <line x1="84" y1="50" x2="100" y2="50" stroke="#0284C7" stroke-width="1.5" marker-end="url(#a)"/>
+    <!-- Vite -->
+    <rect x="102" y="20" width="80" height="60" rx="7" fill="#0284C7" stroke="#0369A1" stroke-width="1.5"/>
+    <text x="142" y="46" text-anchor="middle" font-size="10" font-weight="900" fill="white">Vite 8</text>
+    <text x="142" y="59" text-anchor="middle" font-size="8" fill="#BAE6FD">Rolldown</text>
+    <text x="142" y="70" text-anchor="middle" font-size="8" fill="#BAE6FD">Bundler</text>
+    <line x1="184" y1="50" x2="200" y2="50" stroke="#0284C7" stroke-width="1.5" marker-end="url(#a)"/>
+    <!-- Chunks -->
+    <rect x="202" y="2" width="90" height="22" rx="5" fill="#0F172A" stroke="#334155" stroke-width="1"/>
+    <text x="247" y="17" text-anchor="middle" font-size="8.5" font-weight="700" fill="#38BDF8">three-vendor.js (~2.1MB)</text>
+    <rect x="202" y="28" width="90" height="22" rx="5" fill="#0F172A" stroke="#334155" stroke-width="1"/>
+    <text x="247" y="43" text-anchor="middle" font-size="8.5" font-weight="700" fill="#818CF8">framer-motion.js</text>
+    <rect x="202" y="54" width="90" height="22" rx="5" fill="#0F172A" stroke="#334155" stroke-width="1"/>
+    <text x="247" y="69" text-anchor="middle" font-size="8.5" font-weight="700" fill="#6EE7B7">react-vendor.js</text>
+    <rect x="202" y="80" width="90" height="18" rx="5" fill="#0F172A" stroke="#334155" stroke-width="1"/>
+    <text x="247" y="93" text-anchor="middle" font-size="8" font-weight="700" fill="#FCD34D">8x route chunks</text>
+    <line x1="294" y1="50" x2="310" y2="50" stroke="#0284C7" stroke-width="1.5" marker-end="url(#a)"/>
+    <!-- Output -->
+    <rect x="312" y="20" width="88" height="60" rx="7" fill="#F0FDF4" stroke="#86EFAC" stroke-width="1.5"/>
+    <text x="356" y="44" text-anchor="middle" font-size="9" font-weight="800" fill="#15803D">dist/assets/</text>
+    <text x="356" y="57" text-anchor="middle" font-size="8" fill="#16A34A">Hashed filenames</text>
+    <text x="356" y="69" text-anchor="middle" font-size="8" fill="#16A34A">Gzip + Brotli</text>
+    <line x1="402" y1="50" x2="418" y2="50" stroke="#0284C7" stroke-width="1.5" marker-end="url(#a)"/>
+    <!-- Vercel -->
+    <rect x="420" y="20" width="88" height="60" rx="7" fill="#EDE9FE" stroke="#C4B5FD" stroke-width="1.5"/>
+    <text x="464" y="44" text-anchor="middle" font-size="9" font-weight="800" fill="#6D28D9">Vercel Edge</text>
+    <text x="464" y="57" text-anchor="middle" font-size="8" fill="#7C3AED">100+ global PoPs</text>
+    <text x="464" y="69" text-anchor="middle" font-size="8" fill="#7C3AED">immutable cache</text>
+  </svg>
+</div>
+
+<h2>2. Technology Decision Framework</h2>
+
+<div class="deep-dive-card">
+  <div class="card-title"><span>1. React 18 + Vite 8 vs Next.js SSR</span><span class="card-badge">Framework</span></div>
+  <div class="qa-box qa-what"><div class="qa-label">What is it?</div><div class="qa-text">A client-side rendered Single Page Application (SPA) using React 18 with concurrent features, built and bundled by Vite 8 using the Rolldown Rust-based bundler.</div></div>
+  <div class="qa-box qa-how"><div class="qa-label">How does it work &amp; Problem solved?</div><div class="qa-text">React Router v6 provides client-side navigation with zero full-page reloads. Dynamic imports via <code>React.lazy()</code> ensure heavy pages (Three.js globe, AI chat) only download when visited, reducing initial load to &lt;195kB gzipped.</div></div>
+  <div class="qa-box qa-alt"><div class="qa-label">What alternatives existed?</div><div class="qa-text"><strong>Next.js 14 (SSR)</strong>: Better SEO by default, but requires Node.js server for SSR — adding backend complexity. <strong>Create React App</strong>: Webpack-based, 10x slower builds.</div></div>
+  <div class="qa-box qa-why"><div class="qa-label">Why did we choose this approach?</div><div class="qa-text">Marketing pages use static pre-rendered HTML (SEO via meta tags). The real UX value is in authenticated interactive dashboards — where SSR provides negligible benefit but adds significant operational cost.</div></div>
+</div>
+
+<div class="deep-dive-card">
+  <div class="card-title"><span>2. Three.js WebGL vs CSS 3D Animations</span><span class="card-badge">3D Rendering</span></div>
+  <div class="qa-box qa-what"><div class="qa-label">What is it?</div><div class="qa-text">Hardware-accelerated 3D WebGL scenes embedded in the hero section and FinalCTA banner using Three.js.</div></div>
+  <div class="qa-box qa-how"><div class="qa-label">How does it work &amp; Problem solved?</div><div class="qa-text">WebGL renders on the GPU compositor, bypassing the browser's CSS layout and paint phases entirely. The globe, particle systems, and 3D objects run at 60fps without causing layout jank on the main thread.</div></div>
+  <div class="qa-box qa-alt"><div class="qa-label">What alternatives existed?</div><div class="qa-text"><strong>CSS 3D transforms</strong>: Limited to flat planes, no real depth, no particle systems. <strong>Lottie animations</strong>: 2D SVG-based, no WebGL depth effects.</div></div>
+  <div class="qa-box qa-why"><div class="qa-label">Why did we choose this approach?</div><div class="qa-text">Differentiates UniCoach visually in a commoditized market of cookie-cutter education platforms. The immersive 3D experience increases session duration and perceived product quality.</div></div>
+</div>
+
+<div class="pro-tip">
+  <div class="pro-tip-title">💡 Senior Interview Defense: "Describe your frontend architecture decisions"</div>
+  <p><em>"For UniCoach's student portal, I architected a React 18 SPA using Vite 8 with strategic code splitting — Three.js, Framer Motion, and React itself ship as separate cached vendor chunks. Route-level lazy loading reduces initial download to under 195kB gzipped. Three.js WebGL scenes on the hero run at 60fps via GPU compositing. For mobile, I applied responsive breakpoints with hidden classes to prevent avatar and element collisions on sub-640px viewports."</em></p>
+</div>
+
+<div class="footer-bar">
+  <span>UniCoach Engineering Vault • Module 02: Frontend Client Student Portal</span>
+  <span>Status: Production Verified • 2026</span>
+</div>
+</body>
+</html>

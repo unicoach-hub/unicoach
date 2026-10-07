@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Module 06: Cloud Storage &amp; CDN Pipeline — UniCoach Engineering</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap');
+    @page { size: A4; margin: 14mm 12mm 14mm 12mm; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Plus Jakarta Sans', sans-serif; color: #1E293B; background: #fff; font-size: 12.5px; line-height: 1.5; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .page-break { page-break-after: always; }
+    .header-banner { background: linear-gradient(135deg, #EA580C 0%, #F97316 50%, #0B2272 100%); color: #fff; padding: 28px 24px; border-radius: 14px; margin-bottom: 18px; }
+    .module-tag { display: inline-block; background: rgba(255,255,255,0.18); border: 1px solid rgba(255,255,255,0.3); color: #FED7AA; font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px; padding: 3px 10px; border-radius: 20px; margin-bottom: 10px; }
+    .main-title { font-family: 'Outfit', sans-serif; font-size: 24px; font-weight: 900; line-height: 1.2; margin-bottom: 6px; }
+    .subtitle { font-size: 12px; color: #FED7AA; font-weight: 500; }
+    .meta-bar { margin-top: 14px; padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.15); display: flex; gap: 18px; font-size: 10px; color: #FFEDD5; font-weight: 600; }
+    h2 { font-family: 'Outfit', sans-serif; font-size: 15px; font-weight: 800; color: #EA580C; margin: 16px 0 8px 0; border-bottom: 2px solid #E2E8F0; padding-bottom: 4px; }
+    .diagram-box { background: #F8FAFC; border: 1.5px solid #E2E8F0; border-radius: 10px; padding: 12px; margin: 10px 0 14px 0; }
+    .diagram-title { font-size: 10.5px; font-weight: 800; color: #64748B; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 10px; }
+    .deep-dive-card { background: #F8FAFC; border: 1px solid #E2E8F0; border-left: 4px solid #F97316; border-radius: 10px; padding: 12px; margin-bottom: 12px; }
+    .card-title { font-family: 'Outfit', sans-serif; font-size: 13px; font-weight: 800; color: #0F172A; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; }
+    .card-badge { font-size: 9px; font-weight: 800; text-transform: uppercase; padding: 2px 7px; border-radius: 5px; background: #FFF7ED; color: #EA580C; border: 1px solid #FED7AA; }
+    .qa-box { background: #fff; border: 1px solid #CBD5E1; border-radius: 7px; padding: 8px 10px; margin-bottom: 6px; }
+    .qa-label { font-size: 9.5px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 2px; }
+    .qa-what .qa-label { color: #0284C7; } .qa-how .qa-label { color: #16A34A; } .qa-alt .qa-label { color: #D97706; } .qa-why .qa-label { color: #7C3AED; }
+    .qa-text { font-size: 11.5px; color: #334155; line-height: 1.4; }
+    .pro-tip { background: #FFF7ED; border-left: 4px solid #F97316; border-radius: 7px; padding: 10px 12px; margin: 12px 0; font-size: 11.5px; }
+    .pro-tip-title { font-weight: 800; color: #C2410C; margin-bottom: 3px; }
+    .footer-bar { margin-top: 18px; padding-top: 8px; border-top: 1px solid #E2E8F0; display: flex; justify-content: space-between; font-size: 9px; color: #94A3B8; font-weight: 600; }
+  </style>
+</head>
+<body>
+
+<div class="header-banner">
+  <div class="module-tag">Module 06 • System Architecture Vault</div>
+  <h1 class="main-title">Cloud Storage &amp; CDN Pipeline</h1>
+  <p class="subtitle">Cloudinary managed media pipeline, Multer in-memory buffer processing, automatic WebP/AVIF format conversion, ephemeral disk hygiene, and global CDN delivery.</p>
+  <div class="meta-bar"><span>☁️ Storage: Cloudinary Managed CDN</span><span>📤 Upload: Multer Memory Buffer</span><span>🖼️ Auto-Format: WebP + AVIF</span></div>
+</div>
+
+<h2>1. Media Upload Pipeline Architecture</h2>
+
+<div class="diagram-box">
+  <div class="diagram-title">📤 Image Upload Lifecycle — From Browser to Global CDN</div>
+  <svg viewBox="0 0 560 110" xmlns="http://www.w3.org/2000/svg" style="width:100%;font-family:'Plus Jakarta Sans',sans-serif;">
+    <defs><marker id="a" markerWidth="6" markerHeight="5" refX="6" refY="2.5" orient="auto"><polygon points="0 0, 6 2.5, 0 5" fill="#EA580C"/></marker></defs>
+
+    <rect x="2" y="35" width="72" height="40" rx="7" fill="#FFF7ED" stroke="#FED7AA" stroke-width="1.5"/>
+    <text x="38" y="52" text-anchor="middle" font-size="8.5" font-weight="800" fill="#C2410C">Admin UI</text>
+    <text x="38" y="65" text-anchor="middle" font-size="7.5" fill="#EA580C">multipart/form-data</text>
+    <line x1="76" y1="55" x2="90" y2="55" stroke="#EA580C" stroke-width="1.5" marker-end="url(#a)"/>
+
+    <rect x="92" y="25" width="86" height="60" rx="7" fill="#0F172A" stroke="#334155" stroke-width="1.5"/>
+    <text x="135" y="46" text-anchor="middle" font-size="9" font-weight="800" fill="#FBBF24">Multer</text>
+    <text x="135" y="59" text-anchor="middle" font-size="8" fill="#94A3B8">memoryStorage()</text>
+    <text x="135" y="72" text-anchor="middle" font-size="7.5" fill="#94A3B8">Buffer in RAM</text>
+    <text x="135" y="84" text-anchor="middle" font-size="7.5" fill="#22C55E">No disk write ✅</text>
+    <line x1="180" y1="55" x2="194" y2="55" stroke="#EA580C" stroke-width="1.5" marker-end="url(#a)"/>
+
+    <rect x="196" y="25" width="80" height="60" rx="7" fill="#FFF7ED" stroke="#FED7AA" stroke-width="1.5"/>
+    <text x="236" y="44" text-anchor="middle" font-size="8.5" font-weight="800" fill="#C2410C">Express</text>
+    <text x="236" y="57" text-anchor="middle" font-size="8" fill="#EA580C">Controller</text>
+    <text x="236" y="70" text-anchor="middle" font-size="7.5" fill="#64748B">Zod validates</text>
+    <text x="236" y="82" text-anchor="middle" font-size="7.5" fill="#64748B">metadata</text>
+    <line x1="278" y1="55" x2="292" y2="55" stroke="#EA580C" stroke-width="1.5" marker-end="url(#a)"/>
+
+    <rect x="294" y="15" width="90" height="80" rx="7" fill="#EA580C"/>
+    <text x="339" y="42" text-anchor="middle" font-size="9.5" font-weight="900" fill="white">Cloudinary</text>
+    <text x="339" y="56" text-anchor="middle" font-size="8" fill="#FED7AA">SDK upload()</text>
+    <text x="339" y="69" text-anchor="middle" font-size="7.5" fill="#FFF7ED">Auto WebP+AVIF</text>
+    <text x="339" y="81" text-anchor="middle" font-size="7.5" fill="#FFF7ED">Resize + Optimize</text>
+    <text x="339" y="93" text-anchor="middle" font-size="7.5" fill="#FFF7ED">Returns CDN URL</text>
+    <line x1="386" y1="55" x2="400" y2="55" stroke="#EA580C" stroke-width="1.5" marker-end="url(#a)"/>
+
+    <rect x="402" y="25" width="76" height="60" rx="7" fill="#F0FDF4" stroke="#86EFAC" stroke-width="1.5"/>
+    <text x="440" y="44" text-anchor="middle" font-size="8.5" font-weight="800" fill="#15803D">MongoDB</text>
+    <text x="440" y="57" text-anchor="middle" font-size="8" fill="#16A34A">Stores URL</text>
+    <text x="440" y="70" text-anchor="middle" font-size="7.5" fill="#64748B">res.cloudinary</text>
+    <text x="440" y="82" text-anchor="middle" font-size="7.5" fill="#64748B">.com/...</text>
+    <line x1="480" y1="55" x2="494" y2="55" stroke="#EA580C" stroke-width="1.5" marker-end="url(#a)"/>
+
+    <rect x="496" y="25" width="62" height="60" rx="7" fill="#DCFCE7" stroke="#86EFAC" stroke-width="1.5"/>
+    <text x="527" y="46" text-anchor="middle" font-size="8" font-weight="800" fill="#15803D">Global</text>
+    <text x="527" y="58" text-anchor="middle" font-size="8" font-weight="800" fill="#15803D">CDN</text>
+    <text x="527" y="72" text-anchor="middle" font-size="7.5" fill="#16A34A">180+ PoPs</text>
+    <text x="527" y="84" text-anchor="middle" font-size="7.5" fill="#16A34A">&lt;50ms serve</text>
+    <text x="527" y="4" text-anchor="middle" font-size="8" font-weight="700" fill="#EA580C">→ Student Browser receives optimized image URL in response</text>
+  </svg>
+</div>
+
+<!-- Diagram 2: Cloudinary vs S3 -->
+<div class="diagram-box">
+  <div class="diagram-title">⚖️ Architecture Decision: Cloudinary Managed CDN vs AWS S3 + CloudFront</div>
+  <svg viewBox="0 0 560 110" xmlns="http://www.w3.org/2000/svg" style="width:100%;font-family:'Plus Jakarta Sans',sans-serif;">
+    <!-- Cloudinary Column -->
+    <rect x="2" y="2" width="270" height="106" rx="8" fill="#FFF7ED" stroke="#FED7AA" stroke-width="1.5"/>
+    <text x="137" y="20" text-anchor="middle" font-size="10" font-weight="900" fill="#EA580C">✅ Cloudinary (Our Choice)</text>
+    <text x="10" y="36" font-size="8.5" fill="#334155">✅ Auto WebP/AVIF format conversion</text>
+    <text x="10" y="50" font-size="8.5" fill="#334155">✅ Built-in CDN — 180+ global PoPs</text>
+    <text x="10" y="64" font-size="8.5" fill="#334155">✅ Single SDK call → done</text>
+    <text x="10" y="78" font-size="8.5" fill="#334155">✅ Automatic resizing &amp; quality optimization</text>
+    <text x="10" y="92" font-size="8.5" fill="#334155">✅ Generous free tier (25GB bandwidth)</text>
+    <text x="10" y="106" font-size="8.5" fill="#15803D">⚡ Upload-to-CDN in 1 API call, &lt;2s</text>
+
+    <!-- S3 Column -->
+    <rect x="288" y="2" width="270" height="106" rx="8" fill="#FEF2F2" stroke="#FCA5A5" stroke-width="1.5"/>
+    <text x="423" y="20" text-anchor="middle" font-size="10" font-weight="900" fill="#B91C1C">❌ AWS S3 + CloudFront</text>
+    <text x="296" y="36" font-size="8.5" fill="#334155">❌ Manual format conversion (Lambda@Edge)</text>
+    <text x="296" y="50" font-size="8.5" fill="#334155">❌ Requires configuring CloudFront distribution</text>
+    <text x="296" y="64" font-size="8.5" fill="#334155">❌ Separate IAM roles, bucket policies, ACLs</text>
+    <text x="296" y="78" font-size="8.5" fill="#334155">❌ Cache invalidation costs money</text>
+    <text x="296" y="92" font-size="8.5" fill="#334155">❌ Minimum 3–4 AWS services required</text>
+    <text x="296" y="106" font-size="8.5" fill="#DC2626">⏱️ Setup time: 8–16 hours of DevOps work</text>
+  </svg>
+</div>
+
+<h2>2. Technology Decision Framework</h2>
+<div class="deep-dive-card">
+  <div class="card-title"><span>1. Cloudinary Managed CDN vs AWS S3 + CloudFront</span><span class="card-badge">Storage Architecture</span></div>
+  <div class="qa-box qa-what"><div class="qa-label">What is it?</div><div class="qa-text">A cloud media management platform that handles file upload, automatic image format optimization (WebP/AVIF), global CDN delivery, and URL-based transformation in a single SDK.</div></div>
+  <div class="qa-box qa-how"><div class="qa-label">How does it work &amp; Problem solved?</div><div class="qa-text">Admin uploads a PNG university banner (5MB). Cloudinary receives the buffer stream, automatically converts it to WebP (saving 40% file size), creates multiple responsive size variants, and distributes the optimized image across 180+ global CDN edge nodes. Students receive the nearest-PoP version in under 50ms.</div></div>
+  <div class="qa-box qa-alt"><div class="qa-label">What alternatives existed?</div><div class="qa-text"><strong>AWS S3 + CloudFront</strong>: Requires configuring IAM roles, bucket policies, CloudFront distributions, Lambda@Edge for format conversion — 8–16 hours of DevOps setup and ongoing maintenance.</div></div>
+  <div class="qa-box qa-why"><div class="qa-label">Why did we choose this approach?</div><div class="qa-text">Upload-to-global-CDN in one API call. No bucket configuration, no IAM policy debugging, no CloudFront distribution management. Pure business velocity.</div></div>
+</div>
+
+<div class="deep-dive-card">
+  <div class="card-title"><span>2. Multer Memory Buffer vs Disk Storage</span><span class="card-badge">Server Hygiene</span></div>
+  <div class="qa-box qa-what"><div class="qa-label">What is it?</div><div class="qa-text">Multer middleware configured with <code>memoryStorage()</code> mode that holds uploaded file bytes in server RAM as a Buffer, never writing to disk.</div></div>
+  <div class="qa-box qa-how"><div class="qa-label">How does it work &amp; Problem solved?</div><div class="qa-text">With <code>diskStorage()</code>, uploaded files persist as temporary files on the server's filesystem. In ephemeral containerized environments (Render, Railway, Fly.io), these containers restart and the disk is wiped, losing the uploaded files. Worse, if <code>fs.unlinkSync()</code> is forgotten, temp files accumulate until the disk fills up, crashing the server.</div></div>
+  <div class="qa-box qa-alt"><div class="qa-label">What alternatives existed?</div><div class="qa-text"><strong>diskStorage() + fs.unlinkSync()</strong>: Works but requires meticulous cleanup code in every error path. One unhandled exception = disk accumulation.</div></div>
+  <div class="qa-box qa-why"><div class="qa-label">Why did we choose this approach?</div><div class="qa-text">Zero disk footprint by design: files live only in RAM for the duration of the upload, then are garbage-collected automatically. Container-native and zero-cleanup-code required.</div></div>
+</div>
+
+<div class="pro-tip">
+  <div class="pro-tip-title">💡 Senior Interview Defense: "How do you handle media uploads in production?"</div>
+  <p><em>"In UniCoach, file uploads use Multer with memoryStorage — images are held in RAM as Buffers and streamed directly to Cloudinary via their SDK, never touching disk. Cloudinary automatically converts uploads to WebP/AVIF, creates responsive size variants, and serves them globally from their 180-PoP CDN. The Cloudinary URL is the only artifact persisted to MongoDB. This is zero-disk, zero-cleanup, and CDN-ready in a single API call — versus AWS S3 + CloudFront which requires 8+ hours of DevOps configuration."</em></p>
+</div>
+
+<div class="footer-bar">
+  <span>UniCoach Engineering Vault • Module 06: Cloud Storage &amp; CDN Pipeline</span>
+  <span>Status: Production Verified • 2026</span>
+</div>
+</body>
+</html>

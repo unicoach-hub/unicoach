@@ -1,0 +1,44 @@
+# Environment and Keys
+.env
+.env.*
+*.env
+!*.env.example
+config/api_keys.json
+
+
+config/keys.env
+
+# Dependencies
+node_modules/
+
+# Logs
+*.log
+npm-debug.log*
+
+# Next.js / Build outputs
+.next/
+dist/
+build/
+
+# Testing & Scratch Folders
+testing/
+scratch/
+backend/scratch/
+lets-scroll-main/
+demounicoach/
+onceagain/
+trendzone/
+trendzone.html
+student_cutout.png
+index.html
+
+# Datasets and Archives
+*.zip
+unicoach_scholarships_only/
+verified_scholarship_datasets/
+verified_university_datasets/
+backups/
+backend/backups/
+newfeature
+
+

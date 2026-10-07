@@ -1,0 +1,3 @@
+{
+  "ignore": ["reports/**", "scripts/**", "__tests__/**", "node_modules/**"]
+}

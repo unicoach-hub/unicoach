@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Module 03: Admin CRM Operations Portal — UniCoach Engineering</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap');
+    @page { size: A4; margin: 14mm 12mm 14mm 12mm; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Plus Jakarta Sans', sans-serif; color: #1E293B; background: #fff; font-size: 12.5px; line-height: 1.5; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .page-break { page-break-after: always; }
+    .header-banner { background: linear-gradient(135deg, #7C3AED 0%, #A855F7 50%, #0B2272 100%); color: #fff; padding: 28px 24px; border-radius: 14px; margin-bottom: 18px; }
+    .module-tag { display: inline-block; background: rgba(255,255,255,0.18); border: 1px solid rgba(255,255,255,0.3); color: #E9D5FF; font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px; padding: 3px 10px; border-radius: 20px; margin-bottom: 10px; }
+    .main-title { font-family: 'Outfit', sans-serif; font-size: 24px; font-weight: 900; line-height: 1.2; margin-bottom: 6px; }
+    .subtitle { font-size: 12px; color: #E9D5FF; font-weight: 500; }
+    .meta-bar { margin-top: 14px; padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.15); display: flex; gap: 18px; font-size: 10px; color: #F3E8FF; font-weight: 600; }
+    h2 { font-family: 'Outfit', sans-serif; font-size: 15px; font-weight: 800; color: #7C3AED; margin: 16px 0 8px 0; border-bottom: 2px solid #E2E8F0; padding-bottom: 4px; }
+    .diagram-box { background: #F8FAFC; border: 1.5px solid #E2E8F0; border-radius: 10px; padding: 12px; margin: 10px 0 14px 0; }
+    .diagram-title { font-size: 10.5px; font-weight: 800; color: #64748B; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 10px; }
+    .deep-dive-card { background: #F8FAFC; border: 1px solid #E2E8F0; border-left: 4px solid #7C3AED; border-radius: 10px; padding: 12px; margin-bottom: 12px; }
+    .card-title { font-family: 'Outfit', sans-serif; font-size: 13px; font-weight: 800; color: #0F172A; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; }
+    .card-badge { font-size: 9px; font-weight: 800; text-transform: uppercase; padding: 2px 7px; border-radius: 5px; background: #F3F0FF; color: #7C3AED; border: 1px solid #DDD6FE; }
+    .qa-box { background: #fff; border: 1px solid #CBD5E1; border-radius: 7px; padding: 8px 10px; margin-bottom: 6px; }
+    .qa-label { font-size: 9.5px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 2px; }
+    .qa-what .qa-label { color: #0284C7; } .qa-how .qa-label { color: #16A34A; } .qa-alt .qa-label { color: #D97706; } .qa-why .qa-label { color: #7C3AED; }
+    .qa-text { font-size: 11.5px; color: #334155; line-height: 1.4; }
+    .pro-tip { background: #F3F0FF; border-left: 4px solid #7C3AED; border-radius: 7px; padding: 10px 12px; margin: 12px 0; font-size: 11.5px; }
+    .pro-tip-title { font-weight: 800; color: #6D28D9; margin-bottom: 3px; }
+    .footer-bar { margin-top: 18px; padding-top: 8px; border-top: 1px solid #E2E8F0; display: flex; justify-content: space-between; font-size: 9px; color: #94A3B8; font-weight: 600; }
+  </style>
+</head>
+<body>
+
+<div class="header-banner">
+  <div class="module-tag">Module 03 • System Architecture Vault</div>
+  <h1 class="main-title">Admin CRM Operations Portal</h1>
+  <p class="subtitle">Ant Design v5 data tables, drag-and-drop Kanban pipeline, Recharts analytics dashboard, Axios interceptors with auth loop guards, and crawler immunity.</p>
+  <div class="meta-bar"><span>🎨 UI: Ant Design v5</span><span>📊 Charts: Recharts SVG</span><span>🔒 Crawler-Immune: noindex headers</span></div>
+</div>
+
+<h2>1. Admin Portal Architecture</h2>
+
+<!-- Diagram 1: Admin UI Structure -->
+<div class="diagram-box">
+  <div class="diagram-title">🏗️ Admin CRM Portal — Page Layout &amp; Component Architecture</div>
+  <svg viewBox="0 0 560 180" xmlns="http://www.w3.org/2000/svg" style="width:100%;font-family:'Plus Jakarta Sans',sans-serif;">
+    <!-- Sidebar -->
+    <rect x="2" y="2" width="90" height="176" rx="8" fill="#1E1B4B" stroke="#4338CA" stroke-width="1.5"/>
+    <text x="47" y="22" text-anchor="middle" font-size="9" font-weight="800" fill="#A5B4FC">SIDEBAR NAV</text>
+    <text x="47" y="40" text-anchor="middle" font-size="8" fill="#6366F1">📊 Dashboard</text>
+    <text x="47" y="56" text-anchor="middle" font-size="8" fill="#6366F1">👥 Leads CRM</text>
+    <text x="47" y="72" text-anchor="middle" font-size="8" fill="#6366F1">🎓 Universities</text>
+    <text x="47" y="88" text-anchor="middle" font-size="8" fill="#6366F1">💰 Scholarships</text>
+    <text x="47" y="104" text-anchor="middle" font-size="8" fill="#6366F1">📋 Bookings</text>
+    <text x="47" y="120" text-anchor="middle" font-size="8" fill="#6366F1">🎫 Support</text>
+    <text x="47" y="136" text-anchor="middle" font-size="8" fill="#6366F1">📈 Analytics</text>
+    <text x="47" y="152" text-anchor="middle" font-size="8" fill="#F87171">🔐 Login Guard</text>
+    <text x="47" y="168" text-anchor="middle" font-size="7.5" fill="#4B5563">Ant Design Menu</text>
+
+    <!-- Top Nav Bar -->
+    <rect x="98" y="2" width="460" height="28" rx="6" fill="#F1F5F9" stroke="#E2E8F0" stroke-width="1"/>
+    <text x="328" y="20" text-anchor="middle" font-size="9" font-weight="700" fill="#475569">Top Navigation Bar — Admin Name • Notifications • Logout</text>
+
+    <!-- Main Content Grid -->
+    <rect x="98" y="36" width="460" height="142" rx="8" fill="#F8FAFC" stroke="#E2E8F0" stroke-width="1.5"/>
+
+    <!-- KPI Cards Row -->
+    <rect x="106" y="44" width="104" height="40" rx="6" fill="#DBEAFE" stroke="#93C5FD" stroke-width="1"/>
+    <text x="158" y="60" text-anchor="middle" font-size="8.5" font-weight="800" fill="#1D4ED8">Total Leads</text>
+    <text x="158" y="76" text-anchor="middle" font-size="14" font-weight="900" fill="#2563EB">1,284</text>
+
+    <rect x="216" y="44" width="104" height="40" rx="6" fill="#D1FAE5" stroke="#86EFAC" stroke-width="1"/>
+    <text x="268" y="60" text-anchor="middle" font-size="8.5" font-weight="800" fill="#15803D">Converted</text>
+    <text x="268" y="76" text-anchor="middle" font-size="14" font-weight="900" fill="#16A34A">342</text>
+
+    <rect x="326" y="44" width="104" height="40" rx="6" fill="#FEF3C7" stroke="#FCD34D" stroke-width="1"/>
+    <text x="378" y="60" text-anchor="middle" font-size="8.5" font-weight="800" fill="#B45309">In Progress</text>
+    <text x="378" y="76" text-anchor="middle" font-size="14" font-weight="900" fill="#D97706">218</text>
+
+    <rect x="436" y="44" width="114" height="40" rx="6" fill="#FEE2E2" stroke="#FCA5A5" stroke-width="1"/>
+    <text x="493" y="60" text-anchor="middle" font-size="8.5" font-weight="800" fill="#B91C1C">This Month Rev</text>
+    <text x="493" y="76" text-anchor="middle" font-size="12" font-weight="900" fill="#DC2626">₹14.2L</text>
+
+    <!-- Kanban + Chart area -->
+    <rect x="106" y="92" width="222" height="76" rx="6" fill="#fff" stroke="#E2E8F0" stroke-width="1"/>
+    <text x="217" y="106" text-anchor="middle" font-size="8.5" font-weight="800" fill="#7C3AED">Kanban Pipeline (Drag-and-Drop)</text>
+    <rect x="114" y="112" width="40" height="48" rx="4" fill="#EDE9FE" stroke="#C4B5FD" stroke-width="1"/>
+    <text x="134" y="125" text-anchor="middle" font-size="7" font-weight="700" fill="#6D28D9">NEW</text>
+    <rect x="158" y="112" width="40" height="48" rx="4" fill="#DBEAFE" stroke="#93C5FD" stroke-width="1"/>
+    <text x="178" y="125" text-anchor="middle" font-size="7" font-weight="700" fill="#1D4ED8">CALLED</text>
+    <rect x="202" y="112" width="40" height="48" rx="4" fill="#D1FAE5" stroke="#86EFAC" stroke-width="1"/>
+    <text x="222" y="125" text-anchor="middle" font-size="7" font-weight="700" fill="#047857">QUAL.</text>
+    <rect x="246" y="112" width="40" height="48" rx="4" fill="#FEF3C7" stroke="#FCD34D" stroke-width="1"/>
+    <text x="266" y="125" text-anchor="middle" font-size="7" font-weight="700" fill="#B45309">IN PRG</text>
+    <rect x="290" y="112" width="30" height="48" rx="4" fill="#D1FAE5" stroke="#86EFAC" stroke-width="1"/>
+    <text x="305" y="125" text-anchor="middle" font-size="6.5" font-weight="700" fill="#047857">DONE</text>
+
+    <rect x="334" y="92" width="216" height="76" rx="6" fill="#fff" stroke="#E2E8F0" stroke-width="1"/>
+    <text x="442" y="106" text-anchor="middle" font-size="8.5" font-weight="800" fill="#0369A1">Recharts Lead Trend Chart</text>
+    <!-- Simple bar chart visual -->
+    <rect x="342" y="148" width="14" height="16" rx="2" fill="#2563EB" opacity="0.8"/>
+    <rect x="360" y="138" width="14" height="26" rx="2" fill="#2563EB" opacity="0.8"/>
+    <rect x="378" y="130" width="14" height="34" rx="2" fill="#2563EB" opacity="0.8"/>
+    <rect x="396" y="120" width="14" height="44" rx="2" fill="#7C3AED" opacity="0.9"/>
+    <rect x="414" y="115" width="14" height="49" rx="2" fill="#7C3AED" opacity="0.9"/>
+    <rect x="432" y="110" width="14" height="54" rx="2" fill="#A855F7" opacity="0.9"/>
+    <rect x="450" y="125" width="14" height="39" rx="2" fill="#6366F1" opacity="0.8"/>
+    <rect x="468" y="118" width="14" height="46" rx="2" fill="#6366F1" opacity="0.8"/>
+    <rect x="486" y="112" width="14" height="52" rx="2" fill="#4F46E5" opacity="0.9"/>
+    <rect x="504" y="116" width="14" height="48" rx="2" fill="#4F46E5" opacity="0.9"/>
+    <rect x="522" y="108" width="14" height="56" rx="2" fill="#4338CA"/>
+    <line x1="342" y1="164" x2="540" y2="164" stroke="#E2E8F0" stroke-width="1"/>
+  </svg>
+</div>
+
+<!-- Diagram 2: Axios Auth Interceptor Flow -->
+<div class="diagram-box">
+  <div class="diagram-title">🔒 Axios Auth Interceptor — JWT Loop Guard &amp; Auto-Logout Flow</div>
+  <svg viewBox="0 0 560 85" xmlns="http://www.w3.org/2000/svg" style="width:100%;font-family:'Plus Jakarta Sans',sans-serif;">
+    <defs><marker id="a" markerWidth="6" markerHeight="5" refX="6" refY="2.5" orient="auto"><polygon points="0 0, 6 2.5, 0 5" fill="#7C3AED"/></marker></defs>
+    <rect x="2" y="22" width="80" height="40" rx="7" fill="#EDE9FE" stroke="#C4B5FD" stroke-width="1.5"/>
+    <text x="42" y="40" text-anchor="middle" font-size="9" font-weight="800" fill="#6D28D9">Admin Page</text>
+    <text x="42" y="54" text-anchor="middle" font-size="8" fill="#7C3AED">API Request</text>
+    <line x1="84" y1="42" x2="98" y2="42" stroke="#7C3AED" stroke-width="1.5" marker-end="url(#a)"/>
+
+    <rect x="100" y="14" width="94" height="56" rx="7" fill="#0F172A" stroke="#334155" stroke-width="1.5"/>
+    <text x="147" y="33" text-anchor="middle" font-size="9" font-weight="800" fill="#38BDF8">Axios</text>
+    <text x="147" y="47" text-anchor="middle" font-size="9" font-weight="800" fill="#38BDF8">Interceptor</text>
+    <text x="147" y="60" text-anchor="middle" font-size="7.5" fill="#94A3B8">withCredentials: true</text>
+    <text x="147" y="72" text-anchor="middle" font-size="7.5" fill="#94A3B8">Loop Guard Active</text>
+    <line x1="196" y1="42" x2="210" y2="42" stroke="#7C3AED" stroke-width="1.5" marker-end="url(#a)"/>
+
+    <rect x="212" y="22" width="90" height="40" rx="7" fill="#FFF7ED" stroke="#FED7AA" stroke-width="1.5"/>
+    <text x="257" y="40" text-anchor="middle" font-size="9" font-weight="800" fill="#C2410C">Check Response</text>
+    <text x="257" y="54" text-anchor="middle" font-size="8" fill="#EA580C">Status Code?</text>
+
+    <!-- 200 path -->
+    <line x1="304" y1="32" x2="320" y2="18" stroke="#16A34A" stroke-width="1.5" marker-end="url(#a)"/>
+    <rect x="322" y="4" width="78" height="28" rx="6" fill="#D1FAE5" stroke="#86EFAC" stroke-width="1"/>
+    <text x="361" y="16" text-anchor="middle" font-size="8.5" font-weight="800" fill="#047857">200 OK</text>
+    <text x="361" y="28" text-anchor="middle" font-size="8" fill="#16A34A">Return Data ✅</text>
+
+    <!-- 401 path -->
+    <line x1="304" y1="52" x2="320" y2="52" stroke="#DC2626" stroke-width="1.5" marker-end="url(#a)"/>
+    <rect x="322" y="38" width="78" height="28" rx="6" fill="#FEE2E2" stroke="#FCA5A5" stroke-width="1"/>
+    <text x="361" y="50" text-anchor="middle" font-size="8.5" font-weight="800" fill="#B91C1C">401 Unauthorized</text>
+    <text x="361" y="62" text-anchor="middle" font-size="8" fill="#DC2626">Token Expired</text>
+    <line x1="402" y1="52" x2="418" y2="52" stroke="#DC2626" stroke-width="1.5" marker-end="url(#a)"/>
+
+    <!-- Loop guard -->
+    <rect x="420" y="16" width="136" height="52" rx="7" fill="#0F172A" stroke="#334155" stroke-width="1.5"/>
+    <text x="488" y="33" text-anchor="middle" font-size="8.5" font-weight="800" fill="#F87171">Loop Guard Check</text>
+    <text x="488" y="47" text-anchor="middle" font-size="7.5" fill="#94A3B8">isAuthEndpoint? → skip</text>
+    <text x="488" y="59" text-anchor="middle" font-size="7.5" fill="#94A3B8">Already on /login? → skip</text>
+    <text x="488" y="4" text-anchor="middle" font-size="7" fill="#F87171">→ Redirect to /login</text>
+  </svg>
+</div>
+
+<h2>2. Technology Decision Framework</h2>
+
+<div class="deep-dive-card">
+  <div class="card-title"><span>1. Ant Design v5 vs Material UI vs Custom CSS</span><span class="card-badge">UI Library</span></div>
+  <div class="qa-box qa-what"><div class="qa-label">What is it?</div><div class="qa-text">A React enterprise UI component library providing pre-built data tables, forms, modals, date pickers, and layout components optimized for admin dashboards.</div></div>
+  <div class="qa-box qa-how"><div class="qa-label">How does it work &amp; Problem solved?</div><div class="qa-text">Building a sortable, filterable data table from scratch for 1,000+ lead records would take 2–3 weeks. Ant Design's <code>&lt;Table&gt;</code> component provides server-side pagination, column sorting, row selection, and inline editing out-of-the-box, fully accessible and keyboard-navigable.</div></div>
+  <div class="qa-box qa-alt"><div class="qa-label">What alternatives existed?</div><div class="qa-text"><strong>Material UI</strong>: Similar scale, but Google-branded aesthetic that conflicts with UniCoach's brand language. <strong>Custom CSS</strong>: Maximum flexibility but 10x development time.</div></div>
+  <div class="qa-box qa-why"><div class="qa-label">Why did we choose this approach?</div><div class="qa-text">Ant Design's data-dense table components are purpose-built for CRM operations. Token customization via ConfigProvider lets us override the default blue palette to match UniCoach brand colors.</div></div>
+</div>
+
+<div class="deep-dive-card">
+  <div class="card-title"><span>2. Crawler Immunity via Vercel Security Headers</span><span class="card-badge">Security</span></div>
+  <div class="qa-box qa-what"><div class="qa-label">What is it?</div><div class="qa-text">A <code>vercel.json</code> configuration that injects <code>X-Robots-Tag: noindex, nofollow</code> and <code>X-Frame-Options: DENY</code> HTTP headers on all admin portal responses.</div></div>
+  <div class="qa-box qa-how"><div class="qa-label">How does it work &amp; Problem solved?</div><div class="qa-text">Without these headers, Google could index the admin login page, student data dashboards, or internal lead records. Search engine crawlers would discover and cache sensitive operational data. These headers instruct all crawlers to exclude the admin domain from their indexes entirely.</div></div>
+  <div class="qa-box qa-alt"><div class="qa-label">What alternatives existed?</div><div class="qa-text"><strong>robots.txt</strong>: Voluntarily respected but not enforced. Malicious crawlers ignore it. HTTP headers are enforced at the transport layer.</div></div>
+  <div class="qa-box qa-why"><div class="qa-label">Why did we choose this approach?</div><div class="qa-text">Prevents sensitive operational data from appearing in Google search results and denies iframe embedding attacks (clickjacking).</div></div>
+</div>
+
+<div class="pro-tip">
+  <div class="pro-tip-title">💡 Senior Interview Defense: "How did you architect the admin CRM?"</div>
+  <p><em>"The UniCoach admin portal is a purpose-built CRM SPA using Ant Design v5 for its enterprise-grade data table components. The Kanban drag-and-drop pipeline uses dnd-kit under the hood, triggering PATCH /api/leads/:id/status API calls on drop. Recharts renders SVG lead trend charts. All API calls are routed through a centralized Axios interceptor with an infinite loop guard — if a 401 is received outside an auth endpoint or login page, the session is immediately cleared and admin is redirected to login. Finally, we deploy with noindex/nofollow headers to prevent search engines from indexing any admin UI or lead data."</em></p>
+</div>
+
+<div class="footer-bar">
+  <span>UniCoach Engineering Vault • Module 03: Admin CRM Operations Portal</span>
+  <span>Status: Production Verified • 2026</span>
+</div>
+</body>
+</html>

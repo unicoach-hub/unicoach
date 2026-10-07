@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Module 01: Business &amp; Product Model — UniCoach Engineering</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap');
+    @page { size: A4; margin: 14mm 12mm 14mm 12mm; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Plus Jakarta Sans', sans-serif; color: #1E293B; background: #fff; font-size: 12.5px; line-height: 1.5; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .page-break { page-break-after: always; }
+    .header-banner { background: linear-gradient(135deg, #7C3AED 0%, #4F46E5 50%, #0B2272 100%); color: #fff; padding: 28px 24px; border-radius: 14px; margin-bottom: 18px; position: relative; overflow: hidden; }
+    .header-banner::after { content: ''; position: absolute; top: -30px; right: -30px; width: 150px; height: 150px; background: radial-gradient(circle, rgba(255,255,255,0.12) 0%, transparent 70%); border-radius: 50%; }
+    .module-tag { display: inline-block; background: rgba(255,255,255,0.18); border: 1px solid rgba(255,255,255,0.3); color: #E9D5FF; font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px; padding: 3px 10px; border-radius: 20px; margin-bottom: 10px; }
+    .main-title { font-family: 'Outfit', sans-serif; font-size: 24px; font-weight: 900; line-height: 1.2; margin-bottom: 6px; }
+    .subtitle { font-size: 12px; color: #C4B5FD; font-weight: 500; }
+    .meta-bar { margin-top: 14px; padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.15); display: flex; gap: 18px; font-size: 10px; color: #DDD6FE; font-weight: 600; }
+    h2 { font-family: 'Outfit', sans-serif; font-size: 15px; font-weight: 800; color: #4F46E5; margin: 16px 0 8px 0; border-bottom: 2px solid #E2E8F0; padding-bottom: 4px; }
+    p { margin-bottom: 8px; color: #334155; font-size: 12px; }
+    .diagram-box { background: #F8FAFC; border: 1.5px solid #E2E8F0; border-radius: 10px; padding: 12px; margin: 10px 0 14px 0; }
+    .diagram-title { font-size: 10.5px; font-weight: 800; color: #64748B; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 10px; }
+    .deep-dive-card { background: #F8FAFC; border: 1px solid #E2E8F0; border-left: 4px solid #7C3AED; border-radius: 10px; padding: 12px; margin-bottom: 12px; }
+    .card-title { font-family: 'Outfit', sans-serif; font-size: 13px; font-weight: 800; color: #0F172A; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; }
+    .card-badge { font-size: 9px; font-weight: 800; text-transform: uppercase; padding: 2px 7px; border-radius: 5px; background: #F3F0FF; color: #7C3AED; border: 1px solid #DDD6FE; }
+    .qa-box { background: #fff; border: 1px solid #CBD5E1; border-radius: 7px; padding: 8px 10px; margin-bottom: 6px; }
+    .qa-label { font-size: 9.5px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 2px; }
+    .qa-what .qa-label { color: #0284C7; } .qa-how .qa-label { color: #16A34A; } .qa-alt .qa-label { color: #D97706; } .qa-why .qa-label { color: #7C3AED; }
+    .qa-text { font-size: 11.5px; color: #334155; line-height: 1.4; }
+    .pro-tip { background: #F3F0FF; border-left: 4px solid #7C3AED; border-radius: 7px; padding: 10px 12px; margin: 12px 0; font-size: 11.5px; }
+    .pro-tip-title { font-weight: 800; color: #6D28D9; margin-bottom: 3px; }
+    .footer-bar { margin-top: 18px; padding-top: 8px; border-top: 1px solid #E2E8F0; display: flex; justify-content: space-between; font-size: 9px; color: #94A3B8; font-weight: 600; }
+  </style>
+</head>
+<body>
+
+<div class="header-banner">
+  <div class="module-tag">Module 01 • System Architecture Vault</div>
+  <h1 class="main-title">Business &amp; Product Model</h1>
+  <p class="subtitle">$100B global study-abroad market problem, student persona lifecycle, lead monetization, and unit economics.</p>
+  <div class="meta-bar"><span>🌍 Market: $100B+ Global Study Abroad</span><span>🎯 Persona: Aspiring Overseas Student</span><span>💰 LTV: INR 15,000–80,000</span></div>
+</div>
+
+<h2>1. The Market Problem &amp; Opportunity Architecture</h2>
+
+<!-- Diagram 1: Market Funnel -->
+<div class="diagram-box">
+  <div class="diagram-title">📊 UniCoach Market Opportunity Funnel</div>
+  <svg viewBox="0 0 520 210" xmlns="http://www.w3.org/2000/svg" style="width:100%;font-family:'Plus Jakarta Sans',sans-serif;">
+    <!-- Funnel layers -->
+    <polygon points="20,20 500,20 430,60 90,60" fill="#7C3AED" opacity="0.9"/>
+    <text x="260" y="46" text-anchor="middle" fill="white" font-size="11" font-weight="800">TAM: 3.5 Million Indian Students Seeking Foreign Education Annually ($100B+)</text>
+    <polygon points="90,65 430,65 370,105 150,105" fill="#4F46E5" opacity="0.9"/>
+    <text x="260" y="91" text-anchor="middle" fill="white" font-size="11" font-weight="800">SAM: 800K Active Applicants Using Online Platforms</text>
+    <polygon points="150,110 370,110 310,150 210,150" fill="#6D28D9" opacity="0.9"/>
+    <text x="260" y="136" text-anchor="middle" fill="white" font-size="11" font-weight="800">SOM: 50K Reachable via Organic SEO + Community</text>
+    <polygon points="210,155 310,155 275,195 245,195" fill="#A855F7" opacity="0.9"/>
+    <text x="260" y="181" text-anchor="middle" fill="white" font-size="11" font-weight="800">Leads: 5K</text>
+  </svg>
+</div>
+
+<!-- Diagram 2: Student Lifecycle -->
+<div class="diagram-box">
+  <div class="diagram-title">🔄 Student Lead Lifecycle — CRM Pipeline Stages</div>
+  <svg viewBox="0 0 560 80" xmlns="http://www.w3.org/2000/svg" style="width:100%;font-family:'Plus Jakarta Sans',sans-serif;">
+    <defs>
+      <marker id="arr1" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#7C3AED"/></marker>
+    </defs>
+    <!-- Stage boxes -->
+    <rect x="2" y="15" width="74" height="46" rx="7" fill="#EDE9FE" stroke="#7C3AED" stroke-width="1.5"/>
+    <text x="39" y="35" text-anchor="middle" font-size="9" font-weight="800" fill="#6D28D9">NEW LEAD</text>
+    <text x="39" y="50" text-anchor="middle" font-size="8" fill="#7C3AED">Form Submit</text>
+    <line x1="78" y1="38" x2="94" y2="38" stroke="#7C3AED" stroke-width="1.5" marker-end="url(#arr1)"/>
+
+    <rect x="96" y="15" width="74" height="46" rx="7" fill="#DBEAFE" stroke="#2563EB" stroke-width="1.5"/>
+    <text x="133" y="35" text-anchor="middle" font-size="9" font-weight="800" fill="#1D4ED8">CONTACTED</text>
+    <text x="133" y="50" text-anchor="middle" font-size="8" fill="#2563EB">WhatsApp/Call</text>
+    <line x1="172" y1="38" x2="188" y2="38" stroke="#7C3AED" stroke-width="1.5" marker-end="url(#arr1)"/>
+
+    <rect x="190" y="15" width="74" height="46" rx="7" fill="#D1FAE5" stroke="#059669" stroke-width="1.5"/>
+    <text x="227" y="35" text-anchor="middle" font-size="9" font-weight="800" fill="#047857">QUALIFIED</text>
+    <text x="227" y="50" text-anchor="middle" font-size="8" fill="#059669">AI Scored ≥70</text>
+    <line x1="266" y1="38" x2="282" y2="38" stroke="#7C3AED" stroke-width="1.5" marker-end="url(#arr1)"/>
+
+    <rect x="284" y="15" width="74" height="46" rx="7" fill="#FEF3C7" stroke="#D97706" stroke-width="1.5"/>
+    <text x="321" y="35" text-anchor="middle" font-size="9" font-weight="800" fill="#B45309">IN PROGRESS</text>
+    <text x="321" y="50" text-anchor="middle" font-size="8" fill="#D97706">Doc Review</text>
+    <line x1="360" y1="38" x2="376" y2="38" stroke="#7C3AED" stroke-width="1.5" marker-end="url(#arr1)"/>
+
+    <rect x="378" y="15" width="74" height="46" rx="7" fill="#FEE2E2" stroke="#DC2626" stroke-width="1.5"/>
+    <text x="415" y="35" text-anchor="middle" font-size="9" font-weight="800" fill="#B91C1C">APPLIED</text>
+    <text x="415" y="50" text-anchor="middle" font-size="8" fill="#DC2626">University Sent</text>
+    <line x1="454" y1="38" x2="470" y2="38" stroke="#7C3AED" stroke-width="1.5" marker-end="url(#arr1)"/>
+
+    <rect x="472" y="15" width="74" height="46" rx="7" fill="#D1FAE5" stroke="#059669" stroke-width="2"/>
+    <text x="509" y="35" text-anchor="middle" font-size="9" font-weight="800" fill="#047857">CONVERTED</text>
+    <text x="509" y="50" text-anchor="middle" font-size="8" fill="#059669">Enrolled 🎓</text>
+  </svg>
+</div>
+
+<h2>2. Technology Decision Framework</h2>
+
+<div class="deep-dive-card">
+  <div class="card-title"><span>1. Lead Management System (Custom CRM vs Salesforce)</span><span class="card-badge">Product Strategy</span></div>
+  <div class="qa-box qa-what"><div class="qa-label">What is it?</div><div class="qa-text">A custom-built CRM pipeline in the Admin Portal that tracks every student lead from initial form submission through university enrollment.</div></div>
+  <div class="qa-box qa-how"><div class="qa-label">How does it work &amp; Problem solved?</div><div class="qa-text">Instead of losing student inquiries in WhatsApp chats or spreadsheets, every form submission creates a tracked Lead document in MongoDB. Admins drag-and-drop across Kanban stages, AI auto-scores leads on eligibility, and automatic WhatsApp notifications keep students informed.</div></div>
+  <div class="qa-box qa-alt"><div class="qa-label">What alternatives existed?</div><div class="qa-text"><strong>Salesforce CRM</strong>: $150/user/month — prohibitive for an early-stage startup. <strong>Google Sheets</strong>: No automation, no status tracking, no AI scoring.</div></div>
+  <div class="qa-box qa-why"><div class="qa-label">Why did we choose this approach?</div><div class="qa-text">Full domain ownership: custom lead statuses, AI scoring logic, direct WhatsApp integration, and zero SaaS dependency cost.</div></div>
+</div>
+
+<div class="deep-dive-card">
+  <div class="card-title"><span>2. B2C vs B2B Revenue Model Decision</span><span class="card-badge">Business Model</span></div>
+  <div class="qa-box qa-what"><div class="qa-label">What is it?</div><div class="qa-text">UniCoach operates a B2C model — charging students directly for consultancy services — rather than a B2B model targeting universities for enrollment commissions.</div></div>
+  <div class="qa-box qa-how"><div class="qa-label">How does it work &amp; Problem solved?</div><div class="qa-text">Students pay service fees (INR 15,000–80,000) for end-to-end university application support. Revenue is recognized at enrollment confirmation, not at lead acquisition.</div></div>
+  <div class="qa-box qa-alt"><div class="qa-label">What alternatives existed?</div><div class="qa-text"><strong>B2B University Commission Model</strong>: Longer payment cycles (6–18 months), dependent on foreign university partnerships, subject to regulatory compliance across multiple countries.</div></div>
+  <div class="qa-box qa-why"><div class="qa-label">Why did we choose this approach?</div><div class="qa-text">Faster cash conversion cycle, full control over pricing, and direct student relationship ownership.</div></div>
+</div>
+
+<div class="pro-tip">
+  <div class="pro-tip-title">💡 Senior Interview Defense: "Explain the UniCoach Business Model &amp; Technical Strategy"</div>
+  <p><em>"UniCoach addresses a $100B+ global study-abroad market with a technology-led B2C consultancy model. We built our own CRM pipeline rather than licensing Salesforce — giving us full control over the lead lifecycle, AI scoring integration, and direct WhatsApp automation. Our unit economics target an LTV of INR 15,000–80,000 per enrolled student with sub-30-day sales cycles enabled by automated AI qualification and real-time communication triggers."</em></p>
+</div>
+
+<div class="footer-bar">
+  <span>UniCoach Engineering Vault • Module 01: Business &amp; Product Model</span>
+  <span>Status: Production Verified • 2026</span>
+</div>
+</body>
+</html>

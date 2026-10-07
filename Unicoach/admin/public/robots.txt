@@ -1,0 +1,3 @@
+# Disallow indexing of private admin management portal
+User-agent: *
+Disallow: /

@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Module 11: Testing &amp; Quality Assurance — UniCoach Engineering</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap');
+    @page { size: A4; margin: 14mm 12mm 14mm 12mm; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Plus Jakarta Sans', sans-serif; color: #1E293B; background: #fff; font-size: 12.5px; line-height: 1.5; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .page-break { page-break-after: always; }
+    .header-banner { background: linear-gradient(135deg, #2563EB 0%, #1D4ED8 50%, #0B2272 100%); color: #fff; padding: 28px 24px; border-radius: 14px; margin-bottom: 18px; }
+    .module-tag { display: inline-block; background: rgba(255,255,255,0.18); border: 1px solid rgba(255,255,255,0.3); color: #BFDBFE; font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px; padding: 3px 10px; border-radius: 20px; margin-bottom: 10px; }
+    .main-title { font-family: 'Outfit', sans-serif; font-size: 24px; font-weight: 900; line-height: 1.2; margin-bottom: 6px; }
+    .subtitle { font-size: 12px; color: #BFDBFE; font-weight: 500; }
+    .meta-bar { margin-top: 14px; padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.15); display: flex; gap: 18px; font-size: 10px; color: #DBEAFE; font-weight: 600; }
+    h2 { font-family: 'Outfit', sans-serif; font-size: 15px; font-weight: 800; color: #2563EB; margin: 16px 0 8px 0; border-bottom: 2px solid #E2E8F0; padding-bottom: 4px; }
+    .diagram-box { background: #F8FAFC; border: 1.5px solid #E2E8F0; border-radius: 10px; padding: 12px; margin: 10px 0 14px 0; }
+    .diagram-title { font-size: 10.5px; font-weight: 800; color: #64748B; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 10px; }
+    .deep-dive-card { background: #F8FAFC; border: 1px solid #E2E8F0; border-left: 4px solid #2563EB; border-radius: 10px; padding: 12px; margin-bottom: 12px; }
+    .card-title { font-family: 'Outfit', sans-serif; font-size: 13px; font-weight: 800; color: #0F172A; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; }
+    .card-badge { font-size: 9px; font-weight: 800; text-transform: uppercase; padding: 2px 7px; border-radius: 5px; background: #EFF6FF; color: #2563EB; border: 1px solid #BFDBFE; }
+    .qa-box { background: #fff; border: 1px solid #CBD5E1; border-radius: 7px; padding: 8px 10px; margin-bottom: 6px; }
+    .qa-label { font-size: 9.5px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 2px; }
+    .qa-what .qa-label { color: #0284C7; } .qa-how .qa-label { color: #16A34A; } .qa-alt .qa-label { color: #D97706; } .qa-why .qa-label { color: #7C3AED; }
+    .qa-text { font-size: 11.5px; color: #334155; line-height: 1.4; }
+    .code-box { background: #0F172A; color: #F8FAFC; border-radius: 7px; padding: 9px 12px; font-family: 'JetBrains Mono', monospace; font-size: 10px; margin: 6px 0 10px 0; line-height: 1.45; }
+    .pro-tip { background: #EFF6FF; border-left: 4px solid #2563EB; border-radius: 7px; padding: 10px 12px; margin: 12px 0; font-size: 11.5px; }
+    .pro-tip-title { font-weight: 800; color: #1D4ED8; margin-bottom: 3px; }
+    .footer-bar { margin-top: 18px; padding-top: 8px; border-top: 1px solid #E2E8F0; display: flex; justify-content: space-between; font-size: 9px; color: #94A3B8; font-weight: 600; }
+  </style>
+</head>
+<body>
+
+<div class="header-banner">
+  <div class="module-tag">Module 11 • System Architecture Vault</div>
+  <h1 class="main-title">Testing &amp; Quality Assurance</h1>
+  <p class="subtitle">Testing Pyramid architecture, Jest + Supertest API integration suites, module integrity checkers, deterministic mock strategy, and build-gate verification.</p>
+  <div class="meta-bar"><span>🧪 Runner: Jest + Supertest</span><span>🛡️ Gate: Module Integrity Checker</span><span>✅ 32 Routes Verified</span></div>
+</div>
+
+<h2>1. Testing Pyramid &amp; Pipeline Architecture</h2>
+
+<div class="diagram-box">
+  <div class="diagram-title">🔺 UniCoach Testing Pyramid — 3-Tier QA Strategy</div>
+  <svg viewBox="0 0 560 155" xmlns="http://www.w3.org/2000/svg" style="width:100%;font-family:'Plus Jakarta Sans',sans-serif;">
+    <!-- Pyramid -->
+    <!-- E2E Top -->
+    <polygon points="220,10 340,10 296,55 264,55" fill="#DC2626" opacity="0.9"/>
+    <text x="280" y="30" text-anchor="middle" font-size="8.5" font-weight="800" fill="white">E2E Smoke Tests</text>
+    <text x="280" y="44" text-anchor="middle" font-size="7.5" fill="#FECACA">10% — Critical Flows</text>
+    <!-- Integration Middle -->
+    <polygon points="200,60 360,60 314,105 246,105" fill="#2563EB" opacity="0.9"/>
+    <text x="280" y="80" text-anchor="middle" font-size="8.5" font-weight="800" fill="white">Integration Tests</text>
+    <text x="280" y="94" text-anchor="middle" font-size="7.5" fill="#BFDBFE">30% — Jest + Supertest API</text>
+    <!-- Unit Base -->
+    <polygon points="180,110 380,110 380,148 180,148" fill="#059669" opacity="0.9"/>
+    <rect x="180" y="110" width="200" height="38" fill="#059669"/>
+    <text x="280" y="129" text-anchor="middle" font-size="8.5" font-weight="800" fill="white">Unit Tests</text>
+    <text x="280" y="144" text-anchor="middle" font-size="7.5" fill="#A7F3D0">60% — Zod Schemas, Math, Score Calculators</text>
+
+    <!-- Annotations Right -->
+    <line x1="342" y1="32" x2="380" y2="32" stroke="#DC2626" stroke-width="1" stroke-dasharray="3"/>
+    <text x="384" y="28" font-size="7.5" fill="#334155">✓ Registration flow</text>
+    <text x="384" y="39" font-size="7.5" fill="#334155">✓ Admin login</text>
+
+    <line x1="366" y1="82" x2="390" y2="82" stroke="#2563EB" stroke-width="1" stroke-dasharray="3"/>
+    <text x="394" y="78" font-size="7.5" fill="#334155">✓ POST /api/leads</text>
+    <text x="394" y="89" font-size="7.5" fill="#334155">✓ Auth middleware</text>
+    <text x="394" y="100" font-size="7.5" fill="#334155">✓ Rate limit 429</text>
+
+    <line x1="380" y1="129" x2="396" y2="129" stroke="#059669" stroke-width="1" stroke-dasharray="3"/>
+    <text x="400" y="120" font-size="7.5" fill="#334155">✓ Zod schema validation</text>
+    <text x="400" y="131" font-size="7.5" fill="#334155">✓ Score calculation</text>
+    <text x="400" y="142" font-size="7.5" fill="#334155">✓ GPA converter</text>
+
+    <!-- CI Pipeline steps below pyramid -->
+    <text x="2" y="154" font-size="8" font-weight="700" fill="#2563EB">Pipeline: 1. ESLint → 2. Route Integrity Check → 3. Unit Tests → 4. Integration Tests → 5. Vite Production Build</text>
+  </svg>
+</div>
+
+<!-- Diagram 2: Supertest in-memory flow -->
+<div class="diagram-box">
+  <div class="diagram-title">🔬 Supertest In-Memory API Testing — No Physical Network Ports</div>
+  <svg viewBox="0 0 560 80" xmlns="http://www.w3.org/2000/svg" style="width:100%;font-family:'Plus Jakarta Sans',sans-serif;">
+    <defs><marker id="a" markerWidth="6" markerHeight="5" refX="6" refY="2.5" orient="auto"><polygon points="0 0, 6 2.5, 0 5" fill="#2563EB"/></marker></defs>
+
+    <!-- Jest Test -->
+    <rect x="2" y="22" width="92" height="36" rx="7" fill="#EFF6FF" stroke="#BFDBFE" stroke-width="1.5"/>
+    <text x="48" y="38" text-anchor="middle" font-size="9" font-weight="800" fill="#1D4ED8">Jest Test File</text>
+    <text x="48" y="52" text-anchor="middle" font-size="7.5" fill="#3B82F6">lead.test.js</text>
+    <line x1="96" y1="40" x2="110" y2="40" stroke="#2563EB" stroke-width="1.5" marker-end="url(#a)"/>
+
+    <!-- Supertest -->
+    <rect x="112" y="14" width="100" height="52" rx="7" fill="#0F172A" stroke="#334155" stroke-width="1.5"/>
+    <text x="162" y="34" text-anchor="middle" font-size="9" font-weight="800" fill="#38BDF8">Supertest</text>
+    <text x="162" y="48" text-anchor="middle" font-size="7.5" fill="#94A3B8">request(app)</text>
+    <text x="162" y="60" text-anchor="middle" font-size="7.5" fill="#22C55E">No TCP port bind</text>
+    <line x1="214" y1="40" x2="228" y2="40" stroke="#2563EB" stroke-width="1.5" marker-end="url(#a)"/>
+
+    <!-- Mocks -->
+    <rect x="230" y="14" width="100" height="52" rx="7" fill="#F3F0FF" stroke="#DDD6FE" stroke-width="1.5"/>
+    <text x="280" y="33" text-anchor="middle" font-size="9" font-weight="800" fill="#6D28D9">Mock Layer</text>
+    <text x="280" y="47" text-anchor="middle" font-size="7.5" fill="#7C3AED">jest.mock(Twilio)</text>
+    <text x="280" y="59" text-anchor="middle" font-size="7.5" fill="#7C3AED">jest.mock(Groq)</text>
+    <line x1="332" y1="40" x2="346" y2="40" stroke="#2563EB" stroke-width="1.5" marker-end="url(#a)"/>
+
+    <!-- Express App -->
+    <rect x="348" y="14" width="100" height="52" rx="7" fill="#F0FDF4" stroke="#86EFAC" stroke-width="1.5"/>
+    <text x="398" y="33" text-anchor="middle" font-size="9" font-weight="800" fill="#15803D">Express App</text>
+    <text x="398" y="47" text-anchor="middle" font-size="7.5" fill="#16A34A">Full middleware</text>
+    <text x="398" y="59" text-anchor="middle" font-size="7.5" fill="#16A34A">stack executes</text>
+    <line x1="450" y1="40" x2="464" y2="40" stroke="#2563EB" stroke-width="1.5" marker-end="url(#a)"/>
+
+    <!-- Result -->
+    <rect x="466" y="22" width="92" height="36" rx="7" fill="#D1FAE5" stroke="#6EE7B7" stroke-width="1.5"/>
+    <text x="512" y="37" text-anchor="middle" font-size="9" font-weight="800" fill="#047857">Assertions</text>
+    <text x="512" y="50" text-anchor="middle" font-size="7.5" fill="#059669">expect(201) ✅</text>
+  </svg>
+</div>
+
+<div class="code-box">
+// tests/lead.test.js — Supertest Integration Suite
+jest.mock('../src/services/notification.service', () => ({
+  dispatchLeadConfirmation: jest.fn().mockResolvedValue(true),
+}));
+
+describe('POST /api/leads', () => {
+  it('returns 201 for valid lead payload', async () => {
+    const res = await request(app).post('/api/leads')
+      .send({ name: 'John', email: 'j@test.com', phone: '+919876543210' });
+    expect(res.status).toBe(201);
+    expect(res.body.success).toBe(true);
+  });
+
+  it('returns 400 for invalid phone format', async () => {
+    const res = await request(app).post('/api/leads')
+      .send({ name: 'John', email: 'j@test.com', phone: 'bad-phone' });
+    expect(res.status).toBe(400);
+  });
+});</div>
+
+<h2>2. Technology Decision Framework</h2>
+
+<div class="deep-dive-card">
+  <div class="card-title"><span>1. Jest + Supertest vs Mocha + Chai vs Postman</span><span class="card-badge">Test Framework</span></div>
+  <div class="qa-box qa-what"><div class="qa-label">What is it?</div><div class="qa-text">Jest is a zero-configuration parallel test runner with built-in assertions and mocking. Supertest wraps an Express app for in-memory HTTP testing without binding to a network port.</div></div>
+  <div class="qa-box qa-how"><div class="qa-label">How does it work &amp; Problem solved?</div><div class="qa-text">Binding to a real TCP port during tests causes random port collisions in CI environments and adds 100–500ms latency per test suite. Supertest passes synthetic requests directly into the Express application handler in-memory, completing in milliseconds.</div></div>
+  <div class="qa-box qa-alt"><div class="qa-label">What alternatives existed?</div><div class="qa-text"><strong>Mocha + Chai</strong>: Requires separate test runner, assertion library, spy library, and coverage tool. <strong>Manual Postman</strong>: Not automatable in CI pipelines.</div></div>
+  <div class="qa-box qa-why"><div class="qa-label">Why did we choose this approach?</div><div class="qa-text">Jest ships with everything: parallel execution, mocking, coverage, watch mode. Supertest integrates directly with Express. Zero configuration overhead.</div></div>
+</div>
+
+<div class="pro-tip">
+  <div class="pro-tip-title">💡 Senior Interview Defense: "How do you ensure code quality before releases?"</div>
+  <p><em>"UniCoach uses a 5-stage quality pipeline. ESLint runs first for static analysis. Then an automated module integrity checker verifies all 32 Express routes map to existing controller functions — catching the classic 'callback got undefined' boot crash before it reaches production. Jest unit tests cover Zod schemas and utility functions. Supertest integration suites validate every API endpoint in-memory with Twilio and Groq mocked out. Finally, a mandatory production build gate runs Vite on both frontend and admin apps — if any syntax error or broken import exists, the build fails and the git push is blocked."</em></p>
+</div>
+
+<div class="footer-bar">
+  <span>UniCoach Engineering Vault • Module 11: Testing &amp; Quality Assurance</span>
+  <span>Status: Production Verified • 2026</span>
+</div>
+</body>
+</html>

@@ -1,0 +1,129 @@
+/* ══════════════════════════════════════════════════════════════════
+   OLD COLOR THEME — "Bluish / Indigo / Slate" (Before Warm Rebrand)
+   ══════════════════════════════════════════════════════════════════
+   
+   This file preserves the original blue/indigo/slate color palette
+   that was used across the UniCoach site before switching to the
+   warm cream/terracotta theme.
+   
+   Saved on: 26 Sept 2026
+   ═══════════════════════════════════════════════════════════════════ */
+
+
+/* ── BACKGROUNDS ── */
+--old-bg-primary:         #F1F5F9;       /* slate-100 — main page bg */
+--old-bg-card-dark:       #0F172A;       /* slate-900 — dark cards, buttons */
+--old-bg-card-white:      #FFFFFF;       /* white cards */
+--old-bg-hero:            #F8FAFC;       /* slate-50 — hero section bg */
+--old-bg-footer-gradient: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);  /* slate-800 → slate-900 */
+--old-bg-section-alt:     #F8FAFC;       /* alternating section bg */
+
+
+/* ── ACCENT / BRAND COLORS ── */
+--old-accent-primary:     #4F46E5;       /* indigo-600 — primary brand accent */
+--old-accent-hover:       #4338CA;       /* indigo-700 — hover state */
+--old-accent-light:       #EEF2FF;       /* indigo-50 — light accent bg */
+--old-accent-ring:        #C7D2FE;       /* indigo-200 — focus rings */
+--old-accent-text:        #6366F1;       /* indigo-500 — accent text */
+
+
+/* ── TEXT COLORS ── */
+--old-text-heading:       #0F172A;       /* slate-900 */
+--old-text-body:          #475569;       /* slate-600 */
+--old-text-muted:         #94A3B8;       /* slate-400 */
+--old-text-on-dark:       #FFFFFF;       /* white on dark cards */
+--old-text-sub-on-dark:   #CBD5E1;       /* slate-300 — subtitle on dark */
+
+
+/* ── BORDERS ── */
+--old-border-default:     #E2E8F0;       /* slate-200 */
+--old-border-card:        #E2E8F0;       /* slate-200 */
+--old-border-hover:       #4F46E5;       /* indigo-600 */
+
+
+/* ── ATMOSPHERIC / AMBIENT GLOWS ── */
+--old-glow-1:             rgba(99, 102, 241, 0.15);   /* indigo glow */
+--old-glow-2:             rgba(79, 70, 229, 0.10);    /* deeper indigo glow */
+--old-ambient-top:        from-blue-100/50 via-indigo-50/30 to-transparent;
+--old-ambient-bottom:     from-indigo-100/40 via-blue-50/30 to-transparent;
+
+
+/* ── BUTTONS ── */
+--old-btn-primary-bg:     #0F172A;       /* slate-900 */
+--old-btn-primary-hover:  #1E293B;       /* slate-800 */
+--old-btn-primary-text:   #FFFFFF;
+--old-btn-secondary-bg:   #FFFFFF;
+--old-btn-secondary-border: #E2E8F0;     /* slate-200 */
+--old-btn-secondary-text: #0F172A;       /* slate-900 */
+
+
+/* ── BADGES / PILLS ── */
+--old-badge-bg:           linear-gradient(to right, #EFF6FF, #EEF2FF, #F5F3FF);  /* blue-50 → indigo-50 → purple-50 */
+--old-badge-border:       #BFDBFE;       /* blue-200 */
+--old-badge-text:         #4338CA;       /* indigo-700 */
+--old-pill-icon:          #F43F5E;       /* rose-500 — sparkle icons in pills */
+
+
+/* ── FORM INPUTS ── */
+--old-input-bg:           #FFFFFF;
+--old-input-border:       #E2E8F0;       /* slate-200 */
+--old-input-focus-border: #4F46E5;       /* indigo-600 */
+--old-input-focus-ring:   #E0E7FF;       /* indigo-100 */
+--old-input-placeholder:  #94A3B8;       /* slate-400 */
+--old-input-radius:       12px;          /* rounded-xl */
+
+
+/* ── SHADOWS ── */
+--old-shadow-card:        0 10px 15px -3px rgba(15, 23, 42, 0.05);  /* slate-900/5 */
+--old-shadow-btn:         0 4px 14px -2px rgba(15, 23, 42, 0.15);
+--old-shadow-heavy:       0 25px 50px -12px rgba(15, 23, 42, 0.25);
+
+
+/* ── FOOTER ── */
+--old-footer-bg:          #0F172A;       /* slate-900 */
+--old-footer-text:        #94A3B8;       /* slate-400 */
+--old-footer-heading:     #FFFFFF;
+--old-footer-link-hover:  #6366F1;       /* indigo-500 */
+--old-footer-border:      #1E293B;       /* slate-800 */
+--old-footer-gradient-line: linear-gradient(to right, transparent, #4F46E5, #7C3AED, #EC4899, transparent);
+
+
+/* ── STAT CARDS (Hero floating) ── */
+--old-stat-card-bg:       rgba(17, 17, 17, 0.95);   /* #111111/95 — obsidian */
+--old-stat-card-border:   rgba(255, 255, 255, 0.20); /* white/20 */
+--old-stat-card-text:     #FFFFFF;
+--old-stat-card-sub:      #CBD5E1;       /* slate-300 */
+--old-stat-card-glow:     #DE5C2B;       /* terracotta top edge (this stayed) */
+--old-stat-card-shadow:   0 25px 50px -12px rgba(0, 0, 0, 0.35);
+
+
+/* ── PRIORITY DM PAGE (old blue version) ── */
+--old-dm-page-bg:         #F1F5F9;       /* slate-100 */
+--old-dm-ambient-1:       from-blue-100/50 via-indigo-50/30 to-transparent;
+--old-dm-ambient-2:       from-indigo-100/40 via-blue-50/30 to-transparent;
+--old-dm-badge-gradient:  linear-gradient(to right, #FFF1F2, #FFF1F2, #FAF5FF);  /* pink-50 → rose-50 → purple-50 */
+--old-dm-badge-border:    #FBCFE8;       /* pink-200 */
+--old-dm-badge-text:      #BE123C;       /* rose-700 */
+--old-dm-submit-bg:       #0F172A;       /* slate-900 */
+--old-dm-success-icon:    #F472B6;       /* pink-400 */
+--old-dm-success-text:    #4F46E5;       /* indigo-600 — category highlight */
+
+
+/* ══════════════════════════════════════════════════════════════════
+   CURRENT THEME — "Warm Cream / Terracotta" (Active)
+   ══════════════════════════════════════════════════════════════════
+   
+   For reference, current active palette:
+   
+   Background:     #FAF9F6  (warm cream)
+   Heading:        #111111  (obsidian black)
+   Accent:         #DE5C2B  (terracotta)
+   Highlight:      #FED7CE  (peach)
+   Body text:      slate-600
+   Borders:        orange-100/60
+   Cards:          white with orange-100 borders
+   Buttons:        #111111 pill with white arrow
+   Focus rings:    #FED7CE/40
+   Font families:  Outfit (headings), Urbanist (stats), Plus Jakarta Sans (body)
+   
+   ═══════════════════════════════════════════════════════════════════ */

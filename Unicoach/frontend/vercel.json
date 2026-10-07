@@ -1,0 +1,177 @@
+{
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "DENY"
+        },
+        {
+          "key": "X-XSS-Protection",
+          "value": "1; mode=block"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        },
+        {
+          "key": "Permissions-Policy",
+          "value": "camera=(), microphone=(), geolocation=()"
+        }
+      ]
+    },
+    {
+      "source": "/assets/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ],
+  "trailingSlash": false,
+  "redirects": [
+    {
+      "source": "/:p(contact-us(?:-[0-9]+)?|careers)",
+      "destination": "/contact",
+      "permanent": true
+    },
+    {
+      "source": "/:p((?:destinations|services)(?:-[0-9]+)?)",
+      "destination": "/study-abroad",
+      "permanent": true
+    },
+    {
+      "source": "/unicoach-:c(usa|uk|canada|australia|germany|ireland|france|italy|new-zealand)",
+      "destination": "/study-abroad/:c",
+      "permanent": true
+    },
+    {
+      "source": "/unicoach-:c(vietnam|switzerland|sweden|spain|singapore|netherlands|mauritius|malaysia|japan|hungary|finland|dubai|denmark|czech-republic|cyprus|austria)",
+      "destination": "/study-abroad",
+      "permanent": true
+    },
+    {
+      "source": "/:p((?:undergrad|masters|ranking-accredit)[a-z-]*(?:-[0-9]+)?|profile(?:-[0-9]+)?)",
+      "destination": "/universities",
+      "permanent": true
+    },
+    {
+      "source": "/:p(life-with-unicoach(?:-[0-9]+)?)",
+      "destination": "/unicoach",
+      "permanent": true
+    },
+    {
+      "source": "/:p((?:pre-departure|post-arrival)(?:-[0-9]+)?)",
+      "destination": "/visa-assistance",
+      "permanent": true
+    },
+    {
+      "source": "/sample-page",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/:p(blog|feed)",
+      "destination": "/blogs",
+      "permanent": true
+    },
+    {
+      "source": "/comments/feed",
+      "destination": "/blogs",
+      "permanent": true
+    },
+    {
+      "source": "/:t(category|tag|author)/:rest*",
+      "destination": "/blogs",
+      "permanent": true
+    },
+    {
+      "source": "/:y([0-9]{4})/:rest*",
+      "destination": "/blogs",
+      "permanent": true
+    },
+    {
+      "source": "/:w(wp-admin|wp-content|wp-includes|wp-json)/:rest*",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/:w(wp-login[.]php|xmlrpc[.]php)",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/:p(do-you-know-what-is-a-gic-and-how-can-it-help-you-study-in-canada|what-to-choose-masters-or-pg-diploma-in-canada|know-about-designated-learning-institutions-dlis-in-canada|grading-system-in-canada-how-does-it-work|everything-you-need-to-know-about-project-management-course-in-canada|how-to-choose-your-province-in-canada-for-education|rejection-of-canadian-student-visas-4-big-reasons|6-reasons-to-choose-canada-for-higher-education)",
+      "destination": "/study-abroad/canada",
+      "permanent": true
+    },
+    {
+      "source": "/:p(universities-in-usa-with-guaranteed-international-student-housing|know-about-different-types-of-summer-programs-in-us|pathway-programs-in-usa-and-how-effective-they-are-for-your-career|pathway-programs-in-usa-and-how-effective-they-are-for-your-career-2|how-to-know-where-to-study-in-the-usa|types-of-student-visas-in-the-usa-and-how-to-get-them|an-international-students-guide-to-studying-in-the-united-states[^/]*)",
+      "destination": "/study-abroad/usa",
+      "permanent": true
+    },
+    {
+      "source": "/:p(5-reasons-to-consider-before-going-to-the-uk|4-reasons-why-uk-is-popular-education-hub-for-international-students)",
+      "destination": "/study-abroad/uk",
+      "permanent": true
+    },
+    {
+      "source": "/:p(best-medical-science-universities-in-australia-for-international-students|best-mba-colleges-in-australia-for-international-students-2022|8-reasons-to-choose-australia-for-your-education-journey)",
+      "destination": "/study-abroad/australia",
+      "permanent": true
+    },
+    {
+      "source": "/study-in-ireland-the-land-of-saints-and-scholars",
+      "destination": "/study-abroad/ireland",
+      "permanent": true
+    },
+    {
+      "source": "/top-7-reasons-to-choose-germany-for-international-students",
+      "destination": "/study-abroad/germany",
+      "permanent": true
+    },
+    {
+      "source": "/how-to-write-sop-importance-tips-and-format",
+      "destination": "/resources/sop/statement-of-purpose",
+      "permanent": true
+    },
+    {
+      "source": "/top-universities-waiving-gre-and-gmat-exam-in-2022",
+      "destination": "/exams/gre",
+      "permanent": true
+    },
+    {
+      "source": "/the-sat-is-going-digital-in-2023-heres-how-you-can-ace-it-and-get-into-top-universities",
+      "destination": "/exams/sat",
+      "permanent": true
+    },
+    {
+      "source": "/how-to-enhance-your-visa-interview-skills-to-gain-us-f-1-visa-tips",
+      "destination": "/ai-tools/visa-prep",
+      "permanent": true
+    },
+    {
+      "source": "/:p(ivy-league-school-admissions-how-to-build-a-strong-profile|5-ivy-league-schools-in-popular-countries-for-international-students-oxford-or-harvard)",
+      "destination": "/universities",
+      "permanent": true
+    },
+    {
+      "source": "/:p(how-to-bring-your-family-while-studying-abroad|10-top-skills-needed-to-become-a-data-scientist|top-humanities-courses-at-undergraduate-level|top-7-bachelors-degrees-you-can-study-abroad-in-2022|5-factors-international-students-should-keep-in-mind-to-study-abroad|know-about-transferring-schools-a-complete-guide|study-physics-in-these-top-countries)",
+      "destination": "/study-abroad",
+      "permanent": true
+    }
+  ]
+}

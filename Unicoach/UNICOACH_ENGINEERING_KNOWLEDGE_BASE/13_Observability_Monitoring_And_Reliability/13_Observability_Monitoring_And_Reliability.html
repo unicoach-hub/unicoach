@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Module 13: Observability, Monitoring &amp; Reliability — UniCoach Engineering</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap');
+    @page { size: A4; margin: 14mm 12mm 14mm 12mm; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Plus Jakarta Sans', sans-serif; color: #1E293B; background: #fff; font-size: 12.5px; line-height: 1.5; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .page-break { page-break-after: always; }
+    .header-banner { background: linear-gradient(135deg, #0E7490 0%, #06B6D4 50%, #0B2272 100%); color: #fff; padding: 28px 24px; border-radius: 14px; margin-bottom: 18px; }
+    .module-tag { display: inline-block; background: rgba(255,255,255,0.18); border: 1px solid rgba(255,255,255,0.3); color: #CFFAFE; font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px; padding: 3px 10px; border-radius: 20px; margin-bottom: 10px; }
+    .main-title { font-family: 'Outfit', sans-serif; font-size: 24px; font-weight: 900; line-height: 1.2; margin-bottom: 6px; }
+    .subtitle { font-size: 12px; color: #A5F3FC; font-weight: 500; }
+    .meta-bar { margin-top: 14px; padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.15); display: flex; gap: 18px; font-size: 10px; color: #CFFAFE; font-weight: 600; }
+    h2 { font-family: 'Outfit', sans-serif; font-size: 15px; font-weight: 800; color: #0E7490; margin: 16px 0 8px 0; border-bottom: 2px solid #E2E8F0; padding-bottom: 4px; }
+    .diagram-box { background: #F8FAFC; border: 1.5px solid #E2E8F0; border-radius: 10px; padding: 12px; margin: 10px 0 14px 0; }
+    .diagram-title { font-size: 10.5px; font-weight: 800; color: #64748B; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 10px; }
+    .deep-dive-card { background: #F8FAFC; border: 1px solid #E2E8F0; border-left: 4px solid #06B6D4; border-radius: 10px; padding: 12px; margin-bottom: 12px; }
+    .card-title { font-family: 'Outfit', sans-serif; font-size: 13px; font-weight: 800; color: #0F172A; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; }
+    .card-badge { font-size: 9px; font-weight: 800; text-transform: uppercase; padding: 2px 7px; border-radius: 5px; background: #ECFEFF; color: #0891B2; border: 1px solid #A5F3FC; }
+    .qa-box { background: #fff; border: 1px solid #CBD5E1; border-radius: 7px; padding: 8px 10px; margin-bottom: 6px; }
+    .qa-label { font-size: 9.5px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 2px; }
+    .qa-what .qa-label { color: #0284C7; } .qa-how .qa-label { color: #16A34A; } .qa-alt .qa-label { color: #D97706; } .qa-why .qa-label { color: #7C3AED; }
+    .qa-text { font-size: 11.5px; color: #334155; line-height: 1.4; }
+    .code-box { background: #0F172A; color: #F8FAFC; border-radius: 7px; padding: 9px 12px; font-family: 'JetBrains Mono', monospace; font-size: 10px; margin: 6px 0 10px 0; line-height: 1.45; }
+    .pro-tip { background: #ECFEFF; border-left: 4px solid #06B6D4; border-radius: 7px; padding: 10px 12px; margin: 12px 0; font-size: 11.5px; }
+    .pro-tip-title { font-weight: 800; color: #0E7490; margin-bottom: 3px; }
+    .footer-bar { margin-top: 18px; padding-top: 8px; border-top: 1px solid #E2E8F0; display: flex; justify-content: space-between; font-size: 9px; color: #94A3B8; font-weight: 600; }
+  </style>
+</head>
+<body>
+
+<div class="header-banner">
+  <div class="module-tag">Module 13 • System Architecture Vault</div>
+  <h1 class="main-title">Observability, Monitoring &amp; Reliability</h1>
+  <p class="subtitle">Sentry APM real-time error tracking, HTTP access latency telemetry, sanitized liveness health endpoint, graceful SIGTERM shutdown, and RPO/RTO disaster recovery targets.</p>
+  <div class="meta-bar"><span>📡 APM: Sentry Error Tracking</span><span>💓 Health: /api/health Probe</span><span>🔄 DR: RPO &lt;1hr · RTO &lt;15min</span></div>
+</div>
+
+<h2>1. Observability &amp; Reliability Architecture</h2>
+
+<div class="diagram-box">
+  <div class="diagram-title">📡 Telemetry Stack — Error Capture, Latency Logging &amp; Health Probing</div>
+  <svg viewBox="0 0 560 130" xmlns="http://www.w3.org/2000/svg" style="width:100%;font-family:'Plus Jakarta Sans',sans-serif;">
+    <defs><marker id="a" markerWidth="6" markerHeight="5" refX="6" refY="2.5" orient="auto"><polygon points="0 0, 6 2.5, 0 5" fill="#0891B2"/></marker></defs>
+
+    <!-- Incoming Request -->
+    <rect x="2" y="50" width="68" height="30" rx="6" fill="#ECFEFF" stroke="#A5F3FC" stroke-width="1.5"/>
+    <text x="36" y="68" text-anchor="middle" font-size="8.5" font-weight="800" fill="#0E7490">HTTP Request</text>
+    <line x1="72" y1="65" x2="86" y2="65" stroke="#0891B2" stroke-width="1.5" marker-end="url(#a)"/>
+
+    <!-- Access Logger -->
+    <rect x="88" y="38" width="90" height="54" rx="7" fill="#0F172A" stroke="#334155" stroke-width="1.5"/>
+    <text x="133" y="57" text-anchor="middle" font-size="8.5" font-weight="800" fill="#38BDF8">Access Logger</text>
+    <text x="133" y="69" text-anchor="middle" font-size="7.5" fill="#94A3B8">Date.now() start</text>
+    <text x="133" y="81" text-anchor="middle" font-size="7.5" fill="#22C55E">[HTTP] GET /api</text>
+    <text x="133" y="92" text-anchor="middle" font-size="7.5" fill="#22C55E">200 — 18ms ✅</text>
+    <line x1="180" y1="65" x2="194" y2="65" stroke="#0891B2" stroke-width="1.5" marker-end="url(#a)"/>
+
+    <!-- Route Handler -->
+    <rect x="196" y="38" width="90" height="54" rx="7" fill="#F0FDF4" stroke="#86EFAC" stroke-width="1.5"/>
+    <text x="241" y="57" text-anchor="middle" font-size="8.5" font-weight="800" fill="#15803D">Route Handler</text>
+    <text x="241" y="69" text-anchor="middle" font-size="7.5" fill="#16A34A">Controller runs</text>
+    <text x="241" y="81" text-anchor="middle" font-size="7.5" fill="#16A34A">DB query</text>
+    <text x="241" y="92" text-anchor="middle" font-size="7.5" fill="#64748B">Returns data</text>
+
+    <!-- Error path -->
+    <line x1="241" y1="94" x2="241" y2="114" stroke="#DC2626" stroke-width="1.5" stroke-dasharray="4"/>
+    <line x1="241" y1="114" x2="330" y2="114" stroke="#DC2626" stroke-width="1.5" marker-end="url(#a)"/>
+    <text x="285" y="124" text-anchor="middle" font-size="7.5" fill="#DC2626">On unhandled exception</text>
+
+    <line x1="288" y1="65" x2="302" y2="65" stroke="#0891B2" stroke-width="1.5" marker-end="url(#a)"/>
+
+    <!-- Sentry capture -->
+    <rect x="304" y="38" width="100" height="54" rx="7" fill="#FEF2F2" stroke="#FCA5A5" stroke-width="1.5"/>
+    <text x="354" y="56" text-anchor="middle" font-size="9" font-weight="800" fill="#B91C1C">Sentry APM</text>
+    <text x="354" y="69" text-anchor="middle" font-size="7.5" fill="#DC2626">Stack trace</text>
+    <text x="354" y="81" text-anchor="middle" font-size="7.5" fill="#DC2626">Breadcrumbs</text>
+    <text x="354" y="93" text-anchor="middle" font-size="7.5" fill="#DC2626">→ Alert engineer</text>
+    <line x1="406" y1="65" x2="420" y2="65" stroke="#0891B2" stroke-width="1.5" marker-end="url(#a)"/>
+
+    <!-- Health probe + Graceful shutdown -->
+    <rect x="422" y="10" width="136" height="120" rx="8" fill="#ECFEFF" stroke="#A5F3FC" stroke-width="1.5"/>
+    <text x="490" y="28" text-anchor="middle" font-size="8.5" font-weight="800" fill="#0E7490">Reliability Layer</text>
+    <text x="490" y="44" text-anchor="middle" font-size="7.5" fill="#0891B2">GET /api/health</text>
+    <text x="490" y="56" text-anchor="middle" font-size="7.5" fill="#064E3B">→ {"status":"UP"}</text>
+    <text x="490" y="68" text-anchor="middle" font-size="7" fill="#475569">(No RAM/version leaked)</text>
+    <line x1="430" y1="78" x2="556" y2="78" stroke="#E2E8F0" stroke-width="1"/>
+    <text x="490" y="92" text-anchor="middle" font-size="7.5" fill="#0891B2">SIGTERM → drain</text>
+    <text x="490" y="104" text-anchor="middle" font-size="7.5" fill="#064E3B">In-flight req complete</text>
+    <text x="490" y="116" text-anchor="middle" font-size="7.5" fill="#064E3B">MongoDB pool closed</text>
+    <text x="490" y="128" text-anchor="middle" font-size="7" fill="#15803D">process.exit(0) ✅</text>
+  </svg>
+</div>
+
+<!-- Diagram 2: Disaster Recovery -->
+<div class="diagram-box">
+  <div class="diagram-title">🔄 Disaster Recovery Architecture — RPO &amp; RTO Targets</div>
+  <svg viewBox="0 0 560 90" xmlns="http://www.w3.org/2000/svg" style="width:100%;font-family:'Plus Jakarta Sans',sans-serif;">
+    <!-- RPO card -->
+    <rect x="2" y="2" width="268" height="86" rx="8" fill="#F0FDF4" stroke="#86EFAC" stroke-width="1.5"/>
+    <text x="137" y="22" text-anchor="middle" font-size="11" font-weight="900" fill="#15803D">RPO &lt; 1 Hour</text>
+    <text x="137" y="36" text-anchor="middle" font-size="8.5" font-weight="700" fill="#16A34A">Recovery Point Objective — Max Data Loss Window</text>
+    <text x="10" y="52" font-size="8" fill="#334155">✅ MongoDB Atlas continuous oplog snapshots</text>
+    <text x="10" y="65" font-size="8" fill="#334155">✅ Point-in-time restore to any second in last 24h</text>
+    <text x="10" y="78" font-size="8" fill="#334155">✅ 3-node replica set — data survives single node failure</text>
+    <text x="10" y="88" font-size="8.5" font-weight="700" fill="#15803D">→ Maximum data loss: 1 hour of new submissions</text>
+
+    <!-- RTO card -->
+    <rect x="290" y="2" width="268" height="86" rx="8" fill="#ECFEFF" stroke="#A5F3FC" stroke-width="1.5"/>
+    <text x="424" y="22" text-anchor="middle" font-size="11" font-weight="900" fill="#0E7490">RTO &lt; 15 Minutes</text>
+    <text x="424" y="36" text-anchor="middle" font-size="8.5" font-weight="700" fill="#0891B2">Recovery Time Objective — Max Downtime Window</text>
+    <text x="298" y="52" font-size="8" fill="#334155">⚡ Vercel rollback: &lt;10 seconds (DNS pointer swap)</text>
+    <text x="298" y="65" font-size="8" fill="#334155">⚡ Render new container spin-up: 2–5 minutes</text>
+    <text x="298" y="78" font-size="8" fill="#334155">⚡ MongoDB replica failover: &lt;30 seconds auto</text>
+    <text x="298" y="88" font-size="8.5" font-weight="700" fill="#0E7490">→ Max downtime: 15 minutes end-to-end</text>
+  </svg>
+</div>
+
+<div class="code-box">
+// server.js — Graceful Shutdown Handler (SIGTERM from cloud container orchestrator)
+const shutdown = async (signal) => {
+  console.log(`[PROCESS] ${signal} received — initiating graceful drain...`);
+  server.close(async () => {
+    console.log('[PROCESS] HTTP server closed. Closing MongoDB pool...');
+    await mongoose.connection.close(false); // false = don't force close
+    console.log('[PROCESS] All connections closed safely. process.exit(0)');
+    process.exit(0);
+  });
+};
+process.on('SIGTERM', () => shutdown('SIGTERM')); // Cloud PaaS deploy signal
+process.on('SIGINT',  () => shutdown('SIGINT'));  // Ctrl+C local dev signal</div>
+
+<h2>2. Technology Decision Framework</h2>
+
+<div class="deep-dive-card">
+  <div class="card-title"><span>1. Sentry APM vs Raw Cloud Logs vs Datadog</span><span class="card-badge">Observability</span></div>
+  <div class="qa-box qa-what"><div class="qa-label">What is it?</div><div class="qa-text">Sentry intercepts every unhandled Node.js exception and React component error, grouping them with full stack traces, user breadcrumbs, and environment context.</div></div>
+  <div class="qa-box qa-how"><div class="qa-label">How does it work &amp; Problem solved?</div><div class="qa-text">Without APM, a student who encounters a 500 error sees a generic failure message and you only discover the bug if they contact support. Sentry captures the error 100ms after it occurs, pushes an alert, and shows the exact line of code and preceding user actions that caused it.</div></div>
+  <div class="qa-box qa-alt"><div class="qa-label">What alternatives existed?</div><div class="qa-text"><strong>Raw Render/CloudWatch Logs</strong>: Errors buried in thousands of lines, no grouping, no alert thresholds. <strong>Datadog</strong>: Enterprise pricing ($150–$500/month) with complex agent installation.</div></div>
+  <div class="qa-box qa-why"><div class="qa-label">Why did we choose this approach?</div><div class="qa-text">Free tier covers 5,000 errors/month — sufficient for early-stage. Zero-config Node.js SDK integration. Source map uploads de-minify production stack traces to exact original source lines.</div></div>
+</div>
+
+<div class="deep-dive-card">
+  <div class="card-title"><span>2. Sanitized Health Endpoint vs Verbose Debug Probe</span><span class="card-badge">Security</span></div>
+  <div class="qa-box qa-what"><div class="qa-label">What is it?</div><div class="qa-text">A <code>GET /api/health</code> endpoint that returns only <code>{"status":"UP","timestamp":...}</code> in production, withholding process memory stats and runtime version details.</div></div>
+  <div class="qa-box qa-how"><div class="qa-label">How does it work &amp; Problem solved?</div><div class="qa-text">Many tutorials expose <code>process.memoryUsage()</code> and <code>process.version</code> in health endpoints. Attackers use automated scanners to discover Node.js version numbers and target known CVEs for that specific runtime version. Our sanitized response provides liveness confirmation while revealing zero infrastructure metadata.</div></div>
+  <div class="qa-box qa-alt"><div class="qa-label">What alternatives existed?</div><div class="qa-text">Verbose <code>/health</code> endpoints exposing Node version, heap usage, uptime — providing attackers a fingerprinting vector for targeted CVE exploitation.</div></div>
+  <div class="qa-box qa-why"><div class="qa-label">Why did we choose this approach?</div><div class="qa-text">Satisfies PaaS liveness probe requirements while adhering to OWASP information hiding principles.</div></div>
+</div>
+
+<div class="pro-tip">
+  <div class="pro-tip-title">💡 Senior Interview Defense: "How do you ensure system reliability and observability?"</div>
+  <p><em>"UniCoach has a 4-pillar reliability stack. Sentry captures and alerts on every unhandled exception with breadcrumbs showing the exact user action sequence that triggered it. A lightweight access logger records every route's HTTP status and execution latency in milliseconds for trend analysis. The /api/health endpoint is deliberately sanitized — it returns only status:UP with no runtime metadata, preventing Node.js version fingerprinting by attackers. Finally, SIGTERM handlers drain in-flight requests before closing MongoDB connection pools — preventing any data corruption during rolling cloud deployments. Our RPO is under 1 hour via Atlas oplog snapshots and RTO under 15 minutes via instant Vercel rollbacks."</em></p>
+</div>
+
+<div class="footer-bar">
+  <span>UniCoach Engineering Vault • Module 13: Observability &amp; Reliability — COMPLETE VAULT ✅</span>
+  <span>All 13 Modules Generated • 2026</span>
+</div>
+</body>
+</html>

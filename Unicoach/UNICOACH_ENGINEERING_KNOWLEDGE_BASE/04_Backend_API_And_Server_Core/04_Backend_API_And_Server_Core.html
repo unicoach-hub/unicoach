@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Module 04: Backend API &amp; Server Core — UniCoach Engineering</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap');
+    @page { size: A4; margin: 14mm 12mm 14mm 12mm; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Plus Jakarta Sans', sans-serif; color: #1E293B; background: #fff; font-size: 12.5px; line-height: 1.5; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .page-break { page-break-after: always; }
+    .header-banner { background: linear-gradient(135deg, #0284C7 0%, #0369A1 50%, #0B2272 100%); color: #fff; padding: 28px 24px; border-radius: 14px; margin-bottom: 18px; position: relative; overflow: hidden; }
+    .module-tag { display: inline-block; background: rgba(255,255,255,0.18); border: 1px solid rgba(255,255,255,0.3); color: #BAE6FD; font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px; padding: 3px 10px; border-radius: 20px; margin-bottom: 10px; }
+    .main-title { font-family: 'Outfit', sans-serif; font-size: 24px; font-weight: 900; line-height: 1.2; margin-bottom: 6px; }
+    .subtitle { font-size: 12px; color: #BAE6FD; font-weight: 500; }
+    .meta-bar { margin-top: 14px; padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.15); display: flex; gap: 18px; font-size: 10px; color: #E0F2FE; font-weight: 600; }
+    h2 { font-family: 'Outfit', sans-serif; font-size: 15px; font-weight: 800; color: #0369A1; margin: 16px 0 8px 0; border-bottom: 2px solid #E2E8F0; padding-bottom: 4px; }
+    p { margin-bottom: 8px; color: #334155; font-size: 12px; }
+    .diagram-box { background: #F8FAFC; border: 1.5px solid #E2E8F0; border-radius: 10px; padding: 12px; margin: 10px 0 14px 0; }
+    .diagram-title { font-size: 10.5px; font-weight: 800; color: #64748B; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 10px; }
+    .deep-dive-card { background: #F8FAFC; border: 1px solid #E2E8F0; border-left: 4px solid #0284C7; border-radius: 10px; padding: 12px; margin-bottom: 12px; }
+    .card-title { font-family: 'Outfit', sans-serif; font-size: 13px; font-weight: 800; color: #0F172A; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; }
+    .card-badge { font-size: 9px; font-weight: 800; text-transform: uppercase; padding: 2px 7px; border-radius: 5px; background: #EFF6FF; color: #0369A1; border: 1px solid #BAE6FD; }
+    .qa-box { background: #fff; border: 1px solid #CBD5E1; border-radius: 7px; padding: 8px 10px; margin-bottom: 6px; }
+    .qa-label { font-size: 9.5px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 2px; }
+    .qa-what .qa-label { color: #0284C7; } .qa-how .qa-label { color: #16A34A; } .qa-alt .qa-label { color: #D97706; } .qa-why .qa-label { color: #7C3AED; }
+    .qa-text { font-size: 11.5px; color: #334155; line-height: 1.4; }
+    .pro-tip { background: #EFF6FF; border-left: 4px solid #0369A1; border-radius: 7px; padding: 10px 12px; margin: 12px 0; font-size: 11.5px; }
+    .pro-tip-title { font-weight: 800; color: #0369A1; margin-bottom: 3px; }
+    .footer-bar { margin-top: 18px; padding-top: 8px; border-top: 1px solid #E2E8F0; display: flex; justify-content: space-between; font-size: 9px; color: #94A3B8; font-weight: 600; }
+  </style>
+</head>
+<body>
+
+<div class="header-banner">
+  <div class="module-tag">Module 04 • System Architecture Vault</div>
+  <h1 class="main-title">Backend API &amp; Server Core</h1>
+  <p class="subtitle">Node.js 22 LTS micro-monolith, Express v4 REST API, 7-layer middleware pipeline, Zod schema validation, and clean layered architecture.</p>
+  <div class="meta-bar"><span>🟢 Runtime: Node.js 22 LTS</span><span>🔗 32 Routes • 23 Controllers</span><span>🛡️ 7-Layer Middleware Pipeline</span></div>
+</div>
+
+<h2>1. Full-Stack Request Architecture</h2>
+
+<!-- Diagram 1: End-to-end request flow -->
+<div class="diagram-box">
+  <div class="diagram-title">🌐 End-to-End HTTP Request Lifecycle — From Browser to Database</div>
+  <svg viewBox="0 0 560 130" xmlns="http://www.w3.org/2000/svg" style="width:100%;font-family:'Plus Jakarta Sans',sans-serif;">
+    <defs><marker id="a" markerWidth="6" markerHeight="5" refX="6" refY="2.5" orient="auto"><polygon points="0 0, 6 2.5, 0 5" fill="#0369A1"/></marker></defs>
+
+    <!-- Client -->
+    <rect x="2" y="45" width="68" height="40" rx="7" fill="#DBEAFE" stroke="#93C5FD" stroke-width="1.5"/>
+    <text x="36" y="63" text-anchor="middle" font-size="9" font-weight="800" fill="#1D4ED8">Browser</text>
+    <text x="36" y="76" text-anchor="middle" font-size="8" fill="#3B82F6">React SPA</text>
+    <line x1="72" y1="65" x2="86" y2="65" stroke="#0369A1" stroke-width="1.5" marker-end="url(#a)"/>
+
+    <!-- Vercel Edge -->
+    <rect x="88" y="35" width="68" height="60" rx="7" fill="#EDE9FE" stroke="#C4B5FD" stroke-width="1.5"/>
+    <text x="122" y="56" text-anchor="middle" font-size="9" font-weight="800" fill="#6D28D9">Vercel</text>
+    <text x="122" y="68" text-anchor="middle" font-size="8" fill="#7C3AED">Edge CDN</text>
+    <text x="122" y="80" text-anchor="middle" font-size="7.5" fill="#8B5CF6">Static assets</text>
+    <line x1="158" y1="65" x2="172" y2="65" stroke="#0369A1" stroke-width="1.5" marker-end="url(#a)"/>
+
+    <!-- Middleware Stack -->
+    <rect x="174" y="10" width="90" height="110" rx="8" fill="#0F172A" stroke="#334155" stroke-width="1.5"/>
+    <text x="219" y="27" text-anchor="middle" font-size="9" font-weight="800" fill="#38BDF8">Middleware Stack</text>
+    <text x="219" y="41" text-anchor="middle" font-size="7.5" fill="#94A3B8">1. CORS Policy</text>
+    <text x="219" y="53" text-anchor="middle" font-size="7.5" fill="#94A3B8">2. Rate Limiter</text>
+    <text x="219" y="65" text-anchor="middle" font-size="7.5" fill="#FBBF24">3. Auth Guard (JWT)</text>
+    <text x="219" y="77" text-anchor="middle" font-size="7.5" fill="#94A3B8">4. NoSQL Sanitize</text>
+    <text x="219" y="89" text-anchor="middle" font-size="7.5" fill="#94A3B8">5. Zod Validate</text>
+    <text x="219" y="101" text-anchor="middle" font-size="7.5" fill="#94A3B8">6. Access Logger</text>
+    <text x="219" y="113" text-anchor="middle" font-size="7.5" fill="#F87171">7. Error Handler</text>
+    <line x1="266" y1="65" x2="280" y2="65" stroke="#0369A1" stroke-width="1.5" marker-end="url(#a)"/>
+
+    <!-- Router -->
+    <rect x="282" y="35" width="72" height="60" rx="7" fill="#F0FDF4" stroke="#86EFAC" stroke-width="1.5"/>
+    <text x="318" y="55" text-anchor="middle" font-size="9" font-weight="800" fill="#15803D">Express</text>
+    <text x="318" y="67" text-anchor="middle" font-size="8" fill="#16A34A">Router</text>
+    <text x="318" y="79" text-anchor="middle" font-size="7.5" fill="#22C55E">32 Routes</text>
+    <line x1="356" y1="65" x2="370" y2="65" stroke="#0369A1" stroke-width="1.5" marker-end="url(#a)"/>
+
+    <!-- Controllers / Models -->
+    <rect x="372" y="35" width="82" height="60" rx="7" fill="#FFF7ED" stroke="#FED7AA" stroke-width="1.5"/>
+    <text x="413" y="55" text-anchor="middle" font-size="9" font-weight="800" fill="#C2410C">Controller</text>
+    <text x="413" y="67" text-anchor="middle" font-size="8" fill="#EA580C">23 Controllers</text>
+    <text x="413" y="79" text-anchor="middle" font-size="7.5" fill="#F97316">Business Logic</text>
+    <line x1="456" y1="65" x2="470" y2="65" stroke="#0369A1" stroke-width="1.5" marker-end="url(#a)"/>
+
+    <!-- MongoDB -->
+    <rect x="472" y="35" width="82" height="60" rx="7" fill="#DCFCE7" stroke="#86EFAC" stroke-width="1.5"/>
+    <text x="513" y="55" text-anchor="middle" font-size="9" font-weight="800" fill="#15803D">MongoDB</text>
+    <text x="513" y="67" text-anchor="middle" font-size="8" fill="#16A34A">Atlas</text>
+    <text x="513" y="79" text-anchor="middle" font-size="7.5" fill="#22C55E">Mongoose v8</text>
+  </svg>
+</div>
+
+<!-- Diagram 2: 7-Layer Middleware Pipeline -->
+<div class="diagram-box">
+  <div class="diagram-title">🛡️ 7-Layer Middleware Pipeline — Security-First Express Configuration</div>
+  <svg viewBox="0 0 560 80" xmlns="http://www.w3.org/2000/svg" style="width:100%;font-family:'Plus Jakarta Sans',sans-serif;">
+    <defs><marker id="b" markerWidth="6" markerHeight="5" refX="6" refY="2.5" orient="auto"><polygon points="0 0, 6 2.5, 0 5" fill="#0369A1"/></marker></defs>
+
+    <!-- Incoming Request -->
+    <rect x="2" y="22" width="56" height="36" rx="6" fill="#DBEAFE" stroke="#93C5FD" stroke-width="1.5"/>
+    <text x="30" y="38" text-anchor="middle" font-size="8.5" font-weight="800" fill="#1D4ED8">HTTP</text>
+    <text x="30" y="50" text-anchor="middle" font-size="8.5" font-weight="800" fill="#1D4ED8">Request</text>
+    <line x1="60" y1="40" x2="70" y2="40" stroke="#0369A1" stroke-width="1.5" marker-end="url(#b)"/>
+
+    <!-- Layer boxes -->
+    <rect x="72" y="16" width="60" height="48" rx="5" fill="#7C3AED" opacity="0.9"/>
+    <text x="102" y="34" text-anchor="middle" font-size="8" font-weight="800" fill="white">CORS</text>
+    <text x="102" y="46" text-anchor="middle" font-size="7" fill="#E9D5FF">Origin</text>
+    <text x="102" y="56" text-anchor="middle" font-size="7" fill="#E9D5FF">Whitelist</text>
+    <line x1="134" y1="40" x2="142" y2="40" stroke="#0369A1" stroke-width="1.5" marker-end="url(#b)"/>
+
+    <rect x="144" y="16" width="60" height="48" rx="5" fill="#DC2626" opacity="0.9"/>
+    <text x="174" y="34" text-anchor="middle" font-size="8" font-weight="800" fill="white">Rate</text>
+    <text x="174" y="46" text-anchor="middle" font-size="7" fill="#FEE2E2">Limiter</text>
+    <text x="174" y="56" text-anchor="middle" font-size="7" fill="#FEE2E2">100rq/15m</text>
+    <line x1="206" y1="40" x2="214" y2="40" stroke="#0369A1" stroke-width="1.5" marker-end="url(#b)"/>
+
+    <rect x="216" y="16" width="60" height="48" rx="5" fill="#D97706" opacity="0.9"/>
+    <text x="246" y="34" text-anchor="middle" font-size="8" font-weight="800" fill="white">Auth JWT</text>
+    <text x="246" y="46" text-anchor="middle" font-size="7" fill="#FEF3C7">HttpOnly</text>
+    <text x="246" y="56" text-anchor="middle" font-size="7" fill="#FEF3C7">Cookie</text>
+    <line x1="278" y1="40" x2="286" y2="40" stroke="#0369A1" stroke-width="1.5" marker-end="url(#b)"/>
+
+    <rect x="288" y="16" width="60" height="48" rx="5" fill="#0369A1" opacity="0.9"/>
+    <text x="318" y="34" text-anchor="middle" font-size="8" font-weight="800" fill="white">NoSQL</text>
+    <text x="318" y="46" text-anchor="middle" font-size="7" fill="#BAE6FD">Sanitize</text>
+    <text x="318" y="56" text-anchor="middle" font-size="7" fill="#BAE6FD">Injection</text>
+    <line x1="350" y1="40" x2="358" y2="40" stroke="#0369A1" stroke-width="1.5" marker-end="url(#b)"/>
+
+    <rect x="360" y="16" width="60" height="48" rx="5" fill="#059669" opacity="0.9"/>
+    <text x="390" y="34" text-anchor="middle" font-size="8" font-weight="800" fill="white">Zod</text>
+    <text x="390" y="46" text-anchor="middle" font-size="7" fill="#D1FAE5">Schema</text>
+    <text x="390" y="56" text-anchor="middle" font-size="7" fill="#D1FAE5">Validate</text>
+    <line x1="422" y1="40" x2="430" y2="40" stroke="#0369A1" stroke-width="1.5" marker-end="url(#b)"/>
+
+    <rect x="432" y="16" width="60" height="48" rx="5" fill="#475569" opacity="0.9"/>
+    <text x="462" y="34" text-anchor="middle" font-size="8" font-weight="800" fill="white">Logger</text>
+    <text x="462" y="46" text-anchor="middle" font-size="7" fill="#E2E8F0">Method +</text>
+    <text x="462" y="56" text-anchor="middle" font-size="7" fill="#E2E8F0">Latency</text>
+    <line x1="494" y1="40" x2="502" y2="40" stroke="#0369A1" stroke-width="1.5" marker-end="url(#b)"/>
+
+    <rect x="504" y="22" width="54" height="36" rx="5" fill="#0F172A" stroke="#334155" stroke-width="1.5"/>
+    <text x="531" y="38" text-anchor="middle" font-size="8" font-weight="800" fill="#38BDF8">Route</text>
+    <text x="531" y="50" text-anchor="middle" font-size="8" fill="#64748B">Handler</text>
+  </svg>
+</div>
+
+<!-- Diagram 3: Route to Controller Mapping -->
+<div class="diagram-box">
+  <div class="diagram-title">📡 Express Route → Controller → Model Mapping (Sample Endpoints)</div>
+  <svg viewBox="0 0 560 120" xmlns="http://www.w3.org/2000/svg" style="width:100%;font-family:'JetBrains Mono',monospace;">
+    <rect x="2" y="2" width="176" height="116" rx="8" fill="#F0FDF4" stroke="#86EFAC" stroke-width="1.5"/>
+    <text x="90" y="18" text-anchor="middle" font-size="8" font-weight="800" fill="#15803D" style="font-family:'Plus Jakarta Sans',sans-serif;">ROUTES</text>
+    <text x="10" y="34" font-size="8.5" fill="#0F172A">POST /api/leads</text>
+    <text x="10" y="48" font-size="8.5" fill="#0F172A">GET  /api/universities</text>
+    <text x="10" y="62" font-size="8.5" fill="#0F172A">POST /api/ai/chat</text>
+    <text x="10" y="76" font-size="8.5" fill="#0F172A">POST /api/auth/login</text>
+    <text x="10" y="90" font-size="8.5" fill="#0F172A">GET  /api/scholarships</text>
+    <text x="10" y="104" font-size="8.5" fill="#0F172A">DELETE /api/leads/:id</text>
+    <line x1="180" y1="60" x2="196" y2="60" stroke="#0369A1" stroke-width="1.5"/>
+    <polygon points="194,56 200,60 194,64" fill="#0369A1"/>
+
+    <rect x="202" y="2" width="176" height="116" rx="8" fill="#FFF7ED" stroke="#FED7AA" stroke-width="1.5"/>
+    <text x="290" y="18" text-anchor="middle" font-size="8" font-weight="800" fill="#C2410C" style="font-family:'Plus Jakarta Sans',sans-serif;">CONTROLLERS (23)</text>
+    <text x="210" y="34" font-size="8.5" fill="#0F172A">leadController.createLead</text>
+    <text x="210" y="48" font-size="8.5" fill="#0F172A">uniController.getAll</text>
+    <text x="210" y="62" font-size="8.5" fill="#0F172A">aiController.streamChat</text>
+    <text x="210" y="76" font-size="8.5" fill="#0F172A">authController.login</text>
+    <text x="210" y="90" font-size="8.5" fill="#0F172A">schController.getAll</text>
+    <text x="210" y="104" font-size="8.5" fill="#0F172A">leadController.delete</text>
+    <line x1="380" y1="60" x2="396" y2="60" stroke="#0369A1" stroke-width="1.5"/>
+    <polygon points="394,56 400,60 394,64" fill="#0369A1"/>
+
+    <rect x="402" y="2" width="156" height="116" rx="8" fill="#DCFCE7" stroke="#86EFAC" stroke-width="1.5"/>
+    <text x="480" y="18" text-anchor="middle" font-size="8" font-weight="800" fill="#15803D" style="font-family:'Plus Jakarta Sans',sans-serif;">MODELS (Mongoose)</text>
+    <text x="410" y="34" font-size="8.5" fill="#0F172A">Lead.create()</text>
+    <text x="410" y="48" font-size="8.5" fill="#0F172A">University.find().lean()</text>
+    <text x="410" y="62" font-size="8.5" fill="#0F172A">Groq API stream</text>
+    <text x="410" y="76" font-size="8.5" fill="#0F172A">Admin.findOne()</text>
+    <text x="410" y="90" font-size="8.5" fill="#0F172A">Scholar.find().lean()</text>
+    <text x="410" y="104" font-size="8.5" fill="#0F172A">Lead.findByIdDelete</text>
+  </svg>
+</div>
+
+<h2>2. Technology Decision Framework</h2>
+
+<div class="deep-dive-card">
+  <div class="card-title"><span>1. Node.js + Express vs NestJS</span><span class="card-badge">Runtime</span></div>
+  <div class="qa-box qa-what"><div class="qa-label">What is it?</div><div class="qa-text">A JavaScript/Node.js HTTP server using the Express.js minimalist framework to handle REST API requests.</div></div>
+  <div class="qa-box qa-how"><div class="qa-label">How does it work &amp; Problem solved?</div><div class="qa-text">Express's non-blocking event loop handles thousands of concurrent API requests on a single thread. The 7-layer middleware pipeline processes each request through security, authentication, validation, and logging before hitting business logic.</div></div>
+  <div class="qa-box qa-alt"><div class="qa-label">What alternatives existed?</div><div class="qa-text"><strong>NestJS</strong>: Opinionated TypeScript framework with DI containers — excellent for large enterprise teams but adds significant boilerplate overhead for a 2–3 person startup. <strong>Fastify</strong>: 2x faster than Express, but smaller ecosystem.</div></div>
+  <div class="qa-box qa-why"><div class="qa-label">Why did we choose this approach?</div><div class="qa-text">Maximum velocity for a startup: Express's minimal structure lets us ship features faster, and the full Node.js ecosystem (Mongoose, Groq SDK, Twilio) provides first-class integration support.</div></div>
+</div>
+
+<div class="deep-dive-card">
+  <div class="card-title"><span>2. Zod Schema Validation vs Manual Validation</span><span class="card-badge">Data Safety</span></div>
+  <div class="qa-box qa-what"><div class="qa-label">What is it?</div><div class="qa-text">TypeScript-first runtime schema validation library that rejects malformed API requests before they reach business logic.</div></div>
+  <div class="qa-box qa-how"><div class="qa-label">How does it work &amp; Problem solved?</div><div class="qa-text">Without Zod, invalid data (e.g., non-numeric phone numbers, missing email fields) silently propagates into MongoDB, creating corrupt lead documents. Zod rejects invalid payloads at the middleware layer with structured 400 error responses.</div></div>
+  <div class="qa-box qa-alt"><div class="qa-label">What alternatives existed?</div><div class="qa-text"><strong>Joi</strong>: Runtime-only, no TypeScript integration. <strong>Manual if-else validation</strong>: Repetitive, inconsistent, and error-prone.</div></div>
+  <div class="qa-box qa-why"><div class="qa-label">Why did we choose this approach?</div><div class="qa-text">Single source of truth for API contracts: schema definitions simultaneously validate runtime data and infer TypeScript types.</div></div>
+</div>
+
+<div class="pro-tip">
+  <div class="pro-tip-title">💡 Senior Interview Defense: "Walk me through your backend architecture"</div>
+  <p><em>"UniCoach's backend is a Node.js 22 micro-monolith with 32 REST endpoints organized as a clean MVC: routes declare HTTP verbs and paths, controllers hold business logic, and Mongoose models handle persistence. Every inbound request traverses a 7-layer middleware pipeline — CORS, rate limiting, JWT auth, NoSQL injection sanitization, Zod schema validation, access logging, and a global error handler. This pipeline catches security issues, auth failures, and malformed payloads before they ever reach business logic."</em></p>
+</div>
+
+<div class="footer-bar">
+  <span>UniCoach Engineering Vault • Module 04: Backend API &amp; Server Core</span>
+  <span>Status: Production Verified • 2026</span>
+</div>
+</body>
+</html>

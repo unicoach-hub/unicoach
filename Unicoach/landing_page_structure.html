@@ -1,0 +1,982 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UniCoach | AI-Powered Global Education & Study Abroad Platform</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Urbanist:wght@700;800;900&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              primary: '#1868F8',      // UniCoach Royal Blue
+              primaryDark: '#0B52D6',
+              secondary: '#6366F1',    // Electric Indigo
+              success: '#10B981',      // Emerald Green
+              navy: '#0F172A',         // Slate Navy (Headlines)
+              muted: '#64748B',        // Slate Muted (Body text)
+              bg: '#F8FAFC',           // Page Canvas
+              card: '#FFFFFF',         // Card Surface
+              border: '#E2E8F0',       // Crisp Divider
+            }
+          },
+          fontFamily: {
+            heading: ['Outfit', 'sans-serif'],
+            body: ['"Plus Jakarta Sans"', 'sans-serif'],
+            stat: ['Urbanist', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body {
+      background-color: #F8FAFC;
+      color: #0F172A;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+    h1, h2, h3, h4, .font-heading {
+      font-family: 'Outfit', sans-serif;
+    }
+    .font-stat {
+      font-family: 'Urbanist', sans-serif;
+    }
+  </style>
+</head>
+<body class="min-h-screen antialiased flex flex-col bg-[#F8FAFC]">
+
+  <!-- ═════════════════════════════════════════════════════════════
+       SECTION 0: TOP ANNOUNCEMENT BAR
+       ═════════════════════════════════════════════════════════════ -->
+  <div class="bg-[#0F172A] text-white py-2 px-4 text-center text-xs font-semibold tracking-wide border-b border-slate-800">
+    <div class="max-w-7xl mx-auto flex items-center justify-center gap-2">
+      <span class="w-2 h-2 rounded-full bg-[#10B981] animate-pulse"></span>
+      <span>Fall 2027 International Intakes Now Open: Get ₹24Cr+ in Verified Scholarships &amp; 100% Free Profile Evaluation</span>
+      <a href="#quick-finder" class="underline hover:text-[#60A5FA] ml-1 font-bold">Check Eligibility &rarr;</a>
+    </div>
+  </div>
+
+  <!-- ═════════════════════════════════════════════════════════════
+       GLOBAL STICKY NAVBAR
+       ═════════════════════════════════════════════════════════════ -->
+  <header class="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-[#E2E8F0] shadow-xs">
+    <div class="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-10 h-20 flex items-center justify-between">
+      
+      <!-- Brand Logo -->
+      <a href="#" class="flex items-center gap-2 select-none">
+        <img src="frontend/src/assets/logo.png" alt="UniCoach Logo" class="h-10 sm:h-11 w-auto object-contain">
+      </a>
+
+      <!-- Desktop Nav Links -->
+      <nav class="hidden lg:flex items-center gap-1 xl:gap-2 text-[13.5px] font-bold text-[#0F172A]">
+        <div class="group relative px-3 py-2 rounded-xl hover:bg-slate-50 cursor-pointer flex items-center gap-1">
+          <span>Study Abroad</span>
+          <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+        </div>
+        <div class="group relative px-3 py-2 rounded-xl hover:bg-slate-50 cursor-pointer flex items-center gap-1 text-[#1868F8]">
+          <span class="w-2 h-2 rounded-full bg-[#6366F1]"></span>
+          <span>AI &amp; Tools</span>
+          <span class="text-[9px] font-extrabold uppercase px-1.5 py-0.5 rounded bg-indigo-50 text-[#6366F1] border border-indigo-200">New</span>
+        </div>
+        <a href="#destinations" class="px-3 py-2 rounded-xl hover:bg-slate-50 transition">Destinations</a>
+        <a href="#scholarships" class="px-3 py-2 rounded-xl hover:bg-slate-50 transition">Scholarships</a>
+        <a href="#how-it-works" class="px-3 py-2 rounded-xl hover:bg-slate-50 transition">How It Works</a>
+        <a href="#success-stories" class="px-3 py-2 rounded-xl hover:bg-slate-50 transition">Admits Wall</a>
+        <a href="#faq" class="px-3 py-2 rounded-xl hover:bg-slate-50 transition">FAQ</a>
+      </nav>
+
+      <!-- Right CTAs -->
+      <div class="flex items-center gap-3">
+        <a href="https://wa.me/" target="_blank" class="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-[#10B981] border border-emerald-200 text-xs font-bold transition">
+          <span>💬 WhatsApp Expert</span>
+        </a>
+        <a href="#quick-finder" class="px-5 py-2.5 rounded-xl bg-[#1868F8] hover:bg-[#0B52D6] text-white font-bold text-xs sm:text-sm tracking-wide shadow-md shadow-[#1868F8]/25 hover:-translate-y-0.5 transition flex items-center gap-1.5">
+          <span>Book Free Counselling</span>
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+        </a>
+      </div>
+
+    </div>
+  </header>
+
+  <main class="space-y-24">
+
+    <!-- ═════════════════════════════════════════════════════════════
+         SECTION 1: HERO SECTION WITH INTERACTIVE DISCOVERY WIDGET
+         ═════════════════════════════════════════════════════════════ -->
+    <section class="relative pt-12 pb-16 lg:py-20 overflow-hidden bg-gradient-to-b from-white via-white to-[#F8FAFC] border-b border-[#E2E8F0]">
+      
+      <!-- Subtle Atmospheric Ambient Glows -->
+      <div class="absolute top-0 right-1/4 w-[500px] h-[400px] bg-[#1868F8]/8 rounded-full blur-[100px] pointer-events-none"></div>
+      <div class="absolute bottom-0 left-10 w-[400px] h-[350px] bg-[#6366F1]/8 rounded-full blur-[90px] pointer-events-none"></div>
+
+      <div class="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-10 relative z-10">
+        <div class="grid lg:grid-cols-12 gap-10 lg:gap-12 items-center">
+          
+          <!-- Left 7 Columns: Messaging & Authority -->
+          <div class="lg:col-span-7 space-y-6">
+            
+            <!-- Trust Pills Row -->
+            <div class="flex flex-wrap items-center gap-2">
+              <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-50 border border-emerald-200">
+                <span class="w-2 h-2 rounded-full bg-[#10B981] shadow-[0_0_8px_rgba(16,185,129,0.8)]"></span>
+                <span class="text-xs font-bold text-[#10B981] tracking-wide uppercase">100% Free Counseling • Zero Agent Brokerage</span>
+              </div>
+              <div class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-blue-50 border border-blue-200 text-xs font-bold text-[#1868F8]">
+                <span>⭐ 4.9/5 Google Rating</span>
+              </div>
+            </div>
+
+            <!-- Main Headline -->
+            <h1 class="font-heading text-4xl sm:text-5xl lg:text-6xl font-black text-[#0F172A] leading-[1.06] tracking-tight">
+              Your Global Future Starts Here — <br/>
+              <span class="text-transparent bg-clip-text bg-gradient-to-r from-[#1868F8] to-[#6366F1]">
+                Decoded with AI
+              </span>
+            </h1>
+
+            <!-- Supporting Paragraph -->
+            <p class="text-slate-600 text-base sm:text-lg leading-relaxed max-w-xl">
+              Compare 1,500+ top universities across USA, UK, Canada &amp; Germany. Unlock ₹24Cr+ in verified scholarships and draft Ivy-league SOPs in minutes with certified expert guidance.
+            </p>
+
+            <!-- Action Buttons Row -->
+            <div class="flex flex-wrap items-center gap-4 pt-2">
+              <a href="#quick-finder" class="px-7 py-4 rounded-xl bg-[#1868F8] hover:bg-[#0B52D6] text-white font-heading font-bold text-sm tracking-wide shadow-xl shadow-[#1868F8]/30 hover:-translate-y-0.5 transition flex items-center gap-2">
+                <span>Check Free Eligibility</span>
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+              </a>
+
+              <a href="#ai-suite" class="px-6 py-4 rounded-xl bg-white hover:bg-slate-50 text-[#0F172A] border border-[#E2E8F0] hover:border-[#1868F8] font-heading font-bold text-sm tracking-wide transition flex items-center gap-2 shadow-xs">
+                <span class="w-2.5 h-2.5 rounded-full bg-[#6366F1]"></span>
+                <span>Explore Free AI Tools</span>
+              </a>
+            </div>
+
+            <!-- Live Proof Strip -->
+            <div class="grid grid-cols-3 gap-4 pt-6 border-t border-[#E2E8F0] max-w-lg">
+              <div>
+                <span class="font-stat text-2xl sm:text-3xl font-extrabold text-[#0F172A] block leading-none">98.7%</span>
+                <span class="text-xs text-[#64748B] mt-1 block font-medium">Visa Approval Rate</span>
+              </div>
+              <div class="border-l border-[#E2E8F0] pl-4">
+                <span class="font-stat text-2xl sm:text-3xl font-extrabold text-[#1868F8] block leading-none">₹24Cr+</span>
+                <span class="text-xs text-[#64748B] mt-1 block font-medium">Scholarships Won</span>
+              </div>
+              <div class="border-l border-[#E2E8F0] pl-4">
+                <span class="font-stat text-2xl sm:text-3xl font-extrabold text-[#10B981] block leading-none">1,500+</span>
+                <span class="text-xs text-[#64748B] mt-1 block font-medium">Global Colleges</span>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Right 5 Columns: Interactive Quick Discovery Card (The Hook) -->
+          <div id="quick-finder" class="lg:col-span-5">
+            <div class="bg-white rounded-3xl p-6 sm:p-8 border-2 border-[#1868F8]/30 shadow-2xl shadow-slate-900/10 space-y-5 relative">
+              
+              <!-- Card Header -->
+              <div class="flex items-center justify-between pb-3 border-b border-[#E2E8F0]">
+                <div>
+                  <h3 class="font-heading font-extrabold text-lg text-[#0F172A] flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-[#1868F8]"></span>
+                    Instant University Shortlist
+                  </h3>
+                  <p class="text-xs text-[#64748B] mt-0.5">Tell us your goal to get your top 10 college matches</p>
+                </div>
+                <span class="text-[10px] font-extrabold uppercase px-2 py-0.5 rounded bg-emerald-50 text-[#10B981] border border-emerald-200">
+                  Instant
+                </span>
+              </div>
+
+              <!-- Selector 1: Country -->
+              <div class="space-y-1.5">
+                <label class="text-[11px] font-bold uppercase tracking-wider text-[#64748B] block">1. Where do you want to study?</label>
+                <div class="grid grid-cols-3 gap-2">
+                  <button class="py-2.5 px-2 rounded-xl border-2 border-[#1868F8] bg-blue-50/60 text-xs font-bold text-[#1868F8] flex items-center justify-center gap-1.5">
+                    <span>🇺🇸</span> USA
+                  </button>
+                  <button class="py-2.5 px-2 rounded-xl border border-[#E2E8F0] hover:border-[#1868F8] text-xs font-bold text-[#0F172A] flex items-center justify-center gap-1.5 bg-white transition">
+                    <span>🇬🇧</span> UK
+                  </button>
+                  <button class="py-2.5 px-2 rounded-xl border border-[#E2E8F0] hover:border-[#1868F8] text-xs font-bold text-[#0F172A] flex items-center justify-center gap-1.5 bg-white transition">
+                    <span>🇩🇪</span> Germany
+                  </button>
+                </div>
+              </div>
+
+              <!-- Selector 2: Degree Level -->
+              <div class="space-y-1.5">
+                <label class="text-[11px] font-bold uppercase tracking-wider text-[#64748B] block">2. Target Degree Level</label>
+                <select class="w-full h-12 px-4 rounded-xl border border-[#E2E8F0] bg-[#F8FAFC] text-sm font-semibold text-[#0F172A] focus:outline-none focus:border-[#1868F8] focus:ring-2 focus:ring-[#1868F8]/10 cursor-pointer">
+                  <option>Master's / Postgraduate (MS / MBA / MSc)</option>
+                  <option>Bachelor's / Undergraduate (BS / BA / BTech)</option>
+                  <option>Doctorate / PhD / Research Fellow</option>
+                </select>
+              </div>
+
+              <!-- Selector 3: Course Discipline -->
+              <div class="space-y-1.5">
+                <label class="text-[11px] font-bold uppercase tracking-wider text-[#64748B] block">3. Field of Study</label>
+                <select class="w-full h-12 px-4 rounded-xl border border-[#E2E8F0] bg-[#F8FAFC] text-sm font-semibold text-[#0F172A] focus:outline-none focus:border-[#1868F8] focus:ring-2 focus:ring-[#1868F8]/10 cursor-pointer">
+                  <option>💻 Computer Science, AI &amp; Data Science</option>
+                  <option>📈 Business Administration (MBA) &amp; Finance</option>
+                  <option>⚙️ Engineering &amp; Robotics</option>
+                  <option>🏥 Public Health &amp; Healthcare</option>
+                </select>
+              </div>
+
+              <!-- Submit CTA -->
+              <button class="w-full py-4 rounded-xl bg-[#1868F8] hover:bg-[#0B52D6] text-white font-heading font-bold text-sm tracking-wide shadow-lg shadow-[#1868F8]/30 hover:opacity-95 transition flex items-center justify-center gap-2 cursor-pointer">
+                <span>Generate Free University Matches</span>
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+              </button>
+
+              <div class="flex items-center justify-center gap-3 pt-1 text-[11px] font-semibold text-slate-500">
+                <span class="flex items-center gap-1 text-[#10B981]">✓ Zero Spam</span>
+                <span>•</span>
+                <span class="flex items-center gap-1 text-[#10B981]">✓ 100% Free</span>
+                <span>•</span>
+                <span>⚡ Results in 30 Seconds</span>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ═════════════════════════════════════════════════════════════
+         SECTION 2: GLOBAL ADMITS & ACCREDITATION STRIP
+         ═════════════════════════════════════════════════════════════ -->
+    <section class="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-10">
+      <div class="bg-white rounded-2xl p-6 sm:p-8 border border-[#E2E8F0] shadow-xs text-center space-y-6">
+        <span class="text-xs font-extrabold uppercase tracking-wider text-[#64748B] block">
+          Our Students Admitted to World's Top Ranked Universities
+        </span>
+
+        <div class="flex flex-wrap items-center justify-center gap-8 sm:gap-12 opacity-80 grayscale hover:grayscale-0 transition-all duration-300">
+          <span class="font-heading font-black text-xl text-slate-800 tracking-wider">HARVARD</span>
+          <span class="font-heading font-black text-xl text-slate-800 tracking-wider">OXFORD</span>
+          <span class="font-heading font-black text-xl text-slate-800 tracking-wider">STANFORD</span>
+          <span class="font-heading font-black text-xl text-slate-800 tracking-wider">COLUMBIA</span>
+          <span class="font-heading font-black text-xl text-slate-800 tracking-wider">TORONTO</span>
+          <span class="font-heading font-black text-xl text-slate-800 tracking-wider">MONASH</span>
+          <span class="font-heading font-black text-xl text-slate-800 tracking-wider">TU MUNICH</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═════════════════════════════════════════════════════════════
+         SECTION 3: AI STUDY SUITE (THE CORE DIFFERENTIATOR)
+         ═════════════════════════════════════════════════════════════ -->
+    <section id="ai-suite" class="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-10 space-y-10">
+      
+      <div class="text-center max-w-3xl mx-auto space-y-3">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-50 text-[#6366F1] border border-indigo-200 text-xs font-bold uppercase tracking-wider">
+          Proprietary Ed-Tech Suite
+        </div>
+        <h2 class="font-heading text-3xl sm:text-4xl font-extrabold text-[#0F172A] tracking-tight">
+          Supercharge Your Applications with UniCoach AI
+        </h2>
+        <p class="text-slate-600 text-base leading-relaxed">
+          Traditional agents take weeks to review drafts and charge ₹50,000+. Our free AI suite evaluates your profile, drafts Ivy-league SOPs, and conducts live mock visa interviews in real time.
+        </p>
+      </div>
+
+      <!-- 4 Core AI Tools Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+
+        <!-- Tool 1: AI SOP Generator -->
+        <div class="bg-white rounded-3xl p-6 border border-[#E2E8F0] hover:border-[#6366F1] hover:shadow-xl hover:-translate-y-1 transition-all duration-200 flex flex-col justify-between group">
+          <div class="space-y-4">
+            <div class="w-12 h-12 rounded-2xl bg-indigo-50 text-[#6366F1] flex items-center justify-center text-2xl border border-indigo-200 shadow-xs">
+              🤖
+            </div>
+            <div>
+              <span class="text-[10px] font-extrabold uppercase tracking-wider text-[#6366F1] block">Instant Drafting</span>
+              <h3 class="font-heading font-bold text-xl text-[#0F172A] group-hover:text-[#6366F1] transition">
+                AI Statement of Purpose (SOP)
+              </h3>
+            </div>
+            <p class="text-xs text-[#64748B] leading-relaxed">
+              Generate tailored, university-compliant SOP drafts for MS, MBA, and PhD programs with automatic grammar and tone polish.
+            </p>
+          </div>
+          <div class="pt-6 mt-6 border-t border-[#E2E8F0]">
+            <a href="/ai-tools/sop-generator" class="w-full py-2.5 rounded-xl bg-indigo-50 hover:bg-[#6366F1] text-[#6366F1] hover:text-white font-bold text-xs tracking-wide transition flex items-center justify-center gap-1.5">
+              <span>Try AI SOP Writer</span>
+              <span>&rarr;</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Tool 2: AI Study Roadmap -->
+        <div class="bg-white rounded-3xl p-6 border border-[#E2E8F0] hover:border-[#1868F8] hover:shadow-xl hover:-translate-y-1 transition-all duration-200 flex flex-col justify-between group">
+          <div class="space-y-4">
+            <div class="w-12 h-12 rounded-2xl bg-blue-50 text-[#1868F8] flex items-center justify-center text-2xl border border-blue-200 shadow-xs">
+              🗺️
+            </div>
+            <div>
+              <span class="text-[10px] font-extrabold uppercase tracking-wider text-[#1868F8] block">Timeline Planner</span>
+              <h3 class="font-heading font-bold text-xl text-[#0F172A] group-hover:text-[#1868F8] transition">
+                AI Study Roadmap Planner
+              </h3>
+            </div>
+            <p class="text-xs text-[#64748B] leading-relaxed">
+              Personalized 12-month admission timeline: track exams (GRE/IELTS), LOR submissions, deadlines, and visa interview slots.
+            </p>
+          </div>
+          <div class="pt-6 mt-6 border-t border-[#E2E8F0]">
+            <a href="/ai-tools/roadmap" class="w-full py-2.5 rounded-xl bg-blue-50 hover:bg-[#1868F8] text-[#1868F8] hover:text-white font-bold text-xs tracking-wide transition flex items-center justify-center gap-1.5">
+              <span>Generate Roadmap</span>
+              <span>&rarr;</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Tool 3: AI Visa Mock Prep -->
+        <div class="bg-white rounded-3xl p-6 border border-[#E2E8F0] hover:border-[#10B981] hover:shadow-xl hover:-translate-y-1 transition-all duration-200 flex flex-col justify-between group">
+          <div class="space-y-4">
+            <div class="w-12 h-12 rounded-2xl bg-emerald-50 text-[#10B981] flex items-center justify-center text-2xl border border-emerald-200 shadow-xs">
+              🎙️
+            </div>
+            <div>
+              <span class="text-[10px] font-extrabold uppercase tracking-wider text-[#10B981] block">Interview Simulator</span>
+              <h3 class="font-heading font-bold text-xl text-[#0F172A] group-hover:text-[#10B981] transition">
+                AI Mock Visa Interview
+              </h3>
+            </div>
+            <p class="text-xs text-[#64748B] leading-relaxed">
+              Practice real US F-1 &amp; German visa consular questions. Get live feedback on intent, finances, and communication clarity.
+            </p>
+          </div>
+          <div class="pt-6 mt-6 border-t border-[#E2E8F0]">
+            <a href="/ai-tools/visa-prep" class="w-full py-2.5 rounded-xl bg-emerald-50 hover:bg-[#10B981] text-[#10B981] hover:text-white font-bold text-xs tracking-wide transition flex items-center justify-center gap-1.5">
+              <span>Start Visa Mock</span>
+              <span>&rarr;</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Tool 4: IELTS Band Evaluator -->
+        <div class="bg-white rounded-3xl p-6 border border-[#E2E8F0] hover:border-amber-500 hover:shadow-xl hover:-translate-y-1 transition-all duration-200 flex flex-col justify-between group">
+          <div class="space-y-4">
+            <div class="w-12 h-12 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center text-2xl border border-amber-200 shadow-xs">
+              📝
+            </div>
+            <div>
+              <span class="text-[10px] font-extrabold uppercase tracking-wider text-amber-600 block">Band 0–9 Scoring</span>
+              <h3 class="font-heading font-bold text-xl text-[#0F172A] group-hover:text-amber-600 transition">
+                IELTS AI Essay Evaluator
+              </h3>
+            </div>
+            <p class="text-xs text-[#64748B] leading-relaxed">
+              Submit IELTS Task 2 essays and get instant Cambridge band scores across Task Response, Coherence, and Lexical Resource.
+            </p>
+          </div>
+          <div class="pt-6 mt-6 border-t border-[#E2E8F0]">
+            <a href="/ai-tools/ielts-evaluator" class="w-full py-2.5 rounded-xl bg-amber-50 hover:bg-amber-600 text-amber-700 hover:text-white font-bold text-xs tracking-wide transition flex items-center justify-center gap-1.5">
+              <span>Score My Essay</span>
+              <span>&rarr;</span>
+            </a>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ═════════════════════════════════════════════════════════════
+         SECTION 4: EXPLORE TOP STUDY DESTINATIONS (DATA-RICH)
+         ═════════════════════════════════════════════════════════════ -->
+    <section id="destinations" class="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-10 space-y-10">
+      
+      <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
+        <div>
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 text-[#1868F8] border border-blue-200 text-xs font-bold uppercase tracking-wider mb-2">
+            Country Hubs
+          </div>
+          <h2 class="font-heading text-3xl sm:text-4xl font-extrabold text-[#0F172A] tracking-tight">
+            Explore Top Global Study Destinations
+          </h2>
+          <p class="text-slate-600 text-sm mt-1">Transparent breakdown of tuition, living expenses, post-study work visas, and intakes.</p>
+        </div>
+
+        <a href="/study-abroad/usa" class="text-xs font-bold text-[#1868F8] hover:underline flex items-center gap-1">
+          <span>Compare All 9 Countries</span>
+          <span>&rarr;</span>
+        </a>
+      </div>
+
+      <!-- Destination Cards Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+        <!-- Card: USA -->
+        <div class="bg-white rounded-3xl p-6 border border-[#E2E8F0] shadow-sm hover:shadow-xl hover:border-[#1868F8] transition-all group">
+          <div class="flex items-center justify-between">
+            <span class="text-3xl">🇺🇸</span>
+            <span class="text-xs font-bold px-2.5 py-1 rounded-full bg-blue-50 text-[#1868F8] border border-blue-200">
+              #1 Tech &amp; Research
+            </span>
+          </div>
+          <h3 class="font-heading font-extrabold text-2xl text-[#0F172A] mt-4 group-hover:text-[#1868F8] transition">
+            Study in United States
+          </h3>
+          <p class="text-xs text-[#64748B] mt-1">Home to MIT, Stanford, Harvard and 4,000+ top research colleges.</p>
+
+          <div class="mt-5 pt-4 border-t border-[#E2E8F0] space-y-2.5 text-xs">
+            <div class="flex justify-between">
+              <span class="text-[#64748B]">Avg Annual Tuition:</span>
+              <span class="font-bold text-[#0F172A]">$25,000 – $48,000</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-[#64748B]">Post-Study Work Visa:</span>
+              <span class="font-bold text-[#10B981]">3 Years (STEM OPT)</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-[#64748B]">Popular Intakes:</span>
+              <span class="font-semibold text-slate-700">Fall (Aug) &amp; Spring (Jan)</span>
+            </div>
+          </div>
+
+          <a href="/study-abroad/usa" class="mt-6 w-full py-3 rounded-xl bg-[#F8FAFC] group-hover:bg-[#1868F8] text-[#0F172A] group-hover:text-white font-bold text-xs transition border border-[#E2E8F0] group-hover:border-[#1868F8] flex items-center justify-center gap-1.5">
+            <span>Explore USA Universities &amp; Fees</span>
+            <span>&rarr;</span>
+          </a>
+        </div>
+
+        <!-- Card: Germany -->
+        <div class="bg-white rounded-3xl p-6 border border-[#E2E8F0] shadow-sm hover:shadow-xl hover:border-[#10B981] transition-all group">
+          <div class="flex items-center justify-between">
+            <span class="text-3xl">🇩🇪</span>
+            <span class="text-xs font-bold px-2.5 py-1 rounded-full bg-emerald-50 text-[#10B981] border border-emerald-200">
+              Zero Tuition Fees
+            </span>
+          </div>
+          <h3 class="font-heading font-extrabold text-2xl text-[#0F172A] mt-4 group-hover:text-[#10B981] transition">
+            Study in Germany
+          </h3>
+          <p class="text-xs text-[#64748B] mt-1">World capital for Engineering, Automotive, and Tuition-Free public universities.</p>
+
+          <div class="mt-5 pt-4 border-t border-[#E2E8F0] space-y-2.5 text-xs">
+            <div class="flex justify-between">
+              <span class="text-[#64748B]">Avg Annual Tuition:</span>
+              <span class="font-bold text-[#10B981]">€0 (Public Universities)</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-[#64748B]">Post-Study Work Visa:</span>
+              <span class="font-bold text-[#0F172A]">18 Months (EU Blue Card)</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-[#64748B]">Blocked Account:</span>
+              <span class="font-semibold text-slate-700">€11,904 / yr (Living)</span>
+            </div>
+          </div>
+
+          <a href="/study-abroad/germany" class="mt-6 w-full py-3 rounded-xl bg-[#F8FAFC] group-hover:bg-[#10B981] text-[#0F172A] group-hover:text-white font-bold text-xs transition border border-[#E2E8F0] group-hover:border-[#10B981] flex items-center justify-center gap-1.5">
+            <span>Explore Germany Guide</span>
+            <span>&rarr;</span>
+          </a>
+        </div>
+
+        <!-- Card: United Kingdom -->
+        <div class="bg-white rounded-3xl p-6 border border-[#E2E8F0] shadow-sm hover:shadow-xl hover:border-[#6366F1] transition-all group">
+          <div class="flex items-center justify-between">
+            <span class="text-3xl">🇬🇧</span>
+            <span class="text-xs font-bold px-2.5 py-1 rounded-full bg-indigo-50 text-[#6366F1] border border-indigo-200">
+              1-Year Fast Masters
+            </span>
+          </div>
+          <h3 class="font-heading font-extrabold text-2xl text-[#0F172A] mt-4 group-hover:text-[#6366F1] transition">
+            Study in United Kingdom
+          </h3>
+          <p class="text-xs text-[#64748B] mt-1">Fast-track 12-month master's degrees with worldwide industry prestige.</p>
+
+          <div class="mt-5 pt-4 border-t border-[#E2E8F0] space-y-2.5 text-xs">
+            <div class="flex justify-between">
+              <span class="text-[#64748B]">Avg Annual Tuition:</span>
+              <span class="font-bold text-[#0F172A]">£14,000 – £28,000</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-[#64748B]">Graduate Visa Route:</span>
+              <span class="font-bold text-[#10B981]">2 Years PSWV</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-[#64748B]">Degree Duration:</span>
+              <span class="font-semibold text-slate-700">1 Year (Lower Living Cost)</span>
+            </div>
+          </div>
+
+          <a href="/study-abroad/uk" class="mt-6 w-full py-3 rounded-xl bg-[#F8FAFC] group-hover:bg-[#6366F1] text-[#0F172A] group-hover:text-white font-bold text-xs transition border border-[#E2E8F0] group-hover:border-[#6366F1] flex items-center justify-center gap-1.5">
+            <span>Explore UK Universities &amp; Costs</span>
+            <span>&rarr;</span>
+          </a>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ═════════════════════════════════════════════════════════════
+         SECTION 5: SCHOLARSHIP SHORTLISTER TEASER
+         ═════════════════════════════════════════════════════════════ -->
+    <section id="scholarships" class="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-10">
+      <div class="bg-gradient-to-br from-[#0F172A] via-[#172554] to-[#0F172A] rounded-3xl p-8 lg:p-14 text-white relative overflow-hidden shadow-xl border border-slate-800">
+        
+        <!-- Glowing accent orb -->
+        <div class="absolute -right-20 -top-20 w-80 h-80 bg-[#1868F8]/30 rounded-full blur-3xl pointer-events-none"></div>
+
+        <div class="relative z-10 grid lg:grid-cols-12 gap-8 items-center">
+          
+          <div class="lg:col-span-7 space-y-4">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 text-emerald-300 border border-emerald-500/30 text-xs font-bold uppercase tracking-wider">
+              <span>🏆</span> Verified Database
+            </div>
+            <h2 class="font-heading text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight leading-tight">
+              Unlock ₹24Cr+ in Verified Scholarships for 2027
+            </h2>
+            <p class="text-slate-300 text-sm sm:text-base leading-relaxed max-w-xl">
+              Don't let tuition fees hold you back. We match your academic percentage, GRE/IELTS scores, and target country against 1,500+ active university grants and government scholarships.
+            </p>
+
+            <div class="flex flex-wrap gap-4 pt-2">
+              <a href="/scholarships" class="px-6 py-3.5 rounded-xl bg-[#1868F8] hover:bg-[#0B52D6] text-white font-bold text-sm tracking-wide shadow-lg shadow-[#1868F8]/40 transition flex items-center gap-2">
+                <span>Filter Scholarships by CGPA</span>
+                <span>&rarr;</span>
+              </a>
+              <span class="text-xs text-slate-400 self-center">✓ 100% Free • No document uploads required</span>
+            </div>
+          </div>
+
+          <!-- Right Floating Scholarship Cards Demo -->
+          <div class="lg:col-span-5 space-y-3">
+            <div class="p-4 rounded-2xl bg-white/10 backdrop-blur-md border border-white/10 flex items-center justify-between">
+              <div>
+                <span class="text-xs font-extrabold text-white block">Fulbright-Nehru Master's Fellowship</span>
+                <span class="text-[11px] text-slate-300">USA • Full Tuition + Airfare + Stipend</span>
+              </div>
+              <span class="text-xs font-bold text-emerald-400 font-stat">$60,000 Value</span>
+            </div>
+
+            <div class="p-4 rounded-2xl bg-white/10 backdrop-blur-md border border-white/10 flex items-center justify-between">
+              <div>
+                <span class="text-xs font-extrabold text-white block">Chevening UK Scholarships</span>
+                <span class="text-[11px] text-slate-300">UK • 100% Free 1-Year Masters</span>
+              </div>
+              <span class="text-xs font-bold text-emerald-400 font-stat">Full Funding</span>
+            </div>
+
+            <div class="p-4 rounded-2xl bg-white/10 backdrop-blur-md border border-white/10 flex items-center justify-between">
+              <div>
+                <span class="text-xs font-extrabold text-white block">DAAD Study Scholarships</span>
+                <span class="text-[11px] text-slate-300">Germany • Postgraduate Monthly Stipend</span>
+              </div>
+              <span class="text-xs font-bold text-emerald-400 font-stat">€934 / month</span>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ═════════════════════════════════════════════════════════════
+         SECTION 6: HOW UNICOACH WORKS (4 TRANSPARENT STEPS)
+         ═════════════════════════════════════════════════════════════ -->
+    <section id="how-it-works" class="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-10 space-y-12">
+      
+      <div class="text-center max-w-2xl mx-auto space-y-2">
+        <span class="text-xs font-bold uppercase tracking-wider text-[#1868F8] block">Predictable &amp; Stress-Free</span>
+        <h2 class="font-heading text-3xl sm:text-4xl font-extrabold text-[#0F172A] tracking-tight">
+          How UniCoach Works
+        </h2>
+        <p class="text-slate-600 text-sm">We handle your global admissions through a clear, transparent 4-step roadmap.</p>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 relative">
+
+        <!-- Step 1 -->
+        <div class="bg-white rounded-3xl p-6 border border-[#E2E8F0] shadow-sm space-y-4 relative">
+          <div class="w-10 h-10 rounded-xl bg-blue-50 text-[#1868F8] font-stat font-extrabold text-base flex items-center justify-center border border-blue-200">
+            01
+          </div>
+          <h3 class="font-heading font-bold text-lg text-[#0F172A]">Profile Evaluation &amp; Shortlist</h3>
+          <p class="text-xs text-[#64748B] leading-relaxed">
+            Our counselors and AI analyze your CGPA, work experience, and budget to build an unbiased Dream, Reach, and Safe university list.
+          </p>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="bg-white rounded-3xl p-6 border border-[#E2E8F0] shadow-sm space-y-4 relative">
+          <div class="w-10 h-10 rounded-xl bg-indigo-50 text-[#6366F1] font-stat font-extrabold text-base flex items-center justify-center border border-indigo-200">
+            02
+          </div>
+          <h3 class="font-heading font-bold text-lg text-[#0F172A]">SOP &amp; Application Filing</h3>
+          <p class="text-xs text-[#64748B] leading-relaxed">
+            Draft customized SOPs and LORs with our AI tools, polished by Ivy League editors, and submit error-free university portals.
+          </p>
+        </div>
+
+        <!-- Step 3 -->
+        <div class="bg-white rounded-3xl p-6 border border-[#E2E8F0] shadow-sm space-y-4 relative">
+          <div class="w-10 h-10 rounded-xl bg-emerald-50 text-[#10B981] font-stat font-extrabold text-base flex items-center justify-center border border-emerald-200">
+            03
+          </div>
+          <h3 class="font-heading font-bold text-lg text-[#0F172A]">Scholarships &amp; Loan Approvals</h3>
+          <p class="text-xs text-[#64748B] leading-relaxed">
+            Apply to university fee waivers and secure collateral-free education loans through our partner nationalized banks at lowest interest rates.
+          </p>
+        </div>
+
+        <!-- Step 4 -->
+        <div class="bg-white rounded-3xl p-6 border border-[#E2E8F0] shadow-sm space-y-4 relative">
+          <div class="w-10 h-10 rounded-xl bg-slate-100 text-[#0F172A] font-stat font-extrabold text-base flex items-center justify-center border border-slate-300">
+            04
+          </div>
+          <h3 class="font-heading font-bold text-lg text-[#0F172A]">Visa Mock &amp; Flying Support</h3>
+          <p class="text-xs text-[#64748B] leading-relaxed">
+            Practice 1-on-1 consular visa interviews with certified experts, complete document checklists, and attend pre-departure briefing.
+          </p>
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- ═════════════════════════════════════════════════════════════
+         SECTION 7: REAL ADMITS WALL & STUDENT SUCCESS PROOF
+         ═════════════════════════════════════════════════════════════ -->
+    <section id="success-stories" class="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-10 space-y-10">
+      
+      <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
+        <div>
+          <span class="text-xs font-bold uppercase tracking-wider text-[#10B981] block">Real Admits • Real Students</span>
+          <h2 class="font-heading text-3xl sm:text-4xl font-extrabold text-[#0F172A] tracking-tight">
+            Our Hall of Fame: Recent 2026 Admits
+          </h2>
+          <p class="text-slate-600 text-sm mt-1">See students with similar profiles who cracked top universities with scholarships.</p>
+        </div>
+
+        <div class="text-xs font-bold text-slate-500">
+          Over 12,000+ Visas Approved
+        </div>
+      </div>
+
+      <!-- Real Student Cards Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+        <!-- Admit 1 -->
+        <div class="bg-white rounded-3xl p-6 border border-[#E2E8F0] shadow-sm hover:shadow-lg transition space-y-4">
+          <div class="flex items-center gap-3">
+            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=120&auto=format&fit=crop&q=80" alt="Student" class="w-14 h-14 rounded-2xl object-cover border border-[#E2E8F0]">
+            <div>
+              <h4 class="font-heading font-bold text-base text-[#0F172A]">Sneha Patel</h4>
+              <span class="text-xs text-[#64748B]">Admitted to Columbia University</span>
+            </div>
+          </div>
+          
+          <div class="p-3 rounded-xl bg-slate-50 border border-slate-100 text-xs space-y-1">
+            <div class="flex justify-between">
+              <span class="text-[#64748B]">Profile:</span>
+              <span class="font-bold text-[#0F172A]">CGPA 8.2 • GRE 322</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-[#64748B]">Degree:</span>
+              <span class="font-semibold text-slate-800">MS in Computer Science (USA)</span>
+            </div>
+            <div class="flex justify-between text-[#10B981] font-bold">
+              <span>Scholarship Won:</span>
+              <span>$22,000 Merit Grant</span>
+            </div>
+          </div>
+
+          <p class="text-xs text-slate-600 italic">
+            "The AI SOP generator helped me structure my research statement, and the mock visa practice made my actual US embassy interview a breeze."
+          </p>
+        </div>
+
+        <!-- Admit 2 -->
+        <div class="bg-white rounded-3xl p-6 border border-[#E2E8F0] shadow-sm hover:shadow-lg transition space-y-4">
+          <div class="flex items-center gap-3">
+            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=120&auto=format&fit=crop&q=80" alt="Student" class="w-14 h-14 rounded-2xl object-cover border border-[#E2E8F0]">
+            <div>
+              <h4 class="font-heading font-bold text-base text-[#0F172A]">Arjun Verma</h4>
+              <span class="text-xs text-[#64748B]">Admitted to TU Munich</span>
+            </div>
+          </div>
+          
+          <div class="p-3 rounded-xl bg-slate-50 border border-slate-100 text-xs space-y-1">
+            <div class="flex justify-between">
+              <span class="text-[#64748B]">Profile:</span>
+              <span class="font-bold text-[#0F172A]">CGPA 7.6 • IELTS 7.5</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-[#64748B]">Degree:</span>
+              <span class="font-semibold text-slate-800">MSc Automotive Engg (Germany)</span>
+            </div>
+            <div class="flex justify-between text-[#10B981] font-bold">
+              <span>Tuition Cost:</span>
+              <span>€0 Tuition Fee</span>
+            </div>
+          </div>
+
+          <p class="text-xs text-slate-600 italic">
+            "Other agents were asking ₹75,000 just for German application filing. UniCoach did the entire counseling and blocked account setup 100% free."
+          </p>
+        </div>
+
+        <!-- Admit 3 -->
+        <div class="bg-white rounded-3xl p-6 border border-[#E2E8F0] shadow-sm hover:shadow-lg transition space-y-4">
+          <div class="flex items-center gap-3">
+            <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=120&auto=format&fit=crop&q=80" alt="Student" class="w-14 h-14 rounded-2xl object-cover border border-[#E2E8F0]">
+            <div>
+              <h4 class="font-heading font-bold text-base text-[#0F172A]">Rhea Deshmukh</h4>
+              <span class="text-xs text-[#64748B]">Admitted to University of Leeds</span>
+            </div>
+          </div>
+          
+          <div class="p-3 rounded-xl bg-slate-50 border border-slate-100 text-xs space-y-1">
+            <div class="flex justify-between">
+              <span class="text-[#64748B]">Profile:</span>
+              <span class="font-bold text-[#0F172A]">CGPA 7.9 • PTE 68</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-[#64748B]">Degree:</span>
+              <span class="font-semibold text-slate-800">MSc International Business (UK)</span>
+            </div>
+            <div class="flex justify-between text-[#10B981] font-bold">
+              <span>Scholarship Won:</span>
+              <span>£6,000 Dean's Award</span>
+            </div>
+          </div>
+
+          <p class="text-xs text-slate-600 italic">
+            "Got my UK CAS letter within 12 days of submission. The counselor answered every WhatsApp query even on weekends."
+          </p>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ═════════════════════════════════════════════════════════════
+         SECTION 8: UNICOACH VS TRADITIONAL AGENTS (KILLER COMPARISON)
+         ═════════════════════════════════════════════════════════════ -->
+    <section class="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-10 space-y-8">
+      
+      <div class="text-center max-w-2xl mx-auto space-y-2">
+        <span class="text-xs font-bold uppercase tracking-wider text-[#1868F8] block">Why Students Choose Us</span>
+        <h2 class="font-heading text-3xl sm:text-4xl font-extrabold text-[#0F172A] tracking-tight">
+          UniCoach vs Traditional Education Agents
+        </h2>
+        <p class="text-slate-600 text-sm">See how transparency and technology eliminate agent bias and save you money.</p>
+      </div>
+
+      <div class="bg-white rounded-3xl border border-[#E2E8F0] overflow-hidden shadow-sm">
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-sm">
+            <thead class="bg-slate-50 border-b border-[#E2E8F0] text-xs font-bold uppercase tracking-wider text-[#0F172A]">
+              <tr>
+                <th class="py-4 px-6">Feature / Parameter</th>
+                <th class="py-4 px-6 text-[#1868F8] bg-blue-50/50">UniCoach Platform</th>
+                <th class="py-4 px-6 text-slate-500">Local / Traditional Agents</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-[#E2E8F0] text-xs sm:text-sm">
+              <tr>
+                <td class="py-4 px-6 font-semibold text-[#0F172A]">Counseling Fees</td>
+                <td class="py-4 px-6 font-bold text-[#10B981] bg-blue-50/20">₹0 (100% Free Always)</td>
+                <td class="py-4 px-6 text-rose-600 font-medium">₹30,000 – ₹1,00,000</td>
+              </tr>
+              <tr>
+                <td class="py-4 px-6 font-semibold text-[#0F172A]">University Selection Bias</td>
+                <td class="py-4 px-6 font-bold text-[#10B981] bg-blue-50/20">Zero Bias (Algorithm &amp; Student Choice)</td>
+                <td class="py-4 px-6 text-rose-600 font-medium">Push only colleges with high agent commissions</td>
+              </tr>
+              <tr>
+                <td class="py-4 px-6 font-semibold text-[#0F172A]">SOP &amp; Essay Writing</td>
+                <td class="py-4 px-6 font-bold text-[#10B981] bg-blue-50/20">Instant AI Drafting + Expert Review</td>
+                <td class="py-4 px-6 text-slate-600">Copied templates / 2-week delays</td>
+              </tr>
+              <tr>
+                <td class="py-4 px-6 font-semibold text-[#0F172A]">Visa Interview Preparation</td>
+                <td class="py-4 px-6 font-bold text-[#10B981] bg-blue-50/20">AI Mock Voice Simulator + 1-on-1 Sessions</td>
+                <td class="py-4 px-6 text-slate-600">Generic PDF questionnaire</td>
+              </tr>
+              <tr>
+                <td class="py-4 px-6 font-semibold text-[#0F172A]">Scholarship Discovery</td>
+                <td class="py-4 px-6 font-bold text-[#10B981] bg-blue-50/20">Verified 1,500+ database with CGPA filter</td>
+                <td class="py-4 px-6 text-slate-600">Very limited or no assistance</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ═════════════════════════════════════════════════════════════
+         SECTION 9: FREQUENTLY ASKED QUESTIONS (FAQ ACCORDION)
+         ═════════════════════════════════════════════════════════════ -->
+    <section id="faq" class="max-w-4xl mx-auto px-4 sm:px-6 space-y-8">
+      
+      <div class="text-center space-y-2">
+        <span class="text-xs font-bold uppercase tracking-wider text-[#1868F8] block">Got Doubts?</span>
+        <h2 class="font-heading text-3xl font-extrabold text-[#0F172A] tracking-tight">
+          Frequently Asked Questions
+        </h2>
+        <p class="text-slate-600 text-sm">Everything you need to know about our services, scholarships, and visas.</p>
+      </div>
+
+      <div class="space-y-4">
+        
+        <div class="bg-white rounded-2xl p-5 border border-[#E2E8F0] shadow-xs">
+          <h4 class="font-heading font-bold text-base text-[#0F172A] flex justify-between items-center cursor-pointer">
+            <span>Is UniCoach really 100% free? Are there any hidden fees later?</span>
+            <span class="text-[#1868F8] font-bold text-lg">−</span>
+          </h4>
+          <p class="text-xs sm:text-sm text-slate-600 mt-2 leading-relaxed">
+            Yes, our end-to-end admission counseling, profile evaluation, and AI tools are 100% free for students. International universities fund our counseling operations, ensuring you pay zero brokerage or consultation fees.
+          </p>
+        </div>
+
+        <div class="bg-white rounded-2xl p-5 border border-[#E2E8F0] shadow-xs">
+          <h4 class="font-heading font-bold text-base text-[#0F172A] flex justify-between items-center cursor-pointer">
+            <span>Can I get a 100% scholarship for master's in USA, UK, or Germany?</span>
+            <span class="text-[#1868F8] font-bold text-lg">+</span>
+          </h4>
+        </div>
+
+        <div class="bg-white rounded-2xl p-5 border border-[#E2E8F0] shadow-xs">
+          <h4 class="font-heading font-bold text-base text-[#0F172A] flex justify-between items-center cursor-pointer">
+            <span>What if I have backlogs or a study gap of 2–3 years?</span>
+            <span class="text-[#1868F8] font-bold text-lg">+</span>
+          </h4>
+        </div>
+
+        <div class="bg-white rounded-2xl p-5 border border-[#E2E8F0] shadow-xs">
+          <h4 class="font-heading font-bold text-base text-[#0F172A] flex justify-between items-center cursor-pointer">
+            <span>When should I start preparing for Fall 2027 admissions?</span>
+            <span class="text-[#1868F8] font-bold text-lg">+</span>
+          </h4>
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- ═════════════════════════════════════════════════════════════
+         SECTION 10: FINAL HIGH-CONVERTING CTA BANNER
+         ═════════════════════════════════════════════════════════════ -->
+    <section class="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-10 pb-12">
+      <div class="bg-gradient-to-r from-[#1868F8] via-[#0B52D6] to-[#6366F1] rounded-3xl p-8 lg:p-14 text-white text-center space-y-6 relative overflow-hidden shadow-2xl shadow-[#1868F8]/20">
+        
+        <div class="max-w-2xl mx-auto space-y-3 relative z-10">
+          <span class="text-xs font-extrabold uppercase tracking-wider bg-white/20 px-3 py-1 rounded-full text-white inline-block">
+            Start Your Journey Today
+          </span>
+          <h2 class="font-heading text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight leading-tight">
+            Still Confused About Which Country or College is Right For You?
+          </h2>
+          <p class="text-white/90 text-sm sm:text-base leading-relaxed">
+            Talk to a certified senior study abroad advisor for 30 minutes. Get your customized eligibility report, university list, and scholarship roadmap.
+          </p>
+        </div>
+
+        <div class="flex flex-wrap items-center justify-center gap-4 relative z-10 pt-2">
+          <a href="#quick-finder" class="px-8 py-4 rounded-xl bg-white hover:bg-slate-50 text-[#0F172A] font-heading font-bold text-sm tracking-wide shadow-lg transition hover:-translate-y-0.5">
+            Book 1-on-1 Free Call Now
+          </a>
+          <a href="https://wa.me/" target="_blank" class="px-8 py-4 rounded-xl bg-[#10B981] hover:bg-[#059669] text-white font-heading font-bold text-sm tracking-wide shadow-lg transition flex items-center gap-2">
+            <span>💬 Chat on WhatsApp</span>
+          </a>
+        </div>
+
+        <div class="pt-4 text-xs text-white/80 font-medium">
+          🔒 100% Free • No Spam Guarantee • Certified Advisors
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ═════════════════════════════════════════════════════════════
+       GLOBAL FOOTER
+       ═════════════════════════════════════════════════════════════ -->
+  <footer class="bg-[#0F172A] text-white border-t border-slate-800 pt-16 pb-12 mt-auto">
+    <div class="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-10 space-y-12">
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8">
+        
+        <!-- Brand Col -->
+        <div class="lg:col-span-2 space-y-4">
+          <div class="flex items-center gap-2">
+            <!-- Inverted White Logo Simulation -->
+            <div class="flex items-center tracking-tight font-heading font-black text-2xl text-white select-none">
+              <span>Uni</span>
+              <span class="relative text-[#38BDF8]">
+                <span class="absolute -top-3.5 left-0 text-xs">🎓</span>
+                Coach
+              </span>
+            </div>
+          </div>
+          <p class="text-xs text-slate-400 max-w-sm leading-relaxed">
+            UniCoach is India's premier AI-powered global education consultancy, enabling ambitious students to secure admits and scholarships at world-class international universities.
+          </p>
+          <div class="text-xs text-emerald-400 font-bold">
+            ✓ 12,000+ Counselled Students • 98.7% Visa Success Rate
+          </div>
+        </div>
+
+        <!-- Col 2: Destinations -->
+        <div class="space-y-3 text-xs">
+          <span class="font-bold text-white uppercase tracking-wider text-[11px] block">Study Destinations</span>
+          <ul class="space-y-2 text-slate-400">
+            <li><a href="/study-abroad/usa" class="hover:text-white transition">Study in USA</a></li>
+            <li><a href="/study-abroad/uk" class="hover:text-white transition">Study in UK</a></li>
+            <li><a href="/study-abroad/germany" class="hover:text-white transition">Study in Germany</a></li>
+            <li><a href="/study-abroad/canada" class="hover:text-white transition">Study in Canada</a></li>
+            <li><a href="/study-abroad/australia" class="hover:text-white transition">Study in Australia</a></li>
+          </ul>
+        </div>
+
+        <!-- Col 3: AI Tools -->
+        <div class="space-y-3 text-xs">
+          <span class="font-bold text-white uppercase tracking-wider text-[11px] block">Free AI Tools</span>
+          <ul class="space-y-2 text-slate-400">
+            <li><a href="/ai-tools/sop-generator" class="hover:text-white transition">AI SOP Generator</a></li>
+            <li><a href="/ai-tools/roadmap" class="hover:text-white transition">AI Study Roadmap</a></li>
+            <li><a href="/ai-tools/visa-prep" class="hover:text-white transition">AI Mock Visa Prep</a></li>
+            <li><a href="/ai-tools/ielts-evaluator" class="hover:text-white transition">IELTS AI Evaluator</a></li>
+            <li><a href="/scholarships" class="hover:text-white transition">Scholarship Finder</a></li>
+          </ul>
+        </div>
+
+        <!-- Col 4: Exams & Tests -->
+        <div class="space-y-3 text-xs">
+          <span class="font-bold text-white uppercase tracking-wider text-[11px] block">Exams Prep</span>
+          <ul class="space-y-2 text-slate-400">
+            <li><a href="/exams/ielts" class="hover:text-white transition">IELTS Exam Prep</a></li>
+            <li><a href="/exams/gre" class="hover:text-white transition">GRE Practice Tests</a></li>
+            <li><a href="/exams/toefl" class="hover:text-white transition">TOEFL Syllabus &amp; Dates</a></li>
+            <li><a href="/exams/gmat" class="hover:text-white transition">GMAT Registration</a></li>
+            <li><a href="/exams/pte" class="hover:text-white transition">PTE Academic Guide</a></li>
+          </ul>
+        </div>
+
+      </div>
+
+      <div class="pt-8 border-t border-slate-800 text-center text-xs text-slate-500">
+        &copy; 2026 UniCoach Global Education Technologies Pvt. Ltd. All rights reserved.
+      </div>
+
+    </div>
+  </footer>
+
+</body>
+</html>

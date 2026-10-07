@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Module 09: Communication &amp; Messaging — UniCoach Engineering</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap');
+    @page { size: A4; margin: 14mm 12mm 14mm 12mm; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Plus Jakarta Sans', sans-serif; color: #1E293B; background: #fff; font-size: 12.5px; line-height: 1.5; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .page-break { page-break-after: always; }
+    .header-banner { background: linear-gradient(135deg, #059669 0%, #10B981 50%, #0B2272 100%); color: #fff; padding: 28px 24px; border-radius: 14px; margin-bottom: 18px; }
+    .module-tag { display: inline-block; background: rgba(255,255,255,0.18); border: 1px solid rgba(255,255,255,0.3); color: #A7F3D0; font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px; padding: 3px 10px; border-radius: 20px; margin-bottom: 10px; }
+    .main-title { font-family: 'Outfit', sans-serif; font-size: 24px; font-weight: 900; line-height: 1.2; margin-bottom: 6px; }
+    .subtitle { font-size: 12px; color: #A7F3D0; font-weight: 500; }
+    .meta-bar { margin-top: 14px; padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.15); display: flex; gap: 18px; font-size: 10px; color: #D1FAE5; font-weight: 600; }
+    h2 { font-family: 'Outfit', sans-serif; font-size: 15px; font-weight: 800; color: #059669; margin: 16px 0 8px 0; border-bottom: 2px solid #E2E8F0; padding-bottom: 4px; }
+    .diagram-box { background: #F8FAFC; border: 1.5px solid #E2E8F0; border-radius: 10px; padding: 12px; margin: 10px 0 14px 0; }
+    .diagram-title { font-size: 10.5px; font-weight: 800; color: #64748B; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 10px; }
+    .deep-dive-card { background: #F8FAFC; border: 1px solid #E2E8F0; border-left: 4px solid #059669; border-radius: 10px; padding: 12px; margin-bottom: 12px; }
+    .card-title { font-family: 'Outfit', sans-serif; font-size: 13px; font-weight: 800; color: #0F172A; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; }
+    .card-badge { font-size: 9px; font-weight: 800; text-transform: uppercase; padding: 2px 7px; border-radius: 5px; background: #ECFDF5; color: #059669; border: 1px solid #A7F3D0; }
+    .qa-box { background: #fff; border: 1px solid #CBD5E1; border-radius: 7px; padding: 8px 10px; margin-bottom: 6px; }
+    .qa-label { font-size: 9.5px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 2px; }
+    .qa-what .qa-label { color: #0284C7; } .qa-how .qa-label { color: #16A34A; } .qa-alt .qa-label { color: #D97706; } .qa-why .qa-label { color: #7C3AED; }
+    .qa-text { font-size: 11.5px; color: #334155; line-height: 1.4; }
+    .pro-tip { background: #ECFDF5; border-left: 4px solid #059669; border-radius: 7px; padding: 10px 12px; margin: 12px 0; font-size: 11.5px; }
+    .pro-tip-title { font-weight: 800; color: #047857; margin-bottom: 3px; }
+    .footer-bar { margin-top: 18px; padding-top: 8px; border-top: 1px solid #E2E8F0; display: flex; justify-content: space-between; font-size: 9px; color: #94A3B8; font-weight: 600; }
+  </style>
+</head>
+<body>
+
+<div class="header-banner">
+  <div class="module-tag">Module 09 • System Architecture Vault</div>
+  <h1 class="main-title">Communication &amp; Messaging Integrations</h1>
+  <p class="subtitle">Twilio WhatsApp/SMS gateway, Resend transactional SMTP, EmailJS client-side dispatch, SerpAPI live scholarship telemetry, and graceful failure isolation.</p>
+  <div class="meta-bar"><span>💬 WhatsApp/SMS: Twilio REST</span><span>📧 Email: Resend SMTP + EmailJS</span><span>🔍 Live Data: SerpAPI</span></div>
+</div>
+
+<h2>1. Multi-Channel Communication Architecture</h2>
+
+<div class="diagram-box">
+  <div class="diagram-title">📡 Communication Event Triggers — Lead Lifecycle to Notification Dispatch</div>
+  <svg viewBox="0 0 560 145" xmlns="http://www.w3.org/2000/svg" style="width:100%;font-family:'Plus Jakarta Sans',sans-serif;">
+    <defs><marker id="a" markerWidth="6" markerHeight="5" refX="6" refY="2.5" orient="auto"><polygon points="0 0, 6 2.5, 0 5" fill="#059669"/></marker></defs>
+
+    <!-- Trigger Events -->
+    <rect x="2" y="2" width="120" height="141" rx="8" fill="#F0FDF4" stroke="#86EFAC" stroke-width="1.5"/>
+    <text x="62" y="18" text-anchor="middle" font-size="9" font-weight="800" fill="#15803D">Trigger Events</text>
+    <rect x="8" y="24" width="108" height="20" rx="4" fill="#059669" opacity="0.15" stroke="#86EFAC" stroke-width="1"/>
+    <text x="62" y="38" text-anchor="middle" font-size="8" font-weight="700" fill="#047857">📋 New Lead Submitted</text>
+    <rect x="8" y="50" width="108" height="20" rx="4" fill="#059669" opacity="0.15" stroke="#86EFAC" stroke-width="1"/>
+    <text x="62" y="64" text-anchor="middle" font-size="8" font-weight="700" fill="#047857">📊 Lead Status Changed</text>
+    <rect x="8" y="76" width="108" height="20" rx="4" fill="#059669" opacity="0.15" stroke="#86EFAC" stroke-width="1"/>
+    <text x="62" y="90" text-anchor="middle" font-size="8" font-weight="700" fill="#047857">📅 Session Booked</text>
+    <rect x="8" y="102" width="108" height="20" rx="4" fill="#059669" opacity="0.15" stroke="#86EFAC" stroke-width="1"/>
+    <text x="62" y="116" text-anchor="middle" font-size="8" font-weight="700" fill="#047857">✉️ Contact Form Submit</text>
+    <rect x="8" y="128" width="108" height="14" rx="4" fill="#059669" opacity="0.15" stroke="#86EFAC" stroke-width="1"/>
+    <text x="62" y="139" text-anchor="middle" font-size="7.5" font-weight="700" fill="#047857">🔔 Admin Alert</text>
+
+    <line x1="124" y1="72" x2="140" y2="72" stroke="#059669" stroke-width="1.5" marker-end="url(#a)"/>
+
+    <!-- Notification Router -->
+    <rect x="142" y="36" width="80" height="72" rx="7" fill="#0F172A" stroke="#334155" stroke-width="1.5"/>
+    <text x="182" y="58" text-anchor="middle" font-size="9" font-weight="800" fill="#38BDF8">Notification</text>
+    <text x="182" y="70" text-anchor="middle" font-size="9" font-weight="800" fill="#38BDF8">Service</text>
+    <text x="182" y="84" text-anchor="middle" font-size="7.5" fill="#94A3B8">Routes to</text>
+    <text x="182" y="96" text-anchor="middle" font-size="7.5" fill="#94A3B8">correct channel</text>
+    <text x="182" y="108" text-anchor="middle" font-size="7.5" fill="#22C55E">Try/Catch ✅</text>
+
+    <!-- Channel Arrows -->
+    <line x1="224" y1="58" x2="240" y2="38" stroke="#059669" stroke-width="1.5" marker-end="url(#a)"/>
+    <line x1="224" y1="72" x2="240" y2="72" stroke="#059669" stroke-width="1.5" marker-end="url(#a)"/>
+    <line x1="224" y1="86" x2="240" y2="106" stroke="#059669" stroke-width="1.5" marker-end="url(#a)"/>
+
+    <!-- Twilio box -->
+    <rect x="242" y="18" width="100" height="40" rx="7" fill="#F0FDF4" stroke="#86EFAC" stroke-width="1.5"/>
+    <text x="292" y="34" text-anchor="middle" font-size="9" font-weight="800" fill="#15803D">Twilio API</text>
+    <text x="292" y="48" text-anchor="middle" font-size="7.5" fill="#16A34A">WhatsApp + SMS</text>
+    <text x="292" y="58" text-anchor="middle" font-size="7.5" fill="#64748B">Student + Admin notify</text>
+    <line x1="344" y1="38" x2="360" y2="38" stroke="#059669" stroke-width="1.5" marker-end="url(#a)"/>
+
+    <!-- Resend box -->
+    <rect x="242" y="54" width="100" height="40" rx="7" fill="#EFF6FF" stroke="#BAE6FD" stroke-width="1.5"/>
+    <text x="292" y="70" text-anchor="middle" font-size="9" font-weight="800" fill="#0369A1">Resend SMTP</text>
+    <text x="292" y="84" text-anchor="middle" font-size="7.5" fill="#2563EB">Transactional email</text>
+    <text x="292" y="94" text-anchor="middle" font-size="7.5" fill="#64748B">Admin notifications</text>
+    <line x1="344" y1="74" x2="360" y2="74" stroke="#059669" stroke-width="1.5" marker-end="url(#a)"/>
+
+    <!-- EmailJS box -->
+    <rect x="242" y="90" width="100" height="40" rx="7" fill="#FFF7ED" stroke="#FED7AA" stroke-width="1.5"/>
+    <text x="292" y="106" text-anchor="middle" font-size="9" font-weight="800" fill="#C2410C">EmailJS</text>
+    <text x="292" y="120" text-anchor="middle" font-size="7.5" fill="#EA580C">Client-side dispatch</text>
+    <text x="292" y="130" text-anchor="middle" font-size="7.5" fill="#64748B">Contact page form</text>
+    <line x1="344" y1="110" x2="360" y2="110" stroke="#059669" stroke-width="1.5" marker-end="url(#a)"/>
+
+    <!-- Delivery boxes -->
+    <rect x="362" y="18" width="90" height="30" rx="6" fill="#ECFDF5" stroke="#A7F3D0" stroke-width="1"/>
+    <text x="407" y="31" text-anchor="middle" font-size="8" font-weight="700" fill="#047857">📱 WhatsApp Message</text>
+    <text x="407" y="43" text-anchor="middle" font-size="7.5" fill="#059669">Student Mobile</text>
+
+    <rect x="362" y="56" width="90" height="30" rx="6" fill="#EFF6FF" stroke="#BAE6FD" stroke-width="1"/>
+    <text x="407" y="69" text-anchor="middle" font-size="8" font-weight="700" fill="#0369A1">📧 Email Delivery</text>
+    <text x="407" y="81" text-anchor="middle" font-size="7.5" fill="#2563EB">Admin Inbox</text>
+
+    <rect x="362" y="94" width="90" height="30" rx="6" fill="#FFF7ED" stroke="#FED7AA" stroke-width="1"/>
+    <text x="407" y="107" text-anchor="middle" font-size="8" font-weight="700" fill="#C2410C">📩 Contact Email</text>
+    <text x="407" y="119" text-anchor="middle" font-size="7.5" fill="#EA580C">Business Inbox</text>
+
+    <!-- Failure isolation -->
+    <rect x="456" y="4" width="100" height="137" rx="8" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1.5" stroke-dasharray="4"/>
+    <text x="506" y="24" text-anchor="middle" font-size="8.5" font-weight="800" fill="#475569">Failure Isolation</text>
+    <text x="462" y="40" font-size="7.5" fill="#64748B">try { await twilio</text>
+    <text x="462" y="52" font-size="7.5" fill="#64748B">  .send() }</text>
+    <text x="462" y="64" font-size="7.5" fill="#64748B">catch (err) {</text>
+    <text x="462" y="76" font-size="7.5" fill="#22C55E">  log(err) ✅</text>
+    <text x="462" y="88" font-size="7.5" fill="#22C55E">  // Don't throw</text>
+    <text x="462" y="100" font-size="7.5" fill="#22C55E">  // Lead still saved</text>
+    <text x="462" y="112" font-size="7.5" fill="#64748B">}</text>
+    <text x="506" y="130" text-anchor="middle" font-size="7" fill="#059669">Core flow unaffected ✅</text>
+  </svg>
+</div>
+
+<h2>2. Technology Decision Framework</h2>
+
+<div class="deep-dive-card">
+  <div class="card-title"><span>1. Twilio WhatsApp vs Bulk SMS Services vs Native Messaging</span><span class="card-badge">Messaging</span></div>
+  <div class="qa-box qa-what"><div class="qa-label">What is it?</div><div class="qa-text">Twilio's REST API sends automated WhatsApp and SMS messages to students upon lead creation, status changes, and session bookings.</div></div>
+  <div class="qa-box qa-how"><div class="qa-label">How does it work &amp; Problem solved?</div><div class="qa-text">Students in India have 90%+ WhatsApp penetration. Email open rates average 20%; WhatsApp open rates exceed 95%. When a lead is created, the notification service dispatches a WhatsApp message within 1–2 seconds, dramatically reducing lead response latency.</div></div>
+  <div class="qa-box qa-alt"><div class="qa-label">What alternatives existed?</div><div class="qa-text"><strong>TextLocal / MSG91</strong>: India-specific SMS only, no WhatsApp Business API. <strong>Direct WhatsApp API</strong>: Requires Meta business verification (4–6 week process).</div></div>
+  <div class="qa-box qa-why"><div class="qa-label">Why did we choose this approach?</div><div class="qa-text">Twilio provides a unified REST API for both WhatsApp and SMS fallback, with pre-approved templates for instant messaging and a single SDK for both channels.</div></div>
+</div>
+
+<div class="deep-dive-card">
+  <div class="card-title"><span>2. Resend SMTP vs SendGrid vs AWS SES</span><span class="card-badge">Email</span></div>
+  <div class="qa-box qa-what"><div class="qa-label">What is it?</div><div class="qa-text">Resend is a developer-first transactional email API built for modern web stacks with a simple <code>resend.emails.send()</code> API call.</div></div>
+  <div class="qa-box qa-how"><div class="qa-label">How does it work &amp; Problem solved?</div><div class="qa-text">Admin notification emails (new lead alerts, conversion confirmations) are dispatched via Resend from the backend with high deliverability (authenticated SPF, DKIM, DMARC records managed by Resend's domain infrastructure).</div></div>
+  <div class="qa-box qa-alt"><div class="qa-label">What alternatives existed?</div><div class="qa-text"><strong>SendGrid</strong>: Complex dashboard setup, older REST API. <strong>AWS SES</strong>: Excellent cost ($0.0001/email) but requires manual SES production access approval and DNS configuration.</div></div>
+  <div class="qa-box qa-why"><div class="qa-label">Why did we choose this approach?</div><div class="qa-text">Resend's SDK sends transactional email in 3 lines of code with SPF/DKIM handled automatically. Ship fast, high deliverability, free tier covers early-stage volume.</div></div>
+</div>
+
+<div class="pro-tip">
+  <div class="pro-tip-title">💡 Senior Interview Defense: "How do you handle notification delivery reliability?"</div>
+  <p><em>"UniCoach uses a three-channel communication strategy: Twilio for WhatsApp/SMS (95% open rate vs 20% for email), Resend for transactional admin emails, and EmailJS for client-side contact form dispatch. Each notification call is wrapped in a try-catch — if Twilio or Resend has an outage, the error is logged but the lead is still saved to MongoDB and the API returns 201. This failure isolation ensures a third-party messaging outage never breaks our core lead capture flow."</em></p>
+</div>
+
+<div class="footer-bar">
+  <span>UniCoach Engineering Vault • Module 09: Communication &amp; Messaging Integrations</span>
+  <span>Status: Production Verified • 2026</span>
+</div>
+</body>
+</html>

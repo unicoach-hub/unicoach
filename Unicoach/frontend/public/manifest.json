@@ -1,0 +1,21 @@
+{
+  "name": "UniCoach - Study Abroad Platform",
+  "short_name": "UniCoach",
+  "description": "Empowering students globally to identify and navigate world-class education options. Study abroad counselling, visa services, and test preparation.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0B2272",
+  "theme_color": "#0B2272",
+  "icons": [
+    {
+      "src": "/favicon.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/apple-touch-icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

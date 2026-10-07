@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Module 12: DevOps, CI/CD &amp; Cloud Deployment — UniCoach Engineering</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap');
+    @page { size: A4; margin: 14mm 12mm 14mm 12mm; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Plus Jakarta Sans', sans-serif; color: #1E293B; background: #fff; font-size: 12.5px; line-height: 1.5; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .page-break { page-break-after: always; }
+    .header-banner { background: linear-gradient(135deg, #0F172A 0%, #1E293B 50%, #0B2272 100%); color: #fff; padding: 28px 24px; border-radius: 14px; margin-bottom: 18px; }
+    .module-tag { display: inline-block; background: rgba(255,255,255,0.18); border: 1px solid rgba(255,255,255,0.3); color: #E2E8F0; font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px; padding: 3px 10px; border-radius: 20px; margin-bottom: 10px; }
+    .main-title { font-family: 'Outfit', sans-serif; font-size: 24px; font-weight: 900; line-height: 1.2; margin-bottom: 6px; }
+    .subtitle { font-size: 12px; color: #CBD5E1; font-weight: 500; }
+    .meta-bar { margin-top: 14px; padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.15); display: flex; gap: 18px; font-size: 10px; color: #E2E8F0; font-weight: 600; }
+    h2 { font-family: 'Outfit', sans-serif; font-size: 15px; font-weight: 800; color: #1E293B; margin: 16px 0 8px 0; border-bottom: 2px solid #E2E8F0; padding-bottom: 4px; }
+    .diagram-box { background: #F8FAFC; border: 1.5px solid #E2E8F0; border-radius: 10px; padding: 12px; margin: 10px 0 14px 0; }
+    .diagram-title { font-size: 10.5px; font-weight: 800; color: #64748B; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 10px; }
+    .deep-dive-card { background: #F8FAFC; border: 1px solid #E2E8F0; border-left: 4px solid #1E293B; border-radius: 10px; padding: 12px; margin-bottom: 12px; }
+    .card-title { font-family: 'Outfit', sans-serif; font-size: 13px; font-weight: 800; color: #0F172A; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; }
+    .card-badge { font-size: 9px; font-weight: 800; text-transform: uppercase; padding: 2px 7px; border-radius: 5px; background: #F1F5F9; color: #1E293B; border: 1px solid #CBD5E1; }
+    .qa-box { background: #fff; border: 1px solid #CBD5E1; border-radius: 7px; padding: 8px 10px; margin-bottom: 6px; }
+    .qa-label { font-size: 9.5px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 2px; }
+    .qa-what .qa-label { color: #0284C7; } .qa-how .qa-label { color: #16A34A; } .qa-alt .qa-label { color: #D97706; } .qa-why .qa-label { color: #7C3AED; }
+    .qa-text { font-size: 11.5px; color: #334155; line-height: 1.4; }
+    .pro-tip { background: #F1F5F9; border-left: 4px solid #1E293B; border-radius: 7px; padding: 10px 12px; margin: 12px 0; font-size: 11.5px; }
+    .pro-tip-title { font-weight: 800; color: #0F172A; margin-bottom: 3px; }
+    .footer-bar { margin-top: 18px; padding-top: 8px; border-top: 1px solid #E2E8F0; display: flex; justify-content: space-between; font-size: 9px; color: #94A3B8; font-weight: 600; }
+  </style>
+</head>
+<body>
+
+<div class="header-banner">
+  <div class="module-tag">Module 12 • System Architecture Vault</div>
+  <h1 class="main-title">DevOps, CI/CD &amp; Cloud Deployment</h1>
+  <p class="subtitle">Zero-downtime continuous deployment: Git trunk-based development, Vercel Anycast Edge CDN, Render managed containers with rolling deploys, instant rollbacks &lt;10s, and secret vault hygiene.</p>
+  <div class="meta-bar"><span>🌐 Frontend: Vercel Edge Network</span><span>🚀 Backend: Render PaaS</span><span>⏱️ Rollback: &lt;10 seconds</span></div>
+</div>
+
+<h2>1. End-to-End Deployment Pipeline</h2>
+
+<div class="diagram-box">
+  <div class="diagram-title">🚀 Zero-Downtime CI/CD Pipeline — Local Commit to Global Production</div>
+  <svg viewBox="0 0 560 115" xmlns="http://www.w3.org/2000/svg" style="width:100%;font-family:'Plus Jakarta Sans',sans-serif;">
+    <defs><marker id="a" markerWidth="6" markerHeight="5" refX="6" refY="2.5" orient="auto"><polygon points="0 0, 6 2.5, 0 5" fill="#1E293B"/></marker></defs>
+
+    <!-- Dev -->
+    <rect x="2" y="35" width="74" height="44" rx="7" fill="#DBEAFE" stroke="#93C5FD" stroke-width="1.5"/>
+    <text x="39" y="53" text-anchor="middle" font-size="9" font-weight="800" fill="#1D4ED8">1. Dev</text>
+    <text x="39" y="65" text-anchor="middle" font-size="7.5" fill="#3B82F6">npm run build</text>
+    <text x="39" y="77" text-anchor="middle" font-size="7.5" fill="#15803D">0 errors ✅</text>
+    <line x1="78" y1="57" x2="92" y2="57" stroke="#1E293B" stroke-width="1.5" marker-end="url(#a)"/>
+
+    <!-- Git Push -->
+    <rect x="94" y="28" width="78" height="58" rx="7" fill="#0F172A" stroke="#334155" stroke-width="1.5"/>
+    <text x="133" y="48" text-anchor="middle" font-size="9" font-weight="800" fill="#F8FAFC">2. Git Push</text>
+    <text x="133" y="62" text-anchor="middle" font-size="7.5" fill="#94A3B8">Conventional</text>
+    <text x="133" y="74" text-anchor="middle" font-size="7.5" fill="#94A3B8">commit →</text>
+    <text x="133" y="86" text-anchor="middle" font-size="7.5" fill="#94A3B8">origin/main</text>
+    <line x1="174" y1="57" x2="188" y2="57" stroke="#1E293B" stroke-width="1.5" marker-end="url(#a)"/>
+
+    <!-- Webhooks trigger -->
+    <rect x="190" y="28" width="80" height="58" rx="7" fill="#F3F0FF" stroke="#DDD6FE" stroke-width="1.5"/>
+    <text x="230" y="46" text-anchor="middle" font-size="9" font-weight="800" fill="#6D28D9">3. Webhook</text>
+    <text x="230" y="60" text-anchor="middle" font-size="8" fill="#7C3AED">GitHub →</text>
+    <text x="230" y="72" text-anchor="middle" font-size="8" fill="#7C3AED">Vercel + Render</text>
+    <text x="230" y="84" text-anchor="middle" font-size="7.5" fill="#64748B">parallel builds</text>
+
+    <!-- Arrows to Vercel and Render -->
+    <line x1="272" y1="46" x2="288" y2="30" stroke="#7C3AED" stroke-width="1.5" marker-end="url(#a)"/>
+    <line x1="272" y1="68" x2="288" y2="84" stroke="#7C3AED" stroke-width="1.5" marker-end="url(#a)"/>
+
+    <!-- Vercel box -->
+    <rect x="290" y="4" width="120" height="50" rx="7" fill="#EDE9FE" stroke="#C4B5FD" stroke-width="1.5"/>
+    <text x="350" y="22" text-anchor="middle" font-size="9" font-weight="800" fill="#6D28D9">4a. Vercel Edge</text>
+    <text x="350" y="36" text-anchor="middle" font-size="7.5" fill="#7C3AED">Builds SPA bundles</text>
+    <text x="350" y="48" text-anchor="middle" font-size="7.5" fill="#7C3AED">100+ PoP deploy</text>
+
+    <!-- Render box -->
+    <rect x="290" y="62" width="120" height="50" rx="7" fill="#F0FDF4" stroke="#86EFAC" stroke-width="1.5"/>
+    <text x="350" y="80" text-anchor="middle" font-size="9" font-weight="800" fill="#15803D">4b. Render PaaS</text>
+    <text x="350" y="93" text-anchor="middle" font-size="7.5" fill="#16A34A">Builds container</text>
+    <text x="350" y="105" text-anchor="middle" font-size="7.5" fill="#16A34A">Health probe → swap</text>
+
+    <line x1="412" y1="29" x2="426" y2="57" stroke="#1E293B" stroke-width="1.5" marker-end="url(#a)"/>
+    <line x1="412" y1="87" x2="426" y2="57" stroke="#1E293B" stroke-width="1.5" marker-end="url(#a)"/>
+
+    <!-- Live -->
+    <rect x="428" y="28" width="88" height="58" rx="7" fill="#DCFCE7" stroke="#86EFAC" stroke-width="2"/>
+    <text x="472" y="48" text-anchor="middle" font-size="9.5" font-weight="900" fill="#15803D">5. LIVE</text>
+    <text x="472" y="62" text-anchor="middle" font-size="8" fill="#16A34A">Atomic DNS</text>
+    <text x="472" y="74" text-anchor="middle" font-size="8" fill="#16A34A">swap &lt; 60s</text>
+    <text x="472" y="86" text-anchor="middle" font-size="8" fill="#15803D">Zero downtime ✅</text>
+
+    <!-- Rollback note -->
+    <text x="2" y="112" font-size="8" font-weight="700" fill="#DC2626">⚡ Emergency Rollback: Vercel dashboard → click previous deployment → DNS repointed in &lt;10 seconds</text>
+  </svg>
+</div>
+
+<!-- Diagram 2: Infrastructure Map -->
+<div class="diagram-box">
+  <div class="diagram-title">🌐 Production Infrastructure Map — UniCoach Cloud Architecture</div>
+  <svg viewBox="0 0 560 100" xmlns="http://www.w3.org/2000/svg" style="width:100%;font-family:'Plus Jakarta Sans',sans-serif;">
+    <!-- Student browser -->
+    <rect x="2" y="36" width="74" height="28" rx="6" fill="#EFF6FF" stroke="#BAE6FD" stroke-width="1.5"/>
+    <text x="39" y="52" text-anchor="middle" font-size="8.5" font-weight="800" fill="#1D4ED8">Student</text>
+
+    <rect x="2" y="72" width="74" height="28" rx="6" fill="#EDE9FE" stroke="#C4B5FD" stroke-width="1.5"/>
+    <text x="39" y="88" text-anchor="middle" font-size="8.5" font-weight="800" fill="#6D28D9">Admin</text>
+
+    <!-- Vercel -->
+    <line x1="78" y1="50" x2="112" y2="50" stroke="#7C3AED" stroke-width="1.5"/>
+    <line x1="78" y1="86" x2="112" y2="64" stroke="#7C3AED" stroke-width="1.5"/>
+    <rect x="114" y="30" width="120" height="56" rx="8" fill="#EDE9FE" stroke="#C4B5FD" stroke-width="1.5"/>
+    <text x="174" y="48" text-anchor="middle" font-size="9" font-weight="800" fill="#6D28D9">Vercel Edge CDN</text>
+    <text x="174" y="62" text-anchor="middle" font-size="8" fill="#7C3AED">unicoach.in (frontend)</text>
+    <text x="174" y="75" text-anchor="middle" font-size="8" fill="#7C3AED">admin.unicoach.in</text>
+    <text x="174" y="87" text-anchor="middle" font-size="7.5" fill="#64748B">Global Anycast</text>
+
+    <!-- API calls -->
+    <line x1="236" y1="58" x2="268" y2="58" stroke="#0369A1" stroke-width="1.5" stroke-dasharray="4"/>
+    <text x="252" y="52" text-anchor="middle" font-size="7" fill="#0369A1">API calls</text>
+
+    <!-- Render -->
+    <rect x="270" y="30" width="126" height="56" rx="8" fill="#F0FDF4" stroke="#86EFAC" stroke-width="1.5"/>
+    <text x="333" y="48" text-anchor="middle" font-size="9" font-weight="800" fill="#15803D">Render PaaS</text>
+    <text x="333" y="62" text-anchor="middle" font-size="8" fill="#16A34A">api.unicoach.in</text>
+    <text x="333" y="75" text-anchor="middle" font-size="8" fill="#16A34A">Node.js Container</text>
+    <text x="333" y="87" text-anchor="middle" font-size="7.5" fill="#64748B">Auto-rolling deploys</text>
+
+    <!-- DB calls -->
+    <line x1="398" y1="58" x2="420" y2="58" stroke="#15803D" stroke-width="1.5" stroke-dasharray="4"/>
+    <text x="410" y="52" text-anchor="middle" font-size="7" fill="#15803D">Mongoose</text>
+
+    <!-- MongoDB Atlas -->
+    <rect x="422" y="30" width="136" height="56" rx="8" fill="#DCFCE7" stroke="#86EFAC" stroke-width="1.5"/>
+    <text x="490" y="48" text-anchor="middle" font-size="9" font-weight="800" fill="#15803D">MongoDB Atlas</text>
+    <text x="490" y="62" text-anchor="middle" font-size="8" fill="#16A34A">M10 Cluster (Mumbai)</text>
+    <text x="490" y="75" text-anchor="middle" font-size="8" fill="#16A34A">3-Node Replica Set</text>
+    <text x="490" y="87" text-anchor="middle" font-size="7.5" fill="#64748B">Automated backups</text>
+
+    <!-- External APIs strip -->
+    <rect x="114" y="2" width="444" height="20" rx="5" fill="#0F172A" stroke="#334155" stroke-width="1"/>
+    <text x="336" y="16" text-anchor="middle" font-size="8" font-weight="700" fill="#94A3B8">External APIs: Groq LPU | Cloudinary CDN | Twilio SMS | Resend Email | SerpAPI</text>
+  </svg>
+</div>
+
+<h2>2. Technology Decision Framework</h2>
+
+<div class="deep-dive-card">
+  <div class="card-title"><span>1. Vercel Anycast Edge vs Self-Hosted Nginx on EC2</span><span class="card-badge">Frontend Hosting</span></div>
+  <div class="qa-box qa-what"><div class="qa-label">What is it?</div><div class="qa-text">A serverless static hosting network distributing compiled SPA assets across 100+ global Edge PoPs with automated SSL, compression, and immutable caching.</div></div>
+  <div class="qa-box qa-how"><div class="qa-label">How does it work &amp; Problem solved?</div><div class="qa-text">An overseas student in London is routed to the nearest European PoP via Anycast DNS. TLS handshake and asset delivery occur within 30ms instead of traveling to a single origin server in India. Brotli compression reduces asset sizes by an additional 15–20%.</div></div>
+  <div class="qa-box qa-alt"><div class="qa-label">What alternatives existed?</div><div class="qa-text"><strong>Self-hosted Nginx on EC2</strong>: Manual server setup, Certbot SSL renewal, DDoS firewall config, manual CDN invalidation, 40h/month ops overhead.</div></div>
+  <div class="qa-box qa-why"><div class="qa-label">Why did we choose this approach?</div><div class="qa-text">Zero server management: push to Git → live globally in 60 seconds. Preview deployments on every PR. Instant atomic rollback. $0 for startup traffic volumes.</div></div>
+</div>
+
+<div class="deep-dive-card">
+  <div class="card-title"><span>2. Render Managed PaaS vs Kubernetes (EKS)</span><span class="card-badge">Backend Compute</span></div>
+  <div class="qa-box qa-what"><div class="qa-label">What is it?</div><div class="qa-text">A managed container hosting platform that runs the Node.js API with zero-downtime rolling deployments, health check probing, and automatic container restart on crash.</div></div>
+  <div class="qa-box qa-how"><div class="qa-label">How does it work &amp; Problem solved?</div><div class="qa-text">On new deployment: Render spins up the new container, polls <code>GET /api/health</code> until 200 OK, then atomically shifts the load balancer to the new instance. Old container only retires after all in-flight requests complete.</div></div>
+  <div class="qa-box qa-alt"><div class="qa-label">What alternatives existed?</div><div class="qa-text"><strong>Kubernetes on EKS</strong>: Requires 3 control plane nodes, Helm charts, ingress controllers, and dedicated DevOps engineer. Overkill for &lt;10K daily users.</div></div>
+  <div class="qa-box qa-why"><div class="qa-label">Why did we choose this approach?</div><div class="qa-text">Right-sized reliability: container isolation, auto-scaling, and zero-downtime deploys without the operational overhead of self-managed Kubernetes clusters.</div></div>
+</div>
+
+<div class="pro-tip">
+  <div class="pro-tip-title">💡 Senior Interview Defense: "How do you handle deployments and infrastructure?"</div>
+  <p><em>"UniCoach uses a decoupled deployment architecture. The two React SPAs deploy to Vercel's global Anycast Edge Network — push to main, and assets are live on 100+ PoPs globally in under 60 seconds. The Node.js API deploys to Render's managed container PaaS with rolling deployments: new container spins up, health probe returns 200, load balancer atomically shifts. If anything breaks in production, I can rollback to any previous Vercel immutable deployment in under 10 seconds — no git reverting, no rebuild, just DNS pointer swap."</em></p>
+</div>
+
+<div class="footer-bar">
+  <span>UniCoach Engineering Vault • Module 12: DevOps, CI/CD &amp; Cloud Deployment</span>
+  <span>Status: Production Verified • 2026</span>
+</div>
+</body>
+</html>

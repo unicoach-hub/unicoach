@@ -1,0 +1,8 @@
+node_modules
+.env
+uploads/
+backups/
+*.log
+
+# Data-sync dry-run reports (may contain bulk data)
+reports/

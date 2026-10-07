@@ -1,0 +1,5 @@
+/**
+ * NEW ZEALAND COURSES MODULE INDEX
+ */
+export const COURSES_NEW_ZEALAND = [];
+export default COURSES_NEW_ZEALAND;

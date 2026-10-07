@@ -1,0 +1,1218 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UniCoach | Premium Study Abroad &amp; AI Preparation Platform</title>
+
+  <!-- Google Fonts: Outfit (Display & Headings), Plus Jakarta Sans (Body & UI), Urbanist (Stats) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,600&family=Urbanist:wght@500;600;700;800;900&display=swap"
+    rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            outfit: ['Outfit', 'sans-serif'],
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            urbanist: ['Urbanist', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body {
+      background-color: #F8FAFC;
+      color: #0F172A;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    .font-outfit {
+      font-family: 'Outfit', sans-serif;
+    }
+
+    .font-urbanist {
+      font-family: 'Urbanist', sans-serif;
+    }
+
+    /* Bento Card Gradient Borders */
+    .bento-card {
+      position: relative;
+      background: #FFFFFF;
+      border: 1px solid rgba(226, 232, 240, 0.9);
+      border-radius: 28px;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .bento-card:hover {
+      border-color: rgba(99, 102, 241, 0.4);
+      transform: translateY(-3px);
+      box-shadow: 0 20px 40px -15px rgba(15, 23, 42, 0.08), 0 0 0 1px rgba(99, 102, 241, 0.15);
+    }
+
+    .bento-glow-card {
+      border: 1px solid transparent;
+      background:
+        linear-gradient(#FFFFFF, #FFFFFF) padding-box,
+        linear-gradient(135deg, rgba(24, 104, 248, 0.45), rgba(99, 102, 241, 0.25), rgba(226, 232, 240, 0.8)) border-box;
+      border-radius: 28px;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .bento-glow-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 25px 50px -15px rgba(24, 104, 248, 0.12);
+    }
+  </style>
+</head>
+
+<body class="min-h-screen text-[#0F172A] bg-[#F8FAFC] antialiased overflow-x-hidden">
+
+  <!-- ═════════════════════════════════════════════════════════════
+       TOP ANNOUNCEMENT BAR
+       ═════════════════════════════════════════════════════════════ -->
+  <div
+    class="bg-[#0F172A] text-white py-2.5 px-4 text-center text-xs font-semibold tracking-wide border-b border-slate-800">
+    <div class="max-w-7xl mx-auto flex items-center justify-center gap-2">
+      <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+      <span>Fall 2027 Intakes Open: Discover ₹24Cr+ in Verified Scholarships &amp; 100% Free Profile Evaluation</span>
+      <a href="#wizard" class="underline hover:text-blue-400 ml-1.5 font-bold">Check Eligibility &rarr;</a>
+    </div>
+  </div>
+
+  <!-- ═════════════════════════════════════════════════════════════
+       GLOBAL STICKY NAVBAR
+       ═════════════════════════════════════════════════════════════ -->
+  <header
+    class="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-slate-100 shadow-[0_4px_30px_rgba(0,0,0,0.03)]">
+    <div class="max-w-[1440px] mx-auto px-4 md:px-8 h-[74px] md:h-[80px] flex items-center justify-between">
+
+      <!-- Brand Logo -->
+      <a href="#" class="flex-shrink-0 flex items-center select-none pr-2">
+        <img src="frontend/src/assets/logo.png" alt="UniCoach Logo" class="h-9 md:h-11 w-auto object-contain">
+      </a>
+
+      <!-- Desktop Nav Links -->
+      <nav
+        class="hidden lg:flex items-center gap-1 xl:gap-2 h-full text-[0.85rem] xl:text-[0.88rem] font-bold text-slate-700">
+        <div
+          class="px-3 py-1.5 rounded-xl hover:text-indigo-600 hover:bg-slate-50 transition flex items-center gap-1 cursor-pointer">
+          <span>Study Abroad</span>
+          <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+          </svg>
+        </div>
+        <div class="px-3 py-1.5 rounded-xl text-indigo-600 bg-indigo-50/50 flex items-center gap-1 cursor-pointer">
+          <span class="w-2 h-2 rounded-full bg-indigo-600"></span>
+          <span>AI &amp; Tools</span>
+          <span
+            class="text-[9px] font-extrabold uppercase px-1.5 py-0.5 rounded-md bg-indigo-100 text-indigo-700">New</span>
+        </div>
+        <div
+          class="px-3 py-1.5 rounded-xl hover:text-indigo-600 hover:bg-slate-50 transition flex items-center gap-1 cursor-pointer">
+          <span>Exams</span>
+          <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+          </svg>
+        </div>
+        <a href="#services"
+          class="px-3 py-1.5 rounded-xl text-indigo-600 font-extrabold hover:bg-indigo-50/50 transition">Services</a>
+        <a href="#destinations"
+          class="px-3 py-1.5 rounded-xl hover:text-indigo-600 hover:bg-slate-50 transition">Destinations</a>
+        <a href="#events" class="px-3 py-1.5 rounded-xl hover:text-indigo-600 hover:bg-slate-50 transition">Events</a>
+        <a href="#testimonials"
+          class="px-3 py-1.5 rounded-xl hover:text-indigo-600 hover:bg-slate-50 transition">Reviews</a>
+      </nav>
+
+      <!-- Right Action CTAs -->
+      <div class="flex items-center gap-3">
+        <a href="https://wa.me/" target="_blank"
+          class="hidden sm:inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-emerald-50 hover:bg-emerald-100 text-[#10B981] border border-emerald-200/80 text-xs font-bold transition">
+          <span>💬 WhatsApp</span>
+        </a>
+        <button
+          class="px-5 py-2.5 rounded-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold text-xs tracking-wide shadow-md shadow-indigo-600/20 hover:-translate-y-0.5 transition flex items-center gap-1.5 cursor-pointer">
+          <span>Free Consultation</span>
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+          </svg>
+        </button>
+      </div>
+
+    </div>
+  </header>
+
+  <main class="flex flex-col min-h-screen">
+
+    <!-- ═════════════════════════════════════════════════════════════
+         01. HERO SECTION (1:1 REPLICA OF Hero.jsx)
+         ═════════════════════════════════════════════════════════════ -->
+    <section class="relative min-h-[560px] lg:h-[680px] flex items-center overflow-hidden bg-[#F8FAFC] pt-16 lg:pt-0">
+
+      <!-- Atmospheric Sky / Lavender Watercolor Blush Background -->
+      <div class="absolute inset-0 pointer-events-none z-0">
+        <div
+          class="absolute top-[-5%] left-[5%] w-[600px] h-[500px] bg-gradient-to-br from-[#DBEAFE]/80 via-[#E0E7FF]/50 to-transparent rounded-full blur-[80px]">
+        </div>
+        <div
+          class="absolute top-[10%] left-[30%] w-[400px] h-[350px] bg-gradient-to-br from-[#C7D2FE]/50 via-[#E0F2FE]/40 to-transparent rounded-full blur-[70px]">
+        </div>
+        <div
+          class="absolute bottom-[-10%] left-[-5%] w-[450px] h-[400px] bg-gradient-to-br from-[#E0F2FE]/70 via-[#EDE9FE]/40 to-transparent rounded-full blur-[90px]">
+        </div>
+      </div>
+
+      <!-- Full-Bleed Right-Side Hero Scene (Student looking through window) -->
+      <div
+        class="hidden lg:block absolute top-0 bottom-0 right-0 w-[56%] xl:w-[52%] 2xl:w-[50%] h-full z-0 overflow-hidden pointer-events-none"
+        style="mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,0.4) 5%, black 12%, black 100%); -webkit-mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,0.4) 5%, black 12%, black 100%);">
+        <img src="frontend/src/assets/image.png" alt="Student looking through airplane window"
+          class="w-full h-full object-cover object-[15%_center]">
+      </div>
+
+      <!-- White Dot Matrix Grid Pattern -->
+      <div class="hidden lg:block absolute top-[34%] bottom-4 right-0 w-[180px] xl:w-[220px] pointer-events-none z-10"
+        style="background-image: radial-gradient(circle, rgba(255, 255, 255, 0.6) 1.5px, transparent 1.5px); background-size: 18px 18px; mask-image: linear-gradient(to right, transparent 0%, black 25%, black 100%); -webkit-mask-image: linear-gradient(to right, transparent 0%, black 25%, black 100%);">
+      </div>
+
+      <!-- ── FLOATING OVERLAY CARDS ── -->
+
+      <!-- Card 1: Visa Success Rate 98.7% -->
+      <div class="hidden lg:block absolute top-[14%] xl:top-[16%] right-8 xl:right-12 z-20">
+        <div
+          class="bg-white/95 backdrop-blur-md rounded-[18px] p-4 shadow-xl shadow-black/15 border border-white/90 w-[170px] cursor-pointer hover:-translate-y-1 transition">
+          <span class="text-[10px] font-medium text-slate-500 block leading-tight">Visa Success Rate</span>
+          <div class="font-urbanist text-[30px] font-extrabold text-slate-900 leading-none mt-1 tracking-tight">98.7%
+          </div>
+          <span class="text-[9px] text-slate-400 block mt-0.5 italic">and counting...</span>
+          <div class="mt-2 w-full h-[22px]">
+            <svg class="w-full h-full" viewBox="0 0 130 22" fill="none">
+              <path d="M0,16 Q20,18 35,12 T70,10 T100,5 T130,1" stroke="#6366F1" stroke-width="2" stroke-linecap="round"
+                fill="none" />
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 2: ₹24Cr+ Scholarships -->
+      <div class="hidden lg:block absolute top-[24%] left-[44%] xl:left-[47%] z-20">
+        <div
+          class="w-[215px] p-4.5 rounded-[20px] text-white border border-white/50 backdrop-blur-xl shadow-2xl cursor-pointer hover:-translate-y-1 transition"
+          style="background: radial-gradient(circle at 15% 15%, rgba(232, 121, 249, 0.85) 0%, transparent 45%), radial-gradient(circle at 85% 25%, rgba(56, 189, 248, 0.9) 0%, transparent 55%), linear-gradient(135deg, #9333EA 0%, #4F46E5 45%, #2563EB 100%); box-shadow: 0 24px 50px -6px rgba(124, 58, 237, 0.6);">
+          <div class="font-urbanist text-[32px] font-extrabold leading-none tracking-tight text-white drop-shadow-xs">
+            ₹24Cr+</div>
+          <span class="text-[11px] font-medium text-white/95 block mt-1.5 tracking-wide">Scholarships Secured</span>
+          <div class="flex items-center mt-3">
+            <div class="flex -space-x-2">
+              <img class="w-6 h-6 rounded-full border-[1.5px] border-white object-cover shadow-xs"
+                src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80"
+                alt="Student">
+              <img class="w-6 h-6 rounded-full border-[1.5px] border-white object-cover shadow-xs"
+                src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&auto=format&fit=crop&q=80"
+                alt="Student">
+              <img class="w-6 h-6 rounded-full border-[1.5px] border-white object-cover shadow-xs"
+                src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&auto=format&fit=crop&q=80"
+                alt="Student">
+            </div>
+            <span class="text-[10px] font-bold text-white ml-2.5 tracking-wide">+2.4K</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 3: 12K+ Students -->
+      <div class="hidden lg:block absolute top-[74%] right-8 xl:right-12 z-20">
+        <div
+          class="w-[220px] p-4.5 rounded-[20px] bg-white/95 backdrop-blur-md shadow-xl shadow-black/15 border border-white/90 cursor-pointer hover:-translate-y-1 transition">
+          <div class="font-urbanist text-[32px] font-extrabold text-slate-900 leading-none tracking-tight">12K+</div>
+          <span class="text-[11px] font-medium text-slate-500 block mt-1.5 tracking-wide">Students Counselled</span>
+          <div class="flex items-center mt-3">
+            <div class="flex -space-x-1.5">
+              <img class="w-5.5 h-5.5 rounded-full border-[1.5px] border-white object-cover shadow-xs"
+                src="https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=100&auto=format&fit=crop&q=80"
+                alt="Student">
+              <img class="w-5.5 h-5.5 rounded-full border-[1.5px] border-white object-cover shadow-xs"
+                src="https://images.unsplash.com/photo-1517841905240-472988babdf9?w=100&auto=format&fit=crop&q=80"
+                alt="Student">
+              <div
+                class="w-5.5 h-5.5 rounded-full border-[1.5px] border-white bg-slate-100 flex items-center justify-center text-[8px] font-bold text-slate-600">
+                🎓</div>
+            </div>
+            <span class="text-[10px] font-bold text-slate-600 ml-2 tracking-wide">+5K</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Left Content Column -->
+      <div class="w-full max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-10 relative z-10">
+        <div class="grid lg:grid-cols-12 items-center">
+          <div class="lg:col-span-5 relative pr-0 lg:pr-4 space-y-4">
+
+            <div class="absolute -top-6 right-0 w-[140px] h-[90px] pointer-events-none z-30 opacity-80">
+              <svg class="w-full h-full" viewBox="0 0 140 90" fill="none">
+                <path d="M 12 70 C 32 66, 52 56, 68 40" stroke="#94A3B8" stroke-width="1.4" stroke-linecap="round"
+                  fill="none" />
+                <g transform="translate(68, 40) rotate(38) scale(0.95)">
+                  <polygon points="0,-12 1.4,-2 12,5 1.4,4.2 0,14.5 -1.4,4.2 -12,5 -1.4,-2" fill="#94A3B8" />
+                </g>
+              </svg>
+            </div>
+
+            <h1
+              class="font-outfit text-[38px] sm:text-[44px] lg:text-[48px] xl:text-[54px] font-black leading-[1.06] tracking-[-0.03em] text-[#0F172A]">
+              Your Global <br />
+              <span
+                class="bg-gradient-to-r from-[#3B5AFE] via-[#6366F1] via-60% to-[#818CF8] bg-clip-text text-transparent inline-block">
+                Future
+              </span> <br />
+              Starts Here
+            </h1>
+
+            <p class="text-[13px] sm:text-[13.5px] text-slate-500 leading-relaxed max-w-[380px] font-normal">
+              Achieve your target scores and secure admissions &amp; high-value scholarships at top-tier international
+              universities with our expert, end-to-end guidance.
+            </p>
+
+            <div class="flex flex-wrap items-center gap-2 sm:gap-2.5 max-w-[460px] pt-1">
+              <div
+                class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/80 backdrop-blur-md border border-slate-200/80 shadow-2xs">
+                <span
+                  class="w-2 h-2 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.6)] animate-pulse"></span>
+                <span class="text-[12px] font-semibold text-slate-800">100% Free Counselling</span>
+              </div>
+              <div
+                class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/80 backdrop-blur-md border border-slate-200/80 shadow-2xs">
+                <span class="text-indigo-600 text-xs">✨</span>
+                <span class="text-[12px] font-semibold text-slate-800">Scholarship Assistance</span>
+              </div>
+              <div
+                class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/80 backdrop-blur-md border border-slate-200/80 shadow-2xs">
+                <span class="text-blue-600 text-xs">🛡️</span>
+                <span class="text-[12px] font-semibold text-slate-800">Visa &amp; Loan Assistance</span>
+              </div>
+            </div>
+
+            <div class="flex items-center gap-4 pt-3">
+              <a href="#wizard"
+                class="px-6 py-3 rounded-full bg-gradient-to-r from-[#1E40AF] to-[#2563EB] hover:from-[#1E3A8A] hover:to-[#1D4ED8] text-white font-bold text-xs sm:text-sm tracking-wide shadow-lg shadow-blue-600/30 transition hover:-translate-y-0.5 flex items-center gap-2">
+                <span>Check Eligibility</span>
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3">
+                  </path>
+                </svg>
+              </a>
+
+              <a href="#destinations"
+                class="px-5 py-3 rounded-full bg-white hover:bg-slate-50 text-slate-700 border border-slate-200/90 font-bold text-xs sm:text-sm transition flex items-center gap-1.5">
+                <span>Explore Countries</span>
+              </a>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═════════════════════════════════════════════════════════════
+         02. JOURNEY ROADMAP BAR (1:1 REPLICA OF Journey.jsx)
+         ═════════════════════════════════════════════════════════════ -->
+    <section class="relative z-20 -mt-6 sm:-mt-8 lg:-mt-10 mb-4 sm:mb-6">
+      <div class="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-10">
+        <div
+          class="relative rounded-[24px] bg-white/95 backdrop-blur-xl border border-blue-100/90 shadow-xl shadow-blue-900/[0.04] px-6 py-5 lg:py-4.5 lg:px-8 overflow-hidden">
+
+          <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-6 lg:gap-8 relative z-10">
+
+            <div class="flex items-center gap-3.5 group cursor-pointer">
+              <div
+                class="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center font-bold text-sm border border-blue-100">
+                01</div>
+              <div>
+                <span class="font-outfit font-black text-xs sm:text-sm text-[#0F172A] tracking-wider block">DREAM</span>
+                <span class="text-[11px] text-slate-400 block">Discover your aspirations</span>
+              </div>
+            </div>
+
+            <div class="flex items-center gap-3.5 group cursor-pointer">
+              <div
+                class="w-10 h-10 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center font-bold text-sm border border-indigo-100">
+                02</div>
+              <div>
+                <span
+                  class="font-outfit font-black text-xs sm:text-sm text-[#0F172A] tracking-wider block">DISCOVER</span>
+                <span class="text-[11px] text-slate-400 block">Explore best opportunities</span>
+              </div>
+            </div>
+
+            <div class="flex items-center gap-3.5 group cursor-pointer">
+              <div
+                class="w-10 h-10 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center font-bold text-sm border border-purple-100">
+                03</div>
+              <div>
+                <span class="font-outfit font-black text-xs sm:text-sm text-[#0F172A] tracking-wider block">PLAN</span>
+                <span class="text-[11px] text-slate-400 block">Shortlist &amp; plan smartly</span>
+              </div>
+            </div>
+
+            <div class="flex items-center gap-3.5 group cursor-pointer">
+              <div
+                class="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center font-bold text-sm border border-emerald-100">
+                04</div>
+              <div>
+                <span class="font-outfit font-black text-xs sm:text-sm text-[#0F172A] tracking-wider block">APPLY</span>
+                <span class="text-[11px] text-slate-400 block">We handle applications</span>
+              </div>
+            </div>
+
+            <div class="flex items-center gap-3.5 group cursor-pointer">
+              <div
+                class="w-10 h-10 rounded-xl bg-sky-50 text-sky-600 flex items-center justify-center font-bold text-sm border border-sky-100">
+                05</div>
+              <div>
+                <span class="font-outfit font-black text-xs sm:text-sm text-[#0F172A] tracking-wider block">FLY</span>
+                <span class="text-[11px] text-slate-400 block">Visa &amp; travel support</span>
+              </div>
+            </div>
+
+            <div class="flex items-center gap-3.5 group cursor-pointer">
+              <div
+                class="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center font-bold text-sm border border-amber-100">
+                06</div>
+              <div>
+                <span
+                  class="font-outfit font-black text-xs sm:text-sm text-[#0F172A] tracking-wider block">THRIVE</span>
+                <span class="text-[11px] text-slate-400 block">Settle in &amp; achieve goals</span>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ═════════════════════════════════════════════════════════════
+         03. CORE SERVICES (MATCHING FRONTEND LUXURY AESTHETIC)
+         Clean luxury cards • Lucide SVG icons • Refined typography • No tacky mocks
+         ═════════════════════════════════════════════════════════════ -->
+    <section id="services" class="py-16 sm:py-20 bg-white relative overflow-hidden">
+
+      <!-- Subtle Atmospheric Ambient Glow -->
+      <div
+        class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[500px] bg-gradient-to-tr from-blue-50/60 via-indigo-50/40 to-transparent rounded-full blur-3xl pointer-events-none">
+      </div>
+
+      <div class="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-10 relative z-10">
+
+        <!-- Header -->
+        <div class="text-center max-w-3xl mx-auto mb-14 space-y-3">
+          <div
+            class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-indigo-50 text-indigo-700 border border-indigo-200/80 text-xs font-bold tracking-wide">
+            <span class="w-1.5 h-1.5 rounded-full bg-indigo-600"></span>
+            End-to-End Admission Guidance
+          </div>
+          <h2
+            class="font-outfit text-3xl sm:text-4xl md:text-[42px] font-extrabold text-slate-900 tracking-tight leading-tight">
+            Expert Guidance at Every Step
+          </h2>
+          <p class="text-slate-500 text-sm sm:text-base leading-relaxed">
+            Personalized support from profiling and scholarships to visa approvals and flight departures.
+          </p>
+        </div>
+
+        <!-- 4 Clean Luxury Service Cards Matching Frontend Aesthetic -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+
+          <!-- Card 1: University Shortlisting -->
+          <div
+            class="group relative bg-white rounded-3xl p-7 sm:p-8 border border-slate-200/80 hover:border-indigo-400 shadow-[0_4px_20px_rgba(0,0,0,0.03)] hover:shadow-[0_25px_50px_-12px_rgba(79,70,229,0.15)] hover:-translate-y-2 transition-all duration-300 flex flex-col justify-between cursor-pointer">
+            <div
+              class="absolute top-6 right-7 font-urbanist text-5xl font-black text-slate-100 group-hover:text-indigo-50 transition-colors pointer-events-none select-none">
+              01
+            </div>
+
+            <div class="relative z-10">
+              <div
+                class="w-14 h-14 rounded-2xl bg-blue-50 border border-blue-200/70 text-blue-600 flex items-center justify-center mb-6 group-hover:bg-blue-600 group-hover:text-white group-hover:border-blue-600 transition-colors shadow-xs">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4">
+                  </path>
+                </svg>
+              </div>
+
+              <h3
+                class="font-outfit text-xl font-bold text-slate-900 group-hover:text-indigo-600 transition-colors mb-3">
+                University Shortlisting
+              </h3>
+              <p class="text-slate-500 text-xs sm:text-[13px] leading-relaxed mb-6">
+                Data-driven profiling matching your GPA, budget, and career goals across 1,500+ global universities into
+                Dream, Target, and Safe categories.
+              </p>
+            </div>
+
+            <div class="pt-4 border-t border-slate-100 flex items-center justify-between text-xs relative z-10">
+              <span class="font-bold text-indigo-600">1,500+ Universities</span>
+              <span
+                class="font-semibold text-slate-700 group-hover:text-indigo-600 flex items-center gap-1 group-hover:translate-x-1 transition-transform">
+                Explore <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3">
+                  </path>
+                </svg>
+              </span>
+            </div>
+          </div>
+
+          <!-- Card 2: Scholarships & Loans -->
+          <div
+            class="group relative bg-white rounded-3xl p-7 sm:p-8 border border-slate-200/80 hover:border-amber-400 shadow-[0_4px_20px_rgba(0,0,0,0.03)] hover:shadow-[0_25px_50px_-12px_rgba(217,119,6,0.15)] hover:-translate-y-2 transition-all duration-300 flex flex-col justify-between cursor-pointer">
+            <div
+              class="absolute top-6 right-7 font-urbanist text-5xl font-black text-slate-100 group-hover:text-amber-50 transition-colors pointer-events-none select-none">
+              02
+            </div>
+
+            <div class="relative z-10">
+              <div
+                class="w-14 h-14 rounded-2xl bg-amber-50 border border-amber-200/70 text-amber-600 flex items-center justify-center mb-6 group-hover:bg-amber-500 group-hover:text-white group-hover:border-amber-500 transition-colors shadow-xs">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z">
+                  </path>
+                </svg>
+              </div>
+
+              <h3
+                class="font-outfit text-xl font-bold text-slate-900 group-hover:text-amber-600 transition-colors mb-3">
+                Scholarships &amp; Loans
+              </h3>
+              <p class="text-slate-500 text-xs sm:text-[13px] leading-relaxed mb-6">
+                Access verified international merit waivers and secure collateral-free education loans through our
+                institutional banking partners.
+              </p>
+            </div>
+
+            <div class="pt-4 border-t border-slate-100 flex items-center justify-between text-xs relative z-10">
+              <span class="font-bold text-amber-600">₹24Cr+ Granted</span>
+              <span
+                class="font-semibold text-slate-700 group-hover:text-amber-600 flex items-center gap-1 group-hover:translate-x-1 transition-transform">
+                Explore <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3">
+                  </path>
+                </svg>
+              </span>
+            </div>
+          </div>
+
+          <!-- Card 3: Test Preparation -->
+          <div
+            class="group relative bg-white rounded-3xl p-7 sm:p-8 border border-slate-200/80 hover:border-purple-400 shadow-[0_4px_20px_rgba(0,0,0,0.03)] hover:shadow-[0_25px_50px_-12px_rgba(147,51,234,0.15)] hover:-translate-y-2 transition-all duration-300 flex flex-col justify-between cursor-pointer">
+            <div
+              class="absolute top-6 right-7 font-urbanist text-5xl font-black text-slate-100 group-hover:text-purple-50 transition-colors pointer-events-none select-none">
+              03
+            </div>
+
+            <div class="relative z-10">
+              <div
+                class="w-14 h-14 rounded-2xl bg-purple-50 border border-purple-200/70 text-purple-600 flex items-center justify-center mb-6 group-hover:bg-purple-600 group-hover:text-white group-hover:border-purple-600 transition-colors shadow-xs">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253">
+                  </path>
+                </svg>
+              </div>
+
+              <h3
+                class="font-outfit text-xl font-bold text-slate-900 group-hover:text-purple-600 transition-colors mb-3">
+                Test Preparation
+              </h3>
+              <p class="text-slate-500 text-xs sm:text-[13px] leading-relaxed mb-6">
+                Live interactive masterclasses and AI-powered practice mocks for IELTS, TOEFL, GRE, and GMAT led by
+                certified Cambridge trainers.
+              </p>
+            </div>
+
+            <div class="pt-4 border-t border-slate-100 flex items-center justify-between text-xs relative z-10">
+              <span class="font-bold text-purple-600">Band 8.0+ Target</span>
+              <span
+                class="font-semibold text-slate-700 group-hover:text-purple-600 flex items-center gap-1 group-hover:translate-x-1 transition-transform">
+                Explore <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3">
+                  </path>
+                </svg>
+              </span>
+            </div>
+          </div>
+
+          <!-- Card 4: Visa Assistance -->
+          <div
+            class="group relative bg-white rounded-3xl p-7 sm:p-8 border border-slate-200/80 hover:border-emerald-400 shadow-[0_4px_20px_rgba(0,0,0,0.03)] hover:shadow-[0_25px_50px_-12px_rgba(16,185,129,0.15)] hover:-translate-y-2 transition-all duration-300 flex flex-col justify-between cursor-pointer">
+            <div
+              class="absolute top-6 right-7 font-urbanist text-5xl font-black text-slate-100 group-hover:text-emerald-50 transition-colors pointer-events-none select-none">
+              04
+            </div>
+
+            <div class="relative z-10">
+              <div
+                class="w-14 h-14 rounded-2xl bg-emerald-50 border border-emerald-200/70 text-emerald-600 flex items-center justify-center mb-6 group-hover:bg-emerald-600 group-hover:text-white group-hover:border-emerald-600 transition-colors shadow-xs">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z">
+                  </path>
+                </svg>
+              </div>
+
+              <h3
+                class="font-outfit text-xl font-bold text-slate-900 group-hover:text-emerald-600 transition-colors mb-3">
+                Visa Assistance
+              </h3>
+              <p class="text-slate-500 text-xs sm:text-[13px] leading-relaxed mb-6">
+                End-to-end consular interview prep, airtight financial dossier verification, and DS-160/CAS assistance
+                delivering 98.7% success.
+              </p>
+            </div>
+
+            <div class="pt-4 border-t border-slate-100 flex items-center justify-between text-xs relative z-10">
+              <span class="font-bold text-emerald-600">98.7% Success</span>
+              <span
+                class="font-semibold text-slate-700 group-hover:text-emerald-600 flex items-center gap-1 group-hover:translate-x-1 transition-transform">
+                Explore <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3">
+                  </path>
+                </svg>
+              </span>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ═════════════════════════════════════════════════════════════
+         04. SHORTLIST WIZARD WIDGET (1:1 REPLICA OF ShortlistWizardWidget.jsx)
+         ═════════════════════════════════════════════════════════════ -->
+    <section id="wizard" class="py-12 bg-[#F8FAFC]">
+      <div class="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-10">
+        <div class="bg-white border border-slate-200/80 rounded-3xl p-6 md:p-8 shadow-xs text-left">
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="font-outfit text-2xl font-black text-slate-900">
+              Get Your University Shortlist
+            </h3>
+            <span
+              class="text-xs font-bold text-indigo-600 bg-indigo-50 px-3 py-1 rounded-full border border-indigo-200">
+              Free Assessment
+            </span>
+          </div>
+          <p class="text-slate-500 text-xs sm:text-sm font-normal mb-6">
+            Not sure which university fits your GPA and budget? Select your destination below to begin.
+          </p>
+
+          <div
+            class="bg-gradient-to-br from-indigo-50/40 via-white to-blue-50/30 border border-slate-200/70 rounded-2xl p-6 relative overflow-hidden">
+            <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-6">
+              <div class="flex items-center gap-2">
+                <span
+                  class="w-8 h-8 rounded-lg bg-indigo-100 text-indigo-700 flex items-center justify-center text-base">
+                  🎓
+                </span>
+                <span class="font-extrabold text-slate-800 text-xs md:text-sm">Get My University Shortlist in 60
+                  Secs</span>
+              </div>
+              <div class="flex items-center gap-2 self-end sm:self-auto">
+                <span class="text-[10px] font-black text-indigo-600">0% Complete</span>
+                <div class="w-16 h-1.5 bg-slate-100 rounded-full overflow-hidden">
+                  <div class="h-full bg-indigo-600 w-0"></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="space-y-4">
+              <h4 class="font-bold text-slate-800 text-xs md:text-sm">Choose your dream country:</h4>
+              <div class="grid grid-cols-2 sm:grid-cols-5 gap-2.5">
+                <button
+                  class="py-3 px-2 rounded-xl text-xs font-black tracking-wide border transition-all cursor-pointer flex items-center justify-center gap-2 bg-indigo-600 text-white border-indigo-600 shadow-sm">
+                  <img src="https://flagcdn.com/w40/us.png" alt="USA"
+                    class="w-4.5 h-4.5 rounded-full object-cover shrink-0">
+                  <span>USA</span>
+                </button>
+                <button
+                  class="py-3 px-2 rounded-xl text-xs font-black tracking-wide border transition-all cursor-pointer flex items-center justify-center gap-2 bg-white border-slate-200 text-slate-700 hover:bg-slate-50">
+                  <img src="https://flagcdn.com/w40/gb.png" alt="UK"
+                    class="w-4.5 h-4.5 rounded-full object-cover shrink-0">
+                  <span>UK</span>
+                </button>
+                <button
+                  class="py-3 px-2 rounded-xl text-xs font-black tracking-wide border transition-all cursor-pointer flex items-center justify-center gap-2 bg-white border-slate-200 text-slate-700 hover:bg-slate-50">
+                  <img src="https://flagcdn.com/w40/de.png" alt="Germany"
+                    class="w-4.5 h-4.5 rounded-full object-cover shrink-0">
+                  <span>Germany</span>
+                </button>
+                <button
+                  class="py-3 px-2 rounded-xl text-xs font-black tracking-wide border transition-all cursor-pointer flex items-center justify-center gap-2 bg-white border-slate-200 text-slate-700 hover:bg-slate-50">
+                  <img src="https://flagcdn.com/w40/au.png" alt="Australia"
+                    class="w-4.5 h-4.5 rounded-full object-cover shrink-0">
+                  <span>Australia</span>
+                </button>
+                <button
+                  class="py-3 px-2 rounded-xl text-xs font-black tracking-wide border transition-all cursor-pointer flex items-center justify-center gap-2 bg-white border-slate-200 text-slate-700 hover:bg-slate-50">
+                  <img src="https://flagcdn.com/w40/ca.png" alt="Canada"
+                    class="w-4.5 h-4.5 rounded-full object-cover shrink-0">
+                  <span>Canada</span>
+                </button>
+                <button
+                  class="py-3 px-2 rounded-xl text-xs font-black tracking-wide border transition-all cursor-pointer flex items-center justify-center gap-2 bg-white border-slate-200 text-slate-700 hover:bg-slate-50">
+                  <img src="https://flagcdn.com/w40/ie.png" alt="Ireland"
+                    class="w-4.5 h-4.5 rounded-full object-cover shrink-0">
+                  <span>Ireland</span>
+                </button>
+                <button
+                  class="py-3 px-2 rounded-xl text-xs font-black tracking-wide border transition-all cursor-pointer flex items-center justify-center gap-2 bg-white border-slate-200 text-slate-700 hover:bg-slate-50">
+                  <img src="https://flagcdn.com/w40/nz.png" alt="New Zealand"
+                    class="w-4.5 h-4.5 rounded-full object-cover shrink-0">
+                  <span>New Zealand</span>
+                </button>
+                <button
+                  class="py-3 px-2 rounded-xl text-xs font-black tracking-wide border transition-all cursor-pointer flex items-center justify-center gap-2 bg-white border-slate-200 text-slate-700 hover:bg-slate-50">
+                  <img src="https://flagcdn.com/w40/fr.png" alt="France"
+                    class="w-4.5 h-4.5 rounded-full object-cover shrink-0">
+                  <span>France</span>
+                </button>
+                <button
+                  class="py-3 px-2 rounded-xl text-xs font-black tracking-wide border transition-all cursor-pointer flex items-center justify-center gap-2 bg-white border-slate-200 text-slate-700 hover:bg-slate-50">
+                  <img src="https://flagcdn.com/w40/it.png" alt="Italy"
+                    class="w-4.5 h-4.5 rounded-full object-cover shrink-0">
+                  <span>Italy</span>
+                </button>
+                <button
+                  class="py-3 px-2 rounded-xl text-xs font-black tracking-wide border transition-all cursor-pointer flex items-center justify-center gap-2 bg-white border-slate-200 text-slate-700 hover:bg-slate-50">
+                  <img src="https://flagcdn.com/w40/ae.png" alt="UAE"
+                    class="w-4.5 h-4.5 rounded-full object-cover shrink-0">
+                  <span>UAE</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═════════════════════════════════════════════════════════════
+         05. TOP DESTINATIONS (1:1 REPLICA OF Destinations.jsx)
+         ═════════════════════════════════════════════════════════════ -->
+    <section id="destinations" class="py-16 bg-[#F8FAFC]">
+      <div class="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-10">
+
+        <div class="relative mb-8 sm:mb-10 max-w-[700px]">
+          <div
+            class="font-urbanist text-[90px] sm:text-[115px] font-black text-slate-300/85 leading-none select-none tracking-tighter mb-[-35px] sm:mb-[-45px] -ml-1">
+            01
+          </div>
+          <h2
+            class="font-outfit text-[32px] sm:text-[38px] lg:text-[42px] font-black text-[#0F172A] leading-[1.08] tracking-tight relative z-10">
+            Explore Top Study Destinations
+          </h2>
+          <p class="text-[13px] sm:text-[14px] text-slate-500 leading-relaxed mt-2.5">
+            Discover world-class education opportunities across the globe
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+
+          <!-- USA -->
+          <div
+            class="relative rounded-[24px] overflow-hidden group shadow-lg shadow-black/5 hover:shadow-xl transition-all duration-300 h-[340px] cursor-pointer">
+            <img src="frontend/src/assets/destinations/usa.jpg" alt="USA"
+              class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent"></div>
+            <div class="absolute bottom-6 left-6 right-6 text-white">
+              <span class="text-xs font-semibold text-blue-300">4500+ Universities</span>
+              <h3 class="font-outfit text-2xl font-black mt-1">United States</h3>
+              <div class="flex items-center justify-between mt-3 pt-3 border-t border-white/20 text-xs">
+                <span class="text-slate-300">Avg. Salary: $75k+</span>
+                <span
+                  class="w-8 h-8 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center text-white font-bold">&rarr;</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- UK -->
+          <div
+            class="relative rounded-[24px] overflow-hidden group shadow-lg shadow-black/5 hover:shadow-xl transition-all duration-300 h-[340px] cursor-pointer">
+            <img src="frontend/src/assets/destinations/uk.jpg" alt="UK"
+              class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent"></div>
+            <div class="absolute bottom-6 left-6 right-6 text-white">
+              <span class="text-xs font-semibold text-blue-300">150+ Universities</span>
+              <h3 class="font-outfit text-2xl font-black mt-1">United Kingdom</h3>
+              <div class="flex items-center justify-between mt-3 pt-3 border-t border-white/20 text-xs">
+                <span class="text-slate-300">Avg. Salary: £45k+</span>
+                <span
+                  class="w-8 h-8 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center text-white font-bold">&rarr;</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Germany -->
+          <div
+            class="relative rounded-[24px] overflow-hidden group shadow-lg shadow-black/5 hover:shadow-xl transition-all duration-300 h-[340px] cursor-pointer">
+            <img src="frontend/src/assets/destinations/germany.jpg" alt="Germany"
+              class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent"></div>
+            <div class="absolute bottom-6 left-6 right-6 text-white">
+              <span class="text-xs font-semibold text-emerald-300">300+ Universities • €0 Tuition</span>
+              <h3 class="font-outfit text-2xl font-black mt-1">Germany</h3>
+              <div class="flex items-center justify-between mt-3 pt-3 border-t border-white/20 text-xs">
+                <span class="text-slate-300">Avg. Salary: €56k+</span>
+                <span
+                  class="w-8 h-8 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center text-white font-bold">&rarr;</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ═════════════════════════════════════════════════════════════
+         06. STATISTICS (1:1 REPLICA OF Statistics.jsx)
+         Circular gauge SVG arcs • Lucide SVG icons • Gradient borders
+         ═════════════════════════════════════════════════════════════ -->
+    <section
+      class="w-full bg-gradient-to-b from-white via-blue-50/20 to-[#F8FAFC] text-slate-900 py-12 sm:py-14 relative overflow-hidden border-y border-slate-200/80">
+
+      <!-- Soft Ambient Blush Glows -->
+      <div
+        class="absolute top-0 left-[10%] w-[450px] h-[160px] bg-blue-100/40 rounded-full blur-[90px] pointer-events-none">
+      </div>
+      <div
+        class="absolute top-0 left-[40%] w-[400px] h-[160px] bg-purple-100/40 rounded-full blur-[90px] pointer-events-none">
+      </div>
+      <div
+        class="absolute top-0 right-[25%] w-[380px] h-[160px] bg-amber-100/30 rounded-full blur-[90px] pointer-events-none">
+      </div>
+
+      <div class="w-full max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-10 relative z-10">
+        <div class="grid lg:grid-cols-12 gap-6 items-center">
+
+          <!-- LEFT SECTION: Heading + Subtitle + CTA -->
+          <div class="lg:col-span-3.5 xl:col-span-3 pr-0 lg:pr-2">
+            <h2 class="font-outfit text-2xl sm:text-3xl font-black text-slate-900 leading-[1.18] tracking-tight">
+              Numbers That <br />
+              <span class="text-indigo-600">Speak for Themselves</span>
+            </h2>
+            <p class="text-xs sm:text-[13px] text-slate-500 mt-2 font-normal leading-relaxed">
+              Real impact. Real people. Real results.
+            </p>
+            <a href="#services"
+              class="mt-4 inline-flex items-center gap-2 px-4 py-2.5 rounded-xl border border-slate-200/90 bg-white hover:bg-slate-50 text-slate-800 text-xs font-semibold shadow-xs transition">
+              <span>Explore Services</span>
+              <svg class="w-3.5 h-3.5 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3">
+                </path>
+              </svg>
+            </a>
+          </div>
+
+          <!-- RIGHT SECTION: 4 Gauged Cards -->
+          <div class="lg:col-span-8.5 xl:col-span-9 grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+
+            <!-- Stat 1: 12K+ -->
+            <div
+              class="rounded-2xl bg-white p-4 sm:p-5 border border-blue-200/70 shadow-sm flex flex-col justify-between hover:-translate-y-1 transition">
+              <div class="flex items-center justify-between mb-3">
+                <div class="w-9 h-9 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z">
+                    </path>
+                  </svg>
+                </div>
+                <div class="w-10 h-10">
+                  <svg class="w-full h-full -rotate-90" viewBox="0 0 36 36">
+                    <path class="text-slate-100" stroke-width="3.5" stroke="currentColor" fill="none"
+                      d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                    <path class="text-blue-600" stroke-dasharray="92, 100" stroke-width="3.5" stroke-linecap="round"
+                      stroke="currentColor" fill="none"
+                      d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                  </svg>
+                </div>
+              </div>
+              <div class="font-urbanist text-2xl sm:text-3xl font-black text-blue-600 leading-none">12K+</div>
+              <div class="text-[11px] text-slate-500 font-semibold mt-1">Students Counselled</div>
+            </div>
+
+            <!-- Stat 2: 8K+ -->
+            <div
+              class="rounded-2xl bg-white p-4 sm:p-5 border border-purple-200/70 shadow-sm flex flex-col justify-between hover:-translate-y-1 transition">
+              <div class="flex items-center justify-between mb-3">
+                <div class="w-9 h-9 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4">
+                    </path>
+                  </svg>
+                </div>
+                <div class="w-10 h-10">
+                  <svg class="w-full h-full -rotate-90" viewBox="0 0 36 36">
+                    <path class="text-slate-100" stroke-width="3.5" stroke="currentColor" fill="none"
+                      d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                    <path class="text-purple-600" stroke-dasharray="88, 100" stroke-width="3.5" stroke-linecap="round"
+                      stroke="currentColor" fill="none"
+                      d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                  </svg>
+                </div>
+              </div>
+              <div class="font-urbanist text-2xl sm:text-3xl font-black text-purple-600 leading-none">8K+</div>
+              <div class="text-[11px] text-slate-500 font-semibold mt-1">Visa Applications</div>
+            </div>
+
+            <!-- Stat 3: ₹24Cr+ -->
+            <div
+              class="rounded-2xl bg-white p-4 sm:p-5 border border-amber-200/70 shadow-sm flex flex-col justify-between hover:-translate-y-1 transition">
+              <div class="flex items-center justify-between mb-3">
+                <div class="w-9 h-9 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z">
+                    </path>
+                  </svg>
+                </div>
+                <div class="w-10 h-10">
+                  <svg class="w-full h-full -rotate-90" viewBox="0 0 36 36">
+                    <path class="text-slate-100" stroke-width="3.5" stroke="currentColor" fill="none"
+                      d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                    <path class="text-amber-500" stroke-dasharray="95, 100" stroke-width="3.5" stroke-linecap="round"
+                      stroke="currentColor" fill="none"
+                      d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                  </svg>
+                </div>
+              </div>
+              <div class="font-urbanist text-2xl sm:text-3xl font-black text-amber-600 leading-none">₹24Cr+</div>
+              <div class="text-[11px] text-slate-500 font-semibold mt-1">Scholarships Secured</div>
+            </div>
+
+            <!-- Stat 4: 98.7% -->
+            <div
+              class="rounded-2xl bg-white p-4 sm:p-5 border border-rose-200/70 shadow-sm flex flex-col justify-between hover:-translate-y-1 transition">
+              <div class="flex items-center justify-between mb-3">
+                <div class="w-9 h-9 rounded-xl bg-rose-50 text-rose-600 flex items-center justify-center">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z">
+                    </path>
+                  </svg>
+                </div>
+                <div class="w-10 h-10">
+                  <svg class="w-full h-full -rotate-90" viewBox="0 0 36 36">
+                    <path class="text-slate-100" stroke-width="3.5" stroke="currentColor" fill="none"
+                      d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                    <path class="text-rose-500" stroke-dasharray="98, 100" stroke-width="3.5" stroke-linecap="round"
+                      stroke="currentColor" fill="none"
+                      d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                  </svg>
+                </div>
+              </div>
+              <div class="font-urbanist text-2xl sm:text-3xl font-black text-rose-600 leading-none">98.7%</div>
+              <div class="text-[11px] text-slate-500 font-semibold mt-1">Visa Success Rate</div>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ═════════════════════════════════════════════════════════════
+         07. MASTERCLASSES & EVENTS (1:1 REPLICA OF UpcomingEvents.jsx)
+         ═════════════════════════════════════════════════════════════ -->
+    <section id="events" class="py-16 bg-[#F8FAFC]">
+      <div class="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-10 space-y-8">
+
+        <div>
+          <h2 class="font-outfit text-3xl sm:text-4xl font-black text-slate-900 tracking-tight">
+            Upcoming Masterclasses &amp; Events
+          </h2>
+          <p class="text-slate-500 text-xs sm:text-sm mt-1">
+            Free live sessions with verified international alums and admissions consultants
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+          <div class="bg-white rounded-3xl p-6 border border-slate-100 shadow-sm hover:shadow-md transition space-y-4">
+            <div class="flex items-center justify-between">
+              <span
+                class="text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full bg-blue-50 text-blue-600">PROFILE
+                MASTERCLASS</span>
+              <span class="text-xs text-slate-400">1,179+ Registered</span>
+            </div>
+            <h3 class="font-outfit text-xl font-bold text-slate-900">
+              Master's Abroad in 2027? Build a Profile That Gets You Into Top Universities
+            </h3>
+            <p class="text-xs text-slate-500">
+              Speaker: Anushree Tiwari (Imperial College Alum, Senior Consultant)
+            </p>
+            <div class="flex items-center justify-between pt-3 border-t border-slate-100 text-xs">
+              <span class="font-bold text-slate-700 flex items-center gap-1.5">
+                <svg class="w-3.5 h-3.5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                </svg>
+                <span>01 SEP • 07:00 PM IST</span>
+              </span>
+              <button
+                class="px-4 py-2 rounded-xl bg-blue-600 text-white font-bold text-xs hover:bg-blue-700 transition">
+                Register Free
+              </button>
+            </div>
+          </div>
+
+          <div class="bg-white rounded-3xl p-6 border border-slate-100 shadow-sm hover:shadow-md transition space-y-4">
+            <div class="flex items-center justify-between">
+              <span
+                class="text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-600">GERMANY
+                MASTERCLASS</span>
+              <span class="text-xs text-slate-400">850+ Registered</span>
+            </div>
+            <h3 class="font-outfit text-xl font-bold text-slate-900">
+              Master's in Germany 2027: Jobs, Salaries, Zero Tuition &amp; Real ROI
+            </h3>
+            <p class="text-xs text-slate-500">
+              Speaker: Khushi Debnath (TU Munich Alum, DAAD Scholar)
+            </p>
+            <div class="flex items-center justify-between pt-3 border-t border-slate-100 text-xs">
+              <span class="font-bold text-slate-700 flex items-center gap-1.5">
+                <svg class="w-3.5 h-3.5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                </svg>
+                <span>03 SEP • 06:00 PM IST</span>
+              </span>
+              <button
+                class="px-4 py-2 rounded-xl bg-emerald-600 text-white font-bold text-xs hover:bg-emerald-700 transition">
+                Register Free
+              </button>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ═════════════════════════════════════════════════════════════
+         08. TESTIMONIALS (1:1 REPLICA OF Testimonials.jsx)
+         ═════════════════════════════════════════════════════════════ -->
+    <section id="testimonials" class="py-16 bg-white border-t border-slate-100">
+      <div class="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-10 space-y-8">
+
+        <div>
+          <div class="font-urbanist text-[80px] font-black text-slate-200 leading-none select-none -mb-8 -ml-1">
+            03
+          </div>
+          <h2 class="font-outfit text-3xl sm:text-4xl font-black text-[#0F172A] tracking-tight relative z-10">
+            Loved by Students Worldwide
+          </h2>
+          <p class="text-slate-500 text-xs sm:text-sm mt-1">
+            Read authentic experiences from students who achieved their overseas education dreams
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+          <div
+            class="bg-white rounded-3xl p-6 border border-slate-200/70 shadow-sm hover:shadow-md transition space-y-4">
+            <div class="flex items-center gap-3">
+              <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=120&auto=format&fit=crop&q=80"
+                alt="Priya" class="w-12 h-12 rounded-full object-cover border border-slate-100">
+              <div>
+                <h4 class="font-outfit font-bold text-sm text-slate-900">Priya Sharma</h4>
+                <span class="text-[11px] text-slate-400">Northeastern University, USA</span>
+              </div>
+            </div>
+            <p class="text-xs text-slate-600 leading-relaxed italic">
+              "UniCoach helped me get into my dream university with a full scholarship. Their counsellors guided me at
+              every step — from SOP to visa. Couldn't have done it without them!"
+            </p>
+            <div class="flex items-center gap-1 text-amber-400">
+              <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20">
+                <path
+                  d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
+                </path>
+              </svg>
+              <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20">
+                <path
+                  d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
+                </path>
+              </svg>
+              <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20">
+                <path
+                  d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
+                </path>
+              </svg>
+              <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20">
+                <path
+                  d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
+                </path>
+              </svg>
+              <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20">
+                <path
+                  d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
+                </path>
+              </svg>
+            </div>
+          </div>
+
+          <div
+            class="bg-white rounded-3xl p-6 border border-slate-200/70 shadow-sm hover:shadow-md transition space-y-4">
+            <div class="flex items-center gap-3">
+              <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=120&auto=format&fit=crop&q=80"
+                alt="Rahul" class="w-12 h-12 rounded-full object-cover border border-slate-100">
+              <div>
+                <h4 class="font-outfit font-bold text-sm text-slate-900">Rahul Mehta</h4>
+                <span class="text-[11px] text-slate-400">University of Toronto, Canada</span>
+              </div>
+            </div>
+            <p class="text-xs text-slate-600 leading-relaxed italic">
+              "The team was incredibly professional. They shortlisted universities perfectly matching my profile and
+              budget. I got 3 offers and chose Toronto! Best decision of my life."
+            </p>
+            <div class="flex items-center gap-1 text-amber-400">
+              <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20">
+                <path
+                  d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
+                </path>
+              </svg>
+              <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20">
+                <path
+                  d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
+                </path>
+              </svg>
+              <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20">
+                <path
+                  d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
+                </path>
+              </svg>
+              <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20">
+                <path
+                  d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
+                </path>
+              </svg>
+              <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20">
+                <path
+                  d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
+                </path>
+              </svg>
+            </div>
+          </div>
+
+          <div
+            class="bg-white rounded-3xl p-6 border border-slate-200/70 shadow-sm hover:shadow-md transition space-y-4">
+            <div class="flex items-center gap-3">
+              <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=120&auto=format&fit=crop&q=80"
+                alt="Ananya" class="w-12 h-12 rounded-full object-cover border border-slate-100">
+              <div>
+                <h4 class="font-outfit font-bold text-sm text-slate-900">Ananya Patel</h4>
+                <span class="text-[11px] text-slate-400">University of Manchester, UK</span>
+              </div>
+            </div>
+            <p class="text-xs text-slate-600 leading-relaxed italic">
+              "I was sceptical at first, but UniCoach exceeded every expectation. The IELTS coaching was top-notch and
+              my visa was approved in the first attempt. Highly recommend!"
+            </p>
+            <div class="flex items-center gap-1 text-amber-400">
+              <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20">
+                <path
+                  d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
+                </path>
+              </svg>
+              <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20">
+                <path
+                  d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
+                </path>
+              </svg>
+              <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20">
+                <path
+                  d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
+                </path>
+              </svg>
+              <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20">
+                <path
+                  d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
+                </path>
+              </svg>
+              <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20">
+                <path
+                  d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
+                </path>
+              </svg>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ═════════════════════════════════════════════════════════════
+         09. FINAL CTA (1:1 REPLICA OF FinalCTA.jsx)
+         ═════════════════════════════════════════════════════════════ -->
+    <section class="py-12 sm:py-16 bg-[#F8FAFC]">
+      <div class="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-10">
+
+        <div
+          class="relative rounded-[24px] sm:rounded-[32px] overflow-hidden p-6 sm:p-8 lg:p-12 shadow-2xl shadow-indigo-950/25 text-white min-h-[250px] flex items-center">
+
+          <img src="frontend/src/assets/cta_bg.png" alt="World Map Background"
+            class="absolute inset-0 w-full h-full object-cover object-center pointer-events-none z-0">
+          <img src="frontend/src/assets/plane_perfect.png" alt="Plane"
+            class="hidden md:block absolute right-12 top-6 w-52 h-auto object-contain z-10 pointer-events-none opacity-90">
+
+          <div class="relative z-20 max-w-2xl space-y-4">
+            <h2 class="font-outfit text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight leading-tight">
+              Ready to Take the Leap?
+            </h2>
+            <p class="text-white/90 text-xs sm:text-sm leading-relaxed max-w-lg">
+              Talk to our expert counselors today and start your journey towards studying at top global universities
+              with 100% free personalized guidance.
+            </p>
+            <div class="pt-2">
+              <button
+                class="px-7 py-3.5 rounded-full bg-white text-blue-900 font-bold text-xs sm:text-sm tracking-wide shadow-lg hover:bg-slate-100 transition hover:-translate-y-0.5 cursor-pointer">
+                Book Free Consultation &rarr;
+              </button>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ═════════════════════════════════════════════════════════════
+       GLOBAL FOOTER (1:1 REPLICA OF Footer.jsx)
+       ═════════════════════════════════════════════════════════════ -->
+  <footer class="bg-[#0F172A] text-white border-t border-slate-800 pt-16 pb-12">
+    <div class="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-10 space-y-8 text-xs text-slate-400">
+      <div
+        class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 pb-8 border-b border-slate-800">
+        <img src="frontend/src/assets/logo.png" alt="UniCoach" class="h-9 w-auto brightness-0 invert">
+        <span>Empowering students globally to identify and navigate world-class education options.</span>
+      </div>
+      <div class="text-center text-slate-500 text-[11px]">
+        &copy; 2026 UniCoach Global Education. All rights reserved.
+      </div>
+    </div>
+  </footer>
+
+</body>
+
+</html>

@@ -1,0 +1,5 @@
+/**
+ * NEW ZEALAND CITIES MODULE INDEX
+ */
+export const CITIES_NEW_ZEALAND = [];
+export default CITIES_NEW_ZEALAND;

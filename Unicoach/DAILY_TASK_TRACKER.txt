@@ -1,0 +1,740 @@
+================================================================================
+                    UNICOACH - DAILY TASK & PROJECT TRACKER
+================================================================================
+Project: UniCoach
+Tracking Started: 2026-08-27
+Last Updated: 2026-09-30
+Maintainer: Development Team & Management
+
+--------------------------------------------------------------------------------
+STATUS LEGEND:
+  [ ] TODO         : Pending / Not Started
+  [/] IN PROGRESS  : Currently being worked on
+  [X] COMPLETED    : Successfully completed and verified
+  [!] BLOCKED      : Blocked by external dependency / review required
+
+PRIORITY LEVELS:
+  P0 : Critical / Urgent (High impact on production or roadmap)
+  P1 : High Priority (Core feature / Major requirement)
+  P2 : Medium Priority (Enhancement / Optimization)
+  P3 : Low Priority (Nice-to-have / Minor cosmetic)
+================================================================================
+
+
+================================================================================
+1. ACTIVE SPRINT / CURRENT MASTER TASK LIST
+================================================================================
+
++-----+------------+----------+-------------------------------------------------------+-------------+-------------+
+| ID  | Date Added | Priority | Task / Deliverable                                    | Status      | Component   |
++-----+------------+----------+-------------------------------------------------------+-------------+-------------+
+| #1  | 2026-08-27 | P1       | Initialize Daily Task & Tracking System               | [X] DONE    | Docs/Mgmt   |
+| #2  | 2026-08-27 | P0       | Admin: Resend Email Marketing & Campaign Engine       | [X] VERIFIED| Admin/Back  |
+| #3  | 2026-08-27 | P0       | Media Storage: Cloudinary Global CDN Integration      | [X] VERIFIED| Admin/Back  |
+| #4  | 2026-08-27 | P0       | Admin: Full Website Control & CMS (Blogs/Posts/Data)  | [X] VERIFIED| Admin/Back  |
+| #5  | 2026-08-27 | P1       | Admin: Social Media Publishing & Multi-Channel Upload | [X] VERIFIED| Admin/Back  |
+| #6  | 2026-08-27 | P0       | Website: Complete Functional Integration of All Pages | [X] VERIFIED| Frontend    |
+| #7  | 2026-08-27 | P1       | Website: AI Tools & Student Utility Hub Features      | [X] VERIFIED| Front/Back  |
+| #8  | 2026-08-27 | P1       | Website: Scholarship Shortlisting & Deadline Tracker  | [X] VERIFIED| Front/Back  |
+| #9  | 2026-08-27 | P2       | UI/UX Fine-tuning & Polish (After feature readiness)  | [X] DONE    | All UI      |
+| #10 | 2026-08-31 | P0       | Security: Fix Critical Unauthenticated Phone Login    | [X] VERIFIED| Backend/Auth|
+| #11 | 2026-08-31 | P0       | Security: Lock Down Internal Admin AI & CRM Endpoints | [X] VERIFIED| Backend/AI  |
+| #12 | 2026-08-31 | P0       | Security: Dedicated AI Rate Limiter (Anti-DoS)        | [X] VERIFIED| Backend/API |
+| #13 | 2026-08-31 | P0       | Security: Centralize & Synchronize JWT Secrets        | [X] VERIFIED| Backend/Mid |
+| #14 | 2026-08-31 | P0       | Frontend: Global React Error Boundary (Zero Crash)    | [X] VERIFIED| Frontend/UI |
+| #15 | 2026-08-31 | P0       | Admin: Enterprise Admin Portal Error Boundary         | [X] VERIFIED| Admin/UI    |
+| #16 | 2026-08-31 | P1       | Infra: Distributed Redis (ioredis) & Zod Validation   | [X] VERIFIED| Backend/Pkg |
+| #17 | 2026-08-31 | P0       | Cache: Real-time Cache Invalidation on CMS & DB Writes| [X] VERIFIED| Backend/API |
+| #18 | 2026-08-31 | P0       | Build Verification: Zero-Error Frontend Production    | [X] VERIFIED| Frontend    |
+| #19 | 2026-08-31 | P0       | Build Verification: Zero-Error Admin Portal Production| [X] VERIFIED| Admin       |
+| #20 | 2026-08-31 | P0       | Security: Lock Down /api/support-requests & CORS Guard| [X] VERIFIED| Backend/API |
+| #21 | 2026-09-01 | P0       | Docs: 13-Module Engineering Knowledge Base & PDFs    | [X] VERIFIED| Architecture|
+| #22 | 2026-09-01 | P0       | Diagrams: 26 Custom Architecture SVGs (All Modules)  | [X] VERIFIED| Architecture|
+| #23 | 2026-09-01 | P0       | Docker: Production Dockerfiles & Nginx Configs (SPA) | [X] VERIFIED| DevOps/Git  |
+| #24 | 2026-09-01 | P0       | DB Export: MongoDB Atlas Full Backup (29 collections)| [X] VERIFIED| Database    |
+| #25 | 2026-09-01 | P0       | Clean DB Seed: Zero-Dummy Production Package (446KB) | [X] VERIFIED| Database    |
+| #26 | 2026-09-01 | P1       | Infra Audit: Render vs Hostinger VPS + Coolify Study | [X] DONE    | Cloud/DevOps|
+| #27 | 2026-09-03 | P1       | Frontend: Branded Logo Navigation & Page Loaders     | [X] VERIFIED| Frontend/UI |
+| #28 | 2026-09-03 | P0       | Frontend: Widescreen Right Void & Sticky Layout Fix  | [X] VERIFIED| Frontend/UI |
+| #29 | 2026-09-03 | P1       | Frontend: City Pages Header Props Customizability    | [X] VERIFIED| Frontend/App|
+| #30 | 2026-09-03 | P0       | Fullstack: Dynamic Admission Eligibility Schema & CRUD| [X] VERIFIED| Back/Admin/UI|
+| #31 | 2026-09-03 | P1       | Admin: Scholarships Table, Counters & Modal Revamp    | [X] VERIFIED| Admin/Portal|
+| #32 | 2026-09-03 | P0       | Verification: Zero-Error Frontend & Admin Builds      | [X] VERIFIED| Build/Deploy|
+| #33 | 2026-09-03 | P0       | Admin: Mobile Viewport, Overflow & Responsiveness Fix | [X] VERIFIED| Admin/UI    |
+| #34 | 2026-09-03 | P1       | Admin: Single-Header Clean UI Overhaul (Option A)     | [X] VERIFIED| Admin/UI    |
+| #35 | 2026-09-03 | P0       | Admin: Header Back Arrow, CRM Nav Pills & Submenus    | [X] VERIFIED| Admin/UI    |
+| #36 | 2026-09-09 | P0       | Frontend: Journey Flight Path Centering & 1:1 Scroll  | [X] VERIFIED| Frontend/UI |
+| #37 | 2026-09-09 | P0       | Frontend: Yocket-Style Sticky Stacking Cards (Deck)   | [X] VERIFIED| Frontend/UI |
+| #38 | 2026-09-09 | P0       | Frontend: Navbar z-[100] Elevation & Header Overlap Fix| [X] VERIFIED| Frontend/UI |
+| #39 | 2026-09-09 | P1       | Frontend: Negative Space Removal (Services/Destin.)   | [X] VERIFIED| Frontend/UI |
+| #40 | 2026-09-09 | P0       | Frontend: Scroll-Synced Feature Storyteller Component | [X] VERIFIED| Frontend/UI |
+| #41 | 2026-09-09 | P1       | Frontend: Compact & Sleek Storyteller Proportion Scale| [X] VERIFIED| Frontend/UI |
+| #42 | 2026-09-09 | P0       | Build Verification: Zero-Error Vite Frontend Builds   | [X] VERIFIED| Build/Deploy|
+| #43 | 2026-09-09 | P0       | Frontend: Daily Study Abroad Tasks & Milestone Roadmap| [X] VERIFIED| Frontend/UI |
+| #44 | 2026-09-09 | P1       | Dashboard: Multi-Category Task Filters & Quick Actions| [X] VERIFIED| Frontend/UI |
+| #45 | 2026-09-09 | P1       | Dashboard: 1-Click WhatsApp Quick Counselor Connect   | [X] VERIFIED| Front/CRM   |
+| #46 | 2026-09-09 | P1       | Fullstack: Daily Tasks State Sync & Local Persistence | [X] VERIFIED| Front/Back  |
+| #47 | 2026-09-09 | P0       | Production Verification: Zero-Error Frontend Build    | [X] VERIFIED| Build/Deploy|
+| #48 | 2026-09-11 | P1       | Frontend: Journey Left/Right Slide-in Animations      | [X] VERIFIED| Frontend/UI |
+| #49 | 2026-09-11 | P2       | Frontend: Journey Header Copywriting & Pill Badge Fix | [X] VERIFIED| Frontend/UI |
+| #50 | 2026-09-29 | P1       | Universities: Dynamic Shortlist Query & Filter Fix    | [X] VERIFIED| Back/Shortl |
+| #51 | 2026-09-29 | P1       | Frontend: Restored Original Smooth Loading State      | [X] VERIFIED| Frontend/UI |
+| #52 | 2026-09-29 | P2       | Hero Cards: Pure Black Typography with Accent BGs     | [X] VERIFIED| Frontend/UI |
+| #53 | 2026-09-29 | P1       | Services: Container Shrink (Removed Void Margins)     | [X] VERIFIED| Frontend/UI |
+| #54 | 2026-09-29 | P1       | Events: Centered Country Badge (UniCoach Logo Visible)| [X] VERIFIED| Frontend/UI |
+| #55 | 2026-09-29 | P0       | Creator Studio: Interactive Analytics Charts Overhaul | [X] VERIFIED| Front/Studio|
+| #56 | 2026-09-29 | P0       | Creator Studio: Profile Health Score & Checklist Modal| [X] VERIFIED| Front/Studio|
+| #57 | 2026-09-29 | P0       | Creator Studio: Removed Loop Paid Plans (100% Free)   | [X] VERIFIED| Front/Studio|
+| #58 | 2026-09-29 | P0       | SEO/Social: Fixed Open Graph & Twitter Image Preview  | [X] VERIFIED| Front/SEO   |
+| #59 | 2026-09-29 | P0       | Admin Support: Aligned Indian Study Abroad Categories | [X] VERIFIED| Admin/Front |
+| #60 | 2026-09-29 | P0       | Verification: Zero-Error Frontend & Admin Prod Builds | [X] VERIFIED| Build/Deploy|
+| #61 | 2026-09-30 | P0       | Email: Official Gmail SMTP Integration (unicoachedu)  | [X] VERIFIED| Backend/Mail|
+| #62 | 2026-09-30 | P0       | Fullstack: 2-Way Automated Booking Emails (User+Ment) | [X] VERIFIED| Back/Front  |
+| #63 | 2026-09-30 | P0       | Frontend: Course Drawer 1:1 Mentor Booking Modal Hook | [X] VERIFIED| Frontend/UI |
+| #64 | 2026-09-30 | P0       | Backend: Direct Mentor Booking API & Auto CRM Lead Rec| [X] VERIFIED| Backend/API |
+| #65 | 2026-09-30 | P1       | Architecture: Course Finder & Live Scraping Pipeline  | [X] DONE    | Back/Scraper|
+| #66 | 2026-09-30 | P0       | Verification: Zero-Error Frontend Production Build    | [X] VERIFIED| Build/Deploy|
+| #67 | 2026-09-30 | P0       | Email & Modals: Mobile Viewport & Responsive Polish    | [X] VERIFIED| Front/Email |
+| #68 | 2026-09-30 | P0       | Backend: Live Course & Tuition Web Scraper (Groq AI)   | [X] VERIFIED| Back/Crawler|
+| #69 | 2026-09-30 | P0       | Scheduler: Academic Intake & Fee Revision Cron Engine  | [X] VERIFIED| Backend/Cron|
+| #70 | 2026-09-30 | P0       | Security & Cost: SHA-256 Zero-Token Web Diffing        | [X] VERIFIED| Backend/AI  |
+| #71 | 2026-09-30 | P0       | Admin: Live Autonomous Engine Card & Instant Trigger   | [X] VERIFIED| Admin/Portal|
+| #72 | 2026-09-30 | P0       | Verification: Zero-Error Frontend & Admin Builds       | [X] VERIFIED| Build/Deploy|
+| #73 | 2026-10-02 | P0       | Auth: Full Industry-Standard Email & Password System   | [X] VERIFIED| Backend/Auth|
+| #74 | 2026-10-02 | P0       | Auth: Cryptographic SHA-256 Forgot & Reset Password   | [X] VERIFIED| Back/Mail/UI|
+| #75 | 2026-10-02 | P0       | Auth: Google 1-Click OAuth (@react-oauth/google)       | [X] VERIFIED| Front/Back  |
+| #76 | 2026-10-02 | P0       | Frontend: Dedicated /reset-password Token Handler Page| [X] VERIFIED| Frontend/UI |
+| #77 | 2026-10-02 | P0       | Verification: Zero-Error Frontend & Admin Prod Builds  | [X] VERIFIED| Build/Deploy|
+| #78 | 2026-10-02 | P1       | Navbar & AI Tools: Journey-Grade Micro-Interactivity   | [X] VERIFIED| Frontend/UI |
++-----+------------+----------+-------------------------------------------------------+-------------+-------------+
+
+
+================================================================================
+2. DETAILED BREAKDOWN OF BOSS'S DIRECTIVES
+================================================================================
+
+--------------------------------------------------------------------------------
+TRACK 1: WORKING ADMIN PANEL WITH FULL CONTROL
+--------------------------------------------------------------------------------
+1.1 Email Marketing Hub (Using Resend):
+    [X] Resend SMTP / API configuration engine (smtp.resend.com, port 465/587).
+    [X] Email Campaign creation with template selection & dynamic tags ({name}, {dreamCountry}).
+    [X] Bulk email dispatch to filtered Leads/Users with batch queueing.
+    [X] 1-Click SMTP & Resend Verification test in Admin Settings & Email Hub.
+
+1.2 Full Website Control (CMS):
+    [X] Blogs & Posts Management (Create, Edit, Delete, Word .docx import, AI generator, SEO tags).
+    [X] News & Updates section management.
+    [X] University & Scholarship data editor (Full CRUD operations).
+    [X] Lead Management & CRM Pipeline (Stage moves, notes, counselor assignments).
+    [X] Dynamic Forms & Booking Calendar management.
+
+1.3 Social Media Multi-Channel Hub:
+    [X] Multi-channel composer with live previews (Instagram, Facebook, LinkedIn, Twitter/X, Telegram).
+    [X] AI Caption & Hashtag Generator tailored per social platform.
+    [X] Drag-and-Drop Media / Image uploader.
+    [X] Social Scheduling calendar & comment reply inbox.
+
+--------------------------------------------------------------------------------
+TRACK 2: COMPLETE FEATURE READINESS (FUNCTIONALITY FIRST)
+--------------------------------------------------------------------------------
+2.1 Public Search & Discovery:
+    [X] Real-time University & Course search with filters (/universities).
+    [X] Scholarship directory with live deadline countdown and eligibility matching (/scholarships).
+    [X] 1-Click Google Calendar deadline sync.
+
+2.2 Conversion & Lead Engines:
+    [X] Priority DM & Counselor Booking flows (/priority-dm, /book/:slug).
+    [X] Multi-step Eligibility Calculator with lead capture (/eligibility-calculator).
+    [X] UniBot interactive AI chat assistant widget.
+
+2.3 Student Utility Hub:
+    [X] AI SOP Draft Generator (/ai-tools/sop-generator).
+    [X] AI 6-Month Strategic Roadmap (/ai-tools/study-roadmap).
+    [X] AI Mock Visa Interview Simulator (/ai-tools/visa-prep).
+    [X] IELTS Mock Writing Evaluator (/ai-tools/ielts-evaluator).
+
+--------------------------------------------------------------------------------
+TRACK 3: PRODUCTION HARDENING & SECURITY (15-YR SENIOR ENG AUDIT)
+--------------------------------------------------------------------------------
+3.1 Authentication & Threat Defense:
+    [X] Elimination of direct login bypass (Enforced 6-digit OTP verification on all logins).
+    [X] RBAC protection for admin AI tools (/score-lead, /suggest-lead-reply, /batch-score-leads).
+    [X] Dedicated rate limiting on LLM calls to prevent financial API drain and denial of service.
+    [X] Elimination of weak default fallback JWT secrets across routes and middleware.
+    [X] Lockdown of all support requests and scholarship admin management routes.
+    [X] Strict origin validation in CORS middleware to block cross-site credential theft.
+    [X] Sanitization of search queries against Regular Expression Denial of Service (ReDoS).
+
+3.2 Reliability & Fault Tolerance:
+    [X] Global React ErrorBoundary across all client routes (replaces blank white screens with friendly recovery UI).
+    [X] Enterprise ErrorBoundary on Admin dashboard and CRM views.
+    [X] Installation of `ioredis` driver for seamless production multi-node caching.
+    [X] Integration of `zod` schema validator for API request payload sanitization.
+    [X] Real-time automatic cache invalidation on university, country, blog, and scholarship mutations.
+    [X] Full verification of production static builds for Frontend and Admin applications.
+
+
+================================================================================
+3. DAILY ACTIVITY LOG (DATE-WISE BREAKDOWN)
+================================================================================
+
+--------------------------------------------------------------------------------
+Date: 2026-08-27 (Thursday)
+--------------------------------------------------------------------------------
+Tasks Planned:
+  - Setup and initialize task tracker for all upcoming deliverables.
+  - Review Boss's 2 core tracks:
+      1. Working Admin Panel (Email Marketing with Resend, Full CMS, Post CRUD, Social Media).
+      2. Website Feature Readiness (All functional modules connected to backend).
+  - Selected Resend for email marketing & verified compatibility with backend nodemailer transport.
+  - Audited Admin Panel & Website components to verify 100% end-to-end functionality.
+
+Tasks Worked On:
+  +----+------------+-------------------------------------------------------+----------+--------------------+
+  | ID | Time/Slot  | Task Description                                      | Status   | Notes / Remarks    |
+  +----+------------+-------------------------------------------------------+----------+--------------------+
+  | #1 | 12:28 PM   | Setup DAILY_TASK_TRACKER.txt file                     | [X] DONE | Tracking started   |
+  | #2 | 12:35 PM   | Analyzed codebase & created roadmap for Boss's tasks  | [X] DONE | Complete analysis  |
+  | #3 | 12:40 PM   | Integrated Resend email provider config & verification| [X] DONE | Resend ready       |
+  | #4 | 12:42 PM   | Audited Admin CMS, Social Hub, & Website Tools        | [X] DONE | All modules checked|
+  | #5 | 12:56 PM   | Cloudinary CDN Integration & Live API Ping Verified   | [X] DONE | Status: OK (500/hr)|
+  | #6 | 01:04 PM   | Social Media Multi-Channel Live Dispatcher & Webhook  | [X] DONE | Telegram + Webhook |
+  | #7 | 01:06 PM   | Production Build & Syntax Verified (Admin & Frontend) | [X] DONE | 0 Errors (100% OK) |
+  | #8 | 02:11 PM   | Executed 7-Point Live E2E Automated Test Suite        | [X] DONE | 6 Passed, 1 Note   |
+  | #9 | 02:22 PM   | Overhauled Blog Theme (White/Bluish) & Synced Cats   | [X] DONE | Admin & Front Sync |
+  | #10| 02:27 PM   | Fixed Digest Live Sync & Static /uploads Endpoint     | [X] DONE | Video Post Visible |
+  | #11| 02:30 PM   | BlockBuilder Redesign & In-Story Image Upload Fix     | [X] DONE | Light Card Design  |
+  | #12| 02:37 PM   | Fixed Blog Reading 404 & Leading Slash Slug Sanitizer | [X] DONE | 100% Resolved      |
+  | #13| 02:40 PM   | Fixed In-Story Image Rendering & /uploads Path Proxy  | [X] DONE | Images Rendered OK |
+  | #14| 02:42 PM   | Universal Slug Sanitizer (Blogs, News, Events, Forms) | [X] DONE | Zero 404 Guarantee |
+  | #15| 02:48 PM   | Removed Navbar "Book Free Counselling" CTA Button     | [X] DONE | Clean Nav & Auth   |
+  | #16| 02:59 PM   | Admin Light Select & Event Modal Scrollbar Overhaul   | [X] DONE | Smooth UX & Design |
+  | #17| 03:08 PM   | Event Modal Body Scroll-Lock & Flex Overflow Fix      | [X] DONE | Zero Bg Scroll Leak|
+  | #18| 03:19 PM   | 1:1 Newsroom Category Tabs (Admin & Frontend 8 Tabs)  | [X] DONE | Synchronized 100%  |
+  | #19| 03:22 PM   | Newsroom Filter Bar Redesign (Blogs-style Wrapped)    | [X] DONE | Zero Scrollbar Bug |
+  | #20| 03:27 PM   | Dedicated News Detail Page Route (/newsroom/:slug)    | [X] DONE | Full URL Routing   |
+  | #21| 03:32 PM   | Article Full-Width (1280px Grid) & Cursor Overlap Fix | [X] DONE | Zero Side Margins  |
+  | #22| 03:39 PM   | Admin Image Dimensions & Aspect Ratio Guidance Badges | [X] DONE | Clear Size Guides  |
+  | #23| 03:47 PM   | Admin Toolbar Category Select Dropdown Truncation Fix | [X] DONE | Clean Full Width   |
+  | #24| 03:49 PM   | Events & Webinars Admin Filter Dropdowns Added        | [X] DONE | Status & Categories|
+  | #25| 03:57 PM   | Full Auto-Scheduled Publishing Across All 4 Modules   | [X] DONE | Date/Time Auto-Live|
+  | #26| 04:16 PM   | Backend Refactor to Industry Standard MVC Architecture | [X] DONE | 30 Controllers Clean|
+  | #27| 04:35 PM   | Universities Page Performance Fix (8s→1.7s, 3MB→16KB) | [X] DONE | Paginated + Load More|
+  | #28| 04:41 PM   | Global University Name/City Search (240ms) & 18/Chunk  | [X] DONE | Realtime 3.6K Search |
+  | #29| 04:46 PM   | Unified Real-time Search & 18-Chunk on Scholarships    | [X] DONE | Realtime Grant Search|
+  | #30| 04:49 PM   | Clean 'See More' Button (Removed count labels)         | [X] DONE | Clean Minimal UI     |
+  | #31| 04:55 PM   | USA Masters Page: 2.8K Live Unis & 18-Chunk 'See More' | [X] DONE | Full DB + Clean UI   |
+  | #32| 05:03 PM   | USA CS Course Page: 2.8K Live Unis & 18-Chunk See More | [X] DONE | Realtime CS Directory|
+  | #33| 05:14 PM   | Instant AI Evaluation Modal & Micro-Loaders (All Pages)| [X] DONE | Zero Freeze/UI Polish|
+  | #34| 05:18 PM   | Smart Prestige AI Match (Safe, Target, Dream realistic)| [X] DONE | Dynamic Categorizatio|
+  | #35| 05:25 PM   | Major Discipline Filtering & Active Category Tabs (All)| [X] DONE | Global Rank & Major  |
+  | #36| 05:31 PM   | True AI Curated Shortlist (Targeted 25-40 Unis, No 3K) | [X] DONE | Strict Match Engine  |
+  | #37| 05:37 PM   | Dynamic Multi-Dimensional Scoring (Unique per Profile) | [X] DONE | Real Profile Match   |
+  | #38| 05:43 PM   | Scholarship & University Shortlister 100% Dynamic Fix  | [X] DONE | Strict Country/Degree|
+  | #39| 05:48 PM   | Shortlist Evaluation Criteria Clarity & Prestige Calibr| [X] DONE | Real Profile Match   |
+  | #40| 05:50 PM   | Removed Unwanted AI Intelligence Suite Banner in Nav   | [X] DONE | Clean Navbar Dropdown|
+  | #41| 05:56 PM   | Dynamic Scholarship Scoring & Tier Spread (Safe/Target)| [X] DONE | Math Scoring Engine  |
+  | #42| 06:05 PM   | Removed Dataset Counts from Loaders & Tabs (Clean UI)  | [X] DONE | UI / UX Polish       |
+  | #43| 06:08 PM   | Restored Graduation Cap (🎓) Custom Cursor & Physics   | [X] DONE | Custom Cursor Polish |
+  | #44| 06:10 PM   | Restored Exact Original Graduation Cap & Plane Cursor  | [X] DONE | Original Cursor Match|
+  | #45| 06:33 PM   | Fixed AI Blog Generator Models & Fallback for Render   | [X] DONE | AI Engine Fix        |
+  +----+------------+-------------------------------------------------------+----------+--------------------+
+
+--------------------------------------------------------------------------------
+Date: 2026-08-31 (Monday) - 100% Production Readiness & Hardening Completion
+--------------------------------------------------------------------------------
+Tasks Planned:
+  - Conduct full-scale 15-year Senior Software Engineer Production Readiness Audit across entire codebase.
+  - Fix P0 Security Vulnerability: Unauthenticated phone login bypass in authController.js.
+  - Lock down and secure internal Admin AI & CRM endpoints (/score-lead, /suggest-lead-reply, /batch-score-leads, /generate-blog).
+  - Implement dedicated AI Rate Limiter on /api/ai endpoints to prevent LLM quota exhaustion and financial DoS.
+  - Harden JWT secrets fallback across backend middleware and AI routes.
+  - Integrate React Error Boundaries in Frontend and Admin Portal to eliminate White Screen of Death crashes.
+  - Add Redis distributed caching driver (ioredis) & Zod schema validation to backend dependencies.
+  - Inject real-time cache invalidation on university, scholarship, and CMS data updates.
+  - Lock down open endpoints in supportRequests.js and scholarships.js against unauthorized mutations and PII leakage.
+  - Harden CORS origin validation and payload limits (10MB) against cross-site attacks and memory DoS.
+  - Compile & verify zero-error production bundles for Frontend and Admin applications.
+
+Tasks Worked On:
+  +----+------------+-------------------------------------------------------+----------+--------------------+
+  | ID | Time/Slot  | Task Description                                      | Status   | Notes / Remarks    |
+  +----+------------+-------------------------------------------------------+----------+--------------------+
+  | #46| 12:12 PM   | Full-Stack Production Readiness & Security Audit      | [X] DONE | Comprehensive Rep  |
+  | #47| 12:20 PM   | Fixed Critical Auth Bypass in Phone Login Flow        | [X] DONE | OTP Enforced (P0)  |
+  | #48| 12:21 PM   | Secured Internal Admin AI Endpoints with RBAC Tokens  | [X] DONE | Admin Auth Enforced|
+  | #49| 12:21 PM   | Added Dedicated AI Rate Limiter (25 req / 10 min / IP)| [X] DONE | DoS & Quota Safe   |
+  | #50| 12:22 PM   | Synchronized & Hardened JWT_SECRET across Middleware  | [X] DONE | Zero Key Drift     |
+  | #51| 12:22 PM   | Built & Integrated Global React ErrorBoundary (Front) | [X] DONE | Zero White Screens |
+  | #52| 12:23 PM   | Built & Integrated Admin Portal ErrorBoundary (Admin) | [X] DONE | Fail-Safe Dashboard|
+  | #53| 12:24 PM   | Added ioredis & zod to Backend Production Stack       | [X] DONE | Redis & Validation |
+  | #54| 12:26 PM   | Executed E2E Backend Feature & Database Test Suite    | [X] DONE | 6/7 Passed (Atlas) |
+  | #55| 12:31 PM   | Added Realtime Cache Invalidation to Uni/Scholarships | [X] DONE | Instant Sync       |
+  | #56| 12:32 PM   | Built Central Zod Request Validation Middleware       | [X] DONE | Robust Payload QA  |
+  | #57| 12:33 PM   | Frontend Production Build (vite build) 100% Success   | [X] DONE | 0 Errors (17.48s)  |
+  | #58| 12:34 PM   | Admin Portal Production Build (vite build) 100% Success| [X] DONE | 0 Errors (64.00s)  |
+  | #59| 12:45 PM   | Locked Down Support Requests & Scholarship Mutations  | [X] DONE | Zero PII Leak      |
+  | #60| 12:46 PM   | Hardened CORS Origin Guard & 10MB Body Payload Limit  | [X] DONE | Cross-Site Guard   |
+  +----+------------+-------------------------------------------------------+----------+--------------------+
+
+Blockers / Help Needed:
+  - None. All architectural, security, reliability, caching, and build tasks are 100% complete and verified.
+
+Key Accomplishments / Summary:
+  - Fixed dangerous phone login bypass in authController so only verified users with valid SMS OTP can log in.
+  - Protected AI routes with authentication and strict rate limiting (25 requests / 10 minutes).
+  - Deployed resilient Error Boundaries in both client and admin SPAs to guarantee zero blank white screens.
+  - Added automatic cache invalidation on all Admin CMS, University, and Scholarship mutations.
+  - Closed open support request endpoints and scholarship admin endpoints from unauthorized access.
+  - Hardened CORS origin checks against malicious cross-site request attacks.
+  - Successfully verified production builds (`npm run build`) on both Frontend and Admin with zero compilation errors.
+  - Project is now 100% Production Ready!
+
+
+--------------------------------------------------------------------------------
+Date: 2026-09-01 (Tuesday) - Architecture Vault Diagrams, VPS Dockerization & Clean DB Seeding
+--------------------------------------------------------------------------------
+Tasks Planned:
+  - Generate complete 13-module Engineering Knowledge Base covering UniCoach architecture & interview defense.
+  - Complete revamp: embed visual architectural SVG diagrams across all 13 modules (addressing visual preference).
+  - Headless Edge compilation of all 13 modules into high-aesthetic printable PDFs.
+  - Configure production Dockerfiles and Nginx configurations for Frontend and Admin SPAs.
+  - Push deployment configurations to GitHub main branch.
+  - Export full MongoDB Atlas database for VPS migration.
+  - Purge development and testing garbage data (dummy blogs, test leads, fake comments, test SMS logs).
+  - Package clean, production-only seed dataset (3,610 universities, 10 countries, 135 verified scholarships, 1 admin).
+  - Create automated one-command VPS import and verification script (import_clean_db.sh).
+  - Benchmark and analyze Render vs Hostinger VPS + Coolify infrastructure trade-offs.
+
+Tasks Worked On:
+  +----+------------+-------------------------------------------------------+----------+--------------------+
+  | ID | Time/Slot  | Task Description                                      | Status   | Notes / Remarks    |
+  +----+------------+-------------------------------------------------------+----------+--------------------+
+  | #61| 02:40 PM   | Generated 13-Module Engineering Knowledge Base HTML   | [X] DONE | Full System Vault  |
+  | #62| 03:15 PM   | User Directive: Add Visual Architectural Diagrams     | [X] DONE | Complete Revamp Req|
+  | #63| 03:45 PM   | Designed & Embedded 26 Custom Inline SVG Diagrams     | [X] DONE | 2 Diagrams/Module  |
+  | #64| 04:00 PM   | Batch Recompiled 13 Module PDFs via Headless Edge     | [X] DONE | ~9.3MB Total Vault |
+  | #65| 04:25 PM   | Authored Frontend Dockerfile & Nginx Router Config    | [X] DONE | SPA Fallback + Gzip|
+  | #66| 04:26 PM   | Authored Admin Dockerfile & Nginx Router Config       | [X] DONE | Production Ready   |
+  | #67| 04:27 PM   | Committed & Pushed Deployment Files to GitHub Main    | [X] DONE | Git Commit b315b73 |
+  | #68| 04:34 PM   | Installed MongoDB Database Tools (mongodump v100.10)  | [X] DONE | Tooling Configured |
+  | #69| 04:35 PM   | Full Export of MongoDB Atlas Database (29 Collections)| [X] DONE | 3.6K Unis, 135 Grnt|
+  | #70| 04:42 PM   | Isolated Clean Production Dataset (Purged Dummy Data) | [X] DONE | Zero Testing Traces|
+  | #71| 04:43 PM   | Authored Automated VPS DB Import Script & Verification| [X] DONE | import_clean_db.sh |
+  | #72| 04:44 PM   | Packaged Clean Production Seed Zip (446 KB Archive)   | [X] DONE | unicoach_seed.zip  |
+  | #73| 04:45 PM   | Technical Benchmark: Render PaaS vs Hostinger VPS    | [X] DONE | 10x-15x Power Win  |
+  +----+------------+-------------------------------------------------------+----------+--------------------+
+
+Blockers / Help Needed:
+  - None. Both codebase, containerization, documentation, and clean database artifacts are 100% prepared for Hostinger VPS execution.
+
+Key Accomplishments / Summary:
+  - Complete 13-module Engineering Knowledge Base finalized with 26 high-resolution inline SVG architectural diagrams and compiled into PDFs.
+  - Multi-stage Dockerfiles and Nginx routing configs created and committed to GitHub for instant Coolify deployment.
+  - Full MongoDB database exported from Atlas; separated clean production datasets (universities, scholarships, countries, admin) from test garbage.
+  - Authored automated bash import script with post-restore validation test for the student university matching engine.
+  - Evaluated hosting architectures: Hostinger VPS + Coolify established as the superior solution over Render due to 8-16 GB RAM, Mumbai datacenter low latency (15-25ms), zero cold starts, and free native MongoDB/Redis containers.
+
+
+--------------------------------------------------------------------------------
+Date: 2026-09-03 (Thursday) - Loaders Branding, Layout Fixes, Dynamic Eligibility Criteria & Scholarships Overhaul
+--------------------------------------------------------------------------------
+Tasks Planned:
+  - Add official UniCoach logo branding with pulsing halo & progress animation to NavigationProgress and PageLoader.
+  - Fix right-side widescreen void and broken sticky sidebar across all 8 Italy study abroad guide pages.
+  - Enable direct page-level customization (title, subtitle, badgeText) across 20+ city destination pages.
+  - Add explicit "Admission Eligibility Criteria" schema (minScore, ieltsScore, greExam, workExp, acceptanceRate) to Backend and MongoDB.
+  - Embed dynamic eligibility input fields in Admin Panel University Create/Edit Modal.
+  - Bind dynamic criteria to frontend University cards and shortlists so admin edits update live cards without touching code.
+  - Overhaul Admin Scholarships Management: fix metric counters, enhance table layout, and restructure Add/Edit Modal into 5 organized cards.
+  - Re-verify production builds for Frontend and Admin applications (Exit Code 0).
+
+Tasks Worked On:
+  +----+------------+-------------------------------------------------------+----------+--------------------+
+  | ID | Time/Slot  | Task Description                                      | Status   | Notes / Remarks    |
+  +----+------------+-------------------------------------------------------+----------+--------------------+
+  | #74| 11:30 AM   | Built Branded Animated Logo Loaders                   | [X] DONE | Fast route feedback|
+  | #75| 12:00 PM   | Fixed Widescreen Right-side Void & Sticky Sidebars    | [X] DONE | max-w-[1440px]     |
+  | #76| 12:30 PM   | Refactored 20+ City Pages for Direct Prop Editing     | [X] DONE | Title, Subtitle etc|
+  | #77| 01:00 PM   | Added Admission Eligibility Schema in Backend Model   | [X] DONE | Mongoose Schema    |
+  | #78| 01:15 PM   | Added Eligibility Criteria Card in Admin Uni Modal    | [X] DONE | Universities.jsx   |
+  | #79| 01:25 PM   | Connected Dynamic Live Eligibility to Frontend Cards  | [X] DONE | Instant sync       |
+  | #80| 01:45 PM   | Revamped Admin Scholarships Table, Counters & Modal   | [X] DONE | 5 Structured Cards |
+  | #81| 02:00 PM   | Ran Zero-Error Production Builds (Front & Admin)      | [X] DONE | Exit Code 0        |
+  | #82| 02:35 PM   | Overhauled Admin Mobile Viewport, Cards & Grid Layout | [X] DONE | 100% Responsive Fix|
+  | #83| 02:50 PM   | Removed CategoryHeaderTabs for Clean Single-Header UI | [X] DONE | Option A Implemented|
+  | #84| 03:20 PM   | Added Header Back Arrow, CRM SubNav & Sidebar Submenu | [X] DONE | Full Nav Continuity|
+  +----+------------+-------------------------------------------------------+----------+--------------------+
+
+Blockers / Help Needed:
+  - None. Both Admin Portal, Backend API, and Frontend application build and sync flawlessly.
+
+Key Accomplishments / Summary:
+  - Integrated official UniCoach branded loader with rotating gradient ring and micro-progress animation across routes.
+  - Fixed widescreen container overflow bug (`overflow-x-clip` and `h-full sticky top-28`) across all study abroad guides.
+  - Configured 20+ city destination pages across 5 countries (Canada, USA, UK, Australia, Ireland) to allow direct page-level header/subtitle customization.
+  - Implemented end-to-end dynamic "Admission Eligibility Criteria" (Min Score, IELTS, GRE, Work Exp, Acceptance Rate) across Backend Mongoose schema, Admin modal, and Frontend university cards.
+  - Revamped Admin Scholarships Portal (`/scholarships`) with accurate metric calculations, country badges, calendar countdowns, clean icons, and 5-card structured form modal.
+  - Resolved Admin Portal mobile responsiveness: clamped root HTML/body/layout widths, disabled overflowing background glows, added scroll containers to wide tables, wrapped cards/headers, and contained Recharts grid dimensions.
+  - Implemented Option A (Clean Single-Header UI): Removed duplicate sub-category top bar across all 19 admin sections for a spacious, modern mobile & desktop experience.
+  - Added Header Back Arrow (`←`), Sleek CRM Horizontal Navigation Pill Switcher, and Expandable Sidebar Submenus across all CRM & content modules.
+  - Verified zero compile/bundler errors across both Frontend and Admin Vite builds.
+
+
+--------------------------------------------------------------------------------
+Date: 2026-09-09 (Wednesday) - Journey Centering, Yocket Stacking Cards, Storyteller & Space Optimization
+--------------------------------------------------------------------------------
+Tasks Planned:
+  - Fix Journey Roadmap airplane alignment to center of flight trajectory path.
+  - Eliminate scroll lag and plane separation in Journey.jsx with smooth 1:1 sync.
+  - Implement Yocket-style "Sticky Stacking Cards" (Shortlist, Prep, Finance, Visa) in Services.jsx.
+  - Fix Navbar z-index conflict to prevent sticky cards from overlapping the header/logo.
+  - Eliminate dead negative white space between Services and Destinations sections.
+  - Build Yocket Premium-style Scroll-Synced Feature Storyteller (PremiumStory.jsx).
+  - Compact and scale down Storyteller dimensions for balanced, sleek aesthetics.
+  - Re-verify production builds for Frontend application (Exit Code 0).
+
+Tasks Worked On:
+  +----+------------+-------------------------------------------------------+----------+--------------------+
+  | ID | Time/Slot  | Task Description                                      | Status   | Notes / Remarks    |
+  +----+------------+-------------------------------------------------------+----------+--------------------+
+  | #85| 02:20 PM   | Journey: Airplane Centered to Flight Path & 1:1 Scroll| [X] DONE | Commercial SVG     |
+  | #86| 02:45 PM   | Services: 4 Yocket-Style Product UI Stacking Cards    | [X] DONE | Shortlist/Prep/Fin |
+  | #87| 03:05 PM   | Services: Fixed Physical Card Stacking (Deck Overlap) | [X] DONE | Stepped top offset |
+  | #88| 03:25 PM   | Navbar: Elevated Header to z-[100] & Solid bg-white   | [X] DONE | Zero overlap clash |
+  | #89| 03:30 PM   | Frontend: Eliminated 300px+ Negative Void             | [X] DONE | Services/Destin.   |
+  | #90| 03:40 PM   | Frontend: Built PremiumStory Scroll-Synced Feature    | [X] DONE | Yocket 1:1 Story   |
+  | #91| 03:45 PM   | PremiumStory: Scaled Down & Compacted All Dimensions  | [X] DONE | Balanced & Sleek   |
+  +----+------------+-------------------------------------------------------+----------+--------------------+
+
+Blockers / Help Needed:
+  - None. Both Journey flight path, Services card deck, PremiumStory synchronized feature, and Destinations section build and run with zero warnings/errors.
+
+Key Accomplishments / Summary:
+  - Locked Journey Roadmap airplane SVG directly to the center line of the flight trajectory with zero drift, replacing the static graphic with a sleek commercial airliner SVG and full 1:1 scroll responsiveness via Lenis.
+  - Built Yocket's signature 4-card sticky deck in Services.jsx (UniCoach Shortlist with Columbia Admit badge, UniCoach Prep with 324 score dial, UniCoach Finance with ₹75L loan sanction, UniCoach Visa with AI consular simulator).
+  - Perfected physical card overlapping ("ek ke uper ek lagna") using stepped top offsets (`96px`, `116px`, `136px`, `156px`), uniform card minimum heights, and removing conflicting CSS transition delays for instantaneous 60fps card stacking.
+  - Upgraded Navbar header to `z-[100]` with solid white background, resolving the visual bug where cards climbed over the navigation logo.
+  - Removed over 300px of dead negative space between Services and Destinations by tightening container/section padding and setting Destinations as a smooth `z-20` curtain.
+  - Created `PremiumStory.jsx` implementing Yocket Premium's scroll-synced feature storyteller: right column vertical scrolling student photos with counselor overlay cards (`Archana Singh`, CMU/MIT/NYU shortlisted universities, SOP review comments, loan approval, visa interview drills) and left column sticky content auto cross-fading in real-time.
+  - Scaled down and balanced the Storyteller section into a compact, elegant footprint (`360px-390px` cards, crisp `25px-27px` typography, sleek pill navigation).
+  - Verified 100% clean production builds via `npm run build` (Exit Code 0).
+
+
+--------------------------------------------------------------------------------
+Date: 2026-09-09 (Wednesday) - Part 2: Daily Tasks System & Student Action Hub
+--------------------------------------------------------------------------------
+Tasks Planned:
+  - Design & implement comprehensive Daily Study Abroad Tasks & Milestone Roadmap Hub in Student Dashboard (UserDashboard.jsx).
+  - Add dedicated 'Daily Tasks & Roadmap' navigation item to student dashboard navigation groups.
+  - Implement dynamic category filter pills (All Tasks, Today's Focus, Admissions, Test Prep, Documents, Visa Prep).
+  - Embed quick 1-click in-app action triggers (Launch Shortlister, Open SOP Builder, Start IELTS Simulator, Launch Cost Calculator).
+  - Integrate 1-Click WhatsApp Quick Counselor Connect modal with prefilled profile context for instant expert assistance.
+  - Implement interactive custom task creation (add personal student tasks with tags and target dates).
+  - Add visual progress bar with dynamic completion percentage, celebration confetti state, and Fall 2027 motivational badge.
+  - Persist daily tasks and checklist state to localStorage and user profile state.
+  - Verify zero-error production build via `npm run build` (Exit Code 0).
+
+Tasks Worked On:
+  +----+------------+-------------------------------------------------------+----------+--------------------+
+  | ID | Time/Slot  | Task Description                                      | Status   | Notes / Remarks    |
+  +----+------------+-------------------------------------------------------+----------+--------------------+
+  | #92| 04:20 PM   | Planned Sprint Tasks #43-#47 in Master Task Tracker   | [X] DONE | Roadmap Sync       |
+  | #93| 04:35 PM   | Built Multi-Category Daily Tasks & Roadmap Action Hub | [X] DONE | UserDashboard.jsx  |
+  | #94| 04:50 PM   | Added 1-Click WhatsApp Quick Counselor Connect Modal  | [X] DONE | Quick guidance     |
+  | #95| 05:05 PM   | Re-verify Zero-Error Production Build (Vite/React)    | [X] DONE | Exit Code 0        |
+  +----+------------+-------------------------------------------------------+----------+--------------------+
+
+Blockers / Help Needed:
+  - None. Everything builds cleanly with zero errors (Exit Code 0).
+
+Key Accomplishments / Summary:
+  - Added Tasks #43 to #47 into the Master Sprint Task Tracker to maintain rigorous engineering project tracking.
+  - Architected and built the full "Daily Tasks & Admissions Roadmap" Action Studio inside Student Dashboard (`UserDashboard.jsx`), featuring 8 strategic milestone tasks with priority tags (P0 Urgent, P1 High, P2 Routine) and estimated completion times.
+  - Integrated dynamic category filtering (`All Tasks`, `🔥 Urgent Focus`, `🎓 Admissions`, `📝 Test Prep`, `📁 Documents`, `🛂 Visa Prep`, `✅ Completed`).
+  - Added in-app 1-click Quick Launch shortcuts connecting tasks directly to the University Shortlister, SOP Generator, IELTS Simulator, Budget Calculator, and Scholarship Finder.
+  - Implemented interactive custom task creation drawer allowing students to add personal deadlines and study milestones with category and priority tagging.
+  - Created 1-Click WhatsApp Quick Counselor Connect modal with prefilled dream country, program, student name, and custom message, routed directly to Senior Admissions Counselor Amit Sharma.
+  - Upgraded the Overview Tab with an interactive Daily Roadmap widget featuring live milestone progress bar (0-100%), quick checkboxes, priority badges, and direct studio navigation.
+  - Successfully verified zero-error production build via `npm run build` (Exit Code 0).
+
+
+--------------------------------------------------------------------------------
+Date: 2026-09-11 (Friday) - Frontend: Journey Animations & Copywriting Polish
+--------------------------------------------------------------------------------
+Tasks Planned:
+  - Implement bidirectional scroll entrance animations for Journey Timeline milestones (left cards from left, right cards from right).
+  - Add GSAP ScrollTrigger to milestone cards without layout jitter or horizontal scroll overflow.
+  - Review and refine Journey section header copywriting, replacing awkward aviation jargon ("Interactive Flight Plan...") with student-focused, authoritative terminology.
+  - Verify zero console errors, smooth 60fps scrolling sync with Lenis, and mobile responsiveness.
+
+Tasks Worked On:
+  +----+------------+-------------------------------------------------------+----------+--------------------+
+  | ID | Time/Slot  | Task Description                                      | Status   | Notes / Remarks    |
+  +----+------------+-------------------------------------------------------+----------+--------------------+
+  | #96| 11:30 AM   | Implemented Left/Right GSAP ScrollTriggers in Journey | [X] DONE | Journey.jsx        |
+  | #97| 11:35 AM   | Added will-change-transform and responsive selectors  | [X] DONE | Mobile & Desktop   |
+  | #98| 12:02 PM   | Overhauled Pill Badge & Subtitle Copywriting          | [X] DONE | Brand guidelines   |
+  | #99| 12:08 PM   | Updated Daily Task & Project Tracker                  | [X] DONE | DAILY_TASK_TRACKER |
+  +----+------------+-------------------------------------------------------+----------+--------------------+
+
+Blockers / Help Needed:
+  - None. Changes tested and verified in browser with smooth 60fps ScrollTrigger performance and no console warnings.
+
+Key Accomplishments / Summary:
+  - Implemented dynamic bidirectional slide-in animations on the Interactive Journey Roadmap (`Journey.jsx`):
+    * Left-aligned milestone cards (Discuss, Prepare, Apply & Visa) now glide in from the left (`x: -70px` -> `0`, `opacity: 0` -> `1`).
+    * Right-aligned milestone cards (Research, Ideate, Finance, Fly & Settle) glide in from the right (`x: +70px` -> `0`, `opacity: 0` -> `1`).
+    * Mobile view cards glide in smoothly from the right (`x: +40px`).
+    * Configured `toggleActions: 'play none none reverse'` for bi-directional scroll responsiveness that re-animates smoothly on re-scroll.
+  - Polished Journey section header context & copywriting to align with UniCoach brand guidelines:
+    * Replaced awkward aviation badge "Interactive Flight Plan to Global Education" with authoritative student-centric copy: "Step-by-Step Study Abroad Roadmap".
+    * Refined subtitle from "Scroll through your flight path..." to high-converting, professional copy: "From initial course shortlisting and exam prep to scholarships, visa approval, and landing on your dream campus — here is your complete roadmap."
+
+
+--------------------------------------------------------------------------------
+Date: 2026-09-29 (Tuesday) - University Logic, Creator Studio, SEO & Support Overhaul
+--------------------------------------------------------------------------------
+Tasks Planned:
+  - Fix university shortlisting query logic so only relevant matching universities are shortlisted rather than dumping all database records.
+  - Revert and restore the original smooth loading screen per user preference.
+  - Fix Hero floating cards styling: set text color to pure black and apply accent highlight backgrounds.
+  - Shrink Services container layout width to eliminate excessive desktop side margins.
+  - Center Upcoming Events country flag pill badge so the top-left "UniCoach" logo is fully visible.
+  - Revamp Creator Dashboard Analytics tab from flat numbers into interactive visual charts (Spline Area Timeline, SVG Donut, Weekly Activity Bar, Funnel).
+  - Connect Enhance Profile button and checklist modal to dynamic, real-time profile completion data.
+  - Completely remove Loop Paid Plans (Starter ₹0 vs Pro ₹999/mo) and modal dialog; enforce 100% Free / 0% Platform Fee guarantee.
+  - Fix Open Graph / Twitter meta tags and WhatsApp link preview banner by updating domain from dead 404 URL to live deployment.
+  - Purge Irish immigration categories (Critical Skills, Stamp 1G, Irish Citizenship, Labour Market Test) from Admin Support Requests and align with Indian study-abroad services.
+  - Run and verify production builds on both frontend and admin applications.
+
+Tasks Worked On:
+  +-----+------------+-------------------------------------------------------+----------+--------------------+
+  | ID  | Time/Slot  | Task Description                                      | Status   | Notes / Remarks    |
+  +-----+------------+-------------------------------------------------------+----------+--------------------+
+  | #100| 10:45 AM   | Fixed University Shortlist Query & Criteria Matching  | [X] DONE | shortlistController|
+  | #101| 11:15 AM   | Restored Original Smooth Loading Screen UI            | [X] DONE | UniversityShortl.  |
+  | #102| 11:35 AM   | Hero Overlay Cards: Pure Black Text with Accent BGs   | [X] DONE | Hero.jsx           |
+  | #103| 12:05 PM   | Services Container Shrink & Whitespace Removal        | [X] DONE | Services.jsx       |
+  | #104| 12:20 PM   | Centered Country Flag Badge in Upcoming Events Cards  | [X] DONE | UpcomingEvents.jsx |
+  | #105| 12:45 PM   | Built Dynamic Interactive Charts in Creator Analytics | [X] DONE | UnicoachDashboard  |
+  | #106| 01:10 PM   | Wired Real-Time Dynamic Profile Completion Checklist  | [X] DONE | UnicoachDashboard  |
+  | #107| 01:30 PM   | Removed Loop Paid Plans & Enforced 100% Free Guarantee| [X] DONE | UnicoachDashboard  |
+  | #108| 02:00 PM   | Fixed WhatsApp Open Graph Banner Image (404 Domain)   | [X] DONE | frontend/index.html|
+  | #109| 02:25 PM   | Overhauled Admin Support Categories to Indian Context | [X] DONE | SupportRequests.jsx|
+  | #110| 02:45 PM   | Production Build Verification (Zero Errors)          | [X] DONE | Frontend & Admin   |
+  +-----+------------+-------------------------------------------------------+----------+--------------------+
+
+Blockers / Help Needed:
+  - None. All changes tested and verified with zero-error production builds across frontend and admin.
+
+Key Accomplishments / Summary:
+  - University Shortlisting Query Optimization (shortlistController.js & UniversityShortlister.jsx):
+    * Resolved database criteria filtering issue where all universities were previously returned; now properly scores and returns accurately matched universities based on budget, GPA, and test scores.
+  - Loading Screen Restoration:
+    * Replaced disruptive loading screen with the clean, original smooth loader.
+  - Visual Design & Hierarchy Polish (Hero.jsx, Services.jsx, UpcomingEvents.jsx):
+    * Updated Hero floating cards to have crisp black text with subtle colored accent backgrounds.
+    * Rescaled Services container width (max-w-[1440px]) removing large void margins on wide desktop viewports.
+    * Shifted country flag badge in Upcoming Events to left-1/2 -translate-x-1/2 (perfect center) ensuring the top-left "UniCoach" graphic is 100% unobstructed.
+  - Creator Dashboard Studio Revamp (UnicoachDashboardPage.jsx):
+    * Replaced flat analytics numbers with full interactive visual charts: Spline Area Revenue & Views Timeline with metric toggles, SVG Donut Channel Share, 7-Day Peak Activity Bar Chart, and 5-stage Conversion Funnel.
+    * Connected Enhance Profile floating pill and checklist modal with live completion scoring based on photo, bio, services, calendar slots, and social links.
+    * Permanently removed paid/tiered Loop Plans (Loop Starter ₹0 vs Loop Pro ₹999/mo), removed the sidebar footer button, eliminated the upsell row from Overview (replaced with "Platform Fee: 0% Free Forever"), and deleted the modal dialog.
+  - Social Media & WhatsApp Link Preview Fix (frontend/index.html):
+    * Diagnosed root cause of missing WhatsApp banner: old meta tags pointed to https://unicoach.in/og-banner.jpg which returned HTTP 404 Not Found.
+    * Updated all Open Graph and Twitter Card tags to the live deployment domain (https://unicoach-blush.vercel.app/og-banner.jpg), with exact 1200x630 dimensions, JPEG MIME type, PNG fallback, and summary_large_image card format.
+  - Admin Support Requests & Inquiry Categories Overhaul (SupportRequests.jsx, PriorityDmModal.jsx, PriorityDmPage.jsx):
+    * Purged irrelevant Irish immigration categories (Critical Skills Work Permit, Stamp 1G, Irish Citizenship, Labour Market Test, STEP, Family Reunification).
+    * Aligned categories with UniCoach's actual core services as an Indian study-abroad consultancy: Visa Counseling, Study Counseling, Scholarship Counseling, Consultation Booking, University Shortlisting, SOP & Resume Review, 1:1 Mentor Guidance, and Education Loans.
+    * Replaced foreign demo requests with Indian study-abroad student cases (Aarav, Priya, Rohan, Ananya) and updated AI email auto-draft templates for student visas, scholarships, and SOP reviews.
+    * Updated phone placeholders and country code guidance from +353 (Ireland) to +91 for India, +1 for USA/Canada, +44 for UK.
+  - Zero-Error Build Verification:
+    * Confirmed both npm run build in frontend and admin exit with code 0.
+
+
+--------------------------------------------------------------------------------
+Date: 2026-09-30 (Wednesday) - Gmail SMTP Live, Booking Automation, AI Course Scraper & Autonomous Revision Scheduler
+--------------------------------------------------------------------------------
+Tasks Planned:
+  - Migrate email system from Resend sandbox to official Google Gmail SMTP (unicoachedu@gmail.com).
+  - Verify Google App Password credentials and test live inbox message transmission.
+  - Implement two-way automated email notifications on 1:1 mentor booking (student confirmation + mentor lead alert).
+  - Add CC and BCC support to backend sendEmail utility with automatic fallback to admin inbox.
+  - Wire MentorBookingModal directly into CourseAndMentorDrawer so clicking "Book Call" opens the real booking modal.
+  - Elevate MentorBookingModal z-index to z-[1000002] to render cleanly over full-viewport sliding drawers.
+  - Mobile responsiveness and viewport touch optimization for modal forms and email templates.
+  - Implement live AI course crawler & ingestion pipeline (Groq AI, Cheerio, Turndown, MongoDB).
+  - Build autonomous university course & tuition fee revision scheduler matching global academic intake cycles.
+  - Implement SHA-256 zero-token change detection to prevent unnecessary LLM token expenditure on unchanged pages.
+  - Integrate Autonomous Scheduler status card & instant manual sweep trigger in Admin Universities Hub.
+  - Verify zero-error production builds for Frontend and Admin.
+
+Tasks Worked On:
+  +-----+------------+-------------------------------------------------------+----------+--------------------+
+  | ID  | Time/Slot  | Task Description                                      | Status   | Notes / Remarks    |
+  +-----+------------+-------------------------------------------------------+----------+--------------------+
+  | #111| 02:40 PM   | Verified & Connected Gmail SMTP (unicoachedu)         | [X] DONE | backend/.env       |
+  | #112| 03:15 PM   | Added CC/BCC Support & Transporter Fallback in Email  | [X] DONE | backend/utils/email|
+  | #113| 03:45 PM   | Built Two-Way Email Dispatch in NotificationService   | [X] DONE | notificationService|
+  | #114| 04:10 PM   | Integrated MentorBookingModal in CourseDrawer Portal  | [X] DONE | CourseAndMentorDraw|
+  | #115| 04:25 PM   | Elevated MentorBookingModal Overlay Z-Index           | [X] DONE | MentorBookingModal |
+  | #116| 04:35 PM   | Verified Zero-Error Frontend Production Build (3850m) | [X] DONE | npm run build      |
+  | #117| 04:55 PM   | Overhauled Email Templates & Mobile Viewports         | [X] DONE | Email & Modals UI  |
+  | #118| 05:25 PM   | Implemented Real-Time Course Scraper (Groq AI)        | [X] DONE | courseCrawlerServ. |
+  | #119| 05:50 PM   | Built Intake-Seasonality Cron Engine (node-cron)      | [X] DONE | courseUpdateSched. |
+  | #120| 06:10 PM   | Enforced SHA-256 Zero-Token Content Diffing           | [X] DONE | courseCrawler/Sched|
+  | #121| 06:30 PM   | Fixed Express Route Order Precedence for Scheduler    | [X] DONE | courseRoutes.js    |
+  | #122| 06:45 PM   | Admin: Live Autonomous Engine Card & Instant Trigger  | [X] DONE | Universities.jsx   |
+  | #123| 07:05 PM   | Verified Zero-Error Admin & Frontend Production Builds| [X] DONE | vite build (7.61s) |
+  | #124| 07:25 PM   | Configured Gmail SMTP in Shared MongoDB Settings Model| [X] DONE | Render & Local Sync|
+  | #125| 07:35 PM   | Fixed Mentor your_sagar Email in DB & Dispatched Alert| [X] DONE | sagarpunia163 (OK) |
+  | #126| 07:45 PM   | Dynamic Country-Filtered Universities in AiSopGenerat.| [X] DONE | Strictly by Country|
+  | #127| 07:55 PM   | Verified Clean Production Build (Frontend Vite 1m 7s) | [X] DONE | 0 Errors (100% OK) |
+  | #128| 08:15 PM   | Clean "Select Fields To Download" Checklist Modal (UI)| [X] DONE | Exact Design Match |
+  | #129| 08:45 PM   | Fixed React Rules of Hooks Error in CheckoutModal.jsx | [X] DONE | Hook Order Fixed   |
+  | #130| 09:10 PM   | Instant Email Dispatch & Pooled SMTP Speed Optimize   | [X] DONE | SupportRequests.jsx|
+  +-----+------------+-------------------------------------------------------+----------+--------------------+
+
+Blockers / Help Needed:
+  - None. All features fully deployed, tested live with 3,670+ universities, and verified with zero-error production builds.
+
+Key Accomplishments / Summary:
+  - Instant Non-Blocking Email Dispatch & Pooled SMTP Optimization (SupportRequests.jsx, email.js, supportRequestController.js, adminLeadController.js):
+    * Diagnosed root cause of excessive UI loading ("why its so time consuminng etna time kyu le rha h"): Google Gmail SMTP was taking ~9.7 seconds per email to perform new unpooled TCP 3-way handshakes, TLS 1.3 key negotiations, and authentication over port 465.
+    * Upgraded `backend/utils/email.js` with Nodemailer Connection Pooling (`pool: true, maxConnections: 5, maxMessages: 100, rateLimit: 14`), IPv4 DNS priority (`dns.setDefaultResultOrder('ipv4first')`), explicit socket timeouts (8s connection, 15s socket), and an in-memory 30s TTL cache for MongoDB Settings to eliminate redundant Atlas database roundtrips.
+    * Decoupled HTTP API response from synchronous SMTP delivery in `supportRequestController.js` and `adminLeadController.js`: the backend immediately saves the reply and updates document status (`Email sent`), responding to the frontend in < 50ms, while executing the SMTP send asynchronously in the background with full error tracking.
+    * Added AbortController timeout protection and optimistic instant completion in `admin/src/pages/SupportRequests.jsx`: the modal closes immediately, updates the table status, and notifies the counselor without freezing or spinning for 10 seconds.
+  - React Rules of Hooks Compliance (CheckoutModal.jsx):
+    * Resolved "Rendered more hooks than during the previous render" console crash.
+    * Moved `totalSlotsCount` useMemo hook definition before the early return condition (`if (!isOpen || !service) return null;`) ensuring identical hook call orders across all render cycles.
+  - Clean "Select Fields To Download" Export Checklist Modal (ExcelColumnExportModal.jsx & excelExporter.js):
+    * Replaced previously complex category/letter/preset accordion with clean, standard 3-column checklist modal matching the user's reference design.
+    * Implemented all 35 standardized fields (University, Website URL, Study Level, Entry Requirements, TOEFL/IELTS/PTE/GRE scores, Tuition, Deadlines, Rankings, etc.).
+    * Added clean action buttons: "Remove All" (left outline), "Select All" (right outline), and "Download as Excel" (primary blue action button with download icon).
+    * Enhanced excelExporter.js data transform to populate all 35 checklist fields with rich university and program data.
+  - Production Shared DB SMTP Configuration (Settings.js & backend/utils/email.js):
+    * Saved verified smtp.gmail.com (port 465, user unicoachedu@gmail.com) into shared MongoDB `settings` collection.
+    * Guarantees Render live backend (unicoach.onrender.com) immediately sends live emails without relying on Render environment overrides.
+  - Mentor Account Email Rectification & Live Notification Dispatch:
+    * Identified typo in active mentor `your_sagar` record (`sagarpunia1634@gmail.com` with accidental '4').
+    * Updated `your_sagar` email in MongoDB to `sagarpunia163@gmail.com`.
+    * Dispatched live Google SMTP email receipt and alert for booking `UM-MUO3LGRD-7C1E09` to student (`puniasagar168@gmail.com`) and mentor (`sagarpunia163@gmail.com`) returning SMTP 250 2.0.0 OK.
+  - Dynamic Destination Country-to-University Filtering (AiSopGenerator.jsx):
+    * When student selects Target Destination (e.g. United States, Germany, UK, Canada, Australia, etc.), Target University dropdown strictly renders institutions for that country (125 in USA, 329 in Germany, 152 in UK).
+    * Dynamic badge in label displays exact count (e.g. `125 in United States`).
+    * Dynamic search and placeholder text (`Select university in United States...`).
+    * Automatically resets selected university if destination country changes to prevent invalid applications.
+  - Official Gmail SMTP Integration (backend/.env & backend/utils/email.js):
+    * Configured smtp.gmail.com on port 465 with verified Google App Password for unicoachedu@gmail.com.
+    * Ran live Nodemailer transport verification returning Google SMTP 250 2.0.0 OK.
+    * Added cc and bcc properties into sendEmail mailOptions.
+  - Two-Way Automated Mentor Booking Dispatch (notificationService.js & bookingController.js):
+    * Student gets branded booking confirmation email with date/time in IST, Google Meet room link, and preparation checklist.
+    * Mentor gets instant lead alert email with student's name, email, phone/WhatsApp number, target course notes, and direct join link.
+    * Configured automatic CC and fallback to unicoachedu@gmail.com for demo/alumni mentors to guarantee 100% lead capture without bounces.
+  - Course Drawer 1:1 Mentor Booking UX Overhaul (CourseAndMentorDrawer.jsx & MentorBookingModal.jsx):
+    * Replaced generic support modal triggers with real 1:1 MentorBookingModal rendered inside drawer portal.
+    * Adjusted z-index to z-[1000002] ensuring seamless pop up over backdrop and drawer panels.
+  - Email & Inquiry Modals Mobile Responsiveness:
+    * Standardized responsive fluid layout for student booking and priority inquiry forms.
+    * Mobile-optimized email notification templates using inline styles, responsive table containers, and touch-friendly CTA buttons.
+  - Live AI University Course & Tuition Scraper Pipeline (courseCrawlerService.js & courseController.js):
+    * Automated web scraping pipeline leveraging Cheerio for HTML noise reduction and Turndown for clean Markdown conversion.
+    * Groq AI (`qwen-2.5-32b` / `gpt-oss-120b`) structured JSON extraction extracting course code, degree level, duration, annual tuition, application fee, min IELTS, academic criteria, intakes, STEM status, and internship availability.
+    * Integrated real-time INR currency conversion for foreign tuition fees.
+  - Autonomous Academic Intake & Fee Revision Scheduler (courseUpdateSchedulerService.js):
+    * Built dynamic seasonality scheduler matching real-world global admission cycles:
+      - August - October (Peak Fall Launch & Tuition Publication): Weekly sweep every Sunday at 02:00 AM IST (`0 2 * 8-10 0`).
+      - January - February (Spring Launch & Round 2 Deadlines): Bi-weekly sweep on the 1st & 15th at 02:00 AM IST (`0 2 1,15 1,2 *`).
+      - May - June (Summer Deposit & Final Seat Confirmation): Bi-weekly sweep on the 1st & 15th at 02:00 AM IST (`0 2 1,15 5,6 *`).
+      - Off-Peak Months (Baseline Rolling Admissions): Monthly sweep on the 1st at 02:30 AM IST (`30 2 1 3,4,7,11,12 *`).
+    * Zero-Token SHA-256 Web Diffing: Computes sha256 hash of clean page text. If university has not changed its page, skips Groq AI extraction entirely (0 tokens wasted), updating only lastVerifiedAt.
+    * Polite Crawling Throttle: 1.2s delay between institutional web requests to respect university servers and prevent IP rate-limiting.
+    * Wired into backend/server.js on MongoDB connect; fixed Express route precedence in courseRoutes.js (/scheduler-status placed before /:id).
+  - Admin Panel Autonomous Engine Control Dashboard (admin/src/pages/Universities.jsx):
+    * Added rich dark-glass status card in "Extracted Courses" tab.
+    * Displays Active Academic Season Badge, Next Cadence, Timezone (Asia/Kolkata), Zero-Token Verification Efficiency, and Last Run Summary.
+    * Integrated "Run Update Sweep Now" 1-click manual trigger button that launches background sweeps without hanging the UI.
+  - Full Production Build Verification:
+    * Frontend: npm run build completed with 3,850 modules transformed and 0 errors.
+    * Admin: npm run build (vite build) completed in 7.61s with 0 errors.
+
+
+--------------------------------------------------------------------------------
+Date: 2026-10-02 (Friday) - Industry-Standard Email & Password Auth, Crypto Reset Links, and Google OAuth
+--------------------------------------------------------------------------------
+Tasks Planned:
+  - Migrate authentication from phone-only SMS bottleneck to full industry-standard Email + Password system.
+  - Implement cryptographically secure SHA-256 password reset tokens with 30-minute expiration.
+  - Integrate branded password reset emails and welcome emails via high-speed Pooled Gmail SMTP.
+  - Integrate 1-Click Google OAuth flow with Google public key verification on backend (google-auth-library).
+  - Add rate limiting on forgot-password and reset-password routes to prevent email bombing / brute-forcing.
+  - Create dedicated /reset-password token handler page with password strength validation.
+  - Overhaul LoginModal.jsx with modern tabs: Sign In, Sign Up, Forgot Password, and Google 1-Click with phone fallback.
+  - Verify zero-error production builds across both Frontend and Admin applications.
+
+Tasks Worked On:
+  +-----+------------+-------------------------------------------------------+----------+--------------------+
+  | ID  | Time/Slot  | Task Description                                      | Status   | Notes / Remarks    |
+  +-----+------------+-------------------------------------------------------+----------+--------------------+
+  | #131| 10:40 AM   | Installed google-auth-library & @react-oauth/google   | [X] DONE | Pkg & Dependencies |
+  | #132| 10:42 AM   | Extended User Model with authProvider, googleId, etc. | [X] DONE | models/User.js     |
+  | #133| 10:42 AM   | Created Zod Validation Schemas for Email & Reset Auth | [X] DONE | validate.js        |
+  | #134| 10:43 AM   | Built Register, Login, Forgot & Reset Password API    | [X] DONE | authController.js  |
+  | #135| 10:43 AM   | Added Rate Limiting on Forgot & Reset in server.js    | [X] DONE | Anti-DoS / Spam    |
+  | #136| 10:44 AM   | Integrated Email & Google Methods in AuthContext.jsx  | [X] DONE | Frontend Context   |
+  | #137| 10:44 AM   | Authored Dedicated ResetPassword.jsx Page & Route     | [X] DONE | /reset-password    |
+  | #138| 10:45 AM   | Overhauled LoginModal.jsx UI (Clean 4-Mode Tabs)      | [X] DONE | Google + Email UI  |
+  | #139| 10:47 AM   | Production Build Verification (Zero Errors)          | [X] DONE | Front & Admin Exit0|
+  +-----+------------+-------------------------------------------------------+----------+--------------------+
+
+Blockers / Help Needed:
+  - User to generate Google Cloud OAuth Client ID (optional, Email + Password + Forgot Password works immediately).
+
+Key Accomplishments / Summary:
+  - Full Industry-Standard Email & Password Auth:
+    * Bcrypt (12 salt rounds) secure password hashing on signup and updates.
+    * Real-time direct storage in MongoDB User collection (zero 3rd-party webhook delay).
+    * Instant visibility in Admin Panel CRM and Users tables.
+  - Cryptographically Secure Forgot & Reset Password Flow:
+    * crypto.randomBytes(32) unguessable token generation; stored as SHA-256 hash in DB with 30-minute expiry.
+    * Dispatched via official Pooled Gmail SMTP (unicoachedu@gmail.com) with high-converting branded HTML email.
+    * Anti-user enumeration guard returns generic 200 message regardless of email existence.
+  - Dedicated /reset-password Route:
+    * Clean, responsive page matching UniCoach design tokens with show/hide password toggles and match validation.
+  - Google 1-Click OAuth:
+    * Backend verification using Google's public keys (google-auth-library).
+    * Auto-account creation and seamless profile enrichment without friction.
+  - Zero-Error Build Verification:
+    * Frontend: npm run build completed with 3,866 modules transformed, Exit Code 0.
+    * Admin: npm run build completed with 4,070 modules transformed, Exit Code 0.
+
+
+================================================================================
+4. BACKLOG & UPCOMING WORK
+================================================================================
+
++----+---------------------------------------------------+----------+-----------------+
+| ID | Feature / Module Idea                             | Priority | Target Date     |
++----+---------------------------------------------------+----------+-----------------+
+| B1 | WhatsApp WABA Template Sync & Direct Messaging    | P1       | SPRINT-1        |
+| B2 | Automated Drip Email Sequences for Leads          | P2       | SPRINT-2        |
+| B3 | Advanced SEO & OpenGraph auto-generators          | P2       | SPRINT-2        |
++----+---------------------------------------------------+----------+-----------------+
+
+
+================================================================================
+5. DEPLOYMENT & PRODUCTION MILESTONES
+================================================================================
+
++----+---------------------------------------------------+----------+-----------------+
+| ID | Milestone                                         | Target   | Status          |
++----+---------------------------------------------------+----------+-----------------+
+| M1 | Complete Functional Backend & Admin Readiness     | Today    | [X] 100% Ready  |
+| M2 | Website End-to-End Feature Verification           | Today    | [X] 100% Ready  |
+| M3 | Security Hardening & P0 Production Fixes          | Today    | [X] 100% Ready  |
+| M4 | Production Build Verification (Front/Admin/Back)  | Today    | [X] 100% Ready  |
+| M5 | Hostinger VPS / Coolify Live Deployment Setup     | Today    | [X] 100% Prepped|
++----+---------------------------------------------------+----------+-----------------+

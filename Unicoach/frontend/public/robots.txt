@@ -1,0 +1,11 @@
+# robots.txt for UniCoach (https://www.unicoach.com)
+User-agent: *
+Allow: /
+
+# Account pages and the API are not for search engines
+Disallow: /api/
+Disallow: /dashboard
+Disallow: /unicoach/dashboard
+Disallow: /reset-password
+
+Sitemap: https://www.unicoach.com/sitemap.xml

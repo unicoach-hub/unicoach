@@ -1,0 +1,104 @@
+name: 🚀 UniCoach CI/CD Verification & Deployment
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  # ── JOB 1: Backend Automated Tests & Security Verification ──
+  backend-test:
+    name: 🧪 Backend Tests & Validation
+    runs-on: ubuntu-latest
+    steps:
+      - name: 📥 Checkout Code
+        uses: actions/checkout@v4
+
+      - name: ⚙️ Setup Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+          cache-dependency-path: backend/package-lock.json
+
+      - name: 📦 Install Backend Dependencies
+        run: |
+          cd backend
+          npm ci
+
+      - name: 🧪 Execute Automated Test Suite (Jest)
+        env:
+          NODE_ENV: test
+          JWT_SECRET: test_jwt_secret_for_ci_pipeline_2026
+        run: |
+          cd backend
+          npm test
+
+  # ── JOB 2: Frontend Production Build Check ──
+  frontend-build:
+    name: 🎨 Frontend Build Verification
+    runs-on: ubuntu-latest
+    steps:
+      - name: 📥 Checkout Code
+        uses: actions/checkout@v4
+
+      - name: ⚙️ Setup Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: 📦 Install Frontend Dependencies
+        run: |
+          cd frontend
+          npm ci
+
+      - name: 🏗️ Verify Vite Production Bundle
+        run: |
+          cd frontend
+          npm run build
+
+  # ── JOB 3: Admin CRM Production Build Check ──
+  admin-build:
+    name: 🛡️ Admin CRM Build Verification
+    runs-on: ubuntu-latest
+    steps:
+      - name: 📥 Checkout Code
+        uses: actions/checkout@v4
+
+      - name: ⚙️ Setup Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+          cache-dependency-path: admin/package-lock.json
+
+      - name: 📦 Install Admin Dependencies
+        run: |
+          cd admin
+          npm ci
+
+      - name: 🏗️ Verify Admin Vite Production Bundle
+        run: |
+          cd admin
+          npm run build
+
+  # ── JOB 4: Automated Deployment Trigger (Coolify / VPS) ──
+  deploy:
+    name: 🚀 Auto-Deploy to Coolify VPS
+    needs: [ backend-test, frontend-build, admin-build ]
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    steps:
+      - name: 📡 Trigger Deploy Webhook (if configured)
+        env:
+          WEBHOOK_URL: ${{ secrets.COOLIFY_DEPLOY_WEBHOOK }}
+        run: |
+          if [ -n "$WEBHOOK_URL" ]; then
+            echo "🚀 Notifying Coolify to deploy new release..."
+            curl -fsS -X GET "$WEBHOOK_URL" || echo "⚠️ Webhook trigger failed, check Coolify token"
+          else
+            echo "ℹ️ COOLIFY_DEPLOY_WEBHOOK secret not set yet. Skipping automatic trigger."
+          fi

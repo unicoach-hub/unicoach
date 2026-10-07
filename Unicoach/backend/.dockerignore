@@ -1,0 +1,28 @@
+# Files Docker must NOT copy into the backend image (build context = backend/).
+
+# Dependencies are installed inside the image with `npm ci`
+node_modules
+npm-debug.log*
+*.log
+
+# Secrets: production values come from Coolify environment variables, never from a file in the image
+.env
+.env.*
+
+# Runtime data: belongs in the persistent volume (/app/uploads) or the database, not in the image
+uploads
+backups
+
+# Development / test only
+__tests__
+scratch
+coverage
+.vscode
+.idea
+.DS_Store
+
+# Build files themselves
+Dockerfile
+.dockerignore
+.git
+.gitignore
