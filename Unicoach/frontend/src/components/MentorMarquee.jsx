@@ -1,9 +1,6 @@
-import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
-import { getPublicMentorsDirectory } from '../unicoach/api/unicoachApi';
 import { TEAM_MENTORS } from '../utils/teamMentors';
-import { toAbsoluteUrl } from '../utils/eventHelpers';
 
 // Each half of the loop must be wider than the widest screen, otherwise a gap shows mid-loop;
 // with only a few mentors the list is repeated until it is (about 260px per card incl. gap)
@@ -12,28 +9,15 @@ const CARD_SLOT_PX = 260;
 // Loop speed scales with the number of cards so it always drifts at the same slow pace
 const SECONDS_PER_CARD = 6;
 
-// Demo profiles use stock photos; only mentors with their own photo are shown on the homepage
-const STOCK_PHOTO = /\/\/([a-z0-9-]+\.)*(unsplash\.com|pexels\.com|randomuser\.me|pravatar\.cc|ui-avatars\.com|picsum\.photos)\//i;
-
-// Our event hosts are always shown (their sessions are free)
-const HOST_CARDS = TEAM_MENTORS.map((m) => ({
-  key: `host-${m.name}`,
+// Keep the homepage mentor row to the three featured UniCoach mentors.
+const MENTOR_CARDS = TEAM_MENTORS.map((m) => ({
+  key: `mentor-${m.name}`,
   name: m.name,
   role: m.role,
   photo: m.portrait || m.src,
   to: '/events',
   cta: 'Free session',
 }));
-
-// Approved mentors from the UniCoach directory open their own booking page
-const toDirectoryCard = (m) => ({
-  key: `mentor-${m.handle}`,
-  name: m.name,
-  role: [m.university || m.headline, m.country].filter(Boolean).join(' · '),
-  photo: toAbsoluteUrl(m.avatarUrl),
-  to: `/@${m.handle}`,
-  cta: 'Book 1:1',
-});
 
 const MentorCard = ({ card, isCopy = false }) => (
   <Link
@@ -62,33 +46,11 @@ const MentorCard = ({ card, isCopy = false }) => (
 );
 
 /**
- * Homepage mentors row: our event hosts + approved directory mentors with a real photo,
- * drifting slowly in a loop (paused on hover). Grows by itself as mentors are approved.
+ * Homepage mentors row: the three featured UniCoach mentors, drifting in a loop
+ * (paused on hover).
  */
 const MentorMarquee = () => {
-  const [directoryCards, setDirectoryCards] = useState([]);
-
-  useEffect(() => {
-    let cancelled = false;
-    getPublicMentorsDirectory()
-      .then((data) => {
-        if (cancelled) return;
-        const mentors = Array.isArray(data?.mentors) ? data.mentors : [];
-        setDirectoryCards(
-          mentors
-            .filter((m) => m.handle && m.name && m.avatarUrl && !STOCK_PHOTO.test(m.avatarUrl))
-            .map(toDirectoryCard)
-        );
-      })
-      .catch(() => {
-        // Directory unavailable: the event hosts are still shown
-      });
-    return () => {
-      cancelled = true;
-    };
-  }, []);
-
-  const cards = [...HOST_CARDS, ...directoryCards];
+  const cards = MENTOR_CARDS;
   const repeats = Math.max(1, Math.ceil(MIN_LOOP_WIDTH_PX / (cards.length * CARD_SLOT_PX)));
   const loopCards = Array.from({ length: repeats }, (_, round) => cards.map((card) => ({ card, round }))).flat();
 
