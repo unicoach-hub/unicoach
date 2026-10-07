@@ -31,6 +31,7 @@ trendzone/
 trendzone.html
 student_cutout.png
 index.html
+!admin/index.html
 !frontend/index.html
 
 # Datasets and Archives
@@ -41,4 +42,3 @@ verified_university_datasets/
 backups/
 backend/backups/
 newfeature
-
