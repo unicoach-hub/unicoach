@@ -626,7 +626,7 @@ Details: `RAZORPAY_PAYMENT_SETUP_GUIDE.md` (sections 4 and 9). The production va
       `https://api.unicoach.com/api/unicoach/webhooks/razorpay`
       Events: `payment.captured`, `payment.failed`, `order.paid`, `refund.processed`, `refund.failed`.
       Secret = `RAZORPAY_WEBHOOK_SECRET` of that mode.
-- [ ] Delete or update the old webhook that points to `unicoach.onrender.com`.
+- [ ] Delete or update the old webhook that points to `unicoach.onrender.com`; use `https://unicoach-1.onrender.com/api/unicoach/webhooks/razorpay` if using the Render backend.
 - [ ] Admin → Settings: the Razorpay fields there must be **empty** (they override env).
 - [ ] Start with `rzp_test_` keys, finish the test table in the Razorpay guide, then switch to live keys
       + live webhook secret and Redeploy the backend.
@@ -914,7 +914,7 @@ Maintenance:
 | MongoDB **"bad auth : authentication failed"** | Wrong user/password, or special characters not URL-encoded | Reset the Atlas user password with letters/digits only, update `MONGO_URI`. |
 | MongoDB **server selection timed out** | VPS IP not in Atlas Network Access | Atlas → Network Access → add `<VPS_IP>/32`. |
 | **Logged out after refresh / cookies not set** | Not HTTPS, `NODE_ENV` not `production`, site opened from a domain other than `unicoach.com` / `unicoach.in` (browser blocks the cookie as third-party), or the frontend was built with a wrong `VITE_API_URL` | Use only the `https://*.unicoach.in` domains. Check the build variable `VITE_API_URL=https://api.unicoach.com/api` and Redeploy the frontend. |
-| Site calls **unicoach.onrender.com** | `VITE_API_URL` was not a **build** variable at build time | Tick "Build Variable", Redeploy frontend/admin. |
+| Site calls **unicoach.onrender.com** | `VITE_API_URL` was not a **build** variable at build time | Set `VITE_API_URL=https://unicoach-1.onrender.com/api` as a build variable, then redeploy frontend/admin. |
 | Google login: **"origin is not allowed for the client ID"** | Missing Authorized JavaScript origin | Add the exact origin (7.2), wait a few minutes. |
 | Emails not arriving | Resend domain not verified, `RESEND_FROM` not on the verified domain `booking.unicoach.com`, wrong Gmail App Password | Backend logs show `[Resend]` / `[SMTP]` lines with the reason. Fix 7.3. |
 | Razorpay webhook shows **400** | Webhook secret mismatch (test vs live) | See `RAZORPAY_PAYMENT_SETUP_GUIDE.md` section 11. |

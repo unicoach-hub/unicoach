@@ -21,7 +21,7 @@ const toOrigin = (url) => {
 };
 
 const API_ORIGINS = new Set(
-  [API_BASE_URL, 'http://localhost:5000', 'http://127.0.0.1:5000', 'https://unicoach.onrender.com', 'https://api.unicoach.com', 'https://api.unicoach.in']
+  [API_BASE_URL, 'http://localhost:5000', 'http://127.0.0.1:5000', 'https://unicoach-1.onrender.com', 'https://api.unicoach.com', 'https://api.unicoach.in']
     .map(toOrigin)
     .filter(Boolean)
 );

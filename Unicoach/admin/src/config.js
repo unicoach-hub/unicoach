@@ -13,7 +13,7 @@ export const getFrontendUrl = () => {
 
   // 2. Local dev check
   if (typeof window !== 'undefined') {
-    const { protocol, hostname, port } = window.location;
+    const { protocol, hostname } = window.location;
     if (hostname === 'localhost' || hostname === '127.0.0.1') {
       return `${protocol}//${hostname}:5173`;
     }
@@ -27,6 +27,7 @@ export const getFrontendUrl = () => {
 
 export const getApiUrl = () => {
   const envUrl = import.meta.env.VITE_BACKEND_URL || import.meta.env.VITE_API_URL;
+  const fallbackApiUrl = 'https://unicoach-1.onrender.com/api';
 
   if (typeof window !== 'undefined') {
     const { hostname } = window.location;
@@ -41,21 +42,13 @@ export const getApiUrl = () => {
     if (envUrl && !envUrl.includes('localhost') && !envUrl.includes('127.0.0.1')) {
       return envUrl.replace(/\/$/, '');
     }
-
-    // admin.unicoach.com → api.unicoach.com (main domain); admin.unicoach.in → api.unicoach.in
-    if (hostname === 'unicoach.com' || hostname.endsWith('.unicoach.com')) {
-      return 'https://api.unicoach.com/api';
-    }
-    if (hostname === 'unicoach.in' || hostname.endsWith('.unicoach.in')) {
-      return 'https://api.unicoach.in/api';
-    }
   }
 
   if (envUrl) {
     return envUrl.replace(/\/$/, '');
   }
 
-  return 'https://api.unicoach.com/api';
+  return fallbackApiUrl;
 };
 
 // Shareable Form Link helper

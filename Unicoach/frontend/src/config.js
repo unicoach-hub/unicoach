@@ -9,7 +9,7 @@
  * 2. Served from one of our domains AND VITE_USE_API_SUBDOMAIN=true -> https://api.<that domain>/api
  *    (www.unicoach.com -> https://api.unicoach.com/api); otherwise our domains fall through to 4.
  * 3. Served from localhost / 127.0.0.1         -> http://localhost:5000/api
- * 4. Anything else (e.g. *.vercel.app)          -> https://unicoach.onrender.com/api (current hosted backend)
+ * 4. Anything else (e.g. *.vercel.app)          -> https://unicoach-1.onrender.com/api (current hosted backend)
  *
  * The result is normalised: no trailing slash and always ending in '/api'.
  */
@@ -18,7 +18,7 @@ const LOCAL_API_URL = 'http://localhost:5000/api';
 // Production lives on unicoach.com; unicoach.in keeps working as a second domain
 const SITE_DOMAINS = ['unicoach.com', 'unicoach.in'];
 // Hosts outside our domains (the Vercel deployments) keep using the Render backend until the unicoach.com move
-const FALLBACK_API_URL = 'https://unicoach.onrender.com/api';
+const FALLBACK_API_URL = 'https://unicoach-1.onrender.com/api';
 
 // Canonical public address used for SEO (canonical links, sitemap). Google indexed the www host.
 export const SITE_URL = (import.meta.env.VITE_SITE_URL || 'https://www.unicoach.com').replace(/\/+$/, '');

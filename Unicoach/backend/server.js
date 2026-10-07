@@ -93,7 +93,7 @@ const allowedOrigins = [
   'http://127.0.0.1:5000',
   'https://unicoach-blush.vercel.app',
   'https://unicoach-mjs6.vercel.app',
-  'https://unicoach.onrender.com',
+  'https://unicoach-1.onrender.com',
   process.env.FRONTEND_URL,
   process.env.ADMIN_URL,
   // Extra exact origins, comma separated (e.g. a new admin/preview domain)
@@ -377,4 +377,3 @@ if (process.env.NODE_ENV !== 'test') {
 }
 
 module.exports = app;
-

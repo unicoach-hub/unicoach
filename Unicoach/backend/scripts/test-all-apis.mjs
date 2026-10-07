@@ -1,5 +1,5 @@
 // Comprehensive Backend API Test & Benchmark Suite
-const BASE_URL = process.env.BACKEND_URL || 'https://unicoach.onrender.com';
+const BASE_URL = process.env.BACKEND_URL || 'https://unicoach-1.onrender.com';
 
 const testResults = [];
 
