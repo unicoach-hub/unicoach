@@ -8,6 +8,7 @@ import { ArrowRight } from 'lucide-react';
 import { MentorHeroSection } from '../components/MentorHeroSection';
 import { CohortSection } from '../components/CohortSection';
 import { MentorFlashSection } from '../components/MentorFlashSection';
+import { MentorDashboardPreview } from '../components/MentorDashboardPreview';
 import { UnicoachFeatureBentoGrid } from '../components/UnicoachFeatureBentoGrid';
 import { ZeroFeeBanner } from '../components/ZeroFeeBanner';
 import { MentorTestimonialSection } from '../components/MentorTestimonialSection';
@@ -25,6 +26,9 @@ const MentorLandingPage = () => {
 
       {/* ════════ SECTION 3: CREATE IN A FLASH (Mentor Setup Guide) ════════ */}
       <MentorFlashSection />
+
+      {/* ════════ SECTION 3B: DASHBOARD PREVIEW (what mentors get after joining) ════════ */}
+      <MentorDashboardPreview />
 
       {/* ════════ SECTION 4: 6-PILLAR CREATOR BENTO GRAPHICS ════════ */}
       <section id="mentor-features" className="py-16 sm:py-24 px-4 sm:px-6 lg:px-12 bg-white border-b border-slate-100">
