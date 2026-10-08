@@ -9,7 +9,7 @@ if (!fs.existsSync(unicoachUploadDir)) {
   fs.mkdirSync(unicoachUploadDir, { recursive: true });
 }
 
-// Multer Disk Storage for zero-cost local file assets
+// Multer disk storage: a temp file that fileStorageService moves to Cloudinary (local fallback without keys)
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, unicoachUploadDir);
@@ -41,7 +41,7 @@ const fileFilter = (req, file, cb) => {
 const uploadResource = multer({
   storage,
   limits: {
-    fileSize: 25 * 1024 * 1024 // 25 MB limit
+    fileSize: 10 * 1024 * 1024 // 10 MB: Cloudinary free plan's per-file limit
   },
   fileFilter
 });

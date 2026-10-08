@@ -3,6 +3,7 @@ const UnicoachService = require('../models/UnicoachService');
 const UnicoachBooking = require('../models/UnicoachBooking');
 const UnicoachCoupon = require('../models/UnicoachCoupon');
 const UnicoachReview = require('../models/UnicoachReview');
+const { refreshMentorStats } = require('../services/mentorStatsService');
 
 /**
  * POST /api/unicoach/@:handle/validate-coupon
@@ -190,6 +191,7 @@ const submitReview = async (req, res) => {
     });
 
     await review.save();
+    await refreshMentorStats(mentor._id);
 
     res.status(201).json({ success: true, message: 'Review submitted successfully!', review });
   } catch (err) {

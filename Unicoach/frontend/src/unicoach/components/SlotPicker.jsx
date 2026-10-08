@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Calendar, Clock, Globe2, AlertCircle, Sparkles, Moon, Sun } from 'lucide-react';
+import { TimezoneOptions } from './TimezoneOptions';
 
 const SlotPicker = ({ 
   groupedSlots, 
@@ -41,7 +42,7 @@ const SlotPicker = ({
     if (tz.includes('Singapore')) return '🇸🇬 Singapore';
     if (tz.includes('Sydney')) return '🇦🇺 Sydney, Australia';
     if (tz.includes('Kolkata')) return '🇮🇳 India (IST)';
-    return tz.split('/')[1]?.replace(/_/g, ' ') || tz;
+    return tz.split('/').pop().replace(/_/g, ' ');
   };
 
   if (loading) {
@@ -97,19 +98,7 @@ const SlotPicker = ({
               className="text-xs font-bold text-slate-900 bg-transparent border-none outline-none cursor-pointer pr-1 focus:ring-0"
               title="Change displayed timezone"
             >
-              <option value="Asia/Kolkata">🇮🇳 India (IST)</option>
-              <option value="Europe/Dublin">🇮🇪 Ireland (GMT)</option>
-              <option value="Europe/London">🇬🇧 UK (GMT/BST)</option>
-              <option value="America/New_York">🇺🇸 USA Eastern</option>
-              <option value="America/Chicago">🇺🇸 USA Central</option>
-              <option value="America/Los_Angeles">🇺🇸 USA Pacific</option>
-              <option value="America/Toronto">🇨🇦 Canada (ET)</option>
-              <option value="America/Vancouver">🇨🇦 Canada (PT)</option>
-              <option value="Australia/Sydney">🇦🇺 Australia</option>
-              <option value="Asia/Dubai">🇦🇪 UAE (GST)</option>
-              <option value="Europe/Berlin">🇩🇪 Germany</option>
-              <option value="Europe/Paris">🇫🇷 France</option>
-              <option value="Asia/Singapore">🇸🇬 Singapore</option>
+              <TimezoneOptions current={userTimezone} />
             </select>
           </div>
           <span className="text-[10px] text-slate-400 font-medium hidden sm:inline">

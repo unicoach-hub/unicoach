@@ -99,11 +99,11 @@ import {
   Building
 } from 'lucide-react';
 import { 
-  POPULAR_TIMEZONES, 
   convertMentorTimeToIST, 
   getTimezoneDiff, 
   getRecommendedMentorHours 
 } from '../utils/timezoneHelper';
+import { TimezoneOptions } from '../components/TimezoneOptions';
 
 const InstagramIcon = ({ className = "w-4 h-4" }) => (
   <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -4257,9 +4257,7 @@ const UnicoachDashboardPage = () => {
                   className="text-xs font-bold text-slate-900 bg-transparent border-none outline-none cursor-pointer pr-1 focus:ring-0"
                   title="Change your working timezone"
                 >
-                  {POPULAR_TIMEZONES.map(tz => (
-                    <option key={tz.value} value={tz.value}>{tz.label}</option>
-                  ))}
+                  <TimezoneOptions current={mentorTimezone} />
                 </select>
               </div>
             </div>
@@ -4778,9 +4776,7 @@ const UnicoachDashboardPage = () => {
                     onChange={(e) => handleTimezoneChange(e.target.value)}
                     className="px-3 py-2 rounded-xl border border-slate-200 text-xs font-bold bg-white text-slate-900 shadow-sm cursor-pointer focus:ring-2 focus:ring-indigo-500 focus:outline-none"
                   >
-                    {POPULAR_TIMEZONES.map(tz => (
-                      <option key={tz.value} value={tz.value}>{tz.label}</option>
-                    ))}
+                    <TimezoneOptions current={mentorTimezone} />
                   </select>
                 </div>
 

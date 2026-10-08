@@ -352,6 +352,8 @@ const UnicoachApplyPage = () => {
     try {
       const res = await submitMentorApplication({
         ...form,
+        // Mentor's own time zone, so their slots are created in their local time (changeable later in the dashboard)
+        ianaTimezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
         phone: form.phone.trim(),
         payoutMethod: 'BANK_TRANSFER',
         accountHolderName: payoutForm.accountHolderName.trim(),
@@ -829,7 +831,7 @@ const UnicoachApplyPage = () => {
                       Select student verification file from your computer
                     </p>
                     <p className="text-[10px] text-slate-400 mb-3">
-                      Max size 25MB • PDF, JPG, PNG, DOCX supported
+                      Max size 10MB • PDF, JPG, PNG, DOCX supported
                     </p>
                     <input
                       type="file"

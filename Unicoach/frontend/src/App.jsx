@@ -23,6 +23,7 @@ const LoginModal = lazy(() => import('./components/LoginModal'));
 const UniBotChatWidget = lazy(() => import('./components/UniBotChatWidget'));
 const UserDashboard = lazy(() => import('./components/UserDashboard'));
 const UnicoachMarketplacePage = lazy(() => import('./unicoach/pages/UnicoachMarketplacePage'));
+const MentorsDirectoryPage = lazy(() => import('./unicoach/pages/MentorsDirectoryPage'));
 const UnicoachApplyPage = lazy(() => import('./unicoach/pages/UnicoachApplyPage'));
 const UnicoachProfilePage = lazy(() => import('./unicoach/pages/UnicoachProfilePage'));
 const UnicoachDashboardPage = lazy(() => import('./unicoach/pages/UnicoachDashboardPage'));
@@ -864,7 +865,7 @@ const App = () => {
 
             {/* UniCoach Verified Mentorship & Marketplace Engine */}
             <Route path="/unicoach" element={<UnicoachMarketplacePage />} />
-            <Route path="/unicoach/mentors" element={<UnicoachMarketplacePage />} />
+            <Route path="/unicoach/mentors" element={<MentorsDirectoryPage />} />
             <Route path="/unicoach/for-mentors" element={<MentorLandingPage />} />
             <Route path="/unicoach/apply" element={<UnicoachApplyPage />} />
             <Route path="/unicoach/join" element={<UnicoachApplyPage />} />

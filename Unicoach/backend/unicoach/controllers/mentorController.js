@@ -7,6 +7,8 @@ const UnicoachPayout = require('../models/UnicoachPayout');
 const UnicoachNotification = require('../models/UnicoachNotification');
 const { validateHandle } = require('../middlewares/slugValidator');
 const { cleanSocialLinks } = require('../services/socialLinks');
+const { refreshMentorStats } = require('../services/mentorStatsService');
+const { storeUpload } = require('../services/fileStorageService');
 const { generateDaySlots, getZonedDateToUtc } = require('../services/timezoneService');
 const {
   PAN_PATTERN, IFSC_PATTERN, ACCOUNT_NUMBER_PATTERN, PINCODE_PATTERN,
@@ -176,6 +178,7 @@ const createService = async (req, res) => {
     });
 
     await service.save();
+    await refreshMentorStats(mentor._id);
 
     res.status(201).json({
       success: true,
@@ -517,6 +520,7 @@ const updateService = async (req, res) => {
     );
 
     if (!updated) return res.status(404).json({ error: 'Service not found.' });
+    await refreshMentorStats(mentor._id);
 
     res.json({ success: true, service: updated });
   } catch (err) {
@@ -539,6 +543,7 @@ const deleteService = async (req, res) => {
 
     const { serviceId } = req.params;
     await UnicoachService.findOneAndDelete({ _id: serviceId, mentorId: mentor._id });
+    await refreshMentorStats(mentor._id);
 
     res.json({ success: true, message: 'Service deleted successfully.' });
   } catch (err) {
@@ -957,7 +962,7 @@ const copySlots = async (req, res) => {
 
 /**
  * POST /api/unicoach/mentors/:handle/upload-resource
- * Zero-cost local file upload for digital guides/templates
+ * Paid digital guides/templates: stored privately, only downloadable after purchase
  */
 const uploadResourceFile = async (req, res) => {
   try {
@@ -969,7 +974,7 @@ const uploadResourceFile = async (req, res) => {
     const ext = path.extname(req.file.originalname).toUpperCase().replace('.', '');
     const sizeInMB = (req.file.size / (1024 * 1024)).toFixed(2);
 
-    const fileUrl = `/uploads/unicoach/${req.file.filename}`;
+    const { url: fileUrl } = await storeUpload(req.file, { visibility: 'private', folder: 'unicoach/assets' });
 
     res.status(200).json({
       success: true,
@@ -983,7 +988,7 @@ const uploadResourceFile = async (req, res) => {
     });
   } catch (err) {
     console.error('Error uploading resource file:', err);
-    res.status(500).json({ error: 'Failed to upload resource file.' });
+    res.status(err.statusCode || 500).json({ error: err.statusCode ? err.message : 'Failed to upload resource file.' });
   }
 };
 
@@ -998,7 +1003,7 @@ const uploadProfilePhoto = async (req, res) => {
     }
 
     const type = req.body.type || 'avatar'; // 'avatar' or 'cover' / 'banner'
-    const fileUrl = `/uploads/unicoach/${req.file.filename}`;
+    const { url: fileUrl } = await storeUpload(req.file, { visibility: 'public', folder: 'unicoach/mentors' });
 
     const handle = req.validatedHandle || req.params.handle;
     const mentor = req.mentor || await UnicoachMentor.findOne({ handle });
@@ -1020,7 +1025,7 @@ const uploadProfilePhoto = async (req, res) => {
     });
   } catch (err) {
     console.error('Error uploading profile photo:', err);
-    res.status(500).json({ error: 'Failed to upload photo.' });
+    res.status(err.statusCode || 500).json({ error: err.statusCode ? err.message : 'Failed to upload photo.' });
   }
 };
 

@@ -626,17 +626,29 @@ export const processAdminPayout = async (payoutId, payload) => {
 };
 
 /**
+ * Paid digital product download link. The backend checks payment, counts the download
+ * and redirects to a short-lived file link.
+ */
+export const getAssetDownloadUrl = (downloadToken) =>
+  downloadToken ? `${UNICOACH_BASE_URL}/download/${encodeURIComponent(downloadToken)}` : '';
+
+/**
  * ── Public Marketplace Directory (Only Verified Mentors) ──
  */
-export const getPublicMentorsDirectory = async (filters = {}) => {
+export const getPublicMentorsDirectory = async (filters = {}, { signal } = {}) => {
   const params = new URLSearchParams();
   if (filters.search) params.append('search', filters.search);
   if (filters.country && filters.country !== 'ALL') params.append('country', filters.country);
   if (filters.serviceType && filters.serviceType !== 'ALL') params.append('serviceType', filters.serviceType);
+  if (filters.minRating) params.append('minRating', filters.minRating);
+  if (filters.minPrice !== undefined && filters.minPrice !== '') params.append('minPrice', filters.minPrice);
+  if (filters.maxPrice !== undefined && filters.maxPrice !== '') params.append('maxPrice', filters.maxPrice);
+  if (filters.sort) params.append('sort', filters.sort);
   if (filters.page) params.append('page', filters.page);
+  if (filters.limit) params.append('limit', filters.limit);
 
   const queryString = params.toString() ? `?${params.toString()}` : '';
-  const res = await fetch(`${UNICOACH_BASE_URL}/directory${queryString}`);
+  const res = await fetch(`${UNICOACH_BASE_URL}/directory${queryString}`, { signal });
   if (!res.ok) {
     const err = await res.json().catch(() => ({ error: 'Failed to fetch directory' }));
     throw new Error(err.error || 'Failed to fetch mentors directory');

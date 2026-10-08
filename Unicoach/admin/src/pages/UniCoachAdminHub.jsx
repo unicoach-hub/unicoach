@@ -618,6 +618,23 @@ const UniCoachAdminHub = () => {
       )
     },
     {
+      title: 'Registered On',
+      key: 'createdAt',
+      width: 150,
+      sorter: (a, b) => new Date(a.createdAt || 0) - new Date(b.createdAt || 0),
+      defaultSortOrder: 'descend',
+      render: (_, r) => r.createdAt ? (
+        <div style={{ fontSize: 11.5, color: TEXT_2 }}>
+          <div style={{ fontWeight: 600, color: TEXT }}>
+            {new Date(r.createdAt).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}
+          </div>
+          <div style={{ fontSize: 11, color: TEXT_3 }}>
+            {new Date(r.createdAt).toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' })}
+          </div>
+        </div>
+      ) : <span style={{ fontSize: 11.5, color: TEXT_3 }}>—</span>
+    },
+    {
       title: 'Academic & Destination',
       key: 'academic',
       width: 210,
@@ -2303,7 +2320,7 @@ const UniCoachAdminHub = () => {
 
             <div>
               <div style={{ fontWeight: 600, marginBottom: 8, fontSize: 13.5, color: INK }}>Uploaded Proof / Student ID Document:</div>
-              {selectedProofMentor.verificationDocUrl?.match(/\.(jpeg|jpg|gif|png|webp)/i) ? (
+              {selectedProofMentor.verificationDocUrl?.match(/(\.|format=)(jpeg|jpg|gif|png|webp)\b/i) ? (
                 <img
                   src={selectedProofMentor.verificationDocUrl.startsWith('http') ? selectedProofMentor.verificationDocUrl : `${frontendUrl}${selectedProofMentor.verificationDocUrl}`}
                   alt="Student ID Proof"

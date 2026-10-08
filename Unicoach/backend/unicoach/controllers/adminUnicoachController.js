@@ -7,6 +7,10 @@ const UnicoachCoupon = require('../models/UnicoachCoupon');
 const UnicoachReview = require('../models/UnicoachReview');
 const UnicoachPayout = require('../models/UnicoachPayout');
 const UnicoachNotification = require('../models/UnicoachNotification');
+const { getAccessUrl } = require('../services/fileStorageService');
+
+// Private files (verification docs, paid products) open for admins through 1-hour signed links
+const ADMIN_LINK_TTL_SECONDS = 3600;
 const {
   ensureLinkedAccount,
   refreshLinkedAccountStatus,
@@ -186,6 +190,9 @@ const getAllMentors = async (req, res) => {
 
         return {
           ...m,
+          verificationDocUrl: m.verificationDocUrl
+            ? await getAccessUrl(m.verificationDocUrl, { expiresInSeconds: ADMIN_LINK_TTL_SECONDS })
+            : '',
           services,
           servicesCount: services.length,
           availableSlotsCount,
@@ -362,6 +369,12 @@ const getAllBookings = async (req, res) => {
       .sort({ createdAt: -1 })
       .limit(200)
       .lean();
+
+    await Promise.all(bookings.map(async (b) => {
+      if (b.digitalAssetDelivery?.fileUrl) {
+        b.digitalAssetDelivery.fileUrl = await getAccessUrl(b.digitalAssetDelivery.fileUrl, { expiresInSeconds: ADMIN_LINK_TTL_SECONDS });
+      }
+    }));
 
     res.json(bookings);
   } catch (err) {

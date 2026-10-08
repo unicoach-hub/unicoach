@@ -1,5 +1,29 @@
 const { sendEmail } = require('../../utils/email');
 
+// "Tuesday, 20 October 2026, 01:00 pm" in the given IANA time zone
+const formatInZone = (date, timeZone) => new Date(date).toLocaleString('en-IN', {
+  timeZone,
+  weekday: 'long',
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+  hour: '2-digit',
+  minute: '2-digit',
+  hour12: true
+});
+
+// Session time for the mentor: their own local time first, IST alongside when they live elsewhere
+const formatForMentor = (date, mentorTimezone) => {
+  const tz = mentorTimezone || 'Asia/Kolkata';
+  try {
+    if (tz === 'Asia/Kolkata') return `${formatInZone(date, tz)} IST`;
+    const istTime = new Date(date).toLocaleString('en-IN', { timeZone: 'Asia/Kolkata', hour: '2-digit', minute: '2-digit', hour12: true });
+    return `${formatInZone(date, tz)} (${tz.split('/').pop().replace(/_/g, ' ')} time) · ${istTime} IST for the student`;
+  } catch (e) {
+    return `${formatInZone(date, 'Asia/Kolkata')} IST`;
+  }
+};
+
 /**
  * Sends a clean, branded email to the student with session date/time and Google Meet/Zoom link.
  */
@@ -34,6 +58,9 @@ async function sendBookingConfirmationEmail(booking, mentor, service) {
         formattedDate = new Date(booking.startUtc).toUTCString();
       }
     }
+    const mentorFormattedDate = booking.startUtc
+      ? formatForMentor(booking.startUtc, mentor?.ianaTimezone || booking.mentorId?.ianaTimezone)
+      : formattedDate;
 
     const htmlContent = `
     <!DOCTYPE html>
@@ -278,7 +305,7 @@ async function sendBookingConfirmationEmail(booking, mentor, service) {
                       ` : ''}
                       <tr>
                         <td style="padding: 12px 20px; font-size: 13.5px; color: #64748b; border-bottom: 1px solid #f1f5f9;">Date &amp; Time</td>
-                        <td style="padding: 12px 20px; font-size: 14px; font-weight: 700; color: #059669; border-bottom: 1px solid #f1f5f9; text-align: right;">${formattedDate}</td>
+                        <td style="padding: 12px 20px; font-size: 14px; font-weight: 700; color: #059669; border-bottom: 1px solid #f1f5f9; text-align: right;">${mentorFormattedDate}</td>
                       </tr>
                       <tr>
                         <td style="padding: 12px 20px; font-size: 13.5px; color: #64748b; border-bottom: 1px solid #f1f5f9;">Booking Ref</td>

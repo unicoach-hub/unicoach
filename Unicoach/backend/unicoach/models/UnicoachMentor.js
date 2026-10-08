@@ -98,11 +98,20 @@ const unicoachMentorSchema = new mongoose.Schema({
     updatedAt: { type: Date, default: null }
   },
 
+  // Public directory ranking & filters, kept in sync by services/mentorStatsService.js
+  ratingAvg: { type: Number, default: 0 },
+  reviewCount: { type: Number, default: 0 },
+  rankScore: { type: Number }, // Bayesian rating used for "Top rated" ordering; unset until first computed
+  startingPriceINR: { type: Number, default: null }, // Lowest active service price; null = no services
+  serviceTypes: [{ type: String }],
+
   active: { type: Boolean, default: true }
-}, { 
+}, {
   timestamps: true,
   toJSON: { virtuals: true },
   toObject: { virtuals: true }
 });
+
+unicoachMentorSchema.index({ isVerified: 1, active: 1, rankScore: -1, reviewCount: -1 });
 
 module.exports = createUniCoachModel('UnicoachMentor', unicoachMentorSchema, 'unicoach_mentors');

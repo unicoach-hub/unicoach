@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { CheckCircle2, Video, Calendar, ArrowRight, Download, Share2, FileText, MessageSquare, ExternalLink, Sparkles } from 'lucide-react';
+import { getAssetDownloadUrl } from '../api/unicoachApi';
 
 const BookingSuccess = ({ booking, onClose }) => {
   if (!booking) return null;
@@ -115,12 +116,11 @@ const BookingSuccess = ({ booking, onClose }) => {
       {/* Action Buttons */}
       <div className="space-y-3">
         {/* Digital Asset Download Button */}
-        {isDigitalAsset && (
+        {isDigitalAsset && digitalAsset.downloadToken && (
           <a
-            href={digitalAsset.fileUrl}
+            href={getAssetDownloadUrl(digitalAsset.downloadToken)}
             target="_blank"
             rel="noreferrer"
-            download={digitalAsset.fileName}
             className="w-full py-4 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm shadow-md transition-all flex items-center justify-center gap-2"
           >
             <Download className="w-4 h-4" />

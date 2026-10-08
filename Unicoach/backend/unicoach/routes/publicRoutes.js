@@ -35,6 +35,9 @@ router.post('/@:handle/confirm-booking', handleValidatorMiddleware, idempotencyM
 // ── Direct Instant Purchase (Digital Products & Priority DMs) ──
 router.post('/@:handle/purchase-direct', handleValidatorMiddleware, idempotencyMiddleware, bookingController.purchaseDirectService);
 
+// ── Paid Digital Product Download (token-gated, short-lived link) ──
+router.get('/download/:token', bookingController.downloadDigitalAsset);
+
 // ── Student Priority DM Status & Answer Tracking ──
 router.get('/queries/:bookingRef', bookingController.getStudentQueryStatus);
 

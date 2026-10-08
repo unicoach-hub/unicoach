@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { getStudentQueryStatus, submitReview } from '../api/unicoachApi';
+import { getStudentQueryStatus, submitReview, getAssetDownloadUrl } from '../api/unicoachApi';
 import { 
   CheckCircle2, Clock, AlertCircle, Download, ExternalLink, 
   ArrowLeft, MessageSquare, Video, FileText, Calendar, 
@@ -73,7 +73,7 @@ const StudentQueryTrackingPage = () => {
   };
 
   const isPriorityDm = Boolean(booking?.priorityDm?.questionText);
-  const isDigitalAsset = Boolean(booking?.digitalAssetDelivery?.fileUrl || booking?.serviceId?.type === 'DIGITAL_ASSET');
+  const isDigitalAsset = Boolean(booking?.digitalAssetDelivery?.downloadToken || booking?.serviceId?.type === 'DIGITAL_ASSET');
   const isVideoCall = !isPriorityDm && !isDigitalAsset;
 
   return (
@@ -299,7 +299,9 @@ const StudentQueryTrackingPage = () => {
                   </div>
                   <div>
                     <h3 className="text-base font-bold text-slate-900">Your Downloadable Resource</h3>
-                    <p className="text-xs text-slate-600">You have permanent access to download this file anytime.</p>
+                    <p className="text-xs text-slate-600">
+                      Download this file anytime from this page (up to {booking.digitalAssetDelivery?.maxDownloads || 10} times).
+                    </p>
                   </div>
                 </div>
 
@@ -318,9 +320,9 @@ const StudentQueryTrackingPage = () => {
                     </div>
                   </div>
 
-                  {booking.digitalAssetDelivery?.fileUrl && (
+                  {booking.digitalAssetDelivery?.downloadToken && (
                     <a
-                      href={booking.digitalAssetDelivery.fileUrl}
+                      href={getAssetDownloadUrl(booking.digitalAssetDelivery.downloadToken)}
                       target="_blank"
                       rel="noreferrer"
                       className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm shadow-sm transition-all"

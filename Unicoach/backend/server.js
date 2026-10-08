@@ -226,6 +226,8 @@ const connectMongoDB = () => {
   })
     .then(() => {
       console.log('✅ MongoDB connected with production pool options');
+      require('./unicoach/services/mentorStatsService').backfillMentorStats()
+        .catch((err) => console.warn('Could not backfill mentor directory stats:', err.message));
       try {
         const { initCourseUpdateScheduler } = require('./services/courseUpdateSchedulerService');
         initCourseUpdateScheduler();

@@ -16,9 +16,77 @@ export const POPULAR_TIMEZONES = [
   { value: 'America/Vancouver', label: '🇨🇦 Vancouver (America/Vancouver)', city: 'Vancouver', country: 'Canada' },
   { value: 'Asia/Dubai', label: '🇦🇪 Dubai, UAE (Asia/Dubai)', city: 'Dubai', country: 'UAE' },
   { value: 'Asia/Singapore', label: '🇸🇬 Singapore (Asia/Singapore)', city: 'Singapore', country: 'Singapore' },
-  { value: 'Australia/Sydney', label: '🇦🇺 Sydney / Melbourne (Australia/Sydney)', city: 'Sydney', country: 'Australia' },
+  { value: 'Australia/Sydney', label: '🇦🇺 Sydney / Canberra (Australia/Sydney)', city: 'Sydney', country: 'Australia' },
+  { value: 'Australia/Melbourne', label: '🇦🇺 Melbourne (Australia/Melbourne)', city: 'Melbourne', country: 'Australia' },
+  { value: 'Australia/Brisbane', label: '🇦🇺 Brisbane (Australia/Brisbane)', city: 'Brisbane', country: 'Australia' },
+  { value: 'Australia/Adelaide', label: '🇦🇺 Adelaide (Australia/Adelaide)', city: 'Adelaide', country: 'Australia' },
+  { value: 'Australia/Perth', label: '🇦🇺 Perth (Australia/Perth)', city: 'Perth', country: 'Australia' },
+  { value: 'Pacific/Auckland', label: '🇳🇿 Auckland / Wellington (Pacific/Auckland)', city: 'Auckland', country: 'New Zealand' },
+  { value: 'Europe/Rome', label: '🇮🇹 Rome / Milan (Europe/Rome)', city: 'Rome', country: 'Italy' },
+  { value: 'Europe/Madrid', label: '🇪🇸 Madrid / Barcelona (Europe/Madrid)', city: 'Madrid', country: 'Spain' },
+  { value: 'Europe/Stockholm', label: '🇸🇪 Stockholm (Europe/Stockholm)', city: 'Stockholm', country: 'Sweden' },
+  { value: 'Europe/Zurich', label: '🇨🇭 Zurich (Europe/Zurich)', city: 'Zurich', country: 'Switzerland' },
+  { value: 'America/Edmonton', label: '🇨🇦 Calgary / Edmonton (America/Edmonton)', city: 'Calgary', country: 'Canada' },
+  { value: 'America/Halifax', label: '🇨🇦 Halifax (America/Halifax)', city: 'Halifax', country: 'Canada' },
+  { value: 'America/Denver', label: '🇺🇸 Denver (America/Denver)', city: 'Denver', country: 'USA' },
+  { value: 'America/Phoenix', label: '🇺🇸 Phoenix / Arizona (America/Phoenix)', city: 'Phoenix', country: 'USA' },
+  { value: 'Asia/Tokyo', label: '🇯🇵 Tokyo (Asia/Tokyo)', city: 'Tokyo', country: 'Japan' },
+  { value: 'Asia/Seoul', label: '🇰🇷 Seoul (Asia/Seoul)', city: 'Seoul', country: 'South Korea' },
+  { value: 'Asia/Hong_Kong', label: '🇭🇰 Hong Kong (Asia/Hong_Kong)', city: 'Hong Kong', country: 'Hong Kong' },
+  { value: 'Asia/Kuala_Lumpur', label: '🇲🇾 Kuala Lumpur (Asia/Kuala_Lumpur)', city: 'Kuala Lumpur', country: 'Malaysia' },
+  { value: 'Asia/Qatar', label: '🇶🇦 Doha (Asia/Qatar)', city: 'Doha', country: 'Qatar' },
+  { value: 'Asia/Kathmandu', label: '🇳🇵 Kathmandu (Asia/Kathmandu)', city: 'Kathmandu', country: 'Nepal' },
+  { value: 'Asia/Dhaka', label: '🇧🇩 Dhaka (Asia/Dhaka)', city: 'Dhaka', country: 'Bangladesh' },
+  { value: 'Asia/Colombo', label: '🇱🇰 Colombo (Asia/Colombo)', city: 'Colombo', country: 'Sri Lanka' },
   { value: 'Asia/Kolkata', label: '🇮🇳 India (IST, Asia/Kolkata)', city: 'New Delhi / Bengaluru', country: 'India' },
 ];
+
+// "GMT+5:30" for a time zone right now (DST-aware)
+export const getGmtOffsetLabel = (timeZone, at = new Date()) => {
+  try {
+    const name = new Intl.DateTimeFormat('en-US', { timeZone, timeZoneName: 'shortOffset' })
+      .formatToParts(at)
+      .find((p) => p.type === 'timeZoneName')?.value;
+    return name === 'GMT' ? 'GMT+0' : name || '';
+  } catch {
+    return '';
+  }
+};
+
+const isValidTimezone = (tz) => {
+  try {
+    new Intl.DateTimeFormat('en-US', { timeZone: tz });
+    return true;
+  } catch {
+    return false;
+  }
+};
+
+/**
+ * Time zone choices for any select: the popular study-abroad cities first, then every IANA time zone
+ * in the world (so a mentor or student anywhere can pick theirs). `current` is always included so a
+ * saved zone that is not in either list is never silently shown as a different city.
+ */
+export const getTimezoneOptionGroups = (current) => {
+  const popular = POPULAR_TIMEZONES.map(({ value, label }) => ({ value, label }));
+  const popularSet = new Set(popular.map((o) => o.value));
+  let all;
+  try {
+    all = typeof Intl.supportedValuesOf === 'function' ? Intl.supportedValuesOf('timeZone') : [];
+  } catch {
+    all = []; // older browsers: popular list only
+  }
+  const rest = all
+    .filter((tz) => !popularSet.has(tz))
+    .map((tz) => ({ value: tz, label: `${tz.replace(/_/g, ' ')} (${getGmtOffsetLabel(tz)})` }));
+  if (current && !popularSet.has(current) && !all.includes(current) && isValidTimezone(current)) {
+    rest.unshift({ value: current, label: `${current.replace(/_/g, ' ')} (${getGmtOffsetLabel(current)})` });
+  }
+  return [
+    { label: 'Popular', options: popular },
+    ...(rest.length ? [{ label: 'All time zones', options: rest }] : []),
+  ];
+};
 
 /**
  * Accurately convert local date + time in an IANA timezone into a UTC Date object

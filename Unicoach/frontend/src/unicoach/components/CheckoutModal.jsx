@@ -633,7 +633,8 @@ const CheckoutModal = ({
                   <p className="font-semibold text-slate-800">
                     {new Date(slot.startUtc).toLocaleString('en-US', {
                       dateStyle: 'full',
-                      timeStyle: 'short'
+                      timeStyle: 'short',
+                      ...(userTimezone && userTimezone !== 'UTC' ? { timeZone: userTimezone } : {})
                     })} ({userTimezone})
                   </p>
                 </div>

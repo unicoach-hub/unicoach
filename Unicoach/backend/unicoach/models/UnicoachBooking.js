@@ -166,4 +166,7 @@ const unicoachBookingSchema = new mongoose.Schema({
   timestamps: true 
 });
 
+// Paid-file downloads look bookings up by their download token
+unicoachBookingSchema.index({ 'digitalAssetDelivery.downloadToken': 1 }, { sparse: true });
+
 module.exports = createUniCoachModel('UnicoachBooking', unicoachBookingSchema, 'unicoach_bookings');

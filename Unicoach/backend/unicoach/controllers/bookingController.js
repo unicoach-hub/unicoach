@@ -8,6 +8,8 @@ const UnicoachReview = require('../models/UnicoachReview');
 const User = require('../../models/User');
 const { acquireSlotLock, releaseSlotLock, checkSlotLock } = require('../services/lockService');
 const { assertTransition } = require('../services/fsmService');
+const { refreshMentorStats } = require('../services/mentorStatsService');
+const { storeUpload, getAccessUrl } = require('../services/fileStorageService');
 const { satisfiesNoticePeriod, getZonedDateToUtc } = require('../services/timezoneService');
 const { createRazorpayOrder } = require('../services/paymentService');
 const {
@@ -615,9 +617,15 @@ const getStudentQueryStatus = async (req, res) => {
           formatted: `${hoursRemaining}h ${minutesRemaining}m`
         }
       },
-      // Paid file is only revealed once the booking is actually paid/confirmed
-      digitalAssetDelivery: ['CONFIRMED', 'IN_PROGRESS', 'COMPLETED'].includes(booking.state)
-        ? booking.digitalAssetDelivery
+      // Paid file is only revealed once the booking is actually paid/confirmed, and only as a
+      // download token: the stored file URL never leaves the server
+      digitalAssetDelivery: PAID_STATES.includes(booking.state) && booking.digitalAssetDelivery?.downloadToken
+        ? {
+          fileName: booking.digitalAssetDelivery.fileName,
+          downloadToken: booking.digitalAssetDelivery.downloadToken,
+          downloadCount: booking.digitalAssetDelivery.downloadCount || 0,
+          maxDownloads: MAX_ASSET_DOWNLOADS
+        }
         : null,
       createdAt: booking.createdAt
     });
@@ -630,12 +638,29 @@ const getStudentQueryStatus = async (req, res) => {
 /**
  * GET /api/unicoach/directory
  * Public marketplace directory of verified mentors (Strictly isVerified === true)
+ *
+ * Query: search, country, serviceType, minRating, minPrice, maxPrice,
+ *        sort (top_rated | most_reviewed | price_low | price_high | newest), page, limit
  */
+const DIRECTORY_SORTS = {
+  top_rated: { rankScore: -1, reviewCount: -1, createdAt: -1 },
+  most_reviewed: { reviewCount: -1, rankScore: -1, createdAt: -1 },
+  price_low: { startingPriceINR: 1, rankScore: -1 },
+  price_high: { startingPriceINR: -1, rankScore: -1 },
+  newest: { createdAt: -1 }
+};
+const SERVICE_TYPES = ['ONE_ON_ONE', 'SOP_REVIEW', 'PRIORITY_DM', 'DIGITAL_ASSET'];
+
 const getPublicDirectory = async (req, res) => {
   try {
     const { search, country, serviceType } = req.query;
     const page = Math.max(1, parseInt(req.query.page, 10) || 1);
-    const limit = Math.min(50, Math.max(1, parseInt(req.query.limit, 10) || 50));
+    const limit = Math.min(50, Math.max(1, parseInt(req.query.limit, 10) || 24));
+    const sortKey = DIRECTORY_SORTS[req.query.sort] ? req.query.sort : 'top_rated';
+    const minRating = Number(req.query.minRating);
+    const minPrice = Number(req.query.minPrice);
+    const maxPrice = Number(req.query.maxPrice);
+    const hasServiceType = typeof serviceType === 'string' && SERVICE_TYPES.includes(serviceType);
 
     const query = {
       isVerified: true,
@@ -658,60 +683,64 @@ const getPublicDirectory = async (req, res) => {
       ];
     }
 
-    const verifiedMentors = await UnicoachMentor.find(query)
-      .select('name handle headline bio avatarUrl coverImageUrl country university course graduationYear badges isVerified')
-      .sort({ createdAt: -1 })
-      .skip((page - 1) * limit)
-      .limit(limit)
-      .lean();
+    if (hasServiceType) query.serviceTypes = serviceType;
+    if (Number.isFinite(minRating) && minRating > 0) {
+      query.ratingAvg = { $gte: Math.min(5, minRating) };
+      query.reviewCount = { $gt: 0 };
+    }
+    if (req.query.minPrice !== undefined || req.query.maxPrice !== undefined || sortKey.startsWith('price_')) {
+      // Mentors without any active service have no price, so they drop out of price filters/sorts
+      query.startingPriceINR = { $ne: null };
+      if (Number.isFinite(minPrice) && minPrice > 0) query.startingPriceINR.$gte = minPrice;
+      if (Number.isFinite(maxPrice) && maxPrice >= 0) query.startingPriceINR.$lte = maxPrice;
+    }
 
-    // Enrich mentors with their active services, lowest starting price, & ratings
-    const enriched = await Promise.all(
-      verifiedMentors.map(async (m) => {
-        let serviceQuery = { mentorId: m._id, active: true };
-        if (serviceType && serviceType !== 'ALL') {
-          serviceQuery.type = serviceType;
-        }
-        const services = await UnicoachService.find(serviceQuery)
-          .select('type title priceInINR durationMinutes maxDeliveryHours bundleCount')
-          .lean();
+    const [total, mentors, countries] = await Promise.all([
+      UnicoachMentor.countDocuments(query),
+      UnicoachMentor.find(query)
+        .select('name handle headline bio avatarUrl coverImageUrl country university course graduationYear badges isVerified ratingAvg reviewCount startingPriceINR')
+        .sort(DIRECTORY_SORTS[sortKey])
+        .skip((page - 1) * limit)
+        .limit(limit)
+        .lean(),
+      // Country options for the filter dropdown (only needed on the first page)
+      page === 1 ? UnicoachMentor.distinct('country', { isVerified: true, active: true, country: { $ne: '' } }) : null
+    ]);
 
-        // If filtering by serviceType and mentor has no matching services, skip
-        if (serviceType && serviceType !== 'ALL' && services.length === 0) {
-          return null;
-        }
+    const mentorIds = mentors.map((m) => m._id);
+    const [services, completedCounts] = await Promise.all([
+      UnicoachService.find({ mentorId: { $in: mentorIds }, active: true, ...(hasServiceType && { type: serviceType }) })
+        .select('mentorId type title priceInINR durationMinutes maxDeliveryHours bundleCount')
+        .lean(),
+      UnicoachBooking.aggregate([
+        { $match: { mentorId: { $in: mentorIds }, state: 'COMPLETED' } },
+        { $group: { _id: '$mentorId', count: { $sum: 1 } } }
+      ])
+    ]);
+    const completedByMentor = new Map(completedCounts.map((c) => [String(c._id), c.count]));
 
-        const lowestPrice = services.length > 0
-          ? Math.min(...services.map(s => s.priceInINR || 0))
-          : 0;
-
-        // Rating calculation
-        const totalReviews = await UnicoachReview.countDocuments({ mentorId: m._id });
-        const allRatings = await UnicoachReview.find({ mentorId: m._id }).select('rating');
-        const avgRating = totalReviews > 0
-          ? (allRatings.reduce((acc, r) => acc + r.rating, 0) / totalReviews).toFixed(1)
-          : 5.0;
-
-        const totalBookingsCompleted = await UnicoachBooking.countDocuments({ mentorId: m._id, state: 'COMPLETED' });
-
-        return {
-          ...m,
-          services,
-          totalServices: services.length,
-          startingPriceINR: lowestPrice,
-          rating: Number(avgRating),
-          reviewCount: totalReviews,
-          completedSessions: totalBookingsCompleted
-        };
-      })
-    );
-
-    const filtered = enriched.filter(Boolean);
+    const enriched = mentors.map((m) => {
+      const mentorServices = services.filter((s) => String(s.mentorId) === String(m._id));
+      return {
+        ...m,
+        services: mentorServices,
+        totalServices: mentorServices.length,
+        startingPriceINR: m.startingPriceINR ?? 0,
+        rating: m.reviewCount > 0 ? m.ratingAvg : null, // null = "New", no reviews yet
+        reviewCount: m.reviewCount || 0,
+        completedSessions: completedByMentor.get(String(m._id)) || 0
+      };
+    });
 
     res.json({
       success: true,
-      total: filtered.length,
-      mentors: filtered
+      total,
+      page,
+      limit,
+      hasMore: page * limit < total,
+      sort: sortKey,
+      ...(countries && { countries: countries.filter(Boolean).sort() }),
+      mentors: enriched
     });
   } catch (err) {
     console.error('Error fetching public mentors directory:', err);
@@ -739,6 +768,7 @@ const applyAsMentor = async (req, res) => {
       graduationYear,
       linkedinUrl,
       verificationDocUrl,
+      ianaTimezone,
       payoutMethod,
       upiId,
       accountHolderName,
@@ -815,8 +845,15 @@ const applyAsMentor = async (req, res) => {
       }
     }
 
+    // Mentor's own time zone (sent by the apply form from their browser); slots are created in it
+    const isValidTimezone = (tz) => {
+      try { return Boolean(tz) && Boolean(new Intl.DateTimeFormat('en-US', { timeZone: tz })); } catch { return false; }
+    };
+    const mentorTimezone = typeof ianaTimezone === 'string' && isValidTimezone(ianaTimezone.trim()) ? ianaTimezone.trim() : 'Asia/Kolkata';
+
     const mentor = new UnicoachMentor({
       userId: linkedUserId || undefined,
+      ianaTimezone: mentorTimezone,
       name: name.trim(),
       email: email.toLowerCase().trim(),
       phone: phone ? phone.trim() : '',
@@ -900,16 +937,17 @@ const applyAsMentor = async (req, res) => {
         });
       }
     }
+    await refreshMentorStats(mentor._id);
 
-    // Automatically generate 10 upcoming booking slots for the next 5 days
+    // Automatically generate 10 upcoming booking slots for the next 5 days: 5 PM and 6 PM in the mentor's own time zone
     const now = new Date();
     for (let dayOffset = 1; dayOffset <= 5; dayOffset++) {
-      const slotDate1 = new Date(now.getTime() + dayOffset * 24 * 60 * 60 * 1000);
-      slotDate1.setHours(17, 0, 0, 0); // 5:00 PM
+      const dateStr = new Date(now.getTime() + dayOffset * 24 * 60 * 60 * 1000)
+        .toLocaleDateString('en-CA', { timeZone: mentorTimezone }); // YYYY-MM-DD in the mentor's calendar
+      const slotDate1 = getZonedDateToUtc(dateStr, '17:00', mentorTimezone);
       const slotEnd1 = new Date(slotDate1.getTime() + 30 * 60 * 1000);
 
-      const slotDate2 = new Date(now.getTime() + dayOffset * 24 * 60 * 60 * 1000);
-      slotDate2.setHours(18, 0, 0, 0); // 6:00 PM
+      const slotDate2 = getZonedDateToUtc(dateStr, '18:00', mentorTimezone);
       const slotEnd2 = new Date(slotDate2.getTime() + 30 * 60 * 1000);
 
       await UnicoachSlot.create({
@@ -946,9 +984,55 @@ const applyAsMentor = async (req, res) => {
   }
 };
 
+const PAID_STATES = ['CONFIRMED', 'IN_PROGRESS', 'COMPLETED'];
+const MAX_ASSET_DOWNLOADS = 10;
+
+/**
+ * GET /api/unicoach/download/:token
+ * Paid digital product download: checks the booking is paid, counts the download and redirects
+ * to a link that expires in 5 minutes (so a shared link stops working almost immediately).
+ */
+const downloadDigitalAsset = async (req, res) => {
+  try {
+    const token = String(req.params.token || '');
+    if (!/^dl_[0-9a-f-]{36}$/i.test(token)) return res.status(404).json({ error: 'Download link not found.' });
+
+    // Atomic check-and-increment so parallel clicks can't exceed the limit
+    const booking = await UnicoachBooking.findOneAndUpdate(
+      {
+        'digitalAssetDelivery.downloadToken': token,
+        state: { $in: PAID_STATES },
+        'digitalAssetDelivery.downloadCount': { $lt: MAX_ASSET_DOWNLOADS }
+      },
+      { $inc: { 'digitalAssetDelivery.downloadCount': 1 } },
+      { new: true }
+    ).select('digitalAssetDelivery state').lean();
+
+    if (!booking) {
+      const exists = await UnicoachBooking.exists({ 'digitalAssetDelivery.downloadToken': token, state: { $in: PAID_STATES } });
+      return exists
+        ? res.status(429).json({ error: `Download limit reached (${MAX_ASSET_DOWNLOADS}). Please contact support if you need the file again.` })
+        : res.status(404).json({ error: 'Download link not found or payment not confirmed yet.' });
+    }
+
+    const fileUrl = booking.digitalAssetDelivery?.fileUrl;
+    if (!fileUrl) return res.status(404).json({ error: 'The mentor has not attached a file to this product yet.' });
+
+    const target = fileUrl.startsWith('/uploads/')
+      ? `${req.protocol}://${req.get('host')}${fileUrl}` // legacy local-disk file
+      : await getAccessUrl(fileUrl, { expiresInSeconds: 300, attachment: true });
+
+    res.set('Cache-Control', 'no-store');
+    res.redirect(302, target);
+  } catch (err) {
+    console.error('Error serving digital asset download:', err);
+    res.status(500).json({ error: 'Failed to prepare your download.' });
+  }
+};
+
 /**
  * POST /api/unicoach/upload-verification-doc
- * Zero-cost local file upload for applicant student ID / offer letter
+ * Applicant student ID / offer letter: stored privately, viewable only by admins via signed links
  */
 const uploadVerificationDoc = async (req, res) => {
   try {
@@ -956,7 +1040,7 @@ const uploadVerificationDoc = async (req, res) => {
       return res.status(400).json({ error: 'Please select a document or student ID image to upload.' });
     }
 
-    const fileUrl = `/uploads/unicoach/${req.file.filename}`;
+    const { url: fileUrl } = await storeUpload(req.file, { visibility: 'private', folder: 'unicoach/verification' });
 
     res.status(200).json({
       success: true,
@@ -967,7 +1051,7 @@ const uploadVerificationDoc = async (req, res) => {
     });
   } catch (err) {
     console.error('Error uploading verification doc:', err);
-    res.status(500).json({ error: 'Failed to upload verification document.' });
+    res.status(err.statusCode || 500).json({ error: err.statusCode ? err.message : 'Failed to upload verification document.' });
   }
 };
 
@@ -1170,6 +1254,7 @@ module.exports = {
   getPublicDirectory,
   applyAsMentor,
   uploadVerificationDoc,
+  downloadDigitalAsset,
   bookCourseMentorDirect,
   getCourseMentorSessions
 };

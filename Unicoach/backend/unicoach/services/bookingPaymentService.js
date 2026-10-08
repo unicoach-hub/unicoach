@@ -194,7 +194,6 @@ function serializeDirectResult(booking) {
     mentorName: booking.mentorId?.name,
     digitalAsset: isDigitalAsset ? {
       fileName: booking.digitalAssetDelivery?.fileName,
-      fileUrl: booking.digitalAssetDelivery?.fileUrl,
       downloadToken: booking.digitalAssetDelivery?.downloadToken,
       fileType: service.digitalAsset?.fileType || 'PDF',
       fileSize: service.digitalAsset?.fileSize || 'Instant File'
