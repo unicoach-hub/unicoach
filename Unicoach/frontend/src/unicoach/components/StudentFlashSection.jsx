@@ -31,7 +31,7 @@ const STEPS = [
     number: '01',
     title: 'Browse Verified Seniors',
     shortDesc: 'Filter by university, country, degree, or service type — every mentor is admin-verified.',
-    fullDesc: 'Explore Prachi, Rishi, and Manan, and find guidance by mentor name, expertise, or destination country.'
+    fullDesc: 'Explore Prachi, Nitya, and Manan, and find guidance by mentor name, expertise, or destination country.'
   },
   {
     id: 1,

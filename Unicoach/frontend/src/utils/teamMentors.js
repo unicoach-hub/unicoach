@@ -9,11 +9,11 @@ export const TEAM_MENTORS = [
     portrait: '/images/mentors/prachi_portrait.webp',
   },
   {
-    name: 'Rishi',
+    name: 'Nitya',
     role: 'Career Guide Expert · Ireland',
     country: 'Ireland',
-    src: '/images/mentors/thumbs/rishi_ireland_career.webp',
-    portrait: '/images/mentors/rishi_portrait.webp',
+    src: '/images/mentors/thumbs/nitya_ireland_career.webp',
+    portrait: '/images/mentors/nitya_portrait.webp',
   },
   {
     name: 'Manan',
@@ -24,5 +24,5 @@ export const TEAM_MENTORS = [
   },
 ];
 
-// "Prachi, Rishi & Manan"
+// "Prachi, Nitya & Manan"
 export const TEAM_MENTOR_NAMES = `${TEAM_MENTORS.slice(0, -1).map((m) => m.name).join(', ')} & ${TEAM_MENTORS.at(-1).name}`;

@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const Event = require('../models/Event');
 const User = require('../models/User');
 
-// Creates the "Ireland Career Roadmap 2027" masterclass (Rishi) as an UNPUBLISHED draft.
+// Creates the "Ireland Career Roadmap 2027" masterclass (Nitya) as an UNPUBLISHED draft.
 // Set the date/time in Admin → Events and publish it from there.
 const SLUG = 'ireland-career-roadmap-2027';
 
@@ -18,7 +18,7 @@ mongoose.connect(process.env.MONGO_URI).then(async () => {
   const created = await Event.create({
     title: 'Ireland Career Roadmap 2027: From Job Search to Getting Settled',
     slug: SLUG,
-    body: '<p>Meet Rishi, your Ireland career guide expert, in this masterclass on landing a job in Ireland and settling in after your studies.</p>',
+    body: '<p>Meet Nitya, your Ireland career guide expert, in this masterclass on landing a job in Ireland and settling in after your studies.</p>',
     sections: [
       { type: 'heading', level: 2, content: 'What You Will Learn' },
       { type: 'paragraph', content: 'How the Irish job market works for international graduates, CV and LinkedIn tips for Irish employers, the Stamp 1G and Critical Skills work permit routes, and practical steps to get settled: housing, PPS number and banking.' }
@@ -27,9 +27,9 @@ mongoose.connect(process.env.MONGO_URI).then(async () => {
     author: admin ? admin._id : null,
     published: false,
     location: 'Online Masterclass',
-    description: 'Meet Rishi, Career Guide Expert. Ireland job search strategy, Stamp 1G & work permits, and getting settled in 2027.',
+    description: 'Meet Nitya, Career Guide Expert. Ireland job search strategy, Stamp 1G & work permits, and getting settled in 2027.',
     category: 'webinar',
-    speaker: 'Rishi (Career Guide Expert, Ireland)',
+    speaker: 'Nitya (Career Guide Expert, Ireland)',
     tags: ['Ireland', 'Careers', 'Jobs', 'Stamp 1G', 'Work Permit'],
     registrationCount: 0
   });

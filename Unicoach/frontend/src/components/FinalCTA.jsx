@@ -206,8 +206,8 @@ export const FinalCTA = ({ onOpenModal }) => {
             >
               <div className="w-8 h-8 sm:w-10 sm:h-10 lg:w-11 lg:h-11 rounded-full p-[2px] bg-gradient-to-r from-fuchsia-400 to-pink-500 shadow-[0_0_16px_rgba(232,121,249,0.95)]">
                 <img
-                  src="/images/mentors/thumbs/rishi_ireland_career.webp"
-                  alt="Rishi, Ireland Career Guide Expert"
+                  src="/images/mentors/thumbs/nitya_ireland_career.webp"
+                  alt="Nitya, Ireland Career Guide Expert"
                   className="w-full h-full rounded-full object-cover"
                 />
               </div>

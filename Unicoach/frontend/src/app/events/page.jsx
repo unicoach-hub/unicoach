@@ -24,7 +24,7 @@ import { eventPath, getSpeakerPhoto, toAbsoluteUrl } from '../../utils/eventHelp
 
 // Large portraits of our event hosts (cut from their event banners); Admin → Events "Speaker photo" overrides
 const SPEAKER_PORTRAITS = {
-    rishi: '/images/mentors/rishi_portrait.webp',
+    nitya: '/images/mentors/nitya_portrait.webp',
     manan: '/images/mentors/manan_portrait.webp',
     prachi: '/images/mentors/prachi_portrait.webp',
 };

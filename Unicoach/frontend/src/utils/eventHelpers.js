@@ -28,7 +28,7 @@ export const eventPath = (ev) => {
 
 // Speaker face photos, matched by first name (falls back to the initial when there's no photo)
 const SPEAKER_PHOTOS = {
-  rishi: '/images/mentors/thumbs/rishi_ireland_career.webp',
+  nitya: '/images/mentors/thumbs/nitya_ireland_career.webp',
   manan: '/images/mentors/thumbs/manan_australia.webp',
   prachi: '/images/mentors/thumbs/prachi_cybersecurity.webp',
   joshua: '/images/mentors/thumbs/speaker_joshua.webp',

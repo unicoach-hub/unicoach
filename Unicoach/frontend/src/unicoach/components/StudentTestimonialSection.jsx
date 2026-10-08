@@ -12,40 +12,38 @@ const TESTIMONIALS = [
   {
     quote: 'Aarav helped me understand the exact SOP format TU Munich expects. Got my admit letter in just 2 months after our session!',
     name: 'Rohan Mehta',
-    role: 'M.Sc. Computer Science • TU Munich Admit',
-    image: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=160&auto=format&fit=crop&q=80'
+    role: 'M.Sc. Computer Science • TU Munich Admit'
   },
   {
     quote: 'Booked a 1:1 with an Oxford senior. Best ₹499 I ever spent. Crystal clear guidance on my personal statement and interview prep.',
     name: 'Priya Sharma',
-    role: 'MPP Candidate • University of Oxford',
-    image: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=160&auto=format&fit=crop&q=80'
+    role: 'MPP Candidate • University of Oxford'
   },
   {
     quote: 'The visa prep session saved me from 3 common mistakes I didn\'t even know about. Cleared my F1 interview on the first attempt!',
     name: 'Ananya Singh',
-    role: 'MS in Data Science • Columbia University',
-    image: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=160&auto=format&fit=crop&q=80'
+    role: 'MS in Data Science • Columbia University'
   },
   {
     quote: 'My mentor reviewed my SOP line by line and rewrote the opening paragraph. The difference was night and day. Highly recommended.',
     name: 'Vikram Reddy',
-    role: 'M.Eng. Mechanical • RWTH Aachen Admit',
-    image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=160&auto=format&fit=crop&q=80'
+    role: 'M.Eng. Mechanical • RWTH Aachen Admit'
   },
   {
     quote: 'Was confused between 5 universities. The Priority DM option let me get answers in 12 hours without booking a full call. Super convenient!',
     name: 'Meera Joshi',
-    role: 'MS in AI • University of Toronto Admit',
-    image: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?w=160&auto=format&fit=crop&q=80'
+    role: 'MS in AI • University of Toronto Admit'
   },
   {
     quote: 'UniCoach connected me with someone who actually studied at my dream campus. No consultant could give me that insider perspective.',
     name: 'Arjun Kapoor',
-    role: 'MBA Candidate • HEC Paris',
-    image: 'https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?w=160&auto=format&fit=crop&q=80'
+    role: 'MBA Candidate • HEC Paris'
   }
 ];
+
+// "Rohan Mehta" -> "RM"
+const getInitials = (name) =>
+  name.split(/\s+/).filter(Boolean).slice(0, 2).map((part) => part[0].toUpperCase()).join('');
 
 // Auto-scroll speed in px per second
 const AUTO_SCROLL_SPEED = 28;
@@ -65,13 +63,12 @@ const TestimonialCard = ({ item, hidden }) => (
       </blockquote>
 
       <figcaption className="flex items-center gap-2.5 pt-3 mt-3 border-t border-slate-200/70">
-        <img
-          src={item.image}
-          alt={hidden ? '' : item.name}
-          className="w-8 h-8 rounded-full object-cover ring-2 ring-white shadow-xs shrink-0"
-          loading="lazy"
-          draggable="false"
-        />
+        <span
+          className="w-8 h-8 rounded-full bg-gradient-to-br from-[#DE5C2B] to-[#EAB308] text-white font-outfit font-black text-[11px] flex items-center justify-center ring-2 ring-white shadow-xs shrink-0 select-none"
+          aria-hidden="true"
+        >
+          {getInitials(item.name)}
+        </span>
         <div className="min-w-0">
           <div className="font-outfit text-[13px] font-bold text-slate-950 leading-tight truncate">
             {item.name}
