@@ -183,8 +183,8 @@ const DynamicUniversityPage = () => {
               <p className="text-[10px] font-black uppercase text-slate-400">Tuition Fee</p>
               {officialTuition ? (
                 <>
-                  <p className="text-lg font-black text-slate-900 mt-0.5">{officialTuition.inrText}</p>
-                  <p className="text-[10px] font-bold text-slate-500 mt-0.5">≈ {officialTuition.usdText} · {officialTuition.sourceLabel}</p>
+                  <p className="text-lg font-black text-slate-900 mt-0.5">{officialTuition.localText}</p>
+                  <p className="text-[10px] font-bold text-slate-500 mt-0.5">{officialTuition.sourceLabel}</p>
                 </>
               ) : (
                 <p className="text-sm font-bold text-slate-500 mt-1">{CHECK_SITE}</p>

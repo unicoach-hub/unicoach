@@ -121,8 +121,8 @@ const UniversityDetailsModal = ({ university, isOpen, onClose, onToggleSave, isS
                 <p className="text-[10px] font-black uppercase tracking-wider text-slate-400">Annual Tuition</p>
                 {officialTuition ? (
                   <>
-                    <p className="text-base font-black text-slate-900 mt-0.5">{officialTuition.inrText}</p>
-                    <p className="text-[10px] text-slate-500 font-bold mt-0.5">≈ {officialTuition.usdText} · {officialTuition.sourceLabel}</p>
+                    <p className="text-base font-black text-slate-900 mt-0.5">{officialTuition.localText}</p>
+                    <p className="text-[10px] text-slate-500 font-bold mt-0.5">{officialTuition.sourceLabel}</p>
                   </>
                 ) : (
                   <p className="text-sm font-bold text-slate-500 mt-1">{CHECK_SITE}</p>

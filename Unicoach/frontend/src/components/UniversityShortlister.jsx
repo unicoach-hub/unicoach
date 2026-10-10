@@ -26,6 +26,7 @@ import { cleanPortalUrl, getUniversityPortalFallback } from '../utils/urlHelpers
 import ALL_UNIVERSITIES from '../data/universities';
 import { useAuth } from '../context/AuthContext';
 import { POPULAR_COURSES, ALL_COUNTRY_OPTIONS } from '../utils/shortlistOptions';
+import { getCountryMeta } from '../utils/courseFinderHelper';
 import ExcelColumnExportModal from './ExcelColumnExportModal';
 import { 
   exportUniversitiesToExcel, 
@@ -76,7 +77,8 @@ function evaluateLocalShortlist(formData) {
     return true;
   });
 
-  const listToUse = filtered.length > 0 ? filtered : fallbackUniversities;
+  // Never fall back to other countries: an empty list is better than wrong results
+  const listToUse = filtered;
 
   const categorized = { safe: [], target: [], dream: [] };
 
@@ -374,7 +376,8 @@ const UniversityShortlister = ({ user: propUser, verifiedLead }) => {
 
     try {
       const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 7000); // 7s timeout guard
+      // The server may need up to ~50s to wake up; wait for it rather than show offline guesses
+      const timeoutId = setTimeout(() => controller.abort(), 60000);
 
       const res = await fetch(`${API_URL}/shortlist`, {
         method: 'POST',
@@ -960,21 +963,28 @@ const UniversityShortlister = ({ user: propUser, verifiedLead }) => {
               />
             </div>
 
-            {/* Max Budget Limit */}
-            <div className="space-y-2">
-              <label className="text-xs font-bold text-slate-600 flex items-center gap-1.5">
-                <DollarSign size={15} className="text-indigo-500" /> Max Annual Budget ($ USD)
-              </label>
-              <NumberStepperInput
-                value={formData.maxBudgetUSD}
-                onChange={(v) => handleInputChange('maxBudgetUSD', v)}
-                min={5000}
-                max={80000}
-                step={5000}
-                suffix={`≈ ₹${Math.round(((Number(formData.maxBudgetUSD) || 0) * 85) / 100000)} Lakh/yr`}
-                ariaLabel="Maximum annual budget in US dollars"
-              />
-            </div>
+            {/* Max Budget Limit: shown in the chosen country's currency (€ for Ireland); stored in USD for matching */}
+            {(() => {
+              const meta = getCountryMeta(formData.targetCountry === 'All' ? '' : formData.targetCountry);
+              const rate = meta.rateFromUSD || 1;
+              const toLocal = (usd) => Math.round(((Number(usd) || 0) * rate) / 1000) * 1000;
+              return (
+                <div className="space-y-2">
+                  <label className="text-xs font-bold text-slate-600 flex items-center gap-1.5">
+                    <DollarSign size={15} className="text-indigo-500" /> Max yearly tuition ({meta.symbol} {meta.currency})
+                  </label>
+                  <NumberStepperInput
+                    value={toLocal(formData.maxBudgetUSD)}
+                    onChange={(v) => handleInputChange('maxBudgetUSD', Math.round((Number(v) || 0) / rate))}
+                    min={toLocal(5000)}
+                    max={toLocal(80000)}
+                    step={toLocal(5000)}
+                    suffix={meta.symbol}
+                    ariaLabel={`Maximum yearly tuition in ${meta.currency}`}
+                  />
+                </div>
+              );
+            })()}
 
             {/* IELTS Score */}
             <div className="relative">

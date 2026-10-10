@@ -1,3 +1,4 @@
+import { formatInCountryCurrency, getCountryMeta } from '../utils/courseFinderHelper';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import {
   Search, Globe, MapPin, GraduationCap, Building2, Trophy, Wallet, Layers,
@@ -21,7 +22,8 @@ const COUNTRY_LABELS = {
 
 const optionsCache = new Map();
 
-const formatUSD = (n) => `$${Number(n).toLocaleString('en-US')}`;
+// Amounts are stored in USD; labels show the selected country's currency (€ for Ireland)
+const formatUSD = (n, meta) => formatInCountryCurrency(n, meta);
 
 const isAllCountry = (c) => !c || ['all', 'all destinations', 'all global destinations'].includes(String(c).toLowerCase());
 
@@ -216,6 +218,7 @@ const CourseFinderFilterBar = ({
   const [showAdvanced, setShowAdvanced] = useState(() => typeof window === 'undefined' || window.innerWidth >= 768);
   const { data: options, loading, countries: knownCountryList } = useFilterOptions(country);
   const allCountry = isAllCountry(country);
+  const money = getCountryMeta(allCountry ? '' : country);
 
   const countries = useMemo(() => {
     const source = options?.countries || knownCountryList;
@@ -240,7 +243,7 @@ const CourseFinderFilterBar = ({
     filters.degreeLevel && { key: 'degreeLevel', label: options?.degreeLevels?.find((d) => d.value === filters.degreeLevel)?.label || 'Degree' },
     filters.universityType && { key: 'universityType', label: options?.universityTypes?.find((t) => t.value === filters.universityType)?.label || 'Type' },
     filters.maxRank > 0 && { key: 'maxRank', label: `Top ${filters.maxRank}` },
-    filters.maxTuitionUSD > 0 && { key: 'maxTuitionUSD', label: `Under ${formatUSD(filters.maxTuitionUSD)}/yr` },
+    filters.maxTuitionUSD > 0 && { key: 'maxTuitionUSD', label: `Under ${formatUSD(filters.maxTuitionUSD, money)}/yr` },
   ].filter(Boolean);
 
   const activeCount = activeChips.length;
@@ -391,20 +394,20 @@ const CourseFinderFilterBar = ({
           <div className="sm:col-span-2 lg:col-span-3">
             <FieldLabel
               icon={Wallet}
-              hint={options?.tuition ? `Range here: ${formatUSD(options.tuition.min)} – ${formatUSD(options.tuition.max)} / yr` : null}
+              hint={options?.tuition ? `Range here: ${formatUSD(options.tuition.min, money)} – ${formatUSD(options.tuition.max, money)} / yr` : null}
             >
               Max tuition per year
             </FieldLabel>
             {tuitionSteps.length > 0 ? (
               <ChipGroup
-                options={tuitionSteps.map((s) => ({ value: s, label: `Under ${formatUSD(s)}` }))}
+                options={tuitionSteps.map((s) => ({ value: s, label: `Under ${formatUSD(s, money)}` }))}
                 value={filters.maxTuitionUSD || ''}
                 onChange={(v) => set('maxTuitionUSD')(Number(v) || 0)}
               />
             ) : (
               <p className="text-[12.5px] text-slate-500">
                 {options?.tuition
-                  ? `Every university here costs ${formatUSD(options.tuition.max)}/yr or less, so there is nothing to filter.`
+                  ? `Every university here costs ${formatUSD(options.tuition.max, money)}/yr or less, so there is nothing to filter.`
                   : 'Loading…'}
               </p>
             )}

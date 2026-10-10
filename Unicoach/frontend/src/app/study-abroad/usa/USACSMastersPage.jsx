@@ -327,7 +327,7 @@ const USACSMastersPage = () => {
               state: u.state || 'USA',
               // Only official values: fee from an official source (Master's fee preferred), rank from an
               // imported ranking file, acceptance rate from College Scorecard. Unknown stays empty.
-              tuition: (() => { const t = getOfficialTuition(u, { preferGraduate: true }); return t ? `₹ ${(Math.round((t.usd * 85) / 10000) / 10).toFixed(1)} Lakh / yr` : 'N/A'; })(),
+              tuition: (() => { const t = getOfficialTuition(u, { preferGraduate: true }); return t ? t.localText : 'N/A'; })(),
               tuitionFeeUSD: getOfficialTuition(u, { preferGraduate: true })?.usd || null,
               rank: u.rankingSource && u.rankingNum > 0 ? u.rankingNum : null,
               degrees: Array.isArray(u.degreeLevels) ? u.degreeLevels : [],

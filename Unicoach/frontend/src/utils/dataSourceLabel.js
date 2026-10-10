@@ -18,6 +18,8 @@ export const hasOfficialFee = (dataSource) => {
   return Array.isArray(dataSource.fields) && dataSource.fields.some((f) => FEE_FIELDS.includes(f));
 };
 
+import { getCountryMeta, formatInCountryCurrency } from './currency';
+
 // Rough USD → INR rate used only for the "≈ ₹ Lakh" hint next to an official USD fee
 const USD_TO_INR = 85;
 
@@ -25,7 +27,8 @@ const USD_TO_INR = 85;
  * Yearly tuition to show for a university, or null when there is no official fee.
  * Only fees taken from an official source are shown; estimates and placeholder values never are
  * (callers show CHECK_SITE / a link to the university instead). Prefers the Master's fee when asked.
- * Returns { usd, usdText, inrText, sourceLabel }.
+ * Returns { usd, usdText, inrText, localText, currency, sourceLabel }; localText is in the country's own
+ * currency (€ for Ireland, £ for the UK, $ for the USA) and is what pages show.
  */
 export const getOfficialTuition = (uni, { preferGraduate = false } = {}) => {
   if (!uni || !hasOfficialFee(uni.dataSource)) return null;
@@ -37,6 +40,8 @@ export const getOfficialTuition = (uni, { preferGraduate = false } = {}) => {
     usd,
     usdText: `$${Math.round(usd).toLocaleString('en-US')} USD/yr`,
     inrText: `₹${(Math.round((usd * USD_TO_INR) / 10000) / 10).toFixed(1)} Lakh/yr`,
+    localText: `${formatInCountryCurrency(usd, getCountryMeta(uni.countryName || uni.country))}/yr`,
+    currency: getCountryMeta(uni.countryName || uni.country).currency,
     sourceLabel: getDataSourceLabel(uni.dataSource.provider),
   };
 };
