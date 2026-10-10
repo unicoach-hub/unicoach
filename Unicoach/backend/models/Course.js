@@ -36,17 +36,18 @@ const courseSchema = new mongoose.Schema({
   },
 
   // Admission Criteria
-  minIeltsScore: { type: Number, default: 6.5 },
-  ieltsRequirement: { type: String, default: '6.5 (No band < 6.0)' },
-  minToeflScore: { type: Number, default: 88 },
-  minPteScore: { type: Number, default: 63 },
-  minGpaPercent: { type: Number, default: 60 },
+  // No placeholder values: requirements stay empty until taken from the official course page
+  minIeltsScore: { type: Number },
+  ieltsRequirement: { type: String },
+  minToeflScore: { type: Number },
+  minPteScore: { type: Number },
+  minGpaPercent: { type: Number },
   academicRequirement: { type: String }, // e.g. "First Class Honours (60%+ in relevant UG)"
   greRequired: { type: Boolean, default: false },
-  workExpRequirement: { type: String, default: 'Freshers Eligible' },
+  workExpRequirement: { type: String },
 
   // Intakes & Dates
-  intakes: { type: [String], default: ['September 2026'] },
+  intakes: { type: [String], default: [] },
   applicationDeadline: { type: String },
 
   // Perks & Flags

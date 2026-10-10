@@ -4,6 +4,7 @@ import { Table, Popconfirm, message, Input, Select } from 'antd';
 import Header from '../components/Header';
 import StatsCard from '../components/StatsCard';
 import API from '../api/axios';
+import { usePermissions } from '../utils/permissions';
 import { getCachedData, invalidateCache, fetchWithCache } from '../utils/cache';
 import { PlusOutlined, EditOutlined, DeleteOutlined, SearchOutlined, CalendarOutlined, ClockCircleOutlined, TeamOutlined } from '@ant-design/icons';
 
@@ -59,6 +60,7 @@ const Events = () => {
   const [statusFilter, setStatusFilter] = useState('all');
   const [categoryFilter, setCategoryFilter] = useState('all');
   const navigate = useNavigate();
+  const { can } = usePermissions();
 
   const fetchEvents = async (force = false) => {
     if (!getCachedData('/admin/content:event') || force) {
@@ -219,10 +221,14 @@ const Events = () => {
       title: 'Actions', key: 'actions',
       render: (_, record) => (
         <div className="action-btn-group">
+          {can('events', 'update') && (
           <button onClick={() => navigate(`/events/edit/${record._id}`)} className="action-btn action-btn--edit"><EditOutlined /></button>
+          )}
+          {can('events', 'delete') && (
           <Popconfirm title="Delete?" onConfirm={() => handleDelete(record._id)} okText="Yes" cancelText="No">
             <button className="action-btn action-btn--delete"><DeleteOutlined /></button>
           </Popconfirm>
+          )}
         </div>
       ),
     },
@@ -255,7 +261,9 @@ const Events = () => {
               <Option value="other">Other Events</Option>
             </Select>
           </div>
+          {can('events', 'create') && (
           <button type="button" onClick={() => navigate('/events/create')} className="nx-btn nx-btn--dark"><PlusOutlined /> New event</button>
+          )}
         </div>
         <div className="page-table-card">
           <Table rowKey="_id" columns={columns} dataSource={filtered} loading={loading} scroll={{ x: 1100 }} pagination={{ pageSize: 10 }} />

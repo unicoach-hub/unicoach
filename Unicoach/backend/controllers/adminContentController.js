@@ -33,7 +33,8 @@ function compileSectionsToHtml(sections) {
         return `<div class="content-img-wrapper${imgAlignClass}"><img src="${section.url}" alt="${section.caption || 'Image'}" />${section.caption ? `<span class="content-img-caption">${section.caption}</span>` : ''}</div>`;
       case 'faq':
         const faqAnswer = (section.answer || '').replace(/\n/g, '<br>');
-        return `<details class="blog-faq-item group border border-white/10 rounded-2xl bg-indigo-950/20 p-4 transition-all duration-350 [&_summary::-webkit-details-marker]:hidden mb-4"><summary class="flex items-center justify-between cursor-pointer font-bold text-white text-base outline-none list-none select-none"><span>${section.question || ''}</span><span class="ml-1.5 flex-shrink-0 rounded-full bg-white/10 p-1 text-white/50 group-open:rotate-180 transition-transform duration-250"><svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg></span></summary><div class="mt-3 text-slate-350 text-sm leading-relaxed border-t border-white/5 pt-3">${faqAnswer}</div></details>`;
+        // Light styling: blog articles render on a white card
+        return `<details class="blog-faq-item group border border-slate-200 rounded-2xl bg-slate-50 p-4 transition-all duration-350 [&_summary::-webkit-details-marker]:hidden mb-4"><summary class="flex items-center justify-between cursor-pointer font-bold text-slate-900 text-base outline-none list-none select-none"><span>${section.question || ''}</span><span class="ml-1.5 flex-shrink-0 rounded-full bg-white border border-slate-200 p-1 text-slate-500 group-open:rotate-180 transition-transform duration-250"><svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg></span></summary><div class="mt-3 text-slate-600 text-sm leading-relaxed border-t border-slate-200 pt-3">${faqAnswer}</div></details>`;
       default:
         return '';
     }
@@ -49,6 +50,11 @@ const cleanText = (value, max) => (typeof value === 'string' ? value.trim().slic
 function readEventSiteFields(body = {}) {
   const fields = {};
   if (has(body, 'registrationLink')) fields.registrationLink = cleanText(body.registrationLink, 2000);
+  // Joining link (Zoom/Meet) for registered people; http(s) only
+  if (has(body, 'joiningLink')) {
+    const link = cleanText(body.joiningLink, 500);
+    fields.joiningLink = /^https?:\/\//i.test(link) ? link : '';
+  }
   if (has(body, 'country')) fields.country = Event.EVENT_COUNTRIES.includes(body.country) ? body.country : '';
   if (has(body, 'speakerRole')) fields.speakerRole = cleanText(body.speakerRole, 120);
   if (has(body, 'speakerPhoto')) {

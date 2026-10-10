@@ -1,4 +1,6 @@
 const User = require('../models/User');
+const { applyAttributionToLead } = require('../utils/attribution');
+const { sendMetaEvent } = require('../services/metaConversions');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const crypto = require('crypto');
@@ -77,7 +79,7 @@ const enrichUserWithMentor = async (userDoc) => {
  *   so counsellor-managed fields (status, assignee, follow-ups) are never overwritten.
  * Mentors and admins are skipped. Never throws: auth must not fail because of CRM sync.
  */
-const syncLeadFromAuth = async (enrichedUser, { method, isNewAccount }) => {
+const syncLeadFromAuth = async (enrichedUser, { method, isNewAccount, attribution }) => {
   try {
     if (!enrichedUser || enrichedUser.role === 'admin' || enrichedUser.isMentor) return;
 
@@ -96,7 +98,7 @@ const syncLeadFromAuth = async (enrichedUser, { method, isNewAccount }) => {
       : `Logged in via ${method}`;
 
     if (!existing) {
-      await Lead.create({
+      const lead = new Lead({
         name: enrichedUser.name || 'Student',
         email: email || 'Not provided',
         phone: phone || 'Not provided',
@@ -107,6 +109,8 @@ const syncLeadFromAuth = async (enrichedUser, { method, isNewAccount }) => {
         lastInquiryAt: new Date(),
         activities: [{ type: 'note', comment: note, performedBy: 'System' }]
       });
+      applyAttributionToLead(lead, attribution);
+      await lead.save();
       return;
     }
 
@@ -115,6 +119,11 @@ const syncLeadFromAuth = async (enrichedUser, { method, isNewAccount }) => {
     if (isNewAccount) {
       update.$set = { ...(update.$set || {}), lastInquiryAt: new Date(), latestSource: `Signup - ${method}` };
       update.$push = { activities: { type: 'note', comment: note, performedBy: 'System' } };
+    }
+    if (attribution) {
+      const tracked = { attribution: existing.attribution?.toObject?.() || existing.attribution };
+      applyAttributionToLead(tracked, attribution);
+      if (tracked.attribution) update.$set = { ...(update.$set || {}), attribution: tracked.attribution };
     }
     if (Object.keys(update).length > 0) {
       await Lead.updateOne({ _id: existing._id }, update);
@@ -171,7 +180,14 @@ exports.register = async (req, res) => {
     await user.save();
 
     const enrichedUser = await enrichUserWithMentor(user);
-    syncLeadFromAuth(enrichedUser, { method: 'Email', isNewAccount: true });
+    syncLeadFromAuth(enrichedUser, { method: 'Email', isNewAccount: true, attribution: req.body.attribution });
+    sendMetaEvent({
+      eventName: 'CompleteRegistration',
+      eventId: req.body.attribution?.eventId,
+      user: { email: user.email, phone: user.phone, name: user.name, externalId: user._id },
+      req,
+      attribution: req.body.attribution
+    });
     const token = jwt.sign({ id: user._id, role: enrichedUser.role }, JWT_SECRET, { expiresIn: '7d' });
 
     // Secure HttpOnly cookie
@@ -513,7 +529,16 @@ exports.googleLogin = async (req, res) => {
     }
 
     const enrichedUser = await enrichUserWithMentor(user);
-    syncLeadFromAuth(enrichedUser, { method: 'Google', isNewAccount });
+    syncLeadFromAuth(enrichedUser, { method: 'Google', isNewAccount, attribution: req.body.attribution });
+    if (isNewAccount) {
+      sendMetaEvent({
+        eventName: 'CompleteRegistration',
+        eventId: req.body.attribution?.eventId,
+        user: { email: user.email, phone: user.phone, name: user.name, externalId: user._id },
+        req,
+        attribution: req.body.attribution
+      });
+    }
     const token = jwt.sign({ id: user._id, role: enrichedUser.role }, JWT_SECRET, { expiresIn: '7d' });
 
     res.cookie('token', token, {
@@ -526,7 +551,8 @@ exports.googleLogin = async (req, res) => {
     return res.json({
       success: true,
       token,
-      user: enrichedUser
+      user: enrichedUser,
+      isNewAccount
     });
   } catch (err) {
     console.error('Google login error:', err);

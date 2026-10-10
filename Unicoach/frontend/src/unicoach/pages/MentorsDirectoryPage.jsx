@@ -194,7 +194,7 @@ const MentorsDirectoryPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#FAF9F6] text-slate-900 selection:bg-[#DE5C2B]/20">
+    <div className="min-h-screen bg-[#FAF9F6] text-slate-900">
       <div className="max-w-[1000px] mx-auto px-4 sm:px-6 pt-24 sm:pt-28 pb-20">
 
         <Link to="/unicoach#mentors-grid" className="inline-flex items-center gap-1 text-xs font-semibold text-slate-500 hover:text-[#DE5C2B] mb-4">

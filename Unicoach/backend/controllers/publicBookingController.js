@@ -2,6 +2,8 @@ const BookingEvent = require('../models/BookingEvent');
 const BookingSlot = require('../models/BookingSlot');
 const FormSubmission = require('../models/FormSubmission');
 const Lead = require('../models/Lead');
+const { readAttribution, applyAttributionToLead } = require('../utils/attribution');
+const { sendMetaEvent } = require('../services/metaConversions');
 
 const generateTimeSlots = (startTimeStr, endTimeStr, intervalMinutes = 30) => {
   const slots = [];
@@ -159,6 +161,16 @@ exports.bookSlot = async (req, res) => {
       await slot.save();
     }
 
+    const attribution = readAttribution(req.body);
+    sendMetaEvent({
+      eventName: 'Lead',
+      eventId: attribution?.eventId,
+      user: { email: studentEmail, phone: studentPhone, name: studentName },
+      req,
+      attribution,
+      customData: { content_name: `Booking: ${event.title}` }
+    });
+
     try {
       const existingLead = await Lead.findOne({ email: studentEmail });
       if (!existingLead) {
@@ -171,6 +183,7 @@ exports.bookSlot = async (req, res) => {
           source: `Booking: ${event.title}`,
           status: 'new'
         });
+        applyAttributionToLead(newLead, attribution);
         await newLead.save();
       }
     } catch (e) {

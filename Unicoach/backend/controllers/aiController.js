@@ -1,5 +1,6 @@
 const IeltsAttempt = require('../models/IeltsAttempt');
 const Lead = require('../models/Lead');
+const { scopedStaffId, canAccessLead } = require('../utils/leadAccess');
 const {
   gradeIeltsEssay,
   generateSOP,
@@ -373,6 +374,12 @@ exports.scoreLead = async (req, res) => {
     if (!targetLead && leadId) {
       targetLead = await Lead.findById(leadId);
     }
+    // Staff limited to their own leads can only score (and save a score on) those
+    const saveId = leadId || targetLead?._id;
+    if (saveId && scopedStaffId(req)) {
+      const stored = await Lead.findById(saveId).select('assignedTo').lean();
+      if (stored && !canAccessLead(req, stored)) return res.status(404).json({ error: 'Lead not found.' });
+    }
 
     if (!targetLead) {
       return res.status(400).json({ error: 'Lead details or leadId is required.' });
@@ -441,7 +448,9 @@ exports.suggestLeadReply = async (req, res) => {
 exports.batchScoreLeads = async (req, res) => {
   try {
     const { limit = 15 } = req.body;
+    const ownOnly = scopedStaffId(req);
     const unscoredLeads = await Lead.find({
+      ...(ownOnly ? { assignedTo: ownOnly } : {}),
       $or: [
         { 'aiScoring.score': { $exists: false } },
         { 'aiScoring.score': null }

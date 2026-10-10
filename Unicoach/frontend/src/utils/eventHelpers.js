@@ -6,10 +6,22 @@ export const API_ORIGIN = API_BASE_URL.replace(/\/api$/, '');
 export const toAbsoluteUrl = (url) => (typeof url === 'string' && url.startsWith('/uploads') ? `${API_ORIGIN}${url}` : url);
 
 // Registration link from Admin → Events: http(s) or a site path; a bare domain gets https://; other schemes are ignored
+// Our own site never hosts a separate sign-up page: links to unicoach.com (or a site path) use the built-in form
+const isOwnSiteLink = (value) => {
+  if (value.startsWith('/')) return true;
+  try {
+    const host = new URL(/^https?:\/\//i.test(value) ? value : `https://${value}`).hostname;
+    return /(^|\.)unicoach\.(com|in)$/i.test(host) || host === window.location.hostname;
+  } catch {
+    return false;
+  }
+};
+
+// External registration link from Admin → Events (e.g. a Google Form); '' means "use the built-in form"
 export const toRegistrationUrl = (link) => {
   const value = typeof link === 'string' ? link.trim() : '';
-  if (!value || value === '#') return '';
-  if (/^https?:\/\//i.test(value) || value.startsWith('/')) return value;
+  if (!value || value === '#' || isOwnSiteLink(value)) return '';
+  if (/^https?:\/\//i.test(value)) return value;
   if (/^[a-z][a-z\d+.-]*:/i.test(value)) return '';
   return `https://${value}`;
 };
@@ -31,6 +43,7 @@ const SPEAKER_PHOTOS = {
   nitya: '/images/mentors/thumbs/nitya_ireland_career.webp',
   manan: '/images/mentors/thumbs/manan_australia.webp',
   prachi: '/images/mentors/thumbs/prachi_cybersecurity.webp',
+  manvi: '/images/mentors/thumbs/manvi_europe.webp',
   joshua: '/images/mentors/thumbs/speaker_joshua.webp',
   prateek: '/images/mentors/thumbs/speaker_prateek.webp',
   hardik: '/images/mentors/thumbs/speaker_hardik.webp',

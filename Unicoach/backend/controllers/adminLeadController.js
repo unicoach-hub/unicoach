@@ -1,17 +1,30 @@
+const mongoose = require('mongoose');
 const Lead = require('../models/Lead');
+const Staff = require('../models/Staff');
 const User = require('../models/User');
 const { sendEmail } = require('../utils/email');
+const { scopedStaffId, canAccessLead } = require('../utils/leadAccess');
+const { cleanManualTags, refreshAutoTags } = require('../utils/leadTags');
 
 /**
- * Helper to resolve admin username
+ * Helper to resolve the name shown in lead activity ("performed by")
  */
-async function getAdminName(userId) {
+async function getAdminName(userId, req) {
+  if (req?.user?.role === 'staff') return req.staff?.name || 'Staff';
   let adminName = 'Admin';
   if (userId) {
     const adminUser = await User.findById(userId);
     if (adminUser) adminName = adminUser.name || adminUser.username || 'Admin';
   }
   return adminName;
+}
+
+// Leads are assigned by staff id; older leads may still hold a plain name
+async function counselorName(value) {
+  if (!value || value === 'Unassigned') return 'Unassigned';
+  if (!mongoose.Types.ObjectId.isValid(value)) return value;
+  const staff = await Staff.findById(value).select('name').lean();
+  return staff?.name || value;
 }
 
 /**
@@ -31,6 +44,13 @@ exports.getAllLeads = async (req, res) => {
       } else {
         filter.assignedTo = assignedTo;
       }
+    }
+
+    // Staff limited to their own leads only ever see those, whatever filter they pick
+    const ownOnly = scopedStaffId(req);
+    if (ownOnly) {
+      delete filter.$or;
+      filter.assignedTo = ownOnly;
     }
 
     if (followUpFilter === 'due') {
@@ -60,6 +80,7 @@ exports.getLeadById = async (req, res) => {
   try {
     const lead = await Lead.findById(req.params.id);
     if (!lead) return res.status(404).json({ message: 'Not found' });
+    if (!canAccessLead(req, lead)) return res.status(404).json({ message: 'Not found' });
     return res.json(lead);
   } catch (err) {
     console.error('Error fetching lead by ID:', err);
@@ -76,8 +97,9 @@ exports.updateLead = async (req, res) => {
     const { status, notes, assignedTo } = req.body;
     const lead = await Lead.findById(req.params.id);
     if (!lead) return res.status(404).json({ message: 'Not found' });
+    if (!canAccessLead(req, lead)) return res.status(404).json({ message: 'Not found' });
 
-    const adminName = await getAdminName(req.user?.id);
+    const adminName = await getAdminName(req.user?.id, req);
 
     if (status && status !== lead.status) {
       lead.activities.push({
@@ -89,9 +111,11 @@ exports.updateLead = async (req, res) => {
     }
 
     if (assignedTo !== undefined && assignedTo !== lead.assignedTo) {
+      // Staff limited to their own leads can't hand them to someone else
+      if (scopedStaffId(req)) return res.status(403).json({ code: 'NO_PERMISSION', message: 'Only a manager or the admin can reassign leads' });
       lead.activities.push({
         type: 'note',
-        comment: `Lead assignment updated from "${lead.assignedTo || 'Unassigned'}" to "${assignedTo}"`,
+        comment: `Lead assignment updated from "${await counselorName(lead.assignedTo)}" to "${await counselorName(assignedTo)}"`,
         performedBy: adminName,
         date: new Date()
       });
@@ -118,8 +142,9 @@ exports.addActivity = async (req, res) => {
     const { type, comment, nextFollowUpDate, status } = req.body;
     const lead = await Lead.findById(req.params.id);
     if (!lead) return res.status(404).json({ message: 'Lead not found' });
+    if (!canAccessLead(req, lead)) return res.status(404).json({ message: 'Lead not found' });
 
-    const adminName = await getAdminName(req.user?.id);
+    const adminName = await getAdminName(req.user?.id, req);
 
     lead.activities.push({
       type: type || 'note',
@@ -159,8 +184,9 @@ exports.sendLeadEmail = async (req, res) => {
     const { subject, html } = req.body;
     const lead = await Lead.findById(req.params.id);
     if (!lead) return res.status(404).json({ message: 'Lead not found' });
+    if (!canAccessLead(req, lead)) return res.status(404).json({ message: 'Lead not found' });
 
-    const adminName = await getAdminName(req.user?.id);
+    const adminName = await getAdminName(req.user?.id, req);
 
     lead.activities.push({
       type: 'email',
@@ -200,8 +226,9 @@ exports.logWhatsApp = async (req, res) => {
     const { templateName, messageContent } = req.body;
     const lead = await Lead.findById(req.params.id);
     if (!lead) return res.status(404).json({ message: 'Lead not found' });
+    if (!canAccessLead(req, lead)) return res.status(404).json({ message: 'Lead not found' });
 
-    const adminName = await getAdminName(req.user?.id);
+    const adminName = await getAdminName(req.user?.id, req);
 
     lead.activities.push({
       type: 'whatsapp',
@@ -224,6 +251,8 @@ exports.logWhatsApp = async (req, res) => {
  */
 exports.importLeads = async (req, res) => {
   try {
+    // Import updates existing leads by email, so it needs access to every lead
+    if (scopedStaffId(req)) return res.status(403).json({ code: 'NO_PERMISSION', message: 'Only a manager or the admin can import leads' });
     const { leads } = req.body;
     if (!Array.isArray(leads)) {
       return res.status(400).json({ error: 'Leads must be an array' });
@@ -233,7 +262,7 @@ exports.importLeads = async (req, res) => {
     const bulkOps = [];
     let processedCount = 0;
 
-    const adminName = await getAdminName(req.user?.id);
+    const adminName = await getAdminName(req.user?.id, req);
 
     for (let i = 0; i < leads.length; i++) {
       const l = leads[i];
@@ -281,6 +310,8 @@ exports.importLeads = async (req, res) => {
 
     if (bulkOps.length > 0) {
       await Lead.bulkWrite(bulkOps);
+      // bulkWrite skips the save hook, so work out the auto tags for these leads now
+      await refreshAutoTags({ email: { $in: leads.filter((l) => l.email).map((l) => String(l.email).toLowerCase()) } });
     }
 
     return res.json({
@@ -295,11 +326,74 @@ exports.importLeads = async (req, res) => {
 };
 
 /**
+ * GET /api/admin/leads/tags
+ * Every tag in use with how many leads have it (auto and manual), for pickers and filters
+ */
+exports.getTags = async (req, res) => {
+  try {
+    const own = scopedStaffId(req);
+    const match = own ? { assignedTo: own } : {};
+    const [auto, manual] = await Promise.all(['autoTags', 'tags'].map((field) => Lead.aggregate([
+      { $match: match },
+      { $unwind: `$${field}` },
+      { $group: { _id: `$${field}`, count: { $sum: 1 } } },
+      { $sort: { count: -1, _id: 1 } },
+    ])));
+    return res.json({
+      auto: auto.map((t) => ({ tag: t._id, count: t.count })),
+      manual: manual.map((t) => ({ tag: t._id, count: t.count })),
+    });
+  } catch (err) {
+    console.error('Error listing lead tags:', err);
+    return res.status(500).json({ error: 'Server error' });
+  }
+};
+
+/**
+ * PATCH /api/admin/leads/:id/tags  { tags: [...] }  (manual tags only; auto tags can't be edited)
+ */
+exports.setTags = async (req, res) => {
+  try {
+    const lead = await Lead.findById(req.params.id).select('assignedTo tags');
+    if (!lead || !canAccessLead(req, lead)) return res.status(404).json({ message: 'Not found' });
+    const tags = cleanManualTags(req.body.tags);
+    await Lead.updateOne({ _id: lead._id }, { $set: { tags } });
+    return res.json({ tags });
+  } catch (err) {
+    console.error('Error setting lead tags:', err);
+    return res.status(500).json({ error: 'Server error' });
+  }
+};
+
+/**
+ * POST /api/admin/leads/bulk-tags  { ids: [...], add: [...], remove: [...] }
+ */
+exports.bulkTags = async (req, res) => {
+  try {
+    const ids = (Array.isArray(req.body.ids) ? req.body.ids : []).filter((id) => mongoose.Types.ObjectId.isValid(id)).slice(0, 2000);
+    const add = cleanManualTags(req.body.add);
+    const remove = cleanManualTags(req.body.remove);
+    if (!ids.length || (!add.length && !remove.length)) return res.status(400).json({ message: 'Choose leads and a tag' });
+    const filter = { _id: { $in: ids } };
+    const own = scopedStaffId(req);
+    if (own) filter.assignedTo = own;
+    if (add.length) await Lead.updateMany(filter, { $addToSet: { tags: { $each: add } } });
+    if (remove.length) await Lead.updateMany(filter, { $pull: { tags: { $in: remove } } });
+    return res.json({ updated: ids.length });
+  } catch (err) {
+    console.error('Error bulk tagging leads:', err);
+    return res.status(500).json({ error: 'Server error' });
+  }
+};
+
+/**
  * DELETE /api/admin/leads/:id
  * Delete lead
  */
 exports.deleteLead = async (req, res) => {
   try {
+    const lead = await Lead.findById(req.params.id).select('assignedTo');
+    if (!lead || !canAccessLead(req, lead)) return res.status(404).json({ message: 'Not found' });
     await Lead.findByIdAndDelete(req.params.id);
     return res.json({ message: 'Deleted' });
   } catch (err) {

@@ -1,5 +1,7 @@
 const CustomForm = require('../models/CustomForm');
 const FormSubmission = require('../models/FormSubmission');
+const { readAttribution } = require('../utils/attribution');
+const { sendMetaEvent } = require('../services/metaConversions');
 
 /**
  * GET /api/forms/:slug
@@ -62,6 +64,17 @@ exports.submitForm = async (req, res) => {
 
     form.submissionCount = (form.submissionCount || 0) + 1;
     await form.save();
+
+    const attribution = readAttribution(req.body);
+    const valueOf = (pattern) => Object.entries(data).find(([label]) => pattern.test(label))?.[1];
+    sendMetaEvent({
+      eventName: 'Lead',
+      eventId: attribution?.eventId,
+      user: { email: valueOf(/e-?mail/i), phone: valueOf(/phone|mobile|whatsapp/i), name: valueOf(/name/i) },
+      req,
+      attribution,
+      customData: { content_name: form.name || form.slug }
+    });
 
     return res.status(201).json({
       success: true,

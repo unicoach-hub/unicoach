@@ -182,11 +182,11 @@ function normalizeCity(city) {
 }
 
 // Fee that matters for the student's target degree: graduate (Master's/PhD) tuition when an official
-// source provided it, otherwise the general/undergraduate figure.
+// source provided it, otherwise the general/undergraduate figure. 0 = unknown (never an assumed price).
 const isUndergradTarget = (targetDegree) => /bachelor|undergrad|ug\b|diploma|foundation/i.test(String(targetDegree || ''));
 function feeForDegree(uni, targetDegree) {
   if (!isUndergradTarget(targetDegree) && uni.graduateTuitionUSD > 0) return uni.graduateTuitionUSD;
-  return uni.tuitionFeeUSD || 25000;
+  return Number(uni.tuitionFeeUSD) > 0 ? Number(uni.tuitionFeeUSD) : 0;
 }
 
 function parseAdvancedFilters(body = {}) {
@@ -243,7 +243,7 @@ async function getCachedData(forceRefresh = false) {
       }
 
       const universities = await University.find({ isActive: { $ne: false } })
-        .select('name city logo website rank rankingNum rankingSource requirementsSource tuition tuitionFeeUSD graduateTuitionUSD dataSource minGpaPercent minIeltsScore minGreScore greRequired acceptanceRate type eligibility country courses degreeLevels description categoryTags')
+        .select('name city logo website rank rankingNum rankingSource requirementsSource englishRequirement tuition tuitionFeeUSD graduateTuitionUSD dataSource minGpaPercent minIeltsScore minGreScore greRequired acceptanceRate type eligibility country courses degreeLevels description categoryTags')
         .lean();
 
       // Query Course collection to attach real rich course data (fees, intakes, durations)
@@ -452,7 +452,8 @@ exports.generateShortlist = async (req, res) => {
       // 3. Budget Fit (20 pts)
       const feeUSD = feeForDegree(uni, targetDegree);
       let budgetPoints = 0;
-      if (parsedBudget >= feeUSD) budgetPoints = 20;
+      if (!feeUSD) budgetPoints = 12; // fee unknown: neutral, neither rewarded nor penalised
+      else if (parsedBudget >= feeUSD) budgetPoints = 20;
       else if (parsedBudget >= feeUSD * 0.85) budgetPoints = 14;
       else if (parsedBudget >= feeUSD * 0.70) budgetPoints = 8;
       else budgetPoints = 2;
@@ -472,7 +473,7 @@ exports.generateShortlist = async (req, res) => {
 
       // High-Precision Academic & Financial Categorization
       let category = 'target';
-      const isAffordable = parsedBudget >= feeUSD;
+      const isAffordable = !feeUSD || parsedBudget >= feeUSD;
 
       // 1. Dream / Reach
       // Elite prestige (Top 120 QS), highly competitive admit (<= 25%),
@@ -481,7 +482,7 @@ exports.generateShortlist = async (req, res) => {
         rankNum <= 120 || 
         accRate <= 25 || 
         parsedGpa < reqGpa || 
-        (!isAffordable && feeUSD > parsedBudget * 1.15)
+        (feeUSD > 0 && !isAffordable && feeUSD > parsedBudget * 1.15)
       ) {
         category = 'dream';
       }
@@ -529,6 +530,8 @@ exports.generateShortlist = async (req, res) => {
         minGreScore: officialReqs ? uni.minGreScore ?? null : null,
         greRequired: officialReqs ? uni.greRequired ?? null : null,
         requirementsSource: uni.requirementsSource || null,
+        // University-wide minimum English requirement with its official source (independent of requirementsSource)
+        englishRequirement: uni.englishRequirement && uni.englishRequirement.sourceUrl ? uni.englishRequirement : null,
         estimatedRequirements: { gpaPercent: reqGpa, ielts: reqIelts },
         // Official only (College Scorecard admission rate); other records hold a schema default
         acceptanceRate: uni.dataSource?.provider === 'College Scorecard' && typeof uni.acceptanceRate === 'number' ? uni.acceptanceRate : null,
@@ -676,7 +679,7 @@ exports.getFilterOptions = async (req, res) => {
         if (rank <= 200) rankCounts[200] += 1;
         if (rank <= 500) rankCounts[500] += 1;
       }
-      fees.push(uni.tuitionFeeUSD || 25000);
+      if (Number(uni.tuitionFeeUSD) > 0) fees.push(Number(uni.tuitionFeeUSD)); // known fees only for the budget range
     }
 
     fees.sort((a, b) => a - b);

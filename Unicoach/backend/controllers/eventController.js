@@ -57,6 +57,18 @@ const eventSummary = (event) => ({
   location: event.location
 });
 
+// Public "N registered" = real sign-ups (attendees on file), never a hand-edited number
+async function withRealCounts(docs) {
+  const list = Array.isArray(docs) ? docs : [docs];
+  const counts = await Event.aggregate([
+    { $match: { _id: { $in: list.map((e) => e._id) } } },
+    { $project: { n: { $size: { $ifNull: ['$attendees', []] } } } },
+  ]);
+  const byId = Object.fromEntries(counts.map((c) => [String(c._id), c.n]));
+  const out = list.map((e) => ({ ...(e.toObject ? e.toObject() : e), registrationCount: byId[String(e._id)] || 0 }));
+  return Array.isArray(docs) ? out : out[0];
+}
+
 /**
  * GET /api/events
  * Retrieve all published events (excluding future scheduled events)
@@ -65,9 +77,9 @@ exports.getAllEvents = async (req, res) => {
   try {
     const events = await Event.find({ published: true, ...publicVisibility() })
       .sort({ eventStart: 1 })
-      .select('-attendees') // public endpoint: never expose registrants' names, emails, phones
+      .select('-attendees -joiningLink') // public endpoint: never expose registrants' names, emails, phones
       .populate('author', 'name');
-    return res.json(events);
+    return res.json(await withRealCounts(events));
   } catch (err) {
     console.error('Error fetching events:', err);
     return res.status(500).json({ error: 'Server error' });
@@ -80,11 +92,11 @@ exports.getAllEvents = async (req, res) => {
  */
 exports.getEventByIdOrSlug = async (req, res) => {
   try {
-    const event = await Event.findOne(publicEventQuery(req.params.id || '')).select('-attendees').populate('author', 'name');
+    const event = await Event.findOne(publicEventQuery(req.params.id || '')).select('-attendees -joiningLink').populate('author', 'name');
     if (!event) {
       return res.status(404).json({ message: 'Event not found' });
     }
-    return res.json(event);
+    return res.json(await withRealCounts(event));
   } catch (err) {
     console.error('Error fetching event details:', err);
     return res.status(500).json({ error: 'Server error' });
@@ -193,7 +205,7 @@ exports.registerForEvent = async (req, res) => {
     const { name, email, intake } = form;
     const phone = normalizePhone(form.phone);
 
-    const event = await Event.findOne(publicEventQuery(String(req.params.id || ''))).select('-attendees');
+    const event = await Event.findOne(publicEventQuery(String(req.params.id || ''))).select('-attendees -joiningLink');
     if (!event) {
       return res.status(404).json({ error: 'Event not found' });
     }

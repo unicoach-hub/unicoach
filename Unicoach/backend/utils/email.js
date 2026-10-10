@@ -372,6 +372,7 @@ async function sendEmailBatch(messages, { from: customFrom, replyTo: customReply
     const chunk = messages.slice(i, i + 100);
     const payload = chunk.map((m) => {
       const item = { from: identity.from, to: [m.to], subject: m.subject, html: m.html, text: m.text || htmlToText(m.html) };
+      if (m.headers) item.headers = m.headers;
       if (identity.replyTo) item.replyTo = identity.replyTo;
       return item;
     });

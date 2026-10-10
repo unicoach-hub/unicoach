@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
 import Sidebar from '../components/Sidebar';
+import { PageGuard } from '../components/ProtectedRoute';
 
 const AdminLayout = () => {
   // Collapse by default on mobile/tablet devices & split-screen (< 1024px)
@@ -46,7 +47,9 @@ const AdminLayout = () => {
       )}
       
       <main className="admin-main">
-        <Outlet />
+        <PageGuard>
+          <Outlet />
+        </PageGuard>
       </main>
     </div>
   );

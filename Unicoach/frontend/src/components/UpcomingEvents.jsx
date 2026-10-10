@@ -25,11 +25,12 @@ const COUNTRY_MAP = {
   'NEW ZEALAND': { name: 'New Zealand', flag: 'https://flagcdn.com/w40/nz.png', image: '/events/global.webp' },
   SINGAPORE: { name: 'Singapore', flag: 'https://flagcdn.com/w40/sg.png', image: '/events/global.webp' },
   DUBAI: { name: 'Dubai', flag: 'https://flagcdn.com/w40/ae.png', image: '/events/global.webp' },
+  EUROPE: { name: 'Europe', flag: 'https://flagcdn.com/w40/eu.png', image: '/events/europe-scholarships.webp' },
   GLOBAL: { name: 'Global', flag: 'https://flagcdn.com/w40/un.png', image: '/events/global.webp' },
 };
 
 // Filter pills in display order; a pill only shows when at least one card has that country
-const TAB_ORDER = ['UK', 'USA', 'GERMANY', 'CANADA', 'AUSTRALIA', 'IRELAND', 'FRANCE', 'NETHERLANDS', 'ITALY', 'NEW ZEALAND', 'SINGAPORE', 'DUBAI'];
+const TAB_ORDER = ['UK', 'USA', 'GERMANY', 'CANADA', 'AUSTRALIA', 'IRELAND', 'FRANCE', 'NETHERLANDS', 'ITALY', 'NEW ZEALAND', 'SINGAPORE', 'DUBAI', 'EUROPE'];
 
 // Used only when no country is set in Admin → Events. Whole words only, so "Campus" is not the US,
 // "Ukraine" is not the UK and "maps" is not APS. A country or city named in the title wins; the topic
@@ -42,6 +43,7 @@ const TITLE_PLACES = [
   ['USA', /\bU\.?S\b/], // capitals only: "join us" is not the US
   ['CANADA', /\b(canada|canadian|toronto)\b/i],
   ['AUSTRALIA', /\b(australia|australian|sydney|melbourne)\b/i],
+  ['EUROPE', /\b(europe|european|schengen)\b/i], // after the single countries, so "Germany" still wins
 ];
 const TITLE_TOPICS = [
   ['IRELAND', /\bcyber/i],
@@ -217,13 +219,15 @@ export const UpcomingEvents = ({ onOpenModal }) => {
   const categories = ['All', ...TAB_ORDER.filter((cat) => events.some((ev) => ev.category === cat))];
   const currentTab = categories.includes(activeTab) ? activeTab : 'All';
 
-  // Max 3 cards, all from Admin → Events
+  // Up to 6 cards in a 3-column grid: 2 rows of 3 when there are 6, all from Admin → Events
   const displayedEvents = events
     .filter((ev) => currentTab === 'All' || ev.category === currentTab)
-    .slice(0, 3);
+    .slice(0, 6);
 
-  const gridLayout = loading || displayedEvents.length >= 3
-    ? 'md:grid-cols-2 lg:grid-cols-3'
+  const gridLayout = loading || displayedEvents.length >= 4
+    ? 'sm:grid-cols-2 lg:grid-cols-3'
+    : displayedEvents.length === 3
+      ? 'md:grid-cols-2 lg:grid-cols-3'
     : displayedEvents.length === 2
       ? 'md:grid-cols-2 max-w-[900px] mx-auto'
       : 'max-w-[440px] mx-auto';
@@ -315,10 +319,10 @@ export const UpcomingEvents = ({ onOpenModal }) => {
         )}
 
         {/* ════════ 3-CARD COMPACT BALANCED GRID (Overflow Safe) ════════ */}
-        {!noEvents && <div className={`grid grid-cols-1 ${gridLayout} gap-5 w-full min-w-0`}>
+        {!noEvents && <div className={`grid grid-cols-1 ${gridLayout} gap-4 w-full min-w-0`}>
           {loading && [0, 1, 2].map((k) => (
             <div key={k} className="bg-white rounded-2xl overflow-hidden border border-slate-200/90 animate-pulse" aria-hidden="true">
-              <div className="aspect-[2/1] w-full bg-slate-200" />
+              <div className="aspect-[16/9] w-full bg-slate-200" />
               <div className="p-4 space-y-3">
                 <div className="h-4 bg-slate-200 rounded w-11/12" />
                 <div className="h-4 bg-slate-100 rounded w-2/3" />
@@ -354,7 +358,7 @@ export const UpcomingEvents = ({ onOpenModal }) => {
                 className={`bg-white rounded-2xl overflow-hidden border border-slate-200/90 shadow-[0_3px_14px_-2px_rgba(15,23,42,0.06)] hover:shadow-[0_16px_32px_-4px_rgba(15,23,42,0.12)] hover:border-orange-300 transition-all duration-300 flex flex-col group w-full ${ev.detailPath ? 'cursor-pointer' : ''}`}
               >
                 {/* ──── TOP COMPACT 2:1 COVER IMAGE (Zero Cropping - Full Text & Expert Visible) ──── */}
-                <div className="relative aspect-[2/1] w-full overflow-hidden bg-slate-900 border-b border-slate-100">
+                <div className="relative aspect-[16/9] w-full overflow-hidden bg-slate-900 border-b border-slate-100">
                   <img
                     src={eventImg}
                     alt={ev.title}
@@ -386,21 +390,21 @@ export const UpcomingEvents = ({ onOpenModal }) => {
                   {/* Bottom strip: date on the left, category on the right.
                       (The category used to sit top-right, right on top of the expert's face in the banner.) */}
                   <div className="absolute bottom-2.5 left-2.5 right-2.5 flex items-center justify-between gap-2 text-white z-10">
-                    <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-slate-950/75 backdrop-blur-md text-[11px] font-semibold text-white/95 border border-white/15 shadow-sm min-w-0">
+                    <div className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-slate-950/75 backdrop-blur-md text-[10px] font-semibold text-white/95 border border-white/15 shadow-sm min-w-0">
                       <Calendar className="w-3 h-3 text-[#FED7CE] shrink-0" />
                       <span className="truncate">{ev.date} • {ev.time}</span>
                     </div>
-                    <span className="px-2.5 py-0.5 rounded-full bg-[#DE5C2B] text-white text-[10px] font-extrabold uppercase tracking-wider shadow-sm shrink-0 whitespace-nowrap">
+                    <span className="px-2 py-0.5 rounded-full bg-[#DE5C2B] text-white text-[9px] font-extrabold uppercase tracking-wider shadow-sm shrink-0 whitespace-nowrap">
                       {ev.badge || 'Masterclass'}
                     </span>
                   </div>
                 </div>
 
                 {/* ──── BOTTOM COMPACT CONTENT BODY ──── */}
-                <div className="p-4 sm:p-4.5 flex flex-col justify-between flex-1 bg-white">
+                <div className="p-3.5 flex flex-col justify-between flex-1 bg-white">
                   <div>
                     {/* Title */}
-                    <h3 className="font-outfit text-[15px] sm:text-[16px] font-bold text-[#111111] leading-snug group-hover:text-[#DE5C2B] transition-colors mb-2 line-clamp-2 min-h-[42px]" title={ev.title}>
+                    <h3 className="font-outfit text-[14px] font-bold text-[#111111] leading-snug group-hover:text-[#DE5C2B] transition-colors mb-2 line-clamp-2 min-h-[38px]" title={ev.title}>
                       {ev.detailPath ? (
                         <Link to={ev.detailPath} onClick={(e) => e.stopPropagation()} className="focus-visible:outline-none focus-visible:underline">
                           {ev.title}
@@ -462,7 +466,7 @@ export const UpcomingEvents = ({ onOpenModal }) => {
                           e.stopPropagation();
                           handleCta(ev);
                         }}
-                        className="w-full flex items-center justify-center gap-2.5 py-2.5 px-4 rounded-full bg-[#111111] hover:bg-[#DE5C2B] text-white text-[13px] font-bold shadow-xs hover:shadow-md hover:shadow-orange-500/20 transition-all duration-200 cursor-pointer group/btn"
+                        className="w-full flex items-center justify-center gap-2 py-2 px-3 rounded-full bg-[#111111] hover:bg-[#DE5C2B] text-white text-[12.5px] font-bold shadow-xs hover:shadow-md hover:shadow-orange-500/20 transition-all duration-200 cursor-pointer group/btn"
                       >
                         <span className="truncate">{ev.ctaLabel || 'Claim Free VIP Seat'}</span>
                         <span className="w-6 h-6 rounded-full bg-white text-black flex items-center justify-center transition-transform group-hover/btn:translate-x-0.5 shrink-0">

@@ -77,13 +77,13 @@ const Footer = () => {
     {
       name: 'Instagram',
       icon: InstagramLogo,
-      href: 'https://instagram.com/unicoach.in',
+      href: 'https://www.instagram.com/unicoachglobal/',
       colorClass: 'bg-gradient-to-tr from-[#f09433] via-[#dc2743] to-[#bc1888] text-white shadow-xs hover:brightness-110'
     },
     {
       name: 'LinkedIn',
       icon: LinkedinLogo,
-      href: 'https://www.linkedin.com/company/unicoachglobal/posts/?feedView=all',
+      href: 'https://www.linkedin.com/company/unicoachglobal/',
       colorClass: 'bg-[#0A66C2] text-white shadow-xs hover:brightness-110'
     },
     {

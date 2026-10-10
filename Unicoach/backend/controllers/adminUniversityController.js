@@ -168,7 +168,7 @@ exports.createUniversity = async (req, res) => {
       ieltsScore: ieltsScore || 'IELTS 6.0+',
       greExam: greExam || 'GRE Waived',
       workExp: workExp || 'Freshers Eligible',
-      acceptanceRate: acceptanceRate || '66%'
+      acceptanceRate: acceptanceRate || undefined
     });
 
     await newUniversity.save();

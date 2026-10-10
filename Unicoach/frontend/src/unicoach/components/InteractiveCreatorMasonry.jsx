@@ -22,12 +22,12 @@ const CreatorCard = ({ item, tabIndex }) => (
     tabIndex={tabIndex}
     className="bg-white rounded-[22px] p-3 sm:p-3.5 border border-slate-200/90 shadow-[0_4px_16px_rgba(0,0,0,0.06)] hover:shadow-xl transition-all duration-300 hover:scale-[1.02] cursor-pointer block text-left group shrink-0"
   >
-    {/* Image Container with 4:3 Aspect Ratio — full face, head, shoulders centered */}
+    {/* Image Container with 4:3 Aspect Ratio — anchored to the top so the head is never cropped */}
     <div className="relative w-full aspect-[4/3] rounded-[16px] overflow-hidden bg-slate-100 mb-2.5 shadow-2xs">
       <img
         src={item.image}
         alt={item.name}
-        className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
+        className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500"
         loading="lazy"
       />
       {item.badge && (

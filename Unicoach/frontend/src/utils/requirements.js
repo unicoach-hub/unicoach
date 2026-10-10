@@ -23,14 +23,43 @@ export const getOfficialAcceptanceRate = (uni) => {
   return typeof uni.acceptanceRate === 'number' && Number.isFinite(uni.acceptanceRate) ? uni.acceptanceRate : null;
 };
 
+// University-wide minimum English requirement from the university's central admissions page
+// (University.englishRequirement, set by backend/scripts/dataSync/englishRequirementsSync.js). Independent of
+// requirementsSource: having it never makes the placeholder GPA/GRE fields count as official.
+export const getOfficialEnglish = (uni) => {
+  const e = uni && uni.englishRequirement;
+  if (!e || !e.sourceUrl) return null;
+  const ielts = positiveNumber(e.ieltsOverall);
+  const toefl = positiveNumber(e.toeflIbt);
+  if (!ielts && !toefl) return null;
+  let host;
+  try { host = new URL(e.sourceUrl).hostname.replace(/^www\./, ''); } catch { host = ''; }
+  const checked = e.checkedAt ? new Date(e.checkedAt) : null;
+  return {
+    ielts,
+    ieltsMinBand: positiveNumber(e.ieltsMinBand),
+    toefl,
+    sourceUrl: e.sourceUrl,
+    sourceLabel: `${host || 'University website'}${checked && !Number.isNaN(checked.getTime()) ? `, checked ${checked.toLocaleDateString('en-GB', { month: 'short', year: 'numeric' })}` : ''}`,
+  };
+};
+
 /**
- * Every requirement field is null unless `uni.requirementsSource` is set.
+ * Every requirement field is null unless `uni.requirementsSource` is set (IELTS/TOEFL may instead come from
+ * getOfficialEnglish).
  * gpaPercent / ielts / gre: numbers. greRequired: boolean. workExp / minScoreText / ieltsText / eligibilityText:
  * the university's own text. acceptanceRate: see getOfficialAcceptanceRate.
  */
 export const getOfficialRequirements = (uni) => {
   const source = uni ? nonEmptyText(uni.requirementsSource) : null;
   const acceptanceRate = getOfficialAcceptanceRate(uni);
+  const english = getOfficialEnglish(uni);
+  const englishFields = english ? {
+    ielts: english.ielts,
+    ieltsText: english.ielts ? `${english.ielts} overall${english.ieltsMinBand ? `, ${english.ieltsMinBand} each band` : ''}` : null,
+    toefl: english.toefl,
+    englishSource: english,
+  } : { toefl: null, englishSource: null };
 
   if (!source) {
     return {
@@ -44,6 +73,7 @@ export const getOfficialRequirements = (uni) => {
       eligibilityText: null,
       source: null,
       acceptanceRate,
+      ...englishFields,
     };
   }
 
@@ -58,6 +88,8 @@ export const getOfficialRequirements = (uni) => {
     eligibilityText: nonEmptyText(uni.eligibility),
     source,
     acceptanceRate,
+    toefl: english?.toefl ?? positiveNumber(uni.minToeflScore),
+    englishSource: english,
   };
 };
 

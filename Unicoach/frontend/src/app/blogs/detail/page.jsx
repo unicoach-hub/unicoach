@@ -115,7 +115,7 @@ const BlogDetailPage = () => {
     }
 
     return (
-        <main className="min-h-screen bg-[#F8FAFC] text-slate-900 pt-24 pb-24 relative overflow-hidden">
+        <main className="min-h-screen bg-[#F8FAFC] text-slate-900 pt-24 pb-24 relative overflow-x-clip">
             
             {/* Ambient Background Blur */}
             <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-orange-100/60 rounded-full blur-[140px] pointer-events-none" />
@@ -178,7 +178,7 @@ const BlogDetailPage = () => {
                                 </span>
                                 <span className="flex items-center gap-1.5">
                                     <User size={14} className="text-indigo-600" />
-                                    By {blog.author?.name || 'UniCoach Senior Counselor'}
+                                    By UniCoach Team
                                 </span>
                             </div>
                         </div>
@@ -236,7 +236,7 @@ const BlogDetailPage = () => {
                     </article>
 
                     {/* Right Sticky Sidebar (4 Columns) */}
-                    <aside className="lg:col-span-4 space-y-6">
+                    <aside className="lg:col-span-4 space-y-6 lg:sticky lg:top-28 lg:self-start">
                         
                         {/* Author & Editorial Info */}
                         <div className="bg-white rounded-3xl p-6 border border-slate-200/80 shadow-sm space-y-4">
@@ -246,10 +246,10 @@ const BlogDetailPage = () => {
                             
                             <div className="flex items-center gap-3">
                                 <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-indigo-600 to-blue-500 text-white font-black text-sm flex items-center justify-center shadow-sm flex-shrink-0">
-                                    {blog.author?.name ? blog.author.name.split(' ').map(n=>n[0]).join('') : 'UC'}
+                                    UC
                                 </div>
                                 <div>
-                                    <span className="block text-slate-900 font-bold text-sm leading-tight">{blog.author?.name || 'UniCoach Advisory Team'}</span>
+                                    <span className="block text-slate-900 font-bold text-sm leading-tight">UniCoach Team</span>
                                     <span className="text-slate-400 text-xs font-semibold">Global Admissions Expert</span>
                                 </div>
                             </div>

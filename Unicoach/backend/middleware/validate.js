@@ -1,4 +1,5 @@
 const { z } = require('zod');
+const { attributionField } = require('../utils/attribution');
 
 /**
  * Higher-order validation middleware using Zod
@@ -35,14 +36,16 @@ const leadSubmitSchema = z.object({
   highestEducation: z.string().optional(),
   currentCity: z.string().optional(),
   source: z.string().optional(),
-  university: z.string().optional()
+  university: z.string().optional(),
+  attribution: attributionField
 });
 
 const userRegisterSchema = z.object({
   name: z.string().min(2, 'Name must be at least 2 characters'),
   email: z.string().email('Invalid email address'),
   phone: z.string().regex(phoneRegex, 'Invalid phone number').optional(),
-  password: z.string().length(6, 'Password must be exactly 6 characters')
+  password: z.string().length(6, 'Password must be exactly 6 characters'),
+  attribution: attributionField
 });
 
 const userLoginSchema = z.object({
@@ -61,7 +64,8 @@ const resetPasswordSchema = z.object({
 });
 
 const googleAuthSchema = z.object({
-  credential: z.string().min(10, 'Google credential token is required')
+  credential: z.string().min(10, 'Google credential token is required'),
+  attribution: attributionField
 });
 
 const adminLoginSchema = z.object({

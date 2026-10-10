@@ -7,6 +7,7 @@ import StatsCard from '../components/StatsCard';
 import API from '../api/axios';
 import { getCachedData, invalidateCache, fetchWithCache } from '../utils/cache';
 import { escapeHtml as esc, plainTextToHtml } from '../utils/escapeHtml';
+import { usePermissions } from '../utils/permissions';
 import { 
   SearchOutlined, 
   EyeOutlined, 
@@ -44,7 +45,6 @@ import {
 
 const { Option } = Select;
 
-const counselors = ['Pooja Sharma', 'Rohan Verma', 'Amit Patel', 'Sara Khan'];
 
 const statusColors = {
   new: 'blue', contacted: 'cyan', qualified: 'green', converted: 'purple', closed: 'red',
@@ -172,6 +172,20 @@ const emailTemplates = [
   }
 ];
 
+// Ad campaign that brought a lead (saved by the website's adTracking.js), e.g. "google / cpc · ielts-delhi"
+const describeAdTouch = (touch) => {
+  if (!touch) return '';
+  if (touch.utm_source || touch.utm_campaign) {
+    return [[touch.utm_source, touch.utm_medium].filter(Boolean).join(' / '), touch.utm_campaign].filter(Boolean).join(' · ');
+  }
+  if (touch.gclid || touch.gbraid || touch.wbraid) return 'Google Ads';
+  if (touch.fbclid) return 'Meta Ads';
+  if (touch.referrer) {
+    try { return new URL(touch.referrer).hostname.replace(/^www\./, ''); } catch { return ''; }
+  }
+  return '';
+};
+
 const Leads = () => {
   const navigate = useNavigate();
   const cachedLeads = getCachedData('/admin/leads:list:all:all:all');
@@ -183,6 +197,60 @@ const Leads = () => {
   const [statusFilter, setStatusFilter] = useState('all');
   const [followUpFilter, setFollowUpFilter] = useState('all'); // all | due
   const [counselorFilter, setCounselorFilter] = useState('all');
+  // Counselors = active staff accounts; leads store the staff id in assignedTo
+  const [counselors, setCounselors] = useState([]);
+  const { user, can } = usePermissions();
+  const ownLeadsOnly = user?.role === 'staff' && user?.leadScope !== 'all';
+  const canReassign = can('leads', 'update') && !ownLeadsOnly;
+  const counselorName = (value) => (!value || value === 'Unassigned' ? 'Unassigned' : counselors.find((c) => c._id === value)?.name || value);
+
+  useEffect(() => {
+    API.get('/admin/staff/assignable').then((res) => setCounselors(res.data || [])).catch(() => {});
+  }, []);
+
+  // Tags: auto ones (event, source, country, intake) come from the server; manual ones the team adds here
+  const [tagFilter, setTagFilter] = useState([]);
+  const [tagCatalog, setTagCatalog] = useState({ auto: [], manual: [] });
+  const [selectedRowKeys, setSelectedRowKeys] = useState([]);
+  const [bulkTags, setBulkTags] = useState([]);
+  const loadTagCatalog = () => API.get('/admin/leads/tags').then((r) => setTagCatalog(r.data || { auto: [], manual: [] })).catch(() => {});
+  useEffect(() => { loadTagCatalog(); }, []);
+  const manualTagOptions = tagCatalog.manual.map((t) => ({ value: t.tag, label: t.tag }));
+  const allTagOptions = [
+    { label: 'Added by the system', options: tagCatalog.auto.map((t) => ({ value: t.tag, label: `${t.tag} (${t.count})` })) },
+    { label: 'Added by the team', options: tagCatalog.manual.map((t) => ({ value: t.tag, label: `${t.tag} (${t.count})` })) },
+  ].filter((g) => g.options.length);
+
+  const saveLeadTags = async (lead, tags) => {
+    try {
+      const { data: res } = await API.patch(`/admin/leads/${lead._id}/tags`, { tags });
+      setData((list) => list.map((l) => (l._id === lead._id ? { ...l, tags: res.tags } : l)));
+      loadTagCatalog();
+    } catch (err) {
+      message.error(err.response?.data?.message || 'Could not save tags');
+    }
+  };
+
+  const applyBulkTags = async (mode) => {
+    if (!bulkTags.length) {
+      message.error('Type or pick a tag first');
+      return;
+    }
+    try {
+      await API.post('/admin/leads/bulk-tags', { ids: selectedRowKeys, [mode]: bulkTags });
+      setData((list) => list.map((l) => {
+        if (!selectedRowKeys.includes(l._id)) return l;
+        const current = l.tags || [];
+        const next = mode === 'add' ? [...new Set([...current, ...bulkTags])] : current.filter((t) => !bulkTags.includes(t));
+        return { ...l, tags: next };
+      }));
+      message.success(mode === 'add' ? `Tag added to ${selectedRowKeys.length} leads` : `Tag removed from ${selectedRowKeys.length} leads`);
+      setBulkTags([]);
+      loadTagCatalog();
+    } catch (err) {
+      message.error(err.response?.data?.message || 'Could not update tags');
+    }
+  };
   const [selectedLead, setSelectedLead] = useState(null);
   const [viewMode, setViewMode] = useState('table'); // 'table' | 'kanban'
 
@@ -647,9 +715,10 @@ const Leads = () => {
   };
 
   const filtered = data.filter(l =>
-    l.name?.toLowerCase().includes(search.toLowerCase()) ||
+    (l.name?.toLowerCase().includes(search.toLowerCase()) ||
     l.email?.toLowerCase().includes(search.toLowerCase()) ||
-    l.phone?.includes(search)
+    l.phone?.includes(search)) &&
+    (!tagFilter.length || tagFilter.some((t) => (l.tags || []).includes(t) || (l.autoTags || []).includes(t)))
   );
 
   const columns = [
@@ -764,17 +833,63 @@ const Leads = () => {
       title: 'Counselor',
       dataIndex: 'assignedTo',
       key: 'assignedTo',
-      render: (counselor, record) => (
+      render: (counselor, record) => (canReassign ? (
         <Select
           value={counselor || 'Unassigned'}
           size="small"
           onChange={(val) => handleCounselorChange(record._id, val)}
           style={{ width: 140 }}
+          labelRender={({ value }) => counselorName(value)}
         >
           <Option value="Unassigned"><span style={{ color: 'var(--ux-text-3)' }}>Unassigned</span></Option>
-          {counselors.map(c => <Option key={c} value={c}>{c}</Option>)}
+          {counselors.map(c => <Option key={c._id} value={c._id}>{c.name}</Option>)}
         </Select>
-      )
+      ) : <span style={{ color: 'var(--ux-text-2)' }}>{counselorName(counselor)}</span>)
+    },
+    {
+      title: 'Tags',
+      key: 'tags',
+      width: 240,
+      render: (_, record) => {
+        const manual = record.tags || [];
+        const auto = record.autoTags || [];
+        return (
+          <div onClick={(e) => e.stopPropagation()} style={{ display: 'flex', flexWrap: 'wrap', gap: 4, alignItems: 'center' }}>
+            {manual.map((t) => <span key={t} className="lead-tag">{t}</span>)}
+            {auto.slice(0, 2).map((t) => <span key={t} className="lead-tag lead-tag--auto" title="Added automatically">{t}</span>)}
+            {auto.length > 2 && (
+              <Tooltip title={auto.slice(2).join(', ')}><span className="lead-tag lead-tag--auto">+{auto.length - 2}</span></Tooltip>
+            )}
+            {can('leads', 'update') && (
+              <Popover
+                trigger="click"
+                title="Your tags for this lead"
+                content={(
+                  <div style={{ width: 260 }}>
+                    <Select
+                      mode="tags"
+                      style={{ width: '100%' }}
+                      defaultValue={manual}
+                      options={manualTagOptions}
+                      placeholder="Type a tag and press Enter"
+                      onChange={(tags) => saveLeadTags(record, tags)}
+                      tokenSeparators={[',']}
+                    />
+                    {auto.length > 0 && (
+                      <div style={{ marginTop: 10 }}>
+                        <div style={{ fontSize: 11.5, color: 'var(--ux-text-3)', marginBottom: 4 }}>Added automatically</div>
+                        {auto.map((t) => <span key={t} className="lead-tag lead-tag--auto">{t}</span>)}
+                      </div>
+                    )}
+                  </div>
+                )}
+              >
+                <button type="button" className="lead-tag lead-tag--add" aria-label={`Edit tags for ${record.name}`}>+ Tag</button>
+              </Popover>
+            )}
+          </div>
+        );
+      },
     },
     {
       title: 'Source',
@@ -820,7 +935,7 @@ const Leads = () => {
       render: (_, record) => (
         <div className="action-btn-group">
           <button onClick={(e) => { e.stopPropagation(); handleOpenLead(record); }} className="action-btn action-btn--view" title="Open Lead Details"><EyeOutlined /></button>
-          <Popconfirm
+          {can('leads', 'delete') && <Popconfirm
             title="Delete this lead?"
             description="This permanently removes the lead and its activity history."
             okText="Delete"
@@ -829,7 +944,7 @@ const Leads = () => {
             onCancel={(e) => e?.stopPropagation()}
           >
             <button onClick={(e) => e.stopPropagation()} className="action-btn action-btn--delete" title="Delete Lead"><DeleteOutlined /></button>
-          </Popconfirm>
+          </Popconfirm>}
         </div>
       ),
     },
@@ -979,7 +1094,7 @@ const Leads = () => {
                           <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}><MailOutlined style={{ marginRight: 6, color: 'var(--ux-text-3)' }} />{l.email}</span>
                           <span style={{ color: 'var(--ux-text-3)', fontSize: '11px', marginTop: '2px' }}><ReadOutlined style={{ marginRight: 6 }} />{l.highestEducation}</span>
                           <span style={{ color: 'var(--ux-text-3)', fontSize: '11px' }}><EnvironmentOutlined style={{ marginRight: 6 }} />{l.currentCity}</span>
-                          <span style={{ color: 'var(--ux-text-2)', fontSize: '11px', fontWeight: 500, marginTop: '4px' }}><UserOutlined style={{ marginRight: 6, color: 'var(--ux-text-3)' }} />Counselor: <span style={{ color: 'var(--ux-ink)', fontWeight: 600 }}>{l.assignedTo || 'Unassigned'}</span></span>
+                          <span style={{ color: 'var(--ux-text-2)', fontSize: '11px', fontWeight: 500, marginTop: '4px' }}><UserOutlined style={{ marginRight: 6, color: 'var(--ux-text-3)' }} />Counselor: <span style={{ color: 'var(--ux-ink)', fontWeight: 600 }}>{counselorName(l.assignedTo)}</span></span>
                         </div>
 
                         {/* Action buttons */}
@@ -1039,11 +1154,23 @@ const Leads = () => {
               <Option value="all">All lead interactions</Option>
               <Option value="due">Follow-up due / overdue</Option>
             </Select>
-            <Select value={counselorFilter} onChange={setCounselorFilter} style={{ width: 160 }}>
-              <Option value="all">All counselors</Option>
-              <Option value="Unassigned">Unassigned</Option>
-              {counselors.map(c => <Option key={c} value={c}>{c}</Option>)}
-            </Select>
+            <Select
+              mode="multiple"
+              allowClear
+              placeholder="Filter by tag"
+              value={tagFilter}
+              onChange={setTagFilter}
+              options={allTagOptions}
+              maxTagCount="responsive"
+              style={{ minWidth: 180, maxWidth: 320 }}
+            />
+            {!ownLeadsOnly && (
+              <Select value={counselorFilter} onChange={setCounselorFilter} style={{ width: 160 }}>
+                <Option value="all">All counselors</Option>
+                <Option value="Unassigned">Unassigned</Option>
+                {counselors.map(c => <Option key={c._id} value={c._id}>{c.name}</Option>)}
+              </Select>
+            )}
 
             {/* Pipeline Selector Dropdown */}
             <Select 
@@ -1113,12 +1240,14 @@ const Leads = () => {
             >
               Export leads
             </Button>
-            <Button
-              icon={<UploadOutlined />}
-              onClick={() => document.getElementById('csv-import-file').click()}
-            >
-              Import leads
-            </Button>
+            {can('leads', 'create') && !ownLeadsOnly && (
+              <Button
+                icon={<UploadOutlined />}
+                onClick={() => document.getElementById('csv-import-file').click()}
+              >
+                Import leads
+              </Button>
+            )}
             <Button
               type="primary"
               icon={<RobotOutlined />}
@@ -1140,9 +1269,27 @@ const Leads = () => {
         
         {viewMode === 'table' ? (
           <div className="page-table-card">
+            {selectedRowKeys.length > 0 && (
+              <div className="lead-bulk-bar">
+                <strong>{selectedRowKeys.length} selected</strong>
+                <Select
+                  mode="tags"
+                  value={bulkTags}
+                  onChange={setBulkTags}
+                  options={manualTagOptions}
+                  placeholder="Tag, e.g. VIP"
+                  style={{ minWidth: 200 }}
+                  tokenSeparators={[',']}
+                />
+                <Button type="primary" size="small" onClick={() => applyBulkTags('add')}>Add tag</Button>
+                <Button size="small" onClick={() => applyBulkTags('remove')}>Remove tag</Button>
+                <Button size="small" type="text" onClick={() => setSelectedRowKeys([])}>Clear</Button>
+              </div>
+            )}
             <Table 
               rowKey="_id" 
               columns={columns} 
+              rowSelection={can('leads', 'update') ? { selectedRowKeys, onChange: setSelectedRowKeys } : undefined}
               dataSource={filtered} 
               loading={loading} 
               pagination={{ pageSize: 15 }} 
@@ -1234,6 +1381,14 @@ const Leads = () => {
                         <span>
                           Latest enquiry: <strong style={{ color: 'var(--ux-brand-strong)', fontWeight: 600 }}>{selectedLead.latestSource}</strong>
                           {selectedLead.lastInquiryAt && ` (${new Date(selectedLead.lastInquiryAt).toLocaleDateString()})`}
+                        </span>
+                      </>
+                    )}
+                    {describeAdTouch(selectedLead.attribution?.lastTouch) && (
+                      <>
+                        <span>•</span>
+                        <span title={describeAdTouch(selectedLead.attribution?.firstTouch) ? `First visit: ${describeAdTouch(selectedLead.attribution.firstTouch)}` : undefined}>
+                          Campaign: <strong style={{ color: 'var(--ux-ink)', fontWeight: 600 }}>{describeAdTouch(selectedLead.attribution.lastTouch)}</strong>
                         </span>
                       </>
                     )}
@@ -1540,9 +1695,11 @@ const Leads = () => {
                       value={selectedLead.assignedTo || 'Unassigned'} 
                       style={{ width: '100%' }}
                       onChange={(val) => handleCounselorChange(selectedLead._id, val)}
+                      disabled={!canReassign}
+                      labelRender={({ value }) => counselorName(value)}
                     >
                       <Option value="Unassigned"><span style={{ color: 'var(--ux-text-3)' }}>Unassigned</span></Option>
-                      {counselors.map(c => <Option key={c} value={c}>{c}</Option>)}
+                      {counselors.map(c => <Option key={c._id} value={c._id}>{c.name}</Option>)}
                     </Select>
                   </div>
 

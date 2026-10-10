@@ -1,33 +1,39 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import CoverImage from '../../components/CoverImage';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
     Play, 
     Tv, 
     BookOpen, 
-    TrendingUp, 
     Newspaper, 
-    Flame, 
     Clock, 
-    Share2, 
-    Heart, 
     X,
-    Volume2,
-    VolumeX,
-    Maximize2,
     Sparkles,
     Calendar,
     ArrowRight
 } from 'lucide-react';
 import PageLoader from '../../components/PageLoader';
 import { API_BASE_URL } from '../../config';
+import { STUDENT_VIDEOS } from '../../data/studentVideos';
+
+// Real student stories, shaped like digest items so the same player modal can play them
+const STUDENT_STORIES = STUDENT_VIDEOS.map((v) => ({
+    id: v.id,
+    title: `${v.name}'s study abroad story`,
+    description: `${v.name}, a UniCoach student, talks about their journey abroad.`,
+    image: v.thumbnail,
+    videoUrl: v.videoUrl,
+    isVideo: true,
+    isLocal: true,
+    portrait: true,
+    name: v.name,
+}));
 
 const UniCoachDigestPage = () => {
     const navigate = useNavigate();
     const [activeCategory, setActiveCategory] = useState('all'); // 'all', 'reviews', 'insights', 'news'
     const [selectedVideo, setSelectedVideo] = useState(null); // For custom video player modal
-    const [isPlaying, setIsPlaying] = useState(true);
-    const [isMuted, setIsMuted] = useState(false);
     const [likedCards, setLikedCards] = useState({});
     const [digests, setDigests] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -54,9 +60,13 @@ const UniCoachDigestPage = () => {
         setLikedCards(prev => ({ ...prev, [id]: !prev[id] }));
     };
 
-    const handlePlayVideo = (video) => {
-        setSelectedVideo(video);
-        setIsPlaying(true);
+    // Only real videos open the player; articles go to the guides
+    const handlePlayVideo = (item) => {
+        if (!item?.videoUrl) {
+            navigate('/blogs');
+            return;
+        }
+        setSelectedVideo(item);
     };
 
     const getAbsoluteUrl = (url) => {
@@ -94,7 +104,7 @@ const UniCoachDigestPage = () => {
         categoryLabel: item.category === 'reviews' ? 'Student Reviews' : item.category === 'insights' ? 'Expert Insights' : 'Trending News',
         title: item.title,
         description: item.description,
-        image: item.imageUrl ? getAbsoluteUrl(item.imageUrl) : "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=800&auto=format&fit=crop&q=80",
+        image: item.imageUrl ? getAbsoluteUrl(item.imageUrl) : null,
         isVideo: item.isVideo,
         videoUrl: item.videoUrl,
         length: item.length,
@@ -107,22 +117,20 @@ const UniCoachDigestPage = () => {
     // 1. Horizontal banner spotlights (newest first)
     const spotlightItems = sortedDigests.filter(d => d.isSpotlight).map(mapItem);
 
-    // 2. Large left video player card (newest video review or video item)
-    const featuredReviewItem = sortedDigests.find(d => d.isVideo) || sortedDigests[0];
-    const featuredReview = featuredReviewItem ? mapItem(featuredReviewItem) : null;
-
-    // 3. Right side sub link recommendations (Expert Insights posts)
+    // 2. Right side sub link recommendations
     const moreInsights = sortedDigests
-        .filter(d => d._id !== featuredReviewItem?._id)
+        .filter(d => d.category !== 'reviews')
         .slice(0, 3)
         .map(mapItem);
 
-    // 4. Main listing grid content cards
+    // 3. Main listing grid: under "All", items already in the spotlight row aren't repeated
     const gridItems = sortedDigests.map(mapItem);
+    const spotlightIds = new Set(spotlightItems.map((item) => item.id));
 
-    const filteredItems = activeCategory === 'all' 
-        ? gridItems 
+    const filteredItems = activeCategory === 'all'
+        ? gridItems.filter(item => !spotlightIds.has(item.id))
         : gridItems.filter(item => item.category === activeCategory);
+    const showStories = activeCategory === 'all' || activeCategory === 'reviews';
 
     if (loading) {
         return <PageLoader />;
@@ -186,19 +194,98 @@ const UniCoachDigestPage = () => {
                 </div>
             ) : (
                 <>
+                    {/* Real student stories + guides */}
+                    {showStories && (
+                        <section className="max-w-[1240px] mx-auto px-4 sm:px-6 md:px-10 grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 mb-12">
+                            <div className="lg:col-span-8 bg-white border border-slate-200/60 rounded-[28px] p-5 sm:p-6 shadow-sm text-left">
+                                <div className="flex items-end justify-between gap-3 mb-5">
+                                    <div>
+                                        <span className="text-[10px] font-extrabold uppercase tracking-wider text-[#DE5C2B] bg-orange-50 px-3 py-1 rounded-lg border border-orange-100">
+                                            Student Reviews
+                                        </span>
+                                        <h2 className="mt-3 text-xl md:text-2xl font-black text-slate-800 tracking-tight">Real student stories</h2>
+                                        <p className="text-slate-500 text-xs md:text-sm font-semibold mt-1">Hear it straight from UniCoach students who made the move abroad.</p>
+                                    </div>
+                                </div>
+                                <div className="grid grid-cols-3 sm:grid-cols-6 gap-2.5 sm:gap-3">
+                                    {STUDENT_STORIES.map((story) => (
+                                        <button
+                                            key={story.id}
+                                            type="button"
+                                            onClick={() => handlePlayVideo(story)}
+                                            className="group relative aspect-[9/16] rounded-2xl overflow-hidden bg-slate-100 cursor-pointer text-left"
+                                            aria-label={`Play ${story.title}`}
+                                        >
+                                            <img src={story.image} alt="" loading="lazy" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                                            <span className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-950/10 to-transparent" />
+                                            <span className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/90 flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
+                                                <Play size={15} className="fill-[#DE5C2B] text-[#DE5C2B] ml-0.5" />
+                                            </span>
+                                            <span className="absolute bottom-2 left-2.5 right-2 text-white text-xs font-black">{story.name}</span>
+                                        </button>
+                                    ))}
+                                </div>
+                            </div>
+
+                            <div className="lg:col-span-4 flex flex-col gap-6">
+                                <div className="bg-slate-900 text-white rounded-[28px] p-6 shadow-md relative overflow-hidden flex-grow flex flex-col justify-between min-h-[220px]">
+                                    <div className="absolute -top-12 -right-12 w-44 h-44 bg-[#DE5C2B]/30 rounded-full blur-2xl pointer-events-none" />
+                                    <div className="space-y-3 relative z-10 text-left">
+                                        <span className="text-[9px] font-extrabold uppercase text-orange-200 tracking-widest block bg-white/10 w-fit px-2.5 py-1 rounded-md">
+                                            Guides
+                                        </span>
+                                        <h3 className="text-lg md:text-xl font-bold tracking-tight leading-snug">
+                                            Country guides, intakes and admission tips
+                                        </h3>
+                                        <p className="text-slate-300 text-xs font-semibold leading-relaxed">
+                                            Step-by-step articles from the UniCoach team on choosing a country, applying and getting your visa.
+                                        </p>
+                                    </div>
+                                    <button
+                                        onClick={() => navigate('/blogs')}
+                                        className="relative mt-6 inline-flex items-center gap-1 text-white font-bold text-xs bg-[#DE5C2B] hover:bg-[#C04A1D] px-4 py-3 rounded-2xl w-fit transition-colors cursor-pointer"
+                                    >
+                                        <span>Browse guides</span>
+                                        <ArrowRight size={14} />
+                                    </button>
+                                </div>
+
+                                {moreInsights.length > 0 && (
+                                    <div className="bg-white border border-slate-200/60 rounded-[28px] p-5 shadow-sm space-y-4 text-left">
+                                        <h4 className="text-xs font-black text-slate-400 uppercase tracking-widest">More Insights</h4>
+                                        <div className="space-y-3.5">
+                                            {moreInsights.map((insight) => (
+                                                <Link
+                                                    to="/blogs"
+                                                    key={insight.id}
+                                                    className="block group text-xs text-slate-700 font-semibold leading-snug hover:text-indigo-600 transition-colors"
+                                                >
+                                                    <span className="line-clamp-2">{insight.title}</span>
+                                                    <span className="block text-[10px] text-slate-400 font-bold mt-1 group-hover:translate-x-1 transition-transform">Read article →</span>
+                                                </Link>
+                                            ))}
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
+                        </section>
+                    )}
+
                     {/* Spotlight Sliding Horizontal Carousel */}
                     {spotlightItems.length > 0 && (
-                        <section className="max-w-[1280px] mx-auto px-4 md:px-8 mb-12">
-                            <div className="flex overflow-x-auto gap-6 pb-6 px-2 scrollbar-hide snap-x">
+                        <section className="max-w-[1240px] mx-auto px-4 sm:px-6 md:px-10 mb-12">
+                            <div className={spotlightItems.length <= 2 ? `grid grid-cols-1 ${spotlightItems.length === 2 ? 'lg:grid-cols-2' : ''} gap-6` : 'flex overflow-x-auto gap-6 pb-2 px-2 scrollbar-hide snap-x'}>
                                 {spotlightItems.map((item) => (
                             <div 
                                 key={item.id}
-                                className="bg-white border border-slate-200/50 rounded-3xl p-5 md:p-6 shadow-sm hover:shadow-lg transition-all duration-300 min-w-[320px] sm:min-w-[450px] md:min-w-[700px] max-w-[800px] flex-shrink-0 flex flex-col md:flex-row gap-6 snap-center group"
+                                className={`bg-white border border-slate-200/50 rounded-3xl p-5 md:p-6 shadow-sm hover:shadow-lg transition-all duration-300 ${spotlightItems.length <= 2 ? 'w-full' : 'w-[85%] md:w-[700px] max-w-[800px] flex-shrink-0'} flex flex-col md:flex-row gap-6 snap-center group`}
                             >
                                 <div className="relative md:w-1/2 aspect-[16/10] md:aspect-auto rounded-2xl overflow-hidden bg-slate-100 border border-slate-100/50">
-                                    <img 
-                                        src={item.image} 
-                                        alt={item.title} 
+                                    <CoverImage
+                                        src={item.image}
+                                        alt={item.title}
+                                        title={item.title}
+                                        category={item.categoryLabel}
                                         className="w-full h-full object-cover group-hover:scale-103 transition-transform duration-500"
                                     />
                                     {item.isVideo && (
@@ -251,7 +338,8 @@ const UniCoachDigestPage = () => {
                 </section>
             )}
 
-            {/* Core Listing Grid */}
+            {/* Core Listing Grid (under "All", nothing to show once every item is in the spotlight row) */}
+            {(filteredItems.length > 0 || activeCategory !== 'all') && (
             <section className="max-w-[1240px] mx-auto px-6 md:px-10 mb-12">
                 {filteredItems.length > 0 ? (
                     <motion.div 
@@ -270,9 +358,11 @@ const UniCoachDigestPage = () => {
                                     className="bg-white border border-slate-200/60 rounded-[32px] overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300 flex flex-col justify-between group"
                                 >
                                     <div className="relative overflow-hidden aspect-[16/10] bg-slate-100 border-b border-slate-100">
-                                        <img 
-                                            src={item.image} 
-                                            alt={item.title} 
+                                        <CoverImage
+                                            src={item.image}
+                                            alt={item.title}
+                                            title={item.title}
+                                            category={item.categoryLabel}
                                             className="w-full h-full object-cover group-hover:scale-102 transition-transform duration-700"
                                         />
                                         {item.isVideo && (
@@ -331,111 +421,20 @@ const UniCoachDigestPage = () => {
                     </div>
                 )}
             </section>
+            )}
 
-            {/* Split Section: Featured Reviews & Expert Insights */}
-            <section className="max-w-[1240px] mx-auto px-6 md:px-10 grid grid-cols-1 lg:grid-cols-12 gap-8 mb-16">
-                
-                {/* Left Side: Large Student Review Player Card (8 Columns) */}
-                {featuredReview ? (
-                    <div className="lg:col-span-8 bg-white border border-slate-200/60 rounded-[32px] overflow-hidden shadow-sm flex flex-col justify-between group">
-                        <div className="relative aspect-[16/9] bg-slate-100 border-b border-slate-100 overflow-hidden">
-                            <img 
-                                src={featuredReview.image} 
-                                alt={featuredReview.title}
-                                className="w-full h-full object-cover group-hover:scale-102 transition-transform duration-700"
-                            />
-                            <div className="absolute inset-0 bg-slate-950/25 flex items-center justify-center">
-                                <div 
-                                    onClick={() => handlePlayVideo(featuredReview)}
-                                    className="w-16 h-16 rounded-full bg-white/95 text-indigo-650 flex items-center justify-center shadow-xl cursor-pointer hover:scale-110 transition-transform duration-300"
-                                >
-                                    <Play size={24} className="fill-indigo-650 ml-1" />
-                                </div>
-                            </div>
-                            <span className="absolute bottom-4 right-4 bg-slate-900/80 backdrop-blur-sm border border-white/10 px-3 py-1 rounded-md text-xs font-black text-white">
-                                {featuredReview.length}
-                            </span>
-                        </div>
-
-                        <div className="p-6 md:p-8 space-y-4 text-left">
-                            <div className="flex items-center justify-between">
-                                <span className="text-[10px] font-extrabold uppercase tracking-wider text-indigo-600 bg-indigo-50 px-3 py-1 rounded-lg border border-indigo-100/30">
-                                    Student Reviews
-                                </span>
-                                <span className="text-slate-400 text-xs font-bold">Published {featuredReview.date}</span>
-                            </div>
-                            <h3 className="text-xl md:text-2xl font-black text-slate-800 tracking-tight leading-snug">
-                                {featuredReview.title}
-                            </h3>
-                            <p className="text-slate-600 text-xs md:text-sm font-semibold leading-relaxed">
-                                {featuredReview.description}
-                            </p>
-                        </div>
-                    </div>
-                ) : (
-                    <div className="lg:col-span-8 bg-white border border-slate-200/60 rounded-[32px] p-12 text-center text-slate-400 font-semibold shadow-sm flex items-center justify-center">
-                        Create a Student Review video in the admin panel to display here.
-                    </div>
-                )}
-
-                {/* Right Side: Expert Insights Panel (4 Columns) */}
-                <div className="lg:col-span-4 flex flex-col justify-between gap-6">
-                    <div className="bg-indigo-900 text-white rounded-[32px] p-6 shadow-md relative overflow-hidden flex-grow flex flex-col justify-between min-h-[300px]">
-                        <div className="absolute top-[-50px] right-[-50px] w-48 h-48 bg-indigo-600/30 rounded-full blur-2xl pointer-events-none"></div>
-                        
-                        <div className="space-y-4 relative z-10 text-left">
-                            <span className="text-[9px] font-extrabold uppercase text-indigo-300 tracking-widest block bg-indigo-950/40 w-fit px-2.5 py-1 rounded-md">
-                                Hot Report
-                            </span>
-                            <h3 className="text-lg md:text-xl font-bold tracking-tight leading-snug">
-                                Where Indian Students Are Going in 2026-2027
-                            </h3>
-                            <p className="text-slate-200 text-xs font-semibold leading-relaxed">
-                                Our counsellors review the latest migration shifts and country-specific scholarship ratios for undergraduate and master's applicants.
-                            </p>
-                        </div>
-                        
-                        <button 
-                            onClick={() => navigate('/blogs')}
-                            className="mt-6 inline-flex items-center gap-1 text-white font-bold text-xs hover:text-indigo-200 tracking-wide bg-indigo-950/40 hover:bg-indigo-950/60 p-3 rounded-2xl w-fit transition-colors cursor-pointer border border-indigo-700/30"
-                        >
-                            <span>Read Report</span>
-                            <ArrowRight size={14} />
-                        </button>
-                    </div>
-
-                    {/* Sub Links List */}
-                    {moreInsights.length > 0 && (
-                        <div className="bg-white border border-slate-200/60 rounded-[32px] p-5 shadow-sm space-y-4 text-left">
-                            <h4 className="text-xs font-black text-slate-400 uppercase tracking-widest">More Insights</h4>
-                            <div className="space-y-3.5">
-                                {moreInsights.map((insight) => (
-                                    <Link 
-                                        to="/blogs" 
-                                        key={insight.id}
-                                        className="block group text-xs text-slate-700 font-semibold leading-snug hover:text-indigo-600 transition-colors"
-                                    >
-                                        <span className="line-clamp-2">{insight.title}</span>
-                                        <span className="block text-[10px] text-slate-400 font-bold mt-1 group-hover:translate-x-1 transition-transform">Read article →</span>
-                                    </Link>
-                                ))}
-                            </div>
-                        </div>
-                    )}
-                </div>
-            </section>
             </>
             )}
 
             {/* Custom Simulated Video Player Modal */}
             <AnimatePresence>
                 {selectedVideo && (
-                    <div className="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 flex items-center justify-center p-4">
+                    <div className="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-[1000] flex items-center justify-center p-4">
                         <motion.div
                             initial={{ opacity: 0, scale: 0.95, y: 30 }}
                             animate={{ opacity: 1, scale: 1, y: 0 }}
                             exit={{ opacity: 0, scale: 0.95, y: 30 }}
-                            className="bg-slate-900 border border-slate-800 rounded-[32px] overflow-hidden max-w-4xl w-full shadow-2xl relative"
+                            className={`bg-slate-900 border border-slate-800 rounded-[28px] overflow-hidden w-full shadow-2xl relative ${selectedVideo.portrait ? 'max-w-sm' : 'max-w-4xl'}`}
                         >
                             {/* Close cross */}
                             <button
@@ -446,89 +445,31 @@ const UniCoachDigestPage = () => {
                             </button>
 
                             {/* Video Screen Layout */}
-                            <div className="relative aspect-[16/9] bg-black">
-                                {selectedVideo.videoUrl ? (
-                                    selectedVideo.videoUrl.includes('youtube.com') || selectedVideo.videoUrl.includes('youtu.be') ? (
-                                        <iframe
-                                            src={getYoutubeEmbedUrl(selectedVideo.videoUrl)}
-                                            title={selectedVideo.title}
-                                            frameBorder="0"
-                                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                                            allowFullScreen
-                                            className="w-full h-full object-cover"
-                                        />
-                                    ) : (
-                                        <video
-                                            src={getAbsoluteUrl(selectedVideo.videoUrl)}
-                                            controls
-                                            autoPlay
-                                            className="w-full h-full object-contain"
-                                        />
-                                    )
+                            <div className={`relative bg-black ${selectedVideo.portrait ? 'aspect-[9/16] max-h-[72vh] mx-auto' : 'aspect-[16/9]'}`}>
+                                {selectedVideo.videoUrl.includes('youtube.com') || selectedVideo.videoUrl.includes('youtu.be') ? (
+                                    <iframe
+                                        src={getYoutubeEmbedUrl(selectedVideo.videoUrl)}
+                                        title={selectedVideo.title}
+                                        frameBorder="0"
+                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                        allowFullScreen
+                                        className="w-full h-full object-cover"
+                                    />
                                 ) : (
-                                    <>
-                                        <img 
-                                            src={selectedVideo.image} 
-                                            alt="Video Player Background" 
-                                            className={`w-full h-full object-cover transition-opacity duration-500 ${isPlaying ? 'opacity-90' : 'opacity-50'}`}
-                                        />
-                                        
-                                        {/* Overlay Play State */}
-                                        {!isPlaying && (
-                                            <div className="absolute inset-0 flex items-center justify-center">
-                                                <button 
-                                                    onClick={() => setIsPlaying(true)}
-                                                    className="w-16 h-16 rounded-full bg-indigo-650/90 text-white flex items-center justify-center shadow-lg transform scale-110 animate-pulse cursor-pointer"
-                                                >
-                                                    <Play size={24} className="fill-white ml-1" />
-                                                </button>
-                                            </div>
-                                        )}
-
-                                        {/* Simulating Scrolling Subtitles */}
-                                        {isPlaying && (
-                                            <div className="absolute bottom-16 left-1/2 -translate-x-1/2 bg-black/75 px-4 py-1.5 rounded-lg border border-white/5 text-[11px] md:text-xs text-white text-center font-bold max-w-lg select-none">
-                                                "...this structured assistance model made a substantial difference in our final visa approvals..."
-                                            </div>
-                                        )}
-
-                                        {/* Media Controls overlay */}
-                                        <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black via-black/40 to-transparent flex flex-col gap-3 select-none">
-                                            {/* Timeline progress line */}
-                                            <div className="w-full h-1.5 bg-white/20 rounded-full overflow-hidden cursor-pointer relative group">
-                                                <div className={`h-full bg-indigo-500 ${isPlaying ? 'w-[42%] animate-pulse' : 'w-[42%]'}`} />
-                                                <div className="absolute top-1/2 -translate-y-1/2 left-[42%] w-3 h-3 bg-white rounded-full scale-0 group-hover:scale-100 transition-transform"></div>
-                                            </div>
-
-                                            {/* Controls */}
-                                            <div className="flex items-center justify-between text-white text-xs">
-                                                <div className="flex items-center gap-4">
-                                                    <button 
-                                                        onClick={() => setIsPlaying(!isPlaying)}
-                                                        className="hover:text-indigo-400 cursor-pointer font-bold border-none bg-transparent text-white"
-                                                    >
-                                                        {isPlaying ? 'Pause' : 'Play'}
-                                                    </button>
-                                                    <span className="text-[11px] text-slate-400">03:45 / {selectedVideo.length || '12:00'}</span>
-                                                </div>
-                                                <div className="flex items-center gap-3">
-                                                    <button 
-                                                        onClick={() => setIsMuted(!isMuted)}
-                                                        className="hover:text-indigo-400 cursor-pointer border-none bg-transparent text-white"
-                                                    >
-                                                        {isMuted ? <VolumeX size={15} /> : <Volume2 size={15} />}
-                                                    </button>
-                                                    <Maximize2 size={14} className="text-slate-400 hover:text-white cursor-pointer" />
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </>
+                                    <video
+                                        src={selectedVideo.isLocal ? selectedVideo.videoUrl : getAbsoluteUrl(selectedVideo.videoUrl)}
+                                        poster={selectedVideo.image || undefined}
+                                        controls
+                                        autoPlay
+                                        playsInline
+                                        className="w-full h-full object-contain"
+                                    />
                                 )}
                             </div>
 
                             {/* Video Title Details Panel */}
                             <div className="p-6 bg-slate-950 text-white border-t border-slate-800 space-y-2 text-left">
-                                <span className="text-[10px] font-black text-indigo-400 uppercase tracking-widest">Currently Playing Student Interview</span>
+                                <span className="text-[10px] font-black text-indigo-400 uppercase tracking-widest">Now playing</span>
                                 <h3 className="text-base md:text-lg font-bold leading-snug">
                                     {selectedVideo.title}
                                 </h3>

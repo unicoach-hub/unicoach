@@ -838,10 +838,7 @@ const EligibilityCalculatorPage = () => {
             
             {/* 2. Target Destination */}
             <div className="space-y-2">
-              <label className="text-xs font-black text-slate-700 uppercase tracking-wider flex items-center justify-between">
-                <span>Target Destination *</span>
-                <span className="text-[11px] text-indigo-600 font-bold truncate max-w-[150px]">{countryMeta.label}</span>
-              </label>
+              <label className="text-xs font-black text-slate-700 uppercase tracking-wider">Target Destination *</label>
               <PremiumDropdown
                 value={targetCountry}
                 onChange={setTargetCountry}
@@ -860,9 +857,9 @@ const EligibilityCalculatorPage = () => {
                 onChange={setTargetDegree}
                 accent="indigo"
                 options={[
-                  { value: "Master's", label: "Master's (MS / MSc / MA)", icon: '🎓' },
-                  { value: 'MBA', label: 'MBA / Business Management', icon: '💼' },
-                  { value: "Bachelor's", label: "Bachelor's (BS / BA / BEng)", icon: '🏫' }
+                  { value: "Master's", label: "Master's (MS / MSc / MA)", shortLabel: "Master's", icon: '🎓' },
+                  { value: 'MBA', label: 'MBA / Business Management', shortLabel: 'MBA', icon: '💼' },
+                  { value: "Bachelor's", label: "Bachelor's (BS / BA / BEng)", shortLabel: "Bachelor's", icon: '🏫' }
                 ]}
               />
             </div>

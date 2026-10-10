@@ -4,7 +4,27 @@ const Settings = require('../models/Settings');
 const Template = require('../models/Template');
 const Lead = require('../models/Lead');
 const User = require('../models/User');
-const { sendEmailBatch } = require('../utils/email');
+const Event = require('../models/Event');
+const { sendEmailBatch, isResendConfigured } = require('../utils/email');
+const { buildAudienceQuery } = require('../utils/leadAudience');
+const { unsubscribeUrl, isValidSignature } = require('../utils/unsubscribe');
+
+const LEAD_FIELDS = 'name email phone dreamCountry preferredIntake highestEducation currentCity unsubscribed';
+
+// Date and time of an event in IST, for {event_date} / {event_time}
+const istDate = (d) => (d ? new Date(d).toLocaleDateString('en-IN', { timeZone: 'Asia/Kolkata', weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' }) : '');
+const istTime = (d) => (d ? `${new Date(d).toLocaleTimeString('en-IN', { timeZone: 'Asia/Kolkata', hour: 'numeric', minute: '2-digit' })} IST` : '');
+const eventVariables = (ev) => ({
+  event_name: ev.title || '',
+  event_date: istDate(ev.eventStart),
+  event_time: istTime(ev.eventStart),
+  meet_link: ev.joiningLink || '',
+});
+// Campaign-wide values typed in the send form ({meet_link}, {event_name}, ...)
+const CAMPAIGN_VARIABLES = ['meet_link', 'event_name', 'event_date', 'event_time'];
+const readCampaignVariables = (input) => Object.fromEntries(
+  CAMPAIGN_VARIABLES.map((k) => [k, typeof input?.[k] === 'string' ? input[k].trim().slice(0, 500) : '']).filter(([, v]) => v)
+);
 
 // Variable aliases offered by the admin template editors ({{snake_case}}) mapped to
 // the recipient data keys. Legacy {camelCase} keys are matched directly.
@@ -118,24 +138,48 @@ exports.verifySmtp = async (req, res) => {
  */
 exports.sendBulk = async (req, res) => {
   try {
-    const { channel, templateId, target, customRecipients } = req.body;
+    const { channel, templateId, target, customRecipients, audience } = req.body;
+    let campaignVars = readCampaignVariables(req.body.variables);
 
-    if (!channel || !templateId || !target) {
-      return res.status(400).json({ message: 'Channel, templateId, and target are required.' });
+    // A saved template, or a message written right in the campaign page ({ subject, body })
+    const inline = req.body.message && typeof req.body.message.body === 'string' && req.body.message.body.trim()
+      ? { subject: String(req.body.message.subject || '').slice(0, 200), body: req.body.message.body.slice(0, 10000) }
+      : null;
+    if (!channel || !target || (!templateId && !inline)) {
+      return res.status(400).json({ message: 'Choose who gets it and write the message.' });
+    }
+    if (channel === 'email' && inline && !inline.subject.trim()) {
+      return res.status(400).json({ message: 'Add an email subject.' });
     }
 
-    const template = await Template.findById(templateId);
+    const template = inline || await Template.findById(templateId);
     if (!template) {
       return res.status(404).json({ message: 'Template not found.' });
     }
 
     let recipientsList = [];
-    if (target === 'leads') {
-      recipientsList = await Lead.find({ verified: true }).select('name email phone dreamCountry preferredIntake highestEducation currentCity');
+    // Lead audiences: unsubscribed people never get promotional email
+    const leadFilter = (q) => (channel === 'email' ? { $and: [q, { unsubscribed: { $ne: true } }] } : q);
+    let isLeadAudience = false;
+    if (target === 'audience') {
+      recipientsList = await Lead.find(buildAudienceQuery(audience, { forEmail: channel === 'email' })).select(LEAD_FIELDS).lean();
+      isLeadAudience = true;
+    } else if (target === 'leads') {
+      recipientsList = await Lead.find(leadFilter({ verified: true })).select(LEAD_FIELDS).lean();
+      isLeadAudience = true;
     } else if (target === 'all-leads') {
-      recipientsList = await Lead.find({}).select('name email phone dreamCountry preferredIntake highestEducation currentCity');
+      recipientsList = await Lead.find(leadFilter({})).select(LEAD_FIELDS).lean();
+      isLeadAudience = true;
     } else if (target === 'users') {
       recipientsList = await User.find({ role: 'user' }).select('name email phone dreamCountry preferredIntake highestEducation currentCity');
+    } else if (typeof target === 'string' && target.startsWith('event:')) {
+      // Everyone registered for one event (e.g. a "joining link" or reminder message)
+      const eventId = target.slice(6);
+      if (!require('mongoose').Types.ObjectId.isValid(eventId)) return res.status(400).json({ message: 'Unknown event.' });
+      const ev = await Event.findById(eventId).select('attendees title eventStart joiningLink').lean();
+      recipientsList = (ev?.attendees || []).map((a) => ({ name: a.name, email: a.email, phone: a.phone, preferredIntake: a.intake }));
+      // The event fills {event_name}, {event_date}, {event_time}, {meet_link}; anything typed in the form wins
+      if (ev) campaignVars = { ...eventVariables(ev), ...campaignVars };
     } else if (target === 'custom' && Array.isArray(customRecipients)) {
       recipientsList = customRecipients.filter(r => r && typeof r === 'object' && (r.email || r.phone));
     }
@@ -168,7 +212,8 @@ exports.sendBulk = async (req, res) => {
         dreamCountry: recipient.dreamCountry || 'Dream Country',
         preferredIntake: recipient.preferredIntake || 'Intake',
         highestEducation: recipient.highestEducation || 'Education',
-        currentCity: recipient.currentCity || 'City'
+        currentCity: recipient.currentCity || 'City',
+        ...campaignVars,
       };
 
       const compiledBody = compileTemplate(template.body, recipientData);
@@ -180,7 +225,15 @@ exports.sendBulk = async (req, res) => {
             throw new Error('No email address provided.');
           }
 
-          emailQueue.push({ logIndex: logs.length, to: recipientData.email, subject: compiledSubject, text: compiledBody });
+          // Promotional email to leads carries an unsubscribe link (footer + one-click header)
+          const unsub = isLeadAudience && recipient._id ? unsubscribeUrl(recipient._id) : '';
+          emailQueue.push({
+            logIndex: logs.length,
+            to: recipientData.email,
+            subject: compiledSubject,
+            text: unsub ? `${compiledBody}\n\n—\nDon't want these emails? Unsubscribe: ${unsub}` : compiledBody,
+            ...(unsub ? { headers: { 'List-Unsubscribe': `<${unsub}>`, 'List-Unsubscribe-Post': 'List-Unsubscribe=One-Click' } } : {}),
+          });
           logs.push({
             recipient: recipientData.email,
             name: recipientData.name,
@@ -301,6 +354,57 @@ exports.sendBulk = async (req, res) => {
   } catch (err) {
     console.error('Error in bulk sending endpoint:', err);
     return res.status(500).json({ error: 'Server error occurred during bulk messaging' });
+  }
+};
+
+/**
+ * POST /api/admin/messaging/audience-preview  { audience, channel }
+ * How many leads match the filters, plus the first few, before sending
+ */
+exports.previewAudience = async (req, res) => {
+  try {
+    const forEmail = req.body.channel !== 'whatsapp';
+    const query = buildAudienceQuery(req.body.audience, { forEmail });
+    const [count, unsubscribed, sample] = await Promise.all([
+      Lead.countDocuments(query),
+      forEmail ? Lead.countDocuments({ $and: [buildAudienceQuery(req.body.audience), { unsubscribed: true }] }) : 0,
+      Lead.find(query).sort({ lastInquiryAt: -1 }).limit(50).select('name email phone status tags autoTags').lean(),
+    ]);
+    return res.json({ count, unsubscribed, sample });
+  } catch (err) {
+    console.error('Error previewing audience:', err);
+    return res.status(500).json({ error: 'Server error' });
+  }
+};
+
+/**
+ * GET /api/admin/messaging/email-status  (which provider sends email and whether it is ready)
+ */
+exports.getEmailStatus = async (req, res) => {
+  try {
+    const configured = await isResendConfigured();
+    return res.json({ provider: 'Resend', configured, from: configured ? (process.env.RESEND_FROM || '') : '' });
+  } catch (err) {
+    console.error('Error reading email status:', err);
+    return res.status(500).json({ error: 'Server error' });
+  }
+};
+
+/**
+ * POST /api/leads/unsubscribe  { l: leadId, t: signature }  (public, from the email footer)
+ */
+exports.unsubscribeLead = async (req, res) => {
+  try {
+    const leadId = String(req.body.l || req.query.l || '');
+    const sig = String(req.body.t || req.query.t || '');
+    if (!require('mongoose').Types.ObjectId.isValid(leadId) || !isValidSignature(leadId, sig)) {
+      return res.status(400).json({ message: 'This unsubscribe link is not valid.' });
+    }
+    await Lead.updateOne({ _id: leadId }, { $set: { unsubscribed: true, unsubscribedAt: new Date() } });
+    return res.json({ success: true });
+  } catch (err) {
+    console.error('Error unsubscribing lead:', err);
+    return res.status(500).json({ error: 'Server error' });
   }
 };
 

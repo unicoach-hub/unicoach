@@ -100,7 +100,7 @@ const SignupPage = () => {
   };
 
   return (
-    <div className="min-h-[calc(100dvh-74px)] pt-[80px] md:pt-[90px] pb-8 px-3.5 sm:px-6 bg-[#F8FAFC] flex flex-col justify-center items-center relative selection:bg-orange-500 selection:text-white">
+    <div className="min-h-[calc(100dvh-74px)] pt-[80px] md:pt-[90px] pb-8 px-3.5 sm:px-6 bg-[#F8FAFC] flex flex-col justify-center items-center relative">
       
       {/* Background Ambient Orbs */}
       <div className="absolute top-20 right-10 w-96 h-96 bg-orange-400/10 rounded-full blur-3xl pointer-events-none translate-x-1/3" />

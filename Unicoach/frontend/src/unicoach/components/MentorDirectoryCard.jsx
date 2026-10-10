@@ -13,7 +13,7 @@ export const MentorDirectoryCard = ({ mentor: m }) => {
       className="bg-white rounded-[22px] p-3 sm:p-3.5 border border-slate-200/80 hover:border-[#DE5C2B]/40 shadow-[0_2px_8px_rgba(0,0,0,0.03)] hover:shadow-[0_12px_28px_-6px_rgba(222,92,43,0.14)] transition-all duration-300 hover:-translate-y-1 flex flex-col justify-between group cursor-pointer select-none"
     >
       {/* Portrait Photo Container */}
-      <div className="relative w-full aspect-square rounded-[16px] overflow-hidden bg-slate-100 mb-2.5 sm:mb-3">
+      <div className={`relative w-full aspect-square rounded-[16px] overflow-hidden mb-2.5 sm:mb-3 ${String(m._id).startsWith('featured-') ? 'bg-[#F8EBC0]' : 'bg-slate-100'}`}>
         <MentorAvatar
           mentor={m}
           imgClassName="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500"

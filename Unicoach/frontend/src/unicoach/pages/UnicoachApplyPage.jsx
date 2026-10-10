@@ -480,7 +480,7 @@ const UnicoachApplyPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-[#F8FAFC] text-slate-900 pt-28 pb-24 px-4 sm:px-6 lg:px-10 relative selection:bg-[#DE5C2B]/20">
+    <div className="min-h-screen bg-[#F8FAFC] text-slate-900 pt-28 pb-24 px-4 sm:px-6 lg:px-10 relative">
       
       {/* Background watercolor blooms */}
       <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden">

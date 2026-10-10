@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const slugify = require('slugify');
 
 // Country shown on the homepage event card (Admin → Events dropdown). '' = not set: the site guesses from the title.
-const EVENT_COUNTRIES = ['USA', 'UK', 'Canada', 'Australia', 'Germany', 'Ireland', 'France', 'Netherlands', 'Italy', 'New Zealand', 'Singapore', 'Dubai', 'Global'];
+const EVENT_COUNTRIES = ['USA', 'UK', 'Canada', 'Australia', 'Germany', 'Ireland', 'France', 'Netherlands', 'Italy', 'New Zealand', 'Singapore', 'Dubai', 'Europe', 'Global'];
 
 const eventSchema = new mongoose.Schema({
   title: { type: String, required: true },
@@ -18,6 +18,8 @@ const eventSchema = new mongoose.Schema({
   eventEnd: { type: Date },
   location: { type: String },
   registrationLink: { type: String, default: '' },
+  // Zoom/Meet link sent to registered people ({meet_link} in bulk messages). Never shown on the public site.
+  joiningLink: { type: String, default: '', trim: true },
   description: { type: String, default: '' },
   category: { type: String, enum: ['webinar', 'fair', 'other'], default: 'webinar' },
   speaker: { type: String, default: '' },

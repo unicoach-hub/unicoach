@@ -4,9 +4,13 @@ import { GoogleOAuthProvider } from '@react-oauth/google'
 import './index.css'
 import App from './App.jsx'
 import { installApiFetch } from './utils/installApiFetch'
+import { initAdTracking } from './utils/adTracking'
 
 // Must run before any component fetches: send the session cookie on every call to our API
 installApiFetch()
+
+// Google Ads / Meta Pixel, campaign attribution and lead/signup/purchase conversions
+initAdTracking()
 
 // Initialize Sentry error and crash monitoring asynchronously only when DSN is configured
 const sentryDsn = import.meta.env.VITE_SENTRY_DSN;

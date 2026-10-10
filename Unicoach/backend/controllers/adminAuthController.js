@@ -1,7 +1,47 @@
 const User = require('../models/User');
+const Staff = require('../models/Staff');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { JWT_SECRET } = require('../config/jwt');
+const { MODULES } = require('../config/staffPermissions');
+
+const ADMIN_COOKIE_OPTIONS = {
+  httpOnly: true,
+  secure: process.env.NODE_ENV === 'production',
+  sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+  maxAge: 7 * 24 * 60 * 60 * 1000
+};
+
+// What the admin panel needs to know about a staff member: who they are and what they may do
+const staffProfile = (staff) => ({
+  _id: staff._id,
+  id: staff._id,
+  name: staff.name,
+  email: staff.email,
+  phone: staff.phone,
+  avatar: staff.avatar || '',
+  role: 'staff',
+  roleName: staff.title || 'Staff',
+  permissions: staff.permissions || {},
+  leadScope: staff.leadScope || 'assigned',
+});
+
+// Staff sign in with their email on the same admin login form
+async function staffLogin(email, password, res) {
+  const staff = await Staff.findOne({ email: email.toLowerCase() });
+  if (!staff || !(await bcrypt.compare(password, staff.passwordHash))) {
+    return res.status(401).json({ message: 'Invalid username or password' });
+  }
+  if (!staff.active) {
+    return res.status(403).json({ message: 'Your staff access is switched off. Please contact the admin.' });
+  }
+  staff.lastLoginAt = new Date();
+  await staff.save();
+
+  const token = jwt.sign({ id: staff._id, role: 'staff', tv: staff.tokenVersion || 0 }, JWT_SECRET, { expiresIn: '7d' });
+  res.cookie('admin_token', token, ADMIN_COOKIE_OPTIONS);
+  return res.json({ token, user: staffProfile(staff) });
+}
 
 /**
  * POST /api/admin/auth/login
@@ -26,12 +66,10 @@ exports.adminLogin = async (req, res) => {
         { email: cleanUsername.toLowerCase() }
       ]
     });
-    if (!user) {
+    if (!user || user.role !== 'admin') {
+      // Not the owner account: try a staff account with this email
+      if (cleanUsername.includes('@')) return staffLogin(cleanUsername, cleanPassword, res);
       return res.status(401).json({ message: 'Invalid username or password' });
-    }
-
-    if (user.role !== 'admin') {
-      return res.status(403).json({ message: 'Access denied. Admin only.' });
     }
 
     if (!user.passwordHash) {
@@ -50,12 +88,7 @@ exports.adminLogin = async (req, res) => {
     );
 
     // Admin session gets its OWN cookie name so a student login on the same browser can't replace it
-    res.cookie('admin_token', token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
-      maxAge: 7 * 24 * 60 * 60 * 1000
-    });
+    res.cookie('admin_token', token, ADMIN_COOKIE_OPTIONS);
 
     return res.json({
       token,
@@ -78,6 +111,7 @@ exports.adminLogin = async (req, res) => {
  */
 exports.getAdminProfile = async (req, res) => {
   try {
+    if (req.user.role === 'staff') return res.json(staffProfile(req.staff));
     const user = await User.findById(req.user.id).select('-otp -otpExpires -passwordHash');
     if (!user) {
       return res.status(404).json({ message: 'Admin user not found' });
@@ -95,6 +129,7 @@ exports.getAdminProfile = async (req, res) => {
  */
 exports.updateAdminProfile = async (req, res) => {
   try {
+    if (req.user.role === 'staff') return updateStaffPassword(req, res);
     const { username, email, password } = req.body;
     const adminId = req.user.id;
 
@@ -144,6 +179,17 @@ exports.updateAdminProfile = async (req, res) => {
     return res.status(500).json({ error: 'Server error' });
   }
 };
+
+// Staff can't change their own password: the owner sets and resets it in Staff & Roles
+function updateStaffPassword(req, res) {
+  return res.status(403).json({ code: 'NO_PERMISSION', message: 'Only the admin can change staff passwords. Ask the admin for a new one.' });
+}
+
+/**
+ * GET /api/admin/auth/sections
+ * The sections and actions staff can be given (for the access editor)
+ */
+exports.getSections = (req, res) => res.json(MODULES);
 
 /**
  * GET /api/admin/auth/test

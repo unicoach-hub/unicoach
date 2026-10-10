@@ -219,6 +219,7 @@ const CGPAtoGPACalculator = lazy(() => import('./app/resources/calculators/CGPAt
 const CGPAtoPercentage = lazy(() => import('./app/resources/calculators/CGPAtoPercentage'));
 const CGPAtoMarks = lazy(() => import('./app/resources/calculators/CGPAtoMarks'));
 const EligibilityCalculatorPage = lazy(() => import('./pages/EligibilityCalculatorPage'));
+const UnsubscribePage = lazy(() => import('./pages/UnsubscribePage'));
 const EducationLoanPage = lazy(() => import('./pages/EducationLoanPage'));
 const VisaAssistancePage = lazy(() => import('./pages/VisaAssistancePage'));
 const UniversitiesPage = lazy(() => import('./pages/UniversitiesPage'));
@@ -822,6 +823,7 @@ const App = () => {
             <Route path="/resources/calculators/cgpa-to-marks" element={<CGPAtoMarks />} />
             <Route path="/resources/calculators/admission-eligibility" element={<EligibilityCalculatorPage />} />
             <Route path="/eligibility-calculator" element={<EligibilityCalculatorPage />} />
+            <Route path="/unsubscribe" element={<UnsubscribePage />} />
             <Route path="/education-loan" element={<EducationLoanPage />} />
             <Route path="/visa-assistance" element={<VisaAssistancePage />} />
             <Route path="/scholarship-calculator" element={<EligibilityCalculatorPage />} />

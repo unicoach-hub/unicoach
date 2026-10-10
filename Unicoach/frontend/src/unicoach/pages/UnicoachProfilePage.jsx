@@ -269,7 +269,7 @@ const UnicoachProfilePage = () => {
   const isVerifiedMentor = mentor.applicationStatus === 'APPROVED' && Boolean(mentor.isVerified);
 
   return (
-    <div className={`min-h-screen bg-[#FAF7F2] text-slate-900 font-sans selection:bg-[#8561E5]/20 ${isEmbed ? 'pt-2 px-2 sm:px-4' : 'pt-[74px] md:pt-[80px]'}`}>
+    <div className={`min-h-screen bg-[#FAF7F2] text-slate-900 font-sans ${isEmbed ? 'pt-2 px-2 sm:px-4' : 'pt-[74px] md:pt-[80px]'}`}>
       
       {/* ── Owner Storefront Preview Banner ── */}
       {isOwner && !isEmbed && (

@@ -22,6 +22,13 @@ export const TEAM_MENTORS = [
     src: '/images/mentors/thumbs/manan_australia.webp',
     portrait: '/images/mentors/manan_portrait.webp',
   },
+  {
+    name: 'Manvi',
+    role: 'Europe Guidance Expert',
+    country: 'Europe',
+    src: '/images/mentors/thumbs/manvi_europe.webp',
+    portrait: '/images/mentors/manvi_portrait.webp',
+  },
 ];
 
 // "Prachi, Nitya & Manan"

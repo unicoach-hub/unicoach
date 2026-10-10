@@ -20,6 +20,7 @@ import ScholarshipShortlister from './ScholarshipShortlister';
 import UniversityLogo from './UniversityLogo';
 import PremiumDropdown from './PremiumDropdown';
 import IeltsAiEvaluationModal from './IeltsAiEvaluationModal';
+import StudentMessages from './StudentMessages';
 import AiSopGenerator from './AiSopGenerator';
 import AiVisaInterviewPrep from './AiVisaInterviewPrep';
 import AiStudyRoadmap from './AiStudyRoadmap';
@@ -234,6 +235,30 @@ const UserDashboard = () => {
   const { verifiedLead, clearLead } = useLead();
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('overview');
+  // Unread counselor messages (badge on the Messages tab)
+  const [chatUnread, setChatUnread] = useState(0);
+  const [chatLast, setChatLast] = useState(null); // latest counselor message, for the notification popup
+  const [chatPopupOpen, setChatPopupOpen] = useState(false);
+  useEffect(() => {
+    if (!token) return undefined;
+    const check = () => fetch(`${API_URL}/student-chat/unread`, {
+      credentials: 'include',
+      headers: token !== 'cookie-session' ? { Authorization: `Bearer ${token}` } : {},
+    }).then((r) => (r.ok ? r.json() : null)).then((d) => {
+      if (!d) return;
+      setChatUnread(d.unread);
+      setChatLast(d.last || null);
+    }).catch(() => {});
+    const first = setTimeout(check, 0);
+    const t = setInterval(() => { if (!document.hidden) check(); }, 15000);
+    return () => { clearTimeout(first); clearInterval(t); };
+  }, [token]);
+
+  // "(1) UniCoach…" in the browser tab while a counselor message is unread
+  useEffect(() => {
+    const base = document.title.replace(/^\(\d+\)\s*/, '');
+    document.title = chatUnread > 0 ? `(${chatUnread}) ${base}` : base;
+  }, [chatUnread]);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [mobileToolsSheetOpen, setMobileToolsSheetOpen] = useState(false);
 
@@ -1632,7 +1657,8 @@ ${name || 'Candidate'}`;
           badge: checklist.filter(t => !t.done).length > 0 ? `${checklist.filter(t => !t.done).length} Focus` : 'All Done', 
           badgeColor: checklist.filter(t => !t.done).length > 0 ? 'bg-orange-50 text-[#C04A1D] border border-orange-200/60' : 'bg-emerald-50 text-emerald-700 border border-emerald-200/60' 
         },
-        { id: 'saved-unis', label: 'Saved Shortlist', icon: <BookmarkCheck size={16} />, badge: dbSavedUnis.length > 0 ? `${dbSavedUnis.length}` : null, badgeColor: 'bg-orange-50 text-[#C04A1D] border border-orange-200/60' }
+        { id: 'saved-unis', label: 'Saved Shortlist', icon: <BookmarkCheck size={16} />, badge: dbSavedUnis.length > 0 ? `${dbSavedUnis.length}` : null, badgeColor: 'bg-orange-50 text-[#C04A1D] border border-orange-200/60' },
+        { id: 'messages', label: 'Messages & Documents', icon: <MessageCircle size={16} />, badge: chatUnread > 0 ? `${chatUnread} new` : null, badgeColor: 'bg-[#DE5C2B] text-white' }
       ]
     },
     {
@@ -1688,74 +1714,123 @@ ${name || 'Candidate'}`;
   };
 
   return (
-    <div className="min-h-screen bg-[#f8fafc] pt-20 md:pt-24 pb-36 lg:pb-16 px-3 sm:px-6 lg:px-8">
-      <div className="max-w-7xl mx-auto space-y-4 md:space-y-6">
-        
+    <div className="min-h-screen bg-[#ECEAE6] pt-20 md:pt-24 pb-36 lg:pb-16 px-3 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto space-y-4 md:space-y-0 lg:bg-white lg:rounded-[40px] lg:overflow-hidden lg:shadow-[0_30px_80px_-40px_rgba(15,23,42,0.25)]">
+
         {/* DESKTOP TOP COMMAND HEADER (Hidden on mobile) */}
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: -15 }}
           animate={{ opacity: 1, y: 0 }}
-          className="hidden lg:flex bg-white border border-slate-200/80 p-5 md:p-6 rounded-[28px] shadow-sm flex-col lg:flex-row lg:items-center justify-between gap-6"
+          className="hidden lg:block bg-[#F6F5F2] px-8 pt-7 pb-8"
         >
-          {/* Left Student Profile */}
-          <div className="flex items-center gap-4">
-            <div className="w-14 h-14 md:w-16 md:h-16 rounded-2xl bg-gradient-to-tr from-indigo-600 to-blue-600 text-white font-black flex items-center justify-center text-2xl shadow-md shadow-indigo-200 flex-shrink-0 select-none">
-              {name[0].toUpperCase()}
-            </div>
-            <div>
-              <div className="flex items-center gap-2 flex-wrap">
-                <h1 className="text-xl md:text-2xl font-black text-slate-800 tracking-tight">
-                  Welcome back, {name}!
-                </h1>
-                <span className="px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-emerald-50 text-emerald-700 border border-emerald-200/60">
-                  Registered Student
-                </span>
+          {/* Row 1: identity, quick actions, account */}
+          <div className="flex items-center justify-between gap-6">
+            <div className="flex items-center gap-4">
+              <div className="w-14 h-14 rounded-full bg-[#111] text-white font-black flex items-center justify-center text-xl select-none">
+                {name[0].toUpperCase()}
               </div>
-              <p className="text-xs text-slate-400 font-medium mt-0.5 flex items-center gap-2">
-                <span>{email}</span> • <span>{displayPhone}</span>
-              </p>
+              <div className="leading-tight">
+                <p className="text-xl font-semibold text-slate-900">Student</p>
+                <p className="text-xl text-slate-400">Dashboard</p>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-3">
+              {isMentorAccount && (
+                <button
+                  onClick={handleOpenMentorStudio}
+                  className="h-12 px-5 rounded-full border border-slate-200 bg-white hover:border-orange-200 text-slate-800 font-semibold text-sm flex items-center gap-2 cursor-pointer"
+                  title="Switch to Mentor Studio"
+                >
+                  <Zap size={15} className="text-[#DE5C2B] fill-[#DE5C2B]" /> Mentor Studio
+                </button>
+              )}
+              <div className="flex items-center gap-3 pl-1 pr-2">
+                <div className="w-12 h-12 rounded-full bg-orange-100 text-[#C04A1D] font-black flex items-center justify-center select-none">
+                  {name[0].toUpperCase()}
+                </div>
+                <div className="leading-tight">
+                  <p className="text-sm font-semibold text-slate-900">{name}</p>
+                  <p className="text-xs text-slate-500">{email || displayPhone}</p>
+                </div>
+              </div>
+              <button
+                onClick={handleLogout}
+                aria-label="Log out"
+                title="Log out"
+                className="w-12 h-12 rounded-full border border-slate-200 bg-white hover:border-rose-200 hover:text-rose-600 text-slate-600 flex items-center justify-center cursor-pointer"
+              >
+                <LogOut size={17} />
+              </button>
             </div>
           </div>
 
-          {/* Quick Metrics & Actions */}
-          <div className="flex items-center gap-3 overflow-x-auto pb-1 lg:pb-0">
-            <div className="px-4 py-2 bg-slate-50 border border-slate-100 rounded-2xl flex items-center gap-3 flex-shrink-0">
-              <div className="w-8 h-8 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center font-black">
-                <Globe size={16} />
+          {/* Row 2: today, tasks CTA, greeting */}
+          <div className="mt-8 flex items-center justify-between gap-8">
+            <div className="flex items-center gap-5">
+              <div className="w-[92px] h-[92px] rounded-full border border-slate-200 bg-[#F6F5F2] flex items-center justify-center text-4xl font-medium text-slate-900">
+                {new Date().getDate()}
               </div>
-              <div>
-                <p className="text-[9px] uppercase tracking-wider text-slate-400 font-extrabold">Destination</p>
-                <p className="text-xs font-black text-slate-800">{profileForm.dreamCountry || user?.dreamCountry || 'Global'}</p>
+              <div className="leading-tight pr-5 border-r border-slate-200">
+                <p className="text-lg text-slate-900">{new Date().toLocaleDateString('en-US', { weekday: 'short' })},</p>
+                <p className="text-lg text-slate-900">{new Date().toLocaleDateString('en-US', { month: 'long' })}</p>
               </div>
-            </div>
-
-            <div className="px-4 py-2 bg-slate-50 border border-slate-100 rounded-2xl flex items-center gap-3 flex-shrink-0">
-              <div className="w-8 h-8 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center font-black">
-                <BookmarkCheck size={16} />
-              </div>
-              <div>
-                <p className="text-[9px] uppercase tracking-wider text-slate-400 font-extrabold">Shortlisted</p>
-                <p className="text-xs font-black text-slate-800">{dbSavedUnis.length} Saved</p>
-              </div>
-            </div>
-
-            {isMentorAccount && (
               <button
-                onClick={handleOpenMentorStudio}
-                className="px-4 py-2.5 rounded-2xl border border-orange-200 bg-orange-50/90 hover:bg-orange-100 text-[#DE5C2B] transition-all font-bold text-xs flex items-center gap-1.5 cursor-pointer flex-shrink-0"
-                title="Switch to UniCoach Mentor Studio Dashboard"
+                onClick={() => setActiveTab('daily-tasks')}
+                className="h-14 pl-7 pr-6 rounded-full bg-[#DE5C2B] hover:bg-[#C04A1D] text-white font-semibold text-sm flex items-center gap-8 transition-colors cursor-pointer"
               >
-                <Zap size={14} className="fill-[#DE5C2B]" />
-                <span>Mentor Studio</span>
+                Show my tasks <ArrowRight size={18} />
               </button>
-            )}
+              <button
+                onClick={() => setActiveTab('daily-tasks')}
+                aria-label="Open roadmap"
+                className="relative w-14 h-14 rounded-full border border-slate-200 bg-white text-slate-700 flex items-center justify-center cursor-pointer"
+              >
+                <CalendarDays size={19} />
+                {checklist.some((t) => !t.done) && <span className="absolute top-1 right-1 w-2 h-2 rounded-full bg-[#DE5C2B]" />}
+              </button>
+            </div>
 
-            <button 
-              onClick={handleLogout}
-              className="px-4 py-2.5 rounded-2xl border border-rose-200/80 bg-rose-50/50 hover:bg-rose-100/60 text-rose-600 transition-all font-bold text-xs flex items-center gap-2 cursor-pointer flex-shrink-0"
+            <div className="relative">
+            <button
+              type="button"
+              onClick={() => (chatUnread > 0 ? setChatPopupOpen((v) => !v) : setActiveTab('messages'))}
+              aria-expanded={chatUnread > 0 ? chatPopupOpen : undefined}
+              className="flex items-center gap-6 text-left cursor-pointer group"
             >
-              <LogOut size={15} /> Logout
+              <span className="leading-[1.1]">
+                <span className="block text-[34px] font-semibold tracking-tight text-slate-900">Hey {name.split(' ')[0]}, need help?</span>
+                <span className="block text-[34px] tracking-tight text-slate-400 group-hover:text-slate-500">Ask your counselor anything</span>
+              </span>
+              <span className={`relative w-[88px] h-[88px] rounded-full flex items-center justify-center shrink-0 transition-colors ${
+                chatUnread > 0 ? 'bg-[#DE5C2B] text-white' : 'bg-white text-slate-900 group-hover:text-[#DE5C2B]'
+              }`}>
+                {chatUnread > 0 && <span className="absolute inset-0 rounded-full bg-[#DE5C2B] animate-ping opacity-30" aria-hidden="true" />}
+                <MessageCircle size={24} className="relative" />
+                {chatUnread > 0 && (
+                  <span className="absolute -top-1 -right-1 min-w-6 h-6 px-1.5 rounded-full bg-[#111] text-white text-xs font-bold flex items-center justify-center ring-4 ring-[#F6F5F2]">{chatUnread}</span>
+                )}
+              </span>
             </button>
+
+            {/* New message popup */}
+            {chatPopupOpen && chatUnread > 0 && (
+              <div className="absolute right-0 top-full mt-3 w-[340px] bg-white rounded-[24px] shadow-[0_24px_60px_-20px_rgba(15,23,42,0.35)] border border-slate-100 p-4 z-30 text-left">
+                <p className="text-xs text-slate-500">{chatUnread} new message{chatUnread === 1 ? '' : 's'}</p>
+                {chatLast && (
+                  <div className="mt-2 p-3 rounded-2xl bg-[#F6F5F2]">
+                    <p className="text-sm font-semibold text-slate-900">{chatLast.from}</p>
+                    <p className="text-sm text-slate-600 mt-0.5 line-clamp-3">{chatLast.text}</p>
+                    <p className="text-[11px] text-slate-400 mt-1">{new Date(chatLast.at).toLocaleString([], { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })}</p>
+                  </div>
+                )}
+                <div className="flex gap-2 mt-3">
+                  <button type="button" onClick={() => { setChatPopupOpen(false); setActiveTab('messages'); }} className="flex-1 h-10 rounded-full bg-[#DE5C2B] hover:bg-[#C04A1D] text-white text-sm font-semibold cursor-pointer">Open chat</button>
+                  <button type="button" onClick={() => setChatPopupOpen(false)} className="h-10 px-4 rounded-full border border-slate-200 text-sm font-semibold text-slate-700 cursor-pointer">Later</button>
+                </div>
+              </div>
+            )}
+            </div>
           </div>
         </motion.div>
 
@@ -1778,6 +1853,17 @@ ${name || 'Candidate'}`;
             </div>
 
             <div className="flex items-center gap-2">
+              <button
+                type="button"
+                onClick={() => setActiveTab('messages')}
+                aria-label={chatUnread > 0 ? `${chatUnread} new messages` : 'Messages'}
+                className={`relative w-9 h-9 rounded-xl flex items-center justify-center cursor-pointer ${chatUnread > 0 ? 'bg-[#DE5C2B] text-white' : 'bg-slate-100 text-slate-700'}`}
+              >
+                <MessageCircle size={16} />
+                {chatUnread > 0 && (
+                  <span className="absolute -top-1.5 -right-1.5 min-w-5 h-5 px-1 rounded-full bg-[#111] text-white text-[10px] font-bold flex items-center justify-center ring-2 ring-white">{chatUnread}</span>
+                )}
+              </button>
               <button 
                 onClick={() => {
                   setActiveTab('saved-unis');
@@ -1828,17 +1914,17 @@ ${name || 'Candidate'}`;
         )}
 
         {/* MAIN COMMAND CENTER GRID (Sidebar + Content Workspace) */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start lg:p-6">
 
           {/* SIDEBAR NAVIGATION PANEL (Desktop only) */}
           <div className="hidden lg:block lg:col-span-3 space-y-4">
 
             {/* Desktop Sidebar Container (Hidden on mobile, uses native bottom navigation instead) */}
-            <div className="bg-white border border-slate-200/80 p-3.5 rounded-[24px] shadow-sm space-y-4">
+            <div className="bg-[#F6F5F2] p-3.5 rounded-[28px] space-y-4">
               
               {/* Dual Mode Switcher Pill (Student Tools vs Mentor Studio) — only when the account is also a mentor */}
               {isMentorAccount && (
-              <div className="bg-slate-100/90 p-1 rounded-2xl flex items-center gap-1 border border-slate-200/60">
+              <div className="bg-white p-1 rounded-full flex items-center gap-1">
                 <button
                   type="button"
                   onClick={() => setActiveTab('overview')}
@@ -1880,17 +1966,17 @@ ${name || 'Candidate'}`;
                             if (item.id === 'saved-unis') fetchDbSavedUniversities();
                             setMobileMenuOpen(false);
                           }}
-                          className={`w-full flex items-center justify-between px-2.5 py-2 rounded-xl text-xs transition-all duration-150 cursor-pointer group ${
+                          className={`w-full flex items-center justify-between px-2 py-1.5 rounded-full text-xs transition-all duration-150 cursor-pointer group ${
                             isActive 
-                              ? 'bg-gradient-to-r from-indigo-600 to-blue-600 text-white font-bold shadow-sm shadow-indigo-200' 
-                              : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50 font-medium'
+                              ? 'bg-[#111] text-white font-semibold' 
+                              : 'text-slate-600 hover:text-slate-900 hover:bg-white font-medium'
                           }`}
                         >
                           <div className="flex items-center gap-2.5 min-w-0 pr-1.5">
-                            <div className={`w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0 transition-colors ${
+                            <div className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 transition-colors ${
                               isActive 
-                                ? 'bg-white/20 text-white' 
-                                : 'bg-slate-100 text-slate-500 group-hover:bg-indigo-50 group-hover:text-indigo-600'
+                                ? 'bg-white/15 text-white' 
+                                : 'bg-white text-slate-500 group-hover:text-[#DE5C2B]'
                             }`}>
                               {item.icon}
                             </div>
@@ -1915,9 +2001,9 @@ ${name || 'Candidate'}`;
 
               {/* Sidebar Footer Callout */}
               <div className="pt-2 border-t border-slate-100">
-                <div className="p-3.5 rounded-xl bg-gradient-to-br from-indigo-50 to-blue-50 border border-indigo-100/80 space-y-2">
-                  <div className="flex items-center gap-1.5 text-indigo-900 font-extrabold text-xs">
-                    <Sparkles size={14} className="text-indigo-600" />
+                <div className="p-4 rounded-[22px] bg-white space-y-2">
+                  <div className="flex items-center gap-1.5 text-slate-900 font-bold text-xs">
+                    <Sparkles size={14} className="text-[#DE5C2B]" />
                     <span>Need Guidance?</span>
                   </div>
                   <p className="text-[11px] text-slate-600 font-medium leading-relaxed">
@@ -1925,7 +2011,7 @@ ${name || 'Candidate'}`;
                   </p>
                   <button 
                     onClick={() => navigate('/contact')}
-                    className="w-full py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-[11px] font-bold transition-all shadow-xs cursor-pointer"
+                    className="w-full py-2.5 bg-[#DE5C2B] hover:bg-[#C04A1D] text-white rounded-full text-[11px] font-bold transition-all cursor-pointer"
                   >
                     Book Free Counselling
                   </button>
@@ -1972,84 +2058,56 @@ ${name || 'Candidate'}`;
                 exit={{ opacity: 0, y: -15 }}
                 className="space-y-6"
               >
-                {/* Header Studio Card */}
-                <div className="bg-white border border-slate-200/70 p-6 md:p-8 rounded-[32px] shadow-sm space-y-6">
-                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                    <div className="space-y-2">
-                      <div className="flex items-center gap-2 flex-wrap">
-                        <span className="px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-emerald-50 text-emerald-700 border border-emerald-200/60 flex items-center gap-1.5">
-                          <CheckCircle2 size={13} className="text-emerald-600" /> Admissions Action Studio
-                        </span>
-                        <span className="px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-indigo-50 text-indigo-700 border border-indigo-200/60">
-                          {profileForm.preferredIntake || 'Fall 2027'} Cycle
-                        </span>
+                {/* Header card */}
+                {(() => {
+                  const done = checklist.filter((t) => t.done).length;
+                  const pct = checklist.length ? Math.round((done / checklist.length) * 100) : 0;
+                  const urgent = checklist.filter((t) => t.priority === 'P0' && !t.done).length;
+                  return (
+                    <div className="bg-white border border-slate-100 rounded-[28px] p-6 md:p-7 space-y-6">
+                      <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
+                        <div>
+                          <p className="text-xs text-slate-500">{profileForm.preferredIntake || 'Fall 2027'} cycle · Your roadmap</p>
+                          <h2 className="text-2xl md:text-[28px] font-semibold text-slate-900 tracking-tight mt-1">Roadmap and tasks</h2>
+                          <p className="text-sm text-slate-500 mt-1 max-w-2xl">Step-by-step tasks for your application: tests, SOP, documents and deadlines.</p>
+                        </div>
+                        <button
+                          onClick={() => setIsAddingTask((prev) => !prev)}
+                          className={`h-11 px-5 rounded-full text-sm font-semibold flex items-center gap-2 shrink-0 self-start transition-colors cursor-pointer ${
+                            isAddingTask ? 'border border-slate-200 bg-white text-slate-700' : 'bg-[#DE5C2B] hover:bg-[#C04A1D] text-white'
+                          }`}
+                        >
+                          {isAddingTask ? <X size={16} /> : <Plus size={16} />}
+                          {isAddingTask ? 'Close' : 'Add my own task'}
+                        </button>
                       </div>
-                      <h2 className="text-xl md:text-2xl font-black text-slate-800 tracking-tight flex items-center gap-3">
-                        <CheckSquare className="text-indigo-600" size={28} />
-                        Daily Study Abroad Roadmap & Tasks
-                      </h2>
-                      <p className="text-xs md:text-sm text-slate-500 font-medium max-w-2xl leading-relaxed">
-                        Follow your step-by-step master application roadmap. Complete daily tasks, practice IELTS, build your SOP, and stay on track for your university deadlines.
-                      </p>
-                    </div>
 
-                    <div className="flex items-center gap-2.5 shrink-0 self-start sm:self-center">
-                      <button
-                        onClick={() => setIsAddingTask(prev => !prev)}
-                        className={`px-4 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center gap-2 shadow-2xs cursor-pointer ${
-                          isAddingTask
-                            ? 'bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-300'
-                            : 'bg-indigo-600 hover:bg-indigo-700 text-white'
-                        }`}
-                      >
-                        {isAddingTask ? <X size={15} /> : <Plus size={15} />}
-                        <span>{isAddingTask ? 'Close Form' : 'Add Custom Task'}</span>
-                      </button>
-                    </div>
-                  </div>
+                      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+                        {[
+                          ['Total steps', checklist.length, 'text-slate-900'],
+                          ['Done', done, 'text-slate-900'],
+                          ['Urgent', urgent, urgent ? 'text-[#C04A1D]' : 'text-slate-900'],
+                          ['Ready', `${pct}%`, 'text-[#DE5C2B]'],
+                        ].map(([label, value, cls]) => (
+                          <div key={label} className="bg-[#F6F5F2] rounded-[22px] px-5 py-4">
+                            <p className="text-xs text-slate-500">{label}</p>
+                            <p className={`text-3xl font-semibold mt-1 ${cls}`}>{value}</p>
+                          </div>
+                        ))}
+                      </div>
 
-                  {/* Overall Progress & Stats Pill Bar */}
-                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2">
-                    <div className="p-4 bg-slate-50 rounded-2xl border border-slate-100">
-                      <p className="text-[10px] uppercase font-black tracking-wider text-slate-400">Total Milestones</p>
-                      <p className="text-xl font-black text-slate-800 mt-0.5">{checklist.length}</p>
+                      <div>
+                        <div className="flex justify-between text-xs text-slate-500 mb-2">
+                          <span>Readiness</span>
+                          <span className="font-semibold text-slate-800">{done} of {checklist.length} done</span>
+                        </div>
+                        <div className="w-full h-2.5 rounded-full bg-[#ECEAE6] overflow-hidden">
+                          <div className="h-full rounded-full bg-[#DE5C2B] transition-all duration-500" style={{ width: `${pct}%` }} />
+                        </div>
+                      </div>
                     </div>
-                    <div className="p-4 bg-emerald-50/70 rounded-2xl border border-emerald-100">
-                      <p className="text-[10px] uppercase font-black tracking-wider text-emerald-600">Completed</p>
-                      <p className="text-xl font-black text-emerald-700 mt-0.5">{checklist.filter(t => t.done).length}</p>
-                    </div>
-                    <div className="p-4 bg-rose-50/70 rounded-2xl border border-rose-100">
-                      <p className="text-[10px] uppercase font-black tracking-wider text-rose-600">P0 Urgent</p>
-                      <p className="text-xl font-black text-rose-700 mt-0.5">
-                        {checklist.filter(t => t.priority === 'P0' && !t.done).length}
-                      </p>
-                    </div>
-                    <div className="p-4 bg-indigo-50/70 rounded-2xl border border-indigo-100">
-                      <p className="text-[10px] uppercase font-black tracking-wider text-indigo-600">Readiness</p>
-                      <p className="text-xl font-black text-indigo-700 mt-0.5">
-                        {checklist.length > 0 ? Math.round((checklist.filter(t => t.done).length / checklist.length) * 100) : 0}%
-                      </p>
-                    </div>
-                  </div>
-
-                  {/* Visual Progress Bar */}
-                  <div className="space-y-2">
-                    <div className="flex justify-between items-center text-xs font-bold text-slate-600">
-                      <span className="flex items-center gap-1.5">
-                        <Flame size={14} className="text-amber-500" /> Admissions Readiness Engine
-                      </span>
-                      <span className="text-indigo-600 font-black">
-                        {checklist.filter(t => t.done).length} of {checklist.length} Completed ({checklist.length > 0 ? Math.round((checklist.filter(t => t.done).length / checklist.length) * 100) : 0}%)
-                      </span>
-                    </div>
-                    <div className="w-full bg-slate-100 rounded-full h-3 overflow-hidden p-0.5">
-                      <div 
-                        className="bg-gradient-to-r from-indigo-600 via-blue-600 to-emerald-500 h-full rounded-full transition-all duration-500 shadow-xs"
-                        style={{ width: `${checklist.length > 0 ? Math.round((checklist.filter(t => t.done).length / checklist.length) * 100) : 0}%` }}
-                      />
-                    </div>
-                  </div>
-                </div>
+                  );
+                })()}
 
                 {/* Add Custom Task Inline Drawer */}
                 <AnimatePresence>
@@ -2062,11 +2120,11 @@ ${name || 'Candidate'}`;
                     >
                       <form 
                         onSubmit={handleAddCustomTask}
-                        className="bg-white border-2 border-indigo-200 p-6 rounded-[28px] shadow-sm space-y-4"
+                        className="bg-[#F6F5F2] p-6 rounded-[28px] space-y-4"
                       >
                         <div className="flex items-center justify-between">
                           <h3 className="text-sm font-black text-slate-800 flex items-center gap-2">
-                            <Plus size={16} className="text-indigo-600" /> Create Custom Study Abroad Task
+                            <Plus size={16} className="text-[#DE5C2B]" /> Add your own task
                           </h3>
                           <span className="text-[11px] text-slate-400 font-bold">Personal Milestone</span>
                         </div>
@@ -2077,7 +2135,7 @@ ${name || 'Candidate'}`;
                             value={newTaskTitle}
                             onChange={(e) => setNewTaskTitle(e.target.value)}
                             placeholder="e.g. Schedule GRE exam date at test center, or Request LOR from Prof. Roy"
-                            className="w-full px-4 py-3 border border-slate-200 rounded-2xl text-xs md:text-sm font-semibold focus:border-indigo-500 focus:outline-none"
+                            className="w-full h-12 px-5 bg-white border border-slate-200 rounded-full text-sm font-medium focus:border-[#DE5C2B] focus:outline-none"
                             required
                           />
                         </div>
@@ -2120,9 +2178,9 @@ ${name || 'Candidate'}`;
                             </button>
                             <button
                               type="submit"
-                              className="px-5 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-black shadow-xs cursor-pointer"
+                              className="h-10 px-6 bg-[#DE5C2B] hover:bg-[#C04A1D] text-white rounded-full text-sm font-semibold cursor-pointer"
                             >
-                              Save Task
+                              Save task
                             </button>
                           </div>
                         </div>
@@ -2132,30 +2190,30 @@ ${name || 'Candidate'}`;
                 </AnimatePresence>
 
                 {/* Filter Pills */}
-                <div className="flex items-center gap-2 overflow-x-auto pb-2 custom-scrollbar">
+                <div className="flex items-center gap-2 overflow-x-auto scrollbar-hide bg-[#F6F5F2] p-1.5 rounded-full">
                   {[
-                    { id: 'all', label: 'All Tasks', count: checklist.length },
-                    { id: 'today', label: '🔥 Urgent Focus', count: checklist.filter(t => t.priority === 'P0' && !t.done).length },
-                    { id: 'admissions', label: '🎓 Admissions', count: checklist.filter(t => t.category === 'admissions').length },
-                    { id: 'prep', label: '📝 Test Prep', count: checklist.filter(t => t.category === 'prep').length },
-                    { id: 'documents', label: '📁 Documents', count: checklist.filter(t => t.category === 'documents').length },
-                    { id: 'visa', label: '🛂 Visa Prep', count: checklist.filter(t => t.category === 'visa').length },
-                    { id: 'completed', label: '✅ Completed', count: checklist.filter(t => t.done).length }
+                    { id: 'all', label: 'All', count: checklist.length },
+                    { id: 'today', label: 'Urgent', count: checklist.filter(t => t.priority === 'P0' && !t.done).length },
+                    { id: 'admissions', label: 'Admissions', count: checklist.filter(t => t.category === 'admissions').length },
+                    { id: 'prep', label: 'Test prep', count: checklist.filter(t => t.category === 'prep').length },
+                    { id: 'documents', label: 'Documents', count: checklist.filter(t => t.category === 'documents').length },
+                    { id: 'visa', label: 'Visa', count: checklist.filter(t => t.category === 'visa').length },
+                    { id: 'completed', label: 'Done', count: checklist.filter(t => t.done).length }
                   ].map((f) => {
                     const isActive = dailyTaskFilter === f.id;
                     return (
                       <button
                         key={f.id}
                         onClick={() => setDailyTaskFilter(f.id)}
-                        className={`px-3.5 py-2 rounded-2xl text-xs font-black transition-all flex-shrink-0 flex items-center gap-1.5 cursor-pointer ${
+                        className={`h-10 px-4 rounded-full text-sm font-semibold transition-colors flex-shrink-0 flex items-center gap-2 cursor-pointer ${
                           isActive
-                            ? 'bg-indigo-600 text-white shadow-sm'
-                            : 'bg-white border border-slate-200/80 text-slate-600 hover:bg-slate-50'
+                            ? 'bg-[#111] text-white'
+                            : 'text-slate-600 hover:bg-white'
                         }`}
                       >
                         <span>{f.label}</span>
-                        <span className={`px-1.5 py-0.2 rounded-md text-[10px] font-extrabold ${
-                          isActive ? 'bg-white/25 text-white' : 'bg-slate-100 text-slate-500'
+                        <span className={`min-w-6 h-6 px-1.5 rounded-full text-[11px] font-semibold flex items-center justify-center ${
+                          isActive ? 'bg-white/15 text-white' : 'bg-white text-slate-500'
                         }`}>
                           {f.count}
                         </span>
@@ -2175,34 +2233,30 @@ ${name || 'Candidate'}`;
                     })
                     .map((task) => {
                       const priorityStyles = {
-                        P0: 'bg-rose-50 text-rose-700 border-rose-200/80',
-                        P1: 'bg-amber-50 text-amber-700 border-amber-200/80',
-                        P2: 'bg-slate-100 text-slate-600 border-slate-200'
+                        P0: 'bg-[#DE5C2B] text-white border-transparent',
+                        P1: 'bg-orange-50 text-[#C04A1D] border-orange-100',
+                        P2: 'bg-[#F6F5F2] text-slate-600 border-transparent'
                       }[task.priority || 'P1'];
-
-                      const categoryBadges = {
-                        admissions: 'bg-orange-50 text-[#C04A1D] border-orange-200/60',
-                        prep: 'bg-emerald-50 text-emerald-700 border-emerald-200/60',
-                        documents: 'bg-purple-50 text-purple-700 border-purple-200/60',
-                        visa: 'bg-rose-50 text-rose-700 border-rose-200/60'
-                      }[task.category || 'admissions'];
+                      const priorityLabel = { P0: 'Urgent', P1: 'High', P2: 'Routine' }[task.priority || 'P1'];
+                      const categoryLabel = { admissions: 'Admissions', prep: 'Test prep', documents: 'Documents', visa: 'Visa' }[task.category] || task.category;
+                      const categoryBadges = 'bg-[#F6F5F2] text-slate-600 border-transparent';
 
                       return (
                         <div
                           key={task.id}
-                          className={`bg-white border rounded-[24px] p-5 sm:p-6 transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-4 select-none ${
-                            task.done 
-                              ? 'border-slate-200/70 bg-slate-50/50 opacity-80' 
-                              : 'border-slate-200/90 hover:border-indigo-300 shadow-2xs hover:shadow-xs'
+                          className={`rounded-[24px] p-5 transition-colors flex flex-col sm:flex-row sm:items-center justify-between gap-4 select-none ${
+                            task.done
+                              ? 'bg-[#F6F5F2] opacity-70'
+                              : 'bg-white border border-slate-100 hover:border-orange-200'
                           }`}
                         >
                           <div className="flex items-start gap-4 min-w-0 flex-1">
                             <button
                               onClick={() => toggleChecklistItem(task.id)}
-                              className={`mt-1 w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0 transition-all cursor-pointer ${
+                              className={`mt-0.5 w-9 h-9 rounded-full flex items-center justify-center flex-shrink-0 transition-colors cursor-pointer ${
                                 task.done
-                                  ? 'bg-emerald-500 text-white shadow-xs'
-                                  : 'border-2 border-slate-300 hover:border-indigo-600 text-transparent'
+                                  ? 'bg-[#DE5C2B] text-white'
+                                  : 'bg-[#F6F5F2] border border-slate-200 hover:border-[#DE5C2B] text-transparent hover:text-[#DE5C2B]'
                               }`}
                               title={task.done ? 'Mark as pending' : 'Mark as complete'}
                             >
@@ -2211,12 +2265,12 @@ ${name || 'Candidate'}`;
 
                             <div className="space-y-1.5 min-w-0 flex-1">
                               <div className="flex items-center gap-2 flex-wrap">
-                                <span className={`px-2 py-0.5 rounded-md text-[10px] font-black uppercase tracking-wider border ${priorityStyles}`}>
-                                  {task.priority || 'P1'}
+                                <span className={`px-2.5 py-0.5 rounded-full text-[11px] font-semibold border ${priorityStyles}`}>
+                                  {priorityLabel}
                                 </span>
                                 {task.category && (
-                                  <span className={`px-2 py-0.5 rounded-md text-[10px] font-black uppercase tracking-wider border ${categoryBadges}`}>
-                                    {task.category}
+                                  <span className={`px-2.5 py-0.5 rounded-full text-[11px] font-semibold border ${categoryBadges}`}>
+                                    {categoryLabel}
                                   </span>
                                 )}
                                 {task.stage && (
@@ -2231,7 +2285,7 @@ ${name || 'Candidate'}`;
                                 )}
                               </div>
 
-                              <h3 className={`text-sm sm:text-base font-black leading-snug ${
+                              <h3 className={`text-base font-semibold leading-snug ${
                                 task.done ? 'text-slate-400 line-through' : 'text-slate-800'
                               }`}>
                                 {task.title || task.text}
@@ -2249,7 +2303,7 @@ ${name || 'Candidate'}`;
                             {task.actionLabel && !task.done && (
                               <button
                                 onClick={(e) => handleTaskAction(task, e)}
-                                className="px-4 py-2 bg-indigo-50 hover:bg-indigo-600 text-indigo-700 hover:text-white rounded-xl text-xs font-black transition-all flex items-center gap-1.5 border border-indigo-200/80 cursor-pointer shadow-2xs"
+                                className="h-10 px-5 rounded-full bg-[#111] hover:bg-[#DE5C2B] text-white text-sm font-semibold transition-colors flex items-center gap-1.5 cursor-pointer whitespace-nowrap"
                               >
                                 <span>{task.actionLabel}</span>
                                 <ArrowRight size={13} />
@@ -2259,7 +2313,7 @@ ${name || 'Candidate'}`;
                             {task.isCustom && (
                               <button
                                 onClick={(e) => handleDeleteCustomTask(task.id, e)}
-                                className="p-2 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-xl transition-all cursor-pointer"
+                                className="w-10 h-10 rounded-full border border-slate-200 text-slate-400 hover:text-rose-600 hover:border-rose-200 flex items-center justify-center transition-colors cursor-pointer"
                                 title="Delete custom task"
                               >
                                 <Trash2 size={16} />
@@ -2294,6 +2348,13 @@ ${name || 'Candidate'}`;
               </motion.div>
             )}
 
+            {/* MESSAGES & DOCUMENTS TAB (chat with the counselor) */}
+            {activeTab === 'messages' && (
+              <motion.div key="messages" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}>
+                <StudentMessages token={token} onUnreadChange={setChatUnread} />
+              </motion.div>
+            )}
+
             {/* SAVED UNIVERSITIES TAB */}
             {activeTab === 'saved-unis' && (
               <motion.div
@@ -2307,9 +2368,9 @@ ${name || 'Candidate'}`;
                   <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-100 pb-6">
                     <div>
                       <h2 className="text-xl md:text-2xl font-black text-slate-800 tracking-tight flex items-center gap-3">
-                        <BookmarkCheck className="text-indigo-600" size={26} /> 
+                        <BookmarkCheck className="text-[#DE5C2B]" size={26} /> 
                         My Saved Universities
-                        <span className="px-3 py-1 bg-indigo-50 text-indigo-600 rounded-full text-xs font-black">
+                        <span className="px-3 py-1 bg-orange-50 text-[#C04A1D] rounded-full text-xs font-black">
                           {dbSavedUnis.length} Saved
                         </span>
                       </h2>
@@ -2318,27 +2379,29 @@ ${name || 'Candidate'}`;
                       </p>
                     </div>
 
-                    <div className="flex items-center gap-2 flex-wrap">
+                    <div className="flex items-center gap-2 shrink-0">
+                      <button
+                        onClick={fetchDbSavedUniversities}
+                        aria-label="Refresh list"
+                        title="Refresh list"
+                        className="w-11 h-11 rounded-full border border-slate-200 bg-white hover:border-orange-200 text-slate-600 hover:text-[#DE5C2B] flex items-center justify-center transition-colors cursor-pointer"
+                      >
+                        <RefreshCw size={16} className={loadingSavedUnis ? 'animate-spin' : ''} />
+                      </button>
                       <button
                         onClick={handleExportSavedUniversities}
                         disabled={dbSavedUnis.length === 0}
-                        className="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 disabled:opacity-50 text-white rounded-xl text-xs font-bold transition-all flex items-center gap-2 cursor-pointer shadow-sm shadow-emerald-200"
+                        className="h-11 px-5 rounded-full border border-slate-200 bg-white hover:border-orange-200 disabled:opacity-40 disabled:cursor-not-allowed text-slate-800 text-sm font-semibold flex items-center gap-2 transition-colors cursor-pointer"
                         title="Download your shortlisted universities in Excel (.xlsx)"
                       >
-                        <FileSpreadsheet size={15} />
-                        <span>Download Excel (.xlsx)</span>
-                      </button>
-                      <button
-                        onClick={fetchDbSavedUniversities}
-                        className="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-bold transition-all flex items-center gap-2 cursor-pointer"
-                      >
-                        <RefreshCw size={14} className={loadingSavedUnis ? 'animate-spin' : ''} /> Refresh List
+                        <FileSpreadsheet size={16} className="text-emerald-600" />
+                        <span>Excel</span>
                       </button>
                       <button
                         onClick={() => setActiveTab('shortlister')}
-                        className="px-5 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold transition-all flex items-center gap-2 cursor-pointer shadow-md shadow-indigo-100"
+                        className="h-11 px-6 rounded-full bg-[#DE5C2B] hover:bg-[#C04A1D] text-white text-sm font-semibold flex items-center gap-2 transition-colors cursor-pointer whitespace-nowrap"
                       >
-                        <Sparkles size={14} /> Find More Unis
+                        <Sparkles size={15} /> Find more universities
                       </button>
                     </div>
                   </div>
@@ -2442,269 +2505,174 @@ ${name || 'Candidate'}`;
                 initial={{ opacity: 0, y: 15 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -15 }}
-                className="space-y-8"
+                className="space-y-4"
               >
-                {/* ── 01. STUDY ABROAD PARAMETERS (Full Width 4-Col Grid) ── */}
-                <div className="bg-white border border-slate-200/60 p-6 md:p-8 rounded-[32px] shadow-sm space-y-6">
-                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-4">
-                    <div>
-                      <h2 className="text-lg md:text-xl font-black text-slate-800 tracking-tight flex items-center gap-2">
-                        <Compass className="text-indigo-600" size={22} /> Your Study Abroad Parameters
-                      </h2>
-                      <p className="text-xs text-slate-400 font-semibold mt-0.5">
-                        Target destinations and academic criteria driving your university matches
-                      </p>
-                    </div>
-
-                    <button
-                      onClick={() => setActiveTab('profile')}
-                      className="px-3.5 py-1.5 bg-slate-100 hover:bg-indigo-50 text-slate-700 hover:text-indigo-600 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 self-start sm:self-auto cursor-pointer"
-                    >
-                      <Edit3 size={13} /> Edit Parameters
-                    </button>
-                  </div>
-
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
-                    <div className="p-4 sm:p-5 bg-slate-50/80 hover:bg-slate-50 rounded-2xl border border-slate-100/80 flex items-center gap-4 transition-colors">
-                      <div className="w-11 h-11 rounded-xl bg-orange-50 text-[#DE5C2B] ring-1 ring-orange-100 flex items-center justify-center flex-shrink-0">
-                        <Globe size={20} strokeWidth={1.9} />
-                      </div>
-                      <div className="min-w-0 flex-1">
-                        <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Dream Country</p>
-                        <p className="text-sm font-black text-slate-800 mt-0.5 truncate">{profileForm.dreamCountry || 'N/A'}</p>
-                      </div>
-                    </div>
-
-                    <div className="p-4 sm:p-5 bg-slate-50/80 hover:bg-slate-50 rounded-2xl border border-slate-100/80 flex items-center gap-4 transition-colors">
-                      <div className="w-11 h-11 rounded-xl bg-orange-50 text-[#DE5C2B] ring-1 ring-orange-100 flex items-center justify-center flex-shrink-0">
-                        <GraduationCap size={20} strokeWidth={1.9} />
-                      </div>
-                      <div className="min-w-0 flex-1">
-                        <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Dream Course</p>
-                        <p className="text-sm font-black text-slate-800 mt-0.5 truncate">{profileForm.dreamCourse || 'N/A'}</p>
-                      </div>
-                    </div>
-
-                    <div className="p-4 sm:p-5 bg-slate-50/80 hover:bg-slate-50 rounded-2xl border border-slate-100/80 flex items-center gap-4 transition-colors">
-                      <div className="w-11 h-11 rounded-xl bg-orange-50 text-[#DE5C2B] ring-1 ring-orange-100 flex items-center justify-center flex-shrink-0">
-                        <BookOpenCheck size={20} strokeWidth={1.9} />
-                      </div>
-                      <div className="min-w-0 flex-1">
-                        <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Target Exam & Score</p>
-                        <p className="text-sm font-black text-slate-800 mt-0.5 truncate">
-                          {profileForm.targetExam ? `${profileForm.targetExam} (${profileForm.targetScore || 'Target TBD'})` : 'N/A'}
-                        </p>
-                      </div>
-                    </div>
-
-                    <div className="p-4 sm:p-5 bg-slate-50/80 hover:bg-slate-50 rounded-2xl border border-slate-100/80 flex items-center gap-4 transition-colors">
-                      <div className="w-11 h-11 rounded-xl bg-orange-50 text-[#DE5C2B] ring-1 ring-orange-100 flex items-center justify-center flex-shrink-0">
-                        <CalendarDays size={20} strokeWidth={1.9} />
-                      </div>
-                      <div className="min-w-0 flex-1">
-                        <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Preferred Intake</p>
-                        <p className="text-sm font-black text-slate-800 mt-0.5 truncate">{profileForm.preferredIntake || 'N/A'}</p>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="pt-3 border-t border-slate-100 flex items-center justify-between flex-wrap gap-3">
-                    <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center font-black text-xs">
-                        {dbSavedUnis.length}
-                      </div>
-                      <p className="text-xs font-bold text-slate-600">Saved Universities in Your Profile</p>
-                    </div>
-                    <div className="flex items-center gap-2 flex-wrap">
-                      {dbSavedUnis.length > 0 && (
-                        <button
-                          onClick={handleExportSavedUniversities}
-                          className="px-3.5 py-2 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-200 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer shadow-xs"
-                          title="Download shortlisted universities in Excel (.xlsx)"
-                        >
-                          <FileSpreadsheet size={14} className="text-emerald-600" />
-                          <span>Download Excel</span>
-                        </button>
-                      )}
-                      <button
-                        onClick={() => setActiveTab('saved-unis')}
-                        className="px-4 py-2 bg-slate-100 text-slate-700 hover:bg-slate-200 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer"
-                      >
-                        <BookmarkCheck size={14} className="text-indigo-600" /> View Saved ({dbSavedUnis.length})
-                      </button>
-                      <button
-                        onClick={() => setActiveTab('shortlister')}
-                        className="px-4 py-2 bg-gradient-to-r from-indigo-600 to-blue-600 text-white rounded-xl text-xs font-black hover:shadow-md transition-all flex items-center gap-2 cursor-pointer"
-                      >
-                        <Sparkles size={14} /> Shortlist Universities
-                      </button>
-                    </div>
-                  </div>
-                </div>
-
-                {/* ── 02. DAILY STUDY ABROAD ROADMAP (Full Width 2-Col Task Grid) ── */}
-                <div className="bg-white border border-slate-200/60 p-6 md:p-8 rounded-[32px] shadow-sm space-y-6">
-                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-4">
-                    <div>
-                      <h2 className="text-lg md:text-xl font-black text-slate-800 tracking-tight flex items-center gap-2">
-                        <CheckSquare className="text-indigo-600" size={22} /> Daily Study Abroad Roadmap
-                      </h2>
-                      <p className="text-xs text-slate-400 font-semibold mt-0.5">
-                        Prioritized milestones for your upcoming application cycle
-                      </p>
-                    </div>
-
-                    <div className="flex items-center gap-2">
-                      <span className="px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-indigo-50 text-indigo-700 border border-indigo-200/60">
-                        {checklist.filter(t => t.done).length}/{checklist.length} Completed
-                      </span>
-                      <button
-                        onClick={() => setActiveTab('daily-tasks')}
-                        className="px-3 py-1 bg-slate-100 hover:bg-indigo-50 text-slate-700 hover:text-indigo-600 rounded-xl text-xs font-bold transition-all flex items-center gap-1 cursor-pointer"
-                      >
-                        View Studio <ArrowRight size={13} />
-                      </button>
-                    </div>
-                  </div>
-
-                  {/* Completion Progress Bar */}
-                  <div className="space-y-2">
-                    <div className="flex justify-between text-xs font-bold text-slate-600">
-                      <span>Milestone Readiness</span>
-                      <span className="text-indigo-600 font-black">
-                        {checklist.length > 0 ? Math.round((checklist.filter(t => t.done).length / checklist.length) * 100) : 0}%
-                      </span>
-                    </div>
-                    <div className="w-full bg-slate-100 rounded-full h-2.5 overflow-hidden">
-                      <div 
-                        className="bg-gradient-to-r from-indigo-600 via-blue-600 to-emerald-500 h-full rounded-full transition-all duration-500 shadow-xs"
-                        style={{ width: `${checklist.length > 0 ? Math.round((checklist.filter(t => t.done).length / checklist.length) * 100) : 0}%` }}
-                      />
-                    </div>
-                  </div>
-
-                  {/* Balanced 2-Column Task Grid */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5">
-                    {checklist.slice(0, 6).map((item) => {
-                      const priorityBadge = {
-                        P0: 'bg-rose-50 text-rose-700 border-rose-200/80',
-                        P1: 'bg-amber-50 text-amber-700 border-amber-200/80',
-                        P2: 'bg-slate-100 text-slate-600 border-slate-200'
-                      }[item.priority || 'P1'];
-
-                      return (
-                        <div 
-                          key={item.id} 
-                          className={`p-3.5 sm:p-4 rounded-2xl border transition-all flex items-start sm:items-center justify-between gap-3 select-none ${
-                            item.done 
-                              ? 'bg-slate-50/70 border-slate-200/60 opacity-75' 
-                              : 'bg-white hover:bg-indigo-50/30 border-slate-200/90 hover:border-indigo-200 shadow-2xs'
-                          }`}
-                        >
-                          <div 
-                            onClick={() => toggleChecklistItem(item.id)}
-                            className="flex items-start gap-3.5 min-w-0 flex-1 cursor-pointer"
-                          >
-                            <div className={`mt-0.5 sm:mt-0 w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 transition-all ${
-                              item.done 
-                                ? 'bg-emerald-500 text-white shadow-xs' 
-                                : 'border-2 border-slate-300 hover:border-indigo-500 text-transparent'
-                            }`}>
-                              <Check size={14} className={item.done ? 'opacity-100' : 'opacity-0'} />
-                            </div>
-
-                            <div className="min-w-0 flex-1">
-                              <div className="flex items-center gap-2 flex-wrap">
-                                <p className={`text-xs sm:text-sm font-bold truncate leading-tight ${
-                                  item.done ? 'text-slate-400 line-through' : 'text-slate-800'
-                                }`}>
-                                  {item.title || item.text}
-                                </p>
-                                {item.priority && (
-                                  <span className={`px-1.5 py-0.5 rounded text-[9px] font-black uppercase tracking-wider border ${priorityBadge}`}>
-                                    {item.priority}
-                                  </span>
-                                )}
-                              </div>
-                              {item.subtitle && (
-                                <p className="text-[11px] text-slate-400 font-medium truncate mt-0.5">
-                                  {item.subtitle}
-                                </p>
-                              )}
-                            </div>
+                {(() => {
+                  const doneCount = checklist.filter((t) => t.done).length;
+                  const readiness = checklist.length ? Math.round((doneCount / checklist.length) * 100) : 0;
+                  const ring = 2 * Math.PI * 52;
+                  const tile = 'bg-[#F6F5F2] rounded-[28px] p-5';
+                  return (
+                    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-12 gap-4">
+                      {/* Target profile (the "card" tile) */}
+                      <div className="xl:col-span-5 bg-white border border-slate-100 rounded-[28px] p-6 flex flex-col justify-between gap-6">
+                        <div className="flex items-start justify-between gap-3">
+                          <div>
+                            <p className="text-xs text-slate-400">Target destination</p>
+                            <p className="text-2xl font-semibold text-slate-900 mt-1">{profileForm.dreamCountry || 'Not set yet'}</p>
                           </div>
+                          <button onClick={() => setActiveTab('profile')} className="h-9 px-4 rounded-full border border-slate-200 text-xs font-semibold text-slate-700 hover:border-orange-200 flex items-center gap-1.5 cursor-pointer">
+                            <Edit3 size={12} /> Edit
+                          </button>
+                        </div>
+                        <div className="grid grid-cols-3 gap-3 text-sm">
+                          {[
+                            ['Course', profileForm.dreamCourse],
+                            ['Intake', profileForm.preferredIntake],
+                            ['Exam', profileForm.targetExam ? `${profileForm.targetExam}${profileForm.targetScore ? ` ${profileForm.targetScore}` : ''}` : ''],
+                          ].map(([k, v]) => (
+                            <div key={k} className="min-w-0">
+                              <p className="text-xs text-slate-400">{k}</p>
+                              <p className="font-semibold text-slate-900 truncate" title={v || ''}>{v || '—'}</p>
+                            </div>
+                          ))}
+                        </div>
+                        <div className="flex gap-2">
+                          <button onClick={() => setActiveTab('shortlister')} className="h-11 px-6 rounded-full bg-[#111] hover:bg-black text-white text-sm font-semibold cursor-pointer">Find universities</button>
+                          <button onClick={() => { setActiveTab('saved-unis'); fetchDbSavedUniversities(); }} className="h-11 px-6 rounded-full bg-[#F1F0EC] hover:bg-[#E9E7E2] text-slate-800 text-sm font-semibold cursor-pointer">Saved ({dbSavedUnis.length})</button>
+                        </div>
+                      </div>
 
-                          {item.actionLabel && !item.done && (
-                            <button
-                              onClick={(e) => handleTaskAction(item, e)}
-                              className="px-3 py-1.5 rounded-xl text-[11px] font-black bg-indigo-50 hover:bg-indigo-600 text-indigo-700 hover:text-white border border-indigo-200/80 transition-all flex items-center gap-1 flex-shrink-0 cursor-pointer shadow-2xs"
-                            >
-                              <span>{item.actionLabel}</span>
-                              <ArrowRight size={11} />
+                      {/* Readiness ring */}
+                      <button onClick={() => setActiveTab('daily-tasks')} className="xl:col-span-3 bg-[#F6F5F2] rounded-[28px] p-5 flex flex-col items-center justify-center gap-3 cursor-pointer">
+                        <span className="relative w-[148px] h-[148px] rounded-full bg-[#111] flex items-center justify-center">
+                          <svg viewBox="0 0 120 120" className="absolute inset-0 w-full h-full -rotate-90" aria-hidden="true">
+                            <circle cx="60" cy="60" r="52" fill="none" stroke="rgba(255,255,255,0.12)" strokeWidth="6" />
+                            <circle cx="60" cy="60" r="52" fill="none" stroke="#DE5C2B" strokeWidth="6" strokeLinecap="round" strokeDasharray={ring} strokeDashoffset={ring * (1 - readiness / 100)} style={{ transition: 'stroke-dashoffset 0.8s ease' }} />
+                          </svg>
+                          <span className="text-center text-white">
+                            <span className="block text-3xl font-semibold">{readiness}%</span>
+                            <span className="block text-[11px] text-slate-400">Ready to apply</span>
+                          </span>
+                        </span>
+                        <span className="text-xs text-slate-500">{doneCount} of {checklist.length} roadmap steps done</span>
+                      </button>
+
+                      {/* Messages */}
+                      <button onClick={() => setActiveTab('messages')} className={`xl:col-span-4 ${tile} text-left flex flex-col justify-between gap-6 cursor-pointer hover:bg-[#F1F0EC] transition-colors`}>
+                        <span className="flex items-center justify-between">
+                          <span className="w-11 h-11 rounded-full bg-white flex items-center justify-center text-slate-800"><MessageCircle size={18} /></span>
+                          {chatUnread > 0 && <span className="h-8 px-3 rounded-full bg-[#DE5C2B] text-white text-xs font-semibold flex items-center">{chatUnread} new</span>}
+                        </span>
+                        <span>
+                          <span className="block text-2xl font-semibold text-slate-900">{chatUnread > 0 ? `${chatUnread} new message${chatUnread === 1 ? '' : 's'}` : 'Your counselor'}</span>
+                          <span className="block text-sm text-slate-500 mt-1">Chat and share documents in one place</span>
+                        </span>
+                        <span className="text-sm font-semibold text-[#DE5C2B] inline-flex items-center gap-1">Open messages <ArrowRight size={14} /></span>
+                      </button>
+
+                      {/* Roadmap dots */}
+                      <div className={`xl:col-span-4 ${tile}`}>
+                        <span className="w-11 h-11 rounded-full bg-white flex items-center justify-center text-slate-800"><ListChecks size={18} /></span>
+                        <p className="text-2xl font-semibold text-slate-900 mt-4">{checklist.length - doneCount} steps left</p>
+                        <p className="text-xs text-slate-500">on your study abroad roadmap</p>
+                        <div className="flex flex-wrap gap-1.5 mt-4" aria-hidden="true">
+                          {checklist.slice(0, 30).map((t) => (
+                            <span key={t.id} className={`w-3.5 h-3.5 rounded-full ${t.done ? 'bg-[#DE5C2B]' : 'bg-[#E4E2DD]'}`} />
+                          ))}
+                        </div>
+                      </div>
+
+                      {/* Saved universities */}
+                      <div className={`xl:col-span-4 ${tile} flex flex-col justify-between`}>
+                        <span className="flex items-center justify-between">
+                          <span className="w-11 h-11 rounded-full bg-white flex items-center justify-center text-slate-800"><BookmarkCheck size={18} /></span>
+                          {dbSavedUnis.length > 0 && (
+                            <button onClick={handleExportSavedUniversities} className="h-8 px-3 rounded-full border border-slate-200 bg-white text-xs font-semibold text-slate-700 flex items-center gap-1.5 cursor-pointer" title="Download as Excel">
+                              <FileSpreadsheet size={13} /> Excel
                             </button>
                           )}
-                        </div>
-                      );
-                    })}
-                  </div>
-
-                  <div className="pt-2 border-t border-slate-100 flex items-center justify-between flex-wrap gap-2 text-xs">
-                    <span className="text-slate-400 font-semibold text-[11px]">
-                      Showing top {Math.min(checklist.length, 6)} priority tasks • {checklist.length} total roadmap tasks
-                    </span>
-                    <button
-                      onClick={() => setActiveTab('daily-tasks')}
-                      className="text-indigo-600 hover:text-indigo-800 font-black text-xs inline-flex items-center gap-1 cursor-pointer"
-                    >
-                      Manage Full Roadmap <ChevronRight size={14} />
-                    </button>
-                  </div>
-                </div>
-
-                {/* ── 04. MENTOR STUDIO PROMOTION & QUICK SWITCH BANNER ── */}
-                <div className="bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 border border-slate-800/80 p-6 md:p-8 rounded-[32px] shadow-xl text-white relative overflow-hidden">
-                  {/* Atmospheric Glows */}
-                  <div className="absolute top-0 right-0 w-80 h-80 bg-radial from-orange-500/20 via-indigo-500/10 to-transparent rounded-full blur-3xl pointer-events-none" />
-                  <div className="absolute -bottom-10 -left-10 w-60 h-60 bg-radial from-blue-500/15 to-transparent rounded-full blur-2xl pointer-events-none" />
-
-                  <div className="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-6">
-                    <div className="space-y-2.5 max-w-2xl">
-                      <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-orange-500/20 border border-orange-500/30 text-orange-300 text-[11px] font-black uppercase tracking-wider">
-                        <Zap size={13} className="text-orange-400 fill-orange-400" />
-                        <span>UniCoach Creator & Senior Mentorship</span>
-                        <span className="bg-emerald-500/20 text-emerald-300 text-[9px] px-2 py-0.5 rounded-full font-bold ml-1 border border-emerald-500/30">
-                          0% Platform Commission
                         </span>
+                        <div className="mt-4">
+                          <p className="text-4xl font-semibold text-slate-900">{dbSavedUnis.length}</p>
+                          <p className="text-xs text-slate-500">universities shortlisted</p>
+                        </div>
+                        <button onClick={() => { setActiveTab('saved-unis'); fetchDbSavedUniversities(); }} className="mt-4 text-sm font-semibold text-[#DE5C2B] inline-flex items-center gap-1 cursor-pointer">View shortlist <ArrowRight size={14} /></button>
                       </div>
-                      <h3 className="text-xl md:text-2xl font-black text-white tracking-tight">
-                        Studying abroad or a top university alum?
-                      </h3>
-                      <p className="text-xs md:text-sm text-slate-300 leading-relaxed font-medium">
-                        Launch your personalized mentor storefront in 2 minutes. Host 1:1 consultation calls, answer student priority queries, and review SOPs. UniCoach takes 0% commission; you get your full fee minus only Razorpay's payment charge.
-                      </p>
-                    </div>
 
-                    <div className="flex items-center flex-wrap sm:flex-nowrap gap-3 shrink-0">
-                      <button
-                        type="button"
-                        onClick={isMentorAccount ? handleOpenMentorStudio : () => navigate('/unicoach/apply')}
-                        className="px-5 py-3 rounded-2xl bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white text-xs font-black shadow-lg shadow-orange-500/20 flex items-center gap-2 transition-all cursor-pointer"
-                      >
-                        <Zap size={14} className="fill-white" />
-                        <span>{isMentorAccount ? 'Open Mentor Studio' : 'Become a Mentor'}</span>
-                        <ArrowRight size={14} />
-                      </button>
+                      {/* Quick AI tools */}
+                      <div className={`xl:col-span-4 ${tile}`}>
+                        <p className="text-sm font-semibold text-slate-900 mb-3">Quick tools</p>
+                        <div className="space-y-2">
+                          {[
+                            ['eligibility-calculator', 'Eligibility calculator', <ClipboardCheck key="i" size={15} />],
+                            ['shortlister', 'University shortlister', <School key="i" size={15} />],
+                            ['daily-tasks', 'Roadmap and tasks', <Route key="i" size={15} />],
+                          ].map(([id, label, icon]) => (
+                            <button key={id} onClick={() => setActiveTab(id)} className="w-full h-11 px-2 rounded-full bg-white hover:bg-[#FDF3EE] flex items-center gap-3 text-sm text-slate-800 cursor-pointer">
+                              <span className="w-8 h-8 rounded-full bg-orange-50 text-[#DE5C2B] flex items-center justify-center">{icon}</span>
+                              <span className="flex-1 text-left">{label}</span>
+                              <ChevronRight size={15} className="text-slate-400 mr-2" />
+                            </button>
+                          ))}
+                        </div>
+                      </div>
 
-                      <button
-                        type="button"
-                        onClick={() => navigate('/unicoach/apply')}
-                        className="px-5 py-3 rounded-2xl bg-white/10 hover:bg-white/15 border border-white/20 text-white text-xs font-bold transition-all flex items-center gap-2 cursor-pointer"
-                      >
-                        <Sparkles size={14} className="text-amber-400" />
-                        <span>Apply as Mentor</span>
-                      </button>
+                      {/* Roadmap list */}
+                      <div className="md:col-span-2 xl:col-span-12 bg-white border border-slate-100 rounded-[28px] p-6">
+                        <div className="flex items-center justify-between gap-3 mb-4">
+                          <div>
+                            <p className="text-lg font-semibold text-slate-900">Next steps</p>
+                            <p className="text-xs text-slate-500">Your top priorities for this application cycle</p>
+                          </div>
+                          <button onClick={() => setActiveTab('daily-tasks')} className="h-10 px-5 rounded-full border border-slate-200 text-xs font-semibold text-slate-700 hover:border-orange-200 flex items-center gap-1.5 cursor-pointer">
+                            All tasks <ArrowRight size={13} />
+                          </button>
+                        </div>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                          {checklist.filter((t) => !t.done).slice(0, 6).map((item) => (
+                            <div key={item.id} className="flex items-center gap-3 p-3 rounded-full bg-[#F6F5F2]">
+                              <button
+                                onClick={() => toggleChecklistItem(item.id)}
+                                aria-label={`Mark ${item.title || item.text} done`}
+                                className="w-9 h-9 rounded-full bg-white border border-slate-200 hover:border-[#DE5C2B] flex items-center justify-center shrink-0 cursor-pointer text-transparent hover:text-[#DE5C2B]"
+                              >
+                                <Check size={15} />
+                              </button>
+                              <span className="min-w-0 flex-1">
+                                <span className="block text-sm font-semibold text-slate-900 truncate">{item.title || item.text}</span>
+                                {item.subtitle && <span className="block text-xs text-slate-500 truncate">{item.subtitle}</span>}
+                              </span>
+                              {item.actionLabel && (
+                                <button onClick={(e) => handleTaskAction(item, e)} className="h-9 px-4 rounded-full bg-[#DE5C2B] hover:bg-[#C04A1D] text-white text-xs font-semibold shrink-0 cursor-pointer">
+                                  {item.actionLabel}
+                                </button>
+                              )}
+                            </div>
+                          ))}
+                          {checklist.length > 0 && checklist.every((t) => t.done) && (
+                            <p className="text-sm text-slate-500">All steps done. Great work.</p>
+                          )}
+                        </div>
+                      </div>
                     </div>
+                  );
+                })()}
+
+                {/* ── MENTOR STUDIO PROMOTION ── */}
+                <div className="bg-[#F6F5F2] rounded-[28px] p-6 md:p-7 flex flex-col lg:flex-row lg:items-center justify-between gap-5">
+                  <div className="max-w-2xl">
+                    <p className="text-xs text-slate-500">UniCoach mentorship · 0% platform commission</p>
+                    <p className="text-xl md:text-2xl font-semibold text-slate-900 mt-1">Studying abroad already? Guide others and earn.</p>
+                    <p className="text-sm text-slate-500 mt-1">Host 1:1 calls, answer questions and review SOPs. You keep your full fee minus only Razorpay's charge.</p>
                   </div>
+                  <button
+                    type="button"
+                    onClick={isMentorAccount ? handleOpenMentorStudio : () => navigate('/unicoach/apply')}
+                    className="h-12 px-7 rounded-full bg-[#DE5C2B] hover:bg-[#C04A1D] text-white text-sm font-semibold flex items-center gap-2 shrink-0 cursor-pointer"
+                  >
+                    {isMentorAccount ? 'Open Mentor Studio' : 'Become a mentor'} <ArrowRight size={16} />
+                  </button>
                 </div>
               </motion.div>
             )}

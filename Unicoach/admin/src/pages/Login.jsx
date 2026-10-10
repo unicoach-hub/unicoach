@@ -96,7 +96,7 @@ const Login = () => {
 
             <form onSubmit={handleLogin} className="login-form">
               <div className="login-field">
-                <label className="login-label" htmlFor="login-username">Username</label>
+                <label className="login-label" htmlFor="login-username">Username or email</label>
                 <div className="login-input-wrapper">
                   <UserOutlined className="login-input-icon" />
                   <input
@@ -104,7 +104,7 @@ const Login = () => {
                     type="text"
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
-                    placeholder="Enter your username"
+                    placeholder="Admin username or staff email"
                     required
                     autoComplete="username"
                     className="login-input"

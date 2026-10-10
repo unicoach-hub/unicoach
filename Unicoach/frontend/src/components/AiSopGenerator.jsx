@@ -355,16 +355,19 @@ const AiSopGenerator = ({ initialProfile = {} }) => {
               />
             </div>
 
-            {/* Target University & Tone Row */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {/* Target University & Tone: full width each, so long names and the count badge fit */}
+            <div className="grid grid-cols-1 gap-5">
               <div>
                 <PremiumDropdown
                   label={
-                    <span className="flex items-center justify-between w-full">
-                      <span>Target University</span>
+                    <span className="flex items-center justify-between gap-2 w-full">
+                      <span className="whitespace-nowrap">Target University</span>
                       {universityOptions.length > 0 && (
-                        <span className="text-[10px] font-bold text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded-full border border-indigo-200/60">
-                          {universityOptions.length} in {selectedCountryLabel}
+                        <span
+                          className="text-[10px] font-bold text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded-full border border-indigo-200/60 whitespace-nowrap"
+                          title={`${universityOptions.length} universities in ${selectedCountryLabel}`}
+                        >
+                          {universityOptions.length} universities
                         </span>
                       )}
                     </span>

@@ -4,6 +4,7 @@ import { Table, Popconfirm, message, Input, Select } from 'antd';
 import Header from '../components/Header';
 import StatsCard from '../components/StatsCard';
 import API from '../api/axios';
+import { usePermissions } from '../utils/permissions';
 import { getCachedData, invalidateCache, fetchWithCache } from '../utils/cache';
 import { PlusOutlined, EditOutlined, DeleteOutlined, SearchOutlined, NotificationOutlined, ClockCircleOutlined } from '@ant-design/icons';
 
@@ -16,6 +17,7 @@ const News = () => {
   const [search, setSearch] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
   const navigate = useNavigate();
+  const { can } = usePermissions();
 
   const fetchNews = async (force = false) => {
     if (!getCachedData('/admin/content:news') || force) {
@@ -95,10 +97,14 @@ const News = () => {
       title: 'Actions', key: 'actions',
       render: (_, record) => (
         <div className="action-btn-group">
+          {can('news', 'update') && (
           <button onClick={() => navigate(`/news/edit/${record._id}`)} className="action-btn action-btn--edit"><EditOutlined /></button>
+          )}
+          {can('news', 'delete') && (
           <Popconfirm title="Delete this news?" onConfirm={() => handleDelete(record._id)} okText="Yes" cancelText="No">
             <button className="action-btn action-btn--delete"><DeleteOutlined /></button>
           </Popconfirm>
+          )}
         </div>
       ),
     },
@@ -135,7 +141,9 @@ const News = () => {
               <Option value="General">General Bulletin</Option>
             </Select>
           </div>
+          {can('news', 'create') && (
           <button type="button" onClick={() => navigate('/news/create')} className="nx-btn nx-btn--dark"><PlusOutlined /> New news</button>
+          )}
         </div>
         <div className="page-table-card">
           <Table rowKey="_id" columns={columns} dataSource={filtered} loading={loading} scroll={{ x: 800 }} pagination={{ pageSize: 10 }} />

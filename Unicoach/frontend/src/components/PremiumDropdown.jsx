@@ -52,6 +52,9 @@ const ACCENT_STYLES = {
   },
 };
 
+// The open list is at least this wide, so names and descriptions stay readable in narrow fields
+const PANEL_MIN_WIDTH = 280;
+
 const PremiumDropdown = ({ 
   value, 
   onChange, 
@@ -67,6 +70,7 @@ const PremiumDropdown = ({
   className = ''
 }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [alignRight, setAlignRight] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const containerRef = useRef(null);
   const searchInputRef = useRef(null);
@@ -137,7 +141,12 @@ const PremiumDropdown = ({
       {/* Trigger Button */}
       <button
         type="button"
-        onClick={() => setIsOpen(prev => !prev)}
+        onClick={() => {
+          // Near the right edge of the screen the (wider) panel opens leftwards so it isn't cut off
+          const rect = containerRef.current?.getBoundingClientRect();
+          setAlignRight(Boolean(rect && rect.left + PANEL_MIN_WIDTH > window.innerWidth - 16));
+          setIsOpen(prev => !prev);
+        }}
         className={`
           relative w-full px-3.5 py-2.5 text-left rounded-xl text-xs md:text-sm font-semibold
           transition-all duration-200 cursor-pointer
@@ -182,13 +191,13 @@ const PremiumDropdown = ({
             data-lenis-prevent
             onWheel={(e) => e.stopPropagation()}
             onTouchMove={(e) => e.stopPropagation()}
-            className="
-              absolute z-50 mt-1 left-0 w-full
+            className={`
+              absolute z-50 mt-1 ${alignRight ? 'right-0' : 'left-0'} w-full min-w-[280px] max-w-[min(380px,calc(100vw-2rem))]
               bg-white/98 backdrop-blur-xl
               border border-slate-200/90
               rounded-2xl shadow-xl shadow-slate-300/30
               py-1.5 overflow-hidden
-            "
+            `}
           >
             {/* Optional Sticky Search Box */}
             {searchable && (
@@ -313,11 +322,11 @@ const PremiumDropdown = ({
 
                         {/* Option text */}
                         <span className="flex-1 min-w-0">
-                          <span className={`block truncate ${isSelected ? 'font-black' : 'font-bold'}`}>
+                          <span className={`block leading-snug break-words ${isSelected ? 'font-black' : 'font-bold'}`}>
                             {option.label}
                           </span>
                           {option.description && (
-                            <span className="block text-[11px] font-medium text-slate-400 truncate mt-0.5">
+                            <span className="block text-[11px] font-medium text-slate-400 leading-snug line-clamp-2 mt-0.5">
                               {option.description}
                             </span>
                           )}

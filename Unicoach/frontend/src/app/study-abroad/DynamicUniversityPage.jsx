@@ -14,6 +14,7 @@ import { useLead } from '../../context/LeadContext';
 import { exportUniversitiesToExcel } from '../../utils/excelExporter';
 import { getVerifiedRanking } from '../../utils/ranking';
 import { getOfficialRequirements, getGreText, CHECK_SITE } from '../../utils/requirements';
+import { getOfficialTuition } from '../../utils/dataSourceLabel';
 
 const DynamicUniversityPage = () => {
   const { countryCode, slug } = useParams();
@@ -58,11 +59,11 @@ const DynamicUniversityPage = () => {
   // Requirements and acceptance rate only from official sources (other records hold default values)
   const req = getOfficialRequirements(university);
   const acceptanceRate = req.acceptanceRate;
-  const tuitionINR = university.tuition || `₹${Math.round(((university.tuitionFeeUSD || 25000) * 85) / 100000)} Lakh INR/yr`;
-  const tuitionUSD = university.tuitionFeeUSD ? `$${university.tuitionFeeUSD.toLocaleString()} USD/yr` : '$25,000 USD/yr';
+  // Fees only from an official source; estimates/placeholders are never shown as a fee
+  const officialTuition = getOfficialTuition(university);
   const minGpa = req.gpaPercent ? `${req.gpaPercent}%` : (req.minScoreText || CHECK_SITE);
-  const minIelts = req.ielts ? `${req.ielts} Band` : (req.ieltsText || CHECK_SITE);
-  const minToefl = req.source && university.minToeflScore ? `${university.minToeflScore} iBT` : null;
+  const minIelts = req.englishSource && req.ieltsText ? req.ieltsText : (req.ielts ? `${req.ielts} Band` : (req.ieltsText || CHECK_SITE));
+  const minToefl = req.toefl ? `${req.toefl} iBT` : null;
   const greStatus = getGreText(req) || CHECK_SITE;
   const workExp = req.workExp || CHECK_SITE;
 
@@ -179,15 +180,26 @@ const DynamicUniversityPage = () => {
             )}
 
             <div className="p-4 bg-white border border-slate-200/80 rounded-2xl shadow-xs">
-              <p className="text-[10px] font-black uppercase text-slate-400">Est. Tuition Fee</p>
-              <p className="text-lg font-black text-slate-900 mt-0.5">{tuitionINR}</p>
-              <p className="text-[10px] font-bold text-slate-500 mt-0.5">≈ {tuitionUSD}</p>
+              <p className="text-[10px] font-black uppercase text-slate-400">Tuition Fee</p>
+              {officialTuition ? (
+                <>
+                  <p className="text-lg font-black text-slate-900 mt-0.5">{officialTuition.inrText}</p>
+                  <p className="text-[10px] font-bold text-slate-500 mt-0.5">≈ {officialTuition.usdText} · {officialTuition.sourceLabel}</p>
+                </>
+              ) : (
+                <p className="text-sm font-bold text-slate-500 mt-1">{CHECK_SITE}</p>
+              )}
             </div>
 
             <div className="p-4 bg-white border border-slate-200/80 rounded-2xl shadow-xs">
               <p className="text-[10px] font-black uppercase text-slate-400">Language Cutoff</p>
               <p className="text-lg font-black text-indigo-600 mt-0.5">{minIelts}</p>
               {minToefl && <p className="text-[10px] font-bold text-slate-500 mt-0.5">TOEFL: {minToefl}</p>}
+                {req.englishSource && !req.source && (
+                  <a href={req.englishSource.sourceUrl} target="_blank" rel="noopener noreferrer" className="block text-[10px] font-bold text-emerald-700 hover:underline mt-1 truncate" title="University-wide minimum for international graduate applicants; some programmes ask for more">
+                    Source: {req.englishSource.sourceLabel}
+                  </a>
+                )}
             </div>
 
             <div className="p-4 bg-white border border-slate-200/80 rounded-2xl shadow-xs">

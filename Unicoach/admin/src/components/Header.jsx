@@ -2,8 +2,10 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Tooltip } from 'antd';
 import { MenuOutlined, ArrowLeftOutlined, BellOutlined, GlobalOutlined } from '@ant-design/icons';
 import { useAuth } from '../context/AuthContext';
+import StaffAvatar from './StaffAvatar';
 import { getFrontendUrl } from '../config';
 import useNewRequestsCount from '../hooks/useNewRequestsCount';
+import { can } from '../utils/permissions';
 
 const Header = ({ title, subtitle, extra, showBack, backUrl }) => {
   const navigate = useNavigate();
@@ -46,12 +48,12 @@ const Header = ({ title, subtitle, extra, showBack, backUrl }) => {
       {extra && <div className="nx-header-extra">{extra}</div>}
 
       <div className="nx-header-right">
-        <Tooltip title={newRequests > 0 ? `${newRequests} new support request${newRequests === 1 ? '' : 's'}` : 'Support requests'}>
+        {can(user, 'support') && <Tooltip title={newRequests > 0 ? `${newRequests} new support request${newRequests === 1 ? '' : 's'}` : 'Support requests'}>
           <Link to="/requests" className="nx-round-btn" aria-label="Support requests">
             <BellOutlined />
             {newRequests > 0 && <span className="nx-bell-count">{newRequests > 99 ? '99+' : newRequests}</span>}
           </Link>
-        </Tooltip>
+        </Tooltip>}
 
         <a href={getFrontendUrl()} target="_blank" rel="noreferrer" className="nx-pill-link" title="Open the live website">
           <GlobalOutlined />
@@ -59,10 +61,12 @@ const Header = ({ title, subtitle, extra, showBack, backUrl }) => {
         </a>
 
         <div className="nx-user-chip">
-          <span className="nx-avatar" aria-hidden="true">{initial}</span>
+          <span className="nx-avatar" aria-hidden="true" style={user?.avatar ? { padding: 0, overflow: 'hidden' } : undefined}>
+            {user?.avatar ? <StaffAvatar name={name} src={user.avatar} fill /> : initial}
+          </span>
           <div>
             <strong>{name}</strong>
-            <span>{user?.role === 'admin' ? 'Administrator' : user?.role || 'Team'}</span>
+            <span>{user?.role === 'admin' ? 'Administrator' : user?.roleName || 'Staff'}</span>
           </div>
         </div>
       </div>

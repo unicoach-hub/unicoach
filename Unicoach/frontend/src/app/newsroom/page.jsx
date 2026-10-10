@@ -27,6 +27,7 @@ import {
     TrendingUp
 } from 'lucide-react';
 import { API_BASE_URL } from '../../config';
+import CoverImage from '../../components/CoverImage';
 
 const NewsroomPage = () => {
     const navigate = useNavigate();
@@ -373,11 +374,15 @@ const NewsroomPage = () => {
                                 onClick={() => navigateToNewsDetail(currentHero)}
                                 className="lg:w-1/2 relative bg-slate-950 overflow-hidden min-h-[300px] lg:min-h-auto border-l border-slate-100 flex items-center justify-center cursor-pointer"
                             >
-                                <img 
-                                    src={currentHero.imageUrl ? getAbsoluteUrl(currentHero.imageUrl) : (currentHero.image || '/newsroom_spotlight.webp')} 
-                                    alt={currentHero.title} 
-                                    className="w-full h-full object-cover group-hover:scale-102 transition-transform duration-700 absolute inset-0"
-                                />
+                                <div className="absolute inset-0">
+                                    <CoverImage
+                                        src={currentHero.imageUrl ? getAbsoluteUrl(currentHero.imageUrl) : (currentHero.image || '/newsroom_spotlight.webp')}
+                                        alt={currentHero.title}
+                                        title={currentHero.title}
+                                        category={currentHero.category}
+                                        className="w-full h-full object-cover group-hover:scale-102 transition-transform duration-700"
+                                    />
+                                </div>
                                 <div className="absolute inset-0 bg-gradient-to-r from-slate-950/30 via-transparent to-transparent"></div>
                             </div>
                         </section>
@@ -431,9 +436,11 @@ const NewsroomPage = () => {
                                             className="bg-white border border-slate-200/60 rounded-[32px] overflow-hidden shadow-sm flex flex-col justify-between group hover:shadow-lg transition-all duration-300 cursor-pointer"
                                         >
                                             <div className="relative aspect-[16/10] bg-slate-900 overflow-hidden flex items-center justify-center">
-                                                <img 
-                                                    src={rep.imageUrl ? getAbsoluteUrl(rep.imageUrl) : (rep.image || 'https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=600&auto=format&fit=crop&q=80')} 
-                                                    alt={rep.title} 
+                                                <CoverImage
+                                                    src={rep.imageUrl ? getAbsoluteUrl(rep.imageUrl) : rep.image}
+                                                    alt={rep.title}
+                                                    title={rep.title}
+                                                    category={rep.category}
                                                     className="w-full h-full object-cover group-hover:scale-103 transition-transform duration-500"
                                                 />
                                                 <div className="absolute inset-0 bg-gradient-to-t from-slate-950/40 via-transparent to-transparent opacity-50"></div>
@@ -551,10 +558,12 @@ const NewsroomPage = () => {
                                         className="bg-white border border-slate-200/60 rounded-[32px] overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between group cursor-pointer hover:-translate-y-1"
                                     >
                                         <div className="relative aspect-[16/10] bg-slate-950 overflow-hidden flex items-center justify-center">
-                                            <img 
-                                                src={item.imageUrl ? getAbsoluteUrl(item.imageUrl) : (item.image || '/newsroom_spotlight.webp')} 
-                                                alt={item.title} 
-                                                className="w-full h-full object-cover group-hover:scale-103 transition-transform duration-500" 
+                                            <CoverImage
+                                                src={item.imageUrl ? getAbsoluteUrl(item.imageUrl) : (item.image || '/newsroom_spotlight.webp')}
+                                                alt={item.title}
+                                                title={item.title}
+                                                category={item.category}
+                                                className="w-full h-full object-cover group-hover:scale-103 transition-transform duration-500"
                                             />
                                             <span className="absolute bottom-3 left-3 text-[9px] font-black uppercase text-indigo-700 bg-indigo-50/95 border border-indigo-200/60 px-2.5 py-0.5 rounded-lg backdrop-blur-sm shadow-sm">
                                                 {item.category || activeTabMeta.name}

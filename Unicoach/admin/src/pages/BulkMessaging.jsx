@@ -43,6 +43,8 @@ const BulkMessaging = () => {
   const [leadsCount, setLeadsCount] = useState(0);
   const [verifiedLeadsCount, setVerifiedLeadsCount] = useState(0);
   const [usersCount, setUsersCount] = useState(0);
+  // Events with on-site registrations: target "event:<id>" sends to everyone registered for it
+  const [events, setEvents] = useState([]);
 
   // Sending progress state
   const [sending, setSending] = useState(false);
@@ -64,6 +66,12 @@ const BulkMessaging = () => {
         setVerifiedLeadsCount(statsRes.data.verifiedLeads || 0);
         setUsersCount(statsRes.data.studentUsers ?? statsRes.data.users ?? 0);
       }
+
+      // Events and how many people registered for each
+      API.get('/admin/content', { params: { type: 'event' } })
+        .then((r) => setEvents((r.data || []).filter((ev) => (ev.attendees || []).length > 0)
+          .sort((a, b) => new Date(b.eventStart || 0) - new Date(a.eventStart || 0))))
+        .catch(() => {});
 
       // 3. Fetch settings to inspect SMTP setup
       const settingsRes = await API.get('/admin/settings-manage');
@@ -148,8 +156,10 @@ const BulkMessaging = () => {
       return;
     }
 
+    const targetEvent = target.startsWith('event:') ? events.find((ev) => `event:${ev._id}` === target) : null;
     const recipientCount = target === 'custom'
       ? customRecipients.length
+      : targetEvent ? targetEvent.attendees.length
       : target === 'leads' ? verifiedLeadsCount
       : target === 'all-leads' ? leadsCount
       : usersCount;
@@ -157,7 +167,7 @@ const BulkMessaging = () => {
 
     Modal.confirm({
       title: `Send ${channel === 'email' ? 'email' : 'WhatsApp'} campaign?`,
-      content: `This will send "${templateName}" to ${TARGET_LABELS[target] || target} — ${recipientCount} recipient${recipientCount === 1 ? '' : 's'}. This cannot be undone.`,
+      content: `This will send "${templateName}" to ${targetEvent ? `everyone registered for "${targetEvent.title}"` : TARGET_LABELS[target] || target} — ${recipientCount} recipient${recipientCount === 1 ? '' : 's'}. This cannot be undone.`,
       okText: 'Send Campaign',
       okButtonProps: { danger: true },
       cancelText: 'Cancel',
@@ -234,6 +244,9 @@ const BulkMessaging = () => {
                     <Option value="all-leads">All Leads (including unverified) ({leadsCount})</Option>
                     <Option value="users">All Registered Users ({usersCount} accounts)</Option>
                     <Option value="custom">Manual Recipient List (CSV Format)</Option>
+                    {events.map((ev) => (
+                      <Option key={ev._id} value={`event:${ev._id}`}>Event: {ev.title} ({ev.attendees.length} registered)</Option>
+                    ))}
                   </Select>
                 </div>
 

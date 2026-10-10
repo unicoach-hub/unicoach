@@ -24,6 +24,7 @@ import { useLead } from '../../../context/LeadContext';
 import { getByCountry } from '@/data/universities';
 import { getUniversityLogo } from '../../../components/logoResolver';
 import { matchesUniversitySearch, getMatchedCoursesForUniversity } from '../../../utils/universitySearchMatcher';
+import { getOfficialTuition } from '../../../utils/dataSourceLabel';
 
 const API_URL = API_BASE_URL;
 
@@ -132,18 +133,14 @@ const UniversityCard = ({ uni, currency, exchangeRate, getTuitionDisplay, onKnow
                 <div className="flex items-center justify-between gap-2 mb-4 bg-slate-50/80 p-2.5 rounded-xl border border-slate-100">
                     <div className="flex items-center gap-1.5">
                         <Award size={14} className="text-amber-500" />
-                        <span className="text-xs font-bold text-slate-700">{uni.rank}</span>
-                    </div>
-                    <div className="flex items-center gap-1">
-                        <Building size={14} className="text-indigo-500" />
-                        <span className="text-[11px] font-semibold text-slate-500">Verified Partner</span>
+                        <span className="text-xs font-bold text-slate-700">{uni.rank ? `Rank #${uni.rank}` : 'Rank not listed'}</span>
                     </div>
                 </div>
 
                 {/* Key Metrics */}
                 <div className="grid grid-cols-2 gap-2 mb-4">
                     <div className="bg-orange-50/50 p-2.5 rounded-xl border border-orange-100/50">
-                        <span className="text-[10px] text-[#DE5C2B] font-bold uppercase tracking-wider block mb-0.5">Est. Tuition</span>
+                        <span className="text-[10px] text-[#DE5C2B] font-bold uppercase tracking-wider block mb-0.5">Tuition</span>
                         <p className="font-semibold text-indigo-600 text-sm truncate">{getTuitionDisplay(uni.tuition, currency)}</p>
                     </div>
                     <div className="bg-indigo-50/50 p-2.5 rounded-xl border border-indigo-100/50">
@@ -324,12 +321,14 @@ const USAMastersPage = () => {
               location: (u.city ? `${u.city}, ` : '') + (u.state || 'USA'),
               city: u.city || 'Central City',
               state: u.state || 'USA',
-              tuition: u.tuition || (u.tuitionFeeUSD ? `₹ ${Math.round((u.tuitionFeeUSD * 85) / 100000)} Lakh / yr` : '₹ 25.0 Lakh / yr'),
-              tuitionFeeUSD: u.tuitionFeeUSD || 25000,
-              rank: u.rankingNum || (u.rank ? parseInt(String(u.rank).replace(/\D/g, '')) || 200 : 200),
-              degrees: u.degreeLevels || ['Postgraduate', 'Ph.D.', 'Undergraduate'],
-              courses: u.courses || ['Computer Science', 'Data Science', 'Business Administration', 'Software Engineering'],
-              acceptanceRate: u.acceptanceRate || 55,
+              // Only official values: fee from an official source (Master's fee preferred), rank from an
+              // imported ranking file, acceptance rate from College Scorecard. Unknown stays empty.
+              tuition: (() => { const t = getOfficialTuition(u, { preferGraduate: true }); return t ? `₹ ${(Math.round((t.usd * 85) / 10000) / 10).toFixed(1)} Lakh / yr` : 'N/A'; })(),
+              tuitionFeeUSD: getOfficialTuition(u, { preferGraduate: true })?.usd || null,
+              rank: u.rankingSource && u.rankingNum > 0 ? u.rankingNum : null,
+              degrees: Array.isArray(u.degreeLevels) ? u.degreeLevels : [],
+              courses: Array.isArray(u.courses) ? u.courses : [],
+              acceptanceRate: u.dataSource?.provider === 'College Scorecard' && typeof u.acceptanceRate === 'number' ? u.acceptanceRate : null,
               logo: u.logo || '',
               website: u.website || '',
               type: u.type || 'PUBLIC'
@@ -358,86 +357,20 @@ const USAMastersPage = () => {
       }
 
       // Determine dynamic degrees
-      const nameLower = uni.name.toLowerCase();
       const rawDegrees = Array.isArray(uni.degrees) ? uni.degrees : ['Masters'];
       const degrees = ['Postgraduate']; // Always include Postgraduate since this is Masters in USA page
       if (rawDegrees.some(d => String(d).toLowerCase().includes('master') || String(d).toLowerCase().includes('postgrad'))) {
         if (!degrees.includes('Postgraduate')) degrees.push('Postgraduate');
       }
-      if (rawDegrees.some(d => String(d).toLowerCase().includes('bach') || String(d).toLowerCase().includes('undergrad')) || !nameLower.includes('graduate school')) {
+      if (rawDegrees.some(d => String(d).toLowerCase().includes('bach') || String(d).toLowerCase().includes('undergrad'))) {
         if (!degrees.includes('Undergraduate')) degrees.push('Undergraduate');
       }
-      if (rawDegrees.some(d => String(d).toLowerCase().includes('ph') || String(d).toLowerCase().includes('doctor')) || nameLower.includes('university') || nameLower.includes('institute')) {
+      if (rawDegrees.some(d => String(d).toLowerCase().includes('ph') || String(d).toLowerCase().includes('doctor'))) {
         if (!degrees.includes('Ph.D.')) degrees.push('Ph.D.');
       }
-      if (index % 7 === 0 && !degrees.includes('PG Diploma /Certificate')) {
-        degrees.push('PG Diploma /Certificate');
-      }
-      if (index % 10 === 0 && !degrees.includes('UG Diploma /Certificate /Associate Degree')) {
-        degrees.push('UG Diploma /Certificate /Associate Degree');
-      }
 
-      // Determine dynamic courses
-      let courses = uni.courses || [];
-      if (!courses.length) {
-        if (
-          nameLower.includes('tech') ||
-          nameLower.includes('technology') ||
-          nameLower.includes('polytechnic') ||
-          nameLower.includes('science') ||
-          nameLower.includes('engineering') ||
-          nameLower.includes('mining')
-        ) {
-          courses = [
-            'Computer Science', 'Data Science', 'Cyber Security', 'Artificial Intelligence / Machine Learning',
-            'Software Engineering', 'Computer Engineering', 'Industrial Engineering', 'Civil Engineering',
-            'Mechanical Engineering', 'Electrical Engineering'
-          ];
-        } else if (
-          nameLower.includes('business') ||
-          nameLower.includes('management') ||
-          nameLower.includes('finance') ||
-          nameLower.includes('commerce') ||
-          nameLower.includes('economics') ||
-          nameLower.includes('wharton')
-        ) {
-          courses = [
-            'Business Analytics', 'Business Administration', 'Management', 'International / Global Business',
-            'Sales And Marketing', 'Human resource Management', 'Project Management', 'Banking and Finance', 'Accounting'
-          ];
-        } else if (
-          nameLower.includes('art') ||
-          nameLower.includes('design') ||
-          nameLower.includes('music') ||
-          nameLower.includes('fine art') ||
-          nameLower.includes('creative') ||
-          nameLower.includes('dance') ||
-          nameLower.includes('theatre')
-        ) {
-          courses = [
-            'Industrial Design', 'Interior Design', 'Fashion Design', 'Product Design', 'Arts / Fine Art',
-            'Creative Arts', 'Graphic and Design Studies', 'Animation', 'Photography'
-          ];
-        } else if (
-          nameLower.includes('health') ||
-          nameLower.includes('medical') ||
-          nameLower.includes('medicine') ||
-          nameLower.includes('dental') ||
-          nameLower.includes('nursing') ||
-          nameLower.includes('pharmacy') ||
-          nameLower.includes('clinic')
-        ) {
-          courses = [
-            'Public Health', 'Gerontology', 'Nursing and midwifery', 'Radiography', 'Paramedical Studies',
-            'Pharmacology / Pharmacy', 'Medicine and Medical Studies', 'Biotechnology'
-          ];
-        } else {
-          courses = [
-            'Computer Science', 'Data Science', 'Business Analytics', 'Civil Engineering',
-            'Mechanical Engineering', 'Electrical Engineering', 'Software Engineering', 'Management', 'Data Analytics'
-          ];
-        }
-      }
+      // Courses exactly as stored for the university (no guessing from its name)
+      const courses = Array.isArray(uni.courses) ? uni.courses : [];
 
       // Extract city & state from location
       const parts = (uni.location || uni.city || 'Boston, Massachusetts').split(', ');

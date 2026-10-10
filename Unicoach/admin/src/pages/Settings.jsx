@@ -1,33 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Button, Input, Form, Row, Col, message, Spin, Modal, Space,
-  Divider, Tooltip, Switch, Table, Popconfirm, Select
+  Button, Input, Row, Col, message, Spin, Modal, Space
 } from 'antd';
 import {
   SettingOutlined, LockOutlined, UnlockOutlined, EyeOutlined, EyeInvisibleOutlined,
   SaveOutlined, SafetyCertificateOutlined, BookOutlined, CheckCircleOutlined,
   InstagramOutlined, FacebookOutlined, YoutubeOutlined, LinkedinOutlined,
   TwitterOutlined, SendOutlined, ShareAltOutlined, RobotOutlined, KeyOutlined,
-  MobileOutlined, MailOutlined, PhoneOutlined, UserAddOutlined, EditOutlined,
-  DeleteOutlined, TeamOutlined, GlobalOutlined, CloudUploadOutlined
+  MobileOutlined, MailOutlined, GlobalOutlined, CloudUploadOutlined
 } from '@ant-design/icons';
 import Header from '../components/Header';
 import API from '../api/axios';
-
-const { Option } = Select;
 
 const Settings = () => {
   const [loading, setLoading] = useState(false);
   const [saving, setSaving] = useState(false);
   const [guideModalOpen, setGuideModalOpen] = useState(false);
   const [testingCloudinary, setTestingCloudinary] = useState(false);
-
-  // Employee State
-  const [employees, setEmployees] = useState([]);
-  const [empModalOpen, setEmpModalOpen] = useState(false);
-  const [editingEmp, setEditingEmp] = useState(null);
-  const [empSubmitting, setEmpSubmitting] = useState(false);
-  const [empForm] = Form.useForm();
 
   // Security Locking States
   const [isLocked, setIsLocked] = useState({
@@ -36,7 +25,6 @@ const Settings = () => {
     waba: true,
     smtp: true,
     ai: true,
-    employees: true,
     cloudinary: true
   });
 
@@ -108,13 +96,10 @@ const Settings = () => {
     cloudinaryApiSecret: ''
   });
 
-  const fetchSettingsAndEmployees = async () => {
+  const fetchSettings = async () => {
     setLoading(true);
     try {
-      const [settingsRes, empRes] = await Promise.all([
-        API.get('/admin/settings-manage'),
-        API.get('/admin/employees')
-      ]);
+      const settingsRes = await API.get('/admin/settings-manage');
 
       if (settingsRes.data) {
         setFormState(prev => ({ 
@@ -123,19 +108,15 @@ const Settings = () => {
           cloudinaryCloudName: settingsRes.data.cloudinaryCloudName || 'slsut3se'
         }));
       }
-
-      if (Array.isArray(empRes.data)) {
-        setEmployees(empRes.data);
-      }
     } catch {
-      message.error('Failed to load settings & employees');
+      message.error('Failed to load settings');
     } finally {
       setLoading(false);
     }
   };
 
   useEffect(() => {
-    fetchSettingsAndEmployees();
+    fetchSettings();
   }, []);
 
   const handleChange = (field, value) => {
@@ -176,11 +157,10 @@ const Settings = () => {
         waba: true,
         smtp: true,
         ai: true,
-        employees: true,
-        cloudinary: true
+            cloudinary: true
       });
 
-      fetchSettingsAndEmployees();
+      fetchSettings();
     } catch {
       message.error('Failed to save settings');
     } finally {
@@ -188,115 +168,12 @@ const Settings = () => {
     }
   };
 
-  // Employee CRUD Handlers
-  const handleOpenEmpModal = (emp = null) => {
-    setEditingEmp(emp);
-    if (emp) {
-      empForm.setFieldsValue(emp);
-    } else {
-      empForm.resetFields();
-      empForm.setFieldsValue({
-        role: 'Senior Counselor',
-        branch: 'Panipat Head Office',
-        status: 'active'
-      });
-    }
-    setEmpModalOpen(true);
-  };
-
-  const handleSaveEmployee = async (values) => {
-    setEmpSubmitting(true);
-    try {
-      if (editingEmp) {
-        await API.put(`/admin/employees/${editingEmp._id}`, values);
-        message.success('Counselor employee updated successfully!');
-      } else {
-        await API.post('/admin/employees', values);
-        message.success('New Counselor employee added to system!');
-      }
-      setEmpModalOpen(false);
-      fetchSettingsAndEmployees();
-    } catch {
-      message.error('Failed to save employee');
-    } finally {
-      setEmpSubmitting(false);
-    }
-  };
-
-  const handleDeleteEmployee = async (id) => {
-    try {
-      await API.delete(`/admin/employees/${id}`);
-      message.success('Employee deleted');
-      fetchSettingsAndEmployees();
-    } catch {
-      message.error('Failed to delete employee');
-    }
-  };
-
-  const empColumns = [
-    {
-      title: 'Employee name',
-      dataIndex: 'name',
-      key: 'name',
-      render: (t, r) => (
-        <div>
-          <strong style={{ color: 'var(--ux-ink)', fontWeight: 600, fontSize: 14 }}>{t}</strong>
-          <div style={{ fontSize: 11.5, color: 'var(--ux-text-3)' }}>{r.specialization}</div>
-        </div>
-      )
-    },
-    {
-      title: 'Mobile / WhatsApp phone',
-      dataIndex: 'phone',
-      key: 'phone',
-      render: (phone) => (
-        <span style={{ fontWeight: 500, color: 'var(--ux-ink)', whiteSpace: 'nowrap' }}>
-          <PhoneOutlined style={{ marginRight: 4, color: 'var(--ux-text-3)' }} /> {phone}
-        </span>
-      )
-    },
-    {
-      title: 'Email address',
-      dataIndex: 'email',
-      key: 'email',
-      render: (email) => <span style={{ color: 'var(--ux-text-2)' }}>{email}</span>
-    },
-    {
-      title: 'Role & branch',
-      dataIndex: 'role',
-      key: 'role',
-      render: (role, r) => (
-        <div>
-          <span className="nx-status nx-status--neutral">{role}</span>
-          <div style={{ fontSize: 11, color: 'var(--ux-text-3)', marginTop: 4 }}>{r.branch}</div>
-        </div>
-      )
-    },
-    {
-      title: 'Status',
-      dataIndex: 'status',
-      key: 'status',
-      render: (st) => <span className={`nx-status ${st === 'active' ? 'nx-status--success' : 'nx-status--neutral'}`} style={{ textTransform: 'capitalize' }}>{st}</span>
-    },
-    {
-      title: 'Actions',
-      key: 'actions',
-      render: (_, record) => (
-        <Space size="small">
-          <Button size="small" icon={<EditOutlined />} onClick={() => handleOpenEmpModal(record)} aria-label="Edit employee" />
-          <Popconfirm title="Delete employee?" onConfirm={() => handleDeleteEmployee(record._id)}>
-            <Button size="small" danger icon={<DeleteOutlined />} aria-label="Delete employee" />
-          </Popconfirm>
-        </Space>
-      )
-    }
-  ];
 
   return (
     <div>
       <Header
         title="Settings"
-        subtitle="Site settings, counselors, social media credentials, WABA and SMTP"
+        subtitle="Site settings, social media credentials, WABA and SMTP. Staff accounts are under Staff & Roles."
         extra={
           <Space wrap size="small">
             <Button
@@ -358,31 +235,6 @@ const Settings = () => {
                 />
               </Col>
             </Row>
-          </div>
-
-          {/* ── SECTION 2: 👥 TEAM & EMPLOYEE COUNSELORS MANAGER ── */}
-          <div className="nx-card p-5 sm:p-6">
-            <div className="flex items-center justify-between gap-3 flex-wrap" style={{ marginBottom: 18 }}>
-              <div className="flex items-center gap-3 flex-wrap">
-                <span className="nx-icon-circle"><TeamOutlined /></span>
-                <span className="nx-section-title">Team & employee counselors</span>
-                <span className="nx-tab-count">{employees.length}</span>
-              </div>
-              <Button
-                type="primary"
-                icon={<UserAddOutlined />}
-                onClick={() => handleOpenEmpModal()}
-              >
-                Add employee counselor
-              </Button>
-            </div>
-            <div style={{ marginTop: -6, marginBottom: 14, fontSize: 12.5, color: 'var(--ux-text-2)' }}>
-              Add staff members, counselors, and their mobile numbers here. Their phone numbers will dynamically populate across CRM call actions and WhatsApp buttons.
-            </div>
-
-            <div style={{ width: '100%', overflowX: 'auto', WebkitOverflowScrolling: 'touch' }}>
-              <Table rowKey="_id" dataSource={employees} columns={empColumns} pagination={false} size="small" scroll={{ x: 700 }} />
-            </div>
           </div>
 
           {/* ── SECTION 3: 🔑 SOCIAL MEDIA PLATFORM CREDENTIALS ── */}
@@ -786,62 +638,6 @@ const Settings = () => {
       </Spin>
 
       {/* ── ADD / EDIT EMPLOYEE COUNSELOR MODAL ── */}
-      <Modal
-        title={
-          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-            <span className="nx-icon-circle"><UserAddOutlined /></span>
-            <span style={{ fontWeight: 600, letterSpacing: '-0.02em', color: 'var(--ux-ink)' }}>{editingEmp ? 'Edit employee counselor' : 'Add new employee counselor'}</span>
-          </div>
-        }
-        open={empModalOpen}
-        onCancel={() => setEmpModalOpen(false)}
-        footer={null}
-        width={500}
-      >
-        <Form form={empForm} layout="vertical" onFinish={handleSaveEmployee} style={{ marginTop: 16 }}>
-          <Form.Item name="name" label="Employee Full Name *" rules={[{ required: true, message: 'Please enter employee name' }]}>
-            <Input placeholder="e.g. Sagar Sharma" />
-          </Form.Item>
-
-          <Row gutter={12}>
-            <Col span={12}>
-              <Form.Item name="phone" label="Mobile / WhatsApp Number *" rules={[{ required: true, message: 'Enter mobile number' }]}>
-                <Input prefix={<PhoneOutlined />} placeholder="+91 95186 57944" />
-              </Form.Item>
-            </Col>
-            <Col span={12}>
-              <Form.Item name="email" label="Email Address">
-                <Input placeholder="sagar@unicoach.com" />
-              </Form.Item>
-            </Col>
-          </Row>
-
-          <Row gutter={12}>
-            <Col span={12}>
-              <Form.Item name="role" label="Designated Role">
-                <Select style={{ width: '100%' }}>
-                  <Option value="Senior Study Abroad Counselor">Senior Study Abroad Counselor</Option>
-                  <Option value="Visa & Scholarship Advisor">Visa & Scholarship Advisor</Option>
-                  <Option value="Branch Manager">Branch Manager</Option>
-                  <Option value="Admission Executive">Admission Executive</Option>
-                </Select>
-              </Form.Item>
-            </Col>
-            <Col span={12}>
-              <Form.Item name="specialization" label="Specialization">
-                <Input placeholder="e.g. USA & UK Admissions" />
-              </Form.Item>
-            </Col>
-          </Row>
-
-          <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 10, marginTop: 16 }}>
-            <Button onClick={() => setEmpModalOpen(false)}>Cancel</Button>
-            <Button type="primary" htmlType="submit" loading={empSubmitting}>
-              Save employee counselor
-            </Button>
-          </div>
-        </Form>
-      </Modal>
 
       {/* ── STEP-BY-STEP SETUP GUIDE MODAL ── */}
       <Modal

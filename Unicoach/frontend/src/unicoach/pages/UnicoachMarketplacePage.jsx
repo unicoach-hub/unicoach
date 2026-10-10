@@ -46,7 +46,7 @@ const UnicoachMarketplacePage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#FAF9F6] text-slate-900 selection:bg-[#DE5C2B]/20">
+    <div className="min-h-screen bg-[#FAF9F6] text-slate-900">
       {/* ════════ SECTION 1: STUDENT-FIRST HERO ════════ */}
       <StudentHeroSection />
 

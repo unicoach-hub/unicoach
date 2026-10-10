@@ -30,7 +30,7 @@ const AiToolsHubPage = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-[#F8FAFC] pt-[76px] pb-24 text-slate-900 font-sans selection:bg-orange-100 selection:text-blue-900">
+    <div className="min-h-screen bg-[#F8FAFC] pt-[76px] pb-24 text-slate-900 font-sans">
       
       {/* ── 1. CINEMATIC HERO SECTION ── */}
       <section className="relative pt-12 pb-16 md:pt-16 md:pb-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-[#EBF2FF] via-[#F4F7FD] to-[#F8FAFC] border-b border-slate-200/80 overflow-hidden">

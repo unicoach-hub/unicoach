@@ -308,7 +308,10 @@ app.use('/api/admin/settings-manage', require('./routes/adminSettings'));
 
 // Admin users & employees route
 app.use('/api/admin/users', require('./routes/adminUsers'));
-app.use('/api/admin/employees', require('./routes/adminEmployees'));
+app.use('/api/admin/staff', require('./routes/adminStaff'));
+app.use('/api/admin/student-inbox', require('./routes/adminStudentInbox'));
+app.use('/api/admin/tasks', require('./routes/adminTasks'));
+app.use('/api/student-chat', require('./routes/studentChat'));
 
 // Admin messaging & templates
 app.use('/api/admin/templates', require('./routes/adminTemplates'));

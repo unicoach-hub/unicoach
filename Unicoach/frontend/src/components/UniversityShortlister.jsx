@@ -133,21 +133,22 @@ function evaluateLocalShortlist(formData) {
     else if (parsedGre >= reqGre) score += 10;
     else score += 4;
 
-    // Budget
-    const feeUSD = uni.tuitionFeeUSD || 25000;
-    if (parsedBudget >= feeUSD) score += 15;
+    // Budget (an unknown fee is neutral, never an assumed price)
+    const feeUSD = Number(uni.tuitionFeeUSD) || 0;
+    if (!feeUSD) score += 10;
+    else if (parsedBudget >= feeUSD) score += 15;
     else if (parsedBudget >= feeUSD * 0.85) score += 10;
     else score += 3;
 
     const matchScore = Math.min(98, Math.max(35, score));
-    const isAffordable = parsedBudget >= feeUSD;
+    const isAffordable = !feeUSD || parsedBudget >= feeUSD;
 
     let category = 'target';
     if (
       rankNum <= 120 || 
       accRate <= 25 || 
       parsedGpa < reqGpa || 
-      (!isAffordable && feeUSD > parsedBudget * 1.15)
+      (feeUSD > 0 && !isAffordable && feeUSD > parsedBudget * 1.15)
     ) {
       category = 'dream';
     } else if (

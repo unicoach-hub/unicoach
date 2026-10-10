@@ -1,5 +1,7 @@
 const Lead = require('../models/Lead');
 const { normalizePhone } = require('../utils/twilio');
+const { readAttribution, applyAttributionToLead } = require('../utils/attribution');
+const { sendMetaEvent } = require('../services/metaConversions');
 
 // Service-page forms → the matching Admin → Support Requests category pill
 const SUPPORT_CATEGORY_BY_SOURCE = {
@@ -101,7 +103,17 @@ exports.submitLead = async (req, res) => {
     }
 
     lead.verified = true;
+    applyAttributionToLead(lead, req.body.attribution);
     await lead.save();
+
+    sendMetaEvent({
+      eventName: 'Lead',
+      eventId: req.body.attribution?.eventId,
+      user: { email: cleanEmail, phone: normalizedPhone, name, externalId: lead._id },
+      req,
+      attribution: req.body.attribution,
+      customData: { content_name: lead.latestSource || lead.source }
+    });
 
     return res.status(200).json({
       success: true,
@@ -234,7 +246,18 @@ exports.bookConsultation = async (req, res) => {
       console.warn('AI lead scoring skipped for direct booking:', aiErr.message);
     }
 
+    const attribution = readAttribution(req.body);
+    applyAttributionToLead(lead, attribution);
     await lead.save();
+
+    sendMetaEvent({
+      eventName: 'Lead',
+      eventId: attribution?.eventId,
+      user: { email: cleanEmail, phone: normalizedPhone, name, externalId: lead._id },
+      req,
+      attribution,
+      customData: { content_name: source }
+    });
 
     // ── Also sync to SupportRequest so it appears in Admin -> Support Requests (/requests) ──
     try {

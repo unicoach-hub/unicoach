@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import CoverImage from '../../components/CoverImage';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
     BookOpen, 
@@ -86,8 +87,8 @@ const BlogsPage = () => {
         date: blog.publishDate ? new Date(blog.publishDate).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' }) : new Date(blog.createdAt).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' }),
         readTime: "5 Min Read",
         description: blog.metaDescription || (blog.body ? blog.body.replace(/<[^>]*>/g, '').slice(0, 140) + "..." : "Read the latest update and admissions guidance from UniCoach."),
-        image: blog.imageUrl ? getAbsoluteUrl(blog.imageUrl) : "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=800&auto=format&fit=crop&q=80",
-        author: blog.author?.name || "UniCoach Advisor",
+        image: blog.imageUrl ? getAbsoluteUrl(blog.imageUrl) : null,
+        author: "UniCoach Team",
         category: blog.category || 'General',
         isDbBlog: true
     }));
@@ -169,9 +170,11 @@ const BlogsPage = () => {
                     >
                         {/* Featured Image */}
                         <div className="lg:w-1/2 relative aspect-[16/10] lg:aspect-auto rounded-2xl overflow-hidden bg-slate-100 border border-slate-100">
-                            <img 
-                                src={featuredBlog.image} 
-                                alt={featuredBlog.title} 
+                            <CoverImage
+                                src={featuredBlog.image}
+                                alt={featuredBlog.title}
+                                title={featuredBlog.title}
+                                category={featuredBlog.category}
                                 className="w-full h-full object-cover group-hover:scale-103 transition-transform duration-700"
                             />
                             <div className="absolute inset-0 bg-gradient-to-t from-slate-900/60 via-transparent to-transparent" />
@@ -309,9 +312,11 @@ const BlogsPage = () => {
                             >
                                 {/* Card Thumbnail */}
                                 <div className="relative overflow-hidden aspect-[16/10] bg-slate-100">
-                                    <img 
-                                        src={blog.image} 
-                                        alt={blog.title} 
+                                    <CoverImage
+                                        src={blog.image}
+                                        alt={blog.title}
+                                        title={blog.title}
+                                        category={blog.category}
                                         className="w-full h-full object-cover group-hover:scale-104 transition-transform duration-500"
                                     />
                                     <button 

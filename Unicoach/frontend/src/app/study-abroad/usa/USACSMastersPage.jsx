@@ -12,6 +12,7 @@ const logoHarvard = `https://ui-avatars.com/api/?name=${encodeURIComponent((type
 const logoNorthwestern = `https://ui-avatars.com/api/?name=${encodeURIComponent((typeof uni !== 'undefined' && uni && uni.name) ? uni.name : 'U')}&background=4F46E5&color=ffffff&bold=true&size=128`;
 
 import React, { useState, useMemo, useRef, useEffect } from 'react';
+import { getOfficialTuition } from '../../../utils/dataSourceLabel';
 import { motion, AnimatePresence, useMotionValue, useSpring, useTransform } from 'framer-motion';
 import { 
   DollarSign, MapPin, Award, Building, Globe, ExternalLink, 
@@ -324,12 +325,14 @@ const USACSMastersPage = () => {
               location: (u.city ? `${u.city}, ` : '') + (u.state || 'USA'),
               city: u.city || 'Central City',
               state: u.state || 'USA',
-              tuition: u.tuition || (u.tuitionFeeUSD ? `₹ ${Math.round((u.tuitionFeeUSD * 85) / 100000)} Lakh / yr` : '₹ 25.0 Lakh / yr'),
-              tuitionFeeUSD: u.tuitionFeeUSD || 25000,
-              rank: u.rankingNum || (u.rank ? parseInt(String(u.rank).replace(/\D/g, '')) || 200 : 200),
-              degrees: u.degreeLevels || ['Postgraduate', 'Ph.D.', 'Undergraduate'],
-              courses: u.courses || ['Computer Science', 'Data Science', 'Artificial Intelligence / Machine Learning', 'Software Engineering'],
-              acceptanceRate: u.acceptanceRate || 55,
+              // Only official values: fee from an official source (Master's fee preferred), rank from an
+              // imported ranking file, acceptance rate from College Scorecard. Unknown stays empty.
+              tuition: (() => { const t = getOfficialTuition(u, { preferGraduate: true }); return t ? `₹ ${(Math.round((t.usd * 85) / 10000) / 10).toFixed(1)} Lakh / yr` : 'N/A'; })(),
+              tuitionFeeUSD: getOfficialTuition(u, { preferGraduate: true })?.usd || null,
+              rank: u.rankingSource && u.rankingNum > 0 ? u.rankingNum : null,
+              degrees: Array.isArray(u.degreeLevels) ? u.degreeLevels : [],
+              courses: Array.isArray(u.courses) ? u.courses : [],
+              acceptanceRate: u.dataSource?.provider === 'College Scorecard' && typeof u.acceptanceRate === 'number' ? u.acceptanceRate : null,
               logo: u.logo || '',
               website: u.website || '',
               type: u.type || 'PUBLIC'
@@ -364,17 +367,11 @@ const USACSMastersPage = () => {
       if (rawDegrees.some(d => String(d).toLowerCase().includes('master') || String(d).toLowerCase().includes('postgrad'))) {
         if (!degrees.includes('Postgraduate')) degrees.push('Postgraduate');
       }
-      if (rawDegrees.some(d => String(d).toLowerCase().includes('bach') || String(d).toLowerCase().includes('undergrad')) || !nameLower.includes('graduate school')) {
+      if (rawDegrees.some(d => String(d).toLowerCase().includes('bach') || String(d).toLowerCase().includes('undergrad'))) {
         if (!degrees.includes('Undergraduate')) degrees.push('Undergraduate');
       }
-      if (rawDegrees.some(d => String(d).toLowerCase().includes('ph') || String(d).toLowerCase().includes('doctor')) || nameLower.includes('university') || nameLower.includes('institute')) {
+      if (rawDegrees.some(d => String(d).toLowerCase().includes('ph') || String(d).toLowerCase().includes('doctor'))) {
         if (!degrees.includes('Ph.D.')) degrees.push('Ph.D.');
-      }
-      if (index % 7 === 0 && !degrees.includes('PG Diploma /Certificate')) {
-        degrees.push('PG Diploma /Certificate');
-      }
-      if (index % 10 === 0 && !degrees.includes('UG Diploma /Certificate /Associate Degree')) {
-        degrees.push('UG Diploma /Certificate /Associate Degree');
       }
 
       // Determine dynamic courses specifically for Computer Science

@@ -20,6 +20,12 @@ const leadSchema = new mongoose.Schema({
   status: { type: String, enum: ['new', 'contacted', 'qualified', 'converted', 'closed'], default: 'new', index: true },
   source: { type: String, default: 'check-eligibility' }, // check-eligibility | book-consultation
   assignedTo: { type: String, default: 'Unassigned', index: true },
+  // Tags: `tags` are added by the team; `autoTags` are worked out from the lead's activity on every save
+  tags: { type: [String], default: [], index: true },
+  autoTags: { type: [String], default: [], index: true },
+  // Opted out of promotional emails (unsubscribe link)
+  unsubscribed: { type: Boolean, default: false, index: true },
+  unsubscribedAt: { type: Date },
   notes: { type: String },
   nextFollowUpDate: { type: Date },
   totalInquiries: { type: Number, default: 1 },
@@ -47,6 +53,11 @@ const leadSchema = new mongoose.Schema({
     date: { type: Date, default: Date.now },
     performedBy: { type: String, default: 'Admin' }
   }],
+  // Ad campaign that brought this lead (utm_*, gclid, fbclid), sent by the website's adTracking.js
+  attribution: {
+    firstTouch: { type: mongoose.Schema.Types.Mixed },
+    lastTouch: { type: mongoose.Schema.Types.Mixed }
+  },
   aiScoring: {
     score: { type: Number, default: 50 },
     category: { type: String, enum: ['Hot', 'Warm', 'Cold'], default: 'Warm' },
@@ -64,5 +75,11 @@ leadSchema.index({ phone: 1 });
 leadSchema.index({ status: 1, createdAt: -1 });
 leadSchema.index({ dreamCountry: 1, createdAt: -1 });
 leadSchema.index({ verified: 1, status: 1 });
+leadSchema.index({ 'attribution.lastTouch.utm_campaign': 1, createdAt: -1 });
+
+leadSchema.pre('save', function (next) {
+  this.autoTags = require('../utils/leadTags').deriveAutoTags(this);
+  next();
+});
 
 module.exports = mongoose.model('Lead', leadSchema);

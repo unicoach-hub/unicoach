@@ -18,7 +18,7 @@ const SPEAKER_LINK_FIELDS = [
 const EMPTY_SPEAKER_LINKS = Object.fromEntries(SPEAKER_LINK_FIELDS.map(({ key }) => [key, '']));
 
 // Countries the homepage event card knows a flag for ('' = let the site guess from the title)
-const COUNTRY_OPTIONS = ['USA', 'UK', 'Canada', 'Australia', 'Germany', 'Ireland', 'France', 'Netherlands', 'Italy', 'New Zealand', 'Singapore', 'Dubai', 'Global'];
+const COUNTRY_OPTIONS = ['USA', 'UK', 'Canada', 'Australia', 'Germany', 'Ireland', 'France', 'Netherlands', 'Italy', 'New Zealand', 'Singapore', 'Dubai', 'Europe', 'Global'];
 const DEFAULT_CTA_LABEL = 'Claim Free VIP Seat';
 
 const helperTextStyle = { fontSize: '12px', lineHeight: 1.5, color: 'var(--ux-text-3)', margin: 0 };
@@ -35,7 +35,7 @@ const EventForm = () => {
 
   const [form, setForm] = useState({
     title: '', body: '', sections: [], imageUrl: '', slug: '', location: '', eventStart: '', eventEnd: '',
-    registrationLink: '', description: '', category: 'webinar', speaker: '', tags: '',
+    registrationLink: '', joiningLink: '', description: '', category: 'webinar', speaker: '', tags: '',
     metaTitle: '', metaDescription: '', published: false, publishDate: null,
     // Homepage card controls
     country: '', speakerRole: '', speakerPhoto: '', ctaLabel: '', showOnHomepage: true, homepageOrder: null,
@@ -57,6 +57,7 @@ const EventForm = () => {
           eventStart: data.eventStart ? dayjs(data.eventStart).format('YYYY-MM-DDTHH:mm') : '',
           eventEnd: data.eventEnd ? dayjs(data.eventEnd).format('YYYY-MM-DDTHH:mm') : '',
           registrationLink: data.registrationLink || '',
+          joiningLink: data.joiningLink || '',
           description: data.description || '',
           category: data.category || 'webinar',
           speaker: data.speaker || '',
@@ -138,6 +139,7 @@ const EventForm = () => {
         eventStart: form.eventStart ? new Date(form.eventStart).toISOString() : undefined,
         eventEnd: form.eventEnd ? new Date(form.eventEnd).toISOString() : undefined,
         registrationLink: form.registrationLink.trim(),
+        joiningLink: form.joiningLink.trim(),
         country: form.country || '',
         speakerRole: form.speakerRole.trim(),
         speakerPhoto,
@@ -271,6 +273,11 @@ const EventForm = () => {
                   <label className="nx-label">Registration Form Link (Optional)</label>
                   <input type="url" value={form.registrationLink} onChange={(e) => setForm({ ...form, registrationLink: e.target.value })} placeholder="e.g. https://forms.gle/xyz" className="form-input" />
                   <p style={helperTextStyle}>Leave empty to collect registrations on UniCoach — they appear in Requests → Event Registration.</p>
+                </div>
+                <div className="content-form-field">
+                  <label className="nx-label">Joining link (Zoom / Meet)</label>
+                  <input type="url" value={form.joiningLink} onChange={(e) => setForm({ ...form, joiningLink: e.target.value })} placeholder="e.g. https://zoom.us/j/123456789" className="form-input" />
+                  <p style={helperTextStyle}>Not shown on the website. Sent to registered people when a bulk message uses {'{meet_link}'}.</p>
                 </div>
               </div>
               <div className="content-form-field">

@@ -1,4 +1,6 @@
+const mongoose = require('mongoose');
 const User = require('../models/User');
+const Staff = require('../models/Staff');
 const Blog = require('../models/Blog');
 const News = require('../models/News');
 const Event = require('../models/Event');
@@ -56,6 +58,12 @@ exports.getAdminStats = async (req, res) => {
       { $project: { name: '$_id', leads: 1, converted: 1, _id: 0 } },
       { $sort: { leads: -1 } }
     ]);
+    // Leads are assigned by staff id: show the staff member's name
+    const staffNames = Object.fromEntries(
+      (await Staff.find({ _id: { $in: counselorStats.map((c) => c.name).filter((n) => mongoose.Types.ObjectId.isValid(n)) } }).select('name').lean())
+        .map((st) => [String(st._id), st.name])
+    );
+    counselorStats.forEach((c) => { c.name = staffNames[c.name] || c.name || 'Unassigned'; });
 
     // New leads per IST day over all time; the dashboard chart slices this into
     // 7D / 30D (daily), 3M (weekly), 1Y (monthly) and All (monthly or yearly).

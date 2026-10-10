@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { message } from 'antd';
 import { getApiUrl } from '../config';
 
 const API = axios.create({
@@ -21,6 +22,16 @@ API.interceptors.response.use(
   (err) => {
     const isAuthEndpoint = err.config?.url?.includes('/admin/auth/login') || err.config?.url?.includes('/admin/auth/profile');
     const isAlreadyOnLogin = typeof window !== 'undefined' && (window.location.pathname === '/login' || window.location.pathname.endsWith('/login'));
+
+    // 403 = signed in but this role isn't allowed to do it: tell the user, keep them signed in
+    const isLoggedInCall = !isAuthEndpoint && Boolean(localStorage.getItem('admin_user'));
+    if (err.response?.status === 403 && isLoggedInCall) {
+      message.warning({
+        key: 'no-permission',
+        content: err.response.data?.message || "You don't have permission to do this.",
+      });
+      return Promise.reject(err);
+    }
 
     if (err.response?.status === 401 || err.response?.status === 403) {
       localStorage.removeItem('admin_token');

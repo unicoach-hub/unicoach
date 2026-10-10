@@ -4,6 +4,7 @@ import { Table, Popconfirm, message, Input, Select } from 'antd';
 import Header from '../components/Header';
 import StatsCard from '../components/StatsCard';
 import API from '../api/axios';
+import { usePermissions } from '../utils/permissions';
 import { getCachedData, invalidateCache, fetchWithCache } from '../utils/cache';
 import {
   PlusOutlined,
@@ -27,6 +28,7 @@ const Blogs = () => {
   const [aiModalOpen, setAiModalOpen] = useState(false);
   const [categoryFilter, setCategoryFilter] = useState('all');
   const navigate = useNavigate();
+  const { can } = usePermissions();
 
   const fetchBlogs = async (force = false) => {
     if (!getCachedData('/admin/content:blog') || force) {
@@ -119,14 +121,18 @@ const Blogs = () => {
       title: 'Actions', key: 'actions',
       render: (_, record) => (
         <div className="action-btn-group">
+          {can('blogs', 'update') && (
           <button onClick={() => navigate(`/blogs/edit/${record._id}`)} className="action-btn action-btn--edit">
             <EditOutlined />
           </button>
+          )}
+          {can('blogs', 'delete') && (
           <Popconfirm title="Delete this blog?" onConfirm={() => handleDelete(record._id)} okText="Yes" cancelText="No">
             <button className="action-btn action-btn--delete">
               <DeleteOutlined />
             </button>
           </Popconfirm>
+          )}
         </div>
       ),
     },
@@ -175,9 +181,11 @@ const Blogs = () => {
             <button type="button" onClick={() => setAiModalOpen(true)} className="nx-btn nx-btn--accent">
               <ThunderboltOutlined /> Write blog with AI
             </button>
+            {can('blogs', 'create') && (
             <button type="button" onClick={() => navigate('/blogs/create')} className="nx-btn nx-btn--dark">
               <PlusOutlined /> New blog
             </button>
+            )}
           </div>
         </div>
 

@@ -41,6 +41,11 @@ const isValidDate = (date) => Boolean(date) && Number.isFinite(new Date(date).ge
 
 const isOnline = (location) => /online|zoom|virtual|webinar|google meet|teams|youtube|live stream/i.test(location || '');
 
+// Host cards without personal links yet show UniCoach's official profiles
+const PLACEHOLDER_SOCIALS = [
+  ['linkedin', 'UniCoach on LinkedIn', 'https://www.linkedin.com/company/unicoachglobal/'],
+  ['instagram', 'UniCoach on Instagram', 'https://www.instagram.com/unicoachglobal/'],
+];
 const roundIcon = 'w-10 h-10 rounded-full border border-slate-200 bg-white text-slate-600 hover:text-[#DE5C2B] hover:border-orange-300 flex items-center justify-center transition-colors';
 
 // Live "Starts in 3d 4h 12m" (refreshes every 30 s), "Happening now" or "Event ended"
@@ -336,7 +341,7 @@ const EventDetailPage = () => {
         <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_360px] gap-8 lg:gap-10 items-start">
           <div className="min-w-0">
             {/* Banner (event covers are 2:1, so the whole artwork stays visible) */}
-            <div className="relative w-full aspect-[2/1] rounded-3xl overflow-hidden bg-slate-900 border border-slate-200 mb-6">
+            <div className="relative w-full aspect-[16/9] rounded-3xl overflow-hidden bg-slate-900 border border-slate-200 mb-6">
               <img
                 src={banner}
                 alt={title}
@@ -400,7 +405,7 @@ const EventDetailPage = () => {
                     <p className="text-lg font-bold text-slate-900">{hostName}</p>
                     {hostRole && <p className="text-[14px] font-semibold text-[#B9461C]">{hostRole}</p>}
                     {hostBio && <p className="mt-2.5 text-[14.5px] text-slate-700 leading-relaxed whitespace-pre-line">{hostBio}</p>}
-                    {socialLinks.length > 0 && (
+                    {socialLinks.length > 0 ? (
                       <div className="mt-4">
                         <p className="text-[13px] font-bold text-slate-900 mb-2">Connect with {hostName}</p>
                         <ul className="flex flex-wrap gap-2" aria-label={`${hostName} on social media`}>
@@ -411,6 +416,27 @@ const EventDetailPage = () => {
                                 target="_blank"
                                 rel="noopener noreferrer nofollow"
                                 aria-label={`${hostName} on ${label}`}
+                                title={label}
+                                className={roundIcon}
+                              >
+                                <SocialIcon name={key} />
+                              </a>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    ) : (
+                      // Until the host's own profiles are added in Admin → Events
+                      <div className="mt-4">
+                        <p className="text-[13px] font-bold text-slate-900 mb-2">Connect with {hostName}</p>
+                        <ul className="flex flex-wrap gap-2" aria-label="Social media">
+                          {PLACEHOLDER_SOCIALS.map(([key, label, url]) => (
+                            <li key={key}>
+                              <a
+                                href={url}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                aria-label={label}
                                 title={label}
                                 className={roundIcon}
                               >

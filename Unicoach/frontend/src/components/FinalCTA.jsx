@@ -228,6 +228,21 @@ export const FinalCTA = ({ onOpenModal }) => {
               </div>
             </motion.div>
 
+            {/* 6. Lower-Center Avatar (Emerald Halo) */}
+            <motion.div
+              animate={{ scale: [1, 1.05, 1] }}
+              transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOut", delay: 0.8 }}
+              className="absolute left-[58%] top-[74%] -translate-x-1/2 -translate-y-1/2 hidden md:block"
+            >
+              <div className="w-8 h-8 sm:w-10 sm:h-10 lg:w-11 lg:h-11 rounded-full p-[2px] bg-gradient-to-r from-emerald-300 to-teal-400 shadow-[0_0_16px_rgba(52,211,153,0.95)]">
+                <img
+                  src="/images/mentors/thumbs/manvi.webp"
+                  alt="Manvi, UniCoach mentor"
+                  className="w-full h-full rounded-full object-cover"
+                />
+              </div>
+            </motion.div>
+
             {/* ── GLOWING MAP PINS (Overlapping center pins hidden on mobile) ── */}
 
             {/* 1. Coral Pin near Plane */}

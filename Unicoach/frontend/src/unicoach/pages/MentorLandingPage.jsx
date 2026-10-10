@@ -16,7 +16,7 @@ import { Sparkles } from 'lucide-react';
 
 const MentorLandingPage = () => {
   return (
-    <div className="min-h-screen bg-[#FAF9F6] text-slate-900 selection:bg-[#DE5C2B]/20">
+    <div className="min-h-screen bg-[#FAF9F6] text-slate-900">
       
       {/* ════════ SECTION 1: MENTOR HERO (Original Creator Storefront) ════════ */}
       <MentorHeroSection />

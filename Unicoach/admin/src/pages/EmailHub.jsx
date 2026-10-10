@@ -5,6 +5,7 @@ import {
   MailOutlined, SendOutlined, CheckCircleOutlined, SyncOutlined,
   SafetyCertificateOutlined, ExclamationCircleOutlined
 } from '@ant-design/icons';
+import { useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
 import API from '../api/axios';
 
@@ -83,6 +84,13 @@ const EmailHub = () => {
       setLoading(false);
     }
   };
+
+  const navigate = useNavigate();
+  // Which provider sends email (Resend) and whether it's set up
+  const [emailStatus, setEmailStatus] = useState(null);
+  useEffect(() => {
+    API.get('/admin/messaging/email-status').then((r) => setEmailStatus(r.data)).catch(() => setEmailStatus({ configured: false }));
+  }, []);
 
   useEffect(() => { fetchData(); }, []);
 
@@ -248,7 +256,7 @@ const EmailHub = () => {
     <div>
       <Header
         title="Email Hub"
-        subtitle="Create email templates, manage SMTP connection, and send bulk email campaigns to leads"
+        subtitle="Create email templates and send campaigns to leads picked by tags"
         extra={
           <Button type="primary" icon={<PlusOutlined />} onClick={handleOpenCreate}>
             Create email template
@@ -281,23 +289,18 @@ const EmailHub = () => {
                   <div className="flex items-center justify-between gap-3 mb-4">
                     <div className="flex items-center gap-3">
                       <span className="nx-icon-circle"><SafetyCertificateOutlined /></span>
-                      <span className="nx-section-title">SMTP connection</span>
+                      <span className="nx-section-title">Email sending</span>
                     </div>
-                    <span className={`nx-status ${smtpStatusClass}`}>
-                      {smtpStatus === 'active' ? <CheckCircleOutlined /> : <ExclamationCircleOutlined />}
-                      {smtpStatus === 'active' ? 'Connected' : smtpStatus === 'error' ? 'Error' : 'Simulator'}
+                    <span className={`nx-status ${emailStatus?.configured ? 'nx-status--success' : 'nx-status--warning'}`}>
+                      {emailStatus?.configured ? <CheckCircleOutlined /> : <ExclamationCircleOutlined />}
+                      {emailStatus ? (emailStatus.configured ? 'Connected' : 'Not set up') : 'Checking'}
                     </span>
                   </div>
-                  <p style={{ fontSize: 13, color: 'var(--ux-text-2)', margin: '0 0 14px' }}>
-                    Host: <strong style={{ color: 'var(--ux-ink)', fontWeight: 600 }}>{settings?.smtpHost || 'Not configured'}</strong>
+                  <p style={{ fontSize: 13, color: 'var(--ux-text-2)', margin: 0 }}>
+                    All email goes out through <strong style={{ color: 'var(--ux-ink)', fontWeight: 600 }}>Resend</strong>
+                    {emailStatus?.from ? <> from <strong style={{ color: 'var(--ux-ink)', fontWeight: 600 }}>{emailStatus.from}</strong></> : null}.
+                    {emailStatus && !emailStatus.configured && ' Until the Resend key is added on the server, emails are only simulated.'}
                   </p>
-                  <Button
-                    size="small"
-                    icon={<SyncOutlined spin={verifyingSmtp} />}
-                    onClick={verifySmtp}
-                  >
-                    Verify connection
-                  </Button>
                 </div>
               </Col>
 
@@ -322,27 +325,14 @@ const EmailHub = () => {
                 <div className="nx-card p-6 h-full">
                   <div className="flex items-center gap-3 mb-4">
                     <span className="nx-icon-circle"><SendOutlined /></span>
-                    <span className="nx-section-title">Quick bulk send</span>
+                    <span className="nx-section-title">Send a campaign</span>
                   </div>
-                  <Form form={bulkForm} layout="vertical" initialValues={{ target: 'leads' }}>
-                    <Form.Item name="target" label={null} style={{ marginBottom: 8 }}>
-                      <Select size="small">
-                        <Option value="leads">All Verified Leads ({leadsCount})</Option>
-                        <Option value="users">All Registered Users ({usersCount})</Option>
-                      </Select>
-                    </Form.Item>
-                    <Form.Item name="templateId" label={null} style={{ marginBottom: 8 }}>
-                      <Select size="small" placeholder="Select email template">
-                        {templates.map(t => <Option key={t._id} value={t._id}>{t.name}</Option>)}
-                      </Select>
-                    </Form.Item>
-                    <Button
-                      type="primary" block icon={<SendOutlined />}
-                      onClick={handleBulkSend} loading={sending}
-                    >
-                      {sending ? `Sending... ${sendProgress}%` : 'Send campaign'}
-                    </Button>
-                  </Form>
+                  <p style={{ fontSize: 13, color: 'var(--ux-text-2)', margin: '0 0 14px' }}>
+                    Pick people by tags (event, country, intake, source or your own), add a meet link, preview and send.
+                  </p>
+                  <Button type="primary" block icon={<SendOutlined />} onClick={() => navigate('/automation/campaign')}>
+                    New campaign
+                  </Button>
                 </div>
               </Col>
             </>

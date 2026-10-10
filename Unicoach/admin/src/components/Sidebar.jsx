@@ -18,15 +18,25 @@ import {
   MenuFoldOutlined,
   MenuUnfoldOutlined,
   GlobalOutlined,
+  SafetyCertificateOutlined,
+  MessageOutlined,
+  CheckSquareOutlined,
 } from '@ant-design/icons';
 import { useAuth } from '../context/AuthContext';
+import StaffAvatar from './StaffAvatar';
+import { canOpenPath } from '../utils/permissions';
 import { getFrontendUrl } from '../config';
 import useNewRequestsCount from '../hooks/useNewRequestsCount';
+import useOpenTasksCount from '../hooks/useOpenTasksCount';
+import useInboxUnread from '../hooks/useInboxUnread';
 
 const NAV_SECTIONS = [
   {
     label: 'Overview',
-    items: [{ path: '/', label: 'Dashboard', icon: <AppstoreOutlined />, exact: true }],
+    items: [
+      { path: '/', label: 'Dashboard', icon: <AppstoreOutlined />, exact: true },
+      { path: '/tasks', label: 'Tasks', icon: <CheckSquareOutlined />, badge: 'tasks' },
+    ],
   },
   {
     label: 'Students & CRM',
@@ -41,9 +51,10 @@ const NAV_SECTIONS = [
           { path: '/crm/pipelines', label: 'CRM Pipelines' },
           { path: '/crm/forms', label: 'Form Builder' },
           { path: '/crm/calendar', label: 'Booking Calendar' },
-          { path: '/users', label: 'Users & Staff' },
+          { path: '/users', label: 'Registered Users' },
         ],
       },
+      { path: '/students/inbox', label: 'Student Inbox', icon: <MessageOutlined />, badge: 'inbox' },
       { path: '/requests', label: 'Support Requests', icon: <CustomerServiceOutlined />, badge: 'requests' },
     ],
   },
@@ -81,6 +92,7 @@ const NAV_SECTIONS = [
           { path: '/bulk-messaging', label: 'Bulk Messaging' },
         ],
       },
+      { path: '/staff', label: 'Staff & Roles', icon: <SafetyCertificateOutlined /> },
       { path: '/settings', label: 'Settings', icon: <SettingOutlined /> },
     ],
   },
@@ -94,6 +106,8 @@ const Sidebar = ({ collapsed, onToggle }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const newRequests = useNewRequestsCount();
+  const openTasks = useOpenTasksCount();
+  const inboxUnread = useInboxUnread();
   const [query, setQuery] = useState('');
   const [openGroups, setOpenGroups] = useState({ crm: true });
 
@@ -116,6 +130,14 @@ const Sidebar = ({ collapsed, onToggle }) => {
     logout();
     navigate('/login');
   };
+
+  // Only the pages this account's role can open (the owner sees everything)
+  const allowedSections = NAV_SECTIONS.map((section) => ({
+    ...section,
+    items: section.items
+      .map((item) => (item.children ? { ...item, children: item.children.filter((c) => canOpenPath(user, c.path)) } : item))
+      .filter((item) => (item.children ? item.children.length > 0 : canOpenPath(user, item.path))),
+  }));
 
   const q = query.trim().toLowerCase();
   const matches = (item) =>
@@ -171,7 +193,7 @@ const Sidebar = ({ collapsed, onToggle }) => {
       )}
 
       <nav className="nx-nav">
-        {NAV_SECTIONS.map((section) => {
+        {allowedSections.map((section) => {
           const items = section.items.filter(matches);
           if (items.length === 0) return null;
           return (
@@ -224,7 +246,7 @@ const Sidebar = ({ collapsed, onToggle }) => {
                 }
 
                 const active = isPathActive(location.pathname, item.path, item.exact);
-                const badge = item.badge === 'requests' ? newRequests : 0;
+                const badge = item.badge === 'requests' ? newRequests : item.badge === 'tasks' ? openTasks : item.badge === 'inbox' ? inboxUnread : 0;
                 return withTooltip(
                   badge > 0 ? `${item.label} (${badge} new)` : item.label,
                   <NavLink
@@ -262,11 +284,13 @@ const Sidebar = ({ collapsed, onToggle }) => {
           </a>
         )}
         <div className="nx-profile">
-          <span className="nx-avatar" aria-hidden="true">{initial}</span>
+          <span className="nx-avatar" aria-hidden="true" style={user?.avatar ? { padding: 0, overflow: 'hidden' } : undefined}>
+            {user?.avatar ? <StaffAvatar name={name} src={user.avatar} fill /> : initial}
+          </span>
           {!collapsed && (
             <span className="nx-profile-text">
               <strong>{name}</strong>
-              <span>{user?.email || 'Administrator'}</span>
+              <span>{user?.role === 'staff' ? user.roleName || 'Staff' : user?.email || 'Administrator'}</span>
             </span>
           )}
           {withTooltip(

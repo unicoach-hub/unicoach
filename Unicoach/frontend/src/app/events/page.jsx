@@ -10,23 +10,22 @@ import {
     ChevronDown,
     Video,
     MapPin,
-    Sparkles,
-    User,
     ArrowRight,
-    Play,
     Bookmark
 } from 'lucide-react';
 import Interactive3DGrid from '@/components/Interactive3DGrid';
 import EventRegistrationModal from '@/components/EventRegistrationModal';
 import { useLead } from '../../context/LeadContext';
 import { API_BASE_URL } from '../../config';
-import { eventPath, getSpeakerPhoto, toAbsoluteUrl } from '../../utils/eventHelpers';
+import { eventPath, getSpeakerPhoto, toAbsoluteUrl, toRegistrationUrl } from '../../utils/eventHelpers';
+import { BoardingPassCard, DepartureBoard } from './EventsHeroBoard';
 
 // Large portraits of our event hosts (cut from their event banners); Admin → Events "Speaker photo" overrides
 const SPEAKER_PORTRAITS = {
     nitya: '/images/mentors/nitya_portrait.webp',
     manan: '/images/mentors/manan_portrait.webp',
     prachi: '/images/mentors/prachi_portrait.webp',
+    manvi: '/images/mentors/manvi_portrait.webp',
 };
 
 // The speakers section shows the real hosts of the published events (one card per person, newest event first)
@@ -66,14 +65,6 @@ const SPEAKER_LINK_LABELS = [
 // Admin uploads (/uploads/...) are served by the API host, not the site
 const API_ORIGIN = API_BASE_URL.replace(/\/api$/, '');
 
-// Registration link from Admin → Events: http(s) or a site path; a bare domain gets https://; other schemes are ignored
-const toRegistrationUrl = (link) => {
-    const value = typeof link === 'string' ? link.trim() : '';
-    if (!value || value === '#') return '';
-    if (/^https?:\/\//i.test(value) || value.startsWith('/')) return value;
-    if (/^[a-z][a-z\d+.-]*:/i.test(value)) return '';
-    return `https://${value}`;
-};
 
 // Real sign-ups only (registrationCount is kept by POST /events/:id/register)
 const registeredLabel = (item) => (item?.registrationCount > 0 ? `${item.registrationCount} Registered` : '');
@@ -82,57 +73,6 @@ const registeredLabel = (item) => (item?.registrationCount > 0 ? `${item.registr
 const isEventOver = (item) => {
     const ts = new Date(item?.eventEnd || item?.eventStart || NaN).getTime();
     return Number.isFinite(ts) && ts < Date.now();
-};
-
-const useNow = (intervalMs = 1000) => {
-    const [now, setNow] = useState(() => Date.now());
-    useEffect(() => {
-        const id = setInterval(() => setNow(Date.now()), intervalMs);
-        return () => clearInterval(id);
-    }, [intervalMs]);
-    return now;
-};
-
-// Live countdown to the featured event's real start time
-const FeaturedCountdown = ({ start, end }) => {
-    const now = useNow();
-    const startTs = new Date(start).getTime();
-    const endTs = end ? new Date(end).getTime() : startTs;
-
-    if (now >= startTs) {
-        return (
-            <div className="my-4 bg-slate-50 border border-slate-200/80 p-4 rounded-2xl text-center">
-                <span className="text-emerald-600 inline-flex items-center gap-1.5 font-bold text-[12px]">
-                    <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                    {now < endTs ? 'Happening now' : 'This session has started'}
-                </span>
-            </div>
-        );
-    }
-
-    const total = Math.floor((startTs - now) / 1000);
-    const units = [
-        { label: "Days", val: Math.floor(total / 86400) },
-        { label: "Hrs", val: Math.floor((total % 86400) / 3600) },
-        { label: "Mins", val: Math.floor((total % 3600) / 60) },
-        { label: "Secs", val: total % 60 }
-    ];
-
-    return (
-        <div className="my-4 bg-slate-50 border border-slate-200/80 p-4 rounded-2xl">
-            <div className="flex items-center justify-between text-[10px] font-extrabold uppercase text-slate-500 tracking-wider mb-2">
-                <span>Starts In:</span>
-            </div>
-            <div className="grid grid-cols-4 gap-2 text-center">
-                {units.map((t) => (
-                    <div key={t.label} className="bg-white border border-slate-200/70 p-2.5 rounded-xl shadow-xs">
-                        <span className="block text-xl font-black text-slate-900 tabular-nums">{t.val.toString().padStart(2, '0')}</span>
-                        <span className="text-[9px] font-extrabold text-slate-500 uppercase tracking-widest">{t.label}</span>
-                    </div>
-                ))}
-            </div>
-        </div>
-    );
 };
 
 // Custom LinkedIn SVG Icon
@@ -302,14 +242,13 @@ const EventsPage = () => {
     // Featured: the next event that hasn't finished yet (the API returns events by start date)
     const featuredEvent = eventsList.find((ev) => ev.eventStart && new Date(ev.eventEnd || ev.eventStart) > new Date()) || null;
 
-    // Hero tiles: plain facts plus the real number of upcoming events (no made-up attendee or success stats)
-    const upcomingCount = eventsList.filter((ev) => ev.eventStart && new Date(ev.eventEnd || ev.eventStart) > new Date()).length;
-    const heroTiles = [
-        ...(upcomingCount > 0 ? [{ label: upcomingCount === 1 ? "Upcoming Event" : "Upcoming Events", val: String(upcomingCount) }] : []),
-        { label: "To Attend", val: "Free" },
-        { label: "Q&A With Mentors", val: "Live" },
-        { label: "Free Counselling", val: "1:1" }
-    ];
+    // Hero: the next sessions that haven't finished (real events only)
+    const upcomingEvents = eventsList.filter((ev) => ev.eventStart && new Date(ev.eventEnd || ev.eventStart) > new Date()).slice(0, 4);
+    const hostPhotoFor = (ev) => {
+        const raw = String(ev?.speaker || '').trim();
+        const first = raw.split('(')[0].trim().toLowerCase().split(/\s+/)[0];
+        return ev?.speakerPhoto ? toAbsoluteUrl(ev.speakerPhoto) : (SPEAKER_PORTRAITS[first] || getSpeakerPhoto(raw));
+    };
 
     const filteredEvents = eventsList.filter(e => {
         const itemCategory = e.category || e.type;
@@ -358,96 +297,78 @@ const EventsPage = () => {
                         {/* Hero Text */}
                         <div className="lg:col-span-7 space-y-6 text-left">
                             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white text-[#DE5C2B] border border-orange-200/80 shadow-xs text-xs font-bold">
-                                <Sparkles size={13} className="text-[#DE5C2B]" />
-                                <span>Live Masterclasses & Global Fairs 2026</span>
+                                <span className="relative flex w-2 h-2">
+                                    <span className="absolute inline-flex h-full w-full rounded-full bg-[#DE5C2B] opacity-60 animate-ping" />
+                                    <span className="relative inline-flex w-2 h-2 rounded-full bg-[#DE5C2B]" />
+                                </span>
+                                <span>Live masterclasses · Free to attend</span>
                             </div>
 
-                            <h1 className="font-outfit text-3xl sm:text-4xl lg:text-[46px] font-black tracking-tight text-[#0F172A] leading-[1.1]">
-                                Connect in Real-Time <br />
-                                <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#DE5C2B] to-[#C04A1D]">
-                                    With Admissions Advisors
+                            <h1 className="font-outfit text-[34px] sm:text-5xl lg:text-[56px] font-black tracking-tight text-[#0F172A] leading-[1.03]">
+                                Your study abroad journey <br className="hidden sm:block" />
+                                <span className="relative inline-block text-[#DE5C2B]">
+                                    boards here.
+                                    <svg className="absolute -bottom-2 left-0 w-full h-3 text-orange-300" viewBox="0 0 200 12" preserveAspectRatio="none" aria-hidden="true">
+                                        <path d="M2 9 C 50 2, 120 2, 198 7" stroke="currentColor" strokeWidth="4" fill="none" strokeLinecap="round" />
+                                    </svg>
                                 </span>
                             </h1>
 
                             <p className="text-[14px] sm:text-[15.5px] text-slate-600 font-normal max-w-xl leading-relaxed">
-                                Join interactive webinars, live Q&A sessions, profile workshops, and connect directly with verified university mentors and education advisors.
+                                Live sessions with seniors who already study and work abroad. Ask your questions on admissions, scholarships, visas and jobs, in real time.
                             </p>
 
-                            {/* Elevated Stat Cards */}
-                            <div className={`grid gap-3.5 pt-2 ${heroTiles.length === 4 ? 'grid-cols-2 sm:grid-cols-4' : 'grid-cols-3'}`}>
-                                {heroTiles.map((stat, i) => (
-                                    <div key={i} className="bg-white border border-slate-200/80 rounded-2xl p-4 text-center shadow-xs">
-                                        <span className="block text-2xl font-black text-[#DE5C2B]">{stat.val}</span>
-                                        <span className="text-[10px] text-slate-500 font-extrabold uppercase tracking-wider">{stat.label}</span>
+                            {speakersList.length > 0 && (
+                                <div className="flex items-center gap-3">
+                                    <div className="flex -space-x-3">
+                                        {speakersList.slice(0, 4).map((sp) => (
+                                            sp.image ? (
+                                                <img key={sp.name} src={sp.image} alt={sp.name} className="w-11 h-11 rounded-full object-cover object-top ring-[3px] ring-white shadow-sm" />
+                                            ) : (
+                                                <span key={sp.name} className="w-11 h-11 rounded-full ring-[3px] ring-white bg-orange-100 text-[#DE5C2B] font-black flex items-center justify-center">{sp.name[0]}</span>
+                                            )
+                                        ))}
                                     </div>
-                                ))}
-                            </div>
+                                    <p className="text-[13px] font-semibold text-slate-600">
+                                        Hosted by <span className="font-black text-slate-900">{speakersList.slice(0, 3).map((sp) => sp.name).join(', ').replace(/, ([^,]*)$/, ' & $1')}</span>
+                                    </p>
+                                </div>
+                            )}
+
+                            <DepartureBoard
+                                events={upcomingEvents}
+                                photoFor={hostPhotoFor}
+                                formatDate={formatEventDate}
+                                formatTime={formatEventTime}
+                                onOpen={openDetails}
+                            />
                         </div>
 
                         {/* Interactive Countdown & Live Ticker Dashboard */}
                         <div className="lg:col-span-5">
-                            <div className="bg-white border border-slate-200/90 text-slate-900 rounded-[28px] p-6 shadow-[0_20px_50px_-12px_rgba(15,23,42,0.08)] relative overflow-hidden group text-left">
-                                <div className="flex items-center justify-between gap-2 mb-3">
-                                    <span className="inline-flex items-center gap-1.5 text-[#DE5C2B] text-xs font-black uppercase tracking-wider">
-                                        <Play size={10} className="fill-[#DE5C2B]" />
-                                        <span>Featured Live Event</span>
-                                    </span>
-                                    <span className="px-2.5 py-0.5 bg-orange-50 text-[#DE5C2B] border border-orange-200/70 text-[10px] font-extrabold uppercase tracking-wider rounded-full">
-                                        Next Session
-                                    </span>
+                            {loadingEvents ? (
+                                <div className="bg-white rounded-[26px] p-6 space-y-3 animate-pulse" aria-hidden="true">
+                                    <div className="h-8 bg-orange-100 rounded-xl" />
+                                    <div className="h-12 bg-slate-100 rounded-xl" />
+                                    <div className="h-5 bg-slate-200 rounded w-11/12" />
+                                    <div className="h-20 bg-slate-100 rounded-2xl" />
+                                    <div className="h-12 bg-slate-200 rounded-2xl" />
                                 </div>
-
-                                {loadingEvents ? (
-                                    <div className="space-y-3 animate-pulse" aria-hidden="true">
-                                        <div className="h-5 bg-slate-200 rounded w-11/12" />
-                                        <div className="h-4 bg-slate-100 rounded w-2/3" />
-                                        <div className="h-20 bg-slate-100 rounded-2xl" />
-                                        <div className="h-12 bg-orange-100 rounded-2xl" />
-                                    </div>
-                                ) : featuredEvent ? (
-                                    <>
-                                        <h3
-                                            onClick={() => openDetails(featuredEvent)}
-                                            className="text-lg font-bold text-slate-900 leading-snug group-hover:text-[#DE5C2B] transition-colors cursor-pointer"
-                                        >
-                                            {featuredEvent.title}
-                                        </h3>
-
-                                        <div className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs font-bold text-slate-500">
-                                            <span className="flex items-center gap-1">
-                                                <Calendar size={12} className="text-slate-400" />
-                                                {formatEventDate(featuredEvent.eventStart)}
-                                            </span>
-                                            <span className="flex items-center gap-1">
-                                                <Clock size={12} className="text-slate-400" />
-                                                {formatEventTime(featuredEvent.eventStart, featuredEvent.eventEnd)}
-                                            </span>
-                                            {featuredEvent.speaker && (
-                                                <span className="flex items-center gap-1">
-                                                    <User size={12} className="text-slate-400" />
-                                                    {featuredEvent.speaker}
-                                                </span>
-                                            )}
-                                        </div>
-
-                                        <FeaturedCountdown start={featuredEvent.eventStart} end={featuredEvent.eventEnd} />
-
-                                        <button
-                                            onClick={() => openRegistration(featuredEvent)}
-                                            className="w-full mt-1 py-3.5 rounded-2xl text-white font-bold text-sm bg-[#DE5C2B] hover:bg-[#C04A1D] shadow-md shadow-orange-500/20 transition-all cursor-pointer text-center block duration-200"
-                                        >
-                                            {featuredEvent.ctaLabel || 'Register Free Seat'}
-                                        </button>
-                                    </>
-                                ) : (
-                                    <div className="py-6 text-center">
-                                        <h3 className="text-lg font-bold text-slate-900 leading-snug">
-                                            No upcoming events right now
-                                        </h3>
-                                        <p className="mt-1.5 text-sm text-slate-500">Check back soon for the next live session.</p>
-                                    </div>
-                                )}
-                            </div>
+                            ) : featuredEvent ? (
+                                <BoardingPassCard
+                                    event={featuredEvent}
+                                    hostPhoto={hostPhotoFor(featuredEvent)}
+                                    formatDate={formatEventDate}
+                                    formatTime={formatEventTime}
+                                    onRegister={() => openRegistration(featuredEvent)}
+                                    onOpen={() => openDetails(featuredEvent)}
+                                />
+                            ) : (
+                                <div className="bg-white rounded-[26px] p-8 text-center shadow-sm">
+                                    <h3 className="text-lg font-bold text-slate-900 leading-snug">No upcoming events right now</h3>
+                                    <p className="mt-1.5 text-sm text-slate-500">Check back soon for the next live session.</p>
+                                </div>
+                            )}
                         </div>
                     </div>
                 </div>
@@ -621,7 +542,7 @@ const EventsPage = () => {
                                             onClick={() => openDetails(item)}
                                             className="bg-white border border-slate-200/70 rounded-[28px] overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between group cursor-pointer"
                                         >
-                                            <div className="relative overflow-hidden aspect-[2/1] bg-slate-900 border-b border-slate-100">
+                                            <div className="relative overflow-hidden aspect-[16/9] bg-slate-900 border-b border-slate-100">
                                                 <img
                                                     src={item.imageUrl ? getAbsoluteUrl(item.imageUrl) : (item.image || '/events_hero.webp')}
                                                     alt={item.title}

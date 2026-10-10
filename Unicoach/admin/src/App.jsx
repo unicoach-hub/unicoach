@@ -36,6 +36,10 @@ const FormBuilder = lazy(() => import('./pages/FormBuilder'));
 const BookingCalendar = lazy(() => import('./pages/BookingCalendar'));
 const SupportRequests = lazy(() => import('./pages/SupportRequests'));
 const UniCoachAdminHub = lazy(() => import('./pages/UniCoachAdminHub'));
+const Staff = lazy(() => import('./pages/Staff'));
+const StudentInbox = lazy(() => import('./pages/StudentInbox'));
+const Tasks = lazy(() => import('./pages/Tasks'));
+const Campaign = lazy(() => import('./pages/Campaign'));
 
 // Sleek centered loader for async route transitions matching UniCoach brand
 const PageFallback = () => (
@@ -102,6 +106,8 @@ const App = () => {
                     <Route element={<AdminLayout />}>
                       <Route path="/" element={<Dashboard />} />
                       <Route path="/requests" element={<SupportRequests />} />
+                      <Route path="/students/inbox" element={<StudentInbox />} />
+                      <Route path="/tasks" element={<Tasks />} />
                       <Route path="/content" element={<ContentHub />} />
                       {/* Blogs */}
                       <Route path="/blogs" element={<Blogs />} />
@@ -132,12 +138,15 @@ const App = () => {
                       <Route path="/leads" element={<Leads />} />
                       {/* Automation & Outreach */}
                       <Route path="/automation/email" element={<EmailHub />} />
+                      <Route path="/automation/campaign" element={<Campaign />} />
                       <Route path="/automation/whatsapp" element={<WhatsAppHub />} />
                       <Route path="/automation/workflows" element={<Workflows />} />
                       <Route path="/templates" element={<Templates />} />
                       <Route path="/bulk-messaging" element={<BulkMessaging />} />
                       {/* UniCoach Creator Network & Revenue Suite */}
                       <Route path="/unicoach" element={<UniCoachAdminHub />} />
+                      {/* Staff accounts & roles (owner only) */}
+                      <Route path="/staff" element={<Staff />} />
                       {/* Settings */}
                       <Route path="/settings" element={<Settings />} />
                     </Route>

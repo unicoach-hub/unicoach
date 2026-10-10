@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { SITE_URL } from '../config';
+import { trackPageView } from '../utils/adTracking';
 
 // Account / transactional pages that should never show up in Google
 const NOINDEX_PREFIXES = ['/dashboard', '/login', '/signin', '/register', '/signup', '/reset-password', '/unicoach/dashboard', '/priority-dm'];
@@ -45,6 +46,10 @@ const ScrollToTop = () => {
       cancelAnimationFrame(rafId);
       clearTimeout(timerId);
     };
+  }, [pathname, search]);
+
+  useEffect(() => {
+    trackPageView();
   }, [pathname, search]);
 
   useEffect(() => {

@@ -6,6 +6,7 @@ const {
   getPaymentConfig
 } = require('../services/paymentService');
 const { createMentorTransfer, refundBooking } = require('../services/routeService');
+const { sendMetaEvent } = require('../../services/metaConversions');
 const {
   isDirectServiceType,
   finalizeBookingPayment,
@@ -230,6 +231,18 @@ const verifyPaymentAndConfirm = async (req, res) => {
     }
 
     const { httpStatus, body } = buildConfirmedResponse(result);
+    const paid = result.booking;
+    if (httpStatus === 200 && !result.alreadyConfirmed && paid?.amountPaid > 0) {
+      // Same event id as the website pixel (adTracking.js), so Meta counts this purchase once
+      sendMetaEvent({
+        eventName: 'Purchase',
+        eventId: `purchase_${paid.bookingRef}`,
+        user: { email: paid.studentEmail, phone: paid.studentPhone, name: paid.studentName },
+        req,
+        value: paid.amountPaid,
+        customData: { content_name: paid.serviceId?.title, order_id: paid.bookingRef }
+      });
+    }
     return res.status(httpStatus).json(body);
   } catch (err) {
     console.error('Error verifying payment:', err);

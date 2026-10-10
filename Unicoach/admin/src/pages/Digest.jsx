@@ -4,6 +4,7 @@ import { Table, Popconfirm, message, Input, Select } from 'antd';
 import Header from '../components/Header';
 import StatsCard from '../components/StatsCard';
 import API from '../api/axios';
+import { usePermissions } from '../utils/permissions';
 import { getCachedData, invalidateCache, fetchWithCache } from '../utils/cache';
 import {
   PlusOutlined,
@@ -27,6 +28,7 @@ const Digest = () => {
   const [statusFilter, setStatusFilter] = useState('all');
   const [categoryFilter, setCategoryFilter] = useState('all');
   const navigate = useNavigate();
+  const { can } = usePermissions();
 
   const fetchDigest = async (force = false) => {
     if (!getCachedData('/admin/content:digest') || force) {
@@ -145,14 +147,18 @@ const Digest = () => {
       title: 'Actions', key: 'actions',
       render: (_, record) => (
         <div className="action-btn-group">
+          {can('digest', 'update') && (
           <button onClick={() => navigate(`/digest/edit/${record._id}`)} className="action-btn action-btn--edit">
             <EditOutlined />
           </button>
+          )}
+          {can('digest', 'delete') && (
           <Popconfirm title="Delete this digest?" onConfirm={() => handleDelete(record._id)} okText="Yes" cancelText="No">
             <button className="action-btn action-btn--delete">
               <DeleteOutlined />
             </button>
           </Popconfirm>
+          )}
         </div>
       ),
     },
@@ -193,9 +199,11 @@ const Digest = () => {
               <Option value="news">Trending News</Option>
             </Select>
           </div>
+          {can('digest', 'create') && (
           <button type="button" onClick={() => navigate('/digest/create')} className="nx-btn nx-btn--dark">
             <PlusOutlined /> Create publication
           </button>
+          )}
         </div>
 
         {/* Table view */}

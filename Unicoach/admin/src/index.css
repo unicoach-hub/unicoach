@@ -3966,3 +3966,8 @@ input[type="date"].form-input::-webkit-calendar-picker-indicator {
 .crm-nav-pill-icon {
   font-size: 14px;
 }
+/* Brand text selection: UniCoach orange with white text everywhere */
+::selection {
+  background-color: #DE5C2B;
+  color: #ffffff;
+}
