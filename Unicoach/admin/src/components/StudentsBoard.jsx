@@ -44,6 +44,11 @@ const StudentsBoard = ({ students, stages, phases = [], canEdit, onOpen, onMoved
 
   return (
     <>
+      {!canEdit && (
+        <div style={{ marginBottom: 12, padding: '10px 14px', borderRadius: 12, background: '#fef3c7', color: '#92400e', fontSize: 13 }}>
+          You can view this board but not move students. Ask the owner to turn on <strong>Students, Stages &amp; Documents → Edit</strong> for your role in Staff &amp; Roles.
+        </div>
+      )}
       <div style={{ display: 'flex', gap: 12, overflowX: 'auto', paddingBottom: 12, alignItems: 'flex-start' }}>
         {stages.map((stage) => {
           const list = byStage[stage.key] || [];

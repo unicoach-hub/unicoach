@@ -26,6 +26,7 @@ const SPEAKER_PORTRAITS = {
     manan: '/images/mentors/manan_portrait.webp',
     prachi: '/images/mentors/prachi_portrait.webp',
     manvi: '/images/mentors/manvi_portrait.webp',
+    munish: '/images/mentors/munish_portrait.webp',
 };
 
 // The speakers section shows the real hosts of the published events (one card per person, newest event first)

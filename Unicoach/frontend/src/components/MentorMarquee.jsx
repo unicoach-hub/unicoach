@@ -9,12 +9,11 @@ const CARD_SLOT_PX = 260;
 // Loop speed scales with the number of cards so it always drifts at the same slow pace
 const SECONDS_PER_CARD = 6;
 
-// Keep the homepage mentor row to the three featured UniCoach mentors.
 const MENTOR_CARDS = TEAM_MENTORS.map((m) => ({
   key: `mentor-${m.name}`,
   name: m.name,
   role: m.role,
-  photo: m.portrait || m.src,
+  photo: m.card || m.portrait || m.src,
   to: '/events',
   cta: 'Free session',
 }));
@@ -26,7 +25,7 @@ const MentorCard = ({ card, isCopy = false }) => (
     aria-hidden={isCopy || undefined}
     className="group w-[220px] sm:w-[240px] shrink-0 bg-white rounded-[22px] border border-slate-200 hover:border-orange-200 p-3 shadow-[0_8px_24px_-14px_rgba(15,23,42,0.22)] hover:shadow-[0_14px_30px_-14px_rgba(15,23,42,0.3)] transition-all"
   >
-    <div className="aspect-[4/3] rounded-[16px] overflow-hidden bg-[#F8EBC0]">
+    <div className="aspect-[4/5] rounded-[16px] overflow-hidden bg-white">
       <img
         src={card.photo}
         alt={isCopy ? '' : card.name}

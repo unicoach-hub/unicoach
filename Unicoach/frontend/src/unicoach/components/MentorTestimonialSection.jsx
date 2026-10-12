@@ -1,48 +1,12 @@
 // ════════════════════════════════════════════════════════════════════════════════
-// MentorTestimonialSection.jsx — Mentor testimonials (original copy)
+// MentorTestimonialSection.jsx — The real mentors already guiding students on UniCoach
 // Used on /unicoach/for-mentors
 // ════════════════════════════════════════════════════════════════════════════════
 
+import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-
-const TESTIMONIALS = [
-  {
-    quote: 'Love the integrations with Calendar, Zoom and WhatsApp. Makes my life easier!',
-    name: 'Aishwarya Srinivasan',
-    role: 'LinkedIn Top Voice',
-    image: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=160&auto=format&fit=crop&q=80'
-  },
-  {
-    quote: 'The entire experience is just so seamless. My followers love it',
-    name: 'Joerg Storm',
-    role: '300K on LinkedIn',
-    image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=160&auto=format&fit=crop&q=80'
-  },
-  {
-    quote: 'UniCoach is my go-to platform for scheduling 1:1 sessions and hosting webinars!',
-    name: 'Xinran Waibel',
-    role: 'Founder of Data Engineer Things',
-    image: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=160&auto=format&fit=crop&q=80'
-  },
-  {
-    quote: 'All my monetisation now happens in one place. Zero friction, zero headache.',
-    name: 'Siddharth Dayani',
-    role: 'VP of Growth & Mentor',
-    image: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=160&auto=format&fit=crop&q=80'
-  },
-  {
-    quote: 'The team is extremely helpful and cares a lot about feedback. They keep rolling out new features too!',
-    name: 'Anshuman Sharma',
-    role: 'Engineering Director',
-    image: 'https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?w=160&auto=format&fit=crop&q=80'
-  },
-  {
-    quote: 'I love UniCoach! It has made it seamless to schedule mentoring sessions! Big fan of UniCoach\'s WhatsApp integration.',
-    name: 'Pooja Dutt',
-    role: 'Principal Cloud Architect',
-    image: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?w=160&auto=format&fit=crop&q=80'
-  }
-];
+import { ArrowRight } from 'lucide-react';
+import { TEAM_MENTORS } from '../../utils/teamMentors';
 
 export const MentorTestimonialSection = () => {
   return (
@@ -55,14 +19,14 @@ export const MentorTestimonialSection = () => {
         
         {/* Title */}
         <h2 className="font-outfit text-3xl sm:text-5xl lg:text-6xl font-black text-white tracking-tight mb-14 sm:mb-16">
-          Don&apos;t Just Take Our Word for It
+          Mentors already on UniCoach
         </h2>
 
-        {/* 6 Cards Grid */}
+        {/* Our team mentors: photo, what they help with, link to their free sessions */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-7 text-left">
-          {TESTIMONIALS.map((item, index) => (
+          {TEAM_MENTORS.map((item, index) => (
             <motion.div
-              key={index}
+              key={item.name}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -70,21 +34,23 @@ export const MentorTestimonialSection = () => {
               whileHover={{ y: -6, transition: { duration: 0.2 } }}
               className="bg-[#F1F4F5] rounded-[32px] p-7 sm:p-8 flex flex-col justify-between min-h-[220px] sm:min-h-[240px] shadow-xl hover:shadow-2xl transition-all"
             >
-              {/* Top Quote Content */}
+              {/* What they help with */}
               <div>
-                <span className="text-4xl sm:text-5xl font-serif text-slate-300 block leading-none mb-3">
-                  &ldquo;
-                </span>
-                <p className="text-slate-900 text-sm sm:text-base font-semibold leading-relaxed">
-                  {item.quote}
+                <span className="text-[11px] font-bold uppercase tracking-wider text-[#DE5C2B]">Helps students with</span>
+                <p className="mt-2 text-slate-900 text-sm sm:text-base font-semibold leading-relaxed">
+                  {item.focus}
                 </p>
+                <Link to="/events" className="mt-3 inline-flex items-center gap-1 text-[13px] font-bold text-[#DE5C2B] hover:underline">
+                  Join a free session <ArrowRight className="w-3.5 h-3.5" />
+                </Link>
               </div>
 
               {/* Author Footer */}
               <div className="flex items-center gap-3 pt-6 mt-4 border-t border-slate-200/60">
                 <img
-                  src={item.image}
+                  src={item.src}
                   alt={item.name}
+                  loading="lazy"
                   className="w-11 h-11 rounded-full object-cover ring-2 ring-white shadow-xs"
                 />
                 <div>

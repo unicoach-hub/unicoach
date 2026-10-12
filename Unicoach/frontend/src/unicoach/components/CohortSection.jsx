@@ -2,69 +2,28 @@ import { useState, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { ChevronLeft, ChevronRight, ArrowRight, Users, Calendar, Sparkles } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { TEAM_MENTORS } from '../../utils/teamMentors';
 
-const COHORTS = [
-  {
-    id: 1,
-    title: 'AI Product Builder Roadmap 2026',
-    subtitle: 'IIM + IIT PMs who turn rejections into offers.',
-    statsTag: '3,800+ mentored',
-    durationTag: '12-week live cohort',
-    authorName: 'Shailesh Sharma',
-    authorRole: 'TechnoManagers Founder',
-    authorImage: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=160&auto=format&fit=crop&q=80',
-    brandLogoText: 'TechnoManagers',
-    link: '/unicoach/apply'
-  },
-  {
-    id: 2,
-    title: 'Building AI Agents in Enterprise',
-    subtitle: 'The AI teacher engineers keep coming back to.',
-    statsTag: '22K+ bookings',
-    durationTag: '6-week live cohort',
-    authorName: 'Ajay Shenoy',
-    authorRole: 'Senior AI Architect',
-    authorImage: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=160&auto=format&fit=crop&q=80',
-    brandLogoText: 'Agentic AI Lab',
-    link: '/unicoach/apply'
-  },
-  {
-    id: 3,
-    title: 'Antern Data Science Sprint',
-    subtitle: 'The AI career roadmap MIT itself recommended.',
-    statsTag: '17K followers',
-    durationTag: '~8-week sprint',
-    authorName: 'Ayush Singh',
-    authorRole: 'Data Scientist & Educator',
-    authorImage: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=160&auto=format&fit=crop&q=80',
-    brandLogoText: 'Antern Labs',
-    link: '/unicoach/apply'
-  },
-  {
-    id: 4,
-    title: 'Masters in Germany Admit Sprint',
-    subtitle: 'TU Munich & RWTH Aachen seniors who turn rejections into admits.',
-    statsTag: '1,450+ admits',
-    durationTag: '4-week live sprint',
-    authorName: 'Tanisha Verma',
-    authorRole: 'TU Munich M.Sc. Scholar',
-    authorImage: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=160&auto=format&fit=crop&q=80',
-    brandLogoText: 'TU Munich Alumni',
-    link: '/unicoach/apply'
-  },
-  {
-    id: 5,
-    title: 'System Design for Tier-1 Tech',
-    subtitle: 'How to crack high-concurrency L5/L6 staff architecture rounds.',
-    statsTag: '9,200+ mentored',
-    durationTag: '8-week live cohort',
-    authorName: 'Hardik Patel',
-    authorRole: 'Ex-Amazon Principal',
-    authorImage: 'https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?w=160&auto=format&fit=crop&q=80',
-    brandLogoText: 'SystemMasters',
-    link: '/unicoach/apply'
-  }
-];
+// Real free sessions run by our team mentors (titles and dates from their published events)
+const SESSIONS = {
+  Prachi: { title: 'Study in Ireland: Cyber Security Masters', subtitle: 'Cyber Security Masters, tech hubs and high-demand jobs in Ireland.' },
+  Manan: { title: 'Study in Australia 2026', subtitle: 'Complete roadmap to Go8 universities, student visas and PR.' },
+  Nitya: { title: 'Ireland Career Roadmap 2027', subtitle: 'From job search to getting settled after your studies.' },
+  Manvi: { title: 'Europe Scholarships & Sponsorship', subtitle: 'How to study in Europe with scholarships and sponsorship.' },
+  'Munish Rana': { title: 'Ask a Visa Expert: Ireland', subtitle: 'Your Ireland study, work and family visa questions answered live.' },
+};
+
+const COHORTS = TEAM_MENTORS.filter((m) => SESSIONS[m.name]).map((m) => ({
+  id: m.name,
+  title: SESSIONS[m.name].title,
+  subtitle: SESSIONS[m.name].subtitle,
+  statsTag: 'Free live session',
+  durationTag: '15 Nov 2026',
+  authorName: m.name,
+  authorImage: m.src,
+  brandLogoText: m.role,
+  link: '/events',
+}));
 
 export const CohortSection = () => {
   const scrollContainerRef = useRef(null);
@@ -103,10 +62,10 @@ export const CohortSection = () => {
           
           <div className="max-w-2xl text-left">
             <h2 className="font-outfit text-3xl sm:text-4xl lg:text-5xl font-black text-white tracking-tight leading-tight mb-3">
-              See what the best creators build on UniCoach
+              Free live sessions with our mentors
             </h2>
             <p className="text-white/85 text-sm sm:text-base lg:text-lg font-normal">
-              Live cohorts and 1:1 programs, run by creators who&apos;ve actually done it.
+              Join a session, ask your questions live, then book 1:1 time with the mentor who fits your plans.
             </p>
           </div>
 
@@ -121,7 +80,7 @@ export const CohortSection = () => {
                   ? 'bg-white text-black hover:bg-slate-100 shadow-md'
                   : 'bg-white/30 text-white/50 cursor-not-allowed'
               }`}
-              aria-label="Previous cohorts"
+              aria-label="Previous sessions"
             >
               <ChevronLeft className="w-5 h-5 stroke-[2.5]" />
             </button>
@@ -134,7 +93,7 @@ export const CohortSection = () => {
                   ? 'bg-white text-black hover:bg-slate-100 shadow-md'
                   : 'bg-white/30 text-white/50 cursor-not-allowed'
               }`}
-              aria-label="Next cohorts"
+              aria-label="Next sessions"
             >
               <ChevronRight className="w-5 h-5 stroke-[2.5]" />
             </button>
@@ -201,7 +160,7 @@ export const CohortSection = () => {
                   to={cohort.link}
                   className="inline-flex items-center gap-1.5 text-xs font-bold text-white hover:text-orange-300 transition-colors cursor-pointer group-hover:translate-x-1 duration-200"
                 >
-                  <span>View cohort</span>
+                  <span>View session</span>
                   <ArrowRight className="w-3.5 h-3.5" />
                 </Link>
               </div>
