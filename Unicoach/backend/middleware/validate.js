@@ -45,7 +45,8 @@ const userRegisterSchema = z.object({
   email: z.string().email('Invalid email address'),
   phone: z.string().regex(phoneRegex, 'Invalid phone number').optional(),
   password: z.string().length(6, 'Password must be exactly 6 characters'),
-  attribution: attributionField
+  attribution: attributionField,
+  referral: z.string().trim().max(60).optional().catch(undefined)
 });
 
 const userLoginSchema = z.object({
@@ -65,7 +66,8 @@ const resetPasswordSchema = z.object({
 
 const googleAuthSchema = z.object({
   credential: z.string().min(10, 'Google credential token is required'),
-  attribution: attributionField
+  attribution: attributionField,
+  referral: z.string().trim().max(60).optional().catch(undefined)
 });
 
 const adminLoginSchema = z.object({

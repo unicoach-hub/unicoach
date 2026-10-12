@@ -163,7 +163,7 @@ const Events = () => {
           <span className="nx-muted" style={{ fontSize: 12 }} title={record.registrationLink}>External form</span>
         )}
         <Link
-          to={`/requests?event=${record._id}`}
+          to={`/event-registrations?event=${record._id}`}
           state={{ eventTitle: record.title }}
           style={{ color: 'var(--ux-brand-strong)', fontSize: 12.5, fontWeight: 600, whiteSpace: 'nowrap' }}
         >

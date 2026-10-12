@@ -1,4 +1,8 @@
 const mongoose = require('mongoose');
+const { STAGE_KEYS, LEGACY_STAGES } = require('../config/studentStages');
+
+// Old stage names stay valid so older records still save; they are shown as their new stage
+const ALL_STAGE_KEYS = [...STAGE_KEYS, ...Object.keys(LEGACY_STAGES)];
 
 const userSchema = new mongoose.Schema({
   name: { type: String, required: true },
@@ -26,6 +30,22 @@ const userSchema = new mongoose.Schema({
   dreamCourse: { type: String },
   targetExam: { type: String },
   targetScore: { type: String },
+  // Filled once in the onboarding form after sign-up; reused everywhere else
+  percentage: { type: String },
+  passoutYear: { type: String },
+  profileCompletedAt: { type: Date },
+  // Mentor whose referral link the student signed up through
+  referredBy: { type: mongoose.Schema.Types.ObjectId, ref: 'UnicoachMentor', index: true },
+  referredAt: { type: Date },
+  // Journey stage (config/studentStages.js), changed by the admin
+  journeyStage: { type: String, enum: ALL_STAGE_KEYS, default: 'registered', index: true },
+  stageUpdatedAt: { type: Date },
+  stageHistory: [{
+    stage: { type: String, enum: ALL_STAGE_KEYS },
+    at: { type: Date, default: Date.now },
+    by: { type: String, default: '' },
+    note: { type: String, default: '', maxlength: 500 },
+  }],
   // Inputs from the /universities shortlister (step 1), so a returning student goes straight to their matches
   shortlistProfile: {
     educationLevel: { type: String },

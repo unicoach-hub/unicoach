@@ -21,6 +21,9 @@ import {
   SafetyCertificateOutlined,
   MessageOutlined,
   CheckSquareOutlined,
+  SolutionOutlined,
+  FolderOpenOutlined,
+  CalendarOutlined,
 } from '@ant-design/icons';
 import { useAuth } from '../context/AuthContext';
 import StaffAvatar from './StaffAvatar';
@@ -54,8 +57,11 @@ const NAV_SECTIONS = [
           { path: '/users', label: 'Registered Users' },
         ],
       },
+      { path: '/students/all', label: 'Students & Stages', icon: <SolutionOutlined /> },
+      { path: '/students/documents', label: 'Student Documents', icon: <FolderOpenOutlined /> },
       { path: '/students/inbox', label: 'Student Inbox', icon: <MessageOutlined />, badge: 'inbox' },
       { path: '/requests', label: 'Support Requests', icon: <CustomerServiceOutlined />, badge: 'requests' },
+      { path: '/event-registrations', label: 'Event Registrations', icon: <CalendarOutlined /> },
     ],
   },
   {

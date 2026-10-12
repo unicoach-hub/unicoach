@@ -15,6 +15,36 @@ router.post('/', mentorAuth, mentorController.createOrUpdateMentor);
 // Dashboard Overview (Protected by verified ownership)
 router.get('/:handle/dashboard', handleValidatorMiddleware, mentorAuth, mentorController.getDashboardOverview);
 
+// Students who signed up through this mentor's referral link (name, stage, dates only)
+router.get('/:handle/referrals', handleValidatorMiddleware, mentorAuth, async (req, res) => {
+  try {
+    const User = require('../../models/User');
+    const { PHASES, normalizeStage, publicStages } = require('../../config/studentStages');
+    const students = await User.find({ referredBy: req.mentor._id, role: 'user' })
+      .select('name dreamCountry preferredIntake journeyStage stageUpdatedAt referredAt createdAt')
+      .sort({ createdAt: -1 })
+      .limit(2000)
+      .lean();
+    return res.json({
+      handle: req.mentor.handle,
+      stages: publicStages(),
+      phases: PHASES,
+      students: students.map((s) => ({
+        _id: s._id,
+        name: s.name,
+        dreamCountry: s.dreamCountry || '',
+        preferredIntake: s.preferredIntake || '',
+        journeyStage: normalizeStage(s.journeyStage),
+        stageUpdatedAt: s.stageUpdatedAt || s.referredAt || s.createdAt,
+        joinedAt: s.referredAt || s.createdAt,
+      })),
+    });
+  } catch (err) {
+    console.error('Error loading mentor referrals:', err);
+    return res.status(500).json({ error: 'Server error' });
+  }
+});
+
 // Manage Offerings / Services
 router.post('/:handle/services', handleValidatorMiddleware, mentorAuth, mentorController.createService);
 router.put('/:handle/services/:serviceId', handleValidatorMiddleware, mentorAuth, mentorController.updateService);

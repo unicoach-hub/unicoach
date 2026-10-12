@@ -31,6 +31,7 @@ import { useProgramSelection } from '../utils/useProgramSelection';
 import { POPULAR_COURSES, ALL_COUNTRY_OPTIONS } from '../utils/shortlistOptions';
 import { exportUniversitiesToExcel } from '../utils/excelExporter';
 import { API_BASE_URL } from '../config';
+import JourneyTracker from './JourneyTracker';
 import { clearUserStorage } from '../utils/userStorage';
 
 const API_URL = API_BASE_URL;
@@ -2507,6 +2508,7 @@ ${name || 'Candidate'}`;
                 exit={{ opacity: 0, y: -15 }}
                 className="space-y-4"
               >
+                <JourneyTracker />
                 {(() => {
                   const doneCount = checklist.filter((t) => t.done).length;
                   const readiness = checklist.length ? Math.round((doneCount / checklist.length) * 100) : 0;

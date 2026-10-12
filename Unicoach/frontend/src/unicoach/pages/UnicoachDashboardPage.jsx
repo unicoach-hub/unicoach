@@ -33,6 +33,7 @@ import {
   markAllMentorNotificationsRead
 } from '../api/unicoachApi';
 import { useAuth } from '../../context/AuthContext';
+import MentorReferrals from '../components/MentorReferrals';
 import { 
   Bell,
   BellRing,
@@ -96,7 +97,8 @@ import {
   Activity,
   Globe2,
   Landmark,
-  Building
+  Building,
+  GraduationCap,
 } from 'lucide-react';
 import { 
   convertMentorTimeToIST, 
@@ -3126,8 +3128,8 @@ const UnicoachDashboardPage = () => {
             {[
               { id: 'overview', label: 'Home', icon: Home, hasChevron: false },
               { id: 'notifications', label: 'Announcements & Alerts', icon: Bell, hasChevron: true, badge: unreadNotificationsCount || null, badgeColor: 'bg-[#DE5C2B] text-white' },
-              { id: 'bookings', label: 'Bookings & Sessions', icon: Calendar, hasChevron: true, badge: (scheduledCalls.length || upcomingBookings.length) || null },
-              { id: 'priority_dms', label: 'Priority DMs & Requests', icon: MessageSquare, hasChevron: true, badge: (priorityDms?.pendingCount || pendingRequests.length) || null },
+              { id: 'bookings', label: 'Bookings & Sessions', icon: Calendar, hasChevron: true, badge: ((scheduledCalls.length || upcomingBookings.length) + (priorityDms?.pendingCount || pendingRequests.length)) || null },
+              { id: 'my_students', label: 'My Students', icon: GraduationCap, hasChevron: false },
               { id: 'services', label: 'Services', icon: Grid, hasChevron: false, badge: services.length || null },
               { id: 'calendar', label: 'Calendar & Slots', icon: CalendarDays, hasChevron: false },
               { id: 'profile', label: 'Profile', icon: Users, hasChevron: true },
@@ -3231,7 +3233,7 @@ const UnicoachDashboardPage = () => {
                   { id: 'overview', label: 'Home', icon: Home },
                   { id: 'notifications', label: 'Announcements & Alerts', icon: Bell },
                   { id: 'bookings', label: 'Bookings & Sessions', icon: Calendar },
-                  { id: 'priority_dms', label: 'Priority DMs & Requests', icon: MessageSquare },
+                  { id: 'my_students', label: 'My Students', icon: GraduationCap },
                   { id: 'services', label: 'Services', icon: Grid },
                   { id: 'calendar', label: 'Calendar & Slots', icon: CalendarDays },
                   { id: 'profile', label: 'Profile', icon: Users },
@@ -5203,6 +5205,16 @@ const UnicoachDashboardPage = () => {
               <div>
                 <h2 className="text-base sm:text-lg font-bold text-slate-900">Student Bookings &amp; Requests</h2>
                 <p className="text-xs text-slate-500">Track 1:1 video consultations, student priority questions, and SOP reviews</p>
+                <button
+                  type="button"
+                  onClick={() => { setActiveTab('priority_dms'); loadPriorityDms(handle); }}
+                  className="mt-2 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-orange-50 text-[#C04A1D] text-xs font-bold hover:bg-orange-100 cursor-pointer"
+                >
+                  <MessageSquare className="w-3.5 h-3.5" /> Answer Priority DMs
+                  {(priorityDms?.pendingCount || pendingRequests.length) > 0 && (
+                    <span className="px-1.5 rounded-full bg-[#DE5C2B] text-white text-[10px]">{priorityDms?.pendingCount || pendingRequests.length}</span>
+                  )}
+                </button>
               </div>
 
               {/* Filter Pills - Responsive Wrapped Without Scroller */}
@@ -5670,6 +5682,7 @@ const UnicoachDashboardPage = () => {
           <div className="space-y-6">
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
               <div>
+                <button type="button" onClick={() => setActiveTab('bookings')} className="mb-1 text-xs font-semibold text-slate-500 hover:text-[#DE5C2B] cursor-pointer">← Back to Bookings</button>
                 <h2 className="text-base font-bold text-slate-900">Priority DMs & Paid Queries</h2>
                 <p className="text-xs text-slate-500">
                   Guaranteed text advice inbox. Your earnings are released to your bank automatically once you answer.
@@ -6929,6 +6942,12 @@ const UnicoachDashboardPage = () => {
                 </div>
               ))}
             </div>
+          </div>
+        )}
+
+        {activeTab === 'my_students' && (
+          <div className="animate-in fade-in duration-200">
+            <MentorReferrals handle={mentor?.handle || handle} />
           </div>
         )}
 

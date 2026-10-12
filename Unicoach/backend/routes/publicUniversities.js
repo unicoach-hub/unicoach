@@ -9,6 +9,7 @@ router.get('/countries', publicUniversityController.getPublicCountries);
 router.get('/countries/:code', publicUniversityController.getPublicCountryByCode);
 
 // GET universities with filters
+router.get('/suggest', publicUniversityController.suggestUniversities);
 router.get('/universities', publicUniversityController.getPublicUniversities);
 
 // GET one university (used by the course details page so it shows database data, not a bundled copy)

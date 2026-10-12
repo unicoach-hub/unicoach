@@ -58,6 +58,7 @@ const unicoachMentorSchema = new mongoose.Schema({
     twitter: { type: String, default: '' },
     youtube: { type: String, default: '' },
     github: { type: String, default: '' },
+    facebook: { type: String, default: '' },
     website: { type: String, default: '' }
   },
 

@@ -40,7 +40,8 @@ const handleUpload = (req, res, next) =>
 
 // Standard document types students pick before sending a file, so every file arrives with a proper name
 const DOC_TYPES = [
-  'Passport', '10th Marksheet', '12th Marksheet', 'Degree Certificate', 'Transcripts', 'IELTS Scorecard',
+  'Passport', '10th Marksheet', '12th Marksheet', 'Diploma', 'Bachelor\'s Degree', 'PG Diploma', 'Master\'s Degree',
+  'Degree Certificate', 'Transcripts', 'Work Experience Letter', 'IELTS Scorecard',
   'PTE Scorecard', 'TOEFL Scorecard', 'GRE / GMAT Scorecard', 'SOP', 'LOR', 'CV / Resume', 'Bank Statement',
   'Offer Letter', 'Visa Document', 'Photo', 'Other',
 ];

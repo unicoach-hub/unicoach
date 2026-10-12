@@ -41,6 +41,7 @@ import {
 } from '@ant-design/icons';
 import Header from '../components/Header';
 import API from '../api/axios';
+import MentorDetailDrawer from '../components/MentorDetailDrawer';
 import { getFrontendUrl } from '../config';
 
 // --- Razorpay Route helpers ---------------------------------------------------
@@ -117,6 +118,11 @@ const UniCoachAdminHub = () => {
 
   // Mentors Data & Verification Controls
   const [mentors, setMentors] = useState([]);
+  const [referralSummary, setReferralSummary] = useState({});
+  const [detailMentor, setDetailMentor] = useState(null);
+  useEffect(() => {
+    API.get('/admin/students/mentor-summary').then(({ data }) => setReferralSummary(data.summary || {})).catch(() => {});
+  }, []);
   const [mentorSearch, setMentorSearch] = useState('');
   const [mentorStatusFilter, setMentorStatusFilter] = useState('ALL'); // 'ALL' | 'PENDING' | 'APPROVED' | 'REJECTED'
   const [selectedMentorForServices, setSelectedMentorForServices] = useState(null);
@@ -593,7 +599,7 @@ const UniCoachAdminHub = () => {
           </div>
           <div style={{ minWidth: 0, overflow: 'hidden' }}>
             <div style={{ fontWeight: 600, color: INK, fontSize: 13.5, display: 'flex', alignItems: 'center', gap: 6 }}>
-              <span style={{ textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap' }}>{r.name}</span>
+              <a onClick={() => setDetailMentor(r)} title="View mentor details and referred students" style={{ textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap', color: INK, cursor: 'pointer' }}>{r.name}</a>
               {r.isVerified && (
                 <SafetyCertificateOutlined style={{ color: 'var(--ux-brand)', fontSize: 13, flexShrink: 0 }} title="Verified Creator (Blue Tick)" />
               )}
@@ -635,28 +641,45 @@ const UniCoachAdminHub = () => {
       ) : <span style={{ fontSize: 11.5, color: TEXT_3 }}>—</span>
     },
     {
-      title: 'Academic & Destination',
+      title: 'Students referred',
+      key: 'referred',
+      width: 140,
+      sorter: (a, b) => (referralSummary[a._id]?.total || 0) - (referralSummary[b._id]?.total || 0),
+      render: (_, r) => {
+        const sum = referralSummary[r._id];
+        const offers = sum ? ['offer_received', 'visa_filing', 'visa_applied', 'visa_approved', 'visa_rejected'].reduce((n, k) => n + (sum.byStage[k] || 0), 0) : 0;
+        return (
+          <a onClick={() => setDetailMentor(r)} style={{ cursor: 'pointer' }}>
+            <span style={{ fontWeight: 700, fontSize: 15, color: INK }}>{sum?.total || 0}</span>
+            <span style={{ fontSize: 11.5, color: TEXT_2, marginLeft: 6 }}>{sum ? `${offers} offers` : 'View'}</span>
+          </a>
+        );
+      }
+    },
+    {
+      title: 'University & course',
       key: 'academic',
-      width: 210,
-      render: (_, r) => (
-        <div>
-          <div style={{ fontWeight: 600, color: TEXT, fontSize: 12.5 }}>
-            {r.university || <span style={{ color: TEXT_3, fontWeight: 500 }}>University not set</span>}
+      width: 260,
+      render: (_, r) => {
+        // Names come from a free-text form ("dublin scholl"): show them title-cased so the column reads cleanly
+        const tidy = (v) => String(v || '').trim().replace(/\s+/g, ' ').replace(/(^|\s)(\S)/g, (m, sp, ch) => sp + ch.toUpperCase());
+        return (
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 6, minWidth: 220 }}>
+            <div style={{ fontWeight: 700, color: TEXT, fontSize: 13, lineHeight: 1.3 }}>
+              {r.university ? tidy(r.university) : <span style={{ color: TEXT_3, fontWeight: 500 }}>University not set</span>}
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 6, flexWrap: 'wrap' }}>
+              {r.country && (
+                <span className="nx-status nx-status--neutral" style={{ height: 22, fontSize: 11.5 }}>{r.country}</span>
+              )}
+              {r.graduationYear && (
+                <span className="nx-status nx-status--neutral" style={{ height: 22, fontSize: 11.5 }}>Batch {r.graduationYear}</span>
+              )}
+            </div>
+            {r.course && <div style={{ fontSize: 12, color: TEXT_2, lineHeight: 1.35 }}>{tidy(r.course)}</div>}
           </div>
-          <div style={{ marginTop: 4, display: 'flex', alignItems: 'center', gap: 6, flexWrap: 'wrap' }}>
-            {r.country && (
-              <span className="nx-status nx-status--neutral" style={{ height: 20, fontSize: 11 }}>
-                {r.country}
-              </span>
-            )}
-            {(r.course || r.graduationYear) && (
-              <span style={{ fontSize: 11.5, color: TEXT_2 }}>
-                {[r.course, r.graduationYear ? `Batch '${String(r.graduationYear).slice(-2)}` : null].filter(Boolean).join(' • ')}
-              </span>
-            )}
-          </div>
-        </div>
-      )
+        );
+      }
     },
     {
       title: 'Verification & ID',
@@ -1709,8 +1732,13 @@ const UniCoachAdminHub = () => {
                       rowKey="_id"
                       columns={mentorColumns}
                       dataSource={filteredMentors}
+                      onRow={(r) => ({
+                        // Whole row opens the mentor's details; buttons, links and dropdowns inside keep working
+                        onClick: (e) => { if (!e.target.closest('a, button, input, .ant-select, .ant-switch, .ant-dropdown-trigger, .ant-popover')) setDetailMentor(r); },
+                        style: { cursor: 'pointer' },
+                      })}
                       loading={loading}
-                      scroll={{ x: 1260 }}
+                      scroll={{ x: 2040 }}
                       pagination={{ pageSize: 10, showSizeChanger: true, pageSizeOptions: ['10', '20', '50'] }}
                     />
                   </div>
@@ -1921,6 +1949,7 @@ const UniCoachAdminHub = () => {
       </div>
 
       {/* Modal: Mentor Services & Intake Questions Inspector */}
+      <MentorDetailDrawer mentor={detailMentor} open={Boolean(detailMentor)} onClose={() => setDetailMentor(null)} />
       <Modal
         title={`Offerings & Intake Form: ${selectedMentorForServices?.name} (@${selectedMentorForServices?.handle})`}
         open={Boolean(selectedMentorForServices)}

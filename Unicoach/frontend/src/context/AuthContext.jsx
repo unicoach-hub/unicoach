@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { API_BASE_URL } from '../config';
+import { getReferral } from '../utils/referral';
 import { clearUserStorage } from '../utils/userStorage';
 
 const AuthContext = createContext(null);
@@ -110,7 +111,7 @@ export const AuthProvider = ({ children }) => {
         method: 'POST',
         credentials: 'include',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, email, password, phone }),
+        body: JSON.stringify({ name, email, password, phone, referral: getReferral() }),
       });
       const data = await res.json();
       if (res.ok) {
@@ -177,7 +178,7 @@ export const AuthProvider = ({ children }) => {
         method: 'POST',
         credentials: 'include',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ credential }),
+        body: JSON.stringify({ credential, referral: getReferral() }),
       });
       const data = await res.json();
       if (res.ok) {

@@ -752,6 +752,26 @@ const getPublicDirectory = async (req, res) => {
  * POST /api/unicoach/apply
  * Public application portal for influencers/seniors to join UniCoach as a mentor
  */
+const SOCIAL_BASE = {
+  instagram: 'https://instagram.com/',
+  linkedin: 'https://linkedin.com/in/',
+  twitter: 'https://x.com/',
+  youtube: 'https://youtube.com/@',
+  facebook: 'https://facebook.com/',
+};
+
+// "@riya.k" or "instagram.com/riya.k" or a full URL -> { platform, url }; null when empty or unusable
+const normalizeSocialLink = (platform, raw) => {
+  const p = SOCIAL_BASE[platform] ? platform : null;
+  const v = typeof raw === 'string' ? raw.trim() : '';
+  if (!p || !v || /\s/.test(v) || v.length > 300) return null;
+  if (/^https?:\/\//i.test(v)) return { platform: p, url: v };
+  if (/^(www\.)?[a-z0-9-]+\.[a-z]{2,}\//i.test(v)) return { platform: p, url: `https://${v}` };
+  const h = v.replace(/^@/, '');
+  if (!/^[A-Za-z0-9._-]{2,100}$/.test(h)) return null;
+  return { platform: p, url: `${SOCIAL_BASE[p]}${h}` };
+};
+
 const applyAsMentor = async (req, res) => {
   try {
     const { validateHandle } = require('../middlewares/slugValidator');
@@ -767,6 +787,8 @@ const applyAsMentor = async (req, res) => {
       course,
       graduationYear,
       linkedinUrl,
+      socialPlatform,
+      socialUrl,
       verificationDocUrl,
       ianaTimezone,
       payoutMethod,
@@ -785,6 +807,12 @@ const applyAsMentor = async (req, res) => {
 
     if (!name || !email || !handle) {
       return res.status(400).json({ error: 'Name, Email, and Handle are required.' });
+    }
+
+    // One social profile is required so the team can check the mentor is a real person
+    const social = normalizeSocialLink(socialPlatform, socialUrl) || normalizeSocialLink('linkedin', linkedinUrl);
+    if (!social) {
+      return res.status(400).json({ error: 'Please add one social media profile (Instagram, LinkedIn, X, YouTube or Facebook).' });
     }
 
     // Payout details: students' payments are auto-transferred to this bank account via Razorpay Route
@@ -865,9 +893,7 @@ const applyAsMentor = async (req, res) => {
       course: course ? course.trim() : '',
       graduationYear: graduationYear ? graduationYear.trim() : '',
       verificationDocUrl: verificationDocUrl ? verificationDocUrl.trim() : '',
-      socialLinks: {
-        linkedin: linkedinUrl ? linkedinUrl.trim() : ''
-      },
+      socialLinks: { [social.platform]: social.url },
       defaultPayoutDetails: {
         payoutMethod: 'BANK_TRANSFER',
         upiId: upiId ? upiId.trim() : '',

@@ -6,7 +6,7 @@ import {
   Sparkles, Compass, Search, Target, ShieldCheck, Award, 
   GraduationCap, Globe, DollarSign, CheckCircle2, BookOpen, 
   ExternalLink, SlidersHorizontal, RefreshCw, BookmarkCheck, ArrowRight, ArrowLeft, Calendar, Briefcase, X,
-  FileSpreadsheet, Download
+  FileSpreadsheet, Download, Loader2
 } from 'lucide-react';
 import UniversityLogo from './UniversityLogo';
 import PremiumDropdown from './PremiumDropdown';
@@ -28,6 +28,7 @@ import { useAuth } from '../context/AuthContext';
 import { POPULAR_COURSES, ALL_COUNTRY_OPTIONS } from '../utils/shortlistOptions';
 import { getCountryMeta } from '../utils/courseFinderHelper';
 import ExcelColumnExportModal from './ExcelColumnExportModal';
+import { exportShortlistPdf } from '../utils/exportShortlistPdf';
 import { 
   exportUniversitiesToExcel, 
   exportSelectedProgramsToExcel,
@@ -777,6 +778,29 @@ const UniversityShortlister = ({ user: propUser, verifiedLead }) => {
 
   const displayedings = activeCategoryTab === 'saved' ? savedUnis : allUniversities;
 
+  const [pdfBusy, setPdfBusy] = useState(false);
+  const handleExportPdf = async () => {
+    const list = displayedings && displayedings.length > 0 ? displayedings : [];
+    if (!list.length) {
+      showToast('No universities to put in the PDF yet.');
+      return;
+    }
+    setPdfBusy(true);
+    try {
+      const n = await exportShortlistPdf(list, {
+        title: activeCategoryTab === 'saved' ? 'My saved shortlist' : 'Course list',
+        country: formData.targetCountry,
+        searchQuery: activeSearch,
+      });
+      showToast(`PDF downloaded with ${n} rows.`);
+    } catch (err) {
+      console.error('PDF export failed', err);
+      showToast('Could not create the PDF. Please try again.');
+    } finally {
+      setPdfBusy(false);
+    }
+  };
+
   return (
     <div className="space-y-8">
       {/* Toast Notification */}
@@ -1284,6 +1308,16 @@ const UniversityShortlister = ({ user: propUser, verifiedLead }) => {
             </div>
 
             <div className="flex items-center gap-2 flex-wrap sm:flex-nowrap">
+              <button
+                type="button"
+                onClick={handleExportPdf}
+                disabled={pdfBusy}
+                className="px-4 py-2.5 bg-[#DE5C2B] hover:bg-[#C04A1D] active:scale-95 disabled:opacity-60 text-white rounded-xl text-xs font-black transition-all flex items-center gap-2 cursor-pointer shadow-md shadow-orange-200/60"
+                title="Download this list as a PDF"
+              >
+                {pdfBusy ? <Loader2 size={14} className="animate-spin" /> : <Download size={14} />}
+                <span>Download PDF ({displayedings.length})</span>
+              </button>
               <button
                 type="button"
                 onClick={() => handleExportUniversities(false)}

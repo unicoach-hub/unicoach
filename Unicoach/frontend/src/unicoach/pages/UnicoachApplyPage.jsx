@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { submitMentorApplication, uploadMentorVerificationDoc } from '../api/unicoachApi';
 import { PillButton } from '../../components/ui/PillButton';
 import CountrySelect from '../../components/ui/CountrySelect';
+import SuggestInput from '../../components/ui/SuggestInput';
+import { API_BASE_URL } from '../../config';
 import { 
   ShieldCheck, 
   ArrowLeft, 
@@ -64,9 +66,44 @@ const UnicoachApplyPage = () => {
     course: '',
     graduationYear: '2025',
     linkedinUrl: '',
+    socialPlatform: 'instagram',
+    socialUrl: '',
     headline: '',
     bio: ''
   });
+
+  // University and course suggestions for the chosen country (from our university database)
+  const [uniSuggestions, setUniSuggestions] = useState([]);
+  const [uniLoading, setUniLoading] = useState(false);
+  useEffect(() => {
+    if (!form.country) {
+      setTimeout(() => setUniSuggestions([]), 0);
+      return undefined;
+    }
+    const controller = new AbortController();
+    const t = setTimeout(() => {
+      setUniLoading(true);
+      const params = new URLSearchParams({ country: form.country, q: form.university.trim() });
+      fetch(`${API_BASE_URL}/public/universities-data/suggest?${params}`, { signal: controller.signal })
+        .then((r) => (r.ok ? r.json() : []))
+        .then((list) => setUniSuggestions(Array.isArray(list) ? list : []))
+        .catch(() => {})
+        .finally(() => setUniLoading(false));
+    }, 250);
+    return () => { clearTimeout(t); controller.abort(); };
+  }, [form.country, form.university]);
+
+  const selectedUni = useMemo(
+    () => uniSuggestions.find((u) => u.name.toLowerCase() === form.university.trim().toLowerCase()) || null,
+    [uniSuggestions, form.university]
+  );
+  const courseSuggestions = useMemo(() => {
+    if (!selectedUni) return [];
+    const q = form.course.trim().toLowerCase();
+    return selectedUni.courses
+      .filter((c) => !q || c.toLowerCase().includes(q))
+      .map((c) => ({ value: c }));
+  }, [selectedUni, form.course]);
 
   // ─── Payout & Bank details state (Mandatory — used to open the mentor's Razorpay Route payout account) ───
   const [payoutForm, setPayoutForm] = useState({
@@ -133,6 +170,13 @@ const UnicoachApplyPage = () => {
       const year = parseInt(v, 10);
       if (!v || isNaN(year)) return 'Enter a valid year';
       if (year < 2015 || year > 2032) return 'Year must be between 2015 and 2032';
+      return '';
+    },
+    socialUrl: (v) => {
+      const t = (v || '').trim();
+      if (!t) return 'Add one social media profile so we can verify you are real';
+      if (/\s/.test(t)) return 'Enter a link or @handle without spaces';
+      if (t.length < 3) return 'This handle looks too short';
       return '';
     },
     linkedinUrl: (v) => {
@@ -262,8 +306,8 @@ const UnicoachApplyPage = () => {
     setFeedback(null);
 
     // Run all validators and mark all fields as touched
-    const requiredFields = ['name', 'email', 'phone', 'handle', 'country', 'university'];
-    const allFields = ['name', 'email', 'phone', 'handle', 'country', 'university', 'course', 'graduationYear', 'linkedinUrl'];
+    const requiredFields = ['name', 'email', 'phone', 'handle', 'country', 'university', 'socialUrl'];
+    const allFields = ['name', 'email', 'phone', 'handle', 'country', 'university', 'course', 'graduationYear', 'socialUrl'];
     
     const newTouched = {};
     const newErrors = {};
@@ -323,10 +367,10 @@ const UnicoachApplyPage = () => {
 
     const finalDocUrl = uploadedDocUrl || externalDocLink.trim();
 
-    if (!finalDocUrl && !form.linkedinUrl.trim()) {
+    if (!finalDocUrl && !form.socialUrl.trim()) {
       setFeedback({ 
         type: 'error', 
-        text: 'Please upload a Student ID / Offer letter proof OR provide your LinkedIn profile URL so admin can verify your credentials.' 
+        text: 'Please upload a Student ID / Offer letter proof OR add your social media profile so admin can verify your credentials.' 
       });
       return;
     }
@@ -688,7 +732,7 @@ const UnicoachApplyPage = () => {
           </div>
 
           {/* ── SECTION 2: Academic Credibility & Destination ── */}
-          <div className="bg-white/95 backdrop-blur-xl rounded-[28px] border border-slate-200/90 p-6 sm:p-8 shadow-sm">
+          <div className="relative z-20 bg-white/95 backdrop-blur-xl rounded-[28px] border border-slate-200/90 p-6 sm:p-8 shadow-sm">
             <h2 className="font-outfit text-base font-bold text-[#0F172A] mb-4 flex items-center gap-2">
               <GraduationCap className="w-4 h-4 text-[#DE5C2B]" />
               <span>2. Academic & Destination Information</span>
@@ -712,12 +756,14 @@ const UnicoachApplyPage = () => {
                 <label className="block text-xs font-bold text-slate-700 mb-1.5">
                   University Name <span className="text-rose-500">*</span>
                 </label>
-                <input
-                  type="text"
-                  placeholder="e.g. Technical University of Munich, Oxford"
+                <SuggestInput
+                  placeholder={form.country ? `Start typing a university in ${form.country}` : 'Choose the country first, or type the name'}
                   value={form.university}
-                  onChange={(e) => handleFieldChange('university', e.target.value)}
+                  onChange={(v) => handleFieldChange('university', v)}
                   onBlur={() => handleFieldBlur('university')}
+                  suggestions={uniSuggestions.map((u) => ({ value: u.name, hint: u.city }))}
+                  loading={uniLoading}
+                  emptyHint={form.country ? 'Not in our list? Just type the full name.' : ''}
                   className={`w-full px-4 py-3 rounded-xl border text-sm focus:outline-none focus:ring-4 transition-all ${
                     touched.university && fieldErrors.university
                       ? 'border-rose-300 focus:ring-rose-100 focus:border-rose-400 bg-rose-50/30'
@@ -736,12 +782,12 @@ const UnicoachApplyPage = () => {
                 <label className="block text-xs font-bold text-slate-700 mb-1.5">
                   Course / Major
                 </label>
-                <input
-                  type="text"
-                  placeholder="e.g. M.S. in Computer Science, MBA"
+                <SuggestInput
+                  placeholder={selectedUni ? `Courses at ${selectedUni.name}` : 'e.g. M.S. in Computer Science, MBA'}
                   value={form.course}
-                  onChange={(e) => handleFieldChange('course', e.target.value)}
+                  onChange={(v) => handleFieldChange('course', v)}
                   onBlur={() => handleFieldBlur('course')}
+                  suggestions={courseSuggestions}
                   className={`w-full px-4 py-3 rounded-xl border text-sm focus:outline-none focus:ring-4 transition-all ${
                     touched.course && fieldErrors.course
                       ? 'border-rose-300 focus:ring-rose-100 focus:border-rose-400 bg-rose-50/30'
@@ -876,33 +922,49 @@ const UnicoachApplyPage = () => {
                 />
               </div>
 
-              {/* LinkedIn URL */}
-              <div>
+              {/* Social media profile (required, used to check the mentor is real) */}
+              <div data-field="socialUrl">
                 <label className="block text-xs font-bold text-slate-700 mb-1.5">
-                  LinkedIn Profile URL
+                  Social media profile <span className="text-rose-500">*</span>
                 </label>
-                <div className="relative" data-field="linkedinUrl">
-                  <div className="absolute left-3.5 top-3">
-                    <LinkedinIcon className="w-4 h-4 text-[#DE5C2B]" />
+                <div className="flex gap-2">
+                  <select
+                    value={form.socialPlatform}
+                    onChange={(e) => setForm({ ...form, socialPlatform: e.target.value })}
+                    className="shrink-0 px-3 py-3 rounded-xl border border-slate-200/90 text-sm bg-white focus:outline-none focus:ring-4 focus:ring-[#DE5C2B]/10 focus:border-[#DE5C2B]"
+                    aria-label="Social media platform"
+                  >
+                    <option value="instagram">Instagram</option>
+                    <option value="linkedin">LinkedIn</option>
+                    <option value="twitter">X (Twitter)</option>
+                    <option value="youtube">YouTube</option>
+                    <option value="facebook">Facebook</option>
+                  </select>
+                  <div className="relative flex-1">
+                    <div className="absolute left-3.5 top-3">
+                      <LinkedinIcon className="w-4 h-4 text-[#DE5C2B]" />
+                    </div>
+                    <input
+                      type="text"
+                      placeholder={form.socialPlatform === 'linkedin' ? 'https://linkedin.com/in/yourprofile' : '@yourhandle or profile link'}
+                      value={form.socialUrl}
+                      onChange={(e) => handleFieldChange('socialUrl', e.target.value)}
+                      onBlur={() => handleFieldBlur('socialUrl')}
+                      className={`w-full pl-10 pr-4 py-3 rounded-xl border text-sm focus:outline-none focus:ring-4 transition-all ${
+                        touched.socialUrl && fieldErrors.socialUrl
+                          ? 'border-rose-300 focus:ring-rose-100 focus:border-rose-400 bg-rose-50/30'
+                          : 'border-slate-200/90 focus:ring-[#DE5C2B]/10 focus:border-[#DE5C2B]'
+                      }`}
+                    />
                   </div>
-                  <input
-                    type="text"
-                    placeholder="https://linkedin.com/in/yourprofile"
-                    value={form.linkedinUrl}
-                    onChange={(e) => handleFieldChange('linkedinUrl', e.target.value)}
-                    onBlur={() => handleFieldBlur('linkedinUrl')}
-                    className={`w-full pl-10 pr-4 py-3 rounded-xl border text-sm focus:outline-none focus:ring-4 transition-all ${
-                      touched.linkedinUrl && fieldErrors.linkedinUrl
-                        ? 'border-rose-300 focus:ring-rose-100 focus:border-rose-400 bg-rose-50/30'
-                        : 'border-slate-200/90 focus:ring-[#DE5C2B]/10 focus:border-[#DE5C2B]'
-                    }`}
-                  />
-                  {touched.linkedinUrl && fieldErrors.linkedinUrl && (
-                    <p className="text-[11px] text-rose-500 font-medium mt-1 flex items-center gap-1">
-                      <AlertCircle className="w-3 h-3" /> {fieldErrors.linkedinUrl}
-                    </p>
-                  )}
                 </div>
+                {touched.socialUrl && fieldErrors.socialUrl ? (
+                  <p className="text-[11px] text-rose-500 font-medium mt-1 flex items-center gap-1">
+                    <AlertCircle className="w-3 h-3" /> {fieldErrors.socialUrl}
+                  </p>
+                ) : (
+                  <p className="text-[11px] text-slate-400 mt-1">Required. We check it to confirm you are a real student. It is not shown publicly unless you add it to your profile.</p>
+                )}
               </div>
 
             </div>

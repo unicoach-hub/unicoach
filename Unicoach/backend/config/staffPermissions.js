@@ -9,7 +9,7 @@ const MODULES = [
   { key: 'dashboard', label: 'Dashboard', group: 'Overview', actions: ['view'] },
   { key: 'leads', label: 'Leads', group: 'Students & CRM', actions: ACTIONS },
   { key: 'crm', label: 'Pipelines, Forms & Calendar', group: 'Students & CRM', actions: ACTIONS },
-  { key: 'students', label: 'Registered Users', group: 'Students & CRM', actions: ['view', 'delete'] },
+  { key: 'students', label: 'Students, Stages & Documents', group: 'Students & CRM', actions: ['view', 'update', 'delete'] },
   { key: 'support', label: 'Support Requests', group: 'Students & CRM', actions: ['view', 'update', 'delete'] },
   { key: 'inbox', label: 'Student Chat & Documents', group: 'Students & CRM', actions: ['view', 'create', 'update'] },
   { key: 'mentors', label: 'Mentors, Bookings & Payouts', group: 'Platform', actions: ACTIONS },
@@ -117,6 +117,7 @@ const resolveRequest = async (req) => {
       if (seg === 'test-smtp') return OWNER_ONLY;
       return { module: 'support', action: seg === 'export' ? 'view' : action };
     case '/api/admin/users':
+    case '/api/admin/students':
       return { module: 'students', action };
     case '/api/admin/templates':
       return { module: 'messaging', action };

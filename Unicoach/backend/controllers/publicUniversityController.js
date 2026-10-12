@@ -102,6 +102,35 @@ exports.getPublicUniversities = async (req, res) => {
 };
 
 /**
+ * GET /api/public/universities-data/suggest?country=Ireland&q=dub
+ * Light list for form autocomplete: university names in a country (and their course names)
+ */
+exports.suggestUniversities = async (req, res) => {
+  try {
+    const countryName = String(req.query.country || '').trim().slice(0, 60);
+    const q = String(req.query.q || '').trim().slice(0, 80);
+    if (!countryName) return res.json([]);
+    const country = await Country.findOne({
+      $or: [{ name: new RegExp(`^${escapeRegex(countryName)}$`, 'i') }, { code: countryName.toLowerCase() }],
+    }).select('_id').lean();
+    if (!country) return res.json([]);
+    const query = { country: country._id, isActive: { $ne: false } };
+    if (q) query.name = { $regex: escapeRegex(q), $options: 'i' };
+    const unis = await University.find(query).select('name city courses rankingNum').lean();
+    const rankOf = (u) => (u.rankingNum > 0 ? u.rankingNum : Infinity);
+    unis.sort((a, b) => rankOf(a) - rankOf(b) || String(a.name).localeCompare(String(b.name)));
+    return res.json(unis.slice(0, 40).map((u) => ({
+      name: u.name,
+      city: u.city || '',
+      courses: [...new Set((u.courses || []).map((c) => String(c).trim()).filter(Boolean))].slice(0, 400),
+    })));
+  } catch (err) {
+    console.error('Error suggesting universities:', err);
+    return res.status(500).json({ error: 'Server error' });
+  }
+};
+
+/**
  * GET /api/public/universities-data/universities/:id
  * One university with its country and the detailed courses we hold for it.
  */

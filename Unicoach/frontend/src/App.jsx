@@ -22,6 +22,9 @@ const SuccessModal = lazy(() => import('./components/SuccessModal'));
 const LoginModal = lazy(() => import('./components/LoginModal'));
 const UniBotChatWidget = lazy(() => import('./components/UniBotChatWidget'));
 const UserDashboard = lazy(() => import('./components/UserDashboard'));
+const OnboardingPage = lazy(() => import('./pages/OnboardingPage'));
+const ReferralLanding = lazy(() => import('./pages/ReferralLanding'));
+import RequireProfile from './components/RequireProfile';
 const UnicoachMarketplacePage = lazy(() => import('./unicoach/pages/UnicoachMarketplacePage'));
 const MentorsDirectoryPage = lazy(() => import('./unicoach/pages/MentorsDirectoryPage'));
 const UnicoachApplyPage = lazy(() => import('./unicoach/pages/UnicoachApplyPage'));
@@ -857,7 +860,9 @@ const App = () => {
             <Route path="/contact" element={<ContactPage />} />
 
             {/* User Dashboard */}
-            <Route path="/dashboard" element={<UserDashboard />} />
+            <Route path="/dashboard" element={<RequireProfile><UserDashboard /></RequireProfile>} />
+            <Route path="/onboarding" element={<OnboardingPage />} />
+            <Route path="/r/:handle" element={<ReferralLanding />} />
 
             {/* Public Custom Forms (shareable link) */}
             <Route path="/f/:slug" element={<PublicFormPage />} />

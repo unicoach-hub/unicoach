@@ -10,6 +10,8 @@ const {
 } = require('../services/studentFile');
 
 // The counselor shown to the student: name and photo only
+const { setStudentStage } = require('../services/studentJourney');
+const { normalizeStage } = require('../config/studentStages');
 const counselorFor = async (convo) => {
   if (!mongoose.Types.ObjectId.isValid(convo.assignedTo)) return null;
   const staff = await Staff.findById(convo.assignedTo).select('name avatar title').lean();
@@ -85,6 +87,12 @@ exports.sendMessage = async (req, res) => {
       const file = await storeStudentFile(req.file, { studentName: user?.name, docTitle: document.title });
       Object.assign(document, { file, status: 'uploaded', note: '', uploadedAt: new Date() });
       await document.save();
+      // Documents waiting (or sent back) → now under review; no email, the student just uploaded
+      const current = await User.findById(req.user.id).select('journeyStage').lean();
+      if (['docs_pending', 'docs_rejected', 'registered'].includes(normalizeStage(current?.journeyStage))) {
+        await setStudentStage(req.user.id, 'docs_review', { by: 'System', note: `Uploaded ${document.title}`, notify: false })
+          .catch((e) => console.warn('[Stage] auto docs_review failed:', e.message));
+      }
     }
 
     const msg = await postMessage(convo, {

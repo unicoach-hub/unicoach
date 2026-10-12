@@ -220,6 +220,7 @@ const SupportRequests = () => {
       // Event view loads every registration for that event; the inbox view loads the latest 500 enquiries
       const params = new URLSearchParams({ limit: eventFilter ? '1000' : '500' });
       if (eventFilter) params.set('eventId', eventFilter);
+      else params.set('scope', 'support'); // event registrations have their own page
 
       // Fetch all master requests to compute category counts
       const res = await fetch(`${API_URL}/support-requests?${params}`, { headers, credentials: 'include' });
@@ -500,6 +501,7 @@ const SupportRequests = () => {
     // 'Other Inquiry'), and the dates are sent as exact instants so its timezone cannot shift them.
     const params = new URLSearchParams();
     if (eventFilter) params.set('eventId', eventFilter);
+    else params.set('scope', 'support');
     if (activeCategory === 'New') params.set('status', 'New');
     else if (activeCategory !== 'All') params.set('category', activeCategory);
     if (dateFrom) params.set('from', new Date(dateFrom).toISOString());
@@ -892,6 +894,8 @@ const SupportRequests = () => {
       {/* 3. Controls Filter Bar */}
       <div className="nx-toolbar sr-filter-bar">
         <div className="sr-date-group">
+{eventOptions.length > 0 && (
+            <>
           <span>Event</span>
           <Select
             value={eventFilter || undefined}
@@ -903,6 +907,8 @@ const SupportRequests = () => {
             className="sr-event-select"
             aria-label="Filter by event"
           />
+            </>
+          )}
 
           <span>From</span>
           <input

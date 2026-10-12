@@ -7,7 +7,7 @@ import {
 } from 'lucide-react';
 import { GoogleLogin } from '@react-oauth/google';
 import { useAuth } from '../context/AuthContext';
-import InteractiveAuthMascot from '../components/InteractiveAuthMascot';
+import BoardingPassLogin from '../components/BoardingPassLogin';
 import brandLogo from '@/assets/blackunicoachlogo.webp';
 
 const SignupPage = () => {
@@ -31,6 +31,7 @@ const SignupPage = () => {
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [isPasswordFocused, setIsPasswordFocused] = useState(false);
+  const [isEmailFocused, setIsEmailFocused] = useState(false);
 
   // Status & Feedback
   const [loading, setLoading] = useState(false);
@@ -145,21 +146,23 @@ const SignupPage = () => {
 
             {/* Center: Interactive Mascot Character Animation */}
             <div className="my-auto py-1 flex flex-col items-center justify-center relative z-10">
-              <InteractiveAuthMascot
+              <BoardingPassLogin
+                email={email}
+                isEmailFocused={isEmailFocused}
                 isPasswordFocused={isPasswordFocused}
-                isPasswordVisible={showPassword}
                 passwordLength={password.length}
-                emailLength={email.length}
+                isPasswordVisible={showPassword}
                 isSubmitting={loading}
                 isSuccess={isSuccess}
+                errorSignal={error}
               />
 
-              <div className="mt-2 text-center">
+              <div className="mt-6 text-center">
                 <h3 className="font-outfit font-black text-slate-900 text-[15px] tracking-tight">
-                  Your Global Admissions Scout
+                  Your boarding pass to study abroad
                 </h3>
-                <p className="text-[11.5px] text-slate-600 font-medium max-w-[220px] mx-auto mt-0.5 leading-snug">
-                  Guiding you to top-ranked universities & verified student mentors worldwide.
+                <p className="text-[11.5px] text-slate-600 font-medium max-w-[240px] mx-auto mt-0.5 leading-snug">
+                  Create your account and we'll get you ready for take-off to your dream university.
                 </p>
               </div>
             </div>
@@ -181,17 +184,18 @@ const SignupPage = () => {
           <div className="lg:col-span-7 p-5 sm:p-8 flex flex-col justify-center bg-white relative overflow-y-auto">
 
             {/* Mobile-Only Mascot Animation (Visible on phones) */}
-            <div className="lg:hidden flex flex-col items-center justify-center mb-1.5">
-              <div className="w-16 sm:w-20">
-                <InteractiveAuthMascot
-                  isPasswordFocused={isPasswordFocused}
-                  isPasswordVisible={showPassword}
-                  passwordLength={password.length}
-                  emailLength={email.length}
-                  isSubmitting={loading}
-                  isSuccess={isSuccess}
-                />
-              </div>
+            <div className="lg:hidden mb-4">
+              <BoardingPassLogin
+                email={email}
+                isEmailFocused={isEmailFocused}
+                isPasswordFocused={isPasswordFocused}
+                passwordLength={password.length}
+                isPasswordVisible={showPassword}
+                isSubmitting={loading}
+                isSuccess={isSuccess}
+                errorSignal={error}
+                compact
+              />
             </div>
 
             {/* Header */}
@@ -275,7 +279,8 @@ const SignupPage = () => {
                     type="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    onFocus={() => setIsPasswordFocused(false)}
+                    onFocus={() => { setIsPasswordFocused(false); setIsEmailFocused(true); }}
+                    onBlur={() => setIsEmailFocused(false)}
                     placeholder="name@domain.com"
                     required
                     className="w-full pl-9 pr-3.5 py-2.5 border border-slate-200 rounded-xl bg-slate-50/50 text-slate-900 font-semibold text-xs sm:text-sm outline-none focus:bg-white focus:border-[#DE5C2B] focus:ring-2 focus:ring-orange-500/10 transition-all placeholder:font-normal placeholder-slate-400"

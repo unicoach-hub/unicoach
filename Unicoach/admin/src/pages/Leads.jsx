@@ -722,8 +722,26 @@ const Leads = () => {
   );
 
   const columns = [
-    { 
-      title: 'Name', 
+    {
+      title: 'Date',
+      dataIndex: 'createdAt',
+      key: 'createdAt',
+      width: 110,
+      sorter: (a, b) => new Date(a.createdAt || 0) - new Date(b.createdAt || 0),
+      defaultSortOrder: 'descend',
+      render: (v) => v ? (
+        <div style={{ lineHeight: 1.35 }}>
+          <div style={{ color: 'var(--ux-ink)', fontWeight: 600, fontSize: '13px' }}>
+            {new Date(v).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}
+          </div>
+          <div style={{ color: 'var(--ux-text-2)', fontSize: '11.5px' }}>
+            {new Date(v).toLocaleTimeString('en-IN', { hour: 'numeric', minute: '2-digit' })}
+          </div>
+        </div>
+      ) : <span style={{ color: 'var(--ux-text-2)' }}>—</span>,
+    },
+    {
+      title: 'Name',
       dataIndex: 'name', 
       key: 'name', 
       render: (text, record) => (
@@ -1293,7 +1311,7 @@ const Leads = () => {
               dataSource={filtered} 
               loading={loading} 
               pagination={{ pageSize: 15 }} 
-              scroll={{ x: 1200 }} 
+              scroll={{ x: 1320 }} 
               onRow={(record) => ({
                 onClick: () => handleOpenLead(record),
                 style: { cursor: 'pointer' }

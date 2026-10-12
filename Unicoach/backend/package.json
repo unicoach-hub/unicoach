@@ -13,6 +13,7 @@
   "license": "MIT",
   "dependencies": {
     "@sentry/node": "^10.71.0",
+    "archiver": "^7.0.1",
     "bcryptjs": "^3.0.3",
     "cheerio": "^1.2.0",
     "cloudinary": "^2.10.1",

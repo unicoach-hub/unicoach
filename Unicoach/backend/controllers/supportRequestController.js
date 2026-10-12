@@ -19,6 +19,14 @@ function readCategoryFilter(raw) {
   return new RegExp(raw.trim().replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'i');
 }
 
+// ?scope=events → only event registrations; ?scope=support → everything else. No scope = all (old behaviour)
+const EVENT_CATEGORY = 'Event Registration';
+function readScope(raw) {
+  if (raw === 'events') return { $or: [{ category: EVENT_CATEGORY }, { eventId: { $exists: true, $ne: null } }] };
+  if (raw === 'support') return { category: { $ne: EVENT_CATEGORY }, $or: [{ eventId: { $exists: false } }, { eventId: null }] };
+  return {};
+}
+
 // Registrations per event for the admin Event filter, newest event first
 function countByEvent(docs) {
   const byEvent = new Map();
@@ -164,7 +172,8 @@ exports.getAllSupportRequests = async (req, res) => {
       order = 'desc',
     } = req.query;
 
-    const query = {};
+    const scope = readScope(req.query.scope);
+    const query = Object.keys(scope).length ? { $and: [scope] } : {};
 
     const categoryMatch = readCategoryFilter(category);
     if (categoryMatch) query.category = categoryMatch;
@@ -227,12 +236,12 @@ exports.getAllSupportRequests = async (req, res) => {
     startOfToday.setHours(0, 0, 0, 0);
 
     const [allDocs, newCount, bookedCount, notBookedCount, todaySentCount, todayNewCount] = await Promise.all([
-      SupportRequest.find({}, 'category status isBooked replies createdAt eventId eventTitle eventStart'),
-      SupportRequest.countDocuments({ status: 'New' }),
-      SupportRequest.countDocuments({ isBooked: true }),
-      SupportRequest.countDocuments({ isBooked: false }),
-      SupportRequest.countDocuments({ 'replies.sentAt': { $gte: startOfToday } }),
-      SupportRequest.countDocuments({ createdAt: { $gte: startOfToday } }),
+      SupportRequest.find(scope, 'category status isBooked replies createdAt eventId eventTitle eventStart'),
+      SupportRequest.countDocuments({ ...scope, status: 'New' }),
+      SupportRequest.countDocuments({ ...scope, isBooked: true }),
+      SupportRequest.countDocuments({ ...scope, isBooked: false }),
+      SupportRequest.countDocuments({ ...scope, 'replies.sentAt': { $gte: startOfToday } }),
+      SupportRequest.countDocuments({ ...scope, createdAt: { $gte: startOfToday } }),
     ]);
 
     const categoryCounts = {};
@@ -606,7 +615,8 @@ exports.deleteSupportRequest = async (req, res) => {
 exports.exportSupportRequestsCsv = async (req, res) => {
   try {
     const { category, status, from, to } = req.query;
-    const query = {};
+    const exportScope = readScope(req.query.scope);
+    const query = Object.keys(exportScope).length ? { $and: [exportScope] } : {};
 
     const categoryMatch = readCategoryFilter(category);
     if (categoryMatch) query.category = categoryMatch;

@@ -213,20 +213,6 @@ export const FinalCTA = ({ onOpenModal }) => {
               </div>
             </motion.div>
 
-            {/* 5. Far-Right Avatar (Rose Halo) */}
-            <motion.div
-              animate={{ scale: [1, 1.05, 1] }}
-              transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOut", delay: 3.0 }}
-              className="absolute left-[92%] sm:left-[90%] top-[50%] -translate-x-1/2 -translate-y-1/2 hidden md:block"
-            >
-              <div className="w-8 h-8 sm:w-10 sm:h-10 lg:w-11 lg:h-11 rounded-full p-[2px] bg-gradient-to-r from-rose-400 to-pink-500 shadow-[0_0_16px_rgba(244,63,94,0.95)]">
-                <img
-                  src="/images/mentors/thumbs/mentor_smile_blue.webp"
-                  alt="UniCoach mentor"
-                  className="w-full h-full rounded-full object-cover"
-                />
-              </div>
-            </motion.div>
 
             {/* 6. Lower-Center Avatar (Emerald Halo) */}
             <motion.div
@@ -236,8 +222,22 @@ export const FinalCTA = ({ onOpenModal }) => {
             >
               <div className="w-8 h-8 sm:w-10 sm:h-10 lg:w-11 lg:h-11 rounded-full p-[2px] bg-gradient-to-r from-emerald-300 to-teal-400 shadow-[0_0_16px_rgba(52,211,153,0.95)]">
                 <img
-                  src="/images/mentors/thumbs/manvi.webp"
+                  src="/images/mentors/thumbs/manvi_cta.webp"
                   alt="Manvi, UniCoach mentor"
+                  className="w-full h-full rounded-full object-cover"
+                />
+              </div>
+            </motion.div>
+
+            <motion.div
+              animate={{ scale: [1, 1.05, 1] }}
+              transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOut", delay: 1.4 }}
+              className="absolute left-[46%] top-[67%] -translate-x-1/2 -translate-y-1/2 hidden md:block"
+            >
+              <div className="w-8 h-8 sm:w-10 sm:h-10 lg:w-11 lg:h-11 rounded-full p-[2px] bg-gradient-to-r from-sky-300 to-indigo-400 shadow-[0_0_16px_rgba(56,189,248,0.9)]">
+                <img
+                  src="/images/mentors/thumbs/mentor_navy_suit.webp"
+                  alt="UniCoach mentor"
                   className="w-full h-full rounded-full object-cover"
                 />
               </div>

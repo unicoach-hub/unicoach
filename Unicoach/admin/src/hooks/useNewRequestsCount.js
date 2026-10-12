@@ -23,7 +23,7 @@ const refresh = async () => {
   inFlight = (async () => {
     try {
       const token = localStorage.getItem('admin_token') || localStorage.getItem('adminToken');
-      const res = await fetch(`${getApiUrl()}/support-requests`, {
+      const res = await fetch(`${getApiUrl()}/support-requests?scope=support&limit=1`, {
         headers: token ? { Authorization: `Bearer ${token}` } : {},
         credentials: 'include',
       });

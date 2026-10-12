@@ -8,12 +8,29 @@ const { OAuth2Client } = require('google-auth-library');
 const { normalizePhone } = require('../utils/twilio');
 const { sendEmail } = require('../utils/email');
 const { escapeHtml } = require('../utils/escapeHtml');
+const { applyReferral } = require('../services/studentJourney');
+const { normalizeStage } = require('../config/studentStages');
 
 const { JWT_SECRET } = require('../config/jwt');
 
 /**
  * Helper: Detect and enrich User with Unicoach Mentor profile
  */
+// Study-plan fields every account carries (mentors can use the student dashboard too)
+const studentFields = (u) => ({
+  dreamCountry: u.dreamCountry,
+  preferredIntake: u.preferredIntake,
+  dreamCourse: u.dreamCourse,
+  highestEducation: u.highestEducation,
+  percentage: u.percentage,
+  passoutYear: u.passoutYear,
+  currentCity: u.currentCity,
+  targetExam: u.targetExam,
+  targetScore: u.targetScore,
+  profileCompleted: Boolean(u.profileCompletedAt),
+  journeyStage: normalizeStage(u.journeyStage)
+});
+
 const enrichUserWithMentor = async (userDoc) => {
   if (!userDoc) return null;
   const userObj = userDoc.toObject ? userDoc.toObject() : { ...userDoc };
@@ -51,7 +68,8 @@ const enrichUserWithMentor = async (userDoc) => {
         isVerified: mentor.isVerified,
         avatar: userObj.avatar,
         authProvider: userObj.authProvider || 'local',
-        profile: userObj.profile
+        profile: userObj.profile,
+        ...studentFields(userObj)
       };
     }
   } catch (err) {
@@ -68,7 +86,8 @@ const enrichUserWithMentor = async (userDoc) => {
     mentorHandle: null,
     avatar: userObj.avatar,
     authProvider: userObj.authProvider || 'local',
-    profile: userObj.profile
+    profile: userObj.profile,
+    ...studentFields(userObj)
   };
 };
 
@@ -178,6 +197,7 @@ exports.register = async (req, res) => {
     });
 
     await user.save();
+    if (req.body.referral) await applyReferral(user._id, req.body.referral);
 
     const enrichedUser = await enrichUserWithMentor(user);
     syncLeadFromAuth(enrichedUser, { method: 'Email', isNewAccount: true, attribution: req.body.attribution });
@@ -511,6 +531,7 @@ exports.googleLogin = async (req, res) => {
         role: 'user'
       });
       await user.save();
+      if (req.body.referral) await applyReferral(user._id, req.body.referral);
     } else {
       let changed = false;
       if (!user.googleId && googleId) {

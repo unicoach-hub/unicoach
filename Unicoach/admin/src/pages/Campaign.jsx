@@ -4,6 +4,7 @@ import {
   SendOutlined, TeamOutlined, MailOutlined, WhatsAppOutlined, CheckCircleOutlined, CloseCircleOutlined,
   CalendarOutlined, TagsOutlined, UsergroupAddOutlined, ArrowLeftOutlined, ArrowRightOutlined,
 } from '@ant-design/icons';
+import { useSearchParams } from 'react-router-dom';
 import Header from '../components/Header';
 import API from '../api/axios';
 
@@ -103,6 +104,16 @@ const Campaign = () => {
     const t = setTimeout(loadPreview, 250);
     return () => clearTimeout(t);
   }, [loadPreview]);
+
+  // Opened from Event registrations → "Email this event": preselect that event once events load
+  const [searchParams] = useSearchParams();
+  const presetEvent = searchParams.get('event');
+  useEffect(() => {
+    if (!presetEvent || eventId || !events.some((e) => e._id === presetEvent)) return;
+    setMode('event');
+    pickEvent(presetEvent);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [presetEvent, events]);
 
   const pickEvent = (id) => {
     setEventId(id);

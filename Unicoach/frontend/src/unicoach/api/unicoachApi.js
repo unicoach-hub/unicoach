@@ -728,3 +728,17 @@ export const markAllMentorNotificationsRead = async (handle) => {
 };
 
 
+
+// Students who signed up through the mentor's referral link (name, country, stage, dates)
+export const getMentorReferrals = async (handle) => {
+  const clean = String(handle || '').replace(/^@/, '').trim();
+  const res = await fetch(`${UNICOACH_BASE_URL}/mentors/${clean}/referrals`, {
+    headers: getAuthHeaders(),
+    credentials: 'include'
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.message || err.error || 'Could not load your students');
+  }
+  return await res.json();
+};

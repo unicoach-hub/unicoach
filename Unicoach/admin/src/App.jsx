@@ -38,6 +38,8 @@ const SupportRequests = lazy(() => import('./pages/SupportRequests'));
 const UniCoachAdminHub = lazy(() => import('./pages/UniCoachAdminHub'));
 const Staff = lazy(() => import('./pages/Staff'));
 const StudentInbox = lazy(() => import('./pages/StudentInbox'));
+const Students = lazy(() => import('./pages/Students'));
+const EventRegistrations = lazy(() => import('./pages/EventRegistrations'));
 const Tasks = lazy(() => import('./pages/Tasks'));
 const Campaign = lazy(() => import('./pages/Campaign'));
 
@@ -107,6 +109,9 @@ const App = () => {
                       <Route path="/" element={<Dashboard />} />
                       <Route path="/requests" element={<SupportRequests />} />
                       <Route path="/students/inbox" element={<StudentInbox />} />
+                      <Route path="/students/all" element={<Students />} />
+                      <Route path="/students/documents" element={<Students />} />
+                      <Route path="/event-registrations" element={<EventRegistrations />} />
                       <Route path="/tasks" element={<Tasks />} />
                       <Route path="/content" element={<ContentHub />} />
                       {/* Blogs */}

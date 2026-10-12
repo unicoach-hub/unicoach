@@ -4,9 +4,10 @@ const { verifyToken } = require('../middleware/auth');
 const { handleUpload } = require('../services/studentFile');
 const studentChatController = require('../controllers/studentChatController');
 
-// Signed-in students only (not admin or staff tokens)
+// Signed-in students only (not admin or staff tokens). Accounts that are also mentors sign in with
+// role 'mentor' but are students too, so they get their chat as well.
 const studentOnly = (req, res, next) =>
-  req.user?.role === 'user' ? next() : res.status(403).json({ message: 'Students only' });
+  ['user', 'mentor'].includes(req.user?.role) ? next() : res.status(403).json({ message: 'Students only' });
 
 router.use(verifyToken, studentOnly);
 
