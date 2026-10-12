@@ -86,6 +86,35 @@ exports.mentorSummary = async (req, res) => {
 };
 
 /**
+ * GET /api/admin/students/lookup?email=
+ * The registered student behind a lead (same email), for the lead popup; { student: null } if none
+ */
+exports.lookupByEmail = async (req, res) => {
+  try {
+    const email = String(req.query.email || '').trim().toLowerCase();
+    if (!email || email.length > 200) return res.json({ student: null });
+    const student = await User.findOne({ email, role: 'user' }).select(LIST_FIELDS).populate('referredBy', 'name handle').lean();
+    if (!student) return res.json({ student: null });
+    const docs = await StudentDocument.countDocuments({ student: student._id, 'file.url': { $exists: true, $ne: null } });
+    const stage = normalizeStage(student.journeyStage);
+    const info = publicStages().find((x) => x.key === stage);
+    return res.json({
+      student: {
+        ...student,
+        journeyStage: stage,
+        stageLabel: info?.label,
+        phaseLabel: PHASES.find((p) => p.key === info?.phase)?.label,
+        profileCompleted: Boolean(student.profileCompletedAt),
+        documentsUploaded: docs,
+      },
+    });
+  } catch (err) {
+    console.error('Error looking up student by email:', err);
+    return res.status(500).json({ error: 'Server error' });
+  }
+};
+
+/**
  * GET /api/admin/students/:id
  * One student's full profile, stage history and documents
  */
@@ -125,6 +154,31 @@ exports.updateStage = async (req, res) => {
     return res.json({ success: true, journeyStage: user.journeyStage, stageUpdatedAt: user.stageUpdatedAt, stageHistory: user.stageHistory });
   } catch (err) {
     console.error('Error updating student stage:', err);
+    return res.status(500).json({ error: 'Server error' });
+  }
+};
+
+/**
+ * PATCH /api/admin/students/:id/mentor  { mentorId | null }
+ * Sets (or clears) the mentor who referred the student, e.g. when they signed up without the link
+ */
+exports.updateMentor = async (req, res) => {
+  try {
+    if (!isId(req.params.id)) return res.status(404).json({ message: 'Student not found' });
+    const { mentorId } = req.body || {};
+    let update;
+    if (mentorId) {
+      if (!isId(mentorId) || !(await UnicoachMentor.exists({ _id: mentorId }))) return res.status(400).json({ message: 'Mentor not found' });
+      update = { $set: { referredBy: mentorId, referredAt: new Date() } };
+    } else {
+      update = { $unset: { referredBy: 1, referredAt: 1 } };
+    }
+    const user = await User.findOneAndUpdate({ _id: req.params.id, role: 'user' }, update, { new: true })
+      .select('referredBy referredAt').populate('referredBy', 'name handle').lean();
+    if (!user) return res.status(404).json({ message: 'Student not found' });
+    return res.json({ success: true, referredBy: user.referredBy || null });
+  } catch (err) {
+    console.error('Error updating referring mentor:', err);
     return res.status(500).json({ error: 'Server error' });
   }
 };

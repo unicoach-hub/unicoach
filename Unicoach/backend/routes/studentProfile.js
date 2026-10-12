@@ -4,7 +4,6 @@ const { verifyToken } = require('../middleware/auth');
 const User = require('../models/User');
 const Lead = require('../models/Lead');
 const { PHASES, normalizeStage, publicStages } = require('../config/studentStages');
-const { setStudentStage } = require('../services/studentJourney');
 const { normalizePhone } = require('../utils/twilio');
 
 router.use(verifyToken);
@@ -91,10 +90,6 @@ router.put('/profile', async (req, res) => {
     };
     await user.save();
 
-    // Profile done → next step is sharing documents (the student gets an email saying so)
-    if (firstTime && normalizeStage(user.journeyStage) === 'registered') {
-      await setStudentStage(user._id, 'docs_pending', { by: 'System', note: 'Profile completed' });
-    }
 
     // Keep the CRM lead in step (only fill what the counsellor hasn't set)
     if (user.email) {

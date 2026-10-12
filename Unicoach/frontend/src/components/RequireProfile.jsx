@@ -6,8 +6,10 @@ import { useAuth } from '../context/AuthContext';
 const RequireProfile = ({ children }) => {
   const { user, loading } = useAuth();
   const location = useLocation();
+  // Only when the server says so (profileCompleted === false): an older backend that doesn't send the
+  // flag must never lock students out of their dashboard
   const needsProfile = !loading && user && user.role !== 'admin'
-    && !user.profileCompleted && !user.profileCompletedAt;
+    && user.profileCompleted === false && !user.profileCompletedAt;
   if (needsProfile) {
     return <Navigate to={`/onboarding?next=${encodeURIComponent(location.pathname + location.search)}`} replace />;
   }

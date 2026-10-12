@@ -29,6 +29,27 @@ const StudentDrawer = ({ studentId, open, onClose, onChanged }) => {
   const [notify, setNotify] = useState(true);
   const [saving, setSaving] = useState(false);
   const [zipping, setZipping] = useState(false);
+  const [mentors, setMentors] = useState([]);
+  const [savingMentor, setSavingMentor] = useState(false);
+
+  useEffect(() => {
+    if (!open || mentors.length) return;
+    API.get('/admin/students/mentors').then(({ data: d }) => setMentors(d.mentors || [])).catch(() => {});
+  }, [open, mentors.length]);
+
+  const changeMentor = async (value) => {
+    setSavingMentor(true);
+    try {
+      await API.patch(`/admin/students/${studentId}/mentor`, { mentorId: value === 'none' ? null : value });
+      message.success(value === 'none' ? 'Mentor removed' : 'Mentor linked');
+      await load();
+      onChanged?.();
+    } catch (e) {
+      message.error(e?.response?.data?.message || 'Could not change the mentor');
+    } finally {
+      setSavingMentor(false);
+    }
+  };
 
   const load = useCallback(async () => {
     if (!studentId) return;
@@ -112,7 +133,19 @@ const StudentDrawer = ({ studentId, open, onClose, onChanged }) => {
             <Row label="Percentage" value={s.percentage ? `${s.percentage}%` : ''} />
             <Row label="Passout year" value={s.passoutYear} />
             <Row label="Joined" value={fmt(s.createdAt, true)} />
-            <Row label="Referred by mentor" value={s.referredBy ? `${s.referredBy.name} (@${s.referredBy.handle})` : 'Direct sign-up'} />
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 12, padding: '7px 0', borderBottom: '1px solid var(--ux-border, #f0f0f0)' }}>
+              <span style={{ color: 'var(--ux-text-2)', fontSize: 13 }}>Referred by mentor</span>
+              <Select
+                size="small"
+                value={s.referredBy?._id || 'none'}
+                onChange={changeMentor}
+                disabled={!canEdit || savingMentor}
+                loading={savingMentor}
+                showSearch={{ optionFilterProp: 'label' }}
+                style={{ minWidth: 220 }}
+                options={[{ value: 'none', label: 'Direct sign-up (no mentor)' }, ...mentors.map((m) => ({ value: m._id, label: `${m.name} (@${m.handle})` }))]}
+              />
+            </div>
           </section>
 
           <section>

@@ -5,6 +5,7 @@ import Header from '../components/Header';
 import CrmSubNav from '../components/CrmSubNav';
 import StatsCard from '../components/StatsCard';
 import API from '../api/axios';
+import StudentDrawer from '../components/StudentDrawer';
 import { getCachedData, invalidateCache, fetchWithCache } from '../utils/cache';
 import { escapeHtml as esc, plainTextToHtml } from '../utils/escapeHtml';
 import { usePermissions } from '../utils/permissions';
@@ -252,6 +253,22 @@ const Leads = () => {
     }
   };
   const [selectedLead, setSelectedLead] = useState(null);
+  // Registered student account behind the open lead (onboarding details, stage, mentor)
+  const [leadStudent, setLeadStudent] = useState(null);
+  const [leadStudentLoading, setLeadStudentLoading] = useState(false);
+  const [openStudentId, setOpenStudentId] = useState(null);
+  useEffect(() => {
+    const email = selectedLead?.email;
+    setLeadStudent(null);
+    if (!email || !email.includes('@')) return;
+    let alive = true;
+    setLeadStudentLoading(true);
+    API.get('/admin/students/lookup', { params: { email } })
+      .then(({ data }) => alive && setLeadStudent(data.student))
+      .catch(() => {})
+      .finally(() => alive && setLeadStudentLoading(false));
+    return () => { alive = false; };
+  }, [selectedLead?.email]);
   const [viewMode, setViewMode] = useState('table'); // 'table' | 'kanban'
 
   // Marketing states
@@ -1539,34 +1556,55 @@ const Leads = () => {
                     Student contact & academic
                   </div>
                   
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '12px', padding: '9px 12px', background: 'var(--ux-surface-2)', borderRadius: '12px' }}>
-                      <span style={{ color: 'var(--ux-text-2)', fontSize: '12px' }}>Phone number</span>
-                      <span style={{ color: 'var(--ux-ink)', fontSize: '13px', fontWeight: 600 }}>{selectedLead.phone}</span>
-                    </div>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '12px', padding: '9px 12px', background: 'var(--ux-surface-2)', borderRadius: '12px' }}>
-                      <span style={{ color: 'var(--ux-text-2)', fontSize: '12px' }}>Email address</span>
-                      <span style={{ color: 'var(--ux-ink)', fontSize: '12px', fontWeight: 600, wordBreak: 'break-all', textAlign: 'right' }}>{selectedLead.email}</span>
-                    </div>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '12px', padding: '9px 12px', background: 'var(--ux-surface-2)', borderRadius: '12px' }}>
-                      <span style={{ color: 'var(--ux-text-2)', fontSize: '12px' }}>Preferred intake</span>
-                      <span style={{ color: 'var(--ux-ink)', fontSize: '12px', fontWeight: 600, textAlign: 'right' }}>{selectedLead.preferredIntake || '2026'}</span>
-                    </div>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '12px', padding: '9px 12px', background: 'var(--ux-surface-2)', borderRadius: '12px' }}>
-                      <span style={{ color: 'var(--ux-text-2)', fontSize: '12px' }}>Highest education</span>
-                      <span style={{ color: 'var(--ux-ink)', fontSize: '12px', fontWeight: 600, textAlign: 'right' }}>{selectedLead.highestEducation}</span>
-                    </div>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '12px', padding: '9px 12px', background: 'var(--ux-surface-2)', borderRadius: '12px' }}>
-                      <span style={{ color: 'var(--ux-text-2)', fontSize: '12px' }}>Current city</span>
-                      <span style={{ color: 'var(--ux-ink)', fontSize: '12px', fontWeight: 600, textAlign: 'right' }}>{selectedLead.currentCity}</span>
-                    </div>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '12px', padding: '9px 12px', background: 'var(--ux-surface-2)', borderRadius: '12px' }}>
-                      <span style={{ color: 'var(--ux-text-2)', fontSize: '12px' }}>Total inquiries</span>
-                      <span style={{ color: 'var(--ux-ink)', fontSize: '12px', fontWeight: 600 }}>
-                        {selectedLead.totalInquiries || 1} {selectedLead.totalInquiries > 1 ? '(repeat student)' : 'Inquiry'}
-                      </span>
-                    </div>
-                  </div>
+                  {(() => {
+                    const st = leadStudent;
+                    const rows = [
+                      ['Phone', st?.phone || selectedLead.phone],
+                      ['Email', selectedLead.email],
+                      ['Country', st?.dreamCountry || selectedLead.dreamCountry],
+                      ['Intake', st?.preferredIntake || selectedLead.preferredIntake],
+                      ['Course', st?.dreamCourse],
+                      ['Highest qualification', st?.highestEducation || selectedLead.highestEducation],
+                      ['Percentage', st?.percentage ? `${st.percentage}%` : ''],
+                      ['Passout year', st?.passoutYear],
+                      ['City', st?.currentCity || selectedLead.currentCity],
+                      ['Total inquiries', `${selectedLead.totalInquiries || 1}${selectedLead.totalInquiries > 1 ? ' (repeat student)' : ''}`],
+                    ];
+                    const missing = (v) => !v || ['Not specified', 'Not provided', 'Undecided'].includes(v);
+                    return (
+                      <>
+                        <div style={{ marginBottom: 12 }}>
+                          {leadStudentLoading ? (
+                            <span style={{ fontSize: 12, color: 'var(--ux-text-3)' }}>Checking student account…</span>
+                          ) : st ? (
+                            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
+                              <span className={`nx-status ${st.profileCompleted ? 'nx-status--success' : 'nx-status--warning'}`}>{st.profileCompleted ? 'Profile filled' : 'Profile not filled yet'}</span>
+                              {st.stageLabel && <span className="nx-status nx-status--accent">{st.phaseLabel} · {st.stageLabel}</span>}
+                              <span className="nx-status nx-status--neutral">{st.referredBy ? `Mentor: ${st.referredBy.name}` : 'Direct sign-up'}</span>
+                              <span className="nx-status nx-status--neutral">{st.documentsUploaded} documents</span>
+                            </div>
+                          ) : (
+                            <span style={{ fontSize: 12, color: 'var(--ux-text-3)' }}>No student account with this email yet (lead form details only)</span>
+                          )}
+                        </div>
+                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8 }}>
+                          {rows.map(([label, value]) => (
+                            <div key={label} style={{ padding: '9px 12px', background: 'var(--ux-surface-2)', borderRadius: 12, gridColumn: label === 'Email' || label === 'Course' ? 'span 2' : undefined, minWidth: 0 }}>
+                              <div style={{ color: 'var(--ux-text-2)', fontSize: 11 }}>{label}</div>
+                              <div style={{ color: missing(value) ? 'var(--ux-text-3)' : 'var(--ux-ink)', fontSize: 13, fontWeight: 600, marginTop: 2, wordBreak: 'break-word' }}>
+                                {missing(value) ? 'Not filled' : value}
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                        {st && (
+                          <Button block style={{ marginTop: 12 }} onClick={() => setOpenStudentId(st._id)}>
+                            Open full student profile & documents
+                          </Button>
+                        )}
+                      </>
+                    );
+                  })()}
                 </div>
 
                 {/* AI Lead Intelligence Card */}
@@ -2100,6 +2138,7 @@ const Leads = () => {
           </div>
         )}
       </Modal>
+      <StudentDrawer studentId={openStudentId} open={Boolean(openStudentId)} onClose={() => setOpenStudentId(null)} />
     </div>
   );
 };
