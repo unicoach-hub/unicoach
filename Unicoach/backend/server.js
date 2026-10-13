@@ -308,6 +308,7 @@ app.use('/api/saved-universities', require('./routes/savedUniversities'));
 app.use('/api/scholarships', require('./routes/scholarships'));
 app.use('/api/support-requests', require('./routes/supportRequests'));
 app.use('/api/courses', require('./routes/courseRoutes'));
+app.use('/api/search', require('./routes/cfSearch')); // CourseFinder engine (accurate catalogue + eligibility)
 
 // Admin Routes (protected)
 app.use('/api/admin/content', require('./routes/adminContent'));
