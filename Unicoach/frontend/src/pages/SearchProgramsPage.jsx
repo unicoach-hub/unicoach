@@ -101,7 +101,6 @@ export default function SearchProgramsPage() {
   const [page, setPage] = useState(1);
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
-  const inputRef = useRef(searchText);
 
   useEffect(() => {
     document.title = 'Search Programs | UniCoach';
@@ -166,13 +165,13 @@ export default function SearchProgramsPage() {
           <div className="max-w-2xl mx-auto flex items-center gap-2 bg-white rounded-full border border-slate-200/90 shadow-sm pl-5 pr-2 py-2">
             <Search size={18} className="text-slate-400 shrink-0" />
             <input
-              defaultValue={searchText}
-              onChange={(e) => (inputRef.current = e.target.value)}
-              onKeyDown={(e) => { if (e.key === 'Enter') { setSearchText(inputRef.current); setTimeout(() => runSearch(1), 0); } }}
+              value={searchText}
+              onChange={(e) => setSearchText(e.target.value)}
+              onKeyDown={(e) => { if (e.key === 'Enter') runSearch(1); }}
               placeholder="Search by program or university (e.g. Data Science, Oxford)…"
               className="flex-1 bg-transparent outline-none text-[14px] text-slate-700 placeholder:text-slate-400"
             />
-            <button onClick={() => { setSearchText(inputRef.current); setTimeout(() => runSearch(1), 0); }} className="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-full bg-[#DE5C2B] text-white text-[13px] font-bold hover:bg-[#c04a1d] transition-colors">
+            <button onClick={() => runSearch(1)} className="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-full bg-[#DE5C2B] text-white text-[13px] font-bold hover:bg-[#c04a1d] transition-colors">
               Search
             </button>
           </div>

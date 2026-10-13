@@ -40,7 +40,11 @@ const DURATION_BUCKET = { 1: [0, 12], 2: [12, 24], 3: [24, 36], 4: [36, 48], 5: 
 function buildMatch(f = {}) {
   const m = {};
   const arr = v => (Array.isArray(v) ? v : v != null && v !== '' ? [v] : []);
-  if (f.searchText) m.$text = { $search: f.searchText };
+  if (f.searchText) {
+    const term = String(f.searchText).trim().slice(0, 80).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const rx = new RegExp(term, 'i');
+    (m.$and = m.$and || []).push({ $or: [{ courseName: rx }, { universityName: rx }] });
+  }
   const country = arr(f.country).map(Number).filter(Boolean);
   if (country.length) m.cfCountryId = { $in: country };
   const levels = arr(f.programLevel).map(Number).filter(n => !Number.isNaN(n));
