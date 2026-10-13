@@ -4,6 +4,13 @@
 set -e
 API=http://localhost:8000/api/v1
 
+echo "=== enabling Coolify API (instance setting) ==="
+docker exec -i coolify php artisan tinker 2>/dev/null <<'PHP' | grep -aE 'API_ENABLED|API_ERR' | head -1
+$s = \App\Models\InstanceSettings::first();
+try { $s->is_api_enabled = true; if (property_exists($s,'allowed_ips') || isset($s->allowed_ips)) { $s->allowed_ips = null; } $s->save(); echo "API_ENABLED"; }
+catch (\Throwable $e) { echo "API_ERR:".$e->getMessage(); }
+PHP
+
 echo "=== creating team-scoped Coolify API token ==="
 TOKEN=$(docker exec -i coolify php artisan tinker 2>/dev/null <<'PHP' | grep -oE 'TOKENIS:[0-9]+\|[A-Za-z0-9]+' | sed 's/TOKENIS://' | head -1
 $u = \App\Models\User::first();
