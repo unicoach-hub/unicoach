@@ -1,0 +1,37 @@
+name: VPS Inspect
+on:
+  workflow_dispatch:
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - name: Write SSH key
+        run: |
+          mkdir -p ~/.ssh
+          printf '%s' "${{ secrets.VPS_SSH_KEY }}" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          ssh-keyscan -H "${{ secrets.VPS_HOST }}" >> ~/.ssh/known_hosts 2>/dev/null || true
+      - name: Inspect VPS
+        run: |
+          ssh -i ~/.ssh/id_ed25519 -o StrictHostKeyChecking=no root@${{ secrets.VPS_HOST }} 'bash -s' <<'EOF'
+          echo "=== host ==="; hostname; uptime
+          echo; echo "=== docker containers ==="; docker ps --format '{{.Names}} | {{.Image}} | {{.Status}} | {{.Ports}}'
+          echo; echo "=== coolify present? ==="; docker ps --format '{{.Names}}' | grep -i coolify || echo "no coolify containers"
+          echo; echo "=== candidate backend containers (node/api/unicoach) ==="
+          for c in $(docker ps --format '{{.Names}}'); do
+            img=$(docker inspect -f '{{.Config.Image}}' "$c" 2>/dev/null)
+            if echo "$c $img" | grep -qiE 'node|api|unicoach|backend|express|3000|5000'; then echo "-- $c ($img)"; fi
+          done
+          echo; echo "=== which container answers the API (has MONGO_URI env)? ==="
+          for c in $(docker ps --format '{{.Names}}'); do
+            if docker inspect -f '{{range .Config.Env}}{{println .}}{{end}}' "$c" 2>/dev/null | grep -q '^MONGO_URI='; then
+              echo "### container: $c"
+              docker inspect -f '{{.Config.Image}}' "$c"
+              echo "MONGO_URI (masked host):"; docker inspect -f '{{range .Config.Env}}{{println .}}{{end}}' "$c" | grep '^MONGO_URI=' | sed -E 's/(mongodb\+srv:\/\/[^:]+:)[^@]+@/\1****@/'
+              echo "labels:"; docker inspect -f '{{range $k,$v := .Config.Labels}}{{$k}}={{$v}}{{"\n"}}{{end}}' "$c" | grep -iE 'coolify|traefik.*host' | head -8
+            fi
+          done
+          echo; echo "=== coolify app dirs ==="; ls -1 /data/coolify/applications 2>/dev/null | head;
+          echo; echo "=== docker-compose / env files referencing MONGO_URI ==="; grep -rlZ 'MONGO_URI' /data/coolify 2>/dev/null | tr '\0' '\n' | head -10
+          EOF
