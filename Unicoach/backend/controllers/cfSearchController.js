@@ -51,7 +51,7 @@ function buildMatch(f = {}) {
     const syn = SYN[raw.toUpperCase()];
     if (syn) alts.push(syn);
     const rx = new RegExp('(' + alts.map(esc).join('|') + ')', 'i');
-    (m.$and = m.$and || []).push({ $or: [{ courseName: rx }, { universityName: rx }] });
+    (m.$and = m.$and || []).push({ $or: [{ courseName: rx }, { universityName: rx }, { discipline: rx }] });
   }
   const country = arr(f.country).map(Number).filter(Boolean);
   if (country.length) m.cfCountryId = { $in: country };
