@@ -14,19 +14,22 @@ const SLIM = process.env.SLIM === '1';
 // Where cf_transform.js wrote courses.ndjson / universities.json (override with CF_OUT_DIR).
 const OUT = process.env.CF_OUT_DIR || path.resolve(__dirname, '.cfdata', 'out');
 
-// engine-relevant cf fields to keep even in SLIM mode (so 1:1 search/eligibility still works)
-const CF_KEEP = ['Id','Name','Concentration','StudyLevelId','Studylvl','Duration','Campus','CountryId','IsOnlineCourse','backlog','BacklogRange',
- 'Highlights','ApplicationDeadline','AppFeeWaiverAvailable','ApplicationFee','TutionFee','ApplicationFeeAmt','Amount','WithoutEnglishProficiency',
- 'WithoutMaths','IsStemCourse','ScholarshipAvailable','InternshipAvailable','FifteenYearsEducation','ElpAvailable','EslAvailable','ESLELPDetail',
- 'ScholarshipDeatil','AverageScholarship','AverageScholarshipRemarks','UniversityId','universityName','universityCity','universityState',
- 'universityCountry','CurrencyCode','Currency','USNewsRanking','QSRanking','WebomatricsNationalRanking','WebomatricsWorldRanking','universityLogoExtension',
+// LEAN cf fields for SLIM mode — engine (search + eligibility + sort) critical only.
+// Long prose (Concentration, EntryRequirement*, Remarks, ScholarshipDeatil, TutionFee text,
+// IntakesAndDeadlines/Closed, *Remarks, ESLELPDetail) is intentionally DROPPED to fit a
+// free 512MB M0 cluster. Numeric grade bands, scores, flags and ids are all retained.
+const CF_KEEP = ['Id','Name','StudyLevelId','Studylvl','Duration','Campus','CountryId','IsOnlineCourse','backlog',
+ 'Highlights','ApplicationDeadline','AppFeeWaiverAvailable','ApplicationFeeAmt','Amount','WithoutEnglishProficiency',
+ 'WithoutMaths','IsStemCourse','ScholarshipAvailable','InternshipAvailable','FifteenYearsEducation','ElpAvailable','EslAvailable',
+ 'AverageScholarship','UniversityId','universityName','universityCity','universityState',
+ 'universityCountry','CurrencyCode','Currency','USNewsRanking','QSRanking','WebomatricsNationalRanking','WebomatricsWorldRanking','universityLogoExtension','UniversityOrder',
  'PteScore','PteNoSectionLessThan','ToeflScore','ToeflNoSectionLessThan','IeltsOverall','IeltsNoBandLessThan','DETScore','GreScore','GmatScore','ActScore','SatScore',
- 'EntryRequirement','EntryRequirementTwelfth','EntryRequirementUG','Remarks','EntryRequirementTwelfthOutOf100','EntryRequirementTwelfthOutOf45',
+ 'EntryRequirementTwelfthOutOf100','EntryRequirementTwelfthOutOf45',
  'EntryRequirementTwelfthOutOf10','EntryRequirementTwelfthOutOf7','EntryRequirementTwelfthOutOf5','EntryRequirementTwelfthOutOf4',
  'EntryRequirementUgOutOf100','EntryRequirementUgOutOf10','EntryRequirementUgOutOf7','EntryRequirementUgOutOf5','EntryRequirementUgOutOf4','WorkExp',
  'EligibleCountryIds','EligibleStateIds','IeltsRequired','ToeflRequired','PteRequired','SatRequired','ActRequired','GreRequired','GmatRequired','DETRequired',
- 'EnglishMarks12Score','IsMOIWaiver','TuitionFeeCurrency','ApplicationFeeCurrency','DepositCurrency','Intakes','DisplayIntakes','IntakesAndDeadlines',
- 'IntakesClosed','ApplicationMode','CohortCountryCode','DepositSortAmount','AppFeeWaiver','ApplicationCount12Mo'];
+ 'EnglishMarks12Score','IsMOIWaiver','TuitionFeeCurrency','ApplicationFeeCurrency','DepositCurrency','DisplayIntakes',
+ 'CohortCountryCode','DepositSortAmount','ApplicationCount12Mo'];
 
 function slimCf(cf){ const o={}; for(const k of CF_KEEP) if(cf[k]!==undefined) o[k]=cf[k]; return o; }
 
@@ -35,6 +38,14 @@ function slimCf(cf){ const o={}; for(const k of CF_KEEP) if(cf[k]!==undefined) o
   await client.connect();
   const db = client.db(DBNAME);
   console.log('connected to', db.databaseName, SLIM ? '(SLIM mode)' : '(full cf payload)');
+
+  // RESET=1 drops the cf_* collections first (reclaims space for a clean re-load on tight clusters)
+  if (process.env.RESET === '1') {
+    for (const c of ['cf_courses','cf_universities','cf_highlights','cf_countries']) {
+      await db.collection(c).drop().catch(() => {});
+    }
+    console.log('RESET: dropped cf_* collections');
+  }
 
   // ---- countries ----
   const countries = JSON.parse(fs.readFileSync(path.join(OUT,'countries.json'),'utf8'));
@@ -73,6 +84,11 @@ function slimCf(cf){ const o={}; for(const k of CF_KEEP) if(cf[k]!==undefined) o
     if(!line.trim()) continue;
     const doc = JSON.parse(line);
     if (SLIM && doc.cf) doc.cf = slimCf(doc.cf);
+    if (SLIM) {
+      // drop native long-text duplicates (academicRequirement == cf.EntryRequirement, scholarship criteria == cf.ScholarshipDeatil)
+      delete doc.academicRequirement;
+      if (Array.isArray(doc.scholarships)) doc.scholarships = doc.scholarships.map(s => ({ name: s.name, discount: s.discount }));
+    }
     batch.push({ updateOne:{ filter:{ cfId: doc.cfId }, update:{ $set: doc }, upsert:true } });
     if (batch.length >= 1000){ await flush(); n+=1000; if(n%10000===0) console.log('courses upserted:', n); }
   }

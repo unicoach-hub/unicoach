@@ -58,6 +58,7 @@ jobs:
         env:
           MONGO_URI: ${{ secrets.MONGO_URI }}
           SLIM: ${{ inputs.slim && '1' || '0' }}
+          RESET: '1'
 
       - name: Verify
         run: |
