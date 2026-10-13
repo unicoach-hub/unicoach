@@ -716,3 +716,14 @@ a:active .canva-icon,
     display: none;
   }
 }
+
+/* Final CTA route map: dashes flow from India towards each destination */
+@keyframes cta-route-flow {
+  to { stroke-dashoffset: -20; }
+}
+.cta-route-flow {
+  animation: cta-route-flow 1.4s linear infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .cta-route-flow { animation: none; }
+}

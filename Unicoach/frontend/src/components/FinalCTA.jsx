@@ -3,34 +3,27 @@ import { motion } from 'framer-motion';
 import { ArrowUpRight, Phone } from 'lucide-react';
 import { useLead } from '../context/LeadContext';
 import ctaBgImg from '../assets/cta_bg.webp';
-import planeImg from '../assets/plane_perfect.webp';
+import worldDots from '../assets/world-dots.svg';
 import { PillButton } from './ui/PillButton';
 import PriorityDmModal from './PriorityDmModal';
+import { TEAM_MENTORS } from '../utils/teamMentors';
 
-// ── Exact Custom Glowing Teardrop Pin matching 2nd reference image ──
-const CustomMapPin = ({ bgColor, glowColor, dotColor = '#0A0E1A', size = 'w-3.5 h-4.5 sm:w-4 sm:h-5' }) => (
-  <motion.div
-    animate={{ y: [0, -2.5, 0] }}
-    transition={{ duration: 3.2, repeat: Infinity, ease: "easeInOut" }}
-    whileHover={{ scale: 1.3 }}
-    className="relative flex items-center justify-center cursor-pointer"
-  >
-    <svg
-      className={`${size} overflow-visible`}
-      viewBox="0 0 24 30"
-      fill="none"
-      style={{ filter: `drop-shadow(0 0 6px ${glowColor})` }}
-    >
-      {/* Outer Teardrop Pin Shape */}
-      <path
-        d="M 12 0 C 5.37 0 0 5.37 0 12 C 0 18.5 12 30 12 30 C 12 30 24 18.5 24 12 C 24 5.37 18.63 0 12 0 Z"
-        fill={bgColor}
-      />
-      {/* Inner Pin Center Dot */}
-      <circle cx="12" cy="11.5" r="4.5" fill={dotColor} opacity="0.9" />
-    </svg>
-  </motion.div>
-);
+// Route map: positions are % of the dotted world map (src/assets/world-dots.svg, lon -128..158, lat 62..-46).
+// `dot` is the real spot on the map, `at` is where the mentor group sits (kept clear of other labels).
+const MAP_ORIGIN = { x: 71.8, y: 30.9 }; // New Delhi
+const byName = (n) => TEAM_MENTORS.find((m) => m.name === n);
+const MAP_DESTINATIONS = [
+  { key: 'usa', label: 'USA', flag: 'us', dot: { x: 18.9, y: 19.7 }, at: { x: 18, y: 56 }, names: ['Rishi Gandi'] },
+  { key: 'ireland', label: 'Ireland', flag: 'ie', dot: { x: 42.6, y: 8 }, at: { x: 37, y: 46 }, names: ['Prachi', 'Nitya', 'Munish Rana'] },
+  { key: 'europe', label: 'Europe', flag: 'eu', dot: { x: 47.8, y: 11 }, at: { x: 55, y: 60 }, names: ['Manvi'] },
+  { key: 'australia', label: 'Australia', flag: 'au', dot: { x: 97.6, y: 88.8 }, at: { x: 86, y: 66 }, names: ['Manan'] },
+].map((d) => ({ ...d, mentors: d.names.map(byName).filter(Boolean) }));
+// Gentle upward arc between two map points
+const arcPath = (from, to) => {
+  const mx = (from.x + to.x) / 2;
+  const my = Math.min(from.y, to.y) - Math.abs(from.x - to.x) * 0.22;
+  return `M ${from.x} ${from.y} Q ${mx} ${my} ${to.x} ${to.y}`;
+};
 
 export const FinalCTA = ({ onOpenModal }) => {
   const { openEligibilityModal } = useLead();
@@ -65,216 +58,85 @@ export const FinalCTA = ({ onOpenModal }) => {
             }}
           />
 
-          {/* ════════ FLIGHT PATH ARCS & ASSETS OVERLAY ════════ */}
-          <div className="absolute inset-0 pointer-events-none z-10 overflow-hidden">
+          {/* ════════ ROUTE MAP: India → the countries our mentors cover (tablet/desktop) ════════ */}
+          <div className="absolute inset-y-3 right-3 xl:right-6 pointer-events-none z-10 hidden xl:block aspect-[1000/378]">
+            <img src={worldDots} alt="" aria-hidden="true" className="absolute inset-0 w-full h-full opacity-[0.22]" />
 
-            {/* Glowing Dotted Flight Arcs SVG spreading from Hub */}
-            <svg
-              className="absolute inset-0 w-full h-full"
-              viewBox="0 0 1200 300"
-              fill="none"
-              preserveAspectRatio="none"
-            >
-              <defs>
-                <linearGradient id="arcGlow2nd" x1="0%" y1="0%" x2="100%" y2="0%">
-                  <stop offset="0%" stopColor="#FED7CE" stopOpacity="0.5" />
-                  <stop offset="50%" stopColor="#FFFFFF" stopOpacity="0.95" />
-                  <stop offset="100%" stopColor="#FFEDDF" stopOpacity="0.5" />
-                </linearGradient>
-              </defs>
-
-              {/* Arc 1: Left Plane to Top-Center Hub */}
-              <path
-                d="M 370 180 Q 480 60 580 90"
-                stroke="url(#arcGlow2nd)"
-                strokeWidth="1.5"
-                strokeDasharray="4 4"
-              />
-              {/* Arc 2: Top-Center to Middle-Top UK */}
-              <path
-                d="M 580 90 Q 660 65 745 80"
-                stroke="url(#arcGlow2nd)"
-                strokeWidth="1.5"
-                strokeDasharray="4 4"
-              />
-              {/* Arc 3: Center to Top-Right Asia */}
-              <path
-                d="M 745 80 Q 840 50 915 65"
-                stroke="url(#arcGlow2nd)"
-                strokeWidth="1.5"
-                strokeDasharray="4 4"
-              />
-              {/* Arc 4: Top-Right to Far-Right */}
-              <path
-                d="M 915 65 Q 1010 100 1080 150"
-                stroke="url(#arcGlow2nd)"
-                strokeWidth="1.5"
-                strokeDasharray="4 4"
-              />
-              {/* Arc 5: Center Hub to Bottom-Right */}
-              <path
-                d="M 580 90 Q 720 180 880 210"
-                stroke="url(#arcGlow2nd)"
-                strokeWidth="1.5"
-                strokeDasharray="4 4"
-              />
-              {/* Arc 6: Low sweep curve */}
-              <path
-                d="M 450 190 Q 650 250 880 210"
-                stroke="url(#arcGlow2nd)"
-                strokeWidth="1.3"
-                strokeDasharray="3 3"
-              />
-              {/* Arc 7: Far-Right connecting arc */}
-              <path
-                d="M 880 210 Q 980 210 1080 150"
-                stroke="url(#arcGlow2nd)"
-                strokeWidth="1.3"
-                strokeDasharray="3 3"
-              />
+            {/* Routes from India, dashes flowing towards each destination */}
+            <svg className="absolute inset-0 w-full h-full overflow-visible" viewBox="0 0 100 100" preserveAspectRatio="none" fill="none">
+              {MAP_DESTINATIONS.map((d, i) => (
+                <motion.path
+                  key={d.key}
+                  d={arcPath(MAP_ORIGIN, d.dot)}
+                  stroke="white"
+                  strokeOpacity="0.9"
+                  strokeWidth="1.6"
+                  strokeDasharray="5 5"
+                  strokeLinecap="round"
+                  vectorEffect="non-scaling-stroke"
+                  initial={{ opacity: 0 }}
+                  whileInView={{ opacity: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.8, delay: 0.3 + i * 0.25 }}
+                  className="cta-route-flow"
+                />
+              ))}
+              {MAP_DESTINATIONS.map((d) => (
+                <line key={`${d.key}-lead`} x1={d.dot.x} y1={d.dot.y} x2={d.at.x} y2={d.at.y} stroke="white" strokeOpacity="0.55" strokeWidth="1" vectorEffect="non-scaling-stroke" />
+              ))}
             </svg>
 
-            {/* ── 3D WHITE COMMERCIAL AIRLINER (Hidden on mobile to prevent text clash) ── */}
-            <motion.div
-              animate={{
-                x: [0, 4, 0],
-                y: [0, -3, 0],
-              }}
-              transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-              className="absolute left-[29%] sm:left-[30%] top-[55%] -translate-y-1/2 drop-shadow-2xl hidden md:block"
-            >
-              <img
-                src={planeImg}
-                alt="Commercial Airplane"
-                className="w-22 h-14 sm:w-26 sm:h-17 lg:w-28 lg:h-18 object-contain filter drop-shadow-[0_10px_20px_rgba(0,0,0,0.4)] -rotate-[2deg]"
-                loading="lazy"
+            {/* Exact spots: India (origin) and each destination */}
+            {[MAP_ORIGIN, ...MAP_DESTINATIONS.map((d) => d.dot)].map((pt, i) => (
+              <span
+                key={`dot-${i}`}
+                className="absolute w-2.5 h-2.5 -ml-[5px] -mt-[5px] rounded-full bg-white shadow-[0_0_0_4px_rgba(255,255,255,0.25)]"
+                style={{ left: `${pt.x}%`, top: `${pt.y}%` }}
               />
-            </motion.div>
-
-            {/* ── GLOWING STUDENT AVATARS ── */}
-
-            {/* 1. Top-Center Hub Avatar (Sky-White Halo, hidden on mobile to avoid overlapping the headline) */}
-            <motion.div
-              animate={{ scale: [1, 1.05, 1] }}
-              transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOut", delay: 0.2 }}
-              className="absolute left-[48%] top-[24%] -translate-x-1/2 -translate-y-1/2 hidden md:block"
+            ))}
+            <span
+              className="absolute -translate-x-1/2 mt-3 px-2 py-0.5 rounded-full bg-black/25 text-white text-[10.5px] font-bold tracking-wide whitespace-nowrap"
+              style={{ left: `${MAP_ORIGIN.x}%`, top: `${MAP_ORIGIN.y}%` }}
             >
-              <div className="w-8 h-8 sm:w-10 sm:h-10 lg:w-11 lg:h-11 rounded-full p-[2px] bg-gradient-to-r from-white to-sky-200 shadow-[0_0_16px_rgba(255,255,255,0.95)]">
-                <img
-                  src="/images/mentors/thumbs/mentor_blue_shirt.webp"
-                  alt="UniCoach mentor"
-                  className="w-full h-full rounded-full object-cover"
-                />
-              </div>
-            </motion.div>
+              You · India
+            </span>
 
-            {/* 2. Top-Center Avatar (Hidden on mobile to avoid overlapping 'the Leap?') */}
-            <motion.div
-              animate={{ scale: [1, 1.05, 1] }}
-              transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOut", delay: 1.4 }}
-              className="absolute left-[70%] sm:left-[62%] top-[22%] sm:top-[25%] -translate-x-1/2 -translate-y-1/2 hidden md:block"
-            >
-              <div className="w-8 h-8 sm:w-10 sm:h-10 lg:w-11 lg:h-11 rounded-full p-[2px] bg-white shadow-[0_0_16px_rgba(255,255,255,0.95)]">
-                <img
-                  src="/images/mentors/thumbs/prachi_cybersecurity.webp"
-                  alt="Prachi, Cyber Security Expert (Ireland)"
-                  className="w-full h-full rounded-full object-cover"
-                />
-              </div>
-            </motion.div>
-
-            {/* 3. Top-Right Avatar (Golden Halo) */}
-            <motion.div
-              animate={{ scale: [1, 1.05, 1] }}
-              transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOut", delay: 2.0 }}
-              className="absolute left-[86%] sm:left-[76%] top-[18%] sm:top-[20%] -translate-x-1/2 -translate-y-1/2 hidden md:block"
-            >
-              <div className="w-9 h-9 sm:w-11 sm:h-11 lg:w-12 lg:h-12 rounded-full p-[2px] bg-gradient-to-r from-amber-300 to-yellow-400 shadow-[0_0_16px_rgba(251,191,36,0.95)]">
-                <img
-                  src="/images/mentors/thumbs/manan_australia.webp"
-                  alt="Manan, Australia Expert"
-                  className="w-full h-full rounded-full object-cover"
-                />
-              </div>
-            </motion.div>
-
-            {/* 4. Lower-Right Avatar (Magenta Halo) */}
-            <motion.div
-              animate={{ scale: [1, 1.05, 1] }}
-              transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOut", delay: 2.6 }}
-              className="absolute left-[78%] sm:left-[73%] top-[72%] sm:top-[70%] -translate-x-1/2 -translate-y-1/2 hidden md:block"
-            >
-              <div className="w-8 h-8 sm:w-10 sm:h-10 lg:w-11 lg:h-11 rounded-full p-[2px] bg-gradient-to-r from-fuchsia-400 to-pink-500 shadow-[0_0_16px_rgba(232,121,249,0.95)]">
-                <img
-                  src="/images/mentors/thumbs/nitya_ireland_career.webp"
-                  alt="Nitya, Ireland Career Guide Expert"
-                  className="w-full h-full rounded-full object-cover"
-                />
-              </div>
-            </motion.div>
-
-
-            {/* 6. Lower-Center Avatar (Emerald Halo) */}
-            <motion.div
-              animate={{ scale: [1, 1.05, 1] }}
-              transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOut", delay: 0.8 }}
-              className="absolute left-[58%] top-[74%] -translate-x-1/2 -translate-y-1/2 hidden md:block"
-            >
-              <div className="w-8 h-8 sm:w-10 sm:h-10 lg:w-11 lg:h-11 rounded-full p-[2px] bg-gradient-to-r from-emerald-300 to-teal-400 shadow-[0_0_16px_rgba(52,211,153,0.95)]">
-                <img
-                  src="/images/mentors/thumbs/manvi_cta.webp"
-                  alt="Manvi, UniCoach mentor"
-                  className="w-full h-full rounded-full object-cover"
-                />
-              </div>
-            </motion.div>
-
-            <motion.div
-              animate={{ scale: [1, 1.05, 1] }}
-              transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOut", delay: 1.4 }}
-              className="absolute left-[46%] top-[67%] -translate-x-1/2 -translate-y-1/2 hidden md:block"
-            >
-              <div className="w-8 h-8 sm:w-10 sm:h-10 lg:w-11 lg:h-11 rounded-full p-[2px] bg-gradient-to-r from-sky-300 to-indigo-400 shadow-[0_0_16px_rgba(56,189,248,0.9)]">
-                <img
-                  src="/images/mentors/thumbs/mentor_navy_suit.webp"
-                  alt="UniCoach mentor"
-                  className="w-full h-full rounded-full object-cover"
-                />
-              </div>
-            </motion.div>
-
-            {/* ── GLOWING MAP PINS (Overlapping center pins hidden on mobile) ── */}
-
-            {/* 1. Coral Pin near Plane */}
-            <div className="absolute left-[39%] top-[49%] hidden md:block">
-              <CustomMapPin bgColor="#FB923C" glowColor="rgba(251,146,60,0.9)" />
-            </div>
-
-            {/* 2. Soft Pink Pin Center */}
-            <div className="absolute left-[49%] top-[49%] hidden md:block">
-              <CustomMapPin bgColor="#F472B6" glowColor="rgba(244,114,182,0.9)" />
-            </div>
-
-            {/* 3. Golden Pin South */}
-            <div className="absolute left-[54%] top-[76%] hidden md:block">
-              <CustomMapPin bgColor="#FDE047" glowColor="rgba(253,224,71,0.9)" />
-            </div>
-
-            {/* 4. White Pin North */}
-            <div className="absolute left-[66%] sm:left-[62%] top-[54%] hidden md:block">
-              <CustomMapPin bgColor="#FFFFFF" glowColor="rgba(255,255,255,0.9)" />
-            </div>
-
-            {/* 5. Warm Gold Pin East */}
-            <div className="absolute left-[80%] sm:left-[77%] top-[48%] hidden md:block">
-              <CustomMapPin bgColor="#FBBF24" glowColor="rgba(251,191,36,0.9)" />
-            </div>
-
-            {/* 6. Subtle Amber Pin Far South-East */}
-            <div className="absolute left-[89%] sm:left-[87%] top-[80%] hidden md:block">
-              <CustomMapPin bgColor="#F97316" glowColor="rgba(249,115,22,0.8)" size="w-3 h-4" />
-            </div>
-
+            {/* Mentor groups per destination */}
+            {MAP_DESTINATIONS.map((d, i) => (
+              <motion.div
+                key={d.key}
+                initial={{ opacity: 0, y: 8 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: 1 + i * 0.2 }}
+                className="absolute -translate-x-1/2 -translate-y-1/2 pointer-events-auto"
+                style={{ left: `${d.at.x}%`, top: `${d.at.y}%` }}
+              >
+                <motion.div
+                  animate={{ y: [0, -3, 0] }}
+                  transition={{ duration: 3.6, repeat: Infinity, ease: 'easeInOut', delay: i * 0.6 }}
+                  className="flex flex-col items-center"
+                >
+                  <div className="flex -space-x-2.5">
+                    {d.mentors.map((m) => (
+                      <img
+                        key={m.name}
+                        src={m.headshot || m.src}
+                        alt={`${m.name}, ${m.role}`}
+                        title={`${m.name} · ${m.role}`}
+                        loading="lazy"
+                        className="w-10 h-10 lg:w-11 lg:h-11 rounded-full object-cover border-2 border-white shadow-[0_6px_14px_rgba(0,0,0,0.25)] hover:scale-110 hover:z-10 transition-transform"
+                      />
+                    ))}
+                  </div>
+                  <span className="mt-1.5 inline-flex items-center gap-1.5 pl-1.5 pr-2 py-0.5 rounded-full bg-white text-slate-900 text-[11px] font-bold shadow-md whitespace-nowrap">
+                    <img src={`https://flagcdn.com/w40/${d.flag}.png`} alt="" aria-hidden="true" className="w-4 h-3 rounded-[2px] object-cover" />
+                    {d.label}
+                    <span className="text-slate-400 font-semibold">· {d.mentors.length === 1 ? d.mentors[0].name.split(' ')[0] : `${d.mentors.length} mentors`}</span>
+                  </span>
+                </motion.div>
+              </motion.div>
+            ))}
           </div>
 
           {/* ════════ FOREGROUND CONTENT: LEFT HEADLINE + TEXT + 2 BUTTONS (Slides from Left) ════════ */}

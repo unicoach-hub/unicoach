@@ -16,8 +16,9 @@ const getUniCoachConnection = () => {
   if (process.env.UNICOACH_MONGO_URI) {
     if (!unicoachConnection) {
       unicoachConnection = mongoose.createConnection(process.env.UNICOACH_MONGO_URI, {
-        maxPoolSize: 50,
-        minPoolSize: 5,
+        maxPoolSize: 10,
+        minPoolSize: 0,
+        maxIdleTimeMS: 60000,
         serverSelectionTimeoutMS: 30000,
         socketTimeoutMS: 45000,
       });

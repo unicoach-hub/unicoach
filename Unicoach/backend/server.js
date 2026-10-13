@@ -215,12 +215,22 @@ if (!mongoURI && process.env.NODE_ENV !== 'test') {
   process.exit(1);
 }
 
+// Atlas free/shared clusters allow ~500 connections in total, shared by every running backend
+// (Render + local dev) across 3 replica-set members, so keep the pool small and let idle sockets close.
+let retryTimer = null;
+const scheduleRetry = () => {
+  if (retryTimer) return; // one pending retry at a time
+  retryTimer = setTimeout(() => { retryTimer = null; connectMongoDB(); }, 5000);
+};
+
 const connectMongoDB = () => {
   if (!mongoURI) return;
+  if (mongoose.connection.readyState === 1 || mongoose.connection.readyState === 2) return;
   console.log('🔄 Connecting to MongoDB...');
   mongoose.connect(mongoURI, {
-    maxPoolSize: 100, // Handle up to 100 concurrent connections
-    minPoolSize: 10,
+    maxPoolSize: 10,
+    minPoolSize: 0,
+    maxIdleTimeMS: 60000,
     serverSelectionTimeoutMS: 30000,
     socketTimeoutMS: 45000,
   })
@@ -237,7 +247,7 @@ const connectMongoDB = () => {
     })
     .catch(err => {
       console.error('⚠️ MongoDB connection error (retrying in 5 seconds):', err.message);
-      setTimeout(connectMongoDB, 5000);
+      scheduleRetry();
     });
 };
 
@@ -251,9 +261,9 @@ mongoose.connection.on('error', err => {
   console.error('Mongoose connection error after initial connection:', err);
 });
 
+// After the first connection the driver reconnects by itself; calling connect() again would open extra pools
 mongoose.connection.on('disconnected', () => {
-  console.warn('⚠️ MongoDB disconnected! Retrying connection in 5 seconds...');
-  setTimeout(connectMongoDB, 5000);
+  console.warn('⚠️ MongoDB disconnected; the driver will reconnect automatically.');
 });
 
 // Import Cache Middleware for high-performance read caching

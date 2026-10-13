@@ -125,6 +125,7 @@ const Footer = () => {
     { label: 'Student Blogs', path: '/blogs' },
     { label: 'UniCoach Digest', path: '/unicoach-digest' },
     { label: 'Upcoming Events', path: '/events' },
+    { label: 'Our Team', path: '/team' },
     { label: 'Newsroom', path: '/newsroom' },
   ];
 
