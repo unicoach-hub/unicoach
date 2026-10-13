@@ -41,8 +41,16 @@ function buildMatch(f = {}) {
   const m = {};
   const arr = v => (Array.isArray(v) ? v : v != null && v !== '' ? [v] : []);
   if (f.searchText) {
-    const term = String(f.searchText).trim().slice(0, 80).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-    const rx = new RegExp(term, 'i');
+    const esc = (s) => String(s).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const raw = String(f.searchText).trim().slice(0, 80);
+    // Degree-acronym expansion to mirror CourseFinder (e.g. "MBA" also matches "Master of Business Administration").
+    const SYN = { MBA: 'Master of Business Administration', LLM: 'Master of Laws', LLB: 'Bachelor of Laws',
+      BBA: 'Bachelor of Business Administration', MIM: 'Master in Management', MPH: 'Master of Public Health',
+      MPA: 'Master of Public Administration', MSW: 'Master of Social Work', MFA: 'Master of Fine Arts' };
+    const alts = [raw];
+    const syn = SYN[raw.toUpperCase()];
+    if (syn) alts.push(syn);
+    const rx = new RegExp('(' + alts.map(esc).join('|') + ')', 'i');
     (m.$and = m.$and || []).push({ $or: [{ courseName: rx }, { universityName: rx }] });
   }
   const country = arr(f.country).map(Number).filter(Boolean);
