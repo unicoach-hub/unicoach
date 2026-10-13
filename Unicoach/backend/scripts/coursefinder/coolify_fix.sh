@@ -55,6 +55,6 @@ def call(method,url,body=None):
     except Exception as e:
         return f"ERR {e}"
 print("PATCH:", call("PATCH", f"{api}/applications/{uuid}/envs", {"key":"MONGO_URI","value":new,"is_preview":False}))
-print("DEPLOY:", call("GET", f"{api}/deploy?uuid={uuid}&force=true"))
+print("DEPLOY:", call("POST", f"{api}/deploy?uuid={uuid}&force=true", {}))
 PY
 echo "=== deployment queued ==="
