@@ -374,18 +374,28 @@ if (process.env.NODE_ENV !== 'test') {
   server = app.listen(PORT, () => console.log(`🚀 Backend server running on port ${PORT}`));
 
   // Graceful Shutdown Handlers for Docker / Coolify zero-downtime redeploys
+  // Mongoose 8 has no close() callback (it returns a promise), so the old callback never fired and the
+  // process hung forever, keeping its MongoDB pool open. Close everything, and force-exit if it stalls.
+  let shuttingDown = false;
   const gracefulShutdown = (signal) => {
+    if (shuttingDown) return;
+    shuttingDown = true;
     console.log(`Received ${signal}. Shutting down gracefully...`);
+    setTimeout(() => {
+      console.warn('Shutdown took too long; exiting now.');
+      process.exit(1);
+    }, 8000).unref();
+    const closeDb = () => mongoose.connection.close(false)
+      .then(() => console.log('MongoDB connection closed.'))
+      .catch((err) => console.warn('MongoDB close failed:', err.message))
+      .finally(() => process.exit(0));
     if (server) {
-      server.close(() => {
-        console.log('HTTP server closed.');
-        mongoose.connection.close(false, () => {
-          console.log('MongoDB connection closed.');
-          process.exit(0);
-        });
-      });
+      server.close(() => console.log('HTTP server closed.'));
+      // Idle keep-alive sockets would hold server.close() open; drop them so shutdown can finish
+      if (typeof server.closeIdleConnections === 'function') server.closeIdleConnections();
+      closeDb();
     } else {
-      process.exit(0);
+      closeDb();
     }
   };
 
