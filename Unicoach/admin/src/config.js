@@ -26,8 +26,10 @@ export const getFrontendUrl = () => {
 };
 
 export const getApiUrl = () => {
-  const envUrl = import.meta.env.VITE_BACKEND_URL || import.meta.env.VITE_API_URL;
-  const fallbackApiUrl = 'https://unicoach-1.onrender.com/api';
+  // The old Render backend is retired: an env value still pointing there is ignored
+  const isRetired = (u) => typeof u === 'string' && /unicoach-1\.onrender\.com/i.test(u);
+  const envUrl = [import.meta.env.VITE_BACKEND_URL, import.meta.env.VITE_API_URL].find((u) => u && !isRetired(u));
+  const fallbackApiUrl = 'https://api.unicoach.com/api';
 
   if (typeof window !== 'undefined') {
     const { hostname } = window.location;
