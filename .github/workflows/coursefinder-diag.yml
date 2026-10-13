@@ -1,0 +1,19 @@
+name: CourseFinder DB Diag
+on:
+  workflow_dispatch:
+jobs:
+  diag:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    defaults:
+      run:
+        working-directory: Unicoach/backend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - run: npm i mongodb --no-audit --no-fund
+      - run: node scripts/coursefinder/db_diag.js
+        env:
+          MONGO_URI: ${{ secrets.MONGO_URI }}
