@@ -1,0 +1,26 @@
+name: CourseFinder Engine Verify
+
+# Exercises the /api/search engine (cfSearchController) against the live cf_courses
+# data via mock req/res. Read-only. Uses the MONGO_URI repo secret.
+
+on:
+  workflow_dispatch:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: Unicoach/backend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Install deps (mongoose)
+        run: npm i mongoose --no-audit --no-fund
+      - name: Run engine verification
+        run: node scripts/coursefinder/verify_engine.js
+        env:
+          MONGO_URI: ${{ secrets.MONGO_URI }}
