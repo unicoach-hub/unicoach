@@ -13,38 +13,19 @@ jobs:
     env:
       APP_UUID: et79n1zgjbtodtdsklnfn09d
     steps:
+      - uses: actions/checkout@v4
       - name: Write SSH key
         run: |
           mkdir -p ~/.ssh
           echo "${{ secrets.VPS_SSH_KEY_B64 }}" | base64 -d > ~/.ssh/id_ed25519
           chmod 600 ~/.ssh/id_ed25519
           ssh-keyscan -H "${{ secrets.VPS_HOST }}" >> ~/.ssh/known_hosts 2>/dev/null || true
-      - name: Drive Coolify API over SSH
+      - name: Run Coolify fix on VPS
         env:
           MONGO_URI: ${{ secrets.MONGO_URI }}
           DO_FIX: ${{ inputs.do_fix }}
         run: |
+          SCRIPT_B64=$(base64 -w0 Unicoach/backend/scripts/coursefinder/coolify_fix.sh)
           MONGO_B64=$(printf '%s' "$MONGO_URI" | base64 -w0)
           ssh -i ~/.ssh/id_ed25519 -o StrictHostKeyChecking=no root@${{ secrets.VPS_HOST }} \
-            "APP_UUID='${APP_UUID}' MONGO_B64='${MONGO_B64}' DO_FIX='${DO_FIX}' bash -s" <<'REMOTE'
-          set -e
-          API=http://localhost:8000/api/v1
-          echo "=== creating Coolify API token via tinker ==="
-          TOKEN=$(docker exec coolify php artisan tinker --execute='$u=\App\Models\User::first(); echo $u ? $u->createToken("claude-deploy",["*"])->plainTextToken : "NO_USER";' 2>/dev/null | grep -oE '[0-9]+\|[A-Za-z0-9]+' | tail -1)
-          if [ -z "$TOKEN" ]; then
-            RAW=$(docker exec coolify php artisan tinker --execute='$u=\App\Models\User::first(); echo $u ? $u->createToken("claude-deploy",["*"])->plainTextToken : "NO_USER";' 2>/dev/null | tail -3)
-            echo "could not parse token. raw tail: $RAW"; exit 1
-          fi
-          echo "token acquired (len ${#TOKEN})"
-          echo; echo "=== current MONGO_URI env (masked) ==="
-          curl -s -H "Authorization: Bearer $TOKEN" "$API/applications/$APP_UUID/envs" \
-            | python3 -c "import sys,json;[print(e.get('key'),'=',(e.get('value') or e.get('real_value') or '')[:35],'...') for e in json.load(sys.stdin) if e.get('key')=='MONGO_URI']" 2>/dev/null || echo "(could not parse envs)"
-          if [ "$DO_FIX" != "true" ]; then echo; echo "READ-ONLY: not changing anything."; exit 0; fi
-          NEW=$(echo "$MONGO_B64" | base64 -d)
-          echo; echo "=== updating MONGO_URI (PATCH) ==="
-          curl -s -X PATCH -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/json" \
-            "$API/applications/$APP_UUID/envs" -d "{\"key\":\"MONGO_URI\",\"value\":\"$NEW\",\"is_preview\":false}"; echo
-          echo "=== redeploy ==="
-          curl -s -H "Authorization: Bearer $TOKEN" "$API/deploy?uuid=$APP_UUID&force=true"; echo
-          echo "=== done; deployment queued ==="
-          REMOTE
+            "echo '$SCRIPT_B64' | base64 -d > /tmp/cf_fix.sh && APP_UUID='${APP_UUID}' MONGO_B64='${MONGO_B64}' DO_FIX='${DO_FIX}' bash /tmp/cf_fix.sh; rm -f /tmp/cf_fix.sh"
