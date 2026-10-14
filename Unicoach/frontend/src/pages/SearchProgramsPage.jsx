@@ -284,9 +284,6 @@ export default function SearchProgramsPage() {
               <option value="">Student's Nationality</option>
               {nationalities.map((n) => <option key={n.value} value={n.value}>{n.label}</option>)}
             </select>
-            <select disabled={!profile.nationalityId} className="border border-slate-200 px-3 py-2.5 text-[14px] text-slate-700 bg-white disabled:bg-slate-50 disabled:text-slate-400" style={{ borderRadius: 4 }}>
-              <option value="">Student's State</option>
-            </select>
             <button onClick={() => runSearch(1)} className="text-white text-[14px] font-semibold px-6 py-2.5" style={{ background: BLUE, borderRadius: 4 }}>Search</button>
             <button onClick={clearAll} className="text-[14px] font-medium px-4 py-2.5 border text-slate-600 border-slate-200" style={{ borderRadius: 4 }}>Clear All</button>
           </div>
