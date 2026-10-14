@@ -80,6 +80,7 @@ export default function SearchProgramsPage() {
   const [country, setCountry] = useState('');
   const [programLevels, setProgramLevels] = useState([]);
   const [requirements, setRequirements] = useState([]);
+  const [studyAreas, setStudyAreas] = useState([]);
   const [intake, setIntake] = useState('');
   const [activeHighlights, setActiveHighlights] = useState([]);
   const [sort, setSort] = useState('featured');
@@ -143,7 +144,8 @@ export default function SearchProgramsPage() {
     requirements: requirements.length ? requirements : undefined,
     intake: intake ? [intake] : undefined,
     highlights: activeHighlights.length ? activeHighlights : undefined,
-  }), [searchText, country, programLevels, requirements, intake, activeHighlights]);
+    studyArea: studyAreas.length ? studyAreas : undefined,
+  }), [searchText, country, programLevels, requirements, intake, activeHighlights, studyAreas]);
 
   const profilePayload = useMemo(() => ({
     nationalityId: Number(profile.nationalityId) || undefined, highestQualificationId: profile.highestQualificationId || undefined,
@@ -166,7 +168,7 @@ export default function SearchProgramsPage() {
     if (eligResult) { runEligibility(eligBucket, 1); return; }
     if (result) runSearch(1);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [country, programLevels, requirements, intake, activeHighlights, sort]);
+  }, [country, programLevels, requirements, intake, activeHighlights, studyAreas, sort]);
 
   // show all programs by default on first load (CourseFinder shows the full catalogue)
   useEffect(() => {
@@ -195,6 +197,7 @@ export default function SearchProgramsPage() {
   const countryOpts = (config?.countries || []);
   const levelOpts = (config?.programLevels || []);
   const reqOpts = (config?.requirements || []);
+  const studyAreaOpts = (config?.studyAreas || []);
   const intakeOpts = (config?.intakes || []);
   const nationalities = (config?.studentCountries || []);
   const eligActive = !!eligResult;
@@ -241,7 +244,13 @@ export default function SearchProgramsPage() {
 
           {/* Advanced Search panel */}
           {showAdvanced && (
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mt-4 p-4 bg-slate-50 border border-slate-200" style={{ borderRadius: 4 }}>
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-5 mt-4 p-4 bg-slate-50 border border-slate-200" style={{ borderRadius: 4 }}>
+              <div>
+                <div className="font-['DM_Sans'] font-semibold text-[13px] text-slate-700 mb-1">Study Area</div>
+                <div className="max-h-56 overflow-y-auto pr-1">
+                  {studyAreaOpts.map((s) => <Checkbox key={s.value} checked={studyAreas.includes(Number(s.value))} onChange={() => toggleArr(setStudyAreas)(Number(s.value))} label={s.label} />)}
+                </div>
+              </div>
               <div>
                 <div className="font-['DM_Sans'] font-semibold text-[13px] text-slate-700 mb-1">Program Level</div>
                 <div className="max-h-56 overflow-y-auto pr-1">
@@ -260,7 +269,7 @@ export default function SearchProgramsPage() {
                   <option value="featured">Featured</option><option value="ranking">Ranking</option>
                   <option value="tuition-low">Tuition: Low to High</option><option value="tuition-high">Tuition: High to Low</option>
                 </select>
-                <button onClick={() => { setProgramLevels([]); setRequirements([]); setActiveHighlights([]); setCountry(''); setIntake(''); }} className="text-[13px] text-[#226CF5] font-medium text-left mt-1">Clear All Filters</button>
+                <button onClick={() => { setProgramLevels([]); setRequirements([]); setStudyAreas([]); setActiveHighlights([]); setCountry(''); setIntake(''); }} className="text-[13px] text-[#226CF5] font-medium text-left mt-1">Clear All Filters</button>
                 <button onClick={() => runSearch(1)} className="text-white text-[13px] font-semibold py-2 mt-1" style={{ background: BLUE, borderRadius: 4 }}>Apply Filters</button>
               </div>
             </div>

@@ -85,12 +85,10 @@ function buildMatch(f = {}) {
     const syn = SYN[raw.toUpperCase()];
     if (syn) alts.push(syn);
     const rx = new RegExp('(' + alts.map(esc).join('|') + ')', 'i');
-    // match name, university, first discipline, and the FULL subject-tag array (CourseFinder parity on broad terms)
-    const orClauses = [{ courseName: rx }, { universityName: rx }, { discipline: rx }, { disciplines: rx }];
-    // if the term maps to a CourseFinder study area, also surface that whole area (near-100% coverage)
-    const saIds = matchedStudyAreas(raw);
-    if (saIds.length) orClauses.push({ studyAreaIds: { $in: saIds } });
-    (m.$and = m.$and || []).push({ $or: orClauses });
+    // Precise free-text: name, university, first discipline, and the full subject-tag array.
+    // (Study area is NOT auto-expanded here — typing "Nursing" must not return the whole
+    // Health area. Browse a whole study area via the explicit Study Area filter instead.)
+    (m.$and = m.$and || []).push({ $or: [{ courseName: rx }, { universityName: rx }, { discipline: rx }, { disciplines: rx }] });
   }
   const country = arr(f.country).map(Number).filter(Boolean);
   if (country.length) m.cfCountryId = { $in: country };
