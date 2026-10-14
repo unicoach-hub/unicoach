@@ -11,12 +11,18 @@ const { MongoClient } = require('mongodb');
     if (['admin', 'local', 'config'].includes(d.name)) continue;
     const db = c.db(d.name);
     const cols = await db.listCollections().toArray();
-    const interesting = cols.map(x => x.name).filter(n => /course|universit|countr|cf_|lead|user|scholar|blog/i.test(n));
-    console.log(`\nDB "${d.name}" (${(d.sizeOnDisk/1048576).toFixed(1)}MB) — ${cols.length} collections`);
-    for (const name of interesting.slice(0, 20)) {
-      const n = await db.collection(name).estimatedDocumentCount();
-      console.log(`   ${name}: ${n}`);
+    const st = await db.stats();
+    console.log(`\nDB "${d.name}" (sizeOnDisk ${(d.sizeOnDisk/1048576).toFixed(1)}MB) — ${cols.length} collections`);
+    console.log(`   stats: dataSize ${(st.dataSize/1048576).toFixed(1)}MB | storageSize ${(st.storageSize/1048576).toFixed(1)}MB | indexSize ${(st.indexSize/1048576).toFixed(1)}MB | total ${((st.storageSize+st.indexSize)/1048576).toFixed(1)}MB`);
+    const rows = [];
+    for (const col of cols) {
+      try {
+        const cs = await db.command({ collStats: col.name });
+        rows.push({ name: col.name, count: cs.count || 0, store: (cs.storageSize||0)/1048576, idx: (cs.totalIndexSize||0)/1048576 });
+      } catch (e) { rows.push({ name: col.name, count: '?', store: 0, idx: 0, err: e.message }); }
     }
+    rows.sort((a,b) => (b.store+b.idx) - (a.store+a.idx));
+    for (const r of rows) console.log(`   ${r.name}: ${r.count} docs | store ${r.store.toFixed(1)}MB + idx ${r.idx.toFixed(1)}MB = ${(r.store+r.idx).toFixed(1)}MB`);
   }
   await c.close();
 })().catch(e => { console.error('DIAG FAILED:', e.message); process.exit(1); });
