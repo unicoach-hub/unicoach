@@ -69,11 +69,13 @@ const CourseMentorCard = ({ mentor, onBook }) => {
           </div>
         )}
 
-        {/* Rating Pill (Top-Right) */}
-        <div className="absolute top-2 right-2 flex items-center gap-0.5 bg-white/95 backdrop-blur-md px-1.5 py-0.5 rounded-full text-[10px] font-black text-slate-800 border border-black/5 shadow-2xs">
-          <Star className="w-2.5 h-2.5 fill-amber-400 text-amber-400" />
-          <span>{ratingDisplay}</span>
-        </div>
+        {/* Rating Pill (Top-Right), only when the mentor has real reviews */}
+        {ratingDisplay && (
+          <div className="absolute top-2 right-2 flex items-center gap-0.5 bg-white/95 backdrop-blur-md px-1.5 py-0.5 rounded-full text-[10px] font-black text-slate-800 border border-black/5 shadow-2xs">
+            <Star className="w-2.5 h-2.5 fill-amber-400 text-amber-400" />
+            <span>{ratingDisplay}</span>
+          </div>
+        )}
 
         {/* Verified Orange Shield Badge (Bottom-Right of Photo) */}
         <div
@@ -113,7 +115,7 @@ const CourseMentorCard = ({ mentor, onBook }) => {
               SESSIONS FROM
             </span>
             <div className="font-outfit text-xs sm:text-[13px] font-black text-slate-900 leading-tight mt-0.5">
-              ₹{mentor.startingPriceINR || 499}
+              {mentor.free ? 'Free' : `₹${mentor.startingPriceINR || 499}`}
             </div>
           </div>
 
@@ -285,14 +287,17 @@ const CourseDetailsPage = () => {
   const ranking = getVerifiedRanking(uni);
   const mentors = getMentorsForCourseAndUni(uni, program);
 
+  // No personal phone numbers on the site: chat requests go through the contact form
   const handleQuickChat = (mentor) => {
-    const message = `Hi ${mentor.name}! I found your profile on UniCoach for ${program?.title} at ${uni?.name}. I'm planning my application for ${program?.intake} intake and would love your guidance!`;
-    const encoded = encodeURIComponent(message);
-    const whatsappUrl = `https://api.whatsapp.com/send?phone=919876543210&text=${encoded}`;
-    window.open(whatsappUrl, '_blank', 'noopener,noreferrer');
+    navigate(`/contact?mentor=${encodeURIComponent(mentor.name)}&university=${encodeURIComponent(uni?.name || '')}&course=${encodeURIComponent(program?.title || '')}`);
   };
 
   const handleBookCall = (mentor) => {
+    // Team mentors run free sessions listed on the events page
+    if (mentor.href) {
+      navigate(mentor.href);
+      return;
+    }
     setSelectedBookingMentor(mentor);
     setIsMentorBookingOpen(true);
   };

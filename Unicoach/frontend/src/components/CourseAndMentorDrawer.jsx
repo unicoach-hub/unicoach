@@ -78,14 +78,16 @@ const CourseAndMentorDrawer = ({
     navigate(`/course-details?${params.toString()}`);
   };
 
+  // No personal phone numbers on the site: chat requests go through the contact form
   const handleStartMentorChat = (mentor) => {
-    const message = `Hi ${mentor.name}! I found your profile on UniCoach for ${program.title} at ${uni.name}. I'm planning my application for ${program.intake} intake and would love your guidance!`;
-    const encoded = encodeURIComponent(message);
-    const whatsappUrl = `https://api.whatsapp.com/send?phone=919876543210&text=${encoded}`;
-    window.open(whatsappUrl, '_blank', 'noopener,noreferrer');
+    navigate(`/contact?mentor=${encodeURIComponent(mentor.name)}&university=${encodeURIComponent(uni?.name || '')}&course=${encodeURIComponent(program?.title || '')}`);
   };
 
   const handleBookMentorCall = (mentor) => {
+    if (mentor.href) {
+      navigate(mentor.href);
+      return;
+    }
     setBookingMentor(mentor);
   };
 
@@ -264,12 +266,14 @@ const CourseAndMentorDrawer = ({
                               </p>
                             </div>
 
-                            {/* Rating */}
-                            <div className="flex items-center gap-1 px-2 py-0.5 rounded-md bg-amber-50 text-amber-900 border border-amber-200/80 text-[11px] font-black shrink-0">
-                              <Star size={11} className="fill-amber-400 text-amber-400" />
-                              <span>{m.rating}</span>
-                              <span className="text-amber-600 font-normal">({m.sessionsCount})</span>
-                            </div>
+                            {/* Rating, only when the mentor has real reviews */}
+                            {m.rating ? (
+                              <div className="flex items-center gap-1 px-2 py-0.5 rounded-md bg-amber-50 text-amber-900 border border-amber-200/80 text-[11px] font-black shrink-0">
+                                <Star size={11} className="fill-amber-400 text-amber-400" />
+                                <span>{m.rating}</span>
+                                {m.sessionsCount ? <span className="text-amber-600 font-normal">({m.sessionsCount})</span> : null}
+                              </div>
+                            ) : null}
                           </div>
 
                           {/* Role / Achievement Pill */}
