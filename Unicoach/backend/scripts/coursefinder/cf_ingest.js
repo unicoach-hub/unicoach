@@ -76,6 +76,7 @@ function slimCf(cf){ const o={}; for(const k of CF_KEEP) if(cf[k]!==undefined) o
   await Course.createIndex({ cfUniversityId: 1 });
   await Course.createIndex({ highlightIds: 1 });
   await Course.createIndex({ disciplines: 1 }); // broad free-text subject matching (CourseFinder parity)
+  await Course.createIndex({ studyAreaIds: 1 }); // study-area (CategoryId) broad discipline matching
   // NOTE: no $text index — the engine matches by regex (buildMatch/suggest), so a text
   // index is unused dead weight (~tens of MB) that blows the M0 quota.
 

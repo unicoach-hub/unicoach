@@ -36,6 +36,40 @@ const REQUIREMENT_PREDICATE = {
 };
 const DURATION_BUCKET = { 1: [0, 12], 2: [12, 24], 3: [24, 36], 4: [36, 48], 5: [48, 100000] };
 
+// CourseFinder "study-area" taxonomy (CategoryId 1..22). Typing a discipline surfaces its
+// whole study area (near-100% course coverage), the way CourseFinder's broad search does.
+const STUDY_AREA_TRIGGERS = [
+  { id: 1,  terms: ['agriculture', 'forestry', 'fishery', 'farming', 'horticulture'] },
+  { id: 2,  terms: ['architecture', 'building', 'construction', 'surveying', 'urban planning'] },
+  { id: 3,  terms: ['arts', 'fine arts', 'design', 'music', 'fashion', 'film', 'photography', 'performing arts', 'graphic design', 'interior design', 'animation'] },
+  { id: 4,  terms: ['business', 'commerce', 'management', 'administration', 'mba', 'bba', 'finance', 'accounting', 'accountancy', 'marketing', 'economics', 'supply chain', 'human resource', 'entrepreneurship'] },
+  { id: 5,  terms: ['computer science', 'computing', 'information technology', 'software', 'data science', 'artificial intelligence', 'machine learning', 'cyber security', 'cybersecurity', 'information systems', 'data analytics'] },
+  { id: 6,  terms: ['education', 'teaching', 'pedagogy', 'early childhood'] },
+  { id: 7,  terms: ['engineering', 'mechanical', 'electrical', 'civil engineering', 'mechatronics', 'robotics', 'aerospace'] },
+  { id: 8,  terms: ['environmental', 'environment', 'sustainability', 'ecology', 'climate'] },
+  { id: 9,  terms: ['health', 'nursing', 'medicine', 'medical', 'pharmacy', 'dentistry', 'physiotherapy', 'public health', 'healthcare', 'midwifery', 'nutrition', 'radiography', 'optometry'] },
+  { id: 10, terms: ['humanities', 'history', 'philosophy', 'languages', 'literature', 'linguistics', 'theology', 'religious studies'] },
+  { id: 11, terms: ['journalism', 'media', 'communication', 'communications', 'public relations', 'broadcasting'] },
+  { id: 12, terms: ['law', 'legal', 'llb', 'llm', 'laws'] },
+  { id: 13, terms: ['life sciences', 'biology', 'biotechnology', 'biomedical', 'biochemistry', 'microbiology', 'genetics', 'zoology', 'botany'] },
+  { id: 14, terms: ['manufacturing', 'processing', 'textiles'] },
+  { id: 15, terms: ['mathematics', 'maths', 'statistics', 'actuarial'] },
+  { id: 16, terms: ['hospitality', 'tourism', 'culinary', 'beauty', 'event management'] },
+  { id: 17, terms: ['physics', 'chemistry', 'physical sciences', 'geology', 'astronomy', 'materials science'] },
+  { id: 18, terms: ['security', 'policing', 'criminology', 'criminal justice', 'forensic'] },
+  { id: 19, terms: ['psychology', 'sociology', 'social science', 'anthropology', 'political science', 'politics', 'international relations', 'behavioural science'] },
+  { id: 20, terms: ['social work', 'social services', 'social care', 'counselling'] },
+  { id: 21, terms: ['transport', 'logistics', 'aviation', 'maritime', 'shipping'] },
+  { id: 22, terms: ['veterinary', 'animal science'] },
+];
+function matchedStudyAreas(text) {
+  const t = ' ' + String(text).toLowerCase().trim() + ' ';
+  const ids = [];
+  for (const { id, terms } of STUDY_AREA_TRIGGERS)
+    if (terms.some(term => t.includes(' ' + term + ' '))) ids.push(id);
+  return ids;
+}
+
 // ---------- build the base match from a filters object ----------
 function buildMatch(f = {}) {
   const m = {};
@@ -52,7 +86,11 @@ function buildMatch(f = {}) {
     if (syn) alts.push(syn);
     const rx = new RegExp('(' + alts.map(esc).join('|') + ')', 'i');
     // match name, university, first discipline, and the FULL subject-tag array (CourseFinder parity on broad terms)
-    (m.$and = m.$and || []).push({ $or: [{ courseName: rx }, { universityName: rx }, { discipline: rx }, { disciplines: rx }] });
+    const orClauses = [{ courseName: rx }, { universityName: rx }, { discipline: rx }, { disciplines: rx }];
+    // if the term maps to a CourseFinder study area, also surface that whole area (near-100% coverage)
+    const saIds = matchedStudyAreas(raw);
+    if (saIds.length) orClauses.push({ studyAreaIds: { $in: saIds } });
+    (m.$and = m.$and || []).push({ $or: orClauses });
   }
   const country = arr(f.country).map(Number).filter(Boolean);
   if (country.length) m.cfCountryId = { $in: country };
@@ -70,10 +108,15 @@ function buildMatch(f = {}) {
     m.$and = m.$and || [];
     m.$and.push({ $or: dur.map(d => ({ 'cf.Duration': { $gte: DURATION_BUCKET[d][0], $lt: DURATION_BUCKET[d][1] } })) });
   }
-  if (f.disciplineArea || f.studyArea) {
-    const term = f.disciplineArea || f.studyArea;
-    const drx = new RegExp(String(term).slice(0, 60), 'i');
-    (m.$and = m.$and || []).push({ $or: [{ discipline: drx }, { disciplines: drx }] });
+  // explicit Study Area filter — accepts taxonomy ids (1..22) and/or free text
+  const saFilter = arr(f.studyArea).concat(arr(f.disciplineArea));
+  if (saFilter.length) {
+    const ids = saFilter.map(Number).filter(n => Number.isInteger(n) && n >= 1 && n <= 22);
+    const texts = saFilter.filter(x => !(Number.isInteger(Number(x)) && Number(x) >= 1 && Number(x) <= 22));
+    const or = [];
+    if (ids.length) or.push({ studyAreaIds: { $in: ids } });
+    for (const t of texts) { const drx = new RegExp(String(t).slice(0, 60), 'i'); or.push({ discipline: drx }, { disciplines: drx }); for (const id of matchedStudyAreas(t)) or.push({ studyAreaIds: id }); }
+    if (or.length) (m.$and = m.$and || []).push({ $or: or });
   }
   return m;
 }

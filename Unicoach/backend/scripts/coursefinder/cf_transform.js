@@ -26,6 +26,12 @@ const allConcentrations = s => {
   for (const p of parts) { const k = p.toLowerCase(); if (!seen.has(k)) { seen.add(k); out.push(p); } }
   return out.length ? out : undefined;
 };
+// CF CategoryId is a comma-separated list of study-area taxonomy ids (1..22); parse to int[].
+const studyAreas = s => {
+  if (s === null || s === undefined) return undefined;
+  const set = new Set(String(s).split(',').map(x => parseInt(x.trim(), 10)).filter(n => Number.isInteger(n) && n >= 1 && n <= 22));
+  return set.size ? [...set] : undefined;
+};
 
 function degreeLevel(studylvl, id) {
   const s = (studylvl || '').toLowerCase();
@@ -48,6 +54,7 @@ function mapCourse(c) {
     degreeLevel: degreeLevel(c.Studylvl, c.StudyLevelId),
     discipline: firstConcentration(c.Concentration),
     disciplines: allConcentrations(c.Concentration),
+    studyAreaIds: studyAreas(c.CategoryId), // CF study-area taxonomy (near-100% coverage) for broad search
     duration: c.Duration ? `${c.Duration} Months` : undefined,
     annualFee: { amount: num(c.Amount) || num(c.TutionFee) || 0, currency: cur, inrAmount: 0 },
     applicationFee: { amount: num(c.ApplicationFeeAmt) || 0, currency: c.ApplicationFeeCurrency || cur, isWaived: !!c.AppFeeWaiverAvailable },
