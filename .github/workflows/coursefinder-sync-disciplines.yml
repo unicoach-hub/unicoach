@@ -1,0 +1,51 @@
+name: CourseFinder Sync Disciplines (Atlas -> VPS Mongo)
+
+# Exports cfId->disciplines already computed in Atlas and applies them to the LIVE
+# local VPS Mongo (db `default`) via the app container. No CourseFinder token needed —
+# reuses the disciplines from the successful Atlas harvest.
+# Secrets: MONGO_URI (Atlas), VPS_SSH_KEY_B64, VPS_HOST.
+on:
+  workflow_dispatch:
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      APP_UUID: et79n1zgjbtodtdsklnfn09d
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - run: npm i mongodb --no-audit --no-fund
+        working-directory: Unicoach/backend
+
+      - name: Export cfId->disciplines from Atlas
+        working-directory: Unicoach/backend
+        env:
+          MONGO_URI: ${{ secrets.MONGO_URI }}
+        run: |
+          node -e "
+          const fs=require('fs');const {MongoClient}=require('mongodb');
+          (async()=>{const c=new MongoClient(process.env.MONGO_URI,{serverSelectionTimeoutMS:20000});await c.connect();
+          const rows=await c.db().collection('cf_courses').find({disciplines:{\$exists:true,\$ne:[]}},{projection:{_id:0,cfId:1,disciplines:1}}).toArray();
+          fs.writeFileSync('/tmp/disc.json',JSON.stringify(rows));
+          console.log('exported',rows.length,'courses with disciplines');
+          await c.close();})().catch(e=>{console.error(e);process.exit(1);});
+          "
+          ls -la /tmp/disc.json
+
+      - name: Write SSH key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.VPS_SSH_KEY_B64 }}" | base64 -d > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          ssh-keyscan -H "${{ secrets.VPS_HOST }}" >> ~/.ssh/known_hosts 2>/dev/null || true
+
+      - name: Ship + apply on VPS
+        run: |
+          scp -i ~/.ssh/id_ed25519 -o StrictHostKeyChecking=no /tmp/disc.json root@${{ secrets.VPS_HOST }}:/tmp/disc.json
+          SCRIPT_B64=$(base64 -w0 Unicoach/backend/scripts/coursefinder/vps_apply_disc.sh)
+          ssh -i ~/.ssh/id_ed25519 -o StrictHostKeyChecking=no root@${{ secrets.VPS_HOST }} \
+            "echo '$SCRIPT_B64' | base64 -d > /tmp/vps_apply.sh && APP_UUID='${APP_UUID}' bash /tmp/vps_apply.sh; rm -f /tmp/vps_apply.sh"
