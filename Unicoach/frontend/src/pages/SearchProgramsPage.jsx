@@ -148,7 +148,7 @@ export default function SearchProgramsPage() {
   const toggleArr = (setter) => (val) => setter((a) => (a.includes(val) ? a.filter((x) => x !== val) : [...a, val]));
   const toggleSelect = (c) => setSelected((s) => { const n = { ...s }; if (n[c.cfId]) delete n[c.cfId]; else n[c.cfId] = c; return n; });
   const selectedList = Object.values(selected);
-  const openCourse = (c) => navigate(`/course-details?courseId=${c.cfId}&title=${encodeURIComponent(c.courseName)}&uniName=${encodeURIComponent(c.universityName)}`);
+  const openCourse = (c) => navigate(`/program/${c.cfId}`);
 
   const doExportAll = async () => {
     setExporting(true);
