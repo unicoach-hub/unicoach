@@ -13,7 +13,7 @@ const FEATURED_MENTORS = TEAM_MENTORS.map((mentor) => ({
   name: mentor.name,
   role: mentor.role,
   badge: mentor.country,
-  image: mentor.portrait,
+  image: mentor.headshot || mentor.portrait,
 }));
 
 const CreatorCard = ({ item, tabIndex }) => (

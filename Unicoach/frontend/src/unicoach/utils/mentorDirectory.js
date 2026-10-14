@@ -7,7 +7,8 @@ export const FEATURED_MENTORS = TEAM_MENTORS.map((mentor) => ({
   name: mentor.name,
   headline: mentor.role,
   country: mentor.country,
-  avatarUrl: mentor.portrait,
+  // Same head-and-shoulders crop for every mentor so the cards line up
+  avatarUrl: mentor.headshot || mentor.portrait,
   startingPriceINR: 0,
   rating: null,
   reviewCount: 0,

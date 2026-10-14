@@ -152,6 +152,35 @@ const syncLeadFromAuth = async (enrichedUser, { method, isNewAccount, attributio
   }
 };
 
+// Welcome email for every new student account (email sign-up and Google sign-in). Never blocks sign-up.
+const sendWelcomeEmail = (name, to) => {
+  if (!to) return;
+  sendEmail({
+    to,
+    subject: 'Welcome to UniCoach — Your Global Education Journey Begins',
+    html: `
+        <div style="font-family: 'Helvetica Neue', Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 30px; background: #ffffff; border-radius: 16px; border: 1px solid #e2e8f0;">
+          <div style="text-align: center; margin-bottom: 24px;">
+            <h1 style="color: #DE5C2B; font-size: 26px; margin: 0; font-weight: 800; letter-spacing: -0.5px;">UniCoach</h1>
+            <p style="color: #64748b; font-size: 13px; margin-top: 4px; font-weight: 600;">Global Study Abroad Advisory</p>
+          </div>
+          <h2 style="color: #1e293b; font-size: 20px; font-weight: 700; margin-bottom: 12px;">Welcome aboard, ${escapeHtml(name)}! 🎓</h2>
+          <p style="color: #475569; font-size: 14px; line-height: 1.6; margin-bottom: 20px;">
+            Your UniCoach account is ready. You now have instant access to 3,600+ world universities, AI tools for SOP & IELTS, scholarship deadline tracking, and 1:1 mentor bookings.
+          </p>
+          <div style="text-align: center; margin: 28px 0;">
+            <a href="${(process.env.FRONTEND_URL || 'https://www.unicoach.com').replace(/\/+$/, '')}/universities" style="background: linear-gradient(135deg, #f97316 0%, #DE5C2B 100%); color: #ffffff; font-weight: 700; text-decoration: none; padding: 14px 28px; border-radius: 12px; font-size: 14px; display: inline-block; box-shadow: 0 4px 14px rgba(222, 92, 43, 0.3);">
+              Explore Target Universities →
+            </a>
+          </div>
+          <p style="color: #94a3b8; font-size: 12px; line-height: 1.5; border-top: 1px solid #f1f5f9; padding-top: 20px; text-align: center;">
+            Need help? Reply directly to this email or reach us at <a href="mailto:unicoachedu@gmail.com" style="color: #DE5C2B; text-decoration: none;">unicoachedu@gmail.com</a>.
+          </p>
+        </div>
+      `
+  }).catch(e => console.warn('Welcome email non-blocking failed:', e.message));
+};
+
 /**
  * POST /api/auth/register
  * Register user via Email + Password (phone is optional contact info, never a login method)
@@ -218,31 +247,7 @@ exports.register = async (req, res) => {
       maxAge: 7 * 24 * 60 * 60 * 1000
     });
 
-    // Send Welcome Email asynchronously
-    sendEmail({
-      to: cleanEmail,
-      subject: 'Welcome to UniCoach — Your Global Education Journey Begins',
-      html: `
-        <div style="font-family: 'Helvetica Neue', Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 30px; background: #ffffff; border-radius: 16px; border: 1px solid #e2e8f0;">
-          <div style="text-align: center; margin-bottom: 24px;">
-            <h1 style="color: #DE5C2B; font-size: 26px; margin: 0; font-weight: 800; letter-spacing: -0.5px;">UniCoach</h1>
-            <p style="color: #64748b; font-size: 13px; margin-top: 4px; font-weight: 600;">Global Study Abroad Advisory</p>
-          </div>
-          <h2 style="color: #1e293b; font-size: 20px; font-weight: 700; margin-bottom: 12px;">Welcome aboard, ${escapeHtml(name)}! 🎓</h2>
-          <p style="color: #475569; font-size: 14px; line-height: 1.6; margin-bottom: 20px;">
-            Your UniCoach account is ready. You now have instant access to 3,600+ world universities, AI tools for SOP & IELTS, scholarship deadline tracking, and 1:1 mentor bookings.
-          </p>
-          <div style="text-align: center; margin: 28px 0;">
-            <a href="${(process.env.FRONTEND_URL || 'https://www.unicoach.com').replace(/\/+$/, '')}/universities" style="background: linear-gradient(135deg, #f97316 0%, #DE5C2B 100%); color: #ffffff; font-weight: 700; text-decoration: none; padding: 14px 28px; border-radius: 12px; font-size: 14px; display: inline-block; box-shadow: 0 4px 14px rgba(222, 92, 43, 0.3);">
-              Explore Target Universities →
-            </a>
-          </div>
-          <p style="color: #94a3b8; font-size: 12px; line-height: 1.5; border-top: 1px solid #f1f5f9; padding-top: 20px; text-align: center;">
-            Need help? Reply directly to this email or reach us at <a href="mailto:unicoachedu@gmail.com" style="color: #DE5C2B; text-decoration: none;">unicoachedu@gmail.com</a>.
-          </p>
-        </div>
-      `
-    }).catch(e => console.warn('Welcome email non-blocking failed:', e.message));
+    sendWelcomeEmail(name, cleanEmail);
 
     return res.status(201).json({
       success: true,
@@ -552,6 +557,7 @@ exports.googleLogin = async (req, res) => {
     const enrichedUser = await enrichUserWithMentor(user);
     syncLeadFromAuth(enrichedUser, { method: 'Google', isNewAccount, attribution: req.body.attribution });
     if (isNewAccount) {
+      sendWelcomeEmail(user.name, user.email);
       sendMetaEvent({
         eventName: 'CompleteRegistration',
         eventId: req.body.attribution?.eventId,

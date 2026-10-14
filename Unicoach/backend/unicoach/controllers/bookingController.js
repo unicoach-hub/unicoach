@@ -992,6 +992,8 @@ const applyAsMentor = async (req, res) => {
       });
     }
 
+    require('../services/mentorEmails').sendApplicationReceived(mentor);
+
     res.status(201).json({
       success: true,
       message: `Application submitted successfully for @${mentor.handle}! Our team will review your verification documents. Once approved by Admin, you will be granted the Blue Tick badge and your profile will go live on the public marketplace.`,

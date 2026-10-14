@@ -16,7 +16,8 @@ const appSource = fs.readFileSync(path.join(root, 'src', 'App.jsx'), 'utf8');
 // Pages that must not be indexed, and aliases that would duplicate another page
 const EXCLUDE = [
   /^\/(dashboard|login|signin|register|signup|reset-password|priority-dm)(\/|$)/,
-  /^\/unicoach\/(dashboard|apply|join)(\/|$)/,
+  /^\/unicoach\/(dashboard|apply|join|application-status)(\/|$)/,
+  /^\/(onboarding|unsubscribe)$/,
   /^\/(book-consultation|privacy|terms-of-service|ielts-evaluator|sop-generator|study-roadmap|visa-prep|course-details)$/,
   /^\/admin/,
 ];

@@ -22,12 +22,12 @@ import { BoardingPassCard, DepartureBoard } from './EventsHeroBoard';
 
 // Large portraits of our event hosts (cut from their event banners); Admin → Events "Speaker photo" overrides
 const SPEAKER_PORTRAITS = {
-    nitya: '/images/mentors/nitya_portrait.webp',
-    manan: '/images/mentors/manan_portrait.webp',
-    prachi: '/images/mentors/prachi_portrait.webp',
-    manvi: '/images/mentors/manvi_portrait.webp',
-    munish: '/images/mentors/munish_portrait.webp',
-    rishi: '/images/mentors/rishi_portrait.webp',
+    nitya: '/images/mentors/headshots/nitya.webp',
+    manan: '/images/mentors/headshots/manan.webp',
+    prachi: '/images/mentors/headshots/prachi.webp',
+    manvi: '/images/mentors/headshots/manvi.webp',
+    munish: '/images/mentors/headshots/munish.webp',
+    rishi: '/images/mentors/headshots/rishi.webp',
 };
 
 // The speakers section shows the real hosts of the published events (one card per person, newest event first)

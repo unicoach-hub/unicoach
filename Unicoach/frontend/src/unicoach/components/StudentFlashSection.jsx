@@ -62,7 +62,7 @@ const FEATURED_MENTORS = TEAM_MENTORS.map((mentor) => ({
   uni: mentor.role,
   course: mentor.country,
   gradient: 'from-[#DE5C2B] to-amber-500',
-  photo: mentor.portrait,
+  photo: mentor.headshot || mentor.portrait,
 }));
 const PRIMARY_MENTOR = FEATURED_MENTORS[0];
 

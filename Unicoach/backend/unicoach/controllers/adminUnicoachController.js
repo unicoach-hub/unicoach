@@ -224,6 +224,7 @@ const toggleMentorVerification = async (req, res) => {
     const mentor = await UnicoachMentor.findById(mentorId);
     if (!mentor) return res.status(404).json({ error: 'Mentor not found' });
 
+    const wasApproved = mentor.applicationStatus === 'APPROVED';
     mentor.isVerified = typeof isVerified === 'boolean' ? isVerified : !mentor.isVerified;
 
     if (mentor.isVerified) {
@@ -237,6 +238,7 @@ const toggleMentorVerification = async (req, res) => {
     }
 
     await mentor.save();
+    if (mentor.isVerified && !wasApproved) require('../services/mentorEmails').sendApproved(mentor);
 
     const payoutAccountMessage = mentor.isVerified ? await setupPayoutAccountAfterApproval(mentor) : '';
 
@@ -264,6 +266,9 @@ const updateMentorApplication = async (req, res) => {
     const mentor = await UnicoachMentor.findById(mentorId);
     if (!mentor) return res.status(404).json({ error: 'Mentor not found' });
 
+    const previousStatus = mentor.applicationStatus;
+    const mentorEmails = require('../services/mentorEmails');
+
     if (action === 'APPROVE') {
       mentor.isVerified = true;
       mentor.applicationStatus = 'APPROVED';
@@ -273,6 +278,7 @@ const updateMentorApplication = async (req, res) => {
         mentor.badges.unshift('Verified Creator');
       }
       await mentor.save();
+      if (previousStatus !== 'APPROVED') mentorEmails.sendApproved(mentor);
       const payoutAccountMessage = await setupPayoutAccountAfterApproval(mentor);
       return res.json({
         success: true,
@@ -287,6 +293,7 @@ const updateMentorApplication = async (req, res) => {
       if (adminNotes) mentor.adminNotes = adminNotes;
       mentor.badges = mentor.badges.filter(b => b !== 'Verified Creator');
       await mentor.save();
+      if (previousStatus !== 'REJECTED') mentorEmails.sendRejected(mentor);
       return res.json({
         success: true,
         message: `Mentor @${mentor.handle} application rejected.`,

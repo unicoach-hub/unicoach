@@ -28,6 +28,7 @@ import RequireProfile from './components/RequireProfile';
 const UnicoachMarketplacePage = lazy(() => import('./unicoach/pages/UnicoachMarketplacePage'));
 const MentorsDirectoryPage = lazy(() => import('./unicoach/pages/MentorsDirectoryPage'));
 const UnicoachApplyPage = lazy(() => import('./unicoach/pages/UnicoachApplyPage'));
+const MentorApplicationStatusPage = lazy(() => import('./unicoach/pages/MentorApplicationStatusPage'));
 const UnicoachProfilePage = lazy(() => import('./unicoach/pages/UnicoachProfilePage'));
 const UnicoachDashboardPage = lazy(() => import('./unicoach/pages/UnicoachDashboardPage'));
 const StudentQueryTrackingPage = lazy(() => import('./unicoach/pages/StudentQueryTrackingPage'));
@@ -876,6 +877,7 @@ const App = () => {
             {/* UniCoach Verified Mentorship & Marketplace Engine */}
             <Route path="/unicoach" element={<UnicoachMarketplacePage />} />
             <Route path="/unicoach/mentors" element={<MentorsDirectoryPage />} />
+            <Route path="/unicoach/application-status" element={<MentorApplicationStatusPage />} />
             <Route path="/unicoach/for-mentors" element={<MentorLandingPage />} />
             <Route path="/unicoach/apply" element={<UnicoachApplyPage />} />
             <Route path="/unicoach/join" element={<UnicoachApplyPage />} />
