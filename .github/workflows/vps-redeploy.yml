@@ -1,0 +1,26 @@
+name: VPS Redeploy Backend
+
+# Triggers a Coolify redeploy of the api.unicoach.com backend (pulls latest main).
+# Use when a backend code change on main hasn't auto-deployed.
+on:
+  workflow_dispatch:
+
+jobs:
+  redeploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      APP_UUID: et79n1zgjbtodtdsklnfn09d
+    steps:
+      - uses: actions/checkout@v4
+      - name: Write SSH key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.VPS_SSH_KEY_B64 }}" | base64 -d > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          ssh-keyscan -H "${{ secrets.VPS_HOST }}" >> ~/.ssh/known_hosts 2>/dev/null || true
+      - name: Redeploy on VPS
+        run: |
+          SCRIPT_B64=$(base64 -w0 Unicoach/backend/scripts/coursefinder/coolify_redeploy.sh)
+          ssh -i ~/.ssh/id_ed25519 -o StrictHostKeyChecking=no root@${{ secrets.VPS_HOST }} \
+            "echo '$SCRIPT_B64' | base64 -d > /tmp/cf_redeploy.sh && APP_UUID='${APP_UUID}' bash /tmp/cf_redeploy.sh; rm -f /tmp/cf_redeploy.sh"
