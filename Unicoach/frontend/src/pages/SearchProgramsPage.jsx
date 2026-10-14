@@ -4,6 +4,7 @@ import { Search, SlidersHorizontal, UserCheck, X, Download, FileSpreadsheet, Git
 import { useAuth } from '../context/AuthContext';
 import { getSearchConfig, getHighlights, searchCourses, evaluateEligibility, exportSearch } from '../utils/searchApi';
 import { exportSelectedProgramsToExcel } from '../utils/excelExporter';
+import CfSidebar from '../components/CfSidebar';
 
 const PAGE_SIZE = 20;
 const BLUE = '#226CF5';
@@ -184,7 +185,8 @@ export default function SearchProgramsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 pt-[76px] pb-28 font-['Poppins']">
+    <div className="min-h-screen bg-slate-50 pt-[76px] pb-28 font-['Poppins'] lg:pl-16">
+      <CfSidebar active="search" />
       {/* Search toolbar */}
       <div className="bg-white border-b border-slate-200">
         <div className="max-w-6xl mx-auto px-4 py-4">

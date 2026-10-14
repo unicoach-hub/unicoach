@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { ArrowLeft, Loader2, Lock, Globe, Award, CalendarDays, Clock, MapPin, Wallet, FileText, GraduationCap, ExternalLink } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { getCourseDetail } from '../utils/searchApi';
+import CfSidebar from '../components/CfSidebar';
 
 const BLUE = '#226CF5';
 const FLAG = { 1: '🇺🇸', 2: '🇦🇺', 3: '🇨🇦', 4: '🇬🇧', 5: '🇳🇿', 6: '🇸🇬', 7: '🇦🇪', 8: '🇮🇪', 9: '🇩🇪', 10: '🇫🇷', 16: '🇮🇹', 19: '🇪🇸', 25: '🇲🇾' };
@@ -71,7 +72,8 @@ export default function ProgramDetailPage() {
   const avgSch = d.averageScholarship ? `${(d.tuitionFee?.currency) || ''} ${Number(d.averageScholarship).toLocaleString()}`.trim() : null;
 
   return (
-    <div className="min-h-screen bg-slate-50 pt-[76px] pb-16 font-['Poppins']">
+    <div className="min-h-screen bg-slate-50 pt-[76px] pb-16 font-['Poppins'] lg:pl-16">
+      <CfSidebar active="search" />
       {/* top bar */}
       <div className="bg-white border-b border-slate-200">
         <div className="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
@@ -115,7 +117,7 @@ export default function ProgramDetailPage() {
             <Row label="Intakes" value={Array.isArray(intakes) ? intakes.join(', ') : intakes} />
             <Row label="Application Deadline" value={d.applicationDeadline} />
             <Row label="Yearly Tuition Fee" value={money(d.tuitionFee)} strong />
-            <Row label="Application Fee" value={d.applicationFee?.isWaived ? 'Waived' : money(d.applicationFee)} />
+            <Row label="Application Fee" value={d.applicationFee?.isWaived ? 'Waived' : (money(d.applicationFee) || 'N/A')} />
             <Row label="Initial Deposit" value={money(d.deposit)} />
             <Row label="Average Scholarship" value={avgSch} />
             {d.tuitionFeeRemarks && <p className="text-[12.5px] text-slate-500 mt-2 pt-2 border-t border-slate-100">{d.tuitionFeeRemarks}</p>}
