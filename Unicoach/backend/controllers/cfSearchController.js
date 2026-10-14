@@ -51,7 +51,8 @@ function buildMatch(f = {}) {
     const syn = SYN[raw.toUpperCase()];
     if (syn) alts.push(syn);
     const rx = new RegExp('(' + alts.map(esc).join('|') + ')', 'i');
-    (m.$and = m.$and || []).push({ $or: [{ courseName: rx }, { universityName: rx }, { discipline: rx }] });
+    // match name, university, first discipline, and the FULL subject-tag array (CourseFinder parity on broad terms)
+    (m.$and = m.$and || []).push({ $or: [{ courseName: rx }, { universityName: rx }, { discipline: rx }, { disciplines: rx }] });
   }
   const country = arr(f.country).map(Number).filter(Boolean);
   if (country.length) m.cfCountryId = { $in: country };
@@ -71,7 +72,8 @@ function buildMatch(f = {}) {
   }
   if (f.disciplineArea || f.studyArea) {
     const term = f.disciplineArea || f.studyArea;
-    m.discipline = new RegExp(String(term).slice(0, 60), 'i');
+    const drx = new RegExp(String(term).slice(0, 60), 'i');
+    (m.$and = m.$and || []).push({ $or: [{ discipline: drx }, { disciplines: drx }] });
   }
   return m;
 }

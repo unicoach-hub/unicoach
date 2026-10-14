@@ -168,6 +168,12 @@ export default function SearchProgramsPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [country, programLevels, requirements, intake, activeHighlights, sort]);
 
+  // show all programs by default on first load (CourseFinder shows the full catalogue)
+  useEffect(() => {
+    if (user && !result && !eligResult) runSearch(1);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user]);
+
   const toggleHighlight = (id) => setActiveHighlights((a) => (a.includes(id) ? a.filter((x) => x !== id) : [...a, id]));
   const toggleArr = (setter) => (val) => setter((a) => (a.includes(val) ? a.filter((x) => x !== val) : [...a, val]));
   const toggleSelect = (c) => setSelected((s) => { const n = { ...s }; if (n[c.cfId]) delete n[c.cfId]; else n[c.cfId] = c; return n; });

@@ -75,6 +75,7 @@ function slimCf(cf){ const o={}; for(const k of CF_KEEP) if(cf[k]!==undefined) o
   await Course.createIndex({ cfCountryId: 1, cfStudyLevelId: 1 });
   await Course.createIndex({ cfUniversityId: 1 });
   await Course.createIndex({ highlightIds: 1 });
+  await Course.createIndex({ disciplines: 1 }); // broad free-text subject matching (CourseFinder parity)
   await Course.createIndex({ courseName: 'text', universityName: 'text' });
 
   const rl = readline.createInterface({ input: fs.createReadStream(path.join(OUT,'courses.ndjson')), crlfDelay: Infinity });

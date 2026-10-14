@@ -18,6 +18,14 @@ const highlights = JSON.parse(fs.readFileSync(path.join(NET, 'highlights.json'),
 
 const num = v => { if (v === null || v === undefined || v === '') return undefined; const n = Number(String(v).replace(/[, ]/g,'')); return Number.isFinite(n) ? n : undefined; };
 const firstConcentration = s => (s ? String(s).split(/;|,/)[0].trim() : undefined);
+// ALL subject/study-area tags (deduped), so broad free-text search matches CourseFinder.
+const allConcentrations = s => {
+  if (!s) return undefined;
+  const parts = String(s).split(/[;,/]|\band\b|\&/i).map(x => x.trim()).filter(x => x.length > 1);
+  const seen = new Set(); const out = [];
+  for (const p of parts) { const k = p.toLowerCase(); if (!seen.has(k)) { seen.add(k); out.push(p); } }
+  return out.length ? out : undefined;
+};
 
 function degreeLevel(studylvl, id) {
   const s = (studylvl || '').toLowerCase();
@@ -39,6 +47,7 @@ function mapCourse(c) {
     city: c.universityCity || undefined,
     degreeLevel: degreeLevel(c.Studylvl, c.StudyLevelId),
     discipline: firstConcentration(c.Concentration),
+    disciplines: allConcentrations(c.Concentration),
     duration: c.Duration ? `${c.Duration} Months` : undefined,
     annualFee: { amount: num(c.Amount) || num(c.TutionFee) || 0, currency: cur, inrAmount: 0 },
     applicationFee: { amount: num(c.ApplicationFeeAmt) || 0, currency: c.ApplicationFeeCurrency || cur, isWaived: !!c.AppFeeWaiverAvailable },

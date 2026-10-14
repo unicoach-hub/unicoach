@@ -19,6 +19,10 @@ on:
         description: 'SLIM mode (drop heavy raw payload; needed for free 512MB M0)'
         type: boolean
         default: true
+      reset:
+        description: 'RESET (drop cf_* first). Leave OFF for a live site — upserts update in place with no search gap.'
+        type: boolean
+        default: false
 
 jobs:
   ingest:
@@ -58,7 +62,7 @@ jobs:
         env:
           MONGO_URI: ${{ secrets.MONGO_URI }}
           SLIM: ${{ inputs.slim && '1' || '0' }}
-          RESET: '1'
+          RESET: ${{ inputs.reset && '1' || '0' }}
 
       - name: Verify
         run: |
@@ -73,10 +77,15 @@ jobs:
             const uk = await db.collection('cf_courses').countDocuments({ cfCountryId: 4 });
             const scholarship = await db.collection('cf_courses').countDocuments({ highlightIds: 2 });
             const sample = await db.collection('cf_courses').findOne({ highlightIds: 2 }, { projection: { _id:0, courseName:1, universityName:1, countryName:1, annualFee:1 } });
+            const withDisc = await db.collection('cf_courses').countDocuments({ disciplines: { \$exists: true, \$ne: [] } });
+            const bterm = async (t) => { const rx = new RegExp(t, 'i'); return db.collection('cf_courses').countDocuments({ \$or: [{courseName: rx},{universityName: rx},{discipline: rx},{disciplines: rx}] }); };
             console.log('--- INGEST VERIFY ---');
             console.log('db dataSize MB:', (s.dataSize/1048576).toFixed(1), '/ 512');
             console.log('cf_courses:', courses, '| cf_universities:', unis);
             console.log('UK courses (cfCountryId=4):', uk, '| scholarship-available:', scholarship);
+            console.log('disciplines coverage:', withDisc, '/', courses, '(' + (100*withDisc/courses).toFixed(1) + '%)');
+            console.log('BROAD-TERM counts (name|uni|discipline|disciplines):');
+            for (const t of ['Law','Nursing','Business','Data Science','Computer Science','Psychology']) console.log('  ', t, '=>', await bterm(t));
             console.log('sample scholarship course:', JSON.stringify(sample));
             if (s.dataSize/1048576 > 480) console.log('::warning::DB dataSize is close to the 512MB M0 cap — consider dropping legacy course collections or upgrading to M2.');
             await c.close();
