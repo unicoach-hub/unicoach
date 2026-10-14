@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Search, SlidersHorizontal, UserCheck, X, Download, FileSpreadsheet, GitCompare, ChevronDown, ChevronUp, Info, Loader2, CheckCircle2, AlertCircle, Lock } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
-import { getSearchConfig, getHighlights, searchCourses, evaluateEligibility, exportSearch } from '../utils/searchApi';
+import { getSearchConfig, getHighlights, searchCourses, evaluateEligibility, exportSearch, getCourseDetail } from '../utils/searchApi';
 import { exportSelectedProgramsToExcel } from '../utils/excelExporter';
 import CfSidebar from '../components/CfSidebar';
 
@@ -90,6 +90,7 @@ export default function SearchProgramsPage() {
   const [loading, setLoading] = useState(false);
   const [selected, setSelected] = useState({});       // cfId -> course
   const [showCompare, setShowCompare] = useState(false);
+  const [compareDetails, setCompareDetails] = useState({}); // cfId -> full detail (for CF-parity rows)
   const [exporting, setExporting] = useState(false);
 
   // eligibility
@@ -108,6 +109,18 @@ export default function SearchProgramsPage() {
       setSearchParams(searchParams, { replace: true });
     }
   }, [user, searchParams, setSearchParams]);
+
+  // when Compare opens, pull full detail for each selected program (deposit, website,
+  // test scores, deadline, scholarship, ranking) so the table matches CourseFinder 1:1
+  useEffect(() => {
+    if (!showCompare) return;
+    const ids = Object.keys(selected).filter((id) => !compareDetails[id]);
+    if (!ids.length) return;
+    let cancelled = false;
+    Promise.all(ids.map((id) => getCourseDetail(id).then((d) => [id, d]).catch(() => [id, null])))
+      .then((pairs) => { if (!cancelled) setCompareDetails((prev) => ({ ...prev, ...Object.fromEntries(pairs) })); });
+    return () => { cancelled = true; };
+  }, [showCompare, selected]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     document.title = 'Search Programs | UniCoach';
@@ -396,14 +409,36 @@ export default function SearchProgramsPage() {
                 <button onClick={() => setShowCompare(false)} className="text-slate-400"><X size={18} /></button>
               </div>
             </div>
-            <table className="w-full text-[13px]">
+            <table className="w-full text-[13px] border-collapse">
               <tbody>
-                {[['Program Name', (c) => c.courseName], ['University', (c) => c.universityName], ['Country', (c) => c.countryName], ['Level', (c) => c.degreeLevel], ['Duration', (c) => c.duration], ['Intakes', (c) => (c.intakes || []).join(', ')], ['Tuition / yr', (c) => money(c.annualFee)], ['Application Fee', (c) => (c.applicationFee?.isWaived ? 'Waived' : money(c.applicationFee))]].map(([label, fn]) => (
-                  <tr key={label} className="border-b border-slate-100">
-                    <td className="px-4 py-2 font-medium text-slate-500 bg-slate-50 whitespace-nowrap">{label}</td>
-                    {selectedList.slice(0, 5).map((c) => <td key={c.cfId} className="px-4 py-2 text-slate-700">{fn(c) || '—'}</td>)}
-                  </tr>
-                ))}
+                {(() => {
+                  // merge list item + fetched detail; detail wins where present
+                  const engStr = (d) => (d?.testRequirements?.english || []).map((t) => `${t.test} ${t.score}`).join(', ');
+                  const stdStr = (d) => { const s = (d?.testRequirements?.standardized || []); return s.length ? s.map((t) => `${t.test} ${t.score}`).join(', ') : 'No Test Requirement'; };
+                  const rows = [
+                    ['Program Name', (c, d) => d?.name || c.courseName],
+                    ['University', (c, d) => d?.university?.name || c.universityName],
+                    ['Website', (c, d) => { const w = d?.university?.['website-url']; return w ? <a href={w.startsWith('http') ? w : `https://${w}`} target="_blank" rel="noreferrer" className="text-[#226CF5] break-all">{w}</a> : '—'; }],
+                    ['Country', (c, d) => [d?.university?.city, d?.university?.countryName].filter(Boolean).join(', ') || c.countryName],
+                    ['Program Level', (c, d) => d?.degreeLevel || c.degreeLevel],
+                    ['Duration', (c, d) => d?.duration || c.duration],
+                    ['Intakes', (c, d) => (d?.intakesList || c.intakes || []).join?.(', ') || '—'],
+                    ['English Requirements', (c, d) => engStr(d) || '—'],
+                    ['Standardized Requirements', (c, d) => stdStr(d)],
+                    ['Application Deadline', (c, d) => d?.applicationDeadline || '—'],
+                    ['Application Fee', (c, d) => (d?.applicationFee?.isWaived ? 'Waived' : (money(d?.applicationFee) !== '—' ? money(d?.applicationFee) : (c.applicationFee?.isWaived ? 'Waived' : money(c.applicationFee))))],
+                    ['Yearly Tuition Fee', (c, d) => (money(d?.tuitionFee) !== '—' ? money(d?.tuitionFee) : money(c.annualFee))],
+                    ['Deposit', (c, d) => money(d?.deposit)],
+                    ['Average Scholarship', (c, d) => (d?.averageScholarship ? `${d?.tuitionFee?.currency || ''} ${Number(d.averageScholarship).toLocaleString()}`.trim() : '—')],
+                    ['QS Ranking', (c, d) => (d?.university?.rankings?.qs ? `#${d.university.rankings.qs}` : '—')],
+                  ];
+                  return rows.map(([label, fn]) => (
+                    <tr key={label} className="border-b border-slate-100 align-top">
+                      <td className="px-4 py-2 font-medium text-slate-500 bg-slate-50 whitespace-nowrap sticky left-0">{label}</td>
+                      {selectedList.slice(0, 5).map((c) => <td key={c.cfId} className="px-4 py-2 text-slate-700 min-w-[180px]">{fn(c, compareDetails[c.cfId]) || '—'}</td>)}
+                    </tr>
+                  ));
+                })()}
               </tbody>
             </table>
           </div>
