@@ -1,0 +1,23 @@
+name: DB Free Space (drop sample_* DBs)
+
+# Drops MongoDB's bundled sample_* databases (unused demo data) to reclaim M0 space.
+# Trigger: Actions tab -> "DB Free Space" -> Run workflow.
+on:
+  workflow_dispatch:
+
+jobs:
+  free-space:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    defaults:
+      run:
+        working-directory: Unicoach/backend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - run: npm i mongodb --no-audit --no-fund
+      - run: node scripts/coursefinder/free_space.js
+        env:
+          MONGO_URI: ${{ secrets.MONGO_URI }}
