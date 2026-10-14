@@ -1,0 +1,44 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "gradient-text",
+        "value": "*",
+        "files": [
+          "src/pages/SearchProgramsPage.jsx"
+        ],
+        "createdAt": "2026-10-13T14:25:59.093Z",
+        "reason": "Claude: matches UniCoach live heading gradient (brand-consistent emphasis word), same as existing pages"
+      },
+      {
+        "rule": "gradient-text",
+        "value": "*",
+        "files": [
+          "src/index.css"
+        ],
+        "createdAt": "2026-10-13T14:26:37.362Z",
+        "reason": "Claude: pre-existing UniCoach brand gradient-text utilities (not introduced by this work); authoritative live-site brand style"
+      },
+      {
+        "rule": "overused-font",
+        "value": "*",
+        "files": [
+          "src/index.css"
+        ],
+        "createdAt": "2026-10-13T14:27:26.028Z",
+        "reason": "Claude: pre-existing UniCoach brand typography (Inter/Plus Jakarta Sans/Outfit) from the authoritative live site; matching brand is the task, not changing it"
+      },
+      {
+        "rule": "layout-transition",
+        "value": "*",
+        "files": [
+          "src/components/CfSidebar.jsx"
+        ],
+        "createdAt": "2026-10-14T10:19:27.722Z",
+        "reason": "Claude: intentional expand/collapse of a small fixed sidebar rail; user-triggered, infrequent, few children; transform would clip the icon/label reveal rather than slide it open, so width is the correct property"
+      }
+    ]
+  }
+}
