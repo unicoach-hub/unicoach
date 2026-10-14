@@ -37,6 +37,38 @@
   ],
   "rewrites": [
     {
+      "source": "/blogs/rhodes-scholarship",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/blogs/:slug",
+      "destination": "/api/seo?type=blog&slug=:slug"
+    },
+    {
+      "source": "/news/:slug",
+      "destination": "/api/seo?type=news&slug=:slug"
+    },
+    {
+      "source": "/newsroom/:slug",
+      "destination": "/api/seo?type=news&slug=:slug"
+    },
+    {
+      "source": "/events/:slug",
+      "destination": "/api/seo?type=event&slug=:slug"
+    },
+    {
+      "source": "/sitemap.xml",
+      "destination": "/api/sitemap"
+    },
+    {
+      "source": "/:p(wp-admin|wp-content|wp-includes|wp-json|wp-login\\.php|xmlrpc\\.php|feed|comments)/:rest*",
+      "destination": "/api/gone"
+    },
+    {
+      "source": "/:p(category|tag|author)/:rest*",
+      "destination": "/api/gone"
+    },
+    {
       "source": "/(.*)",
       "destination": "/index.html"
     }

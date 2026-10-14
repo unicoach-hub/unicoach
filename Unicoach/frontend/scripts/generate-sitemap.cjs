@@ -1,5 +1,6 @@
 /**
- * Builds public/sitemap.xml and public/robots.txt from the routes declared in src/App.jsx.
+ * Builds public/sitemap-pages.xml and public/robots.txt from the routes declared in src/App.jsx.
+ * /sitemap.xml itself is served by api/sitemap.js, which adds blogs, news and events from the database.
  * Runs before every production build (npm "prebuild"), so new pages are listed automatically.
  *
  *   node scripts/generate-sitemap.cjs            -> https://www.unicoach.com
@@ -57,6 +58,6 @@ const robots = [
   '',
 ].join('\n');
 
-fs.writeFileSync(path.join(root, 'public', 'sitemap.xml'), xml);
+fs.writeFileSync(path.join(root, 'public', 'sitemap-pages.xml'), xml);
 fs.writeFileSync(path.join(root, 'public', 'robots.txt'), robots);
-console.log(`sitemap.xml: ${unique.length} URLs on ${SITE_URL}`);
+console.log(`sitemap-pages.xml: ${unique.length} URLs on ${SITE_URL}`);
