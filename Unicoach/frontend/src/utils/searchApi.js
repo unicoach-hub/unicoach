@@ -28,6 +28,14 @@ export const searchCourses = (filters = {}, { sort = 'featured', page = 1, pageS
 export const getCourseDetail = (cfId) =>
   fetch(`${API_BASE_URL}/search/courses/${cfId}`).then(json).then((d) => d.data || d);
 
+// all matching results (capped) mapped for the Excel exporter
+export const exportSearch = (filters = {}) =>
+  fetch(`${API_BASE_URL}/search/export`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ filters }),
+  }).then(json);
+
 // profile: { nationalityId, stateId, highestQualificationId, gradingSystem, score, englishExam, backlogs, workExperience }
 export const evaluateEligibility = (filters, profile, { bucket = 'eligible', page = 1, pageSize = 20 } = {}) =>
   fetch(`${API_BASE_URL}/search/eligibility`, {

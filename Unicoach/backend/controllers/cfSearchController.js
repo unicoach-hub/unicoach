@@ -109,6 +109,41 @@ exports.getHighlights = async (req, res) => {
   } catch (e) { res.status(500).json({ error: e.message }); }
 };
 
+// map a cf_course -> the program shape expected by the frontend Excel exporter
+function toExportProgram(c) {
+  const cf = c.cf || {};
+  const money = (m) => (m && m.amount ? `${m.currency || ''} ${Number(m.amount).toLocaleString()}`.trim() : 'Check official site');
+  return {
+    title: c.courseName,
+    universityName: c.universityName,
+    degreeLevel: c.degreeLevel,
+    durationText: c.duration,
+    tuitionPerYear: money(c.annualFee),
+    applicationFee: c.applicationFee?.isWaived ? 'Waived' : money(c.applicationFee),
+    initialDeposit: money(c.initialDeposit),
+    intake: (c.intakes || []).join(', '),
+    intakeYear: '2027',
+    minIeltsScore: cf.IeltsOverall, minPteScore: cf.PteScore, minDetScore: cf.DETScore, gmatScore: cf.GmatScore,
+    pteSubscore: cf.PteNoSectionLessThan,
+    avgScholarship: cf.AverageScholarship,
+    deadline: cf.ApplicationDeadline,
+    concentration: cf.Concentration,
+    requirements: cf.EntryRequirement,
+    isStem: c.isStem,
+    university: { name: c.universityName, countryName: c.countryName, city: c.universityCity || c.city, state: c.universityState },
+  };
+}
+
+// POST /api/search/export  { filters }  -> all matching results (capped) ready for the Excel exporter
+exports.exportCourses = async (req, res) => {
+  try {
+    const { filters = {} } = req.body || {};
+    const CAP = 5000;
+    const rows = await CfCourse.find(buildMatch(filters)).sort(buildSort('featured')).limit(CAP).lean();
+    res.json({ data: rows.map(toExportProgram), total: rows.length, capped: rows.length >= CAP });
+  } catch (e) { res.status(500).json({ error: e.message }); }
+};
+
 // GET /api/search/suggest?keyword=
 exports.suggest = async (req, res) => {
   try {
