@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Search, SlidersHorizontal, UserCheck, X, Download, FileSpreadsheet, GitCompare, ChevronDown, ChevronUp, Info, Loader2, CheckCircle2, AlertCircle, Lock } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { getSearchConfig, getHighlights, searchCourses, evaluateEligibility, exportSearch } from '../utils/searchApi';
@@ -93,11 +93,21 @@ export default function SearchProgramsPage() {
   const [exporting, setExporting] = useState(false);
 
   // eligibility
+  const [searchParams, setSearchParams] = useSearchParams();
   const [showElig, setShowElig] = useState(false);
   const [profile, setProfile] = useState({ nationalityId: '', highestQualificationId: '', gradingSystem: 'OutOf100', score: '', englishExam: 'later', backlogs: '', workExperience: '' });
   const [eligResult, setEligResult] = useState(null);
   const [eligBucket, setEligBucket] = useState('eligible');
   const [eligLoading, setEligLoading] = useState(false);
+
+  // open the eligibility modal when arriving from the sidebar (?check=eligibility)
+  useEffect(() => {
+    if (user && searchParams.get('check') === 'eligibility') {
+      setShowElig(true);
+      searchParams.delete('check');
+      setSearchParams(searchParams, { replace: true });
+    }
+  }, [user, searchParams, setSearchParams]);
 
   useEffect(() => {
     document.title = 'Search Programs | UniCoach';

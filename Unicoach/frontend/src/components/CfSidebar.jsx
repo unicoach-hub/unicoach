@@ -1,28 +1,23 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
-  Home, GraduationCap, BookOpen, Search, ClipboardList, Users,
-  Wallet, FileText, HandCoins, Info, Settings2, ChevronRight, ChevronLeft, LogOut,
+  Home, GraduationCap, BookOpen, Search, UserCheck, Info, ChevronRight, ChevronLeft, LogOut,
 } from 'lucide-react';
 
 const BLUE = '#226CF5';
 
 // CourseFinder-style slim left icon rail. The UniCoach top nav (76px) is shared and
 // stays untouched; this rail sits in the left gutter beneath it, exactly like coursefinder.ai.
-// `active` = which item is highlighted (blue rounded square). Items with a `to` navigate;
-// decorative ones (B2B-only sections UniCoach doesn't have) show a tooltip and don't route.
+// `active` = which item is highlighted (blue rounded square). Every item routes to a real
+// UniCoach destination — CF's B2B-only icons (wallet/commission/enquiry) are omitted since
+// UniCoach has no equivalent, so the rail stays faithful but has no dead ends.
 const ITEMS = [
   { key: 'home', icon: Home, label: 'Home', to: '/' },
   { key: 'study', icon: GraduationCap, label: 'Study Abroad', to: '/study-abroad' },
   { key: 'resources', icon: BookOpen, label: 'Resources', to: '/resources' },
   { key: 'search', icon: Search, label: 'Search Programs', to: '/search-programs' },
-  { key: 'enquiry', icon: ClipboardList, label: 'Enquiries' },
-  { key: 'students', icon: Users, label: 'Students' },
-  { key: 'wallet', icon: Wallet, label: 'Wallet' },
-  { key: 'docs', icon: FileText, label: 'Documents' },
-  { key: 'commission', icon: HandCoins, label: 'Commission' },
-  { key: 'info', icon: Info, label: 'About' },
-  { key: 'learning', icon: Settings2, label: 'Learning' },
+  { key: 'eligibility', icon: UserCheck, label: 'Check Eligibility', to: '/search-programs?check=eligibility' },
+  { key: 'info', icon: Info, label: 'About', to: '/about' },
 ];
 
 export default function CfSidebar({ active = 'search' }) {
