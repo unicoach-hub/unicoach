@@ -30,7 +30,7 @@ const stripHtml = (html) => String(html || '')
 const clip = (s, n) => (s.length > n ? `${s.slice(0, n - 1).replace(/\s+\S*$/, '')}…` : s);
 
 const absolute = (url) => {
-  if (!url) return `${SITE}/og-banner-v3.jpg`;
+  if (!url) return `${SITE}/og-banner-v4.jpg`;
   if (/^https?:\/\//i.test(url)) return url;
   return `${SITE}${url.startsWith('/') ? '' : '/'}${url}`;
 };

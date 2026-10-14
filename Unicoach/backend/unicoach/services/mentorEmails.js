@@ -10,7 +10,7 @@ const statusUrl = () => `${SITE()}/unicoach/application-status`;
 const layout = ({ heading, intro, body = '', button, buttonUrl, tone = '#DE5C2B' }) => `
 <div style="font-family:'Helvetica Neue',Arial,sans-serif;max-width:600px;margin:0 auto;padding:30px;background:#ffffff;border-radius:16px;border:1px solid #e2e8f0">
   <div style="text-align:center;margin-bottom:22px">
-    <h1 style="color:#DE5C2B;font-size:26px;margin:0;font-weight:800;letter-spacing:-0.5px">UniCoach</h1>
+    <img src="https://www.unicoach.com/logo-black.png" alt="UniCoach" width="150" style="display:inline-block;width:150px;max-width:150px;height:auto;border:0;outline:none;text-decoration:none" />
     <p style="color:#64748b;font-size:13px;margin-top:4px;font-weight:600">Mentor Program</p>
   </div>
   <h2 style="color:#1e293b;font-size:20px;font-weight:700;margin:0 0 12px">${heading}</h2>

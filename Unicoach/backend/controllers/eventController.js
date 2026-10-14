@@ -176,7 +176,7 @@ function sendRegistrationEmail({ name, email, event }) {
     subject: `You're registered: ${String(event.title).replace(/[\r\n]+/g, ' ')}`,
     html: `
       <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #18181b; max-width: 560px; margin: 0 auto; padding: 24px; border: 1px solid #e6e4dd; border-radius: 14px;">
-        <div style="font-size: 20px; font-weight: 800; margin-bottom: 4px;">UniCoach<span style="color: #DE5C2B;">.</span></div>
+        <div style="margin-bottom: 12px;"><img src="https://www.unicoach.com/logo-black.png" alt="UniCoach" width="130" style="display:inline-block;width:130px;height:auto;border:0" /></div>
         <p>Hi <strong>${escapeHtml(name)}</strong>,</p>
         <p>You are registered for <strong>${escapeHtml(event.title)}</strong>.</p>
         <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="width: 100%; background: #faf9f6; border-radius: 10px; padding: 12px 16px; margin: 16px 0;">

@@ -225,9 +225,9 @@ export const UpcomingEvents = ({ onOpenModal }) => {
     .slice(0, 6);
 
   const gridLayout = loading || displayedEvents.length >= 4
-    ? 'sm:grid-cols-2 lg:grid-cols-3'
+    ? 'sm:grid-cols-2 lg:grid-cols-3 max-w-[1040px] mx-auto'
     : displayedEvents.length === 3
-      ? 'md:grid-cols-2 lg:grid-cols-3'
+      ? 'md:grid-cols-2 lg:grid-cols-3 max-w-[1040px] mx-auto'
     : displayedEvents.length === 2
       ? 'md:grid-cols-2 max-w-[900px] mx-auto'
       : 'max-w-[440px] mx-auto';
@@ -368,24 +368,6 @@ export const UpcomingEvents = ({ onOpenModal }) => {
                     }}
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-transparent to-transparent pointer-events-none" />
-
-                  {/* Top Flag & Category Badges */}
-                  {/* Centered Country Badge (leaves top-left clear so UniCoach graphic in banner is fully visible) */}
-                  <div className="absolute top-2.5 left-1/2 -translate-x-1/2 z-10 pointer-events-none">
-                    <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-slate-950/85 backdrop-blur-md text-white text-[11px] font-bold border border-white/20 shadow-md whitespace-nowrap pointer-events-auto">
-                      {ev.flag && (typeof ev.flag === 'string' && (ev.flag.startsWith('http') || ev.flag.startsWith('/'))) ? (
-                        <img
-                          src={ev.flag}
-                          alt={ev.countryName}
-                          className="w-4 h-2.5 object-cover rounded-[2px] shadow-2xs shrink-0"
-                          onError={(e) => { e.currentTarget.style.display = 'none'; }}
-                        />
-                      ) : (
-                        <span className="text-[11px]">{ev.flag || '🌍'}</span>
-                      )}
-                      <span className="tracking-tight">{ev.countryName}</span>
-                    </div>
-                  </div>
 
                   {/* Bottom strip: date on the left, category on the right.
                       (The category used to sit top-right, right on top of the expert's face in the banner.) */}

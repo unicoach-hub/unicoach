@@ -50,6 +50,8 @@ const NAV_SECTIONS = [
         icon: <TeamOutlined />,
         children: [
           { path: '/leads', label: 'All Leads' },
+          { path: '/leads-converted', label: 'Converted' },
+          { path: '/leads-followup', label: 'Follow-up' },
           { path: '/crm/board', label: 'Pipeline Board' },
           { path: '/crm/pipelines', label: 'CRM Pipelines' },
           { path: '/crm/forms', label: 'Form Builder' },

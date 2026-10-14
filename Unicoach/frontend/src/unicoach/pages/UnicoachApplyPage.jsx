@@ -122,6 +122,18 @@ const UnicoachApplyPage = () => {
 
   // ─── Field-level validation errors ───
   const [fieldErrors, setFieldErrors] = useState({});
+  // The field the latest error is about: outlined red, and the error also shows as a popup near the bottom of the screen
+  const [errorField, setErrorField] = useState('');
+  const showFieldError = (field, text) => {
+    setErrorField(field);
+    setFeedback({ type: 'error', text });
+    const el = document.querySelector(`[data-field="${field}"]`);
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      const input = el.querySelector('input, select, textarea');
+      if (input) setTimeout(() => input.focus({ preventScroll: true }), 400);
+    }
+  };
   const [touched, setTouched] = useState({});
 
   const validators = {
@@ -330,10 +342,7 @@ const UnicoachApplyPage = () => {
     if (hasError) {
       // Find the first error and show it
       const firstError = allFields.find(f => newErrors[f]);
-      setFeedback({ type: 'error', text: newErrors[firstError] });
-      // Scroll to the first error field
-      const el = document.querySelector(`[data-field="${firstError}"]`);
-      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      showFieldError(firstError, newErrors[firstError]);
       return;
     }
 
@@ -359,19 +368,14 @@ const UnicoachApplyPage = () => {
     const failedPayoutCheck = payoutChecks.find(([, failed]) => failed);
     if (failedPayoutCheck) {
       const [field, , message] = failedPayoutCheck;
-      setFeedback({ type: 'error', text: message });
-      const el = document.querySelector(`[data-field="${field}"]`);
-      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      showFieldError(field, message);
       return;
     }
 
     const finalDocUrl = uploadedDocUrl || externalDocLink.trim();
 
     if (!finalDocUrl && !form.socialUrl.trim()) {
-      setFeedback({ 
-        type: 'error', 
-        text: 'Please upload a Student ID / Offer letter proof OR add your social media profile so admin can verify your credentials.' 
-      });
+      showFieldError('socialUrl', 'Please upload a Student ID / Offer letter proof OR add your social media profile so admin can verify your credentials.');
       return;
     }
 
@@ -600,6 +604,21 @@ const UnicoachApplyPage = () => {
             </div>
           </div>
         </div>
+
+        {/* Error popup: stays in view wherever the mentor is on the page */}
+        {feedback?.type === 'error' && (
+          <div role="alert" className="fixed bottom-6 left-1/2 -translate-x-1/2 z-[100] w-[calc(100%-32px)] max-w-lg flex items-start gap-3 p-4 rounded-2xl bg-white border border-rose-200 shadow-2xl shadow-rose-500/15">
+            <AlertCircle className="w-5 h-5 text-rose-600 flex-shrink-0 mt-0.5" />
+            <div className="flex-1 min-w-0">
+              <p className="text-[13px] font-bold text-slate-900">Please fix this to continue</p>
+              <p className="text-[13px] text-rose-700 mt-0.5 leading-snug">{feedback.text}</p>
+            </div>
+            <button type="button" onClick={() => setFeedback(null)} className="text-slate-400 hover:text-slate-700 text-lg leading-none cursor-pointer" aria-label="Close">×</button>
+          </div>
+        )}
+        {errorField && feedback?.type === 'error' && (
+          <style>{`[data-field="${errorField}"] input, [data-field="${errorField}"] select, [data-field="${errorField}"] textarea { border-color: #f43f5e !important; box-shadow: 0 0 0 3px rgba(244,63,94,0.15) !important; }`}</style>
+        )}
 
         {/* Feedback Alert */}
         {feedback && (

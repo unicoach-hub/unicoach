@@ -141,6 +141,8 @@ const App = () => {
                       {/* Legacy Leads & Users */}
                       <Route path="/users" element={<Users />} />
                       <Route path="/leads" element={<Leads />} />
+                      <Route path="/leads-converted" element={<Leads key="converted" view="converted" />} />
+                      <Route path="/leads-followup" element={<Leads key="followup" view="followup" />} />
                       {/* Automation & Outreach */}
                       <Route path="/automation/email" element={<EmailHub />} />
                       <Route path="/automation/campaign" element={<Campaign />} />

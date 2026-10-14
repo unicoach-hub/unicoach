@@ -46,7 +46,7 @@ const stageEmailHtml = (name, stage) => {
   }).join('');
   return `
   <div style="font-family:'Helvetica Neue',Arial,sans-serif;max-width:600px;margin:0 auto;padding:30px;background:#fff;border-radius:16px;border:1px solid #e2e8f0">
-    <h1 style="color:#DE5C2B;font-size:24px;margin:0 0 20px;font-weight:800">UniCoach</h1>
+    <div style="margin:0 0 20px"><img src="https://www.unicoach.com/logo-black.png" alt="UniCoach" width="150" style="display:inline-block;width:150px;max-width:150px;height:auto;border:0;outline:none;text-decoration:none" /></div>
     <h2 style="color:#1e293b;font-size:19px;margin:0 0 8px">Hi ${escapeHtml(name || 'there')}, you are now at: ${escapeHtml(stage.label)}</h2>
     <p style="color:#475569;font-size:14px;line-height:1.6;margin:0 0 18px">${escapeHtml(stage.message)}</p>
     <table style="border-collapse:collapse;margin:0 0 22px">${steps}</table>

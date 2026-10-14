@@ -51,12 +51,36 @@ const statusColors = {
   new: 'blue', contacted: 'cyan', qualified: 'green', converted: 'purple', closed: 'red',
 };
 
+// Sheet-style options the team picks on All Leads
+const SHEET_STATUSES = [
+  { value: 'new', label: 'New' },
+  { value: 'converted', label: 'Converted' },
+  { value: 'interested', label: 'Interested' },
+  { value: 'fifty_fifty', label: '50 / 50' },
+  { value: 'not_interested', label: 'Not Interested' },
+];
+const FOLLOW_UP_OPTIONS = [
+  { value: '', label: '—' },
+  { value: 'interested', label: 'Interested' },
+  { value: 'fifty_fifty', label: '50 / 50' },
+];
+const PHONE_CALL_OPTIONS = [
+  { value: 'pending', label: 'Pending' },
+  { value: 'done', label: 'Done' },
+];
+const statusLabel = (s) => SHEET_STATUSES.find((o) => o.value === s)?.label || s;
+const VIEW_TITLES = {
+  converted: { title: 'Converted leads', subtitle: 'Leads marked Converted on All Leads' },
+  followup: { title: 'Follow-up leads', subtitle: 'Leads marked Interested or 50 / 50 under Follow Up' },
+};
+
 // Presentation only: kit status-pill class per lead status
 const statusChipClass = {
   new: 'nx-status--neutral', contacted: 'nx-status--accent', qualified: 'nx-status--dark', converted: 'nx-status--success', closed: 'nx-status--danger',
+  interested: 'nx-status--accent', fifty_fifty: 'nx-status--warning', not_interested: 'nx-status--danger',
 };
 const StatusChip = ({ status, style }) => (
-  <span className={`nx-status ${statusChipClass[status] || 'nx-status--neutral'}`} style={{ textTransform: 'capitalize', ...style }}>{status}</span>
+  <span className={`nx-status ${statusChipClass[status] || 'nx-status--neutral'}`} style={{ ...style }}>{statusLabel(status)}</span>
 );
 
 const countryFlags = {
@@ -187,9 +211,9 @@ const describeAdTouch = (touch) => {
   return '';
 };
 
-const Leads = () => {
+const Leads = ({ view = 'all' }) => {
   const navigate = useNavigate();
-  const cachedLeads = getCachedData('/admin/leads:list:all:all:all');
+  const cachedLeads = getCachedData(`/admin/leads:list:${view}:all:all:all`);
   const [data, setData] = useState(cachedLeads || []);
   const [pipelines, setPipelines] = useState([]);
   const [selectedPipelineId, setSelectedPipelineId] = useState('default');
@@ -376,12 +400,13 @@ const Leads = () => {
   }, []);
 
   const fetchLeads = async (force = false) => {
-    const cacheKey = `/admin/leads:list:${statusFilter}:${followUpFilter}:${counselorFilter}`;
+    const cacheKey = `/admin/leads:list:${view}:${statusFilter}:${followUpFilter}:${counselorFilter}`;
     if (!getCachedData(cacheKey) || force) {
       setLoading(true);
     }
     try {
       const params = {};
+      if (view !== 'all') params.view = view;
       if (statusFilter !== 'all') params.status = statusFilter;
       if (followUpFilter === 'due') params.followUpFilter = 'due';
       if (counselorFilter !== 'all') params.assignedTo = counselorFilter;
@@ -450,6 +475,19 @@ const Leads = () => {
       fetchLeads();
     } catch (err) { 
       message.error('Update failed'); 
+    }
+  };
+
+  const handleFieldChange = async (id, field, value) => {
+    // Update the row right away, then save
+    setData((rows) => rows.map((r) => (r._id === id ? { ...r, [field]: value } : r)));
+    try {
+      await API.put(`/admin/leads/${id}`, { [field]: value });
+      invalidateCache('/admin/leads');
+      fetchLeads(true);
+    } catch (err) {
+      message.error('Update failed');
+      fetchLeads(true);
     }
   };
 
@@ -758,11 +796,22 @@ const Leads = () => {
       ) : <span style={{ color: 'var(--ux-text-2)' }}>—</span>,
     },
     {
+      title: 'Lead Ref.',
+      key: 'leadRef',
+      width: 130,
+      render: (_, record) => (
+        <span className="nx-status nx-status--neutral" title={record.latestSource || record.source}>
+          {record.latestSource || record.source || '—'}
+        </span>
+      ),
+    },
+    {
       title: 'Name',
-      dataIndex: 'name', 
-      key: 'name', 
+      dataIndex: 'name',
+      key: 'name',
+      width: 190,
       render: (text, record) => (
-        <div>
+        <div style={{ lineHeight: 1.35 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
             <span style={{ color: 'var(--ux-ink)', fontWeight: 600, fontSize: '13.5px' }}>{text}</span>
             {record.totalInquiries > 1 && (
@@ -771,105 +820,83 @@ const Leads = () => {
               </span>
             )}
           </div>
-          {record.interestedUniversities?.length > 0 && (
-            <div style={{ fontSize: 11.5, color: 'var(--ux-text-2)', marginTop: 4, display: 'flex', alignItems: 'center', gap: 5, fontWeight: 500 }}>
-              <BankOutlined style={{ color: 'var(--ux-text-3)' }} /> <span style={{ maxWidth: 180, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                {record.interestedUniversities[record.interestedUniversities.length - 1].name}
-              </span>
-            </div>
-          )}
+          <div style={{ color: 'var(--ux-text-2)', fontSize: 12, marginTop: 2 }}>{record.phone || 'No phone'}</div>
         </div>
-      ) 
+      )
     },
-    { title: 'Phone', dataIndex: 'phone', key: 'phone', render: (text) => <span style={{ color: 'var(--ux-ink)', fontWeight: 500 }}>{text}</span> },
-    { title: 'Country', dataIndex: 'dreamCountry', key: 'dreamCountry', render: (text) => <span className="nx-status nx-status--neutral">{getCountryFlag(text)} {text}</span> },
-    { title: 'Intake', dataIndex: 'preferredIntake', key: 'preferredIntake', render: (text) => <span style={{ color: 'var(--ux-text-2)', fontSize: 13, fontWeight: 500 }}>{text}</span> },
-    { title: 'Education', dataIndex: 'highestEducation', key: 'highestEducation', render: (text) => <span style={{ color: 'var(--ux-text-2)', fontSize: 13, fontWeight: 500 }}>{text}</span> },
-    { title: 'Verified', dataIndex: 'verified', key: 'verified', render: (v) => <span className={`nx-status ${v ? 'nx-status--success' : 'nx-status--warning'}`}>{v ? 'Yes' : 'No'}</span> },
+    { title: 'Country', dataIndex: 'dreamCountry', key: 'dreamCountry', width: 140, render: (text) => <span className="nx-status nx-status--neutral">{getCountryFlag(text)} {text}</span> },
     {
-      title: 'AI Lead Score',
-      key: 'aiScoring',
-      width: 145,
+      title: 'College', key: 'college', width: 170,
       render: (_, record) => {
-        const scoring = record.aiScoring;
-        const isScoringThis = scoringLeadId === record._id;
-
-        if (isScoringThis) {
-          return (
-            <span className="nx-status nx-status--neutral">
-              <LoadingOutlined /> Analyzing...
-            </span>
-          );
-        }
-
-        if (scoring && scoring.score !== undefined && scoring.score !== null) {
-          const category = scoring.category || (scoring.score >= 80 ? 'Hot' : scoring.score >= 50 ? 'Warm' : 'Cold');
-          // Hot / Warm / Cold keep a red / amber / neutral mapping
-          const color = category === 'Hot' ? '#dc2626' : category === 'Warm' ? '#b45309' : 'var(--ux-text-2)';
-          const chipClass = category === 'Hot' ? 'nx-status--danger' : category === 'Warm' ? 'nx-status--warning' : 'nx-status--neutral';
-
-          const popoverContent = (
-            <div style={{ maxWidth: 280, color: 'var(--ux-text)' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 8, marginBottom: 8, borderBottom: '1px solid var(--ux-line-2)', paddingBottom: 8 }}>
-                <span style={{ fontWeight: 600, color }}>{category} lead ({scoring.score}/100)</span>
-                <span className={`nx-status ${chipClass}`}>{scoring.conversionProbability || 'High Fit'}</span>
-              </div>
-              <p style={{ fontSize: 12, marginBottom: 8, color: 'var(--ux-text-2)', lineHeight: 1.45 }}>
-                <strong style={{ color: 'var(--ux-ink)', fontWeight: 600 }}>AI insight:</strong> {scoring.rationale || 'High conversion probability based on intake timeline.'}
-              </p>
-              {scoring.suggestedAction && (
-                <div style={{ background: 'var(--ux-surface-2)', padding: '8px 10px', borderRadius: 12, fontSize: 11.5, color: 'var(--ux-text)', border: '1px solid var(--ux-line-2)', marginBottom: 10 }}>
-                  <strong style={{ fontWeight: 600 }}><BulbOutlined style={{ color: 'var(--ux-brand)' }} /> Action:</strong> {scoring.suggestedAction}
-                </div>
-              )}
-              <button
-                onClick={(e) => { e.stopPropagation(); handleScoreSingleLead(record._id); }}
-                className="nx-btn nx-btn--accent nx-btn--sm"
-                style={{ width: '100%' }}
-              >
-                <RobotOutlined /> Re-evaluate with AI
-              </button>
-            </div>
-          );
-
-          return (
-            <Popover content={popoverContent} title={null} trigger="hover">
-              <span className={`nx-status ${chipClass}`} style={{ cursor: 'pointer' }}>
-                {category}
-                <span style={{ opacity: 0.65, fontWeight: 500 }}>{scoring.score}</span>
-              </span>
-            </Popover>
-          );
-        }
-
+        const fallback = record.interestedUniversities?.length ? record.interestedUniversities[record.interestedUniversities.length - 1].name : '';
         return (
-          <Button
-            size="small"
-            type="dashed"
-            icon={<RobotOutlined />}
-            loading={isScoringThis}
-            onClick={() => handleScoreSingleLead(record._id)}
-            style={{ fontSize: 12 }}
-          >
-            AI score
-          </Button>
+          <div onClick={(e) => e.stopPropagation()}>
+            <Input
+              size="small"
+              variant="borderless"
+              defaultValue={record.college || fallback}
+              placeholder="Add college"
+              onBlur={(e) => e.target.value !== (record.college || fallback) && handleFieldChange(record._id, 'college', e.target.value.trim())}
+              onPressEnter={(e) => e.target.blur()}
+            />
+          </div>
         );
-      }
+      },
     },
     {
-      title: 'Status', dataIndex: 'status', key: 'status',
+      title: 'Course', key: 'course', width: 160,
+      render: (_, record) => {
+        const fallback = record.interestedUniversities?.length ? record.interestedUniversities[record.interestedUniversities.length - 1].course || '' : '';
+        return (
+          <div onClick={(e) => e.stopPropagation()}>
+            <Input
+              size="small"
+              variant="borderless"
+              defaultValue={record.course || fallback}
+              placeholder="Add course"
+              onBlur={(e) => e.target.value !== (record.course || fallback) && handleFieldChange(record._id, 'course', e.target.value.trim())}
+              onPressEnter={(e) => e.target.blur()}
+            />
+          </div>
+        );
+      },
+    },
+    { title: 'Intake', dataIndex: 'preferredIntake', key: 'preferredIntake', width: 110, render: (text) => <span style={{ color: 'var(--ux-text-2)', fontSize: 13, fontWeight: 500 }}>{text}</span> },
+    {
+      title: 'Phone Call', dataIndex: 'phoneCall', key: 'phoneCall', width: 120,
+      render: (v, record) => (
+        <div onClick={(e) => e.stopPropagation()}>
+          <Select value={v || 'pending'} size="small" style={{ width: 100 }} options={PHONE_CALL_OPTIONS} onChange={(val) => handleFieldChange(record._id, 'phoneCall', val)} />
+        </div>
+      ),
+    },
+    {
+      title: 'Status', dataIndex: 'status', key: 'status', width: 160,
       render: (status, record) => (
-        <Select value={status} size="small" onChange={(val) => handleStatusChange(record._id, val)} style={{ width: 120 }}>
-          {Object.keys(statusColors).map(s => <Option key={s} value={s}><StatusChip status={s} style={{ height: 22 }} /></Option>)}
-        </Select>
+        <div onClick={(e) => e.stopPropagation()}>
+          <Select value={status} size="small" onChange={(val) => handleStatusChange(record._id, val)} style={{ width: 140 }}>
+            {SHEET_STATUSES.map((o) => <Option key={o.value} value={o.value}><StatusChip status={o.value} style={{ height: 22 }} /></Option>)}
+            {!SHEET_STATUSES.some((o) => o.value === status) && <Option value={status}><StatusChip status={status} style={{ height: 22 }} /></Option>}
+          </Select>
+        </div>
+      ),
+    },
+    {
+      title: 'Follow Up', dataIndex: 'followUp', key: 'followUp', width: 130,
+      render: (v, record) => (
+        <div onClick={(e) => e.stopPropagation()}>
+          <Select value={v || ''} size="small" style={{ width: 110 }} options={FOLLOW_UP_OPTIONS} onChange={(val) => handleFieldChange(record._id, 'followUp', val)} />
+        </div>
       ),
     },
     {
       title: 'Counselor',
       dataIndex: 'assignedTo',
       key: 'assignedTo',
+      width: 160,
       render: (counselor, record) => (canReassign ? (
         <Select
+          onClick={(e) => e.stopPropagation()}
           value={counselor || 'Unassigned'}
           size="small"
           onChange={(val) => handleCounselorChange(record._id, val)}
@@ -880,90 +907,6 @@ const Leads = () => {
           {counselors.map(c => <Option key={c._id} value={c._id}>{c.name}</Option>)}
         </Select>
       ) : <span style={{ color: 'var(--ux-text-2)' }}>{counselorName(counselor)}</span>)
-    },
-    {
-      title: 'Tags',
-      key: 'tags',
-      width: 240,
-      render: (_, record) => {
-        const manual = record.tags || [];
-        const auto = record.autoTags || [];
-        return (
-          <div onClick={(e) => e.stopPropagation()} style={{ display: 'flex', flexWrap: 'wrap', gap: 4, alignItems: 'center' }}>
-            {manual.map((t) => <span key={t} className="lead-tag">{t}</span>)}
-            {auto.slice(0, 2).map((t) => <span key={t} className="lead-tag lead-tag--auto" title="Added automatically">{t}</span>)}
-            {auto.length > 2 && (
-              <Tooltip title={auto.slice(2).join(', ')}><span className="lead-tag lead-tag--auto">+{auto.length - 2}</span></Tooltip>
-            )}
-            {can('leads', 'update') && (
-              <Popover
-                trigger="click"
-                title="Your tags for this lead"
-                content={(
-                  <div style={{ width: 260 }}>
-                    <Select
-                      mode="tags"
-                      style={{ width: '100%' }}
-                      defaultValue={manual}
-                      options={manualTagOptions}
-                      placeholder="Type a tag and press Enter"
-                      onChange={(tags) => saveLeadTags(record, tags)}
-                      tokenSeparators={[',']}
-                    />
-                    {auto.length > 0 && (
-                      <div style={{ marginTop: 10 }}>
-                        <div style={{ fontSize: 11.5, color: 'var(--ux-text-3)', marginBottom: 4 }}>Added automatically</div>
-                        {auto.map((t) => <span key={t} className="lead-tag lead-tag--auto">{t}</span>)}
-                      </div>
-                    )}
-                  </div>
-                )}
-              >
-                <button type="button" className="lead-tag lead-tag--add" aria-label={`Edit tags for ${record.name}`}>+ Tag</button>
-              </Popover>
-            )}
-          </div>
-        );
-      },
-    },
-    {
-      title: 'Source',
-      dataIndex: 'source',
-      key: 'source',
-      render: (s, record) => {
-        // A returning student's newest form (e.g. "Education Loan Enquiry") matters more than how they first arrived
-        const latest = record.latestSource && record.latestSource !== s ? record.latestSource : null;
-        return (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 4, alignItems: 'flex-start' }}>
-            {latest && (
-              <span className="nx-status nx-status--accent">
-                Latest: {latest}
-              </span>
-            )}
-            <span className="nx-status nx-status--neutral">{latest ? `First: ${s}` : s}</span>
-            {record.lastInquiryAt && (
-              <span style={{ fontSize: 11, color: 'var(--ux-text-3)' }}>
-                {record.totalInquiries > 1 ? `${record.totalInquiries} enquiries · ` : ''}
-                last {new Date(record.lastInquiryAt).toLocaleDateString()}
-              </span>
-            )}
-          </div>
-        );
-      },
-    },
-    {
-      title: 'Next Follow-up',
-      dataIndex: 'nextFollowUpDate',
-      key: 'nextFollowUpDate',
-      render: (date, record) => {
-        if (!date) return <span style={{ color: 'var(--ux-text-3)', fontSize: 12 }}>None</span>;
-        const isPast = new Date(date) < new Date() && record.status !== 'converted' && record.status !== 'closed';
-        return (
-          <span style={{ color: isPast ? '#dc2626' : 'var(--ux-text-2)', fontSize: 12, fontWeight: isPast ? 600 : 500, whiteSpace: 'nowrap' }}>
-            {isPast ? <ClockCircleOutlined style={{ marginRight: 4 }} /> : null}{new Date(date).toLocaleDateString()}
-          </span>
-        );
-      }
     },
     {
       title: 'Actions', key: 'actions',
@@ -984,6 +927,28 @@ const Leads = () => {
       ),
     },
   ];
+
+  // Excel-style header filters: tick one or more values per column; they combine with each other
+  const uniq = (vals) => [...new Set(vals.filter((v) => v !== undefined && v !== null && v !== ''))].sort((x, y) => String(x).localeCompare(String(y)));
+  const toFilters = (vals, label = (v) => v) => vals.map((v) => ({ text: label(v), value: v }));
+  const lastUni = (l, key) => (l.interestedUniversities?.length ? l.interestedUniversities[l.interestedUniversities.length - 1][key] : '');
+  const columnFilters = {
+    leadRef: { filters: toFilters(uniq(data.map((l) => l.latestSource || l.source))), onFilter: (v, l) => (l.latestSource || l.source) === v },
+    name: {
+      filters: toFilters(uniq(data.map((l) => l.name))),
+      filterSearch: true,
+      onFilter: (v, l) => l.name === v,
+    },
+    dreamCountry: { filters: toFilters(uniq(data.map((l) => l.dreamCountry))), filterSearch: true, onFilter: (v, l) => l.dreamCountry === v },
+    college: { filters: toFilters(uniq(data.map((l) => l.college || lastUni(l, 'name')))), filterSearch: true, onFilter: (v, l) => (l.college || lastUni(l, 'name')) === v },
+    course: { filters: toFilters(uniq(data.map((l) => l.course || lastUni(l, 'course')))), filterSearch: true, onFilter: (v, l) => (l.course || lastUni(l, 'course')) === v },
+    preferredIntake: { filters: toFilters(uniq(data.map((l) => l.preferredIntake))), filterSearch: true, onFilter: (v, l) => l.preferredIntake === v },
+    phoneCall: { filters: PHONE_CALL_OPTIONS.map((o) => ({ text: o.label, value: o.value })), onFilter: (v, l) => (l.phoneCall || 'pending') === v },
+    status: { filters: toFilters(uniq([...SHEET_STATUSES.map((o) => o.value), ...data.map((l) => l.status)]), statusLabel), onFilter: (v, l) => l.status === v },
+    followUp: { filters: [{ text: 'Not set', value: '' }, ...FOLLOW_UP_OPTIONS.filter((o) => o.value).map((o) => ({ text: o.label, value: o.value }))], onFilter: (v, l) => (l.followUp || '') === v },
+    assignedTo: { filters: [{ text: 'Unassigned', value: 'Unassigned' }, ...counselors.map((c) => ({ text: c.name, value: c._id }))], filterSearch: true, onFilter: (v, l) => (l.assignedTo || 'Unassigned') === v },
+  };
+  const sheetColumns = columns.map((c) => (columnFilters[c.key] ? { ...c, ...columnFilters[c.key], filterMultiple: true } : c));
 
   const handleDragStart = (e, id) => {
     e.dataTransfer.setData('leadId', id);
@@ -1168,14 +1133,15 @@ const Leads = () => {
 
   return (
     <div>
-      <Header title="Student leads & consultations" subtitle="All eligibility checks and consultation bookings" />
+      <Header title={VIEW_TITLES[view]?.title || 'Student leads & consultations'} subtitle={VIEW_TITLES[view]?.subtitle || 'All eligibility checks and consultation bookings'} />
       <div className="dashboard-content" style={{ marginTop: 16 }}>
         <CrmSubNav />
-        <div className="page-stats-grid page-stats-grid--4">
+        <div className="page-stats-grid page-stats-grid--5">
           <StatsCard icon={<ContactsOutlined />} label="Total leads" value={data.length} color="brand" loading={loading} />
-          <StatsCard icon={<CheckCircleOutlined />} label="Verified leads" value={data.filter(l => l.verified).length} color="brand" loading={loading} />
-          <StatsCard icon={<FireOutlined />} label="Qualified leads" value={data.filter(l => l.status === 'qualified').length} color="brand" loading={loading} />
-          <StatsCard icon={<TrophyOutlined />} label="Converted leads" value={data.filter(l => l.status === 'converted').length} color="brand" loading={loading} />
+          <StatsCard icon={<TrophyOutlined />} label="Converted" value={data.filter(l => l.status === 'converted').length} color="brand" loading={loading} />
+          <StatsCard icon={<FireOutlined />} label="Interested" value={data.filter(l => l.status === 'interested').length} color="brand" loading={loading} />
+          <StatsCard icon={<ClockCircleOutlined />} label="Follow-up" value={data.filter(l => l.followUp === 'interested' || l.followUp === 'fifty_fifty').length} color="brand" loading={loading} />
+          <StatsCard icon={<CheckCircleOutlined />} label="Not interested" value={data.filter(l => l.status === 'not_interested').length} color="brand" loading={loading} />
         </div>
 
         <div className="nx-toolbar page-toolbar">
@@ -1183,7 +1149,7 @@ const Leads = () => {
             <Input prefix={<SearchOutlined style={{ color: 'var(--ux-text-3)' }} />} placeholder="Search leads..." value={search} onChange={(e) => setSearch(e.target.value)} style={{ width: 280, maxWidth: '100%' }} />
             <Select value={statusFilter} onChange={setStatusFilter} style={{ width: 140 }}>
               <Option value="all">All statuses</Option>
-              {Object.keys(statusColors).map(s => <Option key={s} value={s}><span style={{ textTransform: 'capitalize' }}>{s}</span></Option>)}
+              {SHEET_STATUSES.map(o => <Option key={o.value} value={o.value}>{o.label}</Option>)}
             </Select>
             <Select value={followUpFilter} onChange={setFollowUpFilter} style={{ width: 190 }}>
               <Option value="all">All lead interactions</Option>
@@ -1323,12 +1289,16 @@ const Leads = () => {
             )}
             <Table 
               rowKey="_id" 
-              columns={columns} 
+              columns={sheetColumns}
               rowSelection={can('leads', 'update') ? { selectedRowKeys, onChange: setSelectedRowKeys } : undefined}
               dataSource={filtered} 
               loading={loading} 
               pagination={{ pageSize: 15 }} 
-              scroll={{ x: 1320 }} 
+              scroll={{ x: 1500 }}
+              sticky={{ offsetHeader: 0 }}
+              bordered
+              size="middle"
+              className="leads-sheet"
               onRow={(record) => ({
                 onClick: () => handleOpenLead(record),
                 style: { cursor: 'pointer' }

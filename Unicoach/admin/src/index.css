@@ -1871,6 +1871,35 @@ body::after {
   grid-template-columns: repeat(4, 1fr);
 }
 
+.page-stats-grid--5 {
+  grid-template-columns: repeat(5, 1fr);
+}
+@media (max-width: 1200px) {
+  .page-stats-grid--5 { grid-template-columns: repeat(3, 1fr); }
+}
+@media (max-width: 768px) {
+  .page-stats-grid--5 { grid-template-columns: 1fr 1fr; }
+}
+
+/* All Leads: spreadsheet look, gridlines and a header that stays on top while scrolling */
+.leads-sheet .ant-table-thead > tr > th {
+  background: #f6f4f1 !important;
+  font-weight: 700;
+  font-size: 12.5px;
+  color: var(--ux-ink);
+  white-space: nowrap;
+  padding-top: 10px !important;
+  padding-bottom: 10px !important;
+}
+.leads-sheet .ant-table-tbody > tr > td {
+  padding-top: 8px !important;
+  padding-bottom: 8px !important;
+  vertical-align: middle;
+}
+.leads-sheet .ant-table-tbody > tr:nth-child(even) > td { background: #fcfbfa; }
+.leads-sheet .ant-table-tbody > tr:hover > td { background: #fff6f1 !important; }
+.leads-sheet .ant-table-sticky-holder { z-index: 5; box-shadow: 0 2px 6px rgba(15, 23, 42, 0.06); }
+
 @media (max-width: 768px) {
   .page-stats-grid--3,
   .page-stats-grid--4 {

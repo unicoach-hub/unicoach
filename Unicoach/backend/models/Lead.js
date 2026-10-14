@@ -17,7 +17,7 @@ const leadSchema = new mongoose.Schema({
   otpPhone: { type: String }, // the phone number the current OTP was sent to
   otpAttempts: { type: Number, default: 0 },
   verified: { type: Boolean, default: false, index: true },
-  status: { type: String, enum: ['new', 'contacted', 'qualified', 'converted', 'closed'], default: 'new', index: true },
+  status: { type: String, enum: ['new', 'contacted', 'qualified', 'interested', 'fifty_fifty', 'not_interested', 'converted', 'closed'], default: 'new', index: true },
   source: { type: String, default: 'check-eligibility' }, // check-eligibility | book-consultation
   assignedTo: { type: String, default: 'Unassigned', index: true },
   // Tags: `tags` are added by the team; `autoTags` are worked out from the lead's activity on every save
@@ -27,6 +27,11 @@ const leadSchema = new mongoose.Schema({
   unsubscribed: { type: Boolean, default: false, index: true },
   unsubscribedAt: { type: Date },
   notes: { type: String },
+  // Sheet-style columns the team fills in on All Leads
+  college: { type: String },
+  course: { type: String },
+  phoneCall: { type: String, enum: ['pending', 'done'], default: 'pending' },
+  followUp: { type: String, enum: ['', 'interested', 'fifty_fifty'], default: '', index: true },
   nextFollowUpDate: { type: Date },
   totalInquiries: { type: Number, default: 1 },
   // Form/service of the most recent enquiry (`source` stays the first one), e.g. "Education Loan Enquiry"

@@ -33,9 +33,12 @@ async function counselorName(value) {
  */
 exports.getAllLeads = async (req, res) => {
   try {
-    const { status, verified, source, followUpFilter, assignedTo } = req.query;
+    const { status, verified, source, followUpFilter, assignedTo, view } = req.query;
     const filter = {};
     if (status && status !== 'all') filter.status = status;
+    // Sidebar sections: Converted and Follow-up are filtered views of the same leads
+    if (view === 'converted') filter.status = 'converted';
+    if (view === 'followup') filter.followUp = { $in: ['interested', 'fifty_fifty'] };
     if (verified !== undefined) filter.verified = verified === 'true';
     if (source) filter.source = source;
     if (assignedTo && assignedTo !== 'all') {
@@ -124,6 +127,9 @@ exports.updateLead = async (req, res) => {
 
     lead.status = status || lead.status;
     lead.notes = notes !== undefined ? notes : lead.notes;
+    for (const key of ['college', 'course', 'phoneCall', 'followUp']) {
+      if (req.body[key] !== undefined) lead[key] = req.body[key];
+    }
 
     const updatedLead = await lead.save();
     return res.json(updatedLead);
