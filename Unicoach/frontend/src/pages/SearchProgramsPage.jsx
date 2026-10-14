@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Search, SlidersHorizontal, UserCheck, X, Download, FileSpreadsheet, GitCompare, ChevronDown, ChevronUp, Info, Loader2, CheckCircle2, AlertCircle, Lock } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
-import { getSearchConfig, getHighlights, searchCourses, evaluateEligibility, exportSearch, getCourseDetail } from '../utils/searchApi';
+import { getSearchConfig, getHighlights, searchCourses, evaluateEligibility, exportSearch, getCourseDetail, getUniversitiesFacet } from '../utils/searchApi';
 import { exportSelectedProgramsToExcel } from '../utils/excelExporter';
 import CfSidebar from '../components/CfSidebar';
 
@@ -31,6 +31,16 @@ const Checkbox = ({ checked, onChange, label }) => (
     <input type="checkbox" checked={!!checked} onChange={onChange} className="mt-0.5 accent-[#226CF5] w-4 h-4" />
     <span>{label}</span>
   </label>
+);
+// Collapsible filter section for the CourseFinder-style left sidebar
+const Accordion = ({ title, open, onToggle, children, count }) => (
+  <div className="bg-white border border-slate-200" style={{ borderRadius: 4 }}>
+    <button onClick={onToggle} className="w-full flex items-center justify-between px-3 py-2.5 text-left">
+      <span className="font-['DM_Sans'] font-semibold text-[13.5px] text-slate-700">{title}{count ? <span className="text-slate-400 font-normal"> ({count})</span> : null}</span>
+      <ChevronDown size={15} className={`text-slate-400 transition-transform ${open ? 'rotate-180' : ''}`} />
+    </button>
+    {open && <div className="px-3 pb-3 pt-0 border-t border-slate-100">{children}</div>}
+  </div>
 );
 
 // ── Program row (CourseFinder program card) ───────────────────────────────────
@@ -81,11 +91,20 @@ export default function SearchProgramsPage() {
   const [programLevels, setProgramLevels] = useState([]);
   const [requirements, setRequirements] = useState([]);
   const [studyAreas, setStudyAreas] = useState([]);
-  const [intake, setIntake] = useState('');
+  const [intakeArr, setIntakeArr] = useState([]);
+  const [year, setYear] = useState('');
+  const [universities, setUniversities] = useState([]);  // selected cfUniversityId[]
+  const [uniSearch, setUniSearch] = useState('');
+  const [uniList, setUniList] = useState([]);             // faceted [{id,name,count}]
+  const [tuitionMax, setTuitionMax] = useState(0);        // 0 = no cap
   const [activeHighlights, setActiveHighlights] = useState([]);
   const [sort, setSort] = useState('featured');
   const [view, setView] = useState('universities');
-  const [showAdvanced, setShowAdvanced] = useState(false);
+  const [eligOpen, setEligOpen] = useState(false);        // inline eligibility section (left sidebar)
+  const [intakeOpen, setIntakeOpen] = useState(false);    // intake multi-select popover
+  const [mobileFilters, setMobileFilters] = useState(false);
+  const [openSec, setOpenSec] = useState({ universities: true, level: true, studyArea: false, requirements: false, tuition: true });
+  const toggleSec = (k) => setOpenSec((s) => ({ ...s, [k]: !s[k] }));
   const [page, setPage] = useState(1);
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -96,7 +115,6 @@ export default function SearchProgramsPage() {
 
   // eligibility
   const [searchParams, setSearchParams] = useSearchParams();
-  const [showElig, setShowElig] = useState(false);
   const [profile, setProfile] = useState({ nationalityId: '', highestQualificationId: '', gradingSystem: 'OutOf100', score: '', englishExam: 'later', backlogs: '', workExperience: '' });
   const [eligResult, setEligResult] = useState(null);
   const [eligBucket, setEligBucket] = useState('eligible');
@@ -105,11 +123,23 @@ export default function SearchProgramsPage() {
   // open the eligibility modal when arriving from the sidebar (?check=eligibility)
   useEffect(() => {
     if (user && searchParams.get('check') === 'eligibility') {
-      setShowElig(true);
+      setEligOpen(true);
       searchParams.delete('check');
       setSearchParams(searchParams, { replace: true });
     }
   }, [user, searchParams, setSearchParams]);
+
+  // faceted Universities list for the sidebar (re-facets as other filters change)
+  useEffect(() => {
+    if (!user) return;
+    let cancelled = false;
+    const t = setTimeout(() => {
+      getUniversitiesFacet({ ...filters, university: undefined }, uniSearch)
+        .then((rows) => { if (!cancelled) setUniList(rows); }).catch(() => {});
+    }, 250);
+    return () => { cancelled = true; clearTimeout(t); };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user, uniSearch, searchText, country, programLevels, requirements, intakeArr, studyAreas, activeHighlights, tuitionMax]);
 
   // when Compare opens, pull full detail for each selected program (deposit, website,
   // test scores, deadline, scholarship, ranking) so the table matches CourseFinder 1:1
@@ -142,10 +172,12 @@ export default function SearchProgramsPage() {
     country: country ? [Number(country)] : undefined,
     programLevel: programLevels.length ? programLevels : undefined,
     requirements: requirements.length ? requirements : undefined,
-    intake: intake ? [intake] : undefined,
+    intake: intakeArr.length ? intakeArr : undefined,
     highlights: activeHighlights.length ? activeHighlights : undefined,
     studyArea: studyAreas.length ? studyAreas : undefined,
-  }), [searchText, country, programLevels, requirements, intake, activeHighlights, studyAreas]);
+    university: universities.length ? universities : undefined,
+    tuitionMax: tuitionMax > 0 ? tuitionMax : undefined,
+  }), [searchText, country, programLevels, requirements, intakeArr, activeHighlights, studyAreas, universities, tuitionMax]);
 
   const profilePayload = useMemo(() => ({
     nationalityId: Number(profile.nationalityId) || undefined, highestQualificationId: profile.highestQualificationId || undefined,
@@ -168,7 +200,7 @@ export default function SearchProgramsPage() {
     if (eligResult) { runEligibility(eligBucket, 1); return; }
     if (result) runSearch(1);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [country, programLevels, requirements, intake, activeHighlights, studyAreas, sort]);
+  }, [country, programLevels, requirements, intakeArr, activeHighlights, studyAreas, universities, tuitionMax, sort]);
 
   // show all programs by default on first load (CourseFinder shows the full catalogue)
   useEffect(() => {
@@ -181,6 +213,11 @@ export default function SearchProgramsPage() {
   const toggleSelect = (c) => setSelected((s) => { const n = { ...s }; if (n[c.cfId]) delete n[c.cfId]; else n[c.cfId] = c; return n; });
   const selectedList = Object.values(selected);
   const openCourse = (c) => navigate(`/program/${c.cfId}`);
+  const clearAll = () => {
+    setSearchText(''); setCountry(''); setProgramLevels([]); setRequirements([]); setStudyAreas([]);
+    setIntakeArr([]); setYear(''); setUniversities([]); setUniSearch(''); setTuitionMax(0);
+    setActiveHighlights([]); setEligResult(null);
+  };
 
   const doExportAll = async () => {
     setExporting(true);
@@ -219,65 +256,114 @@ export default function SearchProgramsPage() {
   return (
     <div className="min-h-screen bg-slate-50 pt-[76px] pb-28 font-['Poppins'] lg:pl-16">
       <CfSidebar active="search" />
-      {/* Search toolbar */}
+      {/* Top search bar (CourseFinder: search • intake • year • nationality • state) */}
       <div className="bg-white border-b border-slate-200">
-        <div className="max-w-6xl mx-auto px-4 py-4">
+        <div className="max-w-7xl mx-auto px-4 py-3">
           <div className="flex flex-col lg:flex-row gap-2">
-            <div className="flex-1 flex items-center gap-2 border border-slate-200 px-3" style={{ borderRadius: 4 }}>
+            <div className="flex-1 flex items-center gap-2 border border-slate-200 px-3 bg-white" style={{ borderRadius: 4 }}>
               <Search size={18} className="text-slate-400" />
               <input value={searchText} onChange={(e) => setSearchText(e.target.value)} onKeyDown={(e) => e.key === 'Enter' && runSearch(1)}
                 placeholder="Search Program / University" className="flex-1 py-2.5 text-[14px] outline-none bg-transparent" />
             </div>
-            <select value={intake} onChange={(e) => setIntake(e.target.value)} className="border border-slate-200 px-3 py-2.5 text-[14px] text-slate-700 bg-white" style={{ borderRadius: 4 }}>
-              <option value="">All Intakes</option>
-              {intakeOpts.map((i) => <option key={i.value} value={i.value}>{i.label}</option>)}
+            {/* Intake (multi) */}
+            <div className="relative">
+              <button onClick={() => setIntakeOpen((v) => !v)} className="w-full lg:w-auto border border-slate-200 px-3 py-2.5 text-[14px] text-slate-700 bg-white flex items-center gap-2 justify-between" style={{ borderRadius: 4, minWidth: 130 }}>
+                {intakeArr.length ? `${intakeArr.length} Intake${intakeArr.length > 1 ? 's' : ''}` : 'All Intakes'} <ChevronDown size={15} className="text-slate-400" />
+              </button>
+              {intakeOpen && (
+                <div className="absolute z-30 mt-1 bg-white border border-slate-200 shadow-lg p-2 max-h-64 overflow-y-auto" style={{ borderRadius: 4, minWidth: 180 }}>
+                  {intakeOpts.map((i) => <Checkbox key={i.value} checked={intakeArr.includes(i.value)} onChange={() => toggleArr(setIntakeArr)(i.value)} label={i.label} />)}
+                </div>
+              )}
+            </div>
+            <select value={year} onChange={(e) => setYear(e.target.value)} className="border border-slate-200 px-3 py-2.5 text-[14px] text-slate-700 bg-white" style={{ borderRadius: 4 }}>
+              <option value="">Year</option>
+              {(config?.years || []).map((y) => <option key={y.value} value={y.value}>{y.label}</option>)}
             </select>
-            <select value={country} onChange={(e) => setCountry(e.target.value)} className="border border-slate-200 px-3 py-2.5 text-[14px] text-slate-700 bg-white" style={{ borderRadius: 4 }}>
-              <option value="">All Countries</option>
-              {countryOpts.map((c) => <option key={c.value} value={c.value}>{c.label}</option>)}
+            <select value={profile.nationalityId} onChange={(e) => setProfile((p) => ({ ...p, nationalityId: e.target.value }))} className="border border-slate-200 px-3 py-2.5 text-[14px] text-slate-700 bg-white max-w-[180px]" style={{ borderRadius: 4 }}>
+              <option value="">Student's Nationality</option>
+              {nationalities.map((n) => <option key={n.value} value={n.value}>{n.label}</option>)}
+            </select>
+            <select disabled={!profile.nationalityId} className="border border-slate-200 px-3 py-2.5 text-[14px] text-slate-700 bg-white disabled:bg-slate-50 disabled:text-slate-400" style={{ borderRadius: 4 }}>
+              <option value="">Student's State</option>
             </select>
             <button onClick={() => runSearch(1)} className="text-white text-[14px] font-semibold px-6 py-2.5" style={{ background: BLUE, borderRadius: 4 }}>Search</button>
-            <button onClick={() => setShowAdvanced((v) => !v)} className="text-[14px] font-medium px-4 py-2.5 border flex items-center gap-1.5" style={{ color: BLUE, borderColor: BLUE, borderRadius: 4 }}>
-              Advanced {showAdvanced ? <ChevronUp size={15} /> : <ChevronDown size={15} />}
-            </button>
+            <button onClick={clearAll} className="text-[14px] font-medium px-4 py-2.5 border text-slate-600 border-slate-200" style={{ borderRadius: 4 }}>Clear All</button>
           </div>
-
-          {/* Advanced Search panel */}
-          {showAdvanced && (
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-5 mt-4 p-4 bg-slate-50 border border-slate-200" style={{ borderRadius: 4 }}>
-              <div>
-                <div className="font-['DM_Sans'] font-semibold text-[13px] text-slate-700 mb-1">Study Area</div>
-                <div className="max-h-56 overflow-y-auto pr-1">
-                  {studyAreaOpts.map((s) => <Checkbox key={s.value} checked={studyAreas.includes(Number(s.value))} onChange={() => toggleArr(setStudyAreas)(Number(s.value))} label={s.label} />)}
-                </div>
-              </div>
-              <div>
-                <div className="font-['DM_Sans'] font-semibold text-[13px] text-slate-700 mb-1">Program Level</div>
-                <div className="max-h-56 overflow-y-auto pr-1">
-                  {levelOpts.map((l) => <Checkbox key={l.value} checked={programLevels.includes(Number(l.value))} onChange={() => toggleArr(setProgramLevels)(Number(l.value))} label={l.label} />)}
-                </div>
-              </div>
-              <div>
-                <div className="font-['DM_Sans'] font-semibold text-[13px] text-slate-700 mb-1">Requirements</div>
-                <div className="max-h-56 overflow-y-auto pr-1">
-                  {reqOpts.map((r) => <Checkbox key={r.value} checked={requirements.includes(Number(r.value))} onChange={() => toggleArr(setRequirements)(Number(r.value))} label={r.label} />)}
-                </div>
-              </div>
-              <div className="flex flex-col gap-2">
-                <div className="font-['DM_Sans'] font-semibold text-[13px] text-slate-700">Sort By</div>
-                <select value={sort} onChange={(e) => setSort(e.target.value)} className="border border-slate-200 px-3 py-2 text-[13px] bg-white" style={{ borderRadius: 4 }}>
-                  <option value="featured">Featured</option><option value="ranking">Ranking</option>
-                  <option value="tuition-low">Tuition: Low to High</option><option value="tuition-high">Tuition: High to Low</option>
-                </select>
-                <button onClick={() => { setProgramLevels([]); setRequirements([]); setStudyAreas([]); setActiveHighlights([]); setCountry(''); setIntake(''); }} className="text-[13px] text-[#226CF5] font-medium text-left mt-1">Clear All Filters</button>
-                <button onClick={() => runSearch(1)} className="text-white text-[13px] font-semibold py-2 mt-1" style={{ background: BLUE, borderRadius: 4 }}>Apply Filters</button>
-              </div>
-            </div>
-          )}
         </div>
       </div>
 
-      <div className="max-w-6xl mx-auto px-4 mt-4">
+      {/* Body: left filter sidebar + results */}
+      <div className="max-w-7xl mx-auto px-4 mt-4 flex gap-5 items-start">
+        <aside className={`${mobileFilters ? 'block' : 'hidden'} lg:block w-full lg:w-[290px] shrink-0 space-y-3`}>
+          <div className="bg-white border border-slate-200 px-3 py-2.5 flex items-center gap-2 font-['DM_Sans'] font-semibold text-[14px] text-slate-700" style={{ borderRadius: 4 }}>
+            <SlidersHorizontal size={16} color={BLUE} /> Filter
+          </div>
+
+          {/* Eligibility (inline) */}
+          <Accordion title="Eligibility" open={eligOpen} onToggle={() => setEligOpen((v) => !v)}>
+            <div className="space-y-2 pt-2 text-[13px]">
+              {[["Student's Nationality *", 'nationalityId', nationalities], ['Highest Qualification *', 'highestQualificationId', QUALIFICATIONS], ['Grading System *', 'gradingSystem', GRADING], ['English Proficiency *', 'englishExam', ENGLISH]].map(([label, key, opts]) => (
+                <label key={key} className="flex flex-col gap-1"><span className="text-slate-500">{label}</span>
+                  <select value={profile[key]} onChange={(e) => setProfile((p) => ({ ...p, [key]: e.target.value }))} className="border border-slate-200 px-2 py-2 bg-white" style={{ borderRadius: 4 }}>
+                    {!['gradingSystem', 'englishExam'].includes(key) && <option value="">Select</option>}
+                    {opts.map((o) => <option key={o.value} value={o.value}>{o.label}</option>)}
+                  </select></label>
+              ))}
+              {[['Score *', 'score'], ['Backlogs', 'backlogs'], ['Work Experience (Years)', 'workExperience']].map(([label, key]) => (
+                <label key={key} className="flex flex-col gap-1"><span className="text-slate-500">{label}</span>
+                  <input type="number" value={profile[key]} onChange={(e) => setProfile((p) => ({ ...p, [key]: e.target.value }))} className="border border-slate-200 px-2 py-2" style={{ borderRadius: 4 }} /></label>
+              ))}
+              <div className="flex gap-2 pt-1">
+                <button onClick={() => { setProfile({ nationalityId: '', highestQualificationId: '', gradingSystem: 'OutOf100', score: '', englishExam: 'later', backlogs: '', workExperience: '' }); setEligResult(null); }} className="flex-1 px-3 py-2 text-[13px] text-slate-600 border border-slate-200" style={{ borderRadius: 4 }}>Reset</button>
+                <button disabled={!profile.nationalityId || !profile.highestQualificationId || profile.score === ''} onClick={() => runEligibility('eligible', 1)} className="flex-1 px-3 py-2 text-[13px] font-semibold text-white disabled:opacity-40" style={{ background: BLUE, borderRadius: 4 }}>Apply</button>
+              </div>
+            </div>
+          </Accordion>
+
+          {/* Universities (searchable, with counts) */}
+          <Accordion title="Universities" open={openSec.universities} onToggle={() => toggleSec('universities')} count={universities.length || null}>
+            <div className="pt-2">
+              <input value={uniSearch} onChange={(e) => setUniSearch(e.target.value)} placeholder="Search university…" className="w-full border border-slate-200 px-2 py-1.5 text-[13px] mb-2" style={{ borderRadius: 4 }} />
+              <div className="max-h-64 overflow-y-auto pr-1">
+                {uniList.length === 0 ? <div className="text-[12px] text-slate-400 py-2">No universities.</div>
+                  : uniList.map((u) => <Checkbox key={u.id} checked={universities.includes(u.id)} onChange={() => toggleArr(setUniversities)(u.id)} label={`${u.name} (${u.count})`} />)}
+              </div>
+            </div>
+          </Accordion>
+
+          {/* Program Level */}
+          <Accordion title="Program Level" open={openSec.level} onToggle={() => toggleSec('level')} count={programLevels.length || null}>
+            <div className="max-h-64 overflow-y-auto pr-1 pt-2">
+              {levelOpts.map((l) => <Checkbox key={l.value} checked={programLevels.includes(Number(l.value))} onChange={() => toggleArr(setProgramLevels)(Number(l.value))} label={l.label} />)}
+            </div>
+          </Accordion>
+
+          {/* Study Area */}
+          <Accordion title="Study Area" open={openSec.studyArea} onToggle={() => toggleSec('studyArea')} count={studyAreas.length || null}>
+            <div className="max-h-64 overflow-y-auto pr-1 pt-2">
+              {studyAreaOpts.map((s) => <Checkbox key={s.value} checked={studyAreas.includes(Number(s.value))} onChange={() => toggleArr(setStudyAreas)(Number(s.value))} label={s.label} />)}
+            </div>
+          </Accordion>
+
+          {/* Requirements */}
+          <Accordion title="Requirements" open={openSec.requirements} onToggle={() => toggleSec('requirements')} count={requirements.length || null}>
+            <div className="max-h-64 overflow-y-auto pr-1 pt-2">
+              {reqOpts.map((r) => <Checkbox key={r.value} checked={requirements.includes(Number(r.value))} onChange={() => toggleArr(setRequirements)(Number(r.value))} label={r.label} />)}
+            </div>
+          </Accordion>
+
+          {/* Tuition Fees slider */}
+          <Accordion title="Tuition Fees (as per Country's Currency)" open={openSec.tuition} onToggle={() => toggleSec('tuition')}>
+            <div className="pt-3">
+              <input type="range" min={0} max={100000} step={1000} value={tuitionMax} onChange={(e) => setTuitionMax(Number(e.target.value))} className="w-full accent-[#226CF5]" />
+              <div className="text-[12.5px] text-slate-600 mt-1">{tuitionMax === 0 ? 'Any' : tuitionMax >= 100000 ? 'Above 100,000' : `Up to ${tuitionMax.toLocaleString()}`}</div>
+            </div>
+          </Accordion>
+        </aside>
+
+        {/* Right: results */}
+        <main className="flex-1 min-w-0">
         {/* Quick filter pills */}
         {highlights.length > 0 && (
           <div className="flex items-center gap-2 overflow-x-auto pb-1">
@@ -297,8 +383,7 @@ export default function SearchProgramsPage() {
 
         {/* Controls row */}
         <div className="flex flex-wrap items-center gap-3 mt-3">
-          <button onClick={() => setShowAdvanced((v) => !v)} className="text-[14px] font-medium px-4 py-2 border flex items-center gap-1.5" style={{ color: BLUE, borderColor: BLUE, borderRadius: 4 }}><SlidersHorizontal size={15} /> Filters</button>
-          <button onClick={() => setShowElig(true)} className="text-[14px] font-semibold text-white px-4 py-2 flex items-center gap-1.5" style={{ background: BLUE, borderRadius: 4 }}><UserCheck size={15} /> Check Eligibility</button>
+          <button onClick={() => setMobileFilters((v) => !v)} className="lg:hidden text-[14px] font-medium px-4 py-2 border flex items-center gap-1.5" style={{ color: BLUE, borderColor: BLUE, borderRadius: 4 }}><SlidersHorizontal size={15} /> Filters</button>
           <div className="text-[14px] text-slate-600">
             {eligActive ? <span><b>{eligResult.counts.eligible?.toLocaleString()}</b> eligible · {eligResult.counts.nonEligible?.toLocaleString()} non-eligible</span>
               : result ? <span><b>{result.total?.toLocaleString()}</b> Programs in {result.universitiesCount} Universities · Page {page} of {result.totalPages}</span>
@@ -364,6 +449,7 @@ export default function SearchProgramsPage() {
             <button disabled={page >= result.totalPages} onClick={() => runSearch(page + 1)} className="px-3 py-1.5 border border-slate-200 bg-white text-[13px] disabled:opacity-40" style={{ borderRadius: 4 }}>Next ›</button>
           </div>
         )}
+        </main>
       </div>
 
       {/* Bulk action bar (fixed) */}
@@ -379,39 +465,6 @@ export default function SearchProgramsPage() {
           </div>
         </div>
       </div>
-
-      {/* Eligibility modal */}
-      {showElig && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/50" onClick={() => setShowElig(false)}>
-          <div className="bg-white w-full max-w-lg p-6 max-h-[90vh] overflow-y-auto" style={{ borderRadius: 6 }} onClick={(e) => e.stopPropagation()}>
-            <div className="flex items-center justify-between">
-              <h2 className="font-['DM_Sans'] text-lg font-bold text-slate-800">Check Eligibility</h2>
-              <button onClick={() => setShowElig(false)} className="text-slate-400"><X size={18} /></button>
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-4 text-[13px]">
-              {[['Student\'s Nationality *', 'nationalityId', nationalities], ['Highest Qualification *', 'highestQualificationId', QUALIFICATIONS], ['Grading System *', 'gradingSystem', GRADING], ['English Proficiency *', 'englishExam', ENGLISH]].map(([label, key, opts]) => (
-                <label key={key} className="flex flex-col gap-1">
-                  <span className="text-slate-500">{label}</span>
-                  <select value={profile[key]} onChange={(e) => setProfile((p) => ({ ...p, [key]: e.target.value }))} className="border border-slate-200 px-2 py-2 bg-white" style={{ borderRadius: 4 }}>
-                    {!['gradingSystem', 'englishExam'].includes(key) && <option value="">Select</option>}
-                    {opts.map((o) => <option key={o.value} value={o.value}>{o.label}</option>)}
-                  </select>
-                </label>
-              ))}
-              {[['Score *', 'score'], ['Backlogs', 'backlogs'], ['Work Experience (Years)', 'workExperience']].map(([label, key]) => (
-                <label key={key} className="flex flex-col gap-1">
-                  <span className="text-slate-500">{label}</span>
-                  <input type="number" value={profile[key]} onChange={(e) => setProfile((p) => ({ ...p, [key]: e.target.value }))} className="border border-slate-200 px-2 py-2" style={{ borderRadius: 4 }} />
-                </label>
-              ))}
-            </div>
-            <div className="flex justify-end gap-2 mt-5">
-              <button onClick={() => setProfile({ nationalityId: '', highestQualificationId: '', gradingSystem: 'OutOf100', score: '', englishExam: 'later', backlogs: '', workExperience: '' })} className="px-4 py-2 text-[13px] text-slate-600 border border-slate-200" style={{ borderRadius: 4 }}>Reset</button>
-              <button disabled={!profile.nationalityId || !profile.highestQualificationId || profile.score === ''} onClick={() => { setShowElig(false); runEligibility('eligible', 1); }} className="px-5 py-2 text-[13px] font-semibold text-white disabled:opacity-40" style={{ background: BLUE, borderRadius: 4 }}>Apply</button>
-            </div>
-          </div>
-        </div>
-      )}
 
       {/* Compare modal */}
       {showCompare && (

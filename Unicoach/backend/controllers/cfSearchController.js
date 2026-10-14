@@ -98,6 +98,13 @@ function buildMatch(f = {}) {
   if (intake.length) m['cf.DisplayIntakes'] = { $in: intake };
   const hl = arr(f.highlights).map(Number).filter(Boolean);
   if (hl.length) m.highlightIds = { $all: hl };
+  // Universities filter (multi-select by cfUniversityId)
+  const unis = arr(f.university).map(Number).filter(Boolean);
+  if (unis.length) m.cfUniversityId = { $in: unis };
+  // Tuition Fees range (annual fee amount, "as per country's currency")
+  const tMin = Number(f.tuitionMin), tMax = Number(f.tuitionMax);
+  if (Number.isFinite(tMin) && tMin > 0) m['annualFee.amount'] = { ...(m['annualFee.amount'] || {}), $gte: tMin };
+  if (Number.isFinite(tMax) && tMax > 0) m['annualFee.amount'] = { ...(m['annualFee.amount'] || {}), $lte: tMax };
   if (f.eslElpAvailable === 'yes') m.$or = [{ 'cf.EslAvailable': true }, { 'cf.ElpAvailable': true }];
   const reqs = arr(f.requirements).map(Number);
   for (const r of reqs) if (REQUIREMENT_PREDICATE[r]) Object.assign(m, REQUIREMENT_PREDICATE[r]);
@@ -242,6 +249,28 @@ exports.searchCourses = async (req, res) => {
       universitiesCount: (sponsored[0] || {}).universities || 0,
       highlightCounts,
     });
+  } catch (e) { res.status(500).json({ error: e.message }); }
+};
+
+// POST /api/search/universities — faceted university list (name + program count) for the
+// current filters, searchable. Powers the CourseFinder "Universities" filter sidebar.
+exports.getUniversities = async (req, res) => {
+  try {
+    const { filters = {}, search = '' } = req.body || {};
+    // count by university ignoring the university filter itself (so the list stays stable while selecting)
+    const match = buildMatch({ ...filters, university: undefined });
+    const agg = await CfCourse.aggregate([
+      { $match: match },
+      { $group: { _id: '$cfUniversityId', name: { $first: '$universityName' }, count: { $sum: 1 } } },
+      { $sort: { count: -1 } },
+      { $limit: 400 },
+    ]);
+    let rows = agg.map(a => ({ id: a._id, name: a.name, count: a.count })).filter(r => r.id != null);
+    if (search && search.trim()) {
+      const q = search.trim().toLowerCase();
+      rows = rows.filter(r => (r.name || '').toLowerCase().includes(q));
+    }
+    res.json({ data: rows.slice(0, 200), total: rows.length });
   } catch (e) { res.status(500).json({ error: e.message }); }
 };
 

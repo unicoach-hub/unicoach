@@ -28,6 +28,14 @@ export const searchCourses = (filters = {}, { sort = 'featured', page = 1, pageS
 export const getCourseDetail = (cfId) =>
   fetch(`${API_BASE_URL}/search/courses/${cfId}`).then(json).then((d) => d.data || d);
 
+// faceted university list (name + program count) for the current filters
+export const getUniversitiesFacet = (filters = {}, search = '') =>
+  fetch(`${API_BASE_URL}/search/universities`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ filters, search }),
+  }).then(json).then((d) => d.data || []);
+
 // all matching results (capped) mapped for the Excel exporter
 export const exportSearch = (filters = {}) =>
   fetch(`${API_BASE_URL}/search/export`, {
