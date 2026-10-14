@@ -1,0 +1,60 @@
+name: CourseFinder Ingest (VPS local Mongo)
+
+# Harvests + transforms the CourseFinder catalogue on the runner, ships the output to
+# the VPS, and loads it into the LIVE local Mongo (db `default`) by exec'ing cf_ingest
+# inside the app container. Non-destructive (RESET=0 upsert) — adds `disciplines` to the
+# live data with no search gap. This is the DB the production backend actually reads.
+#
+# Secrets: CF_CREDS, VPS_SSH_KEY_B64, VPS_HOST.
+on:
+  workflow_dispatch:
+
+jobs:
+  ingest-vps:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    env:
+      APP_UUID: et79n1zgjbtodtdsklnfn09d
+    defaults:
+      run:
+        working-directory: Unicoach/backend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Write CourseFinder credentials
+        run: |
+          mkdir -p scripts/coursefinder/.cfdata
+          printf '%s' "$CF_CREDS" > scripts/coursefinder/.cfdata/.cf_creds.json
+          node -e "const c=require('./scripts/coursefinder/.cfdata/.cf_creds.json'); const p=JSON.parse(Buffer.from(c.token.split('.')[1],'base64')); console.log('token expires in (h):',((p.exp*1000-Date.now())/3600000).toFixed(1))"
+        env:
+          CF_CREDS: ${{ secrets.CF_CREDS }}
+
+      - name: Harvest catalogue
+        run: CF_DATA_DIR=./scripts/coursefinder/.cfdata node scripts/coursefinder/cf_harvest.js
+
+      - name: Transform
+        run: node --max-old-space-size=6144 scripts/coursefinder/cf_transform.js
+        env:
+          CF_DATA_DIR: ./scripts/coursefinder/.cfdata
+
+      - name: Package output
+        run: tar czf /tmp/cfout.tgz -C scripts/coursefinder/.cfdata out && ls -la /tmp/cfout.tgz
+
+      - name: Write SSH key
+        working-directory: .
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.VPS_SSH_KEY_B64 }}" | base64 -d > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          ssh-keyscan -H "${{ secrets.VPS_HOST }}" >> ~/.ssh/known_hosts 2>/dev/null || true
+
+      - name: Ship output + ingest on VPS
+        working-directory: .
+        run: |
+          scp -i ~/.ssh/id_ed25519 -o StrictHostKeyChecking=no /tmp/cfout.tgz root@${{ secrets.VPS_HOST }}:/tmp/cfout.tgz
+          SCRIPT_B64=$(base64 -w0 Unicoach/backend/scripts/coursefinder/vps_ingest.sh)
+          ssh -i ~/.ssh/id_ed25519 -o StrictHostKeyChecking=no root@${{ secrets.VPS_HOST }} \
+            "echo '$SCRIPT_B64' | base64 -d > /tmp/vps_ingest.sh && APP_UUID='${APP_UUID}' bash /tmp/vps_ingest.sh; rm -f /tmp/vps_ingest.sh"
