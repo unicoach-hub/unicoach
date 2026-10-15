@@ -14,7 +14,8 @@ const ExcelColumnExportModal = ({
   onConfirmExport,
   exportType = 'universities',
   itemsCount = 0,
-  availableColumns = []
+  availableColumns = [],
+  formatLabel = 'Excel'
 }) => {
   // Use passed availableColumns if they match, or fallback to the 35 standard checklist fields
   const fields = useMemo(() => {
@@ -231,7 +232,7 @@ const ExcelColumnExportModal = ({
                     : 'bg-[#5B9BD5] hover:bg-[#4A8AC4] active:scale-[0.98]'
                 }`}
               >
-                <span>Download as Excel</span>
+                <span>Download as {formatLabel}</span>
                 <Download size={16} />
               </button>
             </div>

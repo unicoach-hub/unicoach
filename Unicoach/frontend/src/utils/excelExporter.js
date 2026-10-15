@@ -363,28 +363,19 @@ export function exportUniversitiesToExcel(universities = [], options = {}) {
  * @param {Array} programs - List of selected program objects with nested university details
  * @param {Object} options - Custom options (filename, sheetName, studentProfile, selectedColumnKeys)
  */
-export function exportSelectedProgramsToExcel(programs = [], options = {}) {
-  try {
-    if (!programs || programs.length === 0) {
-      alert('No programs selected to export.');
-      return false;
-    }
+/**
+ * Build a single fully-keyed export row for a program (all 35 standard fields).
+ * Shared by the Excel and PDF exporters so both honour the same column checklist.
+ */
+export function programToExportRow(prog, idx = 0) {
+  const u = prog.university || {};
+  const rankingStr = formatUniversityRankings(u);
+  const websiteUrl = u.website || (u.name ? `https://www.google.com/search?q=${encodeURIComponent(u.name + ' official portal')}` : 'N/A');
+  const countryStr = u.countryName || u.country || 'Global';
+  const req = getOfficialRequirements(u);
 
-    const {
-      filename = `CourseFinder_Programs_${new Date().toISOString().slice(0, 10)}.xlsx`,
-      sheetName = 'Programs',
-      studentProfile = null
-    } = options;
-
-    const excelRows = programs.map((prog, idx) => {
-      const u = prog.university || {};
-      const rankingStr = formatUniversityRankings(u);
-      const websiteUrl = u.website || (u.name ? `https://www.google.com/search?q=${encodeURIComponent(u.name + ' official portal')}` : 'N/A');
-      const countryStr = u.countryName || u.country || 'Global';
-      const req = getOfficialRequirements(u);
-
-      return {
-        'Serial No.': idx + 1,
+  return {
+    'Serial No.': idx + 1,
         // Column 1
         'University': u.name || prog.universityName || 'N/A',
         'Website URL': websiteUrl,
@@ -421,12 +412,27 @@ export function exportSelectedProgramsToExcel(programs = [], options = {}) {
         'Application Deadline': prog.deadline || 'Check official site',
         'Scholarship Available': 'Check official site',
         'Average Scholarship': prog.avgScholarship || u.avgScholarship || 'Check official site',
-        'Remarks': prog.isStem ? 'STEM designated' : (prog.status ? `Status: ${prog.status}` : ''),
-        'Application Mode': 'Apply through UniCoach or the official portal',
-        'English Proficiency Exam Waiver': 'Check official site',
-        'University Ranking': rankingStr
-      };
-    });
+    'Remarks': prog.isStem ? 'STEM designated' : (prog.status ? `Status: ${prog.status}` : ''),
+    'Application Mode': 'Apply through UniCoach or the official portal',
+    'English Proficiency Exam Waiver': 'Check official site',
+    'University Ranking': rankingStr
+  };
+}
+
+export function exportSelectedProgramsToExcel(programs = [], options = {}) {
+  try {
+    if (!programs || programs.length === 0) {
+      alert('No programs selected to export.');
+      return false;
+    }
+
+    const {
+      filename = `CourseFinder_Programs_${new Date().toISOString().slice(0, 10)}.xlsx`,
+      sheetName = 'Programs',
+      studentProfile = null
+    } = options;
+
+    const excelRows = programs.map((prog, idx) => programToExportRow(prog, idx));
 
     // Filter columns if selectedColumnKeys provided (Serial No. always first)
     let finalRows = excelRows;

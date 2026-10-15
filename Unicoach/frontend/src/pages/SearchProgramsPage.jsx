@@ -5,6 +5,7 @@ import { useAuth } from '../context/AuthContext';
 import { getSearchConfig, getHighlights, searchCourses, evaluateEligibility, exportSearch, getCourseDetail, getUniversitiesFacet } from '../utils/searchApi';
 import { exportSelectedProgramsToExcel } from '../utils/excelExporter';
 import { exportSelectedProgramsToPdf } from '../utils/pdfExporter';
+import ExcelColumnExportModal from '../components/ExcelColumnExportModal';
 import CfSidebar from '../components/CfSidebar';
 
 const PAGE_SIZE = 20;
@@ -114,6 +115,7 @@ export default function SearchProgramsPage() {
   const [compareDetails, setCompareDetails] = useState({}); // cfId -> full detail (for CF-parity rows)
   const [exporting, setExporting] = useState(false);
   const [exportMenu, setExportMenu] = useState(false);
+  const [columnModal, setColumnModal] = useState(null); // { format: 'excel'|'pdf', scope: 'all'|'top25'|'selected' } | null
 
   // eligibility
   const [searchParams, setSearchParams] = useSearchParams();
@@ -221,29 +223,35 @@ export default function SearchProgramsPage() {
     setActiveHighlights([]); setEligResult(null);
   };
 
-  const doExportAll = async () => {
-    setExporting(true);
-    try { const r = await exportSearch(filters); exportSelectedProgramsToExcel(r.data || [], { filename: `UniCoach_Programs_${Date.now()}.xlsx` }); }
-    catch { alert('Export failed. Please try again.'); } finally { setExporting(false); }
-  };
-  const doExportTop25 = async () => {
-    setExporting(true);
-    try { const r = await exportSearch(filters); exportSelectedProgramsToExcel((r.data || []).slice(0, 25), { filename: `UniCoach_Top25_${Date.now()}.xlsx` }); }
-    catch { alert('Export failed.'); } finally { setExporting(false); }
-  };
-  const doExportSelected = () => exportSelectedProgramsToExcel(selectedList.map(toProg), { filename: `UniCoach_Selected_${Date.now()}.xlsx` });
+  // Open the column-checklist modal for a given format + scope; the actual export runs on confirm.
+  const openExport = (format, scope) => { setExportMenu(false); setColumnModal({ format, scope }); };
 
-  const doExportAllPdf = async () => {
-    setExporting(true);
-    try { const r = await exportSearch(filters); await exportSelectedProgramsToPdf(r.data || [], { filename: `UniCoach_Programs_${Date.now()}.pdf`, title: 'Program Shortlist' }); }
-    catch { alert('PDF export failed. Please try again.'); } finally { setExporting(false); }
+  const fetchScopeData = async (scope) => {
+    if (scope === 'selected') return selectedList.map(toProg);
+    const r = await exportSearch(filters);
+    const data = r.data || [];
+    return scope === 'top25' ? data.slice(0, 25) : data;
   };
-  const doExportTop25Pdf = async () => {
+
+  // Called by the checklist modal with the user's chosen column keys.
+  const runColumnExport = async (selectedKeys) => {
+    if (!columnModal) return;
+    const { format, scope } = columnModal;
     setExporting(true);
-    try { const r = await exportSearch(filters); await exportSelectedProgramsToPdf((r.data || []).slice(0, 25), { filename: `UniCoach_Top25_${Date.now()}.pdf`, title: 'Top 25 Programs' }); }
-    catch { alert('PDF export failed.'); } finally { setExporting(false); }
+    try {
+      const data = await fetchScopeData(scope);
+      if (!data || data.length === 0) { alert('No programs to export.'); return; }
+      const stamp = Date.now();
+      const base = scope === 'top25' ? 'Top25' : scope === 'selected' ? 'Selected' : 'Programs';
+      if (format === 'pdf') {
+        const title = base === 'Top25' ? 'Top 25 Programs' : base === 'Selected' ? 'Selected Programs' : 'Program Shortlist';
+        await exportSelectedProgramsToPdf(data, { filename: `UniCoach_${base}_${stamp}.pdf`, title, selectedColumnKeys: selectedKeys });
+      } else {
+        exportSelectedProgramsToExcel(data, { filename: `UniCoach_${base}_${stamp}.xlsx`, selectedColumnKeys: selectedKeys });
+      }
+    } catch { alert('Export failed. Please try again.'); }
+    finally { setExporting(false); }
   };
-  const doExportSelectedPdf = () => exportSelectedProgramsToPdf(selectedList.map(toProg), { filename: `UniCoach_Selected_${Date.now()}.pdf`, title: 'Selected Programs' });
 
   const countryOpts = (config?.countries || []);
   const levelOpts = (config?.programLevels || []);
@@ -430,14 +438,14 @@ export default function SearchProgramsPage() {
                     <div className="fixed inset-0 z-40" onClick={() => setExportMenu(false)} />
                     <div className="absolute right-0 mt-1.5 z-50 w-56 bg-white border border-slate-200 shadow-lg py-1" style={{ borderRadius: 6 }}>
                       <div className="px-3 py-1.5 text-[11px] font-semibold uppercase tracking-wide text-slate-400 flex items-center gap-1.5"><FileSpreadsheet size={12} /> Excel (.xlsx)</div>
-                      <button onClick={() => { setExportMenu(false); doExportAll(); }} className="w-full text-left px-3 py-1.5 text-[13px] text-slate-700 hover:bg-sky-50">All results</button>
-                      <button onClick={() => { setExportMenu(false); doExportTop25(); }} className="w-full text-left px-3 py-1.5 text-[13px] text-slate-700 hover:bg-sky-50">Top 25</button>
-                      {selectedList.length > 0 && <button onClick={() => { setExportMenu(false); doExportSelected(); }} className="w-full text-left px-3 py-1.5 text-[13px] text-slate-700 hover:bg-sky-50">Selected ({selectedList.length})</button>}
+                      <button onClick={() => openExport('excel', 'all')} className="w-full text-left px-3 py-1.5 text-[13px] text-slate-700 hover:bg-sky-50">All results…</button>
+                      <button onClick={() => openExport('excel', 'top25')} className="w-full text-left px-3 py-1.5 text-[13px] text-slate-700 hover:bg-sky-50">Top 25…</button>
+                      {selectedList.length > 0 && <button onClick={() => openExport('excel', 'selected')} className="w-full text-left px-3 py-1.5 text-[13px] text-slate-700 hover:bg-sky-50">Selected ({selectedList.length})…</button>}
                       <div className="my-1 border-t border-slate-100" />
                       <div className="px-3 py-1.5 text-[11px] font-semibold uppercase tracking-wide text-slate-400 flex items-center gap-1.5"><FileText size={12} /> PDF (.pdf)</div>
-                      <button onClick={() => { setExportMenu(false); doExportAllPdf(); }} className="w-full text-left px-3 py-1.5 text-[13px] text-slate-700 hover:bg-sky-50">All results</button>
-                      <button onClick={() => { setExportMenu(false); doExportTop25Pdf(); }} className="w-full text-left px-3 py-1.5 text-[13px] text-slate-700 hover:bg-sky-50">Top 25</button>
-                      {selectedList.length > 0 && <button onClick={() => { setExportMenu(false); doExportSelectedPdf(); }} className="w-full text-left px-3 py-1.5 text-[13px] text-slate-700 hover:bg-sky-50">Selected ({selectedList.length})</button>}
+                      <button onClick={() => openExport('pdf', 'all')} className="w-full text-left px-3 py-1.5 text-[13px] text-slate-700 hover:bg-sky-50">All results…</button>
+                      <button onClick={() => openExport('pdf', 'top25')} className="w-full text-left px-3 py-1.5 text-[13px] text-slate-700 hover:bg-sky-50">Top 25…</button>
+                      {selectedList.length > 0 && <button onClick={() => openExport('pdf', 'selected')} className="w-full text-left px-3 py-1.5 text-[13px] text-slate-700 hover:bg-sky-50">Selected ({selectedList.length})…</button>}
                     </div>
                   </>
                 )}
@@ -500,13 +508,22 @@ export default function SearchProgramsPage() {
           {selectedList.length > 0 && <button onClick={() => setSelected({})} className="text-slate-300 hover:text-white flex items-center gap-1"><X size={14} /> Deselect All</button>}
           <div className="ml-auto flex items-center gap-4">
             <button disabled={selectedList.length < 2} onClick={() => setShowCompare(true)} className="flex items-center gap-1.5 disabled:opacity-40 hover:text-sky-300"><GitCompare size={15} /> Compare</button>
-            <button disabled={selectedList.length === 0} onClick={doExportSelected} className="flex items-center gap-1.5 disabled:opacity-40 hover:text-sky-300"><Download size={15} /> Download Selected</button>
-            <button disabled={!result || exporting} onClick={doExportAll} className="flex items-center gap-1.5 disabled:opacity-40 hover:text-sky-300">{exporting ? <Loader2 size={15} className="animate-spin" /> : <FileSpreadsheet size={15} />} Download Excel</button>
-            <button disabled={!result || exporting} onClick={doExportTop25} className="flex items-center gap-1.5 disabled:opacity-40 hover:text-sky-300"><FileSpreadsheet size={15} /> Download Top 25</button>
-            <button disabled={!result || exporting} onClick={doExportAllPdf} className="flex items-center gap-1.5 disabled:opacity-40 hover:text-sky-300"><FileText size={15} /> Download PDF</button>
+            <button disabled={selectedList.length === 0} onClick={() => openExport('excel', 'selected')} className="flex items-center gap-1.5 disabled:opacity-40 hover:text-sky-300"><Download size={15} /> Export Selected…</button>
+            <button disabled={!result || exporting} onClick={() => openExport('excel', 'all')} className="flex items-center gap-1.5 disabled:opacity-40 hover:text-sky-300">{exporting ? <Loader2 size={15} className="animate-spin" /> : <FileSpreadsheet size={15} />} Excel…</button>
+            <button disabled={!result || exporting} onClick={() => openExport('pdf', 'all')} className="flex items-center gap-1.5 disabled:opacity-40 hover:text-sky-300"><FileText size={15} /> PDF…</button>
           </div>
         </div>
       </div>
+
+      {/* Column-picker checklist (Excel + PDF) */}
+      <ExcelColumnExportModal
+        isOpen={!!columnModal}
+        onClose={() => setColumnModal(null)}
+        onConfirmExport={runColumnExport}
+        exportType="programs"
+        itemsCount={columnModal?.scope === 'selected' ? selectedList.length : (result?.total || 0)}
+        formatLabel={columnModal?.format === 'pdf' ? 'PDF' : 'Excel'}
+      />
 
       {/* Compare modal */}
       {showCompare && (
@@ -515,7 +532,7 @@ export default function SearchProgramsPage() {
             <div className="flex items-center justify-between px-5 py-3 border-b border-slate-100">
               <h2 className="font-['DM_Sans'] text-lg font-bold text-slate-800">Program Comparison</h2>
               <div className="flex items-center gap-3">
-                <button onClick={doExportSelected} className="text-[13px] text-[#226CF5] font-medium flex items-center gap-1"><FileSpreadsheet size={14} /> Download to Excel</button>
+                <button onClick={() => { setShowCompare(false); openExport('excel', 'selected'); }} className="text-[13px] text-[#226CF5] font-medium flex items-center gap-1"><FileSpreadsheet size={14} /> Export to Excel…</button>
                 <button onClick={() => setShowCompare(false)} className="text-slate-400"><X size={18} /></button>
               </div>
             </div>
