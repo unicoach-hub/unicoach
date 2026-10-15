@@ -13,6 +13,11 @@ const settingsSchema = new mongoose.Schema({
   wabaPhoneNumberId: { type: String, default: '' },
   wabaAccountId: { type: String, default: '' },
   wabaSenderNumber: { type: String, default: '' },
+  // Embedded Signup ("Connect with Facebook"): Login for Business configuration id, webhook token, connection info
+  wabaConfigId: { type: String, default: '' },
+  wabaWebhookVerifyToken: { type: String, default: '' },
+  wabaDisplayName: { type: String, default: '' },
+  wabaConnectedAt: { type: Date },
 
   // SMTP Email
   smtpHost: { type: String, default: '' },

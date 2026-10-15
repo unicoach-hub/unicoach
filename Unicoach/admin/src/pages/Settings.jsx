@@ -11,6 +11,7 @@ import {
 } from '@ant-design/icons';
 import Header from '../components/Header';
 import API from '../api/axios';
+import WhatsappConnect from '../components/WhatsappConnect';
 
 const Settings = () => {
   const [loading, setLoading] = useState(false);
@@ -521,6 +522,11 @@ const Settings = () => {
                   </Col>
                 </Row>
               </div>
+            </Col>
+
+            {/* WhatsApp Business: Connect with Facebook */}
+            <Col xs={24}>
+              <WhatsappConnect />
             </Col>
 
             {/* Twilio & Meta WABA */}

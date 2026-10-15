@@ -26,6 +26,8 @@ const leadSchema = new mongoose.Schema({
   // Opted out of promotional emails (unsubscribe link)
   unsubscribed: { type: Boolean, default: false, index: true },
   unsubscribedAt: { type: Date },
+  // Replied STOP on WhatsApp: no more bulk WhatsApp messages
+  whatsappOptOut: { type: Boolean, default: false },
   notes: { type: String },
   // Sheet-style columns the team fills in on All Leads
   college: { type: String },

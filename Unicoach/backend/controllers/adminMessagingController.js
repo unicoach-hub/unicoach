@@ -74,16 +74,37 @@ exports.getWhatsAppStats = async (req, res) => {
     const hasTwilio = !!(settings.twilioAccountSid && settings.twilioAuthToken);
     const isConnected = hasWaba || hasTwilio;
 
+    // Live numbers from Meta (quality and sending limit) and today's delivery reports from the webhook
+    let meta = {};
+    if (hasWaba) {
+      try {
+        const r = await fetch(`https://graph.facebook.com/v20.0/${settings.wabaPhoneNumberId}?fields=display_phone_number,verified_name,quality_rating,messaging_limit_tier`, {
+          headers: { Authorization: `Bearer ${settings.wabaAccessToken}` },
+        });
+        if (r.ok) meta = await r.json();
+      } catch { /* show what we have */ }
+    }
+    const TIER_LIMITS = { TIER_50: 50, TIER_250: 250, TIER_1K: 1000, TIER_10K: 10000, TIER_100K: 100000, TIER_UNLIMITED: Infinity };
+    const startOfDay = new Date();
+    startOfDay.setHours(0, 0, 0, 0);
+    const WhatsappEvent = require('../models/WhatsappEvent');
+    const todays = await WhatsappEvent.aggregate([
+      { $match: { kind: 'status', at: { $gte: startOfDay } } },
+      { $group: { _id: '$status', ids: { $addToSet: '$waMessageId' } } },
+    ]);
+    const countOf = (st) => todays.find((t) => t._id === st)?.ids.length || 0;
+    const tierLimit = TIER_LIMITS[meta.messaging_limit_tier];
+
     return res.json({
       success: true,
-      wabaPhoneNumber: settings.wabaPhoneNumberId || settings.twilioPhoneNumber || '',
+      wabaPhoneNumber: meta.display_phone_number || settings.wabaSenderNumber || settings.twilioPhoneNumber || '',
       connectionStatus: isConnected ? 'CONNECTED' : 'NOT_CONNECTED',
-      qualityRating: isConnected ? 'GREEN (High)' : '—',
-      messagingTier: isConnected ? 'Tier 1 (1,000 Conversations / 24hrs)' : 'Not Available',
-      dailyLimit: isConnected ? 1000 : 0,
-      sentToday: 0,
-      deliveredToday: 0,
-      failedToday: 0,
+      qualityRating: meta.quality_rating || '—',
+      messagingTier: meta.messaging_limit_tier ? meta.messaging_limit_tier.replace('TIER_', 'Tier ').replace('UNLIMITED', 'Unlimited') : (isConnected ? 'Unknown' : 'Not Available'),
+      dailyLimit: Number.isFinite(tierLimit) ? tierLimit : 0,
+      sentToday: countOf('sent'),
+      deliveredToday: countOf('delivered') + countOf('read'),
+      failedToday: countOf('failed'),
       totalTemplates,
       approvedTemplates,
       pendingTemplates,
@@ -241,6 +262,9 @@ exports.sendBulk = async (req, res) => {
             content: compiledBody
           });
         } else {
+          if (recipient.whatsappOptOut) {
+            throw new Error('Opted out of WhatsApp (replied STOP).');
+          }
           let formattedPhone = recipientData.phone.replace(/\D/g, '');
           if (formattedPhone.length === 10) {
             formattedPhone = `91${formattedPhone}`;
@@ -307,7 +331,8 @@ exports.sendBulk = async (req, res) => {
               body: compiledBody
             });
           } else {
-            console.log(`[SIMULATOR] Bulk WhatsApp to ${formattedPhone}`);
+            // Nothing is connected: say so instead of pretending the message went out
+            throw new Error('WhatsApp is not connected. Connect it in Settings → WhatsApp Business.');
           }
           logs.push({
             recipient: formattedPhone,

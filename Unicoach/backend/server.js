@@ -329,6 +329,13 @@ app.use('/api/student-chat', require('./routes/studentChat'));
 // Admin messaging & templates
 app.use('/api/admin/templates', require('./routes/adminTemplates'));
 app.use('/api/admin/messaging', require('./routes/adminMessaging'));
+app.use('/api/admin/whatsapp', require('./routes/adminWhatsapp'));
+// Meta WhatsApp webhook (public, signed with the Meta App Secret)
+{
+  const wa = require('./controllers/whatsappController');
+  app.get('/api/webhooks/whatsapp', wa.verifyWebhook);
+  app.post('/api/webhooks/whatsapp', wa.receiveWebhook);
+}
 
 // CRM — Pipelines, Forms & Bookings (admin)
 app.use('/api/admin/pipelines', require('./routes/adminPipelines'));
