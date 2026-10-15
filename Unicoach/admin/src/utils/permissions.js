@@ -24,6 +24,7 @@ const PAGE_SECTIONS = [
   ['/content', 'content'],
   ['/tasks', 'self'],
   ['/settings', 'owner'],
+  ['/developer', 'owner'],
   ['/staff', 'owner'],
 ];
 

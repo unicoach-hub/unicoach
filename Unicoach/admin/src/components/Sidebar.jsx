@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { Tooltip } from 'antd';
 import {
+  CodeOutlined,
   AppstoreOutlined,
   TeamOutlined,
   CustomerServiceOutlined,
@@ -106,6 +107,7 @@ const NAV_SECTIONS = [
       },
       { path: '/staff', label: 'Staff & Roles', icon: <SafetyCertificateOutlined /> },
       { path: '/settings', label: 'Settings', icon: <SettingOutlined /> },
+      { path: '/developer', label: 'Developer', icon: <CodeOutlined /> },
     ],
   },
 ];

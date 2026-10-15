@@ -148,6 +148,12 @@ app.use(express.json({
 }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 app.use(cookieParser());
+// Developer Dashboard numbers: request counts per route (off on a laptop that shares the live DB)
+if (process.env.DISABLE_METRICS !== 'true') {
+  const metrics = require('./services/apiMetrics');
+  app.use(metrics.requestMetrics);
+  metrics.startMetrics();
+}
 app.use(mongoSanitize()); // must run AFTER the body parsers, otherwise JSON bodies are never sanitized
 
 // Smart Rate Limiting: High throughput for public reading, strict for sensitive actions
@@ -332,6 +338,7 @@ app.use('/api/admin/messaging', require('./routes/adminMessaging'));
 app.use('/api/admin/whatsapp', require('./routes/adminWhatsapp'));
 app.use('/api/admin/campaigns', require('./routes/adminCampaigns'));
 app.use('/api/admin/chat-flows', require('./routes/adminChatFlows'));
+app.use('/api/admin/dev', require('./routes/adminDeveloper'));
 // Meta WhatsApp webhook (public, signed with the Meta App Secret)
 {
   const wa = require('./controllers/whatsappController');
