@@ -145,6 +145,8 @@ const App = () => {
                       <Route path="/leads" element={<Leads />} />
                       <Route path="/leads-converted" element={<Leads key="converted" view="converted" />} />
                       <Route path="/leads-followup" element={<Leads key="followup" view="followup" />} />
+                      <Route path="/leads-interested" element={<Leads key="interested" view="interested" />} />
+                      <Route path="/leads-not-interested" element={<Leads key="not_interested" view="not_interested" />} />
                       {/* Automation & Outreach */}
                       <Route path="/automation/email" element={<EmailHub />} />
                       <Route path="/automation/campaign" element={<Campaign />} />

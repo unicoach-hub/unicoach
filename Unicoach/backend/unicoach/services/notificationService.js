@@ -366,6 +366,7 @@ async function sendBookingConfirmationEmail(booking, mentor, service) {
     // 3. Dispatch concurrently to BOTH student and mentor/admin in parallel
     const emailPromises = [
       sendEmail({
+        kind: 'bookings',
         to: booking.studentEmail,
         subject: `🗓️ 1:1 Session Confirmed: Meeting Link with ${mentorName} (${serviceTitle})`,
         html: htmlContent
@@ -381,6 +382,7 @@ async function sendBookingConfirmationEmail(booking, mentor, service) {
     if (primaryMentorRecipient && mentorHtml) {
       emailPromises.push(
         sendEmail({
+          kind: 'bookings',
           to: primaryMentorRecipient,
           cc: ccRecipient,
           subject: `🚀 New 1:1 Student Booking Alert: ${studentName} booked ${serviceTitle}`,
@@ -726,6 +728,7 @@ async function sendDirectOrderConfirmationEmail(booking, mentor, service) {
     // ── 3. Dispatch concurrently to BOTH student and mentor/admin in parallel ──
     const emailPromises = [
       sendEmail({
+        kind: 'bookings',
         to: booking.studentEmail,
         subject: `✨ Order Confirmed: ${serviceTitle} with ${mentorName} (${bookingRef})`,
         html: studentHtml
@@ -741,6 +744,7 @@ async function sendDirectOrderConfirmationEmail(booking, mentor, service) {
     if (primaryMentorRecipient && mentorHtml) {
       emailPromises.push(
         sendEmail({
+          kind: 'bookings',
           to: primaryMentorRecipient,
           cc: ccRecipient,
           subject: `🚀 New Order Alert: ${studentName} booked ${serviceTitle} (${currency}${amountPaid})`,

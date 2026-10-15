@@ -1,7 +1,7 @@
 import React from 'react';
 import { ArrowUpOutlined, ArrowDownOutlined } from '@ant-design/icons';
 
-const StatsCard = ({ icon, label, value, color = 'indigo', trend, loading = false }) => {
+const StatsCard = ({ icon, label, value, color = 'indigo', trend, loading = false, onClick, active = false }) => {
   if (loading) {
     return (
       <div className={`stats-card stats-card--${color} relative overflow-hidden select-none`}>
@@ -21,8 +21,12 @@ const StatsCard = ({ icon, label, value, color = 'indigo', trend, loading = fals
     );
   }
 
+  const clickable = typeof onClick === 'function';
   return (
-    <div className={`stats-card stats-card--${color}`}>
+    <div
+      className={`stats-card stats-card--${color}${clickable ? ' stats-card--clickable' : ''}${active ? ' stats-card--active' : ''}`}
+      {...(clickable ? { role: 'button', tabIndex: 0, onClick, onKeyDown: (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onClick(); } } } : {})}
+    >
       <div className="stats-card-top">
         <div className={`stats-card-icon stats-card-icon--${color}`}>
           {icon}

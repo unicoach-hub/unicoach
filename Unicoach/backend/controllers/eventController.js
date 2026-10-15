@@ -172,6 +172,7 @@ function sendRegistrationEmail({ name, email, event }) {
     : '';
 
   return sendEmail({
+    kind: 'events',
     to: email,
     subject: `You're registered: ${String(event.title).replace(/[\r\n]+/g, ' ')}`,
     html: `

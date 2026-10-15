@@ -364,7 +364,7 @@ exports.sendBulk = async (req, res) => {
     }
 
     if (emailQueue.length > 0) {
-      const results = await sendEmailBatch(emailQueue);
+      const results = await sendEmailBatch(emailQueue, { kind: 'updates' });
       results.forEach((result, i) => {
         const log = logs[emailQueue[i].logIndex];
         if (result.ok) {

@@ -290,24 +290,37 @@ const Editor = ({ flowId, onBack }) => {
     <FlowCtx.Provider value={ctx}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap', marginBottom: 10 }}>
         <Button icon={<ArrowLeftOutlined />} onClick={() => { if (!dirty || window.confirm('Leave without saving?')) onBack(); }}>Flows</Button>
-        <Input value={flow.name} onChange={(e) => { setFlow({ ...flow, name: e.target.value }); setDirty(true); }} style={{ width: 260, fontWeight: 700 }} />
+        <Input value={flow.name} onChange={(e) => { setFlow({ ...flow, name: e.target.value }); setDirty(true); }} style={{ width: 240, fontWeight: 700 }} placeholder="Flow name" />
         <Tooltip title="Replies to any message that matches no keyword (once a day per student)">
           <Checkbox checked={flow.isDefault} onChange={(e) => { setFlow({ ...flow, isDefault: e.target.checked }); setDirty(true); }}>Default reply</Checkbox>
         </Tooltip>
         <div style={{ flex: 1 }} />
-        <span style={{ fontSize: 13, color: flow.active ? '#15803d' : '#64748b', fontWeight: 600 }}>{flow.active ? 'Live' : 'Off'}</span>
-        <Switch checked={flow.active} loading={saving} onChange={(on) => { setFlow({ ...flow, active: on }); save({ active: on }); }} />
+        {dirty && <span style={{ fontSize: 12, color: '#b45309' }}>Unsaved changes</span>}
+        <span style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '4px 10px', borderRadius: 999, background: flow.active ? '#f0fdf4' : '#f1f5f9', border: `1px solid ${flow.active ? '#bbf7d0' : '#e2e8f0'}` }}>
+          <span style={{ width: 8, height: 8, borderRadius: '50%', background: flow.active ? '#16a34a' : '#94a3b8' }} />
+          <span style={{ fontSize: 13, color: flow.active ? '#15803d' : '#64748b', fontWeight: 600 }}>{flow.active ? 'Live' : 'Off'}</span>
+          <Switch size="small" checked={flow.active} loading={saving} onChange={(on) => { setFlow({ ...flow, active: on }); save({ active: on }); }} />
+        </span>
         <Button type="primary" icon={<SaveOutlined />} loading={saving} onClick={() => save()} disabled={!dirty}>Save changes</Button>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '190px 1fr', gap: 10, height: 'calc(100vh - 220px)', minHeight: 560 }}>
-        <div className="nx-card" style={{ padding: 10, display: 'grid', gap: 6, alignContent: 'start' }}>
-          <div style={{ fontSize: 12, fontWeight: 700, color: 'var(--ux-text-2)', marginBottom: 4 }}>ADD A STEP</div>
+      <div style={{ display: 'grid', gridTemplateColumns: '220px minmax(0, 1fr)', gap: 12, height: 'calc(100vh - 230px)', minHeight: 560 }}>
+        <div className="nx-card" style={{ padding: 12, display: 'flex', flexDirection: 'column', gap: 6, overflowY: 'auto', minWidth: 0 }}>
+          <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.06em', color: 'var(--ux-text-3)', margin: '2px 4px 6px' }}>ADD A STEP</div>
           {Object.entries(NODE_TYPES_META).filter(([k]) => k !== 'start').map(([k, m]) => (
-            <Button key={k} icon={m.icon} onClick={() => addNode(k)} style={{ justifyContent: 'flex-start', color: m.color, borderColor: '#e5e7eb' }}>{m.label}</Button>
+            <button
+              key={k}
+              type="button"
+              onClick={() => addNode(k)}
+              className="flow-palette-btn"
+              style={{ display: 'flex', alignItems: 'center', gap: 10, width: '100%', padding: '9px 10px', borderRadius: 10, border: '1px solid #eef0f3', background: '#fff', cursor: 'pointer', textAlign: 'left', fontSize: 13, fontWeight: 600, color: '#1e293b' }}
+            >
+              <span style={{ width: 28, height: 28, borderRadius: 8, display: 'flex', alignItems: 'center', justifyContent: 'center', background: `${m.color}14`, color: m.color, flexShrink: 0 }}>{m.icon}</span>
+              <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{m.label}</span>
+            </button>
           ))}
-          <div style={{ fontSize: 11.5, color: 'var(--ux-text-3)', marginTop: 8, lineHeight: 1.45 }}>
-            Drag from a dot on the right of a step to the left side of another to connect them. Each button has its own dot.
+          <div style={{ marginTop: 'auto', fontSize: 11.5, color: 'var(--ux-text-3)', lineHeight: 1.5, padding: '10px 4px 2px', borderTop: '1px solid #f1f5f9' }}>
+            Click a step to add it, then drag from the dot on its right to the next step. Every button has its own dot.
           </div>
         </div>
         <div className="nx-card" style={{ padding: 0, overflow: 'hidden' }}>
@@ -319,12 +332,16 @@ const Editor = ({ flowId, onBack }) => {
             onEdgesChange={(c) => { onEdgesChange(c); if (c.some((x) => x.type === 'remove')) setDirty(true); }}
             onConnect={onConnect}
             fitView
+            fitViewOptions={{ maxZoom: 0.9, padding: 0.3 }}
+            minZoom={0.3}
+            maxZoom={1.5}
+            proOptions={{ hideAttribution: true }}
             deleteKeyCode={['Backspace', 'Delete']}
             defaultEdgeOptions={{ animated: true, style: { strokeWidth: 2, strokeDasharray: '6 4' } }}
           >
             <Background gap={18} size={1.5} />
-            <MiniMap pannable zoomable />
-            <Controls />
+            <MiniMap pannable zoomable style={{ width: 150, height: 96, borderRadius: 10, border: '1px solid #e5e7eb' }} maskColor="rgba(241,245,249,0.7)" nodeColor={(n) => NODE_TYPES_META[n.type]?.color || '#94a3b8'} nodeBorderRadius={6} />
+            <Controls showInteractive={false} style={{ borderRadius: 10, overflow: 'hidden', boxShadow: '0 2px 8px rgba(15,23,42,0.08)' }} />
           </ReactFlow>
         </div>
       </div>

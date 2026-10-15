@@ -39,6 +39,8 @@ exports.getAllLeads = async (req, res) => {
     // Sidebar sections: Converted and Follow-up are filtered views of the same leads
     if (view === 'converted') filter.status = 'converted';
     if (view === 'followup') filter.followUp = { $in: ['interested', 'fifty_fifty'] };
+    if (view === 'interested') filter.status = 'interested';
+    if (view === 'not_interested') filter.status = 'not_interested';
     if (verified !== undefined) filter.verified = verified === 'true';
     if (source) filter.source = source;
     if (assignedTo && assignedTo !== 'all') {

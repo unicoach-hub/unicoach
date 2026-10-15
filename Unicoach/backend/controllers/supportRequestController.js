@@ -71,6 +71,7 @@ exports.testSmtp = async (req, res) => {
     }
 
     const result = await sendEmail({
+      kind: 'support',
       to: user,
       from: `"${name.replace(/["<>]/g, '')}" <${user}>`,
       subject: 'UniCoach test email: delivery works',
@@ -120,6 +121,7 @@ exports.createSupportRequest = async (req, res) => {
 
     try {
       await sendEmail({
+        kind: 'support',
         to: saved.email,
         subject: `We have received your request regarding ${saved.category} — UniCoach`,
         html: `
@@ -464,6 +466,7 @@ exports.sendSupportEmail = async (req, res) => {
 
     // 2. Dispatch email asynchronously via pooled SMTP in background (fire-and-track)
     sendEmail({
+      kind: 'support',
       to: recipientEmail,
       from: formattedFrom,
       subject,

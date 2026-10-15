@@ -31,7 +31,7 @@ const steps = (items) => `<table style="border-collapse:collapse;margin:0 0 8px"
 
 const send = (to, subject, html, what) => {
   if (!to) return;
-  sendEmail({ to, subject, html }).catch((e) => console.warn(`[Mentor email] ${what} failed (non-blocking):`, e.message));
+  sendEmail({ to, subject, html, kind: 'mentors' }).catch((e) => console.warn(`[Mentor email] ${what} failed (non-blocking):`, e.message));
 };
 
 /** Right after a mentor applies */

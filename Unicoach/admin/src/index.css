@@ -4000,3 +4000,15 @@ input[type="date"].form-input::-webkit-calendar-picker-indicator {
   background-color: #DE5C2B;
   color: #ffffff;
 }
+
+/* WhatsApp chatbot flow builder */
+.flow-palette-btn { transition: border-color .15s, box-shadow .15s, transform .15s; }
+.flow-palette-btn:hover { border-color: #cbd5e1 !important; box-shadow: 0 4px 12px rgba(15,23,42,0.06); transform: translateY(-1px); }
+.react-flow__edge-path { stroke: #94a3b8; }
+.react-flow__handle { cursor: crosshair; }
+
+/* Stat boxes that open a section */
+.stats-card--clickable { cursor: pointer; transition: transform .15s, box-shadow .15s, border-color .15s; }
+.stats-card--clickable:hover { transform: translateY(-2px); box-shadow: 0 10px 24px rgba(15,23,42,0.08); }
+.stats-card--clickable:focus-visible { outline: 2px solid #DE5C2B; outline-offset: 2px; }
+.stats-card--active { border: 1.5px solid #DE5C2B !important; box-shadow: 0 0 0 3px rgba(222,92,43,0.12); }

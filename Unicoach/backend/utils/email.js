@@ -192,6 +192,23 @@ function buildResendIdentity(baseFrom, customFrom, customReplyTo) {
   return { from: `${displayName} <${address}>`, replyTo };
 }
 
+// Different sender per kind of email, set in the environment (e.g. on Coolify):
+//   EMAIL_FROM_ACCOUNT="UniCoach <hello@unicoach.com>"      welcome, sign-up
+//   EMAIL_FROM_MENTORS="UniCoach Mentors <mentors@unicoach.com>"
+//   EMAIL_FROM_BOOKINGS, EMAIL_FROM_EVENTS, EMAIL_FROM_COUNSELLING, EMAIL_FROM_UPDATES, EMAIL_FROM_SUPPORT
+// and optionally EMAIL_REPLY_TO_<KIND> for where replies go. Anything not set uses RESEND_FROM.
+const SENDER_KINDS = ['account', 'mentors', 'bookings', 'events', 'counselling', 'updates', 'support'];
+function senderFor(kind) {
+  if (!kind || !SENDER_KINDS.includes(kind)) return null;
+  const from = (process.env[`EMAIL_FROM_${kind.toUpperCase()}`] || '').trim();
+  if (!from || !extractAddress(from).includes('@')) return null;
+  const replyTo = extractAddress(process.env[`EMAIL_REPLY_TO_${kind.toUpperCase()}`] || '');
+  return { from, replyTo: replyTo.includes('@') ? replyTo : undefined };
+}
+
+// The sender's domain isn't verified on Resend yet: use the default sender instead of losing the email
+const isUnverifiedSender = (msg) => /domain is not verified|not verified|verify a domain|invalid `from`/i.test(String(msg || ''));
+
 /** Nodemailer-style attachments ({ filename, content, encoding: 'base64', path, contentType }) → Resend */
 function toResendAttachments(attachments) {
   if (!Array.isArray(attachments) || attachments.length === 0) return undefined;
@@ -225,11 +242,14 @@ const htmlToText = (html) => (html ? html.replace(/<[^>]*>/g, '') : '');
  * Sends one email through Resend (see delivery policy above).
  * `smtpConfig` is only honoured when EMAIL_SMTP_FALLBACK=true; otherwise Resend sends it from the verified domain.
  */
-async function sendEmail({ to, cc, bcc, subject, html, text, from: customFrom, replyTo: customReplyTo, attachments = [], smtpConfig = null }) {
+async function sendEmail({ to, cc, bcc, subject, html, text, from: customFrom, replyTo: customReplyTo, attachments = [], smtpConfig = null, kind }) {
   const resendSetup = await getResendSetup();
 
   if (resendSetup) {
-    const identity = buildResendIdentity(resendSetup.from, customFrom, customReplyTo);
+    const sender = senderFor(kind);
+    const identity = sender
+      ? { from: sender.from, replyTo: customReplyTo || sender.replyTo || buildResendIdentity(resendSetup.from, null, null).replyTo }
+      : buildResendIdentity(resendSetup.from, customFrom, customReplyTo);
     const payload = {
       from: identity.from,
       to: Array.isArray(to) ? to : [to],
@@ -246,7 +266,12 @@ async function sendEmail({ to, cc, bcc, subject, html, text, from: customFrom, r
     const t0 = Date.now();
     let failure;
     try {
-      const { data, error } = await resendSetup.client.emails.send(payload);
+      let { data, error } = await resendSetup.client.emails.send(payload);
+      if (!data?.id && sender && isUnverifiedSender(error?.message)) {
+        console.warn(`⚠️ [Resend] Sender ${sender.from} not verified yet, sending from the default address`);
+        payload.from = buildResendIdentity(resendSetup.from, null, null).from;
+        ({ data, error } = await resendSetup.client.emails.send(payload));
+      }
       if (data && data.id) {
         console.log(`✅ [Resend] Email sent in ${Date.now() - t0}ms: <${data.id}> to ${to}`);
         return { messageId: data.id, service: 'resend', accepted: payload.to };
@@ -356,7 +381,7 @@ async function sendEmail({ to, cc, bcc, subject, html, text, from: customFrom, r
  * don't hit the per-second rate limit. Returns one result per message, in order: { ok, id?, error? }.
  * Batch sends don't support attachments.
  */
-async function sendEmailBatch(messages, { from: customFrom, replyTo: customReplyTo } = {}) {
+async function sendEmailBatch(messages, { from: customFrom, replyTo: customReplyTo, kind } = {}) {
   const resendSetup = await getResendSetup();
   if (!resendSetup) {
     if (process.env.NODE_ENV === 'production') {
@@ -366,7 +391,10 @@ async function sendEmailBatch(messages, { from: customFrom, replyTo: customReply
     return messages.map(() => ({ ok: true, simulated: true }));
   }
 
-  const identity = buildResendIdentity(resendSetup.from, customFrom, customReplyTo);
+  const sender = senderFor(kind);
+  const identity = sender
+    ? { from: sender.from, replyTo: customReplyTo || sender.replyTo || buildResendIdentity(resendSetup.from, null, null).replyTo }
+    : buildResendIdentity(resendSetup.from, customFrom, customReplyTo);
   const results = [];
   for (let i = 0; i < messages.length; i += 100) {
     const chunk = messages.slice(i, i + 100);

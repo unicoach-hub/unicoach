@@ -156,6 +156,7 @@ const syncLeadFromAuth = async (enrichedUser, { method, isNewAccount, attributio
 const sendWelcomeEmail = (name, to) => {
   if (!to) return;
   sendEmail({
+    kind: 'account',
     to,
     subject: 'Welcome to UniCoach — Your Global Education Journey Begins',
     html: `
@@ -369,6 +370,7 @@ exports.forgotPassword = async (req, res) => {
 
     // Dispatch branded password reset email in the background (an awaited failure would reveal which emails exist)
     sendEmail({
+      kind: 'account',
       to: cleanEmail,
       subject: 'Reset Your UniCoach Password',
       html: `
@@ -456,6 +458,7 @@ exports.resetPassword = async (req, res) => {
 
     // Send confirmation alert email
     sendEmail({
+      kind: 'account',
       to: user.email,
       subject: 'Your UniCoach Password Has Been Updated',
       html: `

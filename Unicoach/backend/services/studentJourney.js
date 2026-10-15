@@ -71,6 +71,7 @@ const setStudentStage = async (userId, stageKey, { by = '', note = '', notify = 
   if (notify && user.email) {
     const stage = stageInfo(stageKey);
     sendEmail({
+      kind: 'counselling',
       to: user.email,
       subject: `Your UniCoach journey: ${stage.label}`,
       html: stageEmailHtml(user.name, stage),

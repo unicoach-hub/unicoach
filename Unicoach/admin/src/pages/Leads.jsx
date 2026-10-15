@@ -71,8 +71,12 @@ const PHONE_CALL_OPTIONS = [
 const statusLabel = (s) => SHEET_STATUSES.find((o) => o.value === s)?.label || s;
 const VIEW_TITLES = {
   converted: { title: 'Converted leads', subtitle: 'Leads marked Converted on All Leads' },
+  interested: { title: 'Interested leads', subtitle: 'Leads with status Interested' },
   followup: { title: 'Follow-up leads', subtitle: 'Leads marked Interested or 50 / 50 under Follow Up' },
+  not_interested: { title: 'Not interested', subtitle: 'Leads with status Not Interested' },
 };
+// Where each stat box goes
+const VIEW_PATHS = { all: '/leads', converted: '/leads-converted', interested: '/leads-interested', followup: '/leads-followup', not_interested: '/leads-not-interested' };
 
 // Presentation only: kit status-pill class per lead status
 const statusChipClass = {
@@ -448,6 +452,14 @@ const Leads = ({ view = 'all' }) => {
   useEffect(() => { 
     fetchLeads(); 
   }, [statusFilter, followUpFilter, counselorFilter]);
+
+  // The boxes always count every lead, also on the Converted / Follow-up pages
+  const [allForCounts, setAllForCounts] = useState(null);
+  useEffect(() => {
+    if (view === 'all') { setAllForCounts(null); return; }
+    API.get('/admin/leads').then(({ data: rows }) => setAllForCounts(Array.isArray(rows) ? rows : [])).catch(() => {});
+  }, [view]);
+  const countRows = view === 'all' ? data : (allForCounts || []);
 
   // Set message templates whenever a lead is selected
   useEffect(() => {
@@ -1137,11 +1149,11 @@ const Leads = ({ view = 'all' }) => {
       <div className="dashboard-content" style={{ marginTop: 16 }}>
         <CrmSubNav />
         <div className="page-stats-grid page-stats-grid--5">
-          <StatsCard icon={<ContactsOutlined />} label="Total leads" value={data.length} color="brand" loading={loading} />
-          <StatsCard icon={<TrophyOutlined />} label="Converted" value={data.filter(l => l.status === 'converted').length} color="brand" loading={loading} />
-          <StatsCard icon={<FireOutlined />} label="Interested" value={data.filter(l => l.status === 'interested').length} color="brand" loading={loading} />
-          <StatsCard icon={<ClockCircleOutlined />} label="Follow-up" value={data.filter(l => l.followUp === 'interested' || l.followUp === 'fifty_fifty').length} color="brand" loading={loading} />
-          <StatsCard icon={<CheckCircleOutlined />} label="Not interested" value={data.filter(l => l.status === 'not_interested').length} color="brand" loading={loading} />
+          <StatsCard icon={<ContactsOutlined />} label="Total leads" value={countRows.length} color="brand" loading={loading} onClick={() => navigate(VIEW_PATHS.all)} active={view === 'all'} />
+          <StatsCard icon={<TrophyOutlined />} label="Converted" value={countRows.filter(l => l.status === 'converted').length} color="brand" loading={loading} onClick={() => navigate(VIEW_PATHS.converted)} active={view === 'converted'} />
+          <StatsCard icon={<FireOutlined />} label="Interested" value={countRows.filter(l => l.status === 'interested').length} color="brand" loading={loading} onClick={() => navigate(VIEW_PATHS.interested)} active={view === 'interested'} />
+          <StatsCard icon={<ClockCircleOutlined />} label="Follow-up" value={countRows.filter(l => l.followUp === 'interested' || l.followUp === 'fifty_fifty').length} color="brand" loading={loading} onClick={() => navigate(VIEW_PATHS.followup)} active={view === 'followup'} />
+          <StatsCard icon={<CheckCircleOutlined />} label="Not interested" value={countRows.filter(l => l.status === 'not_interested').length} color="brand" loading={loading} onClick={() => navigate(VIEW_PATHS.not_interested)} active={view === 'not_interested'} />
         </div>
 
         <div className="nx-toolbar page-toolbar">
