@@ -94,7 +94,7 @@ const NAV_SECTIONS = [
         icon: <ThunderboltOutlined />,
         children: [
           { path: '/automation/email', label: 'Email Hub' },
-          { path: '/automation/whatsapp', label: 'WhatsApp Cloud API' },
+          { path: '/automation/whatsapp', label: 'WhatsApp Inbox' },
           { path: '/automation/workflows', label: 'Workflows' },
           { path: '/templates', label: 'Templates' },
           { path: '/bulk-messaging', label: 'Bulk Messaging' },

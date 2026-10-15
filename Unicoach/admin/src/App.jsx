@@ -27,7 +27,7 @@ const Universities = lazy(() => import('./pages/Universities'));
 const Scholarships = lazy(() => import('./pages/Scholarships'));
 const Templates = lazy(() => import('./pages/Templates'));
 const BulkMessaging = lazy(() => import('./pages/BulkMessaging'));
-const WhatsAppHub = lazy(() => import('./pages/WhatsAppHub'));
+const WhatsappInbox = lazy(() => import('./pages/WhatsappInbox'));
 const Workflows = lazy(() => import('./pages/Workflows'));
 const EmailHub = lazy(() => import('./pages/EmailHub'));
 const PipelineManager = lazy(() => import('./pages/PipelineManager'));
@@ -146,7 +146,7 @@ const App = () => {
                       {/* Automation & Outreach */}
                       <Route path="/automation/email" element={<EmailHub />} />
                       <Route path="/automation/campaign" element={<Campaign />} />
-                      <Route path="/automation/whatsapp" element={<WhatsAppHub />} />
+                      <Route path="/automation/whatsapp" element={<WhatsappInbox />} />
                       <Route path="/automation/workflows" element={<Workflows />} />
                       <Route path="/templates" element={<Templates />} />
                       <Route path="/bulk-messaging" element={<BulkMessaging />} />

@@ -8,9 +8,12 @@ const templateSchema = new mongoose.Schema({
   wabaTemplateName: { type: String, default: '' },
   wabaLanguageCode: { type: String, default: 'en_US' },
   wabaParameters: { type: String, default: '' },
-  metaStatus: { type: String, enum: ['APPROVED', 'PENDING', 'REJECTED'], default: 'APPROVED' },
+  metaStatus: { type: String, enum: ['APPROVED', 'PENDING', 'REJECTED', 'PAUSED', 'DISABLED', 'IN_APPEAL', 'PENDING_DELETION'], default: 'PENDING' },
   metaCategory: { type: String, enum: ['MARKETING', 'UTILITY', 'AUTHENTICATION'], default: 'UTILITY' },
-  rejectionReason: { type: String, default: '' }
+  rejectionReason: { type: String, default: '' },
+  // Set once the template is sent to Meta for review (WhatsApp only)
+  metaTemplateId: { type: String, default: '' },
+  metaSubmittedAt: { type: Date },
 }, { timestamps: true });
 
 module.exports = mongoose.model('Template', templateSchema);

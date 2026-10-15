@@ -276,7 +276,7 @@ exports.sendBulk = async (req, res) => {
               const parameterKeys = template.wabaParameters ? template.wabaParameters.split(',').map(p => p.trim()).filter(Boolean) : [];
               const parameters = parameterKeys.map(key => ({
                 type: "text",
-                text: String(recipientData[key] !== undefined ? recipientData[key] : '')
+                text: String(resolveTemplateKey(key, recipientData) ?? '')
               }));
 
               payload = {
@@ -320,6 +320,18 @@ exports.sendBulk = async (req, res) => {
             if (!response.ok) {
               throw new Error(resData?.error?.message || `Meta API Error ${response.status}`);
             }
+            // Show it in the WhatsApp Inbox too, so replies land in the same conversation
+            await require('../models/WhatsappEvent').create({
+              kind: 'message',
+              direction: 'out',
+              waMessageId: resData?.messages?.[0]?.id,
+              phone: formattedPhone,
+              text: compiledBody,
+              template: template.wabaTemplateName || undefined,
+              sentBy: 'Bulk message',
+              lead: recipient._id && isLeadAudience ? recipient._id : undefined,
+              readByAdmin: true,
+            }).catch(() => {});
           } else if (isTwilioConfigured && twilioClient) {
             let plusPhone = formattedPhone;
             if (!plusPhone.startsWith('+')) {

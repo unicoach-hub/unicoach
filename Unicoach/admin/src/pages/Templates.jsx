@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { Table, Button, Modal, Form, Input, Select, Space, Popconfirm, message, Card, Dropdown, Menu, Row, Col } from 'antd';
+import { Table, Button, Modal, Form, Input, Select, Space, Popconfirm, message, Card, Dropdown, Menu, Row, Col, Tooltip } from 'antd';
 import { 
   PlusOutlined, EditOutlined, DeleteOutlined, InfoCircleOutlined, CodeOutlined, DownOutlined,
-  MailOutlined, MessageOutlined, FileTextOutlined, MobileOutlined
+  MailOutlined, MessageOutlined, FileTextOutlined, MobileOutlined, CloudUploadOutlined, SyncOutlined
 } from '@ant-design/icons';
 import Header from '../components/Header';
 import API from '../api/axios';
@@ -38,6 +38,17 @@ const VARIABLE_GROUPS = [
   }
 ];
 
+// Meta review status of a WhatsApp template
+const META_STATUS = {
+  APPROVED: { label: 'Approved', cls: 'nx-status--success' },
+  PENDING: { label: 'In review', cls: 'nx-status--warning' },
+  REJECTED: { label: 'Rejected', cls: 'nx-status--danger' },
+  PAUSED: { label: 'Paused', cls: 'nx-status--warning' },
+  DISABLED: { label: 'Disabled', cls: 'nx-status--danger' },
+  IN_APPEAL: { label: 'In appeal', cls: 'nx-status--warning' },
+  PENDING_DELETION: { label: 'Being deleted', cls: 'nx-status--neutral' },
+};
+
 const Templates = () => {
   const [templates, setTemplates] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -63,6 +74,42 @@ const Templates = () => {
   useEffect(() => {
     fetchTemplates();
   }, []);
+
+  // While Meta is reviewing something, refresh quietly so the status changes on screen
+  const anyInReview = templates.some((t) => t.type === 'whatsapp' && t.metaTemplateId && t.metaStatus === 'PENDING');
+  useEffect(() => {
+    if (!anyInReview) return undefined;
+    const t = setInterval(() => {
+      API.get('/admin/templates').then(({ data }) => setTemplates(data)).catch(() => {});
+    }, 20000);
+    return () => clearInterval(t);
+  }, [anyInReview]);
+
+  const [busyId, setBusyId] = useState(null);
+  const submitToMeta = async (record) => {
+    setBusyId(record._id);
+    try {
+      const { data } = await API.post(`/admin/templates/${record._id}/submit-meta`);
+      message.success(data.message || 'Sent to Meta');
+      fetchTemplates();
+    } catch (err) {
+      message.error(err?.response?.data?.message || 'Could not send to Meta', 8);
+    } finally {
+      setBusyId(null);
+    }
+  };
+  const checkMetaStatus = async (record) => {
+    setBusyId(record._id);
+    try {
+      const { data } = await API.post(`/admin/templates/${record._id}/sync-meta`);
+      message.info(data.message || 'Status updated');
+      fetchTemplates();
+    } catch (err) {
+      message.error(err?.response?.data?.message || 'Could not check with Meta', 8);
+    } finally {
+      setBusyId(null);
+    }
+  };
 
   const handleOpenCreate = () => {
     setEditingId(null);
@@ -182,10 +229,40 @@ const Templates = () => {
       render: (subj, record) => subj || record.name
     },
     {
+      title: 'WhatsApp approval',
+      key: 'meta',
+      render: (_, record) => {
+        if (record.type !== 'whatsapp') return <span style={{ color: 'var(--ux-text-3)' }}>—</span>;
+        if (!record.metaTemplateId) return <span className="nx-status nx-status--neutral">Not sent to Meta</span>;
+        const st = META_STATUS[record.metaStatus] || { label: record.metaStatus, cls: 'nx-status--neutral' };
+        return (
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 4, alignItems: 'flex-start' }}>
+            <span className={`nx-status ${st.cls}`}>{st.label}</span>
+            <span style={{ fontSize: 11.5, color: 'var(--ux-text-3)' }}>{record.wabaTemplateName} · {record.metaCategory?.toLowerCase()}</span>
+            {record.metaStatus === 'REJECTED' && record.rejectionReason && (
+              <span style={{ fontSize: 11.5, color: '#b91c1c', maxWidth: 260 }}>Reason: {record.rejectionReason}</span>
+            )}
+          </div>
+        );
+      },
+    },
+    {
       title: 'Actions',
       key: 'actions',
       render: (_, record) => (
         <Space size="small">
+          {record.type === 'whatsapp' && (!record.metaTemplateId || ['REJECTED', 'PAUSED'].includes(record.metaStatus)) && (
+            <Tooltip title={record.metaTemplateId ? 'Send the edited template to Meta again' : 'Send to Meta for approval'}>
+              <Button size="small" type="primary" icon={<CloudUploadOutlined />} loading={busyId === record._id} onClick={() => submitToMeta(record)}>
+                {record.metaTemplateId ? 'Resubmit' : 'Submit to Meta'}
+              </Button>
+            </Tooltip>
+          )}
+          {record.type === 'whatsapp' && record.metaTemplateId && (
+            <Tooltip title="Check status with Meta now">
+              <Button size="small" icon={<SyncOutlined />} loading={busyId === record._id} onClick={() => checkMetaStatus(record)} />
+            </Tooltip>
+          )}
           <Button icon={<EditOutlined />} size="small" onClick={() => handleOpenEdit(record)} aria-label="Edit template" />
           <Popconfirm title="Delete this template?" onConfirm={() => handleDelete(record._id)}>
             <Button icon={<DeleteOutlined />} size="small" danger aria-label="Delete template" />
@@ -257,6 +334,34 @@ const Templates = () => {
                       <Option value="whatsapp">WhatsApp Message</Option>
                     </Select>
                   </Form.Item>
+
+                  {templateType === 'whatsapp' && (
+                    <Row gutter={12}>
+                      <Col span={12}>
+                        <Form.Item name="metaCategory" label={<span style={{ fontWeight: 600 }}>WhatsApp category</span>} initialValue="UTILITY"
+                          tooltip="Utility: updates the student asked for (booking, reminder). Marketing: offers and promotions (costs more).">
+                          <Select options={[{ value: 'UTILITY', label: 'Utility (updates, reminders)' }, { value: 'MARKETING', label: 'Marketing (offers, promotions)' }]} />
+                        </Form.Item>
+                      </Col>
+                      <Col span={12}>
+                        <Form.Item name="wabaLanguageCode" label={<span style={{ fontWeight: 600 }}>Language</span>} initialValue="en_US">
+                          <Select options={[{ value: 'en_US', label: 'English (US)' }, { value: 'en', label: 'English' }, { value: 'en_GB', label: 'English (UK)' }, { value: 'hi', label: 'Hindi' }]} />
+                        </Form.Item>
+                      </Col>
+                      <Col span={24}>
+                        <Form.Item name="wabaTemplateName" label={<span style={{ fontWeight: 600 }}>Meta template name <span style={{ fontWeight: 400, color: 'var(--ux-text-3)' }}>(optional)</span></span>}
+                          rules={[{ pattern: /^[a-z0-9_]*$/, message: 'Only small letters, numbers and _' }]}
+                          extra="Left empty, it is made from the template name (e.g. event_reminder). Can't change after sending to Meta.">
+                          <Input placeholder="event_reminder" />
+                        </Form.Item>
+                      </Col>
+                      <Col span={24}>
+                        <div style={{ fontSize: 12, color: 'var(--ux-text-2)', background: 'var(--ux-surface-2)', borderRadius: 10, padding: '8px 10px', marginBottom: 14 }}>
+                          WhatsApp rules: a variable can't be the very first or last thing in the message, two variables can't sit side by side, max 1024 characters. After saving, press <b>Submit to Meta</b>; approval usually takes minutes to a day.
+                        </div>
+                      </Col>
+                    </Row>
+                  )}
 
                   {templateType === 'email' && (
                     <div style={{ marginBottom: 16 }}>

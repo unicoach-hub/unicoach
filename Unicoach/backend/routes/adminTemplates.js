@@ -9,6 +9,7 @@ router.get('/', adminTemplateController.getAllTemplates);
 router.post('/', adminTemplateController.createTemplate);
 router.put('/:id', adminTemplateController.updateTemplate);
 router.post('/:id/sync-meta', adminTemplateController.syncMeta);
+router.post('/:id/submit-meta', adminTemplateController.submitMeta);
 router.delete('/:id', adminTemplateController.deleteTemplate);
 
 module.exports = router;

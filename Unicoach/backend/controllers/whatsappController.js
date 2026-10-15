@@ -204,6 +204,22 @@ exports.receiveWebhook = async (req, res) => {
     for (const entry of req.body?.entry || []) {
       for (const change of entry.changes || []) {
         const value = change.value || {};
+
+        // Meta finished reviewing a template (approved / rejected / paused …)
+        if (change.field === 'message_template_status_update') {
+          const Template = require('../models/Template');
+          const known = ['APPROVED', 'PENDING', 'REJECTED', 'PAUSED', 'DISABLED', 'IN_APPEAL', 'PENDING_DELETION'];
+          const status = known.includes(value.event) ? value.event : null;
+          if (status) {
+            const query = value.message_template_id
+              ? { $or: [{ metaTemplateId: String(value.message_template_id) }, { wabaTemplateName: value.message_template_name }] }
+              : { wabaTemplateName: value.message_template_name };
+            await Template.updateMany(query, {
+              $set: { metaStatus: status, rejectionReason: status === 'REJECTED' ? (value.reason || value.other_info?.description || '') : '' },
+            });
+          }
+          continue;
+        }
         const contacts = value.contacts || [];
 
         for (const m of value.messages || []) {
