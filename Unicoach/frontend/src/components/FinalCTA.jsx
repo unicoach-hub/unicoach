@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import DotMorph from './DotMorph';
 import { motion } from 'framer-motion';
 import { ArrowUpRight, Phone } from 'lucide-react';
 import { useLead } from '../context/LeadContext';
@@ -13,10 +14,10 @@ import { TEAM_MENTORS } from '../utils/teamMentors';
 const MAP_ORIGIN = { x: 71.8, y: 30.9 }; // New Delhi
 const byName = (n) => TEAM_MENTORS.find((m) => m.name === n);
 const MAP_DESTINATIONS = [
-  { key: 'usa', label: 'USA', flag: 'us', dot: { x: 18.9, y: 19.7 }, at: { x: 18, y: 56 }, names: ['Rishi Gandi'] },
+  { key: 'usa', label: 'USA', flag: 'us', dot: { x: 18.9, y: 19.7 }, at: { x: 18, y: 56 }, names: ['Rishi Gandi'], hideLabel: true },
   { key: 'ireland', label: 'Ireland', flag: 'ie', dot: { x: 42.6, y: 8 }, at: { x: 37, y: 46 }, names: ['Prachi', 'Nitya', 'Munish Rana'] },
   { key: 'europe', label: 'Europe', flag: 'eu', dot: { x: 47.8, y: 11 }, at: { x: 55, y: 60 }, names: ['Manvi'] },
-  { key: 'australia', label: 'Australia', flag: 'au', dot: { x: 97.6, y: 88.8 }, at: { x: 86, y: 66 }, names: ['Manan'] },
+  { key: 'australia', label: 'Australia', flag: 'au', dot: { x: 97.6, y: 88.8 }, at: { x: 83, y: 66 }, names: ['Manan'] },
 ].map((d) => ({ ...d, mentors: d.names.map(byName).filter(Boolean) }));
 // Gentle upward arc between two map points
 const arcPath = (from, to) => {
@@ -29,6 +30,7 @@ export const FinalCTA = ({ onOpenModal }) => {
   const { openEligibilityModal } = useLead();
   const handleOpen = onOpenModal || (() => openEligibilityModal('Final CTA Banner'));
   const [isPriorityDmOpen, setIsPriorityDmOpen] = useState(false);
+  const [mapPhase, setMapPhase] = useState('map');
   return (
     <section className="pt-2 sm:pt-4 pb-12 sm:pb-16 bg-[#FAF9F6] select-none w-full max-w-full overflow-hidden">
       <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-10 w-full min-w-0">
@@ -60,7 +62,10 @@ export const FinalCTA = ({ onOpenModal }) => {
 
           {/* ════════ ROUTE MAP: India → the countries our mentors cover (tablet/desktop) ════════ */}
           <div className="absolute inset-y-3 right-3 xl:right-6 pointer-events-none z-10 hidden xl:block aspect-[1000/378]">
-            <img src={worldDots} alt="" aria-hidden="true" className="absolute inset-0 w-full h-full opacity-[0.22]" />
+            <DotMorph src={worldDots} onPhase={setMapPhase} className="absolute inset-0 w-full h-full" />
+
+            {/* Routes and mentors only while the dots show the world map */}
+            <motion.div className="absolute inset-0" initial={false} animate={{ opacity: mapPhase === 'map' ? 1 : 0 }} transition={{ duration: mapPhase === 'map' ? 0.6 : 0.3 }}>
 
             {/* Routes from India, dashes flowing towards each destination */}
             <svg className="absolute inset-0 w-full h-full overflow-visible" viewBox="0 0 100 100" preserveAspectRatio="none" fill="none">
@@ -109,7 +114,7 @@ export const FinalCTA = ({ onOpenModal }) => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: 1 + i * 0.2 }}
-                className="absolute -translate-x-1/2 -translate-y-1/2 pointer-events-auto"
+                className="absolute w-max -translate-x-1/2 -translate-y-1/2 pointer-events-auto"
                 style={{ left: `${d.at.x}%`, top: `${d.at.y}%` }}
               >
                 <motion.div
@@ -129,14 +134,17 @@ export const FinalCTA = ({ onOpenModal }) => {
                       />
                     ))}
                   </div>
+                  {!d.hideLabel && (
                   <span className="mt-1.5 inline-flex items-center gap-1.5 pl-1.5 pr-2 py-0.5 rounded-full bg-white text-slate-900 text-[11px] font-bold shadow-md whitespace-nowrap">
                     <img src={`https://flagcdn.com/w40/${d.flag}.png`} alt="" aria-hidden="true" className="w-4 h-3 rounded-[2px] object-cover" />
                     {d.label}
                     <span className="text-slate-400 font-semibold">· {d.mentors.length === 1 ? d.mentors[0].name.split(' ')[0] : `${d.mentors.length} mentors`}</span>
                   </span>
+                  )}
                 </motion.div>
               </motion.div>
             ))}
+            </motion.div>
           </div>
 
           {/* ════════ FOREGROUND CONTENT: LEFT HEADLINE + TEXT + 2 BUTTONS (Slides from Left) ════════ */}
