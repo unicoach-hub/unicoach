@@ -21,6 +21,8 @@ import UniversityLogo from './UniversityLogo';
 import PremiumDropdown from './PremiumDropdown';
 import IeltsAiEvaluationModal from './IeltsAiEvaluationModal';
 import StudentMessages from './StudentMessages';
+import ProductTour from './ProductTour';
+import useFirstVisitTour from '../hooks/useFirstVisitTour';
 import AiSopGenerator from './AiSopGenerator';
 import AiVisaInterviewPrep from './AiVisaInterviewPrep';
 import AiStudyRoadmap from './AiStudyRoadmap';
@@ -231,6 +233,20 @@ const ConfettiCanvas = () => {
 
 const UserDashboard = () => {
   const { user, token, updateUser, logout, openLoginModal } = useAuth();
+  // First-visit tour of the student dashboard (skippable; "Take a tour" replays it)
+  const studentTour = useFirstVisitTour(user?._id || user?.id ? `student:${user._id || user.id}` : null, !!user);
+  const STUDENT_TOUR = [
+    { target: null, title: 'Welcome to your UniCoach dashboard 👋', body: 'A quick 1-minute look at what you can do here. Skip any time, and replay it later from "Take a tour".', onEnter: () => setActiveTab('overview') },
+    { target: '[data-tour="my-tasks"]', title: 'Your study-abroad tasks', body: 'A step-by-step checklist from shortlisting universities to your visa. Tick things off as you go.' },
+    { target: '[data-tour="nav-saved-unis"]', title: 'Saved shortlist', body: 'Universities and courses you save while browsing land here, so you can compare them later.' },
+    { target: '[data-tour="nav-messages"]', title: 'Messages & documents', body: 'Chat with the UniCoach team and upload your documents (marksheets, passport, SOP) in one place.' },
+    { target: '[data-tour="nav-shortlister"]', title: 'AI University Shortlister', body: 'Tell us your marks, budget and country, and get Safe / Target / Dream universities that fit you.' },
+    { target: '[data-tour="nav-scholarship-shortlister"]', title: 'Scholarship finder', body: '150+ scholarships you may be eligible for, with deadlines and how to apply.' },
+    { target: '[data-tour="nav-sop-builder"]', title: 'SOP & essay help', body: 'Draft your Statement of Purpose with AI, then polish it with a mentor.' },
+    { target: '[data-tour="nav-visa-mock"]', title: 'Visa mock interview', body: 'Practise real visa interview questions by voice and get feedback before the actual interview.' },
+    { target: '[data-tour="nav-ielts-simulator"]', title: 'IELTS writing practice', body: 'Write IELTS answers and get an AI band score with tips to improve.' },
+    { target: '[data-tour="nav-profile"]', title: 'Your profile', body: 'Keep your country, intake and education up to date so suggestions stay accurate. That\'s it, all the best! 🎓' },
+  ];
   // Only accounts with a mentor profile see the Mentor Studio switch; students see one dashboard
   const isMentorAccount = Boolean(user?.isMentor || user?.mentorHandle || user?.role === 'mentor');
   const { verifiedLead, clearLead } = useLead();
@@ -1716,6 +1732,7 @@ ${name || 'Candidate'}`;
 
   return (
     <div className="min-h-screen bg-[#ECEAE6] pt-20 md:pt-24 pb-36 lg:pb-16 px-3 sm:px-6 lg:px-8">
+      {studentTour.open && <ProductTour steps={STUDENT_TOUR} open onClose={studentTour.close} />}
       <div className="max-w-7xl mx-auto space-y-4 md:space-y-0 lg:bg-white lg:rounded-[40px] lg:overflow-hidden lg:shadow-[0_30px_80px_-40px_rgba(15,23,42,0.25)]">
 
         {/* DESKTOP TOP COMMAND HEADER (Hidden on mobile) */}
@@ -1777,6 +1794,7 @@ ${name || 'Candidate'}`;
                 <p className="text-lg text-slate-900">{new Date().toLocaleDateString('en-US', { month: 'long' })}</p>
               </div>
               <button
+                data-tour="my-tasks"
                 onClick={() => setActiveTab('daily-tasks')}
                 className="h-14 pl-7 pr-6 rounded-full bg-[#DE5C2B] hover:bg-[#C04A1D] text-white font-semibold text-sm flex items-center gap-8 transition-colors cursor-pointer"
               >
@@ -1789,6 +1807,13 @@ ${name || 'Candidate'}`;
               >
                 <CalendarDays size={19} />
                 {checklist.some((t) => !t.done) && <span className="absolute top-1 right-1 w-2 h-2 rounded-full bg-[#DE5C2B]" />}
+              </button>
+              <button
+                type="button"
+                onClick={studentTour.start}
+                className="h-14 px-5 rounded-full border border-slate-200 bg-white text-slate-700 hover:border-[#DE5C2B] hover:text-[#DE5C2B] font-semibold text-sm flex items-center gap-2 transition-colors cursor-pointer"
+              >
+                <Sparkles size={16} /> Take a tour
               </button>
             </div>
 
@@ -1958,6 +1983,7 @@ ${name || 'Candidate'}`;
                       return (
                         <button
                           key={item.id}
+                          data-tour={`nav-${item.id}`}
                           onClick={() => {
                             if (item.id === 'mentor-studio') {
                               handleOpenMentorStudio();

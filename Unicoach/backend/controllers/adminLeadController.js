@@ -193,6 +193,7 @@ exports.sendLeadEmail = async (req, res) => {
     const lead = await Lead.findById(req.params.id);
     if (!lead) return res.status(404).json({ message: 'Lead not found' });
     if (!canAccessLead(req, lead)) return res.status(404).json({ message: 'Lead not found' });
+    if (!lead.email) return res.status(400).json({ message: 'This lead has no email address yet' });
 
     const adminName = await getAdminName(req.user?.id, req);
 

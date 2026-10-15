@@ -27,6 +27,7 @@ import {
 } from '@ant-design/icons';
 import { ResponsiveContainer, PieChart, Pie, Cell, Tooltip } from 'recharts';
 import Header from '../components/Header';
+import AttentionPanel from '../components/AttentionPanel';
 import API from '../api/axios';
 import { getCachedData, fetchWithCache } from '../utils/cache';
 import { useAuth } from '../context/AuthContext';
@@ -343,6 +344,7 @@ const Dashboard = () => {
         <div className="grid grid-cols-1 xl:grid-cols-[minmax(0,1fr)_300px] gap-4">
           {/* Left column */}
           <div className="flex flex-col gap-4 min-w-0">
+            <AttentionPanel />
             <div className="grid grid-cols-1 sm:grid-cols-2 2xl:grid-cols-3 gap-4">
               {loadingStats ? (
                 <>

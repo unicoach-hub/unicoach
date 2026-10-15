@@ -2,11 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
-  Sparkles, Compass, Search, Target, ShieldCheck, Award, 
-  GraduationCap, Globe, DollarSign, CheckCircle2, BookOpen, 
+  Sparkles, Compass, Search, Target, ShieldCheck,
+  Globe, CheckCircle2, BookOpen, 
   ExternalLink, SlidersHorizontal, RefreshCw, BookmarkCheck, 
-  ArrowRight, ArrowLeft, Calendar, Briefcase, Trash2, CalendarPlus,
-  Clock, ShieldAlert, HeartHandshake, FileText, ChevronRight, X,
+  ArrowRight, ArrowLeft, Briefcase, Trash2, CalendarPlus,
+  Clock, ShieldAlert, FileText, ChevronRight, X,
   FileSpreadsheet, Download
 } from 'lucide-react';
 import UniversityLogo from './UniversityLogo';
@@ -733,22 +733,15 @@ const ScholarshipShortlister = () => {
         <motion.div
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-white border border-slate-200/90 p-6 md:p-10 rounded-[32px] shadow-[0_20px_50px_-12px_rgba(15,23,42,0.08)] space-y-8"
+          className="bg-white p-6 md:p-10 rounded-[32px] shadow-[0_24px_60px_-30px_rgba(15,23,42,0.18)] space-y-8"
         >
-          {/* Form Header with Visual Contrast */}
-          <div className="bg-gradient-to-r from-blue-50/80 via-slate-50/60 to-transparent p-4 sm:p-5 rounded-2xl border border-orange-100/70 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          {/* Header */}
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-2">
             <div>
-              <h3 className="text-lg md:text-xl font-black text-slate-800 flex items-center gap-2">
-                <Award className="text-[#DE5C2B]" size={22} />
-                Student Academic, Test & Financial Profile Inputs
-              </h3>
-              <p className="text-xs text-slate-500 font-medium mt-1">
-                Please provide your scores so we can accurately match against scholarship eligibility criteria (Zero document uploads required).
-              </p>
+              <p className="text-[12px] font-bold text-[#DE5C2B] uppercase tracking-[0.12em]">Step 1 of 2</p>
+              <h3 className="mt-1.5 font-outfit text-[22px] md:text-[26px] font-bold text-[#111] tracking-[-0.02em]">Tell us about your profile</h3>
+              <p className="text-[14px] text-slate-500 mt-1">We match it against scholarship rules. No documents needed.</p>
             </div>
-            <span className="self-start sm:self-center px-3 py-1 rounded-full text-xs font-bold bg-orange-100/80 text-[#DE5C2B] border border-orange-200/60 whitespace-nowrap">
-              Step 1 of 2
-            </span>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -756,8 +749,8 @@ const ScholarshipShortlister = () => {
             {/* Target Degree Level */}
             <div className="relative">
               <PremiumDropdown
+                accent="orange"
                 label="Target Degree Level"
-                labelIcon={<GraduationCap size={15} className="text-emerald-500" />}
                 value={formData.targetDegree}
                 onChange={(val) => handleInputChange('targetDegree', val)}
                 options={[
@@ -771,7 +764,7 @@ const ScholarshipShortlister = () => {
             {/* Academic Percentage / GPA */}
             <div className="space-y-2">
               <label className="text-xs font-bold text-slate-600 flex items-center gap-1.5">
-                <Award size={15} className="text-emerald-500" /> Academic Score (% or GPA converted)
+                Academic score (% or converted GPA)
               </label>
               <div className="relative">
                 <input 
@@ -780,7 +773,7 @@ const ScholarshipShortlister = () => {
                   max="100"
                   value={formData.gpaPercent}
                   onChange={(e) => handleInputChange('gpaPercent', e.target.value)}
-                  className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-bold text-slate-800 focus:outline-none focus:border-emerald-500 focus:bg-white transition-all duration-200 hover:border-slate-300 hover:bg-white hover:shadow-sm"
+                  className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-bold text-slate-800 focus:outline-none focus:border-[#DE5C2B] focus:bg-white transition-all duration-200 hover:border-slate-300 hover:bg-white hover:shadow-sm"
                   placeholder="e.g. 78"
                 />
                 <span className="absolute right-3.5 top-3 text-xs font-black text-slate-400">%</span>
@@ -790,14 +783,13 @@ const ScholarshipShortlister = () => {
             {/* Field of Study / Major */}
             <div className="relative">
               <PremiumDropdown
+                accent="orange"
                 label="Major / Field of Study"
-                labelIcon={<BookOpen size={15} className="text-emerald-500" />}
                 value={formData.streamMajor}
                 onChange={(val) => handleInputChange('streamMajor', val)}
-                accent="emerald"
-                searchable={true}
+                                searchable={true}
                 creatable={true}
-                defaultIcon={<BookOpen size={16} className="text-emerald-500" />}
+                defaultIcon={<BookOpen size={16} className="text-[#DE5C2B]" />}
                 searchPlaceholder="Search or type custom course..."
                 placeholder="Select or enter your course..."
                 options={POPULAR_COURSES}
@@ -807,12 +799,11 @@ const ScholarshipShortlister = () => {
             {/* Target Destination Country */}
             <div className="relative">
               <PremiumDropdown
+                accent="orange"
                 label="Target Destination"
-                labelIcon={<Globe size={15} className="text-emerald-500" />}
                 value={formData.targetCountry}
                 onChange={(val) => handleInputChange('targetCountry', val)}
-                accent="emerald"
-                searchable={true}
+                                searchable={true}
                 searchPlaceholder="Search 160+ countries (e.g. USA, Canada, Germany)..."
                 placeholder="Select destination..."
                 options={ALL_COUNTRY_OPTIONS}
@@ -822,8 +813,8 @@ const ScholarshipShortlister = () => {
             {/* Funding Preference */}
             <div className="relative">
               <PremiumDropdown
+                accent="orange"
                 label="Preferred Funding Type"
-                labelIcon={<DollarSign size={15} className="text-emerald-500" />}
                 value={formData.fundingType}
                 onChange={(val) => handleInputChange('fundingType', val)}
                 options={[
@@ -840,8 +831,8 @@ const ScholarshipShortlister = () => {
             {/* IELTS / English Score */}
             <div className="relative">
               <PremiumDropdown
+                accent="orange"
                 label="IELTS / TOEFL Score"
-                labelIcon={<BookOpen size={15} className="text-emerald-500" />}
                 value={formData.ieltsScore}
                 onChange={(val) => handleInputChange('ieltsScore', val)}
                 options={[
@@ -856,8 +847,8 @@ const ScholarshipShortlister = () => {
             {/* Annual Family Income Bracket (Document-Free) */}
             <div className="relative">
               <PremiumDropdown
+                accent="orange"
                 label="Annual Family Income (For Need-Based Aid)"
-                labelIcon={<HeartHandshake size={15} className="text-emerald-500" />}
                 value={formData.familyIncome}
                 onChange={(val) => handleInputChange('familyIncome', val)}
                 options={[
@@ -872,7 +863,7 @@ const ScholarshipShortlister = () => {
             {/* GRE Score */}
             <div className="space-y-2">
               <label className="text-xs font-bold text-slate-600 flex items-center gap-1.5">
-                <Award size={15} className="text-emerald-500" /> GRE Score (0 if not taken)
+                GRE score (0 if not taken)
               </label>
               <input 
                 type="number"
@@ -880,7 +871,7 @@ const ScholarshipShortlister = () => {
                 max="340"
                 value={formData.greScore}
                 onChange={(e) => handleInputChange('greScore', e.target.value)}
-                className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-bold text-slate-800 focus:outline-none focus:border-emerald-500 focus:bg-white transition-all duration-200 hover:border-slate-300 hover:bg-white hover:shadow-sm"
+                className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-bold text-slate-800 focus:outline-none focus:border-[#DE5C2B] focus:bg-white transition-all duration-200 hover:border-slate-300 hover:bg-white hover:shadow-sm"
                 placeholder="0 (or e.g. 320)"
               />
             </div>
@@ -888,8 +879,8 @@ const ScholarshipShortlister = () => {
             {/* Target Intake */}
             <div className="relative">
               <PremiumDropdown
+                accent="orange"
                 label="Target Intake"
-                labelIcon={<Calendar size={15} className="text-emerald-500" />}
                 value={formData.intake}
                 onChange={(val) => handleInputChange('intake', val)}
                 options={[
@@ -901,23 +892,23 @@ const ScholarshipShortlister = () => {
             </div>
           </div>
 
-          <div className="pt-4 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-4">
-            <p className="text-xs text-slate-500 font-semibold">
-              Instant matching across 100% verified merit, need-based & government grant programs.
+          <div className="pt-6 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <p className="text-[13px] text-slate-500">
+              We check 150+ merit, need-based and government scholarships.
             </p>
 
             <button
               onClick={handleShortlistSubmit}
               disabled={loading}
-              className="w-full sm:w-auto px-8 py-4 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white rounded-2xl text-sm font-black transition-all shadow-lg shadow-emerald-200 flex items-center justify-center gap-3 cursor-pointer"
+              className="group w-full sm:w-auto h-12 px-7 rounded-full bg-[#111] hover:bg-[#DE5C2B] disabled:opacity-80 text-white text-[15px] font-bold transition-colors flex items-center justify-center gap-2 cursor-pointer"
             >
               {loading ? (
                 <>
-                  <RefreshCw size={18} className="animate-spin" /> Evaluating 150+ Verified Scholarships...
+                  <RefreshCw size={17} className="animate-spin" /> Checking scholarships…
                 </>
               ) : (
                 <>
-                  <Sparkles size={18} /> Shortlist Scholarships Now <ArrowRight size={18} />
+                  Find my scholarships <ArrowRight size={17} className="transition-transform group-hover:translate-x-1" />
                 </>
               )}
             </button>

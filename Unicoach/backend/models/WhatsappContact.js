@@ -10,6 +10,9 @@ const whatsappContactSchema = new mongoose.Schema({
   flow: { type: mongoose.Schema.Types.ObjectId, ref: 'ChatFlow' },
   waitingNode: { type: String },
   lastDefaultAt: { type: Date },
+  // Answers collected by Question steps (name, email, dreamCountry, course …), and retries on a bad answer
+  attributes: { type: Map, of: String, default: {} },
+  waitingAttempts: { type: Number, default: 0 },
 }, { timestamps: true });
 
 module.exports = mongoose.model('WhatsappContact', whatsappContactSchema);

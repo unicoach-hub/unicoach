@@ -8,7 +8,7 @@ import { Button, Input, Select, Switch, Table, Modal, message, Popconfirm, Toolt
 import {
   PlusOutlined, ArrowLeftOutlined, SaveOutlined, DeleteOutlined, MessageOutlined, PictureOutlined,
   AppstoreOutlined, UnorderedListOutlined, LinkOutlined, PhoneOutlined, CustomerServiceOutlined,
-  ThunderboltOutlined, UploadOutlined, CloseOutlined,
+  ThunderboltOutlined, UploadOutlined, CloseOutlined, QuestionCircleOutlined,
 } from '@ant-design/icons';
 import Header from '../components/Header';
 import API from '../api/axios';
@@ -23,6 +23,7 @@ const uid = (p) => `${p}${Math.random().toString(36).slice(2, 8)}`;
 const NODE_TYPES_META = {
   start: { label: 'Flow Start', icon: <ThunderboltOutlined />, color: '#0f766e' },
   text: { label: 'Message', icon: <MessageOutlined />, color: '#2563eb' },
+  question: { label: 'Ask a question', icon: <QuestionCircleOutlined />, color: '#9333ea' },
   media: { label: 'Image / Video / PDF', icon: <PictureOutlined />, color: '#7c3aed' },
   buttons: { label: 'Message + Buttons', icon: <AppstoreOutlined />, color: '#DE5C2B' },
   list: { label: 'List menu', icon: <UnorderedListOutlined />, color: '#b45309' },
@@ -33,6 +34,7 @@ const NODE_TYPES_META = {
 
 const DEFAULT_DATA = {
   text: () => ({ text: 'Hi! 👋 Welcome to UniCoach.' }),
+  question: () => ({ text: 'What is your name?', field: 'name', validate: 'text', options: [] }),
   media: () => ({ mediaType: 'image', mediaUrl: '', text: '' }),
   buttons: () => ({ text: 'What would you like to do?', buttons: [{ id: uid('b'), label: 'Study abroad' }, { id: uid('b'), label: 'Talk to a mentor' }] }),
   list: () => ({ text: 'Which country are you interested in?', buttonLabel: 'Choose country', rows: [{ id: uid('r'), label: 'Ireland' }, { id: uid('r'), label: 'USA' }, { id: uid('r'), label: 'UK' }] }),
@@ -216,7 +218,55 @@ const HandoffNode = ({ id, data }) => {
   );
 };
 
-const nodeTypes = { start: StartNode, text: TextNode, media: MediaNode, buttons: ButtonsNode, list: ListNode, link: LinkNode, contact: ContactNode, handoff: HandoffNode };
+// Where an answer can be saved; the matching check is picked automatically
+const ANSWER_FIELDS = [
+  { value: 'name', label: 'Name', validate: 'text' },
+  { value: 'email', label: 'Email', validate: 'email' },
+  { value: 'dreamCountry', label: 'Country', validate: 'text' },
+  { value: 'course', label: 'Course', validate: 'text' },
+  { value: 'preferredIntake', label: 'Intake', validate: 'text' },
+  { value: 'highestEducation', label: 'Education', validate: 'text' },
+  { value: 'college', label: 'College', validate: 'text' },
+  { value: 'currentCity', label: 'City', validate: 'text' },
+  { value: 'custom', label: 'Other (only in chat)', validate: 'text' },
+];
+
+const QuestionNode = ({ id, data }) => {
+  const set = useData(id);
+  const options = data.options || [];
+  return (
+    <Shell id={id} type="question">
+      <TextArea value={data.text} onChange={(text) => set({ text })} placeholder="e.g. Which country are you planning for?" rows={2} />
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 6 }}>
+        <div>
+          <div style={{ fontSize: 11, color: '#64748b', marginBottom: 2 }}>Save answer as</div>
+          <Select className="nodrag" size="small" style={{ width: '100%' }} value={data.field || 'name'} options={ANSWER_FIELDS}
+            onChange={(v) => set({ field: v, validate: ANSWER_FIELDS.find((f) => f.value === v)?.validate || 'text' })} />
+        </div>
+        <div>
+          <div style={{ fontSize: 11, color: '#64748b', marginBottom: 2 }}>Check answer</div>
+          <Select className="nodrag" size="small" style={{ width: '100%' }} value={data.validate || 'text'} onChange={(v) => set({ validate: v })}
+            options={[{ value: 'text', label: 'Any text' }, { value: 'email', label: 'Email' }, { value: 'number', label: 'Number' }, { value: 'phone', label: 'Phone' }]} />
+        </div>
+      </div>
+      {data.field === 'custom' && <Input className="nodrag" size="small" value={data.customKey} onChange={(e) => set({ customKey: e.target.value.replace(/[^\w]/g, '') })} placeholder="name for it, e.g. budget" />}
+      <div style={{ fontSize: 11.5, color: '#64748b' }}>Quick answers (optional, up to 3 buttons):</div>
+      {options.map((o, i) => (
+        <div key={i} style={{ display: 'flex', gap: 4 }}>
+          <Input className="nodrag" size="small" value={o.label} maxLength={20} placeholder="e.g. Ireland"
+            onChange={(e) => set({ options: options.map((x, j) => (j === i ? { label: e.target.value } : x)) })} />
+          <Button className="nodrag" size="small" type="text" icon={<CloseOutlined />} onClick={() => set({ options: options.filter((_, j) => j !== i) })} />
+        </div>
+      ))}
+      {options.length < 3 && <Button className="nodrag" size="small" type="dashed" icon={<PlusOutlined />} onClick={() => set({ options: [...options, { label: '' }] })}>Add quick answer</Button>}
+      <div style={{ fontSize: 11.5, color: '#64748b', lineHeight: 1.4 }}>
+        {data.field === 'custom' ? 'Kept with the chat.' : 'Saved on the student\'s Lead (a new Lead is made if needed).'} Use {'{'}{data.field === 'custom' ? data.customKey || 'answer' : data.field || 'name'}{'}'} in later messages.
+      </div>
+    </Shell>
+  );
+};
+
+const nodeTypes = { start: StartNode, text: TextNode, question: QuestionNode, media: MediaNode, buttons: ButtonsNode, list: ListNode, link: LinkNode, contact: ContactNode, handoff: HandoffNode };
 
 // ─── Editor ───
 const Editor = ({ flowId, onBack }) => {

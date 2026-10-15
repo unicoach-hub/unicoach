@@ -38,7 +38,8 @@ exports.getAdminStats = async (req, res) => {
       { $sort: { value: -1 } }
     ]);
 
-    const contacted = await Lead.countDocuments({ status: { $in: ['contacted', 'qualified', 'converted'] } });
+    // Anyone we have spoken to: old statuses plus the sheet-style ones (Interested, 50 / 50, Not interested, Converted)
+    const contacted = await Lead.countDocuments({ $or: [{ status: { $in: ['contacted', 'qualified', 'interested', 'fifty_fifty', 'not_interested', 'converted'] } }, { phoneCall: 'done' }] });
     const qualified = await Lead.countDocuments({ status: { $in: ['qualified', 'converted'] } });
     const converted = await Lead.countDocuments({ status: 'converted' });
     const conversionFunnel = [
@@ -112,5 +113,93 @@ exports.getAdminStats = async (req, res) => {
   } catch (err) {
     console.error('Error in stats endpoint:', err);
     return res.status(500).json({ error: 'Server error' });
+  }
+};
+
+
+/**
+ * GET /api/admin/stats/attention
+ * What needs doing now: overdue follow-ups and tasks, uncalled leads, waiting applications/requests,
+ * WhatsApp chats waiting for a person, today's sessions, events coming up. Staff limited to their own
+ * leads only see their own leads and tasks.
+ */
+exports.getAttention = async (req, res) => {
+  try {
+    const { scopedStaffId } = require('../utils/leadAccess');
+    const StaffTask = require('../models/StaffTask');
+    const SupportRequest = require('../models/SupportRequest');
+    const UnicoachMentor = require('../unicoach/models/UnicoachMentor');
+    const UnicoachBooking = require('../unicoach/models/UnicoachBooking');
+    const WhatsappContact = require('../models/WhatsappContact');
+    const WhatsappEvent = require('../models/WhatsappEvent');
+    const Campaign = require('../models/Campaign');
+
+    const now = new Date();
+    const startOfDay = new Date(now); startOfDay.setHours(0, 0, 0, 0);
+    const endOfDay = new Date(now); endOfDay.setHours(23, 59, 59, 999);
+    const dayAgo = new Date(now - 24 * 3600e3);
+    const weekAhead = new Date(now.getTime() + 7 * 86400e3);
+
+    const own = scopedStaffId(req);
+    const leadScope = own ? { assignedTo: own } : {};
+    const open = { status: { $nin: ['converted', 'closed', 'not_interested'] } };
+    const isOwner = req.user?.role === 'admin';
+    const me = isOwner ? null : String(req.staff?._id || '');
+    const taskScope = isOwner ? {} : { 'assignee.id': me };
+    const pick = 'name phone dreamCountry nextFollowUpDate createdAt assignedTo';
+
+    const [
+      overdueFollowUps, overdueFollowUpCount, dueTodayCount,
+      uncalled, uncalledCount, followUpListCount,
+      overdueTasks, overdueTaskCount, tasksTodayCount,
+      newRequests, pendingMentors, needsAgent, unreadWhatsapp,
+      sessionsToday, upcomingEvents, eventsWithoutDate, pausedCampaigns,
+    ] = await Promise.all([
+      Lead.find({ ...leadScope, ...open, nextFollowUpDate: { $lt: startOfDay } }).select(pick).sort({ nextFollowUpDate: 1 }).limit(6).lean(),
+      Lead.countDocuments({ ...leadScope, ...open, nextFollowUpDate: { $lt: startOfDay } }),
+      Lead.countDocuments({ ...leadScope, ...open, nextFollowUpDate: { $gte: startOfDay, $lte: endOfDay } }),
+      Lead.find({ ...leadScope, status: 'new', phoneCall: { $ne: 'done' }, createdAt: { $lt: dayAgo } }).select(pick).sort({ createdAt: 1 }).limit(6).lean(),
+      Lead.countDocuments({ ...leadScope, status: 'new', phoneCall: { $ne: 'done' }, createdAt: { $lt: dayAgo } }),
+      Lead.countDocuments({ ...leadScope, followUp: { $in: ['interested', 'fifty_fifty'] } }),
+      StaffTask.find({ ...taskScope, status: { $ne: 'done' }, dueAt: { $lt: now } }).select('title dueAt priority assignee').sort({ dueAt: 1 }).limit(6).lean(),
+      StaffTask.countDocuments({ ...taskScope, status: { $ne: 'done' }, dueAt: { $lt: now } }),
+      StaffTask.countDocuments({ ...taskScope, status: { $ne: 'done' }, dueAt: { $gte: now, $lte: endOfDay } }),
+      own ? 0 : SupportRequest.countDocuments({ status: 'New' }),
+      own ? 0 : UnicoachMentor.countDocuments({ applicationStatus: 'PENDING' }),
+      own ? 0 : WhatsappContact.countDocuments({ needsAgent: true }),
+      own ? 0 : WhatsappEvent.countDocuments({ kind: 'message', direction: 'in', readByAdmin: { $ne: true } }),
+      own ? 0 : UnicoachBooking.countDocuments({ state: 'CONFIRMED', startUtc: { $gte: startOfDay, $lte: endOfDay } }),
+      own ? [] : Event.find({ published: true, eventStart: { $gte: now, $lte: weekAhead } }).select('title eventStart attendees').sort({ eventStart: 1 }).limit(4).lean(),
+      own ? 0 : Event.countDocuments({ published: true, $or: [{ eventStart: null }, { eventStart: { $exists: false } }] }),
+      own ? 0 : Campaign.countDocuments({ status: 'paused' }),
+    ]);
+
+    return res.json({
+      followUps: {
+        overdue: overdueFollowUpCount,
+        today: dueTodayCount,
+        items: overdueFollowUps.map((l) => ({ id: l._id, name: l.name, phone: l.phone, country: l.dreamCountry, due: l.nextFollowUpDate })),
+      },
+      uncalled: {
+        count: uncalledCount,
+        items: uncalled.map((l) => ({ id: l._id, name: l.name, phone: l.phone, country: l.dreamCountry, since: l.createdAt })),
+      },
+      followUpList: followUpListCount,
+      tasks: {
+        overdue: overdueTaskCount,
+        today: tasksTodayCount,
+        items: overdueTasks.map((t) => ({ id: t._id, title: t.title, due: t.dueAt, priority: t.priority, assignee: t.assignee?.name || '' })),
+      },
+      newRequests,
+      pendingMentors,
+      whatsapp: { needsAgent, unread: unreadWhatsapp },
+      sessionsToday,
+      upcomingEvents: upcomingEvents.map((e) => ({ id: e._id, title: e.title, start: e.eventStart, registered: (e.attendees || []).length })),
+      eventsWithoutDate,
+      pausedCampaigns,
+    });
+  } catch (err) {
+    console.error('Error building attention list:', err);
+    return res.status(500).json({ message: 'Could not load what needs attention' });
   }
 };

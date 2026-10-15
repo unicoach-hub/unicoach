@@ -342,36 +342,60 @@ export const UpcomingEvents = ({ onOpenModal }) => {
             const speakerRole = ev.speakerRole || ev.speaker.match(/\((.*?)\)/)?.[1]?.trim() || '';
             const speakerPhotos = [ev.speakerPhoto, getSpeakerPhoto(ev.speaker)].filter(Boolean);
 
-            // Safe vertical entrance to prevent mobile horizontal scrollbar expansion
-            const initialPos = { opacity: 0, y: 30 };
+            // Vertical-only entrance (no sideways movement, so phones never get a horizontal scrollbar);
+            // cards in the same row arrive one after another
+            const initialPos = { opacity: 0, y: 56, scale: 0.94, filter: 'blur(6px)' };
+            const enterDelay = (idx % 3) * 0.12 + Math.floor(idx / 3) * 0.08;
 
             return (
               <motion.div
                 key={ev.id || idx}
-                initial={initialPos}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-30px" }}
-                transition={{ duration: 0.6, delay: idx * 0.1, ease: [0.16, 1, 0.3, 1] }}
-                whileHover={{ y: -6, transition: { duration: 0.2 } }}
+                initial="hidden"
+                whileInView="shown"
+                viewport={{ once: true, margin: "-40px" }}
+                variants={{
+                  hidden: initialPos,
+                  shown: { opacity: 1, y: 0, scale: 1, filter: 'blur(0px)', transition: { duration: 0.75, delay: enterDelay, ease: [0.16, 1, 0.3, 1] } },
+                }}
+                whileHover={{ y: -8, transition: { type: 'spring', stiffness: 300, damping: 20 } }}
                 // The rest of the card opens the event page; the CTA button keeps its own action
                 onClick={ev.detailPath ? () => navigate(ev.detailPath) : undefined}
-                className={`bg-white rounded-2xl overflow-hidden border border-slate-200/90 shadow-[0_3px_14px_-2px_rgba(15,23,42,0.06)] hover:shadow-[0_16px_32px_-4px_rgba(15,23,42,0.12)] hover:border-orange-300 transition-all duration-300 flex flex-col group w-full ${ev.detailPath ? 'cursor-pointer' : ''}`}
+                className={`bg-white rounded-2xl overflow-hidden border border-slate-200/90 shadow-[0_3px_14px_-2px_rgba(15,23,42,0.06)] hover:shadow-[0_24px_48px_-16px_rgba(222,92,43,0.35)] hover:border-orange-300 transition-[box-shadow,border-color] duration-300 flex flex-col group w-full ${ev.detailPath ? 'cursor-pointer' : ''}`}
               >
                 {/* ──── TOP COMPACT 2:1 COVER IMAGE (Zero Cropping - Full Text & Expert Visible) ──── */}
-                <div className="relative aspect-[16/9] w-full overflow-hidden bg-slate-900 border-b border-slate-100">
-                  <img
+                <motion.div
+                  className="relative aspect-[16/9] w-full overflow-hidden bg-slate-900 border-b border-slate-100"
+                  // Follows the card's own in-view trigger (a fully clipped element is never "in view" by itself)
+                  variants={{
+                    hidden: { clipPath: 'inset(0 0 100% 0)' },
+                    shown: { clipPath: 'inset(0 0 0% 0)', transition: { duration: 0.9, delay: enterDelay + 0.15, ease: [0.65, 0, 0.35, 1] } },
+                  }}
+                >
+                  <motion.img
                     src={eventImg}
                     alt={ev.title}
-                    className="w-full h-full object-cover object-center group-hover:scale-103 transition-transform duration-500 ease-out"
+                    variants={{
+                      hidden: { scale: 1.18 },
+                      shown: { scale: 1, transition: { duration: 1.4, delay: enterDelay + 0.15, ease: [0.16, 1, 0.3, 1] } },
+                    }}
+                    className="w-full h-full object-cover object-center group-hover:!scale-[1.05] transition-transform duration-700 ease-out"
                     onError={(e) => {
                       e.target.src = '/events/global.webp';
                     }}
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-transparent to-transparent pointer-events-none" />
+                  {/* Light sweep across the banner on hover */}
+                  <span aria-hidden="true" className="pointer-events-none absolute inset-y-0 -left-1/2 w-1/3 skew-x-[-20deg] bg-gradient-to-r from-transparent via-white/35 to-transparent opacity-0 group-hover:opacity-100 group-hover:translate-x-[420%] transition-all duration-[900ms] ease-out" />
 
                   {/* Bottom strip: date on the left, category on the right.
                       (The category used to sit top-right, right on top of the expert's face in the banner.) */}
-                  <div className="absolute bottom-2.5 left-2.5 right-2.5 flex items-center justify-between gap-2 text-white z-10">
+                  <motion.div
+                    className="absolute bottom-2.5 left-2.5 right-2.5 flex items-center justify-between gap-2 text-white z-10"
+                    variants={{
+                      hidden: { opacity: 0, y: 12 },
+                      shown: { opacity: 1, y: 0, transition: { duration: 0.5, delay: enterDelay + 0.75, ease: 'easeOut' } },
+                    }}
+                  >
                     <div className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-slate-950/75 backdrop-blur-md text-[10px] font-semibold text-white/95 border border-white/15 shadow-sm min-w-0">
                       <Calendar className="w-3 h-3 text-[#FED7CE] shrink-0" />
                       <span className="truncate">{ev.date} • {ev.time}</span>
@@ -379,8 +403,8 @@ export const UpcomingEvents = ({ onOpenModal }) => {
                     <span className="px-2 py-0.5 rounded-full bg-[#DE5C2B] text-white text-[9px] font-extrabold uppercase tracking-wider shadow-sm shrink-0 whitespace-nowrap">
                       {ev.badge || 'Masterclass'}
                     </span>
-                  </div>
-                </div>
+                  </motion.div>
+                </motion.div>
 
                 {/* ──── BOTTOM COMPACT CONTENT BODY ──── */}
                 <div className="p-3.5 flex flex-col justify-between flex-1 bg-white">

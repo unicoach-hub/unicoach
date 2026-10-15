@@ -9,11 +9,25 @@ const CARD_SLOT_PX = 260;
 // Loop speed scales with the number of cards so it always drifts at the same slow pace
 const SECONDS_PER_CARD = 6;
 
+// Soft gradient behind each mentor, built from the colour of their original photo background
+const GRADIENTS = {
+  prachi: 'radial-gradient(120% 110% at 15% 0%, #FFF1EC 0%, #FFD3C6 55%, #F7AE9A 100%)',
+  nitya: 'radial-gradient(120% 110% at 15% 0%, #E9F8DD 0%, #A9DB86 55%, #6FB34B 100%)',
+  manan: 'radial-gradient(120% 110% at 15% 0%, #F6F3FF 0%, #DCD3FF 55%, #B7A8F5 100%)',
+  manvi: 'radial-gradient(120% 110% at 15% 0%, #E8FBF8 0%, #A6E6DE 55%, #5FC4B8 100%)',
+  rishi: 'radial-gradient(120% 110% at 15% 0%, #FFF3E4 0%, #FFC890 55%, #F59A52 100%)',
+  munish: 'radial-gradient(120% 110% at 15% 0%, #F2A3A0 0%, #B8474A 55%, #7E2328 100%)',
+};
+const keyOf = (name) => String(name || '').split(' ')[0].toLowerCase();
+
 const MENTOR_CARDS = TEAM_MENTORS.map((m) => ({
   key: `mentor-${m.name}`,
   name: m.name,
   role: m.role,
   photo: m.headshot || m.card || m.portrait || m.src,
+  // Cut-out photo on a gradient when we have both; otherwise the normal photo
+  cutout: GRADIENTS[keyOf(m.name)] ? `/images/mentors/cutouts/${keyOf(m.name)}.webp` : null,
+  gradient: GRADIENTS[keyOf(m.name)] || null,
   to: '/events',
   cta: 'Free session',
 }));
@@ -25,12 +39,15 @@ const MentorCard = ({ card, isCopy = false }) => (
     aria-hidden={isCopy || undefined}
     className="group w-[220px] sm:w-[240px] shrink-0 bg-white rounded-[22px] border border-slate-200 hover:border-orange-200 p-3 shadow-[0_8px_24px_-14px_rgba(15,23,42,0.22)] hover:shadow-[0_14px_30px_-14px_rgba(15,23,42,0.3)] transition-all"
   >
-    <div className="aspect-square rounded-[16px] overflow-hidden bg-slate-100">
+    <div className="relative aspect-square rounded-[16px] overflow-hidden bg-slate-100" style={card.gradient ? { background: card.gradient } : undefined}>
+      {card.gradient && (
+        <span aria-hidden="true" className="absolute -right-8 -top-8 w-32 h-32 rounded-full bg-white/25 blur-2xl" />
+      )}
       <img
-        src={card.photo}
+        src={card.cutout || card.photo}
         alt={isCopy ? '' : card.name}
         loading="lazy"
-        className="w-full h-full object-cover object-top group-hover:scale-[1.03] transition-transform duration-500"
+        className="relative w-full h-full object-cover object-top group-hover:scale-[1.04] transition-transform duration-500 origin-bottom"
       />
     </div>
     <div className="mt-3 px-1 pb-1">

@@ -106,6 +106,8 @@ import {
   getRecommendedMentorHours 
 } from '../utils/timezoneHelper';
 import { TimezoneOptions } from '../components/TimezoneOptions';
+import ProductTour from '../../components/ProductTour';
+import useFirstVisitTour from '../../hooks/useFirstVisitTour';
 
 const InstagramIcon = ({ className = "w-4 h-4" }) => (
   <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -1018,6 +1020,20 @@ const UnicoachDashboardPage = () => {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [activeTab, setActiveTab] = useState('overview'); // 'overview', 'services', 'calendar', 'bookings', 'coupons', 'settings'
+  // First-visit tour of the mentor dashboard (skippable; "Take a tour" in the sidebar replays it)
+  const mentorTour = useFirstVisitTour(user?._id || user?.id ? `mentor:${user._id || user.id}` : null, !!user);
+  const MENTOR_TOUR = [
+    { target: null, title: 'Welcome to your mentor studio 🎉', body: 'A 1-minute look at how you get students and earn on UniCoach. Skip any time, and replay it from "Take a tour" in the sidebar.', onEnter: () => setActiveTab('overview') },
+    { target: '[data-tour="mnav-overview"]', title: 'Home', body: 'Your day at a glance: upcoming sessions, new requests, earnings and profile views.' },
+    { target: '[data-tour="mnav-services"]', title: 'Services', body: 'What students can book from you: 1:1 calls, Priority DMs, document reviews. Set the price and duration for each.' },
+    { target: '[data-tour="mnav-calendar"]', title: 'Calendar & slots', body: 'Add the times you are free. Students can only book slots you open here, so add a few every week.' },
+    { target: '[data-tour="mnav-bookings"]', title: 'Bookings & sessions', body: 'Every booked call and Priority DM. Join calls and answer DMs here before the deadline.' },
+    { target: '[data-tour="mnav-my_students"]', title: 'My students', body: 'Students you have mentored, their stage, and notes, so you can follow up.' },
+    { target: '[data-tour="mnav-profile"]', title: 'Your public profile', body: 'Your photo, university, story and social links. A complete profile gets far more bookings.' },
+    { target: '[data-tour="mnav-payouts"]', title: 'Earnings', body: 'What you have earned and when it reaches your bank. Payouts go out after each session is done.' },
+    { target: '[data-tour="mnav-share_grow"]', title: 'Share & grow', body: 'Your profile link and referral link. Share them on Instagram, LinkedIn and WhatsApp to get more students.' },
+    { target: '[data-tour="mnav-settings"]', title: 'Settings', body: 'Payout bank details, time zone and notifications. You are all set, happy mentoring! 🚀' },
+  ];
   const [actionLoading, setActionLoading] = useState(false);
   const [feedback, setFeedback] = useState(null);
 
@@ -2993,6 +3009,7 @@ const UnicoachDashboardPage = () => {
 
   return (
     <div className="min-h-screen bg-[#F8FAFC] text-slate-900 flex pt-0">
+      {mentorTour.open && <ProductTour steps={MENTOR_TOUR} open onClose={mentorTour.close} />}
       {/* ═══ UniCoach-STYLE LEFT SIDEBAR (Desktop) ═══ */}
       <aside className="w-64 bg-white border-r border-slate-200/90 hidden md:flex flex-col justify-between flex-shrink-0 sticky top-0 h-screen overflow-y-auto z-30">
         <div className="p-4 space-y-4">
@@ -3123,6 +3140,14 @@ const UnicoachDashboardPage = () => {
             )}
           </div>
 
+          <button
+            type="button"
+            onClick={mentorTour.start}
+            className="w-full h-9 rounded-xl border border-dashed border-slate-300 text-slate-600 hover:border-[#DE5C2B] hover:text-[#DE5C2B] text-xs font-semibold flex items-center justify-center gap-1.5 cursor-pointer transition-colors"
+          >
+            <Sparkles className="w-3.5 h-3.5" /> Take a tour
+          </button>
+
           {/* Navigation items matching UniCoach screenshot */}
           <nav className="space-y-1">
             {[
@@ -3145,6 +3170,7 @@ const UnicoachDashboardPage = () => {
                 <button
                   key={item.id}
                   type="button"
+                  data-tour={`mnav-${item.id}`}
                   onClick={() => {
                     setActiveTab(item.id);
                     if (item.id === 'notifications') loadNotifications(handle);

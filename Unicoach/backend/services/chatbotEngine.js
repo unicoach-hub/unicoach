@@ -37,10 +37,41 @@ const headerFor = (d) => {
 };
 
 /** Cloud API payload for one node, plus a short text for the Inbox */
-function payloadFor(flow, node) {
+// {name}, {dreamCountry} … in any step's text are filled from the answers collected so far
+const fill = (text, vars = {}) => String(text || '').replace(/\{(\w+)\}/g, (m, k) => (vars[k] !== undefined && vars[k] !== '' ? vars[k] : m));
+
+// Where a Question step can save its answer (Lead fields), and how to check it
+const LEAD_FIELDS = ['name', 'email', 'dreamCountry', 'preferredIntake', 'highestEducation', 'currentCity', 'course', 'college'];
+const VALIDATORS = {
+  text: (v) => v.length >= 1 && v.length <= 200,
+  email: (v) => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v),
+  number: (v) => /^\d+(\.\d+)?$/.test(v),
+  phone: (v) => v.replace(/\D/g, '').length >= 10,
+};
+
+function payloadFor(flow, node, vars = {}) {
   const d = node.data || {};
-  const body = clip(d.text, 1024);
+  const body = clip(fill(d.text, vars), 1024);
   switch (node.type) {
+    case 'question': {
+      if (!body) return null;
+      const options = (d.options || []).filter((o) => o && o.label).slice(0, 3);
+      if (options.length) {
+        return {
+          payload: {
+            type: 'interactive',
+            interactive: {
+              type: 'button',
+              body: { text: body },
+              action: { buttons: options.map((o, i) => ({ type: 'reply', reply: { id: `q:${flow._id}:${node.id}:${i}`, title: clip(o.label, 20) } })) },
+            },
+          },
+          summary: `${body}\n${options.map((o) => `[${o.label}]`).join(' ')}`,
+          question: true,
+        };
+      }
+      return { payload: { type: 'text', text: { body } }, summary: body, question: true };
+    }
     case 'text':
       if (!body) return null;
       return { payload: { type: 'text', text: { body, preview_url: true } }, summary: body };
@@ -134,7 +165,7 @@ async function runFrom(flow, startNodeId, ctx) {
   for (let step = 0; nodeId && step < MAX_STEPS; step += 1) {
     const node = (flow.nodes || []).find((n) => n.id === nodeId);
     if (!node) return;
-    const built = payloadFor(flow, node);
+    const built = payloadFor(flow, node, ctx.vars);
     if (built) {
       if (step > 0) await sleep(STEP_GAP_MS);
       await sendAndRecord({ settings: ctx.settings, phone: ctx.phone, lead: ctx.lead, sentBy: `Bot: ${flow.name}`, text: built.summary, payload: built.payload });
@@ -143,13 +174,41 @@ async function runFrom(flow, startNodeId, ctx) {
       await WhatsappContact.updateOne({ phone: ctx.phone }, { $set: { needsAgent: true, needsAgentAt: new Date(), botPausedUntil: new Date(Date.now() + PAUSE_MS), waitingNode: null } });
       return;
     }
-    if (built?.waits) {
-      await WhatsappContact.updateOne({ phone: ctx.phone }, { $set: { flow: flow._id, waitingNode: node.id } });
+    if (built?.waits || built?.question) {
+      await WhatsappContact.updateOne({ phone: ctx.phone }, { $set: { flow: flow._id, waitingNode: node.id, waitingAttempts: 0 } });
       return;
     }
     nodeId = nextNodeId(flow, node.id);
   }
   await WhatsappContact.updateOne({ phone: ctx.phone }, { $set: { waitingNode: null } });
+}
+
+/** Saves a Question step's answer on the contact and on their Lead (creating the Lead if needed) */
+async function saveAnswer({ phone, waName, field, customKey, value }) {
+  const Lead = require('../models/Lead');
+  const key = field === 'custom' ? String(customKey || 'answer').replace(/[^\w]/g, '').slice(0, 40) || 'answer' : field;
+  await WhatsappContact.updateOne({ phone }, { $set: { [`attributes.${key}`]: value } });
+  if (!LEAD_FIELDS.includes(field)) return null;
+
+  const tail = phone.replace(/\D/g, '').slice(-10);
+  let lead = await Lead.findOne({ phone: { $regex: `${tail}$` } }).sort({ updatedAt: -1 });
+  if (!lead) {
+    const contact = await WhatsappContact.findOne({ phone }).lean();
+    const attrs = Object.fromEntries(Object.entries(contact?.attributes || {}));
+    lead = new Lead({
+      name: attrs.name || waName || 'WhatsApp lead',
+      email: attrs.email || '',
+      phone: `+${phone}`,
+      source: 'WhatsApp',
+      latestSource: 'WhatsApp chatbot',
+      verified: true, // the number is their WhatsApp, so it's real
+    });
+  }
+  lead[field] = field === 'email' ? value.toLowerCase() : value;
+  lead.lastInquiryAt = new Date();
+  lead.activities.push({ type: 'whatsapp', comment: `Chatbot: ${field} = ${value}`.slice(0, 500), performedBy: 'WhatsApp bot' });
+  await lead.save();
+  return lead;
 }
 
 const startNodeOf = (flow) => (flow.nodes || []).find((n) => n.type === 'start');
@@ -177,7 +236,39 @@ async function handleInbound({ phone, name, text, replyId, lead }) {
   );
   // A person is handling this chat
   if (contact.botPausedUntil && contact.botPausedUntil > new Date()) return;
-  const ctx = { settings, phone, lead };
+  const vars = Object.fromEntries(Object.entries(contact.attributes ? Object.fromEntries(contact.attributes) : {}));
+  if (!vars.name && name) vars.name = name.split(' ')[0];
+  const ctx = { settings, phone, lead, vars, waName: name };
+
+  // 0. The bot asked a question and this is the answer
+  if (contact.waitingNode && contact.flow && !/^f:/.test(replyId || '')) {
+    const flow = await ChatFlow.findOne({ _id: contact.flow, active: true }).lean();
+    const node = flow && (flow.nodes || []).find((n) => n.id === contact.waitingNode && n.type === 'question');
+    if (node) {
+      const d = node.data || {};
+      const q = /^q:[a-f0-9]{24}:[^:]+:(\d+)$/.exec(replyId || '');
+      const answer = q ? clip((d.options || [])[Number(q[1])]?.label, 200) : clip(text, 200);
+      const check = VALIDATORS[d.validate] || VALIDATORS.text;
+      if (!answer || !check(answer)) {
+        if ((contact.waitingAttempts || 0) < 2) {
+          await WhatsappContact.updateOne({ phone }, { $inc: { waitingAttempts: 1 } });
+          const retry = d.retryText || (d.validate === 'email' ? 'That doesn\'t look like an email. Please type it again (e.g. name@gmail.com).' : 'Sorry, I didn\'t get that. Please answer again.');
+          await sendAndRecord({ settings, phone, lead, sentBy: `Bot: ${flow.name}`, text: retry, payload: { type: 'text', text: { body: retry } } });
+          return;
+        }
+        // Gave up asking: move on without saving
+      } else {
+        const saved = await saveAnswer({ phone, waName: name, field: d.field || 'custom', customKey: d.customKey, value: answer });
+        if (saved) ctx.lead = { _id: saved._id };
+        const key = d.field === 'custom' ? (d.customKey || 'answer') : d.field;
+        if (key) vars[key] = answer;
+      }
+      await WhatsappContact.updateOne({ phone }, { $set: { waitingNode: null, waitingAttempts: 0 } });
+      const next = nextNodeId(flow, node.id);
+      if (next) await runFrom(flow, next, ctx);
+      return;
+    }
+  }
 
   // 1. A button or list row from one of our flows
   const m = /^f:([a-f0-9]{24}):([^:]+):(.+)$/.exec(replyId || '');
@@ -232,6 +323,7 @@ function validateFlow(flow) {
       else if (n.type === 'buttons') problems.push(`"${label}": needs text and at least one button.`);
       else if (n.type === 'list') problems.push(`"${label}": needs text and at least one option.`);
       else if (n.type === 'contact') problems.push(`"${label}": add a phone number.`);
+      else if (n.type === 'question') problems.push(`"${label}": type the question.`);
       else if (n.type !== 'handoff') problems.push(`"${label}": add a message.`);
     }
   }

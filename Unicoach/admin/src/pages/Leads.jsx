@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Table, Select, message, Input, Modal, Tabs, Timeline, DatePicker, Button, Form, Popover, Tooltip, Progress, Badge, Spin, Popconfirm } from 'antd';
+import dayjs from 'dayjs';
 import Header from '../components/Header';
 import CrmSubNav from '../components/CrmSubNav';
 import StatsCard from '../components/StatsCard';
@@ -239,6 +240,8 @@ const Leads = ({ view = 'all' }) => {
 
   // Tags: auto ones (event, source, country, intake) come from the server; manual ones the team adds here
   const [tagFilter, setTagFilter] = useState([]);
+  // Lead date (when they came in): [from, to] as dayjs, or null for all time
+  const [dateRange, setDateRange] = useState(null);
   const [tagCatalog, setTagCatalog] = useState({ auto: [], manual: [] });
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const [bulkTags, setBulkTags] = useState([]);
@@ -781,11 +784,17 @@ const Leads = ({ view = 'all' }) => {
     e.target.value = '';
   };
 
+  const inRange = (l) => {
+    if (!dateRange || !dateRange[0] || !dateRange[1]) return true;
+    const t = dayjs(l.createdAt);
+    return !t.isBefore(dateRange[0].startOf('day')) && !t.isAfter(dateRange[1].endOf('day'));
+  };
   const filtered = data.filter(l =>
     (l.name?.toLowerCase().includes(search.toLowerCase()) ||
     l.email?.toLowerCase().includes(search.toLowerCase()) ||
     l.phone?.includes(search)) &&
-    (!tagFilter.length || tagFilter.some((t) => (l.tags || []).includes(t) || (l.autoTags || []).includes(t)))
+    (!tagFilter.length || tagFilter.some((t) => (l.tags || []).includes(t) || (l.autoTags || []).includes(t))) &&
+    inRange(l)
   );
 
   const columns = [
@@ -1148,17 +1157,44 @@ const Leads = ({ view = 'all' }) => {
       <Header title={VIEW_TITLES[view]?.title || 'Student leads & consultations'} subtitle={VIEW_TITLES[view]?.subtitle || 'All eligibility checks and consultation bookings'} />
       <div className="dashboard-content" style={{ marginTop: 16 }}>
         <CrmSubNav />
-        <div className="page-stats-grid page-stats-grid--5">
-          <StatsCard icon={<ContactsOutlined />} label="Total leads" value={countRows.length} color="brand" loading={loading} onClick={() => navigate(VIEW_PATHS.all)} active={view === 'all'} />
+        <div className="page-stats-grid page-stats-grid--6">
+          <StatsCard icon={<ContactsOutlined />} label="Total leads" value={countRows.length} color="brand" loading={loading} onClick={() => { setDateRange(null); navigate(VIEW_PATHS.all); }} active={view === 'all' && !dateRange} />
+          <StatsCard
+            icon={<CalendarOutlined />}
+            label="Today's leads"
+            value={countRows.filter((l) => dayjs(l.createdAt).isSame(dayjs(), 'day')).length}
+            color="brand"
+            loading={loading}
+            onClick={() => { setDateRange([dayjs(), dayjs()]); if (view !== 'all') navigate(VIEW_PATHS.all); }}
+            active={!!dateRange && dateRange[0]?.isSame(dayjs(), 'day') && dateRange[1]?.isSame(dayjs(), 'day')}
+          />
           <StatsCard icon={<TrophyOutlined />} label="Converted" value={countRows.filter(l => l.status === 'converted').length} color="brand" loading={loading} onClick={() => navigate(VIEW_PATHS.converted)} active={view === 'converted'} />
           <StatsCard icon={<FireOutlined />} label="Interested" value={countRows.filter(l => l.status === 'interested').length} color="brand" loading={loading} onClick={() => navigate(VIEW_PATHS.interested)} active={view === 'interested'} />
-          <StatsCard icon={<ClockCircleOutlined />} label="Follow-up" value={countRows.filter(l => l.followUp === 'interested' || l.followUp === 'fifty_fifty').length} color="brand" loading={loading} onClick={() => navigate(VIEW_PATHS.followup)} active={view === 'followup'} />
+          <StatsCard icon={<ClockCircleOutlined />} label="Follow-up (50-50)" value={countRows.filter(l => l.followUp === 'interested' || l.followUp === 'fifty_fifty').length} color="brand" loading={loading} onClick={() => navigate(VIEW_PATHS.followup)} active={view === 'followup'} />
           <StatsCard icon={<CheckCircleOutlined />} label="Not interested" value={countRows.filter(l => l.status === 'not_interested').length} color="brand" loading={loading} onClick={() => navigate(VIEW_PATHS.not_interested)} active={view === 'not_interested'} />
         </div>
 
-        <div className="nx-toolbar page-toolbar">
-          <div className="page-toolbar-left" style={{ display: 'flex', gap: '10px', alignItems: 'center', flexWrap: 'wrap' }}>
-            <Input prefix={<SearchOutlined style={{ color: 'var(--ux-text-3)' }} />} placeholder="Search leads..." value={search} onChange={(e) => setSearch(e.target.value)} style={{ width: 280, maxWidth: '100%' }} />
+        <div className="nx-toolbar page-toolbar" style={{ flexDirection: 'column', alignItems: 'stretch', gap: 10 }}>
+          {/* Row 1: filters */}
+          <div className="page-toolbar-left" style={{ display: 'flex', gap: '10px', alignItems: 'center', flexWrap: 'wrap', width: '100%' }}>
+            <Input prefix={<SearchOutlined style={{ color: 'var(--ux-text-3)' }} />} placeholder="Search name, email or phone" value={search} onChange={(e) => setSearch(e.target.value)} style={{ width: 240, maxWidth: '100%' }} allowClear />
+            <DatePicker.RangePicker
+              value={dateRange}
+              onChange={(v) => setDateRange(v && v[0] && v[1] ? v : null)}
+              format="D MMM YYYY"
+              placeholder={['From date', 'To date']}
+              allowClear
+              presets={[
+                { label: 'Today', value: [dayjs(), dayjs()] },
+                { label: 'Yesterday', value: [dayjs().subtract(1, 'day'), dayjs().subtract(1, 'day')] },
+                { label: 'Last 7 days', value: [dayjs().subtract(6, 'day'), dayjs()] },
+                { label: 'Last 30 days', value: [dayjs().subtract(29, 'day'), dayjs()] },
+                { label: 'This month', value: [dayjs().startOf('month'), dayjs()] },
+                { label: 'Last month', value: [dayjs().subtract(1, 'month').startOf('month'), dayjs().subtract(1, 'month').endOf('month')] },
+              ]}
+              disabledDate={(d) => d && d.isAfter(dayjs().endOf('day'))}
+              style={{ width: 250 }}
+            />
             <Select value={statusFilter} onChange={setStatusFilter} style={{ width: 140 }}>
               <Option value="all">All statuses</Option>
               {SHEET_STATUSES.map(o => <Option key={o.value} value={o.value}>{o.label}</Option>)}
@@ -1204,6 +1240,9 @@ const Leads = ({ view = 'all' }) => {
             </Select>
 
             {/* View Mode Toggle */}
+          </div>
+          {/* Row 2: view, actions and the count */}
+          <div style={{ display: 'flex', gap: '10px', alignItems: 'center', flexWrap: 'wrap', width: '100%', paddingTop: 10, borderTop: '1px solid #f1f1ef' }}>
             <div style={{ display: 'flex', border: '1px solid #eeede8', background: '#ffffff', borderRadius: '999px', padding: '3px', height: '40px', alignItems: 'center' }}>
               <button
                 onClick={() => setViewMode('table')}
@@ -1276,8 +1315,8 @@ const Leads = ({ view = 'all' }) => {
               onChange={handleImportCSV} 
               style={{ display: 'none' }} 
             />
+            <div style={{ marginLeft: 'auto', fontSize: 13, color: 'var(--ux-text-2)', whiteSpace: 'nowrap' }}>Total <strong style={{ color: 'var(--ux-ink)', fontWeight: 600 }}>{filtered.length}</strong> leads{dateRange ? (dateRange[0].isSame(dateRange[1], 'day') ? ` on ${dateRange[0].format('D MMM YYYY')}` : ` from ${dateRange[0].format('D MMM')} to ${dateRange[1].format('D MMM YYYY')}`) : ''}</div>
           </div>
-          <div style={{ fontSize: 13, color: 'var(--ux-text-2)', whiteSpace: 'nowrap' }}>Total <strong style={{ color: 'var(--ux-ink)', fontWeight: 600 }}>{filtered.length}</strong> leads</div>
         </div>
         
         {viewMode === 'table' ? (

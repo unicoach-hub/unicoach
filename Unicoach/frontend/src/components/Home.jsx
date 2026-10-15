@@ -5,7 +5,9 @@ import LazySection from './LazySection';
 // Below-the-fold sections are code-split and dynamically mounted via IntersectionObserver
 const MentorMarquee = lazy(() => import('./MentorMarquee'));
 const Services = lazy(() => import('./Services'));
-const PremiumStory = lazy(() => import('./PremiumStory'));
+const JourneyBento = lazy(() => import('./JourneyBento'));
+const FeatureStory = lazy(() => import('./FeatureStory'));
+const ShortlistShowcase = lazy(() => import('./ShortlistShowcase'));
 const Destinations = lazy(() => import('./Destinations'));
 const UpcomingEvents = lazy(() => import('./UpcomingEvents'));
 const Testimonials = lazy(() => import('./Testimonials'));
@@ -36,6 +38,18 @@ const Home = () => {
       </LazySection>
 
       {/* 04. Explore Top Study Destinations (Country Section) */}
+      <LazySection minHeight="100vh" rootMargin="400px">
+        <Suspense fallback={<SectionPlaceholder minHeight="100vh" />}>
+          <FeatureStory />
+        </Suspense>
+      </LazySection>
+
+      <LazySection minHeight="560px" rootMargin="350px">
+        <Suspense fallback={<SectionPlaceholder minHeight="560px" />}>
+          <ShortlistShowcase />
+        </Suspense>
+      </LazySection>
+
       <LazySection minHeight="480px" rootMargin="350px">
         <Suspense fallback={<SectionPlaceholder minHeight="480px" />}>
           <Destinations />
@@ -52,7 +66,7 @@ const Home = () => {
       {/* 06. How UniCoach works: 4 steps, each opening its tool */}
       <LazySection minHeight="560px" rootMargin="350px">
         <Suspense fallback={<SectionPlaceholder minHeight="560px" />}>
-          <PremiumStory />
+          <JourneyBento />
         </Suspense>
       </LazySection>
 

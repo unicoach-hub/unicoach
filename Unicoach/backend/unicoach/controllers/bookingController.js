@@ -886,7 +886,8 @@ const applyAsMentor = async (req, res) => {
       email: email.toLowerCase().trim(),
       phone: phone ? phone.trim() : '',
       handle: cleanHandle,
-      headline: headline ? headline.trim() : `${course || 'Student'} at ${university || 'University'}`,
+      // Education is optional (working professionals, creators), so build the fallback from what we have
+      headline: headline ? headline.trim() : (university ? `${course ? `${course} at ` : ''}${university}` : `Mentor in ${country || 'abroad'}`),
       bio: bio ? bio.trim() : '',
       university: university ? university.trim() : '',
       country: country ? country.trim() : '',

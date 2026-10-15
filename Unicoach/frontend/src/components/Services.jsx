@@ -393,6 +393,7 @@ export const Services = () => {
             const topOffset = 96 + index * 20;
             const zIndexVal = 10 + index;
             const mockup = cardMockupProps[index];
+            const icon3d = { shortlist: 'target', prep: 'notebook', finance: 'rupee', visa: 'travel' }[service.id];
 
             return (
               <div
@@ -400,11 +401,17 @@ export const Services = () => {
                 style={{
                   top: `${topOffset}px`,
                   zIndex: zIndexVal,
-                  backgroundColor: service.cardBg,
-                  borderColor: service.cardBorder,
+                  background: `radial-gradient(120% 120% at 100% 0%, ${service.accentColor}1F 0%, ${service.cardBg} 45%, #FFFFFF 100%)`,
+                  borderColor: `${service.accentColor}26`,
                 }}
                 className="relative lg:sticky min-h-0 sm:min-h-[480px] flex flex-col justify-center rounded-[24px] sm:rounded-[36px] border p-5 sm:p-8 lg:p-10 xl:p-12 shadow-[0_16px_40px_rgba(15,23,42,0.06)] mb-6 sm:mb-10 lg:mb-14 last:mb-0 overflow-hidden w-full min-w-0"
               >
+                {/* Soft accent glow in the corner */}
+                <div
+                  aria-hidden="true"
+                  className="pointer-events-none absolute -right-24 -top-24 w-[420px] h-[420px] rounded-full blur-3xl opacity-40"
+                  style={{ background: service.accentColor + '33' }}
+                />
                 {/* Top Subtle Brand Highlight Bar */}
                 <div
                   className="absolute top-0 left-0 right-0 h-[3px]"
@@ -425,12 +432,8 @@ export const Services = () => {
                   >
                     {/* Step Badge */}
                     <div
-                      className="inline-flex items-center gap-2 px-3 py-1 rounded-lg text-[11.5px] font-bold tracking-wide border shadow-2xs mb-4"
-                      style={{
-                        backgroundColor: service.badgeBg,
-                        borderColor: service.badgeBorder,
-                        color: service.badgeText
-                      }}
+                      className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-[11.5px] font-bold tracking-wide mb-4 bg-white/80 backdrop-blur shadow-[0_4px_14px_-6px_rgba(15,23,42,0.18)]"
+                      style={{ color: service.badgeText }}
                     >
                       <span className="font-mono font-black">{service.step}</span>
                       <span className="w-1.5 h-1.5 rounded-full bg-current opacity-60" />
@@ -467,31 +470,31 @@ export const Services = () => {
                     </p>
 
                     {/* Boxy Bullet Cards (UniCoach-inspired modular rows) */}
-                    <div className="mt-5 space-y-2.5 w-full max-w-xl">
+                    <ul className="mt-5 space-y-3 w-full max-w-xl">
                       {service.bullets.map((bullet, bIdx) => (
-                        <div
+                        <motion.li
                           key={bIdx}
-                          className="flex items-center gap-3 px-3.5 py-2.5 rounded-xl bg-white/90 border border-slate-200/80 shadow-[0_1px_3px_rgba(0,0,0,0.03)] text-[12.5px] sm:text-[13px] text-slate-800 font-medium font-['Inter',sans-serif]"
+                          initial={{ opacity: 0, y: 10 }}
+                          whileInView={{ opacity: 1, y: 0 }}
+                          viewport={{ once: true }}
+                          transition={{ duration: 0.45, delay: 0.25 + bIdx * 0.1 }}
+                          className="flex items-start gap-3 text-[13.5px] sm:text-[14.5px] text-slate-800 font-medium font-['Inter',sans-serif]"
                         >
                           <span
-                            className="w-5 h-5 rounded-md flex items-center justify-center shrink-0 border text-[11px]"
-                            style={{
-                              backgroundColor: service.accentColor + '15',
-                              borderColor: service.accentColor + '35',
-                              color: service.accentColor
-                            }}
+                            className="mt-0.5 w-5 h-5 rounded-full flex items-center justify-center shrink-0 text-white"
+                            style={{ backgroundColor: service.accentColor }}
                           >
-                            <Check className="w-3.5 h-3.5 stroke-[2.5]" />
+                            <Check className="w-3 h-3 stroke-[3]" />
                           </span>
                           <span className="leading-snug">{bullet}</span>
-                        </div>
+                        </motion.li>
                       ))}
-                    </div>
+                    </ul>
 
                     {/* Boxy CTA Action Button */}
                     <button
                       onClick={() => handleAction(service)}
-                      className="mt-6 inline-flex items-center gap-2.5 px-6 py-3 rounded-xl bg-[#111111] text-white text-[13.5px] sm:text-[14px] font-bold font-['Inter',sans-serif] tracking-tight shadow-sm hover:shadow-md transition-all duration-200 cursor-pointer group"
+                      className="mt-7 inline-flex items-center gap-2.5 h-12 px-6 rounded-full bg-[#111111] text-white text-[13.5px] sm:text-[14px] font-bold font-['Inter',sans-serif] tracking-tight shadow-sm hover:shadow-md transition-all duration-200 cursor-pointer group"
                       onMouseEnter={(e) => {
                         e.currentTarget.style.backgroundColor = service.accentColor;
                       }}
@@ -506,12 +509,31 @@ export const Services = () => {
 
                   {/* ── RIGHT COLUMN: University Shortlist Mockup (Image 2 style, all 4 cards) ── */}
                   <motion.div
-                    initial={{ opacity: 0, y: 30 }}
-                    whileInView={{ opacity: 1, y: 0 }}
+                    initial={{ opacity: 0, y: 40, rotate: 2, scale: 0.96 }}
+                    whileInView={{ opacity: 1, y: 0, rotate: 0, scale: 1 }}
                     viewport={{ once: true, margin: "-30px" }}
-                    transition={{ duration: 0.6, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-                    className="lg:col-span-6 w-full min-w-0"
+                    transition={{ duration: 0.8, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
+                    className="lg:col-span-6 w-full min-w-0 relative"
                   >
+                    {icon3d && (
+                      <motion.div
+                        className="hidden sm:block absolute -top-16 -right-4 lg:-right-10 w-20 lg:w-24 z-20 pointer-events-none"
+                        animate={{ y: [0, -8, 0] }}
+                        transition={{ duration: 4.5, repeat: Infinity, ease: 'easeInOut' }}
+                      >
+                        <motion.img
+                          src={`/images/3d/${icon3d}.webp`}
+                          alt=""
+                          aria-hidden="true"
+                          loading="lazy"
+                          className="w-full drop-shadow-[0_18px_24px_rgba(15,23,42,0.25)]"
+                          initial={{ opacity: 0, scale: 0.4, rotate: -20 }}
+                          whileInView={{ opacity: 1, scale: 1, rotate: 0 }}
+                          viewport={{ once: true }}
+                          transition={{ type: 'spring', stiffness: 200, damping: 14, delay: 0.5 }}
+                        />
+                      </motion.div>
+                    )}
                     {service.id === 'prep' && <PrepScoreMockup />}
                     {service.id === 'finance' && <LoanOfferMockup />}
                     {service.id === 'visa' && <VisaChecklistMockup />}

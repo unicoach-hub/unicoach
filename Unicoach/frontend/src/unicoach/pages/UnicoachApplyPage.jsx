@@ -165,11 +165,11 @@ const UnicoachApplyPage = () => {
       return '';
     },
     country: (v) => {
-      if (!v || !v.trim()) return 'Please select your destination country';
+      if (!v || !v.trim()) return 'Please select the country you study, work or live in';
       return '';
     },
     university: (v) => {
-      if (!v.trim()) return 'University name is required';
+      if (!v || !v.trim()) return ''; // optional
       if (v.trim().length < 3) return 'Enter the full university name (min 3 characters)';
       return '';
     },
@@ -179,8 +179,9 @@ const UnicoachApplyPage = () => {
       return '';
     },
     graduationYear: (v) => {
+      if (!v || !String(v).trim()) return ''; // optional
       const year = parseInt(v, 10);
-      if (!v || isNaN(year)) return 'Enter a valid year';
+      if (isNaN(year)) return 'Enter a valid year';
       if (year < 2015 || year > 2032) return 'Year must be between 2015 and 2032';
       return '';
     },
@@ -318,7 +319,8 @@ const UnicoachApplyPage = () => {
     setFeedback(null);
 
     // Run all validators and mark all fields as touched
-    const requiredFields = ['name', 'email', 'phone', 'handle', 'country', 'university', 'socialUrl'];
+    // Education is optional: mentors can also be people working abroad or creators, not only students
+    const requiredFields = ['name', 'email', 'phone', 'handle', 'country', 'socialUrl'];
     const allFields = ['name', 'email', 'phone', 'handle', 'country', 'university', 'course', 'graduationYear', 'socialUrl'];
     
     const newTouched = {};
@@ -559,7 +561,7 @@ const UnicoachApplyPage = () => {
           </h1>
 
           <p className="text-xs sm:text-sm text-slate-600 leading-relaxed font-normal">
-            UniCoach exclusively features verified international students and admitted alumni. Submit your foreign university proof or LinkedIn profile below. Upon admin verification, you'll receive the official <strong>Blue Tick badge</strong> and your creator profile will be published on the global marketplace.
+            UniCoach features verified people living abroad: international students, alumni, working professionals and creators. Share your proof or social profile below. Upon admin verification, you'll receive the official <strong>Blue Tick badge</strong> and your creator profile will be published on the global marketplace.
           </p>
         </div>
 
@@ -579,7 +581,7 @@ const UnicoachApplyPage = () => {
               <p className="text-xs font-bold text-slate-900 flex items-center gap-1.5">
                 <User className="w-3.5 h-3.5 text-[#DE5C2B]" /> Profile & Proof
               </p>
-              <p className="text-[11px] text-slate-500 mt-1 leading-snug">University details, student ID doc & LinkedIn URL</p>
+              <p className="text-[11px] text-slate-500 mt-1 leading-snug">Where you are abroad, proof & social profile</p>
             </div>
             <div className="p-3.5 rounded-2xl bg-orange-50/50 border border-orange-200/80">
               <span className="text-[10px] font-black uppercase text-[#DE5C2B] block mb-1">Stage 2</span>
@@ -600,7 +602,7 @@ const UnicoachApplyPage = () => {
               <p className="text-xs font-bold text-slate-900 flex items-center gap-1.5">
                 <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" /> Admin Audit
               </p>
-              <p className="text-[11px] text-slate-500 mt-1 leading-snug">Doc verification $\rightarrow$ Blue Tick & live public storefront</p>
+              <p className="text-[11px] text-slate-500 mt-1 leading-snug">Doc verification → Blue Tick & live public storefront</p>
             </div>
           </div>
         </div>
@@ -754,18 +756,18 @@ const UnicoachApplyPage = () => {
           <div className="relative z-20 bg-white/95 backdrop-blur-xl rounded-[28px] border border-slate-200/90 p-6 sm:p-8 shadow-sm">
             <h2 className="font-outfit text-base font-bold text-[#0F172A] mb-4 flex items-center gap-2">
               <GraduationCap className="w-4 h-4 text-[#DE5C2B]" />
-              <span>2. Academic & Destination Information</span>
+              <span>2. Country & Education <span className="text-slate-400 font-medium text-sm">(education optional)</span></span>
             </h2>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div data-field="country">
                 <label className="block text-xs font-bold text-slate-700 mb-1.5">
-                  Destination Country <span className="text-rose-500">*</span>
+                  Country you study, work or live in <span className="text-rose-500">*</span>
                 </label>
                 <CountrySelect
                   value={form.country}
                   onChange={(val) => { handleFieldChange('country', val); setTouched(p => ({ ...p, country: true })); }}
-                  placeholder="Select destination country…"
+                  placeholder="Select country…"
                   error={touched.country && fieldErrors.country ? fieldErrors.country : ''}
                   required
                 />
@@ -773,7 +775,7 @@ const UnicoachApplyPage = () => {
 
               <div data-field="university">
                 <label className="block text-xs font-bold text-slate-700 mb-1.5">
-                  University Name <span className="text-rose-500">*</span>
+                  University Name <span className="text-slate-400 font-medium">(optional)</span>
                 </label>
                 <SuggestInput
                   placeholder={form.country ? `Start typing a university in ${form.country}` : 'Choose the country first, or type the name'}
@@ -799,7 +801,7 @@ const UnicoachApplyPage = () => {
 
               <div data-field="course">
                 <label className="block text-xs font-bold text-slate-700 mb-1.5">
-                  Course / Major
+                  Course / Major <span className="text-slate-400 font-medium">(optional)</span>
                 </label>
                 <SuggestInput
                   placeholder={selectedUni ? `Courses at ${selectedUni.name}` : 'e.g. M.S. in Computer Science, MBA'}
@@ -822,7 +824,7 @@ const UnicoachApplyPage = () => {
 
               <div data-field="graduationYear">
                 <label className="block text-xs font-bold text-slate-700 mb-1.5">
-                  Graduation Batch / Year
+                  Graduation Batch / Year <span className="text-slate-400 font-medium">(optional)</span>
                 </label>
                 <input
                   type="text"
@@ -849,10 +851,10 @@ const UnicoachApplyPage = () => {
           <div className="bg-white/95 backdrop-blur-xl rounded-[28px] border border-slate-200/90 p-6 sm:p-8 shadow-sm">
             <h2 className="font-outfit text-base font-bold text-[#0F172A] mb-1 flex items-center gap-2">
               <ShieldCheck className="w-4 h-4 text-emerald-600" />
-              <span>3. Verification Proof (Required for Blue Tick)</span>
+              <span>3. Verification Proof (for the Blue Tick)</span>
             </h2>
             <p className="text-xs text-slate-500 mb-4 font-normal">
-              To keep UniCoach 100% credible for students, attach your foreign student ID, admission letter, or provide your active LinkedIn profile.
+              To keep UniCoach 100% credible, attach something that shows you are abroad: student ID, admission letter, work ID / offer letter, or residence permit. Your social profile below is also checked.
             </p>
 
             <div className="space-y-4">
@@ -860,7 +862,7 @@ const UnicoachApplyPage = () => {
               {/* Document Upload Box */}
               <div>
                 <label className="block text-xs font-bold text-slate-700 mb-1.5">
-                  Upload Student ID / Offer Letter (Local File: PDF, JPG, PNG)
+                  Upload proof: student ID, offer letter, work ID or residence permit (optional, PDF, JPG, PNG)
                 </label>
                 
                 {/* If File is already uploaded, show attached badge */}
@@ -893,7 +895,7 @@ const UnicoachApplyPage = () => {
                   <div className="border-2 border-dashed border-slate-200 hover:border-[#DE5C2B] rounded-2xl p-6 text-center transition-colors bg-slate-50/50">
                     <Upload className="w-8 h-8 text-slate-400 mx-auto mb-2" />
                     <p className="text-xs font-bold text-slate-800 mb-1">
-                      Select student verification file from your computer
+                      Select your proof file from your computer
                     </p>
                     <p className="text-[10px] text-slate-400 mb-3">
                       Max size 10MB • PDF, JPG, PNG, DOCX supported
@@ -982,7 +984,7 @@ const UnicoachApplyPage = () => {
                     <AlertCircle className="w-3 h-3" /> {fieldErrors.socialUrl}
                   </p>
                 ) : (
-                  <p className="text-[11px] text-slate-400 mt-1">Required. We check it to confirm you are a real student. It is not shown publicly unless you add it to your profile.</p>
+                  <p className="text-[11px] text-slate-400 mt-1">Required. We check it to confirm you are real. It is not shown publicly unless you add it to your profile.</p>
                 )}
               </div>
 
