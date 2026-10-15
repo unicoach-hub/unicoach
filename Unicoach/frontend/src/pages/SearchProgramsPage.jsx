@@ -1,9 +1,10 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { Search, SlidersHorizontal, UserCheck, X, Download, FileSpreadsheet, GitCompare, ChevronDown, ChevronUp, Info, Loader2, CheckCircle2, AlertCircle, Lock } from 'lucide-react';
+import { Search, SlidersHorizontal, UserCheck, X, Download, FileSpreadsheet, FileText, GitCompare, ChevronDown, ChevronUp, Info, Loader2, CheckCircle2, AlertCircle, Lock } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { getSearchConfig, getHighlights, searchCourses, evaluateEligibility, exportSearch, getCourseDetail, getUniversitiesFacet } from '../utils/searchApi';
 import { exportSelectedProgramsToExcel } from '../utils/excelExporter';
+import { exportSelectedProgramsToPdf } from '../utils/pdfExporter';
 import CfSidebar from '../components/CfSidebar';
 
 const PAGE_SIZE = 20;
@@ -112,6 +113,7 @@ export default function SearchProgramsPage() {
   const [showCompare, setShowCompare] = useState(false);
   const [compareDetails, setCompareDetails] = useState({}); // cfId -> full detail (for CF-parity rows)
   const [exporting, setExporting] = useState(false);
+  const [exportMenu, setExportMenu] = useState(false);
 
   // eligibility
   const [searchParams, setSearchParams] = useSearchParams();
@@ -230,6 +232,18 @@ export default function SearchProgramsPage() {
     catch { alert('Export failed.'); } finally { setExporting(false); }
   };
   const doExportSelected = () => exportSelectedProgramsToExcel(selectedList.map(toProg), { filename: `UniCoach_Selected_${Date.now()}.xlsx` });
+
+  const doExportAllPdf = async () => {
+    setExporting(true);
+    try { const r = await exportSearch(filters); await exportSelectedProgramsToPdf(r.data || [], { filename: `UniCoach_Programs_${Date.now()}.pdf`, title: 'Program Shortlist' }); }
+    catch { alert('PDF export failed. Please try again.'); } finally { setExporting(false); }
+  };
+  const doExportTop25Pdf = async () => {
+    setExporting(true);
+    try { const r = await exportSearch(filters); await exportSelectedProgramsToPdf((r.data || []).slice(0, 25), { filename: `UniCoach_Top25_${Date.now()}.pdf`, title: 'Top 25 Programs' }); }
+    catch { alert('PDF export failed.'); } finally { setExporting(false); }
+  };
+  const doExportSelectedPdf = () => exportSelectedProgramsToPdf(selectedList.map(toProg), { filename: `UniCoach_Selected_${Date.now()}.pdf`, title: 'Selected Programs' });
 
   const countryOpts = (config?.countries || []);
   const levelOpts = (config?.programLevels || []);
@@ -398,6 +412,36 @@ export default function SearchProgramsPage() {
                 <option value="featured">Sort: Featured</option><option value="ranking">Sort: Ranking</option>
                 <option value="tuition-low">Tuition ↑</option><option value="tuition-high">Tuition ↓</option>
               </select>
+
+              {/* Prominent Export dropdown (Excel + PDF) */}
+              <div className="relative">
+                <button
+                  onClick={() => setExportMenu((v) => !v)}
+                  disabled={exporting}
+                  className="flex items-center gap-1.5 text-[13px] font-semibold text-white px-3.5 py-1.5 shadow-sm hover:brightness-110 transition disabled:opacity-60"
+                  style={{ background: BLUE, borderRadius: 4 }}
+                >
+                  {exporting ? <Loader2 size={15} className="animate-spin" /> : <Download size={15} />}
+                  Export
+                  <ChevronDown size={14} className={exportMenu ? 'rotate-180 transition' : 'transition'} />
+                </button>
+                {exportMenu && (
+                  <>
+                    <div className="fixed inset-0 z-40" onClick={() => setExportMenu(false)} />
+                    <div className="absolute right-0 mt-1.5 z-50 w-56 bg-white border border-slate-200 shadow-lg py-1" style={{ borderRadius: 6 }}>
+                      <div className="px-3 py-1.5 text-[11px] font-semibold uppercase tracking-wide text-slate-400 flex items-center gap-1.5"><FileSpreadsheet size={12} /> Excel (.xlsx)</div>
+                      <button onClick={() => { setExportMenu(false); doExportAll(); }} className="w-full text-left px-3 py-1.5 text-[13px] text-slate-700 hover:bg-sky-50">All results</button>
+                      <button onClick={() => { setExportMenu(false); doExportTop25(); }} className="w-full text-left px-3 py-1.5 text-[13px] text-slate-700 hover:bg-sky-50">Top 25</button>
+                      {selectedList.length > 0 && <button onClick={() => { setExportMenu(false); doExportSelected(); }} className="w-full text-left px-3 py-1.5 text-[13px] text-slate-700 hover:bg-sky-50">Selected ({selectedList.length})</button>}
+                      <div className="my-1 border-t border-slate-100" />
+                      <div className="px-3 py-1.5 text-[11px] font-semibold uppercase tracking-wide text-slate-400 flex items-center gap-1.5"><FileText size={12} /> PDF (.pdf)</div>
+                      <button onClick={() => { setExportMenu(false); doExportAllPdf(); }} className="w-full text-left px-3 py-1.5 text-[13px] text-slate-700 hover:bg-sky-50">All results</button>
+                      <button onClick={() => { setExportMenu(false); doExportTop25Pdf(); }} className="w-full text-left px-3 py-1.5 text-[13px] text-slate-700 hover:bg-sky-50">Top 25</button>
+                      {selectedList.length > 0 && <button onClick={() => { setExportMenu(false); doExportSelectedPdf(); }} className="w-full text-left px-3 py-1.5 text-[13px] text-slate-700 hover:bg-sky-50">Selected ({selectedList.length})</button>}
+                    </div>
+                  </>
+                )}
+              </div>
             </div>
           )}
         </div>
@@ -459,6 +503,7 @@ export default function SearchProgramsPage() {
             <button disabled={selectedList.length === 0} onClick={doExportSelected} className="flex items-center gap-1.5 disabled:opacity-40 hover:text-sky-300"><Download size={15} /> Download Selected</button>
             <button disabled={!result || exporting} onClick={doExportAll} className="flex items-center gap-1.5 disabled:opacity-40 hover:text-sky-300">{exporting ? <Loader2 size={15} className="animate-spin" /> : <FileSpreadsheet size={15} />} Download Excel</button>
             <button disabled={!result || exporting} onClick={doExportTop25} className="flex items-center gap-1.5 disabled:opacity-40 hover:text-sky-300"><FileSpreadsheet size={15} /> Download Top 25</button>
+            <button disabled={!result || exporting} onClick={doExportAllPdf} className="flex items-center gap-1.5 disabled:opacity-40 hover:text-sky-300"><FileText size={15} /> Download PDF</button>
           </div>
         </div>
       </div>

@@ -38,6 +38,15 @@
         ],
         "createdAt": "2026-10-14T10:19:27.722Z",
         "reason": "Claude: intentional expand/collapse of a small fixed sidebar rail; user-triggered, infrequent, few children; transform would clip the icon/label reveal rather than slide it open, so width is the correct property"
+      },
+      {
+        "rule": "gray-on-color",
+        "value": "*",
+        "files": [
+          "src/pages/SearchProgramsPage.jsx"
+        ],
+        "createdAt": "2026-10-15T08:59:38.656Z",
+        "reason": "false positive: slate-700 text on hover:bg-sky-50 light tint has ~10:1 contrast; standard legible dropdown hover items"
       }
     ]
   }
