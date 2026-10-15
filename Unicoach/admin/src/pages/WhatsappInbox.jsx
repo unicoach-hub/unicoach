@@ -213,7 +213,10 @@ const WhatsappInbox = () => {
                       <span style={{ fontSize: 12.5, color: 'var(--ux-text-2)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                         {c.lastDirection === 'out' ? 'You: ' : ''}{c.lastText}
                       </span>
-                      {c.unread > 0 && <Badge count={c.unread} style={{ background: '#16a34a' }} />}
+                      <span style={{ display: 'flex', gap: 4, alignItems: 'center', flexShrink: 0 }}>
+                        {c.needsAgent && <span className="nx-status nx-status--danger" style={{ height: 18, fontSize: 10.5, padding: '0 6px' }}>Agent needed</span>}
+                        {c.unread > 0 && <Badge count={c.unread} style={{ background: '#16a34a' }} />}
+                      </span>
                     </span>
                   </span>
                 </button>
@@ -239,9 +242,19 @@ const WhatsappInbox = () => {
                     </div>
                   </div>
                   {chat && (
+                    <span style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap', justifyContent: 'flex-end' }}>
+                      {chat.needsAgent && <span className="nx-status nx-status--danger">Student asked for a person</span>}
+                      <Tooltip title={chat.botPausedUntil ? 'The chatbot is quiet in this chat (you are replying). Hand it back to the bot.' : 'Stop the chatbot in this chat for 24 hours'}>
+                        <Button size="small" onClick={async () => {
+                          await API.post(`/admin/whatsapp/conversations/${encodeURIComponent(active)}/bot`, { paused: !chat.botPausedUntil }).catch(() => message.error('Could not update'));
+                          loadChat(active, true);
+                          loadList();
+                        }}>{chat.botPausedUntil ? 'Resume bot' : 'Pause bot'}</Button>
+                      </Tooltip>
                     <span style={{ fontSize: 12, color: chat.windowOpen ? '#15803d' : '#b45309', display: 'flex', alignItems: 'center', gap: 6 }}>
                       <ClockCircleOutlined />
                       {chat.windowOpen ? `Reply window open till ${timeLabel(chat.windowEndsAt)}` : 'Reply window closed: template only'}
+                    </span>
                     </span>
                   )}
                 </div>

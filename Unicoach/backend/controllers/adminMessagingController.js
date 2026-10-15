@@ -289,10 +289,7 @@ exports.sendBulk = async (req, res) => {
                   language: {
                     code: template.wabaLanguageCode || "en_US"
                   },
-                  components: parameters.length > 0 ? [{
-                    type: "body",
-                    parameters
-                  }] : []
+                  components: require('../utils/waTemplate').sendComponents(template, parameters.map((p) => p.text))
                 }
               };
             } else {
@@ -514,3 +511,6 @@ exports.replyWabaConversation = async (req, res) => {
     return res.status(500).json({ error: 'Failed to send WABA reply' });
   }
 };
+
+// Shared with WhatsApp campaigns (services/whatsappCampaigns.js)
+exports.helpers = { LEAD_FIELDS, eventVariables, readCampaignVariables, resolveTemplateKey, compileTemplate };

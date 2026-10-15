@@ -15,6 +15,7 @@ router.get('/events', c.listEvents);
 router.get('/conversations', inbox.listConversations);
 router.get('/conversations/:phone', inbox.getConversation);
 router.post('/conversations/:phone/send', inbox.sendMessage);
+router.post('/conversations/:phone/bot', inbox.setBot);
 router.get('/templates', inbox.listTemplates);
 
 module.exports = router;

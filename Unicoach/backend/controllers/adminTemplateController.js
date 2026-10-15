@@ -1,5 +1,23 @@
 const Template = require('../models/Template');
 
+// WhatsApp header / footer / buttons from the admin form (only the fields that were sent)
+const cleanExtras = ({ headerType, headerText, headerMediaUrl, footer, buttons }) => {
+  const out = {};
+  if (headerType !== undefined) out.headerType = ['none', 'text', 'image', 'video', 'document'].includes(headerType) ? headerType : 'none';
+  if (headerText !== undefined) out.headerText = String(headerText || '').slice(0, 60);
+  if (headerMediaUrl !== undefined) out.headerMediaUrl = String(headerMediaUrl || '').slice(0, 1000);
+  if (footer !== undefined) out.footer = String(footer || '').slice(0, 60);
+  if (buttons !== undefined) {
+    out.buttons = (Array.isArray(buttons) ? buttons : []).slice(0, 10).map((b) => ({
+      type: ['QUICK_REPLY', 'URL', 'PHONE_NUMBER'].includes(b?.type) ? b.type : 'QUICK_REPLY',
+      text: String(b?.text || '').slice(0, 25),
+      url: String(b?.url || '').slice(0, 2000),
+      phone: String(b?.phone || '').slice(0, 20),
+    })).filter((b) => b.text);
+  }
+  return out;
+};
+
 const seedDefaultTemplates = async () => {
   try {
     const count = await Template.countDocuments();
@@ -51,7 +69,7 @@ exports.getAllTemplates = async (req, res) => {
  */
 exports.createTemplate = async (req, res) => {
   try {
-    const { name, type, subject, body, wabaTemplateName, wabaLanguageCode, wabaParameters, metaCategory } = req.body;
+    const { name, type, subject, body, wabaTemplateName, wabaLanguageCode, wabaParameters, metaCategory, headerType, headerText, headerMediaUrl, footer, buttons } = req.body;
     if (!name || !type || !body) {
       return res.status(400).json({ message: 'Name, type, and body are required.' });
     }
@@ -70,7 +88,8 @@ exports.createTemplate = async (req, res) => {
       wabaTemplateName: wabaTemplateName || '',
       wabaLanguageCode: wabaLanguageCode || 'en_US',
       wabaParameters: wabaParameters || '',
-      ...(metaCategory ? { metaCategory } : {})
+      ...(metaCategory ? { metaCategory } : {}),
+      ...cleanExtras({ headerType, headerText, headerMediaUrl, footer, buttons }),
     });
     await template.save();
     return res.status(201).json(template);
@@ -86,7 +105,7 @@ exports.createTemplate = async (req, res) => {
  */
 exports.updateTemplate = async (req, res) => {
   try {
-    const { name, type, subject, body, wabaTemplateName, wabaLanguageCode, wabaParameters, metaCategory } = req.body;
+    const { name, type, subject, body, wabaTemplateName, wabaLanguageCode, wabaParameters, metaCategory, headerType, headerText, headerMediaUrl, footer, buttons } = req.body;
     const template = await Template.findById(req.params.id);
     
     if (!template) {
@@ -108,6 +127,7 @@ exports.updateTemplate = async (req, res) => {
     if (wabaLanguageCode !== undefined) template.wabaLanguageCode = wabaLanguageCode;
     if (wabaParameters !== undefined) template.wabaParameters = wabaParameters;
     if (metaCategory !== undefined) template.metaCategory = metaCategory;
+    Object.assign(template, cleanExtras({ headerType, headerText, headerMediaUrl, footer, buttons }));
 
     await template.save();
     return res.json(template);
@@ -259,16 +279,24 @@ exports.submitMeta = async (req, res) => {
       return data;
     };
 
+    const { reviewComponents } = require('../utils/waTemplate');
+    let components;
+    try {
+      components = await reviewComponents(template, bodyComponent, { appId: settings.metaAppId, token: settings.wabaAccessToken });
+    } catch (e) {
+      return res.status(400).json({ message: e.message });
+    }
+
     let status = 'PENDING';
     if (template.metaTemplateId) {
-      // Already on Meta: send the edited text for review again
-      await graph(template.metaTemplateId, { category: template.metaCategory, components: [bodyComponent] });
+      // Already on Meta: send the edited template for review again
+      await graph(template.metaTemplateId, { category: template.metaCategory, components });
     } else {
       const data = await graph(`${settings.wabaAccountId}/message_templates`, {
         name: metaName,
         language,
         category: template.metaCategory || 'UTILITY',
-        components: [bodyComponent],
+        components,
       });
       template.metaTemplateId = data.id;
       status = data.status || 'PENDING';

@@ -239,6 +239,13 @@ exports.receiveWebhook = async (req, res) => {
             if (STOP_WORDS.test(text)) lead.whatsappOptOut = true;
             await lead.save();
           }
+          // Chatbot: button presses, keywords, default reply. Never for someone who just said STOP.
+          if (!STOP_WORDS.test(text)) {
+            const replyId = m.interactive?.button_reply?.id || m.interactive?.list_reply?.id || m.button?.payload || '';
+            require('../services/chatbotEngine')
+              .handleInbound({ phone: m.from, name: contacts.find((c) => c.wa_id === m.from)?.profile?.name || '', text: m.type === 'text' || m.type === 'button' ? text : '', replyId, lead: lead ? { _id: lead._id } : null })
+              .catch((e) => console.error('[Chatbot] failed:', e.message));
+          }
         }
 
         for (const s of value.statuses || []) {

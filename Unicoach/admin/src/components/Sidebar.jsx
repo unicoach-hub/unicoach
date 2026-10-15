@@ -95,6 +95,8 @@ const NAV_SECTIONS = [
         children: [
           { path: '/automation/email', label: 'Email Hub' },
           { path: '/automation/whatsapp', label: 'WhatsApp Inbox' },
+          { path: '/automation/campaigns', label: 'WhatsApp Campaigns' },
+          { path: '/automation/chatbot', label: 'WhatsApp Chatbot' },
           { path: '/automation/workflows', label: 'Workflows' },
           { path: '/templates', label: 'Templates' },
           { path: '/bulk-messaging', label: 'Bulk Messaging' },

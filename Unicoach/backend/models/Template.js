@@ -11,6 +11,18 @@ const templateSchema = new mongoose.Schema({
   metaStatus: { type: String, enum: ['APPROVED', 'PENDING', 'REJECTED', 'PAUSED', 'DISABLED', 'IN_APPEAL', 'PENDING_DELETION'], default: 'PENDING' },
   metaCategory: { type: String, enum: ['MARKETING', 'UTILITY', 'AUTHENTICATION'], default: 'UTILITY' },
   rejectionReason: { type: String, default: '' },
+  // WhatsApp extras: a header (text or image / video / PDF), a footer line and up to 10 buttons
+  headerType: { type: String, enum: ['none', 'text', 'image', 'video', 'document'], default: 'none' },
+  headerText: { type: String, default: '' },
+  headerMediaUrl: { type: String, default: '' },
+  footer: { type: String, default: '' },
+  buttons: [{
+    _id: false,
+    type: { type: String, enum: ['QUICK_REPLY', 'URL', 'PHONE_NUMBER'] },
+    text: { type: String },
+    url: { type: String },
+    phone: { type: String },
+  }],
   // Set once the template is sent to Meta for review (WhatsApp only)
   metaTemplateId: { type: String, default: '' },
   metaSubmittedAt: { type: Date },

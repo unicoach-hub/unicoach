@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { Table, Button, Modal, Form, Input, Select, Space, Popconfirm, message, Card, Dropdown, Menu, Row, Col, Tooltip } from 'antd';
+import { Table, Button, Modal, Form, Input, Select, Space, Popconfirm, message, Card, Dropdown, Menu, Row, Col, Tooltip, Upload } from 'antd';
 import { 
   PlusOutlined, EditOutlined, DeleteOutlined, InfoCircleOutlined, CodeOutlined, DownOutlined,
-  MailOutlined, MessageOutlined, FileTextOutlined, MobileOutlined, CloudUploadOutlined, SyncOutlined
+  MailOutlined, MessageOutlined, FileTextOutlined, MobileOutlined, CloudUploadOutlined, SyncOutlined, UploadOutlined, LinkOutlined, PhoneOutlined
 } from '@ant-design/icons';
 import Header from '../components/Header';
 import API from '../api/axios';
@@ -58,6 +58,25 @@ const Templates = () => {
   const [templateType, setTemplateType] = useState('email');
   const [subjectVal, setSubjectVal] = useState('');
   const [bodyVal, setBodyVal] = useState('');
+  const headerType = Form.useWatch('headerType', form) || 'none';
+  const headerText = Form.useWatch('headerText', form);
+  const headerMediaUrl = Form.useWatch('headerMediaUrl', form);
+  const footerVal = Form.useWatch('footer', form);
+  const buttonsVal = Form.useWatch('buttons', form) || [];
+  const [uploadingHeader, setUploadingHeader] = useState(false);
+  const uploadHeader = async ({ file }) => {
+    setUploadingHeader(true);
+    try {
+      const fd = new FormData();
+      fd.append('file', file);
+      const { data } = await API.post('/admin/upload', fd, { headers: { 'Content-Type': 'multipart/form-data' } });
+      form.setFieldsValue({ headerMediaUrl: data.url });
+    } catch {
+      message.error('Upload failed');
+    } finally {
+      setUploadingHeader(false);
+    }
+  };
 
   const fetchTemplates = async () => {
     setLoading(true);
@@ -360,6 +379,58 @@ const Templates = () => {
                           WhatsApp rules: a variable can't be the very first or last thing in the message, two variables can't sit side by side, max 1024 characters. After saving, press <b>Submit to Meta</b>; approval usually takes minutes to a day.
                         </div>
                       </Col>
+                      <Col span={10}>
+                        <Form.Item name="headerType" label={<span style={{ fontWeight: 600 }}>Header</span>} initialValue="none">
+                          <Select options={[{ value: 'none', label: 'None' }, { value: 'text', label: 'Text' }, { value: 'image', label: 'Image' }, { value: 'video', label: 'Video' }, { value: 'document', label: 'PDF' }]} />
+                        </Form.Item>
+                      </Col>
+                      <Col span={14}>
+                        {headerType === 'text' && (
+                          <Form.Item name="headerText" label=" " rules={[{ max: 60 }]}><Input placeholder="Bold title, e.g. Ireland Webinar" maxLength={60} /></Form.Item>
+                        )}
+                        {['image', 'video', 'document'].includes(headerType) && (
+                          <Form.Item label=" ">
+                            <div style={{ display: 'flex', gap: 6 }}>
+                              <Upload showUploadList={false} customRequest={uploadHeader} accept={headerType === 'image' ? 'image/png,image/jpeg' : headerType === 'video' ? 'video/mp4' : 'application/pdf'}>
+                                <Button icon={<UploadOutlined />} loading={uploadingHeader}>Upload</Button>
+                              </Upload>
+                              <Form.Item name="headerMediaUrl" noStyle><Input placeholder="or https:// link" /></Form.Item>
+                            </div>
+                          </Form.Item>
+                        )}
+                      </Col>
+                      <Col span={24}>
+                        <Form.Item name="footer" label={<span style={{ fontWeight: 600 }}>Footer <span style={{ fontWeight: 400, color: 'var(--ux-text-3)' }}>(optional, small grey line)</span></span>} rules={[{ max: 60 }]}>
+                          <Input placeholder="e.g. Reply STOP to unsubscribe" maxLength={60} />
+                        </Form.Item>
+                      </Col>
+                      <Col span={24}>
+                        <div style={{ fontWeight: 600, fontSize: 13, marginBottom: 6 }}>Buttons <span style={{ fontWeight: 400, color: 'var(--ux-text-3)' }}>(optional, up to 10)</span></div>
+                        <Form.List name="buttons">
+                          {(fields, { add, remove }) => (
+                            <div style={{ display: 'grid', gap: 6, marginBottom: 14 }}>
+                              {fields.map(({ key, name }) => {
+                                const t = buttonsVal[name]?.type || 'QUICK_REPLY';
+                                return (
+                                  <div key={key} style={{ display: 'grid', gridTemplateColumns: '130px 1fr 1fr 32px', gap: 6 }}>
+                                    <Form.Item name={[name, 'type']} initialValue="QUICK_REPLY" noStyle>
+                                      <Select size="small" options={[{ value: 'QUICK_REPLY', label: 'Quick reply' }, { value: 'URL', label: 'Website link' }, { value: 'PHONE_NUMBER', label: 'Call number' }]} />
+                                    </Form.Item>
+                                    <Form.Item name={[name, 'text']} noStyle><Input size="small" placeholder="Button text" maxLength={25} /></Form.Item>
+                                    {t === 'URL' ? (
+                                      <Form.Item name={[name, 'url']} noStyle><Input size="small" placeholder="https://www.unicoach.com/…" /></Form.Item>
+                                    ) : t === 'PHONE_NUMBER' ? (
+                                      <Form.Item name={[name, 'phone']} noStyle><Input size="small" placeholder="+91 98xxxxxxxx" /></Form.Item>
+                                    ) : <span style={{ fontSize: 11.5, color: 'var(--ux-text-3)', alignSelf: 'center' }}>Reply comes back to the Inbox / chatbot</span>}
+                                    <Button size="small" type="text" danger icon={<DeleteOutlined />} onClick={() => remove(name)} />
+                                  </div>
+                                );
+                              })}
+                              {fields.length < 10 && <Button size="small" type="dashed" icon={<PlusOutlined />} onClick={() => add({ type: 'QUICK_REPLY', text: '' })}>Add button</Button>}
+                            </div>
+                          )}
+                        </Form.List>
+                      </Col>
                     </Row>
                   )}
 
@@ -435,8 +506,19 @@ const Templates = () => {
                         </div>
                       </div>
                     ) : (
-                      <div style={{ background: '#ffffff', border: '1px solid var(--ux-line-2)', padding: 12, borderRadius: '4px 16px 16px 16px', fontSize: 12.5, color: 'var(--ux-text)', whiteSpace: 'pre-wrap', lineHeight: 1.5 }}>
-                        {resolveSamplePreview(bodyVal) || 'WhatsApp message preview...'}
+                      <div>
+                        <div style={{ background: '#ffffff', border: '1px solid var(--ux-line-2)', padding: 10, borderRadius: '4px 16px 16px 16px', fontSize: 12.5, color: 'var(--ux-text)', lineHeight: 1.5 }}>
+                          {headerType === 'image' && headerMediaUrl && <img src={headerMediaUrl} alt="" style={{ width: '100%', borderRadius: 10, marginBottom: 8, maxHeight: 160, objectFit: 'cover' }} />}
+                          {['video', 'document'].includes(headerType) && <div style={{ background: 'var(--ux-surface-2)', borderRadius: 10, padding: 10, marginBottom: 8, fontSize: 12 }}>{headerType === 'video' ? '▶ Video' : '📄 PDF'}</div>}
+                          {headerType === 'text' && headerText && <div style={{ fontWeight: 700, marginBottom: 4 }}>{headerText}</div>}
+                          <div style={{ whiteSpace: 'pre-wrap' }}>{resolveSamplePreview(bodyVal) || 'WhatsApp message preview...'}</div>
+                          {footerVal && <div style={{ fontSize: 11, color: '#8696a0', marginTop: 6 }}>{footerVal}</div>}
+                        </div>
+                        {buttonsVal.filter((b) => b?.text).map((b, i) => (
+                          <div key={i} style={{ marginTop: 4, background: '#fff', border: '1px solid var(--ux-line-2)', borderRadius: 12, padding: '7px 10px', textAlign: 'center', color: '#0284c7', fontSize: 12.5, fontWeight: 600 }}>
+                            {b.type === 'URL' ? <LinkOutlined /> : b.type === 'PHONE_NUMBER' ? <PhoneOutlined /> : null} {b.text}
+                          </div>
+                        ))}
                       </div>
                     )}
                   </div>

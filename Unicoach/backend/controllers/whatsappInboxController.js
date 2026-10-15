@@ -31,7 +31,11 @@ const sendAndRecord = async ({ settings, phone, payload, text, template, sentBy,
     body: JSON.stringify({ messaging_product: 'whatsapp', recipient_type: 'individual', to: phone, ...payload }),
   });
   const data = await res.json().catch(() => ({}));
-  if (!res.ok) throw new Error(data?.error?.error_data?.details || data?.error?.message || `Meta API error ${res.status}`);
+  if (!res.ok) {
+    const err = new Error(data?.error?.error_data?.details || data?.error?.message || `Meta API error ${res.status}`);
+    err.code = data?.error?.code;
+    throw err;
+  }
   return WhatsappEvent.create({
     kind: 'message',
     direction: 'out',
@@ -75,6 +79,8 @@ exports.listConversations = async (req, res) => {
       { $sort: { lastAt: -1 } },
       { $limit: 300 },
     ]);
+    const flagged = await require('../models/WhatsappContact').find({ phone: { $in: rows.map((r) => r._id) } }).select('phone needsAgent botPausedUntil').lean();
+    const contactOf = Object.fromEntries(flagged.map((c) => [c.phone, c]));
     const leadIds = rows.map((r) => r.lead).filter(Boolean);
     const leads = await Lead.find({ _id: { $in: leadIds } }).select('name').lean();
     const leadName = Object.fromEntries(leads.map((l) => [String(l._id), l.name]));
@@ -89,6 +95,8 @@ exports.listConversations = async (req, res) => {
         lastAt: r.lastAt,
         unread: r.unread,
         windowOpen: !!r.lastInAt && Date.now() - new Date(r.lastInAt).getTime() < WINDOW_MS,
+        needsAgent: !!contactOf[r._id]?.needsAgent,
+        botPaused: !!(contactOf[r._id]?.botPausedUntil && new Date(contactOf[r._id].botPausedUntil) > new Date()),
       }))
       .filter((c) => !search || c.phone.includes(digits(search) || '\u0000') || c.name.toLowerCase().includes(search));
     return res.json(out);
@@ -113,9 +121,12 @@ exports.getConversation = async (req, res) => {
     await WhatsappEvent.updateMany({ kind: 'message', phone, direction: 'in', readByAdmin: { $ne: true } }, { $set: { readByAdmin: true } });
     const lastIn = [...messages].reverse().find((m) => m.direction === 'in');
     const lead = await findLead(phone);
+    const contact = await require('../models/WhatsappContact').findOne({ phone }).lean();
     return res.json({
       phone,
       lead,
+      needsAgent: !!contact?.needsAgent,
+      botPausedUntil: contact?.botPausedUntil && new Date(contact.botPausedUntil) > new Date() ? contact.botPausedUntil : null,
       name: lead?.name || lastIn?.name || '',
       windowOpen: !!lastIn && Date.now() - new Date(lastIn.at).getTime() < WINDOW_MS,
       windowEndsAt: lastIn ? new Date(new Date(lastIn.at).getTime() + WINDOW_MS) : null,
@@ -162,7 +173,10 @@ exports.sendMessage = async (req, res) => {
           template: {
             name: template.name,
             language: { code: template.language || 'en' },
-            components: params.length ? [{ type: 'body', parameters: params.map((p) => ({ type: 'text', text: p })) }] : [],
+            components: require('../utils/waTemplate').sendComponents(
+              (await require('../models/Template').findOne({ wabaTemplateName: template.name }).select('headerType headerMediaUrl').lean()) || {},
+              params,
+            ),
           },
         },
       });
@@ -176,6 +190,13 @@ exports.sendMessage = async (req, res) => {
       }
       event = await sendAndRecord({ settings, phone, lead, sentBy: adminName(req), text: body, payload: { type: 'text', text: { body, preview_url: true } } });
     }
+
+    // A person replied: the bot stays quiet in this chat for a day
+    await require('../models/WhatsappContact').updateOne(
+      { phone },
+      { $set: { needsAgent: false, botPausedUntil: new Date(Date.now() + WINDOW_MS), waitingNode: null } },
+      { upsert: true },
+    );
 
     if (lead) {
       await Lead.updateOne({ _id: lead._id }, {
@@ -210,5 +231,22 @@ exports.listTemplates = async (req, res) => {
   } catch (err) {
     console.error('[WhatsApp inbox] templates failed:', err);
     return res.status(500).json({ message: 'Could not load templates' });
+  }
+};
+
+/** POST /api/admin/whatsapp/conversations/:phone/bot  { paused: boolean } — hand the chat back to the bot or take it over */
+exports.setBot = async (req, res) => {
+  try {
+    const phone = normalisePhone(req.params.phone);
+    const paused = !!req.body?.paused;
+    await require('../models/WhatsappContact').updateOne(
+      { phone },
+      { $set: { botPausedUntil: paused ? new Date(Date.now() + WINDOW_MS) : null, needsAgent: false, waitingNode: null } },
+      { upsert: true },
+    );
+    return res.json({ success: true });
+  } catch (err) {
+    console.error('[WhatsApp inbox] bot toggle failed:', err);
+    return res.status(500).json({ message: 'Could not update' });
   }
 };

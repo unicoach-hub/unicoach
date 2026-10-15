@@ -13,6 +13,10 @@ function buildAudienceQuery(audience = {}, { forEmail = false } = {}) {
   clean(audience.tagsAll).forEach((tag) => and.push({ $or: [{ tags: tag }, { autoTags: tag }] }));
   const without = clean(audience.tagsNone);
   if (without.length) and.push({ tags: { $nin: without } }, { autoTags: { $nin: without } });
+  const countries = clean(audience.countries);
+  if (countries.length) and.push({ dreamCountry: { $in: countries } });
+  const followUps = clean(audience.followUps);
+  if (followUps.length) and.push({ followUp: { $in: followUps } });
   if (audience.verifiedOnly) and.push({ verified: true });
   // People who unsubscribed never get promotional emails
   if (forEmail) and.push({ unsubscribed: { $ne: true } });

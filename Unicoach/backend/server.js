@@ -330,6 +330,8 @@ app.use('/api/student-chat', require('./routes/studentChat'));
 app.use('/api/admin/templates', require('./routes/adminTemplates'));
 app.use('/api/admin/messaging', require('./routes/adminMessaging'));
 app.use('/api/admin/whatsapp', require('./routes/adminWhatsapp'));
+app.use('/api/admin/campaigns', require('./routes/adminCampaigns'));
+app.use('/api/admin/chat-flows', require('./routes/adminChatFlows'));
 // Meta WhatsApp webhook (public, signed with the Meta App Secret)
 {
   const wa = require('./controllers/whatsappController');
@@ -380,6 +382,8 @@ let server = null;
 // Only bind HTTP listener when not running in automated testing mode
 if (process.env.NODE_ENV !== 'test') {
   server = app.listen(PORT, () => console.log(`🚀 Backend server running on port ${PORT}`));
+  // WhatsApp campaigns: background sender (scheduled and running campaigns)
+  require('./services/whatsappCampaigns').startWorker();
 
   // Graceful Shutdown Handlers for Docker / Coolify zero-downtime redeploys
   // Mongoose 8 has no close() callback (it returns a promise), so the old callback never fired and the
