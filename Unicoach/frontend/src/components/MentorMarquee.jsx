@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
-import { TEAM_MENTORS } from '../utils/teamMentors';
+import { TEAM_MENTORS, mentorLook } from '../utils/teamMentors';
 
 // Each half of the loop must be wider than the widest screen, otherwise a gap shows mid-loop;
 // with only a few mentors the list is repeated until it is (about 260px per card incl. gap)
@@ -9,16 +9,6 @@ const CARD_SLOT_PX = 260;
 // Loop speed scales with the number of cards so it always drifts at the same slow pace
 const SECONDS_PER_CARD = 6;
 
-// Soft gradient behind each mentor, built from the colour of their original photo background
-const GRADIENTS = {
-  prachi: 'radial-gradient(120% 110% at 15% 0%, #FFF1EC 0%, #FFD3C6 55%, #F7AE9A 100%)',
-  nitya: 'radial-gradient(120% 110% at 15% 0%, #E9F8DD 0%, #A9DB86 55%, #6FB34B 100%)',
-  manan: 'radial-gradient(120% 110% at 15% 0%, #F6F3FF 0%, #DCD3FF 55%, #B7A8F5 100%)',
-  manvi: 'radial-gradient(120% 110% at 15% 0%, #E8FBF8 0%, #A6E6DE 55%, #5FC4B8 100%)',
-  rishi: 'radial-gradient(120% 110% at 15% 0%, #FFF3E4 0%, #FFC890 55%, #F59A52 100%)',
-  munish: 'radial-gradient(120% 110% at 15% 0%, #F2A3A0 0%, #B8474A 55%, #7E2328 100%)',
-};
-const keyOf = (name) => String(name || '').split(' ')[0].toLowerCase();
 
 const MENTOR_CARDS = TEAM_MENTORS.map((m) => ({
   key: `mentor-${m.name}`,
@@ -26,8 +16,7 @@ const MENTOR_CARDS = TEAM_MENTORS.map((m) => ({
   role: m.role,
   photo: m.headshot || m.card || m.portrait || m.src,
   // Cut-out photo on a gradient when we have both; otherwise the normal photo
-  cutout: GRADIENTS[keyOf(m.name)] ? `/images/mentors/cutouts/${keyOf(m.name)}.webp` : null,
-  gradient: GRADIENTS[keyOf(m.name)] || null,
+  ...mentorLook(m.name),
   to: '/events',
   cta: 'Free session',
 }));

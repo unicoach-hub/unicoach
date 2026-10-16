@@ -19,6 +19,7 @@ import { useLead } from '../../context/LeadContext';
 import { API_BASE_URL } from '../../config';
 import { eventPath, getSpeakerPhoto, toAbsoluteUrl, toRegistrationUrl } from '../../utils/eventHelpers';
 import { BoardingPassCard, DepartureBoard } from './EventsHeroBoard';
+import { mentorLook } from '../../utils/teamMentors';
 
 // Large portraits of our event hosts (cut from their event banners); Admin → Events "Speaker photo" overrides
 const SPEAKER_PORTRAITS = {
@@ -46,7 +47,9 @@ const speakersFromEvents = (events) => {
         byName.set(name.toLowerCase(), {
             name,
             role: ev.speakerRole || (raw.match(/\((.*?)\)/) || [])[1] || '',
-            image: ev.speakerPhoto ? toAbsoluteUrl(ev.speakerPhoto) : (SPEAKER_PORTRAITS[firstName] || getSpeakerPhoto(raw)),
+            // Admin photo wins; otherwise our cut-out on its gradient, then the plain portrait
+            image: ev.speakerPhoto ? toAbsoluteUrl(ev.speakerPhoto) : (mentorLook(firstName).cutout || SPEAKER_PORTRAITS[firstName] || getSpeakerPhoto(raw)),
+            imageBg: ev.speakerPhoto ? null : mentorLook(firstName).gradient,
             bio: ev.speakerBio || `Host of “${ev.title}”.`,
             tags,
             links: ev.speakerLinks || {},
@@ -325,7 +328,7 @@ const EventsPage = () => {
                                     <div className="flex -space-x-3">
                                         {speakersList.slice(0, 4).map((sp) => (
                                             sp.image ? (
-                                                <img key={sp.name} src={sp.image} alt={sp.name} className="w-11 h-11 rounded-full object-cover object-top ring-[3px] ring-white shadow-sm" />
+                                                <img key={sp.name} src={sp.image} alt={sp.name} style={sp.imageBg ? { background: sp.imageBg } : undefined} className="w-11 h-11 rounded-full object-cover object-top ring-[3px] ring-white shadow-sm" />
                                             ) : (
                                                 <span key={sp.name} className="w-11 h-11 rounded-full ring-[3px] ring-white bg-orange-100 text-[#DE5C2B] font-black flex items-center justify-center">{sp.name[0]}</span>
                                             )
@@ -529,17 +532,18 @@ const EventsPage = () => {
                             className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
                         >
                             <AnimatePresence mode="popLayout">
-                                {filteredEvents.map((item) => {
+                                {filteredEvents.map((item, idx) => {
                                     const itemCategory = item.category || item.type;
                                     const isPast = isEventOver(item);
                                     const registered = registeredLabel(item);
                                     return (
                                         <motion.div
                                             layout
-                                            initial={{ opacity: 0, scale: 0.95 }}
-                                            animate={{ opacity: 1, scale: 1 }}
+                                            initial={{ opacity: 0, x: idx % 3 === 0 ? -60 : idx % 3 === 2 ? 60 : 0, y: idx % 3 === 1 ? 36 : 0 }}
+                                            whileInView={{ opacity: 1, x: 0, y: 0 }}
+                                            viewport={{ once: true, margin: '-40px' }}
                                             exit={{ opacity: 0, scale: 0.95 }}
-                                            transition={{ duration: 0.3 }}
+                                            transition={{ duration: 0.45, delay: (idx % 3) * 0.06, ease: [0.22, 1, 0.36, 1] }}
                                             key={item.id || item._id}
                                             onClick={() => openDetails(item)}
                                             className="bg-white border border-slate-200/70 rounded-[28px] overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between group cursor-pointer"
@@ -716,7 +720,7 @@ const EventsPage = () => {
                             className="bg-white border border-slate-200/70 rounded-[28px] overflow-hidden shadow-sm flex flex-col group relative hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300"
                         >
                             {/* Speaker image */}
-                            <div className="relative aspect-[10/11] bg-[#F6EBD3] overflow-hidden border-b border-slate-100">
+                            <div className="relative aspect-[10/11] bg-[#F6EBD3] overflow-hidden border-b border-slate-100" style={sp.imageBg ? { background: sp.imageBg } : undefined}>
                                 {sp.image ? (
                                     <img
                                         src={sp.image}

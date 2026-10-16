@@ -9,6 +9,7 @@ import { BrowserRouter, Routes, Route, useLocation, Navigate, useParams } from '
 gsap.registerPlugin(ScrollTrigger);
 // Core Navigation & Context
 import Navbar from './components/Navbar'
+import PageBackButton from './components/PageBackButton';
 import Home from './components/Home'
 import ScrollToTop from './components/ScrollToTop'
 import { LeadProvider, useLead } from './context/LeadContext'
@@ -437,11 +438,13 @@ const DeferredUniBot = () => {
   );
 };
 
-// Study-abroad guide pages get the calmer "editorial" type styles from index.css
+// Content pages get the calmer "editorial" type styles from index.css
 const EditorialPageClass = () => {
   const { pathname } = useLocation();
   useEffect(() => {
-    document.body.classList.toggle('editorial-page', pathname.startsWith('/study-abroad'));
+    // Every content page; the homepage, dashboards and sign-in screens have their own designs
+    const own = pathname === '/' || /dashboard|^\/(login|signin|signup|register|reset-password|admin)/.test(pathname);
+    document.body.classList.toggle('editorial-page', !own);
   }, [pathname]);
   return null;
 };
@@ -528,6 +531,7 @@ const App = () => {
           <ScrollToTop />
           <EditorialPageClass />
           <ConditionalNavbar />
+          <PageBackButton />
           {/* Global Modals (Mounted strictly on demand) */}
           <GlobalModals />
           <ErrorBoundary>

@@ -780,6 +780,7 @@ const Navbar = () => {
                 <div className="flex items-center justify-between h-[74px] md:h-[80px]">
 
                     {/* Logo using main logo image */}
+                    <div className="flex items-center flex-shrink-0">
                     <Link to="/" className="flex-shrink-0 flex items-center select-none pr-2" data-cursor="pointer">
                         <img
                             src={logo}
@@ -789,6 +790,7 @@ const Navbar = () => {
                             height="44"
                         />
                     </Link>
+                    </div>
 
                     {/* Desktop nav links with precise margins or Studio Header */}
                     {isUnicoachDashboard ? (

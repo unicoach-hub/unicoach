@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { ArrowRight, ExternalLink, UserRound } from 'lucide-react';
-import { TEAM_MENTORS, CORE_TEAM } from '../utils/teamMentors';
+import { TEAM_MENTORS, CORE_TEAM, mentorLook } from '../utils/teamMentors';
 
 const FLAGS = { Ireland: 'ie', Australia: 'au', Europe: 'eu', USA: 'us', UK: 'gb', Canada: 'ca', Germany: 'de' };
 
@@ -43,8 +43,8 @@ const TeamPage = () => {
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4 sm:gap-6">
             {TEAM_MENTORS.map((m) => (
               <article key={m.name} className="group bg-white rounded-[22px] border border-slate-200 p-3 hover:border-orange-200 hover:shadow-[0_14px_30px_-16px_rgba(15,23,42,0.3)] transition-all">
-                <div className="aspect-square rounded-[16px] overflow-hidden bg-slate-100">
-                  <img src={m.headshot || m.portrait || m.src} alt={m.name} loading="lazy" className="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-500" />
+                <div className="aspect-square rounded-[16px] overflow-hidden bg-slate-100" style={mentorLook(m.name).gradient ? { background: mentorLook(m.name).gradient } : undefined}>
+                  <img src={mentorLook(m.name).cutout || m.headshot || m.portrait || m.src} alt={m.name} loading="lazy" className="w-full h-full object-cover object-top group-hover:scale-[1.03] transition-transform duration-500 origin-bottom" />
                 </div>
                 <div className="px-1.5 pt-3 pb-1.5">
                   <div className="flex items-center justify-between gap-2">

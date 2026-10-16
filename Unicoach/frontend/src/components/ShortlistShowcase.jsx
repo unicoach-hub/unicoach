@@ -204,7 +204,7 @@ export default function ShortlistShowcase() {
           </h2>
           <p className="mt-3 text-[15px] sm:text-[17px] text-slate-600">Universities, courses and scholarships matched to your profile.</p>
 
-          <div className="mt-6 inline-flex p-1 rounded-full bg-[#F1EEEA] gap-1 max-w-full overflow-x-auto">
+          <div className="mt-6 flex sm:inline-flex w-full sm:w-auto p-1 rounded-full bg-[#F1EEEA] gap-1">
             {TOOLS.map((tl, i) => {
               const TIcon = tl.icon;
               return (
@@ -212,11 +212,11 @@ export default function ShortlistShowcase() {
                   key={tl.id}
                   type="button"
                   onClick={() => pick(i)}
-                  className={`relative h-10 px-4 rounded-full text-[13px] font-bold whitespace-nowrap flex items-center gap-2 cursor-pointer transition-colors ${i === toolIndex ? 'text-white' : 'text-slate-600 hover:text-[#111]'}`}
+                  className={`relative flex-1 sm:flex-none justify-center h-10 px-3 sm:px-4 rounded-full text-[13px] font-bold whitespace-nowrap flex items-center gap-2 cursor-pointer transition-colors ${i === toolIndex ? 'text-white' : 'text-slate-600 hover:text-[#111]'}`}
                 >
                   {i === toolIndex && <motion.span layoutId="tool-pill" className="absolute inset-0 rounded-full bg-[#111]" transition={{ type: 'spring', stiffness: 400, damping: 32 }} />}
                   <TIcon size={15} className="relative" />
-                  <span className="relative">{tl.id === 'uni' ? 'Universities & courses' : 'Scholarships'}</span>
+                  <span className="relative">{tl.id === 'uni' ? <>Universities<span className="hidden sm:inline"> &amp; courses</span></> : 'Scholarships'}</span>
                 </button>
               );
             })}

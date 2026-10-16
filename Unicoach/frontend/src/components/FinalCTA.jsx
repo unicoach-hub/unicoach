@@ -14,7 +14,7 @@ import { TEAM_MENTORS } from '../utils/teamMentors';
 const MAP_ORIGIN = { x: 71.8, y: 30.9 }; // New Delhi
 const byName = (n) => TEAM_MENTORS.find((m) => m.name === n);
 const MAP_DESTINATIONS = [
-  { key: 'usa', label: 'USA', flag: 'us', dot: { x: 18.9, y: 19.7 }, at: { x: 18, y: 56 }, names: ['Rishi Gandi'], hideLabel: true },
+  { key: 'usa', label: 'USA', flag: 'us', dot: { x: 18.9, y: 19.7 }, at: { x: 18, y: 56 }, names: ['Rishi Gandhi'], hideLabel: true },
   { key: 'ireland', label: 'Ireland', flag: 'ie', dot: { x: 42.6, y: 8 }, at: { x: 37, y: 46 }, names: ['Prachi', 'Nitya', 'Munish Rana'] },
   { key: 'europe', label: 'Europe', flag: 'eu', dot: { x: 47.8, y: 11 }, at: { x: 55, y: 60 }, names: ['Manvi'] },
   { key: 'australia', label: 'Australia', flag: 'au', dot: { x: 97.6, y: 88.8 }, at: { x: 83, y: 66 }, names: ['Manan'] },

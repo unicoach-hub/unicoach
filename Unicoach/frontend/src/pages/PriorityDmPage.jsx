@@ -4,7 +4,7 @@ import { Send, CheckCircle2, Shield, Sparkles, Loader2, User, Mail, Phone, HelpC
 import { Link } from 'react-router-dom';
 import { SUPPORT_CATEGORIES } from '../components/PriorityDmModal';
 import { API_BASE_URL } from '../config';
-import { TEAM_MENTORS } from '../utils/teamMentors';
+import { TEAM_MENTORS, mentorLook } from '../utils/teamMentors';
 
 const PriorityDmPage = () => {
   const [formData, setFormData] = useState({
@@ -120,7 +120,8 @@ const PriorityDmPage = () => {
             <div className="flex items-center gap-3 pt-2">
               <div className="flex -space-x-2">
                 {TEAM_MENTORS.map((mentor) => (
-                  <img key={mentor.src} src={mentor.src} alt={mentor.name} title={mentor.name} className="w-8 h-8 rounded-full border-2 border-[#FAF9F6] object-cover shadow-sm" />
+                  <img key={mentor.src} src={mentorLook(mentor.name).cutout || mentor.src}
+                  style={mentorLook(mentor.name).gradient ? { background: mentorLook(mentor.name).gradient } : undefined} alt={mentor.name} title={mentor.name} className="w-8 h-8 rounded-full border-2 border-[#FAF9F6] object-cover object-top shadow-sm" />
                 ))}
               </div>
               <div>

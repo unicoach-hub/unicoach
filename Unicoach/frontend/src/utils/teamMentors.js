@@ -50,7 +50,7 @@ export const TEAM_MENTORS = [
     headshot: '/images/mentors/headshots/manvi.webp',
   },
   {
-    name: 'Rishi Gandi',
+    name: 'Rishi Gandhi',
     focus: "Studying in the USA for IT and technology: picking universities, F-1 visas, internships and building a tech career.",
     role: 'US Education & Tech Career Expert',
     country: 'USA',
@@ -75,6 +75,24 @@ export const TEAM_MENTORS = [
 
 // "Prachi, Nitya, Manan, Manvi & Munish" (first names, for the hero line)
 const firstName = (m) => m.name.split(' ')[0];
+// Cut-out photo on a soft gradient (built from each mentor's original photo background).
+// Used wherever a mentor appears as a photo card, so every card looks the same.
+const MENTOR_GRADIENTS = {
+  prachi: 'radial-gradient(120% 110% at 15% 0%, #FFF1EC 0%, #FFD3C6 55%, #F7AE9A 100%)',
+  nitya: 'radial-gradient(120% 110% at 15% 0%, #E9F8DD 0%, #A9DB86 55%, #6FB34B 100%)',
+  manan: 'radial-gradient(120% 110% at 15% 0%, #F6F3FF 0%, #DCD3FF 55%, #B7A8F5 100%)',
+  manvi: 'radial-gradient(120% 110% at 15% 0%, #E8FBF8 0%, #A6E6DE 55%, #5FC4B8 100%)',
+  rishi: 'radial-gradient(120% 110% at 15% 0%, #FFF3E4 0%, #FFC890 55%, #F59A52 100%)',
+  munish: 'radial-gradient(120% 110% at 15% 0%, #F2A3A0 0%, #B8474A 55%, #7E2328 100%)',
+};
+
+/** { cutout, gradient } for a mentor's photo card, or nulls when we have no cut-out */
+export const mentorLook = (name) => {
+  const key = String(name || '').split(' ')[0].toLowerCase();
+  const gradient = MENTOR_GRADIENTS[key] || null;
+  return { gradient, cutout: gradient ? `/images/mentors/cutouts/${key}.webp` : null };
+};
+
 export const TEAM_MENTOR_NAMES = `${TEAM_MENTORS.slice(0, -1).map(firstName).join(', ')} & ${firstName(TEAM_MENTORS.at(-1))}`;
 
 // UniCoach core team for the /team page. Add photo paths (e.g. '/images/team/name.webp') and names

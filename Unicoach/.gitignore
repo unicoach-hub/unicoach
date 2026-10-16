@@ -36,6 +36,7 @@ index.html
 
 # Datasets and Archives
 *.zip
+db_backup/
 unicoach_scholarships_only/
 verified_scholarship_datasets/
 verified_university_datasets/

@@ -6,6 +6,7 @@ import App from './App.jsx'
 import { installApiFetch } from './utils/installApiFetch'
 import { initAdTracking } from './utils/adTracking'
 import { captureReferral } from './utils/referral'
+import { installButtonRipple } from './utils/buttonRipple'
 
 // Must run before any component fetches: send the session cookie on every call to our API
 installApiFetch()
@@ -13,6 +14,7 @@ installApiFetch()
 // Google Ads / Meta Pixel, campaign attribution and lead/signup/purchase conversions
 initAdTracking()
 captureReferral()
+installButtonRipple()
 
 // Initialize Sentry error and crash monitoring asynchronously only when DSN is configured
 const sentryDsn = import.meta.env.VITE_SENTRY_DSN;

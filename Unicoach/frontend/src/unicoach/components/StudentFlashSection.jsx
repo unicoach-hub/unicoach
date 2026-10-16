@@ -8,7 +8,7 @@
 
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { motion, AnimatePresence, MotionConfig, useInView } from 'framer-motion';
-import { TEAM_MENTORS } from '../../utils/teamMentors';
+import { TEAM_MENTORS, mentorLook } from '../../utils/teamMentors';
 import {
   ChevronDown,
   Search,
@@ -62,7 +62,8 @@ const FEATURED_MENTORS = TEAM_MENTORS.map((mentor) => ({
   uni: mentor.role,
   course: mentor.country,
   gradient: 'from-[#DE5C2B] to-amber-500',
-  photo: mentor.headshot || mentor.portrait,
+  photo: mentorLook(mentor.name).cutout || mentor.headshot || mentor.portrait,
+  photoBg: mentorLook(mentor.name).gradient,
 }));
 const PRIMARY_MENTOR = FEATURED_MENTORS[0];
 
@@ -102,11 +103,12 @@ const panelMotion = {
 
 const Avatar = ({ mentor, size = 'w-9 h-9 text-sm' }) => (
   <div
-    className={`${size} rounded-xl bg-gradient-to-br ${mentor.gradient} text-white font-bold flex items-center justify-center shrink-0`}
+    className={`${size} rounded-xl bg-gradient-to-br ${mentor.gradient} text-white font-bold flex items-center justify-center shrink-0 overflow-hidden`}
+    style={mentor.photoBg ? { background: mentor.photoBg } : undefined}
     aria-hidden="true"
   >
     {mentor.photo ? (
-      <img src={mentor.photo} alt="" className="w-full h-full object-cover rounded-[inherit]" />
+      <img src={mentor.photo} alt="" className="w-full h-full object-cover object-top rounded-[inherit]" />
     ) : (
       mentor.name.charAt(0)
     )}

@@ -685,12 +685,12 @@ const ScholarshipShortlister = () => {
       </AnimatePresence>
 
       {/* Step Switcher Navigation */}
-      <div className="flex items-center gap-2 bg-slate-200/80 border border-slate-300/80 p-1.5 rounded-2xl shadow-inner backdrop-blur-xs">
+      <div className="flex items-center gap-2 bg-slate-100 border border-slate-200 p-1.5 rounded-2xl">
         <button
           onClick={() => setStep(1)}
-          className={`flex-1 py-3 px-4 rounded-xl text-xs md:text-sm font-bold transition-all flex items-center justify-center gap-2 cursor-pointer ${
+          className={`flex-1 py-3 px-4 rounded-xl text-[13px] md:text-[15px] font-semibold transition-all flex items-center justify-center gap-2 cursor-pointer ${
             step === 1 
-              ? 'bg-[#DE5C2B] text-white shadow-md shadow-orange-500/20' 
+              ? 'bg-gradient-to-br from-[#FFF4E6] via-[#FDE2C4] to-[#F8C996] text-[#4A2410] ring-1 ring-[#F3C79B] shadow-[0_8px_20px_-10px_rgba(214,128,60,0.45)] [&>svg]:text-[#C2541F]' 
               : 'text-slate-600 hover:text-slate-900 hover:bg-white/60'
           }`}
         >
@@ -716,9 +716,9 @@ const ScholarshipShortlister = () => {
             if (results) setStep(2);
             else evaluateShortlist();
           }}
-          className={`flex-1 py-3 px-4 rounded-xl text-xs md:text-sm font-bold transition-all flex items-center justify-center gap-2 cursor-pointer ${
+          className={`flex-1 py-3 px-4 rounded-xl text-[13px] md:text-[15px] font-semibold transition-all flex items-center justify-center gap-2 cursor-pointer ${
             step === 2 
-              ? 'bg-[#DE5C2B] text-white shadow-md shadow-orange-500/20' 
+              ? 'bg-gradient-to-br from-[#FFF4E6] via-[#FDE2C4] to-[#F8C996] text-[#4A2410] ring-1 ring-[#F3C79B] shadow-[0_8px_20px_-10px_rgba(214,128,60,0.45)] [&>svg]:text-[#C2541F]' 
               : 'text-slate-600 hover:text-slate-900 hover:bg-white/60'
           }`}
         >

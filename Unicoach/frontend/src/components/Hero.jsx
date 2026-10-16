@@ -10,7 +10,7 @@ import { PillButton } from './ui/PillButton';
 import LordIcon from './ui/LordIcon';
 import arrowRightIcon from '../assets/lordicons/arrow-right.json';
 import sparkleIcon from '../assets/lordicons/sparkle.json';
-import { TEAM_MENTORS, TEAM_MENTOR_NAMES } from '../utils/teamMentors';
+import { TEAM_MENTORS, TEAM_MENTOR_NAMES, mentorLook } from '../utils/teamMentors';
 
 // Fit groups of the University Shortlister (same colours as its results page)
 const SHORTLIST_FITS = [
@@ -24,6 +24,7 @@ export const Hero = ({ onOpenModal }) => {
   const handleOpen = onOpenModal || (() => openEligibilityModal('Hero Banner'));
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const [isPriorityDmOpen, setIsPriorityDmOpen] = useState(false);
+  const [tasselKick, setTasselKick] = useState(0);
 
   const handleMouseMove = (e) => {
     const { clientX, clientY, currentTarget } = e;
@@ -171,8 +172,9 @@ export const Hero = ({ onOpenModal }) => {
               {TEAM_MENTORS.map((mentor) => (
                 <img
                   key={mentor.src}
-                  className="w-7 h-7 rounded-full ring-2 ring-white object-cover bg-slate-100"
-                  src={mentor.src}
+                  className="w-7 h-7 rounded-full ring-2 ring-white object-cover object-top bg-slate-100"
+                  src={mentorLook(mentor.name).cutout || mentor.src}
+                  style={mentorLook(mentor.name).gradient ? { background: mentorLook(mentor.name).gradient } : undefined}
                   alt=""
                   width="28"
                   height="28"
@@ -335,9 +337,35 @@ export const Hero = ({ onOpenModal }) => {
               initial={{ opacity: 0, x: -50 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+              onMouseEnter={() => setTasselKick((k) => k + 1)}
               className="font-outfit text-4xl sm:text-5xl lg:text-[54px] xl:text-[62px] font-black leading-[1.08] tracking-[-0.035em] text-[#111111] mb-5"
             >
-              Your Global Future <br />
+              Your Global{' '}
+              <span className="relative inline-block">
+                Future
+                {/* Our graduation cap resting on the word; the tassel hangs and swings like a real one */}
+                <motion.span
+                  aria-hidden="true"
+                  initial={{ opacity: 0, y: -40, rotate: -30 }}
+                  animate={{ opacity: 1, y: 0, rotate: -22 }}
+                  transition={{ delay: 0.6, type: 'spring', stiffness: 160, damping: 11 }}
+                  className="pointer-events-none select-none absolute top-[0.0em] -left-[0.15em] w-[0.86em] aspect-[662/366] origin-bottom-left"
+                >
+                  <img src="/images/3d/grad-cap-body.webp" alt="" width="320" height="177" className="absolute inset-0 w-full h-full" />
+                  {/* One real swing when the cap lands (and again whenever the heading is hovered), then a slow idle sway */}
+                  <motion.span
+                    key={tasselKick}
+                    className="absolute inset-0"
+                    style={{ transformOrigin: '19.6% 35%' }}
+                    initial={{ rotate: tasselKick ? 16 : 30 }}
+                    animate={{ rotate: 0 }}
+                    transition={{ delay: tasselKick ? 0 : 0.75, type: 'spring', stiffness: 40, damping: 6, mass: 1.2 }}
+                  >
+                    <img src="/images/3d/grad-cap-tassel.webp" alt="" width="320" height="177" className="uc-tassel-sway absolute inset-0 w-full h-full" />
+                  </motion.span>
+                </motion.span>
+              </span>{' '}
+              <br />
               <span className="relative inline-block">
                 Starts Here
                 <span className="absolute -bottom-1 left-0 w-full h-[7px] bg-[#FED7CE] rounded-full -z-10" />

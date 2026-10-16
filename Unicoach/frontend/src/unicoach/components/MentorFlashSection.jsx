@@ -26,7 +26,7 @@ import {
   Bell,
 } from 'lucide-react';
 
-const SCENE_MS = 7000; // how long each feature plays before auto-advancing
+const SCENE_MS = 4800; // how long each feature plays before auto-advancing
 
 const TABS = [
   {
@@ -133,7 +133,7 @@ const Initials = ({ name, color = '#DE5C2B', size = 'w-7 h-7 text-[10px]' }) => 
 
 // ── 01 · 1:1 session: student picks a slot → pays → gets the meeting link → you earn ──
 const SessionScene = ({ accent, running, reduced }) => {
-  const step = useSceneStep(5, running, 1150);
+  const step = useSceneStep(5, running, 700);
   const slots = ['Fri · 6:00 PM', 'Sat · 7:00 PM', 'Sun · 11:00 AM'];
   return (
     <div className="w-full grid grid-cols-1 sm:grid-cols-2 gap-3 items-start text-left">
@@ -186,7 +186,7 @@ const SessionScene = ({ accent, running, reduced }) => {
 
 // ── 02 · Priority DM: question → paid → reply window → your answer ──
 const DmScene = ({ accent, running }) => {
-  const step = useSceneStep(5, running, 1150);
+  const step = useSceneStep(5, running, 700);
   return (
     <div className="w-full bg-white rounded-2xl p-4 sm:p-5 shadow-md border border-orange-100 text-left">
       <div className="flex items-center justify-between mb-3">
@@ -246,7 +246,7 @@ const BOOKINGS = [
   { name: 'Sneha Kapoor', what: 'SOP Review · Oxford', status: 'In review', tone: 'text-indigo-700 bg-indigo-100/80' },
 ];
 const DashboardScene = ({ accent, running, reduced }) => {
-  const step = useSceneStep(4, running, 1300);
+  const step = useSceneStep(4, running, 850);
   const visible = BOOKINGS.slice(0, step);
   return (
     <div className="w-full bg-white rounded-2xl p-4 sm:p-5 shadow-lg border border-orange-100 text-left space-y-3">
@@ -319,7 +319,7 @@ const OTHERS = [
   { id: 'c', name: 'Dev Arora', meta: 'Germany · RWTH' },
 ];
 const DiscoverScene = ({ accent, running }) => {
-  const step = useSceneStep(4, running, 1500);
+  const step = useSceneStep(4, running, 950);
   const yourRank = 3 - step; // 3 → 0
   const order = [...OTHERS];
   order.splice(Math.max(0, yourRank), 0, { id: 'you', name: 'Your Name', meta: 'Ireland · Trinity' });
@@ -373,7 +373,7 @@ const DiscoverScene = ({ accent, running }) => {
 
 // ── 05 · Session pack: three sessions bundle into one checkout ──
 const BundleScene = ({ accent, running }) => {
-  const step = useSceneStep(4, running, 1300);
+  const step = useSceneStep(4, running, 850);
   return (
     <div className="w-full bg-white rounded-2xl p-5 shadow-md border border-orange-100 text-left">
       <div className="inline-flex items-center gap-1 bg-amber-50 text-amber-800 text-[10px] font-bold px-2 py-0.5 rounded-md mb-3">
@@ -415,7 +415,7 @@ const BundleScene = ({ accent, running }) => {
 
 // ── 06 · Digital product: locked file → payment → secure download ──
 const ProductScene = ({ accent, running }) => {
-  const step = useSceneStep(4, running, 1300);
+  const step = useSceneStep(4, running, 850);
   const unlocked = step >= 2;
   return (
     <div className="w-full bg-white rounded-2xl p-5 shadow-md border border-orange-100 text-left">
@@ -493,26 +493,26 @@ export const MentorFlashSection = () => {
           {/* ════════ HEADER ════════ */}
           <div className="order-1 lg:order-none lg:col-span-6 lg:col-start-1 lg:row-start-1 text-left">
             <div className="max-w-xl">
-              <h2 className="font-outfit text-3xl sm:text-5xl lg:text-5xl font-black text-[#111111] tracking-tight leading-[1.12] mb-3">
+              <h2 className="font-outfit text-3xl sm:text-5xl lg:text-5xl font-bold text-[#111111] tracking-[-0.035em] leading-[1.08] mb-3">
                 Create your UniCoach page in a <br className="hidden sm:inline" />
-                <span className="text-[#DE5C2B] font-extrabold">flash</span>
+                <span className="text-[#DE5C2B]">flash</span>
               </h2>
-              <p className="text-slate-600 text-sm sm:text-base font-normal mb-3">
+              <p className="text-slate-600 text-[15px] sm:text-[17px] leading-relaxed font-normal mb-4">
                 One link for everything you offer juniors: calls, questions, packs and guides.
               </p>
               <Link
                 to="/unicoach/apply"
-                className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-bold text-slate-900 hover:text-[#DE5C2B] underline decoration-slate-400 underline-offset-4 transition-colors"
+                className="inline-flex items-center gap-2 h-10 px-4 rounded-full bg-slate-900 hover:bg-[#DE5C2B] text-white text-[14px] font-semibold transition-colors"
               >
                 <span>Launch your page</span>
-                <ArrowUpRight className="w-4 h-4 text-[#DE5C2B]" />
+                <ArrowUpRight className="w-4 h-4" />
               </Link>
             </div>
           </div>
 
           {/* ════════ NUMBERED FEATURE LIST ════════ */}
           <div className="order-3 lg:order-none lg:col-span-6 lg:col-start-1 lg:row-start-2 text-left">
-            <div className="space-y-1.5" role="tablist" aria-label="UniCoach mentor features">
+            <div className="divide-y divide-slate-100 border-y border-slate-100" role="tablist" aria-label="UniCoach mentor features">
               {TABS.map((tab) => {
                 const isActive = activeTab === tab.id;
                 return (
@@ -522,31 +522,29 @@ export const MentorFlashSection = () => {
                     role="tab"
                     aria-selected={isActive}
                     onClick={() => selectTab(tab.id)}
-                    className={`relative w-full text-left rounded-2xl transition-all duration-200 border cursor-pointer overflow-hidden ${
-                      isActive
-                        ? 'bg-orange-50/70 border-orange-200/80 p-3.5 sm:p-4 shadow-xs'
-                        : 'bg-transparent border-transparent hover:bg-slate-50 p-2.5 sm:p-3'
+                    className={`relative w-full text-left rounded-xl transition-colors duration-150 cursor-pointer overflow-hidden px-4 py-3.5 ${
+                      isActive ? 'bg-[#FAF9F6]' : 'hover:bg-slate-50'
                     }`}
                   >
                     <div className="flex items-center justify-between gap-3">
                       <div className="flex items-center gap-3.5">
-                        <span className={`text-xs font-mono font-bold ${isActive ? 'text-[#DE5C2B]' : 'text-slate-400'}`}>
+                        <span className={`text-[12px] font-semibold tabular-nums ${isActive ? 'text-[#DE5C2B]' : 'text-slate-400'}`}>
                           {tab.number}
                         </span>
-                        <h3 className="font-outfit text-sm sm:text-base font-black text-slate-900">{tab.title}</h3>
+                        <h3 className={`font-outfit text-[16px] sm:text-[18px] font-semibold tracking-[-0.01em] ${isActive ? 'text-slate-900' : 'text-slate-600'}`}>{tab.title}</h3>
                       </div>
                       <ChevronDown className={`w-4 h-4 text-slate-500 transition-transform duration-300 ${isActive ? 'rotate-180 text-[#DE5C2B]' : ''}`} />
                     </div>
 
                     {isActive && (
                       <motion.div
-                        initial={{ opacity: 0, height: 0 }}
-                        animate={{ opacity: 1, height: 'auto' }}
-                        transition={{ duration: 0.2 }}
-                        className="mt-2 pl-7 pr-2"
+                        initial={{ opacity: 0, y: -4 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.18 }}
+                        className="mt-1.5 pl-[30px] pr-2"
                       >
-                        <p className="text-xs text-slate-600 leading-relaxed font-normal">{tab.shortDesc}</p>
-                        <p className="text-[11px] text-slate-400 mt-1">{tab.fullDesc}</p>
+                        <p className="text-[14px] text-slate-600 leading-relaxed">{tab.shortDesc}</p>
+                        <p className="text-[13px] text-slate-400 mt-1 leading-relaxed">{tab.fullDesc}</p>
                       </motion.div>
                     )}
 
@@ -554,9 +552,9 @@ export const MentorFlashSection = () => {
                     {isActive && cycling && (
                       <motion.span
                         key={`progress-${tab.id}`}
-                        className="absolute left-0 bottom-0 h-[3px] bg-[#DE5C2B]/70"
-                        initial={{ width: '0%' }}
-                        animate={{ width: '100%' }}
+                        className="absolute left-0 top-0 w-[3px] bg-[#DE5C2B]"
+                        initial={{ height: '0%' }}
+                        animate={{ height: '100%' }}
                         transition={{ duration: SCENE_MS / 1000, ease: 'linear' }}
                       />
                     )}
@@ -568,10 +566,10 @@ export const MentorFlashSection = () => {
 
           {/* ════════ ANIMATED STORY FOR THE ACTIVE FEATURE ════════ */}
           <div className="order-2 lg:order-none lg:col-span-6 lg:col-start-7 lg:row-start-1 lg:row-span-2 lg:sticky lg:top-28">
-            <div className="bg-[#FAF0EB] rounded-[36px] p-5 sm:p-8 sm:min-h-[480px] flex flex-col justify-center relative shadow-inner shadow-orange-100/50 border border-orange-200/50">
+            <div className="bg-[#F6F5F1] rounded-[28px] p-5 sm:p-8 sm:min-h-[480px] flex flex-col justify-center relative border border-slate-200/70">
 
               {/* Your page bar */}
-              <div className="bg-white rounded-2xl p-3.5 sm:p-4 shadow-[0_4px_20px_rgba(0,0,0,0.04)] mb-5 flex items-center justify-between gap-3 border border-orange-100/60">
+              <div className="bg-white rounded-2xl p-3.5 sm:p-4 shadow-[0_4px_20px_rgba(0,0,0,0.04)] mb-5 flex items-center justify-between gap-3 border border-slate-200/70">
                 <div className="flex items-center gap-3 min-w-0">
                   <Initials name="Your Name" color={activeColorHex} size="w-11 h-11 text-sm" />
                   <div className="min-w-0">
@@ -603,7 +601,7 @@ export const MentorFlashSection = () => {
                     initial={{ opacity: 0, scale: 0.96, y: 12 }}
                     animate={{ opacity: 1, scale: 1, y: 0 }}
                     exit={{ opacity: 0, scale: 0.96, y: -12 }}
-                    transition={{ duration: 0.3 }}
+                    transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
                     className="w-full"
                   >
                     <Scene accent={activeColorHex} running={playing} reduced={reduced} />
@@ -611,7 +609,7 @@ export const MentorFlashSection = () => {
                 </AnimatePresence>
               </div>
 
-              <p className="text-center text-[10px] font-semibold text-slate-400 mt-4">Illustrative preview of a mentor page</p>
+              <p className="text-center text-[12px] text-slate-400 mt-4">Illustrative preview of a mentor page</p>
             </div>
           </div>
 

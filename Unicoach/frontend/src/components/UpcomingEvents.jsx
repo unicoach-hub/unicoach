@@ -344,8 +344,10 @@ export const UpcomingEvents = ({ onOpenModal }) => {
 
             // Vertical-only entrance (no sideways movement, so phones never get a horizontal scrollbar);
             // cards in the same row arrive one after another
-            const initialPos = { opacity: 0, y: 56, scale: 0.94, filter: 'blur(6px)' };
-            const enterDelay = (idx % 3) * 0.12 + Math.floor(idx / 3) * 0.08;
+            // Left column slides in from the left, right column from the right, middle rises; quick and smooth
+            const col = idx % 3;
+            const initialPos = { opacity: 0, x: col === 0 ? -70 : col === 2 ? 70 : 0, y: col === 1 ? 40 : 0 };
+            const enterDelay = col * 0.06 + Math.floor(idx / 3) * 0.05;
 
             return (
               <motion.div
@@ -355,7 +357,7 @@ export const UpcomingEvents = ({ onOpenModal }) => {
                 viewport={{ once: true, margin: "-40px" }}
                 variants={{
                   hidden: initialPos,
-                  shown: { opacity: 1, y: 0, scale: 1, filter: 'blur(0px)', transition: { duration: 0.75, delay: enterDelay, ease: [0.16, 1, 0.3, 1] } },
+                  shown: { opacity: 1, x: 0, y: 0, transition: { duration: 0.45, delay: enterDelay, ease: [0.22, 1, 0.36, 1] } },
                 }}
                 whileHover={{ y: -8, transition: { type: 'spring', stiffness: 300, damping: 20 } }}
                 // The rest of the card opens the event page; the CTA button keeps its own action
@@ -368,7 +370,7 @@ export const UpcomingEvents = ({ onOpenModal }) => {
                   // Follows the card's own in-view trigger (a fully clipped element is never "in view" by itself)
                   variants={{
                     hidden: { clipPath: 'inset(0 0 100% 0)' },
-                    shown: { clipPath: 'inset(0 0 0% 0)', transition: { duration: 0.9, delay: enterDelay + 0.15, ease: [0.65, 0, 0.35, 1] } },
+                    shown: { clipPath: 'inset(0 0 0% 0)', transition: { duration: 0.5, delay: enterDelay + 0.08, ease: [0.65, 0, 0.35, 1] } },
                   }}
                 >
                   <motion.img
@@ -376,7 +378,7 @@ export const UpcomingEvents = ({ onOpenModal }) => {
                     alt={ev.title}
                     variants={{
                       hidden: { scale: 1.18 },
-                      shown: { scale: 1, transition: { duration: 1.4, delay: enterDelay + 0.15, ease: [0.16, 1, 0.3, 1] } },
+                      shown: { scale: 1, transition: { duration: 0.8, delay: enterDelay + 0.08, ease: [0.16, 1, 0.3, 1] } },
                     }}
                     className="w-full h-full object-cover object-center group-hover:!scale-[1.05] transition-transform duration-700 ease-out"
                     onError={(e) => {
@@ -393,7 +395,7 @@ export const UpcomingEvents = ({ onOpenModal }) => {
                     className="absolute bottom-2.5 left-2.5 right-2.5 flex items-center justify-between gap-2 text-white z-10"
                     variants={{
                       hidden: { opacity: 0, y: 12 },
-                      shown: { opacity: 1, y: 0, transition: { duration: 0.5, delay: enterDelay + 0.75, ease: 'easeOut' } },
+                      shown: { opacity: 1, y: 0, transition: { duration: 0.3, delay: enterDelay + 0.35, ease: 'easeOut' } },
                     }}
                   >
                     <div className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-slate-950/75 backdrop-blur-md text-[10px] font-semibold text-white/95 border border-white/15 shadow-sm min-w-0">
