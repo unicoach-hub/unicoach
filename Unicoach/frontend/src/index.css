@@ -791,7 +791,7 @@ body.editorial-page :is(a, button)[class*="bg-[#DE5C2B]"]:is([class*="px-6"], [c
   aspect-ratio: 1;
   margin-left: calc(max(260%, 220px) / -2);
   pointer-events: none;
-  z-index: 0;
+  z-index: -1;
   transition: top 1.1s cubic-bezier(.22, 1, .36, 1);
   animation: btn-wave 6s linear infinite paused;
 }

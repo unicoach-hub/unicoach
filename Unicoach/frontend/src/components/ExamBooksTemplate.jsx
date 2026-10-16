@@ -26,6 +26,12 @@ const examsList = [
   { key: 'gmat', name: 'GMAT Books', path: '/resources/books/gmat-books', tag: 'Focus Edition' }
 ];
 
+const getBookCategory = (book) => (
+  typeof book.category === 'string' && book.category.trim()
+    ? book.category.trim()
+    : 'Comprehensive'
+);
+
 const ExamBooksTemplate = ({ currentExamKey, data }) => {
   const navigate = useNavigate();
   const [faqOpen, setFaqOpen] = useState({});
@@ -39,11 +45,11 @@ const ExamBooksTemplate = ({ currentExamKey, data }) => {
   };
 
   // Derive unique categories from books
-  const categories = ['all', ...new Set(data.booksList.map(b => b.category || 'Comprehensive'))];
+  const categories = ['all', ...new Set(data.booksList.map(getBookCategory))];
 
   const filteredBooks = selectedCategory === 'all'
     ? data.booksList
-    : data.booksList.filter(b => (b.category || 'Comprehensive') === selectedCategory);
+    : data.booksList.filter(b => getBookCategory(b) === selectedCategory);
 
   return (
     <main className="min-h-screen bg-slate-50/60 pt-20 md:pt-24 pb-16">
@@ -105,7 +111,7 @@ const ExamBooksTemplate = ({ currentExamKey, data }) => {
           <div className="text-[11px] font-extrabold uppercase tracking-wider text-slate-400 mb-2 px-1">
             Choose Exam Books
           </div>
-          <div className="flex items-center gap-2 overflow-x-auto pb-1 no-scrollbar">
+          <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-hide">
             {examsList.map((exam) => {
               const isCurrent = exam.key === currentExamKey;
               return (
@@ -198,7 +204,7 @@ const ExamBooksTemplate = ({ currentExamKey, data }) => {
 
             {/* Recommended Books Section with Category Filter */}
             <section className="space-y-5">
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-1 border-b border-slate-200">
+              <div className="flex flex-col gap-3 pb-3 border-b border-slate-200">
                 <div className="flex items-center gap-2">
                   <BookOpen className="text-indigo-600" size={20} />
                   <h2 className="text-xl md:text-2xl font-black text-slate-900 tracking-tight">
@@ -208,18 +214,19 @@ const ExamBooksTemplate = ({ currentExamKey, data }) => {
                 
                 {/* Category Pills */}
                 {categories.length > 2 && (
-                  <div className="flex items-center gap-1.5 overflow-x-auto pb-1 no-scrollbar">
+                  <div className="flex flex-wrap items-center gap-1.5">
                     {categories.map((cat) => (
                       <button
                         key={cat}
                         onClick={() => setSelectedCategory(cat)}
+                        aria-pressed={selectedCategory === cat}
                         className={`px-3 py-1 rounded-lg text-xs font-bold capitalize transition-all cursor-pointer whitespace-nowrap ${
                           selectedCategory === cat
                             ? 'bg-slate-900 text-white'
                             : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
                         }`}
                       >
-                        {cat === 'all' ? 'All Books' : cat}
+                        <span className="relative z-10">{cat === 'all' ? 'All Books' : cat}</span>
                       </button>
                     ))}
                   </div>

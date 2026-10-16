@@ -226,7 +226,7 @@ const StatementOfPurposePage = () => {
                                     type="submit"
                                     className="col-span-1 md:col-span-2 py-3.5 rounded-xl text-white font-bold text-xs bg-gradient-to-r from-orange-500 to-[#DE5C2B] hover:shadow-lg transition-all cursor-pointer text-center"
                                 >
-                                    Generate Outline Structure
+                                    <span className="relative z-10">Generate Outline Structure</span>
                                 </button>
                             </form>
 
@@ -326,7 +326,7 @@ const StatementOfPurposePage = () => {
                                 onClick={() => navigate('/book-consultation')}
                                 className="px-6 py-3 rounded-full text-white font-bold text-xs bg-gradient-to-r from-orange-500 to-[#DE5C2B] hover:shadow-lg transition-all cursor-pointer flex-shrink-0"
                             >
-                                Book Free Counselling
+                                <span className="relative z-10">Book Free Counselling</span>
                             </button>
                         </div>
 
