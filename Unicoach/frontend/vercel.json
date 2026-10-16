@@ -38,7 +38,7 @@
   "rewrites": [
     {
       "source": "/blogs/rhodes-scholarship",
-      "destination": "/app-shell.html"
+      "destination": "/app-shell"
     },
     {
       "source": "/blogs/:slug",
@@ -70,7 +70,7 @@
     },
     {
       "source": "/(.*)",
-      "destination": "/app-shell.html"
+      "destination": "/app-shell"
     }
   ],
   "trailingSlash": false,
