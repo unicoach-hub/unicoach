@@ -44,17 +44,35 @@ const xml = [
   '',
 ].join('\n');
 
+// Account pages and the API are not for search engines or AI crawlers
+const PRIVATE_PATHS = ['/api/', '/dashboard', '/unicoach/dashboard', '/reset-password'];
+
+// AI search and assistant crawlers we want to read the site (so UniCoach can be cited in answers).
+// A crawler that matches its own group ignores the "*" group, so each group repeats the Disallows.
+const AI_CRAWLERS = [
+  'GPTBot', 'OAI-SearchBot', 'ChatGPT-User', // OpenAI / ChatGPT search
+  'ClaudeBot', 'Claude-SearchBot', 'Claude-User', // Anthropic / Claude
+  'PerplexityBot', 'Perplexity-User', // Perplexity
+  'Google-Extended', // Gemini and Google AI products
+  'Bingbot', // Bing, which also powers Copilot and ChatGPT search results
+  'Applebot', 'Applebot-Extended', // Apple / Siri / Apple Intelligence
+  'Meta-ExternalAgent', 'DuckAssistBot', 'MistralAI-User', 'CCBot',
+];
+
+const group = (agents) => [
+  ...agents.map((a) => `User-agent: ${a}`),
+  'Allow: /',
+  ...PRIVATE_PATHS.map((p) => `Disallow: ${p}`),
+  '',
+];
+
 const robots = [
   `# robots.txt for UniCoach (${SITE_URL})`,
-  'User-agent: *',
-  'Allow: /',
   '',
-  '# Account pages and the API are not for search engines',
-  'Disallow: /api/',
-  'Disallow: /dashboard',
-  'Disallow: /unicoach/dashboard',
-  'Disallow: /reset-password',
-  '',
+  ...group(['*']),
+  '# AI search engines and assistants: allowed, so UniCoach can be found and cited in AI answers',
+  ...group(AI_CRAWLERS),
+  `# Site summary for AI tools: ${SITE_URL}/llms.txt`,
   `Sitemap: ${SITE_URL}/sitemap.xml`,
   '',
 ].join('\n');

@@ -512,6 +512,24 @@ const ScrollToTop = () => {
       return meta;
     }).setAttribute('content', canonicalUrl);
 
+    // Social / link-preview tags follow the page too. The build prerenders every route (see
+    // scripts/prerender.mjs), so WhatsApp, LinkedIn and AI crawlers read these from the static HTML.
+    // Blog, news and event detail pages get theirs from api/seo.js instead.
+    const isDetailPage = /^\/(blogs|news|newsroom|events)\/[^/]+$/.test(path) && path !== '/blogs/rhodes-scholarship';
+    if (!isDetailPage) {
+      const setMeta = (attr, key, value) => upsertHeadTag(`meta[${attr}="${key}"]`, () => {
+        const meta = document.createElement('meta');
+        meta.setAttribute(attr, key);
+        return meta;
+      }).setAttribute('content', value);
+      setMeta('name', 'title', title);
+      setMeta('property', 'og:title', title);
+      setMeta('property', 'og:description', description);
+      setMeta('name', 'twitter:title', title);
+      setMeta('name', 'twitter:description', description);
+      setMeta('name', 'twitter:url', canonicalUrl);
+    }
+
     const isPrivate = NOINDEX_PREFIXES.some((p) => path === p || path.startsWith(`${p}/`));
     upsertHeadTag('meta[name="robots"]', () => {
       const meta = document.createElement('meta');

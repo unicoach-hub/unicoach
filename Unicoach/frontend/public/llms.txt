@@ -1,0 +1,70 @@
+# UniCoach
+
+> UniCoach is an Indian study abroad platform. It offers study abroad counselling (university shortlisting, applications, scholarships, education loans and student visas) and 1:1 sessions with verified senior students and alumni who have studied abroad. It also publishes free country guides, exam guides and AI tools for Indian students planning to study abroad.
+
+Key facts:
+- Website: https://www.unicoach.com
+- Audience: Indian students planning bachelor's, master's or PhD study abroad
+- Destinations covered: USA, UK, Canada, Australia, Germany, Ireland, France, Italy and New Zealand
+- Services: study abroad counselling, university shortlisting, SOP and LOR help, scholarship guidance, education loan guidance, student visa assistance, test preparation guidance
+- UniCoach mentors: verified seniors and alumni from universities abroad who host 1:1 video calls, SOP reviews and visa guidance sessions
+- Office: 1st Floor, Gali No. 4, Sahil Colony, Jattal Road, Sondhapur Village, Panipat, Haryana 132105, India
+- Contact: info@unicoach.in, +91 95186 57944 (Mon to Sat, 9:30 AM to 6:30 PM IST)
+
+## Study abroad guides
+
+- [Study abroad hub](https://www.unicoach.com/study-abroad): compare destinations, costs, post-study work options and top universities
+- [Study in USA](https://www.unicoach.com/study-abroad/usa)
+- [Study in UK](https://www.unicoach.com/study-abroad/uk)
+- [Study in Canada](https://www.unicoach.com/study-abroad/canada)
+- [Study in Australia](https://www.unicoach.com/study-abroad/australia)
+- [Study in Germany](https://www.unicoach.com/study-abroad/germany)
+- [Study in Ireland](https://www.unicoach.com/study-abroad/ireland)
+- [Study in France](https://www.unicoach.com/study-abroad/france)
+- [Study in Italy](https://www.unicoach.com/study-abroad/italy)
+- [Study in New Zealand](https://www.unicoach.com/study-abroad/new-zealand)
+- [Universities](https://www.unicoach.com/universities): university profiles, fees and admission requirements
+
+## Money: scholarships and loans
+
+- [Scholarships for Indian students](https://www.unicoach.com/scholarships)
+- [How to study abroad for free from India (2027 guide)](https://www.unicoach.com/blogs/how-to-study-abroad-for-free): fully funded scholarships, tuition-free countries and real costs
+- [Scholarship calculator](https://www.unicoach.com/scholarship-calculator)
+- [Education loans for study abroad](https://www.unicoach.com/education-loan)
+
+## Exams
+
+- [Exams hub](https://www.unicoach.com/exams)
+- [IELTS](https://www.unicoach.com/exams/ielts), [TOEFL](https://www.unicoach.com/exams/toefl), [PTE](https://www.unicoach.com/exams/pte), [Duolingo English Test](https://www.unicoach.com/exams/duolingo)
+- [GRE](https://www.unicoach.com/exams/gre), [GMAT](https://www.unicoach.com/exams/gmat), [SAT](https://www.unicoach.com/exams/sat)
+
+## Applications and visas
+
+- [Statement of Purpose (SOP) guide](https://www.unicoach.com/resources/sop/statement-of-purpose)
+- [Letter of Recommendation (LOR) guide](https://www.unicoach.com/resources/lor/lor-blog)
+- [CGPA to GPA calculator](https://www.unicoach.com/resources/calculators/cgpa-to-gpa)
+- [Admission eligibility calculator](https://www.unicoach.com/eligibility-calculator)
+- [Student visa assistance](https://www.unicoach.com/visa-assistance)
+- [Resources hub](https://www.unicoach.com/resources)
+
+## Free AI tools
+
+- [AI tools hub](https://www.unicoach.com/ai-tools)
+- [AI SOP generator](https://www.unicoach.com/ai-tools/sop-generator)
+- [AI IELTS evaluator](https://www.unicoach.com/ai-tools/ielts-evaluator)
+- [AI study roadmap](https://www.unicoach.com/ai-tools/study-roadmap)
+- [AI visa interview prep](https://www.unicoach.com/ai-tools/visa-prep)
+
+## Mentorship
+
+- [UniCoach mentorship marketplace](https://www.unicoach.com/unicoach): book 1:1 sessions with verified seniors studying abroad
+- [Browse mentors](https://www.unicoach.com/unicoach/mentors)
+- [Become a mentor](https://www.unicoach.com/unicoach/for-mentors)
+
+## Optional
+
+- [Blogs](https://www.unicoach.com/blogs)
+- [UniCoach Digest](https://www.unicoach.com/unicoach-digest)
+- [Events and webinars](https://www.unicoach.com/events)
+- [Newsroom](https://www.unicoach.com/newsroom)
+- [Contact and free counselling](https://www.unicoach.com/contact)

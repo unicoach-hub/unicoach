@@ -38,7 +38,7 @@
   "rewrites": [
     {
       "source": "/blogs/rhodes-scholarship",
-      "destination": "/index.html"
+      "destination": "/app-shell.html"
     },
     {
       "source": "/blogs/:slug",
@@ -70,7 +70,7 @@
     },
     {
       "source": "/(.*)",
-      "destination": "/index.html"
+      "destination": "/app-shell.html"
     }
   ],
   "trailingSlash": false,
@@ -205,5 +205,6 @@
       "destination": "/study-abroad",
       "permanent": true
     }
-  ]
+  ],
+  "cleanUrls": true
 }

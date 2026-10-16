@@ -1,11 +1,34 @@
 # robots.txt for UniCoach (https://www.unicoach.com)
+
 User-agent: *
 Allow: /
-
-# Account pages and the API are not for search engines
 Disallow: /api/
 Disallow: /dashboard
 Disallow: /unicoach/dashboard
 Disallow: /reset-password
 
+# AI search engines and assistants: allowed, so UniCoach can be found and cited in AI answers
+User-agent: GPTBot
+User-agent: OAI-SearchBot
+User-agent: ChatGPT-User
+User-agent: ClaudeBot
+User-agent: Claude-SearchBot
+User-agent: Claude-User
+User-agent: PerplexityBot
+User-agent: Perplexity-User
+User-agent: Google-Extended
+User-agent: Bingbot
+User-agent: Applebot
+User-agent: Applebot-Extended
+User-agent: Meta-ExternalAgent
+User-agent: DuckAssistBot
+User-agent: MistralAI-User
+User-agent: CCBot
+Allow: /
+Disallow: /api/
+Disallow: /dashboard
+Disallow: /unicoach/dashboard
+Disallow: /reset-password
+
+# Site summary for AI tools: https://www.unicoach.com/llms.txt
 Sitemap: https://www.unicoach.com/sitemap.xml

@@ -57,13 +57,44 @@ const bodyHtml = (item) => {
 
 const setTag = (html, re, replacement) => (re.test(html) ? html.replace(re, replacement) : html.replace('</head>', `${replacement}\n</head>`));
 
+// The untouched SPA shell. dist/index.html is the prerendered home page (scripts/prerender.mjs),
+// so the empty shell lives in app-shell.html; index.html is only a fallback for older builds.
 async function loadShell(req) {
   const host = req.headers['x-forwarded-host'] || req.headers.host;
   const proto = req.headers['x-forwarded-proto'] || 'https';
-  const res = await fetch(`${proto}://${host}/index.html`);
-  if (!res.ok) throw new Error(`index.html ${res.status}`);
-  return res.text();
+  for (const file of ['/app-shell.html', '/index.html']) {
+    const res = await fetch(`${proto}://${host}${file}`);
+    if (res.ok) return res.text();
+  }
+  throw new Error('app shell not found');
 }
+
+// FAQ blocks from the admin editor ({ type: 'faq', question, answer }) as FAQPage structured data
+const faqSchema = (item) => {
+  const faqs = (Array.isArray(item.sections) ? item.sections : [])
+    .filter((s) => s && s.type === 'faq' && s.question && s.answer)
+    .map((s) => ({
+      '@type': 'Question',
+      name: stripHtml(s.question),
+      acceptedAnswer: { '@type': 'Answer', text: stripHtml(s.answer) },
+    }));
+  return faqs.length ? { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: faqs } : null;
+};
+
+const breadcrumbSchema = (type, item, url) => {
+  const section = { blog: ['Blogs', 'blogs'], news: ['Newsroom', 'newsroom'], event: ['Events', 'events'] }[type];
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: `${SITE}/` },
+      { '@type': 'ListItem', position: 2, name: section[0], item: `${SITE}/${section[1]}` },
+      { '@type': 'ListItem', position: 3, name: clip(stripHtml(item.title), 110), item: url },
+    ],
+  };
+};
+
+const ldScript = (data) => `<script type="application/ld+json">${JSON.stringify(data).replace(/</g, '\\u003c')}</script>`;
 
 export default async function handler(req, res) {
   const type = TYPES[req.query.type] ? req.query.type : null;
@@ -148,7 +179,8 @@ export default async function handler(req, res) {
   html = setTag(html, /<meta name="twitter:title"[^>]*>/i, `<meta name="twitter:title" content="${esc(title)}" />`);
   html = setTag(html, /<meta name="twitter:description"[^>]*>/i, `<meta name="twitter:description" content="${esc(description)}" />`);
   html = setTag(html, /<meta name="twitter:image"[^>]*>/i, `<meta name="twitter:image" content="${esc(image)}" />`);
-  html = html.replace('</head>', `<script type="application/ld+json">${JSON.stringify(ld).replace(/</g, '\\u003c')}</script>\n</head>`);
+  const schemas = [ld, breadcrumbSchema(type, item, url), faqSchema(item)].filter(Boolean);
+  html = html.replace('</head>', `${schemas.map(ldScript).join('\n')}\n</head>`);
 
   const article = `<article>
 <h1>${esc(item.title)}</h1>

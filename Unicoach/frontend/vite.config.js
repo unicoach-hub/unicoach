@@ -9,15 +9,11 @@ import path from 'path'
 // Link previews (WhatsApp, LinkedIn, Facebook) read only the static HTML and never run our
 // JavaScript, so every SPA route would show the homepage banner. For the routes below the build
 // writes a copy of dist/index.html with that page's title, description and image, and nginx
-// serves it for the route (try_files $uri.html in nginx.conf).
-const SHARE_PAGES = {
-  '/unicoach/for-mentors': {
-    title: 'Become a UniCoach Mentor | 0% Platform Fee',
-    description: 'Host paid 1:1 sessions, share your journey abroad and grow your name, all from a single link. Free to join, 0% platform fee.',
-    image: 'https://www.unicoach.com/og-mentors.jpg',
-    imageAlt: 'Become a UniCoach Mentor',
-  },
-}
+// serves it for the route (try_files $uri.html in nginx.conf). scripts/prerender.mjs reads the
+// same list so the prerendered copy of these routes keeps the custom banner.
+const SHARE_PAGES = JSON.parse(
+  fs.readFileSync(fileURLToPath(new URL('./scripts/share-pages.json', import.meta.url)), 'utf8')
+)
 
 const escapeAttr = (s) => s.replace(/&/g, '&amp;').replace(/"/g, '&quot;')
 
