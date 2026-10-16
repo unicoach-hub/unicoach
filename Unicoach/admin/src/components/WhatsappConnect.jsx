@@ -214,7 +214,7 @@ const WhatsappConnect = () => {
           </div>
         </div>
         <div style={{ fontSize: 12.5, color: 'var(--ux-text-2)' }}>
-          Meta App ID and App Secret are the ones in the Meta / Instagram section above
+          Meta App ID and App Secret are in the Meta WABA card below
           ({status.appId ? 'App ID added' : 'App ID missing'}, {status.hasAppSecret ? 'App Secret added' : 'App Secret missing'}).
         </div>
         <div style={{ padding: '12px 14px', borderRadius: 12, background: 'var(--ux-surface-2)', border: '1px solid var(--ux-line-2)' }}>

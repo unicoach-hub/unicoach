@@ -727,3 +727,46 @@ a:active .canva-icon,
 @media (prefers-reduced-motion: reduce) {
   .cta-route-flow { animation: none; }
 }
+
+/* ── Editorial pages (study-abroad guides) ──────────────────────────────
+   Calmer type across ~40 guide pages without touching each file:
+   readable minimum sizes, sentence-case labels, lighter weights, no
+   pulsing badges and no loud orange gradient panels. Header and footer
+   are left alone. */
+body.editorial-page :is([class*="text-[9"], [class*="text-[10"], [class*="text-[11px]"], .text-xs):not(header *, footer *) {
+  font-size: 13px !important;
+  line-height: 1.5;
+}
+body.editorial-page :is(.text-sm, [class*="text-[12"], [class*="text-[13px]"]):not(header *, footer *) {
+  font-size: 14.5px !important;
+}
+body.editorial-page :is(.uppercase):not(header *, footer *, h1, h2) {
+  text-transform: none !important;
+  letter-spacing: 0 !important;
+}
+body.editorial-page :is(.font-black):not(header *, footer *) { font-weight: 700 !important; }
+body.editorial-page :is(.font-extrabold):not(header *, footer *) { font-weight: 650 !important; }
+body.editorial-page :is(p, li, td).font-semibold:not(header *, footer *) { font-weight: 450 !important; }
+body.editorial-page :is(.animate-pulse, .animate-ping):not(header *, footer *) { animation: none !important; }
+body.editorial-page :is(h1, h2):not(header *, footer *) { letter-spacing: -0.03em; }
+body.editorial-page :is(h1, h2) .bg-clip-text:not(header *, footer *) {
+  background: none !important;
+  -webkit-text-fill-color: #DE5C2B;
+  color: #DE5C2B;
+}
+/* Big orange gradient panels become deep ink panels */
+body.editorial-page [class*="bg-gradient"]:is([class*="from-orange"], [class*="from-[#DE5C2B]"], [class*="from-[#de5c2b]"]):not(.bg-clip-text, header *, footer *, a, button) {
+  background: #1B1530 !important;
+}
+body.editorial-page :is(.shadow-lg, .shadow-xl, .shadow-2xl):not(header *, footer *) {
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04), 0 12px 32px -18px rgba(15, 23, 42, 0.18) !important;
+}
+/* Primary orange buttons become the site's black pill */
+body.editorial-page :is(a, button)[class*="bg-[#DE5C2B]"]:is([class*="px-6"], [class*="px-7"], [class*="px-8"]):not(header *, footer *) {
+  background: #111827 !important;
+  border-radius: 999px !important;
+  box-shadow: none !important;
+}
+body.editorial-page :is(a, button)[class*="bg-[#DE5C2B]"]:is([class*="px-6"], [class*="px-7"], [class*="px-8"]):not(header *, footer *):hover {
+  background: #DE5C2B !important;
+}

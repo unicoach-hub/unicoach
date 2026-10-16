@@ -507,11 +507,11 @@ const resourceDataExtended = {
 
 const aiToolsNavData = [
     {
-        title: 'SHORTLIST & PLAN',
+        title: 'Shortlist & plan',
         items: [
             {
                 name: 'University Shortlister',
-                desc: 'Explore 1,500+ global universities by fees & ranking',
+                desc: 'Compare 1,500+ universities by fees and rank',
                 path: '/universities',
                 badge: '1,500+ Unis',
                 icon: GraduationCap,
@@ -524,7 +524,7 @@ const aiToolsNavData = [
             },
             {
                 name: 'Scholarship Tracker',
-                desc: 'Live merit & need cutoff clocks with calendar sync',
+                desc: 'Scholarships you qualify for, with deadlines',
                 path: '/scholarships',
                 badge: 'Live Clocks',
                 icon: Award,
@@ -536,8 +536,8 @@ const aiToolsNavData = [
                 color: '#d97706',
             },
             {
-                name: 'Admission & ROI Calculator',
-                desc: 'Predict acceptance probability & scholarship fit',
+                name: 'Admission Chances',
+                desc: 'Check your chances of getting in',
                 path: '/eligibility-calculator',
                 badge: 'Popular',
                 icon: Calculator,
@@ -550,7 +550,7 @@ const aiToolsNavData = [
             },
             {
                 name: 'AI 6-Month Roadmap',
-                desc: 'Personalized intake & milestone timeline planner',
+                desc: 'A month-by-month plan for your intake',
                 path: '/ai-tools/study-roadmap',
                 badge: 'AI Engine',
                 icon: Compass,
@@ -563,7 +563,7 @@ const aiToolsNavData = [
             },
             {
                 name: 'Education Loan',
-                desc: 'Compare banks & NBFCs, EMI calculator',
+                desc: 'Compare lenders and work out your EMI',
                 path: '/education-loan',
                 badge: 'Free Advice',
                 icon: Landmark,
@@ -577,11 +577,11 @@ const aiToolsNavData = [
         ]
     },
     {
-        title: 'WRITE & PRACTISE',
+        title: 'Write & practise',
         items: [
             {
-                name: 'AI Statement of Purpose (SOP)',
-                desc: 'Ivy-caliber tailored academic & career SOP writer',
+                name: 'SOP Writer',
+                desc: 'Draft a statement of purpose for your course',
                 path: '/ai-tools/sop-generator',
                 badge: 'AI Writer',
                 icon: FileText,
@@ -594,7 +594,7 @@ const aiToolsNavData = [
             },
             {
                 name: 'AI Mock Visa Interview',
-                desc: 'Real Consular VO question simulator with scoring',
+                desc: 'Practise real visa questions and get a score',
                 path: '/ai-tools/visa-prep',
                 badge: 'Interactive',
                 icon: Mic,
@@ -606,8 +606,8 @@ const aiToolsNavData = [
                 color: '#0891b2',
             },
             {
-                name: 'IELTS AI Essay Examiner',
-                desc: 'Official Cambridge band 0-9 scoring & feedback',
+                name: 'IELTS Essay Checker',
+                desc: 'Get a band score and feedback on your essay',
                 path: '/ai-tools/ielts-evaluator',
                 badge: 'Band 0-9',
                 icon: Sparkles,
@@ -620,7 +620,7 @@ const aiToolsNavData = [
             },
             {
                 name: 'Visa & Pre-Departure',
-                desc: 'Visa filing, housing, forex & insurance',
+                desc: 'Visa filing, housing, forex and insurance',
                 path: '/visa-assistance',
                 badge: 'End-to-End',
                 icon: Plane,
@@ -632,8 +632,8 @@ const aiToolsNavData = [
                 color: '#DE5C2B',
             },
             {
-                name: '1-on-1 Expert Consultation',
-                desc: 'Book 30-min strategy review with certified counsellors',
+                name: 'Talk to an Expert',
+                desc: 'A free 30-minute call with a counsellor',
                 path: '/book-consultation',
                 badge: 'Free Session',
                 icon: Headphones,
@@ -648,343 +648,22 @@ const aiToolsNavData = [
     }
 ];
 
-// ─────────────────────────────────────────────
-// Micro-Interactive Animated Icon Components for AI & Tools Dropdown
-// ─────────────────────────────────────────────
-
-// 1. University Shortlister: Graduation Cap Toss & Gold Sparkle Bursts
-const NavShortlisterIcon = ({ isHovered }) => (
-    <div className="relative w-full h-full flex items-center justify-center overflow-hidden">
-        <motion.div
-            animate={isHovered ? {
-                y: [0, -5, 1, 0],
-                rotate: [0, -14, 8, 0],
-                scale: [1, 1.15, 1.05, 1]
-            } : { y: 0, rotate: 0, scale: 1 }}
-            transition={isHovered ? { duration: 0.65, ease: 'easeInOut' } : { duration: 0.2 }}
-        >
-            <GraduationCap className="w-5 h-5 text-blue-600 transition-colors group-hover:text-white" strokeWidth={2.2} />
-        </motion.div>
-
-        {isHovered && (
-            <>
-                <motion.span
-                    animate={{ scale: [0, 1.5, 0], opacity: [0, 1, 0], y: [0, -9] }}
-                    transition={{ duration: 0.6, repeat: Infinity, delay: 0.05 }}
-                    className="absolute top-1 right-1.5 w-1.5 h-1.5 rounded-full bg-amber-300 shadow-[0_0_6px_#fde047]"
-                />
-                <motion.span
-                    animate={{ scale: [0, 1.3, 0], opacity: [0, 1, 0], x: [-2, -8], y: [0, -4] }}
-                    transition={{ duration: 0.55, repeat: Infinity, delay: 0.2 }}
-                    className="absolute bottom-2 left-2 w-1.5 h-1.5 rounded-full bg-blue-200"
-                />
-                <span className="absolute inset-0 rounded-xl border border-blue-400/50 animate-ping opacity-30 pointer-events-none" />
-            </>
-        )}
-    </div>
-);
-
-// 2. Scholarship Tracker: Pendulum Medal Swing & Specular Light Beam
-const NavScholarshipIcon = ({ isHovered }) => (
-    <div className="relative w-full h-full flex items-center justify-center overflow-hidden">
-        <motion.div
-            animate={isHovered ? {
-                rotate: [-15, 15, -9, 9, -3, 0],
-                scale: [1, 1.14, 1]
-            } : { rotate: 0, scale: 1 }}
-            transition={isHovered ? { duration: 0.85, ease: 'easeOut' } : { duration: 0.2 }}
-        >
-            <Award className="w-5 h-5 text-amber-600 transition-colors group-hover:text-white" strokeWidth={2.2} />
-        </motion.div>
-
-        {/* Specular golden light beam sweep across the medal */}
-        {isHovered && (
-            <>
-                <motion.div
-                    initial={{ x: '-120%', y: '-120%' }}
-                    animate={{ x: '220%', y: '220%' }}
-                    transition={{ duration: 0.8, ease: 'easeInOut', repeat: Infinity, repeatDelay: 0.7 }}
-                    className="absolute inset-0 w-full h-full bg-gradient-to-tr from-transparent via-white/45 to-transparent pointer-events-none"
-                />
-                <motion.span
-                    animate={{ scale: [0, 1.3, 0], opacity: [0, 1, 0], y: [0, -8] }}
-                    transition={{ duration: 0.6, repeat: Infinity, delay: 0.15 }}
-                    className="absolute top-1 left-2 w-1.5 h-1.5 rounded-full bg-amber-200 shadow-[0_0_6px_#fef08a]"
-                />
-            </>
-        )}
-    </div>
-);
-
-// 3. Admission & ROI Calculator: Live Match Score Counter (88% -> 98% FIT)
-const NavCalculatorIcon = ({ isHovered }) => {
-    const [matchScore, setMatchScore] = useState(88);
-
-    useEffect(() => {
-        let interval;
-        if (isHovered) {
-            interval = setInterval(() => {
-                setMatchScore((prev) => (prev >= 98 ? 88 : prev + 3));
-            }, 250);
-        } else {
-            setMatchScore(88);
-        }
-        return () => clearInterval(interval);
-    }, [isHovered]);
-
-    return (
-        <div className="relative w-full h-full flex items-center justify-center overflow-hidden">
-            {!isHovered ? (
-                <Calculator className="w-5 h-5 text-emerald-600 transition-colors group-hover:text-white" strokeWidth={2.2} />
-            ) : (
-                <motion.div
-                    initial={{ scale: 0.8, opacity: 0 }}
-                    animate={{ scale: 1, opacity: 1 }}
-                    className="flex flex-col items-center justify-center leading-none select-none"
-                >
-                    <span className="font-mono text-[11px] font-black text-emerald-700 group-hover:text-white tracking-tight">
-                        {matchScore}%
-                    </span>
-                    <span className="text-[7px] uppercase font-bold text-emerald-600 group-hover:text-emerald-100 tracking-wider mt-0.5">
-                        MATCH
-                    </span>
-                </motion.div>
-            )}
-            {isHovered && (
-                <span className="absolute inset-0 rounded-xl border border-emerald-400/50 animate-ping opacity-30 pointer-events-none" />
-            )}
-        </div>
-    );
-};
-
-// 4. AI 6-Month Roadmap: 360° Compass Needle Spin to North-East & Radar Wave
-const NavRoadmapIcon = ({ isHovered }) => (
-    <div className="relative w-full h-full flex items-center justify-center overflow-hidden">
-        <motion.div
-            animate={isHovered ? {
-                rotate: [0, 360, 405],
-                scale: [1, 1.16, 1.05]
-            } : { rotate: 0, scale: 1 }}
-            transition={isHovered ? { duration: 0.85, ease: [0.34, 1.56, 0.64, 1] } : { duration: 0.2 }}
-        >
-            <Compass className="w-5 h-5 text-purple-600 transition-colors group-hover:text-white" strokeWidth={2.2} />
-        </motion.div>
-
-        {isHovered && (
-            <>
-                <span className="absolute inset-0 rounded-xl border border-purple-400/80 animate-ping opacity-40 pointer-events-none" />
-                <motion.span
-                    animate={{ scale: [0, 1.2, 0], opacity: [0, 1, 0] }}
-                    transition={{ repeat: Infinity, duration: 0.7, delay: 0.1 }}
-                    className="absolute top-1 right-2 w-1.5 h-1.5 rounded-full bg-purple-300 shadow-[0_0_6px_#c084fc]"
-                />
-            </>
-        )}
-    </div>
-);
-
-// 5. AI Statement of Purpose (SOP): Vertical Glowing Laser Scan Sweep
-const NavSopIcon = ({ isHovered }) => (
-    <div className="relative w-full h-full flex items-center justify-center overflow-hidden">
-        <motion.div
-            animate={isHovered ? { scale: 1.08 } : { scale: 1 }}
-            transition={{ duration: 0.2 }}
-        >
-            <FileText className="w-5 h-5 text-rose-600 transition-colors group-hover:text-white" strokeWidth={2.2} />
-        </motion.div>
-
-        {/* High-tech AI Document Laser Scanning Line */}
-        {isHovered && (
-            <>
-                <motion.div
-                    animate={{ y: [-13, 13, -13] }}
-                    transition={{ repeat: Infinity, duration: 1.15, ease: 'easeInOut' }}
-                    className="absolute left-1 right-1 h-[2px] bg-rose-400 shadow-[0_0_8px_#f43f5e] rounded-full pointer-events-none"
-                />
-                <motion.span
-                    animate={{ scale: [0, 1.4, 0], opacity: [0, 1, 0] }}
-                    transition={{ repeat: Infinity, duration: 0.6, delay: 0.1 }}
-                    className="absolute top-1.5 left-2 w-1.5 h-1.5 rounded-full bg-rose-300"
-                />
-            </>
-        )}
-    </div>
-);
-
-// 6. AI Mock Visa Interview: 3-Bar Audio Voice Equalizer & Live Beacon
-const NavVisaIcon = ({ isHovered }) => (
-    <div className="relative w-full h-full flex items-center justify-center overflow-hidden">
-        {!isHovered ? (
-            <Mic className="w-5 h-5 text-cyan-600 transition-colors group-hover:text-white" strokeWidth={2.2} />
-        ) : (
-            /* 3-Bar Equalizer dancing dynamically on hover */
-            <div className="flex items-center justify-center gap-1 h-5 select-none">
-                <motion.span
-                    animate={{ height: [5, 16, 7, 14, 5] }}
-                    transition={{ repeat: Infinity, duration: 0.6, ease: 'easeInOut' }}
-                    className="w-1 rounded-full bg-cyan-600 group-hover:bg-white"
-                />
-                <motion.span
-                    animate={{ height: [12, 6, 18, 9, 12] }}
-                    transition={{ repeat: Infinity, duration: 0.52, delay: 0.08, ease: 'easeInOut' }}
-                    className="w-1 rounded-full bg-cyan-600 group-hover:bg-white"
-                />
-                <motion.span
-                    animate={{ height: [7, 15, 8, 16, 7] }}
-                    transition={{ repeat: Infinity, duration: 0.65, delay: 0.15, ease: 'easeInOut' }}
-                    className="w-1 rounded-full bg-cyan-600 group-hover:bg-white"
-                />
-            </div>
-        )}
-
-        {isHovered && (
-            <span className="absolute top-1.5 right-1.5 w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse shadow-[0_0_6px_#34d399]" />
-        )}
-    </div>
-);
-
-// 7. IELTS AI Essay Examiner: Twirling Starburst & Live Band Ticker (7.5 -> 8.5)
-const NavIeltsIcon = ({ isHovered }) => {
-    const [band, setBand] = useState('7.5');
-
-    useEffect(() => {
-        let interval;
-        if (isHovered) {
-            interval = setInterval(() => {
-                setBand((prev) => (prev === '7.5' ? '8.0' : prev === '8.0' ? '8.5' : '7.5'));
-            }, 320);
-        } else {
-            setBand('7.5');
-        }
-        return () => clearInterval(interval);
-    }, [isHovered]);
-
-    return (
-        <div className="relative w-full h-full flex items-center justify-center overflow-hidden">
-            {!isHovered ? (
-                <Sparkles className="w-5 h-5 text-indigo-600 transition-colors group-hover:text-white" strokeWidth={2.2} />
-            ) : (
-                <motion.div
-                    initial={{ scale: 0.8, opacity: 0 }}
-                    animate={{ scale: 1, opacity: 1 }}
-                    className="flex flex-col items-center justify-center leading-none select-none"
-                >
-                    <span className="font-mono text-[10.5px] font-black text-indigo-700 group-hover:text-white tracking-tight">
-                        {band}
-                    </span>
-                    <span className="text-[7px] uppercase font-bold text-indigo-600 group-hover:text-indigo-100 tracking-wider mt-0.5">
-                        BAND
-                    </span>
-                </motion.div>
-            )}
-
-            {isHovered && (
-                <motion.div
-                    animate={{ rotate: 360 }}
-                    transition={{ duration: 3, repeat: Infinity, ease: 'linear' }}
-                    className="absolute inset-0.5 rounded-xl border-t border-r border-indigo-300/80 pointer-events-none"
-                />
-            )}
-        </div>
-    );
-};
-
-// 8. 1-on-1 Expert Consultation: Headset Micro-Shake & Live Counselor Pulse
-const NavConsultationIcon = ({ isHovered }) => (
-    <div className="relative w-full h-full flex items-center justify-center overflow-hidden">
-        <motion.div
-            animate={isHovered ? {
-                rotate: [-8, 8, -5, 5, -2, 0],
-                scale: [1, 1.15, 1.05]
-            } : { rotate: 0, scale: 1 }}
-            transition={isHovered ? { duration: 0.65, ease: 'easeOut' } : { duration: 0.2 }}
-        >
-            <Headphones className="w-5 h-5 text-[#DE5C2B] transition-colors group-hover:text-white" strokeWidth={2.2} />
-        </motion.div>
-
-        {/* Live Counselor Online Beacon */}
-        {isHovered && (
-            <span className="absolute top-1.5 right-1.5 flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500 shadow-[0_0_6px_#10b981]" />
-            </span>
-        )}
-    </div>
-);
-
-// ── Interactive Tool Card Component with Rich Micro-Interactions ──
-const NavAiToolCard = ({ tool, onSelect }) => {
-    const [isHovered, setIsHovered] = useState(false);
-
-    const renderIcon = () => {
-        switch (tool.iconKey) {
-            case 'graduation':
-                return <NavShortlisterIcon isHovered={isHovered} />;
-            case 'award':
-                return <NavScholarshipIcon isHovered={isHovered} />;
-            case 'calculator':
-                return <NavCalculatorIcon isHovered={isHovered} />;
-            case 'compass':
-                return <NavRoadmapIcon isHovered={isHovered} />;
-            case 'sop':
-                return <NavSopIcon isHovered={isHovered} />;
-            case 'mic':
-                return <NavVisaIcon isHovered={isHovered} />;
-            case 'sparkles':
-                return <NavIeltsIcon isHovered={isHovered} />;
-            case 'headphones':
-                return <NavConsultationIcon isHovered={isHovered} />;
-            default:
-                return tool.icon ? <tool.icon className="w-5 h-5" /> : null;
-        }
-    };
-
+// Quiet menu row: one icon, a title and one line of help text
+const NavToolRow = ({ tool, onSelect }) => {
+    const Icon = tool.icon;
     return (
         <Link
             to={tool.path}
             onClick={onSelect}
-            onMouseEnter={() => setIsHovered(true)}
-            onMouseLeave={() => setIsHovered(false)}
-            className={`group relative flex items-start gap-3.5 p-2.5 rounded-2xl bg-white border border-slate-100 ${tool.cardHoverStyle} hover:shadow-[0_12px_28px_rgba(0,0,0,0.07)] hover:-translate-y-1 transition-all duration-200 ease-out cursor-pointer min-w-0 active:scale-[0.98] overflow-hidden`}
+            className="group flex items-center gap-3.5 px-3 py-2.5 rounded-xl hover:bg-slate-50 transition-colors"
         >
-            {/* Top accent indicator line (matches Journey active milestone bar) */}
-            <div className="absolute top-0 left-5 right-5 h-[2px] bg-gradient-to-r from-transparent via-[#DE5C2B] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-full z-20 pointer-events-none" />
-
-            {/* Ambient Radial Hover Light Bloom */}
-            <div
-                className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none rounded-2xl"
-                style={{
-                    background: `radial-gradient(circle at top left, ${tool.color}15 0%, transparent 70%)`
-                }}
-            />
-
-            {/* Micro-Interactive Icon Shell with Halo */}
-            <div
-                className={`w-10 h-10 rounded-xl ${tool.iconBg} ${tool.iconHoverBg} flex items-center justify-center flex-shrink-0 transition-all duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)] group-hover:scale-110 group-hover:shadow-md group-hover:ring-4 group-hover:ring-orange-500/10 relative overflow-hidden z-10`}
-            >
-                {renderIcon()}
-            </div>
-
-            <div className="min-w-0 flex-1 z-10">
-                <div className="flex items-center justify-between gap-1 mb-0.5">
-                    <span className="text-[0.875rem] font-bold text-slate-800 group-hover:text-[#DE5C2B] transition-colors truncate">
-                        {tool.name}
-                    </span>
-                    <span
-                        className={`text-[9.5px] font-bold px-2 py-0.5 rounded-full border transition-all duration-200 flex-shrink-0 leading-none group-hover:scale-105 group-hover:shadow-2xs ${tool.badgeStyle}`}
-                    >
-                        {tool.badge}
-                    </span>
-                </div>
-                <p className="text-[11.5px] text-slate-500 font-normal leading-tight whitespace-normal break-words line-clamp-1 group-hover:text-slate-600">
-                    {tool.desc}
-                </p>
-            </div>
-
-            {/* Gliding Spring Arrow Indicator */}
-            <div className="opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-200 text-[#DE5C2B] self-center flex-shrink-0 pl-0.5 z-10">
-                <ArrowRight size={14} className="stroke-[2.5]" />
-            </div>
+            <span className="w-9 h-9 rounded-lg grid place-items-center flex-shrink-0 bg-slate-100/80 group-hover:bg-white group-hover:shadow-[0_1px_3px_rgba(15,23,42,0.08)] transition-all" style={{ color: tool.color }}>
+                {Icon && <Icon size={18} strokeWidth={1.8} />}
+            </span>
+            <span className="min-w-0">
+                <span className="block text-[15px] font-semibold text-slate-900 tracking-[-0.01em] group-hover:text-[#DE5C2B] transition-colors">{tool.name}</span>
+                <span className="block text-[13px] text-slate-500 leading-snug mt-0.5 truncate">{tool.desc}</span>
+            </span>
         </Link>
     );
 };
@@ -1149,26 +828,18 @@ const Navbar = () => {
                                             to={link.path}
                                             onClick={() => setActiveDropdown(null)}
                                             data-cursor="pointer"
-                                            className={`group relative flex items-center gap-1.5 px-2.5 xl:px-3 py-1.5 rounded-xl text-[0.84rem] xl:text-[0.875rem] font-bold tracking-tight transition-all duration-200 whitespace-nowrap hover:scale-[1.02] active:scale-95
+                                            className={`group relative flex items-center gap-1.5 px-2.5 xl:px-3 py-1.5 rounded-xl text-[0.875rem] xl:text-[0.94rem] font-semibold tracking-[-0.01em] transition-colors duration-150 whitespace-nowrap
                                             ${activeDropdown === link.name || isActive(link.path) || (link.type === 'study' && location.pathname.includes('/study-abroad'))
-                                                    ? 'text-[#DE5C2B] bg-orange-50/80 shadow-2xs'
-                                                    : 'text-slate-700 hover:text-[#DE5C2B] hover:bg-slate-50'}`}
+                                                    ? 'text-slate-900 bg-slate-100/80'
+                                                    : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'}`}
                                         >
-                                            {/* Micro-pulsing indicator dot when dropdown is open */}
-                                            {activeDropdown === link.name && (
-                                                <span className="relative flex h-1.5 w-1.5 mr-0.5">
-                                                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#DE5C2B] opacity-75" />
-                                                    <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-[#DE5C2B]" />
-                                                </span>
-                                            )}
-
                                             <span>{link.name}</span>
 
 
                                             <ChevronDown
                                                 size={13}
                                                 className={`transition-all duration-300 mt-0.5 transform
-                                                ${activeDropdown === link.name ? 'rotate-180 text-[#DE5C2B] scale-110' : 'text-slate-400 group-hover:text-slate-600'}`}
+                                                ${activeDropdown === link.name ? 'rotate-180 text-slate-700' : 'text-slate-400 group-hover:text-slate-600'}`}
                                             />
 
                                             {/* Terracotta active line with subtle glow */}
@@ -1184,10 +855,10 @@ const Navbar = () => {
                                         <Link
                                             to={link.path}
                                             data-cursor="pointer"
-                                            className={`relative flex items-center gap-1.5 px-2.5 xl:px-3 py-1.5 rounded-xl text-[0.84rem] xl:text-[0.875rem] font-bold tracking-tight transition-all duration-200 whitespace-nowrap hover:scale-[1.02] active:scale-95
+                                            className={`relative flex items-center gap-1.5 px-2.5 xl:px-3 py-1.5 rounded-xl text-[0.875rem] xl:text-[0.94rem] font-semibold tracking-[-0.01em] transition-colors duration-150 whitespace-nowrap
                                             ${isActive(link.path)
-                                                    ? 'text-[#DE5C2B] bg-orange-50/80 shadow-2xs'
-                                                    : 'text-slate-700 hover:text-[#DE5C2B] hover:bg-slate-50'}`}
+                                                    ? 'text-slate-900 bg-slate-100/80'
+                                                    : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'}`}
                                         >
                                             <span>{link.name}</span>
                                             {link.badge && (
@@ -1215,7 +886,7 @@ const Navbar = () => {
                                                 animate={{ opacity: 1, y: 0, scale: 1 }}
                                                 exit={{ opacity: 0, y: 12, scale: 0.99 }}
                                                 transition={{ duration: 0.2, ease: [0.23, 1, 0.32, 1] }}
-                                                className="absolute top-[calc(100%-8px)] left-[-180px] w-[980px] bg-white rounded-[28px] shadow-[0_20px_50px_rgba(0,0,0,0.1)] border border-slate-100 overflow-hidden z-50 flex whitespace-normal text-left"
+                                                className="absolute top-[calc(100%-8px)] left-[-180px] w-[980px] bg-white rounded-[24px] shadow-[0_24px_60px_-12px_rgba(15,23,42,0.18)] border border-slate-100 overflow-hidden z-50 flex whitespace-normal text-left"
                                                 onMouseEnter={() => open(link.name)}
                                                 onMouseLeave={close}
                                             >
@@ -1227,15 +898,15 @@ const Navbar = () => {
                                                             <button
                                                                 key={country}
                                                                 onMouseEnter={() => setActiveCountry(country)}
-                                                                className={`w-full flex items-center justify-between px-4 py-3 text-[0.88rem] font-bold rounded-xl transition-all duration-200 cursor-pointer active:scale-95
+                                                                className={`w-full flex items-center justify-between px-4 py-2.5 text-[15px] font-semibold rounded-xl transition-colors duration-150 cursor-pointer
                                                                 ${isActiveCountry
-                                                                        ? 'bg-[#DE5C2B] text-white shadow-[0_4px_14px_rgba(222,92,43,0.28)] scale-[1.02]'
-                                                                        : 'text-slate-600 hover:bg-slate-100/90 hover:text-[#DE5C2B] hover:translate-x-1'}`}
+                                                                        ? 'bg-white text-slate-900 shadow-[0_1px_3px_rgba(15,23,42,0.08)] ring-1 ring-slate-200/70'
+                                                                        : 'text-slate-600 hover:bg-white/70 hover:text-slate-900'}`}
                                                             >
                                                                 <span className="truncate">{country}</span>
                                                                 <ChevronRight
                                                                     size={14}
-                                                                    className={isActiveCountry ? 'text-white flex-shrink-0' : 'text-slate-400 group-hover:text-[#DE5C2B] flex-shrink-0 transition-transform group-hover:translate-x-0.5'}
+                                                                    className={isActiveCountry ? 'text-[#DE5C2B] flex-shrink-0' : 'text-slate-400 group-hover:text-[#DE5C2B] flex-shrink-0 transition-transform group-hover:translate-x-0.5'}
                                                                 />
                                                             </button>
                                                         );
@@ -1248,7 +919,7 @@ const Navbar = () => {
                                                         <Link
                                                             to={`/study-abroad/${selectedData.slug}`}
                                                             onClick={() => setActiveDropdown(null)}
-                                                            className="inline-flex items-center gap-1.5 text-[1.12rem] font-black text-slate-800 hover:text-[#DE5C2B] transition-colors group"
+                                                            className="inline-flex items-center gap-1.5 text-[20px] font-bold text-slate-900 tracking-[-0.02em] hover:text-[#DE5C2B] transition-colors group"
                                                         >
                                                             <span>Study in {selectedData.fullName}</span>
                                                             <ChevronRight size={18} className="transform group-hover:translate-x-1 transition-transform text-[#DE5C2B] stroke-[2.5]" />
@@ -1257,7 +928,7 @@ const Navbar = () => {
                                                         <Link
                                                             to="/study-abroad"
                                                             onClick={() => setActiveDropdown(null)}
-                                                            className="inline-flex items-center gap-1 text-[0.82rem] font-bold text-[#DE5C2B] hover:text-[#C04A1D] bg-orange-50 px-3 py-1 rounded-lg hover:bg-orange-100 transition-colors"
+                                                            className="inline-flex items-center gap-1 text-[13.5px] font-semibold text-slate-600 hover:text-[#DE5C2B] transition-colors"
                                                         >
                                                             <span>Explore All Destinations</span>
                                                             <ArrowRight size={13} />
@@ -1275,7 +946,7 @@ const Navbar = () => {
                                                         {/* Cities / Col 1 */}
                                                         {selectedData.col1 && selectedData.col1.length > 0 && (
                                                             <div className="min-w-0">
-                                                                <p className="text-[11px] font-bold text-slate-400 uppercase tracking-[0.12em] mb-4 truncate">
+                                                                <p className="text-[12px] font-semibold text-slate-400 uppercase tracking-[0.08em] pb-3 mb-4 border-b border-slate-100 truncate">
                                                                     {selectedData.col1Title}
                                                                 </p>
                                                                 <ul className="space-y-3">
@@ -1283,7 +954,7 @@ const Navbar = () => {
                                                                         <li key={i} className="min-w-0">
                                                                             <Link
                                                                                 to={item.isUniversity ? `/study-abroad/${selectedData.slug}` : `/study-abroad/${selectedData.slug}/${item.slug}`}
-                                                                                className="block text-[0.88rem] text-slate-600 font-semibold hover:text-[#DE5C2B] transition-colors leading-snug whitespace-normal break-words"
+                                                                                className="block text-[15px] text-slate-700 font-normal hover:text-[#DE5C2B] transition-colors leading-snug whitespace-normal break-words"
                                                                             >
                                                                                 {item.name}
                                                                             </Link>
@@ -1295,7 +966,7 @@ const Navbar = () => {
                                                         {/* Courses / Col 2 */}
                                                         {selectedData.col2 && selectedData.col2.length > 0 && (
                                                             <div className="min-w-0">
-                                                                <p className="text-[11px] font-bold text-slate-400 uppercase tracking-[0.12em] mb-4 truncate">
+                                                                <p className="text-[12px] font-semibold text-slate-400 uppercase tracking-[0.08em] pb-3 mb-4 border-b border-slate-100 truncate">
                                                                     {selectedData.col2Title}
                                                                 </p>
                                                                 <ul className="space-y-3">
@@ -1341,7 +1012,7 @@ const Navbar = () => {
                                                                                                                 ? `/study-abroad/${selectedData.slug}/universities/${item.slug}`
                                                                                                                 : `/study-abroad/${selectedData.slug}/${selectedData.col1[0].slug}`
                                                                                 }
-                                                                                className="block text-[0.88rem] text-slate-600 font-semibold hover:text-[#DE5C2B] transition-colors leading-snug whitespace-normal break-words"
+                                                                                className="block text-[15px] text-slate-700 font-normal hover:text-[#DE5C2B] transition-colors leading-snug whitespace-normal break-words"
                                                                             >
                                                                                 {item.name}
                                                                             </Link>
@@ -1353,7 +1024,7 @@ const Navbar = () => {
                                                         {/* Universities / Col 3 */}
                                                         {selectedData.col3 && selectedData.col3.length > 0 && (
                                                             <div className="min-w-0">
-                                                                <p className="text-[11px] font-bold text-slate-400 uppercase tracking-[0.12em] mb-4 truncate">
+                                                                <p className="text-[12px] font-semibold text-slate-400 uppercase tracking-[0.08em] pb-3 mb-4 border-b border-slate-100 truncate">
                                                                     {selectedData.col3Title}
                                                                 </p>
                                                                 <ul className="space-y-3">
@@ -1369,7 +1040,7 @@ const Navbar = () => {
                                                                                                 ? `/study-abroad/${selectedData.slug}/courses/${item.slug}`
                                                                                                 : `/study-abroad/${selectedData.slug}/${selectedData.col1[0].slug}`
                                                                                 }
-                                                                                className="block text-[0.88rem] text-slate-600 font-semibold hover:text-[#DE5C2B] transition-colors leading-snug whitespace-normal break-words"
+                                                                                className="block text-[15px] text-slate-700 font-normal hover:text-[#DE5C2B] transition-colors leading-snug whitespace-normal break-words"
                                                                             >
                                                                                 {item.name}
                                                                             </Link>
@@ -1393,7 +1064,7 @@ const Navbar = () => {
                                                 animate={{ opacity: 1, y: 0, scale: 1 }}
                                                 exit={{ opacity: 0, y: 12, scale: 0.99 }}
                                                 transition={{ duration: 0.2, ease: [0.23, 1, 0.32, 1] }}
-                                                className="absolute top-[calc(100%-8px)] left-[-100px] w-[840px] bg-white rounded-[28px] shadow-[0_20px_50px_rgba(0,0,0,0.1)] border border-slate-100 overflow-hidden z-50 flex whitespace-normal text-left"
+                                                className="absolute top-[calc(100%-8px)] left-[-100px] w-[840px] bg-white rounded-[24px] shadow-[0_24px_60px_-12px_rgba(15,23,42,0.18)] border border-slate-100 overflow-hidden z-50 flex whitespace-normal text-left"
                                                 onMouseEnter={() => open(link.name)}
                                                 onMouseLeave={close}
                                             >
@@ -1405,15 +1076,15 @@ const Navbar = () => {
                                                             <button
                                                                 key={exam}
                                                                 onMouseEnter={() => setActiveExam(exam)}
-                                                                className={`w-full flex items-center justify-between px-4 py-3 text-[0.88rem] font-bold rounded-xl transition-all duration-200 cursor-pointer active:scale-95
+                                                                className={`w-full flex items-center justify-between px-4 py-2.5 text-[15px] font-semibold rounded-xl transition-colors duration-150 cursor-pointer
                                                                 ${isActiveExam
-                                                                        ? 'bg-[#DE5C2B] text-white shadow-[0_4px_14px_rgba(222,92,43,0.28)] scale-[1.02]'
-                                                                        : 'text-slate-600 hover:bg-slate-100/90 hover:text-[#DE5C2B] hover:translate-x-1'}`}
+                                                                        ? 'bg-white text-slate-900 shadow-[0_1px_3px_rgba(15,23,42,0.08)] ring-1 ring-slate-200/70'
+                                                                        : 'text-slate-600 hover:bg-white/70 hover:text-slate-900'}`}
                                                             >
                                                                 <span className="truncate">{exam}</span>
                                                                 <ChevronRight
                                                                     size={14}
-                                                                    className={isActiveExam ? 'text-white flex-shrink-0' : 'text-slate-400 flex-shrink-0 transition-transform group-hover:translate-x-0.5'}
+                                                                    className={isActiveExam ? 'text-[#DE5C2B] flex-shrink-0' : 'text-slate-400 flex-shrink-0 transition-transform group-hover:translate-x-0.5'}
                                                                 />
                                                             </button>
                                                         );
@@ -1430,7 +1101,7 @@ const Navbar = () => {
                                                                     key={i}
                                                                     to={hLink.path}
                                                                     onClick={() => setActiveDropdown(null)}
-                                                                    className="inline-flex items-center gap-1 text-[0.95rem] font-black text-slate-800 hover:text-[#DE5C2B] transition-colors group"
+                                                                    className="inline-flex items-center gap-1 text-[16px] font-semibold text-slate-900 hover:text-[#DE5C2B] transition-colors group"
                                                                 >
                                                                     <span>{hLink.name}</span>
                                                                     <ChevronRight size={16} className="transform group-hover:translate-x-0.5 transition-transform text-[#DE5C2B] flex-shrink-0" />
@@ -1441,7 +1112,7 @@ const Navbar = () => {
                                                         <Link
                                                             to="/exams"
                                                             onClick={() => setActiveDropdown(null)}
-                                                            className="inline-flex items-center gap-1 text-[0.82rem] font-bold text-[#DE5C2B] hover:text-[#C04A1D] bg-orange-50 px-3 py-1 rounded-lg hover:bg-orange-100 transition-colors flex-shrink-0"
+                                                            className="inline-flex items-center gap-1 text-[13.5px] font-semibold text-slate-600 hover:text-[#DE5C2B] transition-colors flex-shrink-0"
                                                         >
                                                             <span>View All Exams Hub</span>
                                                             <ArrowRight size={13} />
@@ -1456,7 +1127,7 @@ const Navbar = () => {
                                                             const isDetails = section.title === 'EXAM DETAILS';
                                                             return (
                                                                 <div key={sIdx} className="min-w-0">
-                                                                    <p className="text-[11px] font-bold text-slate-400 uppercase tracking-[0.12em] mb-4 truncate">
+                                                                    <p className="text-[12px] font-semibold text-slate-400 uppercase tracking-[0.08em] pb-3 mb-4 border-b border-slate-100 truncate">
                                                                         {section.title}
                                                                     </p>
                                                                     {isDetails ? (
@@ -1465,7 +1136,7 @@ const Navbar = () => {
                                                                                 <Link
                                                                                     key={itemIdx}
                                                                                     to={item.path}
-                                                                                    className="block text-[0.88rem] text-slate-600 font-semibold hover:text-[#DE5C2B] transition-colors leading-snug whitespace-normal break-words"
+                                                                                    className="block text-[15px] text-slate-700 font-normal hover:text-[#DE5C2B] transition-colors leading-snug whitespace-normal break-words"
                                                                                 >
                                                                                     {item.name}
                                                                                 </Link>
@@ -1477,7 +1148,7 @@ const Navbar = () => {
                                                                                 <li key={itemIdx} className="min-w-0">
                                                                                     <Link
                                                                                         to={item.path}
-                                                                                        className="block text-[0.88rem] text-slate-600 font-semibold hover:text-[#DE5C2B] transition-colors leading-snug whitespace-normal break-words"
+                                                                                        className="block text-[15px] text-slate-700 font-normal hover:text-[#DE5C2B] transition-colors leading-snug whitespace-normal break-words"
                                                                                     >
                                                                                         {item.name}
                                                                                     </Link>
@@ -1502,7 +1173,7 @@ const Navbar = () => {
                                                 animate={{ opacity: 1, y: 0, scale: 1 }}
                                                 exit={{ opacity: 0, y: 12, scale: 0.99 }}
                                                 transition={{ duration: 0.2, ease: [0.23, 1, 0.32, 1] }}
-                                                className="absolute top-[calc(100%-8px)] left-[-150px] w-[740px] bg-white rounded-[28px] shadow-[0_20px_50px_rgba(0,0,0,0.1)] border border-slate-100 overflow-hidden z-50 flex whitespace-normal text-left"
+                                                className="absolute top-[calc(100%-8px)] left-[-150px] w-[740px] bg-white rounded-[24px] shadow-[0_24px_60px_-12px_rgba(15,23,42,0.18)] border border-slate-100 overflow-hidden z-50 flex whitespace-normal text-left"
                                                 onMouseEnter={() => open(link.name)}
                                                 onMouseLeave={close}
                                             >
@@ -1514,15 +1185,15 @@ const Navbar = () => {
                                                             <button
                                                                 key={tabKey}
                                                                 onMouseEnter={() => setActiveResourceTab(tabKey)}
-                                                                className={`w-full flex items-center justify-between px-4 py-3 text-[0.88rem] font-bold rounded-xl transition-all duration-200 cursor-pointer
+                                                                className={`w-full flex items-center justify-between px-4 py-2.5 text-[15px] font-semibold rounded-xl transition-colors duration-150 cursor-pointer
                                                                 ${isActiveTab
-                                                                        ? 'bg-[#DE5C2B] text-white shadow-[0_4px_14px_rgba(222,92,43,0.22)]'
-                                                                        : 'text-slate-600 hover:bg-slate-100/80 hover:text-[#DE5C2B]'}`}
+                                                                        ? 'bg-white text-slate-900 shadow-[0_1px_3px_rgba(15,23,42,0.08)] ring-1 ring-slate-200/70'
+                                                                        : 'text-slate-600 hover:bg-white/70 hover:text-slate-900'}`}
                                                             >
-                                                                <span className="truncate">{tabKey}</span>
+                                                                <span className="truncate">{tabKey.length > 3 ? tabKey.charAt(0) + tabKey.slice(1).toLowerCase() : tabKey}</span>
                                                                 <ChevronRight
                                                                     size={14}
-                                                                    className={isActiveTab ? 'text-white flex-shrink-0' : 'text-slate-400 flex-shrink-0'}
+                                                                    className={isActiveTab ? 'text-[#DE5C2B] flex-shrink-0' : 'text-slate-400 flex-shrink-0'}
                                                                 />
                                                             </button>
                                                         );
@@ -1532,13 +1203,13 @@ const Navbar = () => {
                                                 {/* Right content panel */}
                                                 <div className="flex-1 p-7 flex flex-col justify-start min-w-0">
                                                     <div className="mb-4 flex items-center justify-between">
-                                                        <h3 className="text-[1.05rem] font-black text-slate-800 tracking-tight">
+                                                        <h3 className="text-[18px] font-bold text-slate-900 tracking-[-0.02em]">
                                                             {resourceDataExtended[activeResourceTab].title}
                                                         </h3>
                                                         <Link
                                                             to="/resources"
                                                             onClick={() => setActiveDropdown(null)}
-                                                            className="inline-flex items-center gap-1 text-[0.82rem] font-bold text-[#DE5C2B] hover:text-[#C04A1D] bg-orange-50 px-3 py-1 rounded-lg hover:bg-orange-100 transition-colors flex-shrink-0"
+                                                            className="inline-flex items-center gap-1 text-[13.5px] font-semibold text-slate-600 hover:text-[#DE5C2B] transition-colors flex-shrink-0"
                                                         >
                                                             <span>View All Resources</span>
                                                             <ArrowRight size={13} />
@@ -1552,10 +1223,10 @@ const Navbar = () => {
                                                             <Link
                                                                 key={item.name}
                                                                 to={item.path}
-                                                                className="flex items-center gap-2 group/item min-w-0 hover:translate-x-1 transition-all duration-150"
+                                                                className="flex items-center gap-2 group/item min-w-0"
                                                             >
-                                                                <div className="w-1.5 h-1.5 rounded-full bg-slate-300 group-hover/item:bg-[#DE5C2B] group-hover/item:scale-125 transition-all duration-150 flex-shrink-0" />
-                                                                <span className="text-[0.88rem] text-slate-600 font-semibold group-hover/item:text-[#DE5C2B] transition-colors leading-snug whitespace-normal break-words">
+                                                                <div className="hidden" />
+                                                                <span className="text-[15px] text-slate-700 font-normal group-hover/item:text-[#DE5C2B] transition-colors leading-snug whitespace-normal break-words">
                                                                     {item.name}
                                                                 </span>
                                                             </Link>
@@ -1574,59 +1245,33 @@ const Navbar = () => {
                                                 animate={{ opacity: 1, y: 0, scale: 1 }}
                                                 exit={{ opacity: 0, y: 12, scale: 0.99 }}
                                                 transition={{ duration: 0.2, ease: [0.23, 1, 0.32, 1] }}
-                                                className="absolute top-[calc(100%-8px)] left-[-160px] w-[840px] bg-white rounded-[24px] shadow-[0_20px_50px_rgba(0,0,0,0.08)] border border-slate-100 overflow-hidden z-50 p-6 whitespace-normal text-left"
+                                                className="absolute top-[calc(100%-8px)] left-[-160px] w-[820px] bg-white rounded-[24px] shadow-[0_24px_60px_-12px_rgba(15,23,42,0.18)] border border-slate-100 overflow-hidden z-50 px-7 pt-6 pb-6 whitespace-normal text-left"
                                                 onMouseEnter={() => open(link.name)}
                                                 onMouseLeave={close}
                                             >
-                                                {/* 2-Column Grid */}
-                                                <div className="grid grid-cols-2 gap-5">
+                                                <div className="grid grid-cols-2 gap-x-8">
                                                     {aiToolsNavData.map((category, cIdx) => (
-                                                        <div key={cIdx} className="space-y-2 min-w-0">
-                                                            <div className="flex items-center gap-1.5 px-2 py-0.5">
-                                                                <span className="w-1.5 h-1.5 rounded-full bg-[#DE5C2B] animate-pulse shadow-[0_0_6px_#DE5C2B]" />
-                                                                <p className="text-[11px] font-extrabold text-slate-400 uppercase tracking-[0.14em] truncate">
-                                                                    {category.title}
-                                                                </p>
-                                                            </div>
-                                                            <div className="space-y-1.5">
+                                                        <div key={cIdx} className="min-w-0">
+                                                            <p className="px-3 pb-3 mb-2 border-b border-slate-100 text-[12px] font-semibold text-slate-400 uppercase tracking-[0.08em]">
+                                                                {category.title}
+                                                            </p>
+                                                            <div className="space-y-0.5">
                                                                 {category.items.map((tool, tIdx) => (
-                                                                    <NavAiToolCard
-                                                                        key={tIdx}
-                                                                        tool={tool}
-                                                                        onSelect={() => setActiveDropdown(null)}
-                                                                    />
+                                                                    <NavToolRow key={tIdx} tool={tool} onSelect={() => setActiveDropdown(null)} />
                                                                 ))}
                                                             </div>
                                                         </div>
                                                     ))}
                                                 </div>
 
-                                                {/* Bottom Quick-Action Bar */}
-                                                <div className="mt-4 pt-3.5 border-t border-slate-100 flex items-center justify-between px-2">
-                                                    <div className="flex items-center gap-2 text-[11.5px] font-medium text-slate-500">
-                                                        <span className="relative flex h-2.5 w-2.5">
-                                                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-                                                            <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500" />
-                                                        </span>
-                                                        <span>Over <strong className="text-slate-800 font-bold">50,000+</strong> study abroad profiles shortlisted with UniCoach</span>
-                                                    </div>
-                                                    <div className="flex items-center gap-2.5">
-                                                        <Link
-                                                            to="/ai-tools"
-                                                            onClick={() => setActiveDropdown(null)}
-                                                            className="text-[12px] font-bold text-slate-700 hover:text-[#DE5C2B] flex items-center gap-1.5 px-3 py-1.5 rounded-xl hover:bg-slate-100 transition-all active:scale-95 group"
-                                                        >
-                                                            <span>View Full Toolkit</span>
-                                                            <ArrowRight size={13} className="group-hover:translate-x-1 transition-transform stroke-[2.5]" />
+                                                <div className="mt-5 -mx-7 -mb-6 px-10 py-4 bg-slate-50 border-t border-slate-100 flex items-center justify-between">
+                                                    <p className="text-[13.5px] text-slate-600">Not sure where to start? <span className="text-slate-900 font-semibold">Check your profile in 2 minutes.</span></p>
+                                                    <div className="flex items-center gap-5">
+                                                        <Link to="/ai-tools" onClick={() => setActiveDropdown(null)} className="text-[13.5px] font-semibold text-slate-700 hover:text-[#DE5C2B] inline-flex items-center gap-1.5 transition-colors">
+                                                            All tools <ArrowRight size={14} />
                                                         </Link>
-                                                        <Link
-                                                            to="/eligibility-calculator"
-                                                            onClick={() => setActiveDropdown(null)}
-                                                            className="text-[12px] font-bold text-white bg-[#DE5C2B] hover:bg-[#c2410c] flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl shadow-[0_4px_12px_rgba(222,92,43,0.25)] hover:shadow-[0_6px_16px_rgba(222,92,43,0.35)] transition-all active:scale-95 group"
-                                                        >
-                                                            <Sparkles size={13} className="animate-pulse" />
-                                                            <span>Check Profile Fit</span>
-                                                            <ArrowRight size={13} className="group-hover:translate-x-1 transition-transform stroke-[2.5]" />
+                                                        <Link to="/eligibility-calculator" onClick={() => setActiveDropdown(null)} className="text-[13.5px] font-semibold text-white bg-slate-900 hover:bg-[#DE5C2B] inline-flex items-center gap-1.5 px-4 h-9 rounded-full transition-colors">
+                                                            Check profile <ArrowRight size={14} />
                                                         </Link>
                                                     </div>
                                                 </div>
@@ -1946,35 +1591,14 @@ const Navbar = () => {
                                     <MobileAccordion
                                         icon={Compass}
                                         title="Toolkit"
-                                        badge="9 Tools"
                                         isOpen={mobileExpanded === 'tools'}
                                         onToggle={() => setMobileExpanded(mobileExpanded === 'tools' ? null : 'tools')}
                                     >
                                         <div className="space-y-3 pt-1">
-                                            {/* Sleek Gradient CTA Banner */}
-                                            <Link
-                                                to="/ai-tools"
-                                                onClick={() => setMobileOpen(false)}
-                                                className="group relative overflow-hidden flex items-center justify-between p-3.5 rounded-xl bg-gradient-to-r from-[#DE5C2B] to-[#F97316] text-white font-bold text-xs shadow-md shadow-orange-500/15 active:scale-[0.99] transition-all"
-                                            >
-                                                <div className="flex items-center gap-3">
-                                                    <div className="w-8 h-8 rounded-lg bg-white/20 backdrop-blur-xs flex items-center justify-center shrink-0">
-                                                        <Sparkles size={16} className="text-white" />
-                                                    </div>
-                                                    <div>
-                                                        <p className="font-extrabold text-[13px] leading-tight text-white">Explore Full AI Tools Suite</p>
-                                                        <p className="text-[10.5px] text-white/85 font-normal leading-tight mt-0.5">Shortlist unis, live scholarships & mock visa</p>
-                                                    </div>
-                                                </div>
-                                                <div className="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center shrink-0 group-hover:translate-x-0.5 transition-transform">
-                                                    <ChevronRight size={14} className="text-white" />
-                                                </div>
-                                            </Link>
-
                                             {/* Grouped Tool Cards */}
                                             {aiToolsNavData.map((category, cIdx) => (
                                                 <div key={cIdx} className="space-y-1.5">
-                                                    <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1 pt-1">
+                                                    <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-[0.08em] px-2 pt-2">
                                                         {category.title}
                                                     </p>
                                                     <div className="space-y-1.5">
@@ -1983,31 +1607,28 @@ const Navbar = () => {
                                                                 key={idx}
                                                                 to={tool.path}
                                                                 onClick={() => setMobileOpen(false)}
-                                                                className="group flex items-center justify-between p-2.5 bg-white hover:bg-orange-50/50 rounded-2xl text-xs font-semibold text-slate-800 border border-slate-200/70 hover:border-orange-200 transition-all shadow-2xs active:scale-[0.98]"
+                                                                className="group flex items-center p-2 rounded-xl hover:bg-slate-50 transition-colors"
                                                             >
                                                                 <div className="flex items-center gap-2.5 min-w-0">
-                                                                    <div className={`w-8 h-8 rounded-xl flex items-center justify-center flex-shrink-0 transition-all duration-300 group-hover:scale-110 group-hover:-rotate-3 ${tool.iconBg || 'bg-orange-50 text-[#DE5C2B]'} ${tool.iconHoverBg || 'group-hover:bg-[#DE5C2B] group-hover:text-white'}`}>
+                                                                    <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 bg-slate-100" style={{ color: tool.color }}>
                                                                         {tool.icon && (
                                                                             <tool.icon
-                                                                                className="w-4 h-4 transition-transform duration-300 group-hover:scale-110 text-current group-hover:text-white"
-                                                                                strokeWidth={2.2}
+                                                                                className="w-4 h-4"
+                                                                                strokeWidth={1.9}
                                                                             />
                                                                         )}
                                                                     </div>
                                                                     <div className="min-w-0">
-                                                                        <span className="font-bold text-slate-900 group-hover:text-[#DE5C2B] transition-colors truncate block text-[12.5px]">
+                                                                        <span className="font-semibold text-slate-900 truncate block text-[14px]">
                                                                             {tool.name}
                                                                         </span>
                                                                         {tool.desc && (
-                                                                            <p className="text-[10px] text-slate-500 font-normal truncate max-w-[200px] xs:max-w-[240px]">
+                                                                            <p className="text-[12px] text-slate-500 font-normal truncate max-w-[230px]">
                                                                                 {tool.desc}
                                                                             </p>
                                                                         )}
                                                                     </div>
                                                                 </div>
-                                                                <span className={`text-[9.5px] font-bold px-2 py-0.5 rounded-full border flex-shrink-0 ml-2 shadow-2xs ${tool.badgeStyle || 'bg-slate-100 text-slate-600 border-slate-200'}`}>
-                                                                    {tool.badge}
-                                                                </span>
                                                             </Link>
                                                         ))}
                                                     </div>
@@ -2020,7 +1641,6 @@ const Navbar = () => {
                                     <MobileAccordion
                                         icon={GraduationCap}
                                         title="Exams"
-                                        badge="Hub"
                                         isOpen={mobileExpanded === 'exams'}
                                         onToggle={() => setMobileExpanded(mobileExpanded === 'exams' ? null : 'exams')}
                                     >
@@ -2096,15 +1716,15 @@ const Navbar = () => {
 
                                     {/* Standard Nav links for Mobile — Clean list style */}
                                     <div className="pt-2 pb-1 space-y-0.5">
-                                        <p className="text-[10px] font-black uppercase tracking-wider text-slate-400 px-1 py-1">
+                                        <p className="text-[11px] font-semibold uppercase tracking-[0.08em] text-slate-400 px-1 py-1">
                                             Explore UniCoach
                                         </p>
                                         {[
-                                            { name: 'UniCoach Mentorship', path: '/unicoach', icon: Sparkles, badge: 'Popular', color: 'text-amber-600 bg-amber-50' },
-                                            { name: 'Blogs & Articles', path: '/blogs', icon: FileText, color: 'text-blue-600 bg-blue-50' },
-                                            { name: 'UniCoach Digest', path: '/unicoach-digest', icon: Newspaper, color: 'text-emerald-600 bg-emerald-50' },
-                                            { name: 'Global Events', path: '/events', icon: Calendar, color: 'text-indigo-600 bg-indigo-50' },
-                                            { name: 'Newsroom', path: '/newsroom', icon: Radio, color: 'text-rose-600 bg-rose-50' },
+                                            { name: 'UniCoach Mentorship', path: '/unicoach', icon: Sparkles, color: 'text-slate-600 bg-slate-100' },
+                                            { name: 'Blogs & Articles', path: '/blogs', icon: FileText, color: 'text-slate-600 bg-slate-100' },
+                                            { name: 'UniCoach Digest', path: '/unicoach-digest', icon: Newspaper, color: 'text-slate-600 bg-slate-100' },
+                                            { name: 'Global Events', path: '/events', icon: Calendar, color: 'text-slate-600 bg-slate-100' },
+                                            { name: 'Newsroom', path: '/newsroom', icon: Radio, color: 'text-slate-600 bg-slate-100' },
                                         ].map((l) => {
                                             const Icon = l.icon;
                                             return (
@@ -2170,10 +1790,10 @@ const Navbar = () => {
                                         <Link
                                             to="/login"
                                             onClick={() => setMobileOpen(false)}
-                                            className="w-full py-3 px-4 flex items-center justify-center gap-2 text-center text-white font-bold text-sm bg-gradient-to-r from-orange-500 via-[#DE5C2B] to-[#DE5C2B] hover:opacity-95 active:scale-[0.99] rounded-xl shadow-md shadow-orange-500/20 transition-all cursor-pointer select-none no-underline"
+                                            className="w-full py-3 px-4 flex items-center justify-center gap-2 text-center text-white font-bold text-sm bg-slate-900 hover:bg-black active:scale-[0.99] rounded-full transition-all cursor-pointer select-none no-underline"
                                         >
                                             <UserIcon size={16} />
-                                            <span>Sign In to UniCoach</span>
+                                            <span>Sign in</span>
                                         </Link>
                                         <p className="text-center text-xs text-slate-500 font-medium">
                                             Don't have an account?{' '}
@@ -2198,31 +1818,26 @@ const Navbar = () => {
 };
 
 // Reusable Mobile Accordion wrapper — Clean minimal list style (no bulky outer boxes)
-const MobileAccordion = ({ icon: Icon, title, badge, isOpen, onToggle, children }) => (
+const MobileAccordion = ({ icon: Icon, title, isOpen, onToggle, children }) => (
     <div className="border-b border-slate-100 last:border-b-0 transition-colors">
         <button
             type="button"
             onClick={onToggle}
             className={`w-full flex items-center justify-between py-3.5 px-1 text-[15px] font-semibold transition-colors cursor-pointer select-none ${
-                isOpen ? 'text-[#DE5C2B]' : 'text-slate-800 hover:text-slate-950'
+                isOpen ? 'text-slate-950' : 'text-slate-800 hover:text-slate-950'
             }`}
         >
             <div className="flex items-center gap-3 min-w-0">
                 {Icon && (
                     <div className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 transition-colors ${
-                        isOpen ? 'bg-[#DE5C2B] text-white' : 'bg-orange-50 text-[#DE5C2B]'
+                        isOpen ? 'bg-slate-900 text-white' : 'bg-slate-100 text-slate-600'
                     }`}>
                         <Icon size={16} strokeWidth={2} />
                     </div>
                 )}
                 <span className="font-semibold tracking-tight">{title}</span>
-                {badge && (
-                    <span className="px-2 py-0.5 rounded-full text-[9.5px] font-black uppercase tracking-wider bg-orange-100/80 text-[#DE5C2B]">
-                        {badge}
-                    </span>
-                )}
             </div>
-            <div className={`transition-transform duration-200 ${isOpen ? 'rotate-180 text-[#DE5C2B]' : 'text-slate-400'}`}>
+            <div className={`transition-transform duration-200 ${isOpen ? 'rotate-180 text-slate-700' : 'text-slate-400'}`}>
                 <ChevronDown size={16} strokeWidth={2.2} />
             </div>
         </button>

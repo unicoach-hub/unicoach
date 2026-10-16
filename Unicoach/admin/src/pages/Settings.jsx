@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Button, Input, Row, Col, message, Spin, Modal, Space
+  Button, Input, Row, Col, message, Spin, Space
 } from 'antd';
 import {
   SettingOutlined, LockOutlined, UnlockOutlined, EyeOutlined, EyeInvisibleOutlined,
-  SaveOutlined, SafetyCertificateOutlined, BookOutlined, CheckCircleOutlined,
-  InstagramOutlined, FacebookOutlined, YoutubeOutlined, LinkedinOutlined,
-  TwitterOutlined, SendOutlined, ShareAltOutlined, RobotOutlined, KeyOutlined,
+  SaveOutlined, SafetyCertificateOutlined, CheckCircleOutlined,
   MobileOutlined, MailOutlined, GlobalOutlined, CloudUploadOutlined
 } from '@ant-design/icons';
 import Header from '../components/Header';
@@ -16,7 +14,6 @@ import WhatsappConnect from '../components/WhatsappConnect';
 const Settings = () => {
   const [loading, setLoading] = useState(false);
   const [saving, setSaving] = useState(false);
-  const [guideModalOpen, setGuideModalOpen] = useState(false);
   const [testingCloudinary, setTestingCloudinary] = useState(false);
 
   // Security Locking States
@@ -174,16 +171,9 @@ const Settings = () => {
     <div>
       <Header
         title="Settings"
-        subtitle="Site settings, social media credentials, WABA and SMTP. Staff accounts are under Staff & Roles."
+        subtitle="Site settings, WABA and SMTP. Staff accounts are under Staff & Roles."
         extra={
           <Space wrap size="small">
-            <Button
-              icon={<BookOutlined />}
-              onClick={() => setGuideModalOpen(true)}
-            >
-              Social setup guide
-            </Button>
-
             <Button
               type="primary"
               icon={<SaveOutlined />}
@@ -238,258 +228,7 @@ const Settings = () => {
             </Row>
           </div>
 
-          {/* ── SECTION 3: 🔑 SOCIAL MEDIA PLATFORM CREDENTIALS ── */}
-          <div className="nx-card p-5 sm:p-6">
-            <div className="flex items-center justify-between gap-3 flex-wrap" style={{ marginBottom: 18 }}>
-              <div className="flex items-center gap-3 flex-wrap">
-                <span className="nx-icon-circle"><KeyOutlined /></span>
-                <span className="nx-section-title">Social media & multi-channel API credentials</span>
-                <span className={`nx-status ${isLocked.social ? 'nx-status--neutral' : 'nx-status--warning'}`}>
-                  {isLocked.social ? <LockOutlined /> : <UnlockOutlined />}
-                  {isLocked.social ? 'Locked, read-only' : 'Unlocked, editing'}
-                </span>
-              </div>
-              <Button
-                type={isLocked.social ? 'default' : 'primary'}
-                icon={isLocked.social ? <LockOutlined /> : <UnlockOutlined />}
-                onClick={() => toggleLock('social')}
-              >
-                {isLocked.social ? 'Unlock & edit credentials' : 'Lock section'}
-              </Button>
-            </div>
-            <Row gutter={[16, 16]}>
-
-              {/* 1. Meta / Instagram / Facebook */}
-              <Col xs={24} lg={12}>
-                <div style={{ padding: 18, background: 'var(--ux-surface-2)', borderRadius: 18, border: '1px solid var(--ux-line-2)', height: '100%' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 14 }}>
-                    <span className="nx-icon-circle" style={{ background: '#fff' }}><InstagramOutlined /></span><span className="nx-icon-circle" style={{ background: '#fff' }}><FacebookOutlined /></span>
-                    <span style={{ fontWeight: 600, fontSize: 14, color: 'var(--ux-ink)', marginLeft: 2 }}>Meta (Instagram & Facebook) Graph API</span>
-                  </div>
-
-                  <Row gutter={[12, 12]}>
-                    <Col span={12}>
-                      <label className="nx-label" style={{ display: 'block', marginBottom: 6 }}>Meta app ID</label>
-                      <Input
-                        disabled={isLocked.social}
-                        placeholder="1234567890"
-                        value={formState.metaAppId}
-                        onChange={e => handleChange('metaAppId', e.target.value)}
-                      />
-                    </Col>
-                    <Col span={12}>
-                      <label className="nx-label" style={{ display: 'block', marginBottom: 6 }}>Meta app secret</label>
-                      <Input.Password
-                        disabled={isLocked.social}
-                        placeholder="••••••••••••"
-                        value={formState.metaAppSecret}
-                        onChange={e => handleChange('metaAppSecret', e.target.value)}
-                      />
-                    </Col>
-                    <Col span={24}>
-                      <label className="nx-label" style={{ display: 'block', marginBottom: 6 }}>Page access token</label>
-                      <Input.Password
-                        disabled={isLocked.social}
-                        placeholder="EAA..."
-                        value={formState.metaPageAccessToken}
-                        onChange={e => handleChange('metaPageAccessToken', e.target.value)}
-                      />
-                    </Col>
-                    <Col span={24}>
-                      <label className="nx-label" style={{ display: 'block', marginBottom: 6 }}>Instagram account ID</label>
-                      <Input
-                        disabled={isLocked.social}
-                        placeholder="178414..."
-                        value={formState.instagramAccountId}
-                        onChange={e => handleChange('instagramAccountId', e.target.value)}
-                      />
-                    </Col>
-                  </Row>
-                </div>
-              </Col>
-
-              {/* 2. YouTube Data API */}
-              <Col xs={24} lg={12}>
-                <div style={{ padding: 18, background: 'var(--ux-surface-2)', borderRadius: 18, border: '1px solid var(--ux-line-2)', height: '100%' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 14 }}>
-                    <span className="nx-icon-circle" style={{ background: '#fff' }}><YoutubeOutlined /></span>
-                    <span style={{ fontWeight: 600, fontSize: 14, color: 'var(--ux-ink)', marginLeft: 2 }}>YouTube Data API v3 (Google Cloud)</span>
-                  </div>
-
-                  <Row gutter={[12, 12]}>
-                    <Col span={24}>
-                      <label className="nx-label" style={{ display: 'block', marginBottom: 6 }}>YouTube API key</label>
-                      <Input.Password
-                        disabled={isLocked.social}
-                        placeholder="AIzaSy..."
-                        value={formState.youtubeApiKey}
-                        onChange={e => handleChange('youtubeApiKey', e.target.value)}
-                      />
-                    </Col>
-                    <Col span={12}>
-                      <label className="nx-label" style={{ display: 'block', marginBottom: 6 }}>Google client ID</label>
-                      <Input
-                        disabled={isLocked.social}
-                        placeholder="client_id.apps.googleusercontent.com"
-                        value={formState.youtubeClientId}
-                        onChange={e => handleChange('youtubeClientId', e.target.value)}
-                      />
-                    </Col>
-                    <Col span={12}>
-                      <label className="nx-label" style={{ display: 'block', marginBottom: 6 }}>Client secret</label>
-                      <Input.Password
-                        disabled={isLocked.social}
-                        placeholder="GOCSPX-..."
-                        value={formState.youtubeClientSecret}
-                        onChange={e => handleChange('youtubeClientSecret', e.target.value)}
-                      />
-                    </Col>
-                  </Row>
-                </div>
-              </Col>
-
-              {/* 3. LinkedIn API */}
-              <Col xs={24} lg={12}>
-                <div style={{ padding: 18, background: 'var(--ux-surface-2)', borderRadius: 18, border: '1px solid var(--ux-line-2)', height: '100%' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 14 }}>
-                    <span className="nx-icon-circle" style={{ background: '#fff' }}><LinkedinOutlined /></span>
-                    <span style={{ fontWeight: 600, fontSize: 14, color: 'var(--ux-ink)', marginLeft: 2 }}>LinkedIn Community API</span>
-                  </div>
-
-                  <Row gutter={[12, 12]}>
-                    <Col span={12}>
-                      <label className="nx-label" style={{ display: 'block', marginBottom: 6 }}>LinkedIn client ID</label>
-                      <Input
-                        disabled={isLocked.social}
-                        placeholder="77..."
-                        value={formState.linkedinClientId}
-                        onChange={e => handleChange('linkedinClientId', e.target.value)}
-                      />
-                    </Col>
-                    <Col span={12}>
-                      <label className="nx-label" style={{ display: 'block', marginBottom: 6 }}>Client secret</label>
-                      <Input.Password
-                        disabled={isLocked.social}
-                        placeholder="••••••••••••"
-                        value={formState.linkedinClientSecret}
-                        onChange={e => handleChange('linkedinClientSecret', e.target.value)}
-                      />
-                    </Col>
-                    <Col span={24}>
-                      <label className="nx-label" style={{ display: 'block', marginBottom: 6 }}>Organization URN / ID</label>
-                      <Input
-                        disabled={isLocked.social}
-                        placeholder="urn:li:organization:12345678"
-                        value={formState.linkedinOrgId}
-                        onChange={e => handleChange('linkedinOrgId', e.target.value)}
-                      />
-                    </Col>
-                  </Row>
-                </div>
-              </Col>
-
-              {/* 4. Twitter (X) API */}
-              <Col xs={24} lg={12}>
-                <div style={{ padding: 18, background: 'var(--ux-surface-2)', borderRadius: 18, border: '1px solid var(--ux-line-2)', height: '100%' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 14 }}>
-                    <span className="nx-icon-circle" style={{ background: '#fff' }}><TwitterOutlined /></span>
-                    <span style={{ fontWeight: 600, fontSize: 14, color: 'var(--ux-ink)', marginLeft: 2 }}>Twitter / X API v2</span>
-                  </div>
-
-                  <Row gutter={[12, 12]}>
-                    <Col span={12}>
-                      <label className="nx-label" style={{ display: 'block', marginBottom: 6 }}>API key</label>
-                      <Input
-                        disabled={isLocked.social}
-                        placeholder="API Key"
-                        value={formState.twitterApiKey}
-                        onChange={e => handleChange('twitterApiKey', e.target.value)}
-                      />
-                    </Col>
-                    <Col span={12}>
-                      <label className="nx-label" style={{ display: 'block', marginBottom: 6 }}>API secret</label>
-                      <Input.Password
-                        disabled={isLocked.social}
-                        placeholder="API Secret"
-                        value={formState.twitterApiSecret}
-                        onChange={e => handleChange('twitterApiSecret', e.target.value)}
-                      />
-                    </Col>
-                    <Col span={12}>
-                      <label className="nx-label" style={{ display: 'block', marginBottom: 6 }}>Access token</label>
-                      <Input.Password
-                        disabled={isLocked.social}
-                        placeholder="Access Token"
-                        value={formState.twitterAccessToken}
-                        onChange={e => handleChange('twitterAccessToken', e.target.value)}
-                      />
-                    </Col>
-                    <Col span={12}>
-                      <label className="nx-label" style={{ display: 'block', marginBottom: 6 }}>Access secret</label>
-                      <Input.Password
-                        disabled={isLocked.social}
-                        placeholder="Access Secret"
-                        value={formState.twitterAccessSecret}
-                        onChange={e => handleChange('twitterAccessSecret', e.target.value)}
-                      />
-                    </Col>
-                  </Row>
-                </div>
-              </Col>
-
-              {/* 5. Telegram Bot API */}
-              <Col xs={24} lg={12}>
-                <div style={{ padding: 18, background: 'var(--ux-surface-2)', borderRadius: 18, border: '1px solid var(--ux-line-2)', height: '100%' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 14 }}>
-                    <span className="nx-icon-circle" style={{ background: '#fff' }}><SendOutlined /></span>
-                    <span style={{ fontWeight: 600, fontSize: 14, color: 'var(--ux-ink)', marginLeft: 2 }}>Telegram Bot API</span>
-                  </div>
-
-                  <Row gutter={[12, 12]}>
-                    <Col span={14}>
-                      <label className="nx-label" style={{ display: 'block', marginBottom: 6 }}>Bot HTTP token (@BotFather)</label>
-                      <Input.Password
-                        disabled={isLocked.social}
-                        placeholder="7123456789:AAE..."
-                        value={formState.telegramBotToken}
-                        onChange={e => handleChange('telegramBotToken', e.target.value)}
-                      />
-                    </Col>
-                    <Col span={10}>
-                      <label className="nx-label" style={{ display: 'block', marginBottom: 6 }}>Channel chat ID</label>
-                      <Input
-                        disabled={isLocked.social}
-                        placeholder="@unicoach_updates"
-                        value={formState.telegramChatId}
-                        onChange={e => handleChange('telegramChatId', e.target.value)}
-                      />
-                    </Col>
-                  </Row>
-                </div>
-              </Col>
-
-              {/* 6. Quora Space Integration */}
-              <Col xs={24} lg={12}>
-                <div style={{ padding: 18, background: 'var(--ux-surface-2)', borderRadius: 18, border: '1px solid var(--ux-line-2)', height: '100%' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 14 }}>
-                    <span className="nx-icon-circle" style={{ background: '#fff' }}><ShareAltOutlined /></span>
-                    <span style={{ fontWeight: 600, fontSize: 14, color: 'var(--ux-ink)', marginLeft: 2 }}>Quora Space integration</span>
-                  </div>
-
-                  <label className="nx-label" style={{ display: 'block', marginBottom: 6 }}>Quora space URL</label>
-                  <Input
-                    disabled={isLocked.social}
-                    placeholder="https://www.quora.com/q/unicoach"
-                    value={formState.quoraSpaceUrl}
-                    onChange={e => handleChange('quoraSpaceUrl', e.target.value)}
-                  />
-                </div>
-              </Col>
-
-            </Row>
-          </div>
-
-          {/* ── SECTION 4: ✉️ SMTP EMAIL & TWILIO WABA ── */}
+          {/* ── SECTION 4: ✉️ SMTP EMAIL & META WABA ── */}
           <Row gutter={[16, 16]}>
             {/* SMTP Server */}
             <Col xs={24} lg={12}>
@@ -529,13 +268,13 @@ const Settings = () => {
               <WhatsappConnect />
             </Col>
 
-            {/* Twilio & Meta WABA */}
+            {/* Meta WABA */}
             <Col xs={24} lg={12}>
               <div className="nx-card p-5 sm:p-6 h-full">
                 <div className="flex items-center justify-between gap-3 flex-wrap" style={{ marginBottom: 18 }}>
                   <div className="flex items-center gap-3 flex-wrap">
                     <span className="nx-icon-circle"><MobileOutlined /></span>
-                    <span className="nx-section-title">Meta WABA & Twilio OTP API</span>
+                    <span className="nx-section-title">Meta WABA</span>
                   </div>
                   <Button size="small" icon={isLocked.waba ? <LockOutlined /> : <UnlockOutlined />} onClick={() => toggleLock('waba')}>
                     {isLocked.waba ? 'Unlock' : 'Lock'}
@@ -543,20 +282,20 @@ const Settings = () => {
                 </div>
                 <Row gutter={[12, 12]}>
                   <Col span={12}>
+                    <label className="nx-label" style={{ display: 'block', marginBottom: 6 }}>Meta app ID</label>
+                    <Input disabled={isLocked.waba} value={formState.metaAppId} onChange={e => handleChange('metaAppId', e.target.value)} />
+                  </Col>
+                  <Col span={12}>
+                    <label className="nx-label" style={{ display: 'block', marginBottom: 6 }}>Meta app secret</label>
+                    <Input.Password disabled={isLocked.waba} value={formState.metaAppSecret} onChange={e => handleChange('metaAppSecret', e.target.value)} />
+                  </Col>
+                  <Col span={12}>
                     <label className="nx-label" style={{ display: 'block', marginBottom: 6 }}>WABA phone ID</label>
                     <Input disabled={isLocked.waba} value={formState.wabaPhoneNumberId} onChange={e => handleChange('wabaPhoneNumberId', e.target.value)} />
                   </Col>
                   <Col span={12}>
                     <label className="nx-label" style={{ display: 'block', marginBottom: 6 }}>WABA access token</label>
                     <Input.Password disabled={isLocked.waba} value={formState.wabaAccessToken} onChange={e => handleChange('wabaAccessToken', e.target.value)} />
-                  </Col>
-                  <Col span={12}>
-                    <label className="nx-label" style={{ display: 'block', marginBottom: 6 }}>Twilio SID</label>
-                    <Input disabled={isLocked.waba} value={formState.twilioAccountSid} onChange={e => handleChange('twilioAccountSid', e.target.value)} />
-                  </Col>
-                  <Col span={12}>
-                    <label className="nx-label" style={{ display: 'block', marginBottom: 6 }}>Twilio token</label>
-                    <Input.Password disabled={isLocked.waba} value={formState.twilioAuthToken} onChange={e => handleChange('twilioAuthToken', e.target.value)} />
                   </Col>
                 </Row>
               </div>
@@ -645,36 +384,6 @@ const Settings = () => {
 
       {/* ── ADD / EDIT EMPLOYEE COUNSELOR MODAL ── */}
 
-      {/* ── STEP-BY-STEP SETUP GUIDE MODAL ── */}
-      <Modal
-        title={
-          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-            <span className="nx-icon-circle"><BookOutlined /></span>
-            <span style={{ fontWeight: 600, letterSpacing: '-0.02em', color: 'var(--ux-ink)' }}>Social media channels setup & connection guide</span>
-          </div>
-        }
-        open={guideModalOpen}
-        onCancel={() => setGuideModalOpen(false)}
-        footer={null}
-        width={720}
-      >
-        <div style={{ maxHeight: 500, overflowY: 'auto', paddingRight: 10, fontSize: 13, lineHeight: 1.6, color: 'var(--ux-text-2)' }}>
-          <h3 style={{ fontSize: 15, fontWeight: 600, letterSpacing: '-0.01em', color: 'var(--ux-ink)', margin: '18px 0 4px' }}>1. Instagram & Facebook (Meta Graph API)</h3>
-          <p>Go to <strong>developers.facebook.com</strong> ➔ Create App (Business) ➔ Add Instagram Graph API & Pages API ➔ Generate Access Token & paste App ID & Secret above.</p>
-
-          <h3 style={{ fontSize: 15, fontWeight: 600, letterSpacing: '-0.01em', color: 'var(--ux-ink)', margin: '18px 0 4px' }}>2. YouTube (Google Cloud Console)</h3>
-          <p>Visit <strong>console.cloud.google.com</strong> ➔ Enable <em>YouTube Data API v3</em> ➔ Create OAuth 2.0 Credentials ➔ Paste API Key & Client Secret above.</p>
-
-          <h3 style={{ fontSize: 15, fontWeight: 600, letterSpacing: '-0.01em', color: 'var(--ux-ink)', margin: '18px 0 4px' }}>3. LinkedIn (Community Management API)</h3>
-          <p>Visit <strong>developer.linkedin.com</strong> ➔ Create App ➔ Link your Company Page ➔ Request <em>Share on LinkedIn</em> product permissions.</p>
-
-          <h3 style={{ fontSize: 15, fontWeight: 600, letterSpacing: '-0.01em', color: 'var(--ux-ink)', margin: '18px 0 4px' }}>4. Twitter / X (Twitter API v2)</h3>
-          <p>Visit <strong>developer.twitter.com</strong> ➔ Generate API Key, API Secret & User Access Tokens with <em>Read and Write</em> permissions.</p>
-
-          <h3 style={{ fontSize: 15, fontWeight: 600, letterSpacing: '-0.01em', color: 'var(--ux-ink)', margin: '18px 0 4px' }}>5. Telegram (Telegram Bot API, about 2 minutes)</h3>
-          <p>Open Telegram app ➔ Search <strong>@BotFather</strong> ➔ Send <code>/newbot</code> ➔ Copy HTTP API Token ➔ Add Bot as Admin to your Telegram Channel!</p>
-        </div>
-      </Modal>
     </div>
   );
 };

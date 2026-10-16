@@ -3,71 +3,40 @@ import { Link } from 'react-router-dom';
 import { ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useLead } from '../context/LeadContext';
 
-import usaImg from '../assets/destinations/usa.webp';
-import ukImg from '../assets/destinations/uk.webp';
-import canadaImg from '../assets/destinations/canada.webp';
-import ausImg from '../assets/destinations/australia.webp';
-import germanyImg from '../assets/destinations/germany.webp';
-import irelandImg from '../assets/destinations/ireland.webp';
+import usaSketch from '../assets/destinations/sketch/usa.webp';
+import ukSketch from '../assets/destinations/sketch/uk.webp';
+import canadaSketch from '../assets/destinations/sketch/canada.webp';
+import australiaSketch from '../assets/destinations/sketch/australia.webp';
+import germanySketch from '../assets/destinations/sketch/germany.webp';
+import irelandSketch from '../assets/destinations/sketch/ireland.webp';
+
 
 export const Destinations = ({ onOpenModal }) => {
   const { openEligibilityModal } = useLead();
   const scrollContainerRef = useRef(null);
   const [currentIndex, setCurrentIndex] = useState(0);
 
+  // Editorial cards: a soft colour per country, a pencil sketch and three useful facts
   const destinations = [
-    {
-      id: 'usa',
-      name: 'United States',
-      flagCode: 'us',
-      universities: '4,500+ Universities',
-      salary: 'Avg. Salary: $75K+',
-      image: usaImg,
-    },
-    {
-      id: 'uk',
-      name: 'United Kingdom',
-      flagCode: 'gb',
-      universities: '150+ Universities',
-      salary: 'Avg. Salary: £45K+',
-      image: ukImg,
-    },
-    {
-      id: 'canada',
-      name: 'Canada',
-      flagCode: 'ca',
-      universities: '100+ Colleges',
-      salary: 'Avg. Salary: C$65K+',
-      image: canadaImg,
-    },
-    {
-      id: 'australia',
-      name: 'Australia',
-      flagCode: 'au',
-      universities: '40+ Universities',
-      salary: 'Avg. Salary: A$70K+',
-      image: ausImg,
-    },
-    {
-      id: 'germany',
-      name: 'Germany',
-      flagCode: 'de',
-      universities: '300+ Universities',
-      salary: 'Avg. Salary: €55K+',
-      image: germanyImg,
-    },
-    {
-      id: 'ireland',
-      name: 'Ireland',
-      flagCode: 'ie',
-      universities: '35+ Universities',
-      salary: 'Avg. Salary: €45K+',
-      image: irelandImg,
-    },
+    { id: 'usa', sketch: usaSketch, name: 'United States', region: 'North America', universities: '4,500+', visa: '1–3 years', length: '1.5–2 years',
+      bg: '#EEF1F8', ink: '#16233F', soft: '#4A5A7C', line: '#C9D2E6' },
+    { id: 'uk', sketch: ukSketch, name: 'United Kingdom', region: 'Europe', universities: '150+', visa: 'Up to 2 years', length: '1 year',
+      bg: '#E8EEE6', ink: '#1E3324', soft: '#4F6654', line: '#C4D3C2' },
+    { id: 'canada', sketch: canadaSketch, name: 'Canada', region: 'North America', universities: '100+', visa: 'Up to 3 years', length: '1–2 years',
+      bg: '#F6E9E6', ink: '#4A1E17', soft: '#7D4A40', line: '#E6C9C2' },
+    { id: 'australia', sketch: australiaSketch, name: 'Australia', region: 'Oceania', universities: '40+', visa: '2–4 years', length: '1.5–2 years',
+      bg: '#F5EEDF', ink: '#3E2E12', soft: '#7A6334', line: '#E6D7B5' },
+    { id: 'germany', sketch: germanySketch, name: 'Germany', region: 'Europe', universities: '300+', visa: '18 months', length: '2 years',
+      bg: '#ECEBE8', ink: '#24221E', soft: '#5C5850', line: '#D6D3CC' },
+    { id: 'ireland', sketch: irelandSketch, name: 'Ireland', region: 'Europe', universities: '35+', visa: '1–2 years', length: '1 year',
+      bg: '#E5F0EC', ink: '#123A30', soft: '#3F6A5E', line: '#C1DCD3' },
   ];
 
+  const lockRef = useRef(0);
+  const canHover = typeof window !== 'undefined' && window.matchMedia('(hover: hover)').matches;
+
   const updateCurrentIndex = () => {
-    if (!scrollContainerRef.current) return;
+    if (!scrollContainerRef.current || Date.now() < lockRef.current) return;
     const { scrollLeft } = scrollContainerRef.current;
     const cardStep = window.innerWidth >= 1024 ? 243 : (window.innerWidth >= 640 ? 228 : 201);
     const index = Math.round(scrollLeft / cardStep);
@@ -82,6 +51,7 @@ export const Destinations = ({ onOpenModal }) => {
       behavior: 'smooth',
     });
     setCurrentIndex(index);
+    lockRef.current = Date.now() + 700;
   };
 
   const handleScroll = (direction) => {
@@ -142,19 +112,22 @@ export const Destinations = ({ onOpenModal }) => {
                   />
                 ))}
               </div>
-              <span className="text-[11.5px] font-extrabold text-[#DE5C2B] bg-orange-50 border border-orange-200/70 px-2.5 py-0.5 rounded-full font-mono">
-                0{currentIndex + 1} / 06
+              <span className="text-[11.5px] font-semibold text-slate-700 bg-white border border-slate-200 px-3 py-1 rounded-full whitespace-nowrap">
+                0{currentIndex + 1} · {destinations[currentIndex].name}
               </span>
             </div>
 
             {/* Action Buttons */}
             <div className="mt-5 flex items-center gap-3">
               <Link
-                to="/study-abroad/usa"
-                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-orange-200/90 bg-white hover:bg-orange-50/60 text-[12.5px] font-bold text-[#DE5C2B] shadow-2xs hover:shadow-xs transition-all cursor-pointer"
+                to={`/study-abroad/${destinations[currentIndex].id}`}
+                className="inline-flex items-center gap-2 px-5 h-11 rounded-full bg-slate-900 hover:bg-[#DE5C2B] text-[14px] font-semibold text-white transition-colors"
               >
-                <span>View All Countries</span>
-                <ArrowRight className="w-3.5 h-3.5" />
+                <span>Explore {destinations[currentIndex].name}</span>
+                <ArrowRight className="w-4 h-4" />
+              </Link>
+              <Link to="/study-abroad" className="text-[14px] font-semibold text-slate-600 hover:text-slate-900 transition-colors">
+                All countries
               </Link>
             </div>
 
@@ -185,7 +158,7 @@ export const Destinations = ({ onOpenModal }) => {
             <div
               ref={scrollContainerRef}
               onScroll={updateCurrentIndex}
-              className="flex items-center gap-4 sm:gap-4.5 py-1 overflow-x-auto scroll-smooth scrollbar-none snap-x snap-mandatory"
+              className="flex items-center gap-4 sm:gap-4.5 pt-3 pb-6 px-1 -mt-2 -mb-5 overflow-x-auto scroll-smooth scrollbar-none snap-x snap-mandatory"
             >
               {destinations.map((dest, idx) => {
                 const isActive = idx === currentIndex;
@@ -194,53 +167,50 @@ export const Destinations = ({ onOpenModal }) => {
                   <Link
                     key={`${dest.id}-${idx}`}
                     to={`/study-abroad/${dest.id}`}
-                    className={`group relative w-[185px] sm:w-[210px] lg:w-[225px] xl:w-[235px] h-[290px] sm:h-[330px] lg:h-[350px] shrink-0 rounded-[22px] overflow-hidden bg-slate-900 shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer flex flex-col justify-between p-4 sm:p-5 select-none snap-start ${
-                      isActive ? 'ring-2 ring-[#DE5C2B]/60 shadow-md' : ''
+                    onMouseEnter={() => { if (canHover) { setCurrentIndex(idx); lockRef.current = Date.now() + 400; } }}
+                    style={{
+                      background: dest.bg,
+                      color: dest.ink,
+                      boxShadow: isActive ? `0 0 0 2px ${dest.ink}, 0 24px 44px -20px rgba(15,23,42,0.45)` : 'none',
+                      transform: isActive ? 'translateY(-6px)' : 'none',
+                    }}
+                    className={`group relative w-[200px] sm:w-[215px] lg:w-[225px] xl:w-[235px] h-[360px] sm:h-[390px] lg:h-[420px] shrink-0 rounded-[22px] overflow-hidden transition-all duration-300 cursor-pointer flex flex-col p-5 select-none snap-start ${
+                      isActive ? '' : 'opacity-80 hover:opacity-100'
                     }`}
                   >
-                    {/* Landmark Background Photo */}
-                    <img
-                      src={dest.image}
-                      alt={dest.name}
-                      className="absolute inset-0 w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out pointer-events-none"
-                      loading="lazy"
-                    />
-
-                    {/* Dark Gradient Overlay */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 via-55% to-transparent pointer-events-none" />
-
-                    {/* Top Row: Country Number Badge & Flag */}
-                    <div className="relative z-10 flex items-center justify-between">
-                      <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-black/40 backdrop-blur-md border border-white/20 text-white text-[11px] font-bold">
-                        <img 
-                          src={`https://flagcdn.com/w40/${dest.flagCode}.png`} 
-                          alt={`${dest.name} Flag`} 
-                          className="w-4.5 h-3 rounded-xs object-cover shadow-2xs"
-                        />
-                        <span>0{idx + 1}</span>
-                      </div>
-                      <div className="w-7 h-7 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-opacity">
-                        <ArrowRight className="w-3.5 h-3.5" />
-                      </div>
+                    <div className="flex items-center justify-between text-[12px] font-medium" style={{ color: dest.soft }}>
+                      <span>0{idx + 1} · {dest.region}</span>
+                      <span className={`w-7 h-7 rounded-full grid place-items-center transition-all duration-300 ${isActive ? 'opacity-100 scale-100' : 'opacity-0 scale-75'}`} style={{ background: dest.ink, color: dest.bg }}><ArrowRight className="w-3.5 h-3.5" /></span>
                     </div>
 
-                    {/* Bottom Text Content */}
-                    <div className="relative z-10">
-                      <h3 className="font-outfit text-[17px] sm:text-[19px] font-bold text-white leading-tight">
-                        {dest.name}
-                      </h3>
-                      <p className="text-[11.5px] text-slate-200/90 font-medium mt-1 leading-tight">
-                        {dest.universities}
-                      </p>
-                      <div className="mt-2.5 pt-2 border-t border-white/15 flex items-center justify-between">
-                        <span className="text-[11px] text-slate-300 font-medium leading-tight">
-                          {dest.salary}
-                        </span>
-                        <span className="text-[10.5px] font-bold text-[#FED7CE] group-hover:text-white transition-colors">
-                          Explore →
-                        </span>
-                      </div>
+                    <h3 className="font-outfit text-[26px] lg:text-[28px] font-semibold leading-[1.05] tracking-[-0.03em] mt-3">
+                      {dest.name}
+                    </h3>
+
+                    <div className="relative flex-1 min-h-0 -mx-2 my-2">
+                      {/* Pencil sketch; multiply lets the paper-white take on the card colour */}
+                      <img
+                        src={dest.sketch}
+                        alt=""
+                        loading="lazy"
+                        data-active={isActive}
+                        className="absolute inset-0 w-full h-full object-contain data-[active=true]:scale-[1.06] data-[active=false]:opacity-60 object-center mix-blend-multiply transition-all duration-500"
+                        style={{ maskImage: 'linear-gradient(to bottom, transparent, #000 18%, #000 78%, transparent)', WebkitMaskImage: 'linear-gradient(to bottom, transparent, #000 18%, #000 78%, transparent)' }}
+                      />
                     </div>
+
+                    <dl className="text-[12px] sm:text-[12.5px] leading-[1.9]">
+                      {[
+                        ['Universities', dest.universities],
+                        ['Stay to work', dest.visa],
+                        ["Master's length", dest.length],
+                      ].map(([k, v]) => (
+                        <div key={k} className="flex items-center justify-between border-t" style={{ borderColor: dest.line }}>
+                          <dt className="whitespace-nowrap" style={{ color: dest.soft }}>{k}</dt>
+                          <dd className="font-semibold whitespace-nowrap pl-2">{v}</dd>
+                        </div>
+                      ))}
+                    </dl>
                   </Link>
                 );
               })}

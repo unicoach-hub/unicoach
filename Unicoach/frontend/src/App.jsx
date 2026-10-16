@@ -437,6 +437,15 @@ const DeferredUniBot = () => {
   );
 };
 
+// Study-abroad guide pages get the calmer "editorial" type styles from index.css
+const EditorialPageClass = () => {
+  const { pathname } = useLocation();
+  useEffect(() => {
+    document.body.classList.toggle('editorial-page', pathname.startsWith('/study-abroad'));
+  }, [pathname]);
+  return null;
+};
+
 const ConditionalNavbar = () => {
   const location = useLocation();
   const isEmbed = new URLSearchParams(location.search).get('embed') === 'true';
@@ -517,6 +526,7 @@ const App = () => {
         <BrowserRouter>
           <NavigationProgress />
           <ScrollToTop />
+          <EditorialPageClass />
           <ConditionalNavbar />
           {/* Global Modals (Mounted strictly on demand) */}
           <GlobalModals />
