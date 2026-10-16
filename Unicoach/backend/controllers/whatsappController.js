@@ -127,6 +127,46 @@ exports.completeSignup = async (req, res) => {
   }
 };
 
+/**
+ * POST /api/admin/whatsapp/manual-connect  { wabaId, phoneNumberId, token }
+ * For a number added by hand in the Meta app (WhatsApp → Production setup) with a permanent
+ * System User token from Business Settings. Checks the details with Meta, subscribes our app
+ * to the account so the webhook gets events, then saves them.
+ */
+exports.manualConnect = async (req, res) => {
+  const wabaId = String(req.body?.wabaId || '').trim();
+  const phoneNumberId = String(req.body?.phoneNumberId || '').trim();
+  const token = String(req.body?.token || '').trim();
+  if (!/^\d{6,}$/.test(wabaId) || !/^\d{6,}$/.test(phoneNumberId) || token.length < 20) {
+    return res.status(400).json({ message: 'Enter the WhatsApp Business Account ID, Phone number ID (both numbers) and the access token.' });
+  }
+  try {
+    // 1. The token can see this number (also gives us the name and number to show)
+    const phone = await graph(`/${phoneNumberId}?fields=display_phone_number,verified_name`, { token });
+    // 2. Send this account's events (replies, delivery status, template status) to our webhook
+    const notes = [];
+    try {
+      await graph(`/${wabaId}/subscribed_apps`, { method: 'POST', token });
+    } catch (e) {
+      notes.push(`Webhook subscription: ${e.message}`);
+    }
+
+    const settings = await getSettings();
+    settings.wabaAccessToken = token;
+    settings.wabaAccountId = wabaId;
+    settings.wabaPhoneNumberId = phoneNumberId;
+    settings.wabaSenderNumber = phone.display_phone_number || '';
+    settings.wabaDisplayName = phone.verified_name || '';
+    settings.wabaConnectedAt = new Date();
+    await settings.save();
+
+    return res.json({ success: true, displayName: settings.wabaDisplayName, phoneNumber: settings.wabaSenderNumber, notes });
+  } catch (err) {
+    console.error('[WhatsApp] manual connect failed:', err.message);
+    return res.status(502).json({ message: `Meta did not accept these details: ${err.message}` });
+  }
+};
+
 /** POST /api/admin/whatsapp/disconnect — forget the connection (the number stays on the Meta account) */
 exports.disconnect = async (req, res) => {
   try {
@@ -164,8 +204,10 @@ exports.listEvents = async (req, res) => {
 exports.verifyWebhook = async (req, res) => {
   const settings = await Settings.findOne();
   const expected = settings?.wabaWebhookVerifyToken;
-  if (req.query['hub.mode'] === 'subscribe' && expected && req.query['hub.verify_token'] === expected) {
-    return res.status(200).send(String(req.query['hub.challenge'] || ''));
+  // Read the raw query string: mongoSanitize strips keys that contain a dot (hub.mode, hub.verify_token…)
+  const q = new URLSearchParams((req.originalUrl.split('?')[1]) || '');
+  if (q.get('hub.mode') === 'subscribe' && expected && q.get('hub.verify_token') === expected) {
+    return res.status(200).send(String(q.get('hub.challenge') || ''));
   }
   return res.sendStatus(403);
 };

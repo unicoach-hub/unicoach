@@ -37,6 +37,25 @@ const WhatsappConnect = () => {
   const [connecting, setConnecting] = useState(false);
   const [configId, setConfigId] = useState('');
   const [savingConfig, setSavingConfig] = useState(false);
+  const [manual, setManual] = useState({ wabaId: '', phoneNumberId: '', token: '' });
+  const [showManual, setShowManual] = useState(false);
+  const [savingManual, setSavingManual] = useState(false);
+
+  const connectManually = async () => {
+    setSavingManual(true);
+    try {
+      const { data } = await API.post('/admin/whatsapp/manual-connect', manual);
+      message.success(`Connected${data.displayName ? `: ${data.displayName}` : ''}`);
+      (data.notes || []).forEach((n) => message.warning(n, 8));
+      setManual({ wabaId: '', phoneNumberId: '', token: '' });
+      setShowManual(false);
+      load();
+    } catch (e) {
+      message.error(e.response?.data?.message || 'Could not connect');
+    } finally {
+      setSavingManual(false);
+    }
+  };
   // Ids Facebook posts to the page while the popup runs
   const signupInfo = useRef({});
 
@@ -202,6 +221,28 @@ const WhatsappConnect = () => {
           </span>
         </div>
       )}
+
+      <div style={{ marginTop: 14 }}>
+        <Button type="link" style={{ padding: 0 }} onClick={() => setShowManual((v) => !v)}>
+          {showManual ? 'Hide manual connect' : 'Added the number in the Meta app yourself? Connect manually'}
+        </Button>
+        {showManual && (
+          <div style={{ marginTop: 8, padding: '14px 16px', borderRadius: 12, border: '1px solid var(--ux-line-2)', display: 'grid', gap: 10 }}>
+            <div style={{ fontSize: 12.5, color: 'var(--ux-text-2)' }}>
+              From the Meta app → WhatsApp → API Setup: copy the <b>WhatsApp Business Account ID</b> and <b>Phone number ID</b>.
+              The token must be a permanent <b>System User</b> token (Business Settings → System users → Generate token, with whatsapp_business_management and whatsapp_business_messaging).
+            </div>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
+              <Input placeholder="WhatsApp Business Account ID" value={manual.wabaId} onChange={(e) => setManual((m) => ({ ...m, wabaId: e.target.value }))} />
+              <Input placeholder="Phone number ID" value={manual.phoneNumberId} onChange={(e) => setManual((m) => ({ ...m, phoneNumberId: e.target.value }))} />
+            </div>
+            <Input.Password placeholder="Permanent access token" value={manual.token} onChange={(e) => setManual((m) => ({ ...m, token: e.target.value }))} />
+            <div>
+              <Button type="primary" onClick={connectManually} loading={savingManual} disabled={!manual.wabaId || !manual.phoneNumberId || !manual.token}>Check and connect</Button>
+            </div>
+          </div>
+        )}
+      </div>
 
       <div style={{ marginTop: 18, display: 'grid', gap: 12 }}>
         <div>

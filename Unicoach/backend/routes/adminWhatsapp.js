@@ -8,6 +8,7 @@ router.use(verifyToken, requireAdmin);
 
 router.get('/status', c.getStatus);
 router.post('/embedded-signup', c.completeSignup);
+router.post('/manual-connect', c.manualConnect);
 router.post('/disconnect', c.disconnect);
 router.get('/events', c.listEvents);
 
