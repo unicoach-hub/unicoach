@@ -647,7 +647,7 @@ const UniCoachAdminHub = () => {
       sorter: (a, b) => (referralSummary[a._id]?.total || 0) - (referralSummary[b._id]?.total || 0),
       render: (_, r) => {
         const sum = referralSummary[r._id];
-        const offers = sum ? ['offer_received', 'visa_filing', 'visa_applied', 'visa_approved', 'visa_rejected'].reduce((n, k) => n + (sum.byStage[k] || 0), 0) : 0;
+        const offers = sum ? ['offer_received', 'offer_accepted', 'fees_paid', 'visa_filing', 'visa_applied', 'visa_approved', 'visa_rejected'].reduce((n, k) => n + (sum.byStage[k] || 0), 0) : 0;
         return (
           <a onClick={() => setDetailMentor(r)} style={{ cursor: 'pointer' }}>
             <span style={{ fontWeight: 700, fontSize: 15, color: INK }}>{sum?.total || 0}</span>

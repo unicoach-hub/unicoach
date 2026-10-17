@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Archivo+Black&family=Geist:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800;900&display=swap');
 @import "tailwindcss";
 
 @theme {
@@ -47,8 +47,8 @@
   --container-page: 1440px;
 
   --font-inter: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  --font-outfit: "Outfit", sans-serif;
-  --font-sans: "Inter", "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-outfit: "Geist", sans-serif;
+  --font-sans: "Geist", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   --font-urbanist: "Urbanist", sans-serif;
 }
 
@@ -182,9 +182,9 @@ body {
     --text-muted: #64748B;
     --border-subtle: #E2E8F0;
 
-    --font-heading: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    --font-body: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    --font-display: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --font-heading: 'Geist', 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --font-body: 'Geist', 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --font-display: 'Geist', 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   }
 
   * {
@@ -203,12 +203,13 @@ body {
   body {
     background-color: var(--bg-page);
     color: var(--text-primary);
-    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-family: 'Geist', 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     min-height: 100vh;
     overflow-x: clip;
     overscroll-behavior-y: none;
-    line-height: 1.65;
-    letter-spacing: -0.011em;
+    line-height: 1.6;
+    letter-spacing: -0.006em;
+    font-feature-settings: 'ss01', 'cv11';
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
@@ -241,17 +242,18 @@ body {
   h4,
   h5,
   h6 {
-    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
-    letter-spacing: -0.028em !important;
+    font-family: 'Geist', 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+    letter-spacing: -0.035em !important;
     color: inherit;
-    line-height: 1.25 !important;
+    line-height: 1.12 !important;
+    font-weight: 650;
   }
 
   /* Refined, clean editorial paragraph rhythm */
   p {
-    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    line-height: 1.68;
-    letter-spacing: -0.008em;
+    font-family: 'Geist', 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    line-height: 1.6;
+    letter-spacing: -0.005em;
   }
 
   /* Soften informational body subtitles across all overview & detail pages */
@@ -299,19 +301,19 @@ body {
 .font-heading,
 .font-outfit,
 .font-aileron {
-  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
-  letter-spacing: -0.028em;
+  font-family: 'Geist', 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+  letter-spacing: -0.035em;
 }
 
 .font-urbanist,
 .font-stats {
-  font-family: 'Urbanist', 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  font-family: 'Geist', 'Urbanist', system-ui, -apple-system, sans-serif;
   letter-spacing: -0.025em;
 }
 
 .font-jakarta,
 .font-body {
-  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-family: 'Geist', 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   letter-spacing: -0.011em;
 }
 
@@ -321,7 +323,7 @@ body {
 }
 
 .font-syne {
-  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-family: 'Geist', 'Plus Jakarta Sans', sans-serif;
 }
 
 .font-caveat {

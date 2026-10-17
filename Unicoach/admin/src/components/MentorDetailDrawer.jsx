@@ -81,7 +81,7 @@ const MentorDetailDrawer = ({ mentor, open, onClose }) => {
             {loading ? <div style={{ textAlign: 'center', padding: 24 }}><Spin /></div> : (
               <>
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, minmax(0, 1fr))', gap: 8, marginBottom: 12 }}>
-                  {[['Total', students.length], ['Applied', countIn(['applied', 'offer_received', 'offer_rejected', 'visa_filing', 'visa_applied', 'visa_approved', 'visa_rejected'])], ['Offers', countIn(['offer_received', 'visa_filing', 'visa_applied', 'visa_approved', 'visa_rejected'])], ['Visa approved', count('visa_approved')]].map(([l, v]) => (
+                  {[['Total', students.length], ['Applied', countIn(['applied', 'offer_received', 'offer_accepted', 'offer_rejected', 'fees_paid', 'visa_filing', 'visa_applied', 'visa_approved', 'visa_rejected'])], ['Offers', countIn(['offer_received', 'offer_accepted', 'fees_paid', 'visa_filing', 'visa_applied', 'visa_approved', 'visa_rejected'])], ['Visa approved', count('visa_approved')]].map(([l, v]) => (
                     <div key={l} style={{ border: '1px solid var(--ux-border, #eee)', borderRadius: 10, padding: '10px 12px' }}>
                       <div style={{ fontSize: 12, color: 'var(--ux-text-2)' }}>{l}</div>
                       <div style={{ fontSize: 20, fontWeight: 700 }}>{v}</div>

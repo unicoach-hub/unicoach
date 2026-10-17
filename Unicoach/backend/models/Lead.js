@@ -12,6 +12,8 @@ const leadSchema = new mongoose.Schema({
   // WhatsApp chatbot leads may not have given an email yet
   email: { type: String, required: function () { return this.source !== 'WhatsApp'; }, default: '', index: true },
   phone: { type: String, required: true },
+  // Student account this lead became (set by "Start journey"); the journey stage lives on that account
+  userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', index: true },
   // OTP & Status
   otp: { type: String },
   otpExpires: { type: Date },

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Table, Select, message, Input, Modal, Tabs, Timeline, DatePicker, Button, Form, Popover, Tooltip, Progress, Badge, Spin, Popconfirm } from 'antd';
 import dayjs from 'dayjs';
+import LeadJourneyView from '../components/LeadJourneyView';
 import Header from '../components/Header';
 import CrmSubNav from '../components/CrmSubNav';
 import StatsCard from '../components/StatsCard';
@@ -42,7 +43,7 @@ import {
   SmileOutlined,
   EditOutlined,
   UnorderedListOutlined,
-  AppstoreOutlined
+  AppstoreOutlined, NodeIndexOutlined
 } from '@ant-design/icons';
 
 const { Option } = Select;
@@ -73,7 +74,7 @@ const statusLabel = (s) => SHEET_STATUSES.find((o) => o.value === s)?.label || s
 const VIEW_TITLES = {
   converted: { title: 'Converted leads', subtitle: 'Leads marked Converted on All Leads' },
   interested: { title: 'Interested leads', subtitle: 'Leads with status Interested' },
-  followup: { title: 'Follow-up leads', subtitle: 'Leads marked Interested or 50 / 50 under Follow Up' },
+  followup: { title: '50 / 50 leads', subtitle: 'Leads with status 50 / 50' },
   not_interested: { title: 'Not interested', subtitle: 'Leads with status Not Interested' },
 };
 // Where each stat box goes
@@ -300,7 +301,7 @@ const Leads = ({ view = 'all' }) => {
       .finally(() => alive && setLeadStudentLoading(false));
     return () => { alive = false; };
   }, [selectedLead?.email]);
-  const [viewMode, setViewMode] = useState('table'); // 'table' | 'kanban'
+  const [viewMode, setViewMode] = useState('table'); // 'table' | 'kanban' | 'journey'
 
   // Marketing states
   const [waMessage, setWaMessage] = useState('');
@@ -1170,7 +1171,7 @@ const Leads = ({ view = 'all' }) => {
           />
           <StatsCard icon={<TrophyOutlined />} label="Converted" value={countRows.filter(l => l.status === 'converted').length} color="brand" loading={loading} onClick={() => navigate(VIEW_PATHS.converted)} active={view === 'converted'} />
           <StatsCard icon={<FireOutlined />} label="Interested" value={countRows.filter(l => l.status === 'interested').length} color="brand" loading={loading} onClick={() => navigate(VIEW_PATHS.interested)} active={view === 'interested'} />
-          <StatsCard icon={<ClockCircleOutlined />} label="Follow-up (50-50)" value={countRows.filter(l => l.followUp === 'interested' || l.followUp === 'fifty_fifty').length} color="brand" loading={loading} onClick={() => navigate(VIEW_PATHS.followup)} active={view === 'followup'} />
+          <StatsCard icon={<ClockCircleOutlined />} label="50 / 50" value={countRows.filter(l => l.status === 'fifty_fifty').length} color="brand" loading={loading} onClick={() => navigate(VIEW_PATHS.followup)} active={view === 'followup'} />
           <StatsCard icon={<CheckCircleOutlined />} label="Not interested" value={countRows.filter(l => l.status === 'not_interested').length} color="brand" loading={loading} onClick={() => navigate(VIEW_PATHS.not_interested)} active={view === 'not_interested'} />
         </div>
 
@@ -1284,6 +1285,23 @@ const Leads = ({ view = 'all' }) => {
               >
                 <AppstoreOutlined style={{ marginRight: 6 }} />Pipeline board
               </button>
+              <button
+                onClick={() => setViewMode('journey')}
+                style={{
+                  padding: '0 14px',
+                  borderRadius: '999px',
+                  background: viewMode === 'journey' ? '#111111' : 'transparent',
+                  color: viewMode === 'journey' ? '#fff' : 'var(--ux-text-2)',
+                  border: 'none',
+                  fontSize: '12.5px',
+                  fontWeight: 600,
+                  cursor: 'pointer',
+                  height: '100%',
+                  transition: 'all 0.2s'
+                }}
+              >
+                <NodeIndexOutlined style={{ marginRight: 6 }} />Journey
+              </button>
             </div>
 
             <Button
@@ -1319,7 +1337,9 @@ const Leads = ({ view = 'all' }) => {
           </div>
         </div>
         
-        {viewMode === 'table' ? (
+        {viewMode === 'journey' ? (
+          <LeadJourneyView leads={filtered} onChanged={(id, patch) => setData((prev) => prev.map((l) => (l._id === id ? { ...l, ...patch } : l)))} />
+        ) : viewMode === 'table' ? (
           <div className="page-table-card">
             {selectedRowKeys.length > 0 && (
               <div className="lead-bulk-bar">

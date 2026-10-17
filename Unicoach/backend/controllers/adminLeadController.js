@@ -3,7 +3,7 @@ const Lead = require('../models/Lead');
 const Staff = require('../models/Staff');
 const User = require('../models/User');
 const { sendEmail } = require('../utils/email');
-const { scopedStaffId, canAccessLead } = require('../utils/leadAccess');
+const { scopedStaffId, canAccessLead, actorName } = require('../utils/leadAccess');
 const { cleanManualTags, refreshAutoTags } = require('../utils/leadTags');
 
 /**
@@ -38,7 +38,8 @@ exports.getAllLeads = async (req, res) => {
     if (status && status !== 'all') filter.status = status;
     // Sidebar sections: Converted and Follow-up are filtered views of the same leads
     if (view === 'converted') filter.status = 'converted';
-    if (view === 'followup') filter.followUp = { $in: ['interested', 'fifty_fifty'] };
+    // Boxes split leads by Status only, so they add up to the total
+    if (view === 'followup') filter.status = 'fifty_fifty';
     if (view === 'interested') filter.status = 'interested';
     if (view === 'not_interested') filter.status = 'not_interested';
     if (verified !== undefined) filter.verified = verified === 'true';
@@ -70,6 +71,35 @@ exports.getAllLeads = async (req, res) => {
     const leads = await Lead.find(filter).select('-activities').lean();
     const lastActivity = (l) => new Date(l.lastInquiryAt || l.createdAt || 0).getTime();
     leads.sort((a, b) => lastActivity(b) - lastActivity(a));
+
+    // Students with an account (same email or phone) bring their journey stage, for the Journey view
+    try {
+      const User = require('../models/User');
+      const { normalizeStage } = require('../config/studentStages');
+      const tail = (p) => String(p || '').replace(/\D/g, '').slice(-10);
+      const emails = leads.map((l) => String(l.email || '').toLowerCase()).filter(Boolean);
+      const linkedIds = leads.map((l) => l.userId).filter(Boolean);
+      const users = await User.find({ $or: [{ _id: { $in: linkedIds } }, { email: { $in: emails } }, { phone: { $exists: true, $ne: null } }] })
+        .select('email phone journeyStage stageHistory createdAt').lean();
+      const byEmail = new Map(), byPhone = new Map(), byId = new Map();
+      for (const u of users) {
+        byId.set(String(u._id), u);
+        if (u.email) byEmail.set(String(u.email).toLowerCase(), u);
+        if (tail(u.phone).length === 10) byPhone.set(tail(u.phone), u);
+      }
+      for (const l of leads) {
+        const u = (l.userId && byId.get(String(l.userId))) || byEmail.get(String(l.email || '').toLowerCase()) || byPhone.get(tail(l.phone));
+        if (!u) continue;
+        l.journey = {
+          userId: u._id,
+          stage: normalizeStage(u.journeyStage),
+          since: u.createdAt,
+          history: (u.stageHistory || []).map((h) => ({ stage: normalizeStage(h.stage), at: h.at })),
+        };
+      }
+    } catch (e) {
+      console.warn('[Leads] journey lookup skipped:', e.message);
+    }
     return res.json(leads);
   } catch (err) {
     console.error('Error fetching admin leads:', err);
@@ -408,5 +438,106 @@ exports.deleteLead = async (req, res) => {
   } catch (err) {
     console.error('Error deleting lead:', err);
     return res.status(500).json({ error: 'Server error' });
+  }
+};
+
+
+// ── Student journey from the Leads page ─────────────────────────────────────────────
+// One stage per student, kept on their account: admin, the student's dashboard and the
+// referring mentor all read the same field.
+const { setStudentStage } = require('../services/studentJourney');
+const { STAGE_KEYS } = require('../config/studentStages');
+const { normalizePhone } = require('../utils/twilio');
+
+const phoneTail = (p) => String(p || '').replace(/\D/g, '').slice(-10);
+
+// The account for a lead: the linked one, else one with the same email or phone
+const findAccountForLead = async (lead) => {
+  if (lead.userId) {
+    const u = await User.findById(lead.userId);
+    if (u) return u;
+  }
+  const email = String(lead.email || '').trim().toLowerCase();
+  if (email) {
+    const u = await User.findOne({ email });
+    if (u) return u;
+  }
+  const tail = phoneTail(lead.phone);
+  if (tail.length === 10) return User.findOne({ phone: { $regex: `${tail}$` } });
+  return null;
+};
+
+/**
+ * POST /api/admin/leads/:id/start-journey
+ * Links the lead to a student account (creating one from the lead's details if needed),
+ * marks the lead Converted and starts the student at Walk-in.
+ */
+exports.startJourney = async (req, res) => {
+  try {
+    const lead = await Lead.findById(req.params.id);
+    if (!lead || !canAccessLead(req, lead)) return res.status(404).json({ message: 'Lead not found' });
+
+    let user = await findAccountForLead(lead);
+    let created = false;
+    if (!user) {
+      const email = String(lead.email || '').trim().toLowerCase();
+      const tail = phoneTail(lead.phone);
+      if (!email && tail.length !== 10) return res.status(400).json({ message: 'Add an email or a 10-digit phone to this lead first.' });
+      user = await User.create({
+        name: lead.name || 'Student',
+        ...(email ? { email } : {}),
+        ...(tail.length === 10 ? { phone: normalizePhone(lead.phone) } : {}),
+        authProvider: 'local',
+        dreamCountry: lead.country || lead.dreamCountry || undefined,
+        journeyStage: 'registered',
+        stageUpdatedAt: new Date(),
+        stageHistory: [{ stage: 'registered', by: actorName(req, 'Admin'), note: 'Started from Leads' }],
+      });
+      created = true;
+    }
+
+    // An existing account (e.g. a website sign-up) gets a dated Walk-in entry so the journey starts today
+    if (!created && !(user.stageHistory || []).length) {
+      user.journeyStage = user.journeyStage || 'registered';
+      user.stageUpdatedAt = new Date();
+      user.stageHistory.push({ stage: user.journeyStage, by: actorName(req, 'Admin'), note: 'Journey started from Leads' });
+      await user.save();
+    }
+
+    lead.userId = user._id;
+    if (lead.status !== 'converted') lead.status = 'converted';
+    await lead.save();
+
+    return res.json({
+      success: true,
+      created,
+      canLogin: !!user.email,
+      journey: { userId: user._id, stage: user.journeyStage || 'registered', since: user.createdAt, history: user.stageHistory || [] },
+    });
+  } catch (err) {
+    console.error('Error starting journey:', err);
+    const dup = err && err.code === 11000;
+    return res.status(dup ? 409 : 500).json({ message: dup ? 'An account with this email or phone already exists but could not be linked. Check the lead details.' : 'Could not start the journey' });
+  }
+};
+
+/**
+ * PATCH /api/admin/leads/:id/journey-stage  { stage, note?, notify? }
+ * Moves the lead's student to a stage (same as Students → stage); the student is emailed unless notify=false.
+ */
+exports.setJourneyStage = async (req, res) => {
+  try {
+    const { stage, note, notify } = req.body || {};
+    if (!STAGE_KEYS.includes(stage)) return res.status(400).json({ message: 'Choose a valid stage' });
+    const lead = await Lead.findById(req.params.id);
+    if (!lead || !canAccessLead(req, lead)) return res.status(404).json({ message: 'Lead not found' });
+    const account = await findAccountForLead(lead);
+    if (!account) return res.status(400).json({ message: 'Start the journey for this lead first.' });
+    if (!lead.userId) { lead.userId = account._id; await lead.save(); }
+    const user = await setStudentStage(account._id, stage, { by: actorName(req, 'Admin'), note, notify: notify !== false });
+    return res.json({ success: true, journey: { userId: user._id, stage: user.journeyStage, since: user.createdAt, history: user.stageHistory } });
+  } catch (err) {
+    console.error('Error setting journey stage:', err);
+    return res.status(500).json({ message: 'Could not update the stage' });
   }
 };

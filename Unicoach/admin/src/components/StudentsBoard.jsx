@@ -3,7 +3,7 @@ import { Modal, Checkbox, Input, Tag, message } from 'antd';
 import API from '../api/axios';
 
 const fmt = (d) => (d ? new Date(d).toLocaleDateString('en-IN', { day: 'numeric', month: 'short' }) : '');
-const PHASE_COLORS = { registration: '#64748b', documents: '#0ea5e9', application: '#8b5cf6', visa: '#DE5C2B' };
+const PHASE_COLORS = { registration: '#64748b', documents: '#0ea5e9', application: '#8b5cf6', offer: '#16a34a', fees: '#ca8a04', visa: '#DE5C2B' };
 const accentFor = (stage) => (stage.outcome === 'bad' ? '#dc2626' : stage.outcome === 'good' ? '#16a34a' : PHASE_COLORS[stage.phase] || '#64748b');
 
 // Kanban of the 9 journey stages: total per stage on top, drag a student card to move them

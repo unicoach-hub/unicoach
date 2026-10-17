@@ -12,6 +12,8 @@ router.post('/bulk-tags', adminLeadController.bulkTags);
 router.post('/import', adminLeadController.importLeads);
 router.get('/:id', adminLeadController.getLeadById);
 router.put('/:id', adminLeadController.updateLead);
+router.post('/:id/start-journey', adminLeadController.startJourney);
+router.patch('/:id/journey-stage', adminLeadController.setJourneyStage);
 router.patch('/:id/tags', adminLeadController.setTags);
 router.post('/:id/activity', adminLeadController.addActivity);
 router.post('/:id/send-email', adminLeadController.sendLeadEmail);

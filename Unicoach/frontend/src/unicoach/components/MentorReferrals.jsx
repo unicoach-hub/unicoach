@@ -66,8 +66,8 @@ const MentorReferrals = ({ handle }) => {
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
           {[
             ['Total students', total],
-            ['Applied', ['applied', 'offer_received', 'offer_rejected', 'visa_filing', 'visa_applied', 'visa_approved', 'visa_rejected'].reduce((n, k) => n + countBy(k), 0)],
-            ['Offers', ['offer_received', 'visa_filing', 'visa_applied', 'visa_approved', 'visa_rejected'].reduce((n, k) => n + countBy(k), 0)],
+            ['Applied', ['applied', 'offer_received', 'offer_accepted', 'offer_rejected', 'fees_paid', 'visa_filing', 'visa_applied', 'visa_approved', 'visa_rejected'].reduce((n, k) => n + countBy(k), 0)],
+            ['Offers', ['offer_received', 'offer_accepted', 'fees_paid', 'visa_filing', 'visa_applied', 'visa_approved', 'visa_rejected'].reduce((n, k) => n + countBy(k), 0)],
             ['Visa approved', countBy('visa_approved')],
           ].map(([label, value]) => (
             <div key={label} className="bg-white border border-slate-200 rounded-2xl p-4">

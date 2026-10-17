@@ -5,8 +5,8 @@ import { useAuth } from '../context/AuthContext';
 
 const fmt = (d) => (d ? new Date(d).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }) : '');
 
-// The student's journey (set by the UniCoach team) in four phases:
-// Registration → Documents → Application → Visa, with every step inside each phase
+// The student's journey (set by the UniCoach team) in six phases:
+// Walk-in → Documents → Application → Offer → Fees → Visa, with every step inside each phase
 const JourneyTracker = () => {
   const { token } = useAuth();
   const [data, setData] = useState(null);

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Send, CheckCircle2, Shield, Sparkles, Loader2, User, Mail, Phone, HelpCircle, ArrowLeft, Check, Globe } from 'lucide-react';
+import { Send, CheckCircle2, Shield, Sparkles, Loader2, User, Mail, Phone, HelpCircle, Check, Globe } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { SUPPORT_CATEGORIES } from '../components/PriorityDmModal';
 import { API_BASE_URL } from '../config';
@@ -63,32 +63,25 @@ const PriorityDmPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#FAF9F6] pt-24 pb-20 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+    <div className="min-h-screen bg-[#FAF9F6] pt-[132px] pb-14 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
       {/* Warm Atmospheric Background */}
       <div className="absolute top-[-5%] right-[5%] w-[500px] h-[450px] bg-radial from-[#FFE3D1]/50 via-[#FFF0E5]/30 to-transparent rounded-full blur-[90px] pointer-events-none" />
       <div className="absolute bottom-[10%] left-[-5%] w-[450px] h-[400px] bg-radial from-[#FFEDDF]/40 via-[#FFF5ED]/25 to-transparent rounded-full blur-[80px] pointer-events-none" />
 
-      <div className="max-w-4xl mx-auto relative z-10">
+      <div className="max-w-6xl mx-auto relative z-10">
         
-        {/* Back Link */}
-        <Link
-          to="/"
-          className="inline-flex items-center gap-2 text-[12px] font-bold text-slate-500 hover:text-[#DE5C2B] mb-8 transition-colors"
-        >
-          <ArrowLeft className="w-4 h-4" />
-          <span>Back to Home</span>
-        </Link>
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
+
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
           
           {/* ════════ Left Context Column ════════ */}
           <div className="lg:col-span-5 space-y-6">
-            <div className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-[#FED7CE]/30 border border-[#DE5C2B]/20 text-[#DE5C2B] text-[10.5px] font-extrabold uppercase tracking-wider">
+            <div className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-[#FED7CE]/30 border border-[#DE5C2B]/20 text-[#DE5C2B] text-[13px] font-semibold">
               <Sparkles className="w-3.5 h-3.5" />
               <span>Direct Counsellor Desk</span>
             </div>
 
-            <h1 className="font-outfit text-[32px] sm:text-[38px] font-black text-[#111111] tracking-[-0.02em] leading-[1.12]">
+            <h1 className="font-outfit text-[36px] sm:text-[46px] font-bold text-[#111111] tracking-[-0.035em] leading-[1.05]">
               Send Priority DM to{' '}
               <span className="relative inline-block">
                 Senior Advisors
@@ -96,12 +89,12 @@ const PriorityDmPage = () => {
               </span>
             </h1>
 
-            <p className="text-[13.5px] text-slate-600 leading-relaxed max-w-[380px]">
+            <p className="text-[16px] text-slate-600 leading-relaxed max-w-[440px]">
               Skip the queue. Submit your specific visa, admission, or job roadmap inquiry directly to our senior international counsellors and immigration consultants.
             </p>
 
             {/* Value Points */}
-            <div className="space-y-4 pt-1">
+            <div className="space-y-3 pt-1">
               {[
                 'Guaranteed response from senior specialists within 2–4 hours',
                 'Personalized assessment for University Shortlisting, Scholarships, and Visa Roadmap',
@@ -111,7 +104,7 @@ const PriorityDmPage = () => {
                   <div className="w-5.5 h-5.5 rounded-full bg-emerald-50 border border-emerald-200/80 text-emerald-600 flex items-center justify-center shrink-0 mt-0.5">
                     <Check className="w-3 h-3 stroke-[2.5]" />
                   </div>
-                  <span className="text-[12.5px] text-slate-700 font-medium leading-relaxed">{item}</span>
+                  <span className="text-[15px] text-slate-700 leading-snug">{item}</span>
                 </div>
               ))}
             </div>
@@ -125,15 +118,15 @@ const PriorityDmPage = () => {
                 ))}
               </div>
               <div>
-                <p className="text-[11px] font-bold text-[#111111]">Senior Advisory Team</p>
-                <p className="text-[10px] text-slate-400">Typically responds within 2 hours</p>
+                <p className="text-[14px] font-semibold text-[#111111]">Senior Advisory Team</p>
+                <p className="text-[13px] text-slate-500">Typically responds within 2 hours</p>
               </div>
             </div>
           </div>
 
           {/* ════════ Right Form Card ════════ */}
           <div className="lg:col-span-7">
-            <div className="bg-white rounded-[24px] p-6 sm:p-8 shadow-xl shadow-black/[0.04] border border-orange-100/50 relative overflow-hidden">
+            <div className="bg-white rounded-[24px] p-5 sm:p-7 shadow-[0_24px_60px_-28px_rgba(15,23,42,0.25)] border border-slate-200/70 relative overflow-hidden">
               {/* Top accent line */}
               <div className="absolute top-0 left-0 right-0 h-[3px] bg-gradient-to-r from-[#FED7CE] via-[#DE5C2B] to-[#FED7CE]" />
 
@@ -161,7 +154,7 @@ const PriorityDmPage = () => {
                   </Link>
                 </motion.div>
               ) : (
-                <form onSubmit={handleSubmit} className="space-y-5">
+                <form onSubmit={handleSubmit} className="space-y-4">
                   {error && (
                     <div className="p-3 rounded-2xl bg-rose-50 border border-rose-200 text-rose-700 text-[12px] font-semibold">
                       {error}
@@ -171,7 +164,7 @@ const PriorityDmPage = () => {
                   {/* Name & Email */}
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-[11.5px] font-bold text-[#111111] mb-1.5">
+                      <label className="block text-[13.5px] font-semibold text-[#111111] mb-1.5">
                         Full name <span className="text-[#DE5C2B]">*</span>
                       </label>
                       <div className="relative">
@@ -183,13 +176,13 @@ const PriorityDmPage = () => {
                           placeholder="e.g. Rahul Sharma"
                           value={formData.name}
                           onChange={handleChange}
-                          className="w-full pl-10 pr-4 py-3 rounded-2xl border border-slate-200 bg-[#FAFAF8] focus:bg-white focus:border-[#DE5C2B] focus:ring-2 focus:ring-[#FED7CE]/40 text-[13px] text-[#111111] placeholder:text-slate-400 outline-none transition-all"
+                          className="w-full pl-10 pr-4 h-12 rounded-xl border border-slate-200 bg-[#FAFAF8] focus:bg-white focus:border-[#DE5C2B] focus:ring-2 focus:ring-[#FED7CE]/40 text-[15px] text-[#111111] placeholder:text-slate-400 outline-none transition-all"
                         />
                       </div>
                     </div>
 
                     <div>
-                      <label className="block text-[11.5px] font-bold text-[#111111] mb-1.5">
+                      <label className="block text-[13.5px] font-semibold text-[#111111] mb-1.5">
                         Email address <span className="text-[#DE5C2B]">*</span>
                       </label>
                       <div className="relative">
@@ -201,7 +194,7 @@ const PriorityDmPage = () => {
                           placeholder="you@example.com"
                           value={formData.email}
                           onChange={handleChange}
-                          className="w-full pl-10 pr-4 py-3 rounded-2xl border border-slate-200 bg-[#FAFAF8] focus:bg-white focus:border-[#DE5C2B] focus:ring-2 focus:ring-[#FED7CE]/40 text-[13px] text-[#111111] placeholder:text-slate-400 outline-none transition-all"
+                          className="w-full pl-10 pr-4 h-12 rounded-xl border border-slate-200 bg-[#FAFAF8] focus:bg-white focus:border-[#DE5C2B] focus:ring-2 focus:ring-[#FED7CE]/40 text-[15px] text-[#111111] placeholder:text-slate-400 outline-none transition-all"
                         />
                       </div>
                     </div>
@@ -209,7 +202,7 @@ const PriorityDmPage = () => {
 
                   {/* Phone */}
                   <div>
-                    <label className="block text-[11.5px] font-bold text-[#111111] mb-1.5">
+                    <label className="block text-[13.5px] font-semibold text-[#111111] mb-1.5">
                       Phone number <span className="text-[#DE5C2B]">*</span>
                     </label>
                     <div className="relative">
@@ -221,17 +214,17 @@ const PriorityDmPage = () => {
                         placeholder="+91 ... or +1 ..."
                         value={formData.phone}
                         onChange={handleChange}
-                        className="w-full pl-10 pr-4 py-3 rounded-2xl border border-slate-200 bg-[#FAFAF8] focus:bg-white focus:border-[#DE5C2B] focus:ring-2 focus:ring-[#FED7CE]/40 text-[13px] text-[#111111] placeholder:text-slate-400 outline-none transition-all"
+                        className="w-full pl-10 pr-4 h-12 rounded-xl border border-slate-200 bg-[#FAFAF8] focus:bg-white focus:border-[#DE5C2B] focus:ring-2 focus:ring-[#FED7CE]/40 text-[15px] text-[#111111] placeholder:text-slate-400 outline-none transition-all"
                       />
                     </div>
-                    <p className="text-[10.5px] text-slate-400 mt-1.5 pl-1">
+                    <p className="text-[12.5px] text-slate-500 mt-1.5 pl-1">
                       Please include your country code (e.g. +91 for India, +1 for USA/Canada, +44 for UK).
                     </p>
                   </div>
 
                   {/* Category */}
                   <div>
-                    <label className="block text-[11.5px] font-bold text-[#111111] mb-1.5">
+                    <label className="block text-[13.5px] font-semibold text-[#111111] mb-1.5">
                       What would you like support with? <span className="text-[#DE5C2B]">*</span>
                     </label>
                     <div className="relative">
@@ -241,7 +234,7 @@ const PriorityDmPage = () => {
                         required
                         value={formData.category}
                         onChange={handleChange}
-                        className="w-full pl-10 pr-4 py-3 rounded-2xl border border-slate-200 bg-[#FAFAF8] focus:bg-white focus:border-[#DE5C2B] focus:ring-2 focus:ring-[#FED7CE]/40 text-[13px] text-[#111111] outline-none transition-all cursor-pointer appearance-none"
+                        className="w-full pl-10 pr-4 h-12 rounded-xl border border-slate-200 bg-[#FAFAF8] focus:bg-white focus:border-[#DE5C2B] focus:ring-2 focus:ring-[#FED7CE]/40 text-[15px] text-[#111111] outline-none transition-all cursor-pointer appearance-none"
                       >
                         <option value="" disabled>
                           Choose an option
@@ -261,16 +254,16 @@ const PriorityDmPage = () => {
 
                   {/* Message */}
                   <div>
-                    <label className="block text-[11.5px] font-bold text-[#111111] mb-1.5">
+                    <label className="block text-[13.5px] font-semibold text-[#111111] mb-1.5">
                       Please explain your situation
                     </label>
                     <textarea
                       name="message"
-                      rows={4}
+                      rows={3}
                       placeholder="Share any details that will help us understand your case (e.g. current visa, intake, university, job role). This field is optional."
                       value={formData.message}
                       onChange={handleChange}
-                      className="w-full p-4 rounded-2xl border border-slate-200 bg-[#FAFAF8] focus:bg-white focus:border-[#DE5C2B] focus:ring-2 focus:ring-[#FED7CE]/40 text-[13px] text-[#111111] placeholder:text-slate-400 outline-none transition-all resize-none"
+                      className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-[#FAFAF8] focus:bg-white focus:border-[#DE5C2B] focus:ring-2 focus:ring-[#FED7CE]/40 text-[15px] text-[#111111] placeholder:text-slate-400 outline-none transition-all resize-none"
                     />
                   </div>
 
@@ -279,7 +272,7 @@ const PriorityDmPage = () => {
                     <button
                       type="submit"
                       disabled={loading}
-                      className="w-full inline-flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-full bg-[#111111] hover:bg-black text-white font-bold text-[13.5px] shadow-[0_10px_24px_-4px_rgba(0,0,0,0.22)] hover:shadow-[0_12px_28px_-4px_rgba(0,0,0,0.30)] hover:scale-[1.01] transition-all cursor-pointer disabled:opacity-70"
+                      className="w-full inline-flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-full bg-[#111111] hover:bg-black text-white font-semibold text-[15px] shadow-[0_10px_24px_-4px_rgba(0,0,0,0.22)] hover:shadow-[0_12px_28px_-4px_rgba(0,0,0,0.30)] hover:scale-[1.01] transition-all cursor-pointer disabled:opacity-70"
                     >
                       {loading ? (
                         <>

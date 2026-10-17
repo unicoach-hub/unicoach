@@ -150,6 +150,37 @@ const StudentDrawer = ({ studentId, open, onClose, onChanged }) => {
 
           <section>
             <h4 style={{ margin: '0 0 8px', fontSize: 14 }}>Journey stage</h4>
+            {/* Paper-style timeline: one dot per phase with the date it was reached */}
+            {(() => {
+              const phases = data?.phases || [];
+              const cur = stages.find((st) => st.key === s.journeyStage);
+              const curIdx = phases.findIndex((p) => p.key === cur?.phase);
+              const reached = {};
+              for (const h of s.stageHistory || []) {
+                const st = stages.find((x) => x.key === h.stage);
+                if (st && !reached[st.phase]) reached[st.phase] = { at: h.at, label: st.label };
+              }
+              if (!reached.registration) reached.registration = { at: s.createdAt, label: 'Walk-in' };
+              return (
+                <div style={{ display: 'flex', alignItems: 'flex-start', margin: '4px 0 16px', overflowX: 'auto', paddingBottom: 4 }}>
+                  {phases.map((p, i) => {
+                    const done = i < curIdx || (i === curIdx);
+                    const isCur = i === curIdx;
+                    const bad = isCur && cur?.outcome === 'bad';
+                    const dot = bad ? '#dc2626' : isCur ? '#DE5C2B' : done ? '#16a34a' : '#cbd5e1';
+                    const info = isCur ? { at: (s.stageHistory || []).slice().reverse().find((h) => h.stage === s.journeyStage)?.at || reached[p.key]?.at, label: cur?.label } : reached[p.key];
+                    return (
+                      <div key={p.key} style={{ flex: '1 0 78px', textAlign: 'center', position: 'relative' }}>
+                        {i > 0 && <span style={{ position: 'absolute', top: 8, right: '50%', width: '100%', height: 2, background: i <= curIdx ? '#16a34a' : '#e2e8f0' }} />}
+                        <span style={{ position: 'relative', display: 'inline-block', width: 18, height: 18, borderRadius: '50%', background: dot, border: '3px solid #fff', boxShadow: `0 0 0 1.5px ${dot}` }} />
+                        <div style={{ fontSize: 11.5, fontWeight: 600, marginTop: 4, color: done ? 'var(--ux-ink)' : 'var(--ux-text-3)' }}>{done && info?.label ? info.label : p.label}</div>
+                        <div style={{ fontSize: 11, color: 'var(--ux-text-2)' }}>{done && info?.at ? fmt(info.at) : '—'}</div>
+                      </div>
+                    );
+                  })}
+                </div>
+              );
+            })()}
             <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
               <Select
                 value={stage}
@@ -176,7 +207,7 @@ const StudentDrawer = ({ studentId, open, onClose, onChanged }) => {
                     {h.note && <div style={{ fontSize: 12.5, marginTop: 2 }}>{h.note}</div>}
                   </div>
                 ),
-              })).concat([{ color: 'gray', children: <div><strong>Registered</strong><div style={{ fontSize: 12, color: 'var(--ux-text-2)' }}>{fmt(s.createdAt, true)}</div></div> }])}
+              })).concat([{ color: 'gray', children: <div><strong>Walk-in</strong><div style={{ fontSize: 12, color: 'var(--ux-text-2)' }}>{fmt(s.createdAt, true)}</div></div> }])}
             />
           </section>
 
