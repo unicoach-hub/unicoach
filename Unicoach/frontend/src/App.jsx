@@ -269,6 +269,7 @@ const LoginPage = lazy(() => import('./pages/LoginPage'));
 const SignupPage = lazy(() => import('./pages/SignupPage'));
 const TermsPage = lazy(() => import('./pages/TermsPage'));
 const PrivacyPolicyPage = lazy(() => import('./pages/PrivacyPolicyPage'));
+const RefundPolicyPage = lazy(() => import('./pages/RefundPolicyPage'));
 
 // Import GMAT exam pages
 const GMATOverview = lazy(() => import('./app/exams/gmat/GMATOverview'));
@@ -925,6 +926,8 @@ const App = () => {
             <Route path="/terms-of-service" element={<TermsPage />} />
             <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
             <Route path="/privacy" element={<PrivacyPolicyPage />} />
+            <Route path="/refund-policy" element={<RefundPolicyPage />} />
+            <Route path="/cancellation-policy" element={<RefundPolicyPage />} />
 
             {/* Support /@:handle routing in React Router v6 */}
             <Route path="/:handle/query/:bookingRef" element={<AtHandleQueryTrackingOrNotFound />} />

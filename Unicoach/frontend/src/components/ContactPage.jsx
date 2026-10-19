@@ -36,6 +36,7 @@ import PremiumDropdown from './PremiumDropdown';
 import { ALL_COUNTRY_OPTIONS } from '../utils/shortlistOptions';
 import { API_BASE_URL } from '../config';
 import BackButton from './ui/BackButton';
+import { Muhavra } from './desi/Desi';
 
 const COUNTRY_OPTIONS = ALL_COUNTRY_OPTIONS.filter(c => c.value !== 'All');
 
@@ -677,6 +678,7 @@ const ContactPage = () => {
                                         </div>
                                     )}
 
+                                    <Muhavra hi="शुभ काम में देरी क्यों?" en="Free counselling, no sales call." />
                                     <button
                                         type="submit"
                                         disabled={sending}

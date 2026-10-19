@@ -307,3 +307,100 @@ exports.receiveWebhook = async (req, res) => {
     if (!res.headersSent) res.sendStatus(200);
   }
 };
+
+/**
+ * GET /api/admin/whatsapp/overview
+ * Live account health from Meta (quality, tier, limits, name status) plus our own last-30-day traffic:
+ * messages sent / delivered / read / failed per day (from webhook delivery receipts, the inbox and campaigns).
+ */
+exports.overview = async (req, res) => {
+  try {
+    const settings = await getSettings();
+    const connected = !!(settings.wabaAccessToken && settings.wabaPhoneNumberId);
+    const out = { connected, account: null, metaError: '', traffic: null };
+
+    if (connected) {
+      const token = settings.wabaAccessToken;
+      try {
+        const phone = await graph(`/${settings.wabaPhoneNumberId}?fields=display_phone_number,verified_name,quality_rating,messaging_limit_tier,name_status,status,code_verification_status,platform_type,throughput,is_official_business_account`, { token });
+        let waba = {};
+        if (settings.wabaAccountId) {
+          waba = await graph(`/${settings.wabaAccountId}?fields=name,currency,account_review_status,business_verification_status,timezone_id`, { token }).catch(() => ({}));
+        }
+        // Meta tiers: TIER_250, TIER_1K, TIER_10K, TIER_100K, TIER_UNLIMITED
+        const tier = String(phone.messaging_limit_tier || '');
+        const tierLimit = { TIER_50: 50, TIER_250: 250, TIER_1K: 1000, TIER_2K: 2000, TIER_10K: 10000, TIER_100K: 100000 }[tier] ?? (tier === 'TIER_UNLIMITED' ? null : null);
+        out.account = {
+          phoneNumber: phone.display_phone_number || settings.wabaSenderNumber,
+          displayName: phone.verified_name || settings.wabaDisplayName,
+          phoneNumberId: settings.wabaPhoneNumberId,
+          wabaId: settings.wabaAccountId,
+          status: phone.status || '',
+          quality: phone.quality_rating || '',
+          tier,
+          tierLimit,
+          nameStatus: phone.name_status || '',
+          verification: phone.code_verification_status || '',
+          platform: phone.platform_type || '',
+          throughput: phone.throughput?.level || '',
+          officialBadge: !!phone.is_official_business_account,
+          wabaName: waba.name || '',
+          currency: waba.currency || '',
+          reviewStatus: waba.account_review_status || '',
+          businessVerification: waba.business_verification_status || '',
+          connectedAt: settings.wabaConnectedAt || null,
+        };
+      } catch (e) {
+        out.metaError = e.message;
+      }
+    }
+
+    // Our traffic, last 30 days (IST days)
+    const since = new Date(Date.now() - 30 * 86400000);
+    const tz = 'Asia/Kolkata';
+    const day = { $dateToString: { format: '%Y-%m-%d', date: '$at', timezone: tz } };
+    const [statusRows, outRows, inRows] = await Promise.all([
+      WhatsappEvent.aggregate([
+        { $match: { kind: 'status', at: { $gte: since }, waMessageId: { $exists: true, $ne: null } } },
+        { $group: { _id: '$waMessageId', statuses: { $addToSet: '$status' }, first: { $min: '$at' } } },
+        { $group: {
+          _id: { $dateToString: { format: '%Y-%m-%d', date: '$first', timezone: tz } },
+          sent: { $sum: 1 },
+          delivered: { $sum: { $cond: [{ $or: [{ $in: ['delivered', '$statuses'] }, { $in: ['read', '$statuses'] }] }, 1, 0] } },
+          read: { $sum: { $cond: [{ $in: ['read', '$statuses'] }, 1, 0] } },
+          failed: { $sum: { $cond: [{ $in: ['failed', '$statuses'] }, 1, 0] } },
+        } },
+      ]),
+      WhatsappEvent.aggregate([
+        { $match: { kind: 'message', direction: 'out', at: { $gte: since } } },
+        { $group: { _id: day, n: { $sum: 1 } } },
+      ]),
+      WhatsappEvent.aggregate([
+        { $match: { kind: 'message', direction: 'in', at: { $gte: since } } },
+        { $group: { _id: day, n: { $sum: 1 } } },
+      ]),
+    ]);
+    const byDay = {};
+    const fmtDay = (d) => d.toLocaleDateString('en-CA', { timeZone: tz });
+    for (let i = 29; i >= 0; i -= 1) {
+      const k = fmtDay(new Date(Date.now() - i * 86400000));
+      byDay[k] = { date: k, sent: 0, delivered: 0, read: 0, failed: 0, replies: 0 };
+    }
+    for (const r of statusRows) if (byDay[r._id]) Object.assign(byDay[r._id], { sent: r.sent, delivered: r.delivered, read: r.read, failed: r.failed });
+    // Messages we sent that have no receipt yet still count as sent
+    for (const r of outRows) if (byDay[r._id]) byDay[r._id].sent = Math.max(byDay[r._id].sent, r.n);
+    for (const r of inRows) if (byDay[r._id]) byDay[r._id].replies = r.n;
+    const days = Object.values(byDay);
+    const sum = (k) => days.reduce((n, d) => n + d[k], 0);
+    const todayKey = fmtDay(new Date());
+    out.traffic = {
+      days,
+      totals: { sent: sum('sent'), delivered: sum('delivered'), read: sum('read'), failed: sum('failed'), replies: sum('replies') },
+      sentToday: byDay[todayKey]?.sent || 0,
+    };
+    return res.json(out);
+  } catch (err) {
+    console.error('[WhatsApp] overview failed:', err);
+    return res.status(500).json({ message: 'Could not load WhatsApp overview' });
+  }
+};

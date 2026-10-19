@@ -38,7 +38,7 @@ exports.getFormById = async (req, res) => {
  */
 exports.createForm = async (req, res) => {
   try {
-    const { name, pipeline, fields, headerTitle, headerDescription, successMessage } = req.body;
+    const { name, pipeline, fields, headerTitle, headerDescription, headerImage, successMessage } = req.body;
     if (!name || !pipeline || !fields || fields.length === 0) {
       return res.status(400).json({ message: 'Name, pipeline, and at least one field are required.' });
     }
@@ -51,6 +51,7 @@ exports.createForm = async (req, res) => {
       fields,
       headerTitle: headerTitle || name,
       headerDescription: headerDescription || '',
+      headerImage: headerImage || '',
       successMessage: successMessage || 'Thank you! Your response has been recorded.',
       createdBy: req.user?.id
     });
@@ -68,7 +69,7 @@ exports.createForm = async (req, res) => {
  */
 exports.updateForm = async (req, res) => {
   try {
-    const { name, pipeline, fields, headerTitle, headerDescription, successMessage, active } = req.body;
+    const { name, pipeline, fields, headerTitle, headerDescription, headerImage, successMessage, active } = req.body;
     const form = await CustomForm.findById(req.params.id);
     if (!form) return res.status(404).json({ message: 'Form not found' });
 
@@ -77,6 +78,7 @@ exports.updateForm = async (req, res) => {
     if (fields) form.fields = fields;
     if (headerTitle !== undefined) form.headerTitle = headerTitle;
     if (headerDescription !== undefined) form.headerDescription = headerDescription;
+    if (headerImage !== undefined) form.headerImage = headerImage;
     if (successMessage !== undefined) form.successMessage = successMessage;
     if (active !== undefined) form.active = active;
 

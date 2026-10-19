@@ -338,7 +338,7 @@ const PipelineBoard = () => {
               {Object.entries(selectedCard.data).map(([key, value]) => (
                 <div key={key} style={{ display: 'flex', justifyContent: 'space-between', gap: 12, padding: '10px 0', borderBottom: '1px solid var(--ux-line-2)' }}>
                   <span style={{ fontSize: 13, color: 'var(--ux-text-2)', fontWeight: 500 }}>{key}</span>
-                  <span style={{ fontSize: 13, color: 'var(--ux-ink)', fontWeight: 600, maxWidth: '55%', textAlign: 'right', wordBreak: 'break-word' }}>{value || '—'}</span>
+                  <span style={{ fontSize: 13, color: 'var(--ux-ink)', fontWeight: 600, maxWidth: '55%', textAlign: 'right', wordBreak: 'break-word' }}>{Array.isArray(value) ? value.join(', ') || '—' : value || '—'}</span>
                 </div>
               ))}
             </div>

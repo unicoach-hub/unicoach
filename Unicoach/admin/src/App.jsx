@@ -28,6 +28,8 @@ const Scholarships = lazy(() => import('./pages/Scholarships'));
 const Templates = lazy(() => import('./pages/Templates'));
 const BulkMessaging = lazy(() => import('./pages/BulkMessaging'));
 const WhatsappInbox = lazy(() => import('./pages/WhatsappInbox'));
+const Students = lazy(() => import('./pages/Students'));
+const WhatsappDashboard = lazy(() => import('./pages/WhatsappDashboard'));
 const Campaigns = lazy(() => import('./pages/Campaigns'));
 const ChatbotFlows = lazy(() => import('./pages/ChatbotFlows'));
 const DeveloperDashboard = lazy(() => import('./pages/DeveloperDashboard'));
@@ -41,7 +43,6 @@ const SupportRequests = lazy(() => import('./pages/SupportRequests'));
 const UniCoachAdminHub = lazy(() => import('./pages/UniCoachAdminHub'));
 const Staff = lazy(() => import('./pages/Staff'));
 const StudentInbox = lazy(() => import('./pages/StudentInbox'));
-const Students = lazy(() => import('./pages/Students'));
 const EventRegistrations = lazy(() => import('./pages/EventRegistrations'));
 const Tasks = lazy(() => import('./pages/Tasks'));
 const Campaign = lazy(() => import('./pages/Campaign'));
@@ -112,7 +113,7 @@ const App = () => {
                       <Route path="/" element={<Dashboard />} />
                       <Route path="/requests" element={<SupportRequests />} />
                       <Route path="/students/inbox" element={<StudentInbox />} />
-                      <Route path="/students/all" element={<Students />} />
+                      <Route path="/students/all" element={<Navigate to="/leads" replace />} />
                       <Route path="/students/documents" element={<Students />} />
                       <Route path="/event-registrations" element={<EventRegistrations />} />
                       <Route path="/tasks" element={<Tasks />} />
@@ -152,6 +153,7 @@ const App = () => {
                       <Route path="/automation/email" element={<EmailHub />} />
                       <Route path="/automation/campaign" element={<Campaign />} />
                       <Route path="/automation/whatsapp" element={<WhatsappInbox />} />
+                      <Route path="/automation/whatsapp-dashboard" element={<WhatsappDashboard />} />
                       <Route path="/automation/campaigns" element={<Campaigns />} />
                       <Route path="/automation/chatbot" element={<ChatbotFlows />} />
                       <Route path="/developer" element={<DeveloperDashboard />} />

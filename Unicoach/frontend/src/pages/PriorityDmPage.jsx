@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import { SUPPORT_CATEGORIES } from '../components/PriorityDmModal';
 import { API_BASE_URL } from '../config';
 import { TEAM_MENTORS, mentorLook } from '../utils/teamMentors';
+import { Muhavra } from '../components/desi/Desi';
 
 const PriorityDmPage = () => {
   const [formData, setFormData] = useState({
@@ -267,6 +268,7 @@ const PriorityDmPage = () => {
                     />
                   </div>
 
+                  <Muhavra hi="पूछने में क्या शर्म?" en="Seedha senior advisor tak pahunchega." />
                   {/* Submit button */}
                   <div className="pt-1">
                     <button

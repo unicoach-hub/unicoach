@@ -23,6 +23,7 @@ import { getOfficialRequirements } from '../utils/requirements';
 import { POPULAR_COURSES, ALL_COUNTRY_OPTIONS } from '../utils/shortlistOptions';
 import { API_BASE_URL } from '../config';
 import { HeroBackButton } from '../components/ui/BackButton';
+import { Muhavra } from '../components/desi/Desi';
 
 const API_URL = API_BASE_URL;
 
@@ -747,6 +748,7 @@ const EligibilityCalculatorPage = () => {
               <h2 className="text-xl md:text-2xl font-black text-slate-900 tracking-tight">
                 Enter Your Parameters
               </h2>
+              <Muhavra hi="पहले तौलो, फिर बोलो।" en="Apply karne se pehle chances check karo." className="mt-1" />
             </div>
 
             <button

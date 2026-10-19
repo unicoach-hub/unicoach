@@ -6,8 +6,8 @@ import LazySection from './LazySection';
 const MentorMarquee = lazy(() => import('./MentorMarquee'));
 const Services = lazy(() => import('./Services'));
 const JourneyBento = lazy(() => import('./JourneyBento'));
-const FeatureStory = lazy(() => import('./FeatureStory'));
 const ShortlistShowcase = lazy(() => import('./ShortlistShowcase'));
+const StudentStory = lazy(() => import('./StudentStory'));
 const Destinations = lazy(() => import('./Destinations'));
 const UpcomingEvents = lazy(() => import('./UpcomingEvents'));
 const Testimonials = lazy(() => import('./Testimonials'));
@@ -37,10 +37,10 @@ const Home = () => {
         </Suspense>
       </LazySection>
 
-      {/* 04. Explore Top Study Destinations (Country Section) */}
-      <LazySection minHeight="100vh" rootMargin="400px">
-        <Suspense fallback={<SectionPlaceholder minHeight="100vh" />}>
-          <FeatureStory />
+      {/* 04b. Student ki kahani: chat-style journey */}
+      <LazySection minHeight="560px" rootMargin="350px">
+        <Suspense fallback={<SectionPlaceholder minHeight="560px" />}>
+          <StudentStory />
         </Suspense>
       </LazySection>
 

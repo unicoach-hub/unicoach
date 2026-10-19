@@ -20,6 +20,7 @@ import { API_BASE_URL } from '../../config';
 import { eventPath, getSpeakerPhoto, toAbsoluteUrl, toRegistrationUrl } from '../../utils/eventHelpers';
 import { BoardingPassCard, DepartureBoard } from './EventsHeroBoard';
 import { mentorLook } from '../../utils/teamMentors';
+import { FilmPoster } from '../../components/desi/Desi';
 
 // Large portraits of our event hosts (cut from their event banners); Admin → Events "Speaker photo" overrides
 const SPEAKER_PORTRAITS = {
@@ -380,7 +381,7 @@ const EventsPage = () => {
             </section>
 
             {/* Filterable Events Grid Section */}
-            <section className="max-w-[1240px] mx-auto px-6 md:px-8 mb-16 z-10 relative">
+            <section id="events-grid" className="max-w-[1240px] mx-auto px-6 md:px-8 mb-16 z-10 relative scroll-mt-24">
 
                 {/* Visual Header */}
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-8 border-b border-slate-200/80 pb-6">
@@ -650,6 +651,9 @@ const EventsPage = () => {
                     )
                 )}
             </section>
+
+            {/* Retro film-poster banner for our sessions */}
+            <FilmPoster />
 
             {/* Why Attend Section */}
             <section className="bg-white border border-slate-200/80 py-16 px-6 md:px-12 rounded-[32px] max-w-[1240px] mx-auto mb-16 relative overflow-hidden shadow-sm">

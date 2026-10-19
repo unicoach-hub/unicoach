@@ -9,6 +9,7 @@ import canadaSketch from '../assets/destinations/sketch/canada.webp';
 import australiaSketch from '../assets/destinations/sketch/australia.webp';
 import germanySketch from '../assets/destinations/sketch/germany.webp';
 import irelandSketch from '../assets/destinations/sketch/ireland.webp';
+import './desi/desi.css';
 
 
 export const Destinations = ({ onOpenModal }) => {
@@ -91,6 +92,12 @@ export const Destinations = ({ onOpenModal }) => {
                 <span className="absolute -bottom-1 left-0 w-full h-[6px] bg-[#FED7CE] rounded-full -z-10" />
               </span>
             </h2>
+
+            {/* Old-Bollywood song-caption style line (our own words) */}
+            <div className="desi-caption" aria-label="Hum to chale pardes, ab tumhari baari">
+              <span className="top">HUM TO CHALE PARDES,</span>
+              <span className="bar">अब तुम्हारी बारी ✈️</span>
+            </div>
 
             <p className="text-[13.5px] sm:text-[14.5px] text-slate-600 leading-relaxed mt-2.5 max-w-[290px] font-normal">
               World-class education. Global exposure. <br />

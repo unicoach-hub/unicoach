@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { Tooltip } from 'antd';
 import {
+  FolderOpenOutlined,
   CodeOutlined,
   AppstoreOutlined,
   TeamOutlined,
@@ -22,8 +23,6 @@ import {
   SafetyCertificateOutlined,
   MessageOutlined,
   CheckSquareOutlined,
-  SolutionOutlined,
-  FolderOpenOutlined,
   CalendarOutlined,
 } from '@ant-design/icons';
 import { useAuth } from '../context/AuthContext';
@@ -62,7 +61,6 @@ const NAV_SECTIONS = [
           { path: '/users', label: 'Registered Users' },
         ],
       },
-      { path: '/students/all', label: 'Students & Stages', icon: <SolutionOutlined /> },
       { path: '/students/documents', label: 'Student Documents', icon: <FolderOpenOutlined /> },
       { path: '/students/inbox', label: 'Student Inbox', icon: <MessageOutlined />, badge: 'inbox' },
       { path: '/requests', label: 'Support Requests', icon: <CustomerServiceOutlined />, badge: 'requests' },
@@ -97,6 +95,7 @@ const NAV_SECTIONS = [
         icon: <ThunderboltOutlined />,
         children: [
           { path: '/automation/email', label: 'Email Hub' },
+          { path: '/automation/whatsapp-dashboard', label: 'WhatsApp Dashboard' },
           { path: '/automation/whatsapp', label: 'WhatsApp Inbox' },
           { path: '/automation/campaigns', label: 'WhatsApp Campaigns' },
           { path: '/automation/chatbot', label: 'WhatsApp Chatbot' },

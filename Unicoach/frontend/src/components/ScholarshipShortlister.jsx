@@ -19,6 +19,7 @@ import { POPULAR_COURSES, ALL_COUNTRY_OPTIONS } from '../utils/shortlistOptions'
 import fallbackScholarships from '../data/scholarships.json';
 import { API_BASE_URL } from '../config';
 import { exportScholarshipsToExcel } from '../utils/excelExporter';
+import { Muhavra } from './desi/Desi';
 
 const API_URL = API_BASE_URL;
 
@@ -893,9 +894,12 @@ const ScholarshipShortlister = () => {
           </div>
 
           <div className="pt-6 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-4">
-            <p className="text-[13px] text-slate-500">
-              We check 150+ merit, need-based and government scholarships.
-            </p>
+            <div>
+              <Muhavra hi="बूँद-बूँद से घड़ा भरता है।" />
+              <p className="text-[13px] text-slate-500">
+                We check 150+ merit, need-based and government scholarships.
+              </p>
+            </div>
 
             <button
               onClick={handleShortlistSubmit}

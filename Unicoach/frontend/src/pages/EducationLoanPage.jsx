@@ -6,6 +6,7 @@ import {
 } from 'lucide-react';
 import ServiceEnquiryForm from '../components/ServiceEnquiryForm';
 import BackButton from '../components/ui/BackButton';
+import { DesiSticker, MemeLine } from '../components/desi/Desi';
 
 const formatINR = (n) =>
   new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(Math.max(0, Math.round(n)));
@@ -128,6 +129,7 @@ const EducationLoanPage = () => {
           <h1 className="mt-4 font-outfit text-[34px] sm:text-[46px] lg:text-[52px] font-black text-[#111111] leading-[1.06] tracking-[-0.03em]">
             Fund your study abroad, <span className="text-[#DE5C2B]">without the paperwork maze</span>
           </h1>
+          <MemeLine>Papa ki FD मत तोड़ो, education loan ले लो 💸</MemeLine>
           <p className="mt-4 text-[15px] sm:text-[16.5px] text-slate-600 leading-relaxed max-w-xl">
             Compare education loans from banks and NBFCs for your university, with or without collateral.
             We guide you from the first call to the sanction letter you need for your visa.

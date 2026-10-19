@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
 import { TEAM_MENTORS, mentorLook } from '../utils/teamMentors';
+import './desi/desi.css';
 
 // Each half of the loop must be wider than the widest screen, otherwise a gap shows mid-loop;
 // with only a few mentors the list is repeated until it is (about 260px per card incl. gap)
@@ -68,9 +69,16 @@ const MentorMarquee = () => {
               <span className="w-1.5 h-1.5 rounded-full bg-[#DE5C2B]" />
               REAL SENIORS · 1:1 MENTORSHIP
             </span>
-            <h2 id="home-mentors-heading" className="font-outfit text-[26px] sm:text-[34px] lg:text-[38px] font-black text-[#111111] leading-tight tracking-tight">
-              Talk to seniors who&apos;ve <span className="text-[#DE5C2B]">done it</span>
-            </h2>
+            <div className="flex flex-wrap items-center gap-x-5 gap-y-1">
+              <h2 id="home-mentors-heading" className="font-outfit text-[26px] sm:text-[34px] lg:text-[38px] font-black text-[#111111] leading-tight tracking-tight">
+                Talk to seniors who&apos;ve <span className="text-[#DE5C2B]">done it</span>
+              </h2>
+              {/* Old-film caption, our own line */}
+              <div className="desi-caption desi-caption--inline" aria-label="Anubhavon ki suno, aage badho">
+                <span className="top">ANUBHAVON KI SUNO,</span>
+                <span className="bar">आगे बढ़ो 🙌</span>
+              </div>
+            </div>
             <p className="text-[13.5px] sm:text-[14.5px] text-slate-600 mt-1.5 max-w-xl">
               Book a 1:1 call with students who got in, or join their free live sessions.
             </p>

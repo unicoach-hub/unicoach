@@ -6,6 +6,7 @@ import {
 } from 'lucide-react';
 import ServiceEnquiryForm from '../components/ServiceEnquiryForm';
 import BackButton from '../components/ui/BackButton';
+import { DesiSticker, MemeLine } from '../components/desi/Desi';
 
 const VISA_FIELDS = [
   { name: 'visaType', label: 'Visa type', type: 'select', required: true, half: true,
@@ -46,6 +47,7 @@ const VisaAssistancePage = () => {
           <h1 className="mt-4 font-outfit text-[34px] sm:text-[46px] lg:text-[52px] font-black text-[#111111] leading-[1.06] tracking-[-0.03em]">
             From admit to arrival, <span className="text-[#DE5C2B]">we handle the hard parts</span>
           </h1>
+          <MemeLine>Visa की टेंशन? Ghabrao mat, हम हैं ना 🛂</MemeLine>
           <p className="mt-4 text-[15px] sm:text-[16.5px] text-slate-600 leading-relaxed max-w-xl">
             Visa filing, document checks, interview practice, housing, forex and insurance, all with one advisor
             who knows your country's latest rules.

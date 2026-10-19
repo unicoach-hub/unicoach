@@ -7,6 +7,7 @@ const inbox = require('../controllers/whatsappInboxController');
 router.use(verifyToken, requireAdmin);
 
 router.get('/status', c.getStatus);
+router.get('/overview', c.overview);
 router.post('/embedded-signup', c.completeSignup);
 router.post('/manual-connect', c.manualConnect);
 router.post('/disconnect', c.disconnect);

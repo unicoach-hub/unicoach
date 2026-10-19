@@ -87,9 +87,18 @@ exports.getAllLeads = async (req, res) => {
         if (u.email) byEmail.set(String(u.email).toLowerCase(), u);
         if (tail(u.phone).length === 10) byPhone.set(tail(u.phone), u);
       }
+      // documents each student uploaded (for the "Documents" filter on All Leads)
+      const StudentDocument = require('../models/StudentDocument');
+      const docRows = await StudentDocument.aggregate([
+        { $match: { student: { $in: users.map((u) => u._id) }, 'file.url': { $exists: true, $ne: null } } },
+        { $group: { _id: '$student', total: { $sum: 1 }, toReview: { $sum: { $cond: [{ $eq: ['$status', 'uploaded'] }, 1, 0] } } } },
+      ]);
+      const docsBy = new Map(docRows.map((d) => [String(d._id), d]));
       for (const l of leads) {
         const u = (l.userId && byId.get(String(l.userId))) || byEmail.get(String(l.email || '').toLowerCase()) || byPhone.get(tail(l.phone));
         if (!u) continue;
+        const d = docsBy.get(String(u._id));
+        if (d) l.documents = { total: d.total, toReview: d.toReview };
         l.journey = {
           userId: u._id,
           stage: normalizeStage(u.journeyStage),

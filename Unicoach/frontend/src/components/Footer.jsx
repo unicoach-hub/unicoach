@@ -428,6 +428,7 @@ const Footer = () => {
           <div className="flex items-center gap-5">
             <Link to="/privacy-policy" className="text-slate-500 hover:text-[#DE5C2B] text-xs font-bold transition-colors">Privacy Policy</Link>
             <Link to="/terms" className="text-slate-500 hover:text-[#DE5C2B] text-xs font-bold transition-colors">Terms of Service</Link>
+            <Link to="/refund-policy" className="text-slate-500 hover:text-[#DE5C2B] text-xs font-bold transition-colors">Refund Policy</Link>
             <button
               onClick={scrollToTop}
               className="w-8.5 h-8.5 rounded-lg bg-white border border-slate-200 hover:border-[#111111] hover:bg-[#111111] text-slate-600 hover:text-white flex items-center justify-center transition-all cursor-pointer shadow-2xs group"

@@ -1,3 +1,4 @@
+import { Muhavra } from '../../components/desi/Desi';
 import React, { useEffect, useMemo, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { submitMentorApplication, uploadMentorVerificationDoc } from '../api/unicoachApi';
@@ -1355,6 +1356,7 @@ const UnicoachApplyPage = () => {
             </div>
           </div>
 
+          <Muhavra hi="आम के आम, गुठलियों के दाम।" en="Juniors ki madad bhi, kamaai bhi." className="justify-center" />
           {/* Submit Button */}
           <button
             type="submit"

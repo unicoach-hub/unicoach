@@ -1,0 +1,351 @@
+/* Desi tadka accents (stickers, meme lines, postage-stamp CTA) */
+.desi-sticker {
+  display: inline-block;
+  vertical-align: middle;
+  margin-left: .35em;
+  padding: .12em .5em .02em;
+  border-radius: .3em;
+  font-family: 'Yatra One', 'Baloo 2', sans-serif;
+  font-size: .5em;
+  font-weight: 400;
+  line-height: 1.35;
+  letter-spacing: 0;
+  white-space: nowrap;
+  text-shadow: 1px 1px 0 rgba(0, 0, 0, .25);
+  cursor: default;
+  user-select: none;
+}
+
+.desi-meme {
+  display: inline-block;
+  margin-top: 14px;
+  padding: 6px 14px 4px;
+  border: 2px dashed #B3261E;
+  border-radius: 8px;
+  background: #FFF4E2;
+  color: #B3261E;
+  font-family: 'Yatra One', 'Baloo 2', sans-serif;
+  font-size: 15px;
+  line-height: 1.35;
+  letter-spacing: 0;
+}
+
+/* ── Postage-stamp CTA ── */
+.desi-stamp-wrap { padding: 56px 16px 64px; background: #FAF9F6; display: flex; justify-content: center; }
+.desi-stamp {
+  position: relative;
+  width: min(880px, 100%);
+  padding: 16px;
+  isolation: isolate;
+}
+/* perforated stamp edge, drawn on its own layer so the content stays solid */
+.desi-stamp::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: #E8336B;
+  -webkit-mask: radial-gradient(circle 7px at 50% 50%, #0000 96%, #000) 0 0 / 20px 20px;
+  mask: radial-gradient(circle 7px at 50% 50%, #0000 96%, #000) 0 0 / 20px 20px;
+  -webkit-mask-position: -10px -10px;
+  mask-position: -10px -10px;
+}
+.desi-stamp-inner {
+  background: #F7C12E;
+  border: 3px solid #1B1530;
+  padding: 40px 28px 34px;
+  text-align: center;
+  background-image: radial-gradient(rgba(27, 21, 48, .07) 1px, transparent 1px);
+  background-size: 7px 7px;
+}
+.desi-stamp-kicker {
+  display: inline-block;
+  font: 700 14px 'Baloo 2', sans-serif;
+  color: #1B1530;
+  background: #fff;
+  border: 2px solid #1B1530;
+  border-radius: 999px;
+  padding: 2px 14px;
+}
+.desi-stamp-title { margin: 14px 0 6px !important; line-height: .95 !important; letter-spacing: 0 !important; }
+.desi-stamp-title .en {
+  display: block;
+  font-family: 'Anton', 'Archivo Black', sans-serif;
+  font-size: clamp(48px, 9vw, 96px);
+  color: #E8336B;
+  text-shadow: 4px 4px 0 #1B1530;
+  letter-spacing: .02em;
+}
+.desi-stamp-title .hi {
+  display: block;
+  font-family: 'Yatra One', sans-serif;
+  font-size: clamp(30px, 5vw, 52px);
+  color: #1B1530;
+  margin-top: 4px;
+}
+.desi-stamp-sub { max-width: 520px; margin: 10px auto 0; font: 600 16px/1.45 'Baloo 2', sans-serif; color: #3a2a12; }
+.desi-stamp-actions { margin-top: 22px; display: flex; gap: 18px; justify-content: center; align-items: center; flex-wrap: wrap; }
+.desi-btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: #1B1530; color: #F7C12E; text-decoration: none;
+  font: 800 16px 'Baloo 2', sans-serif;
+  padding: 12px 24px; border-radius: 999px;
+  box-shadow: 4px 4px 0 #E8336B;
+  transition: transform .2s, box-shadow .2s;
+}
+.desi-btn:hover { transform: translate(-2px, -2px); box-shadow: 6px 6px 0 #E8336B; }
+.desi-link { font: 700 15px 'Baloo 2', sans-serif; color: #1B1530; text-decoration: underline; text-underline-offset: 4px; }
+.desi-postmark {
+  position: absolute; right: 34px; top: 30px;
+  width: 92px; height: 92px; border-radius: 50%;
+  border: 2.5px solid rgba(27, 21, 48, .55);
+  color: rgba(27, 21, 48, .6);
+  font: 800 10.5px/1.3 'Baloo 2', sans-serif; letter-spacing: .08em;
+  display: grid; place-items: center; text-align: center;
+  transform: rotate(-14deg);
+}
+@media (max-width: 640px) {
+  .desi-postmark { display: none; }
+  .desi-stamp-inner { padding: 30px 16px 26px; }
+}
+
+/* ── Retro Bollywood film poster ── */
+.desi-film-wrap { padding: 24px 16px 56px; background: #FAF9F6; display: flex; justify-content: center; }
+.desi-film {
+  position: relative; overflow: hidden; width: min(980px, 100%);
+  border-radius: 6px; border: 10px solid #F3E3C3;
+  outline: 2px solid #1B1530; outline-offset: -6px;
+  background: radial-gradient(120% 90% at 50% 0%, #F9B233 0%, #E8541E 45%, #8E1B2A 100%);
+  color: #FFF4E2; text-align: center; padding: 26px 26px 22px;
+  box-shadow: 0 30px 60px -30px rgba(27, 21, 48, .6);
+}
+.desi-film::after { /* worn paper grain */
+  content: ""; position: absolute; inset: 0; pointer-events: none; opacity: .18; mix-blend-mode: multiply;
+  background-image: radial-gradient(#3a1d0b 1px, transparent 1.2px); background-size: 5px 5px;
+}
+.desi-film-rays {
+  position: absolute; left: 50%; top: 30%; width: 1400px; height: 1400px; margin: -700px 0 0 -700px; opacity: .16;
+  background: repeating-conic-gradient(#FFF4E2 0 6deg, transparent 6deg 18deg);
+  animation: desi-rays 60s linear infinite;
+}
+@keyframes desi-rays { to { transform: rotate(360deg); } }
+.desi-film > *:not(.desi-film-rays) { position: relative; z-index: 1; }
+.desi-film-top { display: flex; justify-content: space-between; font: 700 13px 'Baloo 2', sans-serif; letter-spacing: .12em; text-transform: uppercase; }
+.desi-film-cert { border: 1.5px solid #FFF4E2; border-radius: 999px; padding: 0 10px; letter-spacing: .02em; text-transform: none; }
+.desi-film-presents { margin: 10px 0 0 !important; font: 400 18px 'Yatra One', sans-serif; color: #FCE7B5; }
+.desi-film-title { margin: 2px 0 0 !important; line-height: .95 !important; letter-spacing: 0 !important; }
+.desi-film-title .hi {
+  display: block; font-family: 'Yatra One', sans-serif; font-size: clamp(54px, 10vw, 112px);
+  color: #FFE14D; text-shadow: 3px 3px 0 #8E1B2A, 6px 6px 0 #1B1530;
+  transform: rotate(-3deg);
+}
+.desi-film-title .en {
+  display: inline-block; margin-top: 6px; font-family: 'Anton', sans-serif; font-size: clamp(22px, 3.4vw, 34px);
+  letter-spacing: .28em; color: #1B1530; background: #FFE14D; padding: 2px 14px 0;
+}
+.desi-film-tag { margin: 12px 0 0 !important; font: 600 italic 17px 'Baloo 2', sans-serif; color: #FFF4E2; }
+.desi-film-cast { display: flex; justify-content: center; gap: 14px; margin-top: 22px; flex-wrap: wrap; }
+.desi-film-actor { width: 108px; }
+.desi-film-actor .ph { height: 128px; border-radius: 50% 50% 12px 12px; overflow: hidden; border: 3px solid #FFF4E2; box-shadow: 4px 4px 0 #1B1530; background: #FCE7B5; }
+.desi-film-actor img { width: 100%; height: 100%; object-fit: cover; object-position: top; filter: saturate(1.15) contrast(1.05); }
+.desi-film-actor span { display: block; margin-top: 6px; font: 400 18px 'Yatra One', sans-serif; color: #FFE14D; text-shadow: 2px 2px 0 #1B1530; }
+.desi-film-starring { margin: 8px 0 0 !important; font: 700 13px 'Baloo 2', sans-serif; letter-spacing: .06em; text-transform: uppercase; color: #FCE7B5; }
+.desi-film-bottom { margin-top: 20px; padding-top: 14px; border-top: 2px dashed rgba(255, 244, 226, .5); display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap; }
+.desi-film-credits { font: 600 13px/1.5 'Baloo 2', sans-serif; text-align: left; color: #FFF4E2; max-width: 520px; }
+.desi-film-credits b { color: #FFE14D; }
+.desi-film-cta { display: flex; flex-direction: column; align-items: flex-end; gap: 8px; }
+.desi-film-now { font: 400 15px 'Yatra One', sans-serif; color: #FFE14D; }
+@media (max-width: 640px) {
+  .desi-film-actor { width: 84px; } .desi-film-actor .ph { height: 100px; }
+  .desi-film-bottom, .desi-film-cta { justify-content: center; align-items: center; text-align: center; }
+  .desi-film-credits { text-align: center; }
+}
+@media (prefers-reduced-motion: reduce) { .desi-film-rays { animation: none; } }
+
+/* Old film song caption: big yellow line + white text on a black bar */
+.desi-caption { margin: 14px 0 4px; display: inline-flex; flex-direction: column; align-items: flex-start; transform: rotate(-2deg); }
+.desi-caption .top {
+  font-family: 'Anton', sans-serif; font-size: clamp(26px, 3.2vw, 34px); line-height: 1; letter-spacing: .03em;
+  color: #F7C12E; text-shadow: 2px 2px 0 #1B1530, -1px -1px 0 #1B1530, 1px -1px 0 #1B1530, -1px 1px 0 #1B1530;
+}
+.desi-caption .bar {
+  margin-top: 4px; background: #111; color: #fff; padding: 3px 12px 1px; border-radius: 6px;
+  font-family: 'Yatra One', sans-serif; font-size: clamp(18px, 2.2vw, 22px); line-height: 1.35; letter-spacing: 0;
+}
+
+/* Sits on the same line as a heading (smaller, centred on it) */
+.desi-caption--inline { margin: 0; }
+.desi-caption--inline .top { font-size: clamp(20px, 2.2vw, 26px); }
+.desi-caption--inline .bar { font-size: clamp(15px, 1.6vw, 18px); margin-top: 2px; }
+
+/* ── Old railway card-ticket CTA ── */
+.desi-ticket-wrap { padding: 56px 16px 64px; background: #FAF9F6; display: flex; justify-content: center; }
+.desi-ticket {
+  width: min(960px, 100%); display: grid; grid-template-columns: 1fr 230px;
+  background: #F5E6C4; color: #2b2112; border-radius: 10px;
+  box-shadow: 0 30px 60px -32px rgba(43,33,18,.55);
+  background-image: repeating-linear-gradient(45deg, rgba(120,72,20,.05) 0 2px, transparent 2px 9px);
+  position: relative;
+}
+.desi-ticket::before { /* lined double border like old printed tickets */
+  content: ""; position: absolute; inset: 8px; border: 2px solid #8B2E1F; outline: 1px solid #8B2E1F; outline-offset: 3px; border-radius: 6px; pointer-events: none;
+}
+.desi-ticket-main { padding: 26px 28px 22px; position: relative; }
+.desi-ticket-head { display: flex; justify-content: space-between; align-items: center; gap: 10px; font: 800 12px 'Baloo 2', sans-serif; letter-spacing: .14em; color: #8B2E1F; border-bottom: 1.5px dashed #8B2E1F; padding-bottom: 8px; }
+.desi-ticket-head .hi { font-family: 'Yatra One', sans-serif; letter-spacing: 0; font-size: 16px; font-weight: 400; }
+.desi-ticket-route { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 14px; margin-top: 14px; }
+.desi-ticket-route small { display: block; font: 700 10px 'Baloo 2', sans-serif; letter-spacing: .1em; color: #8a6a3d; }
+.desi-ticket-route b { display: block; font: 400 30px/1 'Anton', sans-serif; letter-spacing: .04em; color: #2b2112; }
+.desi-ticket-route em { font: 400 13px 'Yatra One', sans-serif; font-style: normal; color: #8B2E1F; }
+.desi-ticket-route .r { text-align: right; }
+.desi-ticket-train { position: relative; height: 34px; overflow: hidden; }
+.desi-ticket-train .track { position: absolute; left: 0; right: 0; bottom: 6px; border-bottom: 3px dotted #8B2E1F; }
+.desi-ticket-train .engine { position: absolute; bottom: 4px; font-size: 24px; transform: scaleX(-1); }
+.desi-ticket-title { margin: 12px 0 4px !important; line-height: .95 !important; letter-spacing: 0 !important; }
+.desi-ticket-title .en { font: 400 clamp(46px, 8vw, 84px) 'Anton', sans-serif; color: #C2185B; text-shadow: 3px 3px 0 #2b2112; letter-spacing: .02em; }
+.desi-ticket-title .hi { font: 400 clamp(26px, 4.4vw, 44px) 'Yatra One', sans-serif; color: #2b2112; }
+.desi-ticket-passengers { display: flex; flex-wrap: wrap; gap: 6px; margin: 10px 0 14px; }
+.desi-ticket-passengers .seat { display: inline-flex; flex-direction: column; align-items: center; min-width: 74px; padding: 5px 8px 3px; border: 1.5px solid #8B2E1F; border-radius: 6px; background: rgba(255,255,255,.45); }
+.desi-ticket-passengers .seat b { font: 400 14px 'Yatra One', sans-serif; color: #8B2E1F; }
+.desi-ticket-passengers .seat small { font: 600 9.5px 'Baloo 2', sans-serif; color: #6b5435; letter-spacing: .04em; }
+.desi-ticket-grid { display: grid; grid-template-columns: repeat(4, 1fr); border-top: 1.5px dashed #8B2E1F; padding-top: 10px; gap: 10px; }
+.desi-ticket-grid small { display: block; font: 700 9.5px 'Baloo 2', sans-serif; letter-spacing: .1em; color: #8a6a3d; }
+.desi-ticket-grid b { font: 700 14px 'Baloo 2', sans-serif; color: #2b2112; }
+.desi-ticket-stub {
+  position: relative; padding: 26px 22px; display: flex; flex-direction: column; justify-content: center; gap: 12px;
+  border-left: 3px dashed #8B2E1F; background: rgba(139,46,31,.06);
+}
+.desi-ticket-stub::before, .desi-ticket-stub::after { /* punched half-holes on the tear line */
+  content: ""; position: absolute; left: -15px; width: 26px; height: 26px; border-radius: 50%; background: #FAF9F6;
+}
+.desi-ticket-stub::before { top: -13px; } .desi-ticket-stub::after { bottom: -13px; }
+.desi-ticket-stub p { font: 600 14px/1.4 'Baloo 2', sans-serif; color: #2b2112; margin: 0; }
+.desi-ticket-stub .desi-btn { justify-content: center; }
+.desi-postmark-ticket {
+  align-self: center; width: 96px; height: 96px; border-radius: 50%; border: 2.5px solid rgba(194,24,91,.7); color: rgba(194,24,91,.85);
+  font: 800 11px/1.3 'Baloo 2', sans-serif; letter-spacing: .06em; display: grid; place-items: center; text-align: center; transform: rotate(-14deg);
+}
+@media (max-width: 760px) {
+  .desi-ticket { grid-template-columns: 1fr; }
+  .desi-ticket-stub { border-left: 0; border-top: 3px dashed #8B2E1F; }
+  .desi-ticket-stub::before, .desi-ticket-stub::after { top: -15px; left: auto; }
+  .desi-ticket-stub::before { left: -13px; } .desi-ticket-stub::after { right: -13px; bottom: auto; }
+  .desi-ticket-grid { grid-template-columns: repeat(2, 1fr); }
+  .desi-ticket-route b { font-size: 22px; }
+  .desi-postmark-ticket { display: none; }
+}
+
+/* ── Printed journey ticket (station-counter style) ── */
+.jt-wrap { padding: 56px 16px 64px; background: #FAF9F6; display: flex; justify-content: center; }
+.jt {
+  position: relative; width: min(900px, 100%); padding: 18px 70px 18px 22px;
+  background-color: #FDFCF8; border-radius: 4px; box-shadow: 0 30px 60px -30px rgba(15,23,42,.45);
+  /* faint repeating watermark */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='60'%3E%3Ctext x='0' y='38' font-family='Arial' font-size='15' font-weight='700' fill='%23F97316' fill-opacity='0.09' letter-spacing='3'%3EUNICOACH%20%E2%80%A2%20%E0%A4%AF%E0%A5%82%E0%A4%A8%E0%A4%BF%E0%A4%95%E0%A5%8B%E0%A4%9A%3C/text%3E%3C/svg%3E");
+}
+.jt::after { /* serrated top/bottom edge like torn counter tickets */
+  content: ""; position: absolute; left: 0; right: 0; bottom: -6px; height: 8px;
+  background: radial-gradient(circle at 5px 0, #FDFCF8 5px, transparent 5.5px) 0 0 / 10px 8px repeat-x;
+}
+.jt-band { display: flex; align-items: center; justify-content: space-between; background: #C2410C; color: #fff; padding: 6px 14px; font: 800 14px 'Baloo 2', sans-serif; letter-spacing: .06em; border-radius: 2px; }
+.jt-band .hi { font: 400 20px 'Yatra One', sans-serif; letter-spacing: 0; }
+.jt-band .seal { width: 30px; height: 30px; border-radius: 50%; background: #fff; display: grid; place-items: center; font-size: 15px; }
+.jt-body { border: 1.5px solid #C2410C; border-top: 0; padding: 4px 18px 10px; }
+.jt-wave { display: block; width: 100%; height: 14px; margin: 4px 0; }
+.jt-print { display: grid; grid-template-columns: 1fr 1fr; gap: 2px 20px; font: 600 13px/1.6 'Courier New', ui-monospace, monospace; color: #3b3b3b; letter-spacing: .02em; text-transform: uppercase; }
+.jt-print b { color: #111; }
+.jt-hero { display: flex; align-items: center; justify-content: center; gap: 14px; margin: 14px 0 4px; }
+.jt-hero .trav { display: flex; gap: 2px; font-size: clamp(26px, 4vw, 40px); }
+.jt-title { margin: 0 !important; text-align: center; line-height: 1 !important; letter-spacing: 0 !important; }
+.jt-title .en { display: block; font: 800 clamp(40px, 7vw, 72px) 'Baloo 2', sans-serif; color: #1E3A8A; letter-spacing: -.02em; text-decoration: underline; text-decoration-color: #C2410C; text-decoration-thickness: 4px; text-underline-offset: 6px; }
+.jt-title .hi { display: block; margin-top: 8px; font: 400 clamp(20px, 3vw, 28px) 'Yatra One', sans-serif; color: #C2410C; }
+.jt-sub { text-align: center; max-width: 520px; margin: 8px auto 0 !important; font: 600 15px/1.45 'Baloo 2', sans-serif; color: #3b3b3b; }
+.jt-actions { margin: 16px 0 6px; display: flex; gap: 18px; justify-content: center; align-items: center; flex-wrap: wrap; }
+.jt-foot { display: flex; justify-content: space-between; font: 600 11.5px 'Courier New', ui-monospace, monospace; color: #555; letter-spacing: .04em; }
+.jt-holes { position: absolute; right: 22px; top: 50%; transform: translateY(-50%); display: flex; flex-direction: column; gap: 22px; }
+.jt-holes span { width: 18px; height: 18px; border-radius: 50%; background: #FAF9F6; box-shadow: inset 0 1px 3px rgba(0,0,0,.25); }
+.jt-side { position: absolute; right: 46px; top: 50%; transform: translateY(-50%) rotate(90deg); transform-origin: center; white-space: nowrap; font: 800 11px 'Baloo 2', sans-serif; letter-spacing: .2em; color: #C2410C; }
+@media (max-width: 640px) {
+  .jt { padding: 14px 14px 18px; }
+  .jt-holes, .jt-side { display: none; }
+  .jt-print { grid-template-columns: 1fr; font-size: 12px; }
+  .jt-hero { gap: 6px; }
+  .jt-hero .trav { flex-direction: column; font-size: 24px; }
+}
+
+/* ── Full-width ticket section ── */
+.tk {
+  position: relative; width: 100%; background-color: #FDFBF5;
+  border-top: 3px double #C2410C; border-bottom: 3px double #1E3A8A;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='60'%3E%3Ctext x='0' y='38' font-family='Arial' font-size='14' font-weight='700' fill='%23F97316' fill-opacity='0.07' letter-spacing='3'%3EUNICOACH%20%E2%80%A2%20%E0%A4%AF%E0%A5%82%E0%A4%A8%E0%A4%BF%E0%A4%95%E0%A5%8B%E0%A4%9A%3C/text%3E%3C/svg%3E");
+}
+.tk-guil { display: block; width: 100%; height: 34px; }
+.tk-band { display: flex; align-items: center; justify-content: space-between; background: #C2410C; color: #fff; padding: 8px clamp(16px, 4vw, 56px); font: 800 15px 'Baloo 2', sans-serif; letter-spacing: .08em; }
+.tk-band .hi { font: 400 24px 'Yatra One', sans-serif; letter-spacing: 0; }
+.tk-band .seal { width: 34px; height: 34px; border-radius: 50%; background: #fff; display: grid; place-items: center; font-size: 17px; }
+.tk-body { position: relative; max-width: 1200px; margin: 0 auto; padding: 18px clamp(16px, 4vw, 40px) 10px; text-align: center; }
+.tk-print { display: flex; flex-wrap: wrap; justify-content: center; gap: 2px 26px; font: 600 13px/1.7 'Courier New', ui-monospace, monospace; color: #444; text-transform: uppercase; letter-spacing: .02em; }
+.tk-print b { color: #111; }
+.tk-title { margin: 14px 0 0 !important; line-height: 1 !important; letter-spacing: 0 !important; }
+.tk-title .en { display: block; font: 800 clamp(52px, 9vw, 110px) 'Baloo 2', sans-serif; color: #1E3A8A; letter-spacing: -.03em; }
+.tk-title .hi { display: block; margin-top: 4px; font: 400 clamp(18px, 2.6vw, 26px) 'Yatra One', sans-serif; color: #C2410C; }
+.tk-crowd { position: relative; max-width: 1280px; margin: 6px auto 0; }
+.tk-crowd > img { position: relative; z-index: 2; }
+.tk-tte {
+  position: absolute; right: clamp(10px, 4vw, 60px); top: 90px; padding: 8px 12px; border: 3px solid #15803D; color: #15803D; border-radius: 8px;
+  font: 800 13px/1.2 'Courier New', monospace; letter-spacing: .06em; background: rgba(255,255,255,.7);
+}
+.tk-tte small { font: 400 13px 'Yatra One', sans-serif; letter-spacing: 0; }
+.tk-actions { margin: 14px 0 8px; display: flex; gap: 18px; justify-content: center; align-items: center; flex-wrap: wrap; }
+.tk-foot { display: flex; justify-content: space-between; font: 600 11.5px 'Courier New', monospace; color: #666; letter-spacing: .04em; }
+@media (max-width: 640px) {
+  .tk-tte { position: static; display: inline-block; margin-top: 18px; transform: rotate(-6deg) !important; }
+  .tk-crowd { margin-left: -16px; margin-right: -16px; }
+  .tk-foot { flex-direction: column; gap: 2px; }
+}
+
+.tk-logo { display: block; margin: 0 auto; height: clamp(54px, 9vw, 100px); width: auto; }
+
+/* train passing behind the students (sits behind, partly hidden by them) */
+.tk-train { position: absolute; left: 0; right: 0; top: 34%; height: 26%; overflow: hidden; z-index: 1; opacity: .55;
+  -webkit-mask: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent); mask: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent); }
+.tk-train-svg { position: absolute; top: 0; left: 0; height: 100%; aspect-ratio: 1400 / 120; width: auto; animation: tk-train 9s linear infinite; }
+@keyframes tk-train { from { transform: translateX(100vw); } to { transform: translateX(-100%); } }
+.tk-rail { position: absolute; left: 0; right: 0; bottom: 2px; border-bottom: 3px solid rgba(43,33,18,.45); }
+
+@media (prefers-reduced-motion: reduce) { .tk-train-svg { animation: none; } }
+
+/* ── Gen-Z meme CTA ── */
+.gz { position: relative; overflow: hidden; background: #14101F; color: #fff; padding: clamp(80px, 11vw, 140px) 16px; }
+.gz-grid { position: absolute; inset: 0; background-image: linear-gradient(rgba(255,255,255,.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.05) 1px, transparent 1px); background-size: 44px 44px; -webkit-mask: radial-gradient(ellipse at center, #000 30%, transparent 75%); mask: radial-gradient(ellipse at center, #000 30%, transparent 75%); }
+.gz-inner { position: relative; z-index: 2; max-width: 860px; margin: 0 auto; text-align: center; }
+.gz-kicker { display: inline-block; font: 700 15px 'Baloo 2', sans-serif; padding: 6px 16px; border-radius: 999px; border: 1.5px dashed rgba(255,255,255,.35); color: #F7C12E; }
+.gz-title { margin: 18px 0 0 !important; line-height: .95 !important; letter-spacing: -.02em !important; }
+.gz-title span { display: block; font: 800 clamp(44px, 8vw, 96px)/1 'Baloo 2', sans-serif !important; margin: 0 !important; }
+.gz-title span:nth-child(2) { color: #DE5C2B; text-decoration: line-through; text-decoration-thickness: 6px; text-decoration-color: #fff; }
+.gz-title .hi { margin-top: 14px !important; font: 400 clamp(36px, 6vw, 72px)/1.1 'Yatra One', sans-serif !important; color: #F7C12E; text-shadow: 4px 4px 0 #C2187A; }
+.gz-sub { max-width: 560px; margin: 22px auto 0 !important; font: 500 17px/1.5 'Baloo 2', sans-serif; color: rgba(255,255,255,.75); }
+.gz-actions { margin-top: 30px; display: flex; gap: 22px; justify-content: center; align-items: center; flex-wrap: wrap; }
+.gz-btn { display: inline-flex; align-items: center; gap: 10px; background: #F7C12E; color: #14101F; font: 800 18px 'Baloo 2', sans-serif; padding: 14px 28px; border-radius: 999px; box-shadow: 5px 5px 0 #DE5C2B; text-decoration: none; transition: transform .2s, box-shadow .2s; }
+.gz-btn:hover { transform: translate(-2px, -2px); box-shadow: 7px 7px 0 #DE5C2B; }
+.gz-link { font: 700 16px 'Baloo 2', sans-serif; color: #fff; text-decoration: underline; text-underline-offset: 5px; }
+.gz-sticker { position: absolute; z-index: 1; padding: 10px 16px 8px; border-radius: 14px; font: 800 15px 'Baloo 2', sans-serif; white-space: nowrap; border: 2.5px solid #14101F; box-shadow: 0 0 0 3px rgba(255,255,255,.9), 6px 8px 0 rgba(0,0,0,.35); cursor: default; }
+@media (max-width: 900px) {
+  .gz { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px 8px; padding-top: 64px; padding-bottom: 64px; }
+  .gz-inner { order: 1; width: 100%; }
+  .gz-sticker { order: 2; position: relative; left: auto !important; top: auto !important; font-size: 13px; padding: 8px 12px 6px; margin-top: 18px; }
+  .gz-sticker:nth-of-type(n+4) { display: none; }
+}
+
+/* Desi tag on mentor photos: hand-painted signboard look */
+.desi-tag { position: absolute; left: 10px; bottom: 10px; z-index: 2; padding: 3px 10px 1px; border-radius: 6px;
+  background: #FFF4E2; color: #B3261E; font: 400 14px/1.35 'Yatra One', sans-serif; letter-spacing: 0;
+  border: 2px solid #1B1530; box-shadow: 2px 2px 0 #DE5C2B; transform: rotate(-3deg); white-space: nowrap; }
+/* thin bandhani-dot strip at the bottom of a card */
+.desi-dots { height: 8px; margin-top: 10px; border-radius: 4px;
+  background: radial-gradient(circle, #DE5C2B 1.6px, transparent 2px) 0 0/10px 8px, linear-gradient(#FBE3D2, #FBE3D2); }
+
+/* muhavra line above an action button */
+.desi-muhavra { margin: 0 0 10px !important; display: flex; align-items: baseline; flex-wrap: wrap; gap: 6px; line-height: 1.3; }
+.desi-muhavra .hi { font: 400 17px 'Yatra One', sans-serif; color: #C2185B; letter-spacing: 0; }
+.desi-muhavra .en { font: 600 13.5px 'Baloo 2', sans-serif; color: #64748b; }

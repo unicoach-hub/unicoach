@@ -9,6 +9,7 @@ import Interactive3DGrid from '../components/Interactive3DGrid';
 import { useAuth } from '../context/AuthContext';
 import { API_BASE_URL } from '../config';
 import { HeroBackButton } from '../components/ui/BackButton';
+import { DesiSticker, MemeLine } from '../components/desi/Desi';
 
 const API_URL = API_BASE_URL;
 
@@ -175,6 +176,7 @@ const IeltsEvaluatorPage = () => {
             IELTS Writing Task 2{' '}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#DE5C2B] to-[#C04A1D]">AI Examiner</span>
           </h1>
+          <MemeLine>Band 7 बिना लिखे? सपना है भाई. Pehle essay check karo ✍️</MemeLine>
 
           <p className="text-[14px] sm:text-[15.5px] text-slate-600 font-normal max-w-2xl mx-auto leading-relaxed">
             Get instant official band scores (0–9) across Task Response, Coherence & Cohesion, Lexical Resource, and Grammatical Range with detailed sentence-level recommendations.

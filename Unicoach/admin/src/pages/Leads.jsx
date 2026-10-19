@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Table, Select, message, Input, Modal, Tabs, Timeline, DatePicker, Button, Form, Popover, Tooltip, Progress, Badge, Spin, Popconfirm } from 'antd';
 import dayjs from 'dayjs';
 import LeadJourneyView from '../components/LeadJourneyView';
+import LeadStageBoard from '../components/LeadStageBoard';
 import Header from '../components/Header';
 import CrmSubNav from '../components/CrmSubNav';
 import StatsCard from '../components/StatsCard';
@@ -289,6 +290,8 @@ const Leads = ({ view = 'all' }) => {
   const [leadStudent, setLeadStudent] = useState(null);
   const [leadStudentLoading, setLeadStudentLoading] = useState(false);
   const [openStudentId, setOpenStudentId] = useState(null);
+  // ?docs=review opens All Leads filtered to students whose documents need checking (old Student Documents page)
+  const [docsFilter, setDocsFilter] = useState(() => new URLSearchParams(window.location.search).get('docs') || 'all');
   useEffect(() => {
     const email = selectedLead?.email;
     setLeadStudent(null);
@@ -795,7 +798,8 @@ const Leads = ({ view = 'all' }) => {
     l.email?.toLowerCase().includes(search.toLowerCase()) ||
     l.phone?.includes(search)) &&
     (!tagFilter.length || tagFilter.some((t) => (l.tags || []).includes(t) || (l.autoTags || []).includes(t))) &&
-    inRange(l)
+    inRange(l) &&
+    (docsFilter === 'all' || (docsFilter === 'any' ? (l.documents?.total || 0) > 0 : (l.documents?.toReview || 0) > 0))
   );
 
   const columns = [
@@ -1222,6 +1226,12 @@ const Leads = ({ view = 'all' }) => {
               </Select>
             )}
 
+            <Select value={docsFilter} onChange={setDocsFilter} style={{ width: 190 }}>
+              <Option value="all">All documents</Option>
+              <Option value="any">Uploaded documents</Option>
+              <Option value="review">Documents to review</Option>
+            </Select>
+
             {/* Pipeline Selector Dropdown */}
             <Select 
               value={selectedPipelineId} 
@@ -1263,13 +1273,7 @@ const Leads = ({ view = 'all' }) => {
                 <UnorderedListOutlined style={{ marginRight: 6 }} />Table view
               </button>
               <button
-                onClick={() => {
-                  if (pipelines.length > 0) {
-                    navigate('/crm/board');
-                  } else {
-                    setViewMode('kanban');
-                  }
-                }}
+                onClick={() => setViewMode('kanban')}
                 style={{
                   padding: '0 14px',
                   borderRadius: '999px',
@@ -1283,7 +1287,7 @@ const Leads = ({ view = 'all' }) => {
                   transition: 'all 0.2s'
                 }}
               >
-                <AppstoreOutlined style={{ marginRight: 6 }} />Pipeline board
+                <AppstoreOutlined style={{ marginRight: 6 }} />Stage board
               </button>
               <button
                 onClick={() => setViewMode('journey')}
@@ -1338,7 +1342,7 @@ const Leads = ({ view = 'all' }) => {
         </div>
         
         {viewMode === 'journey' ? (
-          <LeadJourneyView leads={filtered} onChanged={(id, patch) => setData((prev) => prev.map((l) => (l._id === id ? { ...l, ...patch } : l)))} />
+          <LeadJourneyView leads={filtered} onOpen={handleOpenLead} onChanged={(id, patch) => { setData((prev) => prev.map((l) => (l._id === id ? { ...l, ...patch } : l))); invalidateCache('/admin/leads'); }} />
         ) : viewMode === 'table' ? (
           <div className="page-table-card">
             {selectedRowKeys.length > 0 && (
@@ -1377,7 +1381,7 @@ const Leads = ({ view = 'all' }) => {
             />
           </div>
         ) : (
-          renderKanbanBoard()
+          <LeadStageBoard leads={filtered} onOpen={handleOpenLead} onChanged={(id, patch) => { setData((prev) => prev.map((l) => (l._id === id ? { ...l, ...patch } : l))); invalidateCache('/admin/leads'); }} />
         )}
       </div>
 
@@ -1490,6 +1494,12 @@ const Leads = ({ view = 'all' }) => {
                     Target: {selectedLead.dreamCountry}
                   </span>
                 </div>
+                {(() => {
+                  const sid = selectedLead.userId || data.find((l) => l._id === selectedLead._id)?.journey?.userId;
+                  return sid ? (
+                    <Button onClick={() => setOpenStudentId(sid)} style={{ height: 40, borderRadius: 999 }}>Journey &amp; documents</Button>
+                  ) : null;
+                })()}
                 <button
                   onClick={() => setSelectedLead(null)}
                   aria-label="Close"
@@ -2179,7 +2189,7 @@ const Leads = ({ view = 'all' }) => {
           </div>
         )}
       </Modal>
-      <StudentDrawer studentId={openStudentId} open={Boolean(openStudentId)} onClose={() => setOpenStudentId(null)} />
+      <StudentDrawer studentId={openStudentId} open={Boolean(openStudentId)} onClose={() => setOpenStudentId(null)} onChanged={() => { invalidateCache('/admin/leads'); fetchLeads(true); }} />
     </div>
   );
 };

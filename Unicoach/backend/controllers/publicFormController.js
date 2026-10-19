@@ -17,6 +17,7 @@ exports.getFormBySlug = async (req, res) => {
       slug: form.slug,
       headerTitle: form.headerTitle,
       headerDescription: form.headerDescription,
+      headerImage: form.headerImage || "",
       fields: form.fields,
       successMessage: form.successMessage
     });
@@ -41,7 +42,10 @@ exports.submitForm = async (req, res) => {
     }
 
     for (const field of form.fields) {
-      if (field.required && (!data[field.label] || data[field.label].toString().trim() === '')) {
+      if (field.type === 'heading') continue;
+      const v = data[field.label];
+      const empty = v === undefined || v === null || (Array.isArray(v) ? v.length === 0 : v.toString().trim() === '' || (field.type === 'consent' && v !== true && v !== 'Yes'));
+      if (field.required && empty) {
         return res.status(400).json({ message: `"${field.label}" is required` });
       }
     }

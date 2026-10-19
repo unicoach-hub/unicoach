@@ -9,6 +9,7 @@ import { MentorDirectoryCard } from '../components/MentorDirectoryCard';
 import { getPublicMentorsDirectory } from '../api/unicoachApi';
 import { FEATURED_MENTORS } from '../utils/mentorDirectory';
 import { Search, ArrowRight } from 'lucide-react';
+import '../../components/desi/desi.css';
 
 // How many mentors the landing page shows before "See all mentors"
 const PREVIEW_COUNT = 6;
@@ -61,6 +62,10 @@ const UnicoachMarketplacePage = () => {
           <h2 className="font-outfit text-3xl sm:text-4xl lg:text-[44px] font-black text-[#111111] tracking-tight leading-tight mb-3">
             Meet Our Top Mentors
           </h2>
+          <div className="desi-caption" style={{ alignItems: 'center', margin: '4px auto 14px' }} aria-label="Gyaan bhi, guidance bhi, seniors wali">
+            <span className="top">GYAAN BHI, GUIDANCE BHI,</span>
+            <span className="bar">सीनियर्स वाली 🎓</span>
+          </div>
           <p className="text-slate-600 text-sm sm:text-base font-normal max-w-xl mx-auto leading-relaxed">
             Verified seniors ranked by student ratings and reviews.
           </p>

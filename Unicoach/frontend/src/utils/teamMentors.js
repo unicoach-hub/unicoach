@@ -93,6 +93,10 @@ export const mentorLook = (name) => {
   return { gradient, cutout: gradient ? `/images/mentors/cutouts/${key}.webp` : null };
 };
 
+// Desi tag shown on mentor photo cards, e.g. "आयरलैंड वाले सीनियर"
+const COUNTRY_HI = { Ireland: 'आयरलैंड', Australia: 'ऑस्ट्रेलिया', Europe: 'यूरोप', USA: 'अमेरिका', UK: 'यूके', Canada: 'कनाडा', Germany: 'जर्मनी' };
+export const desiTag = (country) => (COUNTRY_HI[country] ? `${COUNTRY_HI[country]} वाले सीनियर` : 'आपके सीनियर');
+
 export const TEAM_MENTOR_NAMES = `${TEAM_MENTORS.slice(0, -1).map(firstName).join(', ')} & ${firstName(TEAM_MENTORS.at(-1))}`;
 
 // UniCoach core team for the /team page. Add photo paths (e.g. '/images/team/name.webp') and names

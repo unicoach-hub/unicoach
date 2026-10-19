@@ -6,6 +6,7 @@ import { useLead } from '../context/LeadContext';
 import { API_BASE_URL } from '../config';
 import { toAbsoluteUrl, toRegistrationUrl, hasEventEnded, eventPath, getSpeakerPhoto } from '../utils/eventHelpers';
 import EventRegistrationModal from './EventRegistrationModal';
+import { DesiSticker, Muhavra } from './desi/Desi';
 
 // Keys are the card's country codes; the Admin → Events "Country" values match them uppercased
 const COUNTRY_MAP = {
@@ -274,7 +275,9 @@ export const UpcomingEvents = ({ onOpenModal }) => {
                 Ivy Mentors &amp; Experts
                 <span className="absolute -bottom-1.5 left-0 w-full h-[7px] bg-[#FED7CE] rounded-full -z-10" />
               </span>
+              <DesiSticker tone="yellow" tilt={5}>मुफ़्त है भाई!</DesiSticker>
             </h2>
+            <Muhavra hi="देर आए, दुरुस्त आए।" en="Seats limited, jaldi register karo." className="justify-center !mt-5" />
 
             <p className="text-[14px] sm:text-[16px] text-slate-600 mt-3 font-normal leading-relaxed max-w-2xl lg:max-w-3xl mx-auto">
               Learn insider admissions strategies, profile evaluation hacks, and visa prep directly from top alumni.

@@ -4,6 +4,7 @@ import { Sparkles, FileText, CheckCircle2, ShieldCheck, ArrowRight } from 'lucid
 import Interactive3DGrid from '../components/Interactive3DGrid';
 import { Link } from 'react-router-dom';
 import { HeroBackButton } from '../components/ui/BackButton';
+import { DesiSticker, MemeLine } from '../components/desi/Desi';
 
 const AiSopGeneratorPage = () => {
   useEffect(() => {
@@ -32,6 +33,7 @@ const AiSopGeneratorPage = () => {
             AI Statement of Purpose (SOP){' '}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#DE5C2B] to-[#C04A1D]">Writer & Reviewer</span>
           </h1>
+          <MemeLine>Copy-paste SOP likhna एक दण्डनीय अपराध है 🚫</MemeLine>
 
           <p className="text-[14px] sm:text-[15.5px] text-slate-600 font-normal max-w-2xl mx-auto leading-relaxed">
             Generate an ivy-caliber, plagiarism-free Statement of Purpose tailored specifically to your target university, course specialization, and career trajectory.

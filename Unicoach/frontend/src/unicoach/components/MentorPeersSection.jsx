@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import { ArrowRight, ShieldCheck } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { TEAM_MENTORS, mentorLook } from '../../utils/teamMentors';
+import '../../components/desi/desi.css';
 
 const FLAGS = { Europe: 'eu', Ireland: 'ie', Australia: 'au', USA: 'us', UK: 'gb', Canada: 'ca', Germany: 'de' };
 
@@ -18,6 +19,10 @@ export const MentorPeersSection = () => (
           <h2 className="mt-2 font-outfit text-[30px] sm:text-[40px] font-bold leading-[1.05] tracking-[-0.03em] text-slate-900">
             Mentors already guiding students on UniCoach
           </h2>
+          <div className="desi-caption" aria-label="Ek se bhale do, ab tum bhi aao">
+            <span className="top">EK SE BHALE DO,</span>
+            <span className="bar">अब तुम भी आओ 🤝</span>
+          </div>
           <p className="mt-3 text-[15px] text-slate-600 max-w-xl">
             Students, graduates and working professionals across Ireland, Australia, Europe and the USA. Join them and get your own page next to theirs.
           </p>

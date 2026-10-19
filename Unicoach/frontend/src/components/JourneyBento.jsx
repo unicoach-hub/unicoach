@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { useEffect, useRef, useState } from 'react';
+import { motion, useInView } from 'framer-motion';
 import { ChevronRight, Check } from 'lucide-react';
 import { useLead } from '../context/LeadContext';
 
@@ -17,9 +18,9 @@ const STEPS = {
   sop: {
     step: '02',
     title: 'SOP & Documents',
-    text: 'Draft your SOP with our AI writer, then polish your SOP, LORs and resume with experts who have been through admissions.',
-    cta: 'Try the AI SOP Writer',
-    to: '/ai-tools/sop-generator',
+    text: 'Your SOP, LORs and resume written and polished by experts who have been through admissions themselves, line by line.',
+    cta: 'Get your SOP done by an expert',
+    to: '/unicoach',
   },
   loans: {
     step: '03',
@@ -173,26 +174,121 @@ const FinanceArt = () => (
   </div>
 );
 
-// ── 2. SOP & documents: folder + document + review toast ──
-const SopArt = () => (
-  <div className="relative h-[170px] sm:h-[190px] w-full">
-    <Float className="absolute left-[4%] top-6 w-[48%]" distance={7}>
-      <img src={ICON('folder')} alt="" loading="lazy" className="w-full drop-shadow-2xl -rotate-6" />
-    </Float>
-    <Float className="absolute right-[6%] top-0 w-[34%]" delay={0.7}>
-      <img src={ICON('file-text')} alt="" loading="lazy" className="w-full drop-shadow-xl rotate-12" />
-    </Float>
-    <Chip className="absolute left-1/2 -translate-x-1/2 bottom-0 w-[88%] px-4 py-3 flex items-center gap-3">
-      <span className="w-9 h-9 rounded-xl bg-[#7C3AED] text-white grid place-items-center shrink-0">
-        <Check size={18} strokeWidth={3} />
-      </span>
-      <span className="min-w-0">
-        <span className="block text-[11px] font-semibold text-slate-500 uppercase tracking-wide">Statement of Purpose</span>
-        <span className="block text-[13.5px] font-bold text-[#2A1A12]">Reviewed by an expert</span>
-      </span>
-    </Chip>
-  </div>
-);
+// ── 2. SOP & documents: an expert writes the SOP live, edits a word, leaves a comment, score climbs ──
+const SOP_LINES = [
+  'Growing up in Jaipur, I took apart every radio',
+  'in our house to see how sound travels.',
+  'That curiosity led me to Electronics, and now',
+  'to the MSc in Embedded Systems at TU Munich.',
+];
+// timeline after typing finishes (in ticks of 60 ms)
+const EDIT_AT = 12, COMMENT_AT = 30, SCORE_AT = 44, TICK_AT = 70, RESTART_AT = 130;
+const SopArt = () => {
+  const ref = useRef(null);
+  const inView = useInView(ref, { margin: '-40px' });
+  const [chars, setChars] = useState(0);
+  const [paused, setPaused] = useState(false);
+  const total = SOP_LINES.join('').length;
+  const after = Math.max(0, chars - total);
+  const typing = chars < total;
+
+  useEffect(() => {
+    if (!inView || paused) return undefined;
+    const t = setTimeout(() => setChars((c) => (c >= total + RESTART_AT ? 0 : c + 1)), typing ? 34 : 60);
+    return () => clearTimeout(t);
+  }, [inView, paused, chars, total, typing]);
+
+  const starts = SOP_LINES.map((_, i) => SOP_LINES.slice(0, i).join('').length);
+  const shown = SOP_LINES.map((line, i) => line.slice(0, Math.max(0, Math.min(chars, total) - starts[i])));
+  const cursorLine = shown.findIndex((l, i) => l.length < SOP_LINES[i].length);
+  const edited = after >= EDIT_AT;
+  const commented = after >= COMMENT_AT;
+  const scoring = after >= SCORE_AT;
+  const reviewed = after >= TICK_AT;
+  const score = scoring ? Math.min(91, 62 + Math.round((after - SCORE_AT) * 1.3)) : 62;
+  const status = typing ? 'Expert writing…' : !edited ? 'Re-reading…' : !reviewed ? 'Polishing…' : 'Final draft ✓';
+
+  return (
+    <div
+      ref={ref}
+      className="relative h-[170px] sm:h-[190px] w-full"
+      onMouseEnter={() => setPaused(true)}
+      onMouseLeave={() => setPaused(false)}
+    >
+      <div className="absolute left-[4%] right-[4%] top-0 bottom-6 rounded-2xl bg-white shadow-[0_18px_40px_-18px_rgba(30,27,75,0.35)] border border-white/70 overflow-hidden">
+        <div className="flex items-center gap-1.5 px-3 h-7 border-b border-slate-100 bg-slate-50/80">
+          <span className="w-2 h-2 rounded-full bg-[#FF5F57]" /><span className="w-2 h-2 rounded-full bg-[#FEBC2E]" /><span className="w-2 h-2 rounded-full bg-[#28C840]" />
+          <span className="ml-2 text-[10.5px] font-semibold text-slate-500 truncate">SOP_TU_Munich.docx</span>
+          <span className={`ml-auto text-[10px] font-semibold whitespace-nowrap ${reviewed ? 'text-emerald-600' : 'text-[#7C3AED]'}`}>{paused ? 'Paused' : status}</span>
+        </div>
+        <div className="px-3.5 pt-2 relative">
+          <div className="flex items-center justify-between mb-1">
+            <p className="text-[11.5px] font-bold text-[#2A1A12]">Statement of Purpose</p>
+            {/* strength meter climbs as the expert polishes */}
+            <span className="flex items-center gap-1.5 text-[9.5px] font-semibold text-slate-500">
+              Strength
+              <span className="w-12 h-1.5 rounded-full bg-slate-100 overflow-hidden">
+                <span className="block h-full rounded-full transition-all duration-300" style={{ width: `${score}%`, background: score > 85 ? '#10B981' : '#F59E0B' }} />
+              </span>
+              <span className={score > 85 ? 'text-emerald-600' : 'text-amber-600'}>{score}</span>
+            </span>
+          </div>
+          {shown.map((line, i) => {
+            let body = <span className={reviewed && i === 3 ? 'bg-[#FEF3C7] rounded-sm' : ''}>{line}</span>;
+            // tracked change on the first line: "took apart" → "dismantled"
+            if (i === 0 && line.includes('took apart')) {
+              const [pre, post] = line.split('took apart');
+              body = (
+                <>
+                  {pre}
+                  {edited ? (
+                    <>
+                      <span className="line-through text-rose-400">took apart</span>{' '}
+                      <motion.span initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-emerald-700 bg-emerald-50 rounded-sm">dismantled</motion.span>
+                    </>
+                  ) : 'took apart'}
+                  {post}
+                </>
+              );
+            }
+            return (
+              <p key={i} className="text-[10.5px] leading-[1.55] text-slate-600 whitespace-nowrap overflow-hidden">
+                {body}
+                {i === (cursorLine === -1 ? 3 : cursorLine) && typing && <span className="inline-block w-[1.5px] h-[11px] bg-[#7C3AED] align-middle ml-px animate-pulse" />}
+              </p>
+            );
+          })}
+          {/* expert's margin comment */}
+          <motion.div
+            initial={false}
+            animate={{ opacity: commented && !reviewed ? 1 : 0, x: commented && !reviewed ? 0 : 12 }}
+            transition={{ type: 'spring', stiffness: 260, damping: 20 }}
+            className="absolute right-2 bottom-[-34px] flex items-start gap-1.5 bg-[#F5F3FF] border border-[#DDD6FE] rounded-xl px-2 py-1.5 shadow-sm pointer-events-none"
+          >
+            <span className="w-4 h-4 rounded-full bg-[#7C3AED] text-white text-[8px] font-bold grid place-items-center shrink-0">P</span>
+            <span className="text-[9.5px] leading-tight text-[#4C1D95]"><b>Prachi</b> · mentor<br />Strong opening, keep it 👌</span>
+          </motion.div>
+        </div>
+      </div>
+      <motion.div
+        className="absolute left-1/2 -translate-x-1/2 bottom-0 w-[88%]"
+        initial={false}
+        animate={{ opacity: reviewed ? 1 : 0, y: reviewed ? 0 : 10, scale: reviewed ? 1 : 0.96 }}
+        transition={{ type: 'spring', stiffness: 260, damping: 20 }}
+      >
+        <Chip className="w-full px-4 py-3 flex items-center gap-3">
+          <span className="w-9 h-9 rounded-xl bg-[#7C3AED] text-white grid place-items-center shrink-0">
+            <Check size={18} strokeWidth={3} />
+          </span>
+          <span className="min-w-0">
+            <span className="block text-[11px] font-semibold text-slate-500 uppercase tracking-wide">Strength 62 → 91</span>
+            <span className="block text-[13.5px] font-bold text-[#2A1A12]">Reviewed by an expert</span>
+          </span>
+        </Chip>
+      </motion.div>
+    </div>
+  );
+};
 
 // ── 4. Visa: suitcase, shield, pin + approval toast ──
 const VisaArt = () => (

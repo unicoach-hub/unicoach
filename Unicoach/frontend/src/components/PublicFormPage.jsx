@@ -41,7 +41,10 @@ const PublicFormPage = () => {
 
     // Validate required fields
     for (const field of formConfig.fields) {
-      if (field.required && (!formData[field.label] || formData[field.label].toString().trim() === '')) {
+      if (field.type === 'heading') continue;
+      const v = formData[field.label];
+      const empty = v === undefined || v === null || (Array.isArray(v) ? v.length === 0 : v.toString().trim() === '' || (field.type === 'consent' && v !== 'Yes'));
+      if (field.required && empty) {
         setError(`"${field.label}" is required`);
         return;
       }
@@ -101,6 +104,9 @@ const PublicFormPage = () => {
     <div className="pf-container">
       <div className="pf-card">
         {/* Header */}
+        {formConfig.headerImage && (
+          <img src={formConfig.headerImage} alt="" className="pf-header-image" />
+        )}
         <div className="pf-header">
           <div className="pf-brand">
             <span className="pf-brand-icon">🎓</span>
@@ -114,14 +120,58 @@ const PublicFormPage = () => {
 
         {/* Form */}
         <form onSubmit={handleSubmit} className="pf-form">
-          {formConfig.fields.map((field, idx) => (
+          {formConfig.fields.map((field, idx) => field.type === 'heading' ? (
+            <div key={idx} className="pf-section">
+              <h3>{field.label}</h3>
+              {field.helpText && <p>{field.helpText}</p>}
+            </div>
+          ) : (
             <div key={idx} className="pf-field">
-              <label className="pf-label">
-                {field.label}
-                {field.required && <span className="pf-required">*</span>}
-              </label>
+              {field.type !== 'consent' && (
+                <label className="pf-label">
+                  {field.label}
+                  {field.required && <span className="pf-required">*</span>}
+                </label>
+              )}
+              {field.helpText && field.type !== 'consent' && <p className="pf-help">{field.helpText}</p>}
 
-              {field.type === 'textarea' ? (
+              {['radio', 'yesno', 'checkbox'].includes(field.type) ? (
+                <div className="pf-chips">
+                  {(field.type === 'yesno' ? ['Yes', 'No'] : field.options || []).map((opt) => {
+                    const multi = field.type === 'checkbox';
+                    const cur = formData[field.label];
+                    const on = multi ? (cur || []).includes(opt) : cur === opt;
+                    return (
+                      <button type="button" key={opt} className={`pf-chip${on ? ' on' : ''}`}
+                        onClick={() => handleChange(field.label, multi ? (on ? (cur || []).filter((x) => x !== opt) : [...(cur || []), opt]) : opt)}>
+                        {multi && <span className="pf-tick">{on ? '✓' : ''}</span>}{opt}
+                      </button>
+                    );
+                  })}
+                </div>
+              ) : field.type === 'rating' ? (
+                <div className="pf-stars">
+                  {[1, 2, 3, 4, 5].map((n) => (
+                    <button type="button" key={n} aria-label={`${n} of 5`} className={Number(formData[field.label]) >= n ? 'on' : ''} onClick={() => handleChange(field.label, String(n))}>★</button>
+                  ))}
+                </div>
+              ) : field.type === 'consent' ? (
+                <label className="pf-consent">
+                  <input type="checkbox" checked={formData[field.label] === 'Yes'} onChange={(e) => handleChange(field.label, e.target.checked ? 'Yes' : '')} />
+                  <span>{field.helpText || field.label}{field.required && <span className="pf-required">*</span>}</span>
+                </label>
+              ) : field.type === 'country' ? (
+                <select className="pf-input pf-select" value={formData[field.label] || ''} onChange={(e) => handleChange(field.label, e.target.value)}>
+                  <option value="">Select country</option>
+                  {['USA', 'UK', 'Canada', 'Australia', 'Ireland', 'Germany', 'France', 'Netherlands', 'New Zealand', 'Singapore', 'Dubai (UAE)', 'Italy', 'Other / Not decided'].map((c) => <option key={c} value={c}>{c}</option>)}
+                </select>
+              ) : field.type === 'intake' ? (
+                <select className="pf-input pf-select" value={formData[field.label] || ''} onChange={(e) => handleChange(field.label, e.target.value)}>
+                  <option value="">Select intake</option>
+                  {(() => { const y = new Date().getFullYear(); return [y, y + 1, y + 2].flatMap((yr) => ['January', 'May', 'September'].map((m) => `${m} ${yr}`)); })().map((o) => <option key={o} value={o}>{o}</option>)}
+                  <option value="Not sure yet">Not sure yet</option>
+                </select>
+              ) : field.type === 'textarea' ? (
                 <textarea
                   className="pf-input pf-textarea"
                   placeholder={field.placeholder || field.label}
@@ -143,7 +193,7 @@ const PublicFormPage = () => {
               ) : (
                 <input
                   className="pf-input"
-                  type={field.type === 'email' ? 'email' : field.type === 'phone' ? 'tel' : field.type === 'number' ? 'number' : field.type === 'date' ? 'date' : 'text'}
+                  type={field.type === 'email' ? 'email' : field.type === 'phone' ? 'tel' : field.type === 'number' ? 'number' : field.type === 'date' ? 'date' : field.type === 'time' ? 'time' : field.type === 'url' ? 'url' : 'text'}
                   placeholder={field.placeholder || field.label}
                   value={formData[field.label] || ''}
                   onChange={e => handleChange(field.label, e.target.value)}

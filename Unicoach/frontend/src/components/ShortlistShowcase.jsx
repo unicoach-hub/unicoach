@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence, useInView, useReducedMotion } from 'framer-motion';
 import { ArrowRight, GraduationCap, HandCoins, Search, Check } from 'lucide-react';
+import { DesiSticker } from './desi/Desi';
 
 // Homepage showcase for the two shortlist tools. The preview on the right plays by itself on a loop:
 // the form fills in, the button is pressed, results appear one by one, then it switches tool.
@@ -200,7 +201,7 @@ export default function ShortlistShowcase() {
         <div>
           <span className="text-[12.5px] font-bold text-[#DE5C2B] uppercase tracking-[0.12em]">Free AI tools</span>
           <h2 className="mt-4 font-['Inter',sans-serif] text-[32px] sm:text-[42px] font-black text-[#111] leading-[1.05] tracking-[-0.035em]">
-            Your shortlist,<br /><span className="text-[#DE5C2B]">in 60 seconds</span>
+            Your shortlist,<br /><span className="text-[#DE5C2B]">in 60 seconds</span><DesiSticker tone="green" tilt={-4}>चुटकी में</DesiSticker>
           </h2>
           <p className="mt-3 text-[15px] sm:text-[17px] text-slate-600">Universities, courses and scholarships matched to your profile.</p>
 
