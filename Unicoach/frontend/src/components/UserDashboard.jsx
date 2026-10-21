@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, lazy, Suspense } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useLead } from '../context/LeadContext';
 import { useNavigate } from 'react-router-dom';
@@ -15,23 +15,26 @@ import {
   BookOpen, FileSpreadsheet, Download,
   School, ClipboardCheck, HandCoins, FilePenLine, Mic, Route, Wallet, ListChecks, NotebookPen, CalendarDays, BookOpenCheck
 } from 'lucide-react';
-import UniversityShortlister from './UniversityShortlister';
-import ScholarshipShortlister from './ScholarshipShortlister';
 import UniversityLogo from './UniversityLogo';
 import PremiumDropdown from './PremiumDropdown';
-import IeltsAiEvaluationModal from './IeltsAiEvaluationModal';
 import StudentMessages from './StudentMessages';
 import ProductTour from './ProductTour';
 import useFirstVisitTour from '../hooks/useFirstVisitTour';
-import AiSopGenerator from './AiSopGenerator';
-import AiVisaInterviewPrep from './AiVisaInterviewPrep';
-import AiStudyRoadmap from './AiStudyRoadmap';
-import EligibilityCalculatorPage from '../pages/EligibilityCalculatorPage';
 import CourseFinderCard from './CourseFinderCard';
 import ProgramSelectionTools from './ProgramSelectionTools';
 import { useProgramSelection } from '../utils/useProgramSelection';
 import { POPULAR_COURSES, ALL_COUNTRY_OPTIONS } from '../utils/shortlistOptions';
 import { exportUniversitiesToExcel } from '../utils/excelExporter';
+
+// Tools that live in their own tabs load when the tab is opened, so the dashboard itself opens fast
+const UniversityShortlister = lazy(() => import('./UniversityShortlister'));
+const ScholarshipShortlister = lazy(() => import('./ScholarshipShortlister'));
+const IeltsAiEvaluationModal = lazy(() => import('./IeltsAiEvaluationModal'));
+const AiSopGenerator = lazy(() => import('./AiSopGenerator'));
+const AiVisaInterviewPrep = lazy(() => import('./AiVisaInterviewPrep'));
+const AiStudyRoadmap = lazy(() => import('./AiStudyRoadmap'));
+const EligibilityCalculatorPage = lazy(() => import('../pages/EligibilityCalculatorPage'));
+const TabLoading = () => <div className="py-16 flex justify-center"><span className="w-6 h-6 rounded-full border-2 border-[#DE5C2B] border-t-transparent animate-spin" /></div>;
 import { API_BASE_URL } from '../config';
 import JourneyTracker from './JourneyTracker';
 import { clearUserStorage } from '../utils/userStorage';
@@ -1784,8 +1787,8 @@ ${name || 'Candidate'}`;
           </div>
 
           {/* Row 2: today, tasks CTA, greeting */}
-          <div className="mt-8 flex items-center justify-between gap-8">
-            <div className="flex items-center gap-5">
+          <div className="mt-8 flex flex-wrap items-center justify-between gap-x-8 gap-y-5">
+            <div className="flex flex-wrap items-center gap-4">
               <div className="w-[92px] h-[92px] rounded-full border border-slate-200 bg-[#F6F5F2] flex items-center justify-center text-4xl font-medium text-slate-900">
                 {new Date().getDate()}
               </div>
@@ -1796,7 +1799,7 @@ ${name || 'Candidate'}`;
               <button
                 data-tour="my-tasks"
                 onClick={() => setActiveTab('daily-tasks')}
-                className="h-14 pl-7 pr-6 rounded-full bg-[#DE5C2B] hover:bg-[#C04A1D] text-white font-semibold text-sm flex items-center gap-8 transition-colors cursor-pointer"
+                className="h-14 pl-7 pr-6 rounded-full bg-[#DE5C2B] hover:bg-[#C04A1D] text-white font-semibold text-sm whitespace-nowrap flex items-center gap-6 transition-colors cursor-pointer"
               >
                 Show my tasks <ArrowRight size={18} />
               </button>
@@ -1811,7 +1814,7 @@ ${name || 'Candidate'}`;
               <button
                 type="button"
                 onClick={studentTour.start}
-                className="h-14 px-5 rounded-full border border-slate-200 bg-white text-slate-700 hover:border-[#DE5C2B] hover:text-[#DE5C2B] font-semibold text-sm flex items-center gap-2 transition-colors cursor-pointer"
+                className="h-14 px-5 rounded-full border border-slate-200 bg-white text-slate-700 hover:border-[#DE5C2B] hover:text-[#DE5C2B] font-semibold text-sm whitespace-nowrap flex items-center gap-2 transition-colors cursor-pointer"
               >
                 <Sparkles size={16} /> Take a tour
               </button>
@@ -1825,10 +1828,10 @@ ${name || 'Candidate'}`;
               className="flex items-center gap-6 text-left cursor-pointer group"
             >
               <span className="leading-[1.1]">
-                <span className="block text-[34px] font-semibold tracking-tight text-slate-900">Hey {name.split(' ')[0]}, need help?</span>
-                <span className="block text-[34px] tracking-tight text-slate-400 group-hover:text-slate-500">Ask your counselor anything</span>
+                <span className="block text-[24px] xl:text-[28px] font-semibold tracking-tight text-slate-900 whitespace-nowrap">Hey {name.split(' ')[0]}, need help?</span>
+                <span className="block text-[24px] xl:text-[28px] tracking-tight text-slate-400 group-hover:text-slate-500 whitespace-nowrap">Ask your counselor anything</span>
               </span>
-              <span className={`relative w-[88px] h-[88px] rounded-full flex items-center justify-center shrink-0 transition-colors ${
+              <span className={`relative w-[72px] h-[72px] rounded-full flex items-center justify-center shrink-0 transition-colors ${
                 chatUnread > 0 ? 'bg-[#DE5C2B] text-white' : 'bg-white text-slate-900 group-hover:text-[#DE5C2B]'
               }`}>
                 {chatUnread > 0 && <span className="absolute inset-0 rounded-full bg-[#DE5C2B] animate-ping opacity-30" aria-hidden="true" />}
@@ -2060,7 +2063,7 @@ ${name || 'Candidate'}`;
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -15 }}
               >
-                <UniversityShortlister user={user} verifiedLead={verifiedLead} />
+                <Suspense fallback={<TabLoading />}><UniversityShortlister user={user} verifiedLead={verifiedLead} /></Suspense>
               </motion.div>
             )}
 
@@ -2072,7 +2075,7 @@ ${name || 'Candidate'}`;
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -15 }}
               >
-                <ScholarshipShortlister />
+                <Suspense fallback={<TabLoading />}><ScholarshipShortlister /></Suspense>
               </motion.div>
             )}
 
@@ -2858,7 +2861,7 @@ ${name || 'Candidate'}`;
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -15 }}
               >
-                <AiSopGenerator initialProfile={profileForm} />
+                <Suspense fallback={<TabLoading />}><AiSopGenerator initialProfile={profileForm} /></Suspense>
               </motion.div>
             )}
 
@@ -2870,7 +2873,7 @@ ${name || 'Candidate'}`;
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -15 }}
               >
-                <AiVisaInterviewPrep studentProfile={profileForm} />
+                <Suspense fallback={<TabLoading />}><AiVisaInterviewPrep studentProfile={profileForm} /></Suspense>
               </motion.div>
             )}
 
@@ -2882,7 +2885,7 @@ ${name || 'Candidate'}`;
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -15 }}
               >
-                <AiStudyRoadmap studentProfile={profileForm} />
+                <Suspense fallback={<TabLoading />}><AiStudyRoadmap studentProfile={profileForm} /></Suspense>
               </motion.div>
             )}
 
@@ -2894,7 +2897,7 @@ ${name || 'Candidate'}`;
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -15 }}
               >
-                <EligibilityCalculatorPage />
+                <Suspense fallback={<TabLoading />}><EligibilityCalculatorPage /></Suspense>
               </motion.div>
             )}
 
@@ -3838,7 +3841,7 @@ ${name || 'Candidate'}`;
       </div>
 
       {/* IELTS AI Assessment Report Modal */}
-      <IeltsAiEvaluationModal
+      {isEvaluationModalOpen && <Suspense fallback={null}><IeltsAiEvaluationModal
         isOpen={isEvaluationModalOpen}
         onClose={() => setIsEvaluationModalOpen(false)}
         evaluation={selectedEvaluation}
@@ -3849,7 +3852,7 @@ ${name || 'Candidate'}`;
           setIsEvaluationModalOpen(false);
           handleStartIelts();
         }}
-      />
+      /></Suspense>}
     </div>
 
     {/* NATIVE MOBILE APP BOTTOM NAVIGATION BAR */}

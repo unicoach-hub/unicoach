@@ -1,4 +1,9 @@
-import XLSX from 'xlsx-js-style';
+// xlsx is ~800 KB, so it loads the first time someone actually exports instead of with every page
+let XLSX;
+const loadXLSX = async () => {
+  if (!XLSX) XLSX = (await import('xlsx-js-style')).default;
+  return XLSX;
+};
 import { getVerifiedRanking } from './ranking';
 import { getOfficialRequirements, getGreText, CHECK_SITE } from './requirements';
 
@@ -215,7 +220,8 @@ function applyUniCoachExcelStyles(ws, dataRows) {
  * @param {Array} universities - List of university objects
  * @param {Object} options - Custom options (filename, sheetName, studentProfile, title, selectedColumnKeys)
  */
-export function exportUniversitiesToExcel(universities = [], options = {}) {
+export async function exportUniversitiesToExcel(universities = [], options = {}) {
+  await loadXLSX();
   try {
     if (!universities || universities.length === 0) {
       alert('No universities found to export.');
@@ -419,7 +425,8 @@ export function programToExportRow(prog, idx = 0) {
   };
 }
 
-export function exportSelectedProgramsToExcel(programs = [], options = {}) {
+export async function exportSelectedProgramsToExcel(programs = [], options = {}) {
+  await loadXLSX();
   try {
     if (!programs || programs.length === 0) {
       alert('No programs selected to export.');
@@ -489,7 +496,8 @@ export function exportSelectedProgramsToExcel(programs = [], options = {}) {
  * @param {Array} scholarships - List of scholarship objects
  * @param {Object} options - Custom options (filename, sheetName, studentProfile)
  */
-export function exportScholarshipsToExcel(scholarships = [], options = {}) {
+export async function exportScholarshipsToExcel(scholarships = [], options = {}) {
+  await loadXLSX();
   try {
     if (!scholarships || scholarships.length === 0) {
       alert('No scholarships found to export.');

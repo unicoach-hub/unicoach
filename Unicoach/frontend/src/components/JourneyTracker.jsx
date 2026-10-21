@@ -40,7 +40,7 @@ const JourneyTracker = () => {
         </div>
         <p className="text-xs text-slate-400">Updated {fmt(profile.stageUpdatedAt)}</p>
       </div>
-      <ol className="grid grid-cols-2 sm:grid-cols-4 gap-y-6 gap-x-1">
+      <ol className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-6 gap-y-6 gap-x-1">
         {phases.map((p, i) => {
           const done = i < currentPhase;
           const active = i === currentPhase;
@@ -51,7 +51,7 @@ const JourneyTracker = () => {
               : 'bg-white border-slate-200 text-slate-400';
           return (
             <li key={p.key} className="relative flex flex-col items-center text-center">
-              {i > 0 && <span className={`hidden sm:block absolute top-[15px] right-1/2 w-full h-[2px] ${i <= currentPhase ? 'bg-[#DE5C2B]' : 'bg-slate-200'}`} aria-hidden />}
+              {i > 0 && <span className={`hidden ${i % 3 ? 'sm:block' : 'xl:block'} absolute top-[15px] right-1/2 w-full h-[2px] ${i <= currentPhase ? 'bg-[#DE5C2B]' : 'bg-slate-200'}`} aria-hidden />}
               <span className={`relative z-10 w-8 h-8 rounded-full flex items-center justify-center text-[12px] font-bold border-2 ${dot}`}>
                 {done || (active && current.outcome === 'good') ? <Check size={15} strokeWidth={3} /> : active && bad ? <X size={15} strokeWidth={3} /> : i + 1}
               </span>
