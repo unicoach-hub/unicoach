@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, useInView, AnimatePresence } from 'framer-motion';
-import { ArrowRight, MicOff, Video, MonitorUp, PhoneOff, Hand, MessageSquare } from 'lucide-react';
+import { ArrowRight, Mic, MicOff, Video, VideoOff, MonitorUp, PhoneOff, Hand, MessageSquare } from 'lucide-react';
 
 // "Student ki kahani" as a live 1:1 video session inside UniCoach (a video-call layout, our own design,
 // not any other company's branding). The mentor shares her screen step by step while live captions run.
@@ -11,37 +11,37 @@ const MENTOR = { name: 'Prachi', src: '/images/mentors/cutouts/prachi.webp', bg:
 
 const STEPS = [
   {
-    key: 'shortlist', label: 'Shortlist', hi: 'सही यूनिवर्सिटी',
+    key: 'shortlist', label: 'Shortlist', hi: 'Sahi university',
     student: '7.8 CGPA hai, Ireland mein Data Science. Kaunsi uni?',
     mentor: 'Dekho, teen category bana di: Dream, Target, Safe.',
     screen: { title: 'Shortlist · Ireland · MSc Data Science', rows: [['Trinity College Dublin', 'Dream', 54], ['University College Dublin', 'Target', 78], ['University of Galway', 'Safe', 92]] },
   },
   {
-    key: 'scholarship', label: 'Scholarships', hi: 'पैसा बचाओ',
+    key: 'scholarship', label: 'Scholarships', hi: 'Paisa bachao',
     student: 'Fees bahut zyada hai yaar 😅',
     mentor: 'Tension nahi. Tumhare profile pe ye scholarships ban rahi hain.',
     screen: { title: 'Scholarships you qualify for', big: '₹4,20,000', note: 'Govt. of Ireland + university merit award' },
   },
   {
-    key: 'loan', label: 'Loan', hi: 'फ़ंड का जुगाड़',
+    key: 'loan', label: 'Loan', hi: 'Fund ka jugaad',
     student: 'Baaki ka paisa? Papa ki FD nahi todni 🙏',
     mentor: 'Bina collateral loan, teen lenders compare kiye.',
     screen: { title: 'Education loan · no collateral', big: '₹22,600 / month', note: '₹20L · 10 years · 3 lenders compared' },
   },
   {
-    key: 'ielts', label: 'IELTS', hi: 'स्कोर पक्का',
+    key: 'ielts', label: 'IELTS', hi: 'Score pakka',
     student: 'Mock mein 6 aaya tha...',
     mentor: 'Writing pe kaam karenge. Do hafte, roz ek essay.',
     screen: { title: 'IELTS plan · 14 days', bands: [['Mock 1', 6], ['Day 7', 6.5], ['Day 14', 7]] },
   },
   {
-    key: 'sop', label: 'SOP', hi: 'कहानी दमदार',
+    key: 'sop', label: 'SOP', hi: 'Kahani dumdaar',
     student: 'SOP likhna nahi aata 😬',
     mentor: 'Apni kahani sunao, main likhwati hoon. Radio wala kissa daalna!',
     screen: { title: 'SOP_UCD.docx · reviewed', lines: [96, 100, 82, 90], tag: '✓ Strength 62 → 91' },
   },
   {
-    key: 'visa', label: 'Visa', hi: 'मोहर लगी',
+    key: 'visa', label: 'Visa', hi: 'Visa stamp done',
     student: 'VISA APPROVED!!! 🎉',
     mentor: 'Dublin mein milte hain! Airport pick-up ka bhi plan hai 😄',
     screen: { title: 'Visa status', stamp: 'APPROVED' },
@@ -49,6 +49,9 @@ const STEPS = [
 ];
 
 const REACTIONS = ['👏', '🎯', '💸', '💪', '✍️', '🎉'];
+
+// how long the student asks, then how long the mentor presents (ms)
+const PHASE_MS = [1100, 2300];
 
 // little animated sound bars for whoever is talking
 const Wave = ({ on, className = '' }) => (
@@ -59,11 +62,11 @@ const Wave = ({ on, className = '' }) => (
   </span>
 );
 
-const Tile = ({ who, speaking, children }) => (
+const Tile = ({ who, speaking, live = false, children }) => (
   <div className={`relative rounded-2xl overflow-hidden bg-[#2B2D31] transition-shadow duration-300 ${speaking ? 'ring-[3px] ring-[#8AB4F8]' : 'ring-0'}`}>
     {children}
     <span className="absolute left-2 bottom-2 flex items-center gap-1 text-[11px] font-medium text-white bg-black/45 rounded-md px-1.5 py-0.5">
-      {speaking ? <Wave on /> : <MicOff size={11} className="text-red-400" />} {who}
+      {speaking || live ? <Wave on /> : <MicOff size={11} className="text-red-400" />} {who}
     </span>
   </div>
 );
@@ -73,7 +76,7 @@ const Screen = ({ s }) => (
     <p className="text-[11px] sm:text-[12px] font-semibold text-slate-500">{s.screen.title}</p>
     <div className="flex-1 flex flex-col justify-center">
       {s.screen.rows && s.screen.rows.map(([u, t, p], i) => (
-        <motion.div key={u} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 + i * 0.25 }} className="flex items-center gap-3 py-1.5 border-b border-slate-100 last:border-0">
+        <motion.div key={u} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + i * 0.14 }} className="flex items-center gap-3 py-1.5 border-b border-slate-100 last:border-0">
           <span className="flex-1 text-[13px] sm:text-[14px] font-semibold text-[#111] truncate">{u}</span>
           <span className={`text-[10.5px] font-bold px-2 py-0.5 rounded-full ${t === 'Dream' ? 'bg-orange-100 text-orange-700' : t === 'Target' ? 'bg-blue-100 text-blue-700' : 'bg-emerald-100 text-emerald-700'}`}>{t}</span>
           <span className="w-10 text-right text-[13px] font-bold">{p}%</span>
@@ -81,7 +84,7 @@ const Screen = ({ s }) => (
       ))}
       {s.screen.big && (
         <>
-          <motion.p initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-[30px] sm:text-[38px] font-bold text-[#111] tracking-[-0.03em] leading-none">{s.screen.big}</motion.p>
+          <motion.p initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.12 }} className="text-[30px] sm:text-[38px] font-bold text-[#111] tracking-[-0.03em] leading-none">{s.screen.big}</motion.p>
           <p className="text-[12.5px] text-slate-500 mt-2">{s.screen.note}</p>
         </>
       )}
@@ -90,7 +93,7 @@ const Screen = ({ s }) => (
           {s.screen.bands.map(([l, b], i) => (
             <div key={l} className="flex-1 flex flex-col items-center gap-1">
               <span className="text-[13px] font-bold text-[#1D4ED8]">{b}</span>
-              <motion.div className="w-full rounded-t-lg bg-[#93B4FF]" initial={{ height: 0 }} animate={{ height: `${(b - 5) * 34}px` }} transition={{ delay: 0.2 + i * 0.3, duration: 0.5 }} />
+              <motion.div className="w-full rounded-t-lg bg-[#93B4FF]" initial={{ height: 0 }} animate={{ height: `${(b - 5) * 34}px` }} transition={{ delay: 0.1 + i * 0.16, duration: 0.35 }} />
               <span className="text-[11px] text-slate-500">{l}</span>
             </div>
           ))}
@@ -99,15 +102,15 @@ const Screen = ({ s }) => (
       {s.screen.lines && (
         <div>
           {s.screen.lines.map((w, i) => (
-            <motion.div key={i} className="h-2.5 rounded-full bg-[#E9E1FF] mb-2.5" initial={{ width: 0 }} animate={{ width: `${w}%` }} transition={{ delay: 0.15 + i * 0.3, duration: 0.5 }} />
+            <motion.div key={i} className="h-2.5 rounded-full bg-[#E9E1FF] mb-2.5" initial={{ width: 0 }} animate={{ width: `${w}%` }} transition={{ delay: 0.08 + i * 0.16, duration: 0.35 }} />
           ))}
-          <motion.span initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.5 }} className="inline-block mt-1 text-[12px] font-semibold text-emerald-700 bg-emerald-50 rounded-full px-2.5 py-0.5">{s.screen.tag}</motion.span>
+          <motion.span initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.75 }} className="inline-block mt-1 text-[12px] font-semibold text-emerald-700 bg-emerald-50 rounded-full px-2.5 py-0.5">{s.screen.tag}</motion.span>
         </div>
       )}
       {s.screen.stamp && (
         <div className="relative mx-auto w-[120px] h-[150px] rounded-lg bg-[#1E3A5F] grid place-items-center">
           <span className="text-[10px] font-bold text-amber-200 tracking-[0.2em]">PASSPORT</span>
-          <motion.span initial={{ scale: 2.4, opacity: 0, rotate: -30 }} animate={{ scale: 1, opacity: 1, rotate: -14 }} transition={{ delay: 0.5, type: 'spring', stiffness: 380, damping: 16 }} className="absolute -right-8 bottom-5 px-3 py-1 rounded-md border-[3px] border-[#BE123C] text-[#BE123C] bg-white/95 text-[14px] font-extrabold tracking-wider">{s.screen.stamp}</motion.span>
+          <motion.span initial={{ scale: 2.4, opacity: 0, rotate: -30 }} animate={{ scale: 1, opacity: 1, rotate: -14 }} transition={{ delay: 0.3, type: 'spring', stiffness: 380, damping: 16 }} className="absolute -right-8 bottom-5 px-3 py-1 rounded-md border-[3px] border-[#BE123C] text-[#BE123C] bg-white/95 text-[14px] font-extrabold tracking-wider">{s.screen.stamp}</motion.span>
         </div>
       )}
     </div>
@@ -120,15 +123,38 @@ const StudentStory = () => {
   const [step, setStep] = useState(0);
   const [phase, setPhase] = useState(0); // 0 = student speaks, 1 = mentor speaks + shares screen
   const [secs, setSecs] = useState(754);
+  // the call controls actually work: mute, camera, captions, raise hand, next screen, end/rejoin
+  const [hovered, setHovered] = useState(false);
+  const [muted, setMuted] = useState(true);
+  const [camOn, setCamOn] = useState(true);
+  const [captions, setCaptions] = useState(true);
+  const [ended, setEnded] = useState(false);
+  const [bursts, setBursts] = useState([]); // floating reactions the visitor sent
+  const react = (emoji) => {
+    setBursts((b) => {
+      const id = (b.length ? b[b.length - 1].id : 0) + 1;
+      return [...b, { id, emoji, x: 10 + ((id * 37) % 60) }];
+    });
+  };
+  // each reaction removes itself once it has floated away
+  useEffect(() => {
+    if (!bursts.length) return undefined;
+    const t = setTimeout(() => setBursts((b) => b.slice(1)), 1500);
+    return () => clearTimeout(t);
+  }, [bursts]);
+  const nextScreen = () => {
+    if (phase === 0) setPhase(1);
+    else { setPhase(0); setStep((x) => (x + 1) % STEPS.length); }
+  };
 
   useEffect(() => {
-    if (!inView) return undefined;
+    if (!inView || hovered || ended) return undefined;
     const t = setTimeout(() => {
       if (phase === 0) setPhase(1);
       else { setPhase(0); setStep((x) => (x + 1) % STEPS.length); }
-    }, phase === 0 ? 1900 : 3400);
+    }, phase === 0 ? PHASE_MS[0] : PHASE_MS[1]);
     return () => clearTimeout(t);
-  }, [inView, phase, step]);
+  }, [inView, phase, step, hovered, ended]);
 
   useEffect(() => {
     if (!inView) return undefined;
@@ -174,7 +200,7 @@ const StudentStory = () => {
         </div>
 
         {/* Video call window */}
-        <div className="rounded-[22px] bg-[#202124] p-3 sm:p-4 shadow-[0_40px_80px_-30px_rgba(15,23,42,0.6)]">
+        <div onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)} className="relative rounded-[22px] bg-[#202124] p-3 sm:p-4 shadow-[0_40px_80px_-30px_rgba(15,23,42,0.6)]">
           <div className="flex items-center justify-between text-white/85 text-[12px] px-1 pb-3">
             <span className="flex items-center gap-2"><span className="w-2 h-2 rounded-full bg-red-500 animate-pulse" /> UniCoach 1:1 session · {clock}</span>
             <span className="hidden sm:inline text-white/60">Aarav × Prachi</span>
@@ -194,6 +220,12 @@ const StudentStory = () => {
                   </motion.div>
                 )}
               </AnimatePresence>
+              <AnimatePresence>
+                {bursts.map((b) => (
+                  <motion.span key={b.id} initial={{ opacity: 0, y: 10, scale: 0.6 }} animate={{ opacity: [0, 1, 1, 0], y: [10, -30, -90, -140], scale: [0.6, 1.25, 1, 1] }} transition={{ duration: 1.5 }}
+                    className="absolute bottom-4 z-20 text-[28px] pointer-events-none" style={{ left: `${b.x}%` }}>{b.emoji}</motion.span>
+                ))}
+              </AnimatePresence>
               {mentorTalking && <span className="absolute top-2 right-2 z-10 text-[10.5px] font-semibold text-white bg-[#1A73E8] rounded-md px-2 py-0.5">Prachi is presenting</span>}
               <AnimatePresence>
                 {mentorTalking && (
@@ -201,7 +233,7 @@ const StudentStory = () => {
                     key={`r-${step}`}
                     initial={{ opacity: 0, y: 20, scale: 0.6 }}
                     animate={{ opacity: [0, 1, 1, 0], y: [20, -10, -60, -110], scale: [0.6, 1.2, 1, 1] }}
-                    transition={{ duration: 2.4, delay: 1.2 }}
+                    transition={{ duration: 1.6, delay: 0.6 }}
                     className="absolute left-4 bottom-4 z-10 text-[30px] pointer-events-none"
                   >
                     {REACTIONS[step]}
@@ -217,39 +249,64 @@ const StudentStory = () => {
                   <img src={MENTOR.src} alt="" className="w-full h-full object-cover object-top" />
                 </div>
               </Tile>
-              <Tile who="Aarav (you)" speaking={!mentorTalking}>
-                <div className="aspect-square grid place-items-center bg-gradient-to-br from-[#7C3AED] to-[#DE5C2B]">
+              <Tile who="Aarav (you)" speaking={!mentorTalking} live={!muted}>
+                <div className={`aspect-square grid place-items-center ${camOn ? 'bg-gradient-to-br from-[#7C3AED] to-[#DE5C2B]' : 'bg-[#3C4043]'}`}>
                   <span className="w-12 h-12 rounded-full bg-white/20 grid place-items-center text-white text-[20px] font-bold">A</span>
+                  {!camOn && <span className="absolute top-2 right-2 text-[10px] text-white/70">Camera off</span>}
                 </div>
               </Tile>
             </div>
           </div>
 
           {/* live captions */}
-          <div className="mt-3 min-h-[48px] rounded-xl bg-black/50 px-3 py-2 text-[13px] sm:text-[14px] text-white leading-snug">
+          {captions && <div className="mt-3 min-h-[48px] rounded-xl bg-black/50 px-3 py-2 text-[13px] sm:text-[14px] text-white leading-snug">
             <AnimatePresence mode="wait">
               <motion.p key={`${step}-${phase}`} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} transition={{ duration: 0.25 }}>
                 <span className="font-semibold text-[#8AB4F8]">{mentorTalking ? 'Prachi' : 'Aarav'}:</span> {mentorTalking ? s.mentor : s.student}
               </motion.p>
             </AnimatePresence>
-          </div>
+          </div>}
 
-          {/* session progress */}
+          {/* session progress (click a segment to jump) */}
           <div className="mt-3 flex gap-1.5">
             {STEPS.map((x, i) => (
-              <span key={x.key} className="flex-1 h-1 rounded-full bg-white/10 overflow-hidden">
-                <motion.span className="block h-full bg-[#DE5C2B]" animate={{ width: i < step ? '100%' : i === step ? (mentorTalking ? '100%' : '35%') : '0%' }} transition={{ duration: i === step ? (mentorTalking ? 3.2 : 1.6) : 0.3, ease: 'linear' }} />
-              </span>
+              <button type="button" key={x.key} aria-label={`Go to ${x.label}`} onClick={() => { setStep(i); setPhase(0); setEnded(false); }} className="no-shine flex-1 h-1 rounded-full bg-white/10 overflow-hidden cursor-pointer hover:bg-white/25">
+                <motion.span className="block h-full bg-[#DE5C2B]" animate={{ width: i < step ? '100%' : i === step ? (mentorTalking ? '100%' : '35%') : '0%' }} transition={{ duration: i === step ? (mentorTalking ? PHASE_MS[1] / 1000 : PHASE_MS[0] / 1000) : 0.3, ease: 'linear' }} />
+              </button>
             ))}
           </div>
 
           {/* controls */}
           <div className="mt-3 flex items-center justify-center gap-2.5">
-            {[MicOff, Video, MonitorUp, Hand, MessageSquare].map((I, i) => (
-              <span key={i} className={`w-10 h-10 rounded-full grid place-items-center ${i === 2 && mentorTalking ? 'bg-[#8AB4F8] text-[#202124]' : 'bg-[#3C4043] text-white'}`}><I size={17} /></span>
+            {[
+              { I: muted ? MicOff : Mic, label: muted ? 'Unmute' : 'Mute', on: !muted, act: () => setMuted((m) => !m) },
+              { I: camOn ? Video : VideoOff, label: camOn ? 'Turn camera off' : 'Turn camera on', on: false, act: () => setCamOn((c) => !c) },
+              { I: MonitorUp, label: 'Next screen', on: mentorTalking, act: nextScreen },
+              { I: Hand, label: 'Raise hand', on: false, act: () => react('✋') },
+              { I: MessageSquare, label: captions ? 'Hide captions' : 'Show captions', on: captions, act: () => setCaptions((c) => !c) },
+            ].map(({ I, label, on, act }) => (
+              <motion.button type="button" key={label} title={label} aria-label={label} onClick={act} whileTap={{ scale: 0.88 }}
+                className={`no-shine w-10 h-10 rounded-full grid place-items-center cursor-pointer transition-colors ${on ? 'bg-[#8AB4F8] text-[#202124]' : 'bg-[#3C4043] text-white hover:bg-[#4A4E52]'}`}><I size={17} /></motion.button>
             ))}
-            <span className="w-14 h-10 rounded-full grid place-items-center bg-[#EA4335] text-white"><PhoneOff size={17} /></span>
+            <motion.button type="button" title="End call" aria-label="End call" onClick={() => setEnded(true)} whileTap={{ scale: 0.9 }} className="no-shine w-14 h-10 rounded-full grid place-items-center bg-[#EA4335] hover:bg-[#d33426] text-white cursor-pointer"><PhoneOff size={17} /></motion.button>
           </div>
+          {/* quick reactions */}
+          <div className="mt-2 flex items-center justify-center gap-1.5">
+            {['👍', '❤️', '😂', '🔥', '🙏'].map((e) => (
+              <button type="button" key={e} onClick={() => react(e)} aria-label={`React ${e}`} className="no-shine w-8 h-8 rounded-full bg-white/5 hover:bg-white/15 text-[16px] cursor-pointer transition-transform hover:scale-110">{e}</button>
+            ))}
+          </div>
+          <AnimatePresence>
+            {ended && (
+              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="absolute inset-0 z-30 rounded-[22px] bg-[#202124]/95 flex flex-col items-center justify-center gap-3 text-white">
+                <p className="text-[16px] font-semibold">You left the session</p>
+                <div className="flex gap-2">
+                  <button type="button" onClick={() => setEnded(false)} className="no-shine px-4 h-10 rounded-full bg-[#8AB4F8] text-[#202124] font-semibold text-[13.5px] cursor-pointer">Rejoin</button>
+                  <Link to="/unicoach#mentors-grid" className="px-4 h-10 rounded-full bg-[#DE5C2B] text-white font-semibold text-[13.5px] grid place-items-center">Book a real one</Link>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
       </div>
     </section>

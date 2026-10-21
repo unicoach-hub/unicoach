@@ -1,12 +1,8 @@
 import React, { useState, useEffect, lazy, Suspense } from 'react'
-import Lenis from 'lenis'
-import gsap from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import PageLoader from './components/PageLoader'
 import NavigationProgress from './components/NavigationProgress'
 import { BrowserRouter, Routes, Route, useLocation, Navigate, useParams } from 'react-router-dom'
 
-gsap.registerPlugin(ScrollTrigger);
 // Core Navigation & Context
 import Navbar from './components/Navbar'
 import PageBackButton from './components/PageBackButton';
@@ -227,11 +223,9 @@ const EligibilityCalculatorPage = lazy(() => import('./pages/EligibilityCalculat
 const UnsubscribePage = lazy(() => import('./pages/UnsubscribePage'));
 const EducationLoanPage = lazy(() => import('./pages/EducationLoanPage'));
 const VisaAssistancePage = lazy(() => import('./pages/VisaAssistancePage'));
-const UniversitiesPage = lazy(() => import('./pages/UniversitiesPage'));
 const SearchProgramsPage = lazy(() => import('./pages/SearchProgramsPage'));
 const ProgramDetailPage = lazy(() => import('./pages/ProgramDetailPage'));
 const CourseDetailsPage = lazy(() => import('./pages/CourseDetailsPage'));
-const ScholarshipsPage = lazy(() => import('./pages/ScholarshipsPage'));
 const AiToolsHubPage = lazy(() => import('./pages/AiToolsHubPage'));
 const StudyAbroadHubPage = lazy(() => import('./pages/StudyAbroadHubPage'));
 const ExamsHubPage = lazy(() => import('./pages/ExamsHubPage'));
@@ -476,52 +470,60 @@ const App = () => {
       return;
     }
 
-    const lenis = new Lenis({
-      duration: 0.85,
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      orientation: 'vertical',
-      gestureOrientation: 'vertical',
-      smoothWheel: true,
-      wheelMultiplier: 1.0,
-      touchMultiplier: 1.0,
-      prevent: (node) => {
-        if (!node || typeof node.closest !== 'function') return false;
-        // Explicitly marked containers or open modals/dialogs
-        if (
-          node.hasAttribute?.('data-lenis-prevent') ||
-          node.closest('[data-lenis-prevent]') ||
-          node.closest('[role="dialog"]') ||
-          node.closest('[role="listbox"]') ||
-          node.closest('.modal-content')
-        ) {
-          return true;
-        }
+    // Smooth scrolling is a nicety: load it after the first paint so it never delays the page
+    let cleanup = () => {};
+    let cancelled = false;
+    Promise.all([import('lenis'), import('gsap'), import('gsap/ScrollTrigger')]).then(([{ default: Lenis }, { default: gsap }, { ScrollTrigger }]) => {
+      if (cancelled) return;
+      gsap.registerPlugin(ScrollTrigger);
+      const lenis = new Lenis({
+        duration: 0.85,
+        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+        orientation: 'vertical',
+        gestureOrientation: 'vertical',
+        smoothWheel: true,
+        wheelMultiplier: 1.0,
+        touchMultiplier: 1.0,
+        prevent: (node) => {
+          if (!node || typeof node.closest !== 'function') return false;
+          // Explicitly marked containers or open modals/dialogs
+          if (
+            node.hasAttribute?.('data-lenis-prevent') ||
+            node.closest('[data-lenis-prevent]') ||
+            node.closest('[role="dialog"]') ||
+            node.closest('[role="listbox"]') ||
+            node.closest('.modal-content')
+          ) {
+            return true;
+          }
 
-        // Only prevent if the element is actually vertically scrollable and has scrollable overflow
-        const scrollableY = node.closest('.overflow-y-auto, .overflow-y-scroll');
-        if (scrollableY && scrollableY.scrollHeight > scrollableY.clientHeight) {
-          return true;
-        }
+          // Only prevent if the element is actually vertically scrollable and has scrollable overflow
+          const scrollableY = node.closest('.overflow-y-auto, .overflow-y-scroll');
+          if (scrollableY && scrollableY.scrollHeight > scrollableY.clientHeight) {
+            return true;
+          }
 
-        return false;
-      }
+          return false;
+        }
+      });
+
+      window.lenis = lenis;
+      lenis.on('scroll', ScrollTrigger.update);
+
+      const tickerCb = (time) => {
+        lenis.raf(time * 1000);
+      };
+
+      gsap.ticker.add(tickerCb);
+      gsap.ticker.lagSmoothing(500, 33);
+
+      cleanup = () => {
+        gsap.ticker.remove(tickerCb);
+        window.lenis = null;
+        lenis.destroy();
+      };
     });
-
-    window.lenis = lenis;
-    lenis.on('scroll', ScrollTrigger.update);
-
-    const tickerCb = (time) => {
-      lenis.raf(time * 1000);
-    };
-
-    gsap.ticker.add(tickerCb);
-    gsap.ticker.lagSmoothing(500, 33);
-
-    return () => {
-      gsap.ticker.remove(tickerCb);
-      window.lenis = null;
-      lenis.destroy();
-    };
+    return () => { cancelled = true; cleanup(); };
   }, []);
 
   return (
@@ -903,12 +905,12 @@ const App = () => {
             <Route path="/unicoach/dashboard/:handle" element={<UnicoachDashboardPage />} />
 
             {/* Dedicated AI Tools & Shortlisting Discovery Routes */}
-            <Route path="/universities" element={<UniversitiesPage />} />
+            <Route path="/universities" element={<Navigate to="/search-programs" replace />} />
             <Route path="/search-programs" element={<SearchProgramsPage />} />
             <Route path="/program/:cfId" element={<ProgramDetailPage />} />
             <Route path="/course-details" element={<CourseDetailsPage />} />
             <Route path="/courses/:courseId" element={<CourseDetailsPage />} />
-            <Route path="/scholarships" element={<ScholarshipsPage />} />
+            <Route path="/scholarships" element={<Navigate to="/search-programs?highlight=scholarship" replace />} />
             <Route path="/ai-tools" element={<AiToolsHubPage />} />
             <Route path="/ai-tools/sop-generator" element={<AiSopGeneratorPage />} />
             <Route path="/ai-tools/study-roadmap" element={<AiStudyRoadmapPage />} />

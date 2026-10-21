@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { ArrowUpRight, ArrowRight, ArrowDown, Play, ShieldCheck, MessageCircle } from 'lucide-react';
+import { ArrowUpRight, ArrowRight, ArrowDown, Play, ShieldCheck } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useLead } from '../context/LeadContext';
 // Preloaded critical LCP asset from public directory for instant discovery
@@ -10,21 +10,15 @@ import { PillButton } from './ui/PillButton';
 import LordIcon from './ui/LordIcon';
 import arrowRightIcon from '../assets/lordicons/arrow-right.json';
 import sparkleIcon from '../assets/lordicons/sparkle.json';
+import { MiniSearchDemo, MiniChatDemo } from './HeroMiniDemos';
 import { TEAM_MENTORS, TEAM_MENTOR_NAMES, mentorLook } from '../utils/teamMentors';
-
-// Fit groups of the University Shortlister (same colours as its results page)
-const SHORTLIST_FITS = [
-  { label: 'Safe', className: 'bg-emerald-50 text-emerald-700 border-emerald-100' },
-  { label: 'Target', className: 'bg-orange-50 text-[#C2410C] border-orange-100' },
-  { label: 'Dream', className: 'bg-purple-50 text-purple-700 border-purple-100' },
-];
 
 export const Hero = ({ onOpenModal }) => {
   const { openEligibilityModal } = useLead();
   const handleOpen = onOpenModal || (() => openEligibilityModal('Hero Banner'));
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const [isPriorityDmOpen, setIsPriorityDmOpen] = useState(false);
-  const [tasselKick, setTasselKick] = useState(0);
+  const [hoverCard, setHoverCard] = useState(null);
 
   const handleMouseMove = (e) => {
     const { clientX, clientY, currentTarget } = e;
@@ -81,7 +75,7 @@ export const Hero = ({ onOpenModal }) => {
 
       {/* ════════════════ FLOATING OVERLAY CARDS (Framer Motion & Parallax Physics) ════════════════ */}
 
-      {/* ── Card 1: University Shortlister ── */}
+      {/* ── Card 1: Search Programs (auto-typing preview) ── */}
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
@@ -92,42 +86,16 @@ export const Hero = ({ onOpenModal }) => {
         className="hidden lg:block absolute top-[14%] xl:top-[16%] right-4 sm:right-8 xl:right-12 z-30 transition-transform duration-200 ease-out"
       >
         <Link
-          to="/universities"
-          className="group block bg-white rounded-[20px] p-3.5 sm:p-4 border border-slate-200 hover:border-orange-200 shadow-[0_10px_28px_-12px_rgba(15,23,42,0.22)] hover:shadow-[0_16px_36px_-12px_rgba(15,23,42,0.28)] w-[165px] sm:w-[185px] cursor-pointer overflow-hidden relative transition-all duration-200 hover:-translate-y-1"
+          to="/search-programs"
+          onMouseEnter={() => setHoverCard('search')}
+          onMouseLeave={() => setHoverCard(null)}
+          className="group block bg-white rounded-[20px] p-3.5 sm:p-4 border border-slate-200 hover:border-orange-200 shadow-[0_10px_28px_-12px_rgba(15,23,42,0.22)] hover:shadow-[0_16px_36px_-12px_rgba(15,23,42,0.28)] w-[200px] sm:w-[215px] cursor-pointer overflow-hidden relative transition-all duration-200 hover:-translate-y-1"
         >
-          <div className="flex items-center justify-between">
-            <span className="text-[10.5px] font-extrabold text-black block leading-tight">
-              Shortlist
-            </span>
-            <span className="px-1.5 py-0.5 rounded-full bg-slate-50 text-slate-700 border border-slate-200 text-[8.5px] font-black uppercase tracking-wider">
-              Free
-            </span>
+          <div className="flex items-center justify-between mb-2">
+            <span className="text-[11px] font-extrabold text-black leading-tight">Search programs</span>
+            <span className="text-[9.5px] font-extrabold text-[#DE5C2B] group-hover:underline">Try &rarr;</span>
           </div>
-
-          <div className="font-urbanist text-[26px] sm:text-[30px] font-black text-black leading-none mt-1.5 tracking-tight">
-            1,500+
-          </div>
-
-          <div className="flex items-center justify-between mt-1">
-            <span className="text-[9.5px] text-slate-500 font-medium">
-              Universities to match
-            </span>
-            <span className="text-[9.5px] font-extrabold text-[#DE5C2B] group-hover:underline flex items-center gap-0.5">
-              Start &rarr;
-            </span>
-          </div>
-
-          {/* The three groups the shortlister sorts universities into */}
-          <div className="mt-2.5 flex items-center gap-1">
-            {SHORTLIST_FITS.map((fit) => (
-              <span
-                key={fit.label}
-                className={`flex-1 text-center py-1 rounded-md border text-[8.5px] font-black uppercase tracking-wide ${fit.className}`}
-              >
-                {fit.label}
-              </span>
-            ))}
-          </div>
+          <MiniSearchDemo paused={hoverCard === 'search'} />
         </Link>
       </motion.div>
 
@@ -189,7 +157,7 @@ export const Hero = ({ onOpenModal }) => {
         </Link>
       </motion.div>
 
-      {/* ── Card 3: 12K+ Students (opens the Priority DM / query page) ── */}
+      {/* ── Card 3: Ask a counsellor (auto-playing chat preview, opens Priority DM) ── */}
       <motion.div
         initial={{ opacity: 0, y: 40 }}
         animate={{ opacity: 1, y: 0 }}
@@ -201,38 +169,18 @@ export const Hero = ({ onOpenModal }) => {
       >
         <Link
           to="/priority-dm"
+          onMouseEnter={() => setHoverCard('chat')}
+          onMouseLeave={() => setHoverCard(null)}
           className="group block w-[215px] sm:w-[235px] p-4 sm:p-4.5 rounded-[22px] bg-white border border-slate-200 hover:border-orange-200 shadow-[0_10px_28px_-12px_rgba(15,23,42,0.22)] hover:shadow-[0_16px_36px_-12px_rgba(15,23,42,0.28)] cursor-pointer overflow-hidden relative transition-all duration-200 hover:-translate-y-1"
         >
-          {/* Main Stat + Pill */}
-          <div className="flex items-center justify-between">
-            <div className="font-urbanist text-[28px] sm:text-[32px] font-black text-black leading-none tracking-tight">
-              12K+
-            </div>
-            <span className="px-2 py-0.5 rounded-full bg-slate-50 text-slate-700 border border-slate-200 text-[9.5px] font-black uppercase tracking-wider flex items-center gap-1">
+          <div className="flex items-center justify-between mb-2">
+            <span className="text-[11px] font-extrabold text-black leading-tight">Ask a counsellor</span>
+            <span className="px-2 py-0.5 rounded-full bg-slate-50 text-slate-700 border border-slate-200 text-[9px] font-black uppercase tracking-wider flex items-center gap-1">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
               Free
             </span>
           </div>
-
-          {/* Sub-label with clickable text */}
-          <div className="flex items-center justify-between mt-1.5">
-            <span className="text-[11px] font-semibold text-slate-600">
-              Students Counselled
-            </span>
-            <span className="text-[10px] font-extrabold text-[#DE5C2B] group-hover:underline flex items-center gap-0.5">
-              Ask a query &rarr;
-            </span>
-          </div>
-
-          {/* What happens when you ask */}
-          <div className="flex items-center gap-2 mt-3">
-            <span className="w-7 h-7 rounded-full bg-orange-50 border border-orange-100 text-[#DE5C2B] flex items-center justify-center shrink-0">
-              <MessageCircle className="w-3.5 h-3.5" aria-hidden="true" />
-            </span>
-            <span className="text-[10.5px] font-bold text-slate-700 leading-tight">
-              Get a personal reply from our counsellors
-            </span>
-          </div>
+          <MiniChatDemo paused={hoverCard === 'chat'} />
         </Link>
       </motion.div>
 
@@ -337,34 +285,10 @@ export const Hero = ({ onOpenModal }) => {
               initial={{ opacity: 0, x: -50 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-              onMouseEnter={() => setTasselKick((k) => k + 1)}
               className="font-outfit text-4xl sm:text-5xl lg:text-[54px] xl:text-[62px] font-black leading-[1.08] tracking-[-0.035em] text-[#111111] mb-5"
             >
               Your Global{' '}
-              <span className="relative inline-block">
-                Future
-                {/* Our graduation cap resting on the word; the tassel hangs and swings like a real one */}
-                <motion.span
-                  aria-hidden="true"
-                  initial={{ opacity: 0, y: -40, rotate: -30 }}
-                  animate={{ opacity: 1, y: 0, rotate: -22 }}
-                  transition={{ delay: 0.6, type: 'spring', stiffness: 160, damping: 11 }}
-                  className="pointer-events-none select-none absolute top-[0.0em] -left-[0.15em] w-[0.86em] aspect-[662/366] origin-bottom-left"
-                >
-                  <img src="/images/3d/grad-cap-body.webp" alt="" width="320" height="177" className="absolute inset-0 w-full h-full" />
-                  {/* One real swing when the cap lands (and again whenever the heading is hovered), then a slow idle sway */}
-                  <motion.span
-                    key={tasselKick}
-                    className="absolute inset-0"
-                    style={{ transformOrigin: '19.6% 35%' }}
-                    initial={{ rotate: tasselKick ? 16 : 30 }}
-                    animate={{ rotate: 0 }}
-                    transition={{ delay: tasselKick ? 0 : 0.75, type: 'spring', stiffness: 40, damping: 6, mass: 1.2 }}
-                  >
-                    <img src="/images/3d/grad-cap-tassel.webp" alt="" width="320" height="177" className="uc-tassel-sway absolute inset-0 w-full h-full" />
-                  </motion.span>
-                </motion.span>
-              </span>{' '}
+              Future{' '}
               <br />
               <span className="relative inline-block">
                 Starts Here

@@ -82,7 +82,7 @@ const JourneyRoute = () => {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:auto-rows-[230px]">
           {/* Universities: match card cycling, percentage counts up */}
-          <Card to="/universities" tone="linear-gradient(150deg,#FFE7DA,#FFC9AE)" className="lg:col-span-2 lg:row-span-2" title="Find the right universities" sub="1,500+ universities, matched to your profile" delay={0}>
+          <Card to="/search-programs" tone="linear-gradient(150deg,#FFE7DA,#FFC9AE)" className="lg:col-span-2 lg:row-span-2" title="Find the right universities" sub="1,500+ universities, matched to your profile" delay={0}>
             <div className="h-full flex flex-col justify-center gap-3">
               <motion.div key={t5} initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="bg-white rounded-2xl p-4 shadow-[0_14px_30px_-16px_rgba(42,26,18,0.35)] max-w-[340px]">
                 <div className="flex items-center justify-between">
@@ -106,7 +106,7 @@ const JourneyRoute = () => {
           </Card>
 
           {/* Scholarships: rupee amount counts up */}
-          <Card to="/scholarships" tone="linear-gradient(150deg,#FFF5D6,#FFE08A)" className="lg:col-span-2" title="Unlock scholarships" sub="150+ checked against your profile" delay={0.05}>
+          <Card to="/search-programs?highlight=scholarship" tone="linear-gradient(150deg,#FFF5D6,#FFE08A)" className="lg:col-span-2" title="Unlock scholarships" sub="150+ checked against your profile" delay={0.05}>
             <div className="flex items-center gap-4 h-full">
               <div>
                 <p className="text-[12px] font-semibold text-amber-800">You could save up to</p>

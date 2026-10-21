@@ -319,7 +319,7 @@ export const Journey = () => {
       cta: 'Explore Unis',
       iconComponent: DiscoverIcon,
       actionType: 'link',
-      actionPayload: '/universities',
+      actionPayload: '/search-programs',
     },
     {
       num: '03',
@@ -329,7 +329,7 @@ export const Journey = () => {
       cta: 'Track Grants',
       iconComponent: ScholarshipIcon,
       actionType: 'link',
-      actionPayload: '/scholarships',
+      actionPayload: '/search-programs?highlight=scholarship',
     },
     {
       num: '04',

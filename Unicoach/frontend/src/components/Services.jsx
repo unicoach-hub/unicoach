@@ -26,7 +26,7 @@ const stackingCards = [
       'Direct 1-on-1 mentorship with Ivy & Russell Group alumni',
     ],
     ctaText: 'Build My Shortlist',
-    link: '/universities',
+    link: '/search-programs',
     accentColor: '#DE5C2B',
     cardBg: '#FFF8F4',
     cardBorder: '#FED7CE',

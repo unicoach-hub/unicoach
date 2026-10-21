@@ -87,7 +87,7 @@ const UniversityDetailTemplate = ({ uniData, sections = {} }) => {
     if (user) {
       // Logged-in user → go directly to AI shortlister pre-filtered by country
       const country = getCountryParam();
-      navigate(`/universities?country=${encodeURIComponent(country)}`);
+      navigate(`/search-programs?q=${encodeURIComponent(country)}`);
     } else {
       // Guest → open login modal
       openEligibilityModal(`University Detail: ${uniData?.name || 'University'}`);

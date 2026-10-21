@@ -463,7 +463,7 @@ const AiToolsHubPage = () => {
                       Filters: Tuition, QS Rank, GPA, STEM OPT, Co-op
                     </span>
                     <Link
-                      to="/universities"
+                      to="/search-programs"
                       className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#DE5C2B] hover:bg-[#C04A1D] text-white font-bold text-xs shadow-md shadow-orange-500/20 transition-all"
                     >
                       <span>Launch University Radar</span>
@@ -557,7 +557,7 @@ const AiToolsHubPage = () => {
 
               <div className="pt-4 border-t border-slate-100">
                 <Link
-                  to="/scholarships"
+                  to="/search-programs?highlight=scholarship"
                   className="w-full inline-flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-bold text-xs shadow-md shadow-amber-600/20 transition-all"
                 >
                   <span>Track 450+ Scholarships</span>
@@ -734,7 +734,7 @@ const AiToolsHubPage = () => {
               </button>
 
               <Link
-                to="/universities"
+                to="/search-programs"
                 className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl bg-white/10 hover:bg-white/15 text-white font-bold text-xs sm:text-sm border border-white/20 transition-all"
               >
                 <span>Explore 1,500+ Universities</span>

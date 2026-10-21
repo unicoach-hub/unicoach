@@ -81,31 +81,13 @@ export default defineConfig({
     chunkSizeWarningLimit: 600,
     rollupOptions: {
       output: {
+        // Only split out libraries every page needs. Everything else (xlsx, jspdf, lottie, three…)
+        // stays with the page that imports it, so one page's heavy tool never loads on the others.
         manualChunks(id) {
-          if (id.includes('scholarships.json')) {
-            return 'scholarships-data';
-          }
-          if (id.includes('node_modules')) {
-            if (id.includes('three')) {
-              return 'three';
-            }
-            if (id.includes('framer-motion')) {
-              return 'framer-motion';
-            }
-            if (id.includes('react') || id.includes('react-dom') || id.includes('react-router-dom')) {
-              return 'react-vendor';
-            }
-            if (id.includes('antd') || id.includes('@ant-design')) {
-              return 'antd';
-            }
-            if (id.includes('lucide-react')) {
-              return 'lucide-icons';
-            }
-            if (id.includes('gsap') || id.includes('lenis')) {
-              return 'animations';
-            }
-            return 'vendor';
-          }
+          if (id.includes('scholarships.json')) return 'scholarships-data';
+          if (/node_modules\/(react|react-dom|react-router|react-router-dom|scheduler)\//.test(id)) return 'react-vendor';
+          if (/node_modules\/(framer-motion|motion-dom|motion-utils)\//.test(id)) return 'framer-motion';
+          return undefined;
         }
       }
     }

@@ -186,7 +186,7 @@ function DesktopStory() {
                 <div className="flex flex-col justify-center px-7 sm:px-14 py-8">
                   <h3 className="font-outfit font-bold text-[#1B1530] tracking-[-0.03em] leading-[1.05] text-[30px] sm:text-[50px]">Unlock scholarships<br />you qualify for</h3>
                   <p className="mt-4 text-[#5A4E66] text-[15px] sm:text-[18px] max-w-[400px] leading-relaxed">We check 150+ scholarships against your profile and show what each one covers.</p>
-                  <Link to="/scholarships" className="mt-6 inline-flex w-max items-center gap-2 h-12 px-6 rounded-full bg-[#1B1530] hover:bg-[#DE5C2B] text-white font-bold text-[15px] transition-colors">
+                  <Link to="/search-programs?highlight=scholarship" className="mt-6 inline-flex w-max items-center gap-2 h-12 px-6 rounded-full bg-[#1B1530] hover:bg-[#DE5C2B] text-white font-bold text-[15px] transition-colors">
                     Find my scholarships <ArrowRight size={17} />
                   </Link>
                 </div>
@@ -274,7 +274,7 @@ function MobileStory() {
 
       {[
         { title: 'Find the right university for you', text: 'A shortlist with your chances of getting in, from 1,500+ universities.', cta: 'Build my shortlist', to: '/search-programs', rows: UNI_ROWS, bg: 'linear-gradient(160deg, #FFE1CF 0%, #FFB48A 100%)' },
-        { title: 'Unlock scholarships you qualify for', text: 'We check 150+ scholarships against your profile.', cta: 'Find my scholarships', to: '/scholarships', rows: SCH_ROWS, bg: 'linear-gradient(160deg, #E3E8FF 0%, #A9B5FA 100%)' },
+        { title: 'Unlock scholarships you qualify for', text: 'We check 150+ scholarships against your profile.', cta: 'Find my scholarships', to: '/search-programs?highlight=scholarship', rows: SCH_ROWS, bg: 'linear-gradient(160deg, #E3E8FF 0%, #A9B5FA 100%)' },
       ].map((c) => (
         <motion.div key={c.title} initial={{ opacity: 0, y: 48, scale: 0.96 }} whileInView={{ opacity: 1, y: 0, scale: 1 }} viewport={{ once: true, margin: '-30px' }} transition={{ duration: 0.75, ease: [0.16, 1, 0.3, 1] }} className="mt-4 rounded-[24px] overflow-hidden" style={{ background: c.bg }}>
           <div className="p-5">

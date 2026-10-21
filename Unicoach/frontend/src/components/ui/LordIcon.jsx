@@ -1,5 +1,7 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { Player } from '@lordicon/react';
+import { lazy, Suspense, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+
+// The player pulls in lottie (~500 KB), so it loads after the page instead of with it
+const Player = lazy(() => import('@lordicon/react').then((m) => ({ default: m.Player })));
 
 const REDUCED_MOTION_QUERY = '(prefers-reduced-motion: reduce)';
 
@@ -52,6 +54,8 @@ export default function LordIcon({
   const playerRef = useRef(null);
   const hostRef = useRef(null);
   const [ready, setReady] = useState(false);
+  // ready flips once the lazily loaded player has mounted and handed us its ref
+  const setPlayer = useCallback((p) => { playerRef.current = p; if (p) setReady(true); }, []);
   const reducedMotion = usePrefersReducedMotion();
 
   const loops = trigger === 'loop' || trigger === 'loop-on-hover';
@@ -66,9 +70,6 @@ export default function LordIcon({
   // emitted it for inline animationData, so props.onReady never fires for
   // bundled icons. The ref is populated by the time this effect runs, so key
   // off that instead and treat onReady as a bonus signal.
-  useEffect(() => {
-    if (playerRef.current) setReady(true);
-  }, []);
 
   const play = useCallback(() => {
     if (suppressed || !playerRef.current) return;
@@ -162,14 +163,16 @@ export default function LordIcon({
       {...a11y}
       {...rest}
     >
+      <Suspense fallback={null}>
       <Player
-        ref={playerRef}
+        ref={setPlayer}
         icon={icon}
         size={size}
         colorize={colorize}
         onReady={() => setReady(true)}
         onComplete={handleComplete}
       />
+      </Suspense>
     </span>
   );
 }

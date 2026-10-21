@@ -50,7 +50,7 @@ const STEPS = [
 ];
 
 // How long each step stays on screen while auto-playing
-const STEP_DURATION_MS = 7000;
+const STEP_DURATION_MS = 4800;
 
 const COUNTRIES = [
   { flag: '🇮🇪', label: 'Ireland' },
@@ -120,25 +120,31 @@ const BrowseDemo = ({ autoPlay, paused, onInteract }) => {
   const [query, setQuery] = useState('');
   const [country, setCountry] = useState('Ireland');
 
-  // While auto-playing, gently cycle the country chips to show the filter in action
+  // While auto-playing, "type" searches into the box letter by letter so the filter is seen working
+  const DEMO_QUERIES = useMemo(() => ['Ireland', 'Manan', 'Australia'], []);
+  const [demo, setDemo] = useState({ q: 0, chars: 0, hold: 0 });
   useEffect(() => {
-    if (!autoPlay || paused || query) return undefined;
-    const id = setInterval(() => {
-      setCountry((prev) => {
-        const idx = COUNTRIES.findIndex((c) => c.label === prev);
-        return COUNTRIES[(idx + 1) % COUNTRIES.length].label;
+    if (!autoPlay || paused) return undefined;
+    const word = DEMO_QUERIES[demo.q];
+    const t = setTimeout(() => {
+      setDemo((d) => {
+        if (d.chars < word.length) return { ...d, chars: d.chars + 1 };
+        if (d.hold < 12) return { ...d, hold: d.hold + 1 };
+        return { q: (d.q + 1) % DEMO_QUERIES.length, chars: 0, hold: 0 };
       });
-    }, 1700);
-    return () => clearInterval(id);
-  }, [autoPlay, paused, query]);
+    }, demo.chars < word.length ? 70 : 80);
+    return () => clearTimeout(t);
+  }, [autoPlay, paused, demo, DEMO_QUERIES]);
+  const typing = autoPlay && !paused;
+  const shownQuery = typing ? DEMO_QUERIES[demo.q].slice(0, demo.chars) : query;
 
   const results = useMemo(() => {
-    const q = query.trim().toLowerCase();
+    const q = shownQuery.trim().toLowerCase();
     if (!q) return FEATURED_MENTORS.filter((m) => m.country === country);
     return FEATURED_MENTORS.filter((m) =>
       [m.name, m.uni, m.course, m.country].some((field) => field.toLowerCase().includes(q))
     ).slice(0, 4);
-  }, [query, country]);
+  }, [shownQuery, country]);
 
   return (
     <div className="w-full space-y-3">
@@ -149,7 +155,7 @@ const BrowseDemo = ({ autoPlay, paused, onInteract }) => {
           <span className="sr-only">Search mentors</span>
           <input
             type="text"
-            value={query}
+            value={shownQuery}
             onChange={(e) => {
               onInteract();
               setQuery(e.target.value);
@@ -158,6 +164,7 @@ const BrowseDemo = ({ autoPlay, paused, onInteract }) => {
             placeholder="Search by university, country..."
             className="w-full bg-transparent text-sm text-slate-800 placeholder:text-slate-400 font-medium outline-none"
           />
+          {typing && <span className="w-[2px] h-4 bg-[#DE5C2B] animate-pulse -ml-2 shrink-0" aria-hidden="true" />}
           {query && (
             <button
               type="button"
@@ -174,7 +181,7 @@ const BrowseDemo = ({ autoPlay, paused, onInteract }) => {
       {/* Country chips */}
       <div className="flex items-center gap-2 flex-wrap px-1" role="group" aria-label="Filter mentors by country">
         {COUNTRIES.map((c) => {
-          const isOn = !query && country === c.label;
+          const isOn = !shownQuery && country === c.label;
           return (
             <button
               key={c.label}
@@ -249,7 +256,7 @@ const BookDemo = ({ autoPlay, onInteract }) => {
   const book = () => {
     setBookState('booking');
     clearTimeout(bookTimer.current);
-    bookTimer.current = setTimeout(() => setBookState('booked'), 900);
+    bookTimer.current = setTimeout(() => setBookState('booked'), 550);
   };
 
   useEffect(() => () => clearTimeout(bookTimer.current), []);
@@ -258,9 +265,9 @@ const BookDemo = ({ autoPlay, onInteract }) => {
   useEffect(() => {
     if (!autoPlay) return undefined;
     const timers = [
-      setTimeout(() => setDateIdx(1), 900),
-      setTimeout(() => setTime('5:00 PM'), 1900),
-      setTimeout(() => book(), 2900)
+      setTimeout(() => setDateIdx(1), 500),
+      setTimeout(() => setTime('5:00 PM'), 1100),
+      setTimeout(() => book(), 1700)
     ];
     return () => timers.forEach(clearTimeout);
   }, [autoPlay]);
@@ -443,7 +450,7 @@ const GuidanceDemo = () => (
               key={idx}
               initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.25 + idx * 0.65, duration: 0.3 }}
+              transition={{ delay: 0.15 + idx * 0.35, duration: 0.25 }}
               className={`flex ${isMentor ? 'justify-start' : 'justify-end'}`}
             >
               <div

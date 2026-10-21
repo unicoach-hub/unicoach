@@ -613,7 +613,7 @@ const IELTSFeesPage = () => {
                 Discover merit and need-based fee waivers to offset your exam and overseas study costs.
               </p>
               <Link
-                to="/scholarships"
+                to="/search-programs?highlight=scholarship"
                 className="w-full text-center py-3 bg-white text-[#111111] rounded-xl text-xs font-bold hover:bg-orange-50 transition-all flex items-center justify-center gap-1.5 shadow-sm block cursor-pointer"
               >
                 <span>Explore Scholarships</span>

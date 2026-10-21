@@ -8,10 +8,10 @@ import { DesiSticker } from './desi/Desi';
 // the form fills in, the button is pressed, results appear one by one, then it switches tool.
 // The steps on the left follow along, so a visitor understands the tool without clicking anything.
 
-const TICK = 100; // ms
-const CYCLE = 10500; // one tool's demo
-const T_FORM_END = 3000;
-const T_MATCH_END = 4600;
+const TICK = 50; // ms
+const CYCLE = 6200; // one tool's demo
+const T_FORM_END = 1700;
+const T_MATCH_END = 2500;
 
 const TOOLS = [
   {
@@ -48,7 +48,7 @@ const TOOLS = [
       ['We check eligibility', 'We go through 150+ scholarships and their rules for you.'],
       ['See your matches', 'Scholarships you qualify for, what they cover and how close you are.'],
     ],
-    cta: { text: 'Find my scholarships', to: '/scholarships' },
+    cta: { text: 'Find my scholarships', to: '/search-programs?highlight=scholarship' },
     fields: [
       ['Level', "Master's"],
       ['Countries', 'UK · Germany · USA'],
@@ -69,14 +69,14 @@ const stepAt = (t) => (t < T_FORM_END ? 0 : t < T_MATCH_END ? 1 : 2);
 
 const Preview = ({ tool, t }) => {
   const Icon = tool.icon;
-  // Each field types out in its own slice of the first 3 seconds
+  // Each field types out in its own slice of the form phase (T_FORM_END)
   const slice = T_FORM_END / tool.fields.length;
   const typed = (i, text) => {
     const local = Math.max(0, Math.min(1, (t - i * slice) / (slice * 0.8)));
     return text.slice(0, Math.round(text.length * local));
   };
   const typingIndex = Math.min(tool.fields.length - 1, Math.floor(t / slice));
-  const pressed = t >= T_FORM_END && t < T_FORM_END + 350;
+  const pressed = t >= T_FORM_END && t < T_FORM_END + 250;
   const matching = t >= T_FORM_END && t < T_MATCH_END;
   const showResults = t >= T_MATCH_END;
 
@@ -112,7 +112,7 @@ const Preview = ({ tool, t }) => {
       <motion.div
         animate={{ scale: pressed ? 0.95 : 1 }}
         transition={{ type: 'spring', stiffness: 400, damping: 20 }}
-        className={`mt-3 h-12 rounded-full flex items-center justify-center gap-2 text-[14.5px] font-bold text-white transition-colors ${t >= T_FORM_END - 400 ? 'bg-[#111]' : 'bg-slate-300'}`}
+        className={`mt-3 h-12 rounded-full flex items-center justify-center gap-2 text-[14.5px] font-bold text-white transition-colors ${t >= T_FORM_END - 250 ? 'bg-[#111]' : 'bg-slate-300'}`}
       >
         <Search size={16} /> {tool.button}
       </motion.div>
@@ -139,7 +139,7 @@ const Preview = ({ tool, t }) => {
                   key={r.name}
                   initial={{ opacity: 0, y: 14 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.15 + i * 0.35, type: 'spring', stiffness: 220, damping: 20 }}
+                  transition={{ delay: 0.08 + i * 0.18, type: 'spring', stiffness: 220, damping: 20 }}
                   className="flex items-center gap-3 px-1 py-3 border-b border-slate-100 last:border-0"
                 >
                   <div className="min-w-0 flex-1">
@@ -148,7 +148,7 @@ const Preview = ({ tool, t }) => {
                   </div>
                   <div className="w-24 hidden sm:block">
                     <div className="h-1.5 rounded-full bg-slate-100 overflow-hidden">
-                      <motion.div className="h-full rounded-full" style={{ background: r.color }} initial={{ width: 0 }} animate={{ width: `${r.pct}%` }} transition={{ delay: 0.3 + i * 0.35, duration: 0.8 }} />
+                      <motion.div className="h-full rounded-full" style={{ background: r.color }} initial={{ width: 0 }} animate={{ width: `${r.pct}%` }} transition={{ delay: 0.15 + i * 0.18, duration: 0.5 }} />
                     </div>
                     <p className="text-[10.5px] text-slate-500 mt-1 text-right">{r.pct}% match</p>
                   </div>

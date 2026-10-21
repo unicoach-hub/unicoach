@@ -50,7 +50,7 @@ const LoginModal = () => {
   const handlePostAuthSuccess = (user) => {
     if (loginModalOptions?.onSuccess) {
       loginModalOptions.onSuccess(user);
-    } else if (!loginModalOptions?.preventRedirect && window.location.pathname !== '/universities') {
+    } else if (!loginModalOptions?.preventRedirect && window.location.pathname !== '/search-programs') {
       navigate('/dashboard');
     }
   };

@@ -1,11 +1,10 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { lazy, Suspense, useEffect, useMemo, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Search, SlidersHorizontal, UserCheck, X, Download, FileSpreadsheet, FileText, GitCompare, ChevronDown, ChevronUp, Info, Loader2, CheckCircle2, AlertCircle, Lock } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { getSearchConfig, getHighlights, searchCourses, evaluateEligibility, exportSearch, getCourseDetail, getUniversitiesFacet } from '../utils/searchApi';
-import { exportSelectedProgramsToExcel } from '../utils/excelExporter';
-import { exportSelectedProgramsToPdf } from '../utils/pdfExporter';
-import ExcelColumnExportModal from '../components/ExcelColumnExportModal';
+// Excel/PDF export libraries are large; load them only when someone exports
+const ExcelColumnExportModal = lazy(() => import('../components/ExcelColumnExportModal'));
 import CfSidebar from '../components/CfSidebar';
 
 const PAGE_SIZE = 20;
@@ -88,7 +87,8 @@ export default function SearchProgramsPage() {
 
   const [config, setConfig] = useState(null);
   const [highlights, setHighlights] = useState([]);
-  const [searchText, setSearchText] = useState('');
+  // links from the rest of the site land here with ?q=… (search text) or ?highlight=scholarship
+  const [searchText, setSearchText] = useState(() => new URLSearchParams(window.location.search).get('q') || '');
   const [country, setCountry] = useState('');
   const [programLevels, setProgramLevels] = useState([]);
   const [requirements, setRequirements] = useState([]);
@@ -167,7 +167,12 @@ export default function SearchProgramsPage() {
       document.head.appendChild(l);
     }
     getSearchConfig().then(setConfig).catch(() => {});
-    getHighlights().then(setHighlights).catch(() => {});
+    getHighlights().then((hs) => {
+      setHighlights(hs);
+      const want = new URLSearchParams(window.location.search).get('highlight');
+      const match = want && (hs || []).find((h) => new RegExp(want, 'i').test(h.name));
+      if (match) setActiveHighlights([match.id]);
+    }).catch(() => {});
   }, []);
 
   const highlightMap = useMemo(() => Object.fromEntries((highlights || []).map((h) => [h.id, h])), [highlights]);
@@ -245,8 +250,10 @@ export default function SearchProgramsPage() {
       const base = scope === 'top25' ? 'Top25' : scope === 'selected' ? 'Selected' : 'Programs';
       if (format === 'pdf') {
         const title = base === 'Top25' ? 'Top 25 Programs' : base === 'Selected' ? 'Selected Programs' : 'Program Shortlist';
+        const { exportSelectedProgramsToPdf } = await import('../utils/pdfExporter');
         await exportSelectedProgramsToPdf(data, { filename: `UniCoach_${base}_${stamp}.pdf`, title, selectedColumnKeys: selectedKeys });
       } else {
+        const { exportSelectedProgramsToExcel } = await import('../utils/excelExporter');
         exportSelectedProgramsToExcel(data, { filename: `UniCoach_${base}_${stamp}.xlsx`, selectedColumnKeys: selectedKeys });
       }
     } catch { alert('Export failed. Please try again.'); }
@@ -516,14 +523,14 @@ export default function SearchProgramsPage() {
       </div>
 
       {/* Column-picker checklist (Excel + PDF) */}
-      <ExcelColumnExportModal
+      {columnModal && <Suspense fallback={null}><ExcelColumnExportModal
         isOpen={!!columnModal}
         onClose={() => setColumnModal(null)}
         onConfirmExport={runColumnExport}
         exportType="programs"
         itemsCount={columnModal?.scope === 'selected' ? selectedList.length : (result?.total || 0)}
         formatLabel={columnModal?.format === 'pdf' ? 'PDF' : 'Excel'}
-      />
+      /></Suspense>}
 
       {/* Compare modal */}
       {showCompare && (

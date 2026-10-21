@@ -849,7 +849,7 @@ const TOEFLDetailPage = ({ pageKey }) => {
                   Discover government & university scholarships worth up to 100% tuition coverage.
                 </p>
                 <Link
-                  to="/scholarships"
+                  to="/search-programs?highlight=scholarship"
                   className="w-full text-center py-3 border border-slate-200 text-slate-700 rounded-xl text-xs font-black hover:bg-slate-50 hover:border-slate-300 transition-all block cursor-pointer"
                 >
                   Find Scholarships

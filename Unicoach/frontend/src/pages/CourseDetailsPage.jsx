@@ -261,7 +261,7 @@ const CourseDetailsPage = () => {
         <div className="text-center space-y-3 max-w-md">
           <p className="text-lg font-bold text-slate-800">We couldn't find this course</p>
           <p className="text-sm text-slate-500">The university may have been updated. Search again to see its current programs.</p>
-          <Link to="/universities" className="inline-block mt-2 px-5 py-2.5 rounded-xl bg-[#DE5C2B] text-white text-sm font-semibold">
+          <Link to="/search-programs" className="inline-block mt-2 px-5 py-2.5 rounded-xl bg-[#DE5C2B] text-white text-sm font-semibold">
             Back to universities
           </Link>
         </div>
