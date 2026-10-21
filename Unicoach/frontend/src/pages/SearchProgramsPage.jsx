@@ -1,14 +1,27 @@
 import React, { lazy, Suspense, useEffect, useMemo, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { Search, SlidersHorizontal, UserCheck, X, Download, FileSpreadsheet, FileText, GitCompare, ChevronDown, ChevronUp, Info, Loader2, CheckCircle2, AlertCircle, Lock } from 'lucide-react';
+import { Search, SlidersHorizontal, UserCheck, X, Download, FileSpreadsheet, FileText, GitCompare, ChevronDown, ChevronUp, Info, Loader2, CheckCircle2, AlertCircle, Lock,
+  Gauge, Coins, Languages, PiggyBank, Briefcase, TrendingUp, Banknote, Building2, Landmark, ClipboardCheck, MapPin, FileClock, Wallet, MicOff, GraduationCap, Award, ClipboardList, Users, Tag } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { getSearchConfig, getHighlights, searchCourses, evaluateEligibility, exportSearch, getCourseDetail, getUniversitiesFacet } from '../utils/searchApi';
 // Excel/PDF export libraries are large; load them only when someone exports
 const ExcelColumnExportModal = lazy(() => import('../components/ExcelColumnExportModal'));
-import CfSidebar from '../components/CfSidebar';
 
 const PAGE_SIZE = 20;
-const BLUE = '#226CF5';
+// UniCoach brand accent (was CourseFinder blue #226CF5). Single source of truth for the portal theme.
+const BLUE = '#DE5C2B';
+
+// CourseFinder renders a Material-Symbols icon on every quick-filter pill; map its
+// icon keys (from highlights.json) to the nearest lucide equivalent for a 1:1 look.
+const QUICK_ICONS = {
+  speed: Gauge, paid: Coins, how_to_reg: UserCheck, dictionary: Languages, savings: PiggyBank,
+  badge: Briefcase, chart_data: TrendingUp, local_atm: Banknote, attractions: Building2,
+  assured_workload: Landmark, assignment_ind: ClipboardCheck, home_pin: MapPin, restore_page: FileClock,
+  mintmark: Wallet, voice_over_off: MicOff, school: GraduationCap, workspace_premium: Award,
+  assignment_turned_in: ClipboardCheck, assignment: ClipboardList, diversity_3: Users,
+};
+// CourseFinder shows the first two pills inline, the rest behind "View More".
+const QUICK_INLINE = 2;
 
 // ── helpers ──────────────────────────────────────────────────────────────────
 const money = (m) => (m && m.amount ? `${m.currency || ''} ${Number(m.amount).toLocaleString()}`.trim() : '—');
@@ -29,7 +42,7 @@ const Chip = ({ children, color = '#dbeafe', text = '#1e3a8a' }) => (
 );
 const Checkbox = ({ checked, onChange, label }) => (
   <label className="flex items-start gap-2 cursor-pointer text-[13px] text-slate-700 py-1">
-    <input type="checkbox" checked={!!checked} onChange={onChange} className="mt-0.5 accent-[#226CF5] w-4 h-4" />
+    <input type="checkbox" checked={!!checked} onChange={onChange} className="mt-0.5 accent-[#DE5C2B] w-4 h-4" />
     <span>{label}</span>
   </label>
 );
@@ -49,10 +62,10 @@ const ProgramRow = ({ c, selected, onToggleSelect, onView, eligible, reasons, hi
   <div className="bg-white border border-slate-200" style={{ borderRadius: 4 }}>
     <div className="p-4">
       <div className="flex items-start gap-3">
-        <input type="checkbox" checked={!!selected} onChange={() => onToggleSelect(c)} className="mt-1 accent-[#226CF5] w-4 h-4" />
+        <input type="checkbox" checked={!!selected} onChange={() => onToggleSelect(c)} className="mt-1 accent-[#DE5C2B] w-4 h-4" />
         <div className="flex-1 min-w-0">
           <button onClick={() => onView(c)} className="text-left">
-            <h3 className="font-['DM_Sans'] text-[15px] font-semibold text-[#226CF5] hover:underline leading-snug">{c.courseName}</h3>
+            <h3 className="font-['DM_Sans'] text-[15px] font-semibold text-[#DE5C2B] hover:underline leading-snug">{c.courseName}</h3>
           </button>
           <div className="text-[13px] text-slate-500 mt-0.5">{c.universityName} · {FLAG[c.cfCountryId] || ''} {c.countryName}</div>
           <div className="flex flex-wrap gap-1.5 mt-2">
@@ -66,17 +79,18 @@ const ProgramRow = ({ c, selected, onToggleSelect, onView, eligible, reasons, hi
         </div>
         <button onClick={() => onView(c)} className="shrink-0 text-white text-[13px] font-medium px-4 py-1.5" style={{ background: BLUE, borderRadius: 4 }}>View</button>
       </div>
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-3 pt-3 border-t border-slate-100 text-[13px]">
-        <div><div className="text-[11px] text-slate-400">Status</div><Chip color="#ddffe5" text="#166534">Open</Chip></div>
-        <div><div className="text-[11px] text-slate-400">Duration</div><div className="font-medium text-slate-700">{c.duration || '—'}</div></div>
-        <div><div className="text-[11px] text-slate-400">Tuition / yr</div><div className="font-semibold text-[#226CF5]">{money(c.annualFee)}</div></div>
-        <div><div className="text-[11px] text-slate-400">Application Fee</div><div className="font-medium text-slate-700">{c.applicationFee?.isWaived ? 'Waived' : money(c.applicationFee)}</div></div>
+      {/* CourseFinder: a green "Open" status chip leads the intake chips */}
+      <div className="flex flex-wrap items-center gap-1 mt-3">
+        <Chip color="#ddffe5" text="#166534">Open</Chip>
+        {(c.intakes || []).slice(0, 8).map((i) => <span key={i} className="px-2 py-0.5 bg-slate-100 text-slate-600 text-[11px]" style={{ borderRadius: 2 }}>{i}</span>)}
       </div>
-      {(c.intakes || []).length > 0 && (
-        <div className="flex flex-wrap gap-1 mt-2">
-          {(c.intakes || []).slice(0, 8).map((i) => <span key={i} className="px-2 py-0.5 bg-slate-100 text-slate-600 text-[11px]" style={{ borderRadius: 2 }}>{i}</span>)}
-        </div>
-      )}
+      {/* CourseFinder stat row: Duration · Tuition/yr · Application Fee · Avg. Scholarship */}
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-3 pt-3 border-t border-slate-100 text-[13px]">
+        <div><div className="text-[11px] text-slate-400">Duration</div><div className="font-medium text-slate-700">{c.duration || '—'}</div></div>
+        <div><div className="text-[11px] text-slate-400">Tuition / yr</div><div className="font-semibold text-[#DE5C2B]">{money(c.annualFee)}</div></div>
+        <div><div className="text-[11px] text-slate-400">Application Fee</div><div className="font-medium text-slate-700">{c.applicationFee?.isWaived ? 'Waived' : money(c.applicationFee)}</div></div>
+        <div><div className="text-[11px] text-slate-400">Avg. Scholarship</div><div className="font-medium text-slate-700">{c.avgScholarship ? `${c.annualFee?.currency || ''} ${Number(c.avgScholarship).toLocaleString()}`.trim() : (c.scholarshipAvailable ? 'Available' : '—')}</div></div>
+      </div>
     </div>
   </div>
 );
@@ -100,6 +114,7 @@ export default function SearchProgramsPage() {
   const [uniList, setUniList] = useState([]);             // faceted [{id,name,count}]
   const [tuitionMax, setTuitionMax] = useState(0);        // 0 = no cap
   const [activeHighlights, setActiveHighlights] = useState([]);
+  const [showAllQuick, setShowAllQuick] = useState(false); // "View More" quick-filter toggle (CF shows 2 inline)
   const [sort, setSort] = useState('featured');
   const [view, setView] = useState('universities');
   const [eligOpen, setEligOpen] = useState(false);        // inline eligibility section (left sidebar)
@@ -283,8 +298,7 @@ export default function SearchProgramsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 pt-[76px] pb-28 font-['Poppins'] lg:pl-16">
-      <CfSidebar active="search" />
+    <div className="min-h-screen bg-slate-50 pt-[76px] pb-28 font-['Poppins']">
       {/* Top search bar (CourseFinder: search • intake • year • nationality • state) */}
       <div className="bg-white border-b border-slate-200">
         <div className="max-w-7xl mx-auto px-4 py-3">
@@ -382,7 +396,7 @@ export default function SearchProgramsPage() {
           {/* Tuition Fees slider */}
           <Accordion title="Tuition Fees (as per Country's Currency)" open={openSec.tuition} onToggle={() => toggleSec('tuition')}>
             <div className="pt-3">
-              <input type="range" min={0} max={100000} step={1000} value={tuitionMax} onChange={(e) => setTuitionMax(Number(e.target.value))} className="w-full accent-[#226CF5]" />
+              <input type="range" min={0} max={100000} step={1000} value={tuitionMax} onChange={(e) => setTuitionMax(Number(e.target.value))} className="w-full accent-[#DE5C2B]" />
               <div className="text-[12.5px] text-slate-600 mt-1">{tuitionMax === 0 ? 'Any' : tuitionMax >= 100000 ? 'Above 100,000' : `Up to ${tuitionMax.toLocaleString()}`}</div>
             </div>
           </Accordion>
@@ -390,20 +404,26 @@ export default function SearchProgramsPage() {
 
         {/* Right: results */}
         <main className="flex-1 min-w-0">
-        {/* Quick filter pills */}
+        {/* Quick filter pills — CourseFinder shows "Quick Filters:" + 2 inline pills + "View More" */}
         {highlights.length > 0 && (
-          <div className="flex items-center gap-2 overflow-x-auto pb-1">
-            <span className="text-[13px] font-semibold text-slate-500 shrink-0">Quick Filters:</span>
-            {highlights.map((h) => {
+          <div className="flex items-center flex-wrap gap-2 pb-1">
+            <span className="text-[13px] font-semibold shrink-0" style={{ color: BLUE }}>Quick Filters:</span>
+            {(showAllQuick ? highlights : highlights.slice(0, QUICK_INLINE)).map((h) => {
               const active = activeHighlights.includes(h.id);
               const count = result?.highlightCounts?.[h.id];
+              const Icon = QUICK_ICONS[h.icon] || Tag;
               return (
-                <button key={h.id} onClick={() => toggleHighlight(h.id)} className="shrink-0 text-[13px] font-medium px-3 py-1.5 border transition-colors"
+                <button key={h.id} onClick={() => toggleHighlight(h.id)} className="shrink-0 inline-flex items-center gap-1.5 text-[13px] font-medium px-3 py-1.5 border transition-colors"
                   style={{ borderRadius: 4, background: active ? BLUE : '#fff', color: active ? '#fff' : '#334155', borderColor: active ? BLUE : '#e2e8f0' }}>
-                  {h.name}{count != null && ` (${count})`}
+                  <Icon size={14} /> {h.name}{count != null && ` (${count})`}
                 </button>
               );
             })}
+            {highlights.length > QUICK_INLINE && (
+              <button onClick={() => setShowAllQuick((v) => !v)} className="shrink-0 text-[13px] font-semibold hover:underline" style={{ color: BLUE }}>
+                {showAllQuick ? 'View Less' : 'View More'}
+              </button>
+            )}
           </div>
         )}
 
@@ -467,7 +487,7 @@ export default function SearchProgramsPage() {
             {[['eligible', 'Eligible', eligResult.counts.eligible], ['non-eligible', 'Non-Eligible', eligResult.counts.nonEligible]].map(([b, label, n]) => (
               <button key={b} onClick={() => runEligibility(b, 1)} className="text-[14px] font-medium px-4 py-1.5 border" style={{ borderRadius: 4, background: eligBucket === b ? BLUE : '#fff', color: eligBucket === b ? '#fff' : '#334155', borderColor: eligBucket === b ? BLUE : '#e2e8f0' }}>{label} ({(n || 0).toLocaleString()})</button>
             ))}
-            <button onClick={() => setEligResult(null)} className="ml-auto text-[13px] text-slate-500 hover:text-[#226CF5]">Clear eligibility ✕</button>
+            <button onClick={() => setEligResult(null)} className="ml-auto text-[13px] text-slate-500 hover:text-[#DE5C2B]">Clear eligibility ✕</button>
           </div>
         )}
 
@@ -486,7 +506,7 @@ export default function SearchProgramsPage() {
             Object.values(result.data.reduce((acc, c) => { (acc[c.cfUniversityId] = acc[c.cfUniversityId] || { uni: c, items: [] }).items.push(c); return acc; }, {})).map((g) => (
               <div key={g.uni.cfUniversityId} className="bg-white border border-slate-200" style={{ borderRadius: 4 }}>
                 <div className="px-4 py-3 border-b border-slate-100">
-                  <div className="font-['DM_Sans'] text-[15px] font-semibold text-[#226CF5]">{g.uni.universityName}</div>
+                  <div className="font-['DM_Sans'] text-[15px] font-semibold text-[#DE5C2B]">{g.uni.universityName}</div>
                   <div className="text-[13px] text-slate-500">{FLAG[g.uni.cfCountryId] || ''} {g.uni.countryName} · {g.items.length} program{g.items.length > 1 ? 's' : ''}</div>
                 </div>
                 <div className="p-3 space-y-2">{g.items.map((c) => <ProgramRow key={c.cfId} c={c} selected={selected[c.cfId]} onToggleSelect={toggleSelect} onView={openCourse} highlightMap={highlightMap} />)}</div>
@@ -539,7 +559,7 @@ export default function SearchProgramsPage() {
             <div className="flex items-center justify-between px-5 py-3 border-b border-slate-100">
               <h2 className="font-['DM_Sans'] text-lg font-bold text-slate-800">Program Comparison</h2>
               <div className="flex items-center gap-3">
-                <button onClick={() => { setShowCompare(false); openExport('excel', 'selected'); }} className="text-[13px] text-[#226CF5] font-medium flex items-center gap-1"><FileSpreadsheet size={14} /> Export to Excel…</button>
+                <button onClick={() => { setShowCompare(false); openExport('excel', 'selected'); }} className="text-[13px] text-[#DE5C2B] font-medium flex items-center gap-1"><FileSpreadsheet size={14} /> Export to Excel…</button>
                 <button onClick={() => setShowCompare(false)} className="text-slate-400"><X size={18} /></button>
               </div>
             </div>
@@ -552,7 +572,7 @@ export default function SearchProgramsPage() {
                   const rows = [
                     ['Program Name', (c, d) => d?.name || c.courseName],
                     ['University', (c, d) => d?.university?.name || c.universityName],
-                    ['Website', (c, d) => { const w = d?.university?.['website-url']; return w ? <a href={w.startsWith('http') ? w : `https://${w}`} target="_blank" rel="noreferrer" className="text-[#226CF5] break-all">{w}</a> : '—'; }],
+                    ['Website', (c, d) => { const w = d?.university?.['website-url']; return w ? <a href={w.startsWith('http') ? w : `https://${w}`} target="_blank" rel="noreferrer" className="text-[#DE5C2B] break-all">{w}</a> : '—'; }],
                     ['Country', (c, d) => [d?.university?.city, d?.university?.countryName].filter(Boolean).join(', ') || c.countryName],
                     ['Program Level', (c, d) => d?.degreeLevel || c.degreeLevel],
                     ['Duration', (c, d) => d?.duration || c.duration],

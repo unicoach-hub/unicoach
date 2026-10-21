@@ -3,9 +3,9 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { ArrowLeft, Loader2, Lock, Globe, Award, CalendarDays, Clock, MapPin, Wallet, FileText, GraduationCap, ExternalLink } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { getCourseDetail } from '../utils/searchApi';
-import CfSidebar from '../components/CfSidebar';
 
-const BLUE = '#226CF5';
+// UniCoach brand accent (was CourseFinder blue #226CF5).
+const BLUE = '#DE5C2B';
 const FLAG = { 1: '🇺🇸', 2: '🇦🇺', 3: '🇨🇦', 4: '🇬🇧', 5: '🇳🇿', 6: '🇸🇬', 7: '🇦🇪', 8: '🇮🇪', 9: '🇩🇪', 10: '🇫🇷', 16: '🇮🇹', 19: '🇪🇸', 25: '🇲🇾' };
 const money = (m) => (m && m.amount ? `${m.currency || ''} ${Number(m.amount).toLocaleString()}`.trim() : null);
 
@@ -18,7 +18,7 @@ const Section = ({ title, children }) => (
 const Row = ({ label, value, strong }) => (
   <div className="flex justify-between gap-4 py-1.5 border-b border-slate-50 last:border-0 text-[13.5px]">
     <span className="text-slate-500">{label}</span>
-    <span className={`text-right ${strong ? 'font-semibold text-[#226CF5]' : 'font-medium text-slate-700'}`}>{value || '—'}</span>
+    <span className={`text-right ${strong ? 'font-semibold text-[#DE5C2B]' : 'font-medium text-slate-700'}`}>{value || '—'}</span>
   </div>
 );
 
@@ -60,7 +60,7 @@ export default function ProgramDetailPage() {
   if (notFound || !d) return (
     <div className="min-h-screen bg-slate-50 pt-[120px] text-center font-['Poppins']">
       <p className="text-slate-500">Program not found.</p>
-      <button onClick={() => navigate('/search-programs')} className="mt-3 text-[#226CF5] font-medium">← Back to search</button>
+      <button onClick={() => navigate('/search-programs')} className="mt-3 text-[#DE5C2B] font-medium">← Back to search</button>
     </div>
   );
 
@@ -72,12 +72,11 @@ export default function ProgramDetailPage() {
   const avgSch = d.averageScholarship ? `${(d.tuitionFee?.currency) || ''} ${Number(d.averageScholarship).toLocaleString()}`.trim() : null;
 
   return (
-    <div className="min-h-screen bg-slate-50 pt-[76px] pb-16 font-['Poppins'] lg:pl-16">
-      <CfSidebar active="search" />
+    <div className="min-h-screen bg-slate-50 pt-[76px] pb-16 font-['Poppins']">
       {/* top bar */}
       <div className="bg-white border-b border-slate-200">
         <div className="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
-          <button onClick={() => navigate(-1)} className="inline-flex items-center gap-1.5 text-[14px] font-medium text-slate-600 hover:text-[#226CF5]"><ArrowLeft size={16} /> Back</button>
+          <button onClick={() => navigate(-1)} className="inline-flex items-center gap-1.5 text-[14px] font-medium text-slate-600 hover:text-[#DE5C2B]"><ArrowLeft size={16} /> Back</button>
           <div className="font-['DM_Sans'] font-semibold text-slate-700 text-[15px]">Program Details</div>
           <div className="text-[12px] text-slate-400">{d['last-updated-on'] ? `Updated ${new Date(d['last-updated-on']).toLocaleDateString()}` : ''}</div>
         </div>
@@ -99,8 +98,8 @@ export default function ProgramDetailPage() {
                 {rk.webometricsWorld ? <span className="inline-flex items-center gap-1 px-2 py-1 text-[11px] font-medium" style={{ background: '#f8fafc', color: '#475569', borderRadius: 2 }}>Webometrics #{rk.webometricsWorld}</span> : null}
               </div>
             )}
-            {u['website-url'] && <a href={u['website-url'].startsWith('http') ? u['website-url'] : `https://${u['website-url']}`} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 text-[13px] text-[#226CF5] font-medium mt-3"><Globe size={13} /> University website</a>}
-            <button onClick={() => navigate('/search-programs')} className="mt-4 w-full text-[13px] text-[#226CF5] border border-[#226CF5] py-2" style={{ borderRadius: 4 }}>Back to search</button>
+            {u['website-url'] && <a href={u['website-url'].startsWith('http') ? u['website-url'] : `https://${u['website-url']}`} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 text-[13px] text-[#DE5C2B] font-medium mt-3"><Globe size={13} /> University website</a>}
+            <button onClick={() => navigate('/search-programs')} className="mt-4 w-full text-[13px] text-[#DE5C2B] border border-[#DE5C2B] py-2" style={{ borderRadius: 4 }}>Back to search</button>
           </div>
         </div>
 
@@ -116,10 +115,10 @@ export default function ProgramDetailPage() {
             <Row label="Campus" value={d.campus} />
             <Row label="Intakes" value={Array.isArray(intakes) ? intakes.join(', ') : intakes} />
             <Row label="Application Deadline" value={d.applicationDeadline} />
-            <Row label="Yearly Tuition Fee" value={money(d.tuitionFee)} strong />
             <Row label="Application Fee" value={d.applicationFee?.isWaived ? 'Waived' : (money(d.applicationFee) || 'N/A')} />
-            <Row label="Initial Deposit" value={money(d.deposit)} />
-            <Row label="Average Scholarship" value={avgSch} />
+            <Row label="Yearly Tuition Fee" value={money(d.tuitionFee)} strong />
+            {money(d.deposit) && <Row label="Initial Deposit" value={money(d.deposit)} />}
+            {avgSch && <Row label="Average Scholarship" value={avgSch} />}
             {d.tuitionFeeRemarks && <p className="text-[12.5px] text-slate-500 mt-2 pt-2 border-t border-slate-100">{d.tuitionFeeRemarks}</p>}
           </Section>
 

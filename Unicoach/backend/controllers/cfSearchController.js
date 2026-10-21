@@ -221,12 +221,17 @@ exports.searchCourses = async (req, res) => {
     const skip = (Math.max(1, +page) - 1) * Math.min(100, +pageSize || 20);
     const limit = Math.min(100, +pageSize || 20);
 
-    const projection = {
-      cf: 0, // omit heavy payload from list; detail endpoint returns it
-    };
-
     const [data, total, facetAgg, sponsored] = await Promise.all([
-      CfCourse.find(match, projection).sort(buildSort(sort)).skip(skip).limit(limit).lean(),
+      // Aggregation (not find) so we can lift the two scholarship fields the card shows
+      // out of the heavy `cf` payload, then drop the rest of `cf` from the list response.
+      CfCourse.aggregate([
+        { $match: match },
+        { $sort: buildSort(sort) },
+        { $skip: skip },
+        { $limit: limit },
+        { $addFields: { avgScholarship: '$cf.AverageScholarship', scholarshipAvailable: '$cf.ScholarshipAvailable' } },
+        { $project: { cf: 0 } },
+      ]),
       CfCourse.countDocuments(match),
       // highlight facet counts over the current (non-highlight) match
       CfCourse.aggregate([

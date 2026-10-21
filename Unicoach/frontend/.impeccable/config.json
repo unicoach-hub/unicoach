@@ -46,7 +46,7 @@
           "src/pages/SearchProgramsPage.jsx"
         ],
         "createdAt": "2026-10-15T08:59:38.656Z",
-        "reason": "false positive: slate-700 text on hover:bg-sky-50 light tint has ~10:1 contrast; standard legible dropdown hover items"
+        "reason": "false positive: slate-700 text on hover:bg-sky-50 dropdown items has adequate contrast (pre-existing export menu); confirmed last session"
       }
     ]
   }
