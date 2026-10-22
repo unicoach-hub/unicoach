@@ -1238,7 +1238,7 @@ const Leads = ({ view = 'all' }) => {
               onChange={(val) => {
                 setSelectedPipelineId(val);
                 if (val !== 'default') {
-                  navigate(`/crm/board?pipeline=${val}`);
+                  navigate(`/crm/board?pipeline=${val}${viewMode === 'table' ? '&view=table' : ''}`);
                 }
               }} 
               style={{ width: 230 }}

@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
-import { Card, Button, message, Select, Drawer, Input, Space, Empty, Spin, Popconfirm } from 'antd';
+import React, { useEffect, useMemo, useState } from 'react';
+import { Card, Button, message, Select, Drawer, Input, Space, Empty, Spin, Popconfirm, Table, Segmented } from 'antd';
 import { 
   UserOutlined, MailOutlined, PhoneOutlined, CalendarOutlined,
   EditOutlined, DeleteOutlined, PlusOutlined, MessageOutlined,
-  FileTextOutlined, ArrowRightOutlined, CloseOutlined, SendOutlined
+  FileTextOutlined, ArrowRightOutlined, CloseOutlined, SendOutlined, DownloadOutlined
 } from '@ant-design/icons';
 import { useSearchParams } from 'react-router-dom';
 import Header from '../components/Header';
@@ -29,6 +29,9 @@ const PipelineBoard = () => {
   const [selectedCard, setSelectedCard] = useState(null);
   const [noteText, setNoteText] = useState('');
   const [draggedCard, setDraggedCard] = useState(null);
+  // Board (stages) or a spreadsheet-style table of the same submissions; ?view=table opens the table
+  const [view, setView] = useState(searchParams.get('view') === 'table' ? 'table' : 'board');
+  const [tableSearch, setTableSearch] = useState('');
 
   // Fetch pipelines list
   useEffect(() => {
@@ -150,6 +153,31 @@ const PipelineBoard = () => {
     return '';
   };
 
+  const allSubs = useMemo(() => (pipelineData?.stages || []).flatMap((st) => (st.submissions || []).map((x) => ({ ...x, currentStage: x.currentStage || st.name }))), [pipelineData]);
+  const dataKeys = useMemo(() => {
+    const seen = [];
+    allSubs.forEach((x) => Object.keys(x.data || {}).forEach((k) => { if (!seen.includes(k)) seen.push(k); }));
+    return seen;
+  }, [allSubs]);
+  const tableRows = useMemo(() => {
+    const q = tableSearch.trim().toLowerCase();
+    return allSubs
+      .filter((x) => !q || `${Object.values(x.data || {}).join(' ')} ${x.referrerHandle || ''}`.toLowerCase().includes(q))
+      .sort((a, b) => new Date(b.submittedAt) - new Date(a.submittedAt));
+  }, [allSubs, tableSearch]);
+  const cellText = (v) => (Array.isArray(v) ? v.join(', ') : v == null ? '' : String(v));
+  const downloadCsv = () => {
+    const esc = (v) => `"${cellText(v).replace(/"/g, '""')}"`;
+    const head = ['Submitted on', 'Stage', 'Mentor', ...dataKeys];
+    const lines = tableRows.map((r) => [new Date(r.submittedAt).toLocaleString('en-IN'), r.currentStage, r.referrerHandle ? `@${r.referrerHandle}` : '', ...dataKeys.map((k) => r.data?.[k])].map(esc).join(','));
+    const blob = new Blob(['\ufeff' + [head.map(esc).join(','), ...lines].join('\n')], { type: 'text/csv;charset=utf-8' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = `${(pipelineData?.pipeline?.name || 'pipeline').replace(/\s+/g, '-')}-${new Date().toISOString().slice(0, 10)}.csv`;
+    a.click();
+    URL.revokeObjectURL(a.href);
+  };
+
   const openCard = (submission) => {
     setSelectedCard(submission);
     setDrawerOpen(true);
@@ -163,6 +191,8 @@ const PipelineBoard = () => {
         showBack
         backUrl="/crm/pipelines"
         extra={
+          <Space wrap>
+          <Segmented value={view} onChange={setView} options={[{ label: 'Board', value: 'board' }, { label: 'Table', value: 'table' }]} />
           <Select
             value={selectedPipelineId}
             onChange={setSelectedPipelineId}
@@ -174,6 +204,7 @@ const PipelineBoard = () => {
               <Option key={p._id} value={p._id}>{p.name} ({p.submissionCount || 0})</Option>
             ))}
           </Select>
+          </Space>
         }
       />
 
@@ -218,6 +249,40 @@ const PipelineBoard = () => {
           <Card style={{ borderRadius: 24, textAlign: 'center', padding: '48px 20px', border: '1.5px dashed var(--ux-line)', boxShadow: 'none' }}>
             <Empty description="Select a pipeline to view the board" />
           </Card>
+        ) : view === 'table' ? (
+          <div className="page-table-card" style={{ padding: 12 }}>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, justifyContent: 'space-between', marginBottom: 10 }}>
+              <Input.Search allowClear placeholder="Search name, email, phone, mentor…" style={{ width: 300 }} value={tableSearch} onChange={(e) => setTableSearch(e.target.value)} />
+              <Space>
+                <span style={{ fontSize: 13, color: 'var(--ux-text-2)' }}>{tableRows.length} submissions</span>
+                <Button icon={<DownloadOutlined />} onClick={downloadCsv} disabled={!tableRows.length}>Download Excel</Button>
+              </Space>
+            </div>
+            <Table
+              rowKey="_id"
+              size="middle"
+              dataSource={tableRows}
+              pagination={{ pageSize: 50 }}
+              scroll={{ x: 'max-content' }}
+              onRow={(r) => ({ onClick: () => openCard(r), style: { cursor: 'pointer' } })}
+              columns={[
+                { title: 'Submitted', key: 'at', fixed: 'left', width: 140, sorter: (a, b) => new Date(a.submittedAt) - new Date(b.submittedAt), render: (_, r) => new Date(r.submittedAt).toLocaleString('en-IN', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }) },
+                {
+                  title: 'Stage', key: 'stage', width: 170,
+                  filters: (pipelineData.stages || []).map((st) => ({ text: st.name, value: st.name })),
+                  onFilter: (v, r) => r.currentStage === v,
+                  render: (_, r) => (
+                    <div onClick={(e) => e.stopPropagation()}>
+                      <Select size="small" value={r.currentStage} style={{ width: 150 }} onChange={(v) => moveCard(r._id, v)}
+                        options={(pipelineData.stages || []).map((st) => ({ value: st.name, label: st.name }))} />
+                    </div>
+                  ),
+                },
+                { title: 'Mentor', key: 'mentor', width: 120, render: (_, r) => (r.referrerHandle ? `@${r.referrerHandle}` : '—') },
+                ...dataKeys.map((k) => ({ title: k, key: `d-${k}`, ellipsis: true, width: 200, render: (_, r) => cellText(r.data?.[k]) || '—' })),
+              ]}
+            />
+          </div>
         ) : (
           <div style={{
             display: 'flex', gap: 16, overflowX: 'auto', paddingBottom: 20,

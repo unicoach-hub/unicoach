@@ -37,8 +37,6 @@ import MentorReferrals from '../components/MentorReferrals';
 import MentorFormLeads from '../components/MentorFormLeads';
 import { 
   Bell,
-  BellRing,
-  Megaphone,
   LayoutDashboard, 
   Home,
   Video, 
@@ -46,8 +44,6 @@ import {
   CalendarDays,
   Pause,
   Play,
-  Filter,
-  Layers,
   Users, 
   Settings, 
   ExternalLink, 
@@ -84,21 +80,15 @@ import {
   QrCode,
   Smartphone,
   Eye,
-  TrendingUp,
   Zap,
-  ShieldCheck,
   Lock,
   ShieldAlert,
   ArrowRight,
   Camera,
   Upload,
   Image as ImageIcon,
-  ArrowUpRight,
-  PieChart,
-  Activity,
   Globe2,
   Landmark,
-  Building,
   GraduationCap,
 } from 'lucide-react';
 import { 
@@ -159,839 +149,138 @@ const formatINRAmount = (value) => {
 // ══════════════════════════════════════════════════════════════════════════
 // ── CREATOR ANALYTICS CHARTS COMPONENT (UniCoach / Stripe Style Analytics) ──
 // ══════════════════════════════════════════════════════════════════════════
-const CreatorAnalyticsChartsView = ({ stats, services = [] }) => {
-  const [metric, setMetric] = useState('views'); // 'views' | 'earnings' | 'bookings'
-  const [range, setRange] = useState('30D'); // '7D' | '30D' | '90D'
-  const [hoveredPointIndex, setHoveredPointIndex] = useState(null);
-  const [hoveredChannelId, setHoveredChannelId] = useState(null);
-  const [hoveredBarDay, setHoveredBarDay] = useState(null);
+// Mentor analytics from real bookings only: paid sessions, revenue, busiest days and top services.
+// (Profile-view and traffic-source tracking isn't live yet, so nothing here is estimated.)
+const CreatorAnalyticsChartsView = ({ stats = {}, services = [], earnings = [] }) => {
+  const [range, setRange] = useState(30);
+  const [metric, setMetric] = useState('revenue'); // 'revenue' | 'bookings'
 
-  // Time-series dataset definitions
-  const datasets = {
-    '7D': [
-      { label: 'Wed', fullDate: 'Wed, Sep 23', views: 118, bookings: 3, earnings: 1497 },
-      { label: 'Thu', fullDate: 'Thu, Sep 24', views: 132, bookings: 4, earnings: 1996 },
-      { label: 'Fri', fullDate: 'Fri, Sep 25', views: 146, bookings: 4, earnings: 1996 },
-      { label: 'Sat', fullDate: 'Sat, Sep 26', views: 194, bookings: 7, earnings: 3493 },
-      { label: 'Sun', fullDate: 'Sun, Sep 27', views: 168, bookings: 5, earnings: 2495 },
-      { label: 'Mon', fullDate: 'Mon, Sep 28', views: 188, bookings: 6, earnings: 2994 },
-      { label: 'Today', fullDate: 'Tue, Sep 29 (Today)', views: 154, bookings: 5, earnings: 2495 },
-    ],
-    '30D': [
-      { label: 'Sep 01', fullDate: 'Sep 01, 2026', views: 42, bookings: 1, earnings: 499 },
-      { label: 'Sep 04', fullDate: 'Sep 04, 2026', views: 68, bookings: 2, earnings: 998 },
-      { label: 'Sep 07', fullDate: 'Sep 07, 2026', views: 56, bookings: 1, earnings: 499 },
-      { label: 'Sep 10', fullDate: 'Sep 10, 2026', views: 98, bookings: 3, earnings: 1497 },
-      { label: 'Sep 13', fullDate: 'Sep 13, 2026', views: 86, bookings: 2, earnings: 998 },
-      { label: 'Sep 16', fullDate: 'Sep 16, 2026', views: 124, bookings: 4, earnings: 1996 },
-      { label: 'Sep 19', fullDate: 'Sep 19, 2026', views: 112, bookings: 3, earnings: 1497 },
-      { label: 'Sep 22', fullDate: 'Sep 22, 2026', views: 172, bookings: 5, earnings: 2495 },
-      { label: 'Sep 25', fullDate: 'Sep 25, 2026', views: 154, bookings: 4, earnings: 1996 },
-      { label: 'Sep 28', fullDate: 'Sep 28, 2026', views: 198, bookings: 7, earnings: 3493 },
-      { label: 'Today', fullDate: 'Sep 29 (Today)', views: 154, bookings: 5, earnings: 2495 },
-    ],
-    '90D': [
-      { label: 'Jul W1', fullDate: 'Jul 01 - Jul 07', views: 190, bookings: 4, earnings: 1996 },
-      { label: 'Jul W3', fullDate: 'Jul 15 - Jul 21', views: 240, bookings: 6, earnings: 2994 },
-      { label: 'Aug W1', fullDate: 'Aug 01 - Aug 07', views: 320, bookings: 8, earnings: 3992 },
-      { label: 'Aug W3', fullDate: 'Aug 15 - Aug 21', views: 410, bookings: 11, earnings: 5489 },
-      { label: 'Sep W1', fullDate: 'Sep 01 - Sep 07', views: 480, bookings: 14, earnings: 6986 },
-      { label: 'Sep W3', fullDate: 'Sep 15 - Sep 21', views: 560, bookings: 16, earnings: 7984 },
-      { label: 'Sep W4', fullDate: 'Sep 22 - Sep 29', views: 642, bookings: 18, earnings: 8982 },
-    ]
-  };
-
-  const chartData = datasets[range] || datasets['30D'];
-
-  const metricConfigs = {
-    views: {
-      key: 'views',
-      name: 'Profile Views',
-      prefix: '',
-      suffix: ' views',
-      strokeColor: '#4F46E5', // indigo-600
-      gradientId: 'viewsGradArea',
-      badgeColor: 'bg-indigo-50 text-indigo-700 border-indigo-200',
-      totalFormatted: range === '7D' ? '1,100' : range === '90D' ? '2,842' : '1,842',
-      trend: '+24% vs last period'
-    },
-    earnings: {
-      key: 'earnings',
-      name: 'Gross Volume',
-      prefix: '₹',
-      suffix: '',
-      strokeColor: '#059669', // emerald-600
-      gradientId: 'earningsGradArea',
-      badgeColor: 'bg-emerald-50 text-emerald-700 border-emerald-200',
-      totalFormatted: `₹${(stats?.totalEarningsINR || 4250).toLocaleString('en-IN')}`,
-      trend: '+38% vs last period'
-    },
-    bookings: {
-      key: 'bookings',
-      name: 'Booked Sessions',
-      prefix: '',
-      suffix: ' bookings',
-      strokeColor: '#DE5C2B', // brand orange
-      gradientId: 'bookingsGradArea',
-      badgeColor: 'bg-orange-50 text-orange-700 border-orange-200',
-      totalFormatted: range === '7D' ? '34' : range === '90D' ? '77' : '36',
-      trend: '+19% vs last period'
+  const paid = useMemo(() => earnings.filter((e) => e.state !== 'REFUNDED' && e.paidAt), [earnings]);
+  const days = useMemo(() => {
+    const out = [];
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    for (let i = range - 1; i >= 0; i -= 1) {
+      const d = new Date(today);
+      d.setDate(d.getDate() - i);
+      out.push({ key: d.toDateString(), label: d.toLocaleDateString('en-IN', { day: 'numeric', month: 'short' }), revenue: 0, bookings: 0 });
     }
-  };
+    const byKey = Object.fromEntries(out.map((d) => [d.key, d]));
+    paid.forEach((e) => {
+      const k = new Date(e.paidAt);
+      k.setHours(0, 0, 0, 0);
+      const row = byKey[k.toDateString()];
+      if (row) { row.revenue += Number(e.grossINR) || 0; row.bookings += 1; }
+    });
+    return out;
+  }, [paid, range]);
 
-  const activeMetric = metricConfigs[metric];
-  const activeKey = activeMetric.key;
+  const totalInRange = days.reduce((t, d) => t + d[metric], 0);
+  const max = Math.max(1, ...days.map((d) => d[metric]));
+  const weekday = useMemo(() => {
+    const names = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+    const counts = names.map((n) => ({ n, c: 0 }));
+    paid.forEach((e) => { const d = new Date(e.startUtc || e.paidAt).getDay(); counts[(d + 6) % 7].c += 1; });
+    return counts;
+  }, [paid]);
+  const wMax = Math.max(1, ...weekday.map((w) => w.c));
+  const top = useMemo(() => {
+    const m = {};
+    paid.forEach((e) => {
+      const k = e.serviceTitle || 'Service';
+      m[k] = m[k] || { title: k, count: 0, revenue: 0 };
+      m[k].count += 1;
+      m[k].revenue += Number(e.grossINR) || 0;
+    });
+    return Object.values(m).sort((x, y) => y.revenue - x.revenue);
+  }, [paid]);
+  const topRevenue = top.reduce((t, x) => t + x.revenue, 0) || 1;
 
-  // Chart Geometry
-  const svgWidth = 860;
-  const svgHeight = 240;
-  const padLeft = 45;
-  const padRight = 20;
-  const padTop = 25;
-  const padBottom = 35;
-  const plotW = svgWidth - padLeft - padRight;
-  const plotH = svgHeight - padTop - padBottom;
-
-  const maxVal = Math.max(...chartData.map(d => d[activeKey]), 10) * 1.16;
-
-  const points = chartData.map((d, i) => {
-    const x = padLeft + (i / (chartData.length - 1)) * plotW;
-    const y = padTop + (1 - d[activeKey] / maxVal) * plotH;
-    return { x, y, data: d };
-  });
-
-  // Smooth spline path
-  let pathD = '';
-  if (points.length > 0) {
-    pathD = `M ${points[0].x.toFixed(1)},${points[0].y.toFixed(1)}`;
-    for (let i = 0; i < points.length - 1; i++) {
-      const p0 = points[i === 0 ? 0 : i - 1];
-      const p1 = points[i];
-      const p2 = points[i + 1];
-      const p3 = points[i + 2] || p2;
-      const cp1x = p1.x + (p2.x - p0.x) / 6;
-      const cp1y = p1.y + (p2.y - p0.y) / 6;
-      const cp2x = p2.x - (p3.x - p1.x) / 6;
-      const cp2y = p2.y - (p3.y - p1.y) / 6;
-      pathD += ` C ${cp1x.toFixed(1)},${cp1y.toFixed(1)} ${cp2x.toFixed(1)},${cp2y.toFixed(1)} ${p2.x.toFixed(1)},${p2.y.toFixed(1)}`;
-    }
-  }
-
-  const areaD = pathD ? `${pathD} L ${points[points.length - 1].x.toFixed(1)},${(padTop + plotH).toFixed(1)} L ${points[0].x.toFixed(1)},${(padTop + plotH).toFixed(1)} Z` : '';
-
-  // 4 Y-axis ticks
-  const yTicks = [0, 0.33, 0.66, 1].map(pct => ({
-    val: Math.round(maxVal * pct),
-    y: padTop + (1 - pct) * plotH
-  }));
-
-  // Weekly Activity Bar Chart
-  const weeklyDays = [
-    { day: 'Mon', bookings: 14, revenue: 2100, isPeak: false },
-    { day: 'Tue', bookings: 18, revenue: 3200, isPeak: false },
-    { day: 'Wed', bookings: 26, revenue: 5400, isPeak: true },
-    { day: 'Thu', bookings: 16, revenue: 2800, isPeak: false },
-    { day: 'Fri', bookings: 20, revenue: 4100, isPeak: false },
-    { day: 'Sat', bookings: 28, revenue: 6200, isPeak: true },
-    { day: 'Sun', bookings: 12, revenue: 1900, isPeak: false },
-  ];
-  const maxWeeklyBookings = 30;
-
-  // Traffic Channels Donut
-  const channels = [
-    { id: 'insta', name: 'Instagram (Reels, Bio & DMs)', pct: 58, visitors: 1068, conv: '5.4%', color: '#E1306C', dotColor: 'bg-[#E1306C]' },
-    { id: 'wa', name: 'WhatsApp Communities & Groups', pct: 24, visitors: 442, conv: '7.2%', color: '#10B981', dotColor: 'bg-emerald-500' },
-    { id: 'in', name: 'LinkedIn Posts & Recommendations', pct: 12, visitors: 221, conv: '4.1%', color: '#0284C7', dotColor: 'bg-sky-600' },
-    { id: 'direct', name: 'UniCoach Marketplace Direct', pct: 6, visitors: 111, conv: '3.6%', color: '#DE5C2B', dotColor: 'bg-[#DE5C2B]' },
-  ];
-
-  const donutR = 60;
-  const donutC = 2 * Math.PI * donutR; // ~376.99
-  let accumulatedPct = 0;
-
-  // Offerings Rankings
-  const topServices = (services && services.length > 0 ? services : [
-    { _id: '1', title: '30-Min 1:1 Study Abroad & University Selection Call', priceInINR: 1500, type: 'ONE_ON_ONE' },
-    { _id: '2', title: 'Statement of Purpose (SOP) & Resume Review', priceInINR: 999, type: 'SOP_REVIEW' },
-    { _id: '3', title: 'Priority DM: Ask Any Doubt (24h Guaranteed Reply)', priceInINR: 199, type: 'PRIORITY_DM' },
-  ]).map((svc, idx) => {
-    const mult = 4 - idx > 0 ? 4 - idx : 1;
-    const estCount = idx === 0 ? 4 : idx === 1 ? 3 : 2;
-    const rev = svc.priceInINR * mult;
-    const share = idx === 0 ? 64 : idx === 1 ? 28 : 8;
-    return { ...svc, rank: idx + 1, rev, count: estCount, share };
-  });
-
-  // Funnel Data
-  const funnelSteps = [
-    { label: 'Profile Visitors', count: '1,842', pct: '100%', barPct: 100, color: 'bg-indigo-600' },
-    { label: 'Offerings Explored', count: '784', pct: '42.5%', barPct: 70, color: 'bg-indigo-500' },
-    { label: 'Booking Window Opened', count: '260', pct: '14.1%', barPct: 45, color: 'bg-indigo-400' },
-    { label: 'Checkout Started', count: '112', pct: '6.1%', barPct: 26, color: 'bg-violet-500' },
-    { label: 'Confirmed Bookings', count: '88', pct: '4.8%', barPct: 15, color: 'bg-emerald-500', isGoal: true }
+  const kpis = [
+    { label: 'Total bookings', value: stats.totalBookingsCount || 0 },
+    { label: 'Completed sessions', value: stats.completedCount || 0 },
+    { label: 'Upcoming', value: stats.upcomingCount || 0 },
+    { label: 'Gross revenue', value: formatINRAmount(stats.totalGrossRevenueINR) },
   ];
 
   return (
-    <div className="space-y-6 animate-in fade-in duration-200">
-      {/* ── TOP SECTION HEADER WITH DATE FILTER ── */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div>
-          <h2 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight flex items-center gap-2">
-            <BarChart3 className="w-6 h-6 text-indigo-600" />
-            <span>Audience & Earnings Analytics</span>
-          </h2>
-          <p className="text-xs text-slate-500 mt-0.5">
-            Real-time charts on profile visitors, booking conversion rates, and revenue channel breakdown.
-          </p>
-        </div>
-
-        {/* Date Range Selector Pills */}
-        <div className="flex items-center gap-1 bg-white p-1 rounded-xl border border-slate-200/90 shadow-2xs self-start sm:self-auto">
-          {['7D', '30D', '90D'].map((r) => (
-            <button
-              key={r}
-              type="button"
-              onClick={() => {
-                setRange(r);
-                setHoveredPointIndex(null);
-              }}
-              className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
-                range === r
-                  ? 'bg-slate-900 text-white shadow-2xs'
-                  : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
-              }`}
-            >
-              {r === '7D' ? 'Last 7 Days' : r === '30D' ? 'Last 30 Days' : 'Last 90 Days'}
-            </button>
-          ))}
-        </div>
+    <div className="space-y-5 animate-in fade-in duration-200">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+        {kpis.map((k) => (
+          <div key={k.label} className="bg-white rounded-2xl border border-slate-200 p-4">
+            <p className="text-[11.5px] font-semibold uppercase tracking-wide text-slate-500">{k.label}</p>
+            <p className="mt-1 text-2xl font-bold text-slate-900">{k.value}</p>
+          </div>
+        ))}
       </div>
 
-      {/* ── 4 KPI CARDS WITH LIVE MINI SPARKLINES ── */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        {/* Total Page Views */}
-        <div className="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-2xs flex flex-col justify-between">
+      <div className="bg-white rounded-2xl border border-slate-200 p-5">
+        <div className="flex flex-wrap items-center justify-between gap-3">
           <div>
-            <div className="flex items-center justify-between text-xs font-semibold text-slate-500">
-              <span>Total Page Views</span>
-              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-            </div>
-            <p className="text-2xl font-black text-slate-900 mt-1">
-              {range === '7D' ? '1,100' : range === '90D' ? '2,842' : '1,842'}
-            </p>
-            <span className="text-[11px] text-emerald-600 font-semibold mt-0.5 flex items-center gap-1">
-              <TrendingUp className="w-3 h-3" /> ↑ 24% from last period
-            </span>
+            <p className="text-[12px] font-semibold uppercase tracking-wide text-slate-500">{metric === 'revenue' ? 'Revenue' : 'Paid bookings'} · last {range} days</p>
+            <p className="text-3xl font-bold text-slate-900 mt-0.5">{metric === 'revenue' ? formatINRAmount(totalInRange) : totalInRange}</p>
           </div>
-          {/* Mini Sparkline 1 */}
-          <div className="w-full h-7 mt-3">
-            <svg className="w-full h-full overflow-visible" viewBox="0 0 100 28" fill="none">
-              <defs>
-                <linearGradient id="metricGrad1" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stopColor="#10B981" stopOpacity="0.35" />
-                  <stop offset="100%" stopColor="#10B981" stopOpacity="0.0" />
-                </linearGradient>
-              </defs>
-              <path d="M0,22 Q20,24 35,16 T70,12 T90,6 T100,2" stroke="#10B981" strokeWidth="2.2" strokeLinecap="round" fill="none" />
-              <path d="M0,22 Q20,24 35,16 T70,12 T90,6 T100,2 L100,28 L0,28 Z" fill="url(#metricGrad1)" />
-            </svg>
+          <div className="flex flex-wrap gap-2">
+            {[['revenue', 'Revenue (₹)'], ['bookings', 'Bookings']].map(([k, l]) => (
+              <button key={k} type="button" onClick={() => setMetric(k)} className={`no-shine px-3.5 h-9 rounded-full text-[12.5px] font-semibold border cursor-pointer ${metric === k ? 'bg-slate-900 text-white border-slate-900' : 'bg-white text-slate-600 border-slate-200'}`}>{l}</button>
+            ))}
+            {[7, 30, 90].map((r) => (
+              <button key={r} type="button" onClick={() => setRange(r)} className={`no-shine px-3 h-9 rounded-full text-[12.5px] font-semibold border cursor-pointer ${range === r ? 'bg-[#FFF4EE] text-[#C04A1D] border-orange-200' : 'bg-white text-slate-600 border-slate-200'}`}>{r}D</button>
+            ))}
           </div>
         </div>
-
-        {/* Booking Conversion Rate */}
-        <div className="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-2xs flex flex-col justify-between">
-          <div>
-            <div className="flex items-center justify-between text-xs font-semibold text-slate-500">
-              <span>Booking Conversion</span>
-              <span className="text-[10px] font-bold text-indigo-700 bg-indigo-50 border border-indigo-200/70 px-2 py-0.2 rounded-full">
-                Top 10%
-              </span>
-            </div>
-            <p className="text-2xl font-black text-slate-900 mt-1">4.8%</p>
-            <span className="text-[11px] text-indigo-600 font-semibold mt-0.5 block">
-              1 in 21 visitors books a call
-            </span>
-          </div>
-          {/* Mini Sparkline 2 */}
-          <div className="w-full h-7 mt-3">
-            <svg className="w-full h-full overflow-visible" viewBox="0 0 100 28" fill="none">
-              <defs>
-                <linearGradient id="metricGrad2" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stopColor="#6366F1" stopOpacity="0.35" />
-                  <stop offset="100%" stopColor="#6366F1" stopOpacity="0.0" />
-                </linearGradient>
-              </defs>
-              <path d="M0,18 Q25,10 50,14 T80,8 T100,4" stroke="#6366F1" strokeWidth="2.2" strokeLinecap="round" fill="none" />
-              <path d="M0,18 Q25,10 50,14 T80,8 T100,4 L100,28 L0,28 Z" fill="url(#metricGrad2)" />
-            </svg>
-          </div>
-        </div>
-
-        {/* Gross Creator Volume */}
-        <div className="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-2xs flex flex-col justify-between">
-          <div>
-            <div className="flex items-center justify-between text-xs font-semibold text-slate-500">
-              <span>Gross Creator Volume</span>
-              <span className="text-[10px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 px-2 py-0.2 rounded-full">
-                0% Fee
-              </span>
-            </div>
-            <p className="text-2xl font-black text-slate-900 mt-1">
-              ₹{(stats?.totalEarningsINR || 4250).toLocaleString('en-IN')}
-            </p>
-            <span className="text-[11px] text-emerald-600 font-semibold mt-0.5 block">
-              0% UniCoach commission
-            </span>
-          </div>
-          {/* Mini Sparkline 3 */}
-          <div className="w-full h-7 mt-3">
-            <svg className="w-full h-full overflow-visible" viewBox="0 0 100 28" fill="none">
-              <defs>
-                <linearGradient id="metricGrad3" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stopColor="#059669" stopOpacity="0.35" />
-                  <stop offset="100%" stopColor="#059669" stopOpacity="0.0" />
-                </linearGradient>
-              </defs>
-              <path d="M0,24 Q20,20 40,15 T70,10 T100,3" stroke="#059669" strokeWidth="2.2" strokeLinecap="round" fill="none" />
-              <path d="M0,24 Q20,20 40,15 T70,10 T100,3 L100,28 L0,28 Z" fill="url(#metricGrad3)" />
-            </svg>
-          </div>
-        </div>
-
-        {/* Student Satisfaction */}
-        <div className="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-2xs flex flex-col justify-between">
-          <div>
-            <div className="flex items-center justify-between text-xs font-semibold text-slate-500">
-              <span>Student Satisfaction</span>
-              <span className="text-[10px] font-bold text-amber-700 bg-amber-50 border border-amber-200 px-2 py-0.2 rounded-full">
-                18 Reviews
-              </span>
-            </div>
-            <p className="text-2xl font-black text-amber-500 mt-1 flex items-center gap-1.5">
-              <span>5.0</span>
-              <span className="text-base text-amber-400">★★★★★</span>
-            </p>
-            <span className="text-[11px] text-slate-500 font-medium mt-0.5 block">
-              100% positive student ratings
-            </span>
-          </div>
-          {/* Mini Rating Progress Bars */}
-          <div className="mt-2.5 space-y-1">
-            <div className="flex items-center gap-1.5 text-[9.5px] text-slate-500 font-bold">
-              <span className="w-3">5★</span>
-              <div className="flex-1 h-1.5 rounded-full bg-slate-100 overflow-hidden">
-                <div className="h-full bg-amber-400 rounded-full w-[94%]" />
+        {paid.length === 0 ? (
+          <p className="mt-8 mb-4 text-center text-[13.5px] text-slate-400">No paid bookings yet. Your revenue and bookings will show here once students start booking.</p>
+        ) : (
+          <div className="mt-6 h-[180px] flex items-end gap-[3px]">
+            {days.map((d) => (
+              <div key={d.key} className="group relative flex-1 h-full flex items-end">
+                <div className="w-full rounded-t bg-[#DE5C2B]/80 group-hover:bg-[#DE5C2B] transition-colors" style={{ height: `${(d[metric] / max) * 100}%`, minHeight: d[metric] ? 4 : 1 }} />
+                <span className="pointer-events-none absolute -top-8 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-md bg-slate-900 text-white text-[11px] px-2 py-1 opacity-0 group-hover:opacity-100">
+                  {d.label}: {metric === 'revenue' ? formatINRAmount(d.revenue) : d.bookings}
+                </span>
               </div>
-              <span className="w-6 text-right">94%</span>
-            </div>
-            <div className="flex items-center gap-1.5 text-[9.5px] text-slate-500 font-bold">
-              <span className="w-3">4★</span>
-              <div className="flex-1 h-1.5 rounded-full bg-slate-100 overflow-hidden">
-                <div className="h-full bg-amber-300 rounded-full w-[6%]" />
-              </div>
-              <span className="w-6 text-right">6%</span>
-            </div>
+            ))}
           </div>
-        </div>
+        )}
       </div>
 
-      {/* ── HERO INTERACTIVE LINE/AREA CHART: VIEWS & EARNINGS OVER TIME ── */}
-      <div className="bg-white rounded-3xl border border-slate-200/90 p-5 sm:p-7 shadow-2xs">
-        {/* Chart Header & Metric Switcher Pills */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-slate-100">
-          <div>
-            <div className="flex items-center gap-2 mb-1">
-              <span className="text-xs font-bold uppercase tracking-wider text-slate-400">
-                Performance Timeline
-              </span>
-              <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-100 text-slate-700">
-                Interactive Chart
-              </span>
-            </div>
-            <div className="flex items-baseline gap-3">
-              <h3 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
-                {activeMetric.totalFormatted}
-              </h3>
-              <span className="text-xs font-bold text-emerald-600 flex items-center gap-1">
-                <TrendingUp className="w-3.5 h-3.5" />
-                {activeMetric.trend}
-              </span>
-            </div>
-          </div>
-
-          {/* Metric Switcher Tabs */}
-          <div className="flex flex-wrap items-center gap-2">
-            {[
-              { id: 'views', label: 'Profile Views', icon: Eye, color: 'text-indigo-600' },
-              { id: 'earnings', label: 'Gross Volume (₹)', icon: TrendingUp, color: 'text-emerald-600' },
-              { id: 'bookings', label: 'Bookings Count', icon: Users, color: 'text-[#DE5C2B]' },
-            ].map((btn) => {
-              const Icon = btn.icon;
-              const isSelected = metric === btn.id;
-              return (
-                <button
-                  key={btn.id}
-                  type="button"
-                  onClick={() => {
-                    setMetric(btn.id);
-                    setHoveredPointIndex(null);
-                  }}
-                  className={`px-3.5 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 cursor-pointer ${
-                    isSelected
-                      ? 'bg-slate-900 text-white shadow-sm'
-                      : 'bg-slate-50 hover:bg-slate-100 text-slate-700 border border-slate-200/80'
-                  }`}
-                >
-                  <Icon className={`w-3.5 h-3.5 ${isSelected ? 'text-white' : btn.color}`} />
-                  <span>{btn.label}</span>
-                </button>
-              );
-            })}
+      <div className="grid lg:grid-cols-2 gap-5">
+        <div className="bg-white rounded-2xl border border-slate-200 p-5">
+          <p className="text-[15px] font-bold text-slate-900">Busiest days</p>
+          <p className="text-[12.5px] text-slate-500">Sessions by day of the week, all time</p>
+          <div className="mt-5 h-[140px] flex items-end gap-3">
+            {weekday.map((w) => (
+              <div key={w.n} className="flex-1 flex flex-col items-center gap-1.5 h-full justify-end">
+                <span className="text-[11px] font-semibold text-slate-600">{w.c || ''}</span>
+                <div className={`w-full rounded-lg ${w.c === wMax && w.c ? 'bg-[#DE5C2B]' : 'bg-slate-200'}`} style={{ height: `${(w.c / wMax) * 100}%`, minHeight: 4 }} />
+                <span className="text-[11.5px] text-slate-500">{w.n}</span>
+              </div>
+            ))}
           </div>
         </div>
 
-        {/* SVG Spline & Area Chart with Hover Guide */}
-        <div className="relative mt-4 w-full">
-          <svg
-            className="w-full h-[220px] sm:h-[250px] overflow-visible select-none"
-            viewBox={`0 0 ${svgWidth} ${svgHeight}`}
-            fill="none"
-          >
-            <defs>
-              <linearGradient id="viewsGradArea" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stopColor="#4F46E5" stopOpacity="0.25" />
-                <stop offset="100%" stopColor="#4F46E5" stopOpacity="0.0" />
-              </linearGradient>
-              <linearGradient id="earningsGradArea" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stopColor="#059669" stopOpacity="0.25" />
-                <stop offset="100%" stopColor="#059669" stopOpacity="0.0" />
-              </linearGradient>
-              <linearGradient id="bookingsGradArea" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stopColor="#DE5C2B" stopOpacity="0.28" />
-                <stop offset="100%" stopColor="#DE5C2B" stopOpacity="0.0" />
-              </linearGradient>
-            </defs>
-
-            {/* Horizontal Dashed Gridlines & Y-axis labels */}
-            {yTicks.map((tick, i) => (
-              <g key={i}>
-                <line
-                  x1={padLeft}
-                  y1={tick.y}
-                  x2={svgWidth - padRight}
-                  y2={tick.y}
-                  stroke="#F1F5F9"
-                  strokeDasharray="4 4"
-                  strokeWidth="1.2"
-                />
-                <text
-                  x={padLeft - 8}
-                  y={tick.y + 3.5}
-                  textAnchor="end"
-                  className="text-[10px] font-mono font-medium fill-slate-400"
-                >
-                  {activeMetric.prefix}{tick.val.toLocaleString('en-IN')}
-                </text>
-              </g>
-            ))}
-
-            {/* Filled Area Under Curve */}
-            {areaD && (
-              <path
-                d={areaD}
-                fill={`url(#${activeMetric.gradientId})`}
-                className="transition-all duration-300"
-              />
-            )}
-
-            {/* Main Smooth Line Stroke */}
-            {pathD && (
-              <path
-                d={pathD}
-                stroke={activeMetric.strokeColor}
-                strokeWidth="3.2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                fill="none"
-                className="transition-all duration-300"
-              />
-            )}
-
-            {/* X-axis Date Labels */}
-            {points.map((p, i) => (
-              <text
-                key={i}
-                x={p.x}
-                y={svgHeight - 12}
-                textAnchor="middle"
-                className="text-[10.5px] font-semibold fill-slate-400"
-              >
-                {p.data.label}
-              </text>
-            ))}
-
-            {/* Hover Vertical Guide Line & Active Dot */}
-            {hoveredPointIndex !== null && points[hoveredPointIndex] && (
-              <g>
-                <line
-                  x1={points[hoveredPointIndex].x}
-                  y1={padTop}
-                  x2={points[hoveredPointIndex].x}
-                  y2={padTop + plotH}
-                  stroke={activeMetric.strokeColor}
-                  strokeDasharray="3 3"
-                  strokeWidth="1.5"
-                  opacity="0.65"
-                />
-                <circle
-                  cx={points[hoveredPointIndex].x}
-                  cy={points[hoveredPointIndex].y}
-                  r="9"
-                  fill={activeMetric.strokeColor}
-                  opacity="0.18"
-                  className="animate-ping"
-                />
-                <circle
-                  cx={points[hoveredPointIndex].x}
-                  cy={points[hoveredPointIndex].y}
-                  r="5"
-                  fill="#FFFFFF"
-                  stroke={activeMetric.strokeColor}
-                  strokeWidth="3"
-                />
-              </g>
-            )}
-
-            {/* Invisible Hover Hitboxes across each column */}
-            {points.map((p, idx) => {
-              const colW = plotW / (points.length - 1);
-              return (
-                <rect
-                  key={idx}
-                  x={p.x - colW / 2}
-                  y={padTop}
-                  width={colW}
-                  height={plotH}
-                  fill="transparent"
-                  className="cursor-pointer"
-                  onMouseEnter={() => setHoveredPointIndex(idx)}
-                  onMouseLeave={() => setHoveredPointIndex(null)}
-                />
-              );
-            })}
-          </svg>
-
-          {/* Floating Tooltip HTML Overlay for Precision Positioning */}
-          {hoveredPointIndex !== null && points[hoveredPointIndex] && (
-            <div
-              className="absolute z-20 pointer-events-none transition-all duration-150 transform -translate-x-1/2 -translate-y-full"
-              style={{
-                left: `${(points[hoveredPointIndex].x / svgWidth) * 100}%`,
-                top: `${(points[hoveredPointIndex].y / svgHeight) * 100 - 4}%`,
-              }}
-            >
-              <div className="bg-slate-950 text-white rounded-xl px-3 py-2 shadow-xl border border-slate-800 text-center whitespace-nowrap min-w-[130px]">
-                <p className="text-[10px] text-slate-400 font-medium">
-                  {points[hoveredPointIndex].data.fullDate}
-                </p>
-                <p className="text-sm font-black text-white mt-0.5">
-                  {activeMetric.prefix}
-                  {points[hoveredPointIndex].data[activeKey].toLocaleString('en-IN')}
-                  {activeMetric.suffix}
-                </p>
-                <div className="flex items-center justify-center gap-2 text-[9.5px] text-slate-300 mt-1 border-t border-white/10 pt-1">
-                  <span>{points[hoveredPointIndex].data.bookings} calls booked</span>
-                  <span>·</span>
-                  <span className="text-emerald-400 font-bold">₹{points[hoveredPointIndex].data.earnings}</span>
-                </div>
-              </div>
-            </div>
+        <div className="bg-white rounded-2xl border border-slate-200 p-5">
+          <p className="text-[15px] font-bold text-slate-900">Top services</p>
+          <p className="text-[12.5px] text-slate-500">By revenue from paid bookings</p>
+          {top.length === 0 ? (
+            <p className="mt-6 text-[13px] text-slate-400">{services.length ? `You have ${services.length} service${services.length === 1 ? '' : 's'} live. Bookings will rank here.` : 'Add a service to start getting bookings.'}</p>
+          ) : (
+            <ul className="mt-4 space-y-3">
+              {top.slice(0, 5).map((t, i) => (
+                <li key={t.title}>
+                  <div className="flex items-center justify-between text-[13px]">
+                    <span className="font-semibold text-slate-800">#{i + 1} {t.title}</span>
+                    <span className="font-bold text-emerald-700">{formatINRAmount(t.revenue)}</span>
+                  </div>
+                  <div className="mt-1 flex items-center gap-2">
+                    <span className="flex-1 h-1.5 rounded-full bg-slate-100 overflow-hidden"><span className="block h-full bg-[#DE5C2B]" style={{ width: `${(t.revenue / topRevenue) * 100}%` }} /></span>
+                    <span className="text-[11.5px] text-slate-500">{t.count} booking{t.count === 1 ? '' : 's'}</span>
+                  </div>
+                </li>
+              ))}
+            </ul>
           )}
-        </div>
-      </div>
-
-      {/* ── 2-COLUMN SECTION: TRAFFIC DONUT CHART & WEEKLY ACTIVITY BAR CHART ── */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-        {/* Left Column: Traffic Acquisition Donut Chart */}
-        <div className="lg:col-span-6 bg-white rounded-3xl border border-slate-200/90 p-5 sm:p-6 shadow-2xs space-y-5">
-          <div className="flex items-center justify-between">
-            <div>
-              <h3 className="text-sm font-bold text-slate-900 flex items-center gap-1.5">
-                <PieChart className="w-4 h-4 text-[#DE5C2B]" />
-                <span>Traffic Acquisition Channels</span>
-              </h3>
-              <p className="text-xs text-slate-500 mt-0.5">Where your student visitors discover your page</p>
-            </div>
-            <span className="text-xs font-bold text-slate-700 bg-slate-100 px-2.5 py-1 rounded-lg">
-              1,842 Visits
-            </span>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-12 gap-4 items-center">
-            {/* SVG Donut Ring */}
-            <div className="sm:col-span-5 flex justify-center">
-              <div className="relative w-44 h-44">
-                <svg className="w-full h-full transform -rotate-90" viewBox="0 0 160 160">
-                  {channels.map((ch) => {
-                    const strokeDasharray = `${(ch.pct / 100) * donutC} ${donutC}`;
-                    const strokeDashoffset = -((accumulatedPct / 100) * donutC);
-                    accumulatedPct += ch.pct;
-                    const isHovered = hoveredChannelId === ch.id;
-
-                    return (
-                      <circle
-                        key={ch.id}
-                        cx="80"
-                        cy="80"
-                        r={donutR}
-                        fill="none"
-                        stroke={ch.color}
-                        strokeWidth={isHovered ? 18 : 14}
-                        strokeDasharray={strokeDasharray}
-                        strokeDashoffset={strokeDashoffset}
-                        strokeLinecap="round"
-                        className="transition-all duration-200 cursor-pointer"
-                        onMouseEnter={() => setHoveredChannelId(ch.id)}
-                        onMouseLeave={() => setHoveredChannelId(null)}
-                      />
-                    );
-                  })}
-                </svg>
-
-                {/* Donut Center Display */}
-                <div className="absolute inset-0 flex flex-col items-center justify-center text-center pointer-events-none">
-                  <span className="text-xl font-black text-slate-900">
-                    {hoveredChannelId
-                      ? `${channels.find(c => c.id === hoveredChannelId)?.pct}%`
-                      : '1,842'}
-                  </span>
-                  <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
-                    {hoveredChannelId
-                      ? channels.find(c => c.id === hoveredChannelId)?.name.split(' ')[0]
-                      : 'Visitors'}
-                  </span>
-                </div>
-              </div>
-            </div>
-
-            {/* Channels Legend Breakdown */}
-            <div className="sm:col-span-7 space-y-2.5">
-              {channels.map((ch) => {
-                const isHovered = hoveredChannelId === ch.id;
-                return (
-                  <div
-                    key={ch.id}
-                    onMouseEnter={() => setHoveredChannelId(ch.id)}
-                    onMouseLeave={() => setHoveredChannelId(null)}
-                    className={`p-2.5 rounded-xl border transition-all cursor-pointer ${
-                      isHovered
-                        ? 'bg-slate-50 border-slate-300 shadow-2xs'
-                        : 'bg-white border-slate-100 hover:border-slate-200'
-                    }`}
-                  >
-                    <div className="flex items-center justify-between text-xs">
-                      <div className="flex items-center gap-2">
-                        <span className={`w-2.5 h-2.5 rounded-full ${ch.dotColor}`} />
-                        <span className="font-bold text-slate-900 truncate max-w-[140px] sm:max-w-[160px]">
-                          {ch.name}
-                        </span>
-                      </div>
-                      <span className="font-black text-slate-900">{ch.pct}%</span>
-                    </div>
-
-                    <div className="flex items-center justify-between text-[11px] text-slate-500 mt-1 pl-4.5">
-                      <span>{ch.visitors} visitors</span>
-                      <span className="text-emerald-600 font-semibold">{ch.conv} conv.</span>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        </div>
-
-        {/* Right Column: Weekly Activity Bar Chart */}
-        <div className="lg:col-span-6 bg-white rounded-3xl border border-slate-200/90 p-5 sm:p-6 shadow-2xs space-y-5">
-          <div className="flex items-center justify-between">
-            <div>
-              <h3 className="text-sm font-bold text-slate-900 flex items-center gap-1.5">
-                <Activity className="w-4 h-4 text-emerald-600" />
-                <span>Weekly Booking & Call Volume</span>
-              </h3>
-              <p className="text-xs text-slate-500 mt-0.5">Peak traffic days and booking trends</p>
-            </div>
-            <span className="text-xs font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 px-2.5 py-1 rounded-lg">
-              Wed & Sat Peak
-            </span>
-          </div>
-
-          {/* Bar Chart Container */}
-          <div className="pt-2">
-            <div className="h-44 flex items-end justify-between gap-2 sm:gap-3 px-2 border-b border-slate-100 pb-2">
-              {weeklyDays.map((item) => {
-                const heightPct = (item.bookings / maxWeeklyBookings) * 100;
-                const isHovered = hoveredBarDay === item.day;
-
-                return (
-                  <div
-                    key={item.day}
-                    className="flex-1 flex flex-col items-center h-full justify-end group cursor-pointer relative"
-                    onMouseEnter={() => setHoveredBarDay(item.day)}
-                    onMouseLeave={() => setHoveredBarDay(null)}
-                  >
-                    {/* Floating Tooltip on Bar Hover */}
-                    {isHovered && (
-                      <div className="absolute -top-12 z-20 bg-slate-950 text-white rounded-lg px-2.5 py-1 text-[10px] font-bold shadow-md whitespace-nowrap">
-                        {item.bookings} calls · ₹{item.revenue.toLocaleString('en-IN')}
-                      </div>
-                    )}
-
-                    {/* Bar Column */}
-                    <div
-                      style={{ height: `${heightPct}%` }}
-                      className={`w-full max-w-[34px] rounded-t-xl transition-all duration-300 relative ${
-                        item.isPeak
-                          ? 'bg-gradient-to-t from-orange-500 to-[#DE5C2B] shadow-xs'
-                          : 'bg-slate-200 group-hover:bg-slate-300'
-                      }`}
-                    >
-                      {item.isPeak && (
-                        <div className="absolute -top-1 left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full bg-orange-400" />
-                      )}
-                    </div>
-
-                    {/* Day Label */}
-                    <span className={`text-[11px] font-bold mt-2 ${
-                      item.isPeak ? 'text-[#DE5C2B]' : 'text-slate-500'
-                    }`}>
-                      {item.day}
-                    </span>
-                  </div>
-                );
-              })}
-            </div>
-
-            <div className="mt-3.5 flex items-center justify-between text-xs text-slate-500">
-              <span className="flex items-center gap-1.5">
-                <span className="w-2.5 h-2.5 rounded-full bg-gradient-to-r from-orange-500 to-[#DE5C2B]" />
-                <span className="font-semibold text-slate-700">Peak Conversion Days</span>
-              </span>
-              <span className="text-[11px] text-slate-400">
-                Avg. response time: <strong>4.2 mins</strong>
-              </span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* ── 2-COLUMN SECTION: CONVERSION FUNNEL & TOP OFFERINGS ── */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-        {/* Left: Conversion Funnel Chart */}
-        <div className="lg:col-span-6 bg-white rounded-3xl border border-slate-200/90 p-5 sm:p-6 shadow-2xs space-y-4">
-          <div className="flex items-center justify-between">
-            <div>
-              <h3 className="text-sm font-bold text-slate-900 flex items-center gap-1.5">
-                <TrendingUp className="w-4 h-4 text-indigo-600" />
-                <span>Student Conversion Funnel</span>
-              </h3>
-              <p className="text-xs text-slate-500 mt-0.5">Journey from visitor to confirmed paying mentee</p>
-            </div>
-            <span className="text-xs font-bold text-indigo-700 bg-indigo-50 border border-indigo-200 px-2.5 py-1 rounded-lg">
-              4.8% Overall Conv.
-            </span>
-          </div>
-
-          <div className="space-y-3 pt-1">
-            {funnelSteps.map((step, idx) => (
-              <div key={idx} className="space-y-1">
-                <div className="flex items-center justify-between text-xs">
-                  <span className="font-bold text-slate-700 flex items-center gap-2">
-                    <span className="w-4.5 h-4.5 rounded-md bg-slate-100 text-slate-700 font-bold text-[10px] flex items-center justify-center">
-                      {idx + 1}
-                    </span>
-                    <span>{step.label}</span>
-                  </span>
-                  <div className="flex items-center gap-2">
-                    <span className="font-black text-slate-900">{step.count}</span>
-                    <span className={`text-[10.5px] font-bold px-1.5 py-0.2 rounded ${
-                      step.isGoal
-                        ? 'bg-emerald-100 text-emerald-800'
-                        : 'bg-slate-100 text-slate-600'
-                    }`}>
-                      {step.pct}
-                    </span>
-                  </div>
-                </div>
-
-                <div className="w-full h-3 rounded-full bg-slate-100 overflow-hidden">
-                  <div
-                    className={`h-full ${step.color} rounded-full transition-all duration-500`}
-                    style={{ width: `${step.barPct}%` }}
-                  />
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Right: Top Performing Offerings Ranking & Revenue Breakdown */}
-        <div className="lg:col-span-6 bg-white rounded-3xl border border-slate-200/90 p-5 sm:p-6 shadow-2xs space-y-4">
-          <div className="flex items-center justify-between">
-            <div>
-              <h3 className="text-sm font-bold text-slate-900 flex items-center gap-1.5">
-                <Zap className="w-4 h-4 text-amber-500" />
-                <span>Top Performing Offerings</span>
-              </h3>
-              <p className="text-xs text-slate-500 mt-0.5">Highest earning mentorship services</p>
-            </div>
-            <span className="text-xs font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 px-2.5 py-1 rounded-lg">
-              0% Fee Retained
-            </span>
-          </div>
-
-          <div className="space-y-3 pt-1">
-            {topServices.map((svc) => (
-              <div
-                key={svc._id}
-                className="p-3.5 rounded-2xl bg-slate-50/80 border border-slate-200/70 hover:bg-white hover:shadow-xs transition-all space-y-2"
-              >
-                <div className="flex items-center justify-between gap-3">
-                  <div className="flex items-center gap-2.5 min-w-0">
-                    <span className={`w-6 h-6 rounded-lg font-black text-xs flex items-center justify-center flex-shrink-0 ${
-                      svc.rank === 1
-                        ? 'bg-amber-100 text-amber-800 border border-amber-300'
-                        : svc.rank === 2
-                          ? 'bg-slate-200 text-slate-800'
-                          : 'bg-slate-100 text-slate-600'
-                    }`}>
-                      #{svc.rank}
-                    </span>
-                    <div className="min-w-0">
-                      <p className="text-xs font-bold text-slate-900 truncate">{svc.title}</p>
-                      <p className="text-[10px] text-slate-500">₹{svc.priceInINR} per session · 0% commission</p>
-                    </div>
-                  </div>
-
-                  <div className="text-right flex-shrink-0">
-                    <span className="text-xs font-black text-emerald-600 block">
-                      ₹{svc.rev.toLocaleString('en-IN')}
-                    </span>
-                    <span className="text-[10px] text-slate-400 font-medium">
-                      {svc.count} bookings ({svc.share}% share)
-                    </span>
-                  </div>
-                </div>
-
-                {/* Revenue Share Progress Bar */}
-                <div className="w-full h-1.5 rounded-full bg-slate-200 overflow-hidden">
-                  <div
-                    className="h-full bg-gradient-to-r from-indigo-500 to-[#DE5C2B] rounded-full"
-                    style={{ width: `${svc.share}%` }}
-                  />
-                </div>
-              </div>
-            ))}
-          </div>
         </div>
       </div>
     </div>
@@ -3665,61 +2954,6 @@ const UnicoachDashboardPage = () => {
             >
               See details
             </button>
-          </div>
-
-          {/* ════════ UniCoach-STYLE VIBRANT ORANGE REFERRAL BANNER (Screenshot) ════════ */}
-          <div className="bg-gradient-to-r from-[#FF4E00] via-[#F4511E] to-[#FF3B00] rounded-2xl sm:rounded-3xl p-6 sm:p-8 text-white relative overflow-hidden shadow-md">
-            {/* Background geometric accents */}
-            <div className="absolute right-0 top-0 bottom-0 w-1/3 bg-white/5 skew-x-12 pointer-events-none" />
-
-            <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
-              <div className="max-w-xl">
-                <div className="flex items-center gap-2 mb-2">
-                  <span className="px-2 py-0.5 rounded bg-[#CCFF00] text-slate-950 font-black text-[11px] tracking-wider uppercase inline-block">
-                    NEW
-                  </span>
-                </div>
-
-                <h3 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight leading-snug">
-                  Earn 50% for every creator you refer
-                </h3>
-
-                <div className="flex flex-wrap items-center gap-3 mt-5">
-                  <button
-                    type="button"
-                    onClick={() => setIsReferralModalOpen(true)}
-                    className="px-5 py-2.5 rounded-xl bg-white hover:bg-slate-100 text-slate-950 font-black text-xs transition-all shadow-sm cursor-pointer"
-                  >
-                    Refer Now!
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setIsReferralModalOpen(true)}
-                    className="px-5 py-2.5 rounded-xl bg-white/15 hover:bg-white/25 text-white font-bold text-xs transition-all border border-white/20 cursor-pointer"
-                  >
-                    Referral Perks
-                  </button>
-                </div>
-              </div>
-
-              {/* Graphic badges on right side matching screenshot */}
-              <div className="flex flex-col gap-2.5 self-start md:self-center">
-                <div className="bg-white rounded-xl p-3 shadow-lg flex items-center gap-3 text-slate-900 max-w-xs">
-                  <div className="w-8 h-8 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center font-bold text-xs flex-shrink-0">
-                    ↑
-                  </div>
-                  <div>
-                    <div className="text-xs font-black text-slate-900">₹2,000 credited</div>
-                    <div className="text-[10px] text-emerald-600 font-semibold">Referral payout</div>
-                  </div>
-                </div>
-
-                <div className="bg-white/20 backdrop-blur-md rounded-xl px-3 py-2 border border-white/20 flex items-center gap-2 text-white text-xs font-bold">
-                  <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
-                  <span>500+ Active Mentors</span>
-                </div>
-              </div>
-            </div>
           </div>
 
         {/* Studio Navigation Tabs */}
@@ -7172,7 +6406,7 @@ const UnicoachDashboardPage = () => {
 
         {/* ── TAB 11: ANALYTICS & INSIGHTS ── */}
         {activeTab === 'analytics' && (
-          <CreatorAnalyticsChartsView stats={stats} services={services} />
+          <CreatorAnalyticsChartsView stats={stats} services={services} earnings={earnings} />
         )}
 
         {/* ── TAB 12: ANNOUNCEMENTS & ALERTS (ADMIN NOTIFICATIONS) ── */}
@@ -8074,7 +7308,7 @@ const UnicoachDashboardPage = () => {
                   Enhance Your Creator Profile
                 </h3>
                 <p className="text-xs text-slate-500 mt-1 leading-relaxed">
-                  Complete these steps to rank higher on UniCoach, earn verified mentor status, and convert 3x more visitors into bookings.
+                  Complete these steps to rank higher on UniCoach, earn verified mentor status, and get more bookings.
                 </p>
               </div>
 
