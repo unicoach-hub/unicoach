@@ -38,6 +38,16 @@ const leadSchema = new mongoose.Schema({
   phoneCall: { type: String, enum: ['pending', 'done'], default: 'pending' },
   followUp: { type: String, enum: ['', 'interested', 'fifty_fifty'], default: '', index: true },
   nextFollowUpDate: { type: Date },
+  // Every follow-up that was due and then done: when it was due, when it happened, and whether
+  // it happened on the due day (or earlier). Lets admin see if follow-ups are kept on time.
+  followUpHistory: [{
+    dueDate: { type: Date },
+    doneAt: { type: Date },
+    onTime: { type: Boolean },
+    daysLate: { type: Number, default: 0 },
+    by: { type: String, default: '' },
+    via: { type: String, default: '' },
+  }],
   totalInquiries: { type: Number, default: 1 },
   // Form/service of the most recent enquiry (`source` stays the first one), e.g. "Education Loan Enquiry"
   latestSource: { type: String },

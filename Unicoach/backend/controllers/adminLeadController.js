@@ -69,6 +69,20 @@ exports.getAllLeads = async (req, res) => {
     // Newest enquiry first: a returning student who just submitted another form (e.g. education loan)
     // moves back to the top instead of staying wherever their first enquiry put them
     const leads = await Lead.find(filter).select('-activities').lean();
+    // Calls logged on each lead (activities are left out of the list, so count them separately)
+    if (leads.length) {
+      const calls = await Lead.aggregate([
+        { $match: { _id: { $in: leads.map((l) => l._id) } } },
+        { $project: { c: { $filter: { input: { $ifNull: ['$activities', []] }, cond: { $eq: ['$$this.type', 'call'] } } } } },
+        { $project: { callCount: { $size: '$c' }, lastCallAt: { $max: '$c.date' } } },
+      ]);
+      const byId = Object.fromEntries(calls.map((c) => [String(c._id), c]));
+      leads.forEach((l) => {
+        const c = byId[String(l._id)];
+        l.callCount = c?.callCount || 0;
+        l.lastCallAt = c?.lastCallAt || null;
+      });
+    }
     const lastActivity = (l) => new Date(l.lastInquiryAt || l.createdAt || 0).getTime();
     leads.sort((a, b) => lastActivity(b) - lastActivity(a));
 
@@ -184,6 +198,10 @@ exports.updateLead = async (req, res) => {
  * POST /api/admin/leads/:id/activity
  * Add a follow-up activity log
  */
+// Calendar days in India time, so "on time" means the same IST date as the due date
+const istDayNumber = (d) => Math.floor((new Date(d).getTime() + 5.5 * 3600e3) / 864e5);
+const endOfIstDay = (d) => new Date((istDayNumber(d) + 1) * 864e5 - 5.5 * 3600e3 - 1);
+
 exports.addActivity = async (req, res) => {
   try {
     const { type, comment, nextFollowUpDate, status } = req.body;
@@ -200,6 +218,15 @@ exports.addActivity = async (req, res) => {
       date: new Date()
     });
 
+    // Talking to the student settles the follow-up that was due: record whether it was on time
+    // (on or before the due day, India time), then move to the next date if one was given
+    if (lead.nextFollowUpDate && new Date(lead.nextFollowUpDate) <= endOfIstDay(new Date())) {
+      const due = new Date(lead.nextFollowUpDate);
+      const daysLate = Math.max(0, istDayNumber(new Date()) - istDayNumber(due));
+      lead.followUpHistory = lead.followUpHistory || [];
+      lead.followUpHistory.push({ dueDate: due, doneAt: new Date(), onTime: daysLate === 0, daysLate, by: adminName, via: type || 'note' });
+      lead.nextFollowUpDate = undefined;
+    }
     if (nextFollowUpDate) {
       lead.nextFollowUpDate = new Date(nextFollowUpDate);
     }

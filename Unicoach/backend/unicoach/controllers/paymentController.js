@@ -280,7 +280,11 @@ const handleRazorpayWebhook = async (req, res) => {
           : { 'payment.orderId': payment.order_id }
       );
 
-      if (!booking) return res.json({ status: 'no_booking' });
+      if (!booking) {
+        // Not a mentor booking: it may be a paid team consultation (/book-consultation)
+        const consult = await require('../../controllers/consultationController').confirmFromWebhook(payment);
+        return res.json({ status: consult || 'no_booking' });
+      }
 
       if (booking.payment?.orderId && booking.payment.orderId !== payment.order_id) {
         console.warn(`[Razorpay Webhook] Order mismatch for ${booking.bookingRef}`);

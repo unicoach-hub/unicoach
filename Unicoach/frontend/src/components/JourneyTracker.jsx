@@ -29,6 +29,11 @@ const JourneyTracker = () => {
 
   // Every step a student can go through, per phase. "Rejected" steps only show when they happened.
   const reachedKeys = new Set([...(profile.stageHistory || []).map((h) => h.stage), 'registered']);
+  // When each step was reached (latest time it was set), shown under the step
+  const reachedAt = {};
+  (profile.stageHistory || []).forEach((h) => { if (h.at && (!reachedAt[h.stage] || new Date(h.at) > new Date(reachedAt[h.stage]))) reachedAt[h.stage] = h.at; });
+  if (!reachedAt[current.key] && profile.stageUpdatedAt) reachedAt[current.key] = profile.stageUpdatedAt;
+  if (!reachedAt.registered && profile.createdAt) reachedAt.registered = profile.createdAt;
   const stepsOf = (phaseKey) => stages.filter((st) => st.phase === phaseKey && (st.outcome !== 'bad' || st.key === current.key || reachedKeys.has(st.key)));
 
   return (
@@ -73,6 +78,7 @@ const JourneyTracker = () => {
                       </span>
                       <span className={isNow ? (isBad ? 'font-bold text-red-600' : 'font-bold text-slate-900') : reached ? 'text-slate-600' : 'text-slate-400'}>
                         {st.label}
+                        {reachedAt[st.key] && (reached || isNow) && <span className="block text-[10.5px] font-normal text-slate-400">{fmt(reachedAt[st.key])}</span>}
                         {isNow && <span className="block text-[10px] font-semibold text-[#C04A1D]">Current</span>}
                       </span>
                     </li>

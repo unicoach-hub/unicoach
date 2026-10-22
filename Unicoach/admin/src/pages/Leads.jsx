@@ -16,7 +16,7 @@ import {
   SearchOutlined, 
   EyeOutlined, 
   DeleteOutlined, 
-  ContactsOutlined,
+  ContactsOutlined, UserAddOutlined,
   WhatsAppOutlined,
   MailOutlined,
   CalendarOutlined,
@@ -218,16 +218,34 @@ const describeAdTouch = (touch) => {
   return '';
 };
 
+// Leads nobody has acted on yet, from before today (today's arrivals are counted under "Today's leads")
+const isPendingNew = (l) => (l.status || 'new') === 'new' && !dayjs(l.createdAt).isSame(dayjs(), 'day');
+// Follow-up colour by due date: green = coming up, yellow = due today or up to 2 days late, red = 3+ days late
+const FU_CLOSED = ['converted', 'closed', 'not_interested'];
+const followUpBucket = (l) => {
+  if (!l.nextFollowUpDate || FU_CLOSED.includes(l.status)) return null;
+  const late = dayjs().startOf('day').diff(dayjs(l.nextFollowUpDate).startOf('day'), 'day');
+  if (late < 0) return 'green';
+  return late <= 2 ? 'yellow' : 'red';
+};
+const FU_BOXES = [
+  { key: 'green', title: 'Upcoming', hint: 'Follow-up date is ahead', fg: '#047857', bg: '#ECFDF5', line: '#A7F3D0' },
+  { key: 'yellow', title: 'Due today / slightly late', hint: 'Due today or up to 2 days late', fg: '#A16207', bg: '#FEFCE8', line: '#FDE68A' },
+  { key: 'red', title: 'Missed', hint: '3 or more days late', fg: '#B91C1C', bg: '#FEF2F2', line: '#FECACA' },
+];
+
 const Leads = ({ view = 'all' }) => {
   const navigate = useNavigate();
   const cachedLeads = getCachedData(`/admin/leads:list:${view}:all:all:all`);
   const [data, setData] = useState(cachedLeads || []);
   const [pipelines, setPipelines] = useState([]);
   const [selectedPipelineId, setSelectedPipelineId] = useState('default');
+  // Quick filter from the "New leads" card or a follow-up box: '' | 'new' | 'fu_green' | 'fu_yellow' | 'fu_red'
+  const [quickFilter, setQuickFilter] = useState('');
   const [loading, setLoading] = useState(!cachedLeads);
   const [search, setSearch] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
-  const [followUpFilter, setFollowUpFilter] = useState('all'); // all | due
+  const [followUpFilter, setFollowUpFilter] = useState('all'); // all | due | call_done | call_pending
   const [counselorFilter, setCounselorFilter] = useState('all');
   // Counselors = active staff accounts; leads store the staff id in assignedTo
   const [counselors, setCounselors] = useState([]);
@@ -794,6 +812,9 @@ const Leads = ({ view = 'all' }) => {
     return !t.isBefore(dateRange[0].startOf('day')) && !t.isAfter(dateRange[1].endOf('day'));
   };
   const filtered = data.filter(l =>
+    (followUpFilter !== 'call_done' || (l.callCount || 0) > 0) &&
+    (followUpFilter !== 'call_pending' || !(l.callCount || 0)) &&
+    (!quickFilter || (quickFilter === 'new' ? isPendingNew(l) : followUpBucket(l) === quickFilter.slice(3))) &&
     (l.name?.toLowerCase().includes(search.toLowerCase()) ||
     l.email?.toLowerCase().includes(search.toLowerCase()) ||
     l.phone?.includes(search)) &&
@@ -1162,22 +1183,73 @@ const Leads = ({ view = 'all' }) => {
       <Header title={VIEW_TITLES[view]?.title || 'Student leads & consultations'} subtitle={VIEW_TITLES[view]?.subtitle || 'All eligibility checks and consultation bookings'} />
       <div className="dashboard-content" style={{ marginTop: 16 }}>
         <CrmSubNav />
-        <div className="page-stats-grid page-stats-grid--6">
-          <StatsCard icon={<ContactsOutlined />} label="Total leads" value={countRows.length} color="brand" loading={loading} onClick={() => { setDateRange(null); navigate(VIEW_PATHS.all); }} active={view === 'all' && !dateRange} />
+        <div className="page-stats-grid page-stats-grid--7">
           <StatsCard
             icon={<CalendarOutlined />}
             label="Today's leads"
             value={countRows.filter((l) => dayjs(l.createdAt).isSame(dayjs(), 'day')).length}
             color="brand"
             loading={loading}
-            onClick={() => { setDateRange([dayjs(), dayjs()]); if (view !== 'all') navigate(VIEW_PATHS.all); }}
-            active={!!dateRange && dateRange[0]?.isSame(dayjs(), 'day') && dateRange[1]?.isSame(dayjs(), 'day')}
+            onClick={() => { setQuickFilter(''); setDateRange([dayjs(), dayjs()]); if (view !== 'all') navigate(VIEW_PATHS.all); }}
+            active={!quickFilter && !!dateRange && dateRange[0]?.isSame(dayjs(), 'day') && dateRange[1]?.isSame(dayjs(), 'day')}
           />
-          <StatsCard icon={<TrophyOutlined />} label="Converted" value={countRows.filter(l => l.status === 'converted').length} color="brand" loading={loading} onClick={() => navigate(VIEW_PATHS.converted)} active={view === 'converted'} />
-          <StatsCard icon={<FireOutlined />} label="Interested" value={countRows.filter(l => l.status === 'interested').length} color="brand" loading={loading} onClick={() => navigate(VIEW_PATHS.interested)} active={view === 'interested'} />
-          <StatsCard icon={<ClockCircleOutlined />} label="50 / 50" value={countRows.filter(l => l.status === 'fifty_fifty').length} color="brand" loading={loading} onClick={() => navigate(VIEW_PATHS.followup)} active={view === 'followup'} />
-          <StatsCard icon={<CheckCircleOutlined />} label="Not interested" value={countRows.filter(l => l.status === 'not_interested').length} color="brand" loading={loading} onClick={() => navigate(VIEW_PATHS.not_interested)} active={view === 'not_interested'} />
+          <StatsCard icon={<UserAddOutlined />} label="New leads (not contacted)" value={countRows.filter(isPendingNew).length} color="brand" loading={loading}
+            onClick={() => { setDateRange(null); setQuickFilter('new'); if (view !== 'all') navigate(VIEW_PATHS.all); }} active={quickFilter === 'new'} />
+          <StatsCard icon={<ContactsOutlined />} label="Total leads" value={countRows.length} color="brand" loading={loading} onClick={() => { setQuickFilter(''); setDateRange(null); navigate(VIEW_PATHS.all); }} active={view === 'all' && !dateRange && !quickFilter} />
+          <StatsCard icon={<TrophyOutlined />} label="Converted" value={countRows.filter(l => l.status === 'converted').length} color="brand" loading={loading} onClick={() => { setQuickFilter(''); navigate(VIEW_PATHS.converted); }} active={view === 'converted'} />
+          <StatsCard icon={<FireOutlined />} label="Interested" value={countRows.filter(l => l.status === 'interested').length} color="brand" loading={loading} onClick={() => { setQuickFilter(''); navigate(VIEW_PATHS.interested); }} active={view === 'interested'} />
+          <StatsCard icon={<ClockCircleOutlined />} label="50 / 50" value={countRows.filter(l => l.status === 'fifty_fifty').length} color="brand" loading={loading} onClick={() => { setQuickFilter(''); navigate(VIEW_PATHS.followup); }} active={view === 'followup'} />
+          <StatsCard icon={<CheckCircleOutlined />} label="Not interested" value={countRows.filter(l => l.status === 'not_interested').length} color="brand" loading={loading} onClick={() => { setQuickFilter(''); navigate(VIEW_PATHS.not_interested); }} active={view === 'not_interested'} />
         </div>
+
+        {/* Follow-ups by due date, and whether they were kept on time */}
+        {(() => {
+          const withFu = countRows.filter((l) => followUpBucket(l));
+          const recent = countRows.flatMap((l) => (l.followUpHistory || []).filter((h) => dayjs(h.doneAt).isAfter(dayjs().subtract(30, 'day'))));
+          const onTime = recent.filter((h) => h.onTime).length;
+          return (
+            <div className="page-table-card" style={{ padding: 16, marginBottom: 16 }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 12, flexWrap: 'wrap', marginBottom: 12 }}>
+                <div>
+                  <div style={{ fontWeight: 600, fontSize: 15 }}>Follow-ups</div>
+                  <div style={{ fontSize: 12.5, color: 'var(--ux-text-2)' }}>Set a follow-up date in a lead; logging a call, WhatsApp or note on it marks it done.</div>
+                </div>
+                <div style={{ display: 'flex', gap: 8, alignItems: 'center', flexWrap: 'wrap' }}>
+                  <span className="nx-status nx-status--neutral">Last 30 days: {recent.length ? `${Math.round((onTime / recent.length) * 100)}% on time` : 'no follow-ups done yet'}</span>
+                  {recent.length > 0 && <span style={{ fontSize: 12, color: 'var(--ux-text-2)' }}>{onTime} on time · {recent.length - onTime} late</span>}
+                  {quickFilter && <Button size="small" onClick={() => setQuickFilter('')}>Clear filter</Button>}
+                </div>
+              </div>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 12 }}>
+                {FU_BOXES.map((b) => {
+                  const list = withFu.filter((l) => followUpBucket(l) === b.key).sort((x, y) => new Date(x.nextFollowUpDate) - new Date(y.nextFollowUpDate));
+                  const active = quickFilter === `fu_${b.key}`;
+                  return (
+                    <div key={b.key} role="button" tabIndex={0} onClick={() => { setDateRange(null); setQuickFilter(active ? '' : `fu_${b.key}`); if (view !== 'all') navigate(VIEW_PATHS.all); }}
+                      style={{ cursor: 'pointer', borderRadius: 14, padding: 14, background: b.bg, border: `2px solid ${active ? b.fg : b.line}` }}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
+                        <span style={{ fontWeight: 700, color: b.fg }}>{b.title}</span>
+                        <span style={{ fontSize: 26, fontWeight: 800, color: b.fg }}>{list.length}</span>
+                      </div>
+                      <div style={{ fontSize: 12, color: 'var(--ux-text-2)', marginBottom: 8 }}>{b.hint}</div>
+                      {list.slice(0, 4).map((l) => {
+                        const late = dayjs().startOf('day').diff(dayjs(l.nextFollowUpDate).startOf('day'), 'day');
+                        return (
+                          <div key={l._id} onClick={(e) => { e.stopPropagation(); handleOpenLead(l); }}
+                            style={{ display: 'flex', justifyContent: 'space-between', gap: 8, fontSize: 12.5, padding: '5px 8px', borderRadius: 8, background: '#fff', marginTop: 4 }}>
+                            <span style={{ fontWeight: 600, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{l.name || 'Unnamed'}</span>
+                            <span style={{ color: b.fg, whiteSpace: 'nowrap' }}>{late < 0 ? dayjs(l.nextFollowUpDate).format('D MMM') : late === 0 ? 'Today' : `${late}d late`}</span>
+                          </div>
+                        );
+                      })}
+                      {list.length > 4 && <div style={{ fontSize: 12, color: b.fg, marginTop: 6 }}>+{list.length - 4} more · click to see all</div>}
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          );
+        })()}
 
         <div className="nx-toolbar page-toolbar" style={{ flexDirection: 'column', alignItems: 'stretch', gap: 10 }}>
           {/* Row 1: filters */}
@@ -1207,6 +1279,8 @@ const Leads = ({ view = 'all' }) => {
             <Select value={followUpFilter} onChange={setFollowUpFilter} style={{ width: 190 }}>
               <Option value="all">All lead interactions</Option>
               <Option value="due">Follow-up due / overdue</Option>
+              <Option value="call_done">Call done</Option>
+              <Option value="call_pending">Call pending</Option>
             </Select>
             <Select
               mode="multiple"
@@ -1817,7 +1891,23 @@ const Leads = ({ view = 'all' }) => {
                       </span>
                       <div style={{ color: 'var(--ux-ink)', fontSize: '14px', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '6px' }}>
                         <CalendarOutlined /> {new Date(selectedLead.nextFollowUpDate).toLocaleDateString()}
+                        {(() => {
+                          const b = followUpBucket(selectedLead);
+                          const box = FU_BOXES.find((x) => x.key === b);
+                          return box ? <span style={{ marginLeft: 6, fontSize: 11.5, fontWeight: 700, color: box.fg, background: box.bg, border: `1px solid ${box.line}`, borderRadius: 999, padding: '1px 8px' }}>{box.title}</span> : null;
+                        })()}
                       </div>
+                    </div>
+                  )}
+                  {(selectedLead.followUpHistory || []).length > 0 && (
+                    <div style={{ marginTop: 12 }}>
+                      <span style={{ color: 'var(--ux-text-2)', fontWeight: 600, display: 'block', marginBottom: 6, fontSize: 12 }}>Follow-up record</span>
+                      {[...selectedLead.followUpHistory].reverse().slice(0, 6).map((h, i) => (
+                        <div key={i} style={{ display: 'flex', justifyContent: 'space-between', gap: 8, fontSize: 12.5, padding: '6px 0', borderBottom: '1px solid var(--ux-line-2)' }}>
+                          <span>Due {dayjs(h.dueDate).format('D MMM')} · done {dayjs(h.doneAt).format('D MMM')}{h.by ? ` by ${h.by}` : ''}</span>
+                          <span style={{ fontWeight: 700, color: h.onTime ? '#047857' : '#B91C1C' }}>{h.onTime ? 'On time' : `${h.daysLate}d late`}</span>
+                        </div>
+                      ))}
                     </div>
                   )}
                 </div>

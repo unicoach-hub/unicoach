@@ -24,6 +24,7 @@ const publicProfile = (u) => ({
   profileCompleted: Boolean(u.profileCompletedAt),
   journeyStage: normalizeStage(u.journeyStage),
   stageUpdatedAt: u.stageUpdatedAt || u.createdAt,
+  createdAt: u.createdAt,
   stageHistory: (u.stageHistory || []).map((h) => ({ stage: normalizeStage(h.stage), at: h.at })),
 });
 

@@ -15,6 +15,7 @@ const STATUS = {
   no_show: { label: 'No-show', color: 'orange' },
   cancelled: { label: 'Cancelled', color: 'default' },
   payment_pending: { label: 'Payment pending', color: 'gold' },
+  payment_conflict: { label: 'Needs refund', color: 'red' },
 };
 
 const to12h = (t) => {
@@ -41,7 +42,7 @@ const ConsultationCalls = () => {
   const [loading, setLoading] = useState(false);
   const [filters, setFilters] = useState({ status: '', service: '', q: '' });
   const [open, setOpen] = useState(null);
-  const [tab, setTab] = useState('overview'); // overview | calendar | hours
+  const [tab, setTab] = useState('calendar'); // calendar | hours | overview
   const [saving, setSaving] = useState(false);
 
   const load = useCallback(async () => {
@@ -117,7 +118,7 @@ const ConsultationCalls = () => {
       />
 
       <Segmented style={{ marginBottom: 12 }} value={tab} onChange={setTab}
-        options={[{ label: 'Overview & calls', value: 'overview' }, { label: 'Calendar', value: 'calendar' }, { label: 'My hours', value: 'hours' }]} />
+        options={[{ label: 'Calendar & slots', value: 'calendar' }, { label: 'Weekly schedule', value: 'hours' }, { label: 'All calls & stats', value: 'overview' }]} />
 
       {tab === 'hours' && <AvailabilityEditor />}
       {tab === 'calendar' && (data ? <ConsultCalendar items={data.items} onOpen={setOpen} /> : <div style={{ padding: 60, textAlign: 'center' }}><Spin /></div>)}
@@ -132,6 +133,7 @@ const ConsultationCalls = () => {
             <Stat icon={<CheckCircleOutlined />} label="Show-up rate" value={showRate} sub={`${s.completed} completed · ${s.noShow} no-show`} color="#047857" />
             <Stat icon={<UserDeleteOutlined />} label="Didn't pay" value={s.abandoned} sub="picked a slot, left at payment" color="#B45309" bg="#FFFBEB" />
             <Stat icon={<StopOutlined />} label="Cancelled" value={s.cancelled} color="#B91C1C" />
+            {s.needsRefund > 0 && <Stat icon={<DollarOutlined />} label="Needs refund" value={s.needsRefund} sub="paid after their slot was taken: refund in Razorpay" color="#B91C1C" bg="#FEF2F2" />}
           </div>
 
           <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0,2fr) minmax(0,1fr)', gap: 12, marginTop: 12 }} className="consult-charts">

@@ -1,4 +1,5 @@
 const crypto = require('crypto');
+const mongoose = require('mongoose');
 const Consultation = require('../models/Consultation');
 const ConsultationAvailability = require('../models/ConsultationAvailability');
 const {
@@ -9,12 +10,28 @@ const { sendEmail } = require('../utils/email');
 const escapeHtml = require('../utils/escapeHtml');
 
 const BLOCKING = ['confirmed', 'completed', 'no_show'];
+
+// On startup: give bookings made before the slot lock existed their flag, then make sure the
+// one-booking-per-slot index is built (a failure here is logged loudly, not swallowed)
+if (typeof Consultation.init === 'function' && mongoose.connection) {
+  Promise.resolve()
+    .then(() => Consultation.updateMany({ active: { $exists: false } }, [{ $set: { active: { $not: [{ $in: ['$status', ['cancelled', 'payment_conflict']] }] } } }]))
+    .then(() => Consultation.init())
+    .catch((e) => console.error('❌ [Consultation] Could not build the one-booking-per-slot index:', e.message));
+}
 const holdCutoff = () => new Date(Date.now() - PENDING_HOLD_MIN * 60 * 1000);
 // Slots taken by a paid booking, or held by someone who is paying right now
 const takenFilter = (extra = {}) => ({
   ...extra,
+  active: { $ne: false },
   $or: [{ status: { $in: BLOCKING } }, { status: 'payment_pending', createdAt: { $gte: holdCutoff() } }],
 });
+// A payment hold older than PENDING_HOLD_MIN gives its slot back
+const releaseExpiredHolds = (match = {}) => Consultation.updateMany(
+  { ...match, status: 'payment_pending', active: true, createdAt: { $lt: holdCutoff() } },
+  { $set: { active: false } },
+);
+const isDuplicate = (err) => err && (err.code === 11000 || /E11000/.test(String(err.message)));
 
 const istToday = () => new Date(Date.now() + 5.5 * 3600 * 1000).toISOString().slice(0, 10);
 const addDays = (ymd, n) => {
@@ -88,8 +105,10 @@ exports.create = async (req, res) => {
     if (startsAt.getTime() < Date.now() + 60 * 60 * 1000 || date > addDays(istToday(), BOOK_AHEAD_DAYS)) {
       return res.status(400).json({ message: 'That time is no longer available' });
     }
+    const TAKEN = 'Someone just booked this slot. Please pick another time.';
+    await releaseExpiredHolds({ date, time });
     if (await Consultation.exists(takenFilter({ date, time }))) {
-      return res.status(409).json({ message: 'Someone just booked this slot. Please pick another time.' });
+      return res.status(409).json({ message: TAKEN });
     }
 
     const ref = `CONS-${crypto.randomBytes(4).toString('hex').toUpperCase()}`;
@@ -99,7 +118,8 @@ exports.create = async (req, res) => {
       notes: { type: 'consultation', service: svc.key, slot: `${date} ${time}` },
     });
 
-    await Consultation.create({
+    try {
+      await Consultation.create({
       ref,
       service: svc.key,
       serviceLabel: svc.label,
@@ -114,8 +134,12 @@ exports.create = async (req, res) => {
       amountINR: PRICE_INR,
       payment: { orderId: order.orderId, simulated: Boolean(order.simulated) },
       source: String(source || '').slice(0, 80),
-    });
-
+      });
+    } catch (e) {
+      // Two people pressed pay for the same slot at the same moment: the database lets only one through
+      if (isDuplicate(e)) return res.status(409).json({ message: TAKEN });
+      throw e;
+    }
     return res.status(201).json({
       ref,
       order: { orderId: order.orderId, amount: order.amount, currency: order.currency, keyId: order.keyId },
@@ -127,12 +151,49 @@ exports.create = async (req, res) => {
   }
 };
 
+const sendConfirmation = (c) => sendEmail({
+  to: c.email,
+  subject: `Your UniCoach consultation is booked: ${prettyWhen(c.date, c.time)}`,
+  html: `<p>Hi ${escapeHtml(c.name)},</p>
+<p>Your <b>${escapeHtml(c.serviceLabel)}</b> call with the UniCoach team is confirmed for <b>${prettyWhen(c.date, c.time)} (India time)</b>, ${c.durationMin} minutes.</p>
+<p>We will send the call link before the session. Booking reference: <b>${c.ref}</b>. Amount paid: ₹${c.amountINR}.</p>
+<p>Need to change the time? Just reply to this email.</p>
+<p>Team UniCoach</p>`,
+  kind: 'transactional',
+}).catch((e) => console.error('Consultation email failed:', e.message));
+
+// Mark a held booking as paid. Used by the browser (verify) and the Razorpay webhook (tab closed).
+// Returns 'confirmed' | 'already' | 'conflict' | 'not_payable'.
+const confirmPaid = async (c, paymentId) => {
+  if (['confirmed', 'completed', 'no_show'].includes(c.status)) return 'already';
+  if (c.status !== 'payment_pending') return 'not_payable';
+  c.payment.paymentId = paymentId;
+  c.payment.paidAt = new Date();
+  c.status = 'confirmed';
+  if (!c.active) {
+    // The hold had run out. Take the slot back if it is still free; if not, flag it for a refund.
+    c.active = true;
+    try {
+      await c.save();
+    } catch (e) {
+      if (!isDuplicate(e)) throw e;
+      await Consultation.updateOne({ _id: c._id }, { $set: { status: 'payment_conflict', active: false, 'payment.paymentId': paymentId, 'payment.paidAt': new Date() } });
+      console.error(`[Consultation] ${c.ref}: paid after the hold expired and the slot was taken. Refund ${paymentId}.`);
+      return 'conflict';
+    }
+  } else {
+    await c.save();
+  }
+  sendConfirmation(c);
+  return 'confirmed';
+};
+
 /** POST /api/consultations/:ref/verify: check the payment and confirm the call */
 exports.verify = async (req, res) => {
   try {
     const c = await Consultation.findOne({ ref: req.params.ref });
     if (!c) return res.status(404).json({ message: 'Booking not found' });
-    if (c.status === 'confirmed') return res.json({ ok: true, ref: c.ref });
+    if (['confirmed', 'completed', 'no_show'].includes(c.status)) return res.json({ ok: true, ref: c.ref });
     if (c.status !== 'payment_pending') return res.status(400).json({ message: 'This booking can no longer be paid' });
 
     const { razorpay_order_id, razorpay_payment_id, razorpay_signature } = req.body || {};
@@ -147,27 +208,26 @@ exports.verify = async (req, res) => {
     });
     if (!v.verified) return res.status(400).json({ message: v.error || 'Payment could not be verified' });
 
-    c.status = 'confirmed';
-    c.payment.paymentId = v.simulated ? `pay_sim_${Date.now()}` : razorpay_payment_id;
-    c.payment.paidAt = new Date();
-    await c.save();
-
-    sendEmail({
-      to: c.email,
-      subject: `Your UniCoach consultation is booked: ${prettyWhen(c.date, c.time)}`,
-      html: `<p>Hi ${escapeHtml(c.name)},</p>
-<p>Your <b>${escapeHtml(c.serviceLabel)}</b> call with the UniCoach team is confirmed for <b>${prettyWhen(c.date, c.time)} (India time)</b>, ${c.durationMin} minutes.</p>
-<p>We will send the call link before the session. Booking reference: <b>${c.ref}</b>. Amount paid: ₹${c.amountINR}.</p>
-<p>Need to change the time? Just reply to this email.</p>
-<p>Team UniCoach</p>`,
-      kind: 'transactional',
-    }).catch((e) => console.error('Consultation email failed:', e.message));
-
+    const result = await confirmPaid(c, v.simulated ? `pay_sim_${Date.now()}` : razorpay_payment_id);
+    if (result === 'conflict') {
+      return res.status(409).json({ message: 'Your payment went through, but this slot was taken while you were paying. We will refund you in full within 2 working days, or call you to pick a new time.' });
+    }
     return res.json({ ok: true, ref: c.ref });
   } catch (err) {
     console.error('Consultation verify error:', err);
     return res.status(500).json({ message: 'Could not confirm the payment' });
   }
+};
+
+/** Razorpay webhook fallback (student closed the tab after paying). Returns a status string or null. */
+exports.confirmFromWebhook = async (payment) => {
+  const ref = payment?.notes?.bookingRef;
+  const c = await Consultation.findOne(ref && /^CONS-/.test(ref) ? { ref } : { 'payment.orderId': payment?.order_id });
+  if (!c) return null;
+  if (c.payment.orderId && payment.order_id && c.payment.orderId !== payment.order_id) return 'consultation_order_mismatch';
+  if (Number(payment.amount) !== Math.round(c.amountINR * 100)) return 'consultation_amount_mismatch';
+  const result = await confirmPaid(c, payment.id);
+  return `consultation_${result}`;
 };
 
 /** GET /api/admin/consultations: every call plus the numbers for the analytics strip */
@@ -204,6 +264,7 @@ exports.adminList = async (req, res) => {
       completed: all.filter((c) => c.status === 'completed').length,
       noShow: all.filter((c) => c.status === 'no_show').length,
       cancelled: all.filter((c) => c.status === 'cancelled').length,
+      needsRefund: all.filter((c) => c.status === 'payment_conflict').length,
       abandoned: all.filter((c) => c.status === 'payment_pending' && new Date(c.createdAt) < holdCutoff()).length,
       byService: SERVICES.map((s) => ({ key: s.key, label: s.label, count: paid.filter((c) => c.service === s.key).length })),
       bySlot: [...new Set([...SLOT_TIMES, ...paid.map((c) => c.time)])].sort().map((t) => ({ time: t, count: count(paid, 'time')[t] || 0 })),
@@ -227,7 +288,15 @@ exports.adminUpdate = async (req, res) => {
     }
     if (counsellor !== undefined) update.counsellor = String(counsellor).slice(0, 80);
     if (teamNotes !== undefined) update.teamNotes = String(teamNotes).slice(0, 3000);
-    const c = await Consultation.findByIdAndUpdate(req.params.id, update, { new: true }).lean();
+    // Cancelling frees the slot; bringing a call back takes the slot again (if nobody else has it)
+    if (status) update.active = status !== 'cancelled';
+    let c;
+    try {
+      c = await Consultation.findByIdAndUpdate(req.params.id, update, { new: true }).lean();
+    } catch (e) {
+      if (isDuplicate(e)) return res.status(409).json({ message: 'Another student has booked this slot since. Pick a different time for this call.' });
+      throw e;
+    }
     if (!c) return res.status(404).json({ message: 'Not found' });
     return res.json(c);
   } catch (err) {
