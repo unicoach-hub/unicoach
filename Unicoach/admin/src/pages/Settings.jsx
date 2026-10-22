@@ -21,6 +21,7 @@ const Settings = () => {
     general: true,
     social: true,
     waba: true,
+    razorpay: true,
     smtp: true,
     ai: true,
     cloudinary: true
@@ -163,6 +164,32 @@ const Settings = () => {
       message.error(e.response?.data?.message || e.response?.data?.error || 'Failed to save settings');
     } finally {
       setSaving(false);
+    }
+  };
+
+  // Save just the Razorpay card: live keys + webhook secret (secrets come back masked, never in clear)
+  const [savingRzp, setSavingRzp] = useState(false);
+  const saveRazorpay = async () => {
+    const keyId = (formState.razorpayKeyId || '').trim();
+    if (keyId && !/^rzp_(live|test)_[A-Za-z0-9]+$/.test(keyId)) {
+      message.error('Key ID should look like rzp_live_… (or rzp_test_…)');
+      return;
+    }
+    setSavingRzp(true);
+    try {
+      const { data } = await API.put('/admin/settings-manage', {
+        razorpayKeyId: keyId,
+        razorpayKeySecret: (formState.razorpayKeySecret || '').trim(),
+        razorpayWebhookSecret: (formState.razorpayWebhookSecret || '').trim(),
+      });
+      const st = data?.settings || {};
+      message.success(st.hasRazorpayKeySecret ? `Razorpay saved (${keyId.startsWith('rzp_live_') ? 'LIVE' : 'test'} mode)` : 'Saved, but the Key Secret is still missing');
+      setIsLocked((l) => ({ ...l, razorpay: true }));
+      fetchSettings();
+    } catch (e) {
+      message.error(e.response?.data?.message || e.response?.data?.error || 'Could not save Razorpay');
+    } finally {
+      setSavingRzp(false);
     }
   };
 
@@ -327,6 +354,45 @@ const Settings = () => {
                     {formState.hasMetaAppSecret ? 'App Secret is saved' : 'No App Secret saved yet: incoming WhatsApp messages are rejected'}
                   </span>
                   <Button type="primary" icon={<SaveOutlined />} disabled={isLocked.waba} loading={savingWaba} onClick={saveWaba}>Save Meta WABA</Button>
+                </div>
+              </div>
+            </Col>
+
+            {/* Razorpay payments (consultations ₹500, mentor bookings) */}
+            <Col xs={24} lg={12}>
+              <div className="nx-card p-5 sm:p-6 h-full">
+                <div className="flex items-center justify-between gap-3 flex-wrap" style={{ marginBottom: 12 }}>
+                  <div className="flex items-center gap-3 flex-wrap">
+                    <span className="nx-icon-circle"><SafetyCertificateOutlined /></span>
+                    <span className="nx-section-title">Razorpay</span>
+                    {formState.razorpayKeyId && <span className={`nx-status ${String(formState.razorpayKeyId).startsWith('rzp_live_') ? 'nx-status--success' : 'nx-status--neutral'}`}>{String(formState.razorpayKeyId).startsWith('rzp_live_') ? 'Live' : 'Test'}</span>}
+                  </div>
+                  <Button size="small" icon={isLocked.razorpay ? <LockOutlined /> : <UnlockOutlined />} onClick={() => toggleLock('razorpay')}>
+                    {isLocked.razorpay ? 'Unlock' : 'Lock'}
+                  </Button>
+                </div>
+                <p style={{ fontSize: 12.5, color: 'var(--ux-text-2)', margin: '0 0 12px' }}>
+                  Razorpay → Account &amp; Settings → API Keys. Webhook URL: <code>https://api.unicoach.com/api/unicoach/webhooks/razorpay</code>
+                </p>
+                <Row gutter={[12, 12]}>
+                  <Col span={24}>
+                    <label className="nx-label" style={{ display: 'block', marginBottom: 6 }}>Key ID</label>
+                    <Input disabled={isLocked.razorpay} value={formState.razorpayKeyId} onChange={e => handleChange('razorpayKeyId', e.target.value)} placeholder="rzp_live_…" />
+                  </Col>
+                  <Col span={12}>
+                    <label className="nx-label" style={{ display: 'block', marginBottom: 6 }}>Key Secret</label>
+                    <Input.Password disabled={isLocked.razorpay} value={formState.razorpayKeySecret} onChange={e => handleChange('razorpayKeySecret', e.target.value)} />
+                  </Col>
+                  <Col span={12}>
+                    <label className="nx-label" style={{ display: 'block', marginBottom: 6 }}>Webhook secret</label>
+                    <Input.Password disabled={isLocked.razorpay} value={formState.razorpayWebhookSecret} onChange={e => handleChange('razorpayWebhookSecret', e.target.value)} />
+                  </Col>
+                </Row>
+                <div className="flex items-center justify-between gap-3 flex-wrap" style={{ marginTop: 14 }}>
+                  <span style={{ fontSize: 12.5, color: formState.hasRazorpayKeySecret && formState.hasRazorpayWebhookSecret ? '#047857' : '#B45309' }}>
+                    {!formState.hasRazorpayKeySecret ? 'Key Secret not saved: payments cannot start' : !formState.hasRazorpayWebhookSecret ? 'Webhook secret not saved: closed-tab payments will not confirm' : 'Keys and webhook secret are saved'}
+                  </span>
+                  <Button type="primary" icon={<SaveOutlined />} disabled={isLocked.razorpay} loading={savingRzp} onClick={saveRazorpay}>Save Razorpay</Button>
                 </div>
               </div>
             </Col>
