@@ -189,6 +189,16 @@ exports.updateLead = async (req, res) => {
     for (const key of ['college', 'course', 'phoneCall', 'followUp']) {
       if (req.body[key] !== undefined) lead[key] = req.body[key];
     }
+    // Follow-up date set straight from the leads table (null clears it)
+    if (req.body.nextFollowUpDate !== undefined) {
+      const d = req.body.nextFollowUpDate ? new Date(req.body.nextFollowUpDate) : null;
+      if (d && Number.isNaN(d.getTime())) return res.status(400).json({ message: 'Invalid follow-up date' });
+      const before = lead.nextFollowUpDate ? new Date(lead.nextFollowUpDate).toDateString() : '';
+      if ((d ? d.toDateString() : '') !== before) {
+        lead.activities.push({ type: 'note', comment: d ? `Follow-up set for ${d.toLocaleDateString('en-IN', { timeZone: 'Asia/Kolkata' })}` : 'Follow-up date removed', performedBy: adminName, date: new Date() });
+      }
+      lead.nextFollowUpDate = d || undefined;
+    }
 
     const updatedLead = await lead.save();
     return res.json(updatedLead);

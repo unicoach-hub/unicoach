@@ -918,23 +918,28 @@ const Leads = ({ view = 'all' }) => {
       ),
     },
     {
-      title: 'Status', dataIndex: 'status', key: 'status', width: 160,
-      render: (status, record) => (
-        <div onClick={(e) => e.stopPropagation()}>
-          <Select value={status} size="small" onChange={(val) => handleStatusChange(record._id, val)} style={{ width: 140 }}>
-            {SHEET_STATUSES.map((o) => <Option key={o.value} value={o.value}><StatusChip status={o.value} style={{ height: 22 }} /></Option>)}
-            {!SHEET_STATUSES.some((o) => o.value === status) && <Option value={status}><StatusChip status={status} style={{ height: 22 }} /></Option>}
-          </Select>
-        </div>
-      ),
-    },
-    {
-      title: 'Follow Up', dataIndex: 'followUp', key: 'followUp', width: 130,
-      render: (v, record) => (
-        <div onClick={(e) => e.stopPropagation()}>
-          <Select value={v || ''} size="small" style={{ width: 110 }} options={FOLLOW_UP_OPTIONS} onChange={(val) => handleFieldChange(record._id, 'followUp', val)} />
-        </div>
-      ),
+      // One column: how warm the lead is, and when to follow up next (colour shows if it is on track)
+      title: 'Status & follow-up', dataIndex: 'status', key: 'status', width: 180,
+      render: (status, record) => {
+        const box = FU_BOXES.find((x) => x.key === followUpBucket(record));
+        const v = record.nextFollowUpDate;
+        return (
+          <div onClick={(e) => e.stopPropagation()} style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+            <Select value={status} size="small" onChange={(val) => handleStatusChange(record._id, val)} style={{ width: 150 }}>
+              {SHEET_STATUSES.map((o) => <Option key={o.value} value={o.value}><StatusChip status={o.value} style={{ height: 22 }} /></Option>)}
+              {!SHEET_STATUSES.some((o) => o.value === status) && <Option value={status}><StatusChip status={status} style={{ height: 22 }} /></Option>}
+            </Select>
+            {!['converted', 'closed', 'not_interested'].includes(status) && (
+              <>
+                <DatePicker size="small" format="D MMM YYYY" placeholder="Follow-up date" value={v ? dayjs(v) : null}
+                  style={{ width: 150, ...(box ? { borderColor: box.line, background: box.bg } : {}) }}
+                  onChange={(d) => handleFieldChange(record._id, 'nextFollowUpDate', d ? d.hour(10).toISOString() : null)} />
+                {box && <span style={{ fontSize: 11, fontWeight: 700, color: box.fg }}>{box.key === 'green' ? 'Upcoming' : box.key === 'yellow' ? (dayjs().isSame(dayjs(v), 'day') ? 'Follow up today' : 'Slightly late') : 'Missed follow-up'}</span>}
+              </>
+            )}
+          </div>
+        );
+      },
     },
     {
       title: 'Counselor',
@@ -991,8 +996,15 @@ const Leads = ({ view = 'all' }) => {
     course: { filters: toFilters(uniq(data.map((l) => l.course || lastUni(l, 'course')))), filterSearch: true, onFilter: (v, l) => (l.course || lastUni(l, 'course')) === v },
     preferredIntake: { filters: toFilters(uniq(data.map((l) => l.preferredIntake))), filterSearch: true, onFilter: (v, l) => l.preferredIntake === v },
     phoneCall: { filters: PHONE_CALL_OPTIONS.map((o) => ({ text: o.label, value: o.value })), onFilter: (v, l) => (l.phoneCall || 'pending') === v },
-    status: { filters: toFilters(uniq([...SHEET_STATUSES.map((o) => o.value), ...data.map((l) => l.status)]), statusLabel), onFilter: (v, l) => l.status === v },
-    followUp: { filters: [{ text: 'Not set', value: '' }, ...FOLLOW_UP_OPTIONS.filter((o) => o.value).map((o) => ({ text: o.label, value: o.value }))], onFilter: (v, l) => (l.followUp || '') === v },
+    status: {
+      filters: [
+        ...toFilters(uniq([...SHEET_STATUSES.map((o) => o.value), ...data.map((l) => l.status)]), statusLabel),
+        { text: 'Follow-up: upcoming', value: 'fu:green' },
+        { text: 'Follow-up: due today / slightly late', value: 'fu:yellow' },
+        { text: 'Follow-up: missed', value: 'fu:red' },
+      ],
+      onFilter: (v, l) => (String(v).startsWith('fu:') ? followUpBucket(l) === v.slice(3) : l.status === v),
+    },
     assignedTo: { filters: [{ text: 'Unassigned', value: 'Unassigned' }, ...counselors.map((c) => ({ text: c.name, value: c._id }))], filterSearch: true, onFilter: (v, l) => (l.assignedTo || 'Unassigned') === v },
   };
   const sheetColumns = columns.map((c) => (columnFilters[c.key] ? { ...c, ...columnFilters[c.key], filterMultiple: true } : c));
