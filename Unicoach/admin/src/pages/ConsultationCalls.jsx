@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { Button, Drawer, Input, Select, Spin, Table, Tag, message } from 'antd';
+import { Button, Drawer, Input, Segmented, Select, Spin, Table, Tag, message } from 'antd';
 import {
   ReloadOutlined, PhoneOutlined, CalendarOutlined, CheckCircleOutlined, DollarOutlined,
   StopOutlined, UserDeleteOutlined, ClockCircleOutlined, DownloadOutlined,
@@ -7,6 +7,7 @@ import {
 import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip as ChartTip } from 'recharts';
 import Header from '../components/Header';
 import API from '../api/axios';
+import { AvailabilityEditor, ConsultCalendar } from '../components/ConsultationSchedule';
 
 const STATUS = {
   confirmed: { label: 'Upcoming', color: 'blue' },
@@ -40,6 +41,7 @@ const ConsultationCalls = () => {
   const [loading, setLoading] = useState(false);
   const [filters, setFilters] = useState({ status: '', service: '', q: '' });
   const [open, setOpen] = useState(null);
+  const [tab, setTab] = useState('overview'); // overview | calendar | hours
   const [saving, setSaving] = useState(false);
 
   const load = useCallback(async () => {
@@ -105,7 +107,7 @@ const ConsultationCalls = () => {
     <div className="page-container">
       <Header
         title="Consultation calls"
-        subtitle="Paid ₹500 calls booked from the website: who booked, when, and how they went"
+        subtitle="Paid ₹500 one-hour calls: bookings, your calendar and the hours you take calls"
         extra={(
           <div style={{ display: 'flex', gap: 10 }}>
             <Button icon={<DownloadOutlined />} onClick={download} disabled={!data?.items?.length}>Download Excel</Button>
@@ -114,7 +116,13 @@ const ConsultationCalls = () => {
         )}
       />
 
-      {!data ? <div style={{ padding: 60, textAlign: 'center' }}><Spin /></div> : (
+      <Segmented style={{ marginBottom: 12 }} value={tab} onChange={setTab}
+        options={[{ label: 'Overview & calls', value: 'overview' }, { label: 'Calendar', value: 'calendar' }, { label: 'My hours', value: 'hours' }]} />
+
+      {tab === 'hours' && <AvailabilityEditor />}
+      {tab === 'calendar' && (data ? <ConsultCalendar items={data.items} onOpen={setOpen} /> : <div style={{ padding: 60, textAlign: 'center' }}><Spin /></div>)}
+
+      {tab === 'overview' && (!data ? <div style={{ padding: 60, textAlign: 'center' }}><Spin /></div> : (
         <>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 12 }}>
             <Stat icon={<CalendarOutlined />} label="Today" value={s.today} sub="calls booked for today" color="#1d4ed8" bg="#EFF6FF" />
@@ -174,7 +182,7 @@ const ConsultationCalls = () => {
               pagination={{ pageSize: 25 }} onRow={(c) => ({ onClick: () => setOpen(c), style: { cursor: 'pointer' } })} scroll={{ x: 900 }} />
           </div>
         </>
-      )}
+      ))}
 
       <Drawer open={!!open} onClose={() => setOpen(null)} width={440} title={open ? `${open.name} · ${open.ref}` : ''}>
         {open && (

@@ -1,7 +1,8 @@
 const crypto = require('crypto');
 const Consultation = require('../models/Consultation');
+const ConsultationAvailability = require('../models/ConsultationAvailability');
 const {
-  GROUPS, PRICE_INR, DURATION_MIN, SERVICES, SLOT_TIMES, BOOK_AHEAD_DAYS, PENDING_HOLD_MIN, istToDate,
+  GROUPS, PRICE_INR, DURATION_MIN, SERVICES, SLOT_TIMES, DEFAULT_WEEKLY, BOOK_AHEAD_DAYS, PENDING_HOLD_MIN, istToDate,
 } = require('../config/consultations');
 const { createRazorpayOrder, verifyRazorpayPayment } = require('../unicoach/services/paymentService');
 const { sendEmail } = require('../utils/email');
@@ -25,6 +26,25 @@ const prettyWhen = (date, time) => istToDate(date, time).toLocaleString('en-IN',
   timeZone: 'Asia/Kolkata', weekday: 'long', day: 'numeric', month: 'long', hour: 'numeric', minute: '2-digit',
 });
 
+const TIME_RX = /^([01]\d|2[0-3]):[0-5]\d$/;
+const cleanTimes = (arr) => [...new Set((Array.isArray(arr) ? arr : []).filter((t) => TIME_RX.test(t)))].sort();
+
+// The team's hours: saved in admin, or the defaults until someone sets them
+const loadAvailability = async () => {
+  const doc = await ConsultationAvailability.findOne({ key: 'default' }).lean();
+  return {
+    weekly: doc?.weekly && Object.keys(doc.weekly).length ? doc.weekly : DEFAULT_WEEKLY,
+    overrides: doc?.overrides || [],
+  };
+};
+// Start times offered on one IST date: a date override wins over the weekly hours
+const slotsForDate = (avail, date) => {
+  const o = avail.overrides.find((x) => x.date === date);
+  if (o) return o.closed ? [] : cleanTimes(o.slots);
+  const dow = new Date(`${date}T12:00:00+05:30`).getUTCDay();
+  return cleanTimes(avail.weekly[String(dow)]);
+};
+
 /** GET /api/consultations/config: services, price and the open slots for the next weeks */
 exports.getConfig = async (req, res) => {
   try {
@@ -32,16 +52,17 @@ exports.getConfig = async (req, res) => {
     const to = addDays(from, BOOK_AHEAD_DAYS);
     const taken = await Consultation.find(takenFilter({ date: { $gte: from, $lte: to } })).select('date time').lean();
     const takenSet = new Set(taken.map((t) => `${t.date} ${t.time}`));
+    const avail = await loadAvailability();
     // A slot must start at least an hour from now
     const earliest = Date.now() + 60 * 60 * 1000;
 
     const days = [];
     for (let i = 0; i <= BOOK_AHEAD_DAYS; i += 1) {
       const date = addDays(from, i);
-      const slots = SLOT_TIMES.filter((t) => istToDate(date, t).getTime() > earliest && !takenSet.has(`${date} ${t}`));
+      const slots = slotsForDate(avail, date).filter((t) => istToDate(date, t).getTime() > earliest && !takenSet.has(`${date} ${t}`));
       days.push({ date, slots });
     }
-    return res.json({ price: PRICE_INR, durationMin: DURATION_MIN, groups: GROUPS, services: SERVICES, slotTimes: SLOT_TIMES, days });
+    return res.json({ price: PRICE_INR, durationMin: DURATION_MIN, groups: GROUPS, services: SERVICES, days });
   } catch (err) {
     console.error('Consultation config error:', err);
     return res.status(500).json({ message: 'Could not load open slots' });
@@ -54,8 +75,11 @@ exports.create = async (req, res) => {
     const { service, date, time, name, email, phone, notes, source } = req.body || {};
     const svc = SERVICES.find((s) => s.key === service);
     if (!svc) return res.status(400).json({ message: 'Please pick a service' });
-    if (!/^\d{4}-\d{2}-\d{2}$/.test(String(date)) || !SLOT_TIMES.includes(time)) {
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(String(date)) || !TIME_RX.test(String(time))) {
       return res.status(400).json({ message: 'Please pick a day and a time' });
+    }
+    if (!slotsForDate(await loadAvailability(), date).includes(time)) {
+      return res.status(400).json({ message: 'That time is not open. Please pick another slot.' });
     }
     if (!String(name || '').trim() || !/^\S+@\S+\.\S+$/.test(String(email || '')) || String(phone || '').replace(/\D/g, '').length < 10) {
       return res.status(400).json({ message: 'Please add your name, a valid email and phone number' });
@@ -182,7 +206,7 @@ exports.adminList = async (req, res) => {
       cancelled: all.filter((c) => c.status === 'cancelled').length,
       abandoned: all.filter((c) => c.status === 'payment_pending' && new Date(c.createdAt) < holdCutoff()).length,
       byService: SERVICES.map((s) => ({ key: s.key, label: s.label, count: paid.filter((c) => c.service === s.key).length })),
-      bySlot: SLOT_TIMES.map((t) => ({ time: t, count: count(paid, 'time')[t] || 0 })),
+      bySlot: [...new Set([...SLOT_TIMES, ...paid.map((c) => c.time)])].sort().map((t) => ({ time: t, count: count(paid, 'time')[t] || 0 })),
       last30,
     };
     return res.json({ items, stats, services: SERVICES });
@@ -209,5 +233,38 @@ exports.adminUpdate = async (req, res) => {
   } catch (err) {
     console.error('Admin consultation update error:', err);
     return res.status(500).json({ message: 'Could not update' });
+  }
+};
+
+/** GET /api/admin/consultations/availability: weekly hours and date overrides */
+exports.adminGetAvailability = async (req, res) => {
+  try {
+    return res.json({ ...(await loadAvailability()), durationMin: DURATION_MIN });
+  } catch (err) {
+    console.error('Availability load error:', err);
+    return res.status(500).json({ message: 'Could not load availability' });
+  }
+};
+
+/** PUT /api/admin/consultations/availability: replace weekly hours and date overrides */
+exports.adminSaveAvailability = async (req, res) => {
+  try {
+    const { weekly = {}, overrides = [] } = req.body || {};
+    const cleanWeekly = Object.fromEntries([0, 1, 2, 3, 4, 5, 6].map((d) => [String(d), cleanTimes(weekly[String(d)])]));
+    const seen = new Set();
+    const cleanOverrides = (Array.isArray(overrides) ? overrides : [])
+      .filter((o) => /^\d{4}-\d{2}-\d{2}$/.test(String(o?.date)) && !seen.has(o.date) && seen.add(o.date))
+      .map((o) => ({ date: o.date, closed: Boolean(o.closed), slots: o.closed ? [] : cleanTimes(o.slots) }))
+      .sort((a, b) => a.date.localeCompare(b.date))
+      .slice(0, 400);
+    const doc = await ConsultationAvailability.findOneAndUpdate(
+      { key: 'default' },
+      { weekly: cleanWeekly, overrides: cleanOverrides },
+      { upsert: true, new: true, setDefaultsOnInsert: true },
+    ).lean();
+    return res.json({ weekly: doc.weekly, overrides: doc.overrides, durationMin: DURATION_MIN });
+  } catch (err) {
+    console.error('Availability save error:', err);
+    return res.status(500).json({ message: 'Could not save availability' });
   }
 };

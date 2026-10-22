@@ -22,7 +22,7 @@ const BookingLoop = ({ services }) => {
     return () => clearTimeout(t);
   }, [step, services.length, reduce]);
   const svc = services[i];
-  const slots = ['Today · 8:00 PM', 'Tomorrow · 1:30 PM', 'Sat · 2:00 PM', 'Mon · 8:30 PM'];
+  const slots = ['Today · 8:00 PM', 'Tomorrow · 1:00 PM', 'Sat · 2:00 PM', 'Mon · 8:00 PM'];
   if (!svc) return null;
   return (
     <div className="rounded-[22px] bg-white border border-slate-200 p-5 shadow-[0_24px_60px_-30px_rgba(15,23,42,0.35)]">
@@ -158,7 +158,7 @@ const ServicesPage = () => {
               Every step abroad,<br /><span className="text-[#DE5C2B]">one 1:1 call away</span>
             </h1>
             <p className="mt-4 text-[16px] text-slate-600 max-w-lg leading-relaxed">
-              Pick what you need help with, choose a time, and talk to our team for {cfg?.durationMin || 30} minutes. Counselling, shortlisting, SOPs, funding and visas, all in one place.
+              Pick what you need help with, choose a time, and talk to our team for {cfg?.durationMin || 60} minutes. Counselling, shortlisting, SOPs, funding and visas, all in one place.
             </p>
             <div className="mt-6 flex flex-wrap gap-3">
               <Link to="/book-consultation" className="no-shine inline-flex items-center gap-2 h-12 px-6 rounded-full bg-[#DE5C2B] hover:bg-[#C04A1D] text-white font-semibold text-[14.5px] transition-colors">

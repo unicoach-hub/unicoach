@@ -76,7 +76,7 @@ const BookConsultationPage = () => {
         <p className="inline-flex items-center gap-2 text-[12px] font-bold tracking-[0.14em] text-[#DE5C2B] uppercase"><CalendarDays size={14} /> Book a consultation</p>
         <h1 className="mt-3 font-outfit text-[34px] sm:text-[46px] font-black tracking-tight text-[#111] leading-tight">Choose a day and a time</h1>
         <p className="mt-3 text-[15px] text-slate-600 max-w-xl mx-auto">
-          A {cfg?.durationMin || 30}-minute 1:1 call with our team, ₹{cfg?.price || 500}. Calls run 1 to 3 PM and 8 to 9 PM, India time.
+          A {(cfg?.durationMin || 60) === 60 ? 'one-hour' : `${cfg?.durationMin}-minute`} 1:1 call with our team, ₹{cfg?.price || 500}. Pick any open slot, India time.
         </p>
         <Link to="/services" className="mt-3 inline-flex items-center gap-1.5 text-[13.5px] font-semibold text-[#DE5C2B] hover:underline">Not sure which service? See all services <ArrowRight size={14} /></Link>
       </div>
@@ -126,7 +126,7 @@ const SidePanel = ({ cfg }) => (
     </ul>
 
     <div className="mt-auto pt-6 border-t border-slate-100 text-[13px]">
-      <p className="flex items-center gap-2 font-semibold text-slate-800"><Clock size={14} className="text-[#DE5C2B]" /> {cfg?.durationMin || 30} min · ₹{cfg?.price || 500} per call</p>
+      <p className="flex items-center gap-2 font-semibold text-slate-800"><Clock size={14} className="text-[#DE5C2B]" /> {cfg?.durationMin || 60} min · ₹{cfg?.price || 500} per call</p>
       <p className="mt-1 text-[12px] text-slate-500">Private 1:1 on video. Confirmed by email. All times India time.</p>
     </div>
   </aside>
@@ -247,13 +247,14 @@ const Picker = ({ cfg, service, setService, date, setDate, time, setTime, month,
           {date && (
             <>
               <p className="mt-3 text-[13px] font-semibold text-slate-700">{longDate(date)}</p>
-              {[['Afternoon', (t) => t < '17:00'], ['Evening', (t) => t >= '17:00']].map(([label, test]) => {
+              {slots.length === 0 && <p className="mt-3 text-[12.5px] text-slate-400">No open times left on this day.</p>}
+              {[['Morning', (t) => t < '12:00'], ['Afternoon', (t) => t >= '12:00' && t < '17:00'], ['Evening', (t) => t >= '17:00']].map(([label, test]) => {
                 const list = slots.filter(test);
+                if (!list.length) return null;
                 return (
                   <div key={label} className="mt-3">
                     <p className="text-[11.5px] text-slate-400">{label}</p>
                     <div className="mt-1.5 grid grid-cols-2 gap-2">
-                      {list.length === 0 && <span className="col-span-2 text-[12px] text-slate-400">Fully booked</span>}
                       {list.map((t) => (
                         <button key={t} type="button" onClick={() => setTime(t)}
                           className={`no-shine h-10 rounded-full border text-[13px] font-semibold cursor-pointer transition-colors ${t === time ? 'bg-[#111] border-[#111] text-white' : 'border-slate-200 text-slate-800 hover:border-[#DE5C2B]'}`}>
@@ -369,7 +370,7 @@ const ConfirmStep = ({ cfg, pick }) => {
           <dl className="mt-5 rounded-2xl bg-[#FFF4EE] p-4 grid grid-cols-[auto_1fr] gap-x-6 gap-y-2 text-[14px]">
             <dt className="text-slate-500">Service</dt><dd className="text-right font-semibold text-slate-900">{svc?.label || '…'}</dd>
             <dt className="text-slate-500">When</dt><dd className="text-right font-semibold text-slate-900">{fullDate(pick.date)}, {to12h(pick.time)}</dd>
-            <dt className="text-slate-500">Duration</dt><dd className="text-right font-semibold text-slate-900">{cfg?.durationMin || 30} minutes</dd>
+            <dt className="text-slate-500">Duration</dt><dd className="text-right font-semibold text-slate-900">{cfg?.durationMin || 60} minutes</dd>
             <dt className="text-slate-500">Fee</dt><dd className="text-right font-bold text-[#DE5C2B]">₹{price}</dd>
           </dl>
 

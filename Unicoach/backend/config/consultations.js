@@ -2,7 +2,7 @@
 // Every service is the same price; slots are in India time.
 
 const PRICE_INR = 500;
-const DURATION_MIN = 30;
+const DURATION_MIN = 60;
 
 // group: the section on /services. points: what the call covers (shown under "Read more").
 const GROUPS = [
@@ -25,8 +25,9 @@ const SERVICES = [
   { key: 'departure', group: 'visa', label: 'Pre-departure & accommodation', desc: 'Housing, packing and your first weeks', points: ['Finding safe student housing', 'What to carry and what to buy there', 'Bank, SIM and registration after landing'] },
 ];
 
-// 1 to 3 pm and 8 to 9 pm, 30-minute calls
-const SLOT_TIMES = ['13:00', '13:30', '14:00', '14:30', '20:00', '20:30'];
+// Default hours until the team sets its own in admin: one-hour calls at 1 pm, 2 pm and 8 pm, every day
+const SLOT_TIMES = ['13:00', '14:00', '20:00'];
+const DEFAULT_WEEKLY = Object.fromEntries([0, 1, 2, 3, 4, 5, 6].map((d) => [String(d), SLOT_TIMES]));
 const BOOK_AHEAD_DAYS = 21;
 // A slot is held this long while the student pays; after that it opens up again
 const PENDING_HOLD_MIN = 15;
@@ -34,4 +35,4 @@ const PENDING_HOLD_MIN = 15;
 // "2026-10-22" + "13:30" in IST → Date
 const istToDate = (date, time) => new Date(`${date}T${time}:00+05:30`);
 
-module.exports = { GROUPS, PRICE_INR, DURATION_MIN, SERVICES, SLOT_TIMES, BOOK_AHEAD_DAYS, PENDING_HOLD_MIN, istToDate };
+module.exports = { GROUPS, PRICE_INR, DURATION_MIN, SERVICES, SLOT_TIMES, DEFAULT_WEEKLY, BOOK_AHEAD_DAYS, PENDING_HOLD_MIN, istToDate };
