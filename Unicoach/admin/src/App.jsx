@@ -39,6 +39,7 @@ const PipelineManager = lazy(() => import('./pages/PipelineManager'));
 const PipelineBoard = lazy(() => import('./pages/PipelineBoard'));
 const FormBuilder = lazy(() => import('./pages/FormBuilder'));
 const BookingCalendar = lazy(() => import('./pages/BookingCalendar'));
+const ConsultationCalls = lazy(() => import('./pages/ConsultationCalls'));
 const SupportRequests = lazy(() => import('./pages/SupportRequests'));
 const UniCoachAdminHub = lazy(() => import('./pages/UniCoachAdminHub'));
 const Staff = lazy(() => import('./pages/Staff'));
@@ -142,6 +143,7 @@ const App = () => {
                       <Route path="/crm/board" element={<PipelineBoard />} />
                       <Route path="/crm/forms" element={<FormBuilder />} />
                       <Route path="/crm/calendar" element={<BookingCalendar />} />
+                      <Route path="/crm/consultations" element={<ConsultationCalls />} />
                       {/* Legacy Leads & Users */}
                       <Route path="/users" element={<Users />} />
                       <Route path="/leads" element={<Leads />} />

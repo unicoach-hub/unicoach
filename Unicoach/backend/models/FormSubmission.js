@@ -12,6 +12,9 @@ const formSubmissionSchema = new mongoose.Schema({
   data: { type: mongoose.Schema.Types.Mixed, required: true }, // { "Full Name": "Sagar", "Email": "s@g.com" }
   notes: [noteSchema],
   assignedTo: { type: String, default: '' },
+  // Mentor whose share link (?ref=handle) brought this submission in
+  referredBy: { type: mongoose.Schema.Types.ObjectId, ref: 'UnicoachMentor', default: null },
+  referrerHandle: { type: String, default: '' },
   tags: [String],
   submittedAt: { type: Date, default: Date.now }
 }, { timestamps: true });
@@ -19,5 +22,6 @@ const formSubmissionSchema = new mongoose.Schema({
 // Index for fast pipeline + stage queries
 formSubmissionSchema.index({ pipeline: 1, currentStage: 1 });
 formSubmissionSchema.index({ form: 1 });
+formSubmissionSchema.index({ referredBy: 1, submittedAt: -1 });
 
 module.exports = mongoose.model('FormSubmission', formSubmissionSchema);

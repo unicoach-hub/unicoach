@@ -57,11 +57,22 @@ exports.submitForm = async (req, res) => {
 
     const firstStage = pipeline.stages.sort((a, b) => a.order - b.order)[0].name;
 
+    // A mentor's share link carries ?ref=<handle>; credit that mentor if the handle is real
+    let referrer = null;
+    const refHandle = String(req.body.ref || '').replace(/^@/, '').trim().toLowerCase();
+    if (refHandle && /^[a-z0-9._-]{2,40}$/.test(refHandle)) {
+      const UnicoachMentor = require('../unicoach/models/UnicoachMentor');
+      referrer = await UnicoachMentor.findOne({ handle: refHandle }).select('_id handle').lean();
+    }
+
     const submission = new FormSubmission({
       form: form._id,
       pipeline: pipeline._id,
       currentStage: firstStage,
       data,
+      referredBy: referrer?._id || null,
+      referrerHandle: referrer?.handle || '',
+      tags: referrer ? [`mentor:${referrer.handle}`] : [],
       submittedAt: new Date()
     });
     await submission.save();

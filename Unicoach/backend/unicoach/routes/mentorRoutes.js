@@ -45,6 +45,37 @@ router.get('/:handle/referrals', handleValidatorMiddleware, mentorAuth, async (r
   }
 });
 
+// Form links the mentor can share (each carries ?ref=<handle>) and every submission that came through them
+router.get('/:handle/form-referrals', handleValidatorMiddleware, mentorAuth, async (req, res) => {
+  try {
+    const CustomForm = require('../../models/CustomForm');
+    const FormSubmission = require('../../models/FormSubmission');
+    const [forms, subs] = await Promise.all([
+      CustomForm.find({ active: true }).select('name slug headerTitle').sort({ createdAt: -1 }).lean(),
+      FormSubmission.find({ referredBy: req.mentor._id })
+        .select('form data currentStage submittedAt')
+        .populate('form', 'name')
+        .sort({ submittedAt: -1 })
+        .limit(5000)
+        .lean(),
+    ]);
+    return res.json({
+      handle: req.mentor.handle,
+      forms: forms.map((f) => ({ name: f.headerTitle || f.name, slug: f.slug })),
+      submissions: subs.map((s) => ({
+        _id: s._id,
+        formName: s.form?.name || 'Form',
+        stage: s.currentStage,
+        submittedAt: s.submittedAt,
+        data: s.data || {},
+      })),
+    });
+  } catch (err) {
+    console.error('Error loading mentor form referrals:', err);
+    return res.status(500).json({ error: 'Server error' });
+  }
+});
+
 // Manage Offerings / Services
 router.post('/:handle/services', handleValidatorMiddleware, mentorAuth, mentorController.createService);
 router.put('/:handle/services/:serviceId', handleValidatorMiddleware, mentorAuth, mentorController.updateService);

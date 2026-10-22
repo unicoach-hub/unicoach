@@ -729,6 +729,20 @@ export const markAllMentorNotificationsRead = async (handle) => {
 
 
 
+// Forms the mentor can share and every submission that came through their ?ref link
+export const getMentorFormReferrals = async (handle) => {
+  const clean = String(handle || '').replace(/^@/, '').trim();
+  const res = await fetch(`${UNICOACH_BASE_URL}/mentors/${clean}/form-referrals`, {
+    headers: getAuthHeaders(),
+    credentials: 'include'
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.message || err.error || 'Could not load your form leads');
+  }
+  return await res.json();
+};
+
 // Students who signed up through the mentor's referral link (name, country, stage, dates)
 export const getMentorReferrals = async (handle) => {
   const clean = String(handle || '').replace(/^@/, '').trim();

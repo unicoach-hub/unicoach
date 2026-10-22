@@ -58,6 +58,7 @@ const NAV_SECTIONS = [
           { path: '/crm/pipelines', label: 'CRM Pipelines' },
           { path: '/crm/forms', label: 'Form Builder' },
           { path: '/crm/calendar', label: 'Booking Calendar' },
+          { path: '/crm/consultations', label: 'Consultation Calls' },
           { path: '/users', label: 'Registered Users' },
         ],
       },

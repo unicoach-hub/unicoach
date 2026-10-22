@@ -202,6 +202,7 @@ app.use('/api/auth/forgot-password', authFormLimiter);
 app.use('/api/auth/reset-password', authFormLimiter);
 app.use('/api/leads/submit', authFormLimiter);
 app.use('/api/leads/book-consultation', authFormLimiter);
+app.use('/api/consultations', (req, res, next) => (req.method === 'POST' ? authFormLimiter(req, res, next) : next()));
 app.use('/api/events/:id/register', authFormLimiter);
 app.use('/api/admin/auth/login', adminLoginLimiter);
 // Public mentor application + document upload: no login required, so throttle per IP
@@ -348,6 +349,8 @@ app.use('/api/admin/dev', require('./routes/adminDeveloper'));
 
 // CRM — Pipelines, Forms & Bookings (admin)
 app.use('/api/admin/pipelines', require('./routes/adminPipelines'));
+app.use('/api/consultations', require('./routes/consultations'));
+app.use('/api/admin/consultations', require('./routes/adminConsultations'));
 app.use('/api/admin/forms', require('./routes/adminForms'));
 app.use('/api/admin/bookings', require('./routes/adminBookings'));
 

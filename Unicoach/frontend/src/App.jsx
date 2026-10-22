@@ -1,7 +1,7 @@
 import React, { useState, useEffect, lazy, Suspense } from 'react'
 import PageLoader from './components/PageLoader'
 import NavigationProgress from './components/NavigationProgress'
-import { BrowserRouter, Routes, Route, useLocation, Navigate, useParams } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, useLocation, useNavigate, Navigate, useParams } from 'react-router-dom'
 
 // Core Navigation & Context
 import Navbar from './components/Navbar'
@@ -14,7 +14,6 @@ import ErrorBoundary from './components/ErrorBoundary'
 
 // Lazy-load Global Modals, Footer and Widgets (Non-blocking for initial page load)
 const Footer = lazy(() => import('./components/Footer'));
-const EligibilityModal = lazy(() => import('./components/EligibilityModal'));
 const SuccessModal = lazy(() => import('./components/SuccessModal'));
 const LoginModal = lazy(() => import('./components/LoginModal'));
 const UniBotChatWidget = lazy(() => import('./components/UniBotChatWidget'));
@@ -255,6 +254,7 @@ const NewsDetailPage = lazy(() => import('./app/newsroom/detail/page'));
 const BlogsPage = lazy(() => import('./app/blogs/page'));
 const NotFound = lazy(() => import('./components/NotFound'));
 const ContactPage = lazy(() => import('./components/ContactPage'));
+const BookConsultationPage = lazy(() => import('./pages/BookConsultationPage'));
 const TeamPage = lazy(() => import('./pages/TeamPage'));
 const PublicFormPage = lazy(() => import('./components/PublicFormPage'));
 const PublicBookingPage = lazy(() => import('./components/PublicBookingPage'));
@@ -380,13 +380,25 @@ const AtHandleQueryTrackingOrNotFound = () => {
 };
 
 // Renders modals strictly on-demand when user triggers them (prevents loading ~70KB modal JS on initial load)
+// Every "Book consultation" button used to open the old multi-step lead modal; they now go to the
+// paid booking page instead (calendar → details → pay)
+const ConsultRedirect = () => {
+  const { closeModal } = useLead() || {};
+  const navigate = useNavigate();
+  useEffect(() => {
+    closeModal?.();
+    navigate('/book-consultation');
+  }, [closeModal, navigate]);
+  return null;
+};
+
 const GlobalModals = () => {
   const { isModalOpen, isSubmitted } = useLead() || {};
   const { loginModalOpen } = useAuth() || {};
 
   return (
     <Suspense fallback={null}>
-      {isModalOpen && <EligibilityModal />}
+      {isModalOpen && <ConsultRedirect />}
       {isSubmitted && <SuccessModal />}
       {loginModalOpen && <LoginModal />}
     </Suspense>
@@ -394,6 +406,8 @@ const GlobalModals = () => {
 };
 
 const isAuthRoute = (path) => ['/login', '/signin', '/signup', '/register'].includes(path);
+// Shared form links (/f/:slug) are standalone pages, like a Google Form: no site navbar, footer or chatbot
+const isFormRoute = (path) => path.startsWith('/f/');
 
 // Defer loading UniBotChatWidget until user interaction or after initial 3.5s idle
 const DeferredUniBot = () => {
@@ -421,7 +435,7 @@ const DeferredUniBot = () => {
     };
   }, []);
 
-  if (location.pathname.startsWith('/unicoach/dashboard') || isAuthRoute(location.pathname)) return null;
+  if (location.pathname.startsWith('/unicoach/dashboard') || isAuthRoute(location.pathname) || isFormRoute(location.pathname)) return null;
   if (!shouldLoad) return null;
 
   const isEmbed = new URLSearchParams(location.search).get('embed') === 'true';
@@ -447,14 +461,14 @@ const EditorialPageClass = () => {
 const ConditionalNavbar = () => {
   const location = useLocation();
   const isEmbed = new URLSearchParams(location.search).get('embed') === 'true';
-  if (isEmbed || location.pathname.startsWith('/unicoach/dashboard')) return null;
+  if (isEmbed || location.pathname.startsWith('/unicoach/dashboard') || isFormRoute(location.pathname)) return null;
   return <Navbar />;
 };
 
 const ConditionalFooter = () => {
   const location = useLocation();
   const isEmbed = new URLSearchParams(location.search).get('embed') === 'true';
-  if (isEmbed || location.pathname.startsWith('/unicoach/dashboard') || isAuthRoute(location.pathname)) return null;
+  if (isEmbed || location.pathname.startsWith('/unicoach/dashboard') || isAuthRoute(location.pathname) || isFormRoute(location.pathname)) return null;
   return (
     <Suspense fallback={<div className="min-h-[160px] w-full bg-[#0a0a0a]" />}>
       <Footer />
@@ -877,7 +891,8 @@ const App = () => {
             <Route path="/blogs/:slug" element={<BlogDetailPage />} />
 
             {/* Contact / Book Consultation Portals */}
-            <Route path="/book-consultation" element={<ContactPage />} />
+            <Route path="/book-consultation" element={<BookConsultationPage />} />
+            <Route path="/book-consultation/confirm" element={<BookConsultationPage />} />
             <Route path="/contact" element={<ContactPage />} />
             <Route path="/team" element={<TeamPage />} />
 

@@ -34,6 +34,7 @@ import {
 } from '../api/unicoachApi';
 import { useAuth } from '../../context/AuthContext';
 import MentorReferrals from '../components/MentorReferrals';
+import MentorFormLeads from '../components/MentorFormLeads';
 import { 
   Bell,
   BellRing,
@@ -3155,6 +3156,7 @@ const UnicoachDashboardPage = () => {
               { id: 'notifications', label: 'Announcements & Alerts', icon: Bell, hasChevron: true, badge: unreadNotificationsCount || null, badgeColor: 'bg-[#DE5C2B] text-white' },
               { id: 'bookings', label: 'Bookings & Sessions', icon: Calendar, hasChevron: true, badge: ((scheduledCalls.length || upcomingBookings.length) + (priorityDms?.pendingCount || pendingRequests.length)) || null },
               { id: 'my_students', label: 'My Students', icon: GraduationCap, hasChevron: false },
+              { id: 'form_leads', label: 'Form Leads', icon: FileText, hasChevron: false },
               { id: 'services', label: 'Services', icon: Grid, hasChevron: false, badge: services.length || null },
               { id: 'calendar', label: 'Calendar & Slots', icon: CalendarDays, hasChevron: false },
               { id: 'profile', label: 'Profile', icon: Users, hasChevron: true },
@@ -3260,6 +3262,7 @@ const UnicoachDashboardPage = () => {
                   { id: 'notifications', label: 'Announcements & Alerts', icon: Bell },
                   { id: 'bookings', label: 'Bookings & Sessions', icon: Calendar },
                   { id: 'my_students', label: 'My Students', icon: GraduationCap },
+                  { id: 'form_leads', label: 'Form Leads', icon: FileText },
                   { id: 'services', label: 'Services', icon: Grid },
                   { id: 'calendar', label: 'Calendar & Slots', icon: CalendarDays },
                   { id: 'profile', label: 'Profile', icon: Users },
@@ -6974,6 +6977,12 @@ const UnicoachDashboardPage = () => {
         {activeTab === 'my_students' && (
           <div className="animate-in fade-in duration-200">
             <MentorReferrals handle={mentor?.handle || handle} />
+          </div>
+        )}
+
+        {activeTab === 'form_leads' && (
+          <div className="animate-in fade-in duration-200">
+            <MentorFormLeads handle={mentor?.handle || handle} />
           </div>
         )}
 

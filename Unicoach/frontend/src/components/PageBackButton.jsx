@@ -9,7 +9,7 @@ const PageBackButton = () => {
   const navigate = useNavigate();
   const hidden = pathname === '/'
     || new URLSearchParams(search).get('embed') === 'true'
-    || /dashboard|^\/(login|signin|signup|register|reset-password)/.test(pathname);
+    || /dashboard|^\/(login|signin|signup|register|reset-password|f\/)/.test(pathname);
   const ref = useRef(null);
 
   // If the page puts something (a breadcrumb, a badge) where the pill sits, nudge that row

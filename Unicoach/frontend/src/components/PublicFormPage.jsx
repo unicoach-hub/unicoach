@@ -56,7 +56,8 @@ const PublicFormPage = () => {
       const res = await fetch(`${apiUrl}/api/forms/${slug}/submit`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ data: formData })
+        // ?ref=<mentor handle> credits the mentor who shared this link
+        body: JSON.stringify({ data: formData, ref: new URLSearchParams(window.location.search).get('ref') || undefined })
       });
       const result = await res.json();
       if (!res.ok) throw new Error(result.message || 'Submission failed');
@@ -92,41 +93,36 @@ const PublicFormPage = () => {
   // Success state
   if (submitted) return (
     <div className="pf-container">
-      <div className="pf-card pf-success-card">
-        <div className="pf-success-icon">✅</div>
-        <h2>Submitted Successfully!</h2>
-        <p>{successMsg}</p>
+      <div className="pf-card pf-head pf-success-card">
+        <h1 className="pf-title">{formConfig?.headerTitle || formConfig?.name}</h1>
+        <p className="pf-description">{successMsg}</p>
+        <button type="button" className="pf-link" onClick={() => { setFormData({}); setSubmitted(false); }}>Submit another response</button>
       </div>
+      <p className="pf-footer">UniCoach · Study abroad, guided by seniors</p>
     </div>
   );
 
   return (
     <div className="pf-container">
-      <div className="pf-card">
-        {/* Header */}
-        {formConfig.headerImage && (
-          <img src={formConfig.headerImage} alt="" className="pf-header-image" />
-        )}
+      {/* Header card: banner image, then title and description under the brand stripe */}
+      <div className="pf-card pf-head">
+        {formConfig.headerImage && <img src={formConfig.headerImage} alt="" className="pf-header-image" />}
         <div className="pf-header">
-          <div className="pf-brand">
-            <span className="pf-brand-icon">🎓</span>
-            <span className="pf-brand-text">UniCoach</span>
-          </div>
           <h1 className="pf-title">{formConfig.headerTitle || formConfig.name}</h1>
-          {formConfig.headerDescription && (
-            <p className="pf-description">{formConfig.headerDescription}</p>
-          )}
+          {formConfig.headerDescription && <p className="pf-description">{formConfig.headerDescription}</p>}
+          <p className="pf-required-note"><span className="pf-required">*</span> Indicates required question</p>
         </div>
+      </div>
 
         {/* Form */}
         <form onSubmit={handleSubmit} className="pf-form">
           {formConfig.fields.map((field, idx) => field.type === 'heading' ? (
-            <div key={idx} className="pf-section">
+            <div key={idx} className="pf-card pf-section">
               <h3>{field.label}</h3>
               {field.helpText && <p>{field.helpText}</p>}
             </div>
           ) : (
-            <div key={idx} className="pf-field">
+            <div key={idx} className={`pf-card pf-field${error && error.includes(`"${field.label}"`) ? ' pf-field-error' : ''}`}>
               {field.type !== 'consent' && (
                 <label className="pf-label">
                   {field.label}
@@ -204,15 +200,15 @@ const PublicFormPage = () => {
 
           {error && <div className="pf-error">{error}</div>}
 
-          <button type="submit" className="pf-submit" disabled={submitting}>
-            {submitting ? 'Submitting...' : 'Submit'}
-          </button>
+          <div className="pf-actions">
+            <button type="submit" className="pf-submit" disabled={submitting}>
+              {submitting ? 'Submitting…' : 'Submit'}
+            </button>
+            <button type="button" className="pf-link" onClick={() => { setFormData({}); setError(''); }}>Clear form</button>
+          </div>
         </form>
 
-        <div className="pf-footer">
-          Powered by <strong>UniCoach</strong>
-        </div>
-      </div>
+      <p className="pf-footer">Never submit passwords through this form. · <strong>UniCoach</strong></p>
     </div>
   );
 };

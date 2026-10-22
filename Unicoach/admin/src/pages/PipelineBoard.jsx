@@ -290,6 +290,9 @@ const PipelineBoard = () => {
                               <PhoneOutlined style={{ fontSize: 11 }} /> {phone}
                             </div>
                           )}
+                          {sub.referrerHandle && (
+                            <span className="nx-status nx-status--accent" style={{ height: 22, fontSize: 11, marginBottom: 4 }}>Mentor: @{sub.referrerHandle}</span>
+                          )}
                           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 8, paddingTop: 8, borderTop: '1px solid var(--ux-line-2)' }}>
                             <span style={{ fontSize: 11, color: 'var(--ux-text-3)', fontWeight: 500 }}>
                               <CalendarOutlined style={{ marginRight: 4 }} />
@@ -329,6 +332,11 @@ const PipelineBoard = () => {
               </h3>
               <span className="nx-status nx-status--accent">{selectedCard.currentStage}</span>
             </div>
+            {selectedCard.referrerHandle && (
+              <p style={{ fontSize: 13, color: 'var(--ux-text-2)', margin: '-8px 0 16px' }}>
+                Referred by mentor <b>@{selectedCard.referrerHandle}</b> through their share link
+              </p>
+            )}
 
             {/* All form data */}
             <div style={{ marginBottom: 24 }}>

@@ -17,9 +17,8 @@ export const getFrontendUrl = () => {
     if (hostname === 'localhost' || hostname === '127.0.0.1') {
       return `${protocol}//${hostname}:5173`;
     }
-    // 3. Production domain check: admin.unicoach.com -> www.unicoach.com (the site's canonical host)
-    const rootDomain = hostname.replace(/^admin\./, '');
-    return rootDomain === 'unicoach.com' ? 'https://www.unicoach.com' : `${protocol}//${rootDomain}`;
+    // 3. Anywhere else (admin.unicoach.com, the admin's vercel.app preview…) links go to the public
+    //    site. Using the admin's own host made shared /f/ links open the admin instead of the form.
   }
 
   return 'https://www.unicoach.com';
