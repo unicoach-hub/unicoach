@@ -25,7 +25,7 @@
 
 /* Header card */
 .pf-head { padding: 0; overflow: hidden; border-top: 10px solid var(--pf-brand); }
-.pf-header-image { display: block; width: 100%; max-height: 220px; object-fit: contain; background: #fff; padding: 20px 24px 0; }
+.pf-header-image { display: block; width: auto; max-width: min(260px, 70%); max-height: 72px; object-fit: contain; margin: 22px 24px 0; }
 .pf-header { padding: 20px 24px 22px; }
 .pf-title { font-size: 30px; line-height: 1.25; font-weight: 600; margin: 0; color: #202124; letter-spacing: -0.01em; }
 .pf-description { margin: 10px 0 0; font-size: 14.5px; line-height: 1.6; color: #3c4043; white-space: pre-line; }
