@@ -255,6 +255,7 @@ const BlogsPage = lazy(() => import('./app/blogs/page'));
 const NotFound = lazy(() => import('./components/NotFound'));
 const ContactPage = lazy(() => import('./components/ContactPage'));
 const BookConsultationPage = lazy(() => import('./pages/BookConsultationPage'));
+const ServicesPage = lazy(() => import('./pages/ServicesPage'));
 const TeamPage = lazy(() => import('./pages/TeamPage'));
 const PublicFormPage = lazy(() => import('./components/PublicFormPage'));
 const PublicBookingPage = lazy(() => import('./components/PublicBookingPage'));
@@ -893,6 +894,7 @@ const App = () => {
             {/* Contact / Book Consultation Portals */}
             <Route path="/book-consultation" element={<BookConsultationPage />} />
             <Route path="/book-consultation/confirm" element={<BookConsultationPage />} />
+            <Route path="/services" element={<ServicesPage />} />
             <Route path="/contact" element={<ContactPage />} />
             <Route path="/team" element={<TeamPage />} />
 

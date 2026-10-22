@@ -1,5 +1,5 @@
-import { useEffect, useMemo, useState } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { Link, useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import { ArrowLeft, ArrowRight, CalendarDays, Check, ChevronDown, ChevronLeft, ChevronRight, Clock, Compass, FileText, Loader2, Map, MessageCircle, ShieldCheck } from 'lucide-react';
 import { API_BASE_URL } from '../config';
 import { openRazorpayCheckout } from '../unicoach/utils/razorpayCheckout';
@@ -35,10 +35,11 @@ const BookConsultationPage = () => {
   const location = useLocation();
   const confirmStep = location.pathname.endsWith('/confirm');
   const picked = location.state?.pick;
+  const [params] = useSearchParams();
 
   const [cfg, setCfg] = useState(null);
   const [loadError, setLoadError] = useState('');
-  const [service, setService] = useState(picked?.service || '');
+  const [service, setService] = useState(picked?.service || params.get('service') || '');
   const [date, setDate] = useState(picked?.date || '');
   const [time, setTime] = useState(picked?.time || '');
   const [month, setMonth] = useState('');
@@ -77,6 +78,7 @@ const BookConsultationPage = () => {
         <p className="mt-3 text-[15px] text-slate-600 max-w-xl mx-auto">
           A {cfg?.durationMin || 30}-minute 1:1 call with our team, ₹{cfg?.price || 500}. Calls run 1 to 3 PM and 8 to 9 PM, India time.
         </p>
+        <Link to="/services" className="mt-3 inline-flex items-center gap-1.5 text-[13.5px] font-semibold text-[#DE5C2B] hover:underline">Not sure which service? See all services <ArrowRight size={14} /></Link>
       </div>
 
       <div className="mt-8 grid lg:grid-cols-[320px_1fr] rounded-[28px] bg-white border border-slate-200 shadow-[0_30px_80px_-40px_rgba(15,23,42,0.35)] overflow-hidden">
@@ -130,8 +132,34 @@ const SidePanel = ({ cfg }) => (
   </aside>
 );
 
+const StepLabel = ({ n, label, done }) => (
+  <p className="flex items-center gap-2 text-[11px] font-bold tracking-[0.14em] uppercase text-slate-400">
+    <span className={`w-5 h-5 rounded-full grid place-items-center text-[10.5px] tracking-normal ${done ? 'bg-emerald-500 text-white' : 'bg-slate-100 text-slate-500'}`}>{done ? <Check size={11} strokeWidth={3} /> : n}</span>
+    {label}
+  </p>
+);
+
+// Highlight a step the student skipped: scroll to it and pulse an orange ring for a moment
+const flash = (el) => {
+  if (!el) return;
+  el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  el.classList.remove('bc-flash');
+  void el.offsetWidth; // restart the animation
+  el.classList.add('bc-flash');
+};
+
 const Picker = ({ cfg, service, setService, date, setDate, time, setTime, month, setMonth, onNext }) => {
   const [open, setOpen] = useState(false);
+  const serviceRef = useRef(null);
+  const dayRef = useRef(null);
+  const timeRef = useRef(null);
+  // The button is never dead: it takes the student to whatever is still missing
+  const next = () => {
+    if (!service) { flash(serviceRef.current); setOpen(true); return; }
+    if (!date) { flash(dayRef.current); return; }
+    if (!time) { flash(timeRef.current); return; }
+    onNext();
+  };
   const byDate = useMemo(() => Object.fromEntries(cfg.days.map((d) => [d.date, d.slots])), [cfg]);
   const months = useMemo(() => [...new Set(cfg.days.map((d) => monthKey(d.date)))], [cfg]);
   const svc = cfg.services.find((s) => s.key === service);
@@ -153,8 +181,9 @@ const Picker = ({ cfg, service, setService, date, setDate, time, setTime, month,
   return (
     <div>
       {/* Service */}
-      <p className="text-[11px] font-bold tracking-[0.14em] text-slate-400 uppercase">1 · Service</p>
-      <div className="relative mt-2">
+      <style>{`@keyframes bcFlash{0%,100%{box-shadow:0 0 0 0 rgba(222,92,43,0)}30%,70%{box-shadow:0 0 0 6px rgba(222,92,43,.35)}}.bc-flash{animation:bcFlash 1.1s ease 2;border-radius:18px}`}</style>
+      <StepLabel n={1} label="Service" done={!!service} />
+      <div ref={serviceRef} className="relative mt-2">
         <button type="button" onClick={() => setOpen((v) => !v)}
           className={`w-full flex items-center justify-between gap-3 rounded-2xl border px-4 py-3 text-left cursor-pointer transition-colors ${open ? 'border-[#DE5C2B] ring-4 ring-orange-100' : 'border-slate-200 hover:border-slate-300'}`}>
           <span>
@@ -183,9 +212,9 @@ const Picker = ({ cfg, service, setService, date, setDate, time, setTime, month,
 
       <div className="mt-6 grid md:grid-cols-[1fr_230px] gap-6">
         {/* Calendar */}
-        <div>
+        <div ref={dayRef} className="p-1 -m-1">
           <div className="flex items-center justify-between">
-            <p className="text-[11px] font-bold tracking-[0.14em] text-slate-400 uppercase">2 · Day</p>
+            <StepLabel n={2} label="Day" done={!!date} />
             <div className="flex items-center gap-2">
               <span className="text-[14px] font-semibold text-slate-900">{new Date(`${month}-01T12:00:00Z`).toLocaleDateString('en-IN', { month: 'long', year: 'numeric' })}</span>
               <button type="button" aria-label="Previous month" disabled={mi <= 0} onClick={() => setMonth(months[mi - 1])} className="w-8 h-8 rounded-full border border-slate-200 grid place-items-center disabled:opacity-30 cursor-pointer"><ChevronLeft size={15} /></button>
@@ -200,7 +229,7 @@ const Picker = ({ cfg, service, setService, date, setDate, time, setTime, month,
               const sel = d === date;
               return (
                 <button key={d} type="button" disabled={!open} onClick={() => setDate(d)}
-                  className={`aspect-square rounded-xl flex flex-col items-center justify-center text-[14px] font-semibold transition-all ${
+                  className={`no-shine aspect-square rounded-xl flex flex-col items-center justify-center text-[14px] font-semibold transition-all ${
                     sel ? 'bg-[#DE5C2B] text-white shadow-[0_10px_24px_-10px_rgba(222,92,43,0.8)]'
                       : open ? 'border border-slate-200 text-slate-900 hover:border-[#DE5C2B] cursor-pointer' : 'text-slate-300 cursor-default'}`}>
                   {Number(d.slice(8))}
@@ -212,8 +241,8 @@ const Picker = ({ cfg, service, setService, date, setDate, time, setTime, month,
         </div>
 
         {/* Times */}
-        <div>
-          <p className="text-[11px] font-bold tracking-[0.14em] text-slate-400 uppercase">3 · Time</p>
+        <div ref={timeRef} className="p-1 -m-1">
+          <StepLabel n={3} label="Time" done={!!time} />
           {!date && <p className="mt-3 text-[13px] text-slate-500">Pick a day to see the open times.</p>}
           {date && (
             <>
@@ -227,7 +256,7 @@ const Picker = ({ cfg, service, setService, date, setDate, time, setTime, month,
                       {list.length === 0 && <span className="col-span-2 text-[12px] text-slate-400">Fully booked</span>}
                       {list.map((t) => (
                         <button key={t} type="button" onClick={() => setTime(t)}
-                          className={`h-10 rounded-full border text-[13px] font-semibold cursor-pointer transition-colors ${t === time ? 'bg-[#111] border-[#111] text-white' : 'border-slate-200 text-slate-800 hover:border-[#DE5C2B]'}`}>
+                          className={`no-shine h-10 rounded-full border text-[13px] font-semibold cursor-pointer transition-colors ${t === time ? 'bg-[#111] border-[#111] text-white' : 'border-slate-200 text-slate-800 hover:border-[#DE5C2B]'}`}>
                           {to12h(t)}
                         </button>
                       ))}
@@ -240,10 +269,10 @@ const Picker = ({ cfg, service, setService, date, setDate, time, setTime, month,
         </div>
       </div>
 
-      <button type="button" disabled={!ready} onClick={onNext}
-        className="mt-7 w-full h-14 rounded-full bg-[#DE5C2B] hover:bg-[#C04A1D] disabled:bg-slate-200 disabled:text-slate-400 text-white font-semibold text-[15px] flex items-center justify-between px-6 transition-colors cursor-pointer disabled:cursor-not-allowed">
-        <span>{ready ? `Book ${longDate(date)}, ${to12h(time)}` : !service ? 'Select a service' : !date ? 'Pick a day' : 'Pick a time'}</span>
-        <span className="flex items-center gap-2"><span className="px-2.5 py-0.5 rounded-full bg-white/20 text-[12.5px]">₹{cfg.price}</span><ArrowRight size={17} /></span>
+      <button type="button" onClick={next}
+        className={`no-shine mt-7 w-full h-14 rounded-full font-semibold text-[15px] flex items-center justify-between px-6 transition-colors cursor-pointer ${ready ? 'bg-[#DE5C2B] hover:bg-[#C04A1D] text-white' : 'bg-[#FFE7DC] text-[#C04A1D] hover:bg-[#FFDCCB]'}`}>
+        <span>{ready ? `Book ${longDate(date)}, ${to12h(time)}` : !service ? 'Step 1: choose a service ↑' : !date ? 'Step 2: pick a day ↑' : 'Step 3: pick a time ↑'}</span>
+        <span className="flex items-center gap-2"><span className={`px-2.5 py-0.5 rounded-full text-[12.5px] ${ready ? 'bg-white/20' : 'bg-white'}`}>₹{cfg.price}</span><ArrowRight size={17} /></span>
       </button>
       <p className="mt-2 text-[12px] text-slate-500 text-center">Next you add a few details and pay ₹{cfg.price} to confirm your slot.</p>
     </div>
@@ -256,15 +285,27 @@ const ConfirmStep = ({ cfg, pick }) => {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
   const [doneRef, setDoneRef] = useState('');
+  const [fieldErr, setFieldErr] = useState({});
   const svc = cfg?.services.find((s) => s.key === pick.service);
   const price = cfg?.price || 500;
-  const set = (k) => (e) => setForm((f) => ({ ...f, [k]: e.target.value }));
+  const set = (k) => (e) => { setForm((f) => ({ ...f, [k]: e.target.value })); setFieldErr((x) => ({ ...x, [k]: '' })); };
+  const err = (k) => (fieldErr[k] ? <span className="block mt-1 text-[12px] text-red-600">{fieldErr[k]}</span> : null);
 
   const pay = async (e) => {
     e.preventDefault();
     setError('');
-    if (!form.name.trim() || !/^\S+@\S+\.\S+$/.test(form.email) || form.phone.replace(/\D/g, '').length < 10) {
-      setError('Please add your name, a valid email and a 10-digit phone number.');
+    // Take the student straight to the first field that still needs fixing
+    const bad = {
+      ...(!form.name.trim() ? { name: 'Please add your full name' } : {}),
+      ...(form.phone.replace(/\D/g, '').length < 10 ? { phone: 'Add a 10-digit phone number' } : {}),
+      ...(!/^\S+@\S+\.\S+$/.test(form.email) ? { email: 'Add a valid email' } : {}),
+    };
+    setFieldErr(bad);
+    const first = Object.keys(bad)[0];
+    if (first) {
+      const el = document.querySelector(`[name="${first}"]`);
+      flash(el);
+      el?.focus({ preventScroll: true });
       return;
     }
     setBusy(true);
@@ -318,6 +359,7 @@ const ConfirmStep = ({ cfg, pick }) => {
   const input = 'w-full h-12 rounded-xl border border-slate-200 px-4 text-[14.5px] outline-none focus:border-[#DE5C2B] focus:ring-4 focus:ring-orange-100';
   return (
     <Shell>
+      <style>{`@keyframes bcFlash{0%,100%{box-shadow:0 0 0 0 rgba(222,92,43,0)}30%,70%{box-shadow:0 0 0 6px rgba(222,92,43,.35)}}.bc-flash{animation:bcFlash 1.1s ease 2}`}</style>
       <div className="max-w-[640px] mx-auto">
         <button type="button" onClick={() => navigate('/book-consultation', { state: { pick } })} className="inline-flex items-center gap-1.5 text-[13px] font-semibold text-slate-600 hover:text-[#DE5C2B] cursor-pointer">
           <ArrowLeft size={15} /> Back to calendar
@@ -333,17 +375,17 @@ const ConfirmStep = ({ cfg, pick }) => {
 
           <p className="mt-6 text-[11px] font-bold tracking-[0.14em] text-slate-400 uppercase">Your details</p>
           <div className="mt-3 grid sm:grid-cols-2 gap-4">
-            <label className="block"><span className="text-[13px] font-semibold text-slate-700">Full name</span><input className={`${input} mt-1.5`} value={form.name} onChange={set('name')} autoComplete="name" /></label>
-            <label className="block"><span className="text-[13px] font-semibold text-slate-700">Phone (WhatsApp)</span><input className={`${input} mt-1.5`} value={form.phone} onChange={set('phone')} placeholder="+91 …" inputMode="tel" autoComplete="tel" /></label>
+            <label className="block"><span className="text-[13px] font-semibold text-slate-700">Full name</span><input name="name" className={`${input} mt-1.5 ${fieldErr.name ? 'border-red-400' : ''}`} value={form.name} onChange={set('name')} autoComplete="name" />{err('name')}</label>
+            <label className="block"><span className="text-[13px] font-semibold text-slate-700">Phone (WhatsApp)</span><input name="phone" className={`${input} mt-1.5 ${fieldErr.phone ? 'border-red-400' : ''}`} value={form.phone} onChange={set('phone')} placeholder="+91 …" inputMode="tel" autoComplete="tel" />{err('phone')}</label>
           </div>
-          <label className="block mt-4"><span className="text-[13px] font-semibold text-slate-700">Email</span><input className={`${input} mt-1.5`} type="email" value={form.email} onChange={set('email')} autoComplete="email" /></label>
+          <label className="block mt-4"><span className="text-[13px] font-semibold text-slate-700">Email</span><input name="email" className={`${input} mt-1.5 ${fieldErr.email ? 'border-red-400' : ''}`} type="email" value={form.email} onChange={set('email')} autoComplete="email" />{err('email')}</label>
           <label className="block mt-4"><span className="text-[13px] font-semibold text-slate-700">Anything we should know <span className="font-normal text-slate-400">(optional)</span></span>
             <textarea className={`${input} mt-1.5 h-28 py-3 resize-none`} value={form.notes} onChange={set('notes')} placeholder="Country, course, marks, budget, questions…" />
           </label>
 
           {error && <p className="mt-4 text-[13px] text-red-600">{error}</p>}
           <button type="submit" disabled={busy || !cfg}
-            className="mt-6 w-full h-14 rounded-full bg-[#DE5C2B] hover:bg-[#C04A1D] disabled:opacity-60 text-white font-semibold text-[15px] flex items-center justify-center gap-2 cursor-pointer">
+            className="no-shine mt-6 w-full h-14 rounded-full bg-[#DE5C2B] hover:bg-[#C04A1D] disabled:opacity-60 text-white font-semibold text-[15px] flex items-center justify-center gap-2 cursor-pointer">
             {busy ? <><Loader2 size={17} className="animate-spin" /> Processing…</> : <>Pay ₹{price} &amp; confirm</>}
           </button>
           <p className="mt-3 flex items-center justify-center gap-1.5 text-[12px] text-slate-500"><ShieldCheck size={13} /> Secure payment by Razorpay: UPI, cards, net banking. See our <Link to="/refund-policy" className="underline">refund policy</Link>.</p>

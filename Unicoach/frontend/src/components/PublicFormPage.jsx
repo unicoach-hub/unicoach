@@ -46,6 +46,10 @@ const PublicFormPage = () => {
       const empty = v === undefined || v === null || (Array.isArray(v) ? v.length === 0 : v.toString().trim() === '' || (field.type === 'consent' && v !== 'Yes'));
       if (field.required && empty) {
         setError(`"${field.label}" is required`);
+        // Like Google Forms: jump to the question that still needs an answer
+        const card = document.querySelector(`[data-field="${CSS.escape(field.label)}"]`);
+        card?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        card?.querySelector('input, textarea, select, button')?.focus({ preventScroll: true });
         return;
       }
     }
@@ -122,7 +126,7 @@ const PublicFormPage = () => {
               {field.helpText && <p>{field.helpText}</p>}
             </div>
           ) : (
-            <div key={idx} className={`pf-card pf-field${error && error.includes(`"${field.label}"`) ? ' pf-field-error' : ''}`}>
+            <div key={idx} data-field={field.label} className={`pf-card pf-field${error && error.includes(`"${field.label}"`) ? ' pf-field-error' : ''}`}>
               {field.type !== 'consent' && (
                 <label className="pf-label">
                   {field.label}

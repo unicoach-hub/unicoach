@@ -36,6 +36,7 @@
 .pf-field { transition: border-color .15s, box-shadow .15s; }
 .pf-field:focus-within { border-left: 6px solid var(--pf-brand); padding-left: 19px; }
 .pf-field-error { border-color: #d93025; }
+.pf-field-error .pf-label::after { content: 'This is a required question'; display: block; margin-top: 4px; font-size: 12.5px; font-weight: 400; color: #d93025; }
 .pf-label { display: block; font-size: 16px; font-weight: 500; color: #202124; margin-bottom: 4px; }
 .pf-required { color: #d93025; margin-left: 4px; }
 .pf-help { margin: 0 0 6px; font-size: 13px; color: #5f6368; }

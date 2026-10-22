@@ -1,7 +1,7 @@
 const crypto = require('crypto');
 const Consultation = require('../models/Consultation');
 const {
-  PRICE_INR, DURATION_MIN, SERVICES, SLOT_TIMES, BOOK_AHEAD_DAYS, PENDING_HOLD_MIN, istToDate,
+  GROUPS, PRICE_INR, DURATION_MIN, SERVICES, SLOT_TIMES, BOOK_AHEAD_DAYS, PENDING_HOLD_MIN, istToDate,
 } = require('../config/consultations');
 const { createRazorpayOrder, verifyRazorpayPayment } = require('../unicoach/services/paymentService');
 const { sendEmail } = require('../utils/email');
@@ -41,7 +41,7 @@ exports.getConfig = async (req, res) => {
       const slots = SLOT_TIMES.filter((t) => istToDate(date, t).getTime() > earliest && !takenSet.has(`${date} ${t}`));
       days.push({ date, slots });
     }
-    return res.json({ price: PRICE_INR, durationMin: DURATION_MIN, services: SERVICES, slotTimes: SLOT_TIMES, days });
+    return res.json({ price: PRICE_INR, durationMin: DURATION_MIN, groups: GROUPS, services: SERVICES, slotTimes: SLOT_TIMES, days });
   } catch (err) {
     console.error('Consultation config error:', err);
     return res.status(500).json({ message: 'Could not load open slots' });
