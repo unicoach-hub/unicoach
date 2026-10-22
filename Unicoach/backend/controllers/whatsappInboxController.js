@@ -79,8 +79,21 @@ exports.listConversations = async (req, res) => {
       { $sort: { lastAt: -1 } },
       { $limit: 300 },
     ]);
-    const flagged = await require('../models/WhatsappContact').find({ phone: { $in: rows.map((r) => r._id) } }).select('phone needsAgent botPausedUntil').lean();
+    const flagged = await require('../models/WhatsappContact').find({ phone: { $in: rows.map((r) => r._id) } }).select('phone needsAgent botPausedUntil clearedAt').lean();
     const contactOf = Object.fromEntries(flagged.map((c) => [c.phone, c]));
+    // A cleared chat leaves the list until a new message arrives after the clear
+    const cleared = rows.filter((r) => contactOf[r._id]?.clearedAt && new Date(r.lastAt) <= new Date(contactOf[r._id].clearedAt));
+    if (cleared.length) {
+      const keep = new Set(cleared.map((r) => r._id));
+      for (let i = rows.length - 1; i >= 0; i -= 1) if (keep.has(rows[i]._id)) rows.splice(i, 1);
+    }
+    // Unread counts only messages after the clear
+    for (const r of rows) {
+      const since = contactOf[r._id]?.clearedAt;
+      if (since && r.unread) {
+        r.unread = await WhatsappEvent.countDocuments({ kind: 'message', phone: r._id, direction: 'in', readByAdmin: { $ne: true }, at: { $gt: since } });
+      }
+    }
     const leadIds = rows.map((r) => r.lead).filter(Boolean);
     const leads = await Lead.find({ _id: { $in: leadIds } }).select('name').lean();
     const leadName = Object.fromEntries(leads.map((l) => [String(l._id), l.name]));
@@ -110,7 +123,8 @@ exports.listConversations = async (req, res) => {
 exports.getConversation = async (req, res) => {
   try {
     const phone = normalisePhone(req.params.phone);
-    const messages = await WhatsappEvent.find({ kind: 'message', phone }).sort({ at: 1 }).limit(500).lean();
+    const clearedAt = (await require('../models/WhatsappContact').findOne({ phone }).select('clearedAt').lean())?.clearedAt;
+    const messages = await WhatsappEvent.find({ kind: 'message', phone, ...(clearedAt ? { at: { $gt: clearedAt } } : {}) }).sort({ at: 1 }).limit(500).lean();
     const outIds = messages.filter((m) => m.direction === 'out' && m.waMessageId).map((m) => m.waMessageId);
     const statuses = await WhatsappEvent.find({ kind: 'status', waMessageId: { $in: outIds } }).select('waMessageId status error').lean();
     const best = {};
@@ -119,7 +133,8 @@ exports.getConversation = async (req, res) => {
       if (!cur || (STATUS_RANK[s.status] ?? -1) > (STATUS_RANK[cur.status] ?? -1) || s.status === 'failed') best[s.waMessageId] = s;
     }
     await WhatsappEvent.updateMany({ kind: 'message', phone, direction: 'in', readByAdmin: { $ne: true } }, { $set: { readByAdmin: true } });
-    const lastIn = [...messages].reverse().find((m) => m.direction === 'in');
+    // The 24h reply window is Meta's, so use the latest reply even if the chat was cleared
+    const lastIn = await WhatsappEvent.findOne({ kind: 'message', phone, direction: 'in' }).sort({ at: -1 }).lean();
     const lead = await findLead(phone);
     const contact = await require('../models/WhatsappContact').findOne({ phone }).lean();
     return res.json({
@@ -248,5 +263,28 @@ exports.setBot = async (req, res) => {
   } catch (err) {
     console.error('[WhatsApp inbox] bot toggle failed:', err);
     return res.status(500).json({ message: 'Could not update' });
+  }
+};
+
+/** POST /api/admin/whatsapp/conversations/:phone/clear — start a fresh chat with this number.
+ *  Hides earlier messages from the inbox and resets the chatbot for them. Nothing is deleted,
+ *  so dashboard numbers stay right; the student's own WhatsApp is not touched. */
+exports.clearConversation = async (req, res) => {
+  try {
+    const phone = normalisePhone(req.params.phone);
+    if (!phone) return res.status(400).json({ message: 'Invalid number' });
+    await require('../models/WhatsappContact').updateOne(
+      { phone },
+      {
+        $set: { clearedAt: new Date(), needsAgent: false, waitingNode: null, waitingAttempts: 0, attributes: {} },
+        $unset: { flow: '', botPausedUntil: '', lastDefaultAt: '', needsAgentAt: '' },
+      },
+      { upsert: true },
+    );
+    await WhatsappEvent.updateMany({ kind: 'message', phone, direction: 'in', readByAdmin: { $ne: true } }, { $set: { readByAdmin: true } });
+    return res.json({ ok: true });
+  } catch (err) {
+    console.error('[WhatsApp inbox] clear failed:', err);
+    return res.status(500).json({ message: 'Could not clear the chat' });
   }
 };

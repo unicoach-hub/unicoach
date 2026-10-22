@@ -182,7 +182,7 @@ const ServicesPage = () => {
           {error && <p className="mt-4 text-red-600 text-sm">{error}</p>}
           {!cfg && !error && <div className="py-16 flex justify-center"><Loader2 className="w-6 h-6 animate-spin text-[#DE5C2B]" /></div>}
 
-          <div className="mt-6 grid lg:grid-cols-2 gap-x-6 gap-y-10">
+          <div className="mt-6 space-y-10">
             {groups.map((g) => {
               const list = services.filter((s) => s.group === g.key);
               const Icon = GROUP_ICON[g.key] || Compass;
@@ -192,7 +192,7 @@ const ServicesPage = () => {
                     <span className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white border border-orange-100 text-[12px] font-bold tracking-[0.1em] text-[#C04A1D] uppercase"><Icon size={14} /> {g.label}</span>
                     <span className="w-6 h-6 rounded-full bg-slate-100 text-[11px] font-bold text-slate-600 grid place-items-center">{list.length}</span>
                   </div>
-                  <div className="mt-3 grid sm:grid-cols-2 gap-3">
+                  <div className="mt-3 flex flex-col md:flex-row gap-3 [&>*]:flex-1 [&>*]:min-w-0">
                     {list.map((s) => <ServiceCard key={s.key} s={s} n={numberOf[s.key]} price={cfg.price} />)}
                   </div>
                 </div>

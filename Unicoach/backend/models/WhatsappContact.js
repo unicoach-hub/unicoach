@@ -13,6 +13,8 @@ const whatsappContactSchema = new mongoose.Schema({
   // Answers collected by Question steps (name, email, dreamCountry, course …), and retries on a bad answer
   attributes: { type: Map, of: String, default: {} },
   waitingAttempts: { type: Number, default: 0 },
+  // Admin pressed "Clear chat": the inbox shows only messages after this (history stays for reports)
+  clearedAt: { type: Date },
 }, { timestamps: true });
 
 module.exports = mongoose.model('WhatsappContact', whatsappContactSchema);

@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Input, Button, Empty, Spin, message, Modal, Select, Tooltip, Badge } from 'antd';
-import { SearchOutlined, SendOutlined, WhatsAppOutlined, FileTextOutlined, PlusOutlined, ClockCircleOutlined, CheckOutlined, ExclamationCircleOutlined, UserOutlined } from '@ant-design/icons';
+import { Input, Button, Empty, Spin, message, Modal, Select, Tooltip, Badge, Popconfirm } from 'antd';
+import { SearchOutlined, SendOutlined, WhatsAppOutlined, FileTextOutlined, PlusOutlined, ClockCircleOutlined, CheckOutlined, ExclamationCircleOutlined, UserOutlined, ClearOutlined } from '@ant-design/icons';
 import Header from '../components/Header';
 import API from '../api/axios';
 
@@ -251,6 +251,24 @@ const WhatsappInbox = () => {
                           loadList();
                         }}>{chat.botPausedUntil ? 'Resume bot' : 'Pause bot'}</Button>
                       </Tooltip>
+                      <Popconfirm
+                        title="Clear this chat?"
+                        description={<div style={{ maxWidth: 260 }}>Old messages leave your inbox and the chatbot starts fresh for this number. The student&apos;s own WhatsApp is not changed.</div>}
+                        okText="Clear chat"
+                        okButtonProps={{ danger: true }}
+                        onConfirm={async () => {
+                          try {
+                            await API.post(`/admin/whatsapp/conversations/${encodeURIComponent(active)}/clear`);
+                            message.success('Chat cleared');
+                            setActive(null);
+                            loadList();
+                          } catch {
+                            message.error('Could not clear the chat');
+                          }
+                        }}
+                      >
+                        <Button size="small" danger icon={<ClearOutlined />}>Clear chat</Button>
+                      </Popconfirm>
                     <span style={{ fontSize: 12, color: chat.windowOpen ? '#15803d' : '#b45309', display: 'flex', alignItems: 'center', gap: 6 }}>
                       <ClockCircleOutlined />
                       {chat.windowOpen ? `Reply window open till ${timeLabel(chat.windowEndsAt)}` : 'Reply window closed: template only'}
