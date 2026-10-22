@@ -95,6 +95,11 @@ exports.updateSettings = async (req, res) => {
     });
   } catch (err) {
     console.error('Error updating settings:', err);
+    // A bad value in one field (wrong type / not allowed) should say which field, not just "Server error"
+    if (err.name === 'ValidationError' || err.name === 'CastError') {
+      const fields = Object.keys(err.errors || {}).join(', ') || err.path || '';
+      return res.status(400).json({ message: `Could not save: invalid value${fields ? ` in ${fields}` : ''}` });
+    }
     return res.status(500).json({ error: 'Server error' });
   }
 };

@@ -39,7 +39,11 @@ exports.getAllLeads = async (req, res) => {
     // Sidebar sections: Converted and Follow-up are filtered views of the same leads
     if (view === 'converted') filter.status = 'converted';
     // Boxes split leads by Status only, so they add up to the total
-    if (view === 'followup') filter.status = 'fifty_fifty';
+    // Follow-up page: every open lead that has a follow-up date set
+    if (view === 'followup') {
+      filter.nextFollowUpDate = { $ne: null };
+      filter.status = { $nin: ['converted', 'closed', 'not_interested'] };
+    }
     if (view === 'interested') filter.status = 'interested';
     if (view === 'not_interested') filter.status = 'not_interested';
     if (verified !== undefined) filter.verified = verified === 'true';

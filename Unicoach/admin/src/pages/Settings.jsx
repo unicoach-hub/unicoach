@@ -159,10 +159,34 @@ const Settings = () => {
       });
 
       fetchSettings();
-    } catch {
-      message.error('Failed to save settings');
+    } catch (e) {
+      message.error(e.response?.data?.message || e.response?.data?.error || 'Failed to save settings');
     } finally {
       setSaving(false);
+    }
+  };
+
+  // Save just the Meta WABA card (the big "Save settings" button saves every section)
+  const [savingWaba, setSavingWaba] = useState(false);
+  const saveWaba = async () => {
+    setSavingWaba(true);
+    try {
+      const { metaAppId, metaAppSecret, wabaPhoneNumberId, wabaAccessToken } = formState;
+      const { data } = await API.put('/admin/settings-manage', {
+        metaAppId: (metaAppId || '').trim(),
+        metaAppSecret: (metaAppSecret || '').trim(),
+        wabaPhoneNumberId: (wabaPhoneNumberId || '').trim(),
+        wabaAccessToken: (wabaAccessToken || '').trim(),
+      });
+      const st = data?.settings || {};
+      if (metaAppId && st.metaAppId !== metaAppId.trim()) throw new Error('The server did not keep the App ID');
+      message.success(st.hasMetaAppSecret ? 'Meta WABA saved: App ID and App Secret are set' : 'Meta WABA saved, but no App Secret is stored yet');
+      setIsLocked((l) => ({ ...l, waba: true }));
+      fetchSettings();
+    } catch (e) {
+      message.error(e.response?.data?.message || e.response?.data?.error || e.message || 'Could not save Meta WABA');
+    } finally {
+      setSavingWaba(false);
     }
   };
 
@@ -298,6 +322,12 @@ const Settings = () => {
                     <Input.Password disabled={isLocked.waba} value={formState.wabaAccessToken} onChange={e => handleChange('wabaAccessToken', e.target.value)} />
                   </Col>
                 </Row>
+                <div className="flex items-center justify-between gap-3 flex-wrap" style={{ marginTop: 14 }}>
+                  <span style={{ fontSize: 12.5, color: formState.hasMetaAppSecret ? '#047857' : '#B45309' }}>
+                    {formState.hasMetaAppSecret ? 'App Secret is saved' : 'No App Secret saved yet: incoming WhatsApp messages are rejected'}
+                  </span>
+                  <Button type="primary" icon={<SaveOutlined />} disabled={isLocked.waba} loading={savingWaba} onClick={saveWaba}>Save Meta WABA</Button>
+                </div>
               </div>
             </Col>
 

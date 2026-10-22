@@ -75,7 +75,7 @@ const statusLabel = (s) => SHEET_STATUSES.find((o) => o.value === s)?.label || s
 const VIEW_TITLES = {
   converted: { title: 'Converted leads', subtitle: 'Leads marked Converted on All Leads' },
   interested: { title: 'Interested leads', subtitle: 'Leads with status Interested' },
-  followup: { title: '50 / 50 leads', subtitle: 'Leads with status 50 / 50' },
+  followup: { title: 'Follow-ups', subtitle: 'Leads with a follow-up date: upcoming, due today and missed' },
   not_interested: { title: 'Not interested', subtitle: 'Leads with status Not Interested' },
 };
 // Where each stat box goes
@@ -1184,6 +1184,7 @@ const Leads = ({ view = 'all' }) => {
       <div className="dashboard-content" style={{ marginTop: 16 }}>
         <CrmSubNav />
         <div className="page-stats-grid page-stats-grid--7">
+          <StatsCard icon={<ContactsOutlined />} label="Total leads" value={countRows.length} color="brand" loading={loading} onClick={() => { setQuickFilter(''); setStatusFilter('all'); setDateRange(null); navigate(VIEW_PATHS.all); }} active={view === 'all' && !dateRange && !quickFilter && statusFilter === 'all'} />
           <StatsCard
             icon={<CalendarOutlined />}
             label="Today's leads"
@@ -1193,17 +1194,16 @@ const Leads = ({ view = 'all' }) => {
             onClick={() => { setQuickFilter(''); setDateRange([dayjs(), dayjs()]); if (view !== 'all') navigate(VIEW_PATHS.all); }}
             active={!quickFilter && !!dateRange && dateRange[0]?.isSame(dayjs(), 'day') && dateRange[1]?.isSame(dayjs(), 'day')}
           />
-          <StatsCard icon={<UserAddOutlined />} label="New leads (not contacted)" value={countRows.filter(isPendingNew).length} color="brand" loading={loading}
+          <StatsCard icon={<UserAddOutlined />} label="New (not contacted)" value={countRows.filter(isPendingNew).length} color="brand" loading={loading}
             onClick={() => { setDateRange(null); setQuickFilter('new'); if (view !== 'all') navigate(VIEW_PATHS.all); }} active={quickFilter === 'new'} />
-          <StatsCard icon={<ContactsOutlined />} label="Total leads" value={countRows.length} color="brand" loading={loading} onClick={() => { setQuickFilter(''); setDateRange(null); navigate(VIEW_PATHS.all); }} active={view === 'all' && !dateRange && !quickFilter} />
           <StatsCard icon={<TrophyOutlined />} label="Converted" value={countRows.filter(l => l.status === 'converted').length} color="brand" loading={loading} onClick={() => { setQuickFilter(''); navigate(VIEW_PATHS.converted); }} active={view === 'converted'} />
           <StatsCard icon={<FireOutlined />} label="Interested" value={countRows.filter(l => l.status === 'interested').length} color="brand" loading={loading} onClick={() => { setQuickFilter(''); navigate(VIEW_PATHS.interested); }} active={view === 'interested'} />
-          <StatsCard icon={<ClockCircleOutlined />} label="50 / 50" value={countRows.filter(l => l.status === 'fifty_fifty').length} color="brand" loading={loading} onClick={() => { setQuickFilter(''); navigate(VIEW_PATHS.followup); }} active={view === 'followup'} />
+          <StatsCard icon={<ClockCircleOutlined />} label="50 / 50" value={countRows.filter(l => l.status === 'fifty_fifty').length} color="brand" loading={loading} onClick={() => { setQuickFilter(''); setStatusFilter('fifty_fifty'); navigate(VIEW_PATHS.all); }} active={view === 'all' && statusFilter === 'fifty_fifty'} />
           <StatsCard icon={<CheckCircleOutlined />} label="Not interested" value={countRows.filter(l => l.status === 'not_interested').length} color="brand" loading={loading} onClick={() => { setQuickFilter(''); navigate(VIEW_PATHS.not_interested); }} active={view === 'not_interested'} />
         </div>
 
-        {/* Follow-ups by due date, and whether they were kept on time */}
-        {(() => {
+        {/* Follow-ups by due date, and whether they were kept on time (Follow-up page only) */}
+        {view === 'followup' && (() => {
           const withFu = countRows.filter((l) => followUpBucket(l));
           const recent = countRows.flatMap((l) => (l.followUpHistory || []).filter((h) => dayjs(h.doneAt).isAfter(dayjs().subtract(30, 'day'))));
           const onTime = recent.filter((h) => h.onTime).length;
@@ -1225,7 +1225,7 @@ const Leads = ({ view = 'all' }) => {
                   const list = withFu.filter((l) => followUpBucket(l) === b.key).sort((x, y) => new Date(x.nextFollowUpDate) - new Date(y.nextFollowUpDate));
                   const active = quickFilter === `fu_${b.key}`;
                   return (
-                    <div key={b.key} role="button" tabIndex={0} onClick={() => { setDateRange(null); setQuickFilter(active ? '' : `fu_${b.key}`); if (view !== 'all') navigate(VIEW_PATHS.all); }}
+                    <div key={b.key} role="button" tabIndex={0} onClick={() => { setDateRange(null); setQuickFilter(active ? '' : `fu_${b.key}`); }}
                       style={{ cursor: 'pointer', borderRadius: 14, padding: 14, background: b.bg, border: `2px solid ${active ? b.fg : b.line}` }}>
                       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
                         <span style={{ fontWeight: 700, color: b.fg }}>{b.title}</span>

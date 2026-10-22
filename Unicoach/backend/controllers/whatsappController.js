@@ -234,11 +234,22 @@ exports.receiveWebhook = async (req, res) => {
     const settings = await Settings.findOne();
     // Only accept calls signed with our Meta App Secret
     const signature = req.get('x-hub-signature-256') || '';
-    if (!settings?.metaAppSecret || !req.rawBody) return res.sendStatus(401);
+    // Say why a webhook was refused (never the secret itself), so a wrong setup shows up in the logs
+    if (!settings?.metaAppSecret) {
+      console.warn('[WhatsApp webhook] 401: Meta App Secret is not saved in admin (Settings → Meta WABA)');
+      return res.sendStatus(401);
+    }
+    if (!req.rawBody) {
+      console.warn('[WhatsApp webhook] 401: request body was not captured');
+      return res.sendStatus(401);
+    }
     const expected = `sha256=${crypto.createHmac('sha256', settings.metaAppSecret).update(req.rawBody).digest('hex')}`;
     const a = Buffer.from(signature);
     const b = Buffer.from(expected);
-    if (a.length !== b.length || !crypto.timingSafeEqual(a, b)) return res.sendStatus(401);
+    if (a.length !== b.length || !crypto.timingSafeEqual(a, b)) {
+      console.warn(`[WhatsApp webhook] 401: signature mismatch (${signature ? 'signed' : 'no signature header'}). The App Secret in admin must belong to the same Meta app as the webhook.`);
+      return res.sendStatus(401);
+    }
 
     // Answer straight away; Meta retries if we are slow
     res.sendStatus(200);
