@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Table, Select, message, Input, Modal, Tabs, Timeline, DatePicker, Button, Form, Popover, Tooltip, Progress, Badge, Spin, Popconfirm } from 'antd';
+import { Table, Select, message, Input, Modal, Tabs, Timeline, DatePicker, Button, Form, Popover, Tooltip, Progress, Badge, Spin, Popconfirm, Segmented } from 'antd';
 import dayjs from 'dayjs';
 import LeadJourneyView from '../components/LeadJourneyView';
 import LeadStageBoard from '../components/LeadStageBoard';
@@ -557,7 +557,7 @@ const Leads = ({ view = 'all' }) => {
   const handleLogActivity = async (values) => {
     try {
       const payload = {
-        type: 'call',
+        type: values.type || 'call',
         comment: values.comment,
         nextFollowUpDate: values.nextFollowUpDate ? values.nextFollowUpDate.toDate() : undefined,
         status: values.status
@@ -1611,75 +1611,29 @@ const Leads = ({ view = 'all' }) => {
               </div>
             </div>
 
-            {/* 2. PIPELINE PROGRESS STEPPER (Clean SaaS Flow) */}
-            <div style={{ 
-              background: 'var(--ux-surface-2)',
-              borderBottom: '1px solid var(--ux-line-2)',
-              padding: '16px 28px'
-            }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '8px', marginBottom: '12px' }}>
-                <span style={{ fontSize: '14px', fontWeight: 600, color: 'var(--ux-ink)', letterSpacing: '-0.01em' }}>
-                  Admission pipeline stage
-                </span>
-                <span style={{ fontSize: '12.5px', color: 'var(--ux-text-2)', display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
-                  Current status: <StatusChip status={selectedLead.status} />
-                </span>
-              </div>
-
-              {/* Step Flow Buttons */}
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(190px, 1fr))', gap: '10px' }}>
-                {[
-                  { key: 'new', label: '1. Form submitted', icon: <FileTextOutlined />, desc: 'Inquiry received' },
-                  { key: 'contacted', label: '2. First contact', icon: <PhoneOutlined />, desc: 'Call / WhatsApp sent' },
-                  { key: 'qualified', label: '3. Profile qualified', icon: <FireOutlined />, desc: 'Eligible for intake' },
-                  { key: 'converted', label: '4. Enrolled', icon: <TrophyOutlined />, desc: 'Admitted & processing' }
-                ].map((step, idx) => {
-                  const isActive = selectedLead.status === step.key;
-                  const stepIndex = ['new', 'contacted', 'qualified', 'converted'].indexOf(selectedLead.status);
-                  const isCompleted = stepIndex > idx;
-
-                  return (
-                    <div 
-                      key={step.key}
-                      onClick={() => handleStatusChange(selectedLead._id, step.key)}
-                      style={{
-                        padding: '10px 12px',
-                        borderRadius: '18px',
-                        cursor: 'pointer',
-                        background: isActive ? 'var(--ux-ink)' : '#ffffff',
-                        border: isActive ? '1px solid var(--ux-ink)' : '1px solid var(--ux-line-2)',
-                        color: isActive ? '#ffffff' : 'var(--ux-text-2)',
-                        boxShadow: 'none',
-                        transition: 'all 0.2s',
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '10px'
-                      }}
-                    >
-                      <span style={{
-                        width: '32px',
-                        height: '32px',
-                        minWidth: '32px',
-                        borderRadius: '50%',
-                        display: 'grid',
-                        placeItems: 'center',
-                        fontSize: '14px',
-                        background: isActive ? 'rgba(255,255,255,0.14)' : isCompleted ? 'var(--ux-brand-soft)' : 'var(--ux-surface-2)',
-                        color: isActive ? '#ffffff' : isCompleted ? 'var(--ux-brand-strong)' : 'var(--ux-text-2)'
-                      }}>{isCompleted ? <CheckOutlined /> : step.icon}</span>
-                      <div>
-                        <div style={{ fontSize: '12.5px', fontWeight: 600, color: isActive ? '#ffffff' : 'var(--ux-ink)' }}>
-                          {step.label}
-                        </div>
-                        <div style={{ fontSize: '11px', color: isActive ? 'rgba(255,255,255,0.65)' : 'var(--ux-text-3)' }}>
-                          {step.desc}
-                        </div>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
+            {/* 2. STATUS + NEXT FOLLOW-UP (one simple row) */}
+            {(() => {
+              const box = FU_BOXES.find((x) => x.key === followUpBucket(selectedLead));
+              return (
+                <div style={{ background: 'var(--ux-surface-2)', borderBottom: '1px solid var(--ux-line-2)', padding: '12px 28px', display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '10px 24px' }}>
+                  <span style={{ display: 'inline-flex', alignItems: 'center', gap: 8, fontSize: 13, color: 'var(--ux-text-2)' }}>
+                    Status
+                    <Select value={selectedLead.status} size="small" style={{ width: 160 }} onChange={(val) => handleStatusChange(selectedLead._id, val)}>
+                      {SHEET_STATUSES.map((o) => <Option key={o.value} value={o.value}><StatusChip status={o.value} style={{ height: 22 }} /></Option>)}
+                      {!SHEET_STATUSES.some((o) => o.value === selectedLead.status) && <Option value={selectedLead.status}><StatusChip status={selectedLead.status} style={{ height: 22 }} /></Option>}
+                    </Select>
+                  </span>
+                  <span style={{ display: 'inline-flex', alignItems: 'center', gap: 8, fontSize: 13, color: 'var(--ux-text-2)' }}>
+                    Next follow-up
+                    {selectedLead.nextFollowUpDate ? (
+                      <span style={{ fontWeight: 700, color: box?.fg || 'var(--ux-ink)', background: box?.bg, border: box ? `1px solid ${box.line}` : 'none', borderRadius: 999, padding: '2px 10px' }}>
+                        {dayjs(selectedLead.nextFollowUpDate).format('D MMM YYYY')}{box ? ` · ${box.key === 'green' ? 'Upcoming' : box.key === 'yellow' ? (dayjs().isSame(dayjs(selectedLead.nextFollowUpDate), 'day') ? 'Today' : 'Slightly late') : 'Missed'}` : ''}
+                      </span>
+                    ) : <span style={{ color: 'var(--ux-text-3)' }}>Not set</span>}
+                  </span>
+                </div>
+              );
+            })()}
 
             {/* 3. MAIN WORKSPACE CONTENT (Split Layout) */}
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '20px', padding: '24px 28px', background: 'var(--ux-surface-2)', maxHeight: 'calc(100vh - 280px)', overflowY: 'auto' }}>
@@ -1934,37 +1888,40 @@ const Leads = ({ view = 'all' }) => {
                     items={[
                       {
                         key: 'timeline',
-                        label: <span><ClockCircleOutlined /> Interaction history & notes</span>,
+                        label: <span><ClockCircleOutlined /> Remarks & follow-up</span>,
                         children: (
                           <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
                             
                             {/* Log Call Note Form */}
                             <div style={{ background: 'var(--ux-surface-2)', padding: '16px', borderRadius: '16px', border: '1px solid var(--ux-line-2)' }}>
-                              <h4 style={{ color: 'var(--ux-ink)', marginBottom: '12px', fontSize: 14, fontWeight: 600, letterSpacing: '-0.01em' }}>
-                                Log follow-up call / interaction summary
+                              <h4 style={{ color: 'var(--ux-ink)', marginBottom: '10px', fontSize: 14, fontWeight: 600, letterSpacing: '-0.01em' }}>
+                                Add a remark
                               </h4>
-                              <Form form={activityForm} layout="vertical" onFinish={handleLogActivity}>
-                                <Form.Item name="comment" rules={[{ required: true, message: 'Please enter call summary notes' }]} style={{ marginBottom: '12px' }}>
+                              <Form form={activityForm} layout="vertical" onFinish={handleLogActivity} initialValues={{ type: 'call' }}>
+                                <Form.Item name="type" style={{ marginBottom: '10px' }}>
+                                  <Segmented options={[{ label: 'Call', value: 'call' }, { label: 'WhatsApp', value: 'whatsapp' }, { label: 'Email', value: 'email' }, { label: 'Note', value: 'note' }]} />
+                                </Form.Item>
+                                <Form.Item name="comment" rules={[{ required: true, message: 'Write what you talked about' }]} style={{ marginBottom: '12px' }}>
                                   <Input.TextArea 
-                                    placeholder="Enter follow-up details (e.g., student wants to apply for Sep 2026, requested scholarship checklist, mother joined the call...)" 
+                                    placeholder="What did you talk about? e.g. Wants Canada for Sep 2027, will share marks by Friday, asked about loans."
                                     rows={3}
                                   />
                                 </Form.Item>
                                 
                                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: '12px' }}>
-                                  <Form.Item label={<span style={{ color: 'var(--ux-text-2)', fontSize: '12.5px', fontWeight: 600 }}>Set next follow-up date</span>} name="nextFollowUpDate" style={{ flex: '1 1 200px', marginBottom: 0 }}>
-                                    <DatePicker style={{ width: '100%' }} />
+                                  <Form.Item label={<span style={{ color: 'var(--ux-text-2)', fontSize: '12.5px', fontWeight: 600 }}>Next follow-up date</span>} name="nextFollowUpDate" style={{ flex: '1 1 200px', marginBottom: 0 }}>
+                                    <DatePicker style={{ width: '100%' }} format="D MMM YYYY" placeholder="When to follow up next" disabledDate={(d) => d && d.isBefore(dayjs().startOf('day'))} />
                                   </Form.Item>
 
-                                  <Form.Item label={<span style={{ color: 'var(--ux-text-2)', fontSize: '12.5px', fontWeight: 600 }}>Update status (optional)</span>} name="status" style={{ flex: '1 1 200px', marginBottom: 0 }}>
-                                    <Select placeholder="Optionally change status" allowClear>
-                                      {Object.keys(statusColors).map(s => <Option key={s} value={s}><span style={{ textTransform: 'capitalize' }}>{s}</span></Option>)}
+                                  <Form.Item label={<span style={{ color: 'var(--ux-text-2)', fontSize: '12.5px', fontWeight: 600 }}>Change status (optional)</span>} name="status" style={{ flex: '1 1 200px', marginBottom: 0 }}>
+                                    <Select placeholder="Keep current status" allowClear>
+                                      {SHEET_STATUSES.map((o) => <Option key={o.value} value={o.value}><StatusChip status={o.value} style={{ height: 22 }} /></Option>)}
                                     </Select>
                                   </Form.Item>
                                 </div>
 
                                 <Button type="primary" htmlType="submit" style={{ marginTop: '14px' }}>
-                                  Save interaction note
+                                  Save remark
                                 </Button>
                               </Form>
                             </div>
@@ -1976,33 +1933,30 @@ const Leads = ({ view = 'all' }) => {
                                   No interactions logged yet. Log your first call notes or inquiries above.
                                 </div>
                               ) : (
-                                <Timeline
-                                  mode="left"
-                                  items={selectedLead.activities.slice().reverse().map((act, actIdx) => {
-                                    // Neutral ink dots; the latest interaction is highlighted in orange
-                                    const dotColor = actIdx === 0 ? '#DE5C2B' : '#111111';
-
-                                    return {
-                                      color: dotColor,
-                                      children: (
-                                        <div style={{ background: 'var(--ux-surface-2)', padding: '12px 16px', borderRadius: '16px', border: '1px solid var(--ux-line-2)', marginBottom: '4px' }}>
-                                          <div style={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: '4px 12px', fontSize: '11.5px', marginBottom: '6px' }}>
-                                            <span style={{ fontWeight: 600, color: 'var(--ux-ink)' }}>
-                                              {getActivityHeader(act.type)}
-                                            </span>
-                                            <span style={{ color: 'var(--ux-text-3)', fontWeight: 500 }}>{new Date(act.date).toLocaleString()}</span>
-                                          </div>
-                                          <div style={{ fontSize: '13px', color: 'var(--ux-text)', whiteSpace: 'pre-wrap', lineHeight: 1.5 }}>
-                                            {act.comment}
-                                          </div>
-                                          <div style={{ fontSize: '11px', color: 'var(--ux-text-3)', marginTop: '6px', textAlign: 'right' }}>
-                                            Logged by: <strong>{act.performedBy || 'Admin'}</strong>
-                                          </div>
+                                <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+                                  {selectedLead.activities.slice().reverse().map((act, actIdx) => {
+                                    // Things the system logged on its own show as a small grey line; remarks by staff get a card
+                                    const auto = act.type === 'status_change' || /bot/i.test(act.performedBy || '') || /^(Follow-up set for|Follow-up date removed|Lead assignment|Direct booking|Chatbot:)/.test(act.comment || '');
+                                    const when = dayjs(act.date).format('D MMM YYYY, h:mm A');
+                                    if (auto) {
+                                      return (
+                                        <div key={actIdx} style={{ fontSize: 12, color: 'var(--ux-text-3)', padding: '2px 4px' }}>
+                                          {when} · {act.comment}{act.performedBy ? ` · ${act.performedBy}` : ''}
                                         </div>
-                                      )
-                                    };
+                                      );
+                                    }
+                                    const kind = { call: 'Call', whatsapp: 'WhatsApp', email: 'Email' }[act.type] || 'Note';
+                                    return (
+                                      <div key={actIdx} style={{ background: '#fff', padding: '12px 14px', borderRadius: 14, border: '1px solid var(--ux-line-2)', borderLeft: `3px solid ${actIdx === 0 ? '#DE5C2B' : 'var(--ux-line)'}` }}>
+                                        <div style={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: '4px 12px', fontSize: 12, marginBottom: 4 }}>
+                                          <span><b style={{ color: 'var(--ux-ink)' }}>{kind}</b> <span style={{ color: 'var(--ux-text-3)' }}>by {act.performedBy || 'Admin'}</span></span>
+                                          <span style={{ color: 'var(--ux-text-3)' }}>{when}</span>
+                                        </div>
+                                        <div style={{ fontSize: 13.5, color: 'var(--ux-text)', whiteSpace: 'pre-wrap', lineHeight: 1.5 }}>{act.comment}</div>
+                                      </div>
+                                    );
                                   })}
-                                />
+                                </div>
                               )}
                             </div>
                           </div>
