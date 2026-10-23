@@ -17,8 +17,16 @@ const unicoachPayoutSchema = new mongoose.Schema({
   amountINR: { 
     type: Number, 
     required: true, 
-    min: 100 
+    min: 1,
+    // A mentor's own withdrawal request must be at least ₹100; Monday payouts can be any amount
+    validate: {
+      validator(v) { return this.source === 'WEEKLY' || v >= 100; },
+      message: 'Minimum withdrawal amount is ₹100'
+    }
   },
+  // WEEKLY = Monday bank payout made by admin for completed bookings; REQUEST = mentor asked for it
+  source: { type: String, enum: ['REQUEST', 'WEEKLY'], default: 'REQUEST' },
+  bookingIds: [{ type: mongoose.Schema.Types.ObjectId, ref: 'UnicoachBooking' }],
   currency: { 
     type: String, 
     default: 'INR' 

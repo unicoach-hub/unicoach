@@ -74,7 +74,7 @@ exports.getAllLeads = async (req, res) => {
     // moves back to the top instead of staying wherever their first enquiry put them
     const leads = await Lead.find(filter).select('-activities').lean();
     // Calls logged on each lead (activities are left out of the list, so count them separately)
-    if (leads.length) {
+    if (leads.length) try {
       const calls = await Lead.aggregate([
         { $match: { _id: { $in: leads.map((l) => l._id) } } },
         { $project: { c: { $filter: { input: { $ifNull: ['$activities', []] }, cond: { $eq: ['$$this.type', 'call'] } } } } },
@@ -86,6 +86,9 @@ exports.getAllLeads = async (req, res) => {
         l.callCount = c?.callCount || 0;
         l.lastCallAt = c?.lastCallAt || null;
       });
+    } catch (e) {
+      // Call counts are a nice-to-have: the list still loads without them
+      console.warn('[Leads] call counts skipped:', e.message);
     }
     const lastActivity = (l) => new Date(l.lastInquiryAt || l.createdAt || 0).getTime();
     leads.sort((a, b) => lastActivity(b) - lastActivity(a));

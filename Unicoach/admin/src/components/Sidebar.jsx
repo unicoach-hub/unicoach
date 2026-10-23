@@ -72,6 +72,7 @@ const NAV_SECTIONS = [
     label: 'Platform',
     items: [
       { path: '/unicoach', label: 'Creators & Revenue', icon: <CrownOutlined /> },
+      { path: '/unicoach/payouts', label: 'Mentor Payouts', icon: <BankOutlined /> },
       { path: '/universities', label: 'Universities', icon: <BankOutlined /> },
       { path: '/scholarships', label: 'Scholarships', icon: <TrophyOutlined /> },
       {

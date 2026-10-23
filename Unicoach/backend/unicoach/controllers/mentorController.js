@@ -1,3 +1,4 @@
+const weeklyPayout = require('../services/weeklyPayoutService');
 const UnicoachMentor = require('../models/UnicoachMentor');
 const UnicoachService = require('../models/UnicoachService');
 const UnicoachSlot = require('../models/UnicoachSlot');
@@ -414,8 +415,21 @@ const getDashboardOverview = async (req, res) => {
       settlementStatus: b.settlement?.status || 'PENDING_CAPTURE',
       onHoldUntil: b.settlement?.onHoldUntil || null,
       releasedAt: b.settlement?.releasedAt || null,
-      refundStatus: b.refund?.status || ''
+      refundStatus: b.refund?.status || '',
+      // Weekly Monday payout (used while Razorpay Route is off)
+      payoutState: weeklyPayout.payoutState(b),
+      payoutNetINR: weeklyPayout.netOf(b).amount,
+      payoutRef: b.weeklyPayout?.payoutRef || '',
+      payoutPaidAt: b.weeklyPayout?.paidAt || null
     }));
+    const weekly = earnings.reduce((acc, e) => {
+      if (e.payoutState === 'READY') acc.readyINR += e.payoutNetINR;
+      else if (e.payoutState === 'UPCOMING') acc.upcomingINR += e.payoutNetINR;
+      else if (e.payoutState === 'PAID') acc.paidOutINR += e.payoutNetINR;
+      return acc;
+    }, { readyINR: 0, upcomingINR: 0, paidOutINR: 0 });
+    for (const k of Object.keys(weekly)) weekly[k] = Math.round(weekly[k] * 100) / 100;
+    weekly.nextPayoutDate = weeklyPayout.nextPayoutDate();
 
     const earningsSummary = earnings.reduce((acc, e) => {
       if (e.state === 'REFUNDED') {
@@ -446,6 +460,7 @@ const getDashboardOverview = async (req, res) => {
       services,
       earnings,
       earningsSummary,
+      weeklyPayouts: weekly,
       payoutAccount,
       upcomingBookings,
       pastBookings,

@@ -73,6 +73,12 @@ const unicoachBookingSchema = new mongoose.Schema({
   amountPaid: { type: Number, default: 0, min: 0 },
   platformCommission: { type: Number, default: 0, min: 0 },
   mentorEarning: { type: Number, default: 0, min: 0 },
+  // Paid to the mentor by UniCoach's weekly bank payout (used while Razorpay Route is off)
+  weeklyPayout: {
+    payoutId: { type: mongoose.Schema.Types.ObjectId, ref: 'UnicoachPayout', default: null },
+    payoutRef: { type: String, default: '' },
+    paidAt: { type: Date, default: null },
+  },
   currency: { type: String, default: 'INR' },
 
   // Payment Tracking

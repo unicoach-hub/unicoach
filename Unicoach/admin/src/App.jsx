@@ -42,6 +42,7 @@ const BookingCalendar = lazy(() => import('./pages/BookingCalendar'));
 const ConsultationCalls = lazy(() => import('./pages/ConsultationCalls'));
 const SupportRequests = lazy(() => import('./pages/SupportRequests'));
 const UniCoachAdminHub = lazy(() => import('./pages/UniCoachAdminHub'));
+const MentorPayouts = lazy(() => import('./pages/MentorPayouts'));
 const Staff = lazy(() => import('./pages/Staff'));
 const StudentInbox = lazy(() => import('./pages/StudentInbox'));
 const EventRegistrations = lazy(() => import('./pages/EventRegistrations'));
@@ -164,6 +165,7 @@ const App = () => {
                       <Route path="/bulk-messaging" element={<BulkMessaging />} />
                       {/* UniCoach Creator Network & Revenue Suite */}
                       <Route path="/unicoach" element={<UniCoachAdminHub />} />
+                      <Route path="/unicoach/payouts" element={<MentorPayouts />} />
                       {/* Staff accounts & roles (owner only) */}
                       <Route path="/staff" element={<Staff />} />
                       {/* Settings */}

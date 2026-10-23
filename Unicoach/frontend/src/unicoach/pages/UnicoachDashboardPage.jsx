@@ -1956,6 +1956,7 @@ const UnicoachDashboardPage = () => {
     stats = {},
     earnings = [],
     earningsSummary = {},
+    weeklyPayouts = null,
     payoutAccount = null
   } = data || {};
 
@@ -5160,9 +5161,36 @@ const UnicoachDashboardPage = () => {
             <div>
               <h2 className="text-base font-bold text-slate-900">Earnings & Payouts</h2>
               <p className="text-xs text-slate-500">
-                Payouts are automatic — your share of every paid booking is sent to your bank account once the session is completed. No withdrawal requests needed.
+                Payouts go out every Monday: your share of each paid booking is sent to your bank once the session is done and 48 hours have passed. UniCoach takes 0% commission. No withdrawal requests needed.
               </p>
             </div>
+
+            {/* Weekly Monday payouts */}
+            {weeklyPayouts && (
+              <div className="bg-white rounded-2xl border border-slate-200 p-5">
+                <div className="flex flex-wrap items-center justify-between gap-2">
+                  <p className="text-sm font-bold text-slate-900">Weekly payouts</p>
+                  <span className="text-xs font-semibold text-indigo-700 bg-indigo-50 border border-indigo-100 rounded-full px-2.5 py-1">
+                    Next payout: {new Date(weeklyPayouts.nextPayoutDate).toLocaleDateString('en-IN', { weekday: 'short', day: 'numeric', month: 'short' })}
+                  </span>
+                </div>
+                <div className="mt-4 grid grid-cols-1 sm:grid-cols-3 gap-3">
+                  <div className="rounded-xl bg-emerald-50 border border-emerald-100 p-3">
+                    <p className="text-[11px] font-bold uppercase tracking-wide text-emerald-700">Ready for next Monday</p>
+                    <p className="text-xl font-bold text-emerald-800 mt-0.5">{formatINRAmount(weeklyPayouts.readyINR)}</p>
+                  </div>
+                  <div className="rounded-xl bg-amber-50 border border-amber-100 p-3">
+                    <p className="text-[11px] font-bold uppercase tracking-wide text-amber-700">Upcoming</p>
+                    <p className="text-xl font-bold text-amber-800 mt-0.5">{formatINRAmount(weeklyPayouts.upcomingINR)}</p>
+                    <p className="text-[11px] text-amber-700">Sessions not done yet, or done less than 48h ago</p>
+                  </div>
+                  <div className="rounded-xl bg-slate-50 border border-slate-200 p-3">
+                    <p className="text-[11px] font-bold uppercase tracking-wide text-slate-600">Paid to your bank</p>
+                    <p className="text-xl font-bold text-slate-900 mt-0.5">{formatINRAmount(weeklyPayouts.paidOutINR)}</p>
+                  </div>
+                </div>
+              </div>
+            )}
 
             {/* Payout Account Card */}
             {(() => {
@@ -5351,9 +5379,25 @@ const UnicoachDashboardPage = () => {
                               {pendingCapture ? '—' : formatINRAmount(row.mentorNetINR)}
                             </td>
                             <td className="py-3.5">
+                              {row.payoutState && row.payoutState !== 'NONE' ? (
+                                <>
+                                  <span className={`inline-block px-2.5 py-1 rounded-full text-[10px] font-bold border whitespace-nowrap ${
+                                    row.payoutState === 'PAID' ? 'bg-emerald-50 text-emerald-700 border-emerald-200'
+                                      : row.payoutState === 'READY' ? 'bg-indigo-50 text-indigo-700 border-indigo-200'
+                                        : 'bg-amber-50 text-amber-700 border-amber-200'}`}>
+                                    {row.payoutState === 'PAID' ? 'Paid to your bank' : row.payoutState === 'READY' ? 'In next Monday payout' : 'After session + 48h'}
+                                  </span>
+                                  {row.payoutState === 'PAID' && row.payoutPaidAt && (
+                                    <span className="block text-[10px] text-slate-500 mt-1 whitespace-nowrap">
+                                      {new Date(row.payoutPaidAt).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}{row.payoutRef ? ` · ${row.payoutRef}` : ''}
+                                    </span>
+                                  )}
+                                </>
+                              ) : (
                               <span className={`inline-block px-2.5 py-1 rounded-full text-[10px] font-bold border whitespace-nowrap ${meta.className}`}>
                                 {meta.label}
                               </span>
+                              )}
                               {row.settlementStatus === 'ON_HOLD' && row.onHoldUntil && (
                                 <span className="block text-[10px] text-slate-500 mt-1 whitespace-nowrap">
                                   Auto-release on {new Date(row.onHoldUntil).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}

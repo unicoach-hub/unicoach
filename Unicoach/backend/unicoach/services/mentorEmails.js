@@ -89,4 +89,19 @@ const sendRejected = (mentor) => send(
   'rejected',
 );
 
-module.exports = { sendApplicationReceived, sendApproved, sendRejected };
+/** Monday payout sent to the mentor's bank */
+const sendPayoutPaid = (mentor, payout, bookings) => send(
+  mentor.email,
+  `₹${payout.amountINR} sent to your bank (${payout.payoutRef})`,
+  layout({
+    heading: 'Your payout is on its way',
+    intro: `Hi ${escapeHtml(mentor.name || 'there')}, we have sent <b>₹${payout.amountINR}</b> to your bank account for ${bookings.length} completed booking${bookings.length === 1 ? '' : 's'}.`,
+    body: `<p style="color:#475569;font-size:14px;line-height:1.6">Payout reference: <b>${escapeHtml(payout.payoutRef)}</b>${payout.transactionRef ? `<br/>Bank reference (UTR): <b>${escapeHtml(payout.transactionRef)}</b>` : ''}<br/>Bookings: ${bookings.map((b) => escapeHtml(b.bookingRef)).join(', ')}</p>
+<p style="color:#475569;font-size:14px;line-height:1.6">Bank transfers usually show up within a few hours. You can see every payout under Earnings in your mentor dashboard.</p>`,
+    button: 'Open Earnings',
+    buttonUrl: `${SITE()}/unicoach/dashboard`,
+  }),
+  'payout paid',
+);
+
+module.exports = { sendApplicationReceived, sendApproved, sendRejected, sendPayoutPaid };

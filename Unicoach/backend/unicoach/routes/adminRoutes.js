@@ -54,6 +54,11 @@ router.post('/bookings/:bookingId/refund', refundBookingByAdmin);
 router.get('/ledger', getPlatformLedger);
 
 // Creator Payout Requests & Settlement
+// Weekly (Monday) bank payouts while Razorpay Route is off
+const weekly = require('../controllers/weeklyPayoutController');
+router.get('/weekly-payouts', weekly.listWeeklyPayouts);
+router.post('/weekly-payouts/:mentorId/paid', weekly.markWeeklyPaid);
+
 router.get('/payouts', getAllPayouts);
 router.post('/payouts/:payoutId/process', processPayout);
 
