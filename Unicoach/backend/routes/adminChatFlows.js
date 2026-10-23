@@ -7,6 +7,7 @@ router.use(verifyToken, requireAdmin);
 
 router.get('/', c.list);
 router.post('/', c.create);
+router.post('/templates/:key', c.fromTemplate);
 router.get('/:id', c.get);
 router.put('/:id', c.update);
 router.delete('/:id', c.remove);

@@ -202,7 +202,15 @@ app.use('/api/auth/forgot-password', authFormLimiter);
 app.use('/api/auth/reset-password', authFormLimiter);
 app.use('/api/leads/submit', authFormLimiter);
 app.use('/api/leads/book-consultation', authFormLimiter);
-app.use('/api/consultations', (req, res, next) => (req.method === 'POST' ? authFormLimiter(req, res, next) : next()));
+// Paid bookings: roomier than the login limiter so many students on one college / office Wi-Fi can book
+const consultationLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 40,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { message: 'Too many tries from this network. Please wait a few minutes and try again.' }
+});
+app.use('/api/consultations', (req, res, next) => (req.method === 'POST' ? consultationLimiter(req, res, next) : next()));
 app.use('/api/events/:id/register', authFormLimiter);
 app.use('/api/admin/auth/login', adminLoginLimiter);
 // Public mentor application + document upload: no login required, so throttle per IP

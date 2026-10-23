@@ -422,6 +422,17 @@ const ChatbotFlows = () => {
   };
   useEffect(() => { load(); }, []);
 
+  // Ready-made UniCoach support menu, added switched off so it can be checked first
+  const addTemplate = async () => {
+    try {
+      const { data } = await API.post('/admin/chat-flows/templates/unicoach-support');
+      message.success('Template added (Off). Review it, then switch it on.');
+      setEditing(data._id);
+    } catch (e) {
+      message.error(e.response?.data?.message || 'Could not add the template');
+    }
+  };
+
   const create = async () => {
     try {
       const { data } = await API.post('/admin/chat-flows', { name: 'New chatbot' });
@@ -449,7 +460,14 @@ const ChatbotFlows = () => {
       <Header
         title="WhatsApp chatbot"
         subtitle="Automatic replies: when a student sends “hi”, the bot answers with messages, images, buttons and links"
-        extra={!editing && <Button type="primary" icon={<PlusOutlined />} onClick={create}>New chatbot flow</Button>}
+        extra={!editing && (
+          <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+            <Popconfirm title="Add the UniCoach support menu?" description="It is added switched off so you can review it first." okText="Add" onConfirm={addTemplate}>
+              <Button>Add UniCoach support template</Button>
+            </Popconfirm>
+            <Button type="primary" icon={<PlusOutlined />} onClick={create}>New chatbot flow</Button>
+          </div>
+        )}
       />
       <div className="dashboard-content">
         {editing ? (

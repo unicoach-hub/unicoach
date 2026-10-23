@@ -100,3 +100,28 @@ exports.remove = async (req, res) => {
     return res.status(500).json({ message: 'Could not delete' });
   }
 };
+
+/** POST /api/admin/chat-flows/templates/:key — add a ready-made flow (switched off, to review first) */
+exports.fromTemplate = async (req, res) => {
+  try {
+    const { TEMPLATES } = require('../config/chatFlowTemplates');
+    const make = TEMPLATES[req.params.key];
+    if (!make) return res.status(404).json({ message: 'Unknown template' });
+    const t = make();
+    const nodes = cleanNodes(t.nodes);
+    const flow = await ChatFlow.create({
+      name: t.name,
+      active: false,
+      isDefault: !!t.isDefault,
+      nodes,
+      edges: cleanEdges(t.edges),
+      keywords: keywordsOf(nodes),
+      matchType: nodes.find((n) => n.type === 'start')?.data?.matchType === 'contains' ? 'contains' : 'exact',
+      updatedBy: req.user?.name || 'Admin',
+    });
+    return res.status(201).json(flow);
+  } catch (err) {
+    console.error('[Flows] template failed:', err);
+    return res.status(500).json({ message: 'Could not add the template' });
+  }
+};

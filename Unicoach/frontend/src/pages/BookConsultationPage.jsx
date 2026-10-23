@@ -30,7 +30,7 @@ const Shell = ({ children }) => (
 
 // Step 1 (/book-consultation): pick a service, a day and a time.
 // Step 2 (/book-consultation/confirm): add details, pay ₹500 through Razorpay, done.
-const BookConsultationPage = () => {
+const BookConsultationFlow = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const confirmStep = location.pathname.endsWith('/confirm');
@@ -49,26 +49,44 @@ const BookConsultationPage = () => {
     document.title = 'Book a 1:1 consultation | UniCoach';
   }, [confirmStep]);
 
+  const [notice, setNotice] = useState(location.state?.notice || '');
+  // Latest pick, read by the 30-second refresh below
+  const selRef = useRef({ date: '', time: '' });
+  useEffect(() => { selRef.current = { date, time }; }, [date, time]);
+
+  // Open slots, refreshed every 30 seconds so slots others just booked disappear on their own
   useEffect(() => {
     let alive = true;
-    fetch(`${API}/consultations/config`)
+    const load = (first) => fetch(`${API}/consultations/config`)
       .then((r) => (r.ok ? r.json() : Promise.reject(new Error('Could not load open times'))))
       .then((d) => {
         if (!alive) return;
         setCfg(d);
-        const firstOpen = d.days.find((x) => x.slots.length)?.date || d.days[0]?.date;
-        setMonth((m) => m || monthKey(firstOpen));
+        // The time the student picked was just taken by someone else: clear it and say so
+        const sel = selRef.current;
+        if (!first && sel.date && sel.time && !d.days.find((x) => x.date === sel.date)?.slots.includes(sel.time)) {
+          setTime('');
+          setNotice(`${to12h(sel.time)} on ${longDate(sel.date)} was just booked by someone else. Please pick another time.`);
+        }
+        if (first) {
+          const firstOpen = d.days.find((x) => x.slots.length)?.date || d.days[0]?.date;
+          setMonth((m) => m || monthKey(firstOpen));
+        }
       })
-      .catch((e) => alive && setLoadError(e.message));
-    return () => { alive = false; };
+      .catch((e) => alive && first && setLoadError(e.message));
+    load(true);
+    const t = setInterval(() => { if (document.visibilityState === 'visible') load(false); }, 30000);
+    return () => { alive = false; clearInterval(t); };
   }, []);
+
+
 
   // Coming to step 2 without a pick (refresh / direct link): back to step 1
   useEffect(() => {
     if (confirmStep && !picked) navigate('/book-consultation', { replace: true });
   }, [confirmStep, picked, navigate]);
 
-  if (confirmStep && picked) return <ConfirmStep cfg={cfg} pick={picked} />;
+  if (confirmStep && picked) return <ConfirmStep cfg={cfg} pick={picked} savedForm={location.state?.form} />;
 
   return (
     <Shell>
@@ -85,6 +103,12 @@ const BookConsultationPage = () => {
         <SidePanel cfg={cfg} />
 
         <section className="p-5 sm:p-7">
+          {notice && (
+            <div className="mb-4 flex items-start justify-between gap-3 rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3 text-[13.5px] text-amber-900">
+              <span>{notice}</span>
+              <button type="button" onClick={() => setNotice('')} className="no-shine text-amber-700 font-semibold cursor-pointer">OK</button>
+            </div>
+          )}
           {loadError && <p className="text-red-600 text-sm">{loadError}</p>}
           {!cfg && !loadError && <div className="py-20 flex justify-center"><Loader2 className="w-6 h-6 animate-spin text-[#DE5C2B]" /></div>}
           {cfg && (
@@ -94,7 +118,7 @@ const BookConsultationPage = () => {
               date={date} setDate={(d) => { setDate(d); setTime(''); }}
               time={time} setTime={setTime}
               month={month} setMonth={setMonth}
-              onNext={() => navigate('/book-consultation/confirm', { state: { pick: { service, date, time } } })}
+              onNext={() => navigate('/book-consultation/confirm', { state: { form: location.state?.form, pick: { service, date, time } } })}
             />
           )}
         </section>
@@ -280,9 +304,9 @@ const Picker = ({ cfg, service, setService, date, setDate, time, setTime, month,
   );
 };
 
-const ConfirmStep = ({ cfg, pick }) => {
+const ConfirmStep = ({ cfg, pick, savedForm }) => {
   const navigate = useNavigate();
-  const [form, setForm] = useState({ name: '', phone: '', email: '', notes: '' });
+  const [form, setForm] = useState(savedForm || { name: '', phone: '', email: '', notes: '' });
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
   const [doneRef, setDoneRef] = useState('');
@@ -322,6 +346,12 @@ const ConfirmStep = ({ cfg, pick }) => {
         body: JSON.stringify({ ...pick, ...form, source: document.referrer ? 'website' : 'direct' }),
       });
       const data = await r.json().catch(() => ({}));
+      if (r.status === 409) {
+        // Someone took this slot first: back to the calendar, service kept, fresh slots shown
+        navigate('/book-consultation', { replace: true, state: { form, pick: { service: pick.service, date: pick.date, time: '' }, notice: `${to12h(pick.time)} on ${longDate(pick.date)} was just booked by someone else. Pick another time, your details stay filled.` } });
+        return;
+      }
+      if (r.status === 429) throw new Error('Too many tries from this network. Please wait a few minutes and try again.');
       if (!r.ok) throw new Error(data.message || 'Could not start the booking');
 
       const result = await openRazorpayCheckout(data.order, {
@@ -362,7 +392,7 @@ const ConfirmStep = ({ cfg, pick }) => {
     <Shell>
       <style>{`@keyframes bcFlash{0%,100%{box-shadow:0 0 0 0 rgba(222,92,43,0)}30%,70%{box-shadow:0 0 0 6px rgba(222,92,43,.35)}}.bc-flash{animation:bcFlash 1.1s ease 2}`}</style>
       <div className="max-w-[640px] mx-auto">
-        <button type="button" onClick={() => navigate('/book-consultation', { state: { pick } })} className="inline-flex items-center gap-1.5 text-[13px] font-semibold text-slate-600 hover:text-[#DE5C2B] cursor-pointer">
+        <button type="button" onClick={() => navigate('/book-consultation', { state: { pick, form } })} className="inline-flex items-center gap-1.5 text-[13px] font-semibold text-slate-600 hover:text-[#DE5C2B] cursor-pointer">
           <ArrowLeft size={15} /> Back to calendar
         </button>
         <form onSubmit={pay} className="mt-4 rounded-[28px] bg-white border border-slate-200 p-6 sm:p-8 shadow-[0_30px_80px_-40px_rgba(15,23,42,0.35)]">
@@ -394,6 +424,13 @@ const ConfirmStep = ({ cfg, pick }) => {
       </div>
     </Shell>
   );
+};
+
+// Start each visit fresh (e.g. sent back to the calendar because the slot was taken), using what
+// the navigation carried in its state instead of whatever the previous screen had picked
+const BookConsultationPage = () => {
+  const { key } = useLocation();
+  return <BookConsultationFlow key={key} />;
 };
 
 export default BookConsultationPage;
