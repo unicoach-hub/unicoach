@@ -487,15 +487,22 @@ const ScrollToTop = () => {
       description = 'Contact UniCoach. Get in touch with our certified education advisors for profile evaluation, university shortlists, and visa guidance.';
     }
 
-    document.title = title;
+    // Blog, news and event detail pages arrive with their own title, description and social tags
+    // from api/seo.js, and the page component sets them again once its data loads. Overwriting them
+    // here with the generic defaults made Google index those pages under the home page title.
+    const isDetailPage = /^\/(blogs|news|newsroom|events)\/[^/]+$/.test(path) && path !== '/blogs/rhodes-scholarship';
 
-    let metaDesc = document.querySelector('meta[name="description"]');
-    if (!metaDesc) {
-      metaDesc = document.createElement('meta');
-      metaDesc.setAttribute('name', 'description');
-      document.head.appendChild(metaDesc);
+    if (!isDetailPage) {
+      document.title = title;
+
+      let metaDesc = document.querySelector('meta[name="description"]');
+      if (!metaDesc) {
+        metaDesc = document.createElement('meta');
+        metaDesc.setAttribute('name', 'description');
+        document.head.appendChild(metaDesc);
+      }
+      metaDesc.setAttribute('content', description);
     }
-    metaDesc.setAttribute('content', description);
 
     // One canonical URL per page on the main domain (no trailing slash, no query string), so Google
     // never treats every route as a copy of the home page or indexes a preview/staging host
@@ -514,8 +521,6 @@ const ScrollToTop = () => {
 
     // Social / link-preview tags follow the page too. The build prerenders every route (see
     // scripts/prerender.mjs), so WhatsApp, LinkedIn and AI crawlers read these from the static HTML.
-    // Blog, news and event detail pages get theirs from api/seo.js instead.
-    const isDetailPage = /^\/(blogs|news|newsroom|events)\/[^/]+$/.test(path) && path !== '/blogs/rhodes-scholarship';
     if (!isDetailPage) {
       const setMeta = (attr, key, value) => upsertHeadTag(`meta[${attr}="${key}"]`, () => {
         const meta = document.createElement('meta');
