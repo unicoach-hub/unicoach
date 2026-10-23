@@ -130,7 +130,7 @@ const Footer = () => {
   ];
 
   return (
-    <footer className="relative bg-[#ece3d0] text-slate-700 pt-14 sm:pt-16 pb-10 overflow-hidden border-t border-orange-100/80">
+    <footer className="relative bg-[#ece3d0] text-slate-700 pt-14 sm:pt-16 pb-0 overflow-hidden border-t border-orange-100/80">
 
       {/* Background Soft Atmospheric Radiance (Warm Peach) */}
       <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
@@ -439,6 +439,11 @@ const Footer = () => {
           </div>
         </div>
 
+      </div>
+
+      {/* Giant wordmark across the bottom, cut off by the page edge */}
+      <div aria-hidden="true" className="relative mt-8 -mb-[0.24em] select-none pointer-events-none whitespace-nowrap text-center font-outfit font-black leading-[0.8] tracking-[-0.06em] text-[21.6vw]">
+        <span className="text-[#16130F]">Uni</span><span className="text-[#DE5C2B]">Coach</span>
       </div>
     </footer>
   );
