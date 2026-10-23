@@ -122,7 +122,7 @@ const BlogDetailPage = () => {
             <div className="absolute top-1/3 right-1/4 w-[400px] h-[400px] bg-indigo-100/50 rounded-full blur-[130px] pointer-events-none" />
 
             {/* Standard Global Width Container */}
-            <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-left">
+            <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-left">
                 
                 {/* Top Navigation Bar */}
                 <div className="flex items-center justify-between mb-8 pb-4 border-b border-slate-200/80">

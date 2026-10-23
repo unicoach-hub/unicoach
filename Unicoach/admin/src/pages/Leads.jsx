@@ -845,12 +845,18 @@ const Leads = ({ view = 'all' }) => {
     {
       title: 'Lead Ref.',
       key: 'leadRef',
-      width: 130,
-      render: (_, record) => (
-        <span className="nx-status nx-status--neutral" title={record.latestSource || record.source}>
-          {record.latestSource || record.source || '—'}
-        </span>
-      ),
+      width: 150,
+      render: (_, record) => {
+        const full = record.latestSource || record.source || '—';
+        // Shorter names for long sources; the full one stays in the tooltip
+        const short = { 'Paid consultation booking': 'Paid consultation', 'Website Booking Form': 'Booking form' }[full] || full;
+        return (
+          <span className="nx-status nx-status--neutral" title={full}
+            style={{ whiteSpace: 'normal', height: 'auto', minHeight: 24, lineHeight: 1.3, padding: '4px 10px', fontSize: 12, textAlign: 'left', display: 'inline-block', maxWidth: '100%', overflowWrap: 'anywhere' }}>
+            {short}
+          </span>
+        );
+      },
     },
     {
       title: 'Name',
