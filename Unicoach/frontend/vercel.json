@@ -76,6 +76,26 @@
   "trailingSlash": false,
   "redirects": [
     {
+      "source": "/grading-system-in-canada-how-does-it-work",
+      "destination": "/blogs/grading-system-in-canada",
+      "permanent": true
+    },
+    {
+      "source": "/top-humanities-courses-at-undergraduate-level",
+      "destination": "/blogs/top-humanities-courses",
+      "permanent": true
+    },
+    {
+      "source": "/best-medical-science-universities-in-australia-for-international-students",
+      "destination": "/blogs/best-medical-universities-in-australia",
+      "permanent": true
+    },
+    {
+      "source": "/best-mba-colleges-in-australia-for-international-students-2022",
+      "destination": "/blogs/best-mba-colleges-in-australia",
+      "permanent": true
+    },
+    {
       "source": "/:p(contact-us(?:-[0-9]+)?|careers)",
       "destination": "/contact",
       "permanent": true
@@ -146,7 +166,7 @@
       "permanent": true
     },
     {
-      "source": "/:p(do-you-know-what-is-a-gic-and-how-can-it-help-you-study-in-canada|what-to-choose-masters-or-pg-diploma-in-canada|know-about-designated-learning-institutions-dlis-in-canada|grading-system-in-canada-how-does-it-work|everything-you-need-to-know-about-project-management-course-in-canada|how-to-choose-your-province-in-canada-for-education|rejection-of-canadian-student-visas-4-big-reasons|6-reasons-to-choose-canada-for-higher-education)",
+      "source": "/:p(do-you-know-what-is-a-gic-and-how-can-it-help-you-study-in-canada|what-to-choose-masters-or-pg-diploma-in-canada|know-about-designated-learning-institutions-dlis-in-canada|everything-you-need-to-know-about-project-management-course-in-canada|how-to-choose-your-province-in-canada-for-education|rejection-of-canadian-student-visas-4-big-reasons|6-reasons-to-choose-canada-for-higher-education)",
       "destination": "/study-abroad/canada",
       "permanent": true
     },
@@ -161,7 +181,7 @@
       "permanent": true
     },
     {
-      "source": "/:p(best-medical-science-universities-in-australia-for-international-students|best-mba-colleges-in-australia-for-international-students-2022|8-reasons-to-choose-australia-for-your-education-journey)",
+      "source": "/:p(8-reasons-to-choose-australia-for-your-education-journey)",
       "destination": "/study-abroad/australia",
       "permanent": true
     },
@@ -201,7 +221,7 @@
       "permanent": true
     },
     {
-      "source": "/:p(how-to-bring-your-family-while-studying-abroad|10-top-skills-needed-to-become-a-data-scientist|top-humanities-courses-at-undergraduate-level|top-7-bachelors-degrees-you-can-study-abroad-in-2022|5-factors-international-students-should-keep-in-mind-to-study-abroad|know-about-transferring-schools-a-complete-guide|study-physics-in-these-top-countries)",
+      "source": "/:p(how-to-bring-your-family-while-studying-abroad|10-top-skills-needed-to-become-a-data-scientist|top-7-bachelors-degrees-you-can-study-abroad-in-2022|5-factors-international-students-should-keep-in-mind-to-study-abroad|know-about-transferring-schools-a-complete-guide|study-physics-in-these-top-countries)",
       "destination": "/study-abroad",
       "permanent": true
     }

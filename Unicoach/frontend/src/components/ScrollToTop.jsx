@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { SITE_URL } from '../config';
+import { getPageMeta } from '../utils/pageMeta';
 import { trackPageView } from '../utils/adTracking';
 
 // Account / transactional pages that should never show up in Google
@@ -63,7 +64,7 @@ const ScrollToTop = () => {
       title = 'UniCoach | Premium Study Abroad Counselling & Test Prep';
       description = 'Empowering students globally to identify and navigate world-class education options. Get premium study abroad counselling, visa services, and test preparation.';
     } else if (path.startsWith('/study-abroad/usa')) {
-      title = 'Study in USA | Top Universities, Cost & Visa Guide | UniCoach';
+      title = 'Study in USA for Indian Students | Universities, Cost & Visa | UniCoach';
       description = 'Planning to study in USA? Find best universities, admission processes, tuition fees, cost of living, scholarships, and student visa guides.';
       if (path.includes('/courses/masters')) {
         title = 'Masters in USA | MS Admissions, Fees & Requirements | UniCoach';
@@ -106,7 +107,7 @@ const ScrollToTop = () => {
         description = 'Explore Atlanta higher education options: top universities, cost of living, and post-study opportunities.';
       }
     } else if (path.startsWith('/study-abroad/uk')) {
-      title = 'Study in UK | Universities, Intakes & Student Visa | UniCoach';
+      title = 'Study in UK for Indian Students | Universities, Intakes & Visa | UniCoach';
       description = 'Explore top UK universities, masters courses, intakes (January/September), cost of living, scholarships, and post-study work visa rules.';
       if (path.includes('/courses/masters')) {
         title = 'Masters in UK | MSc Course Fees & Requirements | UniCoach';
@@ -149,7 +150,7 @@ const ScrollToTop = () => {
         description = 'Find top universities and colleges in Edinburgh, living costs, student life, and career opportunities.';
       }
     } else if (path.startsWith('/study-abroad/canada')) {
-      title = 'Study in Canada | Top Colleges, Fees & PGWP Guide | UniCoach';
+      title = 'Study in Canada for Indian Students | Colleges, Fees & PGWP | UniCoach';
       description = 'Guide to study in Canada: top universities/colleges, tuition fees, SDS visa requirements, cost of living, and Post-Graduation Work Permit (PGWP).';
       if (path.includes('/courses/masters')) {
         title = 'Masters in Canada | MS Course Fees & Eligibility | UniCoach';
@@ -192,7 +193,7 @@ const ScrollToTop = () => {
         description = 'Explore universities in London, Canada (Western University, Fanshawe), student living costs, and visa tips.';
       }
     } else if (path.startsWith('/study-abroad/germany')) {
-      title = 'Study in Germany | Free Tuition Public Universities | UniCoach';
+      title = 'Study in Germany for Indian Students | Free Tuition Universities | UniCoach';
       description = 'Study in Germany with €0 tuition fees. Find public universities, APS certificate guide, block account costs, and 18-month job seeker visa.';
       if (path.includes('/intakes') || path.includes('/summer-intake') || path.includes('/winter-intake')) {
         title = 'Germany University Intakes | Summer & Winter Timelines | UniCoach';
@@ -272,7 +273,7 @@ const ScrollToTop = () => {
         description = 'Explore Master of Arts (MA) courses in France: entry requirements, fees, and top universities.';
       }
     } else if (path.startsWith('/study-abroad/new-zealand')) {
-      title = 'Study in New Zealand | Universities, Intakes & Visa | UniCoach';
+      title = 'Study in New Zealand for Indian Students | Universities & Visa | UniCoach';
       description = 'Discover study options in New Zealand. Check out top universities, July/February intakes, student visa requirements, and work rights.';
       if (path.includes('/intakes') || path.includes('/july-intake')) {
         title = 'New Zealand Intakes | July & February Cycles | UniCoach';
@@ -306,7 +307,7 @@ const ScrollToTop = () => {
         description = 'Explore Master of Arts (MA) courses in New Zealand: entry requirements, fees, and top schools.';
       }
     } else if (path.startsWith('/study-abroad/australia')) {
-      title = 'Study in Australia | Top Universities, Cost & Visa | UniCoach';
+      title = 'Study in Australia for Indian Students | Universities, Cost & Visa | UniCoach';
       description = 'Study abroad in Australia: check top Group of Eight universities, masters courses, tuition fees, living costs, and post-study work visa.';
       if (path.includes('/courses/masters')) {
         title = 'Masters in Australia | MS Course Fees & Eligibility | UniCoach';
@@ -485,6 +486,13 @@ const ScrollToTop = () => {
     } else if (path === '/contact' || path === '/book-consultation') {
       title = 'Book Free Study Abroad Counselling | Contact UniCoach';
       description = 'Contact UniCoach. Get in touch with our certified education advisors for profile evaluation, university shortlists, and visa guidance.';
+    }
+
+    // Routes whose sub-pages used to share one generic title get their own (src/utils/pageMeta.js)
+    const pageMeta = getPageMeta(path || '/');
+    if (pageMeta) {
+      title = pageMeta.title;
+      description = pageMeta.description;
     }
 
     // Blog, news and event detail pages arrive with their own title, description and social tags

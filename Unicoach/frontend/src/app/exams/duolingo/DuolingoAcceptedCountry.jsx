@@ -26,14 +26,14 @@ const DuolingoAcceptedCountry = ({ country }) => {
   const countryData = {
     australia: {
       title: "Duolingo Accepted Universities in Australia 2026",
-      subtitle: "List of top Australian universities accepting Duolingo scores, UG & PG requirements, and visa details.",
+      subtitle: "Australian universities that accept Duolingo for admission, UG & PG score requirements, and why your student visa still needs IELTS, PTE or TOEFL.",
       highlights: [
         { label: "Top Accepted Universities", value: "Uni of Melbourne, UNSW, Uni of Sydney, Monash Uni" },
         { label: "Average Tuition Fees", value: "₹22 L – ₹28 L (AUD 39,000 – 50,000) per year" },
         { label: "Minimum Score Range", value: "100 – 120 (UG & PG)" },
-        { label: "Visa Pathway", value: "Student Visa (Subclass 500) accepted with LOA" }
+        { label: "Student Visa (Subclass 500)", value: "DET NOT accepted for the visa (needs IELTS, PTE or TOEFL iBT)" }
       ],
-      description: "The Duolingo English Test (DET) has become a trusted alternative to IELTS and TOEFL for Australian university admissions. In 2026, more than 100 universities in Australia accept Duolingo scores, offering a flexible and accessible English proficiency option for international students.",
+      description: "Yes, many Australian universities accept the Duolingo English Test (DET) for admission, but the Australian student visa (Subclass 500) does not. The Department of Home Affairs only accepts English tests taken at a secure test centre, so a fully online test like Duolingo cannot be used for the visa. Use DET to get your offer if your university accepts it, then take IELTS Academic, PTE Academic or TOEFL iBT for the visa (unless you are exempt).",
       universities: [
         { name: "University of Melbourne", rank: "19", score: "120 (130+ for Law/Med)" },
         { name: "University of New South Wales (UNSW)", rank: "20", score: "110 (125+ for Eng/Law)" },
@@ -60,14 +60,15 @@ const DuolingoAcceptedCountry = ({ country }) => {
       },
       visa: {
         type: "Student Visa (Subclass 500)",
-        fee: "AUD 630 (~₹35,000)",
-        time: "Around 4 weeks",
-        proof: "AUD 42,000 (~₹23 L) annually",
+        fee: "AUD 2,500 from 1 July 2026 (confirm on Home Affairs)",
+        time: "Varies: check Home Affairs processing times",
+        proof: "AUD 29,710 living costs + first-year tuition + travel",
         insurance: "Overseas Student Health Cover (OSHC) mandatory",
-        note: "Ensure your chosen university's confirmation letter explicitly lists DET acceptance before applying."
+        note: "Duolingo is not an accepted English test for the Australian student visa. Your university may accept DET for admission, but plan an IELTS Academic, PTE Academic or TOEFL iBT score for the visa unless you are exempt."
       },
       faqs: [
-        { q: "Is Duolingo accepted for Australian student visas?", a: "Yes. Many Australian universities accepting the DET allow it for visa language requirements when paired with a university-issued confirmation." },
+        { q: "Is Duolingo accepted for Australian student visas?", a: "No. The Department of Home Affairs only accepts English tests taken at a secure test centre, and Duolingo is fully online, so it cannot be used for the Student visa (Subclass 500). Use an accepted test such as IELTS Academic, PTE Academic or TOEFL iBT for the visa, even if your university accepted your Duolingo score for admission." },
+        { q: "Is Duolingo accepted in Australia?", a: "Yes, for admission at many Australian universities, usually with an overall score of 100 to 120 depending on the course and university. Always check the course page, because requirements differ by program, and remember that the student visa needs a different test." },
         { q: "Can I get conditional admission with DET in Australia?", a: "Yes, some universities accepting the DET in Australia may grant conditional admission, allowing you to complete additional English language support courses." }
       ]
     },
