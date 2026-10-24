@@ -1,9 +1,10 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
 
 // "Back" pill at the top left of every page (just under the navbar; scrolls away with the page).
-// Not on the homepage, dashboards or sign-in screens.
+// Not on the homepage, dashboards or sign-in screens, and it steps aside when the page
+// already has its own back link near the top ("Back to all articles" and the like).
 const PageBackButton = () => {
   const { pathname, search } = useLocation();
   const navigate = useNavigate();
@@ -11,11 +12,25 @@ const PageBackButton = () => {
     || new URLSearchParams(search).get('embed') === 'true'
     || /dashboard|^\/(login|signin|signup|register|reset-password|f\/)/.test(pathname);
   const ref = useRef(null);
+  const [ownBackOn, setOwnBackOn] = useState(null); // pathname where the page showed its own back link
+  const pageHasBack = ownBackOn === pathname;
+
+  useEffect(() => {
+    if (hidden) return undefined;
+    const check = () => {
+      const own = [...document.querySelectorAll('a, button')].some((el) => el !== ref.current
+        && /^\s*(←\s*)?back\b/i.test(el.textContent || '')
+        && el.getBoundingClientRect().top < 420 && el.offsetParent !== null);
+      if (own) setOwnBackOn(pathname);
+    };
+    const timers = [100, 500, 1500].map((ms) => setTimeout(check, ms));
+    return () => timers.forEach(clearTimeout);
+  }, [hidden, pathname]);
 
   // If the page puts something (a breadcrumb, a badge) where the pill sits, nudge that row
   // to the right of the pill so they never overlap. Re-checked after lazy content loads.
   useEffect(() => {
-    if (hidden) return undefined;
+    if (hidden || pageHasBack) return undefined;
     const nudged = [];
     const fit = () => {
       const btn = ref.current;
@@ -37,9 +52,9 @@ const PageBackButton = () => {
       timers.forEach(clearTimeout);
       nudged.forEach((el) => { el.style.paddingLeft = ''; delete el.dataset.backNudged; });
     };
-  }, [hidden, pathname]);
+  }, [hidden, pageHasBack, pathname]);
 
-  if (hidden) return null;
+  if (hidden || pageHasBack) return null;
 
   const goBack = () => {
     if (window.history.state && window.history.state.idx > 0) navigate(-1);

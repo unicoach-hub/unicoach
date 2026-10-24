@@ -9,6 +9,7 @@ import {
 import { Link } from 'react-router-dom';
 import StudyAbroadCTA from '../../../../../components/StudyAbroadCTA';
 
+import CapIcon from '../../../../../components/ui/CapIcon';
 const SECTIONS = [
   { id: 'overview', title: 'Why Study MA in NZ?' },
   { id: 'courses', title: 'Top 10 MA Courses' },
@@ -190,7 +191,7 @@ const NewZealandMACourse = () => {
             {/* 2. Top 10 MA Courses */}
             <section id="courses" className="scroll-mt-24">
               <div className="text-left mb-6">
-                <h2 className="text-2xl font-black text-slate-900 mb-1">🎓 Top 10 MA Courses in New Zealand</h2>
+                <h2 className="text-2xl font-black text-slate-900 mb-1"><CapIcon /> Top 10 MA Courses in New Zealand</h2>
                 <p className="text-slate-400 text-xs font-bold uppercase tracking-wider">Top universities, eligibility average, and Green List statuses</p>
               </div>
 
@@ -340,7 +341,7 @@ const NewZealandMACourse = () => {
                     <p className="text-slate-500">Government scholarships designated for Indian nationals at PG levels.</p>
                   </div>
                   <div className="bg-slate-50 p-5 rounded-2xl border border-slate-100">
-                    <h4 className="font-extrabold text-slate-805 uppercase tracking-wider mb-1">🎓 Auckland India High Achiever</h4>
+                    <h4 className="font-extrabold text-slate-805 uppercase tracking-wider mb-1"><CapIcon /> Auckland India High Achiever</h4>
                     <p className="text-indigo-655 font-black mb-1">Value: Up to NZ$20,000</p>
                     <p className="text-slate-500">Offered by Auckland University for outstanding Indian applicants (80%+ in UG).</p>
                   </div>

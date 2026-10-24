@@ -11,6 +11,7 @@ import StudyAbroadCTA from '../../../../../components/StudyAbroadCTA';
 import ShortlistWizardWidget from '../../../../../components/ShortlistWizardWidget';
 import { useLead } from '../../../../../context/LeadContext';
 
+import CapIcon from '../../../../../components/ui/CapIcon';
 const SECTIONS = [
   { id: 'why-italy', title: 'Why Study in Italy?' },
   { id: 'top-unis', title: 'Top 6 Universities' },
@@ -413,7 +414,7 @@ const ItalyTopUniversities = () => {
               <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-8">
                 <div className="bg-white border border-slate-105 rounded-2xl p-5 hover:shadow-md transition-shadow">
                   <div className="w-10 h-10 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center mb-4 font-black">
-                    🎓
+                    <CapIcon />
                   </div>
                   <h4 className="font-extrabold text-slate-900 text-sm mb-2">World-Class Education</h4>
                   <p className="text-slate-500 text-xs font-semibold leading-relaxed">
@@ -565,7 +566,7 @@ const ItalyTopUniversities = () => {
                         <strong className="text-slate-900">{uni.city}, Italy</strong>
                       </div>
                       <div>
-                        <span className="text-slate-400 block mb-1">🎓 Student Enrollment</span>
+                        <span className="text-slate-400 block mb-1"><CapIcon /> Student Enrollment</span>
                         <strong className="text-slate-900">{uni.students}</strong>
                       </div>
                       <div>

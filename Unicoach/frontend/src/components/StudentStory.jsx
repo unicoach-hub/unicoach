@@ -170,7 +170,7 @@ const StudentStory = () => {
     <section ref={ref} className="w-full max-w-full overflow-hidden bg-[#D9ECFF]">
       <div className="max-w-[1180px] mx-auto px-4 sm:px-6 lg:px-10 py-16 sm:py-24 grid lg:grid-cols-[0.85fr_1.15fr] gap-10 lg:gap-14 items-center">
         <div>
-          <span className="text-[13px] font-semibold text-[#DE5C2B]">Student ki kahani</span>
+          <span className="text-[13px] font-semibold text-[#9A3412]">Student ki kahani</span>
           <h2 className="mt-2 font-outfit text-[32px] sm:text-[44px] font-bold text-[#111] leading-[1.05] tracking-[-0.035em]">
             Ek call se <span className="text-[#DE5C2B]">Dublin tak</span>
           </h2>
@@ -183,8 +183,8 @@ const StudentStory = () => {
               return (
                 <li key={x.key}>
                   <button type="button" onClick={() => { setStep(i); setPhase(0); }} className={`no-shine w-full text-left rounded-xl px-3 py-2.5 border transition-all duration-300 cursor-pointer ${now ? 'bg-white border-[#DE5C2B] shadow-[0_8px_20px_-12px_rgba(222,92,43,0.6)]' : done ? 'bg-white border-slate-200' : 'bg-transparent border-slate-200/70 hover:bg-white'}`}>
-                    <span className={`block text-[13.5px] font-semibold leading-tight ${now || done ? 'text-[#111]' : 'text-slate-400'}`}>{done ? '✓ ' : ''}{x.label}</span>
-                    <span className="block text-[11.5px] leading-tight mt-0.5" style={{ fontFamily: "'Yatra One', sans-serif", color: now || done ? '#DE5C2B' : '#A8A29E' }}>{x.hi}</span>
+                    <span className={`block text-[13.5px] font-semibold leading-tight ${now || done ? 'text-[#111]' : 'text-slate-600'}`}>{done ? '✓ ' : ''}{x.label}</span>
+                    <span className="block text-[11.5px] leading-tight mt-0.5" style={{ fontFamily: "'Yatra One', sans-serif", color: now || done ? '#B8451A' : '#57534E' }}>{x.hi}</span>
                   </button>
                 </li>
               );
@@ -195,7 +195,7 @@ const StudentStory = () => {
             <Link to="/unicoach" className="inline-flex items-center gap-2 h-11 px-5 rounded-full bg-slate-900 hover:bg-[#DE5C2B] text-white text-[14px] font-semibold transition-colors">
               Book a 1:1 session <ArrowRight size={16} />
             </Link>
-            <p className="mt-3 text-[12.5px] text-slate-500">Calls happen inside UniCoach. No phone numbers shared. Story is illustrative.</p>
+            <p className="mt-3 text-[12.5px] text-slate-600">Calls happen inside UniCoach. No phone numbers shared. Story is illustrative.</p>
           </div>
         </div>
 

@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Award, ArrowRight, Star, Trophy, Globe } from 'lucide-react';
 
+import CapIcon from '../ui/CapIcon';
 const formatCategory = (cat) => {
   if (!cat) return '';
   const trimmed = cat.trim();
@@ -106,7 +107,7 @@ const RankingsSection = ({ uniData }) => {
         </Link>
         <div className="mt-4 pt-4 border-t border-indigo-100/60 flex items-center justify-center gap-2 text-[11px] font-extrabold text-indigo-950">
           <div className="flex -space-x-1.5">
-            <div className="w-5 h-5 rounded-full bg-indigo-200 border-2 border-white flex items-center justify-center text-[9px]">🎓</div>
+            <div className="w-5 h-5 rounded-full bg-indigo-200 border-2 border-white flex items-center justify-center text-[9px]"><CapIcon /></div>
             <div className="w-5 h-5 rounded-full bg-purple-200 border-2 border-white flex items-center justify-center text-[9px]">🌟</div>
           </div>
           <span>2L+ got free counselling last month!</span>

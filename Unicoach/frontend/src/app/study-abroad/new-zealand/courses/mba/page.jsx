@@ -9,6 +9,7 @@ import {
 import { Link } from 'react-router-dom';
 import StudyAbroadCTA from '../../../../../components/StudyAbroadCTA';
 
+import CapIcon from '../../../../../components/ui/CapIcon';
 const SECTIONS = [
   { id: 'overview', title: 'Why Study MBA?' },
   { id: 'types', title: 'Types of MBA Courses' },
@@ -407,7 +408,7 @@ const NewZealandMBACourse = () => {
                     <p className="text-slate-500">Covers 100% tuition, living stipends, and travel expenses.</p>
                   </div>
                   <div className="bg-slate-50 p-5 rounded-2xl border border-slate-100">
-                    <h4 className="font-extrabold text-slate-805 uppercase tracking-wider mb-2">🎓 UoA India High Achievers</h4>
+                    <h4 className="font-extrabold text-slate-805 uppercase tracking-wider mb-2"><CapIcon /> UoA India High Achievers</h4>
                     <p className="text-indigo-655 font-black mb-1">Value: Up to NZ$20,000</p>
                     <p className="text-slate-500">Offered by Auckland University for high-performing Indian students.</p>
                   </div>

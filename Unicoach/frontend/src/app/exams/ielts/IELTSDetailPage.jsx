@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import CapIcon from '../../../components/ui/CapIcon';
 import {
   BookOpen,
   Calendar,
@@ -136,7 +137,7 @@ const IELTSDetailPage = ({ pageKey }) => {
             
             <div className="bg-slate-50 border border-slate-100 rounded-2xl p-5 space-y-3 text-xs text-slate-500 font-semibold">
               <p>🎯 <strong className="text-slate-800">Age Limit:</strong> Candidates must be at least 16 years old. If you are under 18, a guardian's consent form is required during slot booking.</p>
-              <p>🎓 <strong className="text-slate-800">Academic Qualification:</strong> There are no minimum academic requirements to sit for IELTS. Anyone seeking global education can apply.</p>
+              <p><CapIcon /> <strong className="text-slate-800">Academic Qualification:</strong> There are no minimum academic requirements to sit for IELTS. Anyone seeking global education can apply.</p>
               <p>🔄 <strong className="text-slate-800">Attempt Limit:</strong> You can attempt the test as many times as you like. There is no restriction on retakes.</p>
             </div>
           </div>

@@ -9,6 +9,7 @@ import { Link } from 'react-router-dom';
 import StudyAbroadCTA from '../../../../../components/StudyAbroadCTA';
 import { useLead } from '../../../../../context/LeadContext';
 
+import CapIcon from '../../../../../components/ui/CapIcon';
 const SECTIONS = [
   { id: 'benefits', title: 'Key Benefits' },
   { id: 'top-unis', title: 'Top 10 MS Universities' },
@@ -694,7 +695,7 @@ const ItalyMastersCourse = () => {
                       <h4 className="font-extrabold text-slate-900 text-sm md:text-base">{spec.cat}</h4>
                     </div>
                     <div className="space-y-2 text-xs text-slate-550 font-semibold">
-                      <p>🎓 <strong>Courses:</strong> {spec.courses}</p>
+                      <p><CapIcon /> <strong>Courses:</strong> {spec.courses}</p>
                       <p>🏛️ <strong>Top Unis:</strong> <span className="text-indigo-650 font-bold">{spec.unis}</span></p>
                       <p>💼 <strong>Key Roles:</strong> {spec.role}</p>
                     </div>

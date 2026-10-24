@@ -2,13 +2,15 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import logo from '@/assets/blackunicoachlogo.webp';
+import cap from '@/assets/unicoach-cap.svg';
 import {
   Mail,
   Phone,
   MapPin,
   Clock,
   ArrowUp,
-  ShieldCheck
+  ShieldCheck,
+  MessageCircle,
 } from 'lucide-react';
 
 const FacebookLogo = () => (
@@ -192,9 +194,9 @@ const Footer = () => {
 
           {/* Column 2: DESTINATIONS */}
           <div className="lg:col-span-2">
-            <h4 className="font-extrabold text-slate-900 mb-4 text-[12px] uppercase tracking-wider">
+            <h3 className="font-extrabold text-slate-900 mb-4 text-[12px] uppercase tracking-wider">
               DESTINATIONS
-            </h4>
+            </h3>
             <ul className="space-y-2.5 text-[13px] font-medium">
               {destinationLinks.map((item) => (
                 <li key={item.path}>
@@ -208,9 +210,9 @@ const Footer = () => {
 
           {/* Column 3: EXAMS */}
           <div className="lg:col-span-2">
-            <h4 className="font-extrabold text-slate-900 mb-4 text-[12px] uppercase tracking-wider">
+            <h3 className="font-extrabold text-slate-900 mb-4 text-[12px] uppercase tracking-wider">
               EXAMS
-            </h4>
+            </h3>
             <ul className="space-y-2.5 text-[13px] font-medium">
               {examLinks.map((item) => (
                 <li key={item.path}>
@@ -224,9 +226,9 @@ const Footer = () => {
 
           {/* Column 4: RESOURCES */}
           <div className="lg:col-span-2">
-            <h4 className="font-extrabold text-slate-900 mb-4 text-[12px] uppercase tracking-wider">
+            <h3 className="font-extrabold text-slate-900 mb-4 text-[12px] uppercase tracking-wider">
               RESOURCES
-            </h4>
+            </h3>
             <ul className="space-y-2.5 text-[13px] font-medium">
               {resourceLinks.map((item) => (
                 <li key={item.path}>
@@ -240,9 +242,9 @@ const Footer = () => {
 
           {/* Column 5: REACH US */}
           <div className="lg:col-span-2">
-            <h4 className="font-extrabold text-slate-900 mb-4 text-[12px] uppercase tracking-wider">
+            <h3 className="font-extrabold text-slate-900 mb-4 text-[12px] uppercase tracking-wider">
               REACH US
-            </h4>
+            </h3>
             <ul className="space-y-3.5 text-xs">
               <li className="flex gap-2.5 items-start">
                 <MapPin className="w-4 h-4 text-[#DE5C2B] flex-shrink-0 mt-0.5" />
@@ -254,6 +256,12 @@ const Footer = () => {
                 <Phone className="w-4 h-4 text-[#DE5C2B] flex-shrink-0" />
                 <a href="tel:+919518657944" className="text-slate-700 hover:text-[#DE5C2B] transition-colors font-medium text-[12px]">
                   +91 95186 57944
+                </a>
+              </li>
+              <li className="flex gap-2.5 items-center">
+                <MessageCircle className="w-4 h-4 text-[#25D366] flex-shrink-0" />
+                <a href="https://wa.me/917082610813?text=Hi%20UniCoach" target="_blank" rel="noopener noreferrer" className="text-slate-700 hover:text-[#25D366] transition-colors font-medium text-[12px]">
+                  WhatsApp: +91 70826 10813
                 </a>
               </li>
               <li className="flex gap-2.5 items-center">
@@ -335,10 +343,10 @@ const Footer = () => {
 
               {/* Column 1: DESTINATIONS */}
               <div>
-                <h4 className="font-extrabold text-slate-900 mb-3 text-[11.5px] uppercase tracking-wider flex items-center gap-1.5">
+                <h3 className="font-extrabold text-slate-900 mb-3 text-[11.5px] uppercase tracking-wider flex items-center gap-1.5">
                   <span className="w-1.5 h-1.5 rounded-full bg-[#DE5C2B]" />
                   <span>DESTINATIONS</span>
-                </h4>
+                </h3>
                 <ul className="space-y-2 text-[12px] font-medium">
                   {destinationLinks.map((item) => (
                     <li key={item.path}>
@@ -352,10 +360,10 @@ const Footer = () => {
 
               {/* Column 2: EXAMS */}
               <div>
-                <h4 className="font-extrabold text-slate-900 mb-3 text-[11.5px] uppercase tracking-wider flex items-center gap-1.5">
+                <h3 className="font-extrabold text-slate-900 mb-3 text-[11.5px] uppercase tracking-wider flex items-center gap-1.5">
                   <span className="w-1.5 h-1.5 rounded-full bg-[#DE5C2B]" />
                   <span>EXAMS</span>
-                </h4>
+                </h3>
                 <ul className="space-y-2 text-[12px] font-medium">
                   {examLinks.map((item) => (
                     <li key={item.path}>
@@ -369,10 +377,10 @@ const Footer = () => {
 
               {/* Column 3 / Spanning: RESOURCES */}
               <div className="col-span-2 sm:col-span-1 pt-3 sm:pt-0 border-t border-slate-200/60 sm:border-t-0">
-                <h4 className="font-extrabold text-slate-900 mb-3 text-[11.5px] uppercase tracking-wider flex items-center gap-1.5">
+                <h3 className="font-extrabold text-slate-900 mb-3 text-[11.5px] uppercase tracking-wider flex items-center gap-1.5">
                   <span className="w-1.5 h-1.5 rounded-full bg-[#DE5C2B]" />
                   <span>RESOURCES</span>
-                </h4>
+                </h3>
                 <ul className="grid grid-cols-2 sm:grid-cols-1 gap-x-4 gap-y-2 text-[12px] font-medium">
                   {resourceLinks.map((item) => (
                     <li key={item.path}>
@@ -389,9 +397,9 @@ const Footer = () => {
 
           {/* Mobile REACH US */}
           <div className="space-y-3 text-xs">
-            <h4 className="font-extrabold text-slate-900 text-[12px] uppercase tracking-wider">
+            <h3 className="font-extrabold text-slate-900 text-[12px] uppercase tracking-wider">
               REACH US
-            </h4>
+            </h3>
             <div className="flex gap-2 items-start text-slate-600 font-medium text-[12px]">
               <MapPin className="w-3.5 h-3.5 text-[#DE5C2B] flex-shrink-0 mt-0.5" />
               <span>1st Floor, Gali No. 4, Sahil Colony, Jattal road, Sondhapur Village, Panipat, Haryana, India, 132105</span>
@@ -400,6 +408,11 @@ const Footer = () => {
               <div className="flex gap-1.5 items-center">
                 <Phone className="w-3.5 h-3.5 text-[#DE5C2B] flex-shrink-0" />
                 <a href="tel:+919518657944" className="text-slate-700 font-semibold">+91 95186 57944</a>
+              </div>
+              <span>·</span>
+              <div className="flex gap-1.5 items-center">
+                <MessageCircle className="w-3.5 h-3.5 text-[#25D366] flex-shrink-0" />
+                <a href="https://wa.me/917082610813?text=Hi%20UniCoach" target="_blank" rel="noopener noreferrer" className="text-slate-700 font-semibold">WhatsApp +91 70826 10813</a>
               </div>
               <span>·</span>
               <div className="flex gap-1.5 items-center">
@@ -426,9 +439,9 @@ const Footer = () => {
           </p>
 
           <div className="flex items-center gap-5">
-            <Link to="/privacy-policy" className="text-slate-500 hover:text-[#DE5C2B] text-xs font-bold transition-colors">Privacy Policy</Link>
-            <Link to="/terms" className="text-slate-500 hover:text-[#DE5C2B] text-xs font-bold transition-colors">Terms of Service</Link>
-            <Link to="/refund-policy" className="text-slate-500 hover:text-[#DE5C2B] text-xs font-bold transition-colors">Refund Policy</Link>
+            <Link to="/privacy-policy" className="text-slate-600 hover:text-[#DE5C2B] text-xs font-bold transition-colors">Privacy Policy</Link>
+            <Link to="/terms" className="text-slate-600 hover:text-[#DE5C2B] text-xs font-bold transition-colors">Terms of Service</Link>
+            <Link to="/refund-policy" className="text-slate-600 hover:text-[#DE5C2B] text-xs font-bold transition-colors">Refund Policy</Link>
             <button
               onClick={scrollToTop}
               className="w-8.5 h-8.5 rounded-lg bg-white border border-slate-200 hover:border-[#111111] hover:bg-[#111111] text-slate-600 hover:text-white flex items-center justify-center transition-all cursor-pointer shadow-2xs group"
@@ -441,9 +454,9 @@ const Footer = () => {
 
       </div>
 
-      {/* Giant wordmark across the bottom, cut off by the page edge */}
+      {/* Giant wordmark across the bottom, cut off by the page edge; the i wears the logo's cap */}
       <div aria-hidden="true" className="relative mt-8 -mb-[0.24em] select-none pointer-events-none whitespace-nowrap text-center font-outfit font-black leading-[0.8] tracking-[-0.06em] text-[21.6vw]">
-        <span className="text-[#16130F]">Uni</span><span className="text-[#DE5C2B]">Coach</span>
+        <span className="text-[#16130F]">Un<span className="relative inline-block">ı<img src={cap} alt="" className="absolute left-1/2 -translate-x-[46%] w-[0.5em] max-w-none bottom-[0.6em]" /></span></span><span className="text-[#DE5C2B]">Coach</span>
       </div>
     </footer>
   );

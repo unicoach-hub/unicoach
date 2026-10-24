@@ -9,6 +9,7 @@ import {
 import { Link } from 'react-router-dom';
 import StudyAbroadCTA from '../../../../../components/StudyAbroadCTA';
 
+import CapIcon from '../../../../../components/ui/CapIcon';
 const SECTIONS = [
   { id: 'why-medicine', title: 'Language & Structure Warning' },
   { id: 'medical-cycles', title: 'Three Training Cycles' },
@@ -334,7 +335,7 @@ const FranceMBBSCourse = () => {
               <div className="bg-white border border-slate-200/60 rounded-[2.5rem] p-8 shadow-sm">
                 <h2 className="text-2xl font-black text-slate-900 mb-2 flex items-center gap-2">
                   <Briefcase className="text-indigo-650" size={24} />
-                  🎓 Clinical Qualifications & Practice Right
+                  <CapIcon /> Clinical Qualifications & Practice Right
                 </h2>
                 <p className="text-slate-400 text-xs font-bold mb-6">Earning your credentials and clinical licenses in Europe</p>
 

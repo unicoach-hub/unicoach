@@ -3,6 +3,7 @@ import { API_BASE_URL } from '../config';
 import CountrySelect from './ui/CountrySelect';
 import './PublicBookingPage.css';
 
+import CapIcon from './ui/CapIcon';
 const PublicBookingPage = () => {
   const slug = window.location.pathname.split('/book/')[1];
 
@@ -223,7 +224,7 @@ const PublicBookingPage = () => {
         {/* ── LEFT PANEL: Event Content & Media ── */}
         <div className="pbp-left-panel">
           <div className="pbp-brand">
-            <span className="pbp-brand-icon">🎓</span>
+            <span className="pbp-brand-icon"><CapIcon /></span>
             <span className="pbp-brand-text">UniCoach Scheduling</span>
           </div>
 

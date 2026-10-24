@@ -1,4 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Archivo+Black&family=Geist:wght@400;500;600;700;800&display=swap');
 @import "tailwindcss";
 
 @theme {
@@ -852,3 +851,6 @@ body.editorial-page :is(a, button)[class*="bg-[#DE5C2B]"]:is([class*="px-6"], [c
 .uc-tassel-sway { transform-origin: 19.6% 35%; animation: uc-tassel-sway 3s cubic-bezier(.45, 0, .55, 1) infinite alternate; will-change: transform; }
 @keyframes uc-tassel-sway { from { transform: rotate(-7deg); } to { transform: rotate(7deg); } }
 @media (prefers-reduced-motion: reduce) { .uc-tassel-sway { animation: none; } }
+
+/* Brand orange used as *text* is one shade darker, so small labels pass WCAG AA contrast on cream and white */
+.text-\[\#DE5C2B\], .text-\[\#de5c2b\] { color: #B8451A; }

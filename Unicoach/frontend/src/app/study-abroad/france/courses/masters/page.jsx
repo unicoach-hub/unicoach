@@ -9,6 +9,7 @@ import {
 import { Link } from 'react-router-dom';
 import StudyAbroadCTA from '../../../../../components/StudyAbroadCTA';
 
+import CapIcon from '../../../../../components/ui/CapIcon';
 const SECTIONS = [
   { id: 'why-ms', title: 'Why MS in France?' },
   { id: 'universities', title: 'Top 10 Universities' },
@@ -270,7 +271,7 @@ const FranceMastersCourse = () => {
               {/* Grid of Advantages */}
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
                 <div className="bg-white border border-slate-200/60 p-5 rounded-2xl flex flex-col gap-2 hover:shadow-xs transition-shadow">
-                  <h4 className="font-extrabold text-slate-950 text-xs uppercase tracking-wider text-indigo-650">🎓 High-Quality Education</h4>
+                  <h4 className="font-extrabold text-slate-950 text-xs uppercase tracking-wider text-indigo-650"><CapIcon /> High-Quality Education</h4>
                   <p className="text-slate-500 text-[11px] font-semibold leading-relaxed">
                     Universities like École Polytechnique, HEC Paris, PSL, and Paris-Saclay are consistently top-ranked on global leaderboards.
                   </p>
@@ -442,7 +443,7 @@ const FranceMastersCourse = () => {
               <div className="bg-white border border-slate-200/60 rounded-[2rem] p-6 md:p-8 shadow-sm">
                 <h2 className="text-2xl font-black text-slate-900 mb-2 flex items-center gap-2">
                   <GraduationCap className="text-indigo-650" size={24} />
-                  🎓 Recommended UG Courses for MS
+                  <CapIcon /> Recommended UG Courses for MS
                 </h2>
                 <p className="text-slate-400 text-xs font-bold mb-6">Major eligibility alignments from Bachelor's to Master's degrees</p>
 

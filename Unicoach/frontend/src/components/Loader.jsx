@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import CapIcon from './ui/CapIcon';
 
 const loadingStages = [
   { emoji: '🎓', text: 'Evaluating Academic Profiles & GPAs...' },
@@ -269,7 +270,7 @@ const Loader = ({ onLoadingComplete }) => {
                   exit="exit"
                   className="flex items-center gap-2.5 text-indigo-150 text-[13px] md:text-sm font-semibold bg-white/5 border border-white/10 px-5 py-2 rounded-full backdrop-blur-sm shadow-md"
                 >
-                  <span className="text-base">{loadingStages[stageIndex].emoji}</span>
+                  <span className="text-base">{loadingStages[stageIndex].emoji === '🎓' ? <CapIcon /> : loadingStages[stageIndex].emoji}</span>
                   <span className="text-slate-200">{loadingStages[stageIndex].text}</span>
                 </motion.div>
               </AnimatePresence>

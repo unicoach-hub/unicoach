@@ -81,7 +81,7 @@ export const MiniChatDemo = ({ paused }) => {
   return (
     <div className="space-y-1.5 min-h-[78px]">
       <div className="flex justify-end">
-        <span className="max-w-[88%] px-2 py-1 rounded-xl rounded-br-sm bg-[#DE5C2B] text-white text-[9.5px] font-semibold leading-snug">
+        <span className="max-w-[88%] px-2 py-1 rounded-xl rounded-br-sm bg-[#B8451A] text-white text-[9.5px] font-semibold leading-snug">
           {text || ' '}
         </span>
       </div>

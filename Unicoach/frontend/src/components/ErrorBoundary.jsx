@@ -1,5 +1,6 @@
 import React from 'react';
 
+import CapIcon from './ui/CapIcon';
 /**
  * Enterprise-Grade Global Error Boundary for UniCoach Web App
  * Prevents "White Screen of Death" by catching runtime render errors
@@ -56,7 +57,7 @@ class ErrorBoundary extends React.Component {
         <div className="min-h-screen bg-slate-900 text-white flex items-center justify-center p-6 select-none font-sans">
           <div className="max-w-lg w-full bg-slate-800/90 border border-slate-700/80 rounded-3xl p-8 shadow-2xl backdrop-blur-xl text-center space-y-6">
             <div className="w-16 h-16 mx-auto bg-indigo-500/10 border border-indigo-500/30 rounded-2xl flex items-center justify-center text-3xl text-indigo-400 shadow-inner">
-              🎓
+              <CapIcon />
             </div>
 
             <div className="space-y-2">

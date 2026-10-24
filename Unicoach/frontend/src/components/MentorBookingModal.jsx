@@ -24,6 +24,7 @@ import {
 } from '../unicoach/api/unicoachApi';
 import { openRazorpayCheckout } from '../unicoach/utils/razorpayCheckout';
 
+import CapIcon from './ui/CapIcon';
 // Descriptive copy/badges only, matched to DB sessions by duration.
 // PRICES ALWAYS COME FROM THE API, never from this list.
 const SESSION_COPY = [
@@ -340,7 +341,7 @@ export default function MentorBookingModal({
                 {mentor.currentRole || mentor.headline || 'Senior Alumni & Admission Specialist'}
               </p>
               <p className="text-[11px] text-slate-300 font-medium truncate">
-                🎓 {mentor.university || mentor.uniShort || university?.name} • {mentor.country || 'Global'}
+                <CapIcon /> {mentor.university || mentor.uniShort || university?.name} • {mentor.country || 'Global'}
               </p>
             </div>
           </div>

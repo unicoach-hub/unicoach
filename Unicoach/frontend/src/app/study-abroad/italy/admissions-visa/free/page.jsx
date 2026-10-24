@@ -11,6 +11,7 @@ import StudyAbroadCTA from '../../../../../components/StudyAbroadCTA';
 import ShortlistWizardWidget from '../../../../../components/ShortlistWizardWidget';
 import { useLead } from '../../../../../context/LeadContext';
 
+import CapIcon from '../../../../../components/ui/CapIcon';
 const SECTIONS = [
   { id: 'why-italy', title: 'Why Study in Italy?' },
   { id: 'pathways', title: 'Scholarship Pathways' },
@@ -344,7 +345,7 @@ const ItalyFree = () => {
 
                 <div className="bg-white border border-slate-105 rounded-2xl p-5 hover:shadow-md transition-shadow">
                   <div className="w-10 h-10 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center mb-4 font-black">
-                    🎓
+                    <CapIcon />
                   </div>
                   <h4 className="font-extrabold text-slate-900 text-sm mb-2">Academic Excellence</h4>
                   <p className="text-slate-500 text-xs font-semibold leading-relaxed">

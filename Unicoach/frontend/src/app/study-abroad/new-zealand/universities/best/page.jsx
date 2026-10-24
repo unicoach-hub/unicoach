@@ -8,6 +8,7 @@ import {
 import { Link } from 'react-router-dom';
 import StudyAbroadCTA from '../../../../../components/StudyAbroadCTA';
 
+import CapIcon from '../../../../../components/ui/CapIcon';
 const SECTIONS = [
   { id: 'overview', title: 'Why 2026 is the Best Year' },
   { id: 'rankings', title: 'Top 8 Universities' },
@@ -567,7 +568,7 @@ const NewZealandBest = () => {
                     </p>
                   </div>
                   <div className="bg-slate-50 p-5 rounded-2xl border border-slate-100">
-                    <h3 className="font-extrabold text-slate-800 text-xs uppercase tracking-wider mb-2">🎓 Vice-Chancellor's Merit Scholarships</h3>
+                    <h3 className="font-extrabold text-slate-800 text-xs uppercase tracking-wider mb-2"><CapIcon /> Vice-Chancellor's Merit Scholarships</h3>
                     <p className="text-slate-500 text-xs font-semibold leading-relaxed">
                       Awarded automatically by individual universities (Auckland, Otago, Canterbury) based on Class 12 or Bachelor's GPA scores.
                     </p>

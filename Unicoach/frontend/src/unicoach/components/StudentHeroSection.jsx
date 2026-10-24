@@ -9,6 +9,7 @@ import { motion } from 'framer-motion';
 import { GraduationCap, Search, ArrowRight, Users, ShieldCheck } from 'lucide-react';
 import { InteractiveCreatorMasonry } from './InteractiveCreatorMasonry';
 
+import CapIcon from '../../components/ui/CapIcon';
 export const StudentHeroSection = () => {
   return (
     <section className="relative bg-[#FDF6EE] pt-24 sm:pt-28 lg:pt-32 pb-14 sm:pb-20 px-4 sm:px-6 lg:px-12 overflow-hidden border-b border-orange-100/70">
@@ -31,7 +32,7 @@ export const StudentHeroSection = () => {
           >
             <span className="w-2 h-2 rounded-full bg-[#DE5C2B] animate-pulse" />
             <span className="text-[12px] font-bold text-slate-800 tracking-tight">
-              🎓 Guidance from Verified University Seniors
+              <CapIcon /> Guidance from Verified University Seniors
             </span>
           </motion.div>
 

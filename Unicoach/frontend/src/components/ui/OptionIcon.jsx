@@ -1,11 +1,12 @@
 import {
-  PenLine, GraduationCap, ChartColumn, TrendingUp, Laptop, School, Trophy, FlaskConical, Bot, ShieldCheck,
+  PenLine, ChartColumn, TrendingUp, Laptop, School, Trophy, FlaskConical, Bot, ShieldCheck,
   BookOpen, Briefcase, Wallet, Crown, Landmark, Target, Leaf, Flower2, Globe, BadgeCheck, Zap, Cog,
   Stethoscope, Bandage, Dna, Heart, Brain, Cpu, Handshake, Rocket, Monitor, Microscope, Plug, Package,
   Megaphone, ScrollText, Book, FileText, Ruler, ClipboardList, TrendingDown, Euro, Gem, Pill, Users,
   Factory, Hotel, Hospital, House, Building2, HardHat, Medal, Palette, Mic, Backpack, Sprout, Star,
   Sparkles, TriangleAlert, Scale, Cloud, TreeDeciduous,
 } from 'lucide-react';
+import CapIcon from './CapIcon';
 
 /**
  * Option data across the site still uses emoji strings (icon: '💻').
@@ -23,7 +24,7 @@ const TONES = {
 };
 
 const EMOJI_ICONS = {
-  '📝': [PenLine], '🎓': [GraduationCap], '📊': [ChartColumn], '📈': [TrendingUp], '💻': [Laptop],
+  '📝': [PenLine], '🎓': [CapIcon], '📊': [ChartColumn], '📈': [TrendingUp], '💻': [Laptop],
   '🏫': [School], '🏆': [Trophy, 'amber'], '🧫': [FlaskConical], '🤖': [Bot], '🛡': [ShieldCheck],
   '📚': [BookOpen], '💼': [Briefcase], '💰': [Wallet], '👑': [Crown, 'amber'], '🏛': [Landmark],
   '🎯': [Target], '🍂': [Leaf, 'amber'], '🍁': [TreeDeciduous, 'red'], '🌸': [Flower2, 'rose'], '🌐': [Globe],

@@ -24,6 +24,7 @@ import {
 } from 'lucide-react';
 import { API_BASE_URL } from '../../../config';
 
+import CapIcon from '../../../components/ui/CapIcon';
 const IELTSOverview = () => {
   const [activeSection, setActiveSection] = useState('section-1');
   const [dbBlogs, setDbBlogs] = useState([]);
@@ -431,7 +432,7 @@ const IELTSOverview = () => {
                   The distinction between Academic and General Training tests is overseen by the British Council and IDP's descriptions. IELTS UKVI has the same test content but is administered at secure, UKVI-approved centers and required for UK visa processing. Academic reading uses formal/passage extracts from academic sources; General Training reading uses workplace or everyday texts. UKVI mirrors whichever version you choose.
                 </p>
                 <p className="bg-indigo-50/50 border border-indigo-100 p-4 rounded-xl text-xs text-indigo-955 font-bold leading-relaxed">
-                  🎓 <strong>Student Tip:</strong> All students planning to study abroad should opt for the IELTS Academic test, unless your university explicitly states otherwise. The UKVI version is identical in format but must be taken at certified test centers if required by UK immigration rules. Unless your visa or program mandates it, Academic is typically the right choice.
+                  <CapIcon /> <strong>Student Tip:</strong> All students planning to study abroad should opt for the IELTS Academic test, unless your university explicitly states otherwise. The UKVI version is identical in format but must be taken at certified test centers if required by UK immigration rules. Unless your visa or program mandates it, Academic is typically the right choice.
                 </p>
               </div>
             </section>
