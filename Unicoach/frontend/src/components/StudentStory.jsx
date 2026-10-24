@@ -63,7 +63,7 @@ const Wave = ({ on, className = '' }) => (
 );
 
 const Tile = ({ who, speaking, live = false, children }) => (
-  <div className={`relative rounded-2xl overflow-hidden bg-[#2B2D31] transition-shadow duration-300 ${speaking ? 'ring-[3px] ring-[#8AB4F8]' : 'ring-0'}`}>
+  <div className={`relative rounded-2xl overflow-hidden bg-[#1E3368] transition-shadow duration-300 ${speaking ? 'ring-[3px] ring-[#8AB4F8]' : 'ring-0'}`}>
     {children}
     <span className="absolute left-2 bottom-2 flex items-center gap-1 text-[11px] font-medium text-white bg-black/45 rounded-md px-1.5 py-0.5">
       {speaking || live ? <Wave on /> : <MicOff size={11} className="text-red-400" />} {who}
@@ -167,8 +167,8 @@ const StudentStory = () => {
   const clock = `${String(Math.floor(secs / 60)).padStart(2, '0')}:${String(secs % 60).padStart(2, '0')}`;
 
   return (
-    <section ref={ref} className="py-14 sm:py-20 bg-[#FAF9F6] w-full max-w-full overflow-hidden">
-      <div className="max-w-[1180px] mx-auto px-4 sm:px-6 lg:px-10 grid lg:grid-cols-[0.85fr_1.15fr] gap-10 lg:gap-14 items-center">
+    <section ref={ref} className="w-full max-w-full overflow-hidden bg-[#D9ECFF]">
+      <div className="max-w-[1180px] mx-auto px-4 sm:px-6 lg:px-10 py-16 sm:py-24 grid lg:grid-cols-[0.85fr_1.15fr] gap-10 lg:gap-14 items-center">
         <div>
           <span className="text-[13px] font-semibold text-[#DE5C2B]">Student ki kahani</span>
           <h2 className="mt-2 font-outfit text-[32px] sm:text-[44px] font-bold text-[#111] leading-[1.05] tracking-[-0.035em]">
@@ -200,7 +200,7 @@ const StudentStory = () => {
         </div>
 
         {/* Video call window */}
-        <div onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)} className="relative rounded-[22px] bg-[#202124] p-3 sm:p-4 shadow-[0_40px_80px_-30px_rgba(15,23,42,0.6)]">
+        <div onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)} className="relative rounded-[22px] bg-[#172554] p-3 sm:p-4 shadow-[0_40px_80px_-30px_rgba(15,23,42,0.6)]">
           <div className="flex items-center justify-between text-white/85 text-[12px] px-1 pb-3">
             <span className="flex items-center gap-2"><span className="w-2 h-2 rounded-full bg-red-500 animate-pulse" /> UniCoach 1:1 session · {clock}</span>
             <span className="hidden sm:inline text-white/60">Aarav × Prachi</span>
@@ -208,7 +208,7 @@ const StudentStory = () => {
 
           <div className="grid grid-cols-[1fr_120px] sm:grid-cols-[1fr_150px] gap-3">
             {/* shared screen */}
-            <div className="relative rounded-2xl overflow-hidden bg-[#2B2D31] aspect-[4/3] sm:aspect-[16/11]">
+            <div className="relative rounded-2xl overflow-hidden bg-[#1E3368] aspect-[4/3] sm:aspect-[16/11]">
               <AnimatePresence mode="wait">
                 {mentorTalking ? (
                   <Screen key={s.key} s={s} />
@@ -250,7 +250,7 @@ const StudentStory = () => {
                 </div>
               </Tile>
               <Tile who="Aarav (you)" speaking={!mentorTalking} live={!muted}>
-                <div className={`aspect-square grid place-items-center ${camOn ? 'bg-gradient-to-br from-[#7C3AED] to-[#DE5C2B]' : 'bg-[#3C4043]'}`}>
+                <div className={`aspect-square grid place-items-center ${camOn ? 'bg-gradient-to-br from-[#7C3AED] to-[#DE5C2B]' : 'bg-[#2A4480]'}`}>
                   <span className="w-12 h-12 rounded-full bg-white/20 grid place-items-center text-white text-[20px] font-bold">A</span>
                   {!camOn && <span className="absolute top-2 right-2 text-[10px] text-white/70">Camera off</span>}
                 </div>
@@ -259,7 +259,7 @@ const StudentStory = () => {
           </div>
 
           {/* live captions */}
-          {captions && <div className="mt-3 min-h-[48px] rounded-xl bg-black/50 px-3 py-2 text-[13px] sm:text-[14px] text-white leading-snug">
+          {captions && <div className="mt-3 min-h-[48px] rounded-xl bg-[#0F1D45]/80 px-3 py-2 text-[13px] sm:text-[14px] text-white leading-snug">
             <AnimatePresence mode="wait">
               <motion.p key={`${step}-${phase}`} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} transition={{ duration: 0.25 }}>
                 <span className="font-semibold text-[#8AB4F8]">{mentorTalking ? 'Prachi' : 'Aarav'}:</span> {mentorTalking ? s.mentor : s.student}
@@ -286,7 +286,7 @@ const StudentStory = () => {
               { I: MessageSquare, label: captions ? 'Hide captions' : 'Show captions', on: captions, act: () => setCaptions((c) => !c) },
             ].map(({ I, label, on, act }) => (
               <motion.button type="button" key={label} title={label} aria-label={label} onClick={act} whileTap={{ scale: 0.88 }}
-                className={`no-shine w-10 h-10 rounded-full grid place-items-center cursor-pointer transition-colors ${on ? 'bg-[#8AB4F8] text-[#202124]' : 'bg-[#3C4043] text-white hover:bg-[#4A4E52]'}`}><I size={17} /></motion.button>
+                className={`no-shine w-10 h-10 rounded-full grid place-items-center cursor-pointer transition-colors ${on ? 'bg-[#8AB4F8] text-[#202124]' : 'bg-[#2A4480] text-white hover:bg-[#35529A]'}`}><I size={17} /></motion.button>
             ))}
             <motion.button type="button" title="End call" aria-label="End call" onClick={() => setEnded(true)} whileTap={{ scale: 0.9 }} className="no-shine w-14 h-10 rounded-full grid place-items-center bg-[#EA4335] hover:bg-[#d33426] text-white cursor-pointer"><PhoneOff size={17} /></motion.button>
           </div>
@@ -298,7 +298,7 @@ const StudentStory = () => {
           </div>
           <AnimatePresence>
             {ended && (
-              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="absolute inset-0 z-30 rounded-[22px] bg-[#202124]/95 flex flex-col items-center justify-center gap-3 text-white">
+              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="absolute inset-0 z-30 rounded-[22px] bg-[#172554]/95 flex flex-col items-center justify-center gap-3 text-white">
                 <p className="text-[16px] font-semibold">You left the session</p>
                 <div className="flex gap-2">
                   <button type="button" onClick={() => setEnded(false)} className="no-shine px-4 h-10 rounded-full bg-[#8AB4F8] text-[#202124] font-semibold text-[13.5px] cursor-pointer">Rejoin</button>
