@@ -14,7 +14,7 @@ const crmNavLinks = [
   { path: '/crm/board', label: 'Pipeline Board', icon: <ApartmentOutlined /> },
   { path: '/crm/pipelines', label: 'CRM Pipelines', icon: <BranchesOutlined /> },
   { path: '/crm/forms', label: 'Form Builder', icon: <FormOutlined /> },
-  { path: '/crm/calendar', label: 'Booking Calendar', icon: <CalendarOutlined /> },
+  { path: '/crm/consultations', label: 'Consultation Calls', icon: <CalendarOutlined /> },
   { path: '/users', label: 'Users & Staff', icon: <UserOutlined /> }
 ];
 

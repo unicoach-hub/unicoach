@@ -38,7 +38,6 @@ const EmailHub = lazy(() => import('./pages/EmailHub'));
 const PipelineManager = lazy(() => import('./pages/PipelineManager'));
 const PipelineBoard = lazy(() => import('./pages/PipelineBoard'));
 const FormBuilder = lazy(() => import('./pages/FormBuilder'));
-const BookingCalendar = lazy(() => import('./pages/BookingCalendar'));
 const ConsultationCalls = lazy(() => import('./pages/ConsultationCalls'));
 const SupportRequests = lazy(() => import('./pages/SupportRequests'));
 const UniCoachAdminHub = lazy(() => import('./pages/UniCoachAdminHub'));
@@ -143,7 +142,8 @@ const App = () => {
                       <Route path="/crm/pipelines" element={<PipelineManager />} />
                       <Route path="/crm/board" element={<PipelineBoard />} />
                       <Route path="/crm/forms" element={<FormBuilder />} />
-                      <Route path="/crm/calendar" element={<BookingCalendar />} />
+                      {/* Old CRM booking calendar was unused; consultation bookings live under Consultation Calls */}
+                      <Route path="/crm/calendar" element={<Navigate to="/crm/consultations" replace />} />
                       <Route path="/crm/consultations" element={<ConsultationCalls />} />
                       {/* Legacy Leads & Users */}
                       <Route path="/users" element={<Users />} />
