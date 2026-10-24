@@ -24,6 +24,7 @@ const EXAM_PAGES = {
   'slot-booking': (n) => [`${n} Slot Booking in India: Dates & Availability | UniCoach`, `How to find and book a ${n} slot in India, when slots fill up, and how to reschedule.`],
   centres: (n) => [`${n} Test Centres in India | UniCoach`, `${n} test centres across Indian cities and how to choose and book the right centre.`],
   'score-scale': (n) => [`${n} Score Scale & Score Chart Explained | UniCoach`, `How the ${n} score scale works, what each score band means, and what scores top universities expect.`],
+  'sample-papers': (n) => [`${n} Sample Papers & Practice Questions | UniCoach`, `${n} sample papers and practice questions with tips on how to use them in your preparation.`],
   'sample-questions': (n) => [`${n} Sample Questions with Answers | UniCoach`, `Sample ${n} questions for every section with answers and tips for each question type.`],
 };
 
@@ -34,12 +35,10 @@ const STATIC = {
   '/unicoach': ['UniCoach Mentors | Book 1:1 Sessions with Seniors Studying Abroad', 'Book 1:1 video calls, SOP reviews and visa guidance with verified seniors and alumni studying at universities abroad.'],
   '/unicoach/mentors': ['Browse Study Abroad Mentors | Verified Seniors & Alumni | UniCoach', 'Find a mentor by country, university or course and book a 1:1 session with a verified senior studying abroad.'],
   '/team': ['Our Team | UniCoach Study Abroad Experts', 'Meet the UniCoach team of study abroad counsellors and mentors helping Indian students get into universities abroad.'],
-  '/scholarships': ['Scholarships for Indian Students to Study Abroad 2026-27 | UniCoach', 'Fully funded and partial scholarships for Indian students, with eligibility, amounts and deadlines for 2026-27.'],
   '/scholarship-calculator': ['Scholarship Calculator for Study Abroad | UniCoach', 'Estimate the scholarships you could qualify for abroad based on your academics, test scores and target country.'],
   '/eligibility-calculator': ['Study Abroad Eligibility Calculator | Check Your Chances | UniCoach', 'Check your eligibility for universities abroad using your marks, test scores and target course.'],
   '/resources/calculators/admission-eligibility': ['University Admission Eligibility Calculator | UniCoach', 'See which universities abroad match your academic profile, English test score and budget.'],
   '/search-programs': ['Search Study Abroad Programs & Courses | UniCoach', 'Search courses at universities abroad by subject, country, fees and intake.'],
-  '/universities': ['Universities Abroad: Rankings, Fees & Requirements | UniCoach', 'Compare universities abroad by ranking, tuition fees, entry requirements and intakes.'],
   '/blogs/rhodes-scholarship': ['Rhodes Scholarship for Indian Students: Eligibility & Process | UniCoach', 'How Indian students can apply for the Rhodes Scholarship to Oxford: eligibility, selection process and tips.'],
   '/privacy-policy': ['Privacy Policy | UniCoach', 'How UniCoach collects, uses and protects your personal information.'],
   '/terms': ['Terms of Service | UniCoach', 'Terms that apply when you use UniCoach services, tools and mentorship sessions.'],

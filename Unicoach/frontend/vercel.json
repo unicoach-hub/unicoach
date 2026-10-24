@@ -76,6 +76,16 @@
   "trailingSlash": false,
   "redirects": [
     {
+      "source": "/universities",
+      "destination": "/search-programs",
+      "permanent": true
+    },
+    {
+      "source": "/scholarships",
+      "destination": "/search-programs?highlight=scholarship",
+      "permanent": true
+    },
+    {
       "source": "/grading-system-in-canada-how-does-it-work",
       "destination": "/blogs/grading-system-in-canada",
       "permanent": true

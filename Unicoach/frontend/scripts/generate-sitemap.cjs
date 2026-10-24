@@ -20,6 +20,8 @@ const EXCLUDE = [
   /^\/(onboarding|unsubscribe)$/,
   /^\/(book-consultation|privacy|terms-of-service|ielts-evaluator|sop-generator|study-roadmap|visa-prep|course-details)$/,
   /^\/admin/,
+  // Redirect to /search-programs (see vercel.json); listing them would duplicate that page
+  /^\/(universities|scholarships)$/,
 ];
 
 const routes = [...appSource.matchAll(/path="([^"]+)"/g)]
