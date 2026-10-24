@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { 
     Calendar, 
@@ -72,6 +72,46 @@ const RhodesScholarshipBlogPage = () => {
             a: "OCI and PIO cardholders cannot apply through the Indian constituency, because the Rhodes Trust requires Indian citizenship with an Indian passport or equivalent proof. Refugees and asylum seekers in India are considered. If you hold an OCI card, look at the Global Rhodes Scholarship or interjurisdictional consideration instead."
         }
     ];
+
+    // FAQPage, Article and Breadcrumb structured data, so Google and AI answer engines can read the
+    // FAQs above. The build prerenders this page, so the JSON-LD ends up in the static HTML too.
+    useEffect(() => {
+        const url = 'https://www.unicoach.com/blogs/rhodes-scholarship';
+        const data = [
+            {
+                '@context': 'https://schema.org',
+                '@type': 'FAQPage',
+                mainEntity: faqs.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
+            },
+            {
+                '@context': 'https://schema.org',
+                '@type': 'BlogPosting',
+                headline: 'The Rhodes Scholarship for India 2026-27: Eligibility, Stipend and How to Apply',
+                datePublished: '2026-06-22',
+                dateModified: '2026-06-22',
+                mainEntityOfPage: url,
+                author: { '@type': 'Organization', name: 'UniCoach', url: 'https://www.unicoach.com/' },
+                publisher: { '@type': 'Organization', name: 'UniCoach', logo: { '@type': 'ImageObject', url: 'https://www.unicoach.com/logo-black.png' } },
+            },
+            {
+                '@context': 'https://schema.org',
+                '@type': 'BreadcrumbList',
+                itemListElement: [
+                    { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://www.unicoach.com/' },
+                    { '@type': 'ListItem', position: 2, name: 'Blogs', item: 'https://www.unicoach.com/blogs' },
+                    { '@type': 'ListItem', position: 3, name: 'Rhodes Scholarship for India', item: url },
+                ],
+            },
+        ];
+        const script = document.createElement('script');
+        script.type = 'application/ld+json';
+        script.id = 'rhodes-structured-data';
+        script.textContent = JSON.stringify(data);
+        document.getElementById('rhodes-structured-data')?.remove();
+        document.head.appendChild(script);
+        return () => script.remove();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     return (
         <main className="min-h-screen bg-[#F8FAFC] pt-20 pb-16">
