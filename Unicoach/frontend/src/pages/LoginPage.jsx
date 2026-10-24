@@ -6,6 +6,9 @@ import {
   Sparkles, CheckCircle2, ShieldCheck, HelpCircle, GraduationCap, Users
 } from 'lucide-react';
 import { GoogleLogin } from '@react-oauth/google';
+import withGoogleAuth from '../components/auth/withGoogleAuth';
+import RolePicker from '../components/auth/RolePicker';
+import { roleRedirect, useRole } from '../components/auth/role';
 import { useAuth } from '../context/AuthContext';
 import BoardingPassLogin from '../components/BoardingPassLogin';
 import brandLogo from '@/assets/blackunicoachlogo.webp';
@@ -55,10 +58,11 @@ const LoginPage = () => {
     document.title = 'Sign In | UniCoach - Global Admissions & Test Prep';
   }, []);
 
+  const [role, setRole] = useRole(location.search);
+
   const handlePostAuthSuccess = () => {
     setIsSuccess(true);
-    const params = new URLSearchParams(location.search);
-    const redirectPath = params.get('redirect') || '/dashboard';
+    const redirectPath = roleRedirect(role, location.search);
     setTimeout(() => {
       navigate(redirectPath, { replace: true });
     }, 800);
@@ -260,6 +264,8 @@ const LoginPage = () => {
 
             {!isForgotView ? (
               <>
+                <RolePicker value={role} onChange={setRole} />
+
                 {/* ── 1. Fast & Simple Google 1-Click Sign In ── */}
                 <div className="mb-5">
                   <div className="flex justify-center w-full">
@@ -492,4 +498,4 @@ const LoginPage = () => {
   );
 };
 
-export default LoginPage;
+export default withGoogleAuth(LoginPage);

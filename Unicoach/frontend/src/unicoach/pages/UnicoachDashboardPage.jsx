@@ -1063,6 +1063,48 @@ const UnicoachDashboardPage = () => {
     }
   };
 
+  // One click: create an empty mentor page from the signed-in account (handle from the name).
+  // No starter services: the setup checklist walks the mentor through bank, service and slots.
+  const handleInstantSetup = async () => {
+    setOnboardLoading(true);
+    setFeedback(null);
+    let base = (user?.name || user?.email?.split('@')[0] || 'mentor')
+      .toLowerCase().replace(/[^a-z0-9]+/g, '_').replace(/^_+|_+$/g, '').slice(0, 20);
+    if (base.length < 3) base = `${base}_mentor`.replace(/^_/, '');
+    const candidates = [base, `${base}_${Math.floor(100 + Math.random() * 900)}`, `${base}_${Date.now().toString().slice(-5)}`];
+    for (const candidate of candidates) {
+      try {
+        await updateMentorProfile({
+          name: user?.name || candidate,
+          email: user?.email || '',
+          handle: candidate,
+          ianaTimezone: Intl.DateTimeFormat().resolvedOptions().timeZone || 'Asia/Kolkata',
+          bufferMinutes: 10,
+          noticePeriodHours: 2
+        });
+        setHasNoCreatorProfile(false);
+        navigate(`/unicoach/dashboard/${candidate}`, { replace: true });
+        await loadDashboard(candidate);
+        setOnboardLoading(false);
+        return;
+      } catch (err) {
+        if (!/taken|reserved/i.test(err.message || '')) {
+          setFeedback({ type: 'error', text: err.message || 'Could not create your mentor page.' });
+          break;
+        }
+      }
+    }
+    setOnboardLoading(false);
+  };
+
+  // Came from "I'm a mentor" on sign-up: create the page straight away
+  useEffect(() => {
+    if (hasNoCreatorProfile && user && new URLSearchParams(window.location.search).get('setup') === '1') {
+      handleInstantSetup();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [hasNoCreatorProfile, user]);
+
   const loadDashboard = async (targetHandle) => {
     if (!targetHandle) return;
     setLoading(true);
@@ -1835,19 +1877,12 @@ const UnicoachDashboardPage = () => {
             </Link>
 
             <button
-              onClick={() => {
-                setOnboardForm({
-                  name: user?.name || '',
-                  email: user?.email || '',
-                  headline: '',
-                  bio: ''
-                });
-                setOnboardHandle((user?.name || 'creator').toLowerCase().replace(/[^a-z0-9_]/g, '_'));
-                setShowOnboarding(true);
-              }}
-              className="w-full py-2.5 px-4 rounded-xl border border-slate-200 hover:bg-slate-50 text-slate-700 font-semibold text-xs transition-all flex items-center justify-center gap-1.5 cursor-pointer"
+              onClick={handleInstantSetup}
+              disabled={onboardLoading}
+              className="w-full py-2.5 px-4 rounded-xl border border-slate-200 hover:bg-slate-50 disabled:opacity-60 text-slate-700 font-semibold text-xs transition-all flex items-center justify-center gap-1.5 cursor-pointer"
             >
-              <span>Instant Creator Setup</span>
+              {onboardLoading ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : null}
+              <span>Create my mentor page in one click</span>
             </button>
           </div>
         </div>
@@ -2246,6 +2281,42 @@ const UnicoachDashboardPage = () => {
   // ── Dynamic Profile Health & Optimization Checklist (Enhance Profile) ──
   const profileChecklist = [
     {
+      id: 'bank',
+      title: 'Bank details added',
+      desc: 'So your earnings can reach you every Monday',
+      isDone: Boolean(payoutAccount?.bankLast4 || mentor?.defaultPayoutDetails?.accountNumber || mentor?.defaultPayoutDetails?.upiId),
+      category: 'Payouts',
+      actionLabel: 'Add bank details',
+      onAction: () => {
+        setIsEnhanceModalOpen(false);
+        setActiveTab('settings');
+      }
+    },
+    {
+      id: 'services',
+      title: 'First service created',
+      desc: 'A 1:1 call, Priority DM or SOP review students can book',
+      isDone: Boolean(services && services.filter(s => s.active !== false).length >= 1),
+      category: 'Monetization',
+      actionLabel: 'Create service',
+      onAction: () => {
+        setIsEnhanceModalOpen(false);
+        setIsServiceModalOpen(true);
+      }
+    },
+    {
+      id: 'calendar',
+      title: 'Free time slots opened',
+      desc: 'Students can only book times you open',
+      isDone: Boolean((stats?.activeSlotsCount || 0) > 0),
+      category: 'Availability',
+      actionLabel: 'Open slots',
+      onAction: () => {
+        setIsEnhanceModalOpen(false);
+        setActiveTab('calendar');
+      }
+    },
+    {
       id: 'photo',
       title: 'Profile Photo Uploaded',
       desc: 'Mentors with authentic photos receive 4x more bookings',
@@ -2267,30 +2338,6 @@ const UnicoachDashboardPage = () => {
       onAction: () => {
         setIsEnhanceModalOpen(false);
         setActiveTab('settings');
-      }
-    },
-    {
-      id: 'services',
-      title: 'At least 2 Active Offerings Configured',
-      desc: 'Offer 1:1 Strategy Calls and SOP / Document Reviews',
-      isDone: Boolean(services && services.filter(s => s.active !== false).length >= 2),
-      category: 'Monetization',
-      actionLabel: 'Add Service',
-      onAction: () => {
-        setIsEnhanceModalOpen(false);
-        setIsServiceModalOpen(true);
-      }
-    },
-    {
-      id: 'calendar',
-      title: 'Booking Calendar Slots Published',
-      desc: 'Open time slots so mentees can instantly schedule video sessions',
-      isDone: Boolean((stats?.activeSlotsCount || 0) > 0),
-      category: 'Availability',
-      actionLabel: 'Publish Slots',
-      onAction: () => {
-        setIsEnhanceModalOpen(false);
-        setActiveTab('calendar');
       }
     },
     {
@@ -2778,6 +2825,47 @@ const UnicoachDashboardPage = () => {
           {/* ════════ TAB 1: OVERVIEW / HOME (Matching UniCoach Screenshot) ════════ */}
           {activeTab === 'overview' && (
             <div className="space-y-6 animate-in fade-in duration-200">
+              {/* Setup checklist: new mentors start empty and go step by step until the page is ready */}
+              {pendingCount > 0 && (
+                <div className="bg-white rounded-2xl border border-slate-200 p-5 sm:p-6">
+                  <div className="flex flex-wrap items-center justify-between gap-3">
+                    <div>
+                      <p className="text-base font-bold text-slate-900">Set up your mentor page</p>
+                      <p className="text-xs text-slate-500">{profileChecklist.length - pendingCount} of {profileChecklist.length} done. Finish these and students can book you.</p>
+                    </div>
+                    <span className="text-sm font-bold text-[#DE5C2B]">{profileCompletionPct}%</span>
+                  </div>
+                  <div className="mt-3 h-2 rounded-full bg-slate-100 overflow-hidden">
+                    <div className="h-full bg-[#DE5C2B] rounded-full transition-all" style={{ width: `${profileCompletionPct}%` }} />
+                  </div>
+                  <ol className="mt-4 divide-y divide-slate-100">
+                    {profileChecklist.map((item, i) => {
+                      const isNext = !item.isDone && profileChecklist.findIndex((x) => !x.isDone) === i;
+                      return (
+                        <li key={item.id} className="flex items-center gap-3 py-3">
+                          <span className={`w-7 h-7 rounded-full grid place-items-center text-xs font-bold shrink-0 ${item.isDone ? 'bg-emerald-500 text-white' : isNext ? 'bg-[#DE5C2B] text-white' : 'bg-slate-100 text-slate-500'}`}>
+                            {item.isDone ? <CheckCircle2 className="w-4 h-4" /> : i + 1}
+                          </span>
+                          <div className="flex-1 min-w-0">
+                            <p className={`text-sm font-semibold ${item.isDone ? 'text-slate-400 line-through' : 'text-slate-900'}`}>{item.title}</p>
+                            {!item.isDone && <p className="text-xs text-slate-500">{item.desc}</p>}
+                          </div>
+                          {!item.isDone && (
+                            <button
+                              type="button"
+                              onClick={item.onAction}
+                              className={`shrink-0 rounded-full px-3.5 py-1.5 text-xs font-bold ${isNext ? 'bg-slate-900 text-white hover:bg-black' : 'border border-slate-200 text-slate-700 hover:bg-slate-50'}`}
+                            >
+                              {item.actionLabel}
+                            </button>
+                          )}
+                        </li>
+                      );
+                    })}
+                  </ol>
+                </div>
+              )}
+
               {/* Urgent Broadcast Notice Banner (if any unread urgent broadcast exists) */}
               {(() => {
                 const urgentNotice = notifications.find(n => !n.isRead && (n.priority === 'URGENT' || n.category === 'URGENT'));

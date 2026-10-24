@@ -4,6 +4,7 @@ import { useAuth } from '../context/AuthContext';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate, Link } from 'react-router-dom';
 import { GoogleLogin } from '@react-oauth/google';
+import withGoogleAuth from './auth/withGoogleAuth';
 import brandLogo from '@/assets/blackunicoachlogo.webp';
 
 const LoginModal = () => {
@@ -529,4 +530,4 @@ const LoginModal = () => {
   return typeof document !== 'undefined' ? createPortal(modalContent, document.body) : null;
 };
 
-export default LoginModal;
+export default withGoogleAuth(LoginModal);

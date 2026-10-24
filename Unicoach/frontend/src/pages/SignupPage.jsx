@@ -6,6 +6,9 @@ import {
   Sparkles, CheckCircle2, ShieldCheck, HelpCircle, GraduationCap, Users 
 } from 'lucide-react';
 import { GoogleLogin } from '@react-oauth/google';
+import withGoogleAuth from '../components/auth/withGoogleAuth';
+import RolePicker from '../components/auth/RolePicker';
+import { roleRedirect, useRole } from '../components/auth/role';
 import { useAuth } from '../context/AuthContext';
 import BoardingPassLogin from '../components/BoardingPassLogin';
 import brandLogo from '@/assets/blackunicoachlogo.webp';
@@ -43,10 +46,11 @@ const SignupPage = () => {
     document.title = 'Create Free Account | UniCoach - Global Admissions & Test Prep';
   }, []);
 
+  const [role, setRole] = useRole(location.search);
+
   const handlePostAuthSuccess = () => {
     setIsSuccess(true);
-    const params = new URLSearchParams(location.search);
-    const redirectPath = params.get('redirect') || '/dashboard';
+    const redirectPath = roleRedirect(role, location.search);
     setTimeout(() => {
       navigate(redirectPath, { replace: true });
     }, 800);
@@ -207,16 +211,18 @@ const SignupPage = () => {
                   className="h-7 w-auto object-contain" 
                 />
                 <span className="text-[11px] font-bold text-[#DE5C2B] bg-orange-50 border border-orange-200/70 px-2.5 py-0.5 rounded-full">
-                  Scholar Registration
+                  Free account
                 </span>
               </div>
               <h1 className="font-outfit text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
-                Create Scholar Account
+                Create your free account
               </h1>
               <p className="text-slate-500 text-xs font-medium mt-0.5">
-                Get full access to AI university shortlisting, eligibility & SOP tools.
+                Pick who you are, then continue with Google. Takes 10 seconds.
               </p>
             </div>
+
+            <RolePicker value={role} onChange={setRole} />
 
             {/* ── 1. Google 1-Click Fast Signup ── */}
             <div className="mb-3">
@@ -389,4 +395,4 @@ const SignupPage = () => {
   );
 };
 
-export default SignupPage;
+export default withGoogleAuth(SignupPage);

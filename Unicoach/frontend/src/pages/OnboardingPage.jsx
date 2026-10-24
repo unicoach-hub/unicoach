@@ -38,7 +38,7 @@ const Section = ({ icon: Icon, title, children }) => (
   </div>
 );
 
-// One-time profile form shown right after sign-up (required before the dashboard opens)
+// Profile form opened from the dashboard's "Complete your profile" card (optional, can be skipped)
 const OnboardingPage = () => {
   const { user, token, loading: authLoading, updateUser } = useAuth();
   const authHeaders = token && token !== 'cookie-session' ? { Authorization: `Bearer ${token}` } : {};
@@ -201,7 +201,10 @@ const OnboardingPage = () => {
           >
             {saving ? <Loader2 size={17} className="animate-spin" /> : <>Save and open my dashboard <ArrowRight size={17} /></>}
           </button>
-          <p className="mt-3 text-center text-[11.5px] text-slate-400 flex items-center justify-center gap-1.5">
+          <button type="button" onClick={() => navigate(next, { replace: true })} className="mt-3 w-full text-[13px] font-semibold text-slate-500 hover:text-slate-800 cursor-pointer">
+            Skip for now
+          </button>
+          <p className="mt-2 text-center text-[11.5px] text-slate-400 flex items-center justify-center gap-1.5">
             <CheckCircle2 size={13} /> You can change these later from your dashboard profile.
           </p>
         </form>

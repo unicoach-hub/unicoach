@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, lazy, Suspense } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useLead } from '../context/LeadContext';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   User, Mail, Phone, Globe, Calendar, GraduationCap, 
@@ -39,6 +39,7 @@ import { API_BASE_URL } from '../config';
 import JourneyTracker from './JourneyTracker';
 import { clearUserStorage } from '../utils/userStorage';
 
+import CapIcon from './ui/CapIcon';
 const API_URL = API_BASE_URL;
 
 export const DEFAULT_DAILY_TASKS = [
@@ -2537,6 +2538,19 @@ ${name || 'Candidate'}`;
                 exit={{ opacity: 0, y: -15 }}
                 className="space-y-4"
               >
+                {user && user.role !== 'admin' && user.profileCompleted === false && !user.profileCompletedAt && (
+                  <Link
+                    to="/onboarding?next=/dashboard"
+                    className="flex items-center gap-4 rounded-2xl border border-orange-200 bg-orange-50/70 hover:bg-orange-50 p-4 sm:p-5 transition-colors"
+                  >
+                    <span className="w-10 h-10 rounded-xl bg-[#DE5C2B] text-white grid place-items-center text-lg shrink-0">✍️</span>
+                    <span className="flex-1 min-w-0">
+                      <span className="block text-sm font-bold text-slate-900">Complete your profile</span>
+                      <span className="block text-xs text-slate-600">Dream country, course, intake and marks. 1 minute, and your shortlist and counsellor advice get much better.</span>
+                    </span>
+                    <span className="shrink-0 rounded-full bg-slate-900 text-white text-xs font-bold px-3.5 py-1.5">Complete</span>
+                  </Link>
+                )}
                 <JourneyTracker />
                 {(() => {
                   const doneCount = checklist.filter((t) => t.done).length;
@@ -3422,7 +3436,7 @@ ${name || 'Candidate'}`;
                       <span className="flex flex-col items-center">📝 <span className="hidden sm:inline">Exams</span></span>
                       <span className="flex flex-col items-center">✉️ <span className="hidden sm:inline">Offers</span></span>
                       <span className="flex flex-col items-center">🛂 <span className="hidden sm:inline">Visa</span></span>
-                      <span className="flex flex-col items-center">🎓 <span className="hidden sm:inline">Campus!</span></span>
+                      <span className="flex flex-col items-center"><CapIcon /> <span className="hidden sm:inline">Campus!</span></span>
                     </div>
 
                     {/* Middle dashed lane marker */}

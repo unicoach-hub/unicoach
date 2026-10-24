@@ -1,6 +1,5 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import { GoogleOAuthProvider } from '@react-oauth/google'
 import './index.css'
 import App from './App.jsx'
 import { installApiFetch } from './utils/installApiFetch'
@@ -36,12 +35,8 @@ window.addEventListener('vite:preloadError', (event) => {
   window.location.reload();
 });
 
-const googleClientId = import.meta.env.VITE_GOOGLE_CLIENT_ID || '324611777052-7p8vf6php65bdf7eljj753al4lj6d3kp.apps.googleusercontent.com';
-
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <GoogleOAuthProvider clientId={googleClientId}>
-      <App />
-    </GoogleOAuthProvider>
+    <App />
   </StrictMode>,
 );
