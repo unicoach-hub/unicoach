@@ -72,6 +72,13 @@ const unicoachMentorSchema = new mongoose.Schema({
     bankName: { type: String, default: '', trim: true }
   },
 
+  // Open "please pay me" request from the mentor's Earnings tab; cleared when the admin marks the payout paid
+  payoutRequest: {
+    requestedAt: { type: Date, default: null },
+    amountINR: { type: Number, default: 0 },
+    note: { type: String, default: '', trim: true, maxlength: 300 }
+  },
+
   // KYC needed by Razorpay Route to open a linked account that receives the mentor's payouts.
   // Never exposed on public profile endpoints.
   kyc: {

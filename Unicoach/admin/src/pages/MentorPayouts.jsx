@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import { Button, Empty, Input, Modal, Spin, Table, Tag, message } from 'antd';
-import { DownloadOutlined, ReloadOutlined, CheckCircleOutlined, CalendarOutlined, ClockCircleOutlined, BankOutlined } from '@ant-design/icons';
+import { DownloadOutlined, ReloadOutlined, CheckCircleOutlined, CalendarOutlined, ClockCircleOutlined, BankOutlined, BellOutlined } from '@ant-design/icons';
 import Header from '../components/Header';
 import API from '../api/axios';
 
@@ -20,6 +20,7 @@ const Stat = ({ icon, label, value, sub, color = '#0F172A', bg = '#F8FAFC' }) =>
 );
 
 // Every Monday: pay each mentor what is ready (session done + 48h, nothing refunded), by bank transfer,
+// mentors who tapped "Request payout" listed first,
 // then record the UTR here. UniCoach keeps 0%; the mentor gets the payment minus Razorpay's fee.
 const MentorPayouts = () => {
   const [data, setData] = useState(null);
@@ -74,7 +75,20 @@ const MentorPayouts = () => {
   const bankLine = (b) => (b.accountNumber ? `${b.accountHolderName || ''} · ${b.accountNumber} · ${b.ifscCode || ''}` : b.upiId ? `UPI: ${b.upiId}` : null);
 
   const columns = [
-    { title: 'Mentor', key: 'm', render: (_, m) => <div><b>{m.name}</b><div style={{ fontSize: 12, color: 'var(--ux-text-2)' }}>@{m.handle}</div></div> },
+    {
+      title: 'Mentor', key: 'm', render: (_, m) => (
+        <div>
+          <b>{m.name}</b>
+          <div style={{ fontSize: 12, color: 'var(--ux-text-2)' }}>@{m.handle}</div>
+          {m.request && (
+            <Tag color="orange" style={{ marginTop: 4 }}>
+              Requested {new Date(m.request.requestedAt).toLocaleDateString('en-IN', { day: 'numeric', month: 'short' })}
+            </Tag>
+          )}
+          {m.request?.note && <div style={{ fontSize: 12, marginTop: 2 }}>“{m.request.note}”</div>}
+        </div>
+      ),
+    },
     {
       title: 'Bank', key: 'bank', render: (_, m) => bankLine(m.bank)
         ? <span style={{ fontSize: 12.5 }}>{bankLine(m.bank)}</span>
@@ -115,6 +129,7 @@ const MentorPayouts = () => {
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 12 }}>
             <Stat icon={<CalendarOutlined />} label="Next payout" value={day(data.nextPayoutDate)} sub="Every Monday" color="#1d4ed8" bg="#EFF6FF" />
             <Stat icon={<CheckCircleOutlined />} label="Ready to pay" value={inr(data.totals.readyINR)} sub={`${data.totals.mentorsToPay} mentor${data.totals.mentorsToPay === 1 ? '' : 's'}`} color="#047857" bg="#ECFDF5" />
+            <Stat icon={<BellOutlined />} label="Payout requests" value={data.totals.requests || 0} sub="Mentors who asked to be paid" color="#C2410C" bg="#FFF7ED" />
             <Stat icon={<ClockCircleOutlined />} label="Upcoming" value={inr(data.totals.upcomingINR)} sub={`Sessions not done or within ${data.complaintWindowHours}h complaint window`} color="#B45309" bg="#FFFBEB" />
             <Stat icon={<BankOutlined />} label="UniCoach commission" value="0%" sub="Mentor gets payment minus Razorpay fee" />
           </div>

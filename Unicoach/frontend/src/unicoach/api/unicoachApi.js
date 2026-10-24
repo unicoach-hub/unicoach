@@ -501,6 +501,20 @@ export const getMentorPriorityDMs = async (handle) => {
   return await res.json();
 };
 
+// Mentor asks the team to pay out what is ready (shows on the admin Mentor Payouts page)
+export const requestMentorPayout = async (handle, note = '') => {
+  const clean = handle.replace(/^@/, '').trim();
+  const res = await fetch(`${UNICOACH_BASE_URL}/mentors/${clean}/payouts/request`, {
+    method: 'POST',
+    headers: getAuthHeaders(),
+    credentials: 'include',
+    body: JSON.stringify({ note })
+  });
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.error || 'Could not send your payout request.');
+  return data;
+};
+
 export const answerPriorityDM = async (handle, bookingId, payload) => {
   const clean = handle.replace(/^@/, '').trim();
   const res = await fetch(`${UNICOACH_BASE_URL}/mentors/${clean}/priority-dms/${bookingId}/answer`, {

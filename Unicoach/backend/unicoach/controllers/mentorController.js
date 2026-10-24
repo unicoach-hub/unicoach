@@ -430,6 +430,7 @@ const getDashboardOverview = async (req, res) => {
     }, { readyINR: 0, upcomingINR: 0, paidOutINR: 0 });
     for (const k of Object.keys(weekly)) weekly[k] = Math.round(weekly[k] * 100) / 100;
     weekly.nextPayoutDate = weeklyPayout.nextPayoutDate();
+    weekly.request = mentor.payoutRequest?.requestedAt ? mentor.payoutRequest : null;
 
     const earningsSummary = earnings.reduce((acc, e) => {
       if (e.state === 'REFUNDED') {
@@ -1171,10 +1172,35 @@ const answerPriorityDM = async (req, res) => {
  * mentor's bank via Razorpay Route (Razorpay fee + GST deducted, 0% UniCoach commission).
  */
 const requestPayout = async (req, res) => {
-  res.status(410).json({
-    error: 'Manual withdrawals are no longer needed. Your earnings are sent to your bank account automatically after each session (Razorpay fee + GST deducted, 0% UniCoach commission).',
-    code: 'AUTO_PAYOUTS_ENABLED'
-  });
+  try {
+    const handle = req.validatedHandle || req.params.handle;
+    const mentor = await UnicoachMentor.findOne({ handle }).select('defaultPayoutDetails payoutRequest').lean();
+    if (!mentor) return res.status(404).json({ error: 'Mentor not found.' });
+
+    const bank = mentor.defaultPayoutDetails || {};
+    if (!bank.accountNumber && !bank.upiId) {
+      return res.status(400).json({ error: 'Add your bank details in Settings first, so we know where to send the money.' });
+    }
+    const ready = (await weeklyPayout.payableBookings({ mentorId: mentor._id })).filter((b) => b.payoutState === 'READY');
+    const amountINR = Math.round(ready.reduce((t, b) => t + b.net.amount, 0) * 100) / 100;
+    if (!ready.length) {
+      return res.status(400).json({ error: 'Nothing is ready to withdraw yet. Earnings become ready 48 hours after a session.' });
+    }
+
+    // Only one open request at a time: a second click keeps the first request's date
+    const note = String(req.body?.note || '').trim().slice(0, 300);
+    const updated = await UnicoachMentor.findOneAndUpdate(
+      { _id: mentor._id, 'payoutRequest.requestedAt': null },
+      { $set: { 'payoutRequest.requestedAt': new Date(), 'payoutRequest.amountINR': amountINR, 'payoutRequest.note': note } },
+      { new: true }
+    ).select('payoutRequest').lean();
+    if (!updated) return res.status(409).json({ error: 'You already have a payout request open. We will pay it on the next payout day.' });
+
+    return res.status(201).json({ payoutRequest: updated.payoutRequest });
+  } catch (err) {
+    console.error('Error requesting payout:', err);
+    return res.status(500).json({ error: 'Could not send your payout request.' });
+  }
 };
 
 /**

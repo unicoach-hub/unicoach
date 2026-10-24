@@ -11,6 +11,7 @@ const UnicoachService = require('../unicoach/models/UnicoachService');
 const UnicoachBooking = require('../unicoach/models/UnicoachBooking');
 const UnicoachPayout = require('../unicoach/models/UnicoachPayout');
 const { listWeeklyPayouts, markWeeklyPaid } = require('../unicoach/controllers/weeklyPayoutController');
+const { requestPayout } = require('../unicoach/controllers/mentorController');
 const { payoutState, nextPayoutDate } = require('../unicoach/services/weeklyPayoutService');
 
 let mongo;
@@ -124,4 +125,32 @@ test('bookings paid through Razorpay Route are left out', async () => {
 test('next payout is a Monday', () => {
   expect(nextPayoutDate(new Date('2026-10-23T10:00:00')).getDay()).toBe(1);
   expect(nextPayoutDate(new Date('2026-10-26T10:00:00')).toDateString()).toBe(new Date('2026-11-02T00:00:00').toDateString());
+});
+
+test('mentor can request a payout once; admin sees it first; paying clears it', async () => {
+  const ids = await setup();
+  await booking(ids, { startUtc: new Date(Date.now() - 80 * H), endUtc: new Date(Date.now() - 79 * H) });
+  const handle = `prachi${n - 1}`;
+  const req = { params: { handle }, validatedHandle: handle, body: { note: 'please pay' } };
+
+  const first = await call(requestPayout, req);
+  expect(first.code).toBe(201);
+  expect(first.body.payoutRequest.amountINR).toBe(976.4);
+  expect((await call(requestPayout, req)).code).toBe(409); // only one open request
+
+  const list = (await call(listWeeklyPayouts)).body;
+  expect(list.totals.requests).toBe(1);
+  expect(list.mentors[0].request.note).toBe('please pay');
+
+  await call(markWeeklyPaid, { params: { mentorId: String(ids.mentorId) }, body: { transactionRef: 'UTR1' } });
+  const m = await UnicoachMentor.findById(ids.mentorId).lean();
+  expect(m.payoutRequest.requestedAt).toBeNull();
+});
+
+test('payout request needs bank details and something ready', async () => {
+  const mentor = await UnicoachMentor.collection.insertOne({ name: 'NoBank', handle: 'nobank', email: 'n@example.com' });
+  const req = { params: { handle: 'nobank' }, validatedHandle: 'nobank', body: {} };
+  expect((await call(requestPayout, req)).code).toBe(400);
+  await UnicoachMentor.collection.updateOne({ _id: mentor.insertedId }, { $set: { defaultPayoutDetails: { upiId: 'nb@upi' } } });
+  expect((await call(requestPayout, req)).code).toBe(400); // nothing ready yet
 });

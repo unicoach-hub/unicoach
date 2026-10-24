@@ -23,6 +23,7 @@ import {
   deleteMentorCoupon,
   getMentorPriorityDMs,
   answerPriorityDM,
+  requestMentorPayout,
   uploadResourceFile,
   getCreatorPayouts,
   updateMentorPayoutDetails,
@@ -926,6 +927,20 @@ const UnicoachDashboardPage = () => {
       setFeedback({ type: 'error', text: err.message || 'File upload failed' });
     } finally {
       setResourceUploadLoading(false);
+    }
+  };
+
+  const [payoutRequesting, setPayoutRequesting] = useState(false);
+  const handleRequestPayout = async () => {
+    setPayoutRequesting(true);
+    try {
+      await requestMentorPayout(handle);
+      setFeedback({ type: 'success', text: 'Payout request sent. The UniCoach team will transfer it on the next payout day.' });
+      await loadDashboard(handle);
+    } catch (err) {
+      setFeedback({ type: 'error', text: err.message });
+    } finally {
+      setPayoutRequesting(false);
     }
   };
 
@@ -5161,7 +5176,7 @@ const UnicoachDashboardPage = () => {
             <div>
               <h2 className="text-base font-bold text-slate-900">Earnings & Payouts</h2>
               <p className="text-xs text-slate-500">
-                Payouts go out every Monday: your share of each paid booking is sent to your bank once the session is done and 48 hours have passed. UniCoach takes 0% commission. No withdrawal requests needed.
+                Payouts go out every Monday: your share of each paid booking is sent to your bank once the session is done and 48 hours have passed. UniCoach takes 0% commission. You can also tap Request payout when money is ready.
               </p>
             </div>
 
@@ -5178,6 +5193,21 @@ const UnicoachDashboardPage = () => {
                   <div className="rounded-xl bg-emerald-50 border border-emerald-100 p-3">
                     <p className="text-[11px] font-bold uppercase tracking-wide text-emerald-700">Ready for next Monday</p>
                     <p className="text-xl font-bold text-emerald-800 mt-0.5">{formatINRAmount(weeklyPayouts.readyINR)}</p>
+                    {weeklyPayouts.request ? (
+                      <p className="mt-2 text-[11px] font-semibold text-emerald-700">
+                        Requested on {new Date(weeklyPayouts.request.requestedAt).toLocaleDateString('en-IN', { day: 'numeric', month: 'short' })}. We will pay it on the next payout day.
+                      </p>
+                    ) : weeklyPayouts.readyINR > 0 && (
+                      <button
+                        type="button"
+                        onClick={handleRequestPayout}
+                        disabled={payoutRequesting}
+                        className="mt-2 inline-flex items-center gap-1.5 rounded-full bg-emerald-700 hover:bg-emerald-800 disabled:opacity-60 text-white text-xs font-bold px-3 py-1.5"
+                      >
+                        {payoutRequesting ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : null}
+                        Request payout
+                      </button>
+                    )}
                   </div>
                   <div className="rounded-xl bg-amber-50 border border-amber-100 p-3">
                     <p className="text-[11px] font-bold uppercase tracking-wide text-amber-700">Upcoming</p>

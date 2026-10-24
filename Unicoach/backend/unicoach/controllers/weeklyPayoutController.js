@@ -13,7 +13,7 @@ const listWeeklyPayouts = async (req, res) => {
     const rows = await payableBookings();
     const mentorIds = [...new Set(rows.map((b) => String(b.mentorId)))];
     const mentors = await UnicoachMentor.find({ _id: { $in: mentorIds } })
-      .select('name handle email phone defaultPayoutDetails').lean();
+      .select('name handle email phone defaultPayoutDetails payoutRequest').lean();
     const mentorOf = Object.fromEntries(mentors.map((m) => [String(m._id), m]));
 
     const byMentor = {};
@@ -24,6 +24,7 @@ const listWeeklyPayouts = async (req, res) => {
       byMentor[id] = byMentor[id] || {
         mentorId: id, name: m.name, handle: m.handle, email: m.email,
         bank: m.defaultPayoutDetails || {},
+        request: m.payoutRequest?.requestedAt ? m.payoutRequest : null,
         ready: [], upcoming: [], readyINR: 0, upcomingINR: 0, paidINR: 0,
       };
       const row = {
@@ -38,7 +39,10 @@ const listWeeklyPayouts = async (req, res) => {
     const list = Object.values(byMentor)
       .map((m) => ({ ...m, readyINR: round2(m.readyINR), upcomingINR: round2(m.upcomingINR), paidINR: round2(m.paidINR) }))
       .filter((m) => m.ready.length || m.upcoming.length)
-      .sort((a, b) => b.readyINR - a.readyINR);
+      // Mentors who asked to be paid come first, oldest request first
+      .sort((a, b) => (!!b.request - !!a.request)
+        || (a.request && b.request ? new Date(a.request.requestedAt) - new Date(b.request.requestedAt) : 0)
+        || b.readyINR - a.readyINR);
 
     const history = await UnicoachPayout.find({ source: 'WEEKLY' })
       .populate('mentorId', 'name handle')
@@ -51,6 +55,7 @@ const listWeeklyPayouts = async (req, res) => {
         readyINR: round2(list.reduce((t, m) => t + m.readyINR, 0)),
         upcomingINR: round2(list.reduce((t, m) => t + m.upcomingINR, 0)),
         mentorsToPay: list.filter((m) => m.ready.length).length,
+        requests: list.filter((m) => m.request).length,
       },
       mentors: list,
       history,
@@ -110,6 +115,7 @@ const markWeeklyPaid = async (req, res) => {
       bookingIds: paidNow.map((b) => b._id),
     });
 
+    await UnicoachMentor.updateOne({ _id: mentor._id }, { $set: { 'payoutRequest.requestedAt': null, 'payoutRequest.amountINR': 0, 'payoutRequest.note': '' } });
     sendPayoutPaid(mentor, payout, paidNow);
     return res.status(201).json({ payout, bookings: paidNow.length });
   } catch (err) {
