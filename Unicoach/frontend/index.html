@@ -2,18 +2,32 @@
 <html lang="en">
   <head>
     <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-WVQV1JQC0N"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
 
       gtag('config', 'G-WVQV1JQC0N');
+      // The tag library loads on the visitor's first scroll/tap (or after 7 s), not while the page is loading;
+      // events above wait in dataLayer until then
+      (function () {
+        var done = false, evs = ['scroll', 'pointerdown', 'touchstart', 'keydown'];
+        function go() {
+          if (done) return; done = true;
+          evs.forEach(function (e) { window.removeEventListener(e, go); });
+          var s = document.createElement('script');
+          s.async = true;
+          s.src = 'https://www.googletagmanager.com/gtag/js?id=G-WVQV1JQC0N';
+          document.head.appendChild(s);
+        }
+        evs.forEach(function (e) { window.addEventListener(e, go, { once: true, passive: true }); });
+        window.addEventListener('load', function () { setTimeout(go, 7000); });
+      })();
     </script>
     <meta charset="UTF-8" />
-    <link rel="icon" href="/favicon.ico?v=3" sizes="48x48" />
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png?v=3" />
-    <link rel="icon" type="image/png" sizes="192x192" href="/favicon.png?v=3" />
+    <link rel="icon" href="/favicon.ico?v=4" sizes="48x48" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png?v=4" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/favicon.png?v=4" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>UniCoach | Your Global Future Starts Here</title>
@@ -86,7 +100,9 @@
     <!-- Google Fonts: Preconnect & Stabilized Font Delivery (Eliminates font-swap CLS) -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@500;600;700;800&family=Anton&family=Archivo+Black&family=Baloo+2:wght@600;700;800&family=Yatra+One&family=Geist:wght@400;500;600;700;800&display=swap" />
+    <!-- Fonts load without blocking the first paint (text shows in the fallback font for a moment) -->
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@500;600;700;800&family=Anton&family=Archivo+Black&family=Baloo+2:wght@600;700;800&family=Yatra+One&family=Geist:wght@400;500;600;700;800&display=swap" onload="this.onload=null;this.rel='stylesheet'" />
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@500;600;700;800&family=Anton&family=Archivo+Black&family=Baloo+2:wght@600;700;800&family=Yatra+One&family=Geist:wght@400;500;600;700;800&display=swap" /></noscript>
   </head>
   <body class="bg-[#F6F3EC] text-[#16130F] font-['Geist',sans-serif] antialiased overflow-x-clip">
     <div id="root"></div>

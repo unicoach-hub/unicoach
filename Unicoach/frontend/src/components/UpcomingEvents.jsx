@@ -66,6 +66,13 @@ const BADGE_MAP = {
   other: 'Admit Session',
 };
 
+// Our own banners in /public/events also come as an 800px-wide copy (name-800.webp): cards are ~420px wide,
+// so phones and laptops download that instead of the 1672px original
+const smallBanner = (url) => {
+  const m = /^(.*\/events\/[\w-]+)\.webp$/.exec(url || '');
+  return m && !m[1].endsWith('-800') ? `${m[1]}-800.webp 800w, ${url} 1672w` : undefined;
+};
+
 // Turns an event from GET /api/events into a card. Title and speaker are shown exactly as set in
 // Admin → Events; the only fallbacks are the country guess (and its banner when no cover is set),
 // the role in brackets and the photo by first name.
@@ -272,7 +279,7 @@ export const UpcomingEvents = ({ onOpenModal }) => {
             <h2 className="font-outfit text-[32px] sm:text-[42px] lg:text-[48px] xl:text-[52px] font-black text-[#111111] leading-[1.12] tracking-[-0.03em]">
               Interactive Sessions with{' '}
               <span className="relative inline-block text-[#DE5C2B]">
-                Ivy Mentors &amp; Experts
+                Senior Mentors &amp; Experts
                 <span className="absolute -bottom-1.5 left-0 w-full h-[7px] bg-[#FED7CE] rounded-full -z-10" />
               </span>
               <DesiSticker tone="yellow" tilt={5}>मुफ़्त है भाई!</DesiSticker>
@@ -378,6 +385,8 @@ export const UpcomingEvents = ({ onOpenModal }) => {
                 >
                   <motion.img
                     src={eventImg}
+                    srcSet={smallBanner(eventImg)}
+                    sizes="(min-width: 1024px) 420px, 92vw"
                     alt={ev.title}
                     variants={{
                       hidden: { scale: 1.18 },
@@ -385,6 +394,8 @@ export const UpcomingEvents = ({ onOpenModal }) => {
                     }}
                     className="w-full h-full object-cover object-center group-hover:!scale-[1.05] transition-transform duration-700 ease-out"
                     onError={(e) => {
+                      // a banner without its -800 copy (or a broken link) falls back to the plain original, then the default
+                      if (e.target.srcset) { e.target.removeAttribute('srcset'); return; }
                       e.target.src = '/events/global.webp';
                     }}
                   />

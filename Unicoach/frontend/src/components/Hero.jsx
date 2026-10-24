@@ -1,15 +1,12 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { ArrowUpRight, ArrowRight, ArrowDown, Play, ShieldCheck } from 'lucide-react';
+import { ArrowUpRight, ArrowRight, ArrowDown, Play, ShieldCheck, Sparkles } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useLead } from '../context/LeadContext';
 // Preloaded critical LCP asset from public directory for instant discovery
 const heroImg = '/image.webp';
 import PriorityDmModal from './PriorityDmModal';
 import { PillButton } from './ui/PillButton';
-import LordIcon from './ui/LordIcon';
-import arrowRightIcon from '../assets/lordicons/arrow-right.json';
-import sparkleIcon from '../assets/lordicons/sparkle.json';
 import { MiniSearchDemo, MiniChatDemo } from './HeroMiniDemos';
 import { TEAM_MENTORS, TEAM_MENTOR_NAMES, mentorLook } from '../utils/teamMentors';
 
@@ -328,11 +325,10 @@ export const Hero = ({ onOpenModal }) => {
               {/* Secondary White Pill with Orange Border & Down Arrow - goes to Priority DM page */}
               <Link
                 to="/priority-dm"
-                data-lordicon-group
-                className="inline-flex items-center gap-2 px-5 sm:px-6 py-3 sm:py-3.5 rounded-full bg-white hover:bg-orange-50/50 text-slate-900 text-[14.5px] sm:text-[15px] font-bold border border-orange-200/90 shadow-2xs hover:border-[#DE5C2B] hover:text-[#DE5C2B] hover:scale-[1.02] active:scale-95 transition-all duration-200 cursor-pointer"
+                className="group inline-flex items-center gap-2 px-5 sm:px-6 py-3 sm:py-3.5 rounded-full bg-white hover:bg-orange-50/50 text-slate-900 text-[14.5px] sm:text-[15px] font-bold border border-orange-200/90 shadow-2xs hover:border-[#DE5C2B] hover:text-[#DE5C2B] hover:scale-[1.02] active:scale-95 transition-all duration-200 cursor-pointer"
               >
                 <span>Send Priority DM</span>
-                <LordIcon icon={arrowRightIcon} trigger="group-hover" size={18} />
+                <ArrowRight size={17} strokeWidth={2.4} className="transition-transform group-hover:translate-x-1" />
               </Link>
             </motion.div>
 
@@ -353,10 +349,9 @@ export const Hero = ({ onOpenModal }) => {
 
               {/* Pill 2 */}
               <div
-                data-lordicon-group
                 className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/90 hover:bg-white backdrop-blur-md border border-orange-200/80 shadow-2xs transition-all duration-200 hover:scale-105 active:scale-95 cursor-pointer"
               >
-                <LordIcon icon={sparkleIcon} trigger="group-hover" size={16} />
+                <Sparkles size={14} className="text-[#DE5C2B]" />
                 <span className="text-[12px] font-bold text-slate-800 tracking-tight">
                   ₹24Cr+ Scholarships
                 </span>

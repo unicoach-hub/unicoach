@@ -11,6 +11,7 @@ import ScrollToTop from './components/ScrollToTop'
 import { LeadProvider, useLead } from './context/LeadContext'
 import { AuthProvider, useAuth } from './context/AuthContext'
 import ErrorBoundary from './components/ErrorBoundary'
+import LazySection from './components/LazySection'
 
 // Lazy-load Global Modals, Footer and Widgets (Non-blocking for initial page load)
 const Footer = lazy(() => import('./components/Footer'));
@@ -470,10 +471,13 @@ const ConditionalFooter = () => {
   const location = useLocation();
   const isEmbed = new URLSearchParams(location.search).get('embed') === 'true';
   if (isEmbed || location.pathname.startsWith('/unicoach/dashboard') || isAuthRoute(location.pathname) || isFormRoute(location.pathname)) return null;
+  // The footer is big: build it only when the visitor scrolls near the bottom, not during page load
   return (
-    <Suspense fallback={<div className="min-h-[160px] w-full bg-[#0a0a0a]" />}>
-      <Footer />
-    </Suspense>
+    <LazySection minHeight="160px" rootMargin="900px">
+      <Suspense fallback={<div className="min-h-[160px] w-full" />}>
+        <Footer />
+      </Suspense>
+    </LazySection>
   );
 };
 

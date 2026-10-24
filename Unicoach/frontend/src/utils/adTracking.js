@@ -103,7 +103,13 @@ const loadMetaPixel = () => {
   !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
   n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
   n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
-  t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
+  t.src=v;s=b.getElementsByTagName(e)[0];
+  // the pixel library downloads on the first scroll/tap (or after 7 s); fbq calls queue until then
+  let done=!1;const evs=['scroll','pointerdown','touchstart','keydown'];
+  const go=()=>{if(done)return;done=!0;evs.forEach((x)=>f.removeEventListener(x,go));s.parentNode.insertBefore(t,s)};
+  evs.forEach((x)=>f.addEventListener(x,go,{once:!0,passive:!0}));
+  const later=()=>setTimeout(go,7000);
+  if(b.readyState==='complete')later();else f.addEventListener('load',later,{once:true})}(window,
   document,'script','https://connect.facebook.net/en_US/fbevents.js');
   window.fbq('init', META_PIXEL_ID);
   window.fbq('track', 'PageView');
