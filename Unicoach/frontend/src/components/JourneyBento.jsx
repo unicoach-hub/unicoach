@@ -336,7 +336,7 @@ export const JourneyBento = () => {
             <span className="w-2 h-2 rounded-full bg-[#DE5C2B]" />
             <span className="text-[12px] sm:text-[12.5px] font-bold text-slate-800 tracking-wide uppercase">How UniCoach works</span>
           </div>
-          <h2 className="font-['Inter',sans-serif] text-[30px] sm:text-[38px] lg:text-[40px] font-black text-[#111111] leading-[1.1] tracking-[-0.035em]">
+          <h2 className="font-['Geist',sans-serif] text-[30px] sm:text-[38px] lg:text-[40px] font-black text-[#111111] leading-[1.1] tracking-[-0.035em]">
             Your study abroad journey in <span className="text-[#DE5C2B]">4 steps</span>
           </h2>
           <p className="text-[13.5px] sm:text-[16px] text-slate-600 mt-2.5 leading-relaxed">

@@ -13,6 +13,8 @@ const Destinations = lazy(() => import('./Destinations'));
 const UpcomingEvents = lazy(() => import('./UpcomingEvents'));
 const Testimonials = lazy(() => import('./Testimonials'));
 const FinalCTA = lazy(() => import('./FinalCTA'));
+const StatsStrip = lazy(() => import('./StatsStrip'));
+const FitChecker = lazy(() => import('./FitChecker'));
 
 const SectionPlaceholder = ({ minHeight = '380px' }) => (
   <div style={{ minHeight }} className="w-full bg-[#FAF9F6]" />
@@ -32,6 +34,12 @@ const Home = () => {
       </LazySection>
 
       {/* 03. Upcoming Masterclasses & Events (Interactive Sessions with Ivy Mentors & Experts) */}
+      <LazySection minHeight="520px" rootMargin="350px">
+        <Suspense fallback={<SectionPlaceholder minHeight="520px" />}>
+          <StatsStrip />
+        </Suspense>
+      </LazySection>
+
       <LazySection minHeight="420px" rootMargin="350px">
         <Suspense fallback={<SectionPlaceholder minHeight="420px" />}>
           <UpcomingEvents />
@@ -49,6 +57,12 @@ const Home = () => {
       <LazySection minHeight="100vh" rootMargin="400px">
         <Suspense fallback={<SectionPlaceholder minHeight="100vh" />}>
           <PassportJourney />
+        </Suspense>
+      </LazySection>
+
+      <LazySection minHeight="640px" rootMargin="350px">
+        <Suspense fallback={<SectionPlaceholder minHeight="640px" />}>
+          <FitChecker />
         </Suspense>
       </LazySection>
 

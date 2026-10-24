@@ -200,7 +200,7 @@ export default function ShortlistShowcase() {
         {/* Left: title, tool switch, steps that follow the demo */}
         <div>
           <span className="text-[12.5px] font-bold text-[#DE5C2B] uppercase tracking-[0.12em]">Free AI tools</span>
-          <h2 className="mt-4 font-['Inter',sans-serif] text-[32px] sm:text-[42px] font-black text-[#111] leading-[1.05] tracking-[-0.035em]">
+          <h2 className="mt-4 font-['Geist',sans-serif] text-[32px] sm:text-[42px] font-black text-[#111] leading-[1.05] tracking-[-0.035em]">
             Your shortlist,<br /><span className="text-[#DE5C2B]">in 60 seconds</span><DesiSticker tone="green" tilt={-4}>चुटकी में</DesiSticker>
           </h2>
           <p className="mt-3 text-[15px] sm:text-[17px] text-slate-600">Universities, courses and scholarships matched to your profile.</p>

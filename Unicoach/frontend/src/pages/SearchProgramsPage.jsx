@@ -50,7 +50,7 @@ const Checkbox = ({ checked, onChange, label }) => (
 const Accordion = ({ title, open, onToggle, children, count }) => (
   <div className="bg-white border border-slate-200" style={{ borderRadius: 4 }}>
     <button onClick={onToggle} className="w-full flex items-center justify-between px-3 py-2.5 text-left">
-      <span className="font-['DM_Sans'] font-semibold text-[13.5px] text-slate-700">{title}{count ? <span className="text-slate-400 font-normal"> ({count})</span> : null}</span>
+      <span className="font-['Geist',sans-serif] font-semibold text-[13.5px] text-slate-700">{title}{count ? <span className="text-slate-400 font-normal"> ({count})</span> : null}</span>
       <ChevronDown size={15} className={`text-slate-400 transition-transform ${open ? 'rotate-180' : ''}`} />
     </button>
     {open && <div className="px-3 pb-3 pt-0 border-t border-slate-100">{children}</div>}
@@ -65,7 +65,7 @@ const ProgramRow = ({ c, selected, onToggleSelect, onView, eligible, reasons, hi
         <input type="checkbox" checked={!!selected} onChange={() => onToggleSelect(c)} className="mt-1 accent-[#DE5C2B] w-4 h-4" />
         <div className="flex-1 min-w-0">
           <button onClick={() => onView(c)} className="text-left">
-            <h3 className="font-['DM_Sans'] text-[15px] font-semibold text-[#DE5C2B] hover:underline leading-snug">{c.courseName}</h3>
+            <h3 className="font-['Geist',sans-serif] text-[15px] font-semibold text-[#DE5C2B] hover:underline leading-snug">{c.courseName}</h3>
           </button>
           <div className="text-[13px] text-slate-500 mt-0.5">{c.universityName} · {FLAG[c.cfCountryId] || ''} {c.countryName}</div>
           <div className="flex flex-wrap gap-1.5 mt-2">
@@ -176,11 +176,6 @@ export default function SearchProgramsPage() {
     document.title = 'Search Programs | UniCoach';
     window.scrollTo(0, 0);
     // load CourseFinder-style fonts for this portal
-    if (!document.getElementById('cf-portal-fonts')) {
-      const l = document.createElement('link'); l.id = 'cf-portal-fonts'; l.rel = 'stylesheet';
-      l.href = 'https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Poppins:wght@400;500;600&display=swap';
-      document.head.appendChild(l);
-    }
     getSearchConfig().then(setConfig).catch(() => {});
     getHighlights().then((hs) => {
       setHighlights(hs);
@@ -289,7 +284,7 @@ export default function SearchProgramsPage() {
       <div className="min-h-screen bg-slate-50 pt-[76px] flex items-center justify-center px-4">
         <div className="bg-white border border-slate-200 p-8 max-w-md w-full text-center" style={{ borderRadius: 6 }}>
           <div className="w-14 h-14 mx-auto flex items-center justify-center" style={{ background: '#eef4ff', borderRadius: 999 }}><Lock size={24} color={BLUE} /></div>
-          <h1 className="font-['DM_Sans'] text-xl font-bold text-slate-800 mt-4">Sign in to search programs</h1>
+          <h1 className="font-['Geist',sans-serif] text-xl font-bold text-slate-800 mt-4">Sign in to search programs</h1>
           <p className="text-[14px] text-slate-500 mt-2">Create a free account or sign in to search 98,000+ programs, check eligibility, and download results to Excel.</p>
           <button onClick={() => openLoginModal && openLoginModal()} className="mt-5 w-full text-white text-[14px] font-semibold py-3" style={{ background: BLUE, borderRadius: 4 }}>Sign in / Create account</button>
         </div>
@@ -298,7 +293,7 @@ export default function SearchProgramsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 pt-[76px] pb-28 font-['Poppins']">
+    <div className="min-h-screen bg-slate-50 pt-[76px] pb-28 font-['Geist',sans-serif]">
       {/* Top search bar (CourseFinder: search • intake • year • nationality • state) */}
       <div className="bg-white border-b border-slate-200">
         <div className="max-w-7xl mx-auto px-4 py-3">
@@ -336,7 +331,7 @@ export default function SearchProgramsPage() {
       {/* Body: left filter sidebar + results */}
       <div className="max-w-7xl mx-auto px-4 mt-4 flex gap-5 items-start">
         <aside className={`${mobileFilters ? 'block' : 'hidden'} lg:block w-full lg:w-[290px] shrink-0 space-y-3`}>
-          <div className="bg-white border border-slate-200 px-3 py-2.5 flex items-center gap-2 font-['DM_Sans'] font-semibold text-[14px] text-slate-700" style={{ borderRadius: 4 }}>
+          <div className="bg-white border border-slate-200 px-3 py-2.5 flex items-center gap-2 font-['Geist',sans-serif] font-semibold text-[14px] text-slate-700" style={{ borderRadius: 4 }}>
             <SlidersHorizontal size={16} color={BLUE} /> Filter
           </div>
 
@@ -506,7 +501,7 @@ export default function SearchProgramsPage() {
             Object.values(result.data.reduce((acc, c) => { (acc[c.cfUniversityId] = acc[c.cfUniversityId] || { uni: c, items: [] }).items.push(c); return acc; }, {})).map((g) => (
               <div key={g.uni.cfUniversityId} className="bg-white border border-slate-200" style={{ borderRadius: 4 }}>
                 <div className="px-4 py-3 border-b border-slate-100">
-                  <div className="font-['DM_Sans'] text-[15px] font-semibold text-[#DE5C2B]">{g.uni.universityName}</div>
+                  <div className="font-['Geist',sans-serif] text-[15px] font-semibold text-[#DE5C2B]">{g.uni.universityName}</div>
                   <div className="text-[13px] text-slate-500">{FLAG[g.uni.cfCountryId] || ''} {g.uni.countryName} · {g.items.length} program{g.items.length > 1 ? 's' : ''}</div>
                 </div>
                 <div className="p-3 space-y-2">{g.items.map((c) => <ProgramRow key={c.cfId} c={c} selected={selected[c.cfId]} onToggleSelect={toggleSelect} onView={openCourse} highlightMap={highlightMap} />)}</div>
@@ -557,7 +552,7 @@ export default function SearchProgramsPage() {
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/50" onClick={() => setShowCompare(false)}>
           <div className="bg-white w-full max-w-4xl max-h-[90vh] overflow-auto" style={{ borderRadius: 6 }} onClick={(e) => e.stopPropagation()}>
             <div className="flex items-center justify-between px-5 py-3 border-b border-slate-100">
-              <h2 className="font-['DM_Sans'] text-lg font-bold text-slate-800">Program Comparison</h2>
+              <h2 className="font-['Geist',sans-serif] text-lg font-bold text-slate-800">Program Comparison</h2>
               <div className="flex items-center gap-3">
                 <button onClick={() => { setShowCompare(false); openExport('excel', 'selected'); }} className="text-[13px] text-[#DE5C2B] font-medium flex items-center gap-1"><FileSpreadsheet size={14} /> Export to Excel…</button>
                 <button onClick={() => setShowCompare(false)} className="text-slate-400"><X size={18} /></button>

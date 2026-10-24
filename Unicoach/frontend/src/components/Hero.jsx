@@ -303,7 +303,7 @@ export const Hero = ({ onOpenModal }) => {
               transition={{ duration: 0.8, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
               className="text-[15px] sm:text-[16.5px] text-slate-600 leading-[1.65] max-w-[480px] mb-8 font-normal"
             >
-              Achieve top test scores, secure admissions &amp; high-value scholarships at world-class universities, and connect 1:1 with seniors who&apos;ve actually done it.
+              Admissions, scholarships and visas, guided by seniors who&apos;ve already done it.
             </motion.p>
 
             {/* ── CTA Buttons matching Image 1 Pixel Perfection ── */}

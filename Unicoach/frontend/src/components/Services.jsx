@@ -125,7 +125,7 @@ const UniversityShortlistMockup = ({
   safeRowBg = '#FFFFFF', safeRowBorder = '#E2E8F0',
 }) => (
   <div
-    className="relative rounded-2xl sm:rounded-3xl w-full min-w-0 p-4 sm:p-6 border shadow-[0_8px_24px_rgba(15,23,42,0.04)] font-['Inter',sans-serif]"
+    className="relative rounded-2xl sm:rounded-3xl w-full min-w-0 p-4 sm:p-6 border shadow-[0_8px_24px_rgba(15,23,42,0.04)] font-['Geist',sans-serif]"
     style={{ borderColor: containerBorder, backgroundColor: panelBg }}
   >
     <div className="space-y-3">
@@ -210,7 +210,7 @@ const UniversityShortlistMockup = ({
 
 // ── Card 2: AI test-prep score card ──
 const PrepScoreMockup = () => (
-  <div className="relative rounded-2xl sm:rounded-3xl w-full min-w-0 p-4 sm:p-6 bg-[#E2DCFE] border border-[#CFC5FB] shadow-[0_8px_24px_rgba(15,23,42,0.04)] font-['Inter',sans-serif]">
+  <div className="relative rounded-2xl sm:rounded-3xl w-full min-w-0 p-4 sm:p-6 bg-[#E2DCFE] border border-[#CFC5FB] shadow-[0_8px_24px_rgba(15,23,42,0.04)] font-['Geist',sans-serif]">
     <div className="rounded-xl sm:rounded-2xl bg-white p-4 sm:p-5 shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
     <div className="flex items-center justify-between">
       <span className="text-[13px] font-bold text-slate-900">IELTS Writing · Task 2</span>
@@ -234,7 +234,7 @@ const PrepScoreMockup = () => (
 
 // ── Card 3: education loan offer card ──
 const LoanOfferMockup = () => (
-  <div className="relative rounded-2xl sm:rounded-3xl w-full min-w-0 p-4 sm:p-6 bg-[#9FD368] border border-[#8CC453] shadow-[0_8px_24px_rgba(15,23,42,0.04)] font-['Inter',sans-serif]">
+  <div className="relative rounded-2xl sm:rounded-3xl w-full min-w-0 p-4 sm:p-6 bg-[#9FD368] border border-[#8CC453] shadow-[0_8px_24px_rgba(15,23,42,0.04)] font-['Geist',sans-serif]">
     <div className="flex items-center justify-between px-1">
       <span className="text-[13px] font-bold text-slate-900">Your loan options</span>
       <span className="text-[11px] font-bold px-2.5 py-1 rounded-lg bg-white text-[#15803D] border border-white">3 lenders compared</span>
@@ -259,7 +259,7 @@ const LoanOfferMockup = () => (
 
 // ── Card 4: visa & pre-departure checklist ──
 const VisaChecklistMockup = () => (
-  <div className="relative rounded-2xl sm:rounded-3xl w-full min-w-0 p-4 sm:p-6 bg-[#9DE3DC] border border-[#86D6CE] shadow-[0_8px_24px_rgba(15,23,42,0.04)] font-['Inter',sans-serif]">
+  <div className="relative rounded-2xl sm:rounded-3xl w-full min-w-0 p-4 sm:p-6 bg-[#9DE3DC] border border-[#86D6CE] shadow-[0_8px_24px_rgba(15,23,42,0.04)] font-['Geist',sans-serif]">
     <div className="flex items-center justify-between px-1">
       <span className="text-[13px] font-bold text-slate-900">Canada study permit · Fall intake</span>
       <span className="text-[11px] font-bold px-2.5 py-1 rounded-lg bg-white text-[#9F1239] border border-white">4 / 6 done</span>
@@ -374,7 +374,7 @@ export const Services = () => {
             </span>
           </div>
 
-          <h2 className="font-['Inter',sans-serif] text-[30px] sm:text-[38px] lg:text-[44px] font-black text-[#111111] leading-[1.12] tracking-[-0.035em]">
+          <h2 className="font-['Geist',sans-serif] text-[30px] sm:text-[38px] lg:text-[44px] font-black text-[#111111] leading-[1.12] tracking-[-0.035em]">
             Comprehensive Solutions,{' '}
             <span className="relative inline-block text-[#DE5C2B]">
               For Every Ambition
@@ -460,12 +460,12 @@ export const Services = () => {
                         {service.titleLight}
                       </span>
                     </h3>
-                    <p className="font-['Inter',sans-serif] text-[15px] sm:text-[16.5px] font-normal text-slate-600 tracking-[-0.01em] mt-2">
+                    <p className="font-['Geist',sans-serif] text-[15px] sm:text-[16.5px] font-normal text-slate-600 tracking-[-0.01em] mt-2">
                       {service.highlight}
                     </p>
 
                     {/* Description Paragraph */}
-                    <p className="font-['Inter',sans-serif] text-[13px] sm:text-[14px] text-slate-600 mt-2.5 font-normal leading-relaxed max-w-xl">
+                    <p className="font-['Geist',sans-serif] text-[13px] sm:text-[14px] text-slate-600 mt-2.5 font-normal leading-relaxed max-w-xl">
                       {service.subtitle}
                     </p>
 
@@ -478,7 +478,7 @@ export const Services = () => {
                           whileInView={{ opacity: 1, y: 0 }}
                           viewport={{ once: true }}
                           transition={{ duration: 0.45, delay: 0.25 + bIdx * 0.1 }}
-                          className="flex items-start gap-3 text-[13.5px] sm:text-[14.5px] text-slate-800 font-medium font-['Inter',sans-serif]"
+                          className="flex items-start gap-3 text-[13.5px] sm:text-[14.5px] text-slate-800 font-medium font-['Geist',sans-serif]"
                         >
                           <span
                             className="mt-0.5 w-5 h-5 rounded-full flex items-center justify-center shrink-0 text-white"
@@ -494,7 +494,7 @@ export const Services = () => {
                     {/* Boxy CTA Action Button */}
                     <button
                       onClick={() => handleAction(service)}
-                      className="mt-7 inline-flex items-center gap-2.5 h-12 px-6 rounded-full bg-[#111111] text-white text-[13.5px] sm:text-[14px] font-bold font-['Inter',sans-serif] tracking-tight shadow-sm hover:shadow-md transition-all duration-200 cursor-pointer group"
+                      className="mt-7 inline-flex items-center gap-2.5 h-12 px-6 rounded-full bg-[#111111] text-white text-[13.5px] sm:text-[14px] font-bold font-['Geist',sans-serif] tracking-tight shadow-sm hover:shadow-md transition-all duration-200 cursor-pointer group"
                       onMouseEnter={(e) => {
                         e.currentTarget.style.backgroundColor = service.accentColor;
                       }}
