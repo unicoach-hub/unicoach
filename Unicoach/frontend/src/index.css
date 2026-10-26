@@ -986,3 +986,47 @@ body.editorial-page :is(a, button)[class*="bg-[#DE5C2B]"]:is([class*="px-6"], [c
 
 /* Brand orange used as *text* is one shade darker, so small labels pass WCAG AA contrast on cream and white */
 .text-\[\#DE5C2B\], .text-\[\#de5c2b\] { color: #B8451A; }
+
+/* ═════════════════════════════════════════════════════════
+   CLEAN PANELS (.uc-clean)
+   Replaces the old dark hero gradients on exam / resources pages with the calm
+   paper look. Unlayered, so these win over Tailwind utilities inside the panel:
+   light text meant for dark backgrounds is mapped to readable ink shades.
+   ═════════════════════════════════════════════════════════ */
+.uc-clean {
+  background-color: #FFFFFF;
+  background-image: linear-gradient(180deg, #FBF9F5 0%, #FFFFFF 70%);
+  color: #16130F;
+  border: 1px solid #E6E0D4;
+  box-shadow: 0 24px 60px -40px rgba(22, 19, 15, 0.35);
+}
+.uc-clean .text-white,
+.uc-clean [class*="text-white/"] { color: #16130F; }
+.uc-clean [class*="text-slate-1"], .uc-clean [class*="text-slate-2"], .uc-clean [class*="text-slate-3"], .uc-clean [class*="text-slate-4"],
+.uc-clean [class*="text-gray-2"], .uc-clean [class*="text-gray-3"], .uc-clean [class*="text-gray-4"],
+.uc-clean [class*="text-blue-1"], .uc-clean [class*="text-blue-2"], .uc-clean [class*="text-indigo-1"], .uc-clean [class*="text-indigo-2"] { color: #5B544A; }
+.uc-clean [class*="text-emerald-2"], .uc-clean [class*="text-emerald-3"], .uc-clean [class*="text-emerald-4"],
+.uc-clean [class*="text-green-2"], .uc-clean [class*="text-green-3"], .uc-clean [class*="text-green-4"],
+.uc-clean [class*="text-teal-3"], .uc-clean [class*="text-teal-4"] { color: #385942; }
+.uc-clean [class*="text-amber-2"], .uc-clean [class*="text-amber-3"], .uc-clean [class*="text-amber-4"],
+.uc-clean [class*="text-yellow-2"], .uc-clean [class*="text-yellow-3"], .uc-clean [class*="text-yellow-4"] { color: #795C2C; }
+.uc-clean [class*="text-orange-2"], .uc-clean [class*="text-orange-3"], .uc-clean [class*="text-orange-4"],
+.uc-clean [class*="text-indigo-3"], .uc-clean [class*="text-indigo-4"], .uc-clean [class*="text-blue-3"], .uc-clean [class*="text-blue-4"],
+.uc-clean [class*="text-purple-3"], .uc-clean [class*="text-rose-3"], .uc-clean [class*="text-rose-4"], .uc-clean [class*="text-sky-3"] { color: #A8411D; }
+/* see-through chips and dark sub-panels become paper */
+.uc-clean [class*="bg-white/"], .uc-clean [class*="bg-black/"],
+.uc-clean [class*="bg-slate-8"], .uc-clean [class*="bg-slate-9"], .uc-clean [class*="bg-gray-9"], .uc-clean [class*="bg-zinc-9"], .uc-clean [class*="bg-neutral-9"], .uc-clean [class*="bg-stone-9"], .uc-clean [class*="bg-indigo-9"], .uc-clean [class*="bg-blue-9"], .uc-clean [class*="bg-emerald-9"], .uc-clean [class*="bg-green-9"], .uc-clean [class*="bg-teal-9"], .uc-clean [class*="bg-amber-9"], .uc-clean [class*="bg-orange-9"], .uc-clean [class*="bg-rose-9"], .uc-clean [class*="bg-sky-9"], .uc-clean [class*="bg-purple-9"], .uc-clean [class*="bg-violet-9"] { background-color: #F8F5EF; }
+.uc-clean [class*="border-white/"], .uc-clean [class*="border-slate-7"], .uc-clean [class*="border-slate-8"], .uc-clean [class*="border-slate-9"],
+.uc-clean [class*="border-indigo-8"], .uc-clean [class*="border-indigo-9"], .uc-clean [class*="border-blue-8"], .uc-clean [class*="border-blue-9"] { border-color: #E6E0D4; }
+.uc-clean .bg-white { box-shadow: inset 0 0 0 1px #E6E0D4; }
+/* gradient headline text → solid brand orange */
+.uc-clean .bg-clip-text, .uc-clean .text-transparent { background-image: none; color: #B8451A; -webkit-text-fill-color: currentColor; }
+/* glow blobs only made sense on dark */
+.uc-clean .absolute[class*="blur-"] { display: none; }
+/* solid buttons and badges keep white text */
+.uc-clean [class*="bg-[#DE5C2B]"], .uc-clean [class*="bg-orange-5"], .uc-clean [class*="bg-orange-6"],
+.uc-clean [class*="bg-indigo-5"]:not([class*="/"]), .uc-clean [class*="bg-indigo-6"]:not([class*="/"]),
+.uc-clean [class*="bg-blue-6"]:not([class*="/"]), .uc-clean [class*="bg-emerald-5"]:not([class*="/"]), .uc-clean [class*="bg-emerald-6"]:not([class*="/"]),
+.uc-clean [class*="bg-[#16130F]"], .uc-clean [class*="bg-[#111111]"] { color: #FFFFFF; }
+.uc-clean [class*="bg-[#DE5C2B]"] .text-white, .uc-clean [class*="bg-orange-6"] .text-white, .uc-clean [class*="bg-indigo-6"] .text-white,
+.uc-clean [class*="bg-[#16130F]"] .text-white, .uc-clean [class*="bg-[#111111]"] .text-white { color: #FFFFFF; }

@@ -1111,7 +1111,7 @@ const EligibilityCalculatorPage = () => {
           <motion.div
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
-            className="p-7 md:p-9 rounded-[32px] bg-gradient-to-r from-emerald-950 via-slate-900 to-indigo-950 text-white shadow-2xl space-y-6 relative overflow-hidden"
+            className="uc-clean p-7 md:p-9 rounded-[32px] shadow-2xl space-y-6 relative overflow-hidden"
           >
             <div className="absolute right-0 top-0 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
 

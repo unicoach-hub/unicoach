@@ -1,9 +1,9 @@
 import React, { lazy, Suspense, useEffect, useMemo, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { Search, SlidersHorizontal, UserCheck, X, Download, FileSpreadsheet, FileText, GitCompare, ChevronDown, ChevronUp, Info, Loader2, CheckCircle2, AlertCircle,
+import { ArrowLeft, Search, SlidersHorizontal, UserCheck, X, Download, FileSpreadsheet, FileText, GitCompare, ChevronDown, ChevronUp, Info, Loader2, CheckCircle2, AlertCircle,
   Gauge, Coins, Languages, PiggyBank, Briefcase, TrendingUp, Banknote, Building2, Landmark, ClipboardCheck, MapPin, FileClock, Wallet, MicOff, GraduationCap, Award, ClipboardList, Users, Tag } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
-import { getSearchConfig, getHighlights, searchCourses, evaluateEligibility, exportSearch, getCourseDetail, getUniversitiesFacet } from '../utils/searchApi';
+import { getSearchConfig, getHighlights, searchCourses, evaluateEligibility, exportSearch, getCourseDetail, getUniversitiesFacet, suggest } from '../utils/searchApi';
 // Excel/PDF export libraries are large; load them only when someone exports
 const ExcelColumnExportModal = lazy(() => import('../components/ExcelColumnExportModal'));
 
@@ -57,8 +57,24 @@ const Accordion = ({ title, open, onToggle, children, count }) => (
   </div>
 );
 
+const scholarshipText = (c) => (c.avgScholarship ? `${c.annualFee?.currency || ''} ${Number(c.avgScholarship).toLocaleString()}`.trim() : (c.scholarshipAvailable ? 'Available' : '—'));
+
+// Ticket-style award tag shown on each card while browsing scholarships
+const AwardTag = ({ c }) => (
+  <div className="relative shrink-0 hidden sm:flex items-stretch overflow-hidden border border-[#EAD8AE] bg-[#FBF7EE]" style={{ borderRadius: 8 }}>
+    <div className="grid place-items-center px-2.5 border-r border-dashed border-[#DCBF80]"><Award size={16} className="text-[#977435]" /></div>
+    <div className="px-3 py-1.5 leading-tight">
+      <div className="text-[10px] font-semibold uppercase tracking-wide text-[#977435]">{c.avgScholarship ? 'Avg. scholarship' : 'Scholarship'}</div>
+      <div className="text-[14px] font-bold text-[#4D3C21]">{c.avgScholarship ? scholarshipText(c) : 'Available'}</div>
+    </div>
+  </div>
+);
+
+// One-tap countries on the scholarship band (cf country ids)
+const SCHOLARSHIP_COUNTRIES = [[1, 'USA'], [4, 'UK'], [3, 'Canada'], [2, 'Australia'], [8, 'Ireland'], [9, 'Germany'], [5, 'New Zealand']];
+
 // ── Program row (CourseFinder program card) ───────────────────────────────────
-const ProgramRow = ({ c, selected, onToggleSelect, onView, eligible, reasons, highlightMap = {} }) => (
+const ProgramRow = ({ c, selected, onToggleSelect, onView, eligible, reasons, highlightMap = {}, scholarshipFocus = false }) => (
   <div className="bg-white border border-slate-200" style={{ borderRadius: 4 }}>
     <div className="p-4">
       <div className="flex items-start gap-3">
@@ -77,6 +93,7 @@ const ProgramRow = ({ c, selected, onToggleSelect, onView, eligible, reasons, hi
             <ul className="mt-2 text-[12px] text-rose-700 list-disc pl-4">{reasons.slice(0, 2).map((r, i) => <li key={i}>{r}</li>)}</ul>
           )}
         </div>
+        {scholarshipFocus && <AwardTag c={c} />}
         <button onClick={() => onView(c)} className="shrink-0 text-white text-[13px] font-medium px-4 py-1.5" style={{ background: BLUE, borderRadius: 4 }}>View</button>
       </div>
       {/* CourseFinder: a green "Open" status chip leads the intake chips */}
@@ -89,24 +106,99 @@ const ProgramRow = ({ c, selected, onToggleSelect, onView, eligible, reasons, hi
         <div><div className="text-[11px] text-slate-400">Duration</div><div className="font-medium text-slate-700">{c.duration || '—'}</div></div>
         <div><div className="text-[11px] text-slate-400">Tuition / yr</div><div className="font-semibold text-[#DE5C2B]">{money(c.annualFee)}</div></div>
         <div><div className="text-[11px] text-slate-400">Application Fee</div><div className="font-medium text-slate-700">{c.applicationFee?.isWaived ? 'Waived' : money(c.applicationFee)}</div></div>
-        <div><div className="text-[11px] text-slate-400">Avg. Scholarship</div><div className="font-medium text-slate-700">{c.avgScholarship ? `${c.annualFee?.currency || ''} ${Number(c.avgScholarship).toLocaleString()}`.trim() : (c.scholarshipAvailable ? 'Available' : '—')}</div></div>
+        <div><div className="text-[11px] text-slate-400">Avg. Scholarship</div><div className="font-medium text-slate-700">{scholarshipText(c)}</div></div>
       </div>
     </div>
   </div>
 );
 
 const SHORTLIST_KEY = 'uc_course_shortlist';
+
+// Back pill for the details steps (Course Finder hides the site-wide floating one)
+const PageBack = ({ onClick }) => (
+  <button type="button" onClick={onClick} aria-label="Go back"
+    className="no-shine inline-flex items-center gap-1.5 h-9 pl-3 pr-4 rounded-full bg-white border border-[#E6E0D4] text-[13.5px] font-semibold text-[#16130F] hover:border-[#16130F] transition-colors">
+    <ArrowLeft size={16} strokeWidth={2.2} /> Back
+  </button>
+);
 const INDIA_ID = '99';
 // Student's state (asked like the rest of the profile; not used as a search filter yet)
 const INDIA_STATES = ['Andhra Pradesh', 'Assam', 'Bihar', 'Chandigarh', 'Chhattisgarh', 'Delhi', 'Goa', 'Gujarat', 'Haryana', 'Himachal Pradesh', 'Jammu and Kashmir', 'Jharkhand', 'Karnataka', 'Kerala', 'Madhya Pradesh', 'Maharashtra', 'Odisha', 'Puducherry', 'Punjab', 'Rajasthan', 'Tamil Nadu', 'Telangana', 'Uttar Pradesh', 'Uttarakhand', 'West Bengal', 'Other'];
 
 // Field shell for the details-first search card
-const Field = ({ label, children }) => (
+const Field = ({ label, children, error }) => (
   <label className="flex flex-col gap-1.5 min-w-0">
     <span className="text-[12.5px] font-semibold text-[#16130F]">{label}</span>
     {children}
+    {error && <span className="text-[11.5px] font-medium text-[#984D3D] leading-tight">{error}</span>}
   </label>
 );
+const FIELD_ERR = '!border-[#C97C6A] !bg-[#FBF2EF]';
+
+// Search input with type-ahead suggestions (courses + universities) from /api/search/suggest
+const SuggestBox = ({ value, onChange, onEnter, placeholder, className = '' }) => {
+  const [items, setItems] = useState([]);
+  const [open, setOpen] = useState(false);
+  const [hi, setHi] = useState(-1);
+  const q = value.trim();
+
+  useEffect(() => {
+    if (q.length < 2) return undefined;
+    const ctrl = new AbortController();
+    const t = setTimeout(() => {
+      suggest(q, ctrl.signal).then((rows) => {
+        const lq = q.toLowerCase();
+        // universities first, then names that start with what was typed
+        const rank = (r) => (r.type === 'university' ? 0 : 2) + ((r.name || '').toLowerCase().startsWith(lq) ? 0 : 1);
+        setItems([...(rows || [])].sort((a, b) => rank(a) - rank(b)).slice(0, 8));
+        setHi(-1);
+      }).catch(() => {});
+    }, 180);
+    return () => { clearTimeout(t); ctrl.abort(); };
+  }, [q]);
+
+  const shown = open && q.length >= 2 ? items : [];
+  const pick = (name) => { onChange(name); setOpen(false); };
+  const onKeyDown = (e) => {
+    if (e.key === 'ArrowDown' && shown.length) { e.preventDefault(); setHi((i) => (i + 1) % shown.length); }
+    else if (e.key === 'ArrowUp' && shown.length) { e.preventDefault(); setHi((i) => (i <= 0 ? shown.length - 1 : i - 1)); }
+    else if (e.key === 'Escape') setOpen(false);
+    else if (e.key === 'Enter') {
+      if (hi >= 0 && shown[hi]) { e.preventDefault(); pick(shown[hi].name); }
+      else { setOpen(false); onEnter && onEnter(); }
+    }
+  };
+  const bold = (name) => {
+    const i = name.toLowerCase().indexOf(q.toLowerCase());
+    if (i < 0) return name;
+    return <>{name.slice(0, i)}<b className="font-semibold text-[#16130F]">{name.slice(i, i + q.length)}</b>{name.slice(i + q.length)}</>;
+  };
+
+  return (
+    <div className="relative flex-1 min-w-0">
+      <input value={value} placeholder={placeholder} autoComplete="off" role="combobox" aria-expanded={shown.length > 0} aria-autocomplete="list"
+        onChange={(e) => { onChange(e.target.value); setOpen(true); }} onFocus={() => setOpen(true)} onBlur={() => setTimeout(() => setOpen(false), 120)}
+        onKeyDown={onKeyDown} className={`w-full bg-transparent outline-none ${className}`} />
+      {shown.length > 0 && (
+        <ul role="listbox" className="absolute z-50 left-[-34px] top-[calc(100%+12px)] w-[min(460px,86vw)] bg-white border border-[#E6E0D4] shadow-[0_18px_40px_-20px_rgba(22,19,15,0.35)] py-1.5 max-h-80 overflow-y-auto" style={{ borderRadius: 12 }}>
+          {shown.map((r, i) => {
+            const Icon = r.type === 'university' ? Building2 : GraduationCap;
+            return (
+              <li key={`${r.type}-${r.name}`} role="option" aria-selected={i === hi}>
+                <button type="button" onMouseDown={(e) => { e.preventDefault(); pick(r.name); }} onMouseEnter={() => setHi(i)}
+                  className="w-full flex items-center gap-2.5 px-3 py-2 text-left text-[13.5px] text-[#5B544A]" style={{ background: i === hi ? '#F8F5EF' : 'transparent' }}>
+                  <span className="w-7 h-7 shrink-0 grid place-items-center bg-[#F8F5EF] border border-[#ECE6DA]" style={{ borderRadius: 8 }}><Icon size={14} className="text-[#16130F]" /></span>
+                  <span className="flex-1 min-w-0 truncate">{bold(r.name)}</span>
+                  <span className="text-[11px] uppercase tracking-wide text-[#9E9384] shrink-0">{r.type === 'university' ? 'University' : 'Course'}</span>
+                </button>
+              </li>
+            );
+          })}
+        </ul>
+      )}
+    </div>
+  );
+};
 const FIELD = 'w-full h-11 px-3 text-[14px] text-[#16130F] bg-[#F8F5EF] border border-[#E6E0D4] outline-none focus:border-[#DE5C2B] focus:bg-white transition-colors';
 
 export default function SearchProgramsPage() {
@@ -132,9 +224,13 @@ export default function SearchProgramsPage() {
   // Links that already carry a search (?q, ?highlight, ?check) go straight to results.
   const [started, setStarted] = useState(() => {
     const p = new URLSearchParams(window.location.search);
-    return !!(p.get('q') || p.get('highlight') || p.get('check'));
+    return !!(p.get('q') || p.get('check'));
   });
   const [advOpen, setAdvOpen] = useState(false);
+  const [tried, setTried] = useState(false); // Search pressed with required details missing
+  const [startMode, setStartMode] = useState('search'); // 'search' | 'elig' (scholarship details step)
+  // a ?highlight= link must wait for the quick-filter list, or the first search runs without it
+  const [hlReady, setHlReady] = useState(() => !new URLSearchParams(window.location.search).get('highlight'));
   const [activeHighlights, setActiveHighlights] = useState([]);
   const [showAllQuick, setShowAllQuick] = useState(false); // "View More" quick-filter toggle (CF shows 2 inline)
   const [sort, setSort] = useState('featured');
@@ -212,7 +308,7 @@ export default function SearchProgramsPage() {
       const want = new URLSearchParams(window.location.search).get('highlight');
       const match = want && (hs || []).find((h) => new RegExp(want, 'i').test(h.name));
       if (match) setActiveHighlights([match.id]);
-    }).catch(() => {});
+    }).catch(() => {}).finally(() => setHlReady(true));
   }, []);
 
   const highlightMap = useMemo(() => Object.fromEntries((highlights || []).map((h) => [h.id, h])), [highlights]);
@@ -255,9 +351,18 @@ export default function SearchProgramsPage() {
   // First search runs when the page moves to results: links that already carry a search,
   // "Search" on the details card, or a quick filter tap (no sign-in needed to browse)
   useEffect(() => {
-    if (started && !result && !eligResult) runSearch(1);
+    if (!started || !hlReady || result || eligResult) return;
+    if (startMode === 'elig') runEligibility('eligible', 1);
+    else runSearch(1);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [started]);
+  }, [started, hlReady]);
+
+  const leavePage = () => {
+    if (window.history.state && window.history.state.idx > 0) navigate(-1);
+    else navigate('/');
+  };
+  // results -> back to the details step, keeping everything they picked
+  const backToDetails = () => { setStarted(false); setResult(null); setEligResult(null); window.scrollTo(0, 0); };
 
   const startSearch = () => {
     setIntakeOpen(false);
@@ -324,14 +429,192 @@ export default function SearchProgramsPage() {
   const nationalities = (config?.studentCountries || []);
   const eligActive = !!eligResult;
   const durationOpts = (config?.durations || []);
+  const advCount = programLevels.length + requirements.length + studyAreas.length + durations.length + (country ? 1 : 0) + (tuitionMax ? 1 : 0);
+
+  // Advanced search panel: shared by the details step and the results bar (results refresh as filters change)
+  const advancedPanel = (
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+    <div>
+      <h3 className="text-[14px] font-semibold text-[#16130F] mb-2">Program level</h3>
+      <div className="max-h-[320px] overflow-y-auto pr-1">
+        {levelOpts.map((l) => <Checkbox key={l.value} checked={programLevels.includes(Number(l.value))} onChange={() => toggleArr(setProgramLevels)(Number(l.value))} label={l.label} />)}
+      </div>
+    </div>
+    <div className="space-y-4 md:border-x md:border-[#ECE6DA] md:px-6">
+      <h3 className="text-[14px] font-semibold text-[#16130F]">Other filters</h3>
+      <Field label="Country">
+        <select value={country} onChange={(e) => setCountry(e.target.value)} className={FIELD} style={{ borderRadius: 10 }}>
+          <option value="">All countries</option>
+          {countryOpts.map((c) => <option key={c.value} value={c.value}>{c.label}</option>)}
+        </select>
+      </Field>
+      <div>
+        <span className="text-[12.5px] font-semibold text-[#16130F]">Study area</span>
+        <div className="mt-1.5 max-h-40 overflow-y-auto pr-1 border border-[#E6E0D4] px-2" style={{ borderRadius: 10 }}>
+          {studyAreaOpts.map((a) => <Checkbox key={a.value} checked={studyAreas.includes(Number(a.value))} onChange={() => toggleArr(setStudyAreas)(Number(a.value))} label={a.label} />)}
+        </div>
+      </div>
+      <div>
+        <span className="text-[12.5px] font-semibold text-[#16130F]">Duration</span>
+        <div className="mt-1.5 flex flex-wrap gap-1.5">
+          {durationOpts.map((d) => {
+            const on = durations.includes(Number(d.value));
+            return <button key={d.value} type="button" onClick={() => toggleArr(setDurations)(Number(d.value))} className="px-3 py-1.5 text-[12.5px] border transition-colors" style={{ borderRadius: 999, background: on ? '#16130F' : '#fff', color: on ? '#fff' : '#5B544A', borderColor: on ? '#16130F' : '#E6E0D4' }}>{d.label}</button>;
+          })}
+        </div>
+      </div>
+      <div>
+        <span className="text-[12.5px] font-semibold text-[#16130F]">Max tuition / year (country currency)</span>
+        <input type="range" min={0} max={100000} step={1000} value={tuitionMax} onChange={(e) => setTuitionMax(Number(e.target.value))} className="w-full accent-[#DE5C2B] mt-2" />
+        <div className="text-[12.5px] text-[#5B544A]">{tuitionMax === 0 ? 'Any' : `Up to ${tuitionMax.toLocaleString()}`}</div>
+      </div>
+    </div>
+    <div>
+      <div className="flex items-center justify-between mb-2">
+        <h3 className="text-[14px] font-semibold text-[#16130F]">Requirements</h3>
+        {advCount > 0 && <button onClick={clearAll} className="text-[12.5px] font-semibold text-[#DE5C2B]">Clear all</button>}
+      </div>
+      <div className="max-h-[320px] overflow-y-auto pr-1">
+        {reqOpts.map((r) => <Checkbox key={r.value} checked={requirements.includes(Number(r.value))} onChange={() => toggleArr(setRequirements)(Number(r.value))} label={r.label} />)}
+      </div>
+    </div>
+  </div>
+  );
+  const scholarshipId = highlights.find((h) => /scholarship/i.test(h.name))?.id;
+  const schMode = !!scholarshipId && activeHighlights.includes(scholarshipId);
+
+  // ── STEP 1 (scholarships): ask what decides eligibility, then show only awards they qualify for ──
+  const wantsScholarship = schMode || /scholar/i.test(searchParams.get('highlight') || '');
+  const profileReady = !!(profile.nationalityId && profile.highestQualificationId && profile.score !== '');
+  if (!started && wantsScholarship) {
+    const findScholarships = () => {
+      if (scholarshipId && !activeHighlights.includes(scholarshipId)) setActiveHighlights((a) => [...a, scholarshipId]);
+      setStartMode(profileReady ? 'elig' : 'search');
+      setIntakeOpen(false);
+      setStarted(true);
+      window.scrollTo(0, 0);
+    };
+    const showAll = () => { setStartMode('search'); setStarted(true); window.scrollTo(0, 0); };
+    const set = (k) => (e) => setProfile((p) => ({ ...p, [k]: e.target.value }));
+    return (
+      <div className="min-h-screen pt-[76px] pb-20 font-['Geist',sans-serif]" style={{ background: '#F6F3EC' }}>
+        <div className="max-w-5xl mx-auto px-4">
+          <div className="pt-5"><PageBack onClick={leavePage} /></div>
+          <div className="text-center pt-4 sm:pt-6">
+            <p className="inline-flex items-center gap-2 text-[13px] font-semibold text-[#977435]"><Award size={15} /> Scholarships</p>
+            <h1 className="mt-3 font-outfit text-[30px] sm:text-[44px] font-black tracking-[-0.035em] leading-[1.05] text-[#16130F]">Find scholarships you qualify for</h1>
+            <p className="mt-3 text-[15px] sm:text-[17px] text-[#5B544A]">30,000+ programs offer an award. Tell us about you and we&apos;ll show only the ones you can get.</p>
+          </div>
+
+          <div className="mt-8 bg-white border border-[#EAD8AE] shadow-[0_24px_60px_-36px_rgba(77,60,33,0.4)] overflow-hidden" style={{ borderRadius: 18 }}>
+            {/* 1. what they want */}
+            <div className="p-5 sm:p-6">
+              <p className="text-[12px] font-bold uppercase tracking-[0.16em] text-[#977435]">1 · What you want to study</p>
+              <div className="mt-3 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+                <Field label="Country">
+                  <select value={country} onChange={(e) => setCountry(e.target.value)} className={FIELD} style={{ borderRadius: 10 }}>
+                    <option value="">Any country</option>
+                    {countryOpts.map((c) => <option key={c.value} value={c.value}>{c.label}</option>)}
+                  </select>
+                </Field>
+                <Field label="Program level">
+                  <select value={programLevels[0] ?? ''} onChange={(e) => setProgramLevels(e.target.value ? [Number(e.target.value)] : [])} className={FIELD} style={{ borderRadius: 10 }}>
+                    <option value="">Any level</option>
+                    {levelOpts.map((l) => <option key={l.value} value={l.value}>{l.label}</option>)}
+                  </select>
+                </Field>
+                <Field label="Intake">
+                  <div className="relative">
+                    <button type="button" onClick={() => setIntakeOpen((v) => !v)} className={`${FIELD} flex items-center justify-between gap-2 text-left`} style={{ borderRadius: 10 }}>
+                      <span className="truncate">{intakeArr.length ? intakeArr.join(', ') : 'Any intake'}</span><ChevronDown size={15} className="text-[#5B544A] shrink-0" />
+                    </button>
+                    {intakeOpen && (
+                      <div className="absolute z-30 mt-1 w-full min-w-[200px] bg-white border border-[#E6E0D4] shadow-lg p-2 max-h-64 overflow-y-auto" style={{ borderRadius: 10 }}>
+                        {intakeOpts.map((i) => <Checkbox key={i.value} checked={intakeArr.includes(i.value)} onChange={() => toggleArr(setIntakeArr)(i.value)} label={i.label} />)}
+                      </div>
+                    )}
+                  </div>
+                </Field>
+                <Field label="Subject or program (optional)">
+                  <input value={searchText} onChange={(e) => setSearchText(e.target.value)} placeholder="e.g. Data Science" className={FIELD} style={{ borderRadius: 10 }} />
+                </Field>
+              </div>
+            </div>
+
+            {/* 2. their profile (what scholarship eligibility is checked against) */}
+            <div className="p-5 sm:p-6 border-t border-dashed border-[#EAD8AE]" style={{ background: '#FBF7EE' }}>
+              <p className="text-[12px] font-bold uppercase tracking-[0.16em] text-[#977435]">2 · About you</p>
+              <div className="mt-3 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+                <Field label="Nationality *">
+                  <select value={profile.nationalityId} onChange={(e) => setProfile((p) => ({ ...p, nationalityId: e.target.value, stateName: '' }))} className={FIELD} style={{ borderRadius: 10 }}>
+                    <option value="">Select</option>
+                    {nationalities.map((n) => <option key={n.value} value={n.value}>{n.label}</option>)}
+                  </select>
+                </Field>
+                <Field label="State">
+                  <select value={profile.stateName} disabled={String(profile.nationalityId) !== INDIA_ID} onChange={set('stateName')} className={`${FIELD} disabled:opacity-50`} style={{ borderRadius: 10 }}>
+                    <option value="">{String(profile.nationalityId) === INDIA_ID ? 'Select state' : 'Not needed'}</option>
+                    {INDIA_STATES.map((st) => <option key={st} value={st}>{st}</option>)}
+                  </select>
+                </Field>
+                <Field label="Highest qualification *">
+                  <select value={profile.highestQualificationId} onChange={set('highestQualificationId')} className={FIELD} style={{ borderRadius: 10 }}>
+                    <option value="">Select</option>
+                    {QUALIFICATIONS.map((o) => <option key={o.value} value={o.value}>{o.label}</option>)}
+                  </select>
+                </Field>
+                <Field label="English test">
+                  <select value={profile.englishExam} onChange={set('englishExam')} className={FIELD} style={{ borderRadius: 10 }}>
+                    {ENGLISH.map((o) => <option key={o.value} value={o.value}>{o.label}</option>)}
+                  </select>
+                </Field>
+                <Field label="Grading system">
+                  <select value={profile.gradingSystem} onChange={set('gradingSystem')} className={FIELD} style={{ borderRadius: 10 }}>
+                    {GRADING.map((o) => <option key={o.value} value={o.value}>{o.label}</option>)}
+                  </select>
+                </Field>
+                <Field label="Your score *">
+                  <input type="number" inputMode="decimal" value={profile.score} onChange={set('score')} placeholder="e.g. 72" className={FIELD} style={{ borderRadius: 10 }} />
+                </Field>
+                <Field label="Backlogs">
+                  <input type="number" inputMode="numeric" value={profile.backlogs} onChange={set('backlogs')} placeholder="0" className={FIELD} style={{ borderRadius: 10 }} />
+                </Field>
+                <Field label="Work experience (years)">
+                  <input type="number" inputMode="numeric" value={profile.workExperience} onChange={set('workExperience')} placeholder="0" className={FIELD} style={{ borderRadius: 10 }} />
+                </Field>
+              </div>
+            </div>
+
+            <div className="p-5 sm:p-6 border-t border-[#EAD8AE] flex flex-col sm:flex-row items-center gap-3">
+              <p className="text-[12.5px] text-[#614A26] sm:mr-auto">{profileReady ? "We'll check every award against your profile." : 'Fill the * fields to see only awards you qualify for.'}</p>
+              <button onClick={showAll} className="text-[13.5px] font-semibold text-[#977435] hover:underline">Skip, show all scholarships</button>
+              <button onClick={findScholarships} className="h-11 px-6 inline-flex items-center justify-center gap-2 text-white text-[14px] font-semibold bg-[#16130F] hover:bg-[#DE5C2B] transition-colors" style={{ borderRadius: 10 }}>
+                <Award size={16} /> Find my scholarships
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   // ── STEP 1: details first (search + student details, advanced filters, quick filters) ──
   if (!started) {
-    const advCount = programLevels.length + requirements.length + studyAreas.length + durations.length + (country ? 1 : 0) + (tuitionMax ? 1 : 0);
+    // Required before searching: something to search for, nationality, and state for Indian students
+    const needsState = String(profile.nationalityId) === INDIA_ID;
+    const missing = {
+      query: !(searchText.trim() || intakeArr.length || advCount || activeHighlights.length),
+      nationality: !profile.nationalityId,
+      state: needsState && !profile.stateName,
+    };
+    const blocked = missing.query || missing.nationality || missing.state;
+    const trySearch = () => { if (blocked) { setTried(true); return; } setTried(false); startSearch(); };
+    const err = (k) => tried && missing[k];
     return (
       <div className="min-h-screen pt-[76px] pb-20 font-['Geist',sans-serif]" style={{ background: '#F6F3EC' }}>
         <div className="max-w-6xl mx-auto px-4">
-          <div className="text-center pt-10 sm:pt-14">
+          <div className="pt-5"><PageBack onClick={leavePage} /></div>
+          <div className="text-center pt-4 sm:pt-6">
             <p className="inline-flex items-center gap-2 text-[13px] font-semibold text-[#86351A]"><span className="w-6 h-[2px] bg-[#DE5C2B]" /> Course Finder</p>
             <h1 className="mt-3 font-outfit text-[32px] sm:text-[46px] font-black tracking-[-0.035em] leading-[1.05] text-[#16130F]">Explore 98,000+ programs</h1>
             <p className="mt-3 text-[15px] sm:text-[17px] text-[#5B544A]">Tell us a little about you, then search. Free to search and shortlist, sign in only to download.</p>
@@ -339,12 +622,11 @@ export default function SearchProgramsPage() {
 
           {/* Search card */}
           <div className="mt-8 bg-white border border-[#E6E0D4] shadow-[0_24px_60px_-36px_rgba(22,19,15,0.35)] p-4 sm:p-5" style={{ borderRadius: 18 }}>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-[1.6fr_1.2fr_0.7fr_1.1fr_1.1fr_auto] gap-3 items-end">
-              <Field label="Search programs">
-                <div className={`${FIELD} flex items-center gap-2`} style={{ borderRadius: 10 }}>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-[1.6fr_1.2fr_0.7fr_1.1fr_1.1fr_auto] gap-3 items-start">
+              <Field label="Search programs *" error={err('query') && 'Type a program or university, or pick a filter below'}>
+                <div className={`${FIELD} ${err('query') ? FIELD_ERR : ''} flex items-center gap-2`} style={{ borderRadius: 10 }}>
                   <Search size={16} className="text-[#5B544A] shrink-0" />
-                  <input value={searchText} onChange={(e) => setSearchText(e.target.value)} onKeyDown={(e) => e.key === 'Enter' && startSearch()}
-                    placeholder="Program or university" className="flex-1 min-w-0 bg-transparent outline-none" />
+                  <SuggestBox value={searchText} onChange={setSearchText} onEnter={trySearch} placeholder="Program or university" />
                 </div>
               </Field>
               <Field label="Intake">
@@ -365,19 +647,19 @@ export default function SearchProgramsPage() {
                   {(config?.years || []).map((y) => <option key={y.value} value={y.value}>{y.label}</option>)}
                 </select>
               </Field>
-              <Field label="Your nationality">
-                <select value={profile.nationalityId} onChange={(e) => setProfile((p) => ({ ...p, nationalityId: e.target.value, stateName: '' }))} className={FIELD} style={{ borderRadius: 10 }}>
+              <Field label="Your nationality *" error={err('nationality') && 'Required'}>
+                <select value={profile.nationalityId} onChange={(e) => setProfile((p) => ({ ...p, nationalityId: e.target.value, stateName: '' }))} className={`${FIELD} ${err('nationality') ? FIELD_ERR : ''}`} style={{ borderRadius: 10 }}>
                   <option value="">Select</option>
                   {nationalities.map((n) => <option key={n.value} value={n.value}>{n.label}</option>)}
                 </select>
               </Field>
-              <Field label="Your state">
-                <select value={profile.stateName} disabled={String(profile.nationalityId) !== INDIA_ID} onChange={(e) => setProfile((p) => ({ ...p, stateName: e.target.value }))} className={`${FIELD} disabled:opacity-50`} style={{ borderRadius: 10 }}>
+              <Field label={needsState ? 'Your state *' : 'Your state'} error={err('state') && 'Required'}>
+                <select value={profile.stateName} disabled={!needsState} onChange={(e) => setProfile((p) => ({ ...p, stateName: e.target.value }))} className={`${FIELD} ${err('state') ? FIELD_ERR : ''} disabled:opacity-50`} style={{ borderRadius: 10 }}>
                   <option value="">{String(profile.nationalityId) === INDIA_ID ? 'Select state' : 'Not needed'}</option>
                   {INDIA_STATES.map((st) => <option key={st} value={st}>{st}</option>)}
                 </select>
               </Field>
-              <button onClick={startSearch} className="h-11 px-6 inline-flex items-center justify-center gap-2 text-white text-[14px] font-semibold bg-[#16130F] hover:bg-[#DE5C2B] transition-colors" style={{ borderRadius: 10 }}>
+              <button onClick={trySearch} className="h-11 px-6 inline-flex items-center justify-center gap-2 text-white text-[14px] font-semibold bg-[#16130F] hover:bg-[#DE5C2B] transition-colors self-start lg:mt-[26px]" style={{ borderRadius: 10 }}>
                 <Search size={16} /> Search
               </button>
             </div>
@@ -388,69 +670,22 @@ export default function SearchProgramsPage() {
                 Advanced search{advCount ? ` · ${advCount}` : ''} {advOpen ? <ChevronUp size={15} /> : <ChevronDown size={15} />}
               </button>
             </div>
-            {advOpen && (
-              <div className="mt-4 pt-5 border-t border-[#ECE6DA] grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div>
-                  <h3 className="text-[14px] font-semibold text-[#16130F] mb-2">Program level</h3>
-                  <div className="max-h-[320px] overflow-y-auto pr-1">
-                    {levelOpts.map((l) => <Checkbox key={l.value} checked={programLevels.includes(Number(l.value))} onChange={() => toggleArr(setProgramLevels)(Number(l.value))} label={l.label} />)}
-                  </div>
-                </div>
-                <div className="space-y-4 md:border-x md:border-[#ECE6DA] md:px-6">
-                  <h3 className="text-[14px] font-semibold text-[#16130F]">Other filters</h3>
-                  <Field label="Country">
-                    <select value={country} onChange={(e) => setCountry(e.target.value)} className={FIELD} style={{ borderRadius: 10 }}>
-                      <option value="">All countries</option>
-                      {countryOpts.map((c) => <option key={c.value} value={c.value}>{c.label}</option>)}
-                    </select>
-                  </Field>
-                  <div>
-                    <span className="text-[12.5px] font-semibold text-[#16130F]">Study area</span>
-                    <div className="mt-1.5 max-h-40 overflow-y-auto pr-1 border border-[#E6E0D4] px-2" style={{ borderRadius: 10 }}>
-                      {studyAreaOpts.map((a) => <Checkbox key={a.value} checked={studyAreas.includes(Number(a.value))} onChange={() => toggleArr(setStudyAreas)(Number(a.value))} label={a.label} />)}
-                    </div>
-                  </div>
-                  <div>
-                    <span className="text-[12.5px] font-semibold text-[#16130F]">Duration</span>
-                    <div className="mt-1.5 flex flex-wrap gap-1.5">
-                      {durationOpts.map((d) => {
-                        const on = durations.includes(Number(d.value));
-                        return <button key={d.value} type="button" onClick={() => toggleArr(setDurations)(Number(d.value))} className="px-3 py-1.5 text-[12.5px] border transition-colors" style={{ borderRadius: 999, background: on ? '#16130F' : '#fff', color: on ? '#fff' : '#5B544A', borderColor: on ? '#16130F' : '#E6E0D4' }}>{d.label}</button>;
-                      })}
-                    </div>
-                  </div>
-                  <div>
-                    <span className="text-[12.5px] font-semibold text-[#16130F]">Max tuition / year (country currency)</span>
-                    <input type="range" min={0} max={100000} step={1000} value={tuitionMax} onChange={(e) => setTuitionMax(Number(e.target.value))} className="w-full accent-[#DE5C2B] mt-2" />
-                    <div className="text-[12.5px] text-[#5B544A]">{tuitionMax === 0 ? 'Any' : `Up to ${tuitionMax.toLocaleString()}`}</div>
-                  </div>
-                </div>
-                <div>
-                  <div className="flex items-center justify-between mb-2">
-                    <h3 className="text-[14px] font-semibold text-[#16130F]">Requirements</h3>
-                    {advCount > 0 && <button onClick={clearAll} className="text-[12.5px] font-semibold text-[#DE5C2B]">Clear all</button>}
-                  </div>
-                  <div className="max-h-[320px] overflow-y-auto pr-1">
-                    {reqOpts.map((r) => <Checkbox key={r.value} checked={requirements.includes(Number(r.value))} onChange={() => toggleArr(setRequirements)(Number(r.value))} label={r.label} />)}
-                  </div>
-                </div>
-              </div>
-            )}
+            {advOpen && <div className="mt-4 pt-5 border-t border-[#ECE6DA]">{advancedPanel}</div>}
           </div>
 
-          {/* Quick filters: one tap searches */}
+          {/* Quick filters: tap to add, then Search */}
           {highlights.length > 0 && (
             <div className="mt-6 bg-white/70 border border-[#E6E0D4] p-4 sm:p-5" style={{ borderRadius: 18 }}>
-              <p className="text-[13.5px] font-semibold text-[#16130F] mb-3">Quick filters <span className="font-normal text-[#5B544A]">· tap one to search</span></p>
+              <p className="text-[13.5px] font-semibold text-[#16130F] mb-3">Quick filters <span className="font-normal text-[#5B544A]">· tap to add, then press Search</span></p>
               <div className="flex flex-wrap gap-2">
                 {highlights.map((h) => {
                   const Icon = QUICK_ICONS[h.icon] || Tag;
                   const on = activeHighlights.includes(h.id);
                   return (
                     <button key={h.id} type="button" title={h.description}
-                      onClick={() => { setActiveHighlights((a) => (a.includes(h.id) ? a : [...a, h.id])); setStarted(true); window.scrollTo(0, 0); }}
-                      className="inline-flex items-center gap-1.5 text-[13px] font-medium px-3 py-2 border bg-white hover:border-[#DE5C2B] hover:text-[#DE5C2B] transition-colors"
-                      style={{ borderRadius: 999, borderColor: on ? '#DE5C2B' : '#E6E0D4', color: on ? '#DE5C2B' : '#16130F' }}>
+                      aria-pressed={on} onClick={() => toggleHighlight(h.id)}
+                      className="inline-flex items-center gap-1.5 text-[13px] font-medium px-3 py-2 border transition-colors hover:border-[#16130F]"
+                      style={{ borderRadius: 999, background: on ? '#16130F' : '#fff', borderColor: on ? '#16130F' : '#E6E0D4', color: on ? '#fff' : '#16130F' }}>
                       <Icon size={14} /> {h.name}
                     </button>
                   );
@@ -469,10 +704,13 @@ export default function SearchProgramsPage() {
       <div className="bg-white border-b border-slate-200">
         <div className="max-w-7xl mx-auto px-4 py-3">
           <div className="flex flex-col lg:flex-row gap-2">
+            <button type="button" onClick={backToDetails} aria-label="Back to your details"
+              className="no-shine self-start lg:self-auto inline-flex items-center gap-1.5 h-[42px] pl-3 pr-4 rounded-full bg-white border border-[#E6E0D4] text-[13.5px] font-semibold text-[#16130F] hover:border-[#16130F] transition-colors shrink-0">
+              <ArrowLeft size={16} strokeWidth={2.2} /> Back
+            </button>
             <div className="flex-1 flex items-center gap-2 border border-slate-200 px-3 bg-white" style={{ borderRadius: 4 }}>
               <Search size={18} className="text-slate-400" />
-              <input value={searchText} onChange={(e) => setSearchText(e.target.value)} onKeyDown={(e) => e.key === 'Enter' && runSearch(1)}
-                placeholder="Search Program / University" className="flex-1 py-2.5 text-[14px] outline-none bg-transparent" />
+              <SuggestBox value={searchText} onChange={setSearchText} onEnter={() => runSearch(1)} placeholder="Search Program / University" className="py-2.5 text-[14px]" />
             </div>
             {/* Intake (multi) */}
             <div className="relative">
@@ -494,9 +732,14 @@ export default function SearchProgramsPage() {
               {nationalities.map((n) => <option key={n.value} value={n.value}>{n.label}</option>)}
             </select>
             <button onClick={() => runSearch(1)} className="text-white text-[14px] font-semibold px-6 py-2.5" style={{ background: BLUE, borderRadius: 4 }}>Search</button>
-            <button onClick={clearAll} className="text-[14px] font-medium px-4 py-2.5 border text-slate-600 border-slate-200" style={{ borderRadius: 4 }}>Clear All</button>
-            <button onClick={() => { setStarted(false); setResult(null); setEligResult(null); window.scrollTo(0, 0); }} className="text-[14px] font-medium px-4 py-2.5 text-[#DE5C2B] whitespace-nowrap">Edit details</button>
+            <button onClick={clearAll} className="text-[14px] font-medium px-4 py-2.5 border text-slate-600 border-slate-200 whitespace-nowrap" style={{ borderRadius: 4 }}>Clear All</button>
           </div>
+          <div className="flex justify-center mt-2.5">
+            <button onClick={() => setAdvOpen((v) => !v)} aria-expanded={advOpen} className="inline-flex items-center gap-1.5 text-[13px] font-semibold text-[#DE5C2B] px-4 py-1.5 border border-[#F3C9B4] hover:bg-[#FDF4EF]" style={{ borderRadius: 999 }}>
+              Advanced search{advCount ? ` · ${advCount}` : ''} {advOpen ? <ChevronUp size={15} /> : <ChevronDown size={15} />}
+            </button>
+          </div>
+          {advOpen && <div className="mt-3 pt-4 pb-2 border-t border-[#ECE6DA]">{advancedPanel}</div>}
         </div>
       </div>
 
@@ -571,6 +814,37 @@ export default function SearchProgramsPage() {
 
         {/* Right: results */}
         <main className="flex-1 min-w-0">
+        {/* Scholarship band: shown while browsing scholarship programs */}
+        {schMode && (
+          <section className="relative overflow-hidden mb-4 border border-[#EAD8AE] p-5 sm:p-6" style={{ borderRadius: 16, background: 'linear-gradient(120deg, #FBF7EE 0%, #F5ECD6 100%)' }}>
+            {/* certificate-style inner border and seal */}
+            <div className="absolute inset-2 border border-dashed border-[#DCBF80]/70 pointer-events-none" style={{ borderRadius: 12 }} />
+            <div className="absolute -right-6 -top-6 w-36 h-36 rounded-full border-[6px] border-[#DCBF80]/40 grid place-items-center pointer-events-none">
+              <Award size={46} className="text-[#CBA55B]/50" />
+            </div>
+            <div className="relative">
+              <p className="text-[12px] font-bold uppercase tracking-[0.18em] text-[#977435]">Scholarships</p>
+              <h2 className="mt-1 font-outfit text-[22px] sm:text-[28px] font-black tracking-[-0.02em] text-[#2A2011] leading-tight">
+                {eligActive ? <>{eligResult.counts.eligible?.toLocaleString()} scholarship programs you qualify for</>
+                  : result ? <>{result.total?.toLocaleString()} programs offer a scholarship</> : 'Programs that offer a scholarship'}
+              </h2>
+              <p className="mt-1.5 text-[13.5px] text-[#614A26] max-w-xl">Merit, early-bird and bursary awards. The average award is shown on each program, so you can compare before you apply.</p>
+              <div className="mt-4 flex flex-wrap items-center gap-2">
+                <span className="text-[12.5px] font-semibold text-[#614A26] mr-1">Country:</span>
+                <button onClick={() => setCountry('')} className="px-3 py-1.5 text-[12.5px] font-medium border transition-colors" style={{ borderRadius: 999, background: !country ? '#4D3C21' : '#fff', color: !country ? '#fff' : '#4D3C21', borderColor: !country ? '#4D3C21' : '#EAD8AE' }}>All</button>
+                {SCHOLARSHIP_COUNTRIES.map(([id, name]) => {
+                  const on = String(country) === String(id);
+                  return <button key={id} onClick={() => setCountry(on ? '' : String(id))} className="px-3 py-1.5 text-[12.5px] font-medium border transition-colors" style={{ borderRadius: 999, background: on ? '#4D3C21' : '#fff', color: on ? '#fff' : '#4D3C21', borderColor: on ? '#4D3C21' : '#EAD8AE' }}>{FLAG[id]} {name}</button>;
+                })}
+                <button onClick={() => { setEligOpen(true); setMobileFilters(true); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+                  className="ml-auto inline-flex items-center gap-1.5 px-4 py-2 text-[13px] font-semibold text-white bg-[#16130F] hover:bg-[#DE5C2B] transition-colors" style={{ borderRadius: 999 }}>
+                  <UserCheck size={15} /> Check what I qualify for
+                </button>
+              </div>
+            </div>
+          </section>
+        )}
+
         {/* Quick filter pills — CourseFinder shows "Quick Filters:" + 2 inline pills + "View More" */}
         {highlights.length > 0 && (
           <div className="flex items-center flex-wrap gap-2 pb-1">
@@ -599,7 +873,7 @@ export default function SearchProgramsPage() {
           <button onClick={() => setMobileFilters((v) => !v)} className="lg:hidden text-[14px] font-medium px-4 py-2 border flex items-center gap-1.5" style={{ color: BLUE, borderColor: BLUE, borderRadius: 4 }}><SlidersHorizontal size={15} /> Filters</button>
           <div className="text-[14px] text-slate-600">
             {eligActive ? <span><b>{eligResult.counts.eligible?.toLocaleString()}</b> eligible · {eligResult.counts.nonEligible?.toLocaleString()} non-eligible</span>
-              : result ? <span><b>{result.total?.toLocaleString()}</b> Programs in {result.universitiesCount} Universities · Page {page} of {result.totalPages}</span>
+              : result ? <span><b>{result.total?.toLocaleString()}</b> Programs in {result.universitiesCount} {result.universitiesCount === 1 ? 'University' : 'Universities'} · Page {page} of {result.totalPages}</span>
               : <span>Search to see programs</span>}
           </div>
           {!eligActive && result && (
@@ -665,7 +939,7 @@ export default function SearchProgramsPage() {
             <div className="flex items-center justify-center py-20 text-slate-400"><Loader2 className="animate-spin mr-2" size={20} /> Loading…</div>
           ) : eligActive ? (
             eligResult.data?.length === 0 ? <div className="text-center py-16 text-slate-500">No {eligBucket} programs for this profile.</div>
-            : eligResult.data.map((c) => <ProgramRow key={c.cfId} c={c} selected={selected[c.cfId]} onToggleSelect={toggleSelect} onView={openCourse} eligible={c.eligible} reasons={c.reasons} highlightMap={highlightMap} />)
+            : eligResult.data.map((c) => <ProgramRow key={c.cfId} c={c} selected={selected[c.cfId]} onToggleSelect={toggleSelect} onView={openCourse} eligible={c.eligible} reasons={c.reasons} highlightMap={highlightMap} scholarshipFocus={schMode} />)
           ) : !result ? (
             <div className="text-center py-20 text-slate-400">Search for a program to see results.</div>
           ) : result.data?.length === 0 ? (
@@ -677,11 +951,11 @@ export default function SearchProgramsPage() {
                   <div className="font-['Geist',sans-serif] text-[15px] font-semibold text-[#DE5C2B]">{g.uni.universityName}</div>
                   <div className="text-[13px] text-slate-500">{FLAG[g.uni.cfCountryId] || ''} {g.uni.countryName} · {g.items.length} program{g.items.length > 1 ? 's' : ''}</div>
                 </div>
-                <div className="p-3 space-y-2">{g.items.map((c) => <ProgramRow key={c.cfId} c={c} selected={selected[c.cfId]} onToggleSelect={toggleSelect} onView={openCourse} highlightMap={highlightMap} />)}</div>
+                <div className="p-3 space-y-2">{g.items.map((c) => <ProgramRow key={c.cfId} c={c} selected={selected[c.cfId]} onToggleSelect={toggleSelect} onView={openCourse} highlightMap={highlightMap} scholarshipFocus={schMode} />)}</div>
               </div>
             ))
           ) : (
-            result.data.map((c) => <ProgramRow key={c.cfId} c={c} selected={selected[c.cfId]} onToggleSelect={toggleSelect} onView={openCourse} highlightMap={highlightMap} />)
+            result.data.map((c) => <ProgramRow key={c.cfId} c={c} selected={selected[c.cfId]} onToggleSelect={toggleSelect} onView={openCourse} highlightMap={highlightMap} scholarshipFocus={schMode} />)
           )}
         </div>
 

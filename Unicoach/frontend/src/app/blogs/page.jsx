@@ -22,7 +22,6 @@ import {
     FileText,
     CheckCircle2
 } from 'lucide-react';
-import Interactive3DGrid from '@/components/Interactive3DGrid';
 import { API_BASE_URL } from '../../config';
 
 const BLOG_TABS = [
@@ -119,19 +118,12 @@ const BlogsPage = () => {
     const featuredBlog = formattedDbBlogs[0];
 
     return (
-        <main className="min-h-screen bg-[#F8FAFC] text-slate-900 pt-20 pb-24 relative overflow-hidden">
+        <main className="min-h-screen bg-[#F6F3EC] text-slate-900 pt-20 pb-24 relative overflow-hidden">
             
-            {/* Soft Ambient Background Glows */}
-            <div className="absolute -top-24 -left-24 w-96 h-96 bg-blue-400/10 rounded-full blur-3xl pointer-events-none" />
-            <div className="absolute top-1/3 -right-24 w-96 h-96 bg-indigo-400/10 rounded-full blur-3xl pointer-events-none" />
 
             {/* Clean LeapScholar-Style Hero Section with Interactive 3D Grid */}
-            <section className="relative pt-12 pb-24 sm:pt-14 sm:pb-28 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-[#E9F1FE] via-[#F3F6FD] to-[#F8FAFC] overflow-hidden">
-                {/* Interactive 3D Background Grid */}
-                <Interactive3DGrid gridSize={56} />
+            <section className="relative pt-12 pb-24 sm:pt-14 sm:pb-28 px-4 sm:px-6 lg:px-8 bg-[#F6F3EC] overflow-hidden">
                 
-                {/* Soft Ambient Sky Light */}
-                <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[380px] bg-radial from-orange-200/40/50 via-indigo-100/30 to-transparent rounded-full blur-3xl pointer-events-none" />
 
                 <div className="max-w-7xl mx-auto relative z-10 text-center space-y-4">
                     <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-bold bg-white text-[#DE5C2B] border border-orange-200/80 shadow-xs">

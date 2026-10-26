@@ -56,7 +56,7 @@ const StatementOfPurposePage = () => {
     return (
         <main className="min-h-screen bg-slate-50/50 pt-24 pb-16">
             {/* Header Banner */}
-            <div className="bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 text-white relative overflow-hidden py-12 md:py-16 px-6 md:px-12 mb-12 shadow-md">
+            <div className="uc-clean border-x-0 relative overflow-hidden py-12 md:py-16 px-6 md:px-12 mb-12">
                 <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#DE5C2B_1px,transparent_1px)] [background-size:16px_16px]"></div>
                 <div className="max-w-[1240px] mx-auto relative z-10">
                     <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-indigo-500/20 border border-indigo-400/30 rounded-full text-indigo-300 text-xs font-bold uppercase tracking-wider mb-4">
@@ -246,7 +246,7 @@ const StatementOfPurposePage = () => {
                         </section>
 
                         {/* Formatting Breakdown */}
-                        <div className="bg-indigo-900 text-white rounded-3xl p-6 md:p-8 relative overflow-hidden shadow-md">
+                        <div className="uc-clean rounded-3xl p-6 md:p-8 relative overflow-hidden shadow-md">
                             <div className="flex items-center gap-2 mb-6">
                                 <BookOpen className="text-indigo-300" size={24} />
                                 <h3 className="text-xl font-bold tracking-tight">The 2025 SOP Paragraph Breakdown</h3>

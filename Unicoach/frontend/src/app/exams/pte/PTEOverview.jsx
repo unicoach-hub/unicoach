@@ -173,7 +173,7 @@ const PTEOverview = () => {
         </div>
 
         {/* Hero Header Card */}
-        <div className="relative bg-gradient-to-r from-slate-900 to-indigo-950 rounded-[2.5rem] p-8 md:p-14 text-white overflow-hidden mb-12 shadow-xl border border-indigo-950">
+        <div className="uc-clean relative rounded-[2.5rem] p-8 md:p-14 overflow-hidden mb-12 shadow-xl border">
           {/* Backdrop photo for rich aesthetics */}
           <div className="absolute inset-0 z-0 opacity-15 mix-blend-overlay pointer-events-none">
             <img 
@@ -654,7 +654,7 @@ const PTEOverview = () => {
           <aside className="sticky top-28 space-y-6">
             
             {/* Widget: Live session */}
-            <div className="bg-gradient-to-r from-[#111111] via-[#10319E] to-[#111111] text-white p-6 rounded-2xl shadow-md border border-blue-900/40 relative overflow-hidden">
+            <div className="uc-clean p-6 rounded-2xl shadow-md border relative overflow-hidden">
               <span className="text-[9px] font-bold text-orange-200 uppercase tracking-widest block mb-2">Live Workshops</span>
               <h3 className="text-lg font-bold leading-snug mb-2">
                 Study Abroad Events & Fairs

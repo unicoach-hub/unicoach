@@ -3,14 +3,16 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
 
 // "Back" pill at the top left of every page (just under the navbar; scrolls away with the page).
-// Not on the homepage, dashboards or sign-in screens, and it steps aside when the page
+// Not on the homepage, dashboards, sign-in screens or Course Finder (own Back), and it steps aside when the page
 // already has its own back link near the top ("Back to all articles" and the like).
 const PageBackButton = () => {
   const { pathname, search } = useLocation();
   const navigate = useNavigate();
   const hidden = pathname === '/'
     || new URLSearchParams(search).get('embed') === 'true'
-    || /dashboard|^\/(login|signin|signup|register|reset-password|f\/)/.test(pathname);
+    || /dashboard|^\/(login|signin|signup|register|reset-password|f\/)/.test(pathname)
+    // Course Finder draws its own Back inside its layout (results -> details step)
+    || pathname === '/search-programs';
   const ref = useRef(null);
   const [ownBackOn, setOwnBackOn] = useState(null); // pathname where the page showed its own back link
   const pageHasBack = ownBackOn === pathname;

@@ -139,7 +139,7 @@ const IELTSMasterclass = () => {
       
       {/* Dynamic Hero Section */}
       <section className="max-w-[1320px] mx-auto px-6 md:px-10 mb-20">
-        <div className="grid grid-cols-1 lg:grid-cols-[1.2fr_1fr] gap-12 items-center bg-gradient-to-r from-slate-900 to-indigo-950 rounded-[2.5rem] p-8 md:p-14 text-white overflow-hidden shadow-2xl relative border border-slate-900">
+        <div className="uc-clean grid grid-cols-1 lg:grid-cols-[1.2fr_1fr] gap-12 items-center rounded-[2.5rem] p-8 md:p-14 overflow-hidden shadow-2xl relative border">
           
           {/* Ambient Glows */}
           <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-indigo-500/10 rounded-full blur-3xl pointer-events-none" />
@@ -364,7 +364,7 @@ const IELTSMasterclass = () => {
         </div>
 
         {/* Steps to start */}
-        <div className="bg-slate-900 text-white p-8 md:p-10 rounded-[2rem] border border-slate-900 shadow-xl max-w-[900px] mx-auto">
+        <div className="uc-clean p-8 md:p-10 rounded-[2rem] border shadow-xl max-w-[900px] mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
             <div className="flex gap-4 items-start">
               <div className="w-8 h-8 rounded-full bg-indigo-500/20 text-indigo-400 font-black flex items-center justify-center text-xs flex-shrink-0 mt-0.5">1</div>
@@ -423,7 +423,7 @@ const IELTSMasterclass = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           
           {/* Card 1: Mock Tests */}
-          <div className="bg-gradient-to-br from-indigo-900 via-indigo-950 to-slate-900 text-white p-8 md:p-10 rounded-[2rem] border border-indigo-950 shadow-xl space-y-6 relative overflow-hidden">
+          <div className="uc-clean p-8 md:p-10 rounded-[2rem] border shadow-xl space-y-6 relative overflow-hidden">
             <div className="absolute top-0 right-0 w-36 h-36 bg-white/5 rounded-full blur-2xl pointer-events-none" />
             
             <div className="w-12 h-12 rounded-2xl bg-indigo-500/20 text-indigo-400 flex items-center justify-center border border-indigo-500/30">

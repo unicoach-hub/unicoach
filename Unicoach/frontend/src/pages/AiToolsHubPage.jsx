@@ -8,7 +8,6 @@ import {
   ArrowUpRight, Play, Check, ChevronRight, BarChart3,
   Sliders, Search, Layers, RefreshCw, Star
 } from 'lucide-react';
-import Interactive3DGrid from '../components/Interactive3DGrid';
 import { useLead } from '../context/LeadContext';
 import { HeroBackButton } from '../components/ui/BackButton';
 
@@ -36,15 +35,12 @@ const AiToolsHubPage = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-[#F8FAFC] pt-[76px] pb-24 text-slate-900 font-sans">
+    <div className="min-h-screen bg-[#F6F3EC] pt-[76px] pb-24 text-slate-900 font-sans">
       
       {/* ── 1. CINEMATIC HERO SECTION ── */}
-      <section className="relative pt-12 pb-16 md:pt-16 md:pb-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-[#EBF2FF] via-[#F4F7FD] to-[#F8FAFC] border-b border-slate-200/80 overflow-hidden">
+      <section className="relative pt-12 pb-16 md:pt-16 md:pb-20 px-4 sm:px-6 lg:px-8 bg-[#F6F3EC] border-b border-[#E6E0D4] overflow-hidden">
         <HeroBackButton fallback="/" />
-        <Interactive3DGrid gridSize={52} />
         
-        {/* Ambient Radial Glow */}
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[950px] h-[380px] bg-radial from-orange-200/40 via-amber-100/25 to-transparent rounded-full blur-3xl pointer-events-none" />
 
         <div className="max-w-5xl mx-auto relative z-10 text-center space-y-4">
           
@@ -117,8 +113,6 @@ const AiToolsHubPage = () => {
           {(activeCategory === 'all' || activeCategory === 'documents') && (
             <div className="md:col-span-2 bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/90 shadow-2xs hover:shadow-xl hover:border-slate-300 transition-all duration-300 flex flex-col justify-between group relative overflow-hidden">
               
-              {/* Subtle Ambient Card Gradient */}
-              <div className="absolute top-0 right-0 w-80 h-80 bg-purple-100/30 rounded-full blur-3xl pointer-events-none" />
 
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
                 

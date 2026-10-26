@@ -6,7 +6,6 @@ import {
   ArrowRight, Search, Clock, FileText, Globe, Zap, 
   Calendar, Check, ChevronRight, HelpCircle, PhoneCall 
 } from 'lucide-react';
-import Interactive3DGrid from '../components/Interactive3DGrid';
 import { useLead } from '../context/LeadContext';
 
 const EXAMS_DATA = [
@@ -183,13 +182,11 @@ const ExamsHubPage = () => {
   });
 
   return (
-    <div className="min-h-screen bg-[#F8FAFC] pt-[76px] pb-24 text-slate-900 font-sans">
+    <div className="min-h-screen bg-[#F6F3EC] pt-[76px] pb-24 text-slate-900 font-sans">
       
       {/* ── 1. HERO SECTION ── */}
-      <section className="relative pt-12 pb-16 md:pt-16 md:pb-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-[#EBF2FF] via-[#F4F7FD] to-[#F8FAFC] border-b border-slate-200/80 overflow-hidden">
-        <Interactive3DGrid gridSize={52} />
+      <section className="relative pt-12 pb-16 md:pt-16 md:pb-20 px-4 sm:px-6 lg:px-8 bg-[#F6F3EC] border-b border-[#E6E0D4] overflow-hidden">
         
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[360px] bg-radial from-orange-200/40 via-amber-100/25 to-transparent rounded-full blur-3xl pointer-events-none" />
 
         <div className="max-w-5xl mx-auto relative z-10 text-center space-y-4">
           

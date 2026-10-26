@@ -69,7 +69,7 @@ const ExamBooksTemplate = ({ currentExamKey, data }) => {
 
       {/* ── HERO BANNER (UniCoach Brand Blue #111111) ── */}
       <div className="max-w-[1240px] mx-auto px-4 md:px-8 mt-3 mb-8">
-        <div className="bg-gradient-to-r from-[#111111] via-[#10319E] to-[#111111] text-white rounded-3xl p-6 md:p-10 relative overflow-hidden shadow-xl shadow-[#111111]/25 border border-[#1B3FA8]/30">
+        <div className="uc-clean rounded-3xl p-6 md:p-10 relative overflow-hidden shadow-xl border">
           <div className="absolute top-0 right-0 w-96 h-96 bg-blue-400/10 rounded-full blur-3xl pointer-events-none" />
           <div className="absolute -bottom-10 -left-10 w-72 h-72 bg-indigo-300/10 rounded-full blur-2xl pointer-events-none" />
 
@@ -367,7 +367,7 @@ const ExamBooksTemplate = ({ currentExamKey, data }) => {
             </section>
 
             {/* CTA Banner */}
-            <div className="bg-gradient-to-br from-indigo-900 via-slate-900 to-indigo-950 text-white rounded-3xl p-6 md:p-8 flex flex-col md:flex-row items-center justify-between gap-6 shadow-xl border border-indigo-800">
+            <div className="uc-clean rounded-3xl p-6 md:p-8 flex flex-col md:flex-row items-center justify-between gap-6 shadow-xl border border-indigo-800">
               <div>
                 <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-indigo-500/20 border border-indigo-400/30 rounded-full text-indigo-300 text-xs font-bold uppercase tracking-wider mb-3">
                   <Sparkles size={12} className="text-indigo-400" />

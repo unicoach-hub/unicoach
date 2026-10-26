@@ -13,7 +13,6 @@ import {
     ArrowRight,
     Bookmark
 } from 'lucide-react';
-import Interactive3DGrid from '@/components/Interactive3DGrid';
 import EventRegistrationModal from '@/components/EventRegistrationModal';
 import { useLead } from '../../context/LeadContext';
 import { API_BASE_URL } from '../../config';
@@ -270,7 +269,7 @@ const EventsPage = () => {
     const speakersList = speakersFromEvents(eventsList);
 
     return (
-        <main className="min-h-screen bg-[#F1F5F9] text-slate-800 pt-[76px] pb-20 relative overflow-hidden">
+        <main className="min-h-screen bg-[#F6F3EC] text-slate-800 pt-[76px] pb-20 relative overflow-hidden">
 
             {/* Floating Toast Notification Box */}
             <div className="fixed top-6 right-6 z-50 flex flex-col gap-3">
@@ -291,12 +290,9 @@ const EventsPage = () => {
             </div>
 
             {/* Clean LeapScholar-Style Hero Section */}
-            <section className="relative pt-12 pb-16 sm:pt-14 sm:pb-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-[#E9F1FE] via-[#F3F6FD] to-[#F1F5F9] border-b border-slate-200/80 overflow-hidden mb-12">
+            <section className="relative pt-12 pb-16 sm:pt-14 sm:pb-20 px-4 sm:px-6 lg:px-8 bg-[#F6F3EC] border-b border-[#E6E0D4] overflow-hidden mb-12">
                 {/* 3D Interactive Spotlight & Tilt Grid Background */}
-                <Interactive3DGrid gridSize={56} />
 
-                {/* Soft Ambient Sky Light */}
-                <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[380px] bg-radial from-orange-200/40/50 via-indigo-100/30 to-transparent rounded-full blur-3xl pointer-events-none" />
 
                 <div className="max-w-[1280px] mx-auto relative z-10">
                     <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">

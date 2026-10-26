@@ -15,7 +15,6 @@ import {
     BookOpen
 } from 'lucide-react';
 
-import Interactive3DGrid from '@/components/Interactive3DGrid';
 
 const RhodesScholarshipBlogPage = () => {
     const navigate = useNavigate();
@@ -114,11 +113,10 @@ const RhodesScholarshipBlogPage = () => {
     }, []);
 
     return (
-        <main className="min-h-screen bg-[#F8FAFC] pt-20 pb-16">
+        <main className="min-h-screen bg-[#F6F3EC] pt-20 pb-16">
             
             {/* Header Area */}
-            <div className="relative pt-12 pb-16 px-6 md:px-12 mb-12 bg-gradient-to-b from-[#E9F1FE] via-[#F3F6FD] to-[#F8FAFC] overflow-hidden">
-                <Interactive3DGrid gridSize={56} />
+            <div className="relative pt-12 pb-16 px-6 md:px-12 mb-12 bg-[#F6F3EC] overflow-hidden">
                 <div className="max-w-[1240px] mx-auto relative z-10 space-y-4">
                     <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-white border border-orange-200/80 rounded-full text-[#DE5C2B] text-xs font-bold uppercase tracking-wider shadow-xs">
                         <Sparkles size={12} className="text-[#DE5C2B]" />

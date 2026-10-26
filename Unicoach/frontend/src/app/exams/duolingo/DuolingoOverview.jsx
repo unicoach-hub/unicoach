@@ -97,7 +97,7 @@ const DuolingoOverview = () => {
         </div>
 
         {/* Hero Header Card */}
-        <div className="relative bg-gradient-to-r from-slate-900 to-indigo-950 rounded-[2.5rem] p-8 md:p-14 text-white overflow-hidden mb-12 shadow-xl border border-indigo-950">
+        <div className="uc-clean relative rounded-[2.5rem] p-8 md:p-14 overflow-hidden mb-12 shadow-xl border">
           {/* Backdrop photo for rich aesthetics */}
           <div className="absolute inset-0 z-0 opacity-15 mix-blend-overlay pointer-events-none">
             <img 
@@ -261,7 +261,7 @@ const DuolingoOverview = () => {
             </div>
           </div>
 
-          <div className="bg-gradient-to-r from-indigo-900 to-slate-950 text-white rounded-[2rem] p-8 flex flex-col justify-between">
+          <div className="uc-clean rounded-[2rem] p-8 flex flex-col justify-between">
             <div>
               <h3 className="text-xl font-black mb-3">Duolingo Masterclass</h3>
               <p className="text-white/80 text-xs font-semibold leading-relaxed">

@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import AiVisaInterviewPrep from '../components/AiVisaInterviewPrep';
 import { Sparkles, ShieldCheck, CheckCircle2, Mic, Globe } from 'lucide-react';
-import Interactive3DGrid from '../components/Interactive3DGrid';
 import { HeroBackButton } from '../components/ui/BackButton';
 
 const AiVisaPrepPage = () => {
@@ -11,15 +10,11 @@ const AiVisaPrepPage = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-[#F1F5F9] pt-[76px] pb-20">
+    <div className="min-h-screen bg-[#F6F3EC] pt-[76px] pb-20">
       {/* Clean LeapScholar-Style Hero Section */}
-      <section className="relative pt-12 pb-16 sm:pt-14 sm:pb-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-[#FFF4EC] via-[#FAF9F6] to-[#F1F5F9] border-b border-slate-200/80 overflow-hidden">
+      <section className="relative pt-12 pb-16 sm:pt-14 sm:pb-20 px-4 sm:px-6 lg:px-8 bg-[#F6F3EC] border-b border-[#E6E0D4] overflow-hidden">
         <HeroBackButton />
-        {/* Interactive 3D Background Grid */}
-        <Interactive3DGrid gridSize={56} />
         
-        {/* Soft Ambient Sky Light */}
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[380px] bg-radial from-orange-200/40 via-orange-100/20 to-transparent rounded-full blur-3xl pointer-events-none" />
 
         <div className="max-w-4xl mx-auto relative z-10 space-y-4 text-center">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-bold bg-white text-[#DE5C2B] border border-orange-200/80 shadow-xs">

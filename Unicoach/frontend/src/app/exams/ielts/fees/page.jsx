@@ -180,7 +180,7 @@ const IELTSFeesPage = () => {
         </div>
 
         {/* Title Header Card */}
-        <div className="relative bg-gradient-to-r from-indigo-900 to-slate-900 rounded-[2.5rem] p-8 md:p-14 text-white overflow-hidden mb-12 shadow-xl border border-indigo-950">
+        <div className="uc-clean relative rounded-[2.5rem] p-8 md:p-14 overflow-hidden mb-12 shadow-xl border">
           <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-indigo-500/10 rounded-full blur-3xl pointer-events-none" />
           <div className="relative z-10 max-w-3xl">
             <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-indigo-500/20 border border-indigo-500/30 text-indigo-300 text-xs font-extrabold uppercase tracking-widest mb-6">
@@ -604,7 +604,7 @@ const IELTSFeesPage = () => {
           <aside className="sticky top-28 space-y-6">
             
             {/* Widget: Global Scholarships */}
-            <div className="bg-gradient-to-r from-[#111111] via-[#10319E] to-[#111111] text-white p-6 rounded-2xl shadow-md border border-blue-900/40 relative overflow-hidden">
+            <div className="uc-clean p-6 rounded-2xl shadow-md border relative overflow-hidden">
               <span className="text-[9px] font-bold text-orange-200 uppercase tracking-widest block mb-2">Financial Aid</span>
               <h3 className="text-lg font-bold leading-snug mb-2">
                 10,000+ Global Scholarships
@@ -622,7 +622,7 @@ const IELTSFeesPage = () => {
             </div>
 
             {/* Widget: Live Events & Fairs */}
-            <div className="bg-gradient-to-br from-[#111111] via-[#10319E] to-[#111111] text-white p-6 rounded-2xl shadow-lg border border-blue-900/40 relative overflow-hidden group">
+            <div className="uc-clean p-6 rounded-2xl shadow-lg border relative overflow-hidden group">
               <div className="absolute -right-6 -bottom-6 w-28 h-28 bg-blue-400/10 rounded-full blur-xl pointer-events-none" />
               <span className="text-[9px] font-black text-orange-200 uppercase tracking-widest block mb-2">Live Workshops</span>
               <h3 className="text-lg font-black leading-snug mb-3">
