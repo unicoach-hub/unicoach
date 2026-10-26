@@ -27,7 +27,7 @@ const FitChecker = () => {
     <section className="px-4 sm:px-6 py-10 sm:py-14">
       <div className="max-w-[1320px] mx-auto rounded-[32px] sm:rounded-[40px] bg-[#FFC93C] px-6 sm:px-12 lg:px-16 py-12 sm:py-16 grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
         <div>
-          <span className="inline-block -rotate-3 rounded-full bg-[#1D4ED8] text-white text-[14px] font-semibold px-4 py-1.5 shadow-lg">For students</span>
+          <span className="inline-block -rotate-3 rounded-full bg-[#C04A1D] text-white text-[14px] font-semibold px-4 py-1.5 shadow-lg">For students</span>
           <h2 className="mt-6 text-[44px] sm:text-[60px] lg:text-[72px] font-semibold text-[#16130F]">
             Check where you fit before you apply.
           </h2>
@@ -48,12 +48,12 @@ const FitChecker = () => {
           <label className="block text-[14px] font-semibold text-[#16130F]/70">Budget per year</label>
           <div className="font-heading text-[48px] sm:text-[60px] font-semibold leading-none tracking-[-0.05em] text-[#16130F] mt-1">₹{budget} lakh</div>
           <input type="range" min={8} max={60} step={1} value={budget} onChange={(e) => setBudget(+e.target.value)}
-            className="w-full mt-5 accent-[#1D4ED8]" aria-label="Budget per year in lakh rupees" />
+            className="w-full mt-5 accent-[#C04A1D]" aria-label="Budget per year in lakh rupees" />
 
           <label className="block text-[14px] font-semibold text-[#16130F]/70 mt-7">IELTS score (or equivalent)</label>
           <div className="flex items-center gap-4 mt-2">
             <input type="range" min={5} max={8.5} step={0.5} value={ielts} onChange={(e) => setIelts(+e.target.value)}
-              className="flex-1 accent-[#1D4ED8]" aria-label="IELTS score" />
+              className="flex-1 accent-[#C04A1D]" aria-label="IELTS score" />
             <span className="font-heading text-[28px] font-semibold text-[#16130F] w-14 text-right">{ielts.toFixed(1)}</span>
           </div>
 

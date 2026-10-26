@@ -64,7 +64,7 @@ const TestimonialCard = ({ item, hidden }) => (
 
       <figcaption className="flex items-center gap-2.5 pt-3 mt-3 border-t border-slate-200/70">
         <span
-          className="w-8 h-8 rounded-full bg-gradient-to-br from-[#DE5C2B] to-[#EAB308] text-white font-outfit font-black text-[11px] flex items-center justify-center ring-2 ring-white shadow-xs shrink-0 select-none"
+          className="w-8 h-8 rounded-full bg-gradient-to-br from-[#DE5C2B] to-[#B48C42] text-white font-outfit font-black text-[11px] flex items-center justify-center ring-2 ring-white shadow-xs shrink-0 select-none"
           aria-hidden="true"
         >
           {getInitials(item.name)}

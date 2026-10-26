@@ -2,7 +2,6 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { ArrowUpRight, GraduationCap, Phone } from 'lucide-react';
 import { PillButton } from './ui/PillButton';
-import ctaBgImg from '../assets/cta_bg.webp';
 
 /**
  * StudyAbroadCTA — Reusable inline CTA banner for all Study Abroad pages.
@@ -33,20 +32,10 @@ const StudyAbroadCTA = ({
       viewport={{ once: true }}
       className="mt-14 mb-4 rounded-[28px] sm:rounded-[32px] relative overflow-hidden border border-orange-200/30"
       style={{
-        background: 'linear-gradient(135deg, #DE5C2B 0%, #E25F2E 35%, #EA580C 70%, #F97316 100%)',
-        boxShadow: '0 20px 50px -12px rgba(222, 92, 43, 0.35)',
+        background: 'linear-gradient(135deg, #DE5C2B 0%, #C9502A 100%)',
+        boxShadow: '0 20px 50px -20px rgba(22, 19, 15, 0.35)',
       }}
     >
-      {/* Local Backdrop photo for rich aesthetics - alt="" to prevent broken text leak */}
-      <div className="absolute inset-0 z-0 opacity-15 mix-blend-overlay pointer-events-none">
-        <img 
-          src={ctaBgImg} 
-          alt="" 
-          aria-hidden="true"
-          className="w-full h-full object-cover"
-        />
-      </div>
-
       {/* Subtle world coordinates texture */}
       <div 
         className="absolute inset-0 pointer-events-none z-0 opacity-20"
@@ -55,10 +44,6 @@ const StudyAbroadCTA = ({
           backgroundSize: '22px 22px',
         }}
       />
-
-      {/* Decorative ambient glows */}
-      <div className="absolute top-[-50%] right-[-10%] w-[400px] h-[400px] bg-white/10 rounded-full blur-[100px] pointer-events-none z-0" />
-      <div className="absolute bottom-[-30%] left-[-5%] w-[300px] h-[300px] bg-orange-400/15 rounded-full blur-[80px] pointer-events-none z-0" />
 
       <div className="relative z-10 px-6 py-10 sm:px-10 sm:py-14 md:px-14 md:py-16">
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_auto] gap-8 items-center">

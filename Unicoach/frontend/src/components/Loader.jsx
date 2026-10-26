@@ -180,9 +180,9 @@ const Loader = ({ onLoadingComplete }) => {
                 <svg className="absolute w-[490px] h-[150px] pointer-events-none overflow-visible" viewBox="0 0 500 150">
                   <defs>
                     <linearGradient id="glow-path" x1="0%" y1="0%" x2="100%" y2="0%">
-                      <stop offset="0%" stopColor="#4f46e5" stopOpacity="0.1" />
-                      <stop offset="50%" stopColor="#818cf8" stopOpacity="0.8" />
-                      <stop offset="100%" stopColor="#c084fc" stopOpacity="0.1" />
+                      <stop offset="0%" stopColor="#DE5C2B" stopOpacity="0.1" />
+                      <stop offset="50%" stopColor="#E57D55" stopOpacity="0.8" />
+                      <stop offset="100%" stopColor="#768CAE" stopOpacity="0.1" />
                     </linearGradient>
                   </defs>
 
@@ -199,7 +199,7 @@ const Loader = ({ onLoadingComplete }) => {
                   <path
                     d={`M ${P0.x} ${P0.y} Q ${P1.x} ${P1.y}, ${P2.x} ${P2.y}`}
                     fill="transparent"
-                    stroke="#a78bfa"
+                    stroke="#768CAE"
                     strokeWidth="3.5"
                     strokeDasharray="500"
                     strokeDashoffset={500 - (500 * progress) / 100}
@@ -211,7 +211,7 @@ const Loader = ({ onLoadingComplete }) => {
                     <g transform={`translate(${planeX}, ${planeY}) rotate(${planeAngle})`}>
                       <g transform="translate(-12, -12)">
                         {/* Paper plane SVG icon */}
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-white drop-shadow-[0_0_8px_#818cf8]">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-white drop-shadow-[0_0_8px_#E57D55]">
                           <path 
                             d="M21 3L3 10.5L10.5 13.5L13.5 21L21 3Z" 
                             stroke="currentColor" 

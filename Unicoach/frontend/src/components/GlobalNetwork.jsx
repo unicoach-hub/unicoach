@@ -54,9 +54,9 @@ export const GlobalNetwork = ({ onOpenModal }) => {
       
       {/* ── Soothing Sky Blue & Lavender Watercolor Wash ── */}
       <div className="absolute inset-0 pointer-events-none -z-0">
-        <div className="absolute top-[-10%] left-[-5%] w-[650px] h-[550px] bg-radial from-[#DBEAFE]/85 via-[#E0E7FF]/50 to-transparent rounded-full blur-[80px]" />
-        <div className="absolute top-[20%] right-[-5%] w-[600px] h-[450px] bg-radial from-[#BAE6FD]/45 via-[#E0F2FE]/40 to-transparent rounded-full blur-[80px]" />
-        <div className="absolute bottom-[-10%] left-[20%] w-[500px] h-[400px] bg-radial from-[#E0F2FE]/80 to-transparent rounded-full blur-[90px]" />
+        <div className="absolute top-[-10%] left-[-5%] w-[650px] h-[550px] bg-radial from-[#FAE5DA]/85 via-[#FAE5DA]/50 to-transparent rounded-full blur-[80px]" />
+        <div className="absolute top-[20%] right-[-5%] w-[600px] h-[450px] bg-radial from-[#C4D0E1]/45 via-[#E1E7F0]/40 to-transparent rounded-full blur-[80px]" />
+        <div className="absolute bottom-[-10%] left-[20%] w-[500px] h-[400px] bg-radial from-[#E1E7F0]/80 to-transparent rounded-full blur-[90px]" />
       </div>
 
       <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-10 relative z-10">
@@ -82,7 +82,7 @@ export const GlobalNetwork = ({ onOpenModal }) => {
           
           {/* ──── LEFT / MAIN: FEATURED EVENT CARD (Soothing Ice-Blue Glass) ──── */}
           <div className="lg:col-span-7 xl:col-span-7.5">
-            <div className="relative rounded-[28px] bg-gradient-to-br from-[#EFF6FF] via-[#F0F7FF] to-[#E0EFFF] border border-orange-200/90 p-6 sm:p-8 lg:p-9 shadow-lg shadow-blue-900/[0.04] h-full flex flex-col justify-between overflow-hidden group hover:shadow-xl hover:border-blue-300 transition-all duration-300">
+            <div className="relative rounded-[28px] bg-gradient-to-br from-[#FDF4EF] via-[#F0F7FF] to-[#E0EFFF] border border-orange-200/90 p-6 sm:p-8 lg:p-9 shadow-lg shadow-blue-900/[0.04] h-full flex flex-col justify-between overflow-hidden group hover:shadow-xl hover:border-blue-300 transition-all duration-300">
               
               {/* Soft Ambient Radial Corner Light */}
               <div className="absolute top-0 right-0 w-64 h-64 bg-radial from-blue-400/15 via-indigo-300/10 to-transparent rounded-tr-[28px] pointer-events-none" />

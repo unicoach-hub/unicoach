@@ -65,7 +65,7 @@ const JourneyRoute = () => {
   }, [inView]);
   const loan = 3000000;
   const emiAmt = Math.round((loan * 0.0085 * (1.0085 ** (emi * 12))) / ((1.0085 ** (emi * 12)) - 1));
-  const unis = [['TU Munich', 'Target', '#2563EB'], ['Trinity Dublin', 'Dream', '#DE5C2B'], ['Univ. of Leeds', 'Safe', '#059669']];
+  const unis = [['TU Munich', 'Target', '#DE5C2B'], ['Trinity Dublin', 'Dream', '#DE5C2B'], ['Univ. of Leeds', 'Safe', '#446D50']];
   const shownUni = unis[t5 % unis.length];
   const bands = [6, 6.5, 7, 7.5];
 
@@ -136,7 +136,7 @@ const JourneyRoute = () => {
           <Card to="/ai-tools/ielts-evaluator" tone="linear-gradient(150deg,#E3EBFF,#B9CBFF)" title="Ace IELTS & tests" sub="Band scoring with feedback" delay={0.15}>
             <div className="h-full flex items-center gap-3">
               <motion.div key={t3} initial={{ scale: 0.7, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} transition={{ type: 'spring', stiffness: 260, damping: 14 }} className="w-[74px] h-[74px] rounded-full bg-white grid place-items-center shadow-md shrink-0">
-                <span className="text-[26px] font-bold text-[#1D4ED8]">{bands[t3 % bands.length]}</span>
+                <span className="text-[26px] font-bold text-[#C04A1D]">{bands[t3 % bands.length]}</span>
               </motion.div>
               <div className="text-[12px] text-blue-900 font-semibold leading-snug">Band<br /><span className="text-slate-500 font-medium">Task 2 essay</span></div>
             </div>
@@ -149,7 +149,7 @@ const JourneyRoute = () => {
                 {[92, 100, 70, 84].map((w, i) => (
                   <motion.div key={`${t4}-${i}`} className="h-2 rounded-full bg-[#E9E1FF] mb-2 last:mb-0" initial={{ width: 0 }} animate={{ width: `${w}%` }} transition={{ duration: 0.6, delay: i * 0.45, ease: 'easeOut' }} />
                 ))}
-                <motion.p key={`c${t4}`} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 2 }} className="text-[11.5px] font-semibold text-[#6D28D9] mt-2">✓ Reviewed by Prachi, mentor</motion.p>
+                <motion.p key={`c${t4}`} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 2 }} className="text-[11.5px] font-semibold text-[#3B4963] mt-2">✓ Reviewed by Prachi, mentor</motion.p>
               </div>
             </div>
           </Card>
@@ -164,7 +164,7 @@ const JourneyRoute = () => {
                   initial={{ scale: 2.4, opacity: 0, rotate: -30 }}
                   animate={{ scale: 1, opacity: 1, rotate: -14 }}
                   transition={{ delay: 0.5, type: 'spring', stiffness: 380, damping: 16 }}
-                  className="absolute -right-6 bottom-3 px-2.5 py-1 rounded-md border-[3px] border-[#BE123C] text-[#BE123C] bg-white/90 text-[12px] font-extrabold tracking-wider"
+                  className="absolute -right-6 bottom-3 px-2.5 py-1 rounded-md border-[3px] border-[#7C3F33] text-[#7C3F33] bg-white/90 text-[12px] font-extrabold tracking-wider"
                 >
                   APPROVED
                 </motion.span>

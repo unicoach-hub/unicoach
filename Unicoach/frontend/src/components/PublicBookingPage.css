@@ -1,6 +1,6 @@
 .pbp-container {
   min-height: 100vh;
-  background: linear-gradient(135deg, #f0f4ff 0%, #e8ecf8 50%, #f5f3ff 100%);
+  background: linear-gradient(135deg, #f0f4ff 0%, #e8ecf8 50%, #F1F4F8 100%);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -44,7 +44,7 @@
 .pbp-brand-text {
   font-size: 14px;
   font-weight: 800;
-  color: #4f46e5;
+  color: #DE5C2B;
   letter-spacing: -0.02em;
 }
 
@@ -59,7 +59,7 @@
 .pbp-subheading {
   font-size: 13px;
   font-weight: 700;
-  color: #4f46e5;
+  color: #DE5C2B;
   margin: 0;
 }
 
@@ -70,20 +70,20 @@
 
 .pbp-duration-tag {
   padding: 5px 12px;
-  background: #eef2ff;
-  border: 1px solid #c7d2fe;
+  background: #FDF4EF;
+  border: 1px solid #F3C9B4;
   border-radius: 20px;
-  color: #4338ca;
+  color: #C04A1D;
   font-size: 11px;
   font-weight: 800;
 }
 
 .pbp-type-tag {
   padding: 5px 12px;
-  background: #f0fdf4;
-  border: 1px solid #bbf7d0;
+  background: #F1F6F2;
+  border: 1px solid #C3D9C8;
   border-radius: 20px;
-  color: #15803d;
+  color: #385942;
   font-size: 11px;
   font-weight: 800;
 }
@@ -141,7 +141,7 @@
 .pbp-selected-summary {
   margin-top: auto;
   padding: 16px;
-  background: linear-gradient(135deg, #4f46e5, #6366f1);
+  background: linear-gradient(135deg, #DE5C2B, #DE5C2B);
   border-radius: 18px;
   color: #ffffff;
   box-shadow: 0 6px 20px rgba(79, 70, 229, 0.25);
@@ -164,7 +164,7 @@
 .pbp-summary-time {
   font-size: 17px;
   font-weight: 800;
-  color: #fde047;
+  color: #DCBF80;
   margin-top: 2px;
 }
 
@@ -211,14 +211,14 @@
 }
 
 .pbp-step-pill.active {
-  background: #4f46e5;
+  background: #DE5C2B;
   color: #ffffff;
   box-shadow: 0 4px 12px rgba(79, 70, 229, 0.25);
 }
 
 .pbp-step-pill.completed {
-  background: #e0e7ff;
-  color: #4338ca;
+  background: #FAE5DA;
+  color: #C04A1D;
 }
 
 .pbp-stage-header {
@@ -265,7 +265,7 @@
 }
 
 .pbp-input:focus {
-  border-color: #6366f1;
+  border-color: #DE5C2B;
   background: #ffffff;
   box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
 }
@@ -330,25 +330,25 @@
 }
 
 .pbp-slot-btn:hover {
-  border-color: #6366f1;
-  color: #4f46e5;
-  background: #eef2ff;
+  border-color: #DE5C2B;
+  color: #DE5C2B;
+  background: #FDF4EF;
 }
 
 .pbp-slot-selected {
-  background: #4f46e5 !important;
+  background: #DE5C2B !important;
   color: #ffffff !important;
-  border-color: #4f46e5 !important;
+  border-color: #DE5C2B !important;
   box-shadow: 0 4px 14px rgba(79, 70, 229, 0.3);
 }
 
 .pbp-no-slots {
   padding: 24px;
   text-align: center;
-  background: #fffbeb;
-  border: 1px dashed #fcd34d;
+  background: #FBF7EE;
+  border: 1px dashed #DCBF80;
   border-radius: 14px;
-  color: #b45309;
+  color: #795C2C;
   font-size: 12px;
   line-height: 1.5;
 }
@@ -370,7 +370,7 @@
   font-size: 14px;
   font-weight: 800;
   color: #ffffff;
-  background: linear-gradient(135deg, #4f46e5, #6366f1);
+  background: linear-gradient(135deg, #DE5C2B, #DE5C2B);
   border: none;
   border-radius: 14px;
   cursor: pointer;
@@ -416,7 +416,7 @@
   font-size: 14px;
   font-weight: 800;
   color: #ffffff;
-  background: linear-gradient(135deg, #059669, #10b981);
+  background: linear-gradient(135deg, #446D50, #558563);
   border: none;
   border-radius: 14px;
   cursor: pointer;
@@ -437,7 +437,7 @@
 }
 
 .pbp-footer strong {
-  color: #4f46e5;
+  color: #DE5C2B;
 }
 
 /* Success Card */
@@ -455,10 +455,10 @@
 .pbp-success-badge {
   display: inline-block;
   padding: 10px 18px;
-  background: #eef2ff;
-  border: 1px solid #c7d2fe;
+  background: #FDF4EF;
+  border: 1px solid #F3C9B4;
   border-radius: 20px;
-  color: #4338ca;
+  color: #C04A1D;
   font-size: 14px;
   font-weight: 800;
   margin: 16px 0;

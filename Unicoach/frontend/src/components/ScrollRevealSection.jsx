@@ -22,7 +22,7 @@ const offices = [
     lat: 29.39,
     lon: 76.97,
     accent: 'from-indigo-600 to-blue-600',
-    accentColor: '#6366f1',
+    accentColor: '#DE5C2B',
     bgBadge: 'bg-indigo-50 text-indigo-700 border-indigo-200',
   },
   {
@@ -37,7 +37,7 @@ const offices = [
     lat: 28.55,
     lon: 77.21,
     accent: 'from-emerald-600 to-teal-600',
-    accentColor: '#10b981',
+    accentColor: '#558563',
     bgBadge: 'bg-emerald-50 text-emerald-700 border-emerald-200',
   },
   {
@@ -52,7 +52,7 @@ const offices = [
     lat: 26.91,
     lon: 75.79,
     accent: 'from-orange-500 to-amber-600',
-    accentColor: '#f97316',
+    accentColor: '#DE5C2B',
     bgBadge: 'bg-orange-50 text-orange-700 border-orange-200',
   },
   {
@@ -67,7 +67,7 @@ const offices = [
     lat: 12.97,
     lon: 77.59,
     accent: 'from-amber-500 to-yellow-600',
-    accentColor: '#eab308',
+    accentColor: '#B48C42',
     bgBadge: 'bg-amber-50 text-amber-800 border-amber-200',
   },
   {
@@ -97,7 +97,7 @@ const offices = [
     lat: 28.3949,
     lon: 84.124,
     accent: 'from-pink-600 to-rose-600',
-    accentColor: '#ec4899',
+    accentColor: '#B3604E',
     bgBadge: 'bg-pink-50 text-pink-700 border-pink-200',
   },
   {
@@ -112,7 +112,7 @@ const offices = [
     lat: 7.8731,
     lon: 80.7718,
     accent: 'from-cyan-600 to-teal-600',
-    accentColor: '#06b6d4',
+    accentColor: '#5A7094',
     bgBadge: 'bg-cyan-50 text-cyan-700 border-cyan-200',
   },
   {
@@ -127,7 +127,7 @@ const offices = [
     lat: 23.685,
     lon: 90.3563,
     accent: 'from-emerald-600 to-green-600',
-    accentColor: '#10b981',
+    accentColor: '#558563',
     bgBadge: 'bg-emerald-50 text-emerald-700 border-emerald-200',
   },
 ];
@@ -169,7 +169,7 @@ const ScrollRevealSection = ({ onActiveOffice }) => {
       style={{ height: `${offices.length * 100}vh` }}
     >
       {/* Sticky viewport */}
-      <div className="sticky top-0 h-screen overflow-hidden flex items-center bg-gradient-to-b from-[#f8fafc] via-[#eef2ff]/30 to-[#f8fafc]">
+      <div className="sticky top-0 h-screen overflow-hidden flex items-center bg-gradient-to-b from-[#f8fafc] via-[#FDF4EF]/30 to-[#f8fafc]">
         
         {/* Subtle background grid */}
         <div className="absolute inset-0 opacity-[0.025] bg-[linear-gradient(rgba(99,102,241,0.12)_1px,transparent_1px),linear-gradient(90deg,rgba(99,102,241,0.12)_1px,transparent_1px)] bg-[size:40px_40px] pointer-events-none" />

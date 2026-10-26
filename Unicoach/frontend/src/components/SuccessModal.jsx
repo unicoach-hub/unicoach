@@ -49,7 +49,7 @@ const SuccessModal = () => {
         </p>
         <button
           onClick={handleGotIt}
-          className="w-full py-3.5 bg-[#4f46e5] text-white font-semibold rounded-xl hover:bg-[#4338ca] transition-all cursor-pointer"
+          className="w-full py-3.5 bg-[#DE5C2B] text-white font-semibold rounded-xl hover:bg-[#C04A1D] transition-all cursor-pointer"
         >
           Got it!
         </button>

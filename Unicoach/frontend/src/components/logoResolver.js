@@ -39,14 +39,14 @@ const resolveLogoFilename = (normalizedInput) => {
 
 const AVATAR_COLORS = [
   ['#DE5C2B', '#E87A4F'], // UniCoach Brand Orange
-  ['#4F46E5', '#7C3AED'], // Indigo → Violet
-  ['#0F766E', '#0D9488'], // Teal → Emerald
-  ['#7C3AED', '#EC4899'], // Violet → Pink
-  ['#0284C7', '#2563EB'], // Sky → Blue
-  ['#059669', '#10B981'], // Emerald
-  ['#D97706', '#EA580C'], // Amber → Orange
-  ['#312E81', '#4F46E5'], // Deep Navy → Indigo
-  ['#BE123C', '#E11D48'], // Rose
+  ['#DE5C2B', '#485A79'], // Indigo → Violet
+  ['#355550', '#406862'], // Teal → Emerald
+  ['#485A79', '#B3604E'], // Violet → Pink
+  ['#485A79', '#DE5C2B'], // Sky → Blue
+  ['#446D50', '#558563'], // Emerald
+  ['#977435', '#DE5C2B'], // Amber → Orange
+  ['#6B2C17', '#DE5C2B'], // Deep Navy → Indigo
+  ['#7C3F33', '#984D3D'], // Rose
 ];
 
 export const getAvatarColor = (name = '') => {

@@ -50,11 +50,11 @@ export const MemeLine = ({ children, className = '' }) => (
  */
 const STICKERS = [
   { t: 'Sharma ji ka beta bhi yahin se gaya 👀', bg: '#F7C12E', fg: '#1B1530', x: '6%', y: '12%', r: -8 },
-  { t: 'Mummy approved ✅', bg: '#4ADE80', fg: '#0B3B1E', x: '74%', y: '10%', r: 7 },
+  { t: 'Mummy approved ✅', bg: '#73A07F', fg: '#0B3B1E', x: '74%', y: '10%', r: 7 },
   { t: 'No cap, free hai 🧢', bg: '#fff', fg: '#1B1530', x: '80%', y: '64%', r: -6 },
-  { t: 'POV: visa approved 🛂', bg: '#38BDF8', fg: '#062F4A', x: '4%', y: '70%', r: 6 },
+  { t: 'POV: visa approved 🛂', bg: '#768CAE', fg: '#062F4A', x: '4%', y: '70%', r: 6 },
   { t: 'Rishtedaar ab chup 🤐', bg: '#FF3D7F', fg: '#fff', x: '62%', y: '84%', r: -4 },
-  { t: 'Seniors > YouTube gyaan', bg: '#C4B5FD', fg: '#2E1065', x: '16%', y: '88%', r: 3 },
+  { t: 'Seniors > YouTube gyaan', bg: '#9EB0CA', fg: '#151B25', x: '16%', y: '88%', r: 3 },
 ];
 
 export const TaiyaariStamp = () => (

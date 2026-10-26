@@ -247,24 +247,24 @@
   content: ""; position: absolute; left: 0; right: 0; bottom: -6px; height: 8px;
   background: radial-gradient(circle at 5px 0, #FDFCF8 5px, transparent 5.5px) 0 0 / 10px 8px repeat-x;
 }
-.jt-band { display: flex; align-items: center; justify-content: space-between; background: #C2410C; color: #fff; padding: 6px 14px; font: 800 14px 'Baloo 2', sans-serif; letter-spacing: .06em; border-radius: 2px; }
+.jt-band { display: flex; align-items: center; justify-content: space-between; background: #C04A1D; color: #fff; padding: 6px 14px; font: 800 14px 'Baloo 2', sans-serif; letter-spacing: .06em; border-radius: 2px; }
 .jt-band .hi { font: 400 20px 'Yatra One', sans-serif; letter-spacing: 0; }
 .jt-band .seal { width: 30px; height: 30px; border-radius: 50%; background: #fff; display: grid; place-items: center; font-size: 15px; }
-.jt-body { border: 1.5px solid #C2410C; border-top: 0; padding: 4px 18px 10px; }
+.jt-body { border: 1.5px solid #C04A1D; border-top: 0; padding: 4px 18px 10px; }
 .jt-wave { display: block; width: 100%; height: 14px; margin: 4px 0; }
 .jt-print { display: grid; grid-template-columns: 1fr 1fr; gap: 2px 20px; font: 600 13px/1.6 'Courier New', ui-monospace, monospace; color: #3b3b3b; letter-spacing: .02em; text-transform: uppercase; }
 .jt-print b { color: #111; }
 .jt-hero { display: flex; align-items: center; justify-content: center; gap: 14px; margin: 14px 0 4px; }
 .jt-hero .trav { display: flex; gap: 2px; font-size: clamp(26px, 4vw, 40px); }
 .jt-title { margin: 0 !important; text-align: center; line-height: 1 !important; letter-spacing: 0 !important; }
-.jt-title .en { display: block; font: 800 clamp(40px, 7vw, 72px) 'Baloo 2', sans-serif; color: #1E3A8A; letter-spacing: -.02em; text-decoration: underline; text-decoration-color: #C2410C; text-decoration-thickness: 4px; text-underline-offset: 6px; }
-.jt-title .hi { display: block; margin-top: 8px; font: 400 clamp(20px, 3vw, 28px) 'Yatra One', sans-serif; color: #C2410C; }
+.jt-title .en { display: block; font: 800 clamp(40px, 7vw, 72px) 'Baloo 2', sans-serif; color: #6B2C17; letter-spacing: -.02em; text-decoration: underline; text-decoration-color: #C04A1D; text-decoration-thickness: 4px; text-underline-offset: 6px; }
+.jt-title .hi { display: block; margin-top: 8px; font: 400 clamp(20px, 3vw, 28px) 'Yatra One', sans-serif; color: #C04A1D; }
 .jt-sub { text-align: center; max-width: 520px; margin: 8px auto 0 !important; font: 600 15px/1.45 'Baloo 2', sans-serif; color: #3b3b3b; }
 .jt-actions { margin: 16px 0 6px; display: flex; gap: 18px; justify-content: center; align-items: center; flex-wrap: wrap; }
 .jt-foot { display: flex; justify-content: space-between; font: 600 11.5px 'Courier New', ui-monospace, monospace; color: #555; letter-spacing: .04em; }
 .jt-holes { position: absolute; right: 22px; top: 50%; transform: translateY(-50%); display: flex; flex-direction: column; gap: 22px; }
 .jt-holes span { width: 18px; height: 18px; border-radius: 50%; background: #FAF9F6; box-shadow: inset 0 1px 3px rgba(0,0,0,.25); }
-.jt-side { position: absolute; right: 46px; top: 50%; transform: translateY(-50%) rotate(90deg); transform-origin: center; white-space: nowrap; font: 800 11px 'Baloo 2', sans-serif; letter-spacing: .2em; color: #C2410C; }
+.jt-side { position: absolute; right: 46px; top: 50%; transform: translateY(-50%) rotate(90deg); transform-origin: center; white-space: nowrap; font: 800 11px 'Baloo 2', sans-serif; letter-spacing: .2em; color: #C04A1D; }
 @media (max-width: 640px) {
   .jt { padding: 14px 14px 18px; }
   .jt-holes, .jt-side { display: none; }
@@ -276,23 +276,23 @@
 /* ── Full-width ticket section ── */
 .tk {
   position: relative; width: 100%; background-color: #FDFBF5;
-  border-top: 3px double #C2410C; border-bottom: 3px double #1E3A8A;
+  border-top: 3px double #C04A1D; border-bottom: 3px double #6B2C17;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='60'%3E%3Ctext x='0' y='38' font-family='Arial' font-size='14' font-weight='700' fill='%23F97316' fill-opacity='0.07' letter-spacing='3'%3EUNICOACH%20%E2%80%A2%20%E0%A4%AF%E0%A5%82%E0%A4%A8%E0%A4%BF%E0%A4%95%E0%A5%8B%E0%A4%9A%3C/text%3E%3C/svg%3E");
 }
 .tk-guil { display: block; width: 100%; height: 34px; }
-.tk-band { display: flex; align-items: center; justify-content: space-between; background: #C2410C; color: #fff; padding: 8px clamp(16px, 4vw, 56px); font: 800 15px 'Baloo 2', sans-serif; letter-spacing: .08em; }
+.tk-band { display: flex; align-items: center; justify-content: space-between; background: #C04A1D; color: #fff; padding: 8px clamp(16px, 4vw, 56px); font: 800 15px 'Baloo 2', sans-serif; letter-spacing: .08em; }
 .tk-band .hi { font: 400 24px 'Yatra One', sans-serif; letter-spacing: 0; }
 .tk-band .seal { width: 34px; height: 34px; border-radius: 50%; background: #fff; display: grid; place-items: center; font-size: 17px; }
 .tk-body { position: relative; max-width: 1200px; margin: 0 auto; padding: 18px clamp(16px, 4vw, 40px) 10px; text-align: center; }
 .tk-print { display: flex; flex-wrap: wrap; justify-content: center; gap: 2px 26px; font: 600 13px/1.7 'Courier New', ui-monospace, monospace; color: #444; text-transform: uppercase; letter-spacing: .02em; }
 .tk-print b { color: #111; }
 .tk-title { margin: 14px 0 0 !important; line-height: 1 !important; letter-spacing: 0 !important; }
-.tk-title .en { display: block; font: 800 clamp(52px, 9vw, 110px) 'Baloo 2', sans-serif; color: #1E3A8A; letter-spacing: -.03em; }
-.tk-title .hi { display: block; margin-top: 4px; font: 400 clamp(18px, 2.6vw, 26px) 'Yatra One', sans-serif; color: #C2410C; }
+.tk-title .en { display: block; font: 800 clamp(52px, 9vw, 110px) 'Baloo 2', sans-serif; color: #6B2C17; letter-spacing: -.03em; }
+.tk-title .hi { display: block; margin-top: 4px; font: 400 clamp(18px, 2.6vw, 26px) 'Yatra One', sans-serif; color: #C04A1D; }
 .tk-crowd { position: relative; max-width: 1280px; margin: 6px auto 0; }
 .tk-crowd > img { position: relative; z-index: 2; }
 .tk-tte {
-  position: absolute; right: clamp(10px, 4vw, 60px); top: 90px; padding: 8px 12px; border: 3px solid #15803D; color: #15803D; border-radius: 8px;
+  position: absolute; right: clamp(10px, 4vw, 60px); top: 90px; padding: 8px 12px; border: 3px solid #385942; color: #385942; border-radius: 8px;
   font: 800 13px/1.2 'Courier New', monospace; letter-spacing: .06em; background: rgba(255,255,255,.7);
 }
 .tk-tte small { font: 400 13px 'Yatra One', sans-serif; letter-spacing: 0; }

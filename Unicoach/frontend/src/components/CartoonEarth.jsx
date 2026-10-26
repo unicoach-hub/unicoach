@@ -165,7 +165,7 @@ const createUTexture = () => {
   const capY = 28;
   
   // Draw graduation cap diamond
-  ctx.fillStyle = '#fcd34d'; // Gold
+  ctx.fillStyle = '#DCBF80'; // Gold
   ctx.beginPath();
   ctx.moveTo(capX, capY - 10);
   ctx.lineTo(capX + 14, capY - 3);
@@ -184,7 +184,7 @@ const createUTexture = () => {
   ctx.fill();
 
   // Tassel
-  ctx.strokeStyle = '#fcd34d';
+  ctx.strokeStyle = '#DCBF80';
   ctx.lineWidth = 1.5;
   ctx.beginPath();
   ctx.moveTo(capX + 7, capY - 2);

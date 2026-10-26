@@ -9,7 +9,7 @@ import { Link } from 'react-router-dom';
 import StudyAbroadCTA from '../../../components/StudyAbroadCTA';
 import { getUniversityLogo } from '../../../components/logoResolver';
 import { matchesUniversitySearch, getMatchedCoursesForUniversity } from '../../../utils/universitySearchMatcher';
-import ausImg from '../../../assets/destinations/australia.jpg';
+import SketchHero from '../../../components/SketchHero';
 
 // ─────────────────────────────────────────────
 // Australia Universities Database for Finder
@@ -127,18 +127,7 @@ const StudyInAustralia = () => {
             transition={{ duration: 0.7, delay: 0.1 }}
             className="lg:col-span-5 relative"
           >
-            <div className="w-full h-[320px] md:h-[380px] rounded-[36px] overflow-hidden shadow-xl border border-white/60 relative">
-              <img 
-                src={ausImg} 
-                alt="Sydney Opera House, Australia" 
-                className="w-full h-full object-cover"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-slate-900/60 via-transparent to-transparent" />
-              <div className="absolute bottom-6 left-6 right-6 text-white">
-                <p className="text-xs font-bold text-amber-300 uppercase tracking-widest">Sydney Harbor</p>
-                <h3 className="text-xl font-black mt-1">Gateway to World-Class Careers</h3>
-              </div>
-            </div>
+            <SketchHero country="australia" alt="Sydney Opera House, Australia" place="Sydney Harbor" tagline="Gateway to World-Class Careers" />
           </motion.div>
         </div>
 

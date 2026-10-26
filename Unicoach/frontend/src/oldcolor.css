@@ -20,11 +20,11 @@
 
 
 /* ── ACCENT / BRAND COLORS ── */
---old-accent-primary:     #4F46E5;       /* indigo-600 — primary brand accent */
---old-accent-hover:       #4338CA;       /* indigo-700 — hover state */
---old-accent-light:       #EEF2FF;       /* indigo-50 — light accent bg */
---old-accent-ring:        #C7D2FE;       /* indigo-200 — focus rings */
---old-accent-text:        #6366F1;       /* indigo-500 — accent text */
+--old-accent-primary:     #DE5C2B;       /* indigo-600 — primary brand accent */
+--old-accent-hover:       #C04A1D;       /* indigo-700 — hover state */
+--old-accent-light:       #FDF4EF;       /* indigo-50 — light accent bg */
+--old-accent-ring:        #F3C9B4;       /* indigo-200 — focus rings */
+--old-accent-text:        #DE5C2B;       /* indigo-500 — accent text */
 
 
 /* ── TEXT COLORS ── */
@@ -38,7 +38,7 @@
 /* ── BORDERS ── */
 --old-border-default:     #E2E8F0;       /* slate-200 */
 --old-border-card:        #E2E8F0;       /* slate-200 */
---old-border-hover:       #4F46E5;       /* indigo-600 */
+--old-border-hover:       #DE5C2B;       /* indigo-600 */
 
 
 /* ── ATMOSPHERIC / AMBIENT GLOWS ── */
@@ -58,17 +58,17 @@
 
 
 /* ── BADGES / PILLS ── */
---old-badge-bg:           linear-gradient(to right, #EFF6FF, #EEF2FF, #F5F3FF);  /* blue-50 → indigo-50 → purple-50 */
---old-badge-border:       #BFDBFE;       /* blue-200 */
---old-badge-text:         #4338CA;       /* indigo-700 */
---old-pill-icon:          #F43F5E;       /* rose-500 — sparkle icons in pills */
+--old-badge-bg:           linear-gradient(to right, #FDF4EF, #FDF4EF, #F1F4F8);  /* blue-50 → indigo-50 → purple-50 */
+--old-badge-border:       #F3C9B4;       /* blue-200 */
+--old-badge-text:         #C04A1D;       /* indigo-700 */
+--old-pill-icon:          #B3604E;       /* rose-500 — sparkle icons in pills */
 
 
 /* ── FORM INPUTS ── */
 --old-input-bg:           #FFFFFF;
 --old-input-border:       #E2E8F0;       /* slate-200 */
---old-input-focus-border: #4F46E5;       /* indigo-600 */
---old-input-focus-ring:   #E0E7FF;       /* indigo-100 */
+--old-input-focus-border: #DE5C2B;       /* indigo-600 */
+--old-input-focus-ring:   #FAE5DA;       /* indigo-100 */
 --old-input-placeholder:  #94A3B8;       /* slate-400 */
 --old-input-radius:       12px;          /* rounded-xl */
 
@@ -83,9 +83,9 @@
 --old-footer-bg:          #0F172A;       /* slate-900 */
 --old-footer-text:        #94A3B8;       /* slate-400 */
 --old-footer-heading:     #FFFFFF;
---old-footer-link-hover:  #6366F1;       /* indigo-500 */
+--old-footer-link-hover:  #DE5C2B;       /* indigo-500 */
 --old-footer-border:      #1E293B;       /* slate-800 */
---old-footer-gradient-line: linear-gradient(to right, transparent, #4F46E5, #7C3AED, #EC4899, transparent);
+--old-footer-gradient-line: linear-gradient(to right, transparent, #DE5C2B, #485A79, #B3604E, transparent);
 
 
 /* ── STAT CARDS (Hero floating) ── */
@@ -101,12 +101,12 @@
 --old-dm-page-bg:         #F1F5F9;       /* slate-100 */
 --old-dm-ambient-1:       from-blue-100/50 via-indigo-50/30 to-transparent;
 --old-dm-ambient-2:       from-indigo-100/40 via-blue-50/30 to-transparent;
---old-dm-badge-gradient:  linear-gradient(to right, #FFF1F2, #FFF1F2, #FAF5FF);  /* pink-50 → rose-50 → purple-50 */
---old-dm-badge-border:    #FBCFE8;       /* pink-200 */
---old-dm-badge-text:      #BE123C;       /* rose-700 */
+--old-dm-badge-gradient:  linear-gradient(to right, #FBF2EF, #FBF2EF, #F1F4F8);  /* pink-50 → rose-50 → purple-50 */
+--old-dm-badge-border:    #EBC5BA;       /* pink-200 */
+--old-dm-badge-text:      #7C3F33;       /* rose-700 */
 --old-dm-submit-bg:       #0F172A;       /* slate-900 */
---old-dm-success-icon:    #F472B6;       /* pink-400 */
---old-dm-success-text:    #4F46E5;       /* indigo-600 — category highlight */
+--old-dm-success-icon:    #C97C6A;       /* pink-400 */
+--old-dm-success-text:    #DE5C2B;       /* indigo-600 — category highlight */
 
 
 /* ══════════════════════════════════════════════════════════════════

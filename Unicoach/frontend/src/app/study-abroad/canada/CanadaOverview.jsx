@@ -9,7 +9,7 @@ import { Link } from 'react-router-dom';
 import StudyAbroadCTA from '../../../components/StudyAbroadCTA';
 import { getUniversityLogo } from '../../../components/logoResolver';
 import { matchesUniversitySearch, getMatchedCoursesForUniversity } from '../../../utils/universitySearchMatcher';
-import canadaImg from '../../../assets/destinations/canada.jpg';
+import SketchHero from '../../../components/SketchHero';
 import PageBackBreadcrumb from '../../../components/common/PageBackBreadcrumb';
 
 // ─────────────────────────────────────────────
@@ -118,18 +118,7 @@ const CanadaOverview = () => {
             transition={{ duration: 0.7, delay: 0.1 }}
             className="lg:col-span-5 relative"
           >
-            <div className="w-full h-[320px] md:h-[380px] rounded-[36px] overflow-hidden shadow-xl border border-white/60 relative">
-              <img 
-                src={canadaImg} 
-                alt="CN Tower, Toronto skyline, Canada" 
-                className="w-full h-full object-cover"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-slate-900/60 via-transparent to-transparent" />
-              <div className="absolute bottom-6 left-6 right-6 text-white">
-                <p className="text-xs font-bold text-indigo-300 uppercase tracking-widest">Toronto, Ontario</p>
-                <h3 className="text-xl font-black mt-1">World-Class Education & Living</h3>
-              </div>
-            </div>
+            <SketchHero country="canada" alt="CN Tower, Toronto skyline, Canada" place="Toronto, Ontario" tagline="World-Class Education & Living" />
           </motion.div>
         </div>
 

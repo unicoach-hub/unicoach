@@ -1,6 +1,6 @@
 import React, { lazy, Suspense, useEffect, useMemo, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { Search, SlidersHorizontal, UserCheck, X, Download, FileSpreadsheet, FileText, GitCompare, ChevronDown, ChevronUp, Info, Loader2, CheckCircle2, AlertCircle, Lock,
+import { Search, SlidersHorizontal, UserCheck, X, Download, FileSpreadsheet, FileText, GitCompare, ChevronDown, ChevronUp, Info, Loader2, CheckCircle2, AlertCircle,
   Gauge, Coins, Languages, PiggyBank, Briefcase, TrendingUp, Banknote, Building2, Landmark, ClipboardCheck, MapPin, FileClock, Wallet, MicOff, GraduationCap, Award, ClipboardList, Users, Tag } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { getSearchConfig, getHighlights, searchCourses, evaluateEligibility, exportSearch, getCourseDetail, getUniversitiesFacet } from '../utils/searchApi';
@@ -37,7 +37,7 @@ const GRADING = [{ value: 'OutOf100', label: 'Out of 100 (%)' }, { value: 'OutOf
 const ENGLISH = [{ value: 'later', label: "I'll provide this later" }, { value: 'none', label: "I don't have this yet" }, { value: 'IELTS', label: 'IELTS' }, { value: 'TOEFL', label: 'TOEFL' }, { value: 'PTE', label: 'PTE' }, { value: 'DET', label: 'Duolingo (DET)' }];
 
 // ── small UI atoms (CourseFinder look: blue, 4px radius, Poppins/DM Sans) ─────
-const Chip = ({ children, color = '#dbeafe', text = '#1e3a8a' }) => (
+const Chip = ({ children, color = '#FAE5DA', text = '#6B2C17' }) => (
   <span className="inline-flex items-center gap-1 px-2 py-0.5 text-[11px] font-medium" style={{ background: color, color: text, borderRadius: 2 }}>{children}</span>
 );
 const Checkbox = ({ checked, onChange, label }) => (
@@ -69,7 +69,7 @@ const ProgramRow = ({ c, selected, onToggleSelect, onView, eligible, reasons, hi
           </button>
           <div className="text-[13px] text-slate-500 mt-0.5">{c.universityName} · {FLAG[c.cfCountryId] || ''} {c.countryName}</div>
           <div className="flex flex-wrap gap-1.5 mt-2">
-            {eligible === true && <Chip color="#dcfce7" text="#166534"><CheckCircle2 size={11} /> Eligible</Chip>}
+            {eligible === true && <Chip color="#E1ECE3" text="#2E4836"><CheckCircle2 size={11} /> Eligible</Chip>}
             {eligible === false && <Chip color="#fee2e2" text="#b91c1c"><AlertCircle size={11} /> Non-Eligible</Chip>}
             {(c.highlightIds || []).slice(0, 3).map((id) => { const h = highlightMap[id]; return h ? <span key={id} className="inline-flex items-center px-2 py-0.5 text-[11px] font-medium text-white" style={{ background: h.color || BLUE, borderRadius: 2 }}>{h.name}</span> : null; })}
           </div>
@@ -81,7 +81,7 @@ const ProgramRow = ({ c, selected, onToggleSelect, onView, eligible, reasons, hi
       </div>
       {/* CourseFinder: a green "Open" status chip leads the intake chips */}
       <div className="flex flex-wrap items-center gap-1 mt-3">
-        <Chip color="#ddffe5" text="#166534">Open</Chip>
+        <Chip color="#ddffe5" text="#2E4836">Open</Chip>
         {(c.intakes || []).slice(0, 8).map((i) => <span key={i} className="px-2 py-0.5 bg-slate-100 text-slate-600 text-[11px]" style={{ borderRadius: 2 }}>{i}</span>)}
       </div>
       {/* CourseFinder stat row: Duration · Tuition/yr · Application Fee · Avg. Scholarship */}
@@ -94,6 +94,20 @@ const ProgramRow = ({ c, selected, onToggleSelect, onView, eligible, reasons, hi
     </div>
   </div>
 );
+
+const SHORTLIST_KEY = 'uc_course_shortlist';
+const INDIA_ID = '99';
+// Student's state (asked like the rest of the profile; not used as a search filter yet)
+const INDIA_STATES = ['Andhra Pradesh', 'Assam', 'Bihar', 'Chandigarh', 'Chhattisgarh', 'Delhi', 'Goa', 'Gujarat', 'Haryana', 'Himachal Pradesh', 'Jammu and Kashmir', 'Jharkhand', 'Karnataka', 'Kerala', 'Madhya Pradesh', 'Maharashtra', 'Odisha', 'Puducherry', 'Punjab', 'Rajasthan', 'Tamil Nadu', 'Telangana', 'Uttar Pradesh', 'Uttarakhand', 'West Bengal', 'Other'];
+
+// Field shell for the details-first search card
+const Field = ({ label, children }) => (
+  <label className="flex flex-col gap-1.5 min-w-0">
+    <span className="text-[12.5px] font-semibold text-[#16130F]">{label}</span>
+    {children}
+  </label>
+);
+const FIELD = 'w-full h-11 px-3 text-[14px] text-[#16130F] bg-[#F8F5EF] border border-[#E6E0D4] outline-none focus:border-[#DE5C2B] focus:bg-white transition-colors';
 
 export default function SearchProgramsPage() {
   const navigate = useNavigate();
@@ -113,6 +127,14 @@ export default function SearchProgramsPage() {
   const [uniSearch, setUniSearch] = useState('');
   const [uniList, setUniList] = useState([]);             // faceted [{id,name,count}]
   const [tuitionMax, setTuitionMax] = useState(0);        // 0 = no cap
+  const [durations, setDurations] = useState([]);
+  // Details first: the landing card collects search + student details, results show after "Search".
+  // Links that already carry a search (?q, ?highlight, ?check) go straight to results.
+  const [started, setStarted] = useState(() => {
+    const p = new URLSearchParams(window.location.search);
+    return !!(p.get('q') || p.get('highlight') || p.get('check'));
+  });
+  const [advOpen, setAdvOpen] = useState(false);
   const [activeHighlights, setActiveHighlights] = useState([]);
   const [showAllQuick, setShowAllQuick] = useState(false); // "View More" quick-filter toggle (CF shows 2 inline)
   const [sort, setSort] = useState('featured');
@@ -125,32 +147,38 @@ export default function SearchProgramsPage() {
   const [page, setPage] = useState(1);
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [selected, setSelected] = useState({});       // cfId -> course
+  // shortlist (cfId -> course); kept for the session so it survives the sign-in before export
+  const [selected, setSelected] = useState(() => {
+    try { return JSON.parse(sessionStorage.getItem(SHORTLIST_KEY) || '{}') || {}; } catch { return {}; }
+  });
   const [showCompare, setShowCompare] = useState(false);
   const [compareDetails, setCompareDetails] = useState({}); // cfId -> full detail (for CF-parity rows)
   const [exporting, setExporting] = useState(false);
   const [exportMenu, setExportMenu] = useState(false);
   const [columnModal, setColumnModal] = useState(null); // { format: 'excel'|'pdf', scope: 'all'|'top25'|'selected' } | null
 
+  useEffect(() => {
+    try { sessionStorage.setItem(SHORTLIST_KEY, JSON.stringify(selected)); } catch { /* private mode */ }
+  }, [selected]);
+
   // eligibility
   const [searchParams, setSearchParams] = useSearchParams();
-  const [profile, setProfile] = useState({ nationalityId: '', highestQualificationId: '', gradingSystem: 'OutOf100', score: '', englishExam: 'later', backlogs: '', workExperience: '' });
+  const [profile, setProfile] = useState({ nationalityId: INDIA_ID, stateName: '', highestQualificationId: '', gradingSystem: 'OutOf100', score: '', englishExam: 'later', backlogs: '', workExperience: '' });
   const [eligResult, setEligResult] = useState(null);
   const [eligBucket, setEligBucket] = useState('eligible');
   const [eligLoading, setEligLoading] = useState(false);
 
   // open the eligibility modal when arriving from the sidebar (?check=eligibility)
   useEffect(() => {
-    if (user && searchParams.get('check') === 'eligibility') {
+    if (searchParams.get('check') === 'eligibility') {
       setEligOpen(true);
       searchParams.delete('check');
       setSearchParams(searchParams, { replace: true });
     }
-  }, [user, searchParams, setSearchParams]);
+  }, [searchParams, setSearchParams]);
 
   // faceted Universities list for the sidebar (re-facets as other filters change)
   useEffect(() => {
-    if (!user) return;
     let cancelled = false;
     const t = setTimeout(() => {
       getUniversitiesFacet({ ...filters, university: undefined }, uniSearch)
@@ -158,7 +186,7 @@ export default function SearchProgramsPage() {
     }, 250);
     return () => { cancelled = true; clearTimeout(t); };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user, uniSearch, searchText, country, programLevels, requirements, intakeArr, studyAreas, activeHighlights, tuitionMax]);
+  }, [uniSearch, searchText, country, programLevels, requirements, intakeArr, studyAreas, activeHighlights, tuitionMax]);
 
   // when Compare opens, pull full detail for each selected program (deposit, website,
   // test scores, deadline, scholarship, ranking) so the table matches CourseFinder 1:1
@@ -173,11 +201,13 @@ export default function SearchProgramsPage() {
   }, [showCompare, selected]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
-    document.title = 'Search Programs | UniCoach';
+    document.title = 'Course Finder | UniCoach';
     window.scrollTo(0, 0);
     // load CourseFinder-style fonts for this portal
     getSearchConfig().then(setConfig).catch(() => {});
-    getHighlights().then((hs) => {
+    getHighlights().then((all) => {
+      // drop filters that name another company's own service (e.g. "GS approval with KC")
+      const hs = (all || []).filter((h) => !/\bKC\b/.test(h.name || ''));
       setHighlights(hs);
       const want = new URLSearchParams(window.location.search).get('highlight');
       const match = want && (hs || []).find((h) => new RegExp(want, 'i').test(h.name));
@@ -196,7 +226,8 @@ export default function SearchProgramsPage() {
     studyArea: studyAreas.length ? studyAreas : undefined,
     university: universities.length ? universities : undefined,
     tuitionMax: tuitionMax > 0 ? tuitionMax : undefined,
-  }), [searchText, country, programLevels, requirements, intakeArr, activeHighlights, studyAreas, universities, tuitionMax]);
+    duration: durations.length ? durations : undefined,
+  }), [searchText, country, programLevels, requirements, intakeArr, activeHighlights, studyAreas, universities, tuitionMax, durations]);
 
   const profilePayload = useMemo(() => ({
     nationalityId: Number(profile.nationalityId) || undefined, highestQualificationId: profile.highestQualificationId || undefined,
@@ -219,13 +250,20 @@ export default function SearchProgramsPage() {
     if (eligResult) { runEligibility(eligBucket, 1); return; }
     if (result) runSearch(1);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [country, programLevels, requirements, intakeArr, activeHighlights, studyAreas, universities, tuitionMax, sort]);
+  }, [country, programLevels, requirements, intakeArr, activeHighlights, studyAreas, universities, tuitionMax, durations, sort]);
 
-  // show all programs by default on first load (CourseFinder shows the full catalogue)
+  // First search runs when the page moves to results: links that already carry a search,
+  // "Search" on the details card, or a quick filter tap (no sign-in needed to browse)
   useEffect(() => {
-    if (user && !result && !eligResult) runSearch(1);
+    if (started && !result && !eligResult) runSearch(1);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user]);
+  }, [started]);
+
+  const startSearch = () => {
+    setIntakeOpen(false);
+    setStarted(true);
+    window.scrollTo(0, 0);
+  };
 
   const toggleHighlight = (id) => setActiveHighlights((a) => (a.includes(id) ? a.filter((x) => x !== id) : [...a, id]));
   const toggleArr = (setter) => (val) => setter((a) => (a.includes(val) ? a.filter((x) => x !== val) : [...a, val]));
@@ -234,12 +272,20 @@ export default function SearchProgramsPage() {
   const openCourse = (c) => navigate(`/program/${c.cfId}`);
   const clearAll = () => {
     setSearchText(''); setCountry(''); setProgramLevels([]); setRequirements([]); setStudyAreas([]);
-    setIntakeArr([]); setYear(''); setUniversities([]); setUniSearch(''); setTuitionMax(0);
+    setIntakeArr([]); setYear(''); setUniversities([]); setUniSearch(''); setTuitionMax(0); setDurations([]);
     setActiveHighlights([]); setEligResult(null);
   };
 
   // Open the column-checklist modal for a given format + scope; the actual export runs on confirm.
-  const openExport = (format, scope) => { setExportMenu(false); setColumnModal({ format, scope }); };
+  // Searching and shortlisting are free; downloading needs a free account. After sign-in the picker opens straight away.
+  const openExport = (format, scope) => {
+    setExportMenu(false);
+    if (!user) {
+      if (openLoginModal) openLoginModal({ onSuccess: () => setColumnModal({ format, scope }) });
+      return;
+    }
+    setColumnModal({ format, scope });
+  };
 
   const fetchScopeData = async (scope) => {
     if (scope === 'selected') return selectedList.map(toProg);
@@ -277,16 +323,141 @@ export default function SearchProgramsPage() {
   const intakeOpts = (config?.intakes || []);
   const nationalities = (config?.studentCountries || []);
   const eligActive = !!eligResult;
+  const durationOpts = (config?.durations || []);
 
-  // ── LOGIN GATE ──────────────────────────────────────────────────────────────
-  if (!user) {
+  // ── STEP 1: details first (search + student details, advanced filters, quick filters) ──
+  if (!started) {
+    const advCount = programLevels.length + requirements.length + studyAreas.length + durations.length + (country ? 1 : 0) + (tuitionMax ? 1 : 0);
     return (
-      <div className="min-h-screen bg-slate-50 pt-[76px] flex items-center justify-center px-4">
-        <div className="bg-white border border-slate-200 p-8 max-w-md w-full text-center" style={{ borderRadius: 6 }}>
-          <div className="w-14 h-14 mx-auto flex items-center justify-center" style={{ background: '#eef4ff', borderRadius: 999 }}><Lock size={24} color={BLUE} /></div>
-          <h1 className="font-['Geist',sans-serif] text-xl font-bold text-slate-800 mt-4">Sign in to search programs</h1>
-          <p className="text-[14px] text-slate-500 mt-2">Create a free account or sign in to search 98,000+ programs, check eligibility, and download results to Excel.</p>
-          <button onClick={() => openLoginModal && openLoginModal()} className="mt-5 w-full text-white text-[14px] font-semibold py-3" style={{ background: BLUE, borderRadius: 4 }}>Sign in / Create account</button>
+      <div className="min-h-screen pt-[76px] pb-20 font-['Geist',sans-serif]" style={{ background: '#F6F3EC' }}>
+        <div className="max-w-6xl mx-auto px-4">
+          <div className="text-center pt-10 sm:pt-14">
+            <p className="inline-flex items-center gap-2 text-[13px] font-semibold text-[#86351A]"><span className="w-6 h-[2px] bg-[#DE5C2B]" /> Course Finder</p>
+            <h1 className="mt-3 font-outfit text-[32px] sm:text-[46px] font-black tracking-[-0.035em] leading-[1.05] text-[#16130F]">Explore 98,000+ programs</h1>
+            <p className="mt-3 text-[15px] sm:text-[17px] text-[#5B544A]">Tell us a little about you, then search. Free to search and shortlist, sign in only to download.</p>
+          </div>
+
+          {/* Search card */}
+          <div className="mt-8 bg-white border border-[#E6E0D4] shadow-[0_24px_60px_-36px_rgba(22,19,15,0.35)] p-4 sm:p-5" style={{ borderRadius: 18 }}>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-[1.6fr_1.2fr_0.7fr_1.1fr_1.1fr_auto] gap-3 items-end">
+              <Field label="Search programs">
+                <div className={`${FIELD} flex items-center gap-2`} style={{ borderRadius: 10 }}>
+                  <Search size={16} className="text-[#5B544A] shrink-0" />
+                  <input value={searchText} onChange={(e) => setSearchText(e.target.value)} onKeyDown={(e) => e.key === 'Enter' && startSearch()}
+                    placeholder="Program or university" className="flex-1 min-w-0 bg-transparent outline-none" />
+                </div>
+              </Field>
+              <Field label="Intake">
+                <div className="relative">
+                  <button type="button" onClick={() => setIntakeOpen((v) => !v)} className={`${FIELD} flex items-center justify-between gap-2 text-left`} style={{ borderRadius: 10 }}>
+                    <span className="truncate">{intakeArr.length ? intakeArr.join(', ') : 'All intakes'}</span><ChevronDown size={15} className="text-[#5B544A] shrink-0" />
+                  </button>
+                  {intakeOpen && (
+                    <div className="absolute z-30 mt-1 w-full min-w-[200px] bg-white border border-[#E6E0D4] shadow-lg p-2 max-h-64 overflow-y-auto" style={{ borderRadius: 10 }}>
+                      {intakeOpts.map((i) => <Checkbox key={i.value} checked={intakeArr.includes(i.value)} onChange={() => toggleArr(setIntakeArr)(i.value)} label={i.label} />)}
+                    </div>
+                  )}
+                </div>
+              </Field>
+              <Field label="Year">
+                <select value={year} onChange={(e) => setYear(e.target.value)} className={FIELD} style={{ borderRadius: 10 }}>
+                  <option value="">Any</option>
+                  {(config?.years || []).map((y) => <option key={y.value} value={y.value}>{y.label}</option>)}
+                </select>
+              </Field>
+              <Field label="Your nationality">
+                <select value={profile.nationalityId} onChange={(e) => setProfile((p) => ({ ...p, nationalityId: e.target.value, stateName: '' }))} className={FIELD} style={{ borderRadius: 10 }}>
+                  <option value="">Select</option>
+                  {nationalities.map((n) => <option key={n.value} value={n.value}>{n.label}</option>)}
+                </select>
+              </Field>
+              <Field label="Your state">
+                <select value={profile.stateName} disabled={String(profile.nationalityId) !== INDIA_ID} onChange={(e) => setProfile((p) => ({ ...p, stateName: e.target.value }))} className={`${FIELD} disabled:opacity-50`} style={{ borderRadius: 10 }}>
+                  <option value="">{String(profile.nationalityId) === INDIA_ID ? 'Select state' : 'Not needed'}</option>
+                  {INDIA_STATES.map((st) => <option key={st} value={st}>{st}</option>)}
+                </select>
+              </Field>
+              <button onClick={startSearch} className="h-11 px-6 inline-flex items-center justify-center gap-2 text-white text-[14px] font-semibold bg-[#16130F] hover:bg-[#DE5C2B] transition-colors" style={{ borderRadius: 10 }}>
+                <Search size={16} /> Search
+              </button>
+            </div>
+
+            {/* Advanced search */}
+            <div className="flex items-center justify-center mt-4">
+              <button onClick={() => setAdvOpen((v) => !v)} className="inline-flex items-center gap-1.5 text-[13.5px] font-semibold text-[#DE5C2B] px-4 py-2 border border-[#F3C9B4] hover:bg-[#FDF4EF]" style={{ borderRadius: 999 }}>
+                Advanced search{advCount ? ` · ${advCount}` : ''} {advOpen ? <ChevronUp size={15} /> : <ChevronDown size={15} />}
+              </button>
+            </div>
+            {advOpen && (
+              <div className="mt-4 pt-5 border-t border-[#ECE6DA] grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div>
+                  <h3 className="text-[14px] font-semibold text-[#16130F] mb-2">Program level</h3>
+                  <div className="max-h-[320px] overflow-y-auto pr-1">
+                    {levelOpts.map((l) => <Checkbox key={l.value} checked={programLevels.includes(Number(l.value))} onChange={() => toggleArr(setProgramLevels)(Number(l.value))} label={l.label} />)}
+                  </div>
+                </div>
+                <div className="space-y-4 md:border-x md:border-[#ECE6DA] md:px-6">
+                  <h3 className="text-[14px] font-semibold text-[#16130F]">Other filters</h3>
+                  <Field label="Country">
+                    <select value={country} onChange={(e) => setCountry(e.target.value)} className={FIELD} style={{ borderRadius: 10 }}>
+                      <option value="">All countries</option>
+                      {countryOpts.map((c) => <option key={c.value} value={c.value}>{c.label}</option>)}
+                    </select>
+                  </Field>
+                  <div>
+                    <span className="text-[12.5px] font-semibold text-[#16130F]">Study area</span>
+                    <div className="mt-1.5 max-h-40 overflow-y-auto pr-1 border border-[#E6E0D4] px-2" style={{ borderRadius: 10 }}>
+                      {studyAreaOpts.map((a) => <Checkbox key={a.value} checked={studyAreas.includes(Number(a.value))} onChange={() => toggleArr(setStudyAreas)(Number(a.value))} label={a.label} />)}
+                    </div>
+                  </div>
+                  <div>
+                    <span className="text-[12.5px] font-semibold text-[#16130F]">Duration</span>
+                    <div className="mt-1.5 flex flex-wrap gap-1.5">
+                      {durationOpts.map((d) => {
+                        const on = durations.includes(Number(d.value));
+                        return <button key={d.value} type="button" onClick={() => toggleArr(setDurations)(Number(d.value))} className="px-3 py-1.5 text-[12.5px] border transition-colors" style={{ borderRadius: 999, background: on ? '#16130F' : '#fff', color: on ? '#fff' : '#5B544A', borderColor: on ? '#16130F' : '#E6E0D4' }}>{d.label}</button>;
+                      })}
+                    </div>
+                  </div>
+                  <div>
+                    <span className="text-[12.5px] font-semibold text-[#16130F]">Max tuition / year (country currency)</span>
+                    <input type="range" min={0} max={100000} step={1000} value={tuitionMax} onChange={(e) => setTuitionMax(Number(e.target.value))} className="w-full accent-[#DE5C2B] mt-2" />
+                    <div className="text-[12.5px] text-[#5B544A]">{tuitionMax === 0 ? 'Any' : `Up to ${tuitionMax.toLocaleString()}`}</div>
+                  </div>
+                </div>
+                <div>
+                  <div className="flex items-center justify-between mb-2">
+                    <h3 className="text-[14px] font-semibold text-[#16130F]">Requirements</h3>
+                    {advCount > 0 && <button onClick={clearAll} className="text-[12.5px] font-semibold text-[#DE5C2B]">Clear all</button>}
+                  </div>
+                  <div className="max-h-[320px] overflow-y-auto pr-1">
+                    {reqOpts.map((r) => <Checkbox key={r.value} checked={requirements.includes(Number(r.value))} onChange={() => toggleArr(setRequirements)(Number(r.value))} label={r.label} />)}
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Quick filters: one tap searches */}
+          {highlights.length > 0 && (
+            <div className="mt-6 bg-white/70 border border-[#E6E0D4] p-4 sm:p-5" style={{ borderRadius: 18 }}>
+              <p className="text-[13.5px] font-semibold text-[#16130F] mb-3">Quick filters <span className="font-normal text-[#5B544A]">· tap one to search</span></p>
+              <div className="flex flex-wrap gap-2">
+                {highlights.map((h) => {
+                  const Icon = QUICK_ICONS[h.icon] || Tag;
+                  const on = activeHighlights.includes(h.id);
+                  return (
+                    <button key={h.id} type="button" title={h.description}
+                      onClick={() => { setActiveHighlights((a) => (a.includes(h.id) ? a : [...a, h.id])); setStarted(true); window.scrollTo(0, 0); }}
+                      className="inline-flex items-center gap-1.5 text-[13px] font-medium px-3 py-2 border bg-white hover:border-[#DE5C2B] hover:text-[#DE5C2B] transition-colors"
+                      style={{ borderRadius: 999, borderColor: on ? '#DE5C2B' : '#E6E0D4', color: on ? '#DE5C2B' : '#16130F' }}>
+                      <Icon size={14} /> {h.name}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          )}
         </div>
       </div>
     );
@@ -324,6 +495,7 @@ export default function SearchProgramsPage() {
             </select>
             <button onClick={() => runSearch(1)} className="text-white text-[14px] font-semibold px-6 py-2.5" style={{ background: BLUE, borderRadius: 4 }}>Search</button>
             <button onClick={clearAll} className="text-[14px] font-medium px-4 py-2.5 border text-slate-600 border-slate-200" style={{ borderRadius: 4 }}>Clear All</button>
+            <button onClick={() => { setStarted(false); setResult(null); setEligResult(null); window.scrollTo(0, 0); }} className="text-[14px] font-medium px-4 py-2.5 text-[#DE5C2B] whitespace-nowrap">Edit details</button>
           </div>
         </div>
       </div>
@@ -459,6 +631,7 @@ export default function SearchProgramsPage() {
                   <>
                     <div className="fixed inset-0 z-40" onClick={() => setExportMenu(false)} />
                     <div className="absolute right-0 mt-1.5 z-50 w-56 bg-white border border-slate-200 shadow-lg py-1" style={{ borderRadius: 6 }}>
+                      {!user && <p className="mx-3 mt-1 mb-1.5 px-2.5 py-2 text-[11.5px] leading-snug text-[#7C3F33] bg-[#FBF2EF]" style={{ borderRadius: 4 }}>Search and shortlist free. Sign in (free) to download.</p>}
                       <div className="px-3 py-1.5 text-[11px] font-semibold uppercase tracking-wide text-slate-400 flex items-center gap-1.5"><FileSpreadsheet size={12} /> Excel (.xlsx)</div>
                       <button onClick={() => openExport('excel', 'all')} className="w-full text-left px-3 py-1.5 text-[13px] text-slate-700 hover:bg-sky-50">All results…</button>
                       <button onClick={() => openExport('excel', 'top25')} className="w-full text-left px-3 py-1.5 text-[13px] text-slate-700 hover:bg-sky-50">Top 25…</button>

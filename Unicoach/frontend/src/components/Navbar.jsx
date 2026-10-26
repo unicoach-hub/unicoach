@@ -510,8 +510,8 @@ const aiToolsNavData = [
         title: 'Shortlist & plan',
         items: [
             {
-                name: 'Search Programs',
-                desc: 'Search programs across universities worldwide',
+                name: 'Course Finder',
+                desc: 'Find and shortlist courses worldwide, free',
                 path: '/search-programs',
                 badge: '98K+ Programs',
                 icon: GraduationCap,
@@ -520,7 +520,7 @@ const aiToolsNavData = [
                 iconHoverBg: 'group-hover:bg-blue-600 group-hover:text-white group-hover:shadow-[0_6px_16px_rgba(37,99,235,0.35)]',
                 cardHoverStyle: 'hover:border-blue-200 hover:bg-gradient-to-r hover:from-blue-50/50 hover:to-white',
                 badgeStyle: 'bg-blue-50 text-blue-700 border-blue-200/80 group-hover:border-blue-300 group-hover:bg-blue-100/60',
-                color: '#2563eb',
+                color: '#DE5C2B',
             },
             {
                 name: 'Scholarships',
@@ -533,7 +533,7 @@ const aiToolsNavData = [
                 iconHoverBg: 'group-hover:bg-amber-500 group-hover:text-white group-hover:shadow-[0_6px_16px_rgba(217,119,6,0.35)]',
                 cardHoverStyle: 'hover:border-amber-200 hover:bg-gradient-to-r hover:from-amber-50/50 hover:to-white',
                 badgeStyle: 'bg-amber-50 text-amber-700 border-amber-200/80 group-hover:border-amber-300 group-hover:bg-amber-100/60',
-                color: '#d97706',
+                color: '#977435',
             },
             {
                 name: 'Admission Chances',
@@ -546,7 +546,7 @@ const aiToolsNavData = [
                 iconHoverBg: 'group-hover:bg-emerald-600 group-hover:text-white group-hover:shadow-[0_6px_16px_rgba(5,150,105,0.35)]',
                 cardHoverStyle: 'hover:border-emerald-200 hover:bg-gradient-to-r hover:from-emerald-50/50 hover:to-white',
                 badgeStyle: 'bg-emerald-50 text-emerald-700 border-emerald-200/80 group-hover:border-emerald-300 group-hover:bg-emerald-100/60',
-                color: '#059669',
+                color: '#446D50',
             },
             {
                 name: 'AI 6-Month Roadmap',
@@ -559,7 +559,7 @@ const aiToolsNavData = [
                 iconHoverBg: 'group-hover:bg-purple-600 group-hover:text-white group-hover:shadow-[0_6px_16px_rgba(147,51,234,0.35)]',
                 cardHoverStyle: 'hover:border-purple-200 hover:bg-gradient-to-r hover:from-purple-50/50 hover:to-white',
                 badgeStyle: 'bg-purple-50 text-purple-700 border-purple-200/80 group-hover:border-purple-300 group-hover:bg-purple-100/60',
-                color: '#9333ea',
+                color: '#485A79',
             },
             {
                 name: 'Education Loan',
@@ -590,7 +590,7 @@ const aiToolsNavData = [
                 iconHoverBg: 'group-hover:bg-rose-600 group-hover:text-white group-hover:shadow-[0_6px_16px_rgba(225,29,72,0.35)]',
                 cardHoverStyle: 'hover:border-rose-200 hover:bg-gradient-to-r hover:from-rose-50/50 hover:to-white',
                 badgeStyle: 'bg-rose-50 text-rose-700 border-rose-200/80 group-hover:border-rose-300 group-hover:bg-rose-100/60',
-                color: '#e11d48',
+                color: '#984D3D',
             },
             {
                 name: 'AI Mock Visa Interview',
@@ -603,7 +603,7 @@ const aiToolsNavData = [
                 iconHoverBg: 'group-hover:bg-cyan-600 group-hover:text-white group-hover:shadow-[0_6px_16px_rgba(8,145,178,0.35)]',
                 cardHoverStyle: 'hover:border-cyan-200 hover:bg-gradient-to-r hover:from-cyan-50/50 hover:to-white',
                 badgeStyle: 'bg-cyan-50 text-cyan-700 border-cyan-200/80 group-hover:border-cyan-300 group-hover:bg-cyan-100/60',
-                color: '#0891b2',
+                color: '#485A79',
             },
             {
                 name: 'IELTS Essay Checker',
@@ -616,7 +616,7 @@ const aiToolsNavData = [
                 iconHoverBg: 'group-hover:bg-indigo-600 group-hover:text-white group-hover:shadow-[0_6px_16px_rgba(79,70,229,0.35)]',
                 cardHoverStyle: 'hover:border-indigo-200 hover:bg-gradient-to-r hover:from-indigo-50/50 hover:to-white',
                 badgeStyle: 'bg-indigo-50 text-indigo-700 border-indigo-200/80 group-hover:border-indigo-300 group-hover:bg-indigo-100/60',
-                color: '#4f46e5',
+                color: '#DE5C2B',
             },
             {
                 name: 'Visa & Pre-Departure',

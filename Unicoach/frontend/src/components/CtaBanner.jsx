@@ -64,7 +64,7 @@ const CtaBanner = () => {
         }}
       >
         {/* Animated Gradient Background Base */}
-        <div className="absolute inset-0 bg-gradient-to-br from-[#DE5C2B] via-[#4f46e5] to-[#7c3aed] opacity-90"></div>
+        <div className="absolute inset-0 bg-gradient-to-br from-[#DE5C2B] via-[#DE5C2B] to-[#485A79] opacity-90"></div>
 
         {/* Dynamic Glow orb following mouse */}
         <motion.div 
@@ -125,11 +125,11 @@ const CtaBanner = () => {
                   <defs>
                     <linearGradient id="planeGrad" x1="0" y1="0" x2="1" y2="1">
                       <stop offset="0%" stopColor="#ffffff" />
-                      <stop offset="100%" stopColor="#93c5fd" />
+                      <stop offset="100%" stopColor="#EBA384" />
                     </linearGradient>
                     <linearGradient id="shadowGrad" x1="0" y1="0" x2="0" y2="1">
                       <stop offset="0%" stopColor="#DE5C2B" />
-                      <stop offset="100%" stopColor="#1e3a8a" />
+                      <stop offset="100%" stopColor="#6B2C17" />
                     </linearGradient>
                     <linearGradient id="trailGrad" x1="0" y1="0" x2="1" y2="0">
                       <stop offset="0%" stopColor="rgba(255,255,255,0)" />
@@ -157,19 +157,19 @@ const CtaBanner = () => {
                 <svg width="130" height="130" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <defs>
                     <linearGradient id="capGrad" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="0%" stopColor="#1e1b4b" />
-                      <stop offset="100%" stopColor="#312e81" />
+                      <stop offset="0%" stopColor="#3A150A" />
+                      <stop offset="100%" stopColor="#6B2C17" />
                     </linearGradient>
                     <linearGradient id="tasselGrad" x1="0" y1="0" x2="1" y2="0">
-                      <stop offset="0%" stopColor="#fbbf24" />
-                      <stop offset="100%" stopColor="#f59e0b" />
+                      <stop offset="0%" stopColor="#CBA55B" />
+                      <stop offset="100%" stopColor="#B48C42" />
                     </linearGradient>
                   </defs>
-                  <path d="M60 105 C 60 130, 140 130, 140 105 L 132 125 C 132 140, 68 140, 68 125 Z" fill="url(#capGrad)" stroke="#4f46e5" strokeWidth="2" />
-                  <path d="M100 55 L175 85 L100 115 L25 85 Z" fill="url(#capGrad)" stroke="#4f46e5" strokeWidth="3" strokeLinejoin="round" />
-                  <path d="M100 62 L160 85 L100 108 L40 85 Z" fill="#312e81" />
-                  <ellipse cx="100" cy="85" rx="6" ry="4" fill="#fbbf24" />
-                  <path d="M100 85 Q 120 90 145 105" stroke="#fbbf24" strokeWidth="3" fill="none" strokeLinecap="round" />
+                  <path d="M60 105 C 60 130, 140 130, 140 105 L 132 125 C 132 140, 68 140, 68 125 Z" fill="url(#capGrad)" stroke="#DE5C2B" strokeWidth="2" />
+                  <path d="M100 55 L175 85 L100 115 L25 85 Z" fill="url(#capGrad)" stroke="#DE5C2B" strokeWidth="3" strokeLinejoin="round" />
+                  <path d="M100 62 L160 85 L100 108 L40 85 Z" fill="#6B2C17" />
+                  <ellipse cx="100" cy="85" rx="6" ry="4" fill="#CBA55B" />
+                  <path d="M100 85 Q 120 90 145 105" stroke="#CBA55B" strokeWidth="3" fill="none" strokeLinecap="round" />
                   <path d="M145 105 L150 135 L140 135 Z" fill="url(#tasselGrad)" />
                 </svg>
               </motion.div>

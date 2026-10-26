@@ -13,7 +13,6 @@ import PremiumDropdown from '../components/PremiumDropdown';
 import UniversityLogo from '../components/UniversityLogo';
 import UniversityAiExplainerModal from '../components/UniversityAiExplainerModal';
 import ScholarshipAiExplainerModal from '../components/ScholarshipAiExplainerModal';
-import Interactive3DGrid from '../components/Interactive3DGrid';
 import brandLogo from '@/assets/blackunicoachlogo.webp';
 import { useLead } from '../context/LeadContext';
 import { useAuth } from '../context/AuthContext';
@@ -48,6 +47,18 @@ const COUNTRY_CURRENCIES = {
 };
 
 const DEFAULT_CURRENCY = { currency: '$ USD', rateToInr: 87, avgTuition: 25000 };
+
+// One-tap presets for the most common student profiles (budget in ₹ lakh / year)
+const QUICK_STARTS = [
+  { label: "Master's in USA", flag: '🇺🇸', level: "Bachelor's Degree", degree: "Master's", country: 'USA', major: 'Computer Science', budget: 30 },
+  { label: "Master's in UK", flag: '🇬🇧', level: "Bachelor's Degree", degree: "Master's", country: 'UK', major: 'Data Science', budget: 25 },
+  { label: 'MBA in UK', flag: '🇬🇧', level: "Bachelor's Degree", degree: 'MBA', country: 'UK', major: 'Business Administration', budget: 30 },
+  { label: 'Bachelor\'s in Canada', flag: '🇨🇦', level: '12th Grade / High School', degree: "Bachelor's", country: 'Canada', major: 'Business Administration', budget: 20 },
+  { label: "Low-cost Master's in Germany", flag: '🇩🇪', level: "Bachelor's Degree", degree: "Master's", country: 'Germany', major: 'Mechanical Engineering', budget: 12 },
+  { label: "Master's in Australia", flag: '🇦🇺', level: "Bachelor's Degree", degree: "Master's", country: 'Australia', major: 'Information Technology', budget: 30 },
+  { label: "Master's in Ireland", flag: '🇮🇪', level: "Bachelor's Degree", degree: "Master's", country: 'Ireland', major: 'Business Analytics', budget: 22 },
+  { label: 'Budget under ₹12L', flag: '💰', level: "Bachelor's Degree", degree: "Master's", country: 'Germany', major: 'Computer Science', budget: 12 },
+];
 
 const SCHOLARSHIP_TIERS = [
   {
@@ -478,9 +489,9 @@ const EligibilityCalculatorPage = () => {
   // Top shortlisted universities specifically for the official 2-page print report
   const topPrintUniversities = useMemo(() => {
     const list = [
-      ...(evaluatedUniversities?.target || []).map(u => ({ ...u, fitTag: 'Target Match', tagBg: '#dbeafe', tagColor: '#9A3412' })),
-      ...(evaluatedUniversities?.safe || []).map(u => ({ ...u, fitTag: 'Safe Backup', tagBg: '#dcfce7', tagColor: '#166534' })),
-      ...(evaluatedUniversities?.dream || []).map(u => ({ ...u, fitTag: 'Dream Reach', tagBg: '#f3e8ff', tagColor: '#6b21a8' }))
+      ...(evaluatedUniversities?.target || []).map(u => ({ ...u, fitTag: 'Target Match', tagBg: '#FAE5DA', tagColor: '#86351A' })),
+      ...(evaluatedUniversities?.safe || []).map(u => ({ ...u, fitTag: 'Safe Backup', tagBg: '#E1ECE3', tagColor: '#2E4836' })),
+      ...(evaluatedUniversities?.dream || []).map(u => ({ ...u, fitTag: 'Dream Reach', tagBg: '#E1E7F0', tagColor: '#303C51' }))
     ];
     return list.slice(0, 8);
   }, [evaluatedUniversities]);
@@ -686,43 +697,31 @@ const EligibilityCalculatorPage = () => {
 
   return (
     <>
-      <div className="min-h-screen bg-[#F1F5F9] pt-[76px] pb-24 print:hidden">
+      <div className="min-h-screen pt-[76px] pb-24 print:hidden" style={{ background: '#F6F3EC' }}>
       
       {/* ───────────────────────────────────────────── */}
       {/* HERO SECTION */}
       {/* ───────────────────────────────────────────── */}
-      <section className="relative pt-12 pb-16 sm:pt-14 sm:pb-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-[#E9F1FE] via-[#F3F6FD] to-[#F1F5F9] border-b border-slate-200/80 overflow-hidden">
+      <section className="relative pt-16 pb-16 sm:pt-14 sm:pb-20 px-4 sm:px-6 lg:px-8 font-['Geist',sans-serif]">
         <HeroBackButton />
-        {/* Interactive 3D Background Grid */}
-        <Interactive3DGrid gridSize={56} />
-        
-        {/* Soft Ambient Sky Light */}
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[380px] bg-radial from-orange-200/40/50 via-indigo-100/30 to-transparent rounded-full blur-3xl pointer-events-none" />
-
-        <div className="max-w-4xl mx-auto relative z-10 space-y-4 text-center">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-bold bg-white text-[#DE5C2B] border border-orange-200/80 shadow-xs">
-            <Sparkles size={14} className="text-[#DE5C2B]" />
-            <span>Free 2026 Academic & Financial Eligibility Checker</span>
-          </div>
-
-          <h1 className="font-outfit text-3xl sm:text-4xl lg:text-[46px] font-black tracking-tight text-[#0F172A] leading-tight">
-            Study Abroad Admission, Fees &{' '}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#DE5C2B] to-[#C04A1D]">Scholarship Calculator</span>
+        <div className="max-w-4xl mx-auto text-center">
+          <p className="inline-flex items-center gap-2 text-[13px] font-semibold text-[#86351A]"><span className="w-6 h-[2px] bg-[#DE5C2B]" /> Scholarship Calculator</p>
+          <h1 className="mt-3 font-outfit text-[32px] sm:text-[46px] font-black tracking-[-0.035em] leading-[1.05] text-[#16130F]">
+            Find scholarships you qualify for
           </h1>
-
-          <p className="text-[14px] sm:text-[15.5px] text-slate-600 font-normal max-w-2xl mx-auto leading-relaxed">
-            Enter your academic score, target country, and annual budget to calculate your admission odds, safe university matches, and eligible scholarship amounts.
+          <p className="mt-3 text-[15px] sm:text-[17px] text-[#5B544A] max-w-2xl mx-auto">
+            Add your marks, country and budget. See your admission odds, fees after grants and matching scholarships. Free, sign in only to unlock results.
           </p>
 
-          <div className="flex flex-wrap items-center justify-center gap-2.5 pt-2 text-xs text-slate-700 font-semibold">
-            <span className="flex items-center gap-1.5 bg-white/95 px-3.5 py-1.5 rounded-full border border-slate-200 shadow-xs backdrop-blur-xs">
-              <CheckCircle2 size={13} className="text-[#DE5C2B]" /> 800+ University Cutoffs
+          <div className="mt-5 flex flex-wrap items-center justify-center gap-2 text-[13px] font-medium text-[#16130F]">
+            <span className="inline-flex items-center gap-1.5 bg-white px-3 py-1.5 border border-[#E6E0D4]" style={{ borderRadius: 999 }}>
+              <CheckCircle2 size={14} className="text-[#DE5C2B]" /> 800+ university cutoffs
             </span>
-            <span className="flex items-center gap-1.5 bg-white/95 px-3.5 py-1.5 rounded-full border border-slate-200 shadow-xs backdrop-blur-xs">
-              <Banknote size={13} className="text-amber-500" /> Affordability Matching
+            <span className="inline-flex items-center gap-1.5 bg-white px-3 py-1.5 border border-[#E6E0D4]" style={{ borderRadius: 999 }}>
+              <Banknote size={14} className="text-[#DE5C2B]" /> Fees after grant
             </span>
-            <span className="flex items-center gap-1.5 bg-white/95 px-3.5 py-1.5 rounded-full border border-slate-200 shadow-xs backdrop-blur-xs">
-              <Award size={13} className="text-emerald-600" /> 2026 Scholarship Grants
+            <span className="inline-flex items-center gap-1.5 bg-white px-3 py-1.5 border border-[#E6E0D4]" style={{ borderRadius: 999 }}>
+              <Award size={14} className="text-[#DE5C2B]" /> 2026 scholarships
             </span>
           </div>
         </div>
@@ -736,13 +735,36 @@ const EligibilityCalculatorPage = () => {
         {/* ======================================================== */}
         {/* TOP: INTERACTIVE INPUT FORM */}
         {/* ======================================================== */}
-        <div className="bg-white rounded-[28px] p-6 md:p-8 border border-slate-200/90 shadow-[0_20px_50px_-12px_rgba(15,23,42,0.08)] space-y-6">
-          
-          <div className="flex items-center justify-between border-b border-slate-100 pb-4 flex-wrap gap-3">
+        {/* Quick starts: one tap fills the form, like Course Finder's quick filters */}
+        <div className="bg-white/70 border border-[#E6E0D4] p-4 sm:p-5 font-['Geist',sans-serif]" style={{ borderRadius: 18 }}>
+          <p className="text-[13.5px] font-semibold text-[#16130F] mb-3">Quick start <span className="font-normal text-[#5B544A]">· tap one to fill the form</span></p>
+          <div className="flex flex-wrap gap-2">
+            {QUICK_STARTS.map((q) => (
+              <button key={q.label} type="button"
+                onClick={() => {
+                  handleEducationChange(q.level);
+                  setTargetDegree(q.degree);
+                  setTargetCountry(q.country);
+                  setTargetMajor(q.major);
+                  setAnnualBudgetInr(q.budget);
+                  setHasCalculated(false);
+                  document.getElementById('scholarship-form')?.scrollIntoView({ behavior: 'smooth' });
+                }}
+                className="inline-flex items-center gap-1.5 text-[13px] font-medium px-3 py-2 border border-[#E6E0D4] bg-white text-[#16130F] hover:border-[#DE5C2B] hover:text-[#DE5C2B] transition-colors cursor-pointer"
+                style={{ borderRadius: 999 }}>
+                <span aria-hidden>{q.flag}</span> {q.label}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <div id="scholarship-form"className="bg-white p-6 md:p-8 border border-[#E6E0D4] shadow-[0_24px_60px_-36px_rgba(22,19,15,0.35)] space-y-6 scroll-mt-24" style={{ borderRadius: 18 }}>
+
+          <div className="flex items-center justify-between border-b border-[#ECE6DA] pb-4 flex-wrap gap-3">
             <div className="space-y-1">
-              <div className="inline-flex items-center gap-1.5 text-[11px] font-bold text-indigo-600 uppercase tracking-wider bg-indigo-50/80 px-2.5 py-0.5 rounded-full border border-indigo-100">
+              <div className="inline-flex items-center gap-1.5 text-[11px] font-bold text-[#DE5C2B] uppercase tracking-wider bg-[#FDF4EF] px-2.5 py-0.5 rounded-full border border-[#F3C9B4]">
                 <span>Step 1</span>
-                <span className="text-indigo-300">•</span>
+                <span className="text-[#F3C9B4]">•</span>
                 <span>Academic & Financial Background</span>
               </div>
               <h2 className="text-xl md:text-2xl font-black text-slate-900 tracking-tight">

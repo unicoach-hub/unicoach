@@ -75,9 +75,9 @@ const TABS = [
 
 const THEME_COLORS = [
   { id: 'coral', bg: 'bg-[#DE5C2B]', hex: '#DE5C2B' },
-  { id: 'yellow', bg: 'bg-[#EAB308]', hex: '#EAB308' },
-  { id: 'purple', bg: 'bg-[#8B5CF6]', hex: '#8B5CF6' },
-  { id: 'teal', bg: 'bg-[#10B981]', hex: '#10B981' },
+  { id: 'yellow', bg: 'bg-[#B48C42]', hex: '#B48C42' },
+  { id: 'purple', bg: 'bg-[#5A7094]', hex: '#5A7094' },
+  { id: 'teal', bg: 'bg-[#558563]', hex: '#558563' },
 ];
 
 // Steps 0..count-1 at a fixed pace while `running`; stays on the last step until the scene changes
@@ -404,7 +404,7 @@ const BundleScene = ({ accent, running }) => {
           animate={step >= 3 ? { scale: [1, 1.08, 1] } : {}}
           transition={{ duration: 0.5 }}
           className="px-4 py-2 rounded-full text-white text-xs font-bold"
-          style={{ backgroundColor: step >= 3 ? '#059669' : '#111111' }}
+          style={{ backgroundColor: step >= 3 ? '#446D50' : '#111111' }}
         >
           {step >= 3 ? '✓ Pack booked' : 'Book pack'}
         </motion.span>
@@ -424,7 +424,7 @@ const ProductScene = ({ accent, running }) => {
           animate={unlocked ? { rotate: [0, -8, 8, 0] } : {}}
           transition={{ duration: 0.5 }}
           className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0 text-white"
-          style={{ backgroundColor: unlocked ? '#059669' : accent }}
+          style={{ backgroundColor: unlocked ? '#446D50' : accent }}
         >
           {unlocked ? <Unlock className="w-5 h-5" /> : <Lock className="w-5 h-5" />}
         </motion.div>
@@ -447,7 +447,7 @@ const ProductScene = ({ accent, running }) => {
           animate={step >= 3 ? { y: [0, -3, 0] } : {}}
           transition={{ duration: 0.6, repeat: step >= 3 ? Infinity : 0 }}
           className="px-4 py-2 rounded-full text-white text-xs font-bold flex items-center gap-1.5"
-          style={{ backgroundColor: unlocked ? '#059669' : '#CBD5E1' }}
+          style={{ backgroundColor: unlocked ? '#446D50' : '#CBD5E1' }}
         >
           <Download className="w-3.5 h-3.5" /> Download
         </motion.span>

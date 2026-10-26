@@ -20,7 +20,7 @@ const CountUp = ({ target, suffix = '', prefix = '', postfix = '' }) => {
 
 const Stats = () => (
   <section className="py-24 relative overflow-hidden"
-    style={{ background: 'linear-gradient(135deg, #4f46e5 0%, #6366f1 50%, #818cf8 100%)' }}>
+    style={{ background: 'linear-gradient(135deg, #DE5C2B 0%, #DE5C2B 50%, #E57D55 100%)' }}>
 
     <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-10 relative z-10">
 

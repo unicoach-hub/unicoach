@@ -68,12 +68,12 @@ const DiscoverIcon = ({ isHovered, isHighlighted }) => (
         <motion.span
           animate={{ scale: [0, 1.4, 0], opacity: [0, 1, 0] }}
           transition={{ repeat: Infinity, duration: 0.9, delay: 0.1 }}
-          className="absolute top-2 left-2.5 w-1.5 h-1.5 rounded-full bg-amber-200 shadow-[0_0_6px_#fef08a]"
+          className="absolute top-2 left-2.5 w-1.5 h-1.5 rounded-full bg-amber-200 shadow-[0_0_6px_#EAD8AE]"
         />
         <motion.span
           animate={{ scale: [0, 1.3, 0], opacity: [0, 1, 0] }}
           transition={{ repeat: Infinity, duration: 0.9, delay: 0.45 }}
-          className="absolute bottom-2.5 right-2 w-1.5 h-1.5 rounded-full bg-yellow-300 shadow-[0_0_6px_#fef08a]"
+          className="absolute bottom-2.5 right-2 w-1.5 h-1.5 rounded-full bg-yellow-300 shadow-[0_0_6px_#EAD8AE]"
         />
       </>
     )}
@@ -170,7 +170,7 @@ const ApplyIcon = ({ isHovered, isHighlighted }) => (
         <motion.div
           animate={{ y: [-8, 8, -8] }}
           transition={{ repeat: Infinity, duration: 0.9, ease: 'easeInOut' }}
-          className="absolute -left-1 -right-1 h-[2px] bg-emerald-300 shadow-[0_0_8px_#6ee7b7]"
+          className="absolute -left-1 -right-1 h-[2px] bg-emerald-300 shadow-[0_0_8px_#9DBFA5]"
         />
       )}
     </div>
@@ -273,7 +273,7 @@ const ThriveIcon = ({ isHovered, isHighlighted }) => (
         <motion.div
           animate={{ x: [0, 8], y: [0, -9], scale: [0, 1.3, 0], opacity: [1, 1, 0] }}
           transition={{ repeat: Infinity, duration: 0.7, ease: 'easeOut' }}
-          className="absolute w-1.5 h-1.5 bg-yellow-300 rounded-full shadow-[0_0_6px_#fde047]"
+          className="absolute w-1.5 h-1.5 bg-yellow-300 rounded-full shadow-[0_0_6px_#DCBF80]"
         />
         {/* Top-left emerald confetti */}
         <motion.div

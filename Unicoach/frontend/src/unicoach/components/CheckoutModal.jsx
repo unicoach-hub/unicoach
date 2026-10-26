@@ -46,7 +46,7 @@ const MentorAvatar = ({ mentor, size = 'lg', className = '' }) => {
   if (!mentor?.avatarUrl || imgError) {
     return (
       <div 
-        className={`${sizeClasses} rounded-full bg-gradient-to-tr from-[#DE5C2B] to-[#7C3AED] text-white font-extrabold flex items-center justify-center ring-2 ring-white shadow-md select-none flex-shrink-0 ${className}`}
+        className={`${sizeClasses} rounded-full bg-gradient-to-tr from-[#DE5C2B] to-[#485A79] text-white font-extrabold flex items-center justify-center ring-2 ring-white shadow-md select-none flex-shrink-0 ${className}`}
         title={mentor?.name || 'Mentor'}
       >
         <span>{initials}</span>

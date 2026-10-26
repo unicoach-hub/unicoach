@@ -9,6 +9,28 @@ import { ArrowRight, Mic, MicOff, Video, VideoOff, MonitorUp, PhoneOff, Hand, Me
 
 const MENTOR = { name: 'Prachi', src: '/images/mentors/cutouts/prachi.webp', bg: 'radial-gradient(120% 110% at 15% 0%, #FFF1EC 0%, #FFD3C6 55%, #F7AE9A 100%)' };
 
+// Destination in the heading keeps changing: "Ek call se Dublin tak", "... Toronto tak", ...
+const CITIES = ['Dublin', 'Toronto', 'London', 'Sydney', 'Boston', 'Berlin', 'Melbourne'];
+
+const RotatingCity = () => {
+  const [i, setI] = useState(0);
+  useEffect(() => {
+    const t = setInterval(() => setI((n) => (n + 1) % CITIES.length), 2200);
+    return () => clearInterval(t);
+  }, []);
+  return (
+    <span className="relative inline-flex overflow-hidden align-bottom pb-[0.08em]" aria-live="polite">
+      <AnimatePresence mode="wait" initial={false}>
+        <motion.span key={CITIES[i]} className="inline-block text-[#DE5C2B] whitespace-nowrap"
+          initial={{ y: '70%', opacity: 0 }} animate={{ y: '0%', opacity: 1 }} exit={{ y: '-70%', opacity: 0 }}
+          transition={{ duration: 0.35, ease: [0.2, 0.7, 0.2, 1] }}>
+          {CITIES[i]} tak
+        </motion.span>
+      </AnimatePresence>
+    </span>
+  );
+};
+
 const STEPS = [
   {
     key: 'shortlist', label: 'Shortlist', hi: 'Sahi university',
@@ -92,7 +114,7 @@ const Screen = ({ s }) => (
         <div className="flex items-end gap-4 h-[110px]">
           {s.screen.bands.map(([l, b], i) => (
             <div key={l} className="flex-1 flex flex-col items-center gap-1">
-              <span className="text-[13px] font-bold text-[#1D4ED8]">{b}</span>
+              <span className="text-[13px] font-bold text-[#C04A1D]">{b}</span>
               <motion.div className="w-full rounded-t-lg bg-[#93B4FF]" initial={{ height: 0 }} animate={{ height: `${(b - 5) * 34}px` }} transition={{ delay: 0.1 + i * 0.16, duration: 0.35 }} />
               <span className="text-[11px] text-slate-500">{l}</span>
             </div>
@@ -110,7 +132,7 @@ const Screen = ({ s }) => (
       {s.screen.stamp && (
         <div className="relative mx-auto w-[120px] h-[150px] rounded-lg bg-[#1E3A5F] grid place-items-center">
           <span className="text-[10px] font-bold text-amber-200 tracking-[0.2em]">PASSPORT</span>
-          <motion.span initial={{ scale: 2.4, opacity: 0, rotate: -30 }} animate={{ scale: 1, opacity: 1, rotate: -14 }} transition={{ delay: 0.3, type: 'spring', stiffness: 380, damping: 16 }} className="absolute -right-8 bottom-5 px-3 py-1 rounded-md border-[3px] border-[#BE123C] text-[#BE123C] bg-white/95 text-[14px] font-extrabold tracking-wider">{s.screen.stamp}</motion.span>
+          <motion.span initial={{ scale: 2.4, opacity: 0, rotate: -30 }} animate={{ scale: 1, opacity: 1, rotate: -14 }} transition={{ delay: 0.3, type: 'spring', stiffness: 380, damping: 16 }} className="absolute -right-8 bottom-5 px-3 py-1 rounded-md border-[3px] border-[#7C3F33] text-[#7C3F33] bg-white/95 text-[14px] font-extrabold tracking-wider">{s.screen.stamp}</motion.span>
         </div>
       )}
     </div>
@@ -170,9 +192,9 @@ const StudentStory = () => {
     <section ref={ref} className="w-full max-w-full overflow-hidden bg-[#D9ECFF]">
       <div className="max-w-[1180px] mx-auto px-4 sm:px-6 lg:px-10 py-16 sm:py-24 grid lg:grid-cols-[0.85fr_1.15fr] gap-10 lg:gap-14 items-center">
         <div>
-          <span className="text-[13px] font-semibold text-[#9A3412]">Student ki kahani</span>
+          <span className="text-[13px] font-semibold text-[#86351A]">Student ki kahani</span>
           <h2 className="mt-2 font-outfit text-[32px] sm:text-[44px] font-bold text-[#111] leading-[1.05] tracking-[-0.035em]">
-            Ek call se <span className="text-[#DE5C2B]">Dublin tak</span>
+            Ek call se <RotatingCity />
           </h2>
           <p className="mt-3 text-[15px] sm:text-[17px] text-slate-600 max-w-[460px]">Aarav ne apne senior ke saath 1:1 video session liya. Har sawaal pe screen share, har step pe plan.</p>
 
@@ -200,7 +222,7 @@ const StudentStory = () => {
         </div>
 
         {/* Video call window */}
-        <div onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)} className="relative rounded-[22px] bg-[#172554] p-3 sm:p-4 shadow-[0_40px_80px_-30px_rgba(15,23,42,0.6)]">
+        <div onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)} className="relative rounded-[22px] bg-[#3A150A] p-3 sm:p-4 shadow-[0_40px_80px_-30px_rgba(15,23,42,0.6)]">
           <div className="flex items-center justify-between text-white/85 text-[12px] px-1 pb-3">
             <span className="flex items-center gap-2"><span className="w-2 h-2 rounded-full bg-red-500 animate-pulse" /> UniCoach 1:1 session · {clock}</span>
             <span className="hidden sm:inline text-white/60">Aarav × Prachi</span>
@@ -214,7 +236,7 @@ const StudentStory = () => {
                   <Screen key={s.key} s={s} />
                 ) : (
                   <motion.div key={`ask-${step}`} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="absolute inset-0 flex flex-col items-center justify-center gap-4 bg-gradient-to-br from-[#3B2A6B] via-[#2B2D31] to-[#4A2618]">
-                    <motion.span animate={{ scale: [1, 1.06, 1] }} transition={{ duration: 1.2, repeat: Infinity }} className="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-gradient-to-br from-[#7C3AED] to-[#DE5C2B] grid place-items-center text-white text-[32px] font-bold ring-4 ring-[#8AB4F8]/60">A</motion.span>
+                    <motion.span animate={{ scale: [1, 1.06, 1] }} transition={{ duration: 1.2, repeat: Infinity }} className="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-gradient-to-br from-[#485A79] to-[#DE5C2B] grid place-items-center text-white text-[32px] font-bold ring-4 ring-[#8AB4F8]/60">A</motion.span>
                     <span className="flex items-center gap-2 text-white/85 text-[13px]"><Wave on /> Aarav is asking…</span>
                     <span className="flex items-center gap-1.5 text-white/45 text-[11.5px]"><MonitorUp size={13} /> Prachi will share her screen next</span>
                   </motion.div>
@@ -250,7 +272,7 @@ const StudentStory = () => {
                 </div>
               </Tile>
               <Tile who="Aarav (you)" speaking={!mentorTalking} live={!muted}>
-                <div className={`aspect-square grid place-items-center ${camOn ? 'bg-gradient-to-br from-[#7C3AED] to-[#DE5C2B]' : 'bg-[#2A4480]'}`}>
+                <div className={`aspect-square grid place-items-center ${camOn ? 'bg-gradient-to-br from-[#485A79] to-[#DE5C2B]' : 'bg-[#2A4480]'}`}>
                   <span className="w-12 h-12 rounded-full bg-white/20 grid place-items-center text-white text-[20px] font-bold">A</span>
                   {!camOn && <span className="absolute top-2 right-2 text-[10px] text-white/70">Camera off</span>}
                 </div>
@@ -298,7 +320,7 @@ const StudentStory = () => {
           </div>
           <AnimatePresence>
             {ended && (
-              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="absolute inset-0 z-30 rounded-[22px] bg-[#172554]/95 flex flex-col items-center justify-center gap-3 text-white">
+              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="absolute inset-0 z-30 rounded-[22px] bg-[#3A150A]/95 flex flex-col items-center justify-center gap-3 text-white">
                 <p className="text-[16px] font-semibold">You left the session</p>
                 <div className="flex gap-2">
                   <button type="button" onClick={() => setEnded(false)} className="no-shine px-4 h-10 rounded-full bg-[#8AB4F8] text-[#202124] font-semibold text-[13.5px] cursor-pointer">Rejoin</button>

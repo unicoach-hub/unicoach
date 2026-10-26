@@ -141,7 +141,7 @@ const FrancePublic = () => {
   return (
     <div className="min-h-screen bg-[#fafcff] relative overflow-hidden pt-28 pb-20 font-sans">
       {/* Ambient background designs */}
-      <div className="absolute top-0 inset-x-0 h-[650px] bg-gradient-to-b from-[#e0e7ff]/30 via-indigo-50/10 to-transparent pointer-events-none z-0" />
+      <div className="absolute top-0 inset-x-0 h-[650px] bg-gradient-to-b from-[#FAE5DA]/30 via-indigo-50/10 to-transparent pointer-events-none z-0" />
       <div className="absolute top-[40%] right-[-10%] w-[500px] h-[500px] bg-gradient-to-br from-blue-300/10 to-indigo-300/10 rounded-full blur-3xl pointer-events-none" />
 
       <div className="container mx-auto px-6 md:px-10 relative z-10 max-w-[1320px]">

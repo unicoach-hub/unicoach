@@ -32,7 +32,7 @@ const stackingCards = [
     cardBorder: '#FED7CE',
     badgeBg: '#FFF0EB',
     badgeBorder: '#FED7CE',
-    badgeText: '#C2410C',
+    badgeText: '#C04A1D',
     modalTitle: 'University Shortlist & Counseling',
   },
   {
@@ -51,12 +51,12 @@ const stackingCards = [
     ],
     ctaText: 'Start Free AI Diagnostic',
     link: '/ai-tools/ielts-evaluator',
-    accentColor: '#7C3AED',
+    accentColor: '#485A79',
     cardBg: '#FAF8FF',
-    cardBorder: '#C4B5FD',
+    cardBorder: '#9EB0CA',
     badgeBg: '#E2DCFE',
-    badgeBorder: '#C4B5FD',
-    badgeText: '#5B21B6',
+    badgeBorder: '#9EB0CA',
+    badgeText: '#303C51',
     modalTitle: 'AI Test Prep & IELTS Evaluator',
   },
   {
@@ -76,12 +76,12 @@ const stackingCards = [
     ctaText: 'Check Loan Eligibility',
     link: '/education-loan',
     public: true, // lead page: never put a login wall in front of it
-    accentColor: '#15803D',
+    accentColor: '#385942',
     cardBg: '#F7FCF5',
     cardBorder: '#A3E689',
     badgeBg: '#E7F7DF',
     badgeBorder: '#83C25F',
-    badgeText: '#14532D',
+    badgeText: '#263B2D',
     modalTitle: 'Scholarships & Education Loans',
   },
   {
@@ -103,10 +103,10 @@ const stackingCards = [
     public: true,
     accentColor: '#DC0631',
     cardBg: '#FFF5F6',
-    cardBorder: '#FECDD3',
+    cardBorder: '#EBC5BA',
     badgeBg: '#FFE4E8',
-    badgeBorder: '#FECDD3',
-    badgeText: '#9F1239',
+    badgeBorder: '#EBC5BA',
+    badgeText: '#64342B',
     modalTitle: 'AI Visa Simulator & Pre-Departure',
   },
 ];
@@ -214,17 +214,17 @@ const PrepScoreMockup = () => (
     <div className="rounded-xl sm:rounded-2xl bg-white p-4 sm:p-5 shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
     <div className="flex items-center justify-between">
       <span className="text-[13px] font-bold text-slate-900">IELTS Writing · Task 2</span>
-      <span className="text-[11px] font-bold px-2.5 py-1 rounded-lg bg-[#F5F3FF] text-[#6D28D9] border border-[#DDD6FE]">AI evaluated</span>
+      <span className="text-[11px] font-bold px-2.5 py-1 rounded-lg bg-[#F1F4F8] text-[#3B4963] border border-[#C4D0E1]">AI evaluated</span>
     </div>
     <div className="mt-4 flex items-end gap-3">
-      <span className="text-[44px] font-black leading-none text-[#6D28D9] tracking-tight">7.5</span>
+      <span className="text-[44px] font-black leading-none text-[#3B4963] tracking-tight">7.5</span>
       <span className="text-[12px] font-semibold text-slate-500 mb-1">Predicted band · target 7.0</span>
     </div>
     <div className="mt-4 space-y-2.5">
       {[['Task Response', 7.5], ['Coherence & Cohesion', 7], ['Lexical Resource', 8], ['Grammar Range & Accuracy', 7]].map(([label, band]) => (
         <div key={label}>
           <div className="flex justify-between text-[12px] font-semibold text-slate-700"><span>{label}</span><span>{band}</span></div>
-          <div className="mt-1 h-2 rounded-full bg-[#F5F3FF]"><div className="h-full rounded-full bg-[#7C3AED]" style={{ width: `${(band / 9) * 100}%` }} /></div>
+          <div className="mt-1 h-2 rounded-full bg-[#F1F4F8]"><div className="h-full rounded-full bg-[#485A79]" style={{ width: `${(band / 9) * 100}%` }} /></div>
         </div>
       ))}
     </div>
@@ -237,7 +237,7 @@ const LoanOfferMockup = () => (
   <div className="relative rounded-2xl sm:rounded-3xl w-full min-w-0 p-4 sm:p-6 bg-[#9FD368] border border-[#8CC453] shadow-[0_8px_24px_rgba(15,23,42,0.04)] font-['Geist',sans-serif]">
     <div className="flex items-center justify-between px-1">
       <span className="text-[13px] font-bold text-slate-900">Your loan options</span>
-      <span className="text-[11px] font-bold px-2.5 py-1 rounded-lg bg-white text-[#15803D] border border-white">3 lenders compared</span>
+      <span className="text-[11px] font-bold px-2.5 py-1 rounded-lg bg-white text-[#385942] border border-white">3 lenders compared</span>
     </div>
     <div className="mt-4 space-y-2.5">
       {[['Public sector bank', 'Secured', '₹40 L'], ['Private bank', 'Collateral-free', '₹35 L'], ['NBFC', 'Collateral-free', '₹50 L']].map(([lender, type, amount]) => (
@@ -246,13 +246,13 @@ const LoanOfferMockup = () => (
             <p className="text-[13px] font-bold text-slate-900 truncate">{lender}</p>
             <p className="text-[11.5px] text-slate-500">{type}</p>
           </div>
-          <span className="text-[14px] font-black text-[#15803D] shrink-0">{amount}</span>
+          <span className="text-[14px] font-black text-[#385942] shrink-0">{amount}</span>
         </div>
       ))}
     </div>
     <div className="mt-4 p-3.5 rounded-xl bg-white border border-white flex items-center justify-between">
       <span className="text-[12.5px] font-semibold text-slate-700">Estimated EMI after moratorium</span>
-      <span className="text-[15px] font-black text-[#15803D]">₹53,974/mo</span>
+      <span className="text-[15px] font-black text-[#385942]">₹53,974/mo</span>
     </div>
   </div>
 );
@@ -262,12 +262,12 @@ const VisaChecklistMockup = () => (
   <div className="relative rounded-2xl sm:rounded-3xl w-full min-w-0 p-4 sm:p-6 bg-[#9DE3DC] border border-[#86D6CE] shadow-[0_8px_24px_rgba(15,23,42,0.04)] font-['Geist',sans-serif]">
     <div className="flex items-center justify-between px-1">
       <span className="text-[13px] font-bold text-slate-900">Canada study permit · Fall intake</span>
-      <span className="text-[11px] font-bold px-2.5 py-1 rounded-lg bg-white text-[#9F1239] border border-white">4 / 6 done</span>
+      <span className="text-[11px] font-bold px-2.5 py-1 rounded-lg bg-white text-[#64342B] border border-white">4 / 6 done</span>
     </div>
     <div className="mt-4 space-y-2">
       {[['Offer letter & fee receipt', true], ['Proof of funds / loan sanction', true], ['Statement of purpose reviewed', true], ['Biometrics appointment', true], ['Mock visa interview', false], ['Accommodation & forex card', false]].map(([item, done]) => (
         <div key={item} className="flex items-center gap-2.5 p-2.5 rounded-xl bg-white border border-slate-200/80">
-          <span className={`w-5 h-5 rounded-full flex items-center justify-center shrink-0 ${done ? 'bg-[#DC0631] text-white' : 'border-2 border-[#FECDD3]'}`}>
+          <span className={`w-5 h-5 rounded-full flex items-center justify-center shrink-0 ${done ? 'bg-[#DC0631] text-white' : 'border-2 border-[#EBC5BA]'}`}>
             {done && <Check className="w-3 h-3 stroke-[3]" />}
           </span>
           <span className={`text-[13px] font-semibold ${done ? 'text-slate-500 line-through decoration-slate-300' : 'text-slate-900'}`}>{item}</span>
@@ -282,49 +282,49 @@ const cardMockupProps = [
     // Card 1: Orange / Admissions — white rows on the peach panel (#FED7CE, UniCoach feature cards)
     containerBorder: '#FBC2B3',
     panelBg: '#FED7CE',
-    dreamDotColor: '#7C3AED',
-    dreamBadgeText: '#5B21B6', dreamBadgeBg: '#F5F3FF', dreamBadgeBorder: '#DDD6FE',
+    dreamDotColor: '#485A79',
+    dreamBadgeText: '#303C51', dreamBadgeBg: '#F1F4F8', dreamBadgeBorder: '#C4D0E1',
     dreamRowBorder: '#FFFFFF',
     reachDotColor: '#DE5C2B',
-    reachBadgeText: '#C2410C', reachBadgeBg: '#FFF7ED', reachBadgeBorder: '#FED7AA',
+    reachBadgeText: '#C04A1D', reachBadgeBg: '#FDF4EF', reachBadgeBorder: '#F3C9B4',
     reachRowBorder: '#FFFFFF',
-    safeDotColor: '#15803D',
-    safeBadgeText: '#15803D', safeBadgeBg: '#F0FDF4', safeBadgeBorder: '#BBF7D0',
+    safeDotColor: '#385942',
+    safeBadgeText: '#385942', safeBadgeBg: '#F1F6F2', safeBadgeBorder: '#C3D9C8',
     safeRowBorder: '#FFFFFF',
-    oddsBg: '#FFFFFF', oddsBorder: '#FFFFFF', oddsText: '#C2410C',
+    oddsBg: '#FFFFFF', oddsBorder: '#FFFFFF', oddsText: '#C04A1D',
   },
   {
     // Card 2: Purple / Prep (#E2DCFE)
-    containerBorder: '#C4B5FD',
-    dreamDotColor: '#7C3AED',
-    dreamBadgeText: '#5B21B6', dreamBadgeBg: '#EDE9FE', dreamBadgeBorder: '#DDD6FE',
-    reachDotColor: '#8B5CF6',
-    reachBadgeText: '#6D28D9', reachBadgeBg: '#F5F3FF', reachBadgeBorder: '#C4B5FD',
-    safeDotColor: '#059669',
-    safeBadgeText: '#047857', safeBadgeBg: '#ECFDF5', safeBadgeBorder: '#A7F3D0',
-    oddsBg: '#F5F3FF', oddsBorder: '#C4B5FD', oddsText: '#6D28D9',
+    containerBorder: '#9EB0CA',
+    dreamDotColor: '#485A79',
+    dreamBadgeText: '#303C51', dreamBadgeBg: '#E1E7F0', dreamBadgeBorder: '#C4D0E1',
+    reachDotColor: '#5A7094',
+    reachBadgeText: '#3B4963', reachBadgeBg: '#F1F4F8', reachBadgeBorder: '#9EB0CA',
+    safeDotColor: '#446D50',
+    safeBadgeText: '#385942', safeBadgeBg: '#F1F6F2', safeBadgeBorder: '#C3D9C8',
+    oddsBg: '#F1F4F8', oddsBorder: '#9EB0CA', oddsText: '#3B4963',
   },
   {
     // Card 3: Green / Finance (#83C25F)
     containerBorder: '#A3E689',
-    dreamDotColor: '#15803D',
-    dreamBadgeText: '#14532D', dreamBadgeBg: '#F0FDF4', dreamBadgeBorder: '#BBF7D0',
-    reachDotColor: '#16A34A',
-    reachBadgeText: '#15803D', reachBadgeBg: '#F0FDF4', reachBadgeBorder: '#BBF7D0',
-    safeDotColor: '#15803D',
-    safeBadgeText: '#14532D', safeBadgeBg: '#DCFCE7', safeBadgeBorder: '#83C25F',
-    oddsBg: '#F2FBF0', oddsBorder: '#83C25F', oddsText: '#15803D',
+    dreamDotColor: '#385942',
+    dreamBadgeText: '#263B2D', dreamBadgeBg: '#F1F6F2', dreamBadgeBorder: '#C3D9C8',
+    reachDotColor: '#446D50',
+    reachBadgeText: '#385942', reachBadgeBg: '#F1F6F2', reachBadgeBorder: '#C3D9C8',
+    safeDotColor: '#385942',
+    safeBadgeText: '#263B2D', safeBadgeBg: '#E1ECE3', safeBadgeBorder: '#83C25F',
+    oddsBg: '#F2FBF0', oddsBorder: '#83C25F', oddsText: '#385942',
   },
   {
     // Card 4: Red / Visa (#DC0631)
-    containerBorder: '#FECDD3',
+    containerBorder: '#EBC5BA',
     dreamDotColor: '#DC0631',
-    dreamBadgeText: '#9F1239', dreamBadgeBg: '#FFF1F2', dreamBadgeBorder: '#FECDD3',
-    reachDotColor: '#E11D48',
-    reachBadgeText: '#9F1239', reachBadgeBg: '#FFF1F2', reachBadgeBorder: '#FECDD3',
-    safeDotColor: '#059669',
-    safeBadgeText: '#047857', safeBadgeBg: '#ECFDF5', safeBadgeBorder: '#A7F3D0',
-    oddsBg: '#FFF1F2', oddsBorder: '#FECDD3', oddsText: '#DC0631',
+    dreamBadgeText: '#64342B', dreamBadgeBg: '#FBF2EF', dreamBadgeBorder: '#EBC5BA',
+    reachDotColor: '#984D3D',
+    reachBadgeText: '#64342B', reachBadgeBg: '#FBF2EF', reachBadgeBorder: '#EBC5BA',
+    safeDotColor: '#446D50',
+    safeBadgeText: '#385942', safeBadgeBg: '#F1F6F2', safeBadgeBorder: '#C3D9C8',
+    oddsBg: '#FBF2EF', oddsBorder: '#EBC5BA', oddsText: '#DC0631',
   },
 ];
 

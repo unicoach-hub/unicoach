@@ -31,7 +31,7 @@ const SEARCHES = [
 ];
 const FIT = {
   Safe: 'bg-emerald-50 text-emerald-700',
-  Target: 'bg-orange-50 text-[#C2410C]',
+  Target: 'bg-orange-50 text-[#C04A1D]',
   Dream: 'bg-purple-50 text-purple-700',
 };
 

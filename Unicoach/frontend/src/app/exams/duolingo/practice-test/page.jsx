@@ -63,7 +63,7 @@ const useCountdown = (seconds, running) => {
 const formatTime = (s) => `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`;
 
 const primaryBtn = 'inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full bg-[#111111] hover:bg-[#DE5C2B] text-white text-[14px] font-bold transition-colors cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed';
-const accentBtn = primaryBtn.replace('bg-[#111111] hover:bg-[#DE5C2B]', 'bg-[#DE5C2B] hover:bg-[#C2410C]');
+const accentBtn = primaryBtn.replace('bg-[#111111] hover:bg-[#DE5C2B]', 'bg-[#DE5C2B] hover:bg-[#C04A1D]');
 const secondaryBtn = 'inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-full bg-white border border-slate-200 hover:border-[#DE5C2B] hover:text-[#DE5C2B] text-slate-700 text-[13px] font-bold transition-colors cursor-pointer';
 
 const TaskHeader = ({ taskIndex, xp, secondsLeft, subtitle }) => {
@@ -133,7 +133,7 @@ const WordRound = ({ round, roundNumber, xp, onDone }) => {
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2.5">
         {round.map(({ word, real }) => {
           const isOn = selected.has(word);
-          let style = isOn ? 'bg-orange-50 border-[#DE5C2B] text-[#9A3412]' : 'bg-white border-slate-200 text-slate-800 hover:border-slate-300';
+          let style = isOn ? 'bg-orange-50 border-[#DE5C2B] text-[#86351A]' : 'bg-white border-slate-200 text-slate-800 hover:border-slate-300';
           if (revealed) {
             if (isOn && real) style = 'bg-emerald-50 border-emerald-400 text-emerald-800';
             else if (isOn && !real) style = 'bg-rose-50 border-rose-300 text-rose-700 line-through';
@@ -468,7 +468,7 @@ const PhotoTask = ({ xp, onDone }) => {
             {evaluation.estimatedScore && (
               <span className="font-outfit text-3xl font-black text-slate-900">{evaluation.estimatedScore}<span className="text-base text-slate-400 font-bold"> / 160</span></span>
             )}
-            {evaluation.level && <span className="px-3 py-1 rounded-full bg-orange-50 border border-orange-200 text-[12px] font-bold text-[#C2410C]">{evaluation.level}</span>}
+            {evaluation.level && <span className="px-3 py-1 rounded-full bg-orange-50 border border-orange-200 text-[12px] font-bold text-[#C04A1D]">{evaluation.level}</span>}
             <span className="text-[11px] font-semibold text-slate-400">AI practice estimate for this task</span>
           </div>
           {evaluation.strengths.length > 0 && (
@@ -481,7 +481,7 @@ const PhotoTask = ({ xp, onDone }) => {
           )}
           {evaluation.improvements.length > 0 && (
             <div>
-              <p className="text-[12px] font-black uppercase tracking-wider text-[#C2410C]">To improve</p>
+              <p className="text-[12px] font-black uppercase tracking-wider text-[#C04A1D]">To improve</p>
               <ul className="mt-1 space-y-1">
                 {evaluation.improvements.map((s) => <li key={s} className="flex gap-2 text-[14px] text-slate-700"><ArrowRight className="w-4 h-4 text-[#DE5C2B] shrink-0 mt-0.5" />{s}</li>)}
               </ul>
@@ -549,7 +549,7 @@ const Results = ({ outcome, onRestart }) => {
           <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-amber-50 border border-amber-200 text-amber-800 text-[13px] font-black">
             <Zap className="w-3.5 h-3.5 fill-amber-400 text-amber-500" /> +{xp} XP
           </span>
-          <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-orange-50 border border-orange-200 text-[#C2410C] text-[13px] font-black">
+          <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-orange-50 border border-orange-200 text-[#C04A1D] text-[13px] font-black">
             <Flame className="w-3.5 h-3.5 fill-orange-400 text-orange-500" /> {progress.streak}-day streak
           </span>
           {progress.best > 0 && (
@@ -601,7 +601,7 @@ const Intro = ({ onStart }) => {
       <div className="flex flex-wrap items-center gap-2">
         <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-700 text-[12px] font-bold">Free · No sign-up to start</span>
         {streak > 0 && (
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-orange-50 border border-orange-200 text-[#C2410C] text-[12px] font-black">
+          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-orange-50 border border-orange-200 text-[#C04A1D] text-[12px] font-black">
             <Flame className="w-3.5 h-3.5 fill-orange-400 text-orange-500" /> {streak}-day streak
           </span>
         )}

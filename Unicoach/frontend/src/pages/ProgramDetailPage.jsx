@@ -88,8 +88,8 @@ export default function ProgramDetailPage() {
             <div className="text-[13px] text-slate-500 mt-1">{FLAG[u.cfCountryId] || ''} {[u.city, u.state, u.countryName].filter(Boolean).join(', ')}</div>
             {(rk.qs || rk.usNews) && (
               <div className="flex flex-wrap justify-center gap-2 mt-3">
-                {rk.qs ? <span className="inline-flex items-center gap-1 px-2 py-1 text-[11px] font-medium" style={{ background: '#eff6ff', color: BLUE, borderRadius: 2 }}><Award size={11} />QS #{rk.qs}</span> : null}
-                {rk.usNews ? <span className="inline-flex items-center gap-1 px-2 py-1 text-[11px] font-medium" style={{ background: '#f0fdf4', color: '#166534', borderRadius: 2 }}>US News #{rk.usNews}</span> : null}
+                {rk.qs ? <span className="inline-flex items-center gap-1 px-2 py-1 text-[11px] font-medium" style={{ background: '#FDF4EF', color: BLUE, borderRadius: 2 }}><Award size={11} />QS #{rk.qs}</span> : null}
+                {rk.usNews ? <span className="inline-flex items-center gap-1 px-2 py-1 text-[11px] font-medium" style={{ background: '#F1F6F2', color: '#2E4836', borderRadius: 2 }}>US News #{rk.usNews}</span> : null}
                 {rk.webometricsWorld ? <span className="inline-flex items-center gap-1 px-2 py-1 text-[11px] font-medium" style={{ background: '#f8fafc', color: '#475569', borderRadius: 2 }}>Webometrics #{rk.webometricsWorld}</span> : null}
               </div>
             )}

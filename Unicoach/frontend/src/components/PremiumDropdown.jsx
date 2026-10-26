@@ -47,7 +47,7 @@ const ACCENT_STYLES = {
   orange: {
     openBorder: 'border-[#DE5C2B] shadow-md shadow-orange-100/50 ring-3 ring-[#DE5C2B]/10',
     chevron: 'text-[#DE5C2B]',
-    selectedBg: 'bg-orange-50 text-[#9A3412] border-l-[3px] border-[#DE5C2B] font-bold',
+    selectedBg: 'bg-orange-50 text-[#86351A] border-l-[3px] border-[#DE5C2B] font-bold',
     checkColor: 'text-[#DE5C2B]',
   },
 };

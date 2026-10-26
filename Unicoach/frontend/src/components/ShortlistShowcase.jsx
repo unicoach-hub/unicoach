@@ -33,9 +33,9 @@ const TOOLS = [
     button: 'Find universities',
     matching: 'Matching 1,500+ universities…',
     results: [
-      { name: 'University of Limerick', meta: 'MSc Data Science', tag: 'Safe', pct: 91, color: '#16a34a' },
+      { name: 'University of Limerick', meta: 'MSc Data Science', tag: 'Safe', pct: 91, color: '#446D50' },
       { name: 'Trinity College Dublin', meta: 'MSc Data Science', tag: 'Target', pct: 74, color: '#DE5C2B' },
-      { name: 'University College Dublin', meta: 'MSc Data & Computational Science', tag: 'Dream', pct: 58, color: '#7c3aed' },
+      { name: 'University College Dublin', meta: 'MSc Data & Computational Science', tag: 'Dream', pct: 58, color: '#485A79' },
     ],
   },
   {
@@ -57,8 +57,8 @@ const TOOLS = [
     button: 'Find scholarships',
     matching: 'Checking 150+ scholarships…',
     results: [
-      { name: 'Chevening Scholarship', meta: 'UK · Fully funded', tag: 'Eligible', pct: 88, color: '#16a34a' },
-      { name: 'DAAD EPOS', meta: 'Germany · Monthly stipend', tag: 'Eligible', pct: 81, color: '#16a34a' },
+      { name: 'Chevening Scholarship', meta: 'UK · Fully funded', tag: 'Eligible', pct: 88, color: '#446D50' },
+      { name: 'DAAD EPOS', meta: 'Germany · Monthly stipend', tag: 'Eligible', pct: 81, color: '#446D50' },
       { name: 'Fulbright-Nehru Master’s', meta: 'USA · Tuition + living', tag: 'Close', pct: 63, color: '#DE5C2B' },
     ],
   },

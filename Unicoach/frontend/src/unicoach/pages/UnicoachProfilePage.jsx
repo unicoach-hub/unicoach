@@ -348,7 +348,7 @@ const UnicoachProfilePage = () => {
                     className="w-24 h-24 sm:w-28 sm:h-28 rounded-full object-cover ring-4 ring-white shadow-2xl bg-white"
                   />
                 ) : (
-                  <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-full bg-gradient-to-tr from-[#DE5C2B] to-[#7C3AED] text-white font-black text-3xl flex items-center justify-center ring-4 ring-white/30 shadow-2xl select-none">
+                  <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-full bg-gradient-to-tr from-[#DE5C2B] to-[#485A79] text-white font-black text-3xl flex items-center justify-center ring-4 ring-white/30 shadow-2xl select-none">
                     {(mentor.name || 'M').split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase() || 'M'}
                   </div>
                 )}

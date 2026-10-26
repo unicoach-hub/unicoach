@@ -102,7 +102,7 @@ const Interactive3DGrid = ({ className = '', gridSize = 56, theme = 'light', fad
     : 'linear-gradient(to right, rgba(222, 92, 43, 0.65) 1.5px, transparent 1.5px), linear-gradient(to bottom, rgba(222, 92, 43, 0.65) 1.5px, transparent 1.5px)';
 
   const dotBg = isDark
-    ? 'radial-gradient(circle 2px at 1px 1px, #60A5FA 100%, transparent 0)'
+    ? 'radial-gradient(circle 2px at 1px 1px, #E57D55 100%, transparent 0)'
     : 'radial-gradient(circle 2px at 1px 1px, #DE5C2B 100%, transparent 0)';
 
   return (

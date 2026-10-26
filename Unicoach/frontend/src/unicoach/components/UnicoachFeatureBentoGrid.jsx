@@ -138,7 +138,7 @@ export const UnicoachFeatureBentoGrid = ({ className = "" }) => {
             <svg viewBox="0 0 400 300" className="w-full h-full object-cover">
               <path
                 d="M-20 60 C40 20, 100 80, 140 40 C180 0, 240 70, 300 30 C360 -10, 420 50, 440 20 L440 200 C380 240, 320 180, 260 220 C200 260, 140 190, 80 230 L-20 200 Z"
-                fill="#15803D"
+                fill="#385942"
               />
             </svg>
           </div>

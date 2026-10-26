@@ -265,12 +265,12 @@ const InteractiveAuthMascot = ({
 
         {/* Floating Ambient Sparkles */}
         <motion.div
-          className="absolute top-8 right-6 w-1.5 h-1.5 rounded-full bg-emerald-400/60 shadow-[0_0_8px_#34d399] pointer-events-none"
+          className="absolute top-8 right-6 w-1.5 h-1.5 rounded-full bg-emerald-400/60 shadow-[0_0_8px_#73A07F] pointer-events-none"
           animate={{ y: [0, -8, 0], opacity: [0.3, 0.8, 0.3] }}
           transition={{ repeat: Infinity, duration: 3.2, ease: 'easeInOut' }}
         />
         <motion.div
-          className="absolute bottom-10 right-7 w-2 h-2 rounded-full bg-amber-400/60 shadow-[0_0_10px_#fbbf24] pointer-events-none"
+          className="absolute bottom-10 right-7 w-2 h-2 rounded-full bg-amber-400/60 shadow-[0_0_10px_#CBA55B] pointer-events-none"
           animate={{ y: [0, -12, 0], opacity: [0.3, 0.9, 0.3] }}
           transition={{ repeat: Infinity, duration: 4, ease: 'easeInOut', delay: 1 }}
         />

@@ -100,19 +100,19 @@ const CustomCursor = () => {
   const cursorStyles = {
     default: {
       scale: 1.0,
-      color: '#8b5cf6', // Violet
+      color: '#5A7094', // Violet
     },
     pointer: {
       scale: 1.25,
-      color: '#a78bfa', // Lighter purple on hover
+      color: '#768CAE', // Lighter purple on hover
     },
     visa: {
       scale: 1.25,
-      color: '#f43f5e', // Rose
+      color: '#B3604E', // Rose
     },
     study: {
       scale: 1.3,
-      color: '#8b5cf6', // Violet
+      color: '#5A7094', // Violet
     }
   };
 

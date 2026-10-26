@@ -3,7 +3,6 @@ import DotMorph from './DotMorph';
 import { motion } from 'framer-motion';
 import { ArrowUpRight, Phone } from 'lucide-react';
 import { useLead } from '../context/LeadContext';
-import ctaBgImg from '../assets/cta_bg.webp';
 import worldDots from '../assets/world-dots.svg';
 import { PillButton } from './ui/PillButton';
 import PriorityDmModal from './PriorityDmModal';
@@ -41,14 +40,14 @@ export const FinalCTA = ({ onOpenModal }) => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.7 }}
-          className="relative rounded-[24px] sm:rounded-[32px] overflow-hidden p-6 sm:p-8 lg:p-12 shadow-2xl shadow-orange-500/15 text-white min-h-[240px] sm:min-h-[260px] flex items-center border border-orange-200/40 w-full min-w-0"
+          className="relative rounded-[24px] sm:rounded-[32px] overflow-hidden p-6 sm:p-8 lg:p-12 shadow-[0_20px_50px_-20px_rgba(22,19,15,0.35)] text-white min-h-[240px] sm:min-h-[260px] flex items-center border border-orange-200/40 w-full min-w-0"
         >
 
-          {/* ════════ ELEGANT VIBRANT TERRACOTTA WARM GRADIENT BACKGROUND ════════ */}
+          {/* ════════ CALM BRAND-ORANGE BACKGROUND ════════ */}
           <div
             className="absolute inset-0 w-full h-full pointer-events-none z-0"
             style={{
-              background: 'linear-gradient(135deg, #DE5C2B 0%, #E25F2E 35%, #EA580C 70%, #F97316 100%)',
+              background: 'linear-gradient(135deg, #DE5C2B 0%, #C9502A 100%)',
             }}
           />
           {/* Subtle world coordinates texture */}

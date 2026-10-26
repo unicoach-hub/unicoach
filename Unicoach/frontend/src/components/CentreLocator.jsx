@@ -156,7 +156,7 @@ const CentreLocator = () => {
         transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
       >
         <svg width="120" height="80" viewBox="0 0 120 80">
-          <path d="M30 40a20 20 0 0 1 30-17 15 15 0 0 1 25-5 25 25 0 0 1 15 47H30a20 20 0 0 1 0-25z" fill="#818cf8" />
+          <path d="M30 40a20 20 0 0 1 30-17 15 15 0 0 1 25-5 25 25 0 0 1 15 47H30a20 20 0 0 1 0-25z" fill="#E57D55" />
         </svg>
       </motion.div>
 
@@ -170,7 +170,7 @@ const CentreLocator = () => {
         }}
         transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
       >
-        <svg width="70" height="70" viewBox="0 0 24 24" fill="none" stroke="#6366f1" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <svg width="70" height="70" viewBox="0 0 24 24" fill="none" stroke="#DE5C2B" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
           <path d="M22 2L2 9.07l7.73 3.2L19 6l-6.27 9.27L16 22l6-20z" />
         </svg>
       </motion.div>

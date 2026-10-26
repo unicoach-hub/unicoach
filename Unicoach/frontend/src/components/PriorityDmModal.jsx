@@ -130,7 +130,7 @@ const PriorityDmModal = ({ isOpen, onClose, initialCategory = '', initialMessage
           className="relative w-full max-w-[580px] bg-white rounded-[26px] shadow-[0_25px_70px_rgba(0,0,0,0.35)] border border-slate-200/90 overflow-hidden z-10 my-auto flex flex-col max-h-[92vh]"
         >
           {/* ──── Soft Blushing Header ──── */}
-          <div className="relative bg-gradient-to-br from-[#0F172A] via-[#1E1B4B] to-[#2E1065] p-5 sm:p-6 text-white overflow-hidden shrink-0">
+          <div className="relative bg-gradient-to-br from-[#0F172A] via-[#3A150A] to-[#151B25] p-5 sm:p-6 text-white overflow-hidden shrink-0">
             {/* Blushing ambient glowing orbs */}
             <div className="absolute -top-12 -right-12 w-44 h-44 bg-gradient-to-br from-pink-500/30 via-rose-500/20 to-purple-500/30 rounded-full blur-3xl pointer-events-none" />
             <div className="absolute -bottom-8 -left-8 w-36 h-36 bg-gradient-to-tr from-indigo-500/30 to-purple-500/20 rounded-full blur-2xl pointer-events-none" />

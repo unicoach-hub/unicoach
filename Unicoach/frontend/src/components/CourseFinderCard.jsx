@@ -68,7 +68,7 @@ const CourseFinderCard = ({
                 </span>
                 <h3 
                   onClick={() => onOpenDetailsModal && onOpenDetailsModal(uni)}
-                  className="text-lg sm:text-xl font-black text-[#1E3A8A] hover:text-[#2563EB] cursor-pointer transition-colors leading-tight"
+                  className="text-lg sm:text-xl font-black text-[#6B2C17] hover:text-[#DE5C2B] cursor-pointer transition-colors leading-tight"
                 >
                   {uni.name}
                 </h3>

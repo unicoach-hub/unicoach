@@ -226,7 +226,7 @@ const BrowseDemo = ({ autoPlay, paused, onInteract }) => {
                 </div>
               </div>
               <div className="flex items-center gap-1 text-[10px] font-bold">
-                <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md bg-orange-50 text-[#C2410C] border border-orange-200/70">
+                <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md bg-orange-50 text-[#C04A1D] border border-orange-200/70">
                   <ShieldCheck className="w-3 h-3" aria-hidden="true" />
                   Verified
                 </span>
@@ -289,7 +289,7 @@ const BookDemo = ({ autoPlay, onInteract }) => {
             <div className="text-[10px] text-slate-400 font-medium truncate">{PRIMARY_MENTOR.role}</div>
           </div>
         </div>
-        <span className="shrink-0 inline-flex items-center gap-1 text-[10px] font-bold text-[#C2410C] bg-orange-50 px-2 py-0.5 rounded-md border border-orange-200">
+        <span className="shrink-0 inline-flex items-center gap-1 text-[10px] font-bold text-[#C04A1D] bg-orange-50 px-2 py-0.5 rounded-md border border-orange-200">
           <ShieldCheck className="w-3 h-3" aria-hidden="true" />
           Verified
         </span>

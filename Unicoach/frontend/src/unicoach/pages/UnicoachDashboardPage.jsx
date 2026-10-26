@@ -2080,7 +2080,7 @@ const UnicoachDashboardPage = () => {
       // 1. Rich dark gradient background
       const bgGradient = ctx.createLinearGradient(0, 0, 1080, 1920);
       bgGradient.addColorStop(0, '#0F172A'); // Slate-900
-      bgGradient.addColorStop(0.35, '#1E1B4B'); // Indigo-950
+      bgGradient.addColorStop(0.35, '#3A150A'); // Indigo-950
       bgGradient.addColorStop(0.7, '#180B2B'); // Deep purple
       bgGradient.addColorStop(1, '#DE5C2B'); // Brand orange
       ctx.fillStyle = bgGradient;
@@ -2159,7 +2159,7 @@ const UnicoachDashboardPage = () => {
       // Golden verified badge
       ctx.beginPath();
       ctx.arc(625, 475, 28, 0, Math.PI * 2);
-      ctx.fillStyle = '#F59E0B';
+      ctx.fillStyle = '#B48C42';
       ctx.fill();
       ctx.strokeStyle = '#FFFFFF';
       ctx.lineWidth = 4;
@@ -2184,7 +2184,7 @@ const UnicoachDashboardPage = () => {
       ctx.fillText(mentorName, 540, 580);
 
       // 6. Headline
-      ctx.fillStyle = '#FDE68A';
+      ctx.fillStyle = '#EAD8AE';
       ctx.font = '500 32px system-ui, -apple-system, sans-serif';
       const truncatedHeadline = mentorHeadline.length > 55 ? mentorHeadline.slice(0, 52) + '...' : mentorHeadline;
       ctx.fillText(truncatedHeadline, 540, 642);
@@ -2701,7 +2701,7 @@ const UnicoachDashboardPage = () => {
               }}
               className={`relative h-8 px-2 sm:px-2.5 rounded-xl border transition-all flex items-center gap-1.5 cursor-pointer text-xs font-bold ${
                 activeTab === 'notifications'
-                  ? 'bg-[#FFF7ED] border-[#FDBA74] text-[#DE5C2B]'
+                  ? 'bg-[#FDF4EF] border-[#EBA384] text-[#DE5C2B]'
                   : 'bg-white hover:bg-slate-50 border-slate-200 text-slate-700'
               }`}
               title="Announcements & Alerts from Admin"
@@ -6578,7 +6578,7 @@ const UnicoachDashboardPage = () => {
             <div className="bg-white rounded-2xl border border-slate-200/90 p-5 sm:p-6 shadow-2xs">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div className="flex items-center gap-3">
-                  <div className="w-11 h-11 rounded-2xl bg-[#FFF7ED] text-[#DE5C2B] flex items-center justify-center font-bold shadow-xs">
+                  <div className="w-11 h-11 rounded-2xl bg-[#FDF4EF] text-[#DE5C2B] flex items-center justify-center font-bold shadow-xs">
                     <Bell className="w-5 h-5" />
                   </div>
                   <div>
@@ -6776,7 +6776,7 @@ const UnicoachDashboardPage = () => {
                                   onClick={() => {
                                     if (!item.isRead) handleMarkNotificationRead(item._id);
                                   }}
-                                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#FFF7ED] text-[#DE5C2B] hover:bg-[#FFEDD5] text-xs font-bold transition-all cursor-pointer"
+                                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#FDF4EF] text-[#DE5C2B] hover:bg-[#FAE5DA] text-xs font-bold transition-all cursor-pointer"
                                 >
                                   <span>{item.actionText || 'Take Action'}</span>
                                   <ExternalLink className="w-3 h-3" />
@@ -7044,7 +7044,7 @@ const UnicoachDashboardPage = () => {
                         setShowIntakeQuestionsConfig(true);
                         handleAddQuestion();
                       }}
-                      className="text-[11px] font-bold text-[#DE5C2B] hover:text-[#c2410c] flex items-center gap-1 py-1 px-2 rounded-lg bg-orange-50 hover:bg-orange-100 transition-colors cursor-pointer"
+                      className="text-[11px] font-bold text-[#DE5C2B] hover:text-[#C04A1D] flex items-center gap-1 py-1 px-2 rounded-lg bg-orange-50 hover:bg-orange-100 transition-colors cursor-pointer"
                     >
                       <Plus className="w-3 h-3" />
                       <span>Add Question</span>
@@ -7435,7 +7435,7 @@ const UnicoachDashboardPage = () => {
         <button
           type="button"
           onClick={() => setIsEnhanceModalOpen(true)}
-          className="bg-gradient-to-r from-[#5856D6] to-[#4338CA] hover:from-[#4F46E5] hover:to-[#3730A3] text-white px-3 py-1.5 sm:px-4 sm:py-2.5 rounded-full text-[11px] sm:text-xs font-bold shadow-xl flex items-center gap-1.5 sm:gap-2.5 transition-all hover:scale-105 active:scale-95 cursor-pointer relative border border-white/20"
+          className="bg-gradient-to-r from-[#5856D6] to-[#C04A1D] hover:from-[#DE5C2B] hover:to-[#86351A] text-white px-3 py-1.5 sm:px-4 sm:py-2.5 rounded-full text-[11px] sm:text-xs font-bold shadow-xl flex items-center gap-1.5 sm:gap-2.5 transition-all hover:scale-105 active:scale-95 cursor-pointer relative border border-white/20"
         >
           <Sparkles className="w-3.5 h-3.5 text-amber-300" />
           <span>{pendingCount > 0 ? 'Enhance Profile' : 'All-Star Profile'}</span>

@@ -9,12 +9,7 @@ import {
 import Interactive3DGrid from '../components/Interactive3DGrid';
 import { useLead } from '../context/LeadContext';
 
-import usaImg from '../assets/destinations/usa.webp';
-import ukImg from '../assets/destinations/uk.webp';
-import canadaImg from '../assets/destinations/canada.webp';
-import ausImg from '../assets/destinations/australia.webp';
-import germanyImg from '../assets/destinations/germany.webp';
-import irelandImg from '../assets/destinations/ireland.webp';
+import { SKETCH_THEMES, SKETCH_MASK } from '../components/destinationSketches';
 
 const DESTINATIONS = [
   {
@@ -24,7 +19,6 @@ const DESTINATIONS = [
     slug: 'usa',
     badge: 'World #1 Higher Ed',
     category: 'roi',
-    image: usaImg,
     unis: '4,500+ Universities',
     topUnis: ['MIT', 'Stanford', 'Harvard', 'Columbia', 'Northeastern'],
     avgTuition: '$25,000 - $55,000 / yr',
@@ -40,7 +34,6 @@ const DESTINATIONS = [
     slug: 'germany',
     badge: 'Zero / Low Tuition',
     category: 'tuition',
-    image: germanyImg,
     unis: '380+ Public Unis',
     topUnis: ['TU Munich', 'LMU Munich', 'Heidelberg Univ', 'RWTH Aachen'],
     avgTuition: '€0 - €3,000 / yr (Public)',
@@ -56,7 +49,6 @@ const DESTINATIONS = [
     slug: 'uk',
     badge: '1-Year Fast Masters',
     category: 'roi',
-    image: ukImg,
     unis: '160+ Universities',
     topUnis: ['Oxford', 'Cambridge', 'Imperial College', 'UCL', 'Edinburgh'],
     avgTuition: '£15,000 - £32,000 / yr',
@@ -72,7 +64,6 @@ const DESTINATIONS = [
     slug: 'canada',
     badge: 'Streamlined PR Pathway',
     category: 'pr',
-    image: canadaImg,
     unis: '100+ Recognized Inst.',
     topUnis: ['Univ of Toronto', 'UBC', 'McGill', 'Waterloo', 'Conestoga'],
     avgTuition: 'CAD 20,000 - 38,000 / yr',
@@ -88,7 +79,6 @@ const DESTINATIONS = [
     slug: 'australia',
     badge: 'High Minimum Wage',
     category: 'visa',
-    image: ausImg,
     unis: '43 World-Ranked Unis',
     topUnis: ['Univ of Melbourne', 'Univ of Sydney', 'UNSW', 'ANU', 'Monash'],
     avgTuition: 'AUD 30,000 - 46,000 / yr',
@@ -104,7 +94,6 @@ const DESTINATIONS = [
     slug: 'ireland',
     badge: 'Silicon Valley of Europe',
     category: 'roi',
-    image: irelandImg,
     unis: '30+ Higher Ed Inst.',
     topUnis: ['Trinity College Dublin', 'Univ College Dublin', 'Univ of Galway', 'UCC'],
     avgTuition: '€12,000 - €25,000 / yr',
@@ -297,7 +286,9 @@ const StudyAbroadHubPage = () => {
 
         {/* Destination Cards Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-          {filteredDestinations.map((dest) => (
+          {filteredDestinations.map((dest) => {
+            const sketch = SKETCH_THEMES[dest.id];
+            return (
             <motion.div
               key={dest.id}
               layout
@@ -307,13 +298,25 @@ const StudyAbroadHubPage = () => {
               className="bg-white rounded-2xl border border-slate-200/80 overflow-hidden shadow-2xs hover:shadow-xl transition-all duration-300 flex flex-col group"
             >
               {/* Card Image Banner */}
-              <div className="relative h-48 w-full overflow-hidden bg-slate-100">
-                <img
-                  src={dest.image}
-                  alt={`Study in ${dest.name}`}
-                  className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/85 via-slate-950/30 to-transparent" />
+              <div className="relative h-48 w-full overflow-hidden bg-slate-100" style={sketch ? { background: sketch.bg } : undefined}>
+                {sketch ? (
+                  /* Pencil sketch on the country's paper colour */
+                  <img
+                    src={sketch.sketch}
+                    alt={`Study in ${dest.name}`}
+                    className="absolute inset-x-0 top-0 h-[78%] w-full object-contain mix-blend-multiply group-hover:scale-105 transition-transform duration-500"
+                    style={{ maskImage: SKETCH_MASK, WebkitMaskImage: SKETCH_MASK }}
+                  />
+                ) : (
+                  <>
+                    <img
+                      src={dest.image}
+                      alt={`Study in ${dest.name}`}
+                      className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-slate-950/85 via-slate-950/30 to-transparent" />
+                  </>
+                )}
                 
                 {/* Badge Tag */}
                 <div className="absolute top-3 right-3 px-2.5 py-1 rounded-full bg-white/95 backdrop-blur-md text-[10px] sm:text-xs font-bold text-slate-800 shadow-2xs">
@@ -321,12 +324,15 @@ const StudyAbroadHubPage = () => {
                 </div>
 
                 {/* Country Name & Flag */}
-                <div className="absolute bottom-3 left-4 right-4 flex items-center justify-between text-white">
+                <div className="absolute bottom-3 left-4 right-4 flex items-center justify-between text-white" style={sketch ? { color: sketch.ink } : undefined}>
                   <div>
                     <span className="text-2xl mr-2">{dest.flag}</span>
                     <span className="text-lg font-black tracking-tight">{dest.name}</span>
                   </div>
-                  <span className="text-xs font-semibold text-orange-200 bg-orange-950/40 px-2 py-0.5 rounded-md border border-orange-400/30">
+                  <span
+                    className={sketch ? 'text-xs font-semibold px-2 py-0.5 rounded-md border bg-white/70' : 'text-xs font-semibold text-orange-200 bg-orange-950/40 px-2 py-0.5 rounded-md border border-orange-400/30'}
+                    style={sketch ? { color: sketch.soft, borderColor: sketch.line } : undefined}
+                  >
                     {dest.unis}
                   </span>
                 </div>
@@ -399,7 +405,8 @@ const StudyAbroadHubPage = () => {
 
               </div>
             </motion.div>
-          ))}
+            );
+          })}
         </div>
 
         {filteredDestinations.length === 0 && (

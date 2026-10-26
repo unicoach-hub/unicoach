@@ -442,7 +442,7 @@ const UnicoachApplyPage = () => {
     return (
       <div className="min-h-screen bg-[#F8FAFC] flex items-center justify-center p-4 py-20 relative overflow-hidden">
         {/* Glow */}
-        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[550px] h-[450px] bg-radial from-[#DBEAFE]/70 via-[#E0E7FF]/40 to-transparent rounded-full blur-[80px] pointer-events-none" />
+        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[550px] h-[450px] bg-radial from-[#FAE5DA]/70 via-[#FAE5DA]/40 to-transparent rounded-full blur-[80px] pointer-events-none" />
 
         <div className="bg-white/95 backdrop-blur-xl rounded-[32px] border border-slate-200/90 p-8 sm:p-12 max-w-xl w-full text-center shadow-[0_20px_50px_-10px_rgba(15,23,42,0.1)] relative z-10">
           <div className="w-18 h-18 rounded-3xl bg-orange-50 text-[#DE5C2B] flex items-center justify-center mx-auto mb-5 font-bold text-3xl shadow-inner border border-orange-100">
@@ -535,8 +535,8 @@ const UnicoachApplyPage = () => {
       
       {/* Background watercolor blooms */}
       <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
-        <div className="absolute top-[-5%] left-[10%] w-[600px] h-[480px] bg-radial from-[#DBEAFE]/70 via-[#E0E7FF]/40 to-transparent rounded-full blur-[90px]" />
-        <div className="absolute top-[20%] right-[8%] w-[500px] h-[400px] bg-radial from-[#C7D2FE]/40 via-[#E0F2FE]/25 to-transparent rounded-full blur-[80px]" />
+        <div className="absolute top-[-5%] left-[10%] w-[600px] h-[480px] bg-radial from-[#FAE5DA]/70 via-[#FAE5DA]/40 to-transparent rounded-full blur-[90px]" />
+        <div className="absolute top-[20%] right-[8%] w-[500px] h-[400px] bg-radial from-[#F3C9B4]/40 via-[#E1E7F0]/25 to-transparent rounded-full blur-[80px]" />
       </div>
 
       <div className="max-w-3xl mx-auto relative z-10">
@@ -620,7 +620,7 @@ const UnicoachApplyPage = () => {
           </div>
         )}
         {errorField && feedback?.type === 'error' && (
-          <style>{`[data-field="${errorField}"] input, [data-field="${errorField}"] select, [data-field="${errorField}"] textarea { border-color: #f43f5e !important; box-shadow: 0 0 0 3px rgba(244,63,94,0.15) !important; }`}</style>
+          <style>{`[data-field="${errorField}"] input, [data-field="${errorField}"] select, [data-field="${errorField}"] textarea { border-color: #B3604E !important; box-shadow: 0 0 0 3px rgba(244,63,94,0.15) !important; }`}</style>
         )}
 
         {/* Feedback Alert */}

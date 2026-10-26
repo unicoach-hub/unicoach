@@ -22,7 +22,7 @@ export const MentorAvatar = ({ mentor, imgClassName = '', letterClassName = '' }
     return <img src={src} alt={mentor.name} loading="lazy" onError={() => setFailedSrc(src)} className={imgClassName} />;
   }
   return (
-    <div className={`w-full h-full bg-gradient-to-br from-[#DE5C2B] to-[#EAB308] text-white font-black flex items-center justify-center ${letterClassName}`}>
+    <div className={`w-full h-full bg-gradient-to-br from-[#DE5C2B] to-[#B48C42] text-white font-black flex items-center justify-center ${letterClassName}`}>
       {mentor.name?.charAt(0) || 'M'}
     </div>
   );

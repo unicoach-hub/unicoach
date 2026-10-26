@@ -3,12 +3,7 @@ import { Link } from 'react-router-dom';
 import { ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useLead } from '../context/LeadContext';
 
-import usaSketch from '../assets/destinations/sketch/usa.webp';
-import ukSketch from '../assets/destinations/sketch/uk.webp';
-import canadaSketch from '../assets/destinations/sketch/canada.webp';
-import australiaSketch from '../assets/destinations/sketch/australia.webp';
-import germanySketch from '../assets/destinations/sketch/germany.webp';
-import irelandSketch from '../assets/destinations/sketch/ireland.webp';
+import { SKETCH_THEMES, SKETCH_MASK } from './destinationSketches';
 import './desi/desi.css';
 
 
@@ -19,18 +14,12 @@ export const Destinations = ({ onOpenModal }) => {
 
   // Editorial cards: a soft colour per country, a pencil sketch and three useful facts
   const destinations = [
-    { id: 'usa', sketch: usaSketch, name: 'United States', region: 'North America', universities: '4,500+', visa: '1–3 years', length: '1.5–2 years',
-      bg: '#EEF1F8', ink: '#16233F', soft: '#4A5A7C', line: '#C9D2E6' },
-    { id: 'uk', sketch: ukSketch, name: 'United Kingdom', region: 'Europe', universities: '150+', visa: 'Up to 2 years', length: '1 year',
-      bg: '#E8EEE6', ink: '#1E3324', soft: '#4F6654', line: '#C4D3C2' },
-    { id: 'canada', sketch: canadaSketch, name: 'Canada', region: 'North America', universities: '100+', visa: 'Up to 3 years', length: '1–2 years',
-      bg: '#F6E9E6', ink: '#4A1E17', soft: '#7D4A40', line: '#E6C9C2' },
-    { id: 'australia', sketch: australiaSketch, name: 'Australia', region: 'Oceania', universities: '40+', visa: '2–4 years', length: '1.5–2 years',
-      bg: '#F5EEDF', ink: '#3E2E12', soft: '#7A6334', line: '#E6D7B5' },
-    { id: 'germany', sketch: germanySketch, name: 'Germany', region: 'Europe', universities: '300+', visa: '18 months', length: '2 years',
-      bg: '#ECEBE8', ink: '#24221E', soft: '#5C5850', line: '#D6D3CC' },
-    { id: 'ireland', sketch: irelandSketch, name: 'Ireland', region: 'Europe', universities: '35+', visa: '1–2 years', length: '1 year',
-      bg: '#E5F0EC', ink: '#123A30', soft: '#3F6A5E', line: '#C1DCD3' },
+    { id: 'usa', ...SKETCH_THEMES.usa, name: 'United States', region: 'North America', universities: '4,500+', visa: '1–3 years', length: '1.5–2 years' },
+    { id: 'uk', ...SKETCH_THEMES.uk, name: 'United Kingdom', region: 'Europe', universities: '150+', visa: 'Up to 2 years', length: '1 year' },
+    { id: 'canada', ...SKETCH_THEMES.canada, name: 'Canada', region: 'North America', universities: '100+', visa: 'Up to 3 years', length: '1–2 years' },
+    { id: 'australia', ...SKETCH_THEMES.australia, name: 'Australia', region: 'Oceania', universities: '40+', visa: '2–4 years', length: '1.5–2 years' },
+    { id: 'germany', ...SKETCH_THEMES.germany, name: 'Germany', region: 'Europe', universities: '300+', visa: '18 months', length: '2 years' },
+    { id: 'ireland', ...SKETCH_THEMES.ireland, name: 'Ireland', region: 'Europe', universities: '35+', visa: '1–2 years', length: '1 year' },
   ];
 
   const lockRef = useRef(0);
@@ -202,7 +191,7 @@ export const Destinations = ({ onOpenModal }) => {
                         loading="lazy"
                         data-active={isActive}
                         className="absolute inset-0 w-full h-full object-contain data-[active=true]:scale-[1.06] data-[active=false]:opacity-60 object-center mix-blend-multiply transition-all duration-500"
-                        style={{ maskImage: 'linear-gradient(to bottom, transparent, #000 18%, #000 78%, transparent)', WebkitMaskImage: 'linear-gradient(to bottom, transparent, #000 18%, #000 78%, transparent)' }}
+                        style={{ maskImage: SKETCH_MASK, WebkitMaskImage: SKETCH_MASK }}
                       />
                     </div>
 

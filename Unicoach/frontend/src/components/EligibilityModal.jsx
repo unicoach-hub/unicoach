@@ -237,7 +237,7 @@ const EligibilityModal = () => {
                     value={confirmEmail}
                     onChange={(e) => { setConfirmEmail(e.target.value); setConfirmError(''); }}
                     placeholder="Your email"
-                    className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl text-sm text-gray-800 focus:border-[#4f46e5] outline-none transition-all"
+                    className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl text-sm text-gray-800 focus:border-[#DE5C2B] outline-none transition-all"
                   />
                 )}
                 {!knownPhone && (
@@ -247,7 +247,7 @@ const EligibilityModal = () => {
                       value={confirmPhone}
                       onChange={(e) => { setConfirmPhone(e.target.value.replace(/[^\d+\s-]/g, '')); setConfirmError(''); }}
                       placeholder={`Phone number (${selectedPhoneCountry.code} assumed)`}
-                      className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl text-sm text-gray-800 focus:border-[#4f46e5] outline-none transition-all"
+                      className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl text-sm text-gray-800 focus:border-[#DE5C2B] outline-none transition-all"
                     />
                     <p className="text-[10px] text-slate-400 font-semibold mt-1">
                       Our advisor will call you on this number. Add your country code if you're outside India.
@@ -419,7 +419,7 @@ const EligibilityModal = () => {
                             onClick={() => setFormData({ ...formData, dreamCountry: c.name === 'Other' ? '' : c.name })}
                             className={`flex items-center gap-2.5 px-3.5 py-3.5 rounded-xl border-2 text-xs font-bold transition-all cursor-pointer ${
                               isSelected
-                                ? 'border-[#4f46e5] bg-indigo-50/50 text-[#4f46e5]'
+                                ? 'border-[#DE5C2B] bg-indigo-50/50 text-[#DE5C2B]'
                                 : 'border-gray-200 hover:border-gray-300 text-gray-700'
                             }`}
                           >
@@ -446,7 +446,7 @@ const EligibilityModal = () => {
                       <button
                         type="button"
                         onClick={() => setIsOtherDropdownOpen(!isOtherDropdownOpen)}
-                        className="w-full flex items-center justify-between px-4 py-3.5 border-2 border-gray-200 rounded-xl bg-white text-gray-750 font-bold text-sm outline-none focus:border-[#4f46e5] cursor-pointer"
+                        className="w-full flex items-center justify-between px-4 py-3.5 border-2 border-gray-200 rounded-xl bg-white text-gray-750 font-bold text-sm outline-none focus:border-[#DE5C2B] cursor-pointer"
                       >
                         <div className="flex items-center gap-2.5">
                           {formData.dreamCountry ? (
@@ -481,7 +481,7 @@ const EligibilityModal = () => {
                               value={otherCountrySearch}
                               onChange={(e) => setOtherCountrySearch(e.target.value)}
                               placeholder="Search 160+ countries..."
-                              className="w-full px-3 py-1.5 bg-slate-50 border border-gray-200 rounded-lg text-xs font-semibold text-gray-800 placeholder:text-gray-400 focus:outline-none focus:border-[#4f46e5] focus:bg-white transition-all"
+                              className="w-full px-3 py-1.5 bg-slate-50 border border-gray-200 rounded-lg text-xs font-semibold text-gray-800 placeholder:text-gray-400 focus:outline-none focus:border-[#DE5C2B] focus:bg-white transition-all"
                               onClick={(e) => e.stopPropagation()}
                             />
                           </div>
@@ -498,7 +498,7 @@ const EligibilityModal = () => {
                                 setOtherCountrySearch('');
                               }}
                               className={`w-full flex items-center gap-3 px-4 py-2.5 text-left text-xs font-bold text-gray-700 hover:bg-slate-50 transition-colors cursor-pointer ${
-                                formData.dreamCountry === oc.name ? 'bg-indigo-50/50 text-[#4f46e5]' : ''
+                                formData.dreamCountry === oc.name ? 'bg-indigo-50/50 text-[#DE5C2B]' : ''
                               }`}
                             >
                               <img
@@ -525,7 +525,7 @@ const EligibilityModal = () => {
                             onClick={() => setFormData({ ...formData, preferredIntake: i.label })}
                             className={`relative px-4 py-3 rounded-xl border-2 text-sm font-medium transition-all cursor-pointer ${
                               formData.preferredIntake === i.label
-                                ? 'border-[#4f46e5] bg-indigo-50 text-[#4f46e5]'
+                                ? 'border-[#DE5C2B] bg-indigo-50 text-[#DE5C2B]'
                                 : 'border-gray-200 hover:border-gray-300 text-gray-700'
                             }`}
                           >
@@ -554,7 +554,7 @@ const EligibilityModal = () => {
                           onClick={() => setFormData({ ...formData, highestEducation: e })}
                           className={`px-4 py-3 rounded-xl border-2 text-sm font-medium transition-all cursor-pointer ${
                             formData.highestEducation === e
-                              ? 'border-[#4f46e5] bg-indigo-50 text-[#4f46e5]'
+                              ? 'border-[#DE5C2B] bg-indigo-50 text-[#DE5C2B]'
                               : 'border-gray-200 hover:border-gray-300 text-gray-700'
                           }`}
                         >
@@ -579,7 +579,7 @@ const EligibilityModal = () => {
                         onFocus={() => setShowCityDropdown(true)}
                         onBlur={() => setTimeout(() => setShowCityDropdown(false), 200)}
                         placeholder="Eg. Delhi"
-                        className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl text-gray-800 focus:border-[#4f46e5] outline-none transition-all"
+                        className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl text-gray-800 focus:border-[#DE5C2B] outline-none transition-all"
                       />
                       <span className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400">▾</span>
                     </div>
@@ -594,7 +594,7 @@ const EligibilityModal = () => {
                             key={c}
                             type="button"
                             onClick={() => { setFormData({ ...formData, currentCity: c }); setCitySearch(c); setShowCityDropdown(false); }}
-                            className="w-full text-left px-4 py-3 text-sm text-gray-700 hover:bg-indigo-50 hover:text-[#4f46e5] transition-colors cursor-pointer"
+                            className="w-full text-left px-4 py-3 text-sm text-gray-700 hover:bg-indigo-50 hover:text-[#DE5C2B] transition-colors cursor-pointer"
                           >
                             {c}
                           </button>
@@ -615,7 +615,7 @@ const EligibilityModal = () => {
                       value={formData.name}
                       onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                       placeholder="Name"
-                      className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl text-gray-800 focus:border-[#4f46e5] outline-none transition-all"
+                      className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl text-gray-800 focus:border-[#DE5C2B] outline-none transition-all"
                     />
                   </div>
                   <div>
@@ -625,7 +625,7 @@ const EligibilityModal = () => {
                       value={formData.email}
                       onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                       placeholder="Email"
-                      className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl text-gray-800 focus:border-[#4f46e5] outline-none transition-all"
+                      className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl text-gray-800 focus:border-[#DE5C2B] outline-none transition-all"
                     />
                   </div>
                   <div>
@@ -635,7 +635,7 @@ const EligibilityModal = () => {
                       <button
                         type="button"
                         onClick={() => setIsPhoneDropdownOpen(!isPhoneDropdownOpen)}
-                        className="flex items-center gap-2 px-3 py-3 border-2 border-gray-200 rounded-xl bg-gray-50/50 text-gray-850 font-medium text-sm outline-none focus:border-[#4f46e5] min-w-[110px] justify-between cursor-pointer select-none"
+                        className="flex items-center gap-2 px-3 py-3 border-2 border-gray-200 rounded-xl bg-gray-50/50 text-gray-850 font-medium text-sm outline-none focus:border-[#DE5C2B] min-w-[110px] justify-between cursor-pointer select-none"
                       >
                         <div className="flex items-center gap-1.5">
                           <img
@@ -666,7 +666,7 @@ const EligibilityModal = () => {
                                 setIsPhoneDropdownOpen(false);
                               }}
                               className={`w-full flex items-center gap-3 px-4 py-2.5 text-left text-xs font-semibold text-gray-700 hover:bg-gray-50 transition-colors cursor-pointer ${
-                                selectedPhoneCountry.iso === c.iso ? 'bg-indigo-50/50 text-[#4f46e5]' : ''
+                                selectedPhoneCountry.iso === c.iso ? 'bg-indigo-50/50 text-[#DE5C2B]' : ''
                               }`}
                             >
                               <img
@@ -692,7 +692,7 @@ const EligibilityModal = () => {
                           setFormData({ ...formData, phone: val });
                         }}
                         placeholder="Phone Number"
-                        className="flex-1 px-4 py-3 border-2 border-gray-200 rounded-xl text-gray-800 focus:border-[#4f46e5] outline-none transition-all"
+                        className="flex-1 px-4 py-3 border-2 border-gray-200 rounded-xl text-gray-800 focus:border-[#DE5C2B] outline-none transition-all"
                       />
                     </div>
                   </div>
@@ -712,7 +712,7 @@ const EligibilityModal = () => {
               <button
                 type="button"
                 onClick={handleNext}
-                className="w-full py-3 sm:py-3.5 bg-[#4f46e5] hover:bg-[#4338ca] text-white font-bold rounded-xl transition-all cursor-pointer text-sm sm:text-base shadow-sm hover:shadow-md"
+                className="w-full py-3 sm:py-3.5 bg-[#DE5C2B] hover:bg-[#C04A1D] text-white font-bold rounded-xl transition-all cursor-pointer text-sm sm:text-base shadow-sm hover:shadow-md"
               >
                 Next
               </button>
@@ -721,7 +721,7 @@ const EligibilityModal = () => {
                 type="button"
                 onClick={handleSubmit}
                 disabled={loading}
-                className="w-full py-3 sm:py-3.5 bg-[#4f46e5] hover:bg-[#4338ca] text-white font-bold rounded-xl transition-all cursor-pointer text-sm sm:text-base disabled:opacity-50 shadow-sm hover:shadow-md"
+                className="w-full py-3 sm:py-3.5 bg-[#DE5C2B] hover:bg-[#C04A1D] text-white font-bold rounded-xl transition-all cursor-pointer text-sm sm:text-base disabled:opacity-50 shadow-sm hover:shadow-md"
               >
                 {loading ? 'Submitting...' : 'Submit'}
               </button>

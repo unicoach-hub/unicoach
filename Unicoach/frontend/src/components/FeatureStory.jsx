@@ -16,7 +16,7 @@ const WHEEL = [
   { label: 'Unlock scholarships', icon: HandCoins, color: '#F5A524' },
   { label: 'Plan your education loan', icon: IndianRupee, color: '#22A06B' },
   { label: 'Ace IELTS, GRE & GMAT', icon: BookOpen, color: '#7C6CF2' },
-  { label: 'Get visa ready', icon: Plane, color: '#3B82F6' },
+  { label: 'Get visa ready', icon: Plane, color: '#DE5C2B' },
   { label: 'Talk to a senior mentor', icon: GraduationCap, color: '#E5484D' },
 ];
 

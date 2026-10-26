@@ -40,6 +40,7 @@ export const getUniversitiesFacet = (filters = {}, search = '') =>
 export const exportSearch = (filters = {}) =>
   fetch(`${API_BASE_URL}/search/export`, {
     method: 'POST',
+    credentials: 'include', // export needs the signed-in student's cookie
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ filters }),
   }).then(json);

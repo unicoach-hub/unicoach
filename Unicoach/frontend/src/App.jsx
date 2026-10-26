@@ -928,6 +928,7 @@ const App = () => {
             {/* Dedicated AI Tools & Shortlisting Discovery Routes */}
             <Route path="/universities" element={<Navigate to="/search-programs" replace />} />
             <Route path="/search-programs" element={<SearchProgramsPage />} />
+            <Route path="/course-finder" element={<Navigate to="/search-programs" replace />} />
             <Route path="/program/:cfId" element={<ProgramDetailPage />} />
             <Route path="/course-details" element={<CourseDetailsPage />} />
             <Route path="/courses/:courseId" element={<CourseDetailsPage />} />

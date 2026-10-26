@@ -287,7 +287,7 @@ const AiVisaInterviewPrep = ({ studentProfile = {} }) => {
           <div className="space-y-4 max-w-2xl">
             {/* Top Status Badges */}
             <div className="flex flex-wrap items-center gap-2.5">
-              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-bold bg-orange-50 text-[#C2410C] border border-orange-200/80">
+              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-bold bg-orange-50 text-[#C04A1D] border border-orange-200/80">
                 <ShieldCheck size={14} className="text-[#DE5C2B]" /> AI Visa Officer Simulator
               </div>
               <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
@@ -493,7 +493,7 @@ const AiVisaInterviewPrep = ({ studentProfile = {} }) => {
                   <Bot size={22} />
                 </div>
                 <div>
-                  <span className="text-[10px] font-black uppercase tracking-wider text-[#C2410C]">Senior Consular Visa Officer</span>
+                  <span className="text-[10px] font-black uppercase tracking-wider text-[#C04A1D]">Senior Consular Visa Officer</span>
                   <h4 className="text-sm font-black text-slate-900">Question #{currentQuestionIdx + 1}</h4>
                 </div>
               </div>
@@ -643,7 +643,7 @@ const AiVisaInterviewPrep = ({ studentProfile = {} }) => {
                 {/* Model Answer */}
                 {activeFeedback.modelAnswer && (
                   <div className="p-4 rounded-xl bg-[#FFF7F3] border border-orange-100 space-y-1.5">
-                    <h6 className="text-[11px] font-black text-[#9A3412] uppercase tracking-wider flex items-center gap-1.5">
+                    <h6 className="text-[11px] font-black text-[#86351A] uppercase tracking-wider flex items-center gap-1.5">
                       <Sparkles size={14} className="text-[#DE5C2B]" /> Ideal High-Conviction Model Answer
                     </h6>
                     <p className="text-xs font-medium text-slate-800 italic leading-relaxed bg-white p-3 rounded-lg border border-orange-100">
@@ -701,7 +701,7 @@ const AiVisaInterviewPrep = ({ studentProfile = {} }) => {
               {questionEvaluations.map((item, i) => (
                 <div key={i} className="p-5 rounded-2xl bg-slate-50 border border-slate-200 space-y-3">
                   <div className="flex items-center justify-between">
-                    <span className="text-xs font-black text-[#C2410C] uppercase tracking-wider">Question #{i+1}</span>
+                    <span className="text-xs font-black text-[#C04A1D] uppercase tracking-wider">Question #{i+1}</span>
                     <span className="px-2.5 py-0.5 rounded-lg text-xs font-black bg-white text-slate-800 border border-slate-200">
                       Score: {item.evaluation.score}/10
                     </span>

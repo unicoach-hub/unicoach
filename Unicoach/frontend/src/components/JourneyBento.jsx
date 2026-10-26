@@ -155,12 +155,12 @@ const useLoop = (ms) => {
 
 // ── 1. Shortlist: campuses swipe through the middle; each one lands as Dream, Target or Safe and the dart hits ──
 const SHORTLIST = [
-  { img: 'monash', name: 'Monash University', fit: 'Target', color: '#F59E0B' },
-  { img: 'toronto', name: 'University of Toronto', fit: 'Dream', color: '#7C3AED' },
-  { img: 'trinity', name: 'Trinity College Dublin', fit: 'Target', color: '#F59E0B' },
-  { img: 'deakin', name: 'Deakin University', fit: 'Safe', color: '#10B981' },
-  { img: 'northeastern', name: 'Northeastern University', fit: 'Dream', color: '#7C3AED' },
-  { img: 'coventry', name: 'Coventry University', fit: 'Safe', color: '#10B981' },
+  { img: 'monash', name: 'Monash University', fit: 'Target', color: '#B48C42' },
+  { img: 'toronto', name: 'University of Toronto', fit: 'Dream', color: '#485A79' },
+  { img: 'trinity', name: 'Trinity College Dublin', fit: 'Target', color: '#B48C42' },
+  { img: 'deakin', name: 'Deakin University', fit: 'Safe', color: '#558563' },
+  { img: 'northeastern', name: 'Northeastern University', fit: 'Dream', color: '#485A79' },
+  { img: 'coventry', name: 'Coventry University', fit: 'Safe', color: '#558563' },
 ];
 const ShortlistArt = () => {
   const { ref, tick, go, hover } = useLoop(2400);
@@ -279,7 +279,7 @@ const FundingMeter = ({ f }) => {
       <p className="text-[13.5px] font-semibold text-[#2A1A12]">{f.label}</p>
       <div className="mt-3 flex items-center gap-3">
         <div className="flex-1 h-2 rounded-full bg-slate-100 overflow-hidden">
-          <div className="h-full rounded-full transition-[width] duration-100" style={{ width: `${shown}%`, background: done ? '#10B981' : '#5B5BF7' }} />
+          <div className="h-full rounded-full transition-[width] duration-100" style={{ width: `${shown}%`, background: done ? '#558563' : '#5B5BF7' }} />
         </div>
         <span className="text-[17px] font-bold text-[#2A1A12] tabular-nums">{shown}%</span>
       </div>
@@ -366,7 +366,7 @@ const SopArt = () => {
         <div className="flex items-center gap-1.5 px-3 h-7 border-b border-slate-100 bg-slate-50/80">
           <span className="w-2 h-2 rounded-full bg-[#FF5F57]" /><span className="w-2 h-2 rounded-full bg-[#FEBC2E]" /><span className="w-2 h-2 rounded-full bg-[#28C840]" />
           <span className="ml-2 text-[10.5px] font-semibold text-slate-500 truncate">SOP_TU_Munich.docx</span>
-          <span className={`ml-auto text-[10px] font-semibold whitespace-nowrap ${reviewed ? 'text-emerald-600' : 'text-[#7C3AED]'}`}>{paused ? 'Paused' : status}</span>
+          <span className={`ml-auto text-[10px] font-semibold whitespace-nowrap ${reviewed ? 'text-emerald-600' : 'text-[#485A79]'}`}>{paused ? 'Paused' : status}</span>
         </div>
         <div className="px-3.5 pt-2 relative">
           <div className="flex items-center justify-between mb-1">
@@ -375,13 +375,13 @@ const SopArt = () => {
             <span className="flex items-center gap-1.5 text-[9.5px] font-semibold text-slate-500">
               Strength
               <span className="w-12 h-1.5 rounded-full bg-slate-100 overflow-hidden">
-                <span className="block h-full rounded-full transition-all duration-300" style={{ width: `${score}%`, background: score > 85 ? '#10B981' : '#F59E0B' }} />
+                <span className="block h-full rounded-full transition-all duration-300" style={{ width: `${score}%`, background: score > 85 ? '#558563' : '#B48C42' }} />
               </span>
               <span className={score > 85 ? 'text-emerald-600' : 'text-amber-600'}>{score}</span>
             </span>
           </div>
           {shown.map((line, i) => {
-            let body = <span className={reviewed && i === 3 ? 'bg-[#FEF3C7] rounded-sm' : ''}>{line}</span>;
+            let body = <span className={reviewed && i === 3 ? 'bg-[#F5ECD6] rounded-sm' : ''}>{line}</span>;
             // tracked change on the first line: "took apart" → "dismantled"
             if (i === 0 && line.includes('took apart')) {
               const [pre, post] = line.split('took apart');
@@ -401,7 +401,7 @@ const SopArt = () => {
             return (
               <p key={i} className="text-[10.5px] leading-[1.55] text-slate-600 whitespace-nowrap overflow-hidden">
                 {body}
-                {i === (cursorLine === -1 ? 3 : cursorLine) && typing && <span className="inline-block w-[1.5px] h-[11px] bg-[#7C3AED] align-middle ml-px animate-pulse" />}
+                {i === (cursorLine === -1 ? 3 : cursorLine) && typing && <span className="inline-block w-[1.5px] h-[11px] bg-[#485A79] align-middle ml-px animate-pulse" />}
               </p>
             );
           })}
@@ -410,10 +410,10 @@ const SopArt = () => {
             initial={false}
             animate={{ opacity: commented && !reviewed ? 1 : 0, x: commented && !reviewed ? 0 : 12 }}
             transition={{ type: 'spring', stiffness: 260, damping: 20 }}
-            className="absolute right-2 bottom-[-34px] flex items-start gap-1.5 bg-[#F5F3FF] border border-[#DDD6FE] rounded-xl px-2 py-1.5 shadow-sm pointer-events-none"
+            className="absolute right-2 bottom-[-34px] flex items-start gap-1.5 bg-[#F1F4F8] border border-[#C4D0E1] rounded-xl px-2 py-1.5 shadow-sm pointer-events-none"
           >
-            <span className="w-4 h-4 rounded-full bg-[#7C3AED] text-white text-[8px] font-bold grid place-items-center shrink-0">P</span>
-            <span className="text-[9.5px] leading-tight text-[#4C1D95]"><b>Prachi</b> · mentor<br />Strong opening, keep it 👌</span>
+            <span className="w-4 h-4 rounded-full bg-[#485A79] text-white text-[8px] font-bold grid place-items-center shrink-0">P</span>
+            <span className="text-[9.5px] leading-tight text-[#273142]"><b>Prachi</b> · mentor<br />Strong opening, keep it 👌</span>
           </motion.div>
         </div>
       </div>
@@ -424,7 +424,7 @@ const SopArt = () => {
         transition={{ type: 'spring', stiffness: 260, damping: 20 }}
       >
         <Chip className="w-full px-4 py-3 flex items-center gap-3">
-          <span className="w-9 h-9 rounded-xl bg-[#7C3AED] text-white grid place-items-center shrink-0">
+          <span className="w-9 h-9 rounded-xl bg-[#485A79] text-white grid place-items-center shrink-0">
             <Check size={18} strokeWidth={3} />
           </span>
           <span className="min-w-0">

@@ -174,7 +174,7 @@ const ConfettiCanvas = () => {
     
     let animationFrameId;
     let particles = [];
-    const colors = ['#f43f5e', '#DE5C2B', '#10b981', '#f59e0b', '#8b5cf6', '#ec4899'];
+    const colors = ['#B3604E', '#DE5C2B', '#558563', '#B48C42', '#5A7094', '#B3604E'];
     
     const resizeCanvas = () => {
       canvas.width = canvas.parentElement.clientWidth;
@@ -3523,7 +3523,7 @@ ${name || 'Candidate'}`;
                           className="text-4xl md:text-5xl drop-shadow-lg select-none"
                           style={{
                             filter: isBoosted 
-                              ? 'drop-shadow(0 0 10px #f97316) drop-shadow(0 0 20px #ef4444)' 
+                              ? 'drop-shadow(0 0 10px #DE5C2B) drop-shadow(0 0 20px #ef4444)' 
                               : isCrashed 
                               ? 'grayscale(0.8) sepia(0.3)' 
                               : 'none',
@@ -3572,7 +3572,7 @@ ${name || 'Candidate'}`;
                             cy="50" 
                             r="40" 
                             fill="transparent" 
-                            stroke={wpm > 80 ? '#f43f5e' : wpm > 50 ? '#f59e0b' : '#4f46e5'} 
+                            stroke={wpm > 80 ? '#B3604E' : wpm > 50 ? '#B48C42' : '#DE5C2B'} 
                             strokeWidth="8"
                             strokeDasharray="251.2"
                             animate={{ strokeDashoffset: 251.2 - (251.2 * Math.min(120, wpm)) / 120 }}

@@ -349,7 +349,7 @@ const CourseDetailsPage = () => {
             className="inline-flex items-center gap-1.5 text-xs font-bold text-slate-700 hover:text-blue-600 transition bg-white px-3 py-1.5 rounded-lg border border-slate-200/80 shadow-2xs cursor-pointer active:scale-95"
           >
             <ArrowLeft size={14} />
-            <span>Back<span className="hidden sm:inline"> to Search Programs</span></span>
+            <span>Back<span className="hidden sm:inline"> to Course Finder</span></span>
           </button>
 
           <div className="flex items-center gap-2">
@@ -368,7 +368,7 @@ const CourseDetailsPage = () => {
 
             <Link
               to={`/contact?university=${encodeURIComponent(uni.name)}&course=${encodeURIComponent(program.title)}`}
-              className="px-3 py-1.5 rounded-lg text-xs font-bold bg-[#1E40AF] hover:bg-blue-700 text-white transition flex items-center gap-1.5 shadow-xs shrink-0 active:scale-95"
+              className="px-3 py-1.5 rounded-lg text-xs font-bold bg-[#86351A] hover:bg-blue-700 text-white transition flex items-center gap-1.5 shadow-xs shrink-0 active:scale-95"
             >
               <Sparkles size={13} />
               <span><span className="hidden sm:inline">Free </span>Application Support</span>
@@ -388,7 +388,7 @@ const CourseDetailsPage = () => {
             <div className="bg-white rounded-xl border border-slate-200 p-5 sm:p-6 shadow-xs space-y-4">
               
               {/* University Header Banner with Crest Logo & Verified Badge (No duplicate name!) */}
-              <div className="bg-gradient-to-r from-[#4C1D95] via-[#581c87] to-[#3B0764] rounded-xl p-4 sm:p-5 text-white flex items-center gap-3.5 shadow-sm relative overflow-hidden">
+              <div className="bg-gradient-to-r from-[#273142] via-[#273142] to-[#151B25] rounded-xl p-4 sm:p-5 text-white flex items-center gap-3.5 shadow-sm relative overflow-hidden">
                 <div className="absolute top-0 right-0 w-28 h-28 bg-white/5 rounded-full blur-xl pointer-events-none" />
                 {/* University Crest / Logo */}
                 <div className="w-14 h-14 rounded-xl bg-white p-2 flex items-center justify-center shrink-0 shadow-sm border border-white/20">
@@ -437,7 +437,7 @@ const CourseDetailsPage = () => {
                 {/* Ranking pill: only when the rank was imported from an official ranking file */}
                 {ranking ? (
                   <div className="bg-[#EBF3FE] rounded-xl p-3 flex items-center gap-3 border border-blue-100">
-                    <span className="px-3 py-1 rounded-lg bg-[#1E3A8A] text-white font-black text-xs shadow-xs">
+                    <span className="px-3 py-1 rounded-lg bg-[#6B2C17] text-white font-black text-xs shadow-xs">
                       {ranking.label}
                     </span>
                     <span className="font-semibold text-slate-700 text-xs">

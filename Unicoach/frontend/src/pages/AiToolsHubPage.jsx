@@ -12,6 +12,12 @@ import Interactive3DGrid from '../components/Interactive3DGrid';
 import { useLead } from '../context/LeadContext';
 import { HeroBackButton } from '../components/ui/BackButton';
 
+// Calm paper panels with faint ruled lines instead of stock / AI photos
+const PAPER_PANEL = {
+  background: '#F6F3EC',
+  backgroundImage: 'repeating-linear-gradient(0deg, transparent 0 23px, rgba(22,19,15,0.05) 23px 24px)',
+};
+
 const FILTER_CATEGORIES = [
   { id: 'all', label: 'All AI Tools' },
   { id: 'admissions', label: '🎓 University & Scholarships' },
@@ -109,7 +115,7 @@ const AiToolsHubPage = () => {
 
           {/* ════ CARD 1: AI SOP WRITER (Bento 2-Col Wide with Split Image) ════ */}
           {(activeCategory === 'all' || activeCategory === 'documents') && (
-            <div className="md:col-span-2 bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/90 shadow-2xs hover:shadow-xl hover:border-purple-300 transition-all duration-300 flex flex-col justify-between group relative overflow-hidden">
+            <div className="md:col-span-2 bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/90 shadow-2xs hover:shadow-xl hover:border-slate-300 transition-all duration-300 flex flex-col justify-between group relative overflow-hidden">
               
               {/* Subtle Ambient Card Gradient */}
               <div className="absolute top-0 right-0 w-80 h-80 bg-purple-100/30 rounded-full blur-3xl pointer-events-none" />
@@ -203,7 +209,7 @@ const AiToolsHubPage = () => {
                     </span>
                     <Link
                       to="/ai-tools/sop-generator"
-                      className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-purple-600 hover:bg-purple-700 text-white font-bold text-xs shadow-md shadow-purple-600/25 transition-all"
+                      className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#16130F] hover:bg-[#DE5C2B] text-white font-bold text-xs shadow-sm transition-all"
                     >
                       <span>Launch AI SOP Writer</span>
                       <ArrowRight size={14} />
@@ -212,14 +218,9 @@ const AiToolsHubPage = () => {
 
                 </div>
 
-                {/* Right Visual Image (5 cols) */}
-                <div className="lg:col-span-5 relative h-64 sm:h-72 lg:h-full min-h-[250px] rounded-2xl overflow-hidden border border-purple-100 shadow-md">
-                  <img
-                    src="/images/story_step2_sop.webp"
-                    alt="Student Writing Statement of Purpose with AI"
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950/85 via-slate-950/20 to-transparent" />
+                {/* Right visual: paper panel (5 cols) */}
+                <div className="lg:col-span-5 relative h-64 sm:h-72 lg:h-full min-h-[250px] rounded-2xl overflow-hidden border border-[#ECE6DA]" style={PAPER_PANEL}>
+                  <FileText aria-hidden="true" strokeWidth={0.9} className="absolute left-1/2 top-[42%] -translate-x-1/2 -translate-y-1/2 w-40 h-40 text-[#16130F]/[0.12] group-hover:scale-105 transition-transform duration-500" />
                   
                   {/* Floating Badges */}
                   <div className="absolute top-3 right-3 bg-white/95 backdrop-blur-md px-2.5 py-1 rounded-full text-[10.5px] font-extrabold text-purple-700 shadow-2xs border border-purple-200">
@@ -244,31 +245,26 @@ const AiToolsHubPage = () => {
 
           {/* ════ CARD 2: AI VISA MOCK INTERVIEW SIMULATOR (1-Col with Photo Header) ════ */}
           {(activeCategory === 'all' || activeCategory === 'interview-exams') && (
-            <div className="bg-white rounded-3xl p-5 sm:p-6 border border-slate-200/90 shadow-2xs hover:shadow-xl hover:border-emerald-300 transition-all duration-300 flex flex-col justify-between group overflow-hidden">
+            <div className="bg-white rounded-3xl p-5 sm:p-6 border border-slate-200/90 shadow-2xs hover:shadow-xl hover:border-slate-300 transition-all duration-300 flex flex-col justify-between group overflow-hidden">
               
               <div className="space-y-3.5">
                 
-                {/* Visual Header Image Banner */}
-                <div className="relative h-40 -mx-5 sm:-mx-6 -mt-5 sm:-mt-6 mb-1 overflow-hidden bg-slate-100">
-                  <img
-                    src="/images/story_step4_visa.webp"
-                    alt="AI Visa Mock Interview Session"
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/35 to-transparent" />
-                  
+                {/* Paper header */}
+                <div className="relative h-40 -mx-5 sm:-mx-6 -mt-5 sm:-mt-6 mb-1 overflow-hidden border-b border-[#ECE6DA]" style={PAPER_PANEL}>
+                  <Mic aria-hidden="true" strokeWidth={1} className="absolute -right-5 -bottom-8 w-48 h-48 text-[#16130F]/[0.08] group-hover:scale-105 transition-transform duration-500" />
+
                   <div className="absolute top-3 left-3 flex items-center gap-2">
-                    <div className="w-8 h-8 rounded-xl bg-emerald-500 text-white flex items-center justify-center shadow-md">
+                    <div className="w-8 h-8 rounded-xl bg-white text-[#16130F] border border-[#E6E0D4] flex items-center justify-center shadow-sm">
                       <Mic size={16} />
                     </div>
-                    <span className="text-xs font-black text-white drop-shadow">US F-1 & Consular Simulator</span>
+                    <span className="text-xs font-black text-[#16130F]">US F-1 & Consular Simulator</span>
                   </div>
 
-                  <div className="absolute bottom-2.5 left-3 right-3 flex items-center justify-between text-white text-[11px]">
-                    <span className="bg-emerald-500/85 backdrop-blur-md px-2 py-0.5 rounded text-[10px] font-bold">
+                  <div className="absolute bottom-2.5 left-3 right-3 flex items-center justify-between text-[11px]">
+                    <span className="bg-white border border-[#E6E0D4] text-[#16130F] px-2 py-0.5 rounded text-[10px] font-bold">
                       VO Question Bank
                     </span>
-                    <span className="text-emerald-300 font-bold">Speech & Risk Scorer</span>
+                    <span className="text-[#5B544A] font-semibold">Speech & Risk Scorer</span>
                   </div>
                 </div>
 
@@ -316,7 +312,7 @@ const AiToolsHubPage = () => {
               <div className="pt-4 border-t border-slate-100">
                 <Link
                   to="/ai-tools/visa-prep"
-                  className="w-full inline-flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shadow-md shadow-emerald-600/20 transition-all"
+                  className="w-full inline-flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl bg-[#16130F] hover:bg-[#DE5C2B] text-white font-bold text-xs shadow-sm transition-all"
                 >
                   <span>Start Mock Interview</span>
                   <ArrowRight size={14} />
@@ -328,31 +324,26 @@ const AiToolsHubPage = () => {
 
           {/* ════ CARD 3: IELTS AI EXAMINER (1-Col with Photo Header) ════ */}
           {(activeCategory === 'all' || activeCategory === 'interview-exams') && (
-            <div className="bg-white rounded-3xl p-5 sm:p-6 border border-slate-200/90 shadow-2xs hover:shadow-xl hover:border-teal-300 transition-all duration-300 flex flex-col justify-between group overflow-hidden">
+            <div className="bg-white rounded-3xl p-5 sm:p-6 border border-slate-200/90 shadow-2xs hover:shadow-xl hover:border-slate-300 transition-all duration-300 flex flex-col justify-between group overflow-hidden">
               
               <div className="space-y-3.5">
                 
-                {/* Visual Header Image Banner */}
-                <div className="relative h-40 -mx-5 sm:-mx-6 -mt-5 sm:-mt-6 mb-1 overflow-hidden bg-slate-100">
-                  <img
-                    src="https://images.unsplash.com/photo-1434030216411-0b793f4b4173?auto=format&fit=crop&w=800&q=80"
-                    alt="IELTS Preparation and AI Writing Evaluation"
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/35 to-transparent" />
-                  
+                {/* Paper header */}
+                <div className="relative h-40 -mx-5 sm:-mx-6 -mt-5 sm:-mt-6 mb-1 overflow-hidden border-b border-[#ECE6DA]" style={PAPER_PANEL}>
+                  <Sparkles aria-hidden="true" strokeWidth={1} className="absolute -right-5 -bottom-8 w-48 h-48 text-[#16130F]/[0.08] group-hover:scale-105 transition-transform duration-500" />
+
                   <div className="absolute top-3 left-3 flex items-center gap-2">
-                    <div className="w-8 h-8 rounded-xl bg-teal-500 text-white flex items-center justify-center shadow-md">
+                    <div className="w-8 h-8 rounded-xl bg-white text-[#16130F] border border-[#E6E0D4] flex items-center justify-center shadow-sm">
                       <Sparkles size={16} />
                     </div>
-                    <span className="text-xs font-black text-white drop-shadow">Cambridge Criteria Examiner</span>
+                    <span className="text-xs font-black text-[#16130F]">Cambridge Criteria Examiner</span>
                   </div>
 
-                  <div className="absolute bottom-2.5 left-3 right-3 flex items-center justify-between text-white text-[11px]">
-                    <span className="bg-teal-500/85 backdrop-blur-md px-2 py-0.5 rounded text-[10px] font-bold">
+                  <div className="absolute bottom-2.5 left-3 right-3 flex items-center justify-between text-[11px]">
+                    <span className="bg-white border border-[#E6E0D4] text-[#16130F] px-2 py-0.5 rounded text-[10px] font-bold">
                       Task 1 & Task 2
                     </span>
-                    <span className="text-teal-300 font-bold">Instant Scoring</span>
+                    <span className="text-[#5B544A] font-semibold">Instant Scoring</span>
                   </div>
                 </div>
 
@@ -398,7 +389,7 @@ const AiToolsHubPage = () => {
               <div className="pt-4 border-t border-slate-100">
                 <Link
                   to="/ai-tools/ielts-evaluator"
-                  className="w-full inline-flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl bg-teal-600 hover:bg-teal-700 text-white font-bold text-xs shadow-md shadow-teal-600/20 transition-all"
+                  className="w-full inline-flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl bg-[#16130F] hover:bg-[#DE5C2B] text-white font-bold text-xs shadow-sm transition-all"
                 >
                   <span>Evaluate Essay Instantly</span>
                   <ArrowRight size={14} />
@@ -410,7 +401,7 @@ const AiToolsHubPage = () => {
 
           {/* ════ CARD 4: UNIVERSITY RADAR & SHORTLISTER (2-Col Wide with Split Image) ════ */}
           {(activeCategory === 'all' || activeCategory === 'admissions') && (
-            <div className="md:col-span-2 bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/90 shadow-2xs hover:shadow-xl hover:border-blue-300 transition-all duration-300 flex flex-col justify-between group relative overflow-hidden">
+            <div className="md:col-span-2 bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/90 shadow-2xs hover:shadow-xl hover:border-slate-300 transition-all duration-300 flex flex-col justify-between group relative overflow-hidden">
               
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
                 
@@ -464,7 +455,7 @@ const AiToolsHubPage = () => {
                     </span>
                     <Link
                       to="/search-programs"
-                      className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#DE5C2B] hover:bg-[#C04A1D] text-white font-bold text-xs shadow-md shadow-orange-500/20 transition-all"
+                      className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#16130F] hover:bg-[#DE5C2B] text-white font-bold text-xs shadow-sm transition-all"
                     >
                       <span>Launch University Radar</span>
                       <ArrowRight size={14} />
@@ -473,14 +464,9 @@ const AiToolsHubPage = () => {
 
                 </div>
 
-                {/* Right Visual Image (5 cols) */}
-                <div className="lg:col-span-5 relative h-64 sm:h-72 lg:h-full min-h-[250px] rounded-2xl overflow-hidden border border-orange-100 shadow-md">
-                  <img
-                    src="/images/story_step1_shortlisting.webp"
-                    alt="University Shortlisting and Campus Matching"
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950/85 via-slate-950/25 to-transparent" />
+                {/* Right visual: paper panel (5 cols) */}
+                <div className="lg:col-span-5 relative h-64 sm:h-72 lg:h-full min-h-[250px] rounded-2xl overflow-hidden border border-[#ECE6DA]" style={PAPER_PANEL}>
+                  <GraduationCap aria-hidden="true" strokeWidth={0.9} className="absolute left-1/2 top-[42%] -translate-x-1/2 -translate-y-1/2 w-40 h-40 text-[#16130F]/[0.12] group-hover:scale-105 transition-transform duration-500" />
                   
                   <div className="absolute top-3 right-3 bg-white/95 backdrop-blur-md px-2.5 py-1 rounded-full text-[10.5px] font-extrabold text-[#DE5C2B] shadow-2xs border border-orange-200">
                     1,500+ Global Unis
@@ -504,31 +490,26 @@ const AiToolsHubPage = () => {
 
           {/* ════ CARD 5: SCHOLARSHIPS TRACKER (1-Col with Photo Header) ════ */}
           {(activeCategory === 'all' || activeCategory === 'admissions') && (
-            <div className="bg-white rounded-3xl p-5 sm:p-6 border border-slate-200/90 shadow-2xs hover:shadow-xl hover:border-amber-300 transition-all duration-300 flex flex-col justify-between group overflow-hidden">
+            <div className="bg-white rounded-3xl p-5 sm:p-6 border border-slate-200/90 shadow-2xs hover:shadow-xl hover:border-slate-300 transition-all duration-300 flex flex-col justify-between group overflow-hidden">
               
               <div className="space-y-3.5">
                 
-                {/* Visual Header Image Banner */}
-                <div className="relative h-40 -mx-5 sm:-mx-6 -mt-5 sm:-mt-6 mb-1 overflow-hidden bg-slate-100">
-                  <img
-                    src="/images/story_step3_loans.webp"
-                    alt="Scholarship & Aid Radar"
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/35 to-transparent" />
-                  
+                {/* Paper header */}
+                <div className="relative h-40 -mx-5 sm:-mx-6 -mt-5 sm:-mt-6 mb-1 overflow-hidden border-b border-[#ECE6DA]" style={PAPER_PANEL}>
+                  <Award aria-hidden="true" strokeWidth={1} className="absolute -right-5 -bottom-8 w-48 h-48 text-[#16130F]/[0.08] group-hover:scale-105 transition-transform duration-500" />
+
                   <div className="absolute top-3 left-3 flex items-center gap-2">
-                    <div className="w-8 h-8 rounded-xl bg-amber-500 text-white flex items-center justify-center shadow-md">
+                    <div className="w-8 h-8 rounded-xl bg-white text-[#16130F] border border-[#E6E0D4] flex items-center justify-center shadow-sm">
                       <Award size={16} />
                     </div>
-                    <span className="text-xs font-black text-white drop-shadow">Live Cutoff Clocks</span>
+                    <span className="text-xs font-black text-[#16130F]">Live Cutoff Clocks</span>
                   </div>
 
-                  <div className="absolute bottom-2.5 left-3 right-3 flex items-center justify-between text-white text-[11px]">
-                    <span className="bg-amber-500/85 backdrop-blur-md px-2 py-0.5 rounded text-[10px] font-bold">
+                  <div className="absolute bottom-2.5 left-3 right-3 flex items-center justify-between text-[11px]">
+                    <span className="bg-white border border-[#E6E0D4] text-[#16130F] px-2 py-0.5 rounded text-[10px] font-bold">
                       450+ Active Grants
                     </span>
-                    <span className="text-amber-300 font-bold">100% Fee Waivers</span>
+                    <span className="text-[#5B544A] font-semibold">100% Fee Waivers</span>
                   </div>
                 </div>
 
@@ -544,8 +525,8 @@ const AiToolsHubPage = () => {
                 {/* Simulated Live Scholarship Card */}
                 <div className="bg-slate-50 rounded-2xl p-3 border border-slate-200/80 space-y-1.5">
                   <div className="flex items-center justify-between text-[11px] font-bold">
-                    <span className="text-amber-800">DAAD Helmut-Schmidt</span>
-                    <span className="text-rose-600 font-extrabold flex items-center gap-1">
+                    <span className="text-slate-900">DAAD Helmut-Schmidt</span>
+                    <span className="text-[#DE5C2B] font-extrabold flex items-center gap-1">
                       <Clock size={11} /> 14d : 08h left
                     </span>
                   </div>
@@ -558,7 +539,7 @@ const AiToolsHubPage = () => {
               <div className="pt-4 border-t border-slate-100">
                 <Link
                   to="/search-programs?highlight=scholarship"
-                  className="w-full inline-flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-bold text-xs shadow-md shadow-amber-600/20 transition-all"
+                  className="w-full inline-flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl bg-[#16130F] hover:bg-[#DE5C2B] text-white font-bold text-xs shadow-sm transition-all"
                 >
                   <span>Track 450+ Scholarships</span>
                   <ArrowRight size={14} />
@@ -570,31 +551,26 @@ const AiToolsHubPage = () => {
 
           {/* ════ CARD 6: 6-MONTH STRATEGIC ROADMAP (1-Col with Photo Header) ════ */}
           {(activeCategory === 'all' || activeCategory === 'documents') && (
-            <div className="bg-white rounded-3xl p-5 sm:p-6 border border-slate-200/90 shadow-2xs hover:shadow-xl hover:border-blue-300 transition-all duration-300 flex flex-col justify-between group overflow-hidden">
+            <div className="bg-white rounded-3xl p-5 sm:p-6 border border-slate-200/90 shadow-2xs hover:shadow-xl hover:border-slate-300 transition-all duration-300 flex flex-col justify-between group overflow-hidden">
               
               <div className="space-y-3.5">
                 
-                {/* Visual Header Image Banner */}
-                <div className="relative h-40 -mx-5 sm:-mx-6 -mt-5 sm:-mt-6 mb-1 overflow-hidden bg-slate-100">
-                  <img
-                    src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=800&q=80"
-                    alt="Study Abroad Journey Roadmap"
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/35 to-transparent" />
-                  
+                {/* Paper header */}
+                <div className="relative h-40 -mx-5 sm:-mx-6 -mt-5 sm:-mt-6 mb-1 overflow-hidden border-b border-[#ECE6DA]" style={PAPER_PANEL}>
+                  <Compass aria-hidden="true" strokeWidth={1} className="absolute -right-5 -bottom-8 w-48 h-48 text-[#16130F]/[0.08] group-hover:scale-105 transition-transform duration-500" />
+
                   <div className="absolute top-3 left-3 flex items-center gap-2">
-                    <div className="w-8 h-8 rounded-xl bg-[#DE5C2B] text-white flex items-center justify-center shadow-md">
+                    <div className="w-8 h-8 rounded-xl bg-white text-[#16130F] border border-[#E6E0D4] flex items-center justify-center shadow-sm">
                       <Compass size={16} />
                     </div>
-                    <span className="text-xs font-black text-white drop-shadow">Milestone Engine</span>
+                    <span className="text-xs font-black text-[#16130F]">Milestone Engine</span>
                   </div>
 
-                  <div className="absolute bottom-2.5 left-3 right-3 flex items-center justify-between text-white text-[11px]">
-                    <span className="bg-[#DE5C2B]/85 backdrop-blur-md px-2 py-0.5 rounded text-[10px] font-bold">
+                  <div className="absolute bottom-2.5 left-3 right-3 flex items-center justify-between text-[11px]">
+                    <span className="bg-white border border-[#E6E0D4] text-[#16130F] px-2 py-0.5 rounded text-[10px] font-bold">
                       Intake 2026 Ready
                     </span>
-                    <span className="text-orange-300 font-bold">Week-by-Week</span>
+                    <span className="text-[#5B544A] font-semibold">Week-by-Week</span>
                   </div>
                 </div>
 
@@ -628,7 +604,7 @@ const AiToolsHubPage = () => {
               <div className="pt-4 border-t border-slate-100">
                 <Link
                   to="/ai-tools/study-roadmap"
-                  className="w-full inline-flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl bg-[#DE5C2B] hover:bg-[#C04A1D] text-white font-bold text-xs shadow-md shadow-orange-500/20 transition-all"
+                  className="w-full inline-flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl bg-[#16130F] hover:bg-[#DE5C2B] text-white font-bold text-xs shadow-sm transition-all"
                 >
                   <span>Build Custom Timeline</span>
                   <ArrowRight size={14} />
@@ -640,31 +616,26 @@ const AiToolsHubPage = () => {
 
           {/* ════ CARD 7: ADMISSION & SCHOLARSHIP CALCULATOR (1-Col with Photo Header) ════ */}
           {(activeCategory === 'all' || activeCategory === 'admissions') && (
-            <div className="bg-white rounded-3xl p-5 sm:p-6 border border-slate-200/90 shadow-2xs hover:shadow-xl hover:border-rose-300 transition-all duration-300 flex flex-col justify-between group overflow-hidden">
+            <div className="bg-white rounded-3xl p-5 sm:p-6 border border-slate-200/90 shadow-2xs hover:shadow-xl hover:border-slate-300 transition-all duration-300 flex flex-col justify-between group overflow-hidden">
               
               <div className="space-y-3.5">
                 
-                {/* Visual Header Image Banner */}
-                <div className="relative h-40 -mx-5 sm:-mx-6 -mt-5 sm:-mt-6 mb-1 overflow-hidden bg-slate-100">
-                  <img
-                    src="/images/counselor_student_meeting.webp"
-                    alt="Admission Calculator and Profile Review"
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/35 to-transparent" />
-                  
+                {/* Paper header */}
+                <div className="relative h-40 -mx-5 sm:-mx-6 -mt-5 sm:-mt-6 mb-1 overflow-hidden border-b border-[#ECE6DA]" style={PAPER_PANEL}>
+                  <Calculator aria-hidden="true" strokeWidth={1} className="absolute -right-5 -bottom-8 w-48 h-48 text-[#16130F]/[0.08] group-hover:scale-105 transition-transform duration-500" />
+
                   <div className="absolute top-3 left-3 flex items-center gap-2">
-                    <div className="w-8 h-8 rounded-xl bg-rose-500 text-white flex items-center justify-center shadow-md">
+                    <div className="w-8 h-8 rounded-xl bg-white text-[#16130F] border border-[#E6E0D4] flex items-center justify-center shadow-sm">
                       <Calculator size={16} />
                     </div>
-                    <span className="text-xs font-black text-white drop-shadow">Admit & Aid Calculator</span>
+                    <span className="text-xs font-black text-[#16130F]">Admit & Aid Calculator</span>
                   </div>
 
-                  <div className="absolute bottom-2.5 left-3 right-3 flex items-center justify-between text-white text-[11px]">
-                    <span className="bg-rose-500/85 backdrop-blur-md px-2 py-0.5 rounded text-[10px] font-bold">
+                  <div className="absolute bottom-2.5 left-3 right-3 flex items-center justify-between text-[11px]">
+                    <span className="bg-white border border-[#E6E0D4] text-[#16130F] px-2 py-0.5 rounded text-[10px] font-bold">
                       Instant ROI
                     </span>
-                    <span className="text-rose-300 font-bold">60-Sec Evaluation</span>
+                    <span className="text-[#5B544A] font-semibold">60-Sec Evaluation</span>
                   </div>
                 </div>
 
@@ -697,7 +668,7 @@ const AiToolsHubPage = () => {
               <div className="pt-4 border-t border-slate-100">
                 <Link
                   to="/eligibility-calculator"
-                  className="w-full inline-flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs shadow-md shadow-rose-600/20 transition-all"
+                  className="w-full inline-flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl bg-[#16130F] hover:bg-[#DE5C2B] text-white font-bold text-xs shadow-sm transition-all"
                 >
                   <span>Check Admission Fit</span>
                   <ArrowRight size={14} />
