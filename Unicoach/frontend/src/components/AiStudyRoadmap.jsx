@@ -13,17 +13,34 @@ import { API_BASE_URL } from '../config';
 
 const API_URL = API_BASE_URL;
 
+// Upcoming intakes worked out from today (Spring = January, Fall = September), never one that has already started
+const upcomingIntakes = (from = new Date()) => {
+  const list = [];
+  for (let y = from.getFullYear(); y <= from.getFullYear() + 2; y += 1) {
+    list.push({ name: `Spring ${y}`, start: new Date(y, 0, 15), months: 'Jan/Feb' });
+    list.push({ name: `Fall ${y}`, start: new Date(y, 8, 1), months: 'Aug/Sept' });
+  }
+  const twoMonths = 60 * 24 * 3600 * 1000;
+  return list.filter((i) => i.start - from > twoMonths).slice(0, 4);
+};
+// Default: the first intake that still leaves about six months to prepare
+const defaultIntake = () => {
+  const list = upcomingIntakes();
+  const sixMonths = 182 * 24 * 3600 * 1000;
+  return (list.find((i) => i.start - new Date() >= sixMonths) || list[0]).name;
+};
+
 const AiStudyRoadmap = ({ studentProfile = {} }) => {
   const { user, token, openLoginModal } = useAuth();
 
   const [formData, setFormData] = useState({
-    targetIntake: studentProfile.preferredIntake || 'Fall 2026',
+    targetIntake: (upcomingIntakes().some((i) => i.name === studentProfile.preferredIntake) && studentProfile.preferredIntake) || defaultIntake(),
     targetCountry: studentProfile.dreamCountry || 'USA',
     targetDegree: studentProfile.highestEducation || "Master's",
     targetMajor: studentProfile.dreamCourse || 'Computer Science',
     currentStage: 'Exploring & Profile Building',
     targetExam: studentProfile.targetExam || 'IELTS',
-    currentGpa: studentProfile.targetScore || '8.0 CGPA'
+    currentGpa: studentProfile.targetScore || ''
   });
 
   const [loading, setLoading] = useState(false);
@@ -80,87 +97,8 @@ const AiStudyRoadmap = ({ studentProfile = {} }) => {
         throw new Error(data.error || 'Failed to generate roadmap');
       }
     } catch (err) {
-      // High quality offline fallback roadmap with full 6 months & urgent actions
-      const mockPhases = [
-        {
-          month: 'Month 1',
-          title: 'Profile Audit & Standardized Tests',
-          focus: 'IELTS / GRE Preparation & Document Collection',
-          tasks: [
-            `Register for ${formData.targetExam || 'IELTS'} test slot & complete diagnostic tests`,
-            `Shortlist 8-10 target universities in ${formData.targetCountry} across Safe, Target & Reach`,
-            'Order official undergraduate transcripts & degree certificates'
-          ]
-        },
-        {
-          month: 'Month 2',
-          title: 'SOP Drafting & Professor Recommendations',
-          focus: 'Statement of Purpose & 3 Academic LORs',
-          tasks: [
-            `Draft Statement of Purpose tailored to ${formData.targetMajor} curriculum`,
-            'Request 3 Letters of Recommendation from faculty and supervisors',
-            'Finalize updated international CV / Resume'
-          ]
-        },
-        {
-          month: 'Month 3',
-          title: 'University Portal Applications & Early Grants',
-          focus: 'Round 1 Submissions & Priority Deadlines',
-          tasks: [
-            `Submit formal online applications to primary ${formData.targetCountry} institutions`,
-            'Apply for university merit scholarships and tuition waivers',
-            'Track application receipt acknowledgments and portal login credentials'
-          ]
-        },
-        {
-          month: 'Month 4',
-          title: 'Offer Letters & Financial Documentation',
-          focus: 'Admit Evaluation & Education Loan Sanction',
-          tasks: [
-            'Review conditional and unconditional admission letters',
-            'Initiate education loan sanction letter and bank solvency letters',
-            'Accept primary university offer and pay initial enrollment deposit'
-          ]
-        },
-        {
-          month: 'Month 5',
-          title: 'Visa Filing, Biometrics & Interview',
-          focus: 'Student Visa / I-20 / CAS Documentation',
-          tasks: [
-            `Obtain I-20 / CAS / Admission letter from ${formData.targetCountry} university`,
-            'Pay visa application fees and book biometric appointment',
-            'Complete AI Mock Visa Interview practice sessions'
-          ]
-        },
-        {
-          month: 'Month 6',
-          title: 'Pre-Departure, Housing & Flight Booking',
-          focus: 'Flight Tickets, Accommodations & Forex',
-          tasks: [
-            'Receive stamped passport with student visa approval',
-            'Book student flights and reserve on-campus or private student housing',
-            'Obtain international student health insurance and multi-currency forex card'
-          ]
-        }
-      ];
-
-      const mockRoadmap = {
-        intakeTitle: `${formData.targetIntake} Intake – ${formData.targetMajor} in ${formData.targetCountry}`,
-        readinessRating: '78% Profile Maturity',
-        urgentActionItems: [
-          `Register for ${formData.targetExam || 'IELTS'} mock & diagnostic test`,
-          `Shortlist top 8 target universities in ${formData.targetCountry}`,
-          'Request 3 academic Letters of Recommendation (LOR)'
-        ],
-        criticalDeadlines: [
-          { milestone: "Priority University Applications", deadline: "Nov 15 - Dec 15" },
-          { milestone: "Scholarship Consideration Cutoff", deadline: "Jan 15" },
-          { milestone: "Visa Filing Window", deadline: "May - June" }
-        ],
-        phases: mockPhases,
-        timeline: mockPhases
-      };
-      setRoadmap(mockRoadmap);
+      // No sample roadmap on failure: a generic plan with wrong dates would mislead the student
+      setErrorMsg(err.message && !/fetch/i.test(err.message) ? err.message : 'Our AI planner is busy right now. Please try again in a minute.');
     } finally {
       setLoading(false);
     }
@@ -217,11 +155,7 @@ const AiStudyRoadmap = ({ studentProfile = {} }) => {
               value={formData.targetIntake}
               onChange={(val) => setFormData(prev => ({ ...prev, targetIntake: val }))}
               accent="indigo"
-              options={[
-                { value: 'Fall 2026', label: 'Fall 2026 (Aug/Sept)', shortLabel: 'Fall 2026', icon: <Calendar size={14} className="text-indigo-600" /> },
-                { value: 'Spring 2027', label: 'Spring 2027 (Jan/Feb)', shortLabel: 'Spring 2027', icon: <Calendar size={14} className="text-indigo-600" /> },
-                { value: 'Fall 2027', label: 'Fall 2027 (Aug/Sept)', shortLabel: 'Fall 2027', icon: <Calendar size={14} className="text-indigo-600" /> }
-              ]}
+              options={upcomingIntakes().map((i) => ({ value: i.name, label: `${i.name} (${i.months})`, shortLabel: i.name, icon: <Calendar size={14} className="text-indigo-600" /> }))}
             />
           </div>
 

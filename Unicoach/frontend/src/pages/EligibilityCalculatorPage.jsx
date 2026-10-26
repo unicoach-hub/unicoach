@@ -65,9 +65,9 @@ const SCHOLARSHIP_TIERS = [
     minScore: 55,
     maxScore: 65,
     title: 'Standard Entry Tier',
-    label: 'Partial Grants & Regional Waivers',
-    grantUsd: '$3,000 - $8,000',
-    percentWaiver: '10% - 25% Tuition Waiver',
+    label: 'Merit awards are less common at this score',
+    pctMin: 0, pctMax: 10,
+    percentWaiver: 'Up to 10% off tuition',
     color: 'slate',
     bg: 'bg-slate-100',
     border: 'border-slate-300',
@@ -77,9 +77,9 @@ const SCHOLARSHIP_TIERS = [
     minScore: 65,
     maxScore: 75,
     title: 'Global Merit Tier',
-    label: 'Dean & Department Merit Awards',
-    grantUsd: '$8,000 - $18,000',
-    percentWaiver: '25% - 40% Tuition Waiver',
+    label: 'Department merit awards',
+    pctMin: 10, pctMax: 25,
+    percentWaiver: '10% - 25% off tuition',
     color: 'blue',
     bg: 'bg-orange-50',
     border: 'border-blue-300',
@@ -89,9 +89,9 @@ const SCHOLARSHIP_TIERS = [
     minScore: 75,
     maxScore: 85,
     title: 'Global Excellence Tier',
-    label: 'High Distinction & Faculty Scholarships',
-    grantUsd: '$18,000 - $35,000',
-    percentWaiver: '40% - 70% Tuition Waiver',
+    label: 'Higher merit and faculty scholarships',
+    pctMin: 20, pctMax: 40,
+    percentWaiver: '20% - 40% off tuition',
     color: 'indigo',
     bg: 'bg-indigo-50',
     border: 'border-indigo-300',
@@ -100,10 +100,10 @@ const SCHOLARSHIP_TIERS = [
   {
     minScore: 85,
     maxScore: 100,
-    title: 'Chancellor / Full Ride Tier',
-    label: 'Full Tuition & Prestigious Government Grants',
-    grantUsd: '$35,000 - $65,000+',
-    percentWaiver: 'Up to 100% Fully Funded',
+    title: 'Top Merit Tier',
+    label: 'Top merit awards; full funding is rare and competitive',
+    pctMin: 30, pctMax: 50,
+    percentWaiver: '30% - 50% off tuition',
     color: 'emerald',
     bg: 'bg-emerald-50',
     border: 'border-emerald-300',
@@ -227,43 +227,26 @@ const EligibilityCalculatorPage = () => {
       || (normalizedPercentage >= 85 ? SCHOLARSHIP_TIERS[3] : SCHOLARSHIP_TIERS[0]);
   }, [normalizedPercentage]);
 
-  // Estimated Potential Scholarship Range (in USD and INR)
+  // Estimated scholarship range: same tier as the scale, in the destination's own currency
   const potentialGrant = useMemo(() => {
-    let minUsd = 0;
-    let maxUsd = 0;
-    let waiverPct = '20% - 35%';
-
-    if (normalizedPercentage >= 88) {
-      minUsd = Math.round(countryMeta.avgTuition * 0.7);
-      maxUsd = Math.round(countryMeta.avgTuition * 1.0);
-      waiverPct = '70% - 100% Full Waiver';
-    } else if (normalizedPercentage >= 78) {
-      minUsd = Math.round(countryMeta.avgTuition * 0.4);
-      maxUsd = Math.round(countryMeta.avgTuition * 0.7);
-      waiverPct = '40% - 70% Merit Waiver';
-    } else if (normalizedPercentage >= 65) {
-      minUsd = Math.round(countryMeta.avgTuition * 0.2);
-      maxUsd = Math.round(countryMeta.avgTuition * 0.4);
-      waiverPct = '20% - 40% Tuition Discount';
-    } else {
-      minUsd = Math.round(countryMeta.avgTuition * 0.1);
-      maxUsd = Math.round(countryMeta.avgTuition * 0.2);
-      waiverPct = '10% - 20% Entry Grant';
+    const t = currentTier;
+    const minLocal = Math.round(countryMeta.avgTuition * t.pctMin / 100);
+    const maxLocal = Math.round(countryMeta.avgTuition * t.pctMax / 100);
+    const lakh = (v) => Math.round((v * countryMeta.rateToInr) / 100000 * 10) / 10;
+    if (targetCountry === 'Germany') {
+      return { minUsd: 0, maxUsd: 0, minInrLakh: 0, maxInrLakh: 0, lowTuition: true,
+        waiverPct: 'Low or no tuition', formattedUsd: 'Low or no tuition', formattedInr: 'public universities' };
     }
-
-    const minInrLakh = Math.round((minUsd * countryMeta.rateToInr) / 100000 * 10) / 10;
-    const maxInrLakh = Math.round((maxUsd * countryMeta.rateToInr) / 100000 * 10) / 10;
-
     return {
-      minUsd,
-      maxUsd,
-      minInrLakh,
-      maxInrLakh,
-      waiverPct,
-      formattedUsd: `$${minUsd.toLocaleString()} – $${maxUsd.toLocaleString()}`,
-      formattedInr: `₹${minInrLakh}L – ₹${maxInrLakh} Lakh`
+      minUsd: minLocal,
+      maxUsd: maxLocal,
+      minInrLakh: lakh(minLocal),
+      maxInrLakh: lakh(maxLocal),
+      waiverPct: t.percentWaiver,
+      formattedUsd: `${countryMeta.currency}${minLocal.toLocaleString()} – ${countryMeta.currency}${maxLocal.toLocaleString()}`,
+      formattedInr: `₹${lakh(minLocal)}L – ₹${lakh(maxLocal)} Lakh`
     };
-  }, [normalizedPercentage, countryMeta]);
+  }, [currentTier, countryMeta, targetCountry]);
 
   // Evaluate Universities into Safe / Target / Dream with Financial Affordability Modeling
   const evaluatedUniversities = useMemo(() => {
@@ -299,23 +282,18 @@ const EligibilityCalculatorPage = () => {
       if (uni.rankingNum < 30) baseTuitionLocal = Math.round(countryMeta.avgTuition * 1.35);
       else if (uni.rankingNum > 100) baseTuitionLocal = Math.round(countryMeta.avgTuition * 0.75);
 
-      if (targetCountry === 'Germany') {
-        baseTuitionLocal = uni.isPublic ? 500 : 8000;
-      }
+      // Germany: public universities charge little or no tuition, so there is no merit discount to estimate
+      const lowTuitionCountry = targetCountry === 'Germany';
+      if (lowTuitionCountry) baseTuitionLocal = countryMeta.avgTuition;
 
-      // Estimate specific scholarship discount
-      let scholarshipDiscountLocal = 0;
-      let uniScholarship = 'Eligible for $4,000 Entry Grant';
-      if (normalizedPercentage >= 85) {
-        scholarshipDiscountLocal = Math.round(baseTuitionLocal * 0.65);
-        uniScholarship = `Eligible for ${countryMeta.currency}${scholarshipDiscountLocal.toLocaleString()} Dean Excellence Fellowship`;
-      } else if (normalizedPercentage >= 75) {
-        scholarshipDiscountLocal = Math.round(baseTuitionLocal * 0.40);
-        uniScholarship = `Eligible for ${countryMeta.currency}${scholarshipDiscountLocal.toLocaleString()} Merit Award`;
-      } else if (normalizedPercentage >= 65) {
-        scholarshipDiscountLocal = Math.round(baseTuitionLocal * 0.20);
-        uniScholarship = `Eligible for ${countryMeta.currency}${scholarshipDiscountLocal.toLocaleString()} Tuition Discount`;
-      }
+      // Estimated merit discount from the same tier as the banner (a range, not a named award)
+      const midPct = (currentTier.pctMin + currentTier.pctMax) / 2;
+      const scholarshipDiscountLocal = lowTuitionCountry ? 0 : Math.round(baseTuitionLocal * midPct / 100);
+      const uniScholarship = lowTuitionCountry
+        ? 'Low or no tuition at public universities; see DAAD scholarships'
+        : currentTier.pctMax <= 10
+          ? 'Merit scholarships are less common at this score'
+          : `Est. ${currentTier.percentWaiver} (about ${countryMeta.currency}${scholarshipDiscountLocal.toLocaleString()})`;
 
       const netTuitionLocal = Math.max(0, baseTuitionLocal - scholarshipDiscountLocal);
       const netTuitionInrLakh = Math.round((netTuitionLocal * countryMeta.rateToInr) / 100000 * 10) / 10;
@@ -335,7 +313,8 @@ const EligibilityCalculatorPage = () => {
         isWithinBudget,
         budgetDiff,
         estimatedScholarship: uniScholarship,
-        acceptanceOdds: Math.min(96, Math.max(25, Math.round(55 + scoreDiff * 1.8 + ieltsDiff * 6)))
+        // Typical cutoffs, not official data: keep the estimate away from near-certain numbers
+        acceptanceOdds: Math.min(85, Math.max(10, Math.round(50 + scoreDiff * 1.8 + ieltsDiff * 6)))
       };
 
       if (strictBudgetFilter && !isWithinBudget) {
@@ -356,7 +335,7 @@ const EligibilityCalculatorPage = () => {
       target: target.slice(0, 16),
       dream: dream.slice(0, 16)
     };
-  }, [normalizedPercentage, targetCountry, ieltsScore, annualBudgetInr, strictBudgetFilter, countryMeta]);
+  }, [normalizedPercentage, targetCountry, ieltsScore, annualBudgetInr, strictBudgetFilter, countryMeta, currentTier]);
 
   // Matching Scholarships List
   const matchingScholarships = useMemo(() => {
@@ -1153,7 +1132,9 @@ const EligibilityCalculatorPage = () => {
               </div>
 
               <p className="text-xs md:text-sm text-slate-300 font-semibold leading-relaxed max-w-3xl">
-                You qualify for the <strong>{currentTier.title}</strong>, unlocking an estimated <strong>{potentialGrant.waiverPct}</strong> across accredited {countryMeta.label} universities.
+                {potentialGrant.lowTuition
+                  ? <>Public universities in {countryMeta.label} charge little or no tuition, so there is no merit discount to estimate. For living costs, look at DAAD and other scholarships.</>
+                  : <>Students with a similar score usually fall in the <strong>{currentTier.title}</strong>, with merit awards of about <strong>{potentialGrant.waiverPct}</strong> at {countryMeta.label} universities. This is an estimate; each university decides its own awards.</>}
               </p>
             </div>
 
@@ -1175,7 +1156,7 @@ const EligibilityCalculatorPage = () => {
                 <div className="w-[30%] bg-slate-500/50 h-full border-r border-slate-900" title="50-65%: Entry Tier" />
                 <div className="w-[25%] bg-[#DE5C2B]/70 h-full border-r border-slate-900" title="65-75%: Merit Tier" />
                 <div className="w-[25%] bg-indigo-500/80 h-full border-r border-slate-900" title="75-85%: Excellence Tier" />
-                <div className="w-[20%] bg-emerald-500 h-full" title="85%+: Full Ride Tier" />
+                <div className="w-[20%] bg-emerald-500 h-full" title="85%+: Top Merit Tier" />
               </div>
 
               {/* Tier Indicator Labels */}
@@ -1190,7 +1171,7 @@ const EligibilityCalculatorPage = () => {
                   75-85% (Excellence)
                 </div>
                 <div className={normalizedPercentage >= 85 ? 'text-emerald-400 font-black bg-emerald-900/40 py-1 rounded-md' : 'text-slate-400'}>
-                  85%+ (Full Ride)
+                  85%+ (Top Merit)
                 </div>
               </div>
             </div>

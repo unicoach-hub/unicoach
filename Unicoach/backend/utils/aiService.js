@@ -228,54 +228,9 @@ ${essay}
     const cleaned = cleanJsonResponse(response.content);
     return JSON.parse(cleaned);
   } catch (err) {
-    console.warn('[AI Service] gradeIeltsEssay fallback activated:', err.message);
-    const count = (essay || '').trim().split(/\s+/).filter(Boolean).length;
-    const isUnderlength = count < 250;
-    const calculatedBand = isUnderlength ? (count < 150 ? 5.0 : 6.0) : 6.5;
-
-    return {
-      overallBand: calculatedBand,
-      criteria: {
-        taskAchievement: {
-          score: isUnderlength ? 5.5 : 6.5,
-          feedback: isUnderlength ? 'Essay is under the mandatory 250-word threshold, which limits full idea development.' : 'Addresses the key components of the prompt with clear examples.'
-        },
-        coherenceCohesion: {
-          score: 6.5,
-          feedback: 'Paragraphs show logical progression with appropriate linking words.'
-        },
-        lexicalResource: {
-          score: 6.5,
-          feedback: 'Good use of topic-related vocabulary with minor repetition.'
-        },
-        grammaticalAccuracy: {
-          score: 6.5,
-          feedback: 'Demonstrates a good mix of simple and complex sentence structures.'
-        }
-      },
-      wordCountAnalysis: {
-        count,
-        verdict: isUnderlength ? 'Underlength (< 250 words)' : 'Sufficient (250+ words)',
-        feedback: isUnderlength ? 'Aim for 260-290 words in the official exam.' : 'Good word count satisfying Task 2 requirements.'
-      },
-      strengths: [
-        'Clear central stance maintained throughout the response',
-        'Structured paragraph breakdown with introductory and concluding remarks',
-        'Good attempt at using academic transition connectors'
-      ],
-      improvements: [
-        isUnderlength ? 'Expand body paragraphs with specific supporting data and real-world case studies' : 'Incorporate more advanced collocations and idiomatic phrases',
-        'Vary complex grammatical structures like conditional sentences and passive voice',
-        'Ensure the concluding paragraph synthesizes main arguments rather than simply repeating them'
-      ],
-      vocabularyUpgrades: [
-        { original: "good result", improved: "favorable outcome / substantial payoff", context: "Body Paragraph" },
-        { original: "important thing", improved: "paramount consideration / pivotal factor", context: "Introduction" },
-        { original: "leads to problem", improved: "precipitates severe complications", context: "Body Paragraph" }
-      ],
-      enhancedSampleParagraph: "In conclusion, while proponents argue that tertiary education should remain publicly funded to foster egalitarian opportunity, fiscal realities necessitate sustainable cost-sharing mechanisms. A hybridized model combining income-contingent loans and government bursaries represents the most pragmatic paradigm.",
-      examinerSummary: "A competent academic writing effort showing solid language fundamentals. Focusing on lexical variety and in-depth argument expansion will comfortably elevate your score into Band 7.5+ territory."
-    };
+    console.warn('[AI Service] gradeIeltsEssay failed:', err.message);
+    // No made-up results: the controller returns an error and the student can try again
+    throw err;
   }
 }
 
@@ -296,36 +251,40 @@ async function generateSOP({
   specialInterests = '',
   tone = 'Academic & Professional'
 }) {
-  const applicantName = (fullName && fullName.trim()) || 'Applicant';
-  const destCountry = (targetCountry && targetCountry.trim()) || 'United States';
-  const destUni = (targetUniversity && targetUniversity.trim()) || `Premier University in ${destCountry}`;
-  const degree = (targetDegree && targetDegree.trim()) || "Master's";
-  const major = (targetMajor && targetMajor.trim()) || 'Computer Science';
-  const acad = (academicBackground && academicBackground.trim()) || `Bachelor's degree in ${major} with strong academic distinction`;
-  const gpa = (gpaOrScore && gpaOrScore.trim()) || '8.5 / 10 CGPA';
-  const work = (workExperience && workExperience.trim()) || `1-2 years of technical experience and specialized internships in ${major}`;
-  const projects = (keyProjects && keyProjects.trim()) || `Scalable architectures, end-to-end practical project implementations, and research publications`;
-  const goals = (careerGoals && careerGoals.trim()) || `Advance into a Senior Technical Specialist and lead high-impact industry innovations upon graduation`;
-  const interests = (specialInterests && specialInterests.trim()) || `Applied AI, distributed systems, and modern technological architecture`;
+  const given = (v) => (v && String(v).trim()) || '';
+  const applicantName = given(fullName) || 'Applicant';
+  const destCountry = given(targetCountry) || 'United States';
+  const destUni = given(targetUniversity);
+  const degree = given(targetDegree) || "Master's";
+  const major = given(targetMajor);
+  const NOT_GIVEN = 'Not provided';
+  const acad = given(academicBackground) || NOT_GIVEN;
+  const gpa = given(gpaOrScore) || NOT_GIVEN;
+  const work = given(workExperience) || NOT_GIVEN;
+  const projects = given(keyProjects) || NOT_GIVEN;
+  const goals = given(careerGoals) || NOT_GIVEN;
+  const interests = given(specialInterests) || NOT_GIVEN;
+  const uniLabel = destUni || `[University name]`;
 
   try {
-    const systemPrompt = `You are an elite Admissions Essay Consultant specializing in Ivy League and global top-ranked universities.
-You craft bespoke, emotionally resonant, intellectually rigorous, and compelling Statements of Purpose (SOPs) that guarantee admission.
+    const systemPrompt = `You are an experienced admissions essay coach who helps students write honest, specific Statements of Purpose (SOPs).
 
-CRITICAL INSTRUCTIONS:
-1. NEVER ask questions, NEVER request more information, and NEVER decline to generate.
-2. If any input is generic, invent realistic, highly compelling academic achievements and research interests suitable for the target program.
-3. Return STRICTLY a valid JSON object matching this schema without any introductory or conversational text:
+HONESTY RULES (most important):
+1. Use ONLY the facts the student gave below. Never invent grades, awards, rankings, employers, job titles, projects, publications, certifications, numbers or percentages.
+2. Where a detail is "Not provided" or too thin, write a clear placeholder in square brackets for the student to fill in, e.g. [Add one project: what you built, your role and the result]. Do not make the detail up.
+3. Do not promise admission or use claims like "guarantee".
+4. Write in first person, in a natural voice a real student could have written. Avoid clichés ("since childhood", "ever since I was young").
+5. Return STRICTLY a valid JSON object matching this schema without any introductory or conversational text:
 {
-  "title": "Statement of Purpose for ${degree} in ${major} at ${destUni}",
-  "wordCount": 850,
+  "title": "Statement of Purpose for ${degree} in ${major} at ${uniLabel}",
+  "wordCount": 700,
   "suggestedTone": "${tone}",
   "sopText": "Full formatted Statement of Purpose text with clear paragraph breaks (\\n\\n)",
   "sections": [
     { "heading": "1. Introduction & Academic Passion", "content": "..." },
     { "heading": "2. Academic Journey & Technical Foundation", "content": "..." },
     { "heading": "3. Professional / Research Experience", "content": "..." },
-    { "heading": "4. Why ${destUni}?", "content": "..." },
+    { "heading": "4. Why ${uniLabel}?", "content": "..." },
     { "heading": "5. Career Vision & Long-Term Trajectory", "content": "..." },
     { "heading": "6. Conclusion", "content": "..." }
   ],
@@ -336,10 +295,10 @@ CRITICAL INSTRUCTIONS:
   ]
 }`;
 
-    const userMessage = `Please generate an exceptional, complete Statement of Purpose:
+    const userMessage = `Write the Statement of Purpose from these facts only (use [placeholders] for anything missing):
 - Applicant Name: ${applicantName}
 - Target Destination: ${destCountry}
-- Target University: ${destUni}
+- Target University: ${destUni || 'Not provided'}
 - Target Program: ${degree} in ${major}
 - Academic Background: ${acad} (Score/GPA: ${gpa})
 - Work/Internship Experience: ${work}
@@ -357,34 +316,9 @@ CRITICAL INSTRUCTIONS:
     const cleaned = cleanJsonResponse(response.content);
     return JSON.parse(cleaned);
   } catch (err) {
-    console.warn('[AI Service] generateSOP fallback activated:', err.message);
-    const compiledSopText = `STATEMENT OF PURPOSE\n\n` +
-      `My desire to pursue a ${degree} in ${major} at ${destUni} stems from an enduring fascination with technological innovation and its transformative impact on global industry. Having built a strong foundation through my ${acad} (securing ${gpa}), I am eager to advance my technical capabilities through graduate coursework and cutting-edge research.\n\n` +
-      `During my undergraduate curriculum, I demonstrated rigorous academic dedication and spear-headed key capstone initiatives, most notably working on ${projects}. This hands-on problem solving solidified my analytical abilities and deepened my command over foundational methodologies.\n\n` +
-      `${work ? `In addition to coursework, my professional journey (${work}) exposed me to industrial development lifecycles, cross-functional collaboration, and the engineering discipline necessary to deliver mission-critical solutions.` : `Beyond the classroom, I actively conducted independent technical case studies and exploratory research, staying at the forefront of emerging paradigms.`}\n\n` +
-      `${destUni} stands out as the ideal catalyst for my academic trajectory due to its world-renowned faculty, interdisciplinary research environment in ${major}, and rich industry partnerships in ${destCountry}. I am particularly eager to collaborate with leading faculty members whose research directly mirrors my passion for ${interests}.\n\n` +
-      `Upon completing this degree, my aspiration is to serve as a ${goals}, bridging cutting-edge academic innovation with scalable industrial execution. I am confident that my work ethic, background, and academic curiosity will enable me to make a meaningful contribution to the scholar community at ${destUni}.\n\n` +
-      `Sincerely,\n${applicantName}`;
-
-    return {
-      title: `Statement of Purpose for ${degree} in ${major} at ${destUni}`,
-      wordCount: 780,
-      suggestedTone: tone,
-      sopText: compiledSopText,
-      sections: [
-        { heading: "1. Introduction & Academic Passion", content: `Clear statement of candidate motivation for pursuing ${degree} in ${major} at ${destUni}.` },
-        { heading: "2. Academic Journey & Technical Foundation", content: `Highlights undergraduate achievements (${acad}, ${gpa}) and core theoretical grounding.` },
-        { heading: "3. Professional / Research Experience", content: `Details key projects (${projects}) and industry contributions.` },
-        { heading: "4. Why " + destUni + "?", content: `Specific alignment with institutional faculty and research laboratories in ${destCountry}.` },
-        { heading: "5. Career Vision & Long-Term Trajectory", content: `Clear post-graduation vision to work as ${goals}.` },
-        { heading: "6. Conclusion", content: `Summary of readiness and commitment to academic excellence.` }
-      ],
-      customizationAdvice: [
-        `Research 2 professors at ${destUni} who published recent papers in ${interests} and mention their labs directly in paragraph 4.`,
-        `Quantify results in your project section (e.g. 'improved performance by 25%' or 'processed 10k records').`,
-        `Ensure clear alignment with post-study career goals in your target destination.`
-      ]
-    };
+    console.warn('[AI Service] generateSOP failed:', err.message);
+    // No made-up results: the controller returns an error and the student can try again
+    throw err;
   }
 }
 
@@ -581,28 +515,9 @@ Return STRICTLY a valid JSON object matching this schema:
     const cleaned = cleanJsonResponse(response.content);
     return JSON.parse(cleaned);
   } catch (err) {
-    console.warn('[AI Service] evaluateVisaAnswer fallback activated:', err.message);
-    const wordCount = (studentAnswer || '').trim().split(/\s+/).length;
-    const isGoodLength = wordCount >= 30 && wordCount <= 120;
-    const hasFinancesOrHome = /fund|sponsor|return|family|india|career|job|savings/i.test(studentAnswer || '');
-
-    const score = isGoodLength && hasFinancesOrHome ? 8.5 : isGoodLength ? 7.0 : 6.0;
-    const verdict = score >= 8 ? 'Likely Approved' : score >= 6.5 ? 'Borderline' : 'High Risk of Refusal';
-
-    return {
-      score,
-      confidenceRating: score >= 8 ? 'Strong' : 'Moderate',
-      verdict,
-      consularCritique: `Your response covers key points but should be concise and assertive. In a real visa interview for ${country}, clarity on your post-graduation return plan and financial credibility is paramount.`,
-      strengths: [
-        'Directly addressed the interviewer question',
-        'Maintains a positive and focused academic tone'
-      ],
-      redFlagsOrRisks: [
-        wordCount < 20 ? 'Response is too brief; explain your motivation with specific details.' : 'Avoid sounding memorized; speak naturally with confident eye contact.'
-      ],
-      modelAnswer: `I chose this university because its curriculum in ${studentProfile.targetMajor || 'this field'} directly aligns with my career vision. Upon completing my degree, I plan to return to India to work with leading tech firms where skilled specialists in this domain are in high demand.`
-    };
+    console.warn('[AI Service] evaluateVisaAnswer failed:', err.message);
+    // No made-up results: the controller returns an error and the student can try again
+    throw err;
   }
 }
 
@@ -669,9 +584,19 @@ async function generateStudyRoadmap({
   targetExam = 'IELTS',
   currentGpa = ''
 }) {
+  const today = new Date();
+  const todayLabel = today.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+  const isPostgrad = /master|mba|phd|doctor|pg|postgrad/i.test(targetDegree || '');
   try {
-    const systemPrompt = `You are an elite Study Abroad Strategist and Admissions Counselor.
-Create a personalized, week-by-week and month-by-month 6-Month Strategic Roadmap leading to the student's target intake.
+    const systemPrompt = `You are an experienced study abroad counsellor for Indian students.
+Today's date is ${todayLabel}. Create a month-by-month roadmap (up to 6 months) leading to the student's target intake.
+
+RULES:
+1. Work out how many months are left between today and the intake. If the intake has already started or is less than 3 months away, say so plainly in "intakeTitle" and "urgentActionItems", and plan for the next realistic intake instead.
+2. Every deadline must be in the future relative to today, with real month names (e.g. "15 Jan 2027"), not "Month 1" style placeholders.
+3. ${isPostgrad ? "This is a postgraduate program: applications go through each university's own graduate portal. Do NOT mention CommonApp, Early Decision or Early Action (those are US undergraduate only)." : 'This is an undergraduate program: use the correct system for the country (e.g. Common App for the USA, UCAS for the UK).'}
+4. Use the correct visa and document names for the destination (USA: I-20, SEVIS, DS-160, F-1; UK: CAS, Student visa; Canada: LOA, study permit; Australia: CoE, subclass 500; Germany: blocked account, national visa).
+5. Base "readinessRating" only on the student's current stage. Keep tasks specific and doable.
 
 Return STRICTLY a valid JSON object matching this schema:
 {
@@ -706,7 +631,7 @@ Return STRICTLY a valid JSON object matching this schema:
     {
       "month": "Month 3",
       "title": "Portal Submission & Scholarship Filings",
-      "focus": "Submitting CommonApp/University portals, paying application fees, and applying for department scholarships",
+      "focus": "Submitting university applications, paying application fees, and applying for department scholarships",
       "tasks": [
         "Submit Fall early/priority applications before priority deadlines",
         "Apply for university merit waivers and external government grants",
@@ -751,7 +676,7 @@ Return STRICTLY a valid JSON object matching this schema:
   ]
 }`;
 
-    const userMessage = `Student Details:
+    const userMessage = `Student Details (today is ${todayLabel}):
 - Target Intake: ${targetIntake}
 - Target Destination: ${targetCountry}
 - Target Program: ${targetDegree} in ${targetMajor}
@@ -768,83 +693,9 @@ Return STRICTLY a valid JSON object matching this schema:
     const cleaned = cleanJsonResponse(response.content);
     return JSON.parse(cleaned);
   } catch (err) {
-    console.warn('[AI Service] generateStudyRoadmap fallback activated:', err.message);
-    return {
-      intakeTitle: `Strategic Admission Roadmap for ${targetIntake} in ${targetCountry}`,
-      readinessRating: "78% Profile Maturity",
-      criticalDeadlines: [
-        { milestone: "Priority University Applications", deadline: "Nov 15 - Dec 15" },
-        { milestone: "Scholarship Consideration Cutoff", deadline: "Jan 15" },
-        { milestone: "Visa Filing Window", deadline: "May - June" }
-      ],
-      phases: [
-        {
-          month: "Month 1",
-          title: "Standardized Tests & Diagnostic Prep",
-          focus: "IELTS / GRE preparation, diagnostic mocks, and academic transcript procurement",
-          tasks: [
-            "Take official IELTS diagnostic mock test and target 7.0+",
-            "Order 3 official sets of sealed university transcripts",
-            "Finalize list of 10 ambitious, target, and safe universities"
-          ]
-        },
-        {
-          month: "Month 2",
-          title: "Application Documents & SOP Drafting",
-          focus: "Statement of Purpose, 3 Academic/Professional LORs, and Resume structuring",
-          tasks: [
-            "Draft bespoke Statement of Purpose tailored to top 3 choices",
-            "Reach out to 2 professors and 1 manager for recommendation letters",
-            "Refine CV according to country format (e.g. US 1-page standard)"
-          ]
-        },
-        {
-          month: "Month 3",
-          title: "Portal Submission & Scholarship Filings",
-          focus: "Submitting CommonApp/University portals, paying application fees, and applying for department scholarships",
-          tasks: [
-            "Submit Fall early/priority applications before priority deadlines",
-            "Apply for university merit waivers and external government grants",
-            "Track portal status for missing checklist items"
-          ]
-        },
-        {
-          month: "Month 4",
-          title: "Admit Offers & Financial Planning",
-          focus: "Evaluating acceptances, negotiating scholarships, and procuring education loan sanctions",
-          tasks: [
-            "Compare admit packages, tuition waivers, and post-study opportunities",
-            "Accept offer and pay enrollment confirmation deposit",
-            "Apply for education loan / sanction letter for visa proof"
-          ]
-        },
-        {
-          month: "Month 5",
-          title: "Visa Application & I-20 / CAS Issuance",
-          focus: "Procuring I-20/CAS, DS-160/Visa filing, and scheduling biometrics & consular mock interviews",
-          tasks: [
-            "Receive official I-20 (USA) / CAS letter (UK) / LOA (Canada)",
-            "Pay SEVIS / Visa fee and book appointment slot",
-            "Practice 5 mock visa interviews with UniCoach AI simulator"
-          ]
-        },
-        {
-          month: "Month 6",
-          title: "Pre-Departure, Forex & Housing",
-          focus: "Securing student housing, health insurance, international forex card, and flights",
-          tasks: [
-            "Book university on-campus dorm or verified off-campus shared apartment",
-            "Organize immunization records and international health cover",
-            "Attend UniCoach pre-departure briefing and book flight tickets"
-          ]
-        }
-      ],
-      urgentActionItems: [
-        "Complete IELTS mock exam to baseline current score",
-        "Identify 3 faculty references for LORs",
-        "Calculate exact tuition budget and funding split"
-      ]
-    };
+    console.warn('[AI Service] generateStudyRoadmap failed:', err.message);
+    // No made-up results: the controller returns an error and the student can try again
+    throw err;
   }
 }
 

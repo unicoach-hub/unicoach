@@ -29,7 +29,7 @@ const IeltsAiEvaluationModal = ({ isOpen, onClose, evaluation, essayPrompt, stud
 
   if (!isOpen || !evaluation) return null;
 
-  const band = evaluation.overallBand || 6.0;
+  const band = Number(evaluation.overallBand) || 0;
   const colors = getBandColor(band);
   const descriptor = getBandDescriptor(band);
 

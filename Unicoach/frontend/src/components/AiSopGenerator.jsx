@@ -22,13 +22,14 @@ const AiSopGenerator = ({ initialProfile = {} }) => {
     targetCountry: initialProfile.dreamCountry || 'USA',
     targetUniversity: '',
     targetDegree: "Master's",
-    targetMajor: initialProfile.dreamCourse || 'Computer Science',
-    academicBackground: initialProfile.highestEducation ? `${initialProfile.highestEducation} in Engineering/Science` : '',
-    gpaOrScore: initialProfile.targetScore || '8.0 CGPA / 75%',
-    workExperience: '1-2 years relevant technical/business experience',
-    keyProjects: 'Developed scalable application and led research project in final year',
-    careerGoals: 'Lead AI innovation and product architecture in global technology companies',
-    specialInterests: 'Machine Learning, Cloud Infrastructure, Sustainable Engineering',
+    // Start empty (the inputs show examples): pre-filled sample details would end up in a real SOP
+    targetMajor: initialProfile.dreamCourse || '',
+    academicBackground: '',
+    gpaOrScore: '',
+    workExperience: '',
+    keyProjects: '',
+    careerGoals: '',
+    specialInterests: '',
     tone: 'Academic & Professional'
   });
 
@@ -176,8 +177,10 @@ const AiSopGenerator = ({ initialProfile = {} }) => {
 
   const handleGenerate = async (e) => {
     if (e) e.preventDefault();
-    if (!formData.targetMajor || !formData.targetCountry) {
-      setErrorMsg('Please specify your Target Major and Destination Country.');
+    const missing = [['targetMajor', 'target program'], ['academicBackground', 'academic background'], ['careerGoals', 'career goal']]
+      .filter(([k]) => (formData[k] || '').trim().length < 3).map(([, label]) => label);
+    if (!formData.targetCountry || missing.length) {
+      setErrorMsg(`Please add your ${[...(!formData.targetCountry ? ['destination country'] : []), ...missing].join(', ')}. The SOP is built only from what you write here.`);
       return;
     }
 
@@ -232,21 +235,8 @@ const AiSopGenerator = ({ initialProfile = {} }) => {
       }
     } catch (err) {
       clearInterval(stepInterval);
-      // High-quality offline fallback SOP
-      const mockSop = {
-        sopText: `STATEMENT OF PURPOSE\n\nTarget Program: ${formData.targetDegree} in ${formData.targetMajor}\nDestination: ${formData.targetCountry}\nCandidate: ${formData.fullName || user?.name || 'Prospective Scholar'}\n\n1. ACADEMIC FOUNDATION & PASSION\nGrowing up with an avid fascination for technical problem-solving, I have continually sought to understand how modern computing and engineering systems operate and scale. During my academic studies in ${formData.academicBackground || 'Engineering & Applied Sciences'}, I maintained an academic record of ${formData.gpaOrScore}, with a focused emphasis on algorithmic foundations, mathematical modeling, and practical laboratory implementations.\n\n2. TECHNICAL EXPERTISE & PROJECTS\nTo bridge academic theory with real-world applications, I actively spearheaded specialized initiatives including: "${formData.keyProjects}". Working on these systems exposed me to core industry development pipelines, scalability constraints, and agile cross-functional collaboration.\n\n3. WHY THIS UNIVERSITY & DESTINATION\nSelecting ${formData.targetUniversity || 'a top-tier research institution'} in ${formData.targetCountry} represents a strategic milestone in my academic development. The department's distinguished faculty, world-class research laboratories, and rigorous graduate curriculum in ${formData.targetMajor} provide the exact ecosystem necessary to pursue cutting-edge research in ${formData.specialInterests}.\n\n4. LONG-TERM CAREER ASPIRATIONS\nFollowing graduation, my objective is to ${formData.careerGoals}. I am confident that the knowledge, mentorship, and global network acquired during this program will empower me to make significant contributions to the technology ecosystem.`,
-        sections: [
-          { title: "Introduction & Academic Foundation", content: `Having developed a deep conviction for ${formData.targetMajor} during my undergraduate years, I have continuously pursued rigorous coursework and analytical projects.` },
-          { title: "Technical Projects & Experience", content: `My hands-on experience includes: ${formData.keyProjects}. These endeavors solidified my engineering intuition and problem-solving velocity.` },
-          { title: "Target University Motivation", content: `The faculty research and state-of-the-art facilities at ${formData.targetUniversity || 'your institution'} in ${formData.targetCountry} uniquely align with my interest in ${formData.specialInterests}.` },
-          { title: "Future Vision & Career Goals", content: `Post-completion, I plan to: ${formData.careerGoals}, utilizing advanced knowledge gained during this postgraduate tenure.` }
-        ]
-      };
-      setSopResult(mockSop);
-      try {
-        const sops = JSON.parse(localStorage.getItem('unicoach_saved_sops') || '[]');
-        localStorage.setItem('unicoach_saved_sops', JSON.stringify([{ ...mockSop, createdAt: new Date().toISOString(), title: `${formData.targetDegree} in ${formData.targetMajor} (${formData.targetCountry})` }, ...sops.slice(0, 9)]));
-      } catch (e) {}
+      // No sample SOP on failure: a made-up essay is worse than none
+      setErrorMsg(err.message && !/fetch/i.test(err.message) ? err.message : 'Our AI writer is busy right now. Please try again in a minute.');
     } finally {
       setLoading(false);
     }

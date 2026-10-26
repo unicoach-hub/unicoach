@@ -88,6 +88,14 @@ exports.generateSop = async (req, res) => {
       tone
     } = req.body;
 
+    // An SOP built from nothing would be made up: ask for the basics first
+    const filled = (v) => typeof v === 'string' && v.trim().length >= 3;
+    const missing = [['targetMajor', 'program / major'], ['academicBackground', 'academic background'], ['careerGoals', 'career goals']]
+      .filter(([k]) => !filled(req.body[k])).map(([, label]) => label);
+    if (missing.length) {
+      return res.status(400).json({ error: `Please add your ${missing.join(', ')} so the SOP is about you.`, missing });
+    }
+
     const applicantName = fullName || req.user?.name || 'Applicant';
 
     const sopResult = await generateSOP({
@@ -95,7 +103,7 @@ exports.generateSop = async (req, res) => {
       targetCountry: targetCountry || 'USA',
       targetUniversity,
       targetDegree,
-      targetMajor: targetMajor || 'Computer Science',
+      targetMajor,
       academicBackground,
       gpaOrScore,
       workExperience,
@@ -266,12 +274,21 @@ exports.evaluateDetWriting = async (req, res) => {
 /**
  * POST /api/ai/generate-roadmap
  */
+// Next intake at least ~6 months away (Fall = September, Spring = January)
+function nextIntakeLabel(from = new Date()) {
+  const y = from.getFullYear();
+  const m = from.getMonth(); // 0 = Jan
+  if (m <= 2) return `Fall ${y}`;
+  if (m <= 6) return `Spring ${y + 1}`;
+  return `Fall ${y + 1}`;
+}
+
 exports.generateRoadmap = async (req, res) => {
   try {
     const { targetIntake, targetCountry, targetDegree, targetMajor, currentStage, targetExam, currentGpa } = req.body;
 
     const roadmap = await generateStudyRoadmap({
-      targetIntake: targetIntake || 'Fall 2026',
+      targetIntake: targetIntake || nextIntakeLabel(),
       targetCountry: targetCountry || req.user?.dreamCountry || 'USA',
       targetDegree: targetDegree || req.user?.highestEducation || "Master's",
       targetMajor: targetMajor || req.user?.dreamCourse || 'Computer Science',

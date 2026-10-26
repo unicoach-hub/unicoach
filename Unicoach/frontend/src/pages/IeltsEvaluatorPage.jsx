@@ -87,40 +87,8 @@ const IeltsEvaluatorPage = () => {
         throw new Error(data.error || 'Evaluation service unavailable');
       }
     } catch (err) {
-      // Dynamic Cambridge-aligned offline evaluation fallback
-      const calculatedBand = wordCount >= 250 ? '7.5' : wordCount >= 150 ? '6.5' : '6.0';
-      const mockEval = {
-        overallBand: calculatedBand,
-        taskAchievement: {
-          band: calculatedBand,
-          feedback: 'Clear central thesis presented with well-structured supporting arguments directly addressing both aspects of the prompt.'
-        },
-        coherenceCohesion: {
-          band: (parseFloat(calculatedBand) - 0.5).toFixed(1),
-          feedback: 'Logical flow of paragraphs with effective topic sentences and appropriate transition markers across sections.'
-        },
-        lexicalResource: {
-          band: calculatedBand,
-          feedback: 'Accurate usage of academic vocabulary and domain collocations with natural phrasing and minimal orthographic errors.'
-        },
-        grammaticalRange: {
-          band: (parseFloat(calculatedBand) - 0.5).toFixed(1),
-          feedback: 'Good mix of complex and compound sentence structures with strong control over punctuation and modal verbs.'
-        },
-        keyStrengths: [
-          'Well-articulated thesis statement matching Cambridge IELTS Academic Task 2 criteria',
-          'Rich vocabulary with precise academic collocations and connective devices',
-          'Objective and balanced analytical stance maintained throughout'
-        ],
-        improvementAreas: [
-          'Integrate at least one concrete real-world empirical example in the second body paragraph',
-          'Further vary passive voice structures in conclusion for maximum stylistic range'
-        ],
-        generalFeedback: `Solid attempt! Your essay demonstrates strong academic maturity with cohesive paragraph transitions. Scored at an estimated Band ${calculatedBand}.`
-      };
-      setEvaluation(mockEval);
-      setIsModalOpen(true);
-      setIsTimerRunning(false);
+      // No estimated band on failure: a guessed score would mislead the student
+      setErrorMsg(err.message && !/fetch/i.test(err.message) ? err.message : 'The AI examiner is busy right now. Please try again in a minute.');
     } finally {
       setLoading(false);
     }
