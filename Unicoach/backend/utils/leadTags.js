@@ -6,6 +6,8 @@ const clean = (v) => String(v || '').replace(/\s+/g, ' ').trim();
 // Free-text sources from the site's forms → one readable tag
 const SOURCE_TAGS = [
   [/^event:/i, null], // handled as an event tag below
+  [/^mentor:/i, 'Mentor referral'],
+  [/form:/i, 'Source: Custom form'],
   [/mentor/i, 'Booked mentor'],
   [/^signup/i, 'Signed up'],
   [/eligib/i, 'Source: Eligibility check'],

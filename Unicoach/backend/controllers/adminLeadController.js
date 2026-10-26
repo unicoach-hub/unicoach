@@ -5,6 +5,7 @@ const User = require('../models/User');
 const { sendEmail } = require('../utils/email');
 const { scopedStaffId, canAccessLead, actorName } = require('../utils/leadAccess');
 const { cleanManualTags, refreshAutoTags } = require('../utils/leadTags');
+const { phoneVariants } = require('../utils/leadMatching');
 
 /**
  * Helper to resolve the name shown in lead activity ("performed by")
@@ -25,6 +26,62 @@ async function counselorName(value) {
   if (!mongoose.Types.ObjectId.isValid(value)) return value;
   const staff = await Staff.findById(value).select('name').lean();
   return staff?.name || value;
+}
+
+async function attachDuplicateLeads(leads, req) {
+  if (!leads.length) return;
+  const emails = [...new Set(leads.map((lead) => String(lead.email || '').trim().toLowerCase()).filter((email) => email.includes('@')))];
+  const phones = [...new Set(leads.flatMap((lead) => phoneVariants(lead.phone)))];
+  const groupIds = [...new Set(leads.map((lead) => lead.duplicateGroupId).filter(Boolean))];
+  const conditions = [];
+  if (emails.length) conditions.push({ email: { $in: emails } });
+  if (phones.length) conditions.push({ phone: { $in: phones } });
+  if (groupIds.length) conditions.push({ duplicateGroupId: { $in: groupIds } }, { _id: { $in: groupIds } });
+  if (!conditions.length) return;
+
+  const candidates = await Lead.find({ $or: conditions })
+    .select('_id name email phone source latestSource createdAt duplicateGroupId assignedTo')
+    .lean();
+  const parent = candidates.map((_, i) => i);
+  const find = (i) => {
+    while (parent[i] !== i) {
+      parent[i] = parent[parent[i]];
+      i = parent[i];
+    }
+    return i;
+  };
+  const union = (a, b) => {
+    const rootA = find(a), rootB = find(b);
+    if (rootA !== rootB) parent[rootB] = rootA;
+  };
+  const firstByKey = new Map();
+  candidates.forEach((candidate, i) => {
+    const keys = [
+      ...phoneVariants(candidate.phone).map((phone) => `phone:${phone}`),
+      ...(String(candidate.email || '').includes('@') ? [`email:${String(candidate.email).trim().toLowerCase()}`] : []),
+      ...(candidate.duplicateGroupId ? [`group:${candidate.duplicateGroupId}`] : []),
+    ];
+    for (const key of keys) {
+      const previous = firstByKey.get(key);
+      if (previous === undefined) firstByKey.set(key, i);
+      else union(i, previous);
+    }
+  });
+  const byRoot = new Map();
+  candidates.forEach((candidate, i) => {
+    const root = find(i);
+    if (!byRoot.has(root)) byRoot.set(root, []);
+    byRoot.get(root).push(candidate);
+  });
+  const candidateById = new Map(candidates.map((candidate, i) => [String(candidate._id), i]));
+
+  for (const lead of leads) {
+    const index = candidateById.get(String(lead._id));
+    if (index === undefined) continue;
+    lead.duplicateLeads = (byRoot.get(find(index)) || [])
+      .filter((candidate) => String(candidate._id) !== String(lead._id) && canAccessLead(req, candidate))
+      .map(({ _id, name, source, latestSource, createdAt }) => ({ _id, name, source, latestSource, createdAt }));
+  }
 }
 
 /**
@@ -73,6 +130,7 @@ exports.getAllLeads = async (req, res) => {
     // Newest enquiry first: a returning student who just submitted another form (e.g. education loan)
     // moves back to the top instead of staying wherever their first enquiry put them
     const leads = await Lead.find(filter).select('-activities').lean();
+    await attachDuplicateLeads(leads, req);
     // Calls logged on each lead (activities are left out of the list, so count them separately)
     if (leads.length) try {
       const calls = await Lead.aggregate([
@@ -146,7 +204,9 @@ exports.getLeadById = async (req, res) => {
     const lead = await Lead.findById(req.params.id);
     if (!lead) return res.status(404).json({ message: 'Not found' });
     if (!canAccessLead(req, lead)) return res.status(404).json({ message: 'Not found' });
-    return res.json(lead);
+    const responseLead = lead.toObject ? lead.toObject() : { ...lead };
+    await attachDuplicateLeads([responseLead], req);
+    return res.json(responseLead);
   } catch (err) {
     console.error('Error fetching lead by ID:', err);
     return res.status(500).json({ error: 'Server error' });

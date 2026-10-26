@@ -10,6 +10,8 @@ const mockSupportFind = jest.fn();
 const mockSupportCount = jest.fn();
 const mockSupportDelete = jest.fn();
 const mockLeadFindOne = jest.fn();
+const mockLeadFind = jest.fn();
+const mockLeadUpdateMany = jest.fn();
 const mockLeadSaved = [];
 const mockSendEmail = jest.fn();
 const mockScoreLeadAI = jest.fn();
@@ -34,6 +36,8 @@ jest.mock('../models/Lead', () => {
     this.save = jest.fn(async () => { mockLeadSaved.push(this); return this; });
   }
   Lead.findOne = (...a) => mockLeadFindOne(...a);
+  Lead.find = (...a) => mockLeadFind(...a);
+  Lead.updateMany = (...a) => mockLeadUpdateMany(...a);
   return Lead;
 });
 jest.mock('../models/SupportRequest', () => ({
@@ -107,7 +111,7 @@ let errorSpy;
 let nowSpy;
 beforeEach(() => {
   [mockEventFindOne, mockEventUpdateOne, mockEventFindById, mockEventFindByIdAndUpdate, mockSupportCreate,
-    mockSupportFind, mockSupportCount, mockSupportDelete, mockLeadFindOne, mockSendEmail, mockScoreLeadAI].forEach((m) => m.mockReset());
+    mockSupportFind, mockSupportCount, mockSupportDelete, mockLeadFindOne, mockLeadFind, mockLeadUpdateMany, mockSendEmail, mockScoreLeadAI].forEach((m) => m.mockReset());
   mockEvents.length = 0;
   mockEvents.push(irelandEvent, draftEvent, endedEvent, startedNoEndEvent, undatedEvent);
   mockEventCreated.length = 0;
@@ -121,6 +125,9 @@ beforeEach(() => {
   mockEventUpdateOne.mockResolvedValue({ acknowledged: true, matchedCount: 1, modifiedCount: 1 });
   mockSupportCreate.mockResolvedValue({ _id: 'req1' });
   mockLeadFindOne.mockResolvedValue(null);
+  // findLeadsByContact: Lead.find(query).lean() -> matching leads (none by default)
+  mockLeadFind.mockReturnValue({ lean: async () => [] });
+  mockLeadUpdateMany.mockResolvedValue({ acknowledged: true });
   mockScoreLeadAI.mockResolvedValue({ score: 82, category: 'Hot', rationale: 'Upcoming intake' });
   mockSendEmail.mockResolvedValue({ messageId: 'm1' });
 
@@ -157,7 +164,7 @@ describe('POST /api/events/:id/register', () => {
     expect(body(res)).toEqual({ error: 'Event not found' });
     expect(mockEventUpdateOne).not.toHaveBeenCalled();
     expect(mockSupportCreate).not.toHaveBeenCalled();
-    expect(mockLeadFindOne).not.toHaveBeenCalled();
+    expect(mockLeadFind).not.toHaveBeenCalled();
   });
 
   test('404 for an unpublished event; the lookup only matches published, already-live events', async () => {
@@ -179,7 +186,7 @@ describe('POST /api/events/:id/register', () => {
     expect(body(res)).toEqual({ error: 'This event has ended' });
     expect(mockEventUpdateOne).not.toHaveBeenCalled();
     expect(mockSupportCreate).not.toHaveBeenCalled();
-    expect(mockLeadFindOne).not.toHaveBeenCalled();
+    expect(mockLeadFind).not.toHaveBeenCalled();
     expect(mockSendEmail).not.toHaveBeenCalled();
   });
 
@@ -268,26 +275,31 @@ describe('POST /api/events/:id/register', () => {
     expect(res.status).toHaveBeenCalledWith(200);
     expect(body(res)).toMatchObject({ success: true, alreadyRegistered: true, event: { _id: EVENT_ID, title: 'Ireland Career Webinar' } });
     expect(mockSupportCreate).not.toHaveBeenCalled();
-    expect(mockLeadFindOne).not.toHaveBeenCalled();
+    expect(mockLeadFind).not.toHaveBeenCalled();
     expect(mockSendEmail).not.toHaveBeenCalled();
   });
 
-  test('existing lead keeps its identity and gets the event as latest enquiry', async () => {
+  test('repeat student gets a new event lead linked to the existing one, which is left untouched', async () => {
     const existing = {
       _id: 'lead1', name: 'Priya S', email: 'priya@example.com', phone: '+919876543210', source: 'Login - Google',
-      dreamCountry: 'Canada', totalInquiries: 2, status: 'closed', activities: [], save: jest.fn(),
+      dreamCountry: 'Canada', totalInquiries: 2, status: 'closed', createdAt: '2026-09-01T00:00:00Z',
     };
-    mockLeadFindOne.mockResolvedValue(existing);
+    const before = { ...existing };
+    mockLeadFind.mockReturnValue({ lean: async () => [existing] });
     await register(irelandEvent.slug);
     await flush();
 
-    expect(mockLeadFindOne.mock.calls[0][0]).toEqual({ $or: [{ phone: '+919876543210' }, { email: 'priya@example.com' }] });
-    expect(existing).toMatchObject({
-      name: 'Priya S', source: 'Login - Google', dreamCountry: 'Canada',
-      latestSource: 'Event: Ireland Career Webinar', totalInquiries: 3, status: 'new', preferredIntake: 'Fall 2027',
+    // looked up by phone variants and email
+    const query = mockLeadFind.mock.calls[0][0];
+    expect(query.$or).toEqual(expect.arrayContaining([{ email: 'priya@example.com' }]));
+    // a separate row for this registration, grouped with the existing lead
+    expect(mockLeadSaved).toHaveLength(1);
+    expect(mockLeadSaved[0]).toMatchObject({
+      source: 'Event: Ireland Career Webinar', status: 'new', totalInquiries: 1, duplicateGroupId: 'lead1', preferredIntake: 'Fall 2027',
     });
-    expect(existing.activities[0].comment).toBe('Registered for event: "Ireland Career Webinar" (20 Oct 2026, 6:30 pm IST)');
-    expect(existing.save).toHaveBeenCalled();
+    expect(mockLeadUpdateMany).toHaveBeenCalledWith({ _id: { $in: ['lead1'] } }, { $set: { duplicateGroupId: 'lead1' } });
+    // the existing record itself is not edited
+    expect(existing).toEqual(before);
   });
 
   test.each([

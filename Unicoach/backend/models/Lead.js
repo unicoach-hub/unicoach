@@ -14,6 +14,8 @@ const leadSchema = new mongoose.Schema({
   phone: { type: String, required: true },
   // Student account this lead became (set by "Start journey"); the journey stage lives on that account
   userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', index: true },
+  // Same-contact enquiry rows stay separate, but share this id so CRM users can follow the group.
+  duplicateGroupId: { type: mongoose.Schema.Types.ObjectId, ref: 'Lead', index: true },
   // OTP & Status
   otp: { type: String },
   otpExpires: { type: Date },

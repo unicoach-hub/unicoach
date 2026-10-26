@@ -1,5 +1,8 @@
 const CustomForm = require('../models/CustomForm');
 const FormSubmission = require('../models/FormSubmission');
+const Lead = require('../models/Lead');
+const { normalizePhone } = require('../utils/twilio');
+const { findLeadsByContact, linkLeadToDuplicates } = require('../utils/leadMatching');
 const { readAttribution } = require('../utils/attribution');
 const { sendMetaEvent } = require('../services/metaConversions');
 
@@ -65,6 +68,53 @@ exports.submitForm = async (req, res) => {
       referrer = await UnicoachMentor.findOne({ handle: refHandle }).select('_id handle').lean();
     }
 
+    const formLabel = form.headerTitle || form.name || form.slug || 'Custom form';
+    const formSource = `Form: ${formLabel}`;
+    const mentorTag = referrer ? `Mentor: ${referrer.handle}` : '';
+    const formTags = [formSource];
+    if (referrer) formTags.push(`mentor:${referrer.handle}`, mentorTag);
+
+    const contactValue = (fieldNames) => {
+      const match = Object.entries(data).find(([key]) => fieldNames.some((name) => key.toLowerCase().includes(name.toLowerCase())));
+      return match ? String(match[1]).trim() : '';
+    };
+    const name = contactValue(['name', 'full name', 'student name']) || 'New Lead';
+    const email = contactValue(['email', 'e-mail']) || '';
+    const phone = contactValue(['phone', 'mobile', 'whatsapp']) || '';
+    const dreamCountry = contactValue(['dream country', 'country']) || 'Undecided';
+    const preferredIntake = contactValue(['preferred intake', 'intake']) || '2026';
+    const highestEducation = contactValue(['highest education', 'education', 'qualification']) || 'Not specified';
+    const currentCity = contactValue(['current city', 'city']) || 'Not specified';
+
+    const normalizedPhone = normalizePhone(phone);
+    const cleanEmail = email ? email.trim().toLowerCase() : '';
+    const matchingLeads = await findLeadsByContact(Lead, { phone: normalizedPhone, email: cleanEmail });
+    const lead = new Lead({
+      name,
+      email: cleanEmail,
+      phone: normalizedPhone,
+      dreamCountry,
+      preferredIntake,
+      highestEducation,
+      currentCity,
+      source: formSource,
+      latestSource: formSource,
+      tags: formTags,
+      autoTags: formTags,
+      verified: true,
+      status: 'new',
+      totalInquiries: 1,
+      lastInquiryAt: new Date(),
+      activities: [{
+        type: 'note',
+        comment: `${matchingLeads.length ? 'Repeat' : 'First'} form submission via ${formSource}${referrer ? ` by mentor @${referrer.handle}` : ''}`,
+        date: new Date(),
+        performedBy: 'System'
+      }]
+    });
+    await linkLeadToDuplicates(Lead, lead, matchingLeads);
+    await lead.save();
+
     const submission = new FormSubmission({
       form: form._id,
       pipeline: pipeline._id,
@@ -72,7 +122,7 @@ exports.submitForm = async (req, res) => {
       data,
       referredBy: referrer?._id || null,
       referrerHandle: referrer?.handle || '',
-      tags: referrer ? [`mentor:${referrer.handle}`] : [],
+      tags: formTags,
       submittedAt: new Date()
     });
     await submission.save();

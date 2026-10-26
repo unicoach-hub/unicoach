@@ -6,6 +6,7 @@ const bcrypt = require('bcryptjs');
 const crypto = require('crypto');
 const { OAuth2Client } = require('google-auth-library');
 const { normalizePhone } = require('../utils/twilio');
+const { findLeadByContact, findLeadsByContact, linkLeadToDuplicates } = require('../utils/leadMatching');
 const { sendEmail } = require('../utils/email');
 const { escapeHtml } = require('../utils/escapeHtml');
 const { applyReferral } = require('../services/studentJourney');
@@ -94,8 +95,8 @@ const enrichUserWithMentor = async (userDoc) => {
 /**
  * Make sure every student who signs up or logs in shows up in the admin Leads CRM.
  * - New lead: created with the sign-in method as its source.
- * - Existing lead (e.g. from an eligibility form): we only add a note on account creation and fill a missing phone,
- *   so counsellor-managed fields (status, assignee, follow-ups) are never overwritten.
+ * - Account creation after an existing enquiry creates a separate linked CRM row.
+ * - Normal logins never create another enquiry row or overwrite counsellor-managed fields.
  * Mentors and admins are skipped. Never throws: auth must not fail because of CRM sync.
  */
 const syncLeadFromAuth = async (enrichedUser, { method, isNewAccount, attribution }) => {
@@ -107,10 +108,26 @@ const syncLeadFromAuth = async (enrichedUser, { method, isNewAccount, attributio
     const phone = (enrichedUser.phone || '').trim();
     if (!email && !phone) return;
 
-    const conditions = [];
-    if (email) conditions.push({ email });
-    if (phone) conditions.push({ phone });
-    const existing = await Lead.findOne({ $or: conditions });
+    const existing = await findLeadByContact(Lead, { phone, email });
+    if (existing && isNewAccount) {
+      const matchingLeads = await findLeadsByContact(Lead, { phone, email });
+      const signupLead = new Lead({
+        name: enrichedUser.name || 'Student',
+        email,
+        phone: phone || 'Not provided',
+        source: `Signup - ${method}`,
+        latestSource: `Signup - ${method}`,
+        status: 'new',
+        verified: true,
+        totalInquiries: 1,
+        lastInquiryAt: new Date(),
+        activities: [{ type: 'note', comment: 'Created a UniCoach account via ' + method, performedBy: 'System' }]
+      });
+      await linkLeadToDuplicates(Lead, signupLead, matchingLeads);
+      applyAttributionToLead(signupLead, attribution);
+      await signupLead.save();
+      return;
+    }
 
     const note = isNewAccount
       ? `Created a UniCoach account via ${method}`

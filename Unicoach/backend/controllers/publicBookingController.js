@@ -3,6 +3,7 @@ const BookingSlot = require('../models/BookingSlot');
 const FormSubmission = require('../models/FormSubmission');
 const Lead = require('../models/Lead');
 const { readAttribution, applyAttributionToLead } = require('../utils/attribution');
+const { findLeadsByContact, linkLeadToDuplicates } = require('../utils/leadMatching');
 const { sendMetaEvent } = require('../services/metaConversions');
 
 const generateTimeSlots = (startTimeStr, endTimeStr, intervalMinutes = 30) => {
@@ -172,20 +173,23 @@ exports.bookSlot = async (req, res) => {
     });
 
     try {
-      const existingLead = await Lead.findOne({ email: studentEmail });
-      if (!existingLead) {
-        const newLead = new Lead({
-          name: studentName,
-          email: studentEmail,
-          phone: studentPhone,
-          dreamCountry: dreamCountry || 'Other',
-          preferredIntake: preferredIntake || '2026',
-          source: `Booking: ${event.title}`,
-          status: 'new'
-        });
-        applyAttributionToLead(newLead, attribution);
-        await newLead.save();
-      }
+      const matchingLeads = await findLeadsByContact(Lead, { phone: studentPhone, email: studentEmail });
+      const newLead = new Lead({
+        name: studentName,
+        email: studentEmail,
+        phone: studentPhone,
+        dreamCountry: dreamCountry || 'Other',
+        preferredIntake: preferredIntake || '2026',
+        source: `Booking: ${event.title}`,
+        latestSource: `Booking: ${event.title}`,
+        status: 'new',
+        verified: true,
+        totalInquiries: 1,
+        lastInquiryAt: new Date(),
+      });
+      await linkLeadToDuplicates(Lead, newLead, matchingLeads);
+      applyAttributionToLead(newLead, attribution);
+      await newLead.save();
     } catch (e) {
       console.error('Lead auto-create error:', e);
     }

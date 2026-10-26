@@ -1,5 +1,7 @@
 // Public lead form (Check Eligibility etc.): saved at once, no OTP, no SMS, no session (no DB: models are mocked)
 const mockLeadFindOne = jest.fn();
+const mockLeadFind = jest.fn();
+const mockLeadUpdateMany = jest.fn();
 const mockLeadSaved = [];
 const mockSendOtp = jest.fn();
 const mockUserCtor = jest.fn();
@@ -11,6 +13,8 @@ jest.mock('../models/Lead', () => {
     this.save = jest.fn(async () => { mockLeadSaved.push(this); return this; });
   }
   Lead.findOne = (...a) => mockLeadFindOne(...a);
+  Lead.find = (...a) => mockLeadFind(...a);
+  Lead.updateMany = (...a) => mockLeadUpdateMany(...a);
   return Lead;
 });
 jest.mock('../models/User', () => function User(data) { mockUserCtor(data); });
@@ -34,7 +38,8 @@ const form = {
 };
 
 beforeEach(() => {
-  [mockLeadFindOne, mockSendOtp, mockUserCtor].forEach((m) => m.mockReset());
+  [mockLeadFindOne, mockLeadFind, mockLeadUpdateMany, mockSendOtp, mockUserCtor].forEach((m) => m.mockReset());
+  mockLeadFind.mockReturnValue([]);
   mockLeadSaved.length = 0;
 });
 
@@ -61,22 +66,28 @@ test('new lead is saved immediately as verified, with no OTP, no SMS and no sess
   expect(lead.otp).toBeUndefined();
 });
 
-test('repeat enquiry updates the existing lead without overwriting its identity', async () => {
+test('repeat enquiry creates a new linked lead row', async () => {
   const existing = {
     _id: 'lead1', name: 'Real Owner', email: 'owner@example.com', phone: '+919999999999',
-    verified: false, totalInquiries: 1, status: 'closed', activities: [], interestedUniversities: [],
-    save: jest.fn(async function save() { mockLeadSaved.push(this); return this; }),
+    createdAt: new Date('2026-01-01'), verified: false, totalInquiries: 1, status: 'closed',
   };
-  mockLeadFindOne.mockResolvedValue(existing);
+  mockLeadFind.mockReturnValue([existing]);
   const res = makeRes();
   await submitLead({ body: { ...form, name: 'Someone Else', email: 'other@example.com' } }, res);
 
-  expect(res.json.mock.calls[0][0]).toMatchObject({ success: true, leadId: 'lead1', isRepeat: true });
+  expect(res.json.mock.calls[0][0]).toMatchObject({ success: true, leadId: 'new-lead', isRepeat: true });
+  expect(mockLeadSaved).toHaveLength(1);
+  expect(mockLeadSaved[0]).toMatchObject({
+    name: 'Someone Else',
+    email: 'other@example.com',
+    duplicateGroupId: 'lead1',
+    totalInquiries: 1,
+  });
   expect(existing.name).toBe('Real Owner');
   expect(existing.email).toBe('owner@example.com');
-  expect(existing.verified).toBe(true);
-  expect(existing.status).toBe('new');
-  expect(existing.totalInquiries).toBe(2);
-  expect(existing.activities[0].comment).toContain('Submitted as: Someone Else, other@example.com, +919999999999');
+  expect(mockLeadUpdateMany).toHaveBeenCalledWith(
+    { _id: { $in: ['lead1'] } },
+    { $set: { duplicateGroupId: 'lead1' } }
+  );
   expect(mockSendOtp).not.toHaveBeenCalled();
 });

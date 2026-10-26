@@ -3,6 +3,7 @@ const Event = require('../models/Event');
 const Lead = require('../models/Lead');
 const SupportRequest = require('../models/SupportRequest');
 const { normalizePhone } = require('../utils/twilio');
+const { findLeadsByContact, linkLeadToDuplicates } = require('../utils/leadMatching');
 const { scoreLeadAI } = require('../utils/aiService');
 const { sendEmail } = require('../utils/email');
 const { escapeHtml } = require('../utils/escapeHtml');
@@ -118,40 +119,30 @@ function readRegistration(body = {}) {
   return { name, email, phone, intake };
 }
 
-// CRM: a high-intent lead (new, or an existing one by phone/email gets this event as its latest enquiry)
+// Each registration gets its own CRM row; repeat students are linked by contact.
 async function recordEventLead({ name, email, phone, intake, event }) {
   const source = `Event: ${event.title}`.slice(0, 80);
   const when = formatIst(event.eventStart);
   const note = `Registered for event: "${event.title}"${when ? ` (${when})` : ''}`;
   const eventCountry = event.country && event.country !== 'Global' ? event.country : '';
 
-  let lead = await Lead.findOne({ $or: [{ phone }, { email }] });
-  if (lead) {
-    // Unauthenticated form: never overwrite the lead's identity, only record the enquiry
-    lead.totalInquiries = (lead.totalInquiries || 1) + 1;
-    lead.lastInquiryAt = new Date();
-    lead.latestSource = source;
-    if (intake) lead.preferredIntake = intake;
-    if (eventCountry && (!lead.dreamCountry || lead.dreamCountry === 'Undecided')) lead.dreamCountry = eventCountry;
-    if (lead.status === 'closed') lead.status = 'new';
-    lead.activities.push({ type: 'note', comment: note, date: new Date(), performedBy: 'Student' });
-  } else {
-    lead = new Lead({
-      name,
-      email,
-      phone,
-      ...(intake ? { preferredIntake: intake } : {}),
-      ...(eventCountry ? { dreamCountry: eventCountry } : {}),
-      source,
-      latestSource: source,
-      verified: true,
-      status: 'new',
-      totalInquiries: 1,
-      lastInquiryAt: new Date(),
-      notes: note,
-      activities: [{ type: 'note', comment: note, date: new Date(), performedBy: 'System' }]
-    });
-  }
+  const matchingLeads = await findLeadsByContact(Lead, { phone, email });
+  const lead = new Lead({
+    name,
+    email,
+    phone,
+    ...(intake ? { preferredIntake: intake } : {}),
+    ...(eventCountry ? { dreamCountry: eventCountry } : {}),
+    source,
+    latestSource: source,
+    verified: true,
+    status: 'new',
+    totalInquiries: 1,
+    lastInquiryAt: new Date(),
+    notes: note,
+    activities: [{ type: 'note', comment: note, date: new Date(), performedBy: 'System' }]
+  });
+  await linkLeadToDuplicates(Lead, lead, matchingLeads);
 
   try {
     const aiScore = await scoreLeadAI({ lead });

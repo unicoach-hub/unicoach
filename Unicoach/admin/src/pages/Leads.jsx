@@ -867,10 +867,42 @@ const Leads = ({ view = 'all' }) => {
         <div style={{ lineHeight: 1.35 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
             <span style={{ color: 'var(--ux-ink)', fontWeight: 600, fontSize: '13.5px' }}>{text}</span>
-            {record.totalInquiries > 1 && (
-              <span className="nx-status nx-status--accent" style={{ height: 20, padding: '0 7px', fontSize: 10.5, gap: 4 }}>
-                <RetweetOutlined /> {record.totalInquiries}x
-              </span>
+            {!!record.duplicateLeads?.length && (
+              <Popover
+                trigger="click"
+                placement="right"
+                content={
+                  <div style={{ minWidth: 210, maxWidth: 300 }}>
+                    <div style={{ fontSize: 12, fontWeight: 700, marginBottom: 6 }}>
+                      {record.duplicateLeads.length} linked lead{record.duplicateLeads.length === 1 ? '' : 's'}
+                    </div>
+                    {record.duplicateLeads.map((related) => (
+                      <button
+                        key={related._id}
+                        type="button"
+                        onClick={(event) => { event.stopPropagation(); handleOpenLead(related); }}
+                        style={{ display: 'block', width: '100%', textAlign: 'left', padding: '6px 0', borderTop: '1px solid var(--ux-line-2)', cursor: 'pointer' }}
+                      >
+                        <span style={{ display: 'block', color: 'var(--ux-ink)', fontSize: 12, fontWeight: 600 }}>{related.name || 'Unnamed lead'}</span>
+                        <span style={{ display: 'block', color: 'var(--ux-text-2)', fontSize: 11 }}>
+                          {related.latestSource || related.source || 'Unknown source'}
+                          {related.createdAt ? ` · ${new Date(related.createdAt).toLocaleDateString('en-IN')}` : ''}
+                        </span>
+                      </button>
+                    ))}
+                  </div>
+                }
+              >
+                <button
+                  type="button"
+                  onClick={(event) => event.stopPropagation()}
+                  className="nx-status nx-status--accent"
+                  title="Open linked lead records"
+                  style={{ height: 20, padding: '0 7px', fontSize: 10.5, gap: 4, cursor: 'pointer' }}
+                >
+                  <NodeIndexOutlined /> {record.duplicateLeads.length + 1} linked
+                </button>
+              </Popover>
             )}
           </div>
           <div style={{ color: 'var(--ux-text-2)', fontSize: 12, marginTop: 2 }}>{record.phone || 'No phone'}</div>
@@ -1537,9 +1569,14 @@ const Leads = ({ view = 'all' }) => {
                       {selectedLead.verified ? <CheckCircleOutlined /> : null}
                       {selectedLead.verified ? 'Verified' : 'Unverified'}
                     </span>
-                    {selectedLead.totalInquiries > 1 && (
+                    {!!selectedLead.duplicateLeads?.length && (
                       <span className="nx-status nx-status--accent">
-                        <RetweetOutlined /> {selectedLead.totalInquiries}x repeat student
+                        <NodeIndexOutlined /> {selectedLead.duplicateLeads.length + 1} linked lead records
+                      </span>
+                    )}
+                    {selectedLead.totalInquiries > 1 && (
+                      <span className="nx-status nx-status--neutral">
+                        <RetweetOutlined /> {selectedLead.totalInquiries} enquiries on this record
                       </span>
                     )}
                   </div>
