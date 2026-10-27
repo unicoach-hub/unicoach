@@ -1293,10 +1293,17 @@ const updatePayoutDetails = async (req, res) => {
 
     // Approved mentors: create the payout account, or push the new bank details to it
     let routeMessage = '';
+    let routeSyncError = '';
     if (mentor.applicationStatus === 'APPROVED' && (bankChanged || !mentor.routeAccount?.accountId)) {
-      const sync = await syncSettlementBank(mentor);
-      if (sync.ok) routeMessage = ' Your payout account has been updated.';
-      else if (!sync.skipped) routeMessage = ` Payout account update pending: ${sync.reason}`;
+      try {
+        const sync = await syncSettlementBank(mentor);
+        if (sync.ok) routeMessage = ' Your payout account has been updated.';
+        else if (!sync.skipped) routeMessage = ` Payout account update pending: ${sync.reason}`;
+      } catch (syncErr) {
+        console.error('[Mentor] Bank details saved, but payout account sync failed:', syncErr);
+        routeSyncError = syncErr.message || 'Payout account sync failed.';
+        routeMessage = ' Bank details were saved, but payout account sync is pending.';
+      }
     }
 
     res.json({
@@ -1304,7 +1311,10 @@ const updatePayoutDetails = async (req, res) => {
       message: `Bank payout details successfully saved!${routeMessage}`,
       defaultPayoutDetails: mentor.defaultPayoutDetails,
       kyc: mentor.kyc,
-      routeAccount: { status: mentor.routeAccount?.status || 'NOT_STARTED', lastError: mentor.routeAccount?.lastError || '' }
+      routeAccount: {
+        status: mentor.routeAccount?.status || 'NOT_STARTED',
+        lastError: mentor.routeAccount?.lastError || routeSyncError
+      }
     });
   } catch (err) {
     console.error('Error updating payout details:', err);
@@ -1497,5 +1507,4 @@ module.exports = {
   markNotificationRead,
   markAllNotificationsRead
 };
-
 
