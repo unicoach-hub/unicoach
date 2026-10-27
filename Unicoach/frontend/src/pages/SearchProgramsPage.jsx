@@ -135,7 +135,7 @@ const Field = ({ label, children, error }) => (
 );
 const FIELD_ERR = '!border-[#C97C6A] !bg-[#FBF2EF]';
 
-// Search input with type-ahead suggestions (courses + universities) from /api/search/suggest
+// Search input with type-ahead suggestions (subjects + universities + courses) from /api/search/suggest
 const SuggestBox = ({ value, onChange, onEnter, placeholder, className = '' }) => {
   const [items, setItems] = useState([]);
   const [open, setOpen] = useState(false);
@@ -148,8 +148,9 @@ const SuggestBox = ({ value, onChange, onEnter, placeholder, className = '' }) =
     const t = setTimeout(() => {
       suggest(q, ctrl.signal).then((rows) => {
         const lq = q.toLowerCase();
-        // universities first, then names that start with what was typed
-        const rank = (r) => (r.type === 'university' ? 0 : 2) + ((r.name || '').toLowerCase().startsWith(lq) ? 0 : 1);
+        // subjects (broad) first, then universities, then exact course titles; prefix matches first within each
+        const order = { subject: 0, university: 2, course: 4 };
+        const rank = (r) => (order[r.type] ?? 4) + ((r.name || '').toLowerCase().startsWith(lq) ? 0 : 1);
         setItems([...(rows || [])].sort((a, b) => rank(a) - rank(b)).slice(0, 8));
         setHi(-1);
       }).catch(() => {});
@@ -158,13 +159,14 @@ const SuggestBox = ({ value, onChange, onEnter, placeholder, className = '' }) =
   }, [q]);
 
   const shown = open && q.length >= 2 ? items : [];
-  const pick = (name) => { onChange(name); setOpen(false); };
+  // a course title like "(BSc) Computer Science" searches its subject words, so every matching program shows
+  const pick = (r) => { onChange(r.type === 'course' ? r.name.replace(/^\s*\([^)]*\)\s*/, '').trim() || r.name : r.name); setOpen(false); };
   const onKeyDown = (e) => {
     if (e.key === 'ArrowDown' && shown.length) { e.preventDefault(); setHi((i) => (i + 1) % shown.length); }
     else if (e.key === 'ArrowUp' && shown.length) { e.preventDefault(); setHi((i) => (i <= 0 ? shown.length - 1 : i - 1)); }
     else if (e.key === 'Escape') setOpen(false);
     else if (e.key === 'Enter') {
-      if (hi >= 0 && shown[hi]) { e.preventDefault(); pick(shown[hi].name); }
+      if (hi >= 0 && shown[hi]) { e.preventDefault(); pick(shown[hi]); }
       else { setOpen(false); onEnter && onEnter(); }
     }
   };
@@ -182,14 +184,14 @@ const SuggestBox = ({ value, onChange, onEnter, placeholder, className = '' }) =
       {shown.length > 0 && (
         <ul role="listbox" className="absolute z-50 left-[-34px] top-[calc(100%+12px)] w-[min(460px,86vw)] bg-white border border-[#E6E0D4] shadow-[0_18px_40px_-20px_rgba(22,19,15,0.35)] py-1.5 max-h-80 overflow-y-auto" style={{ borderRadius: 12 }}>
           {shown.map((r, i) => {
-            const Icon = r.type === 'university' ? Building2 : GraduationCap;
+            const Icon = r.type === 'university' ? Building2 : r.type === 'subject' ? Tag : GraduationCap;
             return (
               <li key={`${r.type}-${r.name}`} role="option" aria-selected={i === hi}>
-                <button type="button" onMouseDown={(e) => { e.preventDefault(); pick(r.name); }} onMouseEnter={() => setHi(i)}
+                <button type="button" onMouseDown={(e) => { e.preventDefault(); pick(r); }} onMouseEnter={() => setHi(i)}
                   className="w-full flex items-center gap-2.5 px-3 py-2 text-left text-[13.5px] text-[#5B544A]" style={{ background: i === hi ? '#F8F5EF' : 'transparent' }}>
                   <span className="w-7 h-7 shrink-0 grid place-items-center bg-[#F8F5EF] border border-[#ECE6DA]" style={{ borderRadius: 8 }}><Icon size={14} className="text-[#16130F]" /></span>
                   <span className="flex-1 min-w-0 truncate">{bold(r.name)}</span>
-                  <span className="text-[11px] uppercase tracking-wide text-[#9E9384] shrink-0">{r.type === 'university' ? 'University' : 'Course'}</span>
+                  <span className="text-[11px] uppercase tracking-wide text-[#9E9384] shrink-0">{r.type === 'university' ? 'University' : r.type === 'subject' ? 'Subject' : 'Course'}</span>
                 </button>
               </li>
             );
@@ -484,7 +486,9 @@ export default function SearchProgramsPage() {
   const schMode = !!scholarshipId && activeHighlights.includes(scholarshipId);
 
   // ── STEP 1 (scholarships): ask what decides eligibility, then show only awards they qualify for ──
-  const wantsScholarship = schMode || /scholar/i.test(searchParams.get('highlight') || '');
+  // only a scholarships link (?highlight=scholarship) opens this step; tapping the "Scholarship Available"
+  // quick filter on the Course Finder card just adds the filter and keeps the Course Finder in place
+  const wantsScholarship = /scholar/i.test(searchParams.get('highlight') || '');
   const profileReady = !!(profile.nationalityId && profile.highestQualificationId && profile.score !== '');
   if (!started && wantsScholarship) {
     const findScholarships = () => {

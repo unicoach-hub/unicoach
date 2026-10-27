@@ -81,14 +81,25 @@ function buildMatch(f = {}) {
     const SYN = { MBA: 'Master of Business Administration', LLM: 'Master of Laws', LLB: 'Bachelor of Laws',
       BBA: 'Bachelor of Business Administration', MIM: 'Master in Management', MPH: 'Master of Public Health',
       MPA: 'Master of Public Administration', MSW: 'Master of Social Work', MFA: 'Master of Fine Arts' };
-    const alts = [raw];
-    const syn = SYN[raw.toUpperCase()];
-    if (syn) alts.push(syn);
-    const rx = new RegExp('(' + alts.map(esc).join('|') + ')', 'i');
-    // Precise free-text: name, university, first discipline, and the full subject-tag array.
+    // Match by words, not the exact phrase: "(BSc) Computer Science" finds every course whose
+    // name / university / subject contains BSc AND Computer AND Science (punctuation ignored).
+    // Each word also accepts its degree spelt out (e.g. "MBA" also matches "Master of Business Administration").
     // (Study area is NOT auto-expanded here — typing "Nursing" must not return the whole
     // Health area. Browse a whole study area via the explicit Study Area filter instead.)
-    (m.$and = m.$and || []).push({ $or: [{ courseName: rx }, { universityName: rx }, { discipline: rx }, { disciplines: rx }] });
+    const STOP = new Set(['in', 'of', 'and', 'the', 'for', 'with', 'a', 'an', '&']);
+    const words = raw.split(/[^\p{L}\p{N}+#]+/u).filter((w) => w && !STOP.has(w.toLowerCase())).slice(0, 8);
+    const whole = SYN[raw.toUpperCase()];
+    const terms = words.length ? words : [raw];
+    const and = terms.map((w) => {
+      const alts = [w];
+      const syn = SYN[w.toUpperCase()];
+      if (syn) alts.push(syn);
+      const rx = new RegExp('(' + alts.map(esc).join('|') + ')', 'i');
+      return { $or: [{ courseName: rx }, { universityName: rx }, { discipline: rx }, { disciplines: rx }] };
+    });
+    // a whole-query acronym ("MBA") keeps matching its long form even when split into one word
+    if (whole && terms.length === 1) and[0].$or.push({ courseName: new RegExp(esc(whole), 'i') });
+    (m.$and = m.$and || []).push(...and);
   }
   const country = arr(f.country).map(Number).filter(Boolean);
   if (country.length) m.cfCountryId = { $in: country };
@@ -200,14 +211,22 @@ exports.suggest = async (req, res) => {
     const kw = (req.query.keyword || '').trim();
     if (kw.length < 2) return res.json({ data: [] });
     const rx = new RegExp(kw.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'i');
-    const [courses, unis] = await Promise.all([
+    const [courses, unis, subjects] = await Promise.all([
       CfCourse.find({ courseName: rx }).limit(6).select('courseName').lean(),
-      CfUniversity.find({ name: rx }).limit(6).select('name').lean(),
+      CfUniversity.find({ name: rx }).limit(5).select('name').lean(),
+      // subjects search broadly (e.g. "Computer Science"), unlike one course's exact title
+      CfCourse.distinct('discipline', { discipline: rx }).catch(() => []),
     ]);
+    const lk = kw.toLowerCase();
+    const subjectList = subjects.filter(Boolean)
+      .sort((a, b) => (b.toLowerCase().startsWith(lk) - a.toLowerCase().startsWith(lk)) || a.length - b.length)
+      .slice(0, 3);
+    const seen = new Set();
     const out = [
+      ...subjectList.map(n => ({ type: 'subject', name: n })),
       ...unis.map(u => ({ type: 'university', name: u.name })),
       ...courses.map(c => ({ type: 'course', name: c.courseName })),
-    ].slice(0, 10);
+    ].filter((x) => { const k = x.name.toLowerCase(); if (seen.has(k)) return false; seen.add(k); return true; }).slice(0, 10);
     res.json({ data: out });
   } catch (e) { res.status(500).json({ error: e.message }); }
 };

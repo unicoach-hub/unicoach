@@ -52,15 +52,21 @@ const NavigationProgress = () => {
       }, 500);
     };
 
+    // React Router can render the new page before start() runs (back/forward fires its own
+    // popstate listener first), so done() never comes. If the page on screen is already the URL, finish.
+    const rendered = () => lastLocationRef.current === window.location.pathname + window.location.search;
+
     const start = () => {
       clearTimers();
       pending = true;
       value = 0;
       showTimer = setTimeout(() => {
+        if (rendered()) { pending = false; return; }
         value = 0.2;
         setBar({ value, visible: true });
         // Ease towards 90% without ever claiming to be finished
         tickTimer = setInterval(() => {
+          if (rendered()) { done(); return; }
           value += (0.9 - value) * 0.15;
           setBar({ value, visible: true });
         }, 250);
