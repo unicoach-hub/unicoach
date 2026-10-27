@@ -393,7 +393,9 @@ const UnicoachDashboardPage = () => {
       fileSize: '',
       resourceLink: ''
     },
-    customQuestions: []
+    customQuestions: [],
+    isCustom: false,
+    customLabel: ''
   });
 
   // Priority DMs Inbox State (UniCoach Feature)
@@ -1209,9 +1211,14 @@ const UnicoachDashboardPage = () => {
   const handleCreateService = async (e) => {
     e.preventDefault();
     if (!newService.title.trim()) return;
+    if (newService.isCustom && !newService.customLabel.trim()) {
+      setFeedback({ type: 'error', text: 'Give your custom service a name, e.g. Mock Interview.' });
+      return;
+    }
     setActionLoading(true);
     try {
-      await createMentorService(handle, newService);
+      const { isCustom, ...payload } = newService;
+      await createMentorService(handle, { ...payload, customLabel: isCustom ? newService.customLabel.trim() : '' });
       setIsServiceModalOpen(false);
       setUploadedAsset(null);
       setNewService({
@@ -1228,7 +1235,9 @@ const UnicoachDashboardPage = () => {
           fileSize: '',
           resourceLink: ''
         },
-        customQuestions: []
+        customQuestions: [],
+        isCustom: false,
+        customLabel: ''
       });
       setFeedback({ type: 'success', text: 'New offering published successfully!' });
       await loadDashboard(handle);
@@ -3381,7 +3390,7 @@ const UnicoachDashboardPage = () => {
                     <div>
                       <div className="flex items-center justify-between mb-1.5">
                         <span className="text-[10px] font-black uppercase text-[#DE5C2B] tracking-wider">
-                          {svc.type === 'ONE_ON_ONE' ? '1:1 Video Call' : svc.type === 'SOP_REVIEW' ? 'Async Review' : 'Priority DM'}
+                          {svc.customLabel || (svc.type === 'ONE_ON_ONE' ? '1:1 Video Call' : svc.type === 'SOP_REVIEW' ? 'Async Review' : svc.type === 'DIGITAL_ASSET' ? 'Digital Resource' : 'Priority DM')}
                         </span>
                         <button
                           type="button"
@@ -6856,12 +6865,12 @@ const UnicoachDashboardPage = () => {
                       { type: 'DIGITAL_ASSET', icon: Download, title: 'Digital Resource', desc: 'Instant PDF / File' }
                     ].map(opt => {
                       const Icon = opt.icon;
-                      const isSel = newService.type === opt.type;
+                      const isSel = !newService.isCustom && newService.type === opt.type;
                       return (
                         <button
                           key={opt.type}
                           type="button"
-                          onClick={() => setNewService({ ...newService, type: opt.type })}
+                          onClick={() => setNewService({ ...newService, type: opt.type, isCustom: false, customLabel: '' })}
                           className={`p-2 sm:p-2.5 rounded-xl border text-left transition-all cursor-pointer flex items-center gap-2 ${
                             isSel
                               ? 'bg-orange-50/80 border-[#DE5C2B] ring-2 ring-[#DE5C2B]/20 shadow-xs'
@@ -6884,7 +6893,74 @@ const UnicoachDashboardPage = () => {
                         </button>
                       );
                     })}
+                    {/* Custom: the mentor names the service and picks how it is delivered */}
+                    <button
+                      type="button"
+                      onClick={() => setNewService({
+                        ...newService,
+                        isCustom: true,
+                        type: ['ONE_ON_ONE', 'PRIORITY_DM', 'DIGITAL_ASSET'].includes(newService.type) ? newService.type : 'ONE_ON_ONE'
+                      })}
+                      className={`col-span-2 p-2 sm:p-2.5 rounded-xl border text-left transition-all cursor-pointer flex items-center gap-2 ${
+                        newService.isCustom
+                          ? 'bg-orange-50/80 border-[#DE5C2B] ring-2 ring-[#DE5C2B]/20 shadow-xs'
+                          : 'bg-slate-50 hover:bg-slate-100 border-dashed border-slate-300 text-slate-700'
+                      }`}
+                    >
+                      <div className={`w-7 h-7 rounded-lg flex items-center justify-center shrink-0 ${
+                        newService.isCustom ? 'bg-[#DE5C2B] text-white shadow-xs' : 'bg-white text-slate-500 border border-slate-200'
+                      }`}>
+                        <Sparkles className="w-3.5 h-3.5" />
+                      </div>
+                      <div className="min-w-0 flex-1">
+                        <span className="text-[11px] sm:text-xs font-bold block leading-tight text-slate-900">Custom Service</span>
+                        <span className="text-[10px] text-slate-400 block leading-tight mt-0.5">Your own format, e.g. Mock Interview, Loan Guidance, University Shortlisting</span>
+                      </div>
+                    </button>
                   </div>
+
+                  {newService.isCustom && (
+                    <div className="mt-2.5 p-3 rounded-xl border border-orange-100 bg-orange-50/40 space-y-2.5">
+                      <div>
+                        <label className="block text-xs font-semibold text-slate-700 mb-1">Service type name *</label>
+                        <input
+                          type="text"
+                          maxLength={40}
+                          placeholder="e.g. Mock Interview"
+                          value={newService.customLabel}
+                          onChange={(e) => setNewService({ ...newService, customLabel: e.target.value })}
+                          className="w-full px-3 py-2 rounded-xl border border-slate-200 bg-white text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-[#DE5C2B]/20 focus:border-[#DE5C2B]"
+                        />
+                        <p className="text-[10px] text-slate-400 mt-1">Students see this as the service type on your page.</p>
+                      </div>
+                      <div>
+                        <label className="block text-xs font-semibold text-slate-700 mb-1">How will you deliver it?</label>
+                        <div className="grid grid-cols-3 gap-1.5">
+                          {[
+                            { type: 'ONE_ON_ONE', icon: Video, label: 'Live call', hint: 'Student books a slot' },
+                            { type: 'PRIORITY_DM', icon: MessageSquare, label: 'Written reply', hint: 'You reply in text' },
+                            { type: 'DIGITAL_ASSET', icon: Download, label: 'File / link', hint: 'Instant download' }
+                          ].map((d) => {
+                            const Icon = d.icon;
+                            const on = newService.type === d.type;
+                            return (
+                              <button
+                                key={d.type}
+                                type="button"
+                                onClick={() => setNewService({ ...newService, type: d.type })}
+                                className={`px-2 py-1.5 rounded-lg border text-left cursor-pointer transition-all ${
+                                  on ? 'bg-white border-[#DE5C2B] ring-1 ring-[#DE5C2B]/30' : 'bg-white/60 border-slate-200 hover:border-slate-300'
+                                }`}
+                              >
+                                <span className="flex items-center gap-1 text-[11px] font-bold text-slate-800"><Icon className="w-3 h-3" />{d.label}</span>
+                                <span className="block text-[10px] text-slate-400 leading-tight mt-0.5">{d.hint}</span>
+                              </button>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    </div>
+                  )}
                 </div>
 
                 <div>

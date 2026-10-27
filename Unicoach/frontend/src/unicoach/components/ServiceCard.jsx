@@ -12,7 +12,7 @@ const CATEGORY_LABELS = {
  * Clean, modern card matching UniCoach Storefront design
  */
 const ServiceCard = ({ service, isSelected, onSelect }) => {
-  const categoryLabel = CATEGORY_LABELS[service.type] || service.category || 'Digital Product';
+  const categoryLabel = service.customLabel || CATEGORY_LABELS[service.type] || service.category || 'Digital Product';
   const originalPrice = service.originalPriceINR || (service.priceInINR > 0 ? Math.round(service.priceInINR * 1.3) : null);
 
   return (

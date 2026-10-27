@@ -392,7 +392,7 @@ const CheckoutModal = ({
             <div className="flex items-center gap-2 flex-wrap">
               <span className="px-3 py-1 rounded-full bg-white border border-slate-200 text-xs font-bold text-slate-800 flex items-center gap-1.5 shadow-2xs">
                 {isDigitalAsset ? <Download className="w-3.5 h-3.5 text-emerald-600" /> : isPriorityDm ? <MessageSquare className="w-3.5 h-3.5 text-amber-600" /> : <Video className="w-3.5 h-3.5 text-[#DE5C2B]" />}
-                <span>{isDigitalAsset ? 'Digital Product' : isPriorityDm ? 'Priority DM' : '1:1 Video Consultation'}</span>
+                <span>{service?.customLabel || (isDigitalAsset ? 'Digital Product' : isPriorityDm ? 'Priority DM' : '1:1 Video Consultation')}</span>
               </span>
               <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-white text-slate-900 text-xs font-black shadow-2xs border border-slate-200/60">
                 <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />

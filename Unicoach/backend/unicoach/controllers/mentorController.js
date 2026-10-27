@@ -146,7 +146,8 @@ const createService = async (req, res) => {
       digitalAsset,
       maxDeliveryHours,
       customQuestions,
-      bundleCount
+      bundleCount,
+      customLabel
     } = req.body;
 
     if (!title || priceInINR === undefined) {
@@ -175,7 +176,8 @@ const createService = async (req, res) => {
       digitalAsset: digitalAsset || {},
       maxDeliveryHours: maxDeliveryHours || 48,
       bundleCount: bundleCount ? Number(bundleCount) : 1,
-      customQuestions: Array.isArray(customQuestions) ? customQuestions : []
+      customQuestions: Array.isArray(customQuestions) ? customQuestions : [],
+      customLabel: String(customLabel || '').trim().slice(0, 40)
     });
 
     await service.save();
@@ -507,7 +509,8 @@ const updateService = async (req, res) => {
       digitalAsset,
       maxDeliveryHours,
       customQuestions,
-      bundleCount
+      bundleCount,
+      customLabel
     } = req.body;
 
     if (priceInINR !== undefined) {
@@ -529,7 +532,8 @@ const updateService = async (req, res) => {
           ...(digitalAsset !== undefined && { digitalAsset }),
           ...(maxDeliveryHours !== undefined && { maxDeliveryHours }),
           ...(bundleCount !== undefined && { bundleCount: Number(bundleCount) }),
-          ...(customQuestions !== undefined && { customQuestions })
+          ...(customQuestions !== undefined && { customQuestions }),
+          ...(customLabel !== undefined && { customLabel: String(customLabel || '').trim().slice(0, 40) })
         }
       },
       { new: true, runValidators: true }

@@ -15,6 +15,8 @@ const unicoachServiceSchema = new mongoose.Schema({
     default: 'ONE_ON_ONE'
   },
   title: { type: String, required: true, trim: true },
+  // Mentor's own name for a custom format (e.g. "Mock Interview"); type still decides how it is delivered
+  customLabel: { type: String, default: '', trim: true, maxlength: 40 },
   description: { type: String, default: '' },
   durationMinutes: { type: Number, default: 30, min: 10, max: 240 }, // For 1:1 call
   priceInINR: { type: Number, required: true, min: 0 },

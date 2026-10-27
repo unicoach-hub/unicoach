@@ -1,5 +1,5 @@
-import { useEffect, useMemo, useState } from 'react';
-import { Check, Copy, Loader2, Search, Users } from 'lucide-react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { Check, Copy, Loader2, RefreshCw, Search, Users } from 'lucide-react';
 import { getMentorReferrals } from '../api/unicoachApi';
 import { SITE_URL } from '../../config';
 
@@ -12,6 +12,7 @@ const MentorReferrals = ({ handle }) => {
   const [search, setSearch] = useState('');
   const [stage, setStage] = useState('');
   const [copied, setCopied] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
   const link = `${SITE_URL}/signup?ref=${handle || ''}`;
 
   useEffect(() => {
@@ -22,6 +23,20 @@ const MentorReferrals = ({ handle }) => {
       .catch((e) => alive && setError(e.message));
     return () => { alive = false; };
   }, [handle]);
+
+  // reload just this list (new sign-ups, stage changes) without reloading the whole site
+  const refresh = useCallback(async () => {
+    if (!handle || refreshing) return;
+    setRefreshing(true);
+    try {
+      setData(await getMentorReferrals(handle));
+      setError('');
+    } catch (e) {
+      setError(e.message);
+    } finally {
+      setRefreshing(false);
+    }
+  }, [handle, refreshing]);
 
   const stageLabel = useMemo(() => {
     const phaseLabel = Object.fromEntries((data?.phases || []).map((p) => [p.key, p.label]));
@@ -46,9 +61,15 @@ const MentorReferrals = ({ handle }) => {
 
   return (
     <div className="space-y-5">
-      <div>
-        <h2 className="text-2xl font-bold text-slate-900">My students</h2>
-        <p className="text-sm text-slate-500 mt-1">Students who joined UniCoach through your link, and where each one is in their journey.</p>
+      <div className="flex items-start justify-between gap-3">
+        <div>
+          <h2 className="text-2xl font-bold text-slate-900">My students</h2>
+          <p className="text-sm text-slate-500 mt-1">Students who joined UniCoach through your link, and where each one is in their journey.</p>
+        </div>
+        <button type="button" onClick={refresh} disabled={refreshing} title="Refresh list"
+          className="shrink-0 h-9 px-3.5 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-[13px] font-semibold text-slate-700 flex items-center gap-1.5 cursor-pointer disabled:opacity-60">
+          <RefreshCw size={14} className={refreshing ? 'animate-spin' : ''} /> {refreshing ? 'Refreshing' : 'Refresh'}
+        </button>
       </div>
 
       <div className="bg-white border border-slate-200 rounded-2xl p-5">
