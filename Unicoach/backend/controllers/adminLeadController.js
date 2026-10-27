@@ -6,6 +6,7 @@ const { sendEmail } = require('../utils/email');
 const { scopedStaffId, canAccessLead, actorName } = require('../utils/leadAccess');
 const { cleanManualTags, refreshAutoTags } = require('../utils/leadTags');
 const { phoneVariants } = require('../utils/leadMatching');
+const UnicoachMentor = require('../unicoach/models/UnicoachMentor');
 
 /**
  * Helper to resolve the name shown in lead activity ("performed by")
@@ -159,7 +160,9 @@ exports.getAllLeads = async (req, res) => {
       const emails = leads.map((l) => String(l.email || '').toLowerCase()).filter(Boolean);
       const linkedIds = leads.map((l) => l.userId).filter(Boolean);
       const users = await User.find({ $or: [{ _id: { $in: linkedIds } }, { email: { $in: emails } }, { phone: { $exists: true, $ne: null } }] })
-        .select('email phone journeyStage stageHistory createdAt').lean();
+        .select('email phone journeyStage stageHistory createdAt referredBy')
+        .populate({ path: 'referredBy', model: UnicoachMentor, select: 'name handle' })
+        .lean();
       const byEmail = new Map(), byPhone = new Map(), byId = new Map();
       for (const u of users) {
         byId.set(String(u._id), u);
@@ -184,6 +187,11 @@ exports.getAllLeads = async (req, res) => {
           since: u.createdAt,
           history: (u.stageHistory || []).map((h) => ({ stage: normalizeStage(h.stage), at: h.at })),
         };
+        if (u.referredBy) {
+          l.referralMentor = { name: u.referredBy.name, handle: u.referredBy.handle };
+          l.referralMentorName = l.referralMentorName || u.referredBy.name;
+          l.referralMentorHandle = l.referralMentorHandle || u.referredBy.handle;
+        }
       }
     } catch (e) {
       console.warn('[Leads] journey lookup skipped:', e.message);

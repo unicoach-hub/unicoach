@@ -12,15 +12,16 @@ const PROFILE_FIELDS = ['dreamCountry', 'preferredIntake', 'dreamCourse', 'highe
 const cleanHandle = (v) => String(v || '').trim().toLowerCase().replace(/^@/, '').slice(0, 60);
 
 /**
- * Links a brand-new student to the mentor whose referral link they came from.
- * Only approved, active mentors count; a student is never re-assigned once linked. Never throws.
+ * Links a brand-new student to the active mentor whose referral link they came from.
+ * Referral credit is separate from mentor marketplace approval; students can still be attributed
+ * while the mentor profile is being reviewed. A student is never re-assigned once linked.
  */
 const applyReferral = async (userId, handle) => {
   try {
     const h = cleanHandle(handle);
     if (!h || !/^[a-z0-9._-]+$/.test(h)) return null;
-    const mentor = await UnicoachMentor.findOne({ handle: h, applicationStatus: 'APPROVED', active: { $ne: false } })
-      .select('_id name userId')
+    const mentor = await UnicoachMentor.findOne({ handle: h, active: { $ne: false } })
+      .select('_id name handle userId')
       .lean();
     if (!mentor || String(mentor.userId || '') === String(userId)) return null;
     const res = await User.updateOne(

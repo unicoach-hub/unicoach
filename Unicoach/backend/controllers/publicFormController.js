@@ -65,7 +65,7 @@ exports.submitForm = async (req, res) => {
     const refHandle = String(req.body.ref || '').replace(/^@/, '').trim().toLowerCase();
     if (refHandle && /^[a-z0-9._-]{2,40}$/.test(refHandle)) {
       const UnicoachMentor = require('../unicoach/models/UnicoachMentor');
-      referrer = await UnicoachMentor.findOne({ handle: refHandle }).select('_id handle').lean();
+      referrer = await UnicoachMentor.findOne({ handle: refHandle }).select('_id handle name').lean();
     }
 
     const formLabel = form.headerTitle || form.name || form.slug || 'Custom form';
@@ -101,6 +101,11 @@ exports.submitForm = async (req, res) => {
       latestSource: formSource,
       tags: formTags,
       autoTags: formTags,
+      ...(referrer && {
+        referralMentorId: referrer._id,
+        referralMentorName: referrer.name,
+        referralMentorHandle: referrer.handle
+      }),
       verified: true,
       status: 'new',
       totalInquiries: 1,

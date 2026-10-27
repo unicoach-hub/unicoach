@@ -850,11 +850,23 @@ const Leads = ({ view = 'all' }) => {
         const full = record.latestSource || record.source || '—';
         // Shorter names for long sources; the full one stays in the tooltip
         const short = { 'Paid consultation booking': 'Paid consultation', 'Website Booking Form': 'Booking form' }[full] || full;
+        // A mentor's share link (?ref=handle) tags the lead "mentor:<handle>"
+        const mentorTag = [...(record.tags || []), ...(record.autoTags || [])].find((t) => /^mentor:/i.test(t));
+        const mentorHandle = record.referralMentorHandle || (mentorTag ? mentorTag.slice(7).trim() : '');
+        const mentorName = record.referralMentorName || record.referralMentor?.name || '';
         return (
-          <span className="nx-status nx-status--neutral" title={full}
-            style={{ whiteSpace: 'normal', height: 'auto', minHeight: 24, lineHeight: 1.3, padding: '4px 10px', fontSize: 12, textAlign: 'left', display: 'inline-block', maxWidth: '100%', overflowWrap: 'anywhere' }}>
-            {short}
-          </span>
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: 4 }}>
+            <span className="nx-status nx-status--neutral" title={full}
+              style={{ whiteSpace: 'normal', height: 'auto', minHeight: 24, lineHeight: 1.3, padding: '4px 10px', fontSize: 12, textAlign: 'left', display: 'inline-block', maxWidth: '100%', overflowWrap: 'anywhere' }}>
+              {short}
+            </span>
+            {mentorHandle && (
+              <span title={`Came through ${mentorName ? `${mentorName} ` : ''}@${mentorHandle}'s referral link`}
+                style={{ fontSize: 11.5, fontWeight: 600, color: '#9A3412', background: '#FFF7ED', border: '1px solid #FED7AA', borderRadius: 999, padding: '2px 8px' }}>
+                Mentor: {mentorName || `@${mentorHandle}`}
+              </span>
+            )}
+          </div>
         );
       },
     },

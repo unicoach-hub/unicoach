@@ -10,6 +10,7 @@ import withGoogleAuth from '../components/auth/withGoogleAuth';
 import RolePicker from '../components/auth/RolePicker';
 import { roleRedirect, useRole } from '../components/auth/role';
 import { useAuth } from '../context/AuthContext';
+import { getReferral } from '../utils/referral';
 import BoardingPassLogin from '../components/BoardingPassLogin';
 import brandLogo from '@/assets/blackunicoachlogo.webp';
 
@@ -17,6 +18,7 @@ const SignupPage = () => {
   const { registerWithEmail, loginWithGoogle, user, loading: authLoading } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
+  const referralHandle = getReferral();
 
   // Redirect if already logged in — only once /auth/me has confirmed the session; `user` is
   // hydrated from localStorage first, so an expired session would otherwise bounce to /dashboard
@@ -127,7 +129,7 @@ const SignupPage = () => {
       {/* ── MAIN UNICOACH PORTAL CONTAINER ── */}
       <div className="w-full max-w-4xl lg:max-w-5xl my-auto relative z-10">
         
-        <div className="bg-white rounded-3xl border border-slate-200/80 shadow-[0_20px_50px_-10px_rgba(15,23,42,0.08),0_2px_16px_rgba(222,92,43,0.04)] overflow-hidden grid grid-cols-1 lg:grid-cols-12 h-auto lg:h-[540px] relative">
+        <div className="bg-white rounded-3xl border border-slate-200/80 shadow-[0_20px_50px_-10px_rgba(15,23,42,0.08),0_2px_16px_rgba(222,92,43,0.04)] overflow-hidden grid grid-cols-1 lg:grid-cols-12 h-auto lg:min-h-[540px] relative">
 
           {/* ════════ LEFT COLUMN: Meaningful UniCoach Platform Showcase (Warm Orange Blush Theme) ════════ */}
           <div className="hidden lg:flex lg:col-span-5 bg-gradient-to-br from-[#FFF9F6] via-[#FFF3EC] to-[#FFEBE0] p-7 flex-col justify-between relative border-r border-orange-100/90 overflow-hidden text-slate-800">
@@ -185,7 +187,7 @@ const SignupPage = () => {
           </div>
 
           {/* ════════ RIGHT COLUMN: Fast & Clean Signup Form ════════ */}
-          <div className="lg:col-span-7 p-5 sm:p-8 flex flex-col justify-center bg-white relative overflow-y-auto">
+          <div className="lg:col-span-7 p-5 sm:p-8 flex flex-col justify-center bg-white relative">
 
             {/* Mobile-Only Mascot Animation (Visible on phones) */}
             <div className="lg:hidden mb-4">
@@ -204,6 +206,15 @@ const SignupPage = () => {
 
             {/* Header */}
             <div className="mb-3">
+              {referralHandle && (
+                <div className="mb-3 flex items-start gap-2.5 rounded-xl border border-orange-200 bg-orange-50 px-3 py-2.5 text-[#71351F]">
+                  <Users size={16} className="mt-0.5 shrink-0 text-[#DE5C2B]" />
+                  <div>
+                    <p className="text-xs font-bold">Invited by mentor @{referralHandle}</p>
+                    <p className="mt-0.5 text-[11px] leading-relaxed text-[#7C4A39]">Your new account will be connected to this mentor.</p>
+                  </div>
+                </div>
+              )}
               <div className="flex items-center justify-between mb-1.5">
                 <img 
                   src={brandLogo} 

@@ -10,6 +10,7 @@ import withGoogleAuth from '../components/auth/withGoogleAuth';
 import RolePicker from '../components/auth/RolePicker';
 import { roleRedirect, useRole } from '../components/auth/role';
 import { useAuth } from '../context/AuthContext';
+import { getReferral } from '../utils/referral';
 import BoardingPassLogin from '../components/BoardingPassLogin';
 import brandLogo from '@/assets/blackunicoachlogo.webp';
 
@@ -17,6 +18,7 @@ const LoginPage = () => {
   const { loginWithEmail, loginWithGoogle, forgotPassword, user, loading: authLoading } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
+  const referralHandle = getReferral();
 
   // Redirect if already logged in — only once /auth/me has confirmed the session; `user` is
   // hydrated from localStorage first, so an expired session would otherwise bounce to /dashboard
@@ -235,6 +237,21 @@ const LoginPage = () => {
 
             {/* Header with Official UniCoach Logo */}
             <div className="mb-7">
+              {!isForgotView && referralHandle && (
+                <div className="mb-4 flex items-start gap-2.5 rounded-xl border border-orange-200 bg-orange-50 px-3 py-2.5 text-[#71351F]">
+                  <Users size={16} className="mt-0.5 shrink-0 text-[#DE5C2B]" />
+                  <div className="text-xs leading-relaxed">
+                    <p className="font-bold">You came through mentor @{referralHandle}&apos;s link.</p>
+                    <p className="mt-0.5 text-[#7C4A39]">
+                      New to UniCoach?{' '}
+                      <Link to={`/signup?ref=${encodeURIComponent(referralHandle)}`} className="font-bold text-[#B7471F] underline underline-offset-2">
+                        Create an account with this mentor
+                      </Link>
+                      .
+                    </p>
+                  </div>
+                </div>
+              )}
               <img
                 src={brandLogo}
                 alt="UniCoach"

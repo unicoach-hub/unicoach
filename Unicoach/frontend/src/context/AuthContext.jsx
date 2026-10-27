@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { API_BASE_URL } from '../config';
-import { getReferral } from '../utils/referral';
+import { clearReferral, getReferral } from '../utils/referral';
 import { clearUserStorage } from '../utils/userStorage';
 
 const AuthContext = createContext(null);
@@ -90,6 +90,7 @@ export const AuthProvider = ({ children }) => {
       });
       const data = await res.json();
       if (res.ok) {
+        clearReferral();
         setToken(data.token || 'cookie-session');
         setUser(data.user);
         localStorage.setItem('user_info', JSON.stringify(data.user));
@@ -115,6 +116,7 @@ export const AuthProvider = ({ children }) => {
       });
       const data = await res.json();
       if (res.ok) {
+        clearReferral();
         if (data.token && data.user) {
           setToken(data.token || 'cookie-session');
           setUser(data.user);
@@ -182,6 +184,7 @@ export const AuthProvider = ({ children }) => {
       });
       const data = await res.json();
       if (res.ok) {
+        clearReferral();
         setToken(data.token || 'cookie-session');
         setUser(data.user);
         localStorage.setItem('user_info', JSON.stringify(data.user));

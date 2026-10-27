@@ -7,7 +7,7 @@ const ReferralLanding = () => {
   const { handle } = useParams();
   const { user } = useAuth();
   // Saved during render: the redirect below happens before any effect of this component would run
-  saveReferral(handle);
+  saveReferral(handle, { replace: true });
   return <Navigate to={user ? '/dashboard' : '/signup'} replace />;
 };
 

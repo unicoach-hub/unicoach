@@ -33,7 +33,7 @@ exports.listStudents = async (req, res) => {
     else if (isId(req.query.mentor)) filter.referredBy = req.query.mentor;
 
     const students = await User.find(filter).select(LIST_FIELDS).sort({ createdAt: -1 }).limit(2000)
-      .populate('referredBy', 'name handle').lean();
+      .populate({ path: 'referredBy', model: UnicoachMentor, select: 'name handle' }).lean();
 
     const ids = students.map((s) => s._id);
     const docCounts = await StudentDocument.aggregate([
@@ -93,7 +93,8 @@ exports.lookupByEmail = async (req, res) => {
   try {
     const email = String(req.query.email || '').trim().toLowerCase();
     if (!email || email.length > 200) return res.json({ student: null });
-    const student = await User.findOne({ email, role: 'user' }).select(LIST_FIELDS).populate('referredBy', 'name handle').lean();
+    const student = await User.findOne({ email, role: 'user' }).select(LIST_FIELDS)
+      .populate({ path: 'referredBy', model: UnicoachMentor, select: 'name handle' }).lean();
     if (!student) return res.json({ student: null });
     const docs = await StudentDocument.countDocuments({ student: student._id, 'file.url': { $exists: true, $ne: null } });
     const stage = normalizeStage(student.journeyStage);
@@ -123,7 +124,7 @@ exports.getStudent = async (req, res) => {
     if (!isId(req.params.id)) return res.status(404).json({ message: 'Student not found' });
     const student = await User.findOne({ _id: req.params.id, role: 'user' })
       .select(`${LIST_FIELDS} stageHistory targetExam targetScore shortlistProfile`)
-      .populate('referredBy', 'name handle email avatarUrl')
+      .populate({ path: 'referredBy', model: UnicoachMentor, select: 'name handle email avatarUrl' })
       .lean();
     if (!student) return res.status(404).json({ message: 'Student not found' });
     const documents = await StudentDocument.find({ student: student._id }).sort({ createdAt: -1 }).lean();
@@ -174,7 +175,8 @@ exports.updateMentor = async (req, res) => {
       update = { $unset: { referredBy: 1, referredAt: 1 } };
     }
     const user = await User.findOneAndUpdate({ _id: req.params.id, role: 'user' }, update, { new: true })
-      .select('referredBy referredAt').populate('referredBy', 'name handle').lean();
+      .select('referredBy referredAt')
+      .populate({ path: 'referredBy', model: UnicoachMentor, select: 'name handle' }).lean();
     if (!user) return res.status(404).json({ message: 'Student not found' });
     return res.json({ success: true, referredBy: user.referredBy || null });
   } catch (err) {

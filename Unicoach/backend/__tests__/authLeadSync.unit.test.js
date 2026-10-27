@@ -52,8 +52,18 @@ describe('Signup / login creates a lead in the admin CRM', () => {
     const existing = { _id: 'L1', phone: '+919999999999', createdAt: new Date('2026-01-01') };
     mockFindOne.mockResolvedValue(existing);
     mockFind.mockReturnValue([existing]);
-    await syncLeadFromAuth(student, { method: 'Google', isNewAccount: true });
-    expect(mockSaved[0]).toMatchObject({ source: 'Signup - Google', duplicateGroupId: 'L1' });
+    await syncLeadFromAuth(student, {
+      method: 'Google',
+      isNewAccount: true,
+      referralMentor: { _id: 'mentor-1', name: 'Kalki', handle: 'kalki' },
+    });
+    expect(mockSaved[0]).toMatchObject({
+      source: 'Signup - Google',
+      duplicateGroupId: 'L1',
+      referralMentorId: 'mentor-1',
+      referralMentorName: 'Kalki',
+      referralMentorHandle: 'kalki',
+    });
     expect(mockUpdateMany).toHaveBeenCalled();
   });
 

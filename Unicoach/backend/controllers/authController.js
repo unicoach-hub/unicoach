@@ -99,7 +99,7 @@ const enrichUserWithMentor = async (userDoc) => {
  * - Normal logins never create another enquiry row or overwrite counsellor-managed fields.
  * Mentors and admins are skipped. Never throws: auth must not fail because of CRM sync.
  */
-const syncLeadFromAuth = async (enrichedUser, { method, isNewAccount, attribution }) => {
+const syncLeadFromAuth = async (enrichedUser, { method, isNewAccount, attribution, referralMentor }) => {
   try {
     if (!enrichedUser || enrichedUser.role === 'admin' || enrichedUser.isMentor) return;
 
@@ -123,6 +123,11 @@ const syncLeadFromAuth = async (enrichedUser, { method, isNewAccount, attributio
         lastInquiryAt: new Date(),
         activities: [{ type: 'note', comment: 'Created a UniCoach account via ' + method, performedBy: 'System' }]
       });
+      if (referralMentor) {
+        signupLead.referralMentorId = referralMentor._id;
+        signupLead.referralMentorName = referralMentor.name;
+        signupLead.referralMentorHandle = referralMentor.handle;
+      }
       await linkLeadToDuplicates(Lead, signupLead, matchingLeads);
       applyAttributionToLead(signupLead, attribution);
       await signupLead.save();
@@ -143,6 +148,11 @@ const syncLeadFromAuth = async (enrichedUser, { method, isNewAccount, attributio
         status: 'new',
         verified: true,
         lastInquiryAt: new Date(),
+        ...(referralMentor && {
+          referralMentorId: referralMentor._id,
+          referralMentorName: referralMentor.name,
+          referralMentorHandle: referralMentor.handle
+        }),
         activities: [{ type: 'note', comment: note, performedBy: 'System' }]
       });
       applyAttributionToLead(lead, attribution);
@@ -244,10 +254,10 @@ exports.register = async (req, res) => {
     });
 
     await user.save();
-    if (req.body.referral) await applyReferral(user._id, req.body.referral);
+    const referralMentor = req.body.referral ? await applyReferral(user._id, req.body.referral) : null;
 
     const enrichedUser = await enrichUserWithMentor(user);
-    syncLeadFromAuth(enrichedUser, { method: 'Email', isNewAccount: true, attribution: req.body.attribution });
+    syncLeadFromAuth(enrichedUser, { method: 'Email', isNewAccount: true, attribution: req.body.attribution, referralMentor });
     sendMetaEvent({
       eventName: 'CompleteRegistration',
       eventId: req.body.attribution?.eventId,
@@ -544,6 +554,7 @@ exports.googleLogin = async (req, res) => {
       $or: [{ googleId }, { email: cleanEmail }]
     });
     const isNewAccount = !user;
+    let referralMentor = null;
 
     if (!user) {
       user = new User({
@@ -556,7 +567,7 @@ exports.googleLogin = async (req, res) => {
         role: 'user'
       });
       await user.save();
-      if (req.body.referral) await applyReferral(user._id, req.body.referral);
+      referralMentor = req.body.referral ? await applyReferral(user._id, req.body.referral) : null;
     } else {
       let changed = false;
       if (!user.googleId && googleId) {
@@ -575,7 +586,7 @@ exports.googleLogin = async (req, res) => {
     }
 
     const enrichedUser = await enrichUserWithMentor(user);
-    syncLeadFromAuth(enrichedUser, { method: 'Google', isNewAccount, attribution: req.body.attribution });
+    syncLeadFromAuth(enrichedUser, { method: 'Google', isNewAccount, attribution: req.body.attribution, referralMentor });
     if (isNewAccount) {
       sendWelcomeEmail(user.name, user.email);
       sendMetaEvent({

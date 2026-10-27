@@ -447,6 +447,7 @@ const UnicoachDashboardPage = () => {
   // Dedicated Bank & Payout Account (Razorpay Route linked account) State
   const [isBankDetailsModalOpen, setIsBankDetailsModalOpen] = useState(false);
   const [savingBankDetails, setSavingBankDetails] = useState(false);
+  const [bankFormFeedback, setBankFormFeedback] = useState('');
   const [bankForm, setBankForm] = useState({
     accountHolderName: '',
     accountNumber: '',
@@ -463,6 +464,7 @@ const UnicoachDashboardPage = () => {
   });
 
   const openBankDetailsModal = () => {
+    setBankFormFeedback('');
     const m = data?.mentor || {};
     const bank = m.defaultPayoutDetails || {};
     const kyc = m.kyc || {};
@@ -486,7 +488,7 @@ const UnicoachDashboardPage = () => {
 
   const handleSaveBankDetails = async (e) => {
     if (e) e.preventDefault();
-    const fail = (text) => setFeedback({ type: 'error', text });
+    const fail = (text) => setBankFormFeedback(text);
     const accountNumber = bankForm.accountNumber.trim();
     const ifscCode = bankForm.ifscCode.trim().toUpperCase();
     const pan = bankForm.pan.trim().toUpperCase();
@@ -540,7 +542,7 @@ const UnicoachDashboardPage = () => {
         console.error('Failed to refresh dashboard after saving bank details:', refreshErr);
       }
     } catch (err) {
-      setFeedback({ type: 'error', text: err.message || 'Failed to update bank details.' });
+      setBankFormFeedback(err.message || 'Failed to update bank details.');
     } finally {
       setSavingBankDetails(false);
     }
@@ -7833,7 +7835,11 @@ const UnicoachDashboardPage = () => {
               Razorpay needs your PAN and address to verify your payout account.
             </div>
 
-            <form onSubmit={handleSaveBankDetails} className="space-y-4">
+            <form
+              onSubmit={handleSaveBankDetails}
+              onChange={() => bankFormFeedback && setBankFormFeedback('')}
+              className="space-y-4"
+            >
               <div>
                 <label className="block text-xs font-semibold text-slate-700 mb-1">
                   Account Holder Name *
@@ -8024,6 +8030,15 @@ const UnicoachDashboardPage = () => {
                 Payouts go to bank accounts only — UPI IDs can't receive automatic payouts.
               </p>
 
+              {bankFormFeedback && (
+                <div
+                  role="alert"
+                  className="rounded-xl border border-rose-200 bg-rose-50 px-3 py-2 text-xs font-medium text-rose-700"
+                >
+                  {bankFormFeedback}
+                </div>
+              )}
+
               <div className="flex items-center justify-end gap-2 pt-3 border-t border-slate-100">
                 <button
                   type="button"
@@ -8058,4 +8073,3 @@ const UnicoachDashboardPage = () => {
 };
 
 export default UnicoachDashboardPage;
-

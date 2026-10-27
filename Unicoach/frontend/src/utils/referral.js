@@ -5,16 +5,24 @@ const TTL_MS = 60 * 24 * 60 * 60 * 1000;
 const clean = (v) => String(v || '').trim().toLowerCase().replace(/^@/, '').slice(0, 60);
 const valid = (h) => /^[a-z0-9._-]+$/.test(h);
 
-export const saveReferral = (handle) => {
+export const saveReferral = (handle, { replace = false } = {}) => {
   const h = clean(handle);
   if (!h || !valid(h)) return;
   try {
-    // The first mentor who brought the student keeps the credit
+    // An explicit referral URL takes precedence over a stale referral kept in this browser.
     const current = getReferral();
-    if (current && current !== h) return;
+    if (!replace && current && current !== h) return;
     localStorage.setItem(KEY, JSON.stringify({ handle: h, at: Date.now() }));
   } catch {
     /* storage blocked: referral just isn't remembered */
+  }
+};
+
+export const clearReferral = () => {
+  try {
+    localStorage.removeItem(KEY);
+  } catch {
+    /* storage blocked */
   }
 };
 
@@ -31,7 +39,7 @@ export const getReferral = () => {
 export const captureReferral = () => {
   try {
     const ref = new URLSearchParams(window.location.search).get('ref');
-    if (ref) saveReferral(ref);
+    if (ref) saveReferral(ref, { replace: true });
   } catch {
     /* ignore */
   }
