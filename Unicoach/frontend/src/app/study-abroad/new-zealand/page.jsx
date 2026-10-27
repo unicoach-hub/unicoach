@@ -32,14 +32,14 @@ const NewZealandOverview = () => {
           >
             <div className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-sky-50 border border-sky-100 text-sky-700 text-xs font-black uppercase tracking-wider mb-6 shadow-xs">
               <Sparkles size={14} className="text-sky-600 animate-pulse" />
-              <span>Study Abroad Guide 2026/27</span>
+              <span>Study Abroad Guide 2027</span>
             </div>
             <h1 className="text-4xl md:text-5xl lg:text-[3.5rem] font-black text-slate-900 mb-6 leading-tight tracking-tight">
               Study in{' '}
               <span className="bg-gradient-to-r from-sky-600 to-indigo-600 bg-clip-text text-transparent">New Zealand</span>
             </h1>
             <p className="text-slate-655 text-base md:text-lg leading-relaxed font-semibold max-w-2xl mb-8">
-              New Zealand has emerged as a premier, highly practical destination for Indian students in 2026. Explore world-ranked universities, increased work rights, and streamlined residency pathways.
+              New Zealand is a practical, affordable choice for Indian students. Explore world-ranked universities, increased work rights, and streamlined residency pathways.
             </p>
             <a 
               href="#key-sections" 
@@ -90,9 +90,9 @@ const NewZealandOverview = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
           {[
             {
-              title: "NZ Intakes 2026",
+              title: "NZ Intakes 2027",
               path: "/study-abroad/new-zealand/intakes",
-              desc: "Compare Semester 1 (February), Semester 2 (July), and flexible Rolling Intake timelines for 2026.",
+              desc: "Compare Semester 1 (February), Semester 2 (July), and flexible Rolling Intake timelines for 2027.",
               tag: "February & July Cycles"
             },
             {
@@ -139,7 +139,7 @@ const NewZealandOverview = () => {
 
         {/* SECTION 2: WHY NEW ZEALAND WORKS FOR INDIAN STUDENTS */}
         <div className="bg-white/60 border border-white rounded-[32px] p-8 shadow-[0_8px_30px_rgba(0,0,0,0.02)] backdrop-blur-xl mb-12">
-          <h2 className="text-xl md:text-2xl font-black text-slate-900 mb-6 text-center">Why Study in New Zealand in 2026?</h2>
+          <h2 className="text-xl md:text-2xl font-black text-slate-900 mb-6 text-center">Why Study in New Zealand in 2027?</h2>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div className="space-y-4">

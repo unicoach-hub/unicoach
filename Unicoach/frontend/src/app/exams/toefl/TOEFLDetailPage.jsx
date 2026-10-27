@@ -49,16 +49,16 @@ const TOEFLDetailPage = ({ pageKey }) => {
   // Rich contents dictionary for TOEFL tabs
   const contentMap = {
     overview: {
-      title: "TOEFL Exam for Indian Students in 2025: A Complete Guide",
+      title: "TOEFL Exam for Indian Students: A Complete Guide",
       subtitle: "The Test of English as a Foreign Language (TOEFL) is a highly standardized English proficiency test accepted worldwide.",
       content: (
         <div className="space-y-6">
           <div className="bg-orange-50 border border-blue-150 p-5 rounded-2xl flex items-start gap-3.5">
             <Info className="text-[#DE5C2B] w-5 h-5 flex-shrink-0 mt-0.5" />
             <div>
-              <h4 className="font-extrabold text-blue-950 text-xs uppercase tracking-wider mb-1">TOEFL iBT Shorter Duration Update</h4>
+              <h4 className="font-extrabold text-blue-950 text-xs uppercase tracking-wider mb-1">New TOEFL iBT format (from 21 January 2026)</h4>
               <p className="text-xs text-blue-900 leading-relaxed font-semibold">
-                ETS has shortened the TOEFL iBT test duration to exactly 2 hours (previously 3 hours). The writing section features a new "Writing for an Academic Discussion" task, which has replaced the old independent writing task. In addition, all unscored test questions have been removed.
+                Since 21 January 2026, the TOEFL iBT has new tasks, adaptive Reading and Listening sections and a new 1–6 score scale. The four sections take about 90 minutes of test time; ETS asks you to allow about two hours in total. Until 2028, score reports also show the old 0–120 score alongside the new one.
               </p>
             </div>
           </div>
@@ -73,7 +73,7 @@ const TOEFLDetailPage = ({ pageKey }) => {
             </p>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4.5 my-6">
               {[
-                { title: "Duration", desc: "Exactly 2 hours (Shorter Edition) with no scheduled breaks." },
+                { title: "Duration", desc: "About 90 minutes of test time; allow about 2 hours in total." },
                 { title: "Tested Skills", desc: "Evaluates academic communication across Reading, Listening, Speaking, and Writing." },
                 { title: "Modes of Delivery", desc: "Available as TOEFL iBT (at center/home) and TOEFL Essentials." },
                 { title: "Wide Acceptance", desc: "Accepted by over 12,500 institutions in 160+ countries globally." }
@@ -122,7 +122,7 @@ const TOEFLDetailPage = ({ pageKey }) => {
               ETS offers two main versions of the test. Explore the variations below to select the right match:
             </p>
             <div className="bg-slate-50 border border-slate-150 p-4.5 rounded-2xl text-[11px] text-slate-500 font-semibold leading-relaxed space-y-2">
-              <p>• <strong>TOEFL iBT:</strong> Academic-heavy focus, 2 hours limit, scored on a 0-120 scale. Accepted by all prestigious graduate and undergraduate schools.</p>
+              <p>• <strong>TOEFL iBT:</strong> The main test for university admission. About 90 minutes of test time, scored 1–6 in half bands (the old 0–120 score is shown alongside until 2028).</p>
               <p>• <strong>TOEFL Essentials:</strong> Multi-stage adaptive test, 1.5 hours duration, scored on a 1-12 band scale. Tests everyday conversational language.</p>
             </div>
           </div>
@@ -130,12 +130,12 @@ const TOEFLDetailPage = ({ pageKey }) => {
       )
     },
     syllabus: {
-      title: "TOEFL Exam Syllabus and Pattern 2025: Section-wise Layout",
-      subtitle: "The streamlined TOEFL iBT format assesses 4 main areas. Learn durations, questions, and formatting rules.",
+      title: "TOEFL Exam Syllabus and Pattern: Section-wise Layout",
+      subtitle: "The TOEFL iBT format from 21 January 2026: four sections, new task types, adaptive Reading and Listening.",
       content: (
         <div className="space-y-6">
           <p className="text-slate-650 font-semibold text-xs leading-relaxed">
-            The exam takes approximately 2 hours to complete and has no scheduled breaks. All sections use authentic academic material.
+            The test has four sections in this order: Reading, Listening, Writing, Speaking. Reading and Listening are adaptive: how you do in the first part decides how hard the second part is, so the number of questions and the time can vary slightly. Times below are ETS's approximate figures.
           </p>
 
           <div className="overflow-x-auto border border-slate-200/60 rounded-2xl my-6 shadow-sm">
@@ -151,33 +151,33 @@ const TOEFLDetailPage = ({ pageKey }) => {
               <tbody className="divide-y divide-slate-100 text-slate-600 font-semibold text-xs">
                 <tr>
                   <td className="py-3.5 px-4 font-bold text-slate-800">Reading</td>
-                  <td className="py-3.5 px-4">35 Minutes</td>
-                  <td className="py-3.5 px-4">20 Questions</td>
-                  <td className="py-3.5 px-4 text-slate-500">2 academic passages, 10 multiple-choice questions each.</td>
+                  <td className="py-3.5 px-4">~30 Minutes</td>
+                  <td className="py-3.5 px-4">~50 items</td>
+                  <td className="py-3.5 px-4 text-slate-500">Complete the Words, Read in Daily Life (emails, notices), Read an Academic Passage. Adaptive.</td>
                 </tr>
                 <tr>
                   <td className="py-3.5 px-4 font-bold text-slate-800">Listening</td>
-                  <td className="py-3.5 px-4">36 Minutes</td>
-                  <td className="py-3.5 px-4">28 Questions</td>
-                  <td className="py-3.5 px-4 text-slate-500">3 lectures and 2 conversations. Audio clips play once.</td>
-                </tr>
-                <tr>
-                  <td className="py-3.5 px-4 font-bold text-slate-800">Speaking</td>
-                  <td className="py-3.5 px-4">16 Minutes</td>
-                  <td className="py-3.5 px-4">4 Tasks</td>
-                  <td className="py-3.5 px-4 text-slate-500">1 independent (opinion) and 3 integrated tasks. spoken responses.</td>
+                  <td className="py-3.5 px-4">~29 Minutes</td>
+                  <td className="py-3.5 px-4">~47 items</td>
+                  <td className="py-3.5 px-4 text-slate-500">Listen and Choose a Response, conversations, announcements and academic talks. Adaptive.</td>
                 </tr>
                 <tr>
                   <td className="py-3.5 px-4 font-bold text-slate-800">Writing</td>
-                  <td className="py-3.5 px-4">29 Minutes</td>
-                  <td className="py-3.5 px-4">2 Tasks</td>
-                  <td className="py-3.5 px-4 text-slate-500">1 Integrated task & 1 Writing for Academic Discussion task.</td>
+                  <td className="py-3.5 px-4">~23 Minutes</td>
+                  <td className="py-3.5 px-4">12 tasks</td>
+                  <td className="py-3.5 px-4 text-slate-500">Build a Sentence, Write an Email, Write for an Academic Discussion.</td>
+                </tr>
+                <tr>
+                  <td className="py-3.5 px-4 font-bold text-slate-800">Speaking</td>
+                  <td className="py-3.5 px-4">~8 Minutes</td>
+                  <td className="py-3.5 px-4">11 tasks</td>
+                  <td className="py-3.5 px-4 text-slate-500">Listen and Repeat, Take an Interview.</td>
                 </tr>
                 <tr className="bg-indigo-50/20 font-bold">
                   <td className="py-3.5 px-4 text-slate-800">Total Exam</td>
-                  <td className="py-3.5 px-4 text-indigo-700">~2 Hours</td>
-                  <td className="py-3.5 px-4">54 items / 6 tasks</td>
-                  <td className="py-3.5 px-4">Scale: 0 - 120 (30 points per section)</td>
+                  <td className="py-3.5 px-4 text-indigo-700">~90 Minutes</td>
+                  <td className="py-3.5 px-4">Varies (adaptive)</td>
+                  <td className="py-3.5 px-4">Scale: 1 – 6 in half bands (overall = average of 4 sections)</td>
                 </tr>
               </tbody>
             </table>
@@ -257,7 +257,7 @@ const TOEFLDetailPage = ({ pageKey }) => {
       )
     },
     fees: {
-      title: "TOEFL Exam Fees 2025 in India: Registration & Rescheduling Charges",
+      title: "TOEFL Exam Fees in India: Registration & Rescheduling Charges",
       subtitle: "Understand registration prices, rescheduling fees, and cancellation refunds in India.",
       content: (
         <div className="space-y-6">
@@ -278,28 +278,28 @@ const TOEFLDetailPage = ({ pageKey }) => {
                 <tbody className="divide-y divide-slate-100 text-slate-650 font-semibold text-xs">
                   <tr>
                     <td className="py-3 px-4 font-bold text-slate-805">TOEFL iBT Registration Fee</td>
-                    <td className="py-3 px-4 text-indigo-650 font-bold">₹16,900</td>
+                    <td className="py-3 px-4 text-indigo-650 font-bold">₹15,729</td>
                   </tr>
                   <tr>
                     <td className="py-3 px-4 font-bold text-slate-805">Late Registration Fee</td>
-                    <td className="py-3 px-4">₹3,900</td>
+                    <td className="py-3 px-4">₹3,305</td>
                   </tr>
                   <tr>
                     <td className="py-3 px-4 font-bold text-slate-805">Rescheduling Fee</td>
-                    <td className="py-3 px-4">₹5,900</td>
+                    <td className="py-3 px-4">₹5,000</td>
                   </tr>
                   <tr>
                     <td className="py-3 px-4 font-bold text-slate-805">Score Review Fee (Speaking or Writing)</td>
-                    <td className="py-3 px-4">₹7,900</td>
+                    <td className="py-3 px-4">₹6,695</td>
                   </tr>
                   <tr>
                     <td className="py-3 px-4 font-bold text-slate-805">Additional Score Report (per university)</td>
-                    <td className="py-3 px-4">₹1,950</td>
+                    <td className="py-3 px-4">₹2,000</td>
                   </tr>
                 </tbody>
               </table>
             </div>
-            <p className="text-[10px] text-slate-400 font-bold italic mt-1">* Note: All fees include local goods & services tax (GST) where applicable.</p>
+            <p className="text-[10px] text-slate-400 font-bold italic mt-1">* Fees as listed by ETS India (checked Oct 2026). Confirm on the ETS India site when you book.</p>
           </div>
 
           <div className="space-y-4 pt-4 border-t border-slate-100">
@@ -314,7 +314,7 @@ const TOEFLDetailPage = ({ pageKey }) => {
                 <h5 className="font-black text-xs text-indigo-755 mb-3 uppercase tracking-wider">Rescheduling Rules</h5>
                 <ul className="space-y-2.5 text-[11px] font-bold text-slate-650 leading-relaxed">
                   <li>• Must reschedule at least <strong>4 full days</strong> before your scheduled appointment.</li>
-                  <li>• Rescheduling fee of <strong>₹5,900</strong> applies.</li>
+                  <li>• Rescheduling fee of <strong>₹5,000</strong> applies.</li>
                   <li>• Can be requested online through your ETS TOEFL profile.</li>
                 </ul>
               </div>
@@ -397,7 +397,7 @@ const TOEFLDetailPage = ({ pageKey }) => {
       )
     },
     registration: {
-      title: "TOEFL Registration 2025: Step-by-Step Guide",
+      title: "TOEFL Registration: Step-by-Step Guide",
       subtitle: "Learn how to sign up on the ETS portal, choose test modes, and register for accommodations.",
       content: (
         <div className="space-y-6">
@@ -417,7 +417,7 @@ const TOEFLDetailPage = ({ pageKey }) => {
                 "6. Select up to 4 universities to receive your score reports for free.",
                 "7. Apply for disability accommodations (must submit requests at least 6 weeks in advance).",
                 "8. Review your registration details and accept test rules.",
-                "9. Complete the payment of ₹16,900 online.",
+                "9. Complete the payment of ₹15,729 online.",
                 "10. Save the registration confirmation email and review test day guidelines."
               ].map((step, idx) => (
                 <div key={idx} className="p-3 bg-slate-50 rounded-xl border border-slate-100">
@@ -458,7 +458,7 @@ const TOEFLDetailPage = ({ pageKey }) => {
             </div>
             <div className="border border-slate-100 rounded-2xl p-4 bg-slate-50/50">
               <span className="text-[10px] text-slate-400 font-black uppercase tracking-wider block mb-1">Total Score Scale</span>
-              <span className="text-lg font-black text-indigo-600">0 - 120</span>
+              <span className="text-lg font-black text-indigo-600">1 - 6</span>
             </div>
             <div className="border border-slate-100 rounded-2xl p-4 bg-slate-50/50">
               <span className="text-[10px] text-slate-400 font-black uppercase tracking-wider block mb-1">Online Delivery</span>
@@ -469,42 +469,42 @@ const TOEFLDetailPage = ({ pageKey }) => {
           <div className="space-y-4 pt-4 border-t border-slate-100">
             <h4 className="text-sm font-black text-slate-800">1. Section-wise Scoring Scales</h4>
             <p className="text-xs text-slate-500 font-semibold leading-relaxed">
-              Each of the 4 sections is graded on a scale of 0 to 30. Your total score is the sum of these 4 scores.
+              Since 21 January 2026, each section is scored from 1 to 6 in half bands, and your overall score is the average of the four, rounded to the nearest half band. Each band lines up with a CEFR level, so universities can compare it with IELTS. Until 2028 your report also shows the old 0–120 score.
             </p>
             <div className="overflow-x-auto border border-slate-200/60 rounded-2xl shadow-sm my-3">
               <table className="w-full text-left border-collapse text-xs md:text-sm">
                 <thead className="bg-slate-50 text-slate-500 font-bold uppercase border-b border-slate-150">
                   <tr>
-                    <th className="py-3 px-4 text-xs font-black text-slate-500">TOEFL Section</th>
-                    <th className="py-3 px-4 text-xs font-black text-slate-500">Score Range</th>
-                    <th className="py-3 px-4 text-xs font-black text-slate-500">Typical Good Score</th>
+                    <th className="py-3 px-4 text-xs font-black text-slate-500">Band</th>
+                    <th className="py-3 px-4 text-xs font-black text-slate-500">CEFR Level</th>
+                    <th className="py-3 px-4 text-xs font-black text-slate-500">What it usually means</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-100 text-slate-650 font-semibold text-xs">
                   <tr>
-                    <td className="py-3 px-4 font-bold">Reading</td>
-                    <td className="py-3 px-4">0 to 30</td>
-                    <td className="py-3 px-4 text-emerald-650">24+ (Advanced)</td>
+                    <td className="py-3 px-4 font-bold">6</td>
+                    <td className="py-3 px-4">C2</td>
+                    <td className="py-3 px-4 text-emerald-650">Top band; fine for any program</td>
                   </tr>
                   <tr>
-                    <td className="py-3 px-4 font-bold">Listening</td>
-                    <td className="py-3 px-4">0 to 30</td>
-                    <td className="py-3 px-4 text-emerald-650">22+ (Advanced)</td>
+                    <td className="py-3 px-4 font-bold">5 – 5.5</td>
+                    <td className="py-3 px-4">C1</td>
+                    <td className="py-3 px-4 text-emerald-650">What most master's programs at strong universities ask for</td>
                   </tr>
                   <tr>
-                    <td className="py-3 px-4 font-bold">Speaking</td>
-                    <td className="py-3 px-4">0 to 30</td>
-                    <td className="py-3 px-4 text-emerald-650">25+ (Advanced)</td>
+                    <td className="py-3 px-4 font-bold">4 – 4.5</td>
+                    <td className="py-3 px-4">B2</td>
+                    <td className="py-3 px-4 text-emerald-650">Accepted by many undergraduate and some master's programs</td>
                   </tr>
                   <tr>
-                    <td className="py-3 px-4 font-bold">Writing</td>
-                    <td className="py-3 px-4">0 to 30</td>
-                    <td className="py-3 px-4 text-emerald-650">24+ (Advanced)</td>
+                    <td className="py-3 px-4 font-bold">3 – 3.5</td>
+                    <td className="py-3 px-4">B1</td>
+                    <td className="py-3 px-4 text-emerald-650">Usually needs a pathway or English course first</td>
                   </tr>
-                  <tr className="bg-indigo-50/20 font-bold">
-                    <td className="py-3 px-4 text-slate-805">Total Score</td>
-                    <td className="py-3 px-4 text-indigo-700">0 to 120</td>
-                    <td className="py-3 px-4 text-indigo-700">95+ (Highly Competitive)</td>
+                  <tr>
+                    <td className="py-3 px-4 font-bold">1 – 2.5</td>
+                    <td className="py-3 px-4">A1 – A2</td>
+                    <td className="py-3 px-4 text-emerald-650">Not enough for direct admission</td>
                   </tr>
                 </tbody>
               </table>
@@ -598,19 +598,19 @@ const TOEFLDetailPage = ({ pageKey }) => {
 
   const faqMap = {
     overview: [
-      { q: "What is the TOEFL exam fee in India?", a: "The registration fee for the TOEFL iBT exam in India is ₹16,900." },
+      { q: "What is the TOEFL exam fee in India?", a: "ETS India lists the TOEFL iBT registration fee as ₹15,729. Check the ETS India site when you book, as fees can change." },
       { q: "How long is a TOEFL score valid?", a: "TOEFL scores are valid for exactly 2 years from the date of your exam." },
       { q: "Is TOEFL harder than IELTS?", a: "It depends on preference: TOEFL is fully computer-delivered, whereas IELTS offers paper and face-to-face formats." },
       { q: "Can I write TOEFL from home?", a: "Yes, you can register for the TOEFL iBT Home Edition, which uses the same content and scoring criteria as the center exam." }
     ],
     syllabus: [
-      { q: "What sections are in the shortened TOEFL iBT?", a: "It contains 4 sections: Reading, Listening, Speaking, and Writing, with a total duration of 2 hours." },
-      { q: "Are there breaks during the TOEFL exam?", a: "No, the shortened TOEFL iBT is a 2-hour continuous test with no scheduled breaks." },
-      { q: "What is the new writing task in TOEFL?", a: "The new task is 'Writing for an Academic Discussion', where you write a post contributing to an online classroom forum." }
+      { q: "What sections are in the new TOEFL iBT?", a: "Four: Reading, Listening, Writing and Speaking, in that order. Test time is about 90 minutes; allow about two hours in total." },
+      { q: "What changed in January 2026?", a: "New task types (like Build a Sentence, Write an Email and Take an Interview), adaptive Reading and Listening, and a new 1–6 score scale. The old 0–120 score is shown alongside it until 2028." },
+      { q: "What are the writing tasks in TOEFL?", a: "Build a Sentence, Write an Email, and Write for an Academic Discussion, where you add a post to an online class discussion." }
     ],
     fees: [
-      { q: "Can I reschedule my TOEFL exam?", a: "Yes, you can reschedule your exam up to 4 days before the test date for a fee of ₹5,900." },
-      { q: "What is the late registration fee for TOEFL?", a: "Registering within 7 days of the test date incurs a late fee of ₹3,900." },
+      { q: "Can I reschedule my TOEFL exam?", a: "Yes, you can reschedule your exam up to 4 days before the test date for a fee of ₹5,000." },
+      { q: "What is the late registration fee for TOEFL?", a: "Registering within 7 days of the test date incurs a late fee of about ₹3,305." },
       { q: "Can I get a refund if I cancel my TOEFL exam?", a: "Yes, cancellations made at least 4 full days before the test date receive a 50% partial refund." }
     ],
     dates: [

@@ -156,23 +156,23 @@ const SATDetailPage = ({ pageKey }) => {
               <tbody className="divide-y divide-slate-100 font-semibold text-slate-700 text-xs">
                 <tr>
                   <td className="py-3.5 px-4 font-black">Base International Registration Fee</td>
-                  <td className="py-3.5 px-4 font-bold text-slate-900">$103</td>
+                  <td className="py-3.5 px-4 font-bold text-slate-900">$68</td>
                 </tr>
                 <tr>
-                  <td className="py-3.5 px-4 font-black">Regional Fee (India / South Asia)</td>
+                  <td className="py-3.5 px-4 font-black">International Fee (all test takers outside the US)</td>
                   <td className="py-3.5 px-4 font-bold text-slate-900">$43</td>
                 </tr>
                 <tr>
                   <td className="py-3.5 px-4 font-black">Late Registration Fee</td>
-                  <td className="py-3.5 px-4 font-bold text-slate-900">$30</td>
+                  <td className="py-3.5 px-4 font-bold text-slate-900">$38</td>
                 </tr>
                 <tr>
                   <td className="py-3.5 px-4 font-black">Test Center Change Fee</td>
-                  <td className="py-3.5 px-4 font-bold text-slate-900">$25</td>
+                  <td className="py-3.5 px-4 font-bold text-slate-900">$34</td>
                 </tr>
                 <tr>
                   <td className="py-3.5 px-4 font-black">Cancellation Fee (Prior to Deadline)</td>
-                  <td className="py-3.5 px-4 font-bold text-slate-900">$25</td>
+                  <td className="py-3.5 px-4 font-bold text-slate-900">$34</td>
                 </tr>
                 <tr>
                   <td className="py-3.5 px-4 font-black">Late Cancellation Fee (After Deadline)</td>
@@ -189,49 +189,47 @@ const SATDetailPage = ({ pageKey }) => {
     },
     dates: {
       title: "SAT Exam Dates: International Schedule",
-      subtitle: "Official international test window guidelines.",
+      subtitle: "2026-27 SAT dates and deadlines (College Board). They apply to students in India too.",
       content: (
         <div className="space-y-6 text-xs md:text-sm">
           <p className="text-slate-655 font-semibold leading-relaxed">
-            The Digital SAT is held multiple times a year internationally. Registration typically deadlines 2-3 weeks prior to each scheduled test date.
+            All SAT dates in India fall on Saturdays. Register by the regular deadline; late registration costs $38 extra and closes a few days later. Dates are from the College Board's 2026-27 schedule.
           </p>
 
           <div className="overflow-x-auto border border-slate-200/60 rounded-2xl shadow-xs">
             <table className="w-full text-left border-collapse">
               <thead className="bg-slate-50 border-b border-slate-150 text-slate-400 font-bold uppercase">
                 <tr>
-                  <th className="py-3.5 px-4 text-xs font-black text-slate-500">Test Month</th>
-                  <th className="py-3.5 px-4 text-xs font-black text-slate-500">Target Registration Deadline</th>
+                  <th className="py-3.5 px-4 text-xs font-black text-slate-500">Test Date</th>
+                  <th className="py-3.5 px-4 text-xs font-black text-slate-500">Registration Deadline</th>
+                  <th className="py-3.5 px-4 text-xs font-black text-slate-500">Late Registration Deadline</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100 font-semibold text-slate-700 text-xs">
                 <tr>
-                  <td className="py-3.5 px-4 font-black">March</td>
-                  <td className="py-3.5 px-4">Early February</td>
+                  <td className="py-3.5 px-4 font-black">Nov 7, 2026</td>
+                  <td className="py-3.5 px-4">Oct 23, 2026</td>
+                  <td className="py-3.5 px-4">Oct 27, 2026</td>
                 </tr>
                 <tr>
-                  <td className="py-3.5 px-4 font-black">May</td>
-                  <td className="py-3.5 px-4">Late March / Early April</td>
+                  <td className="py-3.5 px-4 font-black">Dec 5, 2026</td>
+                  <td className="py-3.5 px-4">Nov 20, 2026</td>
+                  <td className="py-3.5 px-4">Nov 24, 2026</td>
                 </tr>
                 <tr>
-                  <td className="py-3.5 px-4 font-black">June</td>
-                  <td className="py-3.5 px-4">Early May</td>
+                  <td className="py-3.5 px-4 font-black">Mar 6, 2027</td>
+                  <td className="py-3.5 px-4">Feb 19, 2027</td>
+                  <td className="py-3.5 px-4">Feb 23, 2027</td>
                 </tr>
                 <tr>
-                  <td className="py-3.5 px-4 font-black">August</td>
-                  <td className="py-3.5 px-4">Late July</td>
+                  <td className="py-3.5 px-4 font-black">May 1, 2027</td>
+                  <td className="py-3.5 px-4">Apr 16, 2027</td>
+                  <td className="py-3.5 px-4">Apr 20, 2027</td>
                 </tr>
                 <tr>
-                  <td className="py-3.5 px-4 font-black">October</td>
-                  <td className="py-3.5 px-4">Early September</td>
-                </tr>
-                <tr>
-                  <td className="py-3.5 px-4 font-black">November</td>
-                  <td className="py-3.5 px-4">Early October</td>
-                </tr>
-                <tr>
-                  <td className="py-3.5 px-4 font-black">December</td>
-                  <td className="py-3.5 px-4">Early November</td>
+                  <td className="py-3.5 px-4 font-black">Jun 5, 2027</td>
+                  <td className="py-3.5 px-4">May 21, 2027</td>
+                  <td className="py-3.5 px-4">May 25, 2027</td>
                 </tr>
               </tbody>
             </table>

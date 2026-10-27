@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import StudyAbroadCTA from './StudyAbroadCTA';
 import { useLead } from '../context/LeadContext';
 import { useAuth } from '../context/AuthContext';
@@ -63,6 +63,7 @@ const UniversityDetailTemplate = ({ uniData, sections = {} }) => {
   const { openEligibilityModal } = useLead();
   const { user } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
   const [activeTab, setActiveTab] = useState('overview'); // Set default to overview matching mockup
   const [logoError, setLogoError] = useState(false);
   const [heroError, setHeroError] = useState(false);
@@ -99,35 +100,18 @@ const UniversityDetailTemplate = ({ uniData, sections = {} }) => {
   const RankingsComp = sections.rankings || RankingsSection;
   const CoursesComp = sections.courses || CoursesFeesSection;
 
-  const defaultBlogs = [
-    {
-      title: "Fresher Jobs In USA For Indians In 2024: Top Roles, Salary & More",
-      readTime: "11 mins read",
-      date: "Mar 15, 2025"
-    },
-    {
-      title: "How to Get Job in USA for Indians in 2024: Easy Job Search Hurdles!",
-      readTime: "11 mins read",
-      date: "Mar 13, 2025"
-    },
-    {
-      title: "Highest Paying Jobs in USA for Indian Students 2025",
-      readTime: "10 mins read",
-      date: "Mar 13, 2025"
-    },
-    {
-      title: "How To Work in USA 2024: Tips & Tricks to Find A Good Job",
-      readTime: "15 mins read",
-      date: "Mar 15, 2025"
-    },
-    {
-      title: "Minimum Wages in USA 2024: State-wise Comparison",
-      readTime: "10 mins read",
-      date: "Mar 15, 2025"
-    }
+  // Real next steps for this university (the old "related articles" were placeholders that linked nowhere)
+  // the URL knows the country (/study-abroad/<country>/universities/...); many pages leave uniData.country unset
+  const COUNTRY_NAMES = { usa: 'USA', uk: 'UK', canada: 'Canada', australia: 'Australia', germany: 'Germany', ireland: 'Ireland', france: 'France', italy: 'Italy', 'new-zealand': 'New Zealand' };
+  const pathCountry = location.pathname.split('/')[2];
+  const countrySlug = COUNTRY_NAMES[pathCountry] ? pathCountry : (uniData.country || 'usa').toLowerCase().replace(/\s+/g, '-');
+  const countryName = COUNTRY_NAMES[countrySlug] || uniData.country || 'USA';
+  const nextSteps = [
+    { title: `Search ${uniData.name} programs`, body: 'See every course, its fees, intakes and entry requirements in Course Finder.', to: `/search-programs?q=${encodeURIComponent(uniData.name || '')}` },
+    { title: 'Find scholarships you qualify for', body: 'Add your marks and study level and see only the awards you can actually get.', to: '/search-programs?highlight=scholarship' },
+    { title: `Study in ${countryName}: full guide`, body: 'Costs, part-time work, post-study visas and how to apply from India.', to: `/study-abroad/${countrySlug}` },
+    { title: 'Talk to a counsellor, free', body: 'Not sure this university fits your profile? Get a straight answer on a free call.', to: '/book-consultation' },
   ];
-
-  const relatedBlogs = uniData.blogs || defaultBlogs;
 
   return (
     <div className="min-h-screen bg-[#fafcff] font-sans pb-20 pt-20">
@@ -236,9 +220,9 @@ const UniversityDetailTemplate = ({ uniData, sections = {} }) => {
         <nav className="flex items-center gap-1.5 text-[11px] font-bold text-slate-400">
           <Link to="/" className="hover:text-indigo-600 transition-colors">Study Abroad</Link>
           <ChevronRight size={10} />
-          <Link to={`/study-abroad/${(uniData.country || 'usa').toLowerCase()}`} className="hover:text-indigo-600 transition-colors">Study in {uniData.country || 'USA'}</Link>
+          <Link to={`/study-abroad/${countrySlug}`} className="hover:text-indigo-600 transition-colors">Study in {countryName}</Link>
           <ChevronRight size={10} />
-          <span className="hover:text-indigo-600 transition-colors">Universities in {uniData.country || 'USA'}</span>
+          <span className="hover:text-indigo-600 transition-colors">Universities in {countryName}</span>
           <ChevronRight size={10} />
           <span className="text-slate-600 font-extrabold">{uniData.name}</span>
         </nav>
@@ -246,26 +230,24 @@ const UniversityDetailTemplate = ({ uniData, sections = {} }) => {
 
       {/* 4. RELEVANT BLOGS FEED SECTION (At bottom of all details page tabs) */}
       <div className="max-w-[1240px] mx-auto px-6 md:px-10 border-t border-slate-200/65 pt-12">
-        <h2 className="text-2xl font-black text-slate-900 mb-8">Related Articles & Guides</h2>
+        <h2 className="text-2xl font-black text-slate-900 mb-8">Your next steps</h2>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {relatedBlogs.map((blog, idx) => (
-            <div 
-              key={idx}
-              className="bg-white/50 border border-white rounded-[24px] p-5 shadow-sm hover:shadow-md transition-all group cursor-pointer"
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {nextSteps.map((step) => (
+            <Link
+              key={step.title}
+              to={step.to}
+              className="bg-white/50 border border-white rounded-[24px] p-5 shadow-sm hover:shadow-md transition-all group block"
             >
-              <div className="flex items-center justify-between text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-3">
-                <span>{blog.readTime}</span>
-                <span>{blog.date}</span>
-              </div>
               <h3 className="font-extrabold text-slate-850 text-sm leading-snug group-hover:text-indigo-600 transition-colors">
-                {blog.title}
+                {step.title}
               </h3>
-              <div className="flex items-center gap-1 text-xs font-black text-indigo-600 mt-4 opacity-0 group-hover:opacity-100 transition-opacity">
-                <span>Read More</span>
+              <p className="text-xs text-slate-500 mt-2 leading-relaxed">{step.body}</p>
+              <div className="flex items-center gap-1 text-xs font-black text-indigo-600 mt-4">
+                <span>Open</span>
                 <ChevronRight size={14} />
               </div>
-            </div>
+            </Link>
           ))}
         </div>
       </div>

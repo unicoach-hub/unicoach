@@ -216,7 +216,7 @@ const PTEOverview = () => {
             <h4 className="font-extrabold text-slate-850 text-sm">Latest PTE Updates</h4>
             <div className="text-xs text-slate-655 font-semibold mt-0.5 space-y-1">
               <p>• <strong>Hybrid Scoring model:</strong> Any PTE exam scheduled on or after August 7, 2025 utilizes double-marking for open-ended tasks like the Essay to ensure human checks verify AI scoring.</p>
-              <p>• <strong>Standard Registration Fee:</strong> The updated PTE exam fee in India is standard at ₹18,000 (including 18% GST).</p>
+              <p>• <strong>Standard Registration Fee:</strong> The PTE Academic fee in India is ₹18,900 including 18% GST (from 16 March 2026). Pearson shows the exact price when you book.</p>
             </div>
           </div>
         </div>
@@ -393,11 +393,11 @@ const PTEOverview = () => {
                     <tbody>
                       <tr className="border-b border-slate-100">
                         <td className="p-3 font-bold text-slate-805">Standard PTE Exam Fee (with GST)</td>
-                        <td className="p-3">₹18,000</td>
+                        <td className="p-3">₹18,900</td>
                       </tr>
                       <tr className="border-b border-slate-100">
                         <td className="p-3">Base Fee (excluding GST)</td>
-                        <td className="p-3">₹15,254.24</td>
+                        <td className="p-3">₹16,017 (approx.)</td>
                       </tr>
                       <tr className="border-b border-slate-100">
                         <td className="p-3">Late Booking Surcharge (within 48 hours)</td>
@@ -702,7 +702,7 @@ const PTEOverview = () => {
             {[
               { q: "What is the PTE Academic exam for?", a: "PTE Academic is a computer-based English language test designed for study abroad and immigration purposes." },
               { q: "Is the PTE exam easier than IELTS?", a: "It depends on preference. PTE is fully computer-delivered and scored by AI. Candidates who prefer speaking to a microphone and fast results find it easier." },
-              { q: "How much does PTE cost in India?", a: "The registration fee for PTE Academic in India is ₹18,000 (including GST)." },
+              { q: "How much does PTE cost in India?", a: "The registration fee for PTE Academic in India is ₹18,900 (including GST), from 16 March 2026." },
               { q: "Can I take the PTE exam multiple times?", a: "Yes, there is no limit to the number of attempts. You can book a test once your previous score is published." },
               { q: "How long is a PTE score valid?", a: "PTE score reports are valid for 2 years from your test date." },
               { q: "Which countries accept PTE Academic?", a: "It is widely accepted for university admissions and student visas in the USA, UK, Canada, Australia, and New Zealand." }

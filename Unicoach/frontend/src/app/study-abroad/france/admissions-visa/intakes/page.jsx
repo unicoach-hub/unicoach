@@ -9,7 +9,7 @@ import { Link } from 'react-router-dom';
 import StudyAbroadCTA from '../../../../../components/StudyAbroadCTA';
 
 const SECTIONS = [
-  { id: 'overview', title: 'Why France in 2026-27?' },
+  { id: 'overview', title: 'Why France in 2027?' },
   { id: 'available-intakes', title: 'Available Intakes' },
   { id: 'comparison', title: 'September vs January' },
   { id: 'september-intake', title: 'September Intake (Fall)' },
@@ -176,7 +176,7 @@ const FranceIntakes = () => {
           <ArrowRight size={12} className="text-slate-400" />
           <Link to="/study-abroad/france" className="hover:text-indigo-650 transition-colors">France</Link>
           <ArrowRight size={12} className="text-slate-400" />
-          <span className="text-slate-600 font-bold">Intakes Guide 2026/27</span>
+          <span className="text-slate-600 font-bold">Intakes Guide 2027</span>
         </div>
 
         {/* Hero Header Card */}
@@ -192,10 +192,10 @@ const FranceIntakes = () => {
           <div className="relative z-10 max-w-3xl">
             <span className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-indigo-500/20 border border-indigo-500/30 text-indigo-300 text-xs font-extrabold uppercase tracking-widest mb-6">
               <Calendar size={14} />
-              France Intake Guide 2026/27
+              France Intake Guide 2027
             </span>
             <h1 className="text-3xl md:text-5xl font-black leading-tight tracking-tight mb-6">
-              France Intakes 2026-27: Complete Guide for International Students
+              France Intakes 2027: Complete Guide for International Students
             </h1>
             <p className="text-indigo-200/90 text-sm md:text-base leading-relaxed mb-6 font-medium">
               The French government has set a target of hosting 30,000 Indian students by 2030. Learn about application cycles, visa rules, scholarship opportunities, and key deadlines.
@@ -203,7 +203,7 @@ const FranceIntakes = () => {
             <div className="flex flex-wrap items-center gap-4 text-xs font-semibold text-slate-400">
               <span className="flex items-center gap-1.5 bg-slate-955/60 px-3 py-1.5 rounded-lg border border-slate-800">
                 <Clock size={13} className="text-indigo-400" />
-                Updated: March 11, 2026
+                Updated: October 27, 2026
               </span>
               <span className="flex items-center gap-1.5 bg-slate-955/60 px-3 py-1.5 rounded-lg border border-slate-800">
                 <Award size={13} className="text-indigo-400" />
@@ -241,12 +241,12 @@ const FranceIntakes = () => {
           {/* Right Column: Content Blocks */}
           <div className="lg:col-span-9 space-y-16">
             
-            {/* 1. Why France in 2026-27 */}
+            {/* 1. Why France in 2027 */}
             <section id="overview" className="scroll-mt-24">
               <div className="bg-gradient-to-r from-sky-50/40 to-indigo-50/40 border border-indigo-100 rounded-[2rem] p-8">
                 <h2 className="text-2xl font-black text-slate-900 mb-4 flex items-center gap-2">
                   <Sparkles className="text-indigo-600" size={22} />
-                  💡 Why Study in France in 2026-27?
+                  💡 Why Study in France in 2027?
                 </h2>
                 <p className="text-slate-655 text-sm font-semibold leading-relaxed mb-6">
                   Close to 9,500 Indian students were enrolled in French universities in 2024. The French government has set a goal of increasing Indian student enrolment to 30,000 by 2030. As a result, French institutions are introducing additional scholarship opportunities, expanding English-taught programs, and offering a unique 5-year post-study Schengen alumni visa.
@@ -284,7 +284,7 @@ const FranceIntakes = () => {
                     </span>
                     <span className="text-xs font-bold text-slate-400">Semester 1</span>
                   </div>
-                  <h3 className="text-lg font-black text-slate-800 mb-2">September Intake 2026-27</h3>
+                  <h3 className="text-lg font-black text-slate-800 mb-2">September Intake 2027</h3>
                   <p className="text-slate-500 text-xs font-semibold leading-relaxed mb-4">
                     The biggest intake in France. Open for almost all courses across disciplines at both public and private universities. Aligns perfectly with the Indian academic calendar.
                   </p>
@@ -316,7 +316,7 @@ const FranceIntakes = () => {
                     </span>
                     <span className="text-xs font-bold text-slate-400">Semester 2</span>
                   </div>
-                  <h3 className="text-lg font-black text-slate-800 mb-2">January Intake 2026-27</h3>
+                  <h3 className="text-lg font-black text-slate-800 mb-2">January Intake 2027</h3>
                   <p className="text-slate-500 text-xs font-semibold leading-relaxed mb-4">
                     A secondary cycle ideal for business, management, and MBA aspirants. Public universities rarely open full programs in this intake.
                   </p>
@@ -377,7 +377,7 @@ const FranceIntakes = () => {
             {/* 4. September Intake (Fall) */}
             <section id="september-intake" className="scroll-mt-24">
               <div className="text-left mb-6">
-                <h2 className="text-2xl font-black text-slate-900 mb-1">🍂 September Intake 2026-27 (Primary Intake)</h2>
+                <h2 className="text-2xl font-black text-slate-900 mb-1">🍂 September Intake 2027 (Primary Intake)</h2>
                 <p className="text-slate-400 text-xs font-bold uppercase tracking-wider">Timeline and top participating universities</p>
               </div>
 
@@ -417,7 +417,7 @@ const FranceIntakes = () => {
             {/* 5. January Intake (Spring) */}
             <section id="january-intake" className="scroll-mt-24">
               <div className="text-left mb-6">
-                <h2 className="text-2xl font-black text-slate-900 mb-1">🌸 January Intake 2026-27 (Spring Intake)</h2>
+                <h2 className="text-2xl font-black text-slate-900 mb-1">🌸 January Intake 2027 (Spring Intake)</h2>
                 <p className="text-slate-400 text-xs font-bold uppercase tracking-wider">Timeline and options for management students</p>
               </div>
 

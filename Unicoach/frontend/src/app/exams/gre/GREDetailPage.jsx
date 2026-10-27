@@ -51,7 +51,7 @@ const GREDetailPage = ({ pageKey }) => {
   // Detailed content dictionary for GRE tabs
   const contentMap = {
     overview: {
-      title: "GRE Exam for Indian Students in 2025: A Complete Guide",
+      title: "GRE Exam for Indian Students: A Complete Guide",
       subtitle: "The Graduate Record Exam (GRE) is the leading admission test required for MS, MBA, and PhD programs globally.",
       content: (
         <div className="space-y-6">
@@ -175,7 +175,7 @@ const GREDetailPage = ({ pageKey }) => {
       content: (
         <div className="space-y-6">
           <p className="text-slate-655 font-semibold text-xs leading-relaxed">
-            The booking fee for the GRE General Test in India is ₹22,550. Additional service fees apply depending on post-booking requests:
+            From 1 August 2026, the GRE General Test fee in India is US$249 (ETS), plus any applicable tax. Additional service fees apply depending on post-booking requests:
           </p>
 
           <div className="overflow-x-auto border border-slate-200/60 rounded-2xl shadow-sm">
@@ -189,7 +189,7 @@ const GREDetailPage = ({ pageKey }) => {
               <tbody className="divide-y divide-slate-100 text-slate-655 font-semibold text-xs">
                 <tr>
                   <td className="py-3 px-4 font-bold text-slate-805">GRE General Test Fee</td>
-                  <td className="py-3 px-4 font-black text-indigo-650">₹22,550</td>
+                  <td className="py-3 px-4 font-black text-indigo-650">US$249</td>
                 </tr>
                 <tr>
                   <td className="py-3 px-4">Rescheduling Fee</td>
@@ -244,7 +244,7 @@ const GREDetailPage = ({ pageKey }) => {
       )
     },
     registration: {
-      title: "GRE Registration 2024: How to Register for GRE?",
+      title: "GRE Registration: How to Register for GRE?",
       subtitle: "Guideline steps to register for GRE General, GRE Subject, and Home exams.",
       content: (
         <div className="space-y-6">
@@ -258,7 +258,7 @@ const GREDetailPage = ({ pageKey }) => {
                 "4. Select the GRE General or GRE Subject Test based on your B-school goals.",
                 "5. Pick your preferred test center, date range, and daily time slot.",
                 "6. Provide details matching your valid ID proof (physical passport).",
-                "7. Complete payment of ₹22,550 using digital card or UPI gateways.",
+                "7. Complete payment of US$249 using a card or UPI.",
                 "8. Receive registration confirmation logs and download your admission ticket."
               ].map((step, idx) => (
                 <div key={idx} className="p-3 bg-slate-50 rounded-xl border border-slate-100">
@@ -292,7 +292,7 @@ const GREDetailPage = ({ pageKey }) => {
           <div className="space-y-4 pt-4 border-t border-slate-100">
             <h4 className="text-sm font-black text-slate-850">GRE at Home vs Test Center</h4>
             <p className="text-xs text-slate-500 leading-relaxed font-semibold">
-              The GRE General at Home allows you to write the test under secure remote proctoring. The at-home registration fee remains the same at ₹19,110 (Wait: as per the user text: "The registration fee for the GRE at Home remains the same at INR 19,110").
+              The GRE General at Home allows you to write the test under secure remote proctoring. The at-home test costs the same as the test-centre test (US$249).
             </p>
           </div>
         </div>
@@ -442,7 +442,7 @@ const GREDetailPage = ({ pageKey }) => {
       )
     },
     'practice-test': {
-      title: "GRE Practice Test 2024 for Exam Preparation",
+      title: "GRE Practice Test for Exam Preparation",
       subtitle: "Simulating exams using practice tests is the best way to evaluate performance and build speed.",
       content: (
         <div className="space-y-6">
@@ -486,7 +486,7 @@ const GREDetailPage = ({ pageKey }) => {
       { q: "Are there breaks in the shorter GRE?", a: "No, there are no scheduled breaks in the shorter 1 hour 58 minutes exam." }
     ],
     fees: [
-      { q: "How much is the GRE exam fee?", a: "The base registration fee for GRE General Test in India is ₹22,550." },
+      { q: "How much is the GRE exam fee?", a: "From 1 August 2026 the GRE General Test costs US$249 in India (ETS), plus any applicable tax." },
       { q: "Is rescheduling the GRE exam free?", a: "No, rescheduling your GRE date costs ₹5,000 and must be done at least 4 days before the test date." }
     ],
     dates: [
@@ -499,7 +499,7 @@ const GREDetailPage = ({ pageKey }) => {
       { q: "What is a good GRE score?", a: "A total score above 300 is considered good. Top-tier universities often seek scores of 315-320 and above." }
     ],
     'slot-booking': [
-      { q: "How can I book GRE slots in India?", a: "You can book slots online via the ETS website by creating an account, selecting a test center, date, and paying the ₹22,550 fee." }
+      { q: "How can I book GRE slots in India?", a: "You can book slots online via the ETS website by creating an account, selecting a test center, date, and paying the US$249 fee." }
     ],
     preparation: [
       { q: "Can I clear my GRE in one month?", a: "Yes, if you already have a strong foundation in math and English, a month of targeted mock testing can yield a good score. Most candidates benefit from 2-3 months of study." }

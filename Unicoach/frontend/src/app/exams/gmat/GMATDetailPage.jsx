@@ -50,7 +50,7 @@ const GMATDetailPage = ({ pageKey }) => {
   // Rich contents dictionary for GMAT tabs
   const contentMap = {
     overview: {
-      title: "GMAT Exam for Indian Students in 2025: A Complete Guide",
+      title: "GMAT Exam for Indian Students: A Complete Guide",
       subtitle: "The Graduate Management Admission Test (GMAT) Focus Edition is a computer-adaptive exam tailored for global business school admissions.",
       content: (
         <div className="space-y-6">
@@ -132,7 +132,7 @@ const GMATDetailPage = ({ pageKey }) => {
       )
     },
     syllabus: {
-      title: "GMAT Exam Syllabus and Pattern 2024: Section-wise GMAT Format",
+      title: "GMAT Exam Syllabus and Pattern: Section-wise GMAT Format",
       subtitle: "The streamlined GMAT Focus Edition contains 3 core modules covering 50 sub-topics over a 2 hours and 15 minutes limit.",
       content: (
         <div className="space-y-6">
@@ -237,7 +237,7 @@ const GMATDetailPage = ({ pageKey }) => {
       )
     },
     fees: {
-      title: "GMAT Exam Fees 2024 in India: Cancellation, Rescheduling Fees",
+      title: "GMAT Exam Fees in India: Cancellation, Rescheduling Fees",
       subtitle: "Full pricing breakdown of standard fees, rescheduling brackets, and cancellation refunds in India.",
       content: (
         <div className="space-y-6">
@@ -387,7 +387,7 @@ const GMATDetailPage = ({ pageKey }) => {
       )
     },
     registration: {
-      title: "GMAT Registration 2024: How to Register for GMAT?",
+      title: "GMAT Registration: How to Register for GMAT?",
       subtitle: "GMAT registration is a clean, 10-step online process. Learn how to sign up, select slots, and submit accommodation requests.",
       content: (
         <div className="space-y-6">
@@ -526,7 +526,7 @@ const GMATDetailPage = ({ pageKey }) => {
       )
     },
     preparation: {
-      title: "GMAT Exam Preparation 2024: Section-wise Tips",
+      title: "GMAT Exam Preparation: Section-wise Tips",
       subtitle: "Unlock score-maximizing strategies for Quantitative, Verbal, and Data Insights sections.",
       content: (
         <div className="space-y-6">

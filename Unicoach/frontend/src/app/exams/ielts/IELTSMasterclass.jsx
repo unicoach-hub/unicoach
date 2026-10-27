@@ -127,7 +127,7 @@ const IELTSMasterclass = () => {
     { q: "How to prepare for IELTS online?", a: "Preparing for IELTS online involves taking live training classes, doing regular practice mock tests, and using graded feedback tools to track speaking and writing improvements." },
     { q: "Can I prepare for IELTS by myself?", a: "Yes. Self-preparation is ideal if you have a strong background in English. You can use official Cambridge IELTS practice books, and complete timed mock tests." },
     { q: "How many attempts are allowed for IELTS?", a: "There is no limit to the number of times you can write the IELTS exam. You can take the test as often as you want by paying the base registration fee each time." },
-    { q: "How much does IELTS cost in India?", a: "The standard fee for both paper-based and computer-delivered IELTS Academic or General Training in India is INR 18,000." },
+    { q: "How much does IELTS cost in India?", a: "The standard fee for IELTS Academic or General Training in India is INR 19,000 (IDP India, from April 2026). IELTS for UKVI costs INR 19,250." },
     { q: "What are the 4 subjects in IELTS?", a: "The 4 core components evaluated in the IELTS exam are Listening, Reading, Writing, and Speaking." },
     { q: "Can I pass IELTS on the first attempt?", a: "Absolutely. With a targeted preparation plan, 1-2 hours of daily diagnostic exercises, and proper guidance, most candidates reach their target band score in their first attempt." },
     { q: "Is IELTS very difficult?", a: "It is not difficult, but it is highly standardized. Understanding the pattern, criteria of assessment (coherence, grammatical range), and timing limits is crucial." },

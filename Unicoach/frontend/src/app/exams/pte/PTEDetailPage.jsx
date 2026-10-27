@@ -232,11 +232,11 @@ const PTEDetailPage = ({ pageKey }) => {
                 <tbody className="divide-y divide-slate-100 text-slate-655 font-semibold text-xs">
                   <tr>
                     <td className="py-3 px-4 font-bold text-slate-805">Standard PTE Exam Fee (including 18% GST)</td>
-                    <td className="py-3 px-4 text-indigo-650 font-bold">₹18,000</td>
+                    <td className="py-3 px-4 text-indigo-650 font-bold">₹18,900</td>
                   </tr>
                   <tr>
                     <td className="py-3 px-4">Base Fee (excluding GST)</td>
-                    <td className="py-3 px-4">₹15,254.24</td>
+                    <td className="py-3 px-4">₹16,017 (approx.)</td>
                   </tr>
                   <tr>
                     <td className="py-3 px-4">Late Booking Surcharge (within 48 hours of test)</td>
@@ -347,7 +347,7 @@ const PTEDetailPage = ({ pageKey }) => {
                 "3. Search Availability: Select test center cities to compare real-time date options.",
                 "4. myPTE Profile: Sign up or log into your myPTE profile. Make sure name details match your passport.",
                 "5. Profile Verification: Input identity details carefully. Remember the Surname Dot rule.",
-                "6. Secure Slot & Pay: Read policies, complete the online fee payment of ₹18,000, and print your receipt."
+                "6. Secure Slot & Pay: Read policies, complete the online fee payment of ₹18,900, and print your receipt."
               ].map((step, idx) => (
                 <div key={idx} className="p-3.5 bg-slate-50 rounded-xl border border-slate-100 leading-relaxed">
                   {step}
@@ -547,7 +547,7 @@ const PTEDetailPage = ({ pageKey }) => {
     overview: [
       { q: "What is the PTE Academic exam for?", a: "It is a computer-based English proficiency test designed for study abroad admissions and immigration visa routes." },
       { q: "Is the PTE exam easier than IELTS?", a: "PTE is fully computer-delivered and graded by AI, which some find easier than speaking to a human examiner or writing essays by hand." },
-      { q: "How much does PTE cost in India?", a: "The official registration fee for PTE Academic in India is ₹18,000 (including 18% GST)." }
+      { q: "How much does PTE cost in India?", a: "The PTE Academic fee in India is ₹18,900 including 18% GST (from 16 March 2026). Pearson shows the exact price when you book." }
     ],
     syllabus: [
       { q: "What are the new Speaking & Writing tasks in 2026?", a: "Pearson has introduced two tasks: 'Respond to a Situation' and 'Summarize Group Discussion' which evaluate classroom conversation skills." },

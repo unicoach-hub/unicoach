@@ -9,11 +9,11 @@ import { Link } from 'react-router-dom';
 import StudyAbroadCTA from '../../../../../components/StudyAbroadCTA';
 
 const SECTIONS = [
-  { id: 'overview', title: 'Why New Zealand in 2026?' },
+  { id: 'overview', title: 'Why New Zealand in 2027?' },
   { id: 'available-intakes', title: 'Available Intakes' },
   { id: 'comparison', title: 'Feb vs July Comparison' },
-  { id: 'february-intake', title: 'February 2026 Intake' },
-  { id: 'july-intake', title: 'July 2026 Intake' },
+  { id: 'february-intake', title: 'February 2027 Intake' },
+  { id: 'july-intake', title: 'July 2027 Intake' },
   { id: 'rolling-intakes', title: 'Rolling Intakes' },
   { id: 'deadlines', title: 'University Deadlines' },
   { id: 'visa-changes', title: 'Student Visa Changes' },
@@ -21,15 +21,16 @@ const SECTIONS = [
   { id: 'faq', title: 'Frequently Asked Questions' }
 ];
 
+// Feb/Mar 2027 deadlines confirmed on each university's site in October 2026; July 2027 dates are not out yet
 const universityDeadlines = [
-  { name: "University of Auckland", feb: "Dec 8, 2025", july: "Jul 4, 2026" },
-  { name: "University of Otago", feb: "Oct 31, 2025", july: "Apr 30, 2026" },
-  { name: "Victoria University of Wellington", feb: "Dec 1, 2025", july: "May 1, 2026" },
-  { name: "University of Canterbury", feb: "Nov 15, 2025", july: "May 1, 2026" },
-  { name: "Massey University", feb: "Dec 15, 2025", july: "May 1, 2026" },
-  { name: "University of Waikato", feb: "Dec 1, 2025", july: "May 31, 2026" },
-  { name: "Lincoln University", feb: "Dec 1, 2025", july: "May 31, 2026" },
-  { name: "Auckland University of Technology (AUT)", feb: "Dec 1, 2025", july: "May 31, 2026" }
+  { name: "University of Auckland", feb: "Dec 7, 2026 (international postgraduate)", july: "Not yet published" },
+  { name: "University of Otago", feb: "Nov 15, 2026 (applying from outside NZ)", july: "Not yet published" },
+  { name: "Victoria University of Wellington", feb: "Dec 1, 2026", july: "Not yet published" },
+  { name: "Lincoln University", feb: "Dec 1, 2026 (applying from outside NZ)", july: "Jun 1, 2027 (applying from outside NZ)" },
+  { name: "University of Canterbury", feb: "Check university site", july: "Not yet published" },
+  { name: "Massey University", feb: "Check university site", july: "Not yet published" },
+  { name: "University of Waikato", feb: "Check university site", july: "Not yet published" },
+  { name: "Auckland University of Technology (AUT)", feb: "Check university site", july: "Not yet published" }
 ];
 
 const intakeComparison = [
@@ -93,7 +94,7 @@ const NewZealandIntakes = () => {
           <ArrowRight size={12} className="text-slate-400" />
           <Link to="/study-abroad/new-zealand" className="hover:text-indigo-650 transition-colors">New Zealand</Link>
           <ArrowRight size={12} className="text-slate-400" />
-          <span className="text-slate-600 font-bold">Intakes Guide 2026</span>
+          <span className="text-slate-600 font-bold">Intakes Guide 2027</span>
         </div>
 
         {/* Hero Header Card */}
@@ -109,10 +110,10 @@ const NewZealandIntakes = () => {
           <div className="relative z-10 max-w-3xl">
             <span className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-indigo-500/20 border border-indigo-500/30 text-indigo-300 text-xs font-extrabold uppercase tracking-widest mb-6">
               <Calendar size={14} />
-              New Zealand Guide 2026
+              New Zealand Guide 2027
             </span>
             <h1 className="text-3xl md:text-5xl font-black leading-tight tracking-tight mb-6">
-              New Zealand Intakes 2026: Complete Guide for Indian Students
+              New Zealand Intakes 2027: Complete Guide for Indian Students
             </h1>
             <p className="text-indigo-200/90 text-sm md:text-base leading-relaxed mb-6 font-medium">
               While other countries tighten rules, New Zealand is opening doors. Learn about application cycles, visa changes, work rights, and step-by-step milestones.
@@ -120,7 +121,7 @@ const NewZealandIntakes = () => {
             <div className="flex flex-wrap items-center gap-4 text-xs font-semibold text-slate-400">
               <span className="flex items-center gap-1.5 bg-slate-950/60 px-3 py-1.5 rounded-lg border border-slate-800">
                 <Clock size={13} className="text-indigo-400" />
-                Updated: December 23, 2025
+                Updated: October 27, 2026
               </span>
               <span className="flex items-center gap-1.5 bg-slate-955/60 px-3 py-1.5 rounded-lg border border-slate-800">
                 <Award size={13} className="text-indigo-400" />
@@ -158,17 +159,17 @@ const NewZealandIntakes = () => {
           {/* Right Column: Content Blocks */}
           <div className="lg:col-span-9 space-y-16">
             
-            {/* 1. Why New Zealand in 2026 */}
+            {/* 1. Why New Zealand in 2027 */}
             <section id="overview" className="scroll-mt-24">
               <div className="bg-gradient-to-r from-sky-50/40 to-indigo-50/40 border border-indigo-100 rounded-[2rem] p-8">
                 <h2 className="text-2xl font-black text-slate-900 mb-4 flex items-center gap-2">
                   <Sparkles className="text-indigo-600" size={22} />
-                  💡 Why New Zealand in 2026?
+                  💡 Why New Zealand in 2027?
                 </h2>
                 <p className="text-slate-650 text-sm font-semibold leading-relaxed mb-6">
                   While other traditional study abroad destinations are tightening student caps and work rights, New Zealand is actively opening doors for international students. 
-                  The biggest news for 2026? Student work rights have officially increased to **25 hours per week**—allowing you to cover more expenses while studying. 
-                  Additionally, a new India-New Zealand partnership has launched to ensure a smoother, faster student visa processing pipeline.
+                  Since 3 November 2025, students can work up to **25 hours per week** during term (up from 20), which helps cover living costs. 
+                  Post-study work visas of up to 3 years for degree graduates also make it a strong option for Indian students.
                 </p>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -191,7 +192,7 @@ const NewZealandIntakes = () => {
             {/* 2. Available Intakes */}
             <section id="available-intakes" className="scroll-mt-24">
               <div className="text-left mb-6">
-                <h2 className="text-2xl font-black text-slate-900 mb-1">Available Intakes in New Zealand (2026)</h2>
+                <h2 className="text-2xl font-black text-slate-900 mb-1">Available Intakes in New Zealand (2027)</h2>
                 <p className="text-slate-400 text-xs font-bold uppercase tracking-wider">Choose your academic starting point</p>
               </div>
 
@@ -204,14 +205,14 @@ const NewZealandIntakes = () => {
                     </span>
                     <span className="text-xs font-bold text-slate-400">Semester 1</span>
                   </div>
-                  <h3 className="text-lg font-black text-slate-800 mb-2">February 2026 Intake</h3>
+                  <h3 className="text-lg font-black text-slate-800 mb-2">February 2027 Intake</h3>
                   <p className="text-slate-500 text-xs font-semibold leading-relaxed mb-4">
-                    The primary academic cycle in New Zealand. Ideal for students who completed their previous qualifying studies in mid-2025 and want maximum program selections.
+                    The primary academic cycle in New Zealand. Ideal for students who completed their previous qualifying studies in mid-2026 and want maximum program selections.
                   </p>
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-4 bg-slate-50 p-4 rounded-xl text-xs">
                     <div>
                       <span className="text-slate-400 font-bold block">Starts</span>
-                      <strong className="text-slate-800 font-extrabold mt-0.5 block">February 2026</strong>
+                      <strong className="text-slate-800 font-extrabold mt-0.5 block">February 2027</strong>
                     </div>
                     <div>
                       <span className="text-slate-400 font-bold block">Courses</span>
@@ -236,14 +237,14 @@ const NewZealandIntakes = () => {
                     </span>
                     <span className="text-xs font-bold text-slate-400">Semester 2</span>
                   </div>
-                  <h3 className="text-lg font-black text-slate-800 mb-2">July 2026 Intake</h3>
+                  <h3 className="text-lg font-black text-slate-800 mb-2">July 2027 Intake</h3>
                   <p className="text-slate-500 text-xs font-semibold leading-relaxed mb-4">
                     A great alternative for students who need more time to prepare transcripts, secure education loans, or study for language proficiency tests.
                   </p>
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-4 bg-slate-50 p-4 rounded-xl text-xs">
                     <div>
                       <span className="text-slate-400 font-bold block">Starts</span>
-                      <strong className="text-slate-800 font-extrabold mt-0.5 block">July 2026</strong>
+                      <strong className="text-slate-800 font-extrabold mt-0.5 block">July 2027</strong>
                     </div>
                     <div>
                       <span className="text-slate-400 font-bold block">Courses</span>
@@ -267,7 +268,7 @@ const NewZealandIntakes = () => {
               <div className="bg-white border border-slate-200/65 rounded-[2rem] p-6 md:p-8 shadow-sm">
                 <h2 className="text-xl md:text-2xl font-black text-slate-900 mb-2 flex items-center gap-2">
                   <Table className="text-indigo-650" size={22} />
-                  February vs. July 2026 Quick Comparison
+                  February vs. July 2027 Quick Comparison
                 </h2>
                 <p className="text-slate-400 text-xs font-bold mb-6">Side-by-side comparison for Semester 1 and Semester 2</p>
 
@@ -276,8 +277,8 @@ const NewZealandIntakes = () => {
                     <thead>
                       <tr className="border-b border-slate-100 text-slate-400 text-xs font-bold uppercase tracking-wider">
                         <th className="pb-3 pr-4">Feature</th>
-                        <th className="pb-3 pr-4">February 2026</th>
-                        <th className="pb-3 pr-4 text-right">July 2026</th>
+                        <th className="pb-3 pr-4">February 2027</th>
+                        <th className="pb-3 pr-4 text-right">July 2027</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-slate-100 text-slate-700 font-semibold">
@@ -294,10 +295,10 @@ const NewZealandIntakes = () => {
               </div>
             </section>
 
-            {/* 4. February 2026 Intake */}
+            {/* 4. February 2027 Intake */}
             <section id="february-intake" className="scroll-mt-24">
               <div className="text-left mb-6">
-                <h2 className="text-2xl font-black text-slate-900 mb-1">February 2026 Intake (The "Main Event")</h2>
+                <h2 className="text-2xl font-black text-slate-900 mb-1">February 2027 Intake (The "Main Event")</h2>
                 <p className="text-slate-400 text-xs font-bold uppercase tracking-wider">Everything you need to know about Semester 1</p>
               </div>
 
@@ -355,15 +356,15 @@ const NewZealandIntakes = () => {
               <div className="bg-white border border-slate-200/60 rounded-3xl p-6">
                 <h3 className="font-black text-slate-800 text-sm mb-6 flex items-center gap-2">
                   <Clock size={16} className="text-indigo-600" />
-                  Application Timeline for February 2026
+                  Application Timeline for February 2027
                 </h3>
                 <div className="relative border-l-2 border-indigo-100 pl-6 ml-4 space-y-6">
                   {[
-                    { date: "Apr – Jun 2025", title: "Research & Program Shortlisting", desc: "Select universities and review prerequisite criteria." },
-                    { date: "Jul – Sep 2025", title: "Standardized Testing", desc: "Sit for IELTS or PTE Academic and secure test scorecards." },
-                    { date: "Aug – Oct 2025", title: "Submit Applications", desc: "Upload academic credentials and apply for scholarships." },
-                    { date: "Nov 2025 – Jan 2026", title: "Offers & Student Visa", desc: "Secure 'Offer of Place', settle fees, and submit visa application." },
-                    { date: "Feb 2026", title: "🎉 Term Commences", desc: "Fly to New Zealand and start classes!" }
+                    { date: "Apr – Jun 2026", title: "Research & Program Shortlisting", desc: "Select universities and review prerequisite criteria." },
+                    { date: "Jul – Sep 2026", title: "Standardized Testing", desc: "Sit for IELTS or PTE Academic and secure test scorecards." },
+                    { date: "Aug – Nov 2026", title: "Submit Applications", desc: "Upload academic credentials and apply for scholarships." },
+                    { date: "Nov 2026 – Jan 2027", title: "Offers & Student Visa", desc: "Secure 'Offer of Place', settle fees, and submit visa application." },
+                    { date: "Late Feb – Mar 2027", title: "🎉 Term Commences", desc: "Fly to New Zealand and start classes!" }
                   ].map((step, idx) => (
                     <div key={idx} className="relative">
                       <div className="absolute -left-[31px] top-0 w-4 h-4 rounded-full bg-indigo-600 border-4 border-white" />
@@ -376,10 +377,10 @@ const NewZealandIntakes = () => {
               </div>
             </section>
 
-            {/* 5. July 2026 Intake */}
+            {/* 5. July 2027 Intake */}
             <section id="july-intake" className="scroll-mt-24">
               <div className="text-left mb-6">
-                <h2 className="text-2xl font-black text-slate-900 mb-1">July 2026 Intake (The "Smart Alternative")</h2>
+                <h2 className="text-2xl font-black text-slate-900 mb-1">July 2027 Intake (The "Smart Alternative")</h2>
                 <p className="text-slate-400 text-xs font-bold uppercase tracking-wider">Mid-year study choices in Semester 2</p>
               </div>
 
@@ -437,15 +438,15 @@ const NewZealandIntakes = () => {
               <div className="bg-white border border-slate-200/60 rounded-3xl p-6">
                 <h3 className="font-black text-slate-800 text-sm mb-6 flex items-center gap-2">
                   <Clock size={16} className="text-indigo-600" />
-                  Application Timeline for July 2026
+                  Application Timeline for July 2027
                 </h3>
                 <div className="relative border-l-2 border-indigo-100 pl-6 ml-4 space-y-6">
                   {[
-                    { date: "Aug – Dec 2025", title: "Preparation Phase", desc: "Shortlist courses and sit for PTE / IELTS exams." },
-                    { date: "Jan – Mar 2026", title: "Submit Applications", desc: "Submit application packs and await Offer of Place." },
-                    { date: "Apr – May 2026", title: "✅ Student Visa Submission", desc: "Safest off-peak window for visa processing." },
-                    { date: "June 2026", title: "Accommodation & Flight", desc: "Lock in student housing and book winter travel tickets." },
-                    { date: "July 2026", title: "🎉 Term Commences", desc: "Arrive for orientation and start your courses." }
+                    { date: "Oct 2026 – Jan 2027", title: "Preparation Phase", desc: "Shortlist courses and sit for PTE / IELTS exams." },
+                    { date: "Jan – Mar 2027", title: "Submit Applications", desc: "Submit application packs and await Offer of Place." },
+                    { date: "Apr – May 2027", title: "✅ Student Visa Submission", desc: "Safest off-peak window for visa processing." },
+                    { date: "June 2027", title: "Accommodation & Flight", desc: "Lock in student housing and book winter travel tickets." },
+                    { date: "July 2027", title: "🎉 Term Commences", desc: "Arrive for orientation and start your courses." }
                   ].map((step, idx) => (
                     <div key={idx} className="relative">
                       <div className="absolute -left-[31px] top-0 w-4 h-4 rounded-full bg-indigo-600 border-4 border-white" />
@@ -514,7 +515,7 @@ const NewZealandIntakes = () => {
               <div className="bg-white border border-slate-200/65 rounded-[2rem] p-6 md:p-8 shadow-sm">
                 <h2 className="text-xl md:text-2xl font-black text-slate-900 mb-2 flex items-center gap-2">
                   <Building className="text-indigo-650" size={22} />
-                  🏛️ University-Wise Deadlines (2026)
+                  🏛️ University-Wise Deadlines (2027)
                 </h2>
                 <p className="text-slate-400 text-xs font-bold mb-6">Ensure you apply before dates to secure admission offers</p>
 
@@ -523,8 +524,8 @@ const NewZealandIntakes = () => {
                     <thead>
                       <tr className="border-b border-slate-100 text-slate-400 text-xs font-bold uppercase tracking-wider">
                         <th className="pb-3 pr-4">University</th>
-                        <th className="pb-3 pr-4">February 2026 Deadline</th>
-                        <th className="pb-3 pr-4 text-right">July 2026 Deadline</th>
+                        <th className="pb-3 pr-4">February 2027 Deadline</th>
+                        <th className="pb-3 pr-4 text-right">July 2027 Deadline</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-slate-100 text-slate-700 font-semibold">
@@ -546,7 +547,7 @@ const NewZealandIntakes = () => {
               <div className="bg-white border border-slate-200/60 rounded-[2.5rem] p-8 shadow-sm">
                 <h2 className="text-2xl font-black text-slate-900 mb-6 flex items-center gap-2">
                   <ShieldCheck className="text-emerald-600" size={24} />
-                  🛂 Student Visa Changes for 2026
+                  🛂 Student Visa Rules for 2027
                 </h2>
 
                 <div className="space-y-6">
@@ -572,7 +573,7 @@ const NewZealandIntakes = () => {
 
                   {/* PSWV */}
                   <div className="p-5 rounded-2xl bg-orange-50/50 border border-orange-100">
-                    <h3 className="font-extrabold text-blue-900 text-xs uppercase tracking-wider mb-2">⏰ Post-Study Work Visa (PSWV) 2026</h3>
+                    <h3 className="font-extrabold text-blue-900 text-xs uppercase tracking-wider mb-2">⏰ Post-Study Work Visa (PSWV) 2027</h3>
                     <ul className="space-y-2 text-xs font-semibold text-slate-655">
                       <li className="flex items-center gap-2">
                         <Check size={14} className="text-[#DE5C2B]" />
@@ -620,7 +621,7 @@ const NewZealandIntakes = () => {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 relative z-10">
                   <div className="bg-white/5 border border-white/10 p-6 rounded-2xl">
-                    <h3 className="font-black text-indigo-300 text-sm mb-4">Choose February 2026 if:</h3>
+                    <h3 className="font-black text-indigo-300 text-sm mb-4">Choose February 2027 if:</h3>
                     <ul className="space-y-3 text-xs font-medium text-white/80">
                       <li className="flex items-start gap-2">
                         <span>✓</span>
@@ -632,7 +633,7 @@ const NewZealandIntakes = () => {
                       </li>
                       <li className="flex items-start gap-2">
                         <span>✓</span>
-                        <span>You completed studies by mid-2025.</span>
+                        <span>You completed studies by mid-2026.</span>
                       </li>
                       <li className="flex items-start gap-2">
                         <span>✓</span>
@@ -642,7 +643,7 @@ const NewZealandIntakes = () => {
                   </div>
 
                   <div className="bg-white/5 border border-white/10 p-6 rounded-2xl">
-                    <h3 className="font-black text-indigo-300 text-sm mb-4">Choose July 2026 if:</h3>
+                    <h3 className="font-black text-indigo-300 text-sm mb-4">Choose July 2027 if:</h3>
                     <ul className="space-y-3 text-xs font-medium text-white/80">
                       <li className="flex items-start gap-2">
                         <span>✓</span>
@@ -676,8 +677,8 @@ const NewZealandIntakes = () => {
               <div className="space-y-4">
                 {[
                   { q: "Which is the best intake for New Zealand?", a: "February is the best intake if you want maximum program choices and scholarship opportunities. July is the best choice if you need more time for preparations or want a faster visa process." },
-                  { q: "When should I apply for the Feb 2026 intake?", a: "You should start preparing your applications by August 2025. Most universities close applications by December 1, 2025. Apply early to secure your offer letter." },
-                  { q: "Can I work while studying in the 2026 intakes?", a: "Yes. Under the new rules effective late 2025, international students can work up to 25 hours per week during academic semesters, and full-time during vacations." },
+                  { q: "When should I apply for the February 2027 intake?", a: "Now, if you have not already. Otago closes on 15 November 2026 for students applying from outside NZ, Victoria and Lincoln on 1 December 2026, and Auckland on 7 December 2026 for international postgraduates. Apply early: offers and visas take time." },
+                  { q: "Can I work while studying?", a: "Yes. Since 3 November 2025, tertiary students can work up to 25 hours a week during term and full-time in scheduled holidays. Research master's students starting from late 2026 may have different conditions, so check Immigration New Zealand." },
                   { q: "What is the duration of the Post-Study Work Visa?", a: "Bachelor's degrees, Master's degrees, and PhD programs all grant a standard 3-year Post-Study Work Visa (PSWV) in New Zealand." },
                   { q: "How long does it take to process a NZ Student Visa?", a: "Average visa processing times range between 30 to 45 working days (~6-8 weeks). The July intake offers faster off-peak processing." },
                   { q: "What is the minimum financial proof required?", a: "You must demonstrate NZD 20,000 (~₹10.5 Lakhs) for living expenses per year, plus tuition fees and return airfare." }

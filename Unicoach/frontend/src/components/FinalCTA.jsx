@@ -157,13 +157,13 @@ export const FinalCTA = ({ onOpenModal }) => {
 
             {/* Headline matching exact scale of 2nd screenshot */}
             <h2 className="font-outfit text-[22px] xs:text-[25px] sm:text-[32px] lg:text-[38px] font-black text-white leading-[1.12] tracking-tight">
-              Ready to Take <br className="hidden xs:inline sm:inline" />
-              the Unicoach?
+              Not sure where <br className="hidden xs:inline sm:inline" />
+              to start?
             </h2>
 
             {/* Subtitle */}
             <p className="text-[11px] xs:text-[12px] sm:text-[12.5px] text-white/90 mt-2 sm:mt-2.5 max-w-[240px] xs:max-w-[280px] sm:max-w-[310px] font-normal leading-relaxed">
-              Join thousands of successful students who trusted UniCoach for their international education journey.
+              Tell us your marks, budget and dream country. A counsellor will call you back with a clear plan, free.
             </p>
 
             {/* Action Buttons */}

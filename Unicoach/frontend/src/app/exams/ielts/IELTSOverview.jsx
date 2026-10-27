@@ -525,7 +525,7 @@ const IELTSOverview = () => {
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4 my-6">
                   <div className="bg-slate-50 border border-slate-100 p-5 rounded-2xl text-center">
                     <p className="text-[10px] text-slate-400 uppercase font-black tracking-wider mb-1">Academic / GT</p>
-                    <p className="text-lg font-black text-slate-850">INR 18,000</p>
+                    <p className="text-lg font-black text-slate-850">INR 19,000</p>
                     <p className="text-[10px] text-slate-400 mt-1">Standard Rate</p>
                   </div>
                   <div className="bg-slate-50 border border-slate-100 p-5 rounded-2xl text-center">
@@ -546,7 +546,7 @@ const IELTSOverview = () => {
                 </div>
 
                 <p className="bg-amber-50 border border-amber-100 p-4 rounded-xl text-xs text-amber-900 leading-relaxed font-bold">
-                  ⚠️ Note: Students need to pay the full base fee again for each attempt, and they can separately retake just one section for roughly INR 12,000.
+                  ⚠️ Note: Students need to pay the full base fee again for each attempt, and they can separately retake just one section (One Skill Retake) for INR 12,650.
                 </p>
                 <p>
                   Therefore, while one can appear for the exam multiple times, it makes sense financially to achieve the desired band score on the first attempt. You can learn more about <Link to="/exams/ielts/fees" className="text-indigo-655 hover:underline">IELTS fees for various exam types</Link>.

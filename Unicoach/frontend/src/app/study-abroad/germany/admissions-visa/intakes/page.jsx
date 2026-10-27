@@ -19,13 +19,13 @@ const SECTIONS = [
 ];
 
 const deadlines = [
-  { name: "Technical University of Munich (TUM)", date: "May 31, 2026 (Most PG programs)" },
-  { name: "LMU Munich", date: "15 July 2026 (International Office deadline)" },
-  { name: "RWTH Aachen University", date: "15 July 2026 (Final deadline, all international)" },
-  { name: "Technical University of Berlin (TU Berlin)", date: "May 15, 2026 (VPD upload for restricted programs)" },
+  { name: "Technical University of Munich (TUM)", date: "May 31, 2027 (Most PG programs)" },
+  { name: "LMU Munich", date: "15 July 2027 (International Office deadline)" },
+  { name: "RWTH Aachen University", date: "15 July 2027 (Final deadline, all international)" },
+  { name: "Technical University of Berlin (TU Berlin)", date: "May 15, 2027 (VPD upload for restricted programs)" },
   { name: "Heidelberg University", date: "April 1 – Sept 30 window (Access-restricted programs vary)" },
-  { name: "University of Hamburg", date: "15 June 2026 (Standard Master's); 31 March 2026 (Int'l programs)" },
-  { name: "Karlsruhe Institute of Technology (KIT)", date: "15 July 2026 (Non-EU standard); 15 June for CS MSc" }
+  { name: "University of Hamburg", date: "15 June 2027 (Standard Master's); 31 March 2027 (Int'l programs)" },
+  { name: "Karlsruhe Institute of Technology (KIT)", date: "15 July 2027 (Non-EU standard); 15 June for CS MSc" }
 ];
 
 const checklists = [
@@ -48,23 +48,23 @@ const faqs = [
   },
   {
     q: "What is the winter intake in Germany?",
-    a: "The winter intake in Germany (Wintersemester) is the primary admission cycle. Classes begin in October. The standard Uni-Assist deadline is 15 July 2026 for most public universities, but the practical submission target for Indian students is the end of May due to the 4- to 6-week Uni-Assist processing lag. DAAD and most other German scholarship deadlines align with the winter intake."
+    a: "The winter intake in Germany (Wintersemester) is the primary admission cycle. Classes begin in October. The standard Uni-Assist deadline is usually 15 July for most public universities, but the practical submission target for Indian students is the end of May due to the 4- to 6-week Uni-Assist processing lag. DAAD and most other German scholarship deadlines align with the winter intake."
   },
   {
     q: "What is the summer intake in Germany?",
-    a: "The summer intake in Germany (Sommersemester) starts in April at traditional universities and on 1 March at Fachhochschulen. Summer 2026 is closed. The next summer intake is April 2027, with applications opening in November 2026. Engineering and CS Master's programs at most public research universities do not accept international applicants for the summer intake."
+    a: "The summer intake in Germany (Sommersemester) starts in April at traditional universities and on 1 March at Fachhochschulen. The next summer intake is April 2027; applications open around November 2026 and most close on 15 January 2027. Engineering and CS Master's programs at most public research universities do not accept international applicants for the summer intake."
   },
   {
     q: "Which intake is better for Germany: winter or summer?",
     a: "The winter intake is the better choice for most Indian students. It offers the widest range of programs, alignment with the Indian graduation calendar (May-to-June completions), more scholarship access, and the highest concentration of English-taught Master's programs. Summer intake is appropriate when a student has missed the winter window and has verified program-level summer availability."
   },
   {
-    q: "What is the application deadline for the winter intake in Germany in 2026?",
-    a: "The standard deadline for most public universities via Uni-Assist is 15 July 2026. However, TU Munich PG programs close May 31, TU Berlin restricted courses require VPD by May 15, and University of Hamburg international master's programs close March 31. The practical submission target for Indian students is the end of May, accounting for the 4- to 6-week Uni-Assist processing time."
+    q: "What is the application deadline for the winter 2027 intake in Germany?",
+    a: "The standard deadline for most public universities via Uni-Assist is usually 15 July (2027 dates are confirmed in early 2027). However, TU Munich PG programs close May 31, TU Berlin restricted courses require VPD by May 15, and University of Hamburg international master's programs close March 31. The practical submission target for Indian students is the end of May, accounting for the 4- to 6-week Uni-Assist processing time."
   },
   {
-    q: "Is the summer intake for 2026 in Germany still open?",
-    a: "No, the summer intake for 2026 closed on 15 January 2026. The next available entry points are Winter 2026 (October start, applications open until 15 July 2026) or Summer 2027 (April start, applications open November 2026)."
+    q: "Can I still apply for the summer 2027 intake in Germany?",
+    a: "Yes, if your program offers a summer start. Summer 2027 classes begin in April 2027 and most applications close on 15 January 2027 (some, like Freiburg, close in mid-December). Otherwise, aim for Winter 2027 (October start, apply by about 15 July 2027)."
   },
   {
     q: "Is the APS certificate required for the summer intake too?",
@@ -76,7 +76,7 @@ const faqs = [
   },
   {
     q: "What should I do if I miss the Germany intake deadline?",
-    a: "If you miss the Winter 2026 deadline for intakes in Germany, your options are Summer 2027 at a program that confirms summer availability (applications open November 2026) or Winter 2027. Use the gap to complete APS, improve your IELTS score, add a relevant internship, and rewrite your SOP to be program-specific. A missed deadline is not a wasted year when the application is genuinely strengthened."
+    a: "If you miss the Winter 2027 deadline, your options are Summer 2028 at a program that confirms summer availability (applications usually open in November 2027) or Winter 2028. Use the gap to complete APS, improve your IELTS score, add a relevant internship, and rewrite your SOP to be program-specific. A missed deadline is not a wasted year when the application is genuinely strengthened."
   },
   {
     q: "Can I defer my German university admission to the next intake?",
@@ -146,7 +146,7 @@ const IntakesGermany = () => {
           <ArrowRight size={12} className="text-slate-400" />
           <Link to="/study-abroad/germany" className="hover:text-indigo-650 transition-colors">Germany</Link>
           <ArrowRight size={12} className="text-slate-400" />
-          <span className="text-slate-600 font-bold">Germany Intakes Guide 2026-27</span>
+          <span className="text-slate-600 font-bold">Germany Intakes Guide 2027</span>
         </div>
 
         {/* Hero Header Card */}
@@ -162,7 +162,7 @@ const IntakesGermany = () => {
           <div className="relative z-10 max-w-3xl">
             <span className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-indigo-500/20 border border-indigo-500/30 text-indigo-300 text-xs font-extrabold uppercase tracking-widest mb-6">
               <Calendar size={14} />
-              Winter 2026 & Summer 2027
+              Summer 2027 & Winter 2027
             </span>
             <h1 className="text-3xl md:text-5xl font-black leading-tight tracking-tight mb-6">
               Intakes in Germany: Winter & Summer Deadlines
@@ -173,7 +173,7 @@ const IntakesGermany = () => {
             <div className="flex flex-wrap items-center gap-4 text-xs font-semibold text-slate-400">
               <span className="flex items-center gap-1.5 bg-slate-955/60 px-3 py-1.5 rounded-lg border border-slate-800">
                 <Clock size={13} className="text-indigo-400" />
-                Updated: June 25, 2026
+                Updated: October 27, 2026
               </span>
               <span className="flex items-center gap-1.5 bg-slate-955/60 px-3 py-1.5 rounded-lg border border-slate-800">
                 <BookOpen size={13} className="text-indigo-400" />
@@ -239,7 +239,7 @@ const IntakesGermany = () => {
 
               <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                 {[
-                  { label: "Winter Intake", val: "October 2026 Start" },
+                  { label: "Winter Intake", val: "October 2027 Start" },
                   { label: "Summer Intake", val: "April 2027 Start" },
                   { label: "APS Fee", val: "₹19,825 (€180)" },
                   { label: "Blocked Account", val: formatCost(11904) }
@@ -265,15 +265,15 @@ const IntakesGermany = () => {
                     <thead>
                       <tr className="border-b border-slate-100 text-slate-400 text-xs font-black uppercase tracking-wider">
                         <th className="pb-3 pr-4">Factor</th>
-                        <th className="pb-3 pr-4">Winter Intake 2026</th>
-                        <th className="pb-3 pr-4">Summer Intake 2026-27</th>
+                        <th className="pb-3 pr-4">Winter Intake 2027</th>
+                        <th className="pb-3 pr-4">Summer Intake 2027</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-slate-100 text-slate-750 font-semibold">
                       {[
-                        { f: "Classes begin", w: "October 2026", s: "April 2026 (closed); April 2027 is next" },
-                        { f: "Application window", w: "April to 15 July 2026", s: "Closed for 2026; Nov 2026 to Jan 2027 for April 2027" },
-                        { f: "Standard deadline", w: "15 July 2026", s: "15 January (standard); some close in December" },
+                        { f: "Classes begin", w: "October 2027", s: "April 2027" },
+                        { f: "Application window", w: "About April to 15 July 2027", s: "About Nov 2026 to 15 Jan 2027" },
+                        { f: "Standard deadline", w: "Usually 15 July", s: "15 January (standard); some close in December" },
                         { f: "Uni-Assist fees", w: "€75 first application, €30 each subsequent", s: "Same rates apply (€75 first, €30 each subsequent)" },
                         { f: "Public university availability", w: "Broad: most public universities participate", s: "Restricted: many do not offer summer to international applicants" },
                         { f: "Masters program availability", w: "Full range across all disciplines", s: "Limited: CS and Engineering mostly winter-only at public universities" },
@@ -302,7 +302,7 @@ const IntakesGermany = () => {
             {/* 3. University Deadlines */}
             <section id="deadlines" className="scroll-mt-24">
               <div className="text-left mb-6">
-                <h2 className="text-2xl font-black text-slate-900 mb-1">🏛️ Winter 2026 Deadlines: Top Universities</h2>
+                <h2 className="text-2xl font-black text-slate-900 mb-1">🏛️ Winter 2027 Deadlines: Top Universities (based on recent years)</h2>
                 <p className="text-slate-400 text-xs font-bold uppercase tracking-wider">Verified deadlines for Indian applicants targeting mainstream Master's programs</p>
               </div>
 
@@ -340,7 +340,7 @@ const IntakesGermany = () => {
                   onClick={() => setActiveTab('winter')}
                   className={`px-5 py-2 text-xs font-black rounded-xl transition-all cursor-pointer ${activeTab === 'winter' ? 'bg-indigo-650 text-white shadow-sm' : 'text-slate-600 hover:bg-slate-50'}`}
                 >
-                  Timeline A: Winter Intake 2026
+                  Timeline A: Winter Intake 2027
                 </button>
                 <button 
                   onClick={() => setActiveTab('summer')}
@@ -357,14 +357,14 @@ const IntakesGermany = () => {
                     className="space-y-4"
                   >
                     {[
-                      { m: "Jan – Feb 2026", t: "Initiation", d: "Apply for APS certificate at the APS India portal, begin IELTS/TOEFL preparation, and request LORs from professors." },
-                      { m: "Feb – Mar 2026", t: "Research & Shortlisting", d: "Research programs, shortlist 5 to 7 universities, and verify whether they require Uni-Assist or direct portals." },
-                      { m: "Mar – Apr 2026", t: "Documentation", d: "Receive your APS certificate, take the IELTS/TOEFL exam, and draft your program-specific SOP." },
-                      { m: "Apr – May 2026", t: "Submission Start", d: "Uni-Assist portals open. Submit all applications before the practical end-of-May target (TUM PG deadline is May 31)." },
-                      { m: "Jun – Jul 2026", t: "Final Applications", d: "Continue submitting applications. The standard official deadline is 15 July 2026." },
-                      { m: "Jul – Aug 2026", t: "Offers & Blocking", d: "Receive admission offers. Open and fund your blocked account (€11,904), and book your VFS appointment immediately." },
-                      { m: "Aug – Sep 2026", t: "Visa Filing", d: "Apply for a German Student Visa (Type D) at the VFS center. Arrange health insurance and student housing." },
-                      { m: "Late Sep 2026", t: "Departure", d: "Arrive in Germany for university orientation. Classes officially begin in October." }
+                      { m: "Jan – Feb 2027", t: "Initiation", d: "Apply for APS certificate at the APS India portal, begin IELTS/TOEFL preparation, and request LORs from professors." },
+                      { m: "Feb – Mar 2027", t: "Research & Shortlisting", d: "Research programs, shortlist 5 to 7 universities, and verify whether they require Uni-Assist or direct portals." },
+                      { m: "Mar – Apr 2027", t: "Documentation", d: "Receive your APS certificate, take the IELTS/TOEFL exam, and draft your program-specific SOP." },
+                      { m: "Apr – May 2027", t: "Submission Start", d: "Uni-Assist portals open. Submit all applications before the practical end-of-May target (TUM PG deadline is May 31)." },
+                      { m: "Jun – Jul 2027", t: "Final Applications", d: "Continue submitting applications. The standard official deadline is 15 July 2027." },
+                      { m: "Jul – Aug 2027", t: "Offers & Blocking", d: "Receive admission offers. Open and fund your blocked account (€11,904), and book your VFS appointment immediately." },
+                      { m: "Aug – Sep 2027", t: "Visa Filing", d: "Apply for a German Student Visa (Type D) at the VFS center. Arrange health insurance and student housing." },
+                      { m: "Late Sep 2027", t: "Departure", d: "Arrive in Germany for university orientation. Classes officially begin in October." }
                     ].map((item, idx) => (
                       <div key={idx} className="flex gap-6 items-start bg-white border border-slate-200/60 p-5 rounded-2xl shadow-xs">
                         <span className="w-28 shrink-0 text-[10px] text-indigo-650 font-black uppercase tracking-wider">{item.m}</span>
@@ -441,7 +441,7 @@ const IntakesGermany = () => {
                     sol: "Contact the university admissions office directly. Some Fachhochschulen will issue conditional admission letters upon receiving your APS application receipt. If the program deadline has passed at strict research universities like TUM, you must pivot to Winter 2027."
                   },
                   {
-                    issue: "You missed the Winter 2026 application deadline entirely:",
+                    issue: "You missed the Winter 2027 application deadline entirely:",
                     sol: "Submit your APS application now. If your IELTS is below 7.0, use the gap to retake it. Secure a documented internship or research project to strengthen your profile, and build a program-specific SOP. A generic SOP is the most common reason for rejection."
                   },
                   {

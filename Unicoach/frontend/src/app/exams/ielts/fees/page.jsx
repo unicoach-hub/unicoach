@@ -431,7 +431,7 @@ const IELTSFeesPage = () => {
                 {[
                   {
                     q: "Has the IELTS fees increased in 2026?",
-                    a: "Yes, the standard IELTS fee for Academic and General Training exams (both computer and paper formats) in India has been updated to INR 19,000 for 2026."
+                    a: "Yes. From April 2026 the standard IELTS fee for Academic and General Training in India is INR 19,000. IDP India has stopped offering IELTS on paper, so the test is now taken on computer."
                   },
                   {
                     q: "Do I need to pay for the IELTS exam every time?",

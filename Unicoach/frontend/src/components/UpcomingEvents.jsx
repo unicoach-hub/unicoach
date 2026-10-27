@@ -287,7 +287,7 @@ export const UpcomingEvents = ({ onOpenModal }) => {
             <Muhavra hi="देर आए, दुरुस्त आए।" en="Seats limited, jaldi register karo." className="justify-center !mt-5" />
 
             <p className="text-[14px] sm:text-[16px] text-slate-600 mt-3 font-normal leading-relaxed max-w-2xl lg:max-w-3xl mx-auto">
-              Learn insider admissions strategies, profile evaluation hacks, and visa prep directly from top alumni.
+              Free live sessions with seniors and counsellors on shortlisting, SOPs, scholarships and visas. Ask your questions live.
             </p>
           </motion.div>
 

@@ -155,7 +155,7 @@ const IELTSDetailPage = ({ pageKey }) => {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 my-6">
             <div className="bg-slate-50 p-4 rounded-xl border border-slate-100 text-center">
               <p className="text-[10px] text-slate-400 font-black uppercase tracking-wider mb-1">Academic / GT</p>
-              <p className="text-lg font-black text-slate-850">INR 18,000</p>
+              <p className="text-lg font-black text-slate-850">INR 19,000</p>
             </div>
             <div className="bg-slate-50 p-4 rounded-xl border border-slate-100 text-center">
               <p className="text-[10px] text-slate-400 font-black uppercase tracking-wider mb-1">IELTS UKVI</p>
@@ -219,7 +219,7 @@ const IELTSDetailPage = ({ pageKey }) => {
             </div>
             <div className="p-4 bg-slate-50 rounded-xl border border-slate-100">
               <span className="font-black text-indigo-600 block mb-1">Step 4: Complete Payment</span>
-              Pay the registration fee of INR 18,000 online using Credit/Debit cards or Net Banking. Keep the email confirmation safe.
+              Pay the registration fee of INR 19,000 online using Credit/Debit cards or Net Banking. Keep the email confirmation safe.
             </div>
           </div>
         </div>

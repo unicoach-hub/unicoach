@@ -31,12 +31,12 @@ const universityDeadlines = [
 ];
 
 const timelinePhases = [
-  { phase: "Research Phase", dates: "Sep – Dec 2025", desc: "Shortlist universities, check course availability, and note deadlines." },
-  { phase: "Test Prep Phase", dates: "Jan – Feb 2026", desc: "Prepare and sit for IELTS/PTE Academic tests and gather transcripts." },
-  { phase: "Application Phase", dates: "Feb – Mar 2026", desc: "Submit university applications along with SOPs, LORs, and resumes." },
-  { phase: "Offers & Acceptance", dates: "Apr – May 2026", desc: "Receive Offer of Place, accept, and pay tuition deposit." },
-  { phase: "Visa Application", dates: "May – Jun 2026", desc: "File student visa with living expenses proof during off-peak window." },
-  { phase: "Preparations & Arrival", dates: "Jun – Jul 2026", desc: "Book flights, arrange student housing, and attend orientation." }
+  { phase: "Research Phase", dates: "Sep – Dec 2026", desc: "Shortlist universities, check course availability, and note deadlines." },
+  { phase: "Test Prep Phase", dates: "Jan – Feb 2027", desc: "Prepare and sit for IELTS/PTE Academic tests and gather transcripts." },
+  { phase: "Application Phase", dates: "Feb – Mar 2027", desc: "Submit university applications along with SOPs, LORs, and resumes." },
+  { phase: "Offers & Acceptance", dates: "Apr – May 2027", desc: "Receive Offer of Place, accept, and pay tuition deposit." },
+  { phase: "Visa Application", dates: "May – Jun 2027", desc: "File student visa with living expenses proof during off-peak window." },
+  { phase: "Preparations & Arrival", dates: "Jun – Jul 2027", desc: "Book flights, arrange student housing, and attend orientation." }
 ];
 
 const cityCosts = [
@@ -114,7 +114,7 @@ const NewZealandJulyIntake = () => {
           <ArrowRight size={12} className="text-slate-400" />
           <Link to="/study-abroad/new-zealand" className="hover:text-indigo-650 transition-colors">New Zealand</Link>
           <ArrowRight size={12} className="text-slate-400" />
-          <span className="text-slate-600 font-bold">July Intake Guide 2026</span>
+          <span className="text-slate-600 font-bold">July Intake Guide 2027</span>
         </div>
 
         {/* Hero Header Card */}
@@ -130,10 +130,10 @@ const NewZealandJulyIntake = () => {
           <div className="relative z-10 max-w-3xl">
             <span className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-indigo-500/20 border border-indigo-500/30 text-indigo-300 text-xs font-extrabold uppercase tracking-widest mb-6">
               <Calendar size={14} />
-              Mid-Year Intake 2026
+              Mid-Year Intake 2027
             </span>
             <h1 className="text-3xl md:text-5xl font-black leading-tight tracking-tight mb-6">
-              July Intake in New Zealand 2026: Deadlines, Fees & Complete Guide
+              July Intake in New Zealand 2027: Deadlines, Fees & Complete Guide
             </h1>
             <p className="text-indigo-200/90 text-sm md:text-base leading-relaxed mb-6 font-medium">
               Missed the February cycle? The July intake is a strategic, off-peak entry point offering smoother visa processing, less competition, and updated work rights.
@@ -141,7 +141,7 @@ const NewZealandJulyIntake = () => {
             <div className="flex flex-wrap items-center gap-4 text-xs font-semibold text-slate-400">
               <span className="flex items-center gap-1.5 bg-slate-950/60 px-3 py-1.5 rounded-lg border border-slate-800">
                 <Clock size={13} className="text-indigo-400" />
-                Updated: December 24, 2025
+                Updated: October 27, 2026
               </span>
               <span className="flex items-center gap-1.5 bg-slate-955/60 px-3 py-1.5 rounded-lg border border-slate-800">
                 <Award size={13} className="text-indigo-400" />
@@ -187,7 +187,7 @@ const NewZealandJulyIntake = () => {
                   💡 Missed the February Deadline? Here's Your Second Chance.
                 </h2>
                 <p className="text-slate-655 text-sm font-semibold leading-relaxed mb-6">
-                  The July intake in New Zealand is no longer just a "backup." It has become a highly popular, strategic entry point for Indian students in 2026. 
+                  The July intake in New Zealand is no longer just a "backup." It has become a popular, strategic entry point for Indian students. 
                   By choosing July, you secure smoother off-peak student visa processing, face lower competition for premium courses, and get additional months to prepare your academic portfolio.
                 </p>
 
@@ -223,7 +223,7 @@ const NewZealandJulyIntake = () => {
                   </div>
                   <div>
                     <span className="text-slate-400 font-bold block">Start Date</span>
-                    <strong className="text-slate-800 font-extrabold mt-0.5 block">June – July 2026</strong>
+                    <strong className="text-slate-800 font-extrabold mt-0.5 block">June – July 2027</strong>
                   </div>
                   <div>
                     <span className="text-slate-400 font-bold block">Target Degrees</span>
@@ -257,7 +257,7 @@ const NewZealandJulyIntake = () => {
               <div className="bg-white border border-slate-200/65 rounded-[2rem] p-6 md:p-8 shadow-sm">
                 <h2 className="text-xl md:text-2xl font-black text-slate-900 mb-2 flex items-center gap-2">
                   <Building className="text-indigo-650" size={22} />
-                  🏛️ Top Universities Offering July Intake (2026)
+                  🏛️ Top Universities Offering July Intake (2027)
                 </h2>
                 <p className="text-slate-400 text-xs font-bold mb-6">Cutoff dates and popular courses open in Semester 2</p>
 
@@ -291,7 +291,7 @@ const NewZealandJulyIntake = () => {
             {/* 4. Application Timeline */}
             <section id="timeline" className="scroll-mt-24">
               <div className="text-left mb-6">
-                <h2 className="text-2xl font-black text-slate-900 mb-1">📅 July 2026 Complete Timeline</h2>
+                <h2 className="text-2xl font-black text-slate-900 mb-1">📅 July 2027 Complete Timeline</h2>
                 <p className="text-slate-400 text-xs font-bold uppercase tracking-wider">Month-by-month planning framework</p>
               </div>
 
@@ -316,7 +316,7 @@ const NewZealandJulyIntake = () => {
               <div className="bg-white border border-slate-200/60 rounded-[2.5rem] p-8 shadow-sm">
                 <h2 className="text-2xl font-black text-slate-900 mb-6 flex items-center gap-2">
                   <Coins className="text-indigo-650" size={24} />
-                  💰 Cost of Studying & Living Costs (July 2026)
+                  💰 Cost of Studying & Living Costs (July 2027)
                 </h2>
 
                 {/* Currency Switcher */}
@@ -400,7 +400,7 @@ const NewZealandJulyIntake = () => {
               <div className="bg-white border border-slate-200/60 rounded-[2.5rem] p-8 shadow-sm">
                 <h2 className="text-2xl font-black text-slate-900 mb-6 flex items-center gap-2">
                   <ShieldCheck className="text-emerald-600" size={24} />
-                  🛂 July 2026 Student Visa & Work Rights
+                  🛂 July 2027 Student Visa & Work Rights
                 </h2>
 
                 <div className="space-y-6">
@@ -466,7 +466,7 @@ const NewZealandJulyIntake = () => {
                       </li>
                       <li className="flex items-start gap-2">
                         <span>✓</span>
-                        <span>You are fully prepared to apply by Oct-Dec 2025.</span>
+                        <span>You are fully prepared to apply by Oct-Dec 2026.</span>
                       </li>
                     </ul>
                   </div>
@@ -529,8 +529,8 @@ const NewZealandJulyIntake = () => {
 
               <div className="space-y-4">
                 {[
-                  { q: "Is the July intake accepted for student visas in 2026?", a: "Yes. In fact, since April to June is the off-peak student visa processing season, visa files for the July intake are processed much faster by Immigration New Zealand compared to the busy February intake." },
-                  { q: "What is the deadline for July 2026 intake?", a: "Most universities close applications between late April and May 2026. However, popular programs can close earlier. It is recommended to submit your application by March 2026." },
+                  { q: "Is the July intake accepted for student visas in 2027?", a: "Yes. In fact, since April to June is the off-peak student visa processing season, visa files for the July intake are processed much faster by Immigration New Zealand compared to the busy February intake." },
+                  { q: "What is the deadline for July 2027 intake?", a: "Most universities close applications between late April and May 2027. However, popular programs can close earlier. It is recommended to submit your application by March 2027." },
                   { q: "Are scholarships available for the July intake?", a: "Yes, but they are more limited and selective compared to the main February intake. Apply early to improve your eligibility chance." },
                   { q: "Is July cold in New Zealand?", a: "Yes. July is in the middle of winter in the Southern Hemisphere, making it the coldest month. Make sure to pack warm winter clothing." },
                   { q: "What is the part-time work hour limit?", a: "Under the updated New Zealand rules, international students can work up to 25 hours per week during the semester and full-time during breaks." }

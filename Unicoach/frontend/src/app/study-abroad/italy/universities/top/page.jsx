@@ -811,8 +811,8 @@ const ItalyTopUniversities = () => {
                 </ul>
 
                 <div className="mt-8 bg-indigo-50/50 border border-indigo-100 rounded-2xl p-5 text-xs text-indigo-900 font-semibold">
-                  <p>📊 <strong>Visa Success Rate:</strong> Historically around 98.2% for genuine Indian students.</p>
-                  <p className="text-rose-700 font-extrabold mt-1.5">⚠️ 2025 projection predicts stricter scrutiny (85-88% success rate) on bank statements and sponsorship contracts.</p>
+                  <p>📊 <strong>What gets visas refused:</strong> unclear bank statements and weak sponsorship papers.</p>
+                  <p className="text-rose-700 font-extrabold mt-1.5">⚠️ Keep 6 months of clean statements, explain any large deposits, and make sure your sponsor's income matches the funds shown.</p>
                 </div>
               </div>
             </section>

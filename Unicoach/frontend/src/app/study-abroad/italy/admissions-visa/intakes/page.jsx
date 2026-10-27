@@ -10,8 +10,8 @@ import StudyAbroadCTA from '../../../../../components/StudyAbroadCTA';
 
 const SECTIONS = [
   { id: 'overview', title: 'Italy Intakes at a Glance' },
-  { id: 'september', title: 'September 2026 Intake' },
-  { id: 'february', title: 'February 2026 Intake' },
+  { id: 'september', title: 'September 2027 Intake' },
+  { id: 'february', title: 'February 2027 Intake' },
   { id: 'requirements', title: 'Admission Requirements' },
   { id: 'fees-scholarships', title: 'Tuition Fees & Scholarships' },
   { id: 'steps', title: 'Application Timeline & Steps' },
@@ -47,18 +47,18 @@ const intakeComparison = [
 ];
 
 const septemberTimeline = [
-  { action: "Entrance Exams (IELTS/GRE/GMAT/SAT)", timeframe: "Jan–Aug 2025", why: "Score early to meet deadlines" },
-  { action: "Applications Open", timeframe: "Nov 2025 – Mar 2026", why: "Early rounds (Nov–Jan) = best scholarship chances" },
-  { action: "Application Deadlines", timeframe: "May–Jun 2026", why: "Final dates for most programs" },
-  { action: "Visa Application", timeframe: "May–Jul 2026", why: "Start immediately after acceptance" },
-  { action: "Classes Begin", timeframe: "Sep–Oct 2026", why: "Final enrollment" }
+  { action: "Entrance Exams (IELTS/GRE/GMAT/SAT)", timeframe: "Jan–Aug 2026", why: "Score early to meet deadlines" },
+  { action: "Applications Open", timeframe: "Nov 2026 – Mar 2027", why: "Early rounds (Nov–Jan) = best scholarship chances" },
+  { action: "Application Deadlines", timeframe: "May–Jun 2027", why: "Final dates for most programs" },
+  { action: "Visa Application", timeframe: "May–Jul 2027", why: "Start immediately after acceptance" },
+  { action: "Classes Begin", timeframe: "Sep–Oct 2027", why: "Final enrollment" }
 ];
 
 const februaryTimeline = [
-  { action: "Applications Open", timeframe: "Sep–Nov 2025", why: "Shorter window than September" },
-  { action: "Application Deadlines", timeframe: "Nov–Dec 2025", why: "Rigid deadlines—no extensions" },
-  { action: "Visa Application", timeframe: "Dec 2025 – Jan 2026", why: "Must be executed quickly" },
-  { action: "Classes Begin", timeframe: "Late Feb – Early Mar 2026", why: "Final enrollment" }
+  { action: "Applications Open", timeframe: "Sep–Nov 2026", why: "Shorter window than September" },
+  { action: "Application Deadlines", timeframe: "Nov–Dec 2026", why: "Rigid deadlines—no extensions" },
+  { action: "Visa Application", timeframe: "Dec 2026 – Jan 2027", why: "Must be executed quickly" },
+  { action: "Classes Begin", timeframe: "Late Feb – Early Mar 2027", why: "Final enrollment" }
 ];
 
 const eligibilityCriteria = [
@@ -169,13 +169,13 @@ const ItalyIntakes = () => {
         >
           <div className="inline-flex items-center gap-3 px-5 py-2.5 rounded-full bg-indigo-50/80 backdrop-blur-xs border border-indigo-100 text-indigo-700 text-xs font-black uppercase tracking-wider mb-6 shadow-xs">
             <Calendar size={14} className="text-indigo-650" />
-            <span>Last Updated: December 3, 2025</span>
+            <span>Last Updated: October 27, 2026</span>
             <span className="text-indigo-300">•</span>
             <Clock size={14} className="text-indigo-650" />
             <span>7 Min Read</span>
           </div>
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-slate-900 mb-6 leading-tight tracking-tight">
-            Italy Intakes 2026:{' '}
+            Italy Intakes 2027:{' '}
             <span className="bg-gradient-to-r from-emerald-600 via-blue-600 to-indigo-600 bg-clip-text text-transparent">Complete Guide</span> for International Students
           </h1>
           <p className="text-slate-600 text-base md:text-lg leading-relaxed font-semibold max-w-2xl mx-auto">
@@ -202,7 +202,7 @@ const ItalyIntakes = () => {
               Stop Guessing. Start Planning.
             </h2>
             <p className="text-slate-300 text-sm md:text-base font-semibold leading-relaxed mb-4">
-              If you're applying to Italy for 2026, the biggest risk isn't your GPA—it's losing an entire year because of a calendar mistake.
+              If you're applying to Italy for 2027, the biggest risk isn't your GPA—it's losing an entire year because of a calendar mistake.
             </p>
             <p className="text-slate-300 text-sm md:text-base font-semibold leading-relaxed mb-4">
               Here's what most guides won't tell you: the intake you choose determines everything—from program availability to scholarship access to visa success.
@@ -265,11 +265,11 @@ const ItalyIntakes = () => {
               </div>
             </section>
 
-            {/* Section 2: September 2026 Intake */}
+            {/* Section 2: September 2027 Intake */}
             <section id="september" className="scroll-mt-24">
               <div className="flex items-center gap-2 mb-6">
                 <span className="w-8 h-8 rounded-lg bg-indigo-50 flex items-center justify-center text-indigo-600 font-black text-sm">02</span>
-                <h2 className="text-2xl md:text-3xl font-black text-slate-900 tracking-tight">September 2026 Intake: The Primary Choice</h2>
+                <h2 className="text-2xl md:text-3xl font-black text-slate-900 tracking-tight">September 2027 Intake: The Primary Choice</h2>
               </div>
               <p className="text-slate-600 font-semibold leading-relaxed mb-8">
                 The September intake is Italy's main academic start date. It aligns with the traditional academic calendar and offers the widest range of options.
@@ -311,7 +311,7 @@ const ItalyIntakes = () => {
 
               <h3 className="text-lg font-black text-slate-900 mb-4 flex items-center gap-2">
                 <Calendar className="text-indigo-600" size={18} />
-                Application Timeline for September 2026 Start
+                Application Timeline for September 2027 Start
               </h3>
               <div className="bg-white border border-slate-100 rounded-[24px] shadow-sm overflow-hidden mb-8">
                 <div className="overflow-x-auto">
@@ -348,11 +348,11 @@ const ItalyIntakes = () => {
               </div>
             </section>
 
-            {/* Section 3: February 2026 Intake */}
+            {/* Section 3: February 2027 Intake */}
             <section id="february" className="scroll-mt-24">
               <div className="flex items-center gap-2 mb-6">
                 <span className="w-8 h-8 rounded-lg bg-indigo-50 flex items-center justify-center text-indigo-600 font-black text-sm">03</span>
-                <h2 className="text-2xl md:text-3xl font-black text-slate-900 tracking-tight">February 2026 Intake: The Strategic Alternative</h2>
+                <h2 className="text-2xl md:text-3xl font-black text-slate-900 tracking-tight">February 2027 Intake: The Strategic Alternative</h2>
               </div>
               <p className="text-slate-600 font-semibold leading-relaxed mb-8">
                 The Spring intake offers a second entry point. It's ideal if you missed September deadlines or need extra preparation time.
@@ -403,7 +403,7 @@ const ItalyIntakes = () => {
 
               <h3 className="text-lg font-black text-slate-900 mb-4 flex items-center gap-2">
                 <Calendar className="text-indigo-600" size={18} />
-                Application Timeline for February 2026 Start
+                Application Timeline for February 2027 Start
               </h3>
               <div className="bg-white border border-slate-100 rounded-[24px] shadow-sm overflow-hidden">
                 <div className="overflow-x-auto">

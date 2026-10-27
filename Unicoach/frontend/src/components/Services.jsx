@@ -18,12 +18,12 @@ const stackingCards = [
     titleBold: 'UniCoach',
     titleLight: 'Shortlist',
     title: 'UniCoach Shortlist',
-    highlight: 'Data-Driven Profile & Ivy Matching',
-    subtitle: 'Evaluate 1,500+ global universities across USA, UK, Canada & Germany. Calibrate your Dream, Reach, and Safe target tiers with historical admit analytics.',
+    highlight: 'The right universities for your profile',
+    subtitle: 'Search 98,000+ programs at 1,300+ universities, then sort them into Dream, Target and Safe with a counsellor who knows how admissions actually go.',
     bullets: [
-      '1,500+ Verified Universities across USA, UK, Canada & Germany',
-      'AI-calibrated Dream, Reach, and Safe profile categorization',
-      'Direct 1-on-1 mentorship with Ivy & Russell Group alumni',
+      '98,000+ programs to search, filter and shortlist for free',
+      'Dream, Target and Safe options based on your marks and scores',
+      '1:1 calls with seniors studying at the universities you want',
     ],
     ctaText: 'Build My Shortlist',
     link: '/search-programs',
@@ -38,16 +38,16 @@ const stackingCards = [
   {
     id: 'prep',
     step: '02',
-    badge: 'AI Exam Engine',
+    badge: 'Test Prep',
     titleBold: 'UniCoach',
     titleLight: 'Prep',
     title: 'UniCoach Prep',
-    highlight: 'IELTS, GRE, GMAT & TOEFL Mastery',
-    subtitle: 'Adaptive AI diagnostic tests with instant essay band score predictions, speaking pronunciation analyzers, and masterclasses led by 99th-percentile tutors.',
+    highlight: 'IELTS, PTE, GRE, GMAT & TOEFL guides',
+    subtitle: 'Know what each exam asks, what score your universities need, and get your IELTS essays checked by AI before test day.',
     bullets: [
-      'Instant AI band evaluation on IELTS Task 2 essays with grammar breakdown',
-      'Full-length adaptive GRE & GMAT mock tests with percentile analytics',
-      'Personalized study plans calibrated to your target university cutoff',
+      'Free AI band score and feedback on IELTS Writing Task 2',
+      'Syllabus, fees, dates and prep plans for every major exam',
+      'A study plan built around the score your universities ask for',
     ],
     ctaText: 'Start Free AI Diagnostic',
     link: '/ai-tools/ielts-evaluator',
@@ -62,16 +62,16 @@ const stackingCards = [
   {
     id: 'finance',
     step: '03',
-    badge: 'Zero-Collateral Capital',
+    badge: 'Funding',
     titleBold: 'UniCoach',
     titleLight: 'Finance',
     title: 'UniCoach Finance',
-    highlight: '₹1.5 Cr Pre-Approved Loans & Scholarships',
-    subtitle: 'Access ₹24 Cr+ in merit scholarships and fast-track collateral-free education loans from 30+ premier international banking partners in under 48 hours.',
+    highlight: 'Scholarships & education loans',
+    subtitle: 'Find the scholarships you actually qualify for, and compare education loans, with or without collateral, before you pick a lender.',
     bullets: [
-      '₹24 Cr+ in active international scholarships cataloged and matched',
-      'Zero-collateral sanctions up to ₹1.5 Cr for premier global universities',
-      'Paperless sanction letter delivered in 48 hours with 0% markup',
+      'Scholarships matched to your study level, country and marks',
+      'Loan options from several lenders compared side by side',
+      'Help with the paperwork, from application to sanction letter',
     ],
     ctaText: 'Check Loan Eligibility',
     link: '/education-loan',
@@ -87,16 +87,16 @@ const stackingCards = [
   {
     id: 'visa',
     step: '04',
-    badge: '98.9% Approval Track',
+    badge: 'Visa & Pre-Departure',
     titleBold: 'UniCoach',
     titleLight: 'Visa & Care',
     title: 'UniCoach Visa & Care',
-    highlight: 'AI Consular Mocks & Smooth Landing',
-    subtitle: 'Eliminate visa anxiety with simulated consular interview drills, automated financial audit checks, verified student housing, and zero-forex debit cards.',
+    highlight: 'Visa interview practice & landing help',
+    subtitle: 'Practise real visa interview questions, get your financial documents checked, and sort housing before you fly.',
     bullets: [
-      'Interactive AI consular interview simulator with actual visa questions',
-      'DS-160 & financial documentation audit by former consular advisors',
-      'Pre-departure housing reservation and international student sim cards',
+      'Mock visa interviews with an AI officer that tells you what to fix',
+      'Visa forms and financial documents checked by counsellors',
+      'Pre-departure help with housing, forex and your first week abroad',
     ],
     ctaText: 'Get Visa Assistance',
     link: '/visa-assistance',
@@ -370,20 +370,20 @@ export const Services = () => {
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-lg bg-white/95 border border-orange-200/90 shadow-2xs mb-4">
             <span className="w-2 h-2 rounded-full bg-[#DE5C2B]" />
             <span className="text-[12px] sm:text-[12.5px] font-bold text-slate-800 tracking-tight">
-              Complete End-to-End Study Abroad Ecosystem
+              Everything in one place
             </span>
           </div>
 
           <h2 className="font-['Geist',sans-serif] text-[30px] sm:text-[38px] lg:text-[44px] font-black text-[#111111] leading-[1.12] tracking-[-0.035em]">
-            Comprehensive Solutions,{' '}
+            From shortlist to visa,{' '}
             <span className="relative inline-block text-[#DE5C2B]">
-              For Every Ambition
+              we&apos;ve got you
               <span className="absolute -bottom-1 left-0 w-full h-[6px] bg-[#FED7CE] rounded-full -z-10" />
             </span>
           </h2>
 
           <p className="text-[13.5px] sm:text-[15px] text-slate-600 mt-2.5 font-normal leading-relaxed max-w-2xl mx-auto">
-            From discovering dream universities to acing exams, securing collateral-free loans, and landing on campus with full visa support.
+            Pick the right universities, clear your exams, fund your degree and get your visa, with seniors and counsellors at every step.
           </p>
         </motion.div>
 

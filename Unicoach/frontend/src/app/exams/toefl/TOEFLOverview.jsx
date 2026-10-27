@@ -215,8 +215,8 @@ const TOEFLOverview = () => {
           <div>
             <h4 className="font-extrabold text-slate-850 text-sm">Latest TOEFL Updates</h4>
             <div className="text-xs text-slate-655 font-semibold mt-0.5 space-y-1">
-              <p>• TOEFL iBT duration has been shortened. Test takers can complete the exam in 2 hours. The exam will also include a new test format.</p>
-              <p>• TOEFL iBT fee has now increased to ₹16,900. Australia is back to accepting TOEFL scores for all visas.</p>
+              <p>• Since 21 January 2026 the TOEFL iBT has a new format: new task types, adaptive Reading and Listening, about 90 minutes of test time, and a 1–6 score scale (the old 0–120 score is shown alongside until 2028).</p>
+              <p>• ETS India lists the TOEFL iBT fee as ₹15,729 (checked October 2026).</p>
             </div>
           </div>
         </div>
@@ -291,7 +291,7 @@ const TOEFLOverview = () => {
               </h2>
               <div className="text-slate-655 text-sm leading-relaxed space-y-4 font-semibold">
                 <p>
-                  The newly updated fee for TOEFL iBT in India is <strong>₹16,900</strong>. Late registration (within 7 to 4 days of test date) incurs a fee of ₹3,900.
+                  ETS India lists the TOEFL iBT fee as <strong>₹15,729</strong>. Late registration (within 7 to 4 days of the test date) costs about ₹3,305 extra. Check the ETS India site when you book, as fees can change.
                 </p>
                 <div className="overflow-x-auto border border-slate-200/60 rounded-2xl my-3">
                   <table className="w-full text-left border-collapse text-xs">
@@ -304,19 +304,19 @@ const TOEFLOverview = () => {
                     <tbody>
                       <tr className="border-b border-slate-100">
                         <td className="p-3 font-bold text-slate-805">TOEFL iBT Registration Fee</td>
-                        <td className="p-3">₹16,900</td>
+                        <td className="p-3">₹15,729</td>
                       </tr>
                       <tr className="border-b border-slate-100">
                         <td className="p-3">Late Registration Fee</td>
-                        <td className="p-3">₹3,900</td>
+                        <td className="p-3">₹3,305</td>
                       </tr>
                       <tr className="border-b border-slate-100">
                         <td className="p-3">Rescheduling Fees</td>
-                        <td className="p-3">₹5,900</td>
+                        <td className="p-3">₹5,000</td>
                       </tr>
                       <tr>
                         <td className="p-3">Score review (Speaking or Writing)</td>
-                        <td className="p-3">₹7,900</td>
+                        <td className="p-3">₹6,695</td>
                       </tr>
                     </tbody>
                   </table>
@@ -349,10 +349,10 @@ const TOEFLOverview = () => {
               </h2>
               <div className="text-slate-655 text-sm leading-relaxed space-y-4 font-semibold">
                 <p>
-                  TOEFL evaluates four sections (Reading, Writing, Speaking, Listening) and awards scores of <strong>0-30</strong> for each.
+                  Since 21 January 2026, each of the four sections (Reading, Listening, Writing, Speaking) is scored from <strong>1 to 6</strong> in half bands.
                 </p>
                 <p>
-                  The overall score ranges from <strong>0 to 120</strong>. There is no negative marking. Results are valid for exactly <strong>2 years</strong>.
+                  Your overall score is the average of the four, rounded to the nearest half band, and lines up with a CEFR level (5 = C1, 4 = B2). Until 2028 your report also shows the old <strong>0–120</strong> score. There is no negative marking, and scores are valid for <strong>2 years</strong>.
                 </p>
                 <div className="bg-indigo-50/50 p-4 border border-indigo-150 rounded-2xl text-xs text-indigo-950 font-bold">
                   💡 <strong>TOEFL MyBest™ scores:</strong> If attempted multiple times, you can combine your highest section scores from all tests taken to show your best overall performance (super scores).
@@ -387,7 +387,7 @@ const TOEFLOverview = () => {
                   <p>1. Create an ETS account online.</p>
                   <p>2. Select your preferred test date and center location.</p>
                   <p>3. Fill in the profile details matching your physical passport.</p>
-                  <p>4. Complete the payment of ₹16,900.</p>
+                  <p>4. Complete the payment of ₹15,729.</p>
                 </div>
               </div>
             </section>
@@ -413,7 +413,7 @@ const TOEFLOverview = () => {
               </h2>
               <div className="text-slate-655 text-sm leading-relaxed space-y-4 font-semibold">
                 <p>
-                  TOEFL covers Reading, Listening, Speaking, and Writing. The shortened test duration limits the time to 2 hours.
+                  TOEFL covers Reading, Listening, Writing and Speaking, in that order. Test time is about 90 minutes; ETS asks you to allow about two hours in total.
                 </p>
                 <div className="overflow-x-auto border border-slate-200/60 rounded-2xl my-3">
                   <table className="w-full text-left border-collapse text-xs">
@@ -427,23 +427,23 @@ const TOEFLOverview = () => {
                     <tbody>
                       <tr className="border-b border-slate-100">
                         <td className="p-3 font-bold text-slate-805">Reading</td>
-                        <td className="p-3">2 passages, 10 questions each</td>
-                        <td className="p-3">36 minutes</td>
+                        <td className="p-3">Complete the Words, Read in Daily Life, Read an Academic Passage (adaptive)</td>
+                        <td className="p-3">~30 minutes</td>
                       </tr>
                       <tr className="border-b border-slate-100">
                         <td className="p-3 font-bold text-slate-805">Listening</td>
-                        <td className="p-3">3-4 lectures & 2-3 conversations</td>
-                        <td className="p-3">41-57 minutes</td>
+                        <td className="p-3">Short responses, conversations, announcements, academic talks (adaptive)</td>
+                        <td className="p-3">~29 minutes</td>
                       </tr>
                       <tr className="border-b border-slate-100">
                         <td className="p-3 font-bold text-slate-805">Speaking</td>
-                        <td className="p-3">4 academic tasks</td>
-                        <td className="p-3">17 minutes</td>
+                        <td className="p-3">Listen and Repeat, Take an Interview</td>
+                        <td className="p-3">~8 minutes</td>
                       </tr>
                       <tr>
                         <td className="p-3 font-bold text-slate-805">Writing</td>
-                        <td className="p-3">2 tasks (including Academic Discussion)</td>
-                        <td className="p-3">30 minutes</td>
+                        <td className="p-3">Build a Sentence, Write an Email, Write for an Academic Discussion</td>
+                        <td className="p-3">~23 minutes</td>
                       </tr>
                     </tbody>
                   </table>
@@ -656,12 +656,12 @@ const TOEFLOverview = () => {
           </h3>
           <div className="space-y-4">
             {[
-              { q: "What is the TOEFL score range, and how is it calculated?", a: "Each of the 4 sections is scored 0-30. The total score range is 0-120." },
+              { q: "What is the TOEFL score range, and how is it calculated?", a: "Since January 2026 each section is scored 1–6 in half bands, and the overall score is their average. The old 0–120 score is shown alongside until 2028." },
               { q: "Can I take the TOEFL exam multiple times?", a: "Yes, you can take the TOEFL as many times as you like. You can take it once in any 3-day period." },
               { q: "How long does it take to receive TOEFL scores?", a: "TOEFL iBT scores are typically available online 4-8 days after your test date." },
-              { q: "Is there a limit on how many times I can send scores?", a: "You can send scores to 4 universities for free. Beyond that, additional reports cost ₹1,950 per university." },
-              { q: "Is TOEFL harder than IELTS?", a: "It depends on preference: TOEFL is fully computer-delivered, whereas IELTS offers paper and face-to-face speaking formats." },
-              { q: "Which is cheaper among IELTS and TOEFL in India?", a: "TOEFL iBT is slightly cheaper at ₹16,900 compared to ₹18,000 for standard IELTS Academic." }
+              { q: "Is there a limit on how many times I can send scores?", a: "You can send scores to 4 universities for free. Beyond that, additional reports cost ₹2,000 per university." },
+              { q: "Is TOEFL harder than IELTS?", a: "It depends on preference: TOEFL is fully computer-delivered, whereas IELTS has a face-to-face speaking test with an examiner." },
+              { q: "Which is cheaper among IELTS and TOEFL in India?", a: "TOEFL iBT is cheaper: ₹15,729 against ₹19,000 for standard IELTS Academic (fees checked October 2026)." }
             ].map((faq, idx) => {
               const isOpen = !!faqOpen[idx];
               return (

@@ -35,7 +35,7 @@ const SATOverview = () => {
     { title: "Score Range", value: "400 – 1600" },
     { title: "Exam Duration", value: "2 Hours 14 Minutes" },
     { title: "Exam Mode", value: "Digital & Adaptive" },
-    { title: "Base International Fee", value: "$103 + regional fee" },
+    { title: "Fee for India", value: "$111 ($68 + $43 international)" },
     { title: "Valid for", value: "5 Years" }
   ];
 

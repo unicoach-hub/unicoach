@@ -89,8 +89,8 @@ export const Destinations = ({ onOpenModal }) => {
             </div>
 
             <p className="text-[13.5px] sm:text-[14.5px] text-slate-600 leading-relaxed mt-2.5 max-w-[290px] font-normal">
-              World-class education. Global exposure. <br />
-              Your pick, your future.
+              Fees, jobs after study and visa rules differ a lot. <br />
+              Compare before you choose.
             </p>
 
             {/* ── Active Destination Pill & Progress Indicator ── */}

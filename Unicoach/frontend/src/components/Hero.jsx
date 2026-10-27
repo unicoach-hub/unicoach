@@ -273,7 +273,7 @@ export const Hero = ({ onOpenModal }) => {
             >
               <span className="w-2 h-2 rounded-full bg-[#DE5C2B]" />
               <span className="text-[12px] sm:text-[12.5px] font-bold text-slate-800 tracking-tight">
-                The #1 Study Abroad &amp; Senior Mentorship Platform
+                Study abroad counselling &amp; 1:1 senior mentorship
               </span>
             </motion.div>
 

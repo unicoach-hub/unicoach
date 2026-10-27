@@ -11,30 +11,30 @@ const SECTIONS = [
   { id: 'overview', title: 'Winter Intake Overview' },
   { id: 'why-winter', title: 'Why Choose Winter?' },
   { id: 'deadlines', title: 'Winter Deadlines' },
-  { id: 'timeline', title: 'Winter 2026 Timeline' },
+  { id: 'timeline', title: 'Winter 2027 Timeline' },
   { id: 'checkpoints', title: 'APS & Visa Booking' }
 ];
 
 const winterUnis = [
-  { name: "TU Munich (TUM)", deadline: "May 31, 2026 (Most PG programs)", note: "Strict deadline, direct portal application" },
-  { name: "LMU Munich", deadline: "15 July 2026", note: "International Office final deadline" },
-  { name: "RWTH Aachen", deadline: "15 July 2026", note: "Final deadline for all international applicants" },
-  { name: "TU Berlin", deadline: "May 15, 2026", note: "VPD upload required for access-restricted courses" },
+  { name: "TU Munich (TUM)", deadline: "May 31, 2027 (Most PG programs)", note: "Strict deadline, direct portal application" },
+  { name: "LMU Munich", deadline: "15 July 2027", note: "International Office final deadline" },
+  { name: "RWTH Aachen", deadline: "15 July 2027", note: "Final deadline for all international applicants" },
+  { name: "TU Berlin", deadline: "May 15, 2027", note: "VPD upload required for access-restricted courses" },
   { name: "Heidelberg University", deadline: "April 1 – Sept 30 window", note: "Varies by specific field of study" },
-  { name: "University of Hamburg", deadline: "15 June 2026 (Standard Master's); 31 March 2026 (Int'l)", note: "International programs close early" },
-  { name: "Karlsruhe Institute of Technology (KIT)", deadline: "15 July 2026 (Standard); 15 June (CS MSc)", note: "Early deadline for CS majors" }
+  { name: "University of Hamburg", deadline: "15 June 2027 (Standard Master's); 31 March 2027 (Int'l)", note: "International programs close early" },
+  { name: "Karlsruhe Institute of Technology (KIT)", deadline: "15 July 2027 (Standard); 15 June (CS MSc)", note: "Early deadline for CS majors" }
 ];
 
 const timelineSteps = [
-  { m: "Jan – Feb 2026", action: "Apply for APS certificate at the Indian portal. Start preparing for IELTS/TOEFL and request LORs from professors.", p: "Critical Start" },
-  { m: "Feb – Mar 2026", action: "Research and shortlist 5 to 7 universities. Verify Uni-Assist vs. direct portals for each program.", p: "High" },
-  { m: "Mar – Apr 2026", action: "Receive your APS certificate. Take the IELTS/TOEFL exam. Draft your program-specific SOPs.", p: "High" },
-  { m: "Apr – May 2026", action: "Submit applications on Uni-Assist. Practical submission target for Indian students is the end of May.", p: "Practical Target" },
-  { m: "May 2026", action: "Submit TU Munich PG applications (TUM deadline is May 31). Ensure VPDs are uploaded.", p: "Critical Deadline" },
-  { m: "Jun – Jul 2026", action: "Submit remaining applications before the official standard Uni-Assist deadline (July 15).", p: "Final Deadlines" },
-  { m: "Jul – Aug 2026", action: "Receive admissions offers. Open a blocked account (€11,904) and book your VFS appointment immediately.", p: "Critical Action" },
-  { m: "Aug – Sep 2026", action: "Apply for German student visa (Type D). Secure student accommodation and public health insurance.", p: "Visa Stage" },
-  { m: "Late Sep 2026", action: "Arrive in Germany. Attend orientation weeks before the winter semester starts in October.", p: "Arrival" }
+  { m: "Jan – Feb 2027", action: "Apply for APS certificate at the Indian portal. Start preparing for IELTS/TOEFL and request LORs from professors.", p: "Critical Start" },
+  { m: "Feb – Mar 2027", action: "Research and shortlist 5 to 7 universities. Verify Uni-Assist vs. direct portals for each program.", p: "High" },
+  { m: "Mar – Apr 2027", action: "Receive your APS certificate. Take the IELTS/TOEFL exam. Draft your program-specific SOPs.", p: "High" },
+  { m: "Apr – May 2027", action: "Submit applications on Uni-Assist. Practical submission target for Indian students is the end of May.", p: "Practical Target" },
+  { m: "May 2027", action: "Submit TU Munich PG applications (TUM deadline is May 31). Ensure VPDs are uploaded.", p: "Critical Deadline" },
+  { m: "Jun – Jul 2027", action: "Submit remaining applications before the official standard Uni-Assist deadline (July 15).", p: "Final Deadlines" },
+  { m: "Jul – Aug 2027", action: "Receive admissions offers. Open a blocked account (€11,904) and book your VFS appointment immediately.", p: "Critical Action" },
+  { m: "Aug – Sep 2027", action: "Apply for German student visa (Type D). Secure student accommodation and public health insurance.", p: "Visa Stage" },
+  { m: "Late Sep 2027", action: "Arrive in Germany. Attend orientation weeks before the winter semester starts in October.", p: "Arrival" }
 ];
 
 const WinterIntakeGermany = () => {
@@ -90,7 +90,7 @@ const WinterIntakeGermany = () => {
           <ArrowRight size={12} className="text-slate-400" />
           <Link to="/study-abroad/germany" className="hover:text-indigo-650 transition-colors">Germany</Link>
           <ArrowRight size={12} className="text-slate-400" />
-          <span className="text-slate-600 font-bold">Winter Intake Guide 2026</span>
+          <span className="text-slate-600 font-bold">Winter Intake Guide 2027</span>
         </div>
 
         {/* Hero Header Card */}
@@ -106,10 +106,10 @@ const WinterIntakeGermany = () => {
           <div className="relative z-10 max-w-3xl">
             <span className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-indigo-500/20 border border-indigo-500/30 text-indigo-300 text-xs font-extrabold uppercase tracking-widest mb-6">
               <Calendar size={14} />
-              Winter 2026 Admissions
+              Winter 2027 Admissions
             </span>
             <h1 className="text-3xl md:text-5xl font-black leading-tight tracking-tight mb-6">
-              Winter Intake in Germany 2026
+              Winter Intake in Germany 2027/28
             </h1>
             <p className="text-indigo-200/90 text-sm md:text-base leading-relaxed mb-6 font-medium">
               The winter intake in Germany starts in October, with orientation beginning in late September. It is the primary entry point for international students as it offers the widest range of programs, scholarship access, and aligns perfectly with the Indian BTech/BSc graduation calendar.
@@ -117,7 +117,7 @@ const WinterIntakeGermany = () => {
             <div className="flex flex-wrap items-center gap-4 text-xs font-semibold text-slate-400">
               <span className="flex items-center gap-1.5 bg-slate-955/60 px-3 py-1.5 rounded-lg border border-slate-800">
                 <Clock size={13} className="text-indigo-400" />
-                Updated: June 25, 2026
+                Updated: October 27, 2026
               </span>
               <span className="flex items-center gap-1.5 bg-slate-955/60 px-3 py-1.5 rounded-lg border border-slate-800">
                 <Award size={13} className="text-indigo-400" />
@@ -183,8 +183,8 @@ const WinterIntakeGermany = () => {
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 {[
-                  { label: "Semester Start", val: "October 2026" },
-                  { label: "Application Window", val: "April – 15 July 2026" },
+                  { label: "Semester Start", val: "October 2027" },
+                  { label: "Application Window", val: "April – 15 July 2027" },
                   { label: "Blocked Account", val: formatCost(11904) }
                 ].map((stat, idx) => (
                   <div key={idx} className="bg-white border border-slate-200/60 rounded-2xl p-5 shadow-xs text-center">
@@ -222,8 +222,8 @@ const WinterIntakeGermany = () => {
             {/* 3. Winter Deadlines */}
             <section id="deadlines" className="scroll-mt-24">
               <div className="text-left mb-6">
-                <h2 className="text-2xl font-black text-slate-900 mb-1">🏛️ Winter 2026 Deadlines</h2>
-                <p className="text-slate-400 text-xs font-bold uppercase tracking-wider">Important dates for applying to Germany's public research universities in Winter 2026</p>
+                <h2 className="text-2xl font-black text-slate-900 mb-1">🏛️ Winter 2027 Deadlines</h2>
+                <p className="text-slate-400 text-xs font-bold uppercase tracking-wider">Deadlines below follow each university's usual yearly dates. Universities confirm 2027 dates in early 2027, so check your program page before you apply.</p>
               </div>
 
               <div className="bg-white border border-slate-200/60 rounded-[2rem] p-6 shadow-xs overflow-hidden">
@@ -232,7 +232,7 @@ const WinterIntakeGermany = () => {
                     <thead>
                       <tr className="border-b border-slate-100 text-slate-400 text-xs font-bold uppercase tracking-wider">
                         <th className="pb-3 pr-4">University</th>
-                        <th className="pb-3 pr-4">Masters Deadline (Winter 2026)</th>
+                        <th className="pb-3 pr-4">Masters Deadline (Winter 2027)</th>
                         <th className="pb-3 pr-4">Admissions Details</th>
                       </tr>
                     </thead>
@@ -257,11 +257,11 @@ const WinterIntakeGermany = () => {
               </div>
             </section>
 
-            {/* 4. Winter 2026 Timeline */}
+            {/* 4. Winter 2027 Timeline */}
             <section id="timeline" className="scroll-mt-24">
               <div className="text-left mb-6">
-                <h2 className="text-2xl font-black text-slate-900 mb-1">📅 Month-by-Month Winter 2026 Timeline</h2>
-                <p className="text-slate-400 text-xs font-bold uppercase tracking-wider">Visualizing the application sequence starting from January 2026</p>
+                <h2 className="text-2xl font-black text-slate-900 mb-1">📅 Month-by-Month Winter 2027 Timeline</h2>
+                <p className="text-slate-400 text-xs font-bold uppercase tracking-wider">Visualizing the application sequence starting from January 2027</p>
               </div>
 
               <div className="relative pl-6 border-l-2 border-indigo-100 space-y-6">

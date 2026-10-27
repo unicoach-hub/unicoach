@@ -1,4 +1,5 @@
 import React from 'react';
+import { nextIntake } from '@/utils/intakes';
 import { Link } from 'react-router-dom';
 import { Star, CheckCircle2, Building, ArrowRight } from 'lucide-react';
 
@@ -52,11 +53,12 @@ const AdmissionsSection = ({ uniData }) => {
         {/* Intakes Panel */}
         {uniData.intakeDeadlines && (
           <div className="bg-white/60 border border-white rounded-[28px] p-6 shadow-sm">
-            <h2 className="text-xl font-black text-slate-900 mb-5">Intakes and Admission Deadlines</h2>
+            <h2 className="text-xl font-black text-slate-900 mb-1">Upcoming intakes</h2>
+            <p className="text-xs text-slate-500 mb-5">Deadlines differ by program, usually 6 to 10 months before the intake. Check the exact date on the course page.</p>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              {uniData.intakeDeadlines.map((intake, i) => (
+              {uniData.intakeDeadlines.map((raw) => nextIntake(raw.name)).map((intake, i) => (
                 <div key={i} className="flex items-center justify-between p-4 bg-slate-50 border border-slate-100 rounded-2xl">
-                  <span className="font-extrabold text-slate-800 text-sm">{intake.name}</span>
+                  <span className="font-extrabold text-slate-800 text-sm">{intake.label}</span>
                   <span className="px-3 py-1 bg-emerald-50 border border-emerald-150 text-emerald-700 text-[10px] font-black rounded-lg uppercase tracking-wider">
                     {intake.status}
                   </span>

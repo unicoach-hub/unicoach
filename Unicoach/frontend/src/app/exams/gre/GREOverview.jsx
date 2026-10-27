@@ -312,7 +312,7 @@ const GREOverview = () => {
               </h2>
               <div className="text-slate-655 text-sm leading-relaxed space-y-4 font-semibold">
                 <p>
-                  The booking fee for the GRE General Test in India is <strong>₹22,550</strong>. Additional service fees apply depending on post-registration requests:
+                  From 1 August 2026, the GRE General Test fee in India is <strong>US$249</strong> (ETS). You pay in dollars or the rupee equivalent on the day, plus any applicable tax. Additional service fees apply depending on post-registration requests:
                 </p>
                 <div className="overflow-x-auto border border-slate-200/60 rounded-2xl my-3">
                   <table className="w-full text-left border-collapse text-xs">
@@ -325,7 +325,7 @@ const GREOverview = () => {
                     <tbody>
                       <tr className="border-b border-slate-100">
                         <td className="p-3 font-bold text-slate-805">GRE General Test Fee</td>
-                        <td className="p-3">₹22,550</td>
+                        <td className="p-3">US$249</td>
                       </tr>
                       <tr className="border-b border-slate-100">
                         <td className="p-3">Rescheduling / Test Center Change</td>
@@ -451,7 +451,7 @@ const GREOverview = () => {
                   </div>
                   <div className="p-4 bg-slate-50 rounded-2xl border border-slate-100">
                     <span className="font-extrabold text-slate-800 block mb-1">Step 3: Payment</span>
-                    Submit the ₹22,550 fee using credit/debit card, e-check, UPI, or PayPal.
+                    Submit the US$249 fee using credit/debit card, e-check, UPI, or PayPal.
                   </div>
                 </div>
               </div>

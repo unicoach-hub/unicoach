@@ -363,7 +363,7 @@ const GMATOverview = () => {
               </h2>
               <div className="text-slate-600 text-sm leading-relaxed space-y-4 font-semibold">
                 <p>
-                  GMAT exam fee structures are determined in USD. Local conversions in INR depend on standard exchange rates.
+                  GMAT fees are set in US dollars (mba.com): US$275 at a test centre and US$300 online. In India, taxes are added at checkout, and the rupee amount depends on the exchange rate on the day you pay.
                 </p>
 
                 {/* Fees table */}
