@@ -21,6 +21,8 @@ import {
   HelpCircle
 } from 'lucide-react';
 import { API_BASE_URL } from '../../../../config';
+import { SourceStat } from '../../../../components/ui/BrandElements';
+import { BarCompare } from '../../../../components/ui/Infographics';
 
 const IELTSFeesPage = () => {
   const [dbBlogs, setDbBlogs] = React.useState([]);
@@ -239,6 +241,8 @@ const IELTSFeesPage = () => {
                 In India, IDP Education takes charge of the IELTS exam. Even though the cost of taking the IELTS exam is broadly similar worldwide, the prices can vary a bit from one country to another. Below is the breakdown of the fee structure for various IELTS exam types:
               </p>
 
+              <SourceStat className="not-prose my-6" value="₹19,000" label="IELTS Academic / General Training fee in India, 2026" source="IDP Education" />
+
               <div className="overflow-x-auto border border-slate-100 rounded-xl my-6 shadow-sm">
                 <table className="w-full text-left text-xs font-semibold">
                   <thead className="bg-slate-50 text-slate-500 border-b border-slate-100">
@@ -270,6 +274,20 @@ const IELTSFeesPage = () => {
                     </tr>
                   </tbody>
                 </table>
+              </div>
+
+              <div>
+                <BarCompare
+                  kicker="Fee comparison"
+                  title="IELTS fees in India by test type"
+                  highlight="Academic / GT"
+                  items={[
+                    { label: 'IELTS for UKVI', value: 19250, display: 'INR 19,250' },
+                    { label: 'Academic / GT', value: 19000, display: 'INR 19,000' },
+                    { label: 'Life Skills (A1 & B1)', value: 18000, display: 'INR 18,000' },
+                    { label: 'One Skill Retake', value: 12650, display: 'INR 12,650' },
+                  ]}
+                />
               </div>
 
               <h3 className="text-lg font-black text-slate-900 mt-8 mb-4">2. IELTS Exam Fees 2026: City-Wise List in India</h3>

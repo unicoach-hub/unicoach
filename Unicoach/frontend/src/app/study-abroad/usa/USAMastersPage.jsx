@@ -25,6 +25,7 @@ import { getByCountry } from '@/data/universities';
 import { getUniversityLogo } from '../../../components/logoResolver';
 import { matchesUniversitySearch, getMatchedCoursesForUniversity } from '../../../utils/universitySearchMatcher';
 import { getOfficialTuition } from '../../../utils/dataSourceLabel';
+import { HookBand, BarCompare } from '../../../components/ui/Infographics';
 
 const API_URL = API_BASE_URL;
 
@@ -271,6 +272,16 @@ const courseDetails = {
     ]
   }
 };
+
+// Post-graduation roles and average salaries (USD), used by the salary chart and table in the Careers tab
+const jobSalaries = [
+  { title: "Data Scientist", salary: 129331, recruiters: "Google, Amazon, Meta, IBM, Microsoft, Deloitte" },
+  { title: "Software Engineer", salary: 128200, recruiters: "Apple, Microsoft, Google, Amazon, Oracle, Intel" },
+  { title: "Product Manager", salary: 125963, recruiters: "Adobe, Salesforce, Google, Meta, Microsoft, Uber" },
+  { title: "Electrical Engineer", salary: 106795, recruiters: "General Electric, Tesla, Intel, Siemens, Lockheed Martin" },
+  { title: "Financial Analyst", salary: 81548, recruiters: "JPMorgan Chase, Goldman Sachs, Morgan Stanley, Citi, Deloitte" },
+  { title: "Healthcare Specialist", salary: 65654, recruiters: "Mayo Clinic, Pfizer, Johnson & Johnson, UnitedHealth Group, Abbott" }
+];
 
 const USAMastersPage = () => {
   const [activeSpec, setActiveSpec] = useState('cs'); 
@@ -613,6 +624,13 @@ const USAMastersPage = () => {
             The U.S. Master's degree is the single biggest career accelerator on the planet. Discover rankings, costs, scholarships, and F-1 visa checklists for 2026.
           </p>
         </motion.div>
+
+        <HookBand
+          value="36 months"
+          label="of US work rights after a STEM Masters: 12 months of OPT plus the 24-month STEM-OPT extension."
+          hi="3 साल"
+          className="mb-10"
+        />
 
         {/* Global Controls: Tabs & Currency Switcher */}
         <div className="flex flex-col md:flex-row items-center justify-between gap-6 mb-10 border-b border-slate-200 pb-6">
@@ -1547,6 +1565,12 @@ const USAMastersPage = () => {
               {/* Jobs salaries and recruiters table */}
               <div className="bg-white border border-slate-100 rounded-[32px] p-6 md:p-8 shadow-sm">
                 <h3 className="text-2xl font-black text-slate-900 mb-6">Salaries and Roles (Post-Graduation)</h3>
+                <BarCompare
+                  kicker="Average salary"
+                  title="What US Masters graduates earn by role"
+                  items={jobSalaries.map((row) => ({ label: row.title, value: row.salary, display: `${formatPrice(row.salary)}/yr` }))}
+                  className="mb-8"
+                />
                 <div className="overflow-x-auto">
                   <table className="w-full text-left text-xs border-collapse">
                     <thead>
@@ -1557,14 +1581,7 @@ const USAMastersPage = () => {
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-slate-100 font-bold text-slate-700">
-                      {[
-                        { title: "Data Scientist", salary: 129331, recruiters: "Google, Amazon, Meta, IBM, Microsoft, Deloitte" },
-                        { title: "Software Engineer", salary: 128200, recruiters: "Apple, Microsoft, Google, Amazon, Oracle, Intel" },
-                        { title: "Product Manager", salary: 125963, recruiters: "Adobe, Salesforce, Google, Meta, Microsoft, Uber" },
-                        { title: "Electrical Engineer", salary: 106795, recruiters: "General Electric, Tesla, Intel, Siemens, Lockheed Martin" },
-                        { title: "Financial Analyst", salary: 81548, recruiters: "JPMorgan Chase, Goldman Sachs, Morgan Stanley, Citi, Deloitte" },
-                        { title: "Healthcare Specialist", salary: 65654, recruiters: "Mayo Clinic, Pfizer, Johnson & Johnson, UnitedHealth Group, Abbott" }
-                      ].map((row, idx) => (
+                      {jobSalaries.map((row, idx) => (
                         <tr key={idx} className="hover:bg-slate-50/50 transition-colors">
                           <td className="py-3 text-slate-900">{row.title}</td>
                           <td className="py-3 text-indigo-650 font-black">{formatPrice(row.salary)}/yr</td>

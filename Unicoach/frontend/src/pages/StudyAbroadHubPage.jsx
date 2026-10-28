@@ -9,6 +9,7 @@ import {
 import { useLead } from '../context/LeadContext';
 
 import { SKETCH_THEMES, SKETCH_MASK } from '../components/destinationSketches';
+import { PuffyWord } from '../components/desi/DesiPop';
 
 const DESTINATIONS = [
   {
@@ -191,6 +192,10 @@ const StudyAbroadHubPage = () => {
       
       {/* ── 1. HERO SECTION ── */}
       <section className="relative pt-12 pb-16 md:pt-16 md:pb-20 px-4 sm:px-6 lg:px-8 bg-[#F6F3EC] border-b border-[#E6E0D4] overflow-hidden">
+        {/* Desi Pop: puffy 3D Devanagari tile, wide screens only */}
+        <div className="hidden xl:block absolute right-8 2xl:right-20 top-1/2 -translate-y-1/2 rotate-6 w-[210px] z-0 pointer-events-none">
+          <PuffyWord>विदेश</PuffyWord>
+        </div>
         
 
         <div className="max-w-6xl mx-auto relative z-10 text-center space-y-4">

@@ -8,6 +8,7 @@ import {
 import { Link } from 'react-router-dom';
 import StudyAbroadCTA from '../../../../../components/StudyAbroadCTA';
 import { useLead } from '../../../../../context/LeadContext';
+import { HookBand, BarCompare } from '../../../../../components/ui/Infographics';
 
 import CapIcon from '../../../../../components/ui/CapIcon';
 const SECTIONS = [
@@ -305,6 +306,8 @@ const ItalyMastersCourse = () => {
             </p>
           </div>
         </motion.div>
+
+        <HookBand value="700+" label="Master's programs taught entirely in English across 90+ Italian universities" hi="पढ़ाई" className="mb-12" />
 
         {/* Currency Switcher Tool */}
         <div className="flex justify-center mb-12">
@@ -714,6 +717,13 @@ const ItalyMastersCourse = () => {
                 Tuition comparison by institution model:
               </p>
 
+              <BarCompare
+                kicker="Annual tuition"
+                title="Upper fee by institution type (EUR / year)"
+                items={costOfStudy.map((row) => ({ label: row.type, value: row.feesEUR.max, display: `€${row.feesEUR.max.toLocaleString()}` }))}
+                className="mb-8"
+              />
+
               <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-8">
                 {costOfStudy.map((cost, idx) => (
                   <div key={idx} className="bg-white border border-slate-105 rounded-2xl p-5 hover:shadow-md transition-shadow flex flex-col justify-between">
@@ -859,6 +869,13 @@ const ItalyMastersCourse = () => {
               <p className="text-slate-600 font-semibold leading-relaxed mb-8">
                 Graduates receive a 12-month post-study work visa to find employment or launch startups, which can then be converted directly to regular work permits under the Decreto Flussi quota systems.
               </p>
+
+              <BarCompare
+                kicker="Post-study pay"
+                title="Top of the salary range by sector (EUR / year)"
+                items={careers.map((row) => ({ label: row.sector, value: row.eur.max, display: `€${row.eur.max.toLocaleString()}` }))}
+                className="mb-8"
+              />
 
               {/* Sector salaries table */}
               <h3 className="text-base font-black text-slate-900 mb-4">Average Salaries by Sector (2026)</h3>

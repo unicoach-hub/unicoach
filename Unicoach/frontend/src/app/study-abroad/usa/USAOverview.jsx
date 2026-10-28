@@ -10,6 +10,7 @@ import StudyAbroadCTA from '../../../components/StudyAbroadCTA';
 import SketchHero from '../../../components/SketchHero';
 import { matchesUniversitySearch } from '../../../utils/universitySearchMatcher';
 import PageBackBreadcrumb from '../../../components/common/PageBackBreadcrumb';
+import { HookBand, StatStrip, BarCompare } from '../../../components/ui/Infographics';
 
 const UniLogo = ({ logo, name }) => {
   const [error, setError] = useState(false);
@@ -100,6 +101,15 @@ const USAOverview = () => {
     return true;
   });
 
+  // Most affordable states by monthly expenses (used by the table and the bar chart)
+  const livingCosts = [
+    { r: "#1", s: "Arkansas", usd: 1860 },
+    { r: "#2", s: "Mississippi", usd: 1880 },
+    { r: "#3", s: "South Dakota", usd: 1910 },
+    { r: "#4", s: "Oklahoma", usd: 1840 },
+    { r: "#5", s: "Louisiana", usd: 2000 }
+  ];
+
   return (
     <div className="min-h-screen bg-[#fafcff] relative overflow-hidden pt-28 pb-20 font-sans">
       {/* Ambient background designs */}
@@ -150,19 +160,21 @@ const USAOverview = () => {
           </motion.div>
         </div>
 
-        {/* Quick Stats Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-16">
-          {[
-            { val: "330,000+", label: "Indian Students" },
-            { val: "50+", label: "Top 200 QS Universities" },
-            { val: "Up to 3 Yrs", label: "OPT Work Extension" },
-            { val: "2 - 5 Yrs", label: "Average ROI Period" }
-          ].map((stat, idx) => (
-            <div key={idx} className="bg-white/70 border border-white/80 rounded-2xl p-5 shadow-[0_4px_20px_rgba(0,0,0,0.02)] backdrop-blur-md text-left">
-              <p className="text-2xl font-black text-indigo-600">{stat.val}</p>
-              <p className="text-xs text-slate-500 font-bold mt-1 uppercase tracking-wider">{stat.label}</p>
-            </div>
-          ))}
+        {/* Quick Stats: hook number + stat strip */}
+        <div className="mb-16">
+          <HookBand
+            value="Up to 3 Yrs"
+            label="OPT work extension after your US degree"
+            hi="पढ़ो, फिर कमाओ"
+            className="mb-4"
+          />
+          <StatStrip
+            stats={[
+              { value: "330,000+", label: "Indian Students" },
+              { value: "50+", label: "Top 200 QS Universities" },
+              { value: "2 - 5 Yrs", label: "Average ROI Period" }
+            ]}
+          />
         </div>
 
         {/* Global Currency Switcher floating badge */}
@@ -250,13 +262,7 @@ const USAOverview = () => {
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-slate-100 text-slate-700 font-semibold">
-                      {[
-                        { r: "#1", s: "Arkansas", usd: 1860 },
-                        { r: "#2", s: "Mississippi", usd: 1880 },
-                        { r: "#3", s: "South Dakota", usd: 1910 },
-                        { r: "#4", s: "Oklahoma", usd: 1840 },
-                        { r: "#5", s: "Louisiana", usd: 2000 }
-                      ].map((row, i) => (
+                      {livingCosts.map((row, i) => (
                         <tr key={i} className="hover:bg-slate-50/50 transition-colors">
                           <td className="py-3.5 text-indigo-650 font-black">{row.r}</td>
                           <td className="py-3.5 text-slate-800 font-bold">{row.s}</td>
@@ -302,6 +308,14 @@ const USAOverview = () => {
               </motion.div>
             )}
           </AnimatePresence>
+
+          <BarCompare
+            kicker="Living costs"
+            title="Monthly expenses in the most affordable states"
+            items={livingCosts.map(row => ({ label: row.s, value: row.usd, display: formatCost(row.usd) }))}
+            highlight="Oklahoma"
+            className="mt-8"
+          />
         </div>
 
         {/* 3. CHEAPEST PROGRAMS BANNER */}

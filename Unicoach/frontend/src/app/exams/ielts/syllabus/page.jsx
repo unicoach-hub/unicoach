@@ -21,6 +21,7 @@ import {
   HelpCircle
 } from 'lucide-react';
 import { API_BASE_URL } from '../../../../config';
+import { HookBand, Donut } from '../../../../components/ui/Infographics';
 
 const IELTSSyllabusPage = () => {
   const [dbBlogs, setDbBlogs] = React.useState([]);
@@ -240,6 +241,23 @@ const IELTSSyllabusPage = () => {
               <p>
                 While the Listening and Speaking sections are identical in both types of tests, the Writing and Reading sections differ. Knowing the syllabus ensures you can allocate study time efficiently and avoid surprises on test day.
               </p>
+
+              <HookBand value="2h 44m" label="total IELTS test time across Listening, Reading, Writing and Speaking" hi="पैटर्न" />
+
+              <div>
+                <Donut
+                  kicker="Time per module"
+                  title="How the IELTS test time splits"
+                  centerValue="4"
+                  centerLabel="modules"
+                  segments={[
+                    { label: 'Reading', value: 60, display: '60 min' },
+                    { label: 'Writing', value: 60, display: '60 min' },
+                    { label: 'Listening', value: 30, display: '30 min' },
+                    { label: 'Speaking', value: 12.5, display: '11–14 min' },
+                  ]}
+                />
+              </div>
 
               {/* Dynamic Course Type Switcher */}
               <div className="bg-indigo-50/45 border border-indigo-100 rounded-2xl p-6">

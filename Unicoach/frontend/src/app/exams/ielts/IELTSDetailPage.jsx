@@ -24,6 +24,8 @@ import {
   HelpCircle,
   FileDown
 } from 'lucide-react';
+import { StatStrip, BarCompare, Donut, VersusCard, HookBand } from '../../../components/ui/Infographics';
+import { JourneyPills } from '../../../components/ui/BrandElements';
 
 const IELTSDetailPage = ({ pageKey }) => {
   const location = useLocation();
@@ -54,6 +56,14 @@ const IELTSDetailPage = ({ pageKey }) => {
           <p>
             The <strong>International English Language Testing System (IELTS)</strong> is globally recognized as the gold standard for measuring English language proficiency for study, work, and migration purposes. Under the joint ownership of IDP and Cambridge English, it tests Listening, Reading, Writing, and Speaking skills.
           </p>
+          <StatStrip
+            stats={[
+              { value: '12,000+', label: 'Organizations accept IELTS' },
+              { value: '150+', label: 'Countries' },
+              { value: '3.5M+', label: 'Test-takers every year' },
+              { value: '0–9', label: 'Band score scale' },
+            ]}
+          />
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 my-6">
             <div className="border border-slate-100 p-5 rounded-2xl bg-slate-50/50">
               <h4 className="font-extrabold text-slate-800 text-sm mb-1">Global Acceptance</h4>
@@ -110,6 +120,14 @@ const IELTSDetailPage = ({ pageKey }) => {
               </tbody>
             </table>
           </div>
+          <div>
+            <VersusCard
+              kicker="Pick the right one"
+              title="Academic vs General Training"
+              left={{ title: 'IELTS Academic', tag: 'Study abroad', points: ['Undergraduate, Postgraduate, and Professional Registration', 'Complex academic charts in Writing', 'College-level passages in Reading'] }}
+              right={{ title: 'General Training', tag: 'Work & migration', points: ['Immigration, Work visas, or below degree level training', 'Everyday English and workplace texts', 'Letter writing tasks'] }}
+            />
+          </div>
           <p>
             Unless your university states otherwise, study abroad applicants must opt for <strong>IELTS Academic</strong>. The UKVI version is identical in structure and score levels but is mandatory for specific UK visa routes requiring secure testing.
           </p>
@@ -124,6 +142,13 @@ const IELTSDetailPage = ({ pageKey }) => {
           <p>
             The IELTS test is highly inclusive, with minimal restrictions. However, to maintain strict security, IDP enforces the following requirements:
           </p>
+          <StatStrip
+            stats={[
+              { value: '16+', label: 'Minimum age (guardian consent under 18)' },
+              { value: 'None', label: 'Minimum academic qualification' },
+              { value: 'Unlimited', label: 'Attempts allowed' },
+            ]}
+          />
           <div className="space-y-4 my-6">
             <div className="flex gap-4 p-5 bg-amber-50 border border-amber-100 rounded-2xl">
               <AlertTriangle className="text-amber-600 flex-shrink-0 w-6 h-6" />
@@ -204,6 +229,16 @@ const IELTSDetailPage = ({ pageKey }) => {
           <p>
             Registering for IELTS is a simple online process conducted through the IDP registration website. Follow these steps:
           </p>
+          <HookBand value="82" label="test cities in India to choose your IELTS centre from" hi="बुक करो" />
+          <JourneyPills
+            className="not-prose"
+            steps={[
+              { label: 'Format', sub: 'Computer or Paper' },
+              { label: 'Centre & Date', sub: '82 test cities' },
+              { label: 'Passport', sub: 'Upload scan' },
+              { label: 'Payment', sub: 'INR 19,000' },
+            ]}
+          />
           <div className="space-y-3.5 text-xs text-slate-500 font-semibold my-6">
             <div className="p-4 bg-slate-50 rounded-xl border border-slate-100">
               <span className="font-black text-indigo-600 block mb-1">Step 1: Select Format</span>
@@ -269,6 +304,16 @@ const IELTSDetailPage = ({ pageKey }) => {
           <p>
             Once you complete the exam, results will be generated based on the delivery format:
           </p>
+          <div>
+            <BarCompare
+              kicker="Result wait"
+              title="Days until your IELTS result"
+              items={[
+                { label: 'Computer-Based', value: 5, display: '3–5 days' },
+                { label: 'Paper-Based', value: 13, display: '11–13 days' },
+              ]}
+            />
+          </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 my-6">
             <div className="border border-slate-100 p-4 rounded-xl bg-slate-50/50">
               <span className="text-xs font-black text-slate-400 block mb-1">Computer-Based IELTS</span>
@@ -293,6 +338,14 @@ const IELTSDetailPage = ({ pageKey }) => {
           <p>
             The IELTS Listening test takes 30 minutes, plus an additional 10 minutes to transfer answers to the answer sheet (in paper tests). It is identical for both Academic and General Training:
           </p>
+          <StatStrip
+            stats={[
+              { value: '30 min', label: 'Listening time' },
+              { value: '4', label: 'Sections' },
+              { value: '40', label: 'Questions (10 per section)' },
+              { value: '1×', label: 'Audio played only once' },
+            ]}
+          />
           <div className="bg-slate-50 p-5 rounded-2xl border border-slate-100 space-y-3 text-xs text-slate-550 font-semibold my-6">
             <p>🎧 <strong>Section 1:</strong> A conversation between two speakers set in an everyday social context (10 questions).</p>
             <p>🎧 <strong>Section 2:</strong> A monologue set in an everyday social context, e.g., a speech about local facilities (10 questions).</p>
@@ -313,6 +366,13 @@ const IELTSDetailPage = ({ pageKey }) => {
           <p>
             The Reading section is 60 minutes long and comprises 40 questions based on 3 reading passages.
           </p>
+          <StatStrip
+            stats={[
+              { value: '60 min', label: 'Reading time' },
+              { value: '40', label: 'Questions' },
+              { value: '3', label: 'Reading passages' },
+            ]}
+          />
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 my-6">
             <div className="border border-slate-150 p-5 rounded-xl">
               <h4 className="font-extrabold text-slate-800 text-sm mb-2">Academic Reading</h4>
@@ -341,6 +401,18 @@ const IELTSDetailPage = ({ pageKey }) => {
           <p>
             The Writing module takes 60 minutes and is divided into two tasks:
           </p>
+          <div>
+            <Donut
+              kicker="Time split"
+              title="How the 60 minutes divide"
+              centerValue="60"
+              centerLabel="minutes"
+              segments={[
+                { label: 'Task 1 (150+ words)', value: 20, display: '20 min' },
+                { label: 'Task 2 essay (250+ words)', value: 40, display: '40 min' },
+              ]}
+            />
+          </div>
           <div className="space-y-4 my-6">
             <div className="p-5 border border-slate-100 rounded-xl bg-slate-50/50">
               <h4 className="font-extrabold text-slate-800 text-sm mb-1">Task 1 (Academic vs General)</h4>
@@ -369,6 +441,19 @@ const IELTSDetailPage = ({ pageKey }) => {
           <p>
             The Speaking test is a face-to-face conversational interview with a certified evaluator. It takes 11–14 minutes:
           </p>
+          <div>
+            <Donut
+              kicker="3 parts"
+              title="Speaking test, part by part"
+              centerValue="11–14"
+              centerLabel="minutes"
+              segments={[
+                { label: 'Part 1: Introduction', value: 4.5, display: '4–5 min' },
+                { label: 'Part 2: Cue Card', value: 3.5, display: '3–4 min' },
+                { label: 'Part 3: Discussion', value: 4.5, display: '4–5 min' },
+              ]}
+            />
+          </div>
           <div className="bg-slate-50 p-5 rounded-2xl border border-slate-100 space-y-3 text-xs text-slate-550 font-semibold my-6">
             <p>🗣️ <strong>Part 1: Introduction (4 - 5 Mins)</strong> - Simple introductory questions related to your home, hobbies, family, work, or studies.</p>
             <p>🗣️ <strong>Part 2: Long Turn Cue Card (3 - 4 Mins)</strong> - The examiner gives you a topic card. You have 1 minute to plan, then speak on it for 1–2 minutes.</p>

@@ -15,6 +15,8 @@ import {
     GitBranch,
     Lightbulb
 } from 'lucide-react';
+import { PostageStamp } from '../../../../components/desi/DesiPop';
+import { VersusCard } from '../../../../components/ui/Infographics';
 
 const LORPhdPage = () => {
     const navigate = useNavigate();
@@ -103,6 +105,10 @@ const LORPhdPage = () => {
             <div className="uc-clean border-x-0 relative overflow-hidden py-12 md:py-16 px-6 md:px-12 mb-12">
                 <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#DE5C2B_1px,transparent_1px)] [background-size:16px_16px]"></div>
                 <div className="max-w-[1240px] mx-auto relative z-10">
+                    {/* Desi Pop: postage stamp, wide screens only */}
+                    <div className="hidden xl:block absolute right-6 top-1/2 -translate-y-1/2 rotate-6 pointer-events-none">
+                        <PostageStamp title="Research" hi="शोध" note="Doctoral LOR" className="w-[150px]" />
+                    </div>
                     <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-indigo-500/20 border border-indigo-400/30 rounded-full text-indigo-300 text-xs font-bold uppercase tracking-wider mb-4">
                         <Sparkles size={12} className="text-indigo-400" />
                         <span>Doctoral Admissions</span>
@@ -180,6 +186,14 @@ const LORPhdPage = () => {
                                 </div>
                             </div>
                         </div>
+
+                        {/* Who should write it: from the h-index FAQ below */}
+                        <VersusCard
+                            kicker="Choosing a recommender"
+                            title="Famous name vs close supervisor"
+                            left={{ title: 'Famous professor', tag: 'Generic', points: ['Recognized name in your field', 'Barely knows you, so the letter stays generic'] }}
+                            right={{ title: 'Close supervisor', tag: 'Better', points: ['Worked closely with you', 'Highly detailed, personalized letter'] }}
+                        />
 
                         {/* PhD LOR Builder Widget */}
                         <section className="bg-white border border-slate-200/60 rounded-3xl p-6 md:p-8 shadow-sm space-y-6">

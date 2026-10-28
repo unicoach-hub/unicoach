@@ -7,6 +7,8 @@ import {
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import StudyAbroadCTA from '../../../../../components/StudyAbroadCTA';
+import { HookBand, TimelineStrip } from '../../../../../components/ui/Infographics';
+import { HazardFrame } from '../../../../../components/ui/BrandElements';
 
 const SECTIONS = [
   { id: 'overview', title: 'Why France in 2027?' },
@@ -243,6 +245,12 @@ const FranceIntakes = () => {
             
             {/* 1. Why France in 2027 */}
             <section id="overview" className="scroll-mt-24">
+              <HookBand
+                value="30,000"
+                label="Indian students France aims to host by 2030, up from close to 9,500 enrolled in 2024"
+                hi="लक्ष्य"
+                className="mb-6"
+              />
               <div className="bg-gradient-to-r from-sky-50/40 to-indigo-50/40 border border-indigo-100 rounded-[2rem] p-8">
                 <h2 className="text-2xl font-black text-slate-900 mb-4 flex items-center gap-2">
                   <Sparkles className="text-indigo-600" size={22} />
@@ -381,21 +389,17 @@ const FranceIntakes = () => {
                 <p className="text-slate-400 text-xs font-bold uppercase tracking-wider">Timeline and top participating universities</p>
               </div>
 
-              <div className="bg-white border border-slate-200/60 rounded-3xl p-6 mb-8">
-                <h3 className="font-black text-slate-805 text-sm mb-6 flex items-center gap-2">
-                  <Clock size={16} className="text-indigo-600" />
-                  September Timeline Milestones
-                </h3>
-                <div className="relative border-l-2 border-indigo-100 pl-6 ml-4 space-y-6">
-                  {timelineSteps.september.map((step, idx) => (
-                    <div key={idx} className="relative">
-                      <div className="absolute -left-[31px] top-0 w-4 h-4 rounded-full bg-indigo-600 border-4 border-white" />
-                      <span className="text-[10px] font-black text-indigo-655 uppercase tracking-wider block mb-0.5">{step.date}</span>
-                      <h4 className="text-xs font-black text-slate-850">{step.title}</h4>
-                      <p className="text-slate-550 text-xs font-medium leading-relaxed mt-1">{step.desc}</p>
-                    </div>
-                  ))}
-                </div>
+              <div className="mb-8">
+                <TimelineStrip
+                  kicker="September 2027"
+                  title="September Timeline Milestones"
+                  steps={timelineSteps.september.map((step, idx) => ({
+                    when: step.date,
+                    what: step.title,
+                    note: step.desc,
+                    highlight: idx === timelineSteps.september.length - 1,
+                  }))}
+                />
               </div>
 
               <div className="bg-white/60 border border-white rounded-[32px] p-6 md:p-8 shadow-xs">
@@ -438,13 +442,15 @@ const FranceIntakes = () => {
                 </div>
               </div>
 
-              <div className="bg-rose-50/50 border border-rose-200/50 rounded-[32px] p-6 md:p-8 mb-8 flex items-start gap-4">
-                <AlertCircle size={24} className="text-rose-600 shrink-0 mt-1" />
-                <div className="text-xs md:text-sm font-semibold text-slate-700 leading-relaxed">
-                  <h4 className="font-black text-slate-905 mb-1 text-rose-900">Visa Timeline Warning for January Cohorts</h4>
-                  Admissions offers for Spring cohorts are typically finalized around October or November. This leaves a very narrow window of 6 to 8 weeks for both Campus France interviews and VFS biometrics validation. Start transcript translations early.
+              <HazardFrame className="mb-8">
+                <div className="flex items-start gap-4">
+                  <AlertCircle size={24} className="text-rose-600 shrink-0 mt-1" />
+                  <div className="text-xs md:text-sm font-semibold text-slate-700 leading-relaxed">
+                    <h4 className="font-black text-slate-905 mb-1 text-rose-900">Visa Timeline Warning for January Cohorts</h4>
+                    Admissions offers for Spring cohorts are typically finalized around October or November. This leaves a very narrow window of 6 to 8 weeks for both Campus France interviews and VFS biometrics validation. Start transcript translations early.
+                  </div>
                 </div>
-              </div>
+              </HazardFrame>
 
               <div className="bg-white/60 border border-white rounded-[32px] p-6 md:p-8 shadow-xs">
                 <h3 className="text-lg font-black text-slate-905 mb-6 flex items-center gap-1.5">

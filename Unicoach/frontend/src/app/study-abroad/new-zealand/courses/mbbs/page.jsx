@@ -6,6 +6,7 @@ import {
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import StudyAbroadCTA from '../../../../../components/StudyAbroadCTA';
+import { BarCompare } from '../../../../../components/ui/Infographics';
 
 const medicalPathways = [
   {
@@ -219,26 +220,15 @@ const NewZealandMBBSCourse = () => {
               </h2>
               <p className="text-slate-500 text-xs font-semibold mb-6">Tuition for international clinical studies in New Zealand is premium-tier.</p>
 
-              <div className="space-y-4">
-                <div className="bg-slate-50 p-4 rounded-xl border border-slate-100 flex items-center justify-between">
-                  <div>
-                    <span className="font-extrabold text-slate-905 text-xs block">University of Auckland (MBChB)</span>
-                    <span className="text-[10px] text-slate-400 font-bold block mt-0.5">QS Rank #65</span>
-                  </div>
-                  <span className="font-black text-indigo-655 text-xs md:text-sm">
-                    {formatCost(79000)} / year
-                  </span>
-                </div>
-                <div className="bg-slate-50 p-4 rounded-xl border border-slate-100 flex items-center justify-between">
-                  <div>
-                    <span className="font-extrabold text-slate-905 text-xs block">University of Otago (MBChB)</span>
-                    <span className="text-[10px] text-slate-400 font-bold block mt-0.5">QS Rank #197</span>
-                  </div>
-                  <span className="font-black text-indigo-655 text-xs md:text-sm">
-                    {formatCost(84000)} / year
-                  </span>
-                </div>
-              </div>
+              <BarCompare
+                kicker="Tuition per year"
+                title="MBChB fees at NZ's two medical schools"
+                items={[
+                  { label: 'Otago', value: 84000, display: formatCost(84000) },
+                  { label: 'Auckland', value: 79000, display: formatCost(79000) },
+                  { label: 'Year 1 Pre-Med', value: 38000, display: `up to ${formatCost(38000)}` },
+                ]}
+              />
             </div>
             
             <div className="border-t border-slate-100 pt-6 mt-6">

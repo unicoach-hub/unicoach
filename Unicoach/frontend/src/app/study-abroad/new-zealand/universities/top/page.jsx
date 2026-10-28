@@ -7,6 +7,7 @@ import {
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import StudyAbroadCTA from '../../../../../components/StudyAbroadCTA';
+import { HookBand, BarCompare, TimelineStrip } from '../../../../../components/ui/Infographics';
 import { matchesUniversitySearch, getMatchedCoursesForUniversity } from '../../../../../utils/universitySearchMatcher';
 
 const SECTIONS = [
@@ -298,6 +299,8 @@ const NewZealandTopUniversities = () => {
 
           {/* Right Column: Content Blocks */}
           <div className="lg:col-span-9 space-y-16">
+
+            <HookBand value="Top 3%" label="All 8 New Zealand public universities rank in the top 3% globally" hi="टॉप क्लास" />
             
             {/* 1. Why New Zealand in 2026 */}
             <section id="overview" className="scroll-mt-24">
@@ -362,6 +365,13 @@ const NewZealandTopUniversities = () => {
                   </button>
                 </div>
               </div>
+
+              <BarCompare
+                className="mb-8"
+                kicker="Estimated fees per year"
+                title="Yearly cost across the top 10"
+                items={topNZUnis.map((uni) => ({ label: uni.name, value: uni.feesTotalNZD, display: formatCost(uni.feesTotalNZD) }))}
+              />
 
               <div className="space-y-6">
                 {filteredUnis.map((uni) => {
@@ -535,22 +545,15 @@ const NewZealandTopUniversities = () => {
                   Strategic Application Timeline
                 </h2>
 
-                <div className="relative border-l-2 border-indigo-100 pl-6 ml-4 space-y-6">
-                  {[
+                <TimelineStrip
+                  steps={[
                     { phase: "Phase 1: Research", dates: "10-12 Months Before", desc: "Shortlist Green List courses, verify GPA eligibility, check deadlines." },
                     { phase: "Phase 2: Prep & Tests", dates: "8-10 Months Before", desc: "Take PTE/IELTS tests, obtain transcripts, draft SOPs and LORs." },
                     { phase: "Phase 3: Submit", dates: "6-8 Months Before", desc: "Submit application bundles. Apply early for high-achiever scholarships." },
                     { phase: "Phase 4: Visas", dates: "3-4 Months Before", desc: "Settle first-year tuition fee, open FTS account, submit student visa." },
                     { phase: "Phase 5: Departure", dates: "1 Month Before", desc: "Arrange student housing, book flights, attend pre-departure webinars." }
-                  ].map((s, idx) => (
-                    <div key={idx} className="relative">
-                      <div className="absolute -left-[31px] top-0 w-4 h-4 rounded-full bg-indigo-600 border-4 border-white" />
-                      <span className="text-[10px] font-black text-indigo-650 uppercase tracking-wider block mb-0.5">{s.dates}</span>
-                      <h4 className="text-xs font-black text-slate-850">{s.phase}</h4>
-                      <p className="text-slate-500 text-xs font-medium leading-relaxed mt-1">{s.desc}</p>
-                    </div>
-                  ))}
-                </div>
+                  ].map((s) => ({ when: s.dates, what: s.phase, note: s.desc }))}
+                />
               </div>
             </section>
 

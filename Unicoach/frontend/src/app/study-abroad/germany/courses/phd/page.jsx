@@ -7,6 +7,7 @@ import {
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import StudyAbroadCTA from '../../../../../components/StudyAbroadCTA';
+import { BarCompare, Donut } from '../../../../../components/ui/Infographics';
 
 // ─────────────────────────────────────────────
 // DATA SECTION
@@ -231,6 +232,18 @@ const GermanyPhdPage = () => {
             <h2 className="text-3xl font-black text-slate-900 mb-3 tracking-tight">Structured vs. Individual PhD</h2>
             <p className="text-slate-500 text-sm font-bold">Germany offers two distinct pathways. Choose the structure that aligns best with your research habits.</p>
           </div>
+
+          <Donut
+            className="mb-8"
+            kicker="Who picks which route"
+            title="3 in 4 candidates go the individual way"
+            centerValue="75%"
+            centerLabel="individual"
+            segments={[
+              { label: 'Individual Doctorate', value: 75, display: '75%' },
+              { label: 'Structured PhD and others', value: 25, display: '25%' },
+            ]}
+          />
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div className="bg-white border border-slate-150 p-8 rounded-[2rem] shadow-xs flex flex-col justify-between">
@@ -561,6 +574,15 @@ const GermanyPhdPage = () => {
               </table>
             </div>
           </div>
+
+          <BarCompare
+            className="mt-8"
+            kicker="Average annual salary"
+            title="Industry pays PhDs more than academia"
+            items={[...careers]
+              .sort((a, b) => b.salaryEur - a.salaryEur)
+              .map((c) => ({ label: c.role, value: c.salaryEur, display: `€${c.salaryEur.toLocaleString()}` }))}
+          />
         </div>
 
         {/* 9. FAQs */}

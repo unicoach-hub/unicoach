@@ -3,6 +3,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import { ArrowLeft, Search, SlidersHorizontal, UserCheck, X, Download, FileSpreadsheet, FileText, GitCompare, ChevronDown, ChevronUp, Info, Loader2, CheckCircle2, AlertCircle,
   Gauge, Coins, Languages, PiggyBank, Briefcase, TrendingUp, Banknote, Building2, Landmark, ClipboardCheck, MapPin, FileClock, Wallet, MicOff, GraduationCap, Award, ClipboardList, Users, Tag } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
+import { JourneyPills } from '../components/ui/BrandElements';
 import { getSearchConfig, getHighlights, searchCourses, evaluateEligibility, exportSearch, getCourseDetail, getUniversitiesFacet, suggest } from '../utils/searchApi';
 // Excel/PDF export libraries are large; load them only when someone exports
 const ExcelColumnExportModal = lazy(() => import('../components/ExcelColumnExportModal'));
@@ -50,7 +51,7 @@ const Checkbox = ({ checked, onChange, label }) => (
 const Accordion = ({ title, open, onToggle, children, count }) => (
   <div className="bg-white border border-slate-200" style={{ borderRadius: 4 }}>
     <button onClick={onToggle} className="w-full flex items-center justify-between px-3 py-2.5 text-left">
-      <span className="font-['Geist',sans-serif] font-semibold text-[13.5px] text-slate-700">{title}{count ? <span className="text-slate-400 font-normal"> ({count})</span> : null}</span>
+      <span className="font-['Onest',sans-serif] font-semibold text-[13.5px] text-slate-700">{title}{count ? <span className="text-slate-400 font-normal"> ({count})</span> : null}</span>
       <ChevronDown size={15} className={`text-slate-400 transition-transform ${open ? 'rotate-180' : ''}`} />
     </button>
     {open && <div className="px-3 pb-3 pt-0 border-t border-slate-100">{children}</div>}
@@ -81,7 +82,7 @@ const ProgramRow = ({ c, selected, onToggleSelect, onView, eligible, reasons, hi
         <input type="checkbox" checked={!!selected} onChange={() => onToggleSelect(c)} className="mt-1 accent-[#DE5C2B] w-4 h-4" />
         <div className="flex-1 min-w-0">
           <button onClick={() => onView(c)} className="text-left">
-            <h3 className="font-['Geist',sans-serif] text-[15px] font-semibold text-[#DE5C2B] hover:underline leading-snug">{c.courseName}</h3>
+            <h3 className="font-['Onest',sans-serif] text-[15px] font-semibold text-[#DE5C2B] hover:underline leading-snug">{c.courseName}</h3>
           </button>
           <div className="text-[13px] text-slate-500 mt-0.5">{c.universityName} · {FLAG[c.cfCountryId] || ''} {c.countryName}</div>
           <div className="flex flex-wrap gap-1.5 mt-2">
@@ -501,7 +502,7 @@ export default function SearchProgramsPage() {
     const showAll = () => { setStartMode('search'); setStarted(true); window.scrollTo(0, 0); };
     const set = (k) => (e) => setProfile((p) => ({ ...p, [k]: e.target.value }));
     return (
-      <div className="min-h-screen pt-[76px] pb-20 font-['Geist',sans-serif]" style={{ background: '#F6F3EC' }}>
+      <div className="min-h-screen pt-[76px] pb-20 font-['Onest',sans-serif]" style={{ background: '#F6F3EC' }}>
         <div className="max-w-5xl mx-auto px-4">
           <div className="pt-5"><PageBack onClick={leavePage} /></div>
           <div className="text-center pt-4 sm:pt-6">
@@ -615,13 +616,23 @@ export default function SearchProgramsPage() {
     const trySearch = () => { if (blocked) { setTried(true); return; } setTried(false); startSearch(); };
     const err = (k) => tried && missing[k];
     return (
-      <div className="min-h-screen pt-[76px] pb-20 font-['Geist',sans-serif]" style={{ background: '#F6F3EC' }}>
+      <div className="min-h-screen pt-[76px] pb-20 font-['Onest',sans-serif]" style={{ background: '#F6F3EC' }}>
         <div className="max-w-6xl mx-auto px-4">
           <div className="pt-5"><PageBack onClick={leavePage} /></div>
           <div className="text-center pt-4 sm:pt-6">
             <p className="inline-flex items-center gap-2 text-[13px] font-semibold text-[#86351A]"><span className="w-6 h-[2px] bg-[#DE5C2B]" /> Course Finder</p>
             <h1 className="mt-3 font-outfit text-[32px] sm:text-[46px] font-black tracking-[-0.035em] leading-[1.05] text-[#16130F]">Explore 98,000+ programs</h1>
             <p className="mt-3 text-[15px] sm:text-[17px] text-[#5B544A]">Tell us a little about you, then search. Free to search and shortlist, sign in only to download.</p>
+            <JourneyPills
+              steps={[
+                { label: 'About you', sub: 'Nationality, state' },
+                { label: 'Search', sub: 'Free' },
+                { label: 'Shortlist', sub: 'Free' },
+                { label: 'Download', sub: 'Sign in only here' },
+              ]}
+              active={0}
+              className="mt-5 mx-auto w-fit max-w-full"
+            />
           </div>
 
           {/* Search card */}
@@ -703,7 +714,7 @@ export default function SearchProgramsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 pt-[76px] pb-28 font-['Geist',sans-serif]">
+    <div className="min-h-screen bg-slate-50 pt-[76px] pb-28 font-['Onest',sans-serif]">
       {/* Top search bar (CourseFinder: search • intake • year • nationality • state) */}
       <div className="bg-white border-b border-slate-200">
         <div className="max-w-7xl mx-auto px-4 py-3">
@@ -750,7 +761,7 @@ export default function SearchProgramsPage() {
       {/* Body: left filter sidebar + results */}
       <div className="max-w-7xl mx-auto px-4 mt-4 flex gap-5 items-start">
         <aside className={`${mobileFilters ? 'block' : 'hidden'} lg:block w-full lg:w-[290px] shrink-0 space-y-3`}>
-          <div className="bg-white border border-slate-200 px-3 py-2.5 flex items-center gap-2 font-['Geist',sans-serif] font-semibold text-[14px] text-slate-700" style={{ borderRadius: 4 }}>
+          <div className="bg-white border border-slate-200 px-3 py-2.5 flex items-center gap-2 font-['Onest',sans-serif] font-semibold text-[14px] text-slate-700" style={{ borderRadius: 4 }}>
             <SlidersHorizontal size={16} color={BLUE} /> Filter
           </div>
 
@@ -952,7 +963,7 @@ export default function SearchProgramsPage() {
             Object.values(result.data.reduce((acc, c) => { (acc[c.cfUniversityId] = acc[c.cfUniversityId] || { uni: c, items: [] }).items.push(c); return acc; }, {})).map((g) => (
               <div key={g.uni.cfUniversityId} className="bg-white border border-slate-200" style={{ borderRadius: 4 }}>
                 <div className="px-4 py-3 border-b border-slate-100">
-                  <div className="font-['Geist',sans-serif] text-[15px] font-semibold text-[#DE5C2B]">{g.uni.universityName}</div>
+                  <div className="font-['Onest',sans-serif] text-[15px] font-semibold text-[#DE5C2B]">{g.uni.universityName}</div>
                   <div className="text-[13px] text-slate-500">{FLAG[g.uni.cfCountryId] || ''} {g.uni.countryName} · {g.items.length} program{g.items.length > 1 ? 's' : ''}</div>
                 </div>
                 <div className="p-3 space-y-2">{g.items.map((c) => <ProgramRow key={c.cfId} c={c} selected={selected[c.cfId]} onToggleSelect={toggleSelect} onView={openCourse} highlightMap={highlightMap} scholarshipFocus={schMode} />)}</div>
@@ -1003,7 +1014,7 @@ export default function SearchProgramsPage() {
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/50" onClick={() => setShowCompare(false)}>
           <div className="bg-white w-full max-w-4xl max-h-[90vh] overflow-auto" style={{ borderRadius: 6 }} onClick={(e) => e.stopPropagation()}>
             <div className="flex items-center justify-between px-5 py-3 border-b border-slate-100">
-              <h2 className="font-['Geist',sans-serif] text-lg font-bold text-slate-800">Program Comparison</h2>
+              <h2 className="font-['Onest',sans-serif] text-lg font-bold text-slate-800">Program Comparison</h2>
               <div className="flex items-center gap-3">
                 <button onClick={() => { setShowCompare(false); openExport('excel', 'selected'); }} className="text-[13px] text-[#DE5C2B] font-medium flex items-center gap-1"><FileSpreadsheet size={14} /> Export to Excel…</button>
                 <button onClick={() => setShowCompare(false)} className="text-slate-400"><X size={18} /></button>

@@ -9,6 +9,7 @@ import { Link } from 'react-router-dom';
 import StudyAbroadCTA from '../../../../../components/StudyAbroadCTA';
 import ShortlistWizardWidget from '../../../../../components/ShortlistWizardWidget';
 import { useLead } from '../../../../../context/LeadContext';
+import { HookBand, BarCompare } from '../../../../../components/ui/Infographics';
 
 const SECTIONS = [
   { id: 'why-public', title: 'Why Public Universities?' },
@@ -291,6 +292,8 @@ const ItalyPublic = () => {
           </div>
         </motion.div>
 
+        <HookBand value="€7,800" label="yearly DSU stipend on top of 100% cost cover at Italy's public universities" hi="बचत" className="mb-12" />
+
         {/* Currency Switcher Tool */}
         <div className="flex justify-center mb-12">
           <div className="bg-white border border-slate-200/60 p-1.5 rounded-2xl shadow-xs inline-flex items-center gap-1">
@@ -512,6 +515,13 @@ const ItalyPublic = () => {
                   </div>
                 ))}
               </div>
+
+              <BarCompare
+                kicker="Lowest fees"
+                title="Typical annual tuition at affordable public universities (EUR)"
+                items={[...otherAffordableUnis].sort((a, b) => a.feeEUR - b.feeEUR).map((u) => ({ label: u.name.replace('University of ', ''), value: u.feeEUR, display: `€${u.feeEUR.toLocaleString()}` }))}
+                className="mb-8"
+              />
 
               {/* Comparison Table */}
               <h3 className="text-lg font-black text-slate-900 mb-4">Affordable Universities Comparison</h3>

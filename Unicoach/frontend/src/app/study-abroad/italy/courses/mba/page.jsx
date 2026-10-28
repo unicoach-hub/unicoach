@@ -8,6 +8,7 @@ import {
 import { Link } from 'react-router-dom';
 import StudyAbroadCTA from '../../../../../components/StudyAbroadCTA';
 import { useLead } from '../../../../../context/LeadContext';
+import { HookBand, BarCompare } from '../../../../../components/ui/Infographics';
 
 const SECTIONS = [
   { id: 'why-mba', title: 'Why Choose an MBA?' },
@@ -299,6 +300,8 @@ const ItalyMBACourse = () => {
             </p>
           </div>
         </motion.div>
+
+        <HookBand value="6,100" label="Indian students chose Italy in 2023, out of 93,000+ international students" hi="इटली" className="mb-12" />
 
         {/* Currency Switcher Tool */}
         <div className="flex justify-center mb-12">
@@ -863,6 +866,13 @@ const ItalyMBACourse = () => {
                 </div>
               </div>
 
+              <BarCompare
+                kicker="Post-MBA pay"
+                title="Top of the salary range by sector (EUR / year)"
+                items={salariesList.map((row) => ({ label: row.sector, value: row.eur.max, display: `€${row.eur.max.toLocaleString()}` }))}
+                className="mb-8"
+              />
+
               {/* Sector salaries table */}
               <h3 className="text-base font-black text-slate-905 mb-4">Salary by Sector</h3>
               <div className="bg-white border border-slate-100 rounded-[24px] shadow-sm overflow-hidden">
@@ -898,6 +908,14 @@ const ItalyMBACourse = () => {
               <p className="text-slate-600 font-semibold leading-relaxed mb-8">
                 How Italy compares with other prominent MBA locations in terms of fees, duration, and stay-back permit terms:
               </p>
+
+              <BarCompare
+                kicker="Starting tuition"
+                title="Lowest MBA fee by country (EUR)"
+                items={globalComparisonList.map((row) => ({ label: row.country, value: row.feeEUR.min, display: `€${row.feeEUR.min.toLocaleString()}` }))}
+                highlight="Italy"
+                className="mb-8"
+              />
 
               {/* Comparison table */}
               <div className="bg-white border border-slate-100 rounded-[24px] shadow-sm overflow-hidden mb-8">

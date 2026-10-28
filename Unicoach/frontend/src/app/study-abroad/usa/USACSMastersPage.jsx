@@ -13,6 +13,7 @@ const logoNorthwestern = `https://ui-avatars.com/api/?name=${encodeURIComponent(
 
 import React, { useState, useMemo, useRef, useEffect } from 'react';
 import { getOfficialTuition } from '../../../utils/dataSourceLabel';
+import { HookBand, BarCompare } from '../../../components/ui/Infographics';
 import { motion, AnimatePresence, useMotionValue, useSpring, useTransform } from 'framer-motion';
 import { 
   DollarSign, MapPin, Award, Building, Globe, ExternalLink, 
@@ -275,6 +276,15 @@ const courseDetails = {
     ]
   }
 };
+
+// Post-graduation CS roles and average salaries (USD), used by the salary chart and table in the Careers tab
+const csJobSalaries = [
+  { title: "Machine Learning Engineer", salary: 143000, recruiters: "Google, Meta, OpenAI, Tesla, Nvidia, Apple" },
+  { title: "Distributed Systems Architect", salary: 138000, recruiters: "AWS, Microsoft Azure, Google Cloud, Oracle" },
+  { title: "Software Engineer III", salary: 128200, recruiters: "Netflix, Uber, Salesforce, Stripe, Airbnb" },
+  { title: "Security Engineer", salary: 122500, recruiters: "Palantir, CrowdStrike, Cloudflare, FireEye" },
+  { title: "Data Scientist", salary: 129331, recruiters: "Amazon, IBM, Deloitte, Bloomberg, Snowflake" }
+];
 
 const USACSMastersPage = () => {
   const [activeSpec, setActiveSpec] = useState('ai'); 
@@ -624,6 +634,13 @@ const USACSMastersPage = () => {
             Launch your career at the epicenter of global tech innovation. From Silicon Valley giants to Wall Street systems, a U.S. MS in CS is the ultimate catalyst for software engineers, AI researchers, and tech leaders.
           </p>
         </motion.div>
+
+        <HookBand
+          value="36 months"
+          label="of US work rights after a STEM degree like an MS in CS: 12 months of OPT plus the 24-month STEM-OPT extension."
+          hi="3 साल"
+          className="mb-10"
+        />
 
         {/* Global Controls: Tabs & Currency Switcher */}
         <div className="flex flex-col md:flex-row items-center justify-between gap-6 mb-10 border-b border-slate-200 pb-6">
@@ -1365,6 +1382,12 @@ const USACSMastersPage = () => {
               {/* Jobs salaries and recruiters table */}
               <div className="bg-white border border-slate-100 rounded-[32px] p-6 md:p-8 shadow-sm">
                 <h3 className="text-2xl font-black text-slate-900 mb-6">CS Salaries and Roles (Post-Graduation)</h3>
+                <BarCompare
+                  kicker="Average salary"
+                  title="What US CS Masters graduates earn by role"
+                  items={csJobSalaries.map((row) => ({ label: row.title, value: row.salary, display: `${formatPrice(row.salary)}/yr` }))}
+                  className="mb-8"
+                />
                 <div className="overflow-x-auto">
                   <table className="w-full text-left text-xs border-collapse">
                     <thead>
@@ -1375,13 +1398,7 @@ const USACSMastersPage = () => {
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-slate-100 font-bold text-slate-700">
-                      {[
-                        { title: "Machine Learning Engineer", salary: 143000, recruiters: "Google, Meta, OpenAI, Tesla, Nvidia, Apple" },
-                        { title: "Distributed Systems Architect", salary: 138000, recruiters: "AWS, Microsoft Azure, Google Cloud, Oracle" },
-                        { title: "Software Engineer III", salary: 128200, recruiters: "Netflix, Uber, Salesforce, Stripe, Airbnb" },
-                        { title: "Security Engineer", salary: 122500, recruiters: "Palantir, CrowdStrike, Cloudflare, FireEye" },
-                        { title: "Data Scientist", salary: 129331, recruiters: "Amazon, IBM, Deloitte, Bloomberg, Snowflake" }
-                      ].map((row, idx) => (
+                      {csJobSalaries.map((row, idx) => (
                         <tr key={idx} className="hover:bg-slate-50/50 transition-colors">
                           <td className="py-3 text-slate-900">{row.title}</td>
                           <td className="py-3 text-indigo-650 font-black">{formatPrice(row.salary)}/yr</td>

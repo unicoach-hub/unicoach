@@ -8,6 +8,7 @@ import {
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import StudyAbroadCTA from '../../../../../components/StudyAbroadCTA';
+import { BarCompare } from '../../../../../components/ui/Infographics';
 
 // ─────────────────────────────────────────────
 // DATA SECTION
@@ -174,6 +175,19 @@ const GermanyMBAPage = () => {
               </div>
             ))}
           </div>
+
+          <BarCompare
+            className="mt-8"
+            kicker="Average program cost, upper end"
+            title="USA vs UK vs Germany for an MBA"
+            highlight="Germany (Public Unis)"
+            items={[
+              { label: 'USA (Top Schools)', value: 180, display: 'Rs. 1.8 Cr' },
+              { label: 'UK (Top Schools)', value: 90, display: 'Rs. 90 L' },
+              { label: 'Germany (Private Schools)', value: 55, display: 'Rs. 55 L' },
+              { label: 'Germany (Public Unis)', value: 1.1, display: 'Rs. 1.1 L/yr' },
+            ]}
+          />
         </div>
 
         {/* 3. DYNAMIC PROFILE PATHWAY SELECTOR */}
@@ -385,6 +399,19 @@ const GermanyMBAPage = () => {
               </table>
             </div>
           </div>
+
+          <BarCompare
+            className="mt-8"
+            kicker="Starting salary, top of range"
+            title="Which MBA specialisation pays most?"
+            items={[...specialisations]
+              .sort((a, b) => b.maxSalary - a.maxSalary)
+              .map((sp) => ({
+                label: sp.spec,
+                value: sp.maxSalary,
+                display: `€${sp.maxSalary / 1000}k`,
+              }))}
+          />
         </div>
 
         {/* 6. WARNING BANNERS & CHECKLISTS */}

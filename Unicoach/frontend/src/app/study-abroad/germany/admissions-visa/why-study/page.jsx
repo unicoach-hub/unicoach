@@ -6,6 +6,7 @@ import {
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import StudyAbroadCTA from '../../../../../components/StudyAbroadCTA';
+import { BarCompare, Donut, HookBand } from '../../../../../components/ui/Infographics';
 
 const SECTIONS = [
   { id: 'benefits', title: 'Why Choose Germany?' },
@@ -169,6 +170,13 @@ const WhyStudyGermany = () => {
           </div>
         </div>
 
+        <HookBand
+          className="mb-10"
+          value="€0"
+          label="tuition at almost all public universities; you pay only a €150–€350 semester contribution"
+          hi="मुफ़्त पढ़ाई"
+        />
+
         {/* 2-Column Sidebar Layout */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
           
@@ -281,6 +289,19 @@ const WhyStudyGermany = () => {
                   </table>
                 </div>
               </div>
+
+              <BarCompare
+                className="mt-6"
+                kicker="Starting salary, top of range"
+                title="Which sector pays new graduates most?"
+                items={[
+                  { label: 'Computer Science & IT', value: 68000, display: '€68k' },
+                  { label: 'Data Science', value: 66000, display: '€66k' },
+                  { label: 'Automotive & Mech', value: 65000, display: '€65k' },
+                  { label: 'Business & Finance', value: 62000, display: '€62k' },
+                  { label: 'Biotech & Chemical', value: 58000, display: '€58k' },
+                ]}
+              />
             </section>
 
             {/* 4. Monthly Student Budget */}
@@ -308,6 +329,18 @@ const WhyStudyGermany = () => {
                     </div>
                   ))}
                 </div>
+
+                <Donut
+                  className="mt-6"
+                  kicker="Where the money goes"
+                  title="Monthly budget split (upper estimates)"
+                  segments={[
+                    { label: 'Accommodation', value: 550, display: '€350 – €550' },
+                    { label: 'Food & Groceries', value: 250, display: '€200 – €250' },
+                    { label: 'Leisure & Utilities', value: 150, display: '€100 – €150' },
+                    { label: 'Statutory Insurance', value: 130, display: '€110 – €130' },
+                  ]}
+                />
               </div>
             </section>
 

@@ -12,6 +12,7 @@ import {
   ChevronUp
 } from 'lucide-react';
 import StudyAbroadCTA from '../../../components/StudyAbroadCTA';
+import { BarCompare, HookBand } from '../../../components/ui/Infographics';
 
 const DuolingoAcceptedCountry = ({ country }) => {
   const [openFaq, setOpenFaq] = useState({});
@@ -26,6 +27,7 @@ const DuolingoAcceptedCountry = ({ country }) => {
   const countryData = {
     australia: {
       title: "Duolingo Accepted Universities in Australia 2026",
+      hook: { value: "100 – 120", label: "Duolingo score range most Australian universities ask for (UG & PG). The student visa still needs IELTS, PTE or TOEFL.", hi: "ध्यान दें" },
       subtitle: "Australian universities that accept Duolingo for admission, UG & PG score requirements, and why your student visa still needs IELTS, PTE or TOEFL.",
       highlights: [
         { label: "Top Accepted Universities", value: "Uni of Melbourne, UNSW, Uni of Sydney, Monash Uni" },
@@ -74,6 +76,7 @@ const DuolingoAcceptedCountry = ({ country }) => {
     },
     canada: {
       title: "Duolingo Accepted Universities in Canada 2026",
+      hook: { value: "400+", label: "universities and colleges in Canada accept the Duolingo English Test", hi: "कनाडा" },
       subtitle: "List of top Canadian universities accepting Duolingo scores, SDS updates, and PR planning.",
       highlights: [
         { label: "Top Accepted Universities", value: "Uni of Toronto, UBC, McGill, Waterloo" },
@@ -121,6 +124,7 @@ const DuolingoAcceptedCountry = ({ country }) => {
     },
     uk: {
       title: "Duolingo Accepted Universities in UK 2026",
+      hook: { value: "50+", label: "UK universities accept Duolingo for 2026-27 admissions. The UK student visa still needs a SELT.", hi: "ध्यान दें" },
       subtitle: "Admissions score lists, two-test strategy costs, and UKVI student visa SELT compliance.",
       highlights: [
         { label: "Top Accepting Universities", value: "Greenwich, Hertfordshire, Coventry, West London" },
@@ -172,6 +176,7 @@ const DuolingoAcceptedCountry = ({ country }) => {
     },
     ireland: {
       title: "Duolingo Accepted Universities in Ireland (2026)",
+      hook: { value: "130", label: "recommended overall DET target for Ireland (120 academic baseline)", hi: "लक्ष्य" },
       subtitle: "Verified minimum scores, mandatory sub-score thresholds, accepted intakes, and student visa info.",
       highlights: [
         { label: "Top Accepted Universities", value: "Trinity College Dublin, UCD, UCC, DCU, UL" },
@@ -220,6 +225,7 @@ const DuolingoAcceptedCountry = ({ country }) => {
     },
     germany: {
       title: "Duolingo Accepted Universities in Germany in 2026",
+      hook: { value: "105", label: "average accepted Duolingo score out of 160 at German universities", hi: "जर्मनी" },
       subtitle: "German private and public university admissions, course score bands, and student visa updates.",
       highlights: [
         { label: "Top Accepted Universities", value: "TUM, Heidelberg, Freie Berlin, Humboldt Berlin" },
@@ -270,6 +276,13 @@ const DuolingoAcceptedCountry = ({ country }) => {
 
   const activeData = countryData[country] || countryData.australia;
 
+  // Minimum DET score per university, read from the score strings above (e.g. "120 (130+ for Law/Med)" -> 120)
+  const scoreBars = activeData.universities.slice(0, 6).map((uni) => ({
+    label: uni.name.match(/\(([^)]+)\)$/)?.[1] || uni.name.replace(/^University of /, ''),
+    value: parseInt(uni.score, 10),
+    display: uni.score.match(/^[\d–+-]+/)?.[0] || uni.score,
+  }));
+
   return (
     <div className="min-h-screen bg-slate-50 pt-28 pb-20 select-none font-sans">
       <div className="max-w-[1320px] mx-auto px-6 md:px-10">
@@ -300,6 +313,9 @@ const DuolingoAcceptedCountry = ({ country }) => {
           </div>
         </div>
 
+        {/* Visual hook */}
+        <HookBand className="mb-8" value={activeData.hook.value} label={activeData.hook.label} hi={activeData.hook.hi} />
+
         {/* Highlights Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
           {activeData.highlights.map((h, idx) => (
@@ -320,6 +336,14 @@ const DuolingoAcceptedCountry = ({ country }) => {
             {activeData.description}
           </p>
         </div>
+
+        <BarCompare
+          className="mb-12"
+          kicker="Score check"
+          title="Minimum Duolingo score at top universities"
+          items={scoreBars}
+          highlight={scoreBars[0].label}
+        />
 
         {/* Tables and Requirements Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 mb-12">

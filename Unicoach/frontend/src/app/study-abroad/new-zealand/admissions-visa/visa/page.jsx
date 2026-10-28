@@ -7,6 +7,8 @@ import {
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import StudyAbroadCTA from '../../../../../components/StudyAbroadCTA';
+import { HookBand, BarCompare } from '../../../../../components/ui/Infographics';
+import { JourneyPills } from '../../../../../components/ui/BrandElements';
 
 const SECTIONS = [
   { id: 'visa-types', title: 'Visa Types' },
@@ -168,6 +170,8 @@ const NewZealandVisa = () => {
 
           {/* Right Column: Content Blocks */}
           <div className="lg:col-span-9 space-y-16">
+
+            <HookBand value="30-45" label="working days (~6-8 weeks) is the standard NZ student visa processing time" hi="सब्र" />
             
             {/* 1. Types of Student Visas */}
             <section id="visa-types" className="scroll-mt-24">
@@ -331,6 +335,18 @@ const NewZealandVisa = () => {
                 <h2 className="text-2xl font-black text-slate-900 mb-1">📝 Step-by-Step Application Process</h2>
                 <p className="text-slate-400 text-xs font-bold uppercase tracking-wider">Follow this milestone workflow to file your visa</p>
               </div>
+
+              <JourneyPills
+                className="mb-8"
+                steps={[
+                  { label: 'Offer', sub: 'Accept & enrol' },
+                  { label: 'RealMe', sub: 'Create account' },
+                  { label: 'Documents', sub: 'Assemble papers' },
+                  { label: 'Pay & upload', sub: 'Fee + IVL' },
+                  { label: 'Biometrics', sub: 'At VFS (India)' },
+                  { label: 'eVisa', sub: 'Decision' },
+                ]}
+              />
 
               <div className="relative border-l-2 border-indigo-100 pl-6 ml-4 space-y-8 mb-12">
                 {[
@@ -526,24 +542,11 @@ const NewZealandVisa = () => {
                     </div>
                   </div>
 
-                  <div className="overflow-x-auto">
-                    <table className="w-full text-left text-sm">
-                      <thead>
-                        <tr className="border-b border-slate-100 text-slate-400 text-xs font-bold uppercase tracking-wider">
-                          <th className="pb-3 pr-4">City</th>
-                          <th className="pb-3 pr-4 text-right">Est. Monthly Cost (excl. rent)</th>
-                        </tr>
-                      </thead>
-                      <tbody className="divide-y divide-slate-100 text-slate-705 font-semibold">
-                        {cityCosts.map((city, idx) => (
-                          <tr key={idx} className="hover:bg-slate-50/50 transition-colors">
-                            <td className="py-4 text-slate-900 font-extrabold">{city.name}</td>
-                            <td className="py-4 text-right text-indigo-650 font-black">{formatCost(city.cost)}</td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
+                  <BarCompare
+                    kicker="Monthly cost (excl. rent)"
+                    title="Estimated living cost by city"
+                    items={cityCosts.map((city) => ({ label: city.name, value: city.cost, display: formatCost(city.cost) }))}
+                  />
                 </div>
               </div>
             </section>

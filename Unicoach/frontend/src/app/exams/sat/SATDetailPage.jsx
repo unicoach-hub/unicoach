@@ -17,6 +17,8 @@ import {
   ChevronDown,
   ChevronUp
 } from 'lucide-react';
+import { HookBand, StatStrip, BarCompare, TimelineStrip, Donut } from '../../../components/ui/Infographics';
+import { JourneyPills } from '../../../components/ui/BrandElements';
 
 const SATDetailPage = ({ pageKey }) => {
   const navigate = useNavigate();
@@ -62,6 +64,15 @@ const SATDetailPage = ({ pageKey }) => {
             </p>
           </div>
 
+          <StatStrip
+            stats={[
+              { value: '2h 14m', label: 'Exam duration, down from 3 hours' },
+              { value: '400–1600', label: 'Total score scale' },
+              { value: 'Desmos', label: 'Built-in graphing calculator' },
+              { value: '5 years', label: 'Score validity' }
+            ]}
+          />
+
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {[
               { title: "Shorter Testing Window", desc: "The exam duration is now cut down to 2 Hours 14 Minutes, from the previous 3 hours." },
@@ -86,6 +97,18 @@ const SATDetailPage = ({ pageKey }) => {
       subtitle: "Full overview of question types, timing constraints, and section contents on the Digital SAT.",
       content: (
         <div className="space-y-6 text-xs md:text-sm">
+          <div>
+            <Donut
+              kicker="Time split"
+              title="Minutes per SAT section"
+              segments={[
+                { label: 'Mathematics', value: 70, display: '70 min · 44 Qs' },
+                { label: 'Reading & Writing', value: 64, display: '64 min · 54 Qs' }
+              ]}
+              centerValue="98"
+              centerLabel="questions"
+            />
+          </div>
           <div className="overflow-x-auto border border-slate-200/60 rounded-2xl shadow-xs">
             <table className="w-full text-left border-collapse">
               <thead className="bg-slate-50 border-b border-slate-150 text-slate-400 font-bold uppercase">
@@ -118,6 +141,18 @@ const SATDetailPage = ({ pageKey }) => {
           <div className="space-y-4">
             <h3 className="text-base font-black text-slate-900">Math Topics Breakdown</h3>
             <p className="text-slate-655 font-semibold">The math section measures mathematical fluency across four standard domains:</p>
+            <div>
+              <BarCompare
+                kicker="Math weightage"
+                title="Share of the Math section by domain"
+                items={[
+                  { label: 'Algebra', value: 35, display: '35%' },
+                  { label: 'Advanced Math', value: 35, display: '35%' },
+                  { label: 'Problem Solving & Data Analysis', value: 15, display: '15%' },
+                  { label: 'Geometry & Trigonometry', value: 15, display: '15%' }
+                ]}
+              />
+            </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="border border-slate-100 p-4 rounded-xl bg-slate-50/30">
                 <span className="font-black text-xs text-slate-800">Algebra (35%)</span>
@@ -145,6 +180,21 @@ const SATDetailPage = ({ pageKey }) => {
       subtitle: "International pricing schedule set by the College Board.",
       content: (
         <div className="space-y-6 text-xs md:text-sm">
+          <HookBand value="$68 + $43" label="Base registration fee plus the international fee for test takers outside the US" />
+          <div>
+            <BarCompare
+              kicker="College Board charges"
+              title="SAT fees for students in India (USD)"
+              items={[
+                { label: 'Base registration', value: 68, display: '$68' },
+                { label: 'International fee', value: 43, display: '$43' },
+                { label: 'Late cancellation', value: 39, display: '$39' },
+                { label: 'Late registration', value: 38, display: '$38' },
+                { label: 'Test center change', value: 34, display: '$34' },
+                { label: 'Cancellation', value: 34, display: '$34' }
+              ]}
+            />
+          </div>
           <div className="overflow-x-auto border border-slate-200/60 rounded-2xl shadow-xs">
             <table className="w-full text-left border-collapse">
               <thead className="bg-slate-50 border-b border-slate-150 text-slate-400 font-bold uppercase">
@@ -196,6 +246,20 @@ const SATDetailPage = ({ pageKey }) => {
             All SAT dates in India fall on Saturdays. Register by the regular deadline; late registration costs $38 extra and closes a few days later. Dates are from the College Board's 2026-27 schedule.
           </p>
 
+          <div>
+            <TimelineStrip
+              kicker="2026-27 schedule"
+              title="SAT test dates and registration deadlines"
+              steps={[
+                { when: 'Nov 7, 2026', what: 'Test day', note: 'Register by Oct 23' },
+                { when: 'Dec 5, 2026', what: 'Test day', note: 'Register by Nov 20' },
+                { when: 'Mar 6, 2027', what: 'Test day', note: 'Register by Feb 19' },
+                { when: 'May 1, 2027', what: 'Test day', note: 'Register by Apr 16' },
+                { when: 'Jun 5, 2027', what: 'Test day', note: 'Register by May 21' }
+              ]}
+            />
+          </div>
+
           <div className="overflow-x-auto border border-slate-200/60 rounded-2xl shadow-xs">
             <table className="w-full text-left border-collapse">
               <thead className="bg-slate-50 border-b border-slate-150 text-slate-400 font-bold uppercase">
@@ -245,6 +309,14 @@ const SATDetailPage = ({ pageKey }) => {
       subtitle: "Step-by-step registration roadmap.",
       content: (
         <div className="space-y-6 text-xs md:text-sm font-semibold text-slate-700">
+          <JourneyPills
+            steps={[
+              { label: 'Account', sub: 'Name as on passport' },
+              { label: 'Profile', sub: 'Personal and school info' },
+              { label: 'Date & centre', sub: 'Open seats near you' },
+              { label: 'Pay & photo', sub: 'Card or PayPal' }
+            ]}
+          />
           <div className="space-y-4">
             <div className="flex gap-3">
               <span className="w-6 h-6 rounded-full bg-indigo-50 border border-indigo-150 flex items-center justify-center font-black text-xs text-indigo-700 shrink-0">1</span>
@@ -290,6 +362,15 @@ const SATDetailPage = ({ pageKey }) => {
             The Digital SAT is scored on a total scale of **400 to 1600**, combining two section scores of 200–800.
           </p>
 
+          <StatStrip
+            stats={[
+              { value: '400–1600', label: 'Total score scale' },
+              { value: '200–800', label: 'Each of the two section scores' },
+              { value: '4 free', label: 'Score reports to universities' },
+              { value: '0', label: 'Negative marking' }
+            ]}
+          />
+
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="border border-slate-100 p-5 rounded-2xl bg-slate-50/30">
               <span className="font-black text-xs text-slate-800 block mb-1">Score Verification</span>
@@ -308,6 +389,7 @@ const SATDetailPage = ({ pageKey }) => {
       subtitle: "Actionable prep workflow to secure a high score.",
       content: (
         <div className="space-y-6 text-xs md:text-sm font-semibold text-slate-700">
+          <HookBand value="6" label="Full-length adaptive practice tests in the official Bluebook app" hi="अभ्यास" />
           <div className="p-5 bg-indigo-50/40 border border-indigo-100 rounded-3xl space-y-3">
             <h4 className="font-black text-indigo-900 text-xs uppercase tracking-wider flex items-center gap-1.5">
               <Sparkles size={14} className="text-indigo-650" />

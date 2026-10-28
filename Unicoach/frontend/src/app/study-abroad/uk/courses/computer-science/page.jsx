@@ -29,6 +29,7 @@ import StAndrewsLogo from '@/assets/uk/University of St Andrews.png';
 import NottinghamLogo from '@/assets/uk/University of Nottingham.png';
 import SheffieldLogo from '@/assets/uk/University of Sheffield.png';
 import NewcastleLogo from '@/assets/uk/Newcastle University.jpg';
+import { HookBand, BarCompare } from '../../../../../components/ui/Infographics';
 
 // ─────────────────────────────────────────────
 // Combined UK University Database (52 Institutions)
@@ -1078,6 +1079,12 @@ const intakeCategories = [
   "JAN", "MAY", "AUG", "SEP", "OCT"
 ];
 
+// Five lowest first-year fees from the list above, for the fee chart under the results
+const lowestFeeUnis = [...new Map(universityDatabase.filter((u) => typeof u.tuition === 'number' && u.tuition > 0).map((u) => [u.name, u])).values()]
+  .sort((a, b) => a.tuition - b.tuition)
+  .slice(0, 5)
+  .map((u) => ({ label: u.name, value: u.tuition, display: `₹${u.tuition} Lakh` }));
+
 const feeRanges = [
   { id: "max10", label: "Max ₹10 Lacs", max: 10 },
   { id: "max20", label: "Max ₹20 Lacs", max: 20 },
@@ -1271,6 +1278,8 @@ const ComputerScienceCoursePage = () => {
             Compare tuition rates, global QS rankings, core eligibility requirements, and explore fully accredited institutions in the United Kingdom.
           </p>
         </div>
+
+        <HookBand value={universityDatabase.length} label="UK universities and colleges on this page. Filter by course, city, fees and intake below." hi="तुलना करो" className="mb-10" />
 
         {/* Main Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-[290px_1fr] gap-8 items-start">
@@ -1705,6 +1714,14 @@ const ComputerScienceCoursePage = () => {
               </div>
             )}
 
+            {lowestFeeUnis.length >= 3 && (
+              <BarCompare
+                kicker="Budget picks"
+                title="Lowest first-year tuition on this page"
+                items={lowestFeeUnis}
+                className="mt-10"
+              />
+            )}
           </main>
 
         </div>

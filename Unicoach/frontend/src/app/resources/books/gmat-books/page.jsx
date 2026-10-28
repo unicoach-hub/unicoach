@@ -53,6 +53,18 @@ const gmatData = {
       link: "https://www.amazon.in/s?k=Kaplan+GMAT+Prep+Plus"
     }
   ],
+  // Section pacing from the prep tip below
+  timeSplit: {
+    kicker: 'Pacing',
+    title: 'GMAT Focus sections, by minutes',
+    segments: [
+      { label: 'Quant (21 questions)', value: 64, display: '64 min' },
+      { label: 'Verbal (23 questions)', value: 45, display: '45 min' },
+      { label: 'Data Insights (20 questions)', value: 45, display: '45 min' },
+    ],
+    centerValue: '3',
+    centerLabel: 'sections',
+  },
   prepTips: [
     "Dedicate extra time to Data Insights: Tables, multi-source reasoning, two-part analysis, and data sufficiency.",
     "Do not rely on a calculator for Quantitative: The GMAT Focus Quant section is non-calculator (calculator is only available in Data Insights).",

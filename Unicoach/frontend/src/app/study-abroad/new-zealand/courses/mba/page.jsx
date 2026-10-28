@@ -8,6 +8,7 @@ import {
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import StudyAbroadCTA from '../../../../../components/StudyAbroadCTA';
+import { HookBand, BarCompare } from '../../../../../components/ui/Infographics';
 
 import CapIcon from '../../../../../components/ui/CapIcon';
 const SECTIONS = [
@@ -158,6 +159,8 @@ const NewZealandMBACourse = () => {
 
           {/* Right Column: Content Blocks */}
           <div className="lg:col-span-9 space-y-16">
+
+            <HookBand value="12-18" label="months to break even on an MBA in New Zealand, per the ROI projection on this page" hi="वसूल" />
             
             {/* 1. Why Study MBA Overview */}
             <section id="overview" className="scroll-mt-24">
@@ -272,6 +275,14 @@ const NewZealandMBACourse = () => {
                   </button>
                 </div>
               </div>
+
+              <BarCompare
+                className="mb-8"
+                kicker="Programme fee"
+                title="MBA fees at NZ universities"
+                items={topMbaUnisList.map((uni) => ({ label: uni.name, value: uni.feeNZD, display: formatCost(uni.feeNZD) }))}
+                highlight="Lincoln University"
+              />
 
               <div className="space-y-6">
                 {topMbaUnisList.map((uni) => (
@@ -432,6 +443,17 @@ const NewZealandMBACourse = () => {
                 <div className="bg-white/5 border border-white/10 p-5 rounded-2xl text-xs font-semibold leading-relaxed mb-6">
                   <strong>📈 ROI Projections:</strong> Part-time earnings (**25 hours/week**) can bring in **~NZD $28,000 (₹14.5 Lakhs)** annually during studies, covering 100% of living costs. Break-even period ranges between **12 – 18 months**.
                 </div>
+
+                <BarCompare
+                  className="mb-6"
+                  kicker="Average salary (NZD)"
+                  title="What MBA roles pay in New Zealand"
+                  items={[
+                    { label: 'ICT Project Manager', value: 145000, display: '$110,000 - $145,000' },
+                    { label: 'Supply Chain Manager', value: 135000, display: '$100,000 - $135,000' },
+                    { label: 'Operations Manager', value: 130000, display: '$95,000 - $130,000' },
+                  ]}
+                />
 
                 <div className="overflow-x-auto">
                   <table className="w-full text-left text-xs">

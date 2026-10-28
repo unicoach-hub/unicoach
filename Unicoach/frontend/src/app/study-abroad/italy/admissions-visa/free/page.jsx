@@ -10,6 +10,7 @@ import { Link } from 'react-router-dom';
 import StudyAbroadCTA from '../../../../../components/StudyAbroadCTA';
 import ShortlistWizardWidget from '../../../../../components/ShortlistWizardWidget';
 import { useLead } from '../../../../../context/LeadContext';
+import { HookBand, TimelineStrip } from '../../../../../components/ui/Infographics';
 
 import CapIcon from '../../../../../components/ui/CapIcon';
 const SECTIONS = [
@@ -275,6 +276,8 @@ const ItalyFree = () => {
             </p>
           </div>
         </motion.div>
+
+        <HookBand value="62%" label="of international students in Italy receive tuition waivers (2023 data)" hi="मुफ़्त" className="mb-12" />
 
         {/* Currency Tool Switcher */}
         <div className="flex justify-center mb-12">
@@ -637,6 +640,13 @@ const ItalyFree = () => {
               <p className="text-slate-600 font-semibold leading-relaxed mb-8">
                 Strict adherence to the Italian academic timeline is essential to secure admission and regional scholarships.
               </p>
+
+              <TimelineStrip
+                kicker="Admission calendar"
+                title="Five phases from shortlist to DSU award"
+                steps={timelinePhases.map((p) => ({ when: p.dates, what: p.phase.split(': ')[1], highlight: p.phase.includes('DSU') }))}
+                className="mb-8"
+              />
 
               {/* Timeline Accordion or visual checklist */}
               <div className="space-y-6 relative before:absolute before:left-6 before:top-2 before:bottom-2 before:w-0.5 before:bg-slate-100 before:pointer-events-none">

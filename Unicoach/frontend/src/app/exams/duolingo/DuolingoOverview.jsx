@@ -19,6 +19,7 @@ import {
   Info
 } from 'lucide-react';
 import StudyAbroadCTA from '../../../components/StudyAbroadCTA';
+import { HookBand, Donut } from '../../../components/ui/Infographics';
 
 const DuolingoOverview = () => {
   const navigate = useNavigate();
@@ -138,6 +139,9 @@ const DuolingoOverview = () => {
           </div>
         </div>
 
+        {/* Visual hook */}
+        <HookBand className="mb-8" value="48 hrs" label="to certified results, shared with unlimited universities for free" hi="फटाफट" />
+
         {/* Quick Stats Grid */}
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-12">
           {keyFacts.map((fact, idx) => (
@@ -189,6 +193,20 @@ const DuolingoOverview = () => {
             </div>
           </div>
         </div>
+
+        {/* Test format split */}
+        <Donut
+          className="mb-16"
+          kicker="Test format"
+          title="Inside the ~60-minute DET"
+          centerValue="60"
+          centerLabel="minutes"
+          segments={[
+            { label: 'Onboarding checks', value: 5, display: '5 min' },
+            { label: 'Adaptive Test', value: 45, display: '45 min' },
+            { label: 'Writing & Speaking sample', value: 10, display: '10 min' },
+          ]}
+        />
 
         {/* Links to Info Hub */}
         <div className="mb-16">

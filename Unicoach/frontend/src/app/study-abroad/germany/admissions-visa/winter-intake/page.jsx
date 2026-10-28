@@ -2,10 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Calendar, MapPin, Award, BookOpen, Clock, Info, CheckCircle2, 
-  ChevronDown, AlertTriangle, ListFilter, ArrowRight, Coins, ShieldCheck
+  ChevronDown, ListFilter, ArrowRight, Coins, ShieldCheck
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import StudyAbroadCTA from '../../../../../components/StudyAbroadCTA';
+import { HookBand, TimelineStrip } from '../../../../../components/ui/Infographics';
+import { HazardFrame } from '../../../../../components/ui/BrandElements';
 
 const SECTIONS = [
   { id: 'overview', title: 'Winter Intake Overview' },
@@ -146,6 +148,13 @@ const WinterIntakeGermany = () => {
           </div>
         </div>
 
+        <HookBand
+          className="mb-10"
+          value="1,930+"
+          label="English-taught master's programs in Germany (DAAD); most STEM courses open to internationals only in winter"
+          hi="सर्दी"
+        />
+
         {/* 2-Column Sidebar Layout */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
           
@@ -249,12 +258,24 @@ const WinterIntakeGermany = () => {
                 </div>
               </div>
 
-              <div className="mt-4 p-5 bg-amber-50 border border-amber-200 rounded-2xl flex items-start gap-3">
-                <AlertTriangle size={16} className="text-amber-600 mt-0.5 shrink-0" />
-                <p className="text-[11px] text-slate-655 font-semibold leading-relaxed">
+              <TimelineStrip
+                className="mt-6"
+                kicker="Winter 2027 deadline run"
+                title="Masters deadlines in date order"
+                steps={[
+                  { when: '31 March 2027', what: 'University of Hamburg', note: "Int'l programs close early" },
+                  { when: 'May 15, 2027', what: 'TU Berlin', note: 'VPD upload required' },
+                  { when: 'May 31, 2027', what: 'TU Munich (TUM)', note: 'Most PG programs', highlight: true },
+                  { when: '15 June 2027', what: 'Hamburg, KIT CS MSc', note: "Standard Master's / CS majors" },
+                  { when: '15 July 2027', what: 'LMU, RWTH, KIT', note: 'Final international deadlines' },
+                ]}
+              />
+
+              <HazardFrame className="mt-4">
+                <p className="m-0 text-[13px] text-slate-800 font-semibold leading-relaxed">
                   <strong>Uni-Assist Processing Lag (4-6 Weeks):</strong> Although the official deadline is July 15, Uni-Assist takes 4 to 6 weeks to evaluate documents and forward them to universities. Submit by the end of May to prevent your profile from arriving after review slots close.
                 </p>
-              </div>
+              </HazardFrame>
             </section>
 
             {/* 4. Winter 2027 Timeline */}

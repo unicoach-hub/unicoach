@@ -6,6 +6,8 @@ import {
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import StudyAbroadCTA from '../../../../../components/StudyAbroadCTA';
+import { HookBand } from '../../../../../components/ui/Infographics';
+import { JourneyPills, StepCounter } from '../../../../../components/ui/BrandElements';
 
 const SECTIONS = [
   { id: 'overview', title: 'Visa Overview & Facts' },
@@ -144,6 +146,13 @@ const GermanyVisaPage = () => {
           </div>
         </div>
 
+        <HookBand
+          className="mb-10"
+          value="€11,904"
+          label="must sit in your blocked account before the visa; it pays out €992 a month once you arrive"
+          hi="पैसा पक्का"
+        />
+
         {/* 2-Column Sidebar Layout */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
           
@@ -209,6 +218,18 @@ const GermanyVisaPage = () => {
                 <p className="text-slate-400 text-xs font-bold uppercase tracking-wider">Sequence of events for a successful VFS Global visa filing in India</p>
               </div>
 
+              <JourneyPills
+                className="mb-6"
+                steps={[
+                  { label: 'Admission', sub: 'Offer or VPD' },
+                  { label: 'Blocked a/c', sub: '€11,904' },
+                  { label: 'VFS slot', sub: 'National Visa: Study' },
+                  { label: 'Papers', sub: 'Checklist set' },
+                  { label: 'Interview', sub: '5 minutes' },
+                  { label: 'Passport', sub: '6 to 12 weeks' },
+                ]}
+              />
+
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {steps.map((step, idx) => (
                   <div key={idx} className="bg-white border border-slate-200/60 p-5 rounded-2xl shadow-xs relative overflow-hidden flex flex-col justify-between hover:shadow-xs transition-shadow">
@@ -258,6 +279,16 @@ const GermanyVisaPage = () => {
                 <h2 className="text-2xl font-black text-slate-900 mb-1">🇩🇪 Post-Arrival Requirements in Germany</h2>
                 <p className="text-slate-400 text-xs font-bold uppercase tracking-wider">Essential administrative steps to complete within your first few weeks on campus</p>
               </div>
+
+              <StepCounter
+                className="mb-6"
+                items={[
+                  { label: 'Register address (14 days)', highlight: true },
+                  { label: 'Health insurance' },
+                  { label: 'Local bank account' },
+                  { label: 'Residence permit' },
+                ]}
+              />
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-xs text-slate-705 font-semibold">
                 {[

@@ -7,6 +7,7 @@ import {
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import StudyAbroadCTA from '../../../../../components/StudyAbroadCTA';
+import { HookBand, BarCompare } from '../../../../../components/ui/Infographics';
 
 import CapIcon from '../../../../../components/ui/CapIcon';
 const SECTIONS = [
@@ -323,6 +324,8 @@ const NewZealandBest = () => {
 
           {/* Right Column: Content Blocks */}
           <div className="lg:col-span-9 space-y-16">
+
+            <HookBand value="25 hrs" label="work rights per week (up from 20), plus up to a 3-year post-study work visa for UG/PG" hi="मौका" />
             
             {/* 1. Why 2026 is the Best Year */}
             <section id="overview" className="scroll-mt-24">
@@ -375,6 +378,13 @@ const NewZealandBest = () => {
                   </button>
                 </div>
               </div>
+
+              <BarCompare
+                className="mb-8"
+                kicker="Estimated fees per year"
+                title="Yearly cost at the top 8"
+                items={top8Unis.map((uni) => ({ label: uni.name, value: uni.feesTotalNZD, display: formatCost(uni.feesTotalNZD) }))}
+              />
 
               <div className="space-y-6">
                 {top8Unis.map((uni) => (

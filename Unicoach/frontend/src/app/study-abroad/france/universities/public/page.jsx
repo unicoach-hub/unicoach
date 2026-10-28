@@ -7,6 +7,7 @@ import {
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import StudyAbroadCTA from '../../../../../components/StudyAbroadCTA';
+import { HookBand, BarCompare } from '../../../../../components/ui/Infographics';
 
 const publicUnis = [
   {
@@ -174,6 +175,13 @@ const FrancePublic = () => {
           </p>
         </motion.div>
 
+        <HookBand
+          value="80–90%"
+          label="of the real cost of your public-university degree is covered by the French state"
+          hi="सब्सिडी"
+          className="mb-10"
+        />
+
         {/* Currency Selector (For general visual consistency) */}
         <div className="flex justify-center mb-12">
           <div className="bg-white border border-slate-200/60 p-1.5 rounded-2xl shadow-sm inline-flex items-center gap-1">
@@ -233,6 +241,19 @@ const FrancePublic = () => {
             </div>
           </div>
         </div>
+
+        <BarCompare
+          className="mb-16"
+          kicker="Taxpayer subsidy"
+          title="What a public Master's costs the state vs what you pay per year"
+          highlight="Your Master's fee"
+          items={[
+            { label: 'Cost to the French state', value: 14000, display: '~€14,000' },
+            { label: "Your Master's fee", value: 3770, display: '€3,770' },
+            { label: "Bachelor's fee", value: 2770, display: '€2,770' },
+            { label: 'PhD fee', value: 380, display: '€380' },
+          ]}
+        />
 
         {/* DYNAMIC PUBLIC UNIVERSITIES LIST */}
         <div className="mb-16">

@@ -23,6 +23,7 @@ import {
     CheckCircle2
 } from 'lucide-react';
 import { API_BASE_URL } from '../../config';
+import { StdSign } from '../../components/desi/DesiPop';
 
 const BLOG_TABS = [
     { key: 'popular', name: 'Popular Blogs', icon: <Sparkles size={14} className="text-amber-500" /> },
@@ -123,6 +124,10 @@ const BlogsPage = () => {
 
             {/* Clean LeapScholar-Style Hero Section with Interactive 3D Grid */}
             <section className="relative pt-12 pb-24 sm:pt-14 sm:pb-28 px-4 sm:px-6 lg:px-8 bg-[#F6F3EC] overflow-hidden">
+                {/* Desi Pop: STD booth style sign with the blog topics, wide screens only */}
+                <div className="hidden 2xl:block absolute left-8 2xl:left-20 top-1/2 -translate-y-1/2 -rotate-6 z-0 pointer-events-none">
+                    <StdSign words={['VISA', 'EXAMS', 'COURSES']} hi="पढ़ो" className="w-[200px]" />
+                </div>
                 
 
                 <div className="max-w-7xl mx-auto relative z-10 text-center space-y-4">

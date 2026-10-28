@@ -6,6 +6,7 @@ import {
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import StudyAbroadCTA from '../../../../../components/StudyAbroadCTA';
+import { BarCompare } from '../../../../../components/ui/Infographics';
 import { matchesUniversitySearch, getMatchedCoursesForUniversity } from '../../../../../utils/universitySearchMatcher';
 
 const bestUniversities = [
@@ -392,6 +393,19 @@ const GermanyBestUniversities = () => {
             </div>
           )}
         </div>
+
+        <BarCompare
+          className="mb-16"
+          kicker="Graduate starting salary"
+          title="Which top-10 university grads earn most?"
+          items={[...bestUniversities]
+            .sort((a, b) => b.startingSalary - a.startingSalary)
+            .map((u) => ({
+              label: u.name.replace(/\s*\(.*\)/, ''),
+              value: u.startingSalary,
+              display: `€${u.startingSalary.toLocaleString()}`,
+            }))}
+        />
 
         {/* Benefits Section */}
         <div className="bg-gradient-to-r from-orange-500 to-[#DE5C2B] text-white rounded-[32px] p-8 md:p-12 shadow-xl mb-16 relative overflow-hidden">

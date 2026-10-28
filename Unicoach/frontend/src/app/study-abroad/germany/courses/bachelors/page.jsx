@@ -7,6 +7,7 @@ import {
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import StudyAbroadCTA from '../../../../../components/StudyAbroadCTA';
+import { BarCompare } from '../../../../../components/ui/Infographics';
 
 // ─────────────────────────────────────────────
 // DATA SECTION
@@ -275,6 +276,16 @@ const GermanyBachelorsPage = () => {
               </div>
             </motion.div>
           </AnimatePresence>
+
+          <BarCompare
+            className="mt-8"
+            kicker="Entry salary by course"
+            title="Which bachelor pays most on day one?"
+            highlight={specialisations[activeTab].title}
+            items={Object.values(specialisations)
+              .map((sp) => ({ label: sp.title, value: sp.salaryVal, display: `€${(sp.salaryVal / 1000).toFixed(1).replace(/\.0$/, '')}k+` }))
+              .sort((a, b) => b.value - a.value)}
+          />
         </div>
 
         {/* 3. UNIVERSITIES TABLE */}
@@ -463,6 +474,19 @@ const GermanyBachelorsPage = () => {
                 </tbody>
               </table>
             </div>
+
+            <BarCompare
+              className="mt-6"
+              kicker="Fee per semester, top of range"
+              title="Public vs state fees vs private"
+              highlight="Private Universities"
+              items={[
+                { label: 'Most Public Universities', value: 0, display: 'Free' },
+                { label: 'Baden-Württemberg', value: 1500, display: '€1,500' },
+                { label: 'TUM', value: 2500, display: '€2k – €3k' },
+                { label: 'Private Universities', value: 7500, display: 'up to €10k' },
+              ]}
+            />
           </div>
 
           <div className="lg:col-span-1 bg-white/60 border border-white rounded-[32px] p-8 shadow-sm backdrop-blur-xl flex flex-col justify-between">

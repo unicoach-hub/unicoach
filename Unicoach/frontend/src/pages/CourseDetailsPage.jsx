@@ -16,6 +16,7 @@ import PriorityDmModal from '../components/PriorityDmModal';
 import MentorBookingModal from '../components/MentorBookingModal';
 import { useAuth } from '../context/AuthContext';
 import { API_BASE_URL } from '../config';
+import { StatStrip } from '../components/ui/Infographics';
 
 /**
  * Exact Match to UniCoach Mentors Marketplace Card (Image 1 Benchmark)
@@ -324,6 +325,15 @@ const CourseDetailsPage = () => {
   const greText = getGreText(req);
   const entryRequirement = req.eligibilityText || req.minScoreText || (req.gpaPercent ? `Minimum academic score: ${req.gpaPercent}%` : null);
 
+  // Headline numbers for the stat strip: only values this course record really holds
+  const ieltsNumber = program.minIeltsScore || req.ielts;
+  const keyStats = [
+    program.durationMonths && { value: `${program.durationMonths} mo`, label: 'Course duration' },
+    program.tuitionPerYear && !/official site/i.test(program.tuitionPerYear) && { value: program.tuitionPerYear, label: 'Yearly tuition fee' },
+    ieltsNumber && { value: String(ieltsNumber), label: 'IELTS overall needed' },
+    program.avgScholarship && { value: program.avgScholarship, label: 'Average scholarship' },
+  ].filter(Boolean);
+
   // URLs: the real course page when we have one, otherwise the university's own website (never a guessed path)
   const siteUrl = uni.website ? (/^https?:\/\//i.test(uni.website) ? uni.website : `https://${uni.website}`) : null;
   const courseUrl = program.officialUrl && /^https?:\/\//i.test(program.officialUrl) ? program.officialUrl : siteUrl;
@@ -564,6 +574,8 @@ const CourseDetailsPage = () => {
                 )}
               </div>
             </div>
+
+            {keyStats.length >= 2 && <StatStrip stats={keyStats} />}
 
             {/* ══════════════════════════════════════════════════════════
                 FEATURED COURSE MENTORS GALLERY (EXACT IMAGE 1 MATCH)

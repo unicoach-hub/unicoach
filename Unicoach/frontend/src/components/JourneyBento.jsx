@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion, useInView, useMotionValue, useSpring, useTransform } from 'framer-motion';
 import { ChevronRight, Check, Plane } from 'lucide-react';
 import { useLead } from '../context/LeadContext';
+import { RedPenCircle } from './ui/BrandElements';
 
 // "Your study abroad journey in 4 steps" as a bento grid: four gradient cards with 3D illustrations
 // (3dicons.co, CC0) and real campus photos. Step 1 opens the free counselling form; the others open their tool.
@@ -390,7 +391,7 @@ const SopArt = () => {
                   {pre}
                   {edited ? (
                     <>
-                      <span className="line-through text-rose-400">took apart</span>{' '}
+                      <RedPenCircle note="weak verb"><span className="line-through text-rose-400">took apart</span></RedPenCircle>{' '}
                       <motion.span initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-emerald-700 bg-emerald-50 rounded-sm">dismantled</motion.span>
                     </>
                   ) : 'took apart'}
@@ -553,7 +554,7 @@ export const JourneyBento = () => {
             <span className="w-2 h-2 rounded-full bg-[#DE5C2B]" />
             <span className="text-[12px] sm:text-[12.5px] font-bold text-slate-800 tracking-wide uppercase">How UniCoach works</span>
           </div>
-          <h2 className="font-['Geist',sans-serif] text-[30px] sm:text-[38px] lg:text-[40px] font-black text-[#111111] leading-[1.1] tracking-[-0.035em]">
+          <h2 className="font-['Onest',sans-serif] text-[30px] sm:text-[38px] lg:text-[40px] font-black text-[#111111] leading-[1.1] tracking-[-0.035em]">
             Your study abroad journey in <span className="text-[#DE5C2B]">4 steps</span>
           </h2>
           <p className="text-[13.5px] sm:text-[16px] text-slate-600 mt-2.5 leading-relaxed">

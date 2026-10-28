@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { HookBand, BarCompare } from '../../../components/ui/Infographics';
 import { Calculator, Award, ArrowRightLeft, Sparkles, AlertCircle, HelpCircle } from 'lucide-react';
 
 const CGPAtoGPACalculator = () => {
@@ -115,6 +116,13 @@ const CGPAtoGPACalculator = () => {
                         Instantly convert your Indian 10-point CGPA into a US 4.0 scale or German Bavarian grade for study abroad applications.
                     </p>
                 </div>
+
+                <HookBand
+                    value="4.0"
+                    label="The top of the US GPA scale. Germany's Bavarian formula runs the other way: 1.0 is a perfect score, 4.0 the minimum pass."
+                    hi="पैमाना"
+                    className="mb-8"
+                />
 
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
                     
@@ -332,6 +340,19 @@ const CGPAtoGPACalculator = () => {
                     </div>
 
                 </div>
+
+                {/* The US GPA conversion chart from the sidebar, as bars (top of each GPA band) */}
+                <BarCompare
+                    className="mt-8"
+                    kicker="US GPA chart"
+                    title="Your CGPA band on the 4.0 scale"
+                    items={[
+                        { label: 'CGPA 9.0–10.0', value: 4.0, display: 'GPA 3.8–4.0' },
+                        { label: 'CGPA 8.0–8.9', value: 3.7, display: 'GPA 3.4–3.7' },
+                        { label: 'CGPA 7.0–7.9', value: 3.3, display: 'GPA 3.0–3.3' },
+                        { label: 'CGPA 6.0–6.9', value: 2.9, display: 'GPA 2.5–2.9' },
+                    ]}
+                />
 
             </div>
         </main>

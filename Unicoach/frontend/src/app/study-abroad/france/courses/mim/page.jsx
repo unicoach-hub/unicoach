@@ -8,6 +8,7 @@ import {
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import StudyAbroadCTA from '../../../../../components/StudyAbroadCTA';
+import { HookBand, BarCompare, Donut } from '../../../../../components/ui/Infographics';
 
 const SECTIONS = [
   { id: 'why-mim', title: 'Why MIM in France?' },
@@ -182,6 +183,12 @@ const FranceMIMCourse = () => {
             
             {/* 1. Why MIM in France? */}
             <section id="why-mim" className="scroll-mt-24">
+              <HookBand
+                value="80%+"
+                label="of French MIM students take a gap year between M1 and M2 for two 6-month corporate internships"
+                hi="इंटर्नशिप"
+                className="mb-8"
+              />
               <div className="text-left mb-6">
                 <h2 className="text-2xl font-black text-slate-900 mb-1">🇫🇷 Why Study MIM in France?</h2>
                 <p className="text-slate-400 text-xs font-bold uppercase tracking-wider">Unlock premier management consulting and luxury pipelines</p>
@@ -217,6 +224,17 @@ const FranceMIMCourse = () => {
                   Top Business Schools for MIM in France
                 </h2>
                 <p className="text-slate-400 text-xs font-bold uppercase tracking-wider mb-6">Compare global management ranks, total tuition fees, and program locations</p>
+
+                <BarCompare
+                  className="mb-8"
+                  kicker="Total programme fees"
+                  title="MIM tuition at France's top business schools (2 years)"
+                  items={topMimSchools.map((school) => ({
+                    label: school.name,
+                    value: school.feesTotalEUR,
+                    display: `€${school.feesTotalEUR.toLocaleString()}`,
+                  }))}
+                />
 
                 <div className="overflow-x-auto">
                   <table className="w-full text-left text-sm">
@@ -318,6 +336,17 @@ const FranceMIMCourse = () => {
                   💼 Career Outcomes & Sector Analysis
                 </h2>
                 <p className="text-slate-400 text-xs font-bold mb-6">Explore placement statistics and sectors recruiting French MIM graduates</p>
+
+                <Donut
+                  className="mb-8"
+                  kicker="Placement share"
+                  title="Where French MIM graduates get hired"
+                  segments={hiringSectors.map((sector) => ({
+                    label: sector.name,
+                    value: parseInt(sector.share, 10),
+                    display: sector.share,
+                  }))}
+                />
 
                 <div className="space-y-6">
                   {hiringSectors.map((sector, idx) => (

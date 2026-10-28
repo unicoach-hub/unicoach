@@ -7,6 +7,7 @@ import {
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import StudyAbroadCTA from '../../../../../components/StudyAbroadCTA';
+import { BarCompare, Donut, HookBand } from '../../../../../components/ui/Infographics';
 
 const tuitionComparison = [
   {
@@ -133,6 +134,13 @@ const GermanyAffordable = () => {
           </div>
         </div>
 
+        <HookBand
+          className="mb-12"
+          value="15 of 16"
+          label="German states charge international students €0 tuition at public universities"
+          hi="मुफ़्त"
+        />
+
         {/* 1. TUITION RANGE COMPARISON */}
         <div className="bg-white/60 border border-white rounded-[32px] p-6 md:p-8 shadow-[0_8px_30px_rgba(0,0,0,0.02)] backdrop-blur-xl mb-16 overflow-hidden">
           <h2 className="text-xl md:text-2xl font-black text-slate-900 mb-2 flex items-center gap-2">
@@ -170,6 +178,18 @@ const GermanyAffordable = () => {
               </tbody>
             </table>
           </div>
+
+          <BarCompare
+            className="mt-6"
+            kicker="Tuition per year, top of range"
+            title="Free, €3,000 or up to €25,050"
+            highlight="Private Universities"
+            items={[
+              { label: 'Public (15 of 16 states)', value: 0, display: 'Free (€0)' },
+              { label: 'Public (Baden-Württemberg)', value: 3000, display: '€3,000' },
+              { label: 'Private Universities', value: 25050, display: '€25,050' },
+            ]}
+          />
         </div>
 
         {/* 2. BLOCKED ACCOUNT DETAILS */}
@@ -243,6 +263,13 @@ const GermanyAffordable = () => {
                 </tbody>
               </table>
             </div>
+
+            <Donut
+              className="mt-6"
+              kicker="Where the money goes"
+              title="Monthly living cost split"
+              segments={monthlyExpenses.map((e) => ({ label: e.item, value: e.eur, display: `€${e.eur}` }))}
+            />
           </div>
 
           {/* Money Saving Roadmap Tips */}

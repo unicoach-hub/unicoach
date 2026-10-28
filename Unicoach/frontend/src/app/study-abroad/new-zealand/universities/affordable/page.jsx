@@ -7,6 +7,7 @@ import {
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import StudyAbroadCTA from '../../../../../components/StudyAbroadCTA';
+import { HookBand, BarCompare } from '../../../../../components/ui/Infographics';
 
 const SECTIONS = [
   { id: 'overview', title: 'Quality & Affordability' },
@@ -247,6 +248,8 @@ const NewZealandAffordable = () => {
 
           {/* Right Column: Content Blocks */}
           <div className="lg:col-span-9 space-y-16">
+
+            <HookBand value="$32,400" label="Lowest starting UG fee per year, at the University of Waikato, while all 8 public universities sit in the top 3% globally" hi="सस्ता" />
             
             {/* 1. Quality & Affordability Overview */}
             <section id="overview" className="scroll-mt-24">
@@ -300,6 +303,14 @@ const NewZealandAffordable = () => {
                   </button>
                 </div>
               </div>
+
+              <BarCompare
+                className="mb-8"
+                kicker="UG start fee per year"
+                title="Cheapest to priciest undergraduate start"
+                items={[...feeComparisonData].sort((a, b) => a.ugFee - b.ugFee).map((uni) => ({ label: uni.name, value: uni.ugFee, display: formatCost(uni.ugFee) }))}
+                highlight="University of Waikato"
+              />
 
               <div className="overflow-x-auto bg-white border border-slate-200/60 rounded-[2rem] p-6 shadow-sm">
                 <table className="w-full text-left text-xs md:text-sm">
@@ -495,6 +506,17 @@ const NewZealandAffordable = () => {
                   <Award className="text-indigo-650" size={24} />
                   🏆 Scholarships at Cheapest Universities
                 </h2>
+
+                <BarCompare
+                  className="mb-6"
+                  kicker="Scholarship value (NZD)"
+                  title="Biggest individual awards"
+                  items={[
+                    { label: 'India High Achievers (Auckland)', value: 20000, display: '$20,000' },
+                    { label: "International Master's (Otago)", value: 18000, display: '$18,000' },
+                    { label: 'NZ Excellence Awards (NZEA)', value: 10000, display: '$10,000' },
+                  ]}
+                />
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-xs font-semibold">
                   <div className="bg-slate-50 p-5 rounded-2xl border border-slate-100">

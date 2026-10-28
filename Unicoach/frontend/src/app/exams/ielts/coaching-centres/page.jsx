@@ -21,6 +21,8 @@ import {
   HelpCircle
 } from 'lucide-react';
 import { API_BASE_URL } from '../../../../config';
+import { HookBand } from '../../../../components/ui/Infographics';
+import { StepCounter } from '../../../../components/ui/BrandElements';
 
 const IELTSCoachingCentresPage = () => {
   const [dbBlogs, setDbBlogs] = React.useState([]);
@@ -313,6 +315,8 @@ const IELTSCoachingCentresPage = () => {
                 The IELTS Test Centres offer both Paper-based and Computer-based IELTS Tests. The IELTS IDP India has 50+ IELTS test centres in 75 cities. You can book your IELTS test online through its official IELTS IDP India Website. For offline applications, you have to visit your nearest IDP branch.
               </p>
 
+              <HookBand value="75" label="cities in India with 50+ IDP IELTS test centres between them" hi="पास में" />
+
               {/* Interactive Search & Region Selector */}
               <div className="bg-indigo-50/40 border border-indigo-100 rounded-2xl p-6 space-y-4">
                 <h4 className="font-extrabold text-slate-900 text-sm flex items-center gap-1.5">
@@ -374,6 +378,16 @@ const IELTSCoachingCentresPage = () => {
               <p>
                 Every candidate is expected to strictly follow IDP test regulations at physical exam venues:
               </p>
+
+              <StepCounter
+                className="not-prose"
+                items={[
+                  { label: 'Original passport', highlight: true },
+                  { label: 'Devices in lockers' },
+                  { label: 'Biometric check' },
+                  { label: 'Draft sheets stay' },
+                ]}
+              />
               
               <div className="bg-slate-50 border border-slate-100 rounded-2xl p-6 space-y-4 my-6">
                 <h4 className="font-extrabold text-slate-850 text-sm">Exam Hall Code of Conduct</h4>

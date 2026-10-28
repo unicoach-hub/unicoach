@@ -16,6 +16,7 @@ import {
 import PageLoader from '../../components/PageLoader';
 import { API_BASE_URL } from '../../config';
 import { STUDENT_VIDEOS } from '../../data/studentVideos';
+import { RailwayBoard } from '../../components/desi/DesiPop';
 
 // Real student stories, shaped like digest items so the same player modal can play them
 const STUDENT_STORIES = STUDENT_VIDEOS.map((v) => ({
@@ -140,7 +141,11 @@ const UniCoachDigestPage = () => {
         <main className="min-h-screen bg-slate-50/50 pt-24 pb-16">
             
             {/* dynamic Publication Masthead */}
-            <div className="max-w-[1240px] mx-auto px-6 md:px-10 text-center mb-10">
+            <div className="relative max-w-[1240px] mx-auto px-6 md:px-10 text-center mb-10">
+                {/* Desi Pop: railway station board, wide screens only */}
+                <div className="hidden 2xl:block absolute left-8 top-0 w-[220px] pointer-events-none">
+                    <RailwayBoard hi="डाइजेस्ट" en="DIGEST" codeLeft="TRENDS" codeRight="REVIEWS" />
+                </div>
                 <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-indigo-50 border border-indigo-100 rounded-full text-indigo-650 text-xs font-bold uppercase tracking-wider mb-4 animate-bounce">
                     <Sparkles size={12} className="text-indigo-500" />
                     <span>UniCoach Digital Press</span>

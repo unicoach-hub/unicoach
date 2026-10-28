@@ -7,6 +7,7 @@ import {
 import StudyAbroadCTA from '../../../../../components/StudyAbroadCTA';
 import { getUniversityLogo } from '../../../../../components/logoResolver';
 import { matchesUniversitySearch, getMatchedCoursesForUniversity } from '../../../../../utils/universitySearchMatcher';
+import { HookBand, BarCompare } from '../../../../../components/ui/Infographics';
 
 // ─────────────────────────────────────────────
 // Ireland University Database — PhD (11 Institutions)
@@ -255,6 +256,12 @@ const cityCategories = [
 
 const intakeCategories = ["JAN", "SEP"];
 
+// Five lowest first-year fees from the list above, for the fee chart under the results
+const lowestFeeUnis = [...new Map(universityDatabase.filter((u) => typeof u.tuition === 'number' && u.tuition > 0).map((u) => [u.name, u])).values()]
+  .sort((a, b) => a.tuition - b.tuition)
+  .slice(0, 5)
+  .map((u) => ({ label: u.name, value: u.tuition, display: `₹${u.tuition} Lakh` }));
+
 const feeRanges = [
   { id: "max10", label: "Max ₹10 Lacs", max: 10 },
   { id: "max20", label: "Max ₹20 Lacs", max: 20 },
@@ -383,6 +390,8 @@ const IrelandPhDPage = () => {
             Explore Ireland's top doctoral programmes — compare QS rankings, tuition fees, research areas, and eligibility requirements.
           </p>
         </div>
+
+        <HookBand value={universityDatabase.length} label="Irish universities on this page for doctoral study. Filter by course, city, fees and intake below." hi="तुलना करो" className="mb-10" />
 
         {/* Main Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-[290px_1fr] gap-8 items-start">
@@ -674,6 +683,14 @@ const IrelandPhDPage = () => {
               </div>
             )}
 
+            {lowestFeeUnis.length >= 3 && (
+              <BarCompare
+                kicker="Budget picks"
+                title="Lowest first-year tuition on this page"
+                items={lowestFeeUnis}
+                className="mt-10"
+              />
+            )}
           </main>
         </div>
 

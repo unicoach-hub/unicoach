@@ -25,6 +25,8 @@ import {
   ExternalLink,
   Info
 } from 'lucide-react';
+import { StatStrip, BarCompare, Donut, TimelineStrip, HookBand } from '../../../components/ui/Infographics';
+import { StepCounter } from '../../../components/ui/BrandElements';
 
 const TOEFLDetailPage = ({ pageKey }) => {
   const [openFaq, setOpenFaq] = useState({});
@@ -62,6 +64,15 @@ const TOEFLDetailPage = ({ pageKey }) => {
               </p>
             </div>
           </div>
+
+          <StatStrip
+            stats={[
+              { value: '~90 min', label: 'Test time (allow about 2 hours)' },
+              { value: '1–6', label: 'New score scale, in half bands' },
+              { value: '12,500+', label: 'Institutions accept TOEFL' },
+              { value: '160+', label: 'Countries' },
+            ]}
+          />
 
           <div className="space-y-4">
             <h3 className="text-lg font-black text-slate-900 flex items-center gap-2">
@@ -137,6 +148,21 @@ const TOEFLDetailPage = ({ pageKey }) => {
           <p className="text-slate-650 font-semibold text-xs leading-relaxed">
             The test has four sections in this order: Reading, Listening, Writing, Speaking. Reading and Listening are adaptive: how you do in the first part decides how hard the second part is, so the number of questions and the time can vary slightly. Times below are ETS's approximate figures.
           </p>
+
+          <div>
+            <Donut
+              kicker="Time split"
+              title="Where your ~90 minutes go"
+              centerValue="~90"
+              centerLabel="minutes"
+              segments={[
+                { label: 'Reading', value: 30, display: '~30 min' },
+                { label: 'Listening', value: 29, display: '~29 min' },
+                { label: 'Writing', value: 23, display: '~23 min' },
+                { label: 'Speaking', value: 8, display: '~8 min' },
+              ]}
+            />
+          </div>
 
           <div className="overflow-x-auto border border-slate-200/60 rounded-2xl my-6 shadow-sm">
             <table className="w-full text-left border-collapse text-xs md:text-sm">
@@ -265,6 +291,8 @@ const TOEFLDetailPage = ({ pageKey }) => {
             In India, all registration payments must be cleared before your appointment. Check below for services list:
           </p>
 
+          <HookBand value="₹15,729" label="TOEFL iBT registration fee in India, as listed by ETS India" hi="फीस" />
+
           <div className="space-y-2">
             <h4 className="text-sm font-black text-slate-800">1. Base Registration & Additional Fees</h4>
             <div className="overflow-x-auto border border-slate-200/60 rounded-2xl shadow-sm">
@@ -300,6 +328,21 @@ const TOEFLDetailPage = ({ pageKey }) => {
               </table>
             </div>
             <p className="text-[10px] text-slate-400 font-bold italic mt-1">* Fees as listed by ETS India (checked Oct 2026). Confirm on the ETS India site when you book.</p>
+          </div>
+
+          <div>
+            <BarCompare
+              kicker="Fee comparison"
+              title="What each TOEFL service costs"
+              source="ETS India (checked Oct 2026)"
+              items={[
+                { label: 'Registration', value: 15729, display: '₹15,729' },
+                { label: 'Score Review', value: 6695, display: '₹6,695' },
+                { label: 'Rescheduling', value: 5000, display: '₹5,000' },
+                { label: 'Late Registration', value: 3305, display: '₹3,305' },
+                { label: 'Extra Score Report', value: 2000, display: '₹2,000' },
+              ]}
+            />
           </div>
 
           <div className="space-y-4 pt-4 border-t border-slate-100">
@@ -357,6 +400,15 @@ const TOEFLDetailPage = ({ pageKey }) => {
             The TOEFL iBT is held over 60 times a year at secure test centers. The TOEFL iBT Home Edition is available 24 hours a day, 4 days a week.
           </p>
 
+          <StatStrip
+            stats={[
+              { value: '60+', label: 'Test centre dates a year' },
+              { value: '39', label: 'Test centre cities in India' },
+              { value: '4 days', label: 'A week for Home Edition, 24 hours a day' },
+              { value: '2 yrs', label: 'Score validity' },
+            ]}
+          />
+
           <div className="space-y-4">
             <h3 className="text-lg font-black text-slate-900 flex items-center gap-2">
               <span className="w-1.5 h-5 bg-indigo-500 rounded-full inline-block" />
@@ -405,6 +457,19 @@ const TOEFLDetailPage = ({ pageKey }) => {
             You can register for the TOEFL iBT up to 7 days before your target test date. Late registrations (within 7 to 4 days) incur extra fees.
           </p>
 
+          <div>
+            <TimelineStrip
+              kicker="Key deadlines"
+              title="Countdown to your TOEFL test day"
+              steps={[
+                { when: '6+ weeks before', what: 'Request disability accommodations' },
+                { when: '7+ days before', what: 'Regular registration', note: '₹15,729' },
+                { when: '7 to 4 days before', what: 'Late registration', note: 'Extra fee applies' },
+                { when: 'Test day', what: 'Bring your physical passport', highlight: true },
+              ]}
+            />
+          </div>
+
           <div className="space-y-3">
             <h4 className="text-sm font-black text-slate-850">Step-by-Step Registration Process</h4>
             <div className="space-y-2 text-[11px] font-bold text-slate-500">
@@ -451,20 +516,13 @@ const TOEFLDetailPage = ({ pageKey }) => {
             TOEFL iBT scores are calculated and scaled within a few days of the exam. Here are the core details:
           </p>
 
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-center">
-            <div className="border border-slate-100 rounded-2xl p-4 bg-slate-50/50">
-              <span className="text-[10px] text-slate-400 font-black uppercase tracking-wider block mb-1">Score Validity</span>
-              <span className="text-lg font-black text-slate-850">2 Years</span>
-            </div>
-            <div className="border border-slate-100 rounded-2xl p-4 bg-slate-50/50">
-              <span className="text-[10px] text-slate-400 font-black uppercase tracking-wider block mb-1">Total Score Scale</span>
-              <span className="text-lg font-black text-indigo-600">1 - 6</span>
-            </div>
-            <div className="border border-slate-100 rounded-2xl p-4 bg-slate-50/50">
-              <span className="text-[10px] text-slate-400 font-black uppercase tracking-wider block mb-1">Online Delivery</span>
-              <span className="text-lg font-black text-slate-850">4 - 8 Days</span>
-            </div>
-          </div>
+          <StatStrip
+            stats={[
+              { value: '2 Years', label: 'Score Validity' },
+              { value: '1 – 6', label: 'Total Score Scale' },
+              { value: '4 – 8 Days', label: 'Online Delivery' },
+            ]}
+          />
 
           <div className="space-y-4 pt-4 border-t border-slate-100">
             <h4 className="text-sm font-black text-slate-800">1. Section-wise Scoring Scales</h4>
@@ -533,6 +591,18 @@ const TOEFLDetailPage = ({ pageKey }) => {
           <p className="text-slate-655 font-semibold text-xs leading-relaxed">
             TOEFL preparation requires familiarizing yourself with the computer-delivered environment. Discover section strategies below:
           </p>
+
+          <HookBand value="60–80" label="hours of study most test takers put in, over 4–6 weeks" hi="तैयारी" />
+
+          <StepCounter
+            items={[
+              { label: 'Reading' },
+              { label: 'Listening' },
+              { label: 'Speaking' },
+              { label: 'Writing' },
+              { label: 'ETS practice tests', highlight: true },
+            ]}
+          />
 
           <div className="space-y-5">
             {/* Reading */}

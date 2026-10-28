@@ -4,6 +4,7 @@ import { ArrowLeft, ArrowRight, CalendarDays, Check, ChevronDown, ChevronLeft, C
 import { API_BASE_URL } from '../config';
 import { openRazorpayCheckout } from '../unicoach/utils/razorpayCheckout';
 import { TEAM_MENTORS, mentorLook } from '../utils/teamMentors';
+import { JourneyPills } from '../components/ui/BrandElements';
 
 const API = API_BASE_URL.replace(/\/$/, '');
 const DOW = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
@@ -12,6 +13,14 @@ const INCLUDED = [
   { icon: Map, t: 'Clear roadmap', d: 'Step-by-step plan for your case.' },
   { icon: FileText, t: 'Next steps', d: 'Exactly what to do after the call.' },
   { icon: MessageCircle, t: 'Open Q&A', d: 'Your questions, answered straight.' },
+];
+
+// The booking flow on this page, shown as pills above each step
+const BOOKING_STEPS = [
+  { label: 'Slot', sub: 'Service, day, time' },
+  { label: 'Details', sub: 'Name and phone' },
+  { label: 'Confirm', sub: 'Pay if a fee applies' },
+  { label: 'Booked', sub: 'Details by email' },
 ];
 
 const to12h = (t) => {
@@ -100,6 +109,7 @@ const BookConsultationFlow = () => {
           A {(cfg?.durationMin || 60) === 60 ? 'one-hour' : `${cfg?.durationMin}-minute`} 1:1 call with our team{cfg ? `, ${fee(cfg.price).toLowerCase()}` : ''}. Pick any open slot, India time.
         </p>
         <Link to="/services" className="mt-3 inline-flex items-center gap-1.5 text-[13.5px] font-semibold text-[#DE5C2B] hover:underline">Not sure which service? See all services <ArrowRight size={14} /></Link>
+        <JourneyPills steps={BOOKING_STEPS} active={0} className="mt-6 mx-auto w-fit max-w-full" />
       </div>
 
       <div className="mt-8 grid lg:grid-cols-[320px_1fr] rounded-[28px] bg-white border border-slate-200 shadow-[0_30px_80px_-40px_rgba(15,23,42,0.35)] overflow-hidden">
@@ -404,6 +414,7 @@ const ConfirmStep = ({ cfg, pick, savedForm }) => {
         <button type="button" onClick={() => navigate('/book-consultation', { state: { pick, form } })} className="inline-flex items-center gap-1.5 text-[13px] font-semibold text-slate-600 hover:text-[#DE5C2B] cursor-pointer">
           <ArrowLeft size={15} /> Back to calendar
         </button>
+        <JourneyPills steps={BOOKING_STEPS} active={1} className="mt-5 mx-auto w-fit max-w-full" />
         <form onSubmit={pay} className="mt-4 rounded-[28px] bg-white border border-slate-200 p-6 sm:p-8 shadow-[0_30px_80px_-40px_rgba(15,23,42,0.35)]">
           <h1 className="font-outfit text-[28px] sm:text-[32px] font-black text-[#111]">Confirm your consultation</h1>
           <dl className="mt-5 rounded-2xl bg-[#FFF4EE] p-4 grid grid-cols-[auto_1fr] gap-x-6 gap-y-2 text-[14px]">

@@ -7,6 +7,7 @@ import {
 import { Link } from 'react-router-dom';
 import StudyAbroadCTA from '../../../components/StudyAbroadCTA';
 import SketchHero from '../../../components/SketchHero';
+import { HookBand, StatStrip } from '../../../components/ui/Infographics';
 
 const IrelandOverview = () => {
   return (
@@ -61,19 +62,21 @@ const IrelandOverview = () => {
           </motion.div>
         </div>
 
-        {/* Quick Stats Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-16">
-          {[
-            { val: "Top 1%", label: "Global University Rankings" },
-            { val: "20 Hrs / Wk", label: "Term-Time Work Rights" },
-            { val: "2-Year Post Study", label: "Stay Back Visa (Level 9)" },
-            { val: "English", label: "Medium of Instruction" }
-          ].map((stat, idx) => (
-            <div key={idx} className="bg-white/70 border border-white/80 rounded-2xl p-5 shadow-xs backdrop-blur-md text-left">
-              <p className="text-xl font-black text-emerald-600">{stat.val}</p>
-              <p className="text-[10px] text-slate-500 font-extrabold mt-1 uppercase tracking-wider">{stat.label}</p>
-            </div>
-          ))}
+        {/* Quick Stats: hook number + stat strip */}
+        <div className="mb-16">
+          <HookBand
+            value="2 Years"
+            label="Stay Back Visa after a Level 9 (Master's) programme in Ireland"
+            hi="पढ़ो, फिर कमाओ"
+            className="mb-4"
+          />
+          <StatStrip
+            stats={[
+              { value: "Top 1%", label: "Global University Rankings" },
+              { value: "20 Hrs / Wk", label: "Term-Time Work Rights" },
+              { value: "English", label: "Medium of Instruction" }
+            ]}
+          />
         </div>
 
         {/* SECTION 1: KEY SECTIONS NAVIGATION */}

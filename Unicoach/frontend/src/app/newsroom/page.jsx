@@ -28,6 +28,7 @@ import {
 } from 'lucide-react';
 import { API_BASE_URL } from '../../config';
 import CoverImage from '../../components/CoverImage';
+import { RailwayBoard } from '../../components/desi/DesiPop';
 
 const NewsroomPage = () => {
     const navigate = useNavigate();
@@ -233,6 +234,10 @@ const NewsroomPage = () => {
 
             {/* Header Masthead */}
             <div className="max-w-[1240px] mx-auto px-4 sm:px-6 md:px-8 mb-8 text-left z-10 relative">
+                {/* Desi Pop: railway station board, wide screens only */}
+                <div className="hidden xl:block absolute right-8 top-1/2 -translate-y-1/2 w-[230px] pointer-events-none">
+                    <RailwayBoard hi="समाचार" en="NEWSROOM" codeLeft="PRESS" codeRight="UPDATES" />
+                </div>
                 <div className="inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-indigo-50 border border-indigo-150 rounded-full text-indigo-700 text-xs font-black uppercase tracking-wider mb-3">
                     <Sparkles size={13} className="text-indigo-600" />
                     <span>Press & Communications Hub</span>

@@ -8,6 +8,7 @@ import {
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import StudyAbroadCTA from '../../../../../components/StudyAbroadCTA';
+import { HookBand, BarCompare } from '../../../../../components/ui/Infographics';
 
 import CapIcon from '../../../../../components/ui/CapIcon';
 const SECTIONS = [
@@ -263,6 +264,12 @@ const FranceMastersCourse = () => {
             
             {/* 1. Why MS in France? */}
             <section id="why-ms" className="scroll-mt-24">
+              <HookBand
+                value="90%+"
+                label="of French Master's graduates find a job within 6 months, with starting packages of €40K–€60K"
+                hi="नौकरी"
+                className="mb-8"
+              />
               <div className="text-left mb-6">
                 <h2 className="text-2xl font-black text-slate-900 mb-1">🇫🇷 Why Study MS in France?</h2>
                 <p className="text-slate-400 text-xs font-bold uppercase tracking-wider">Strategic advantages of French postgraduate degrees in 2026</p>
@@ -342,6 +349,18 @@ const FranceMastersCourse = () => {
                   </h2>
                   <p className="text-slate-400 text-xs font-bold uppercase tracking-wider">QS rankings and average tuition fee estimates</p>
                 </div>
+
+                <BarCompare
+                  className="mb-8"
+                  kicker="Tuition per year"
+                  title="Average MS tuition at France's top 10 universities"
+                  highlight="Université PSL"
+                  items={topMSUnis.map((uni) => ({
+                    label: uni.name,
+                    value: uni.tuitionEUR,
+                    display: `€${uni.tuitionEUR.toLocaleString()}`,
+                  }))}
+                />
 
                 <div className="overflow-x-auto">
                   <table className="w-full text-left text-sm">
@@ -631,6 +650,18 @@ const FranceMastersCourse = () => {
                   💶 Cost of Living in France
                 </h2>
                 <p className="text-slate-400 text-xs font-bold mb-6">Monthly living expense estimations across major French student destinations</p>
+
+                <BarCompare
+                  className="mb-8"
+                  kicker="Monthly budget"
+                  title="Living costs by city (lower end of range)"
+                  highlight="Paris"
+                  items={livingCostsByCity.map((row) => ({
+                    label: row.city,
+                    value: parseInt(row.costEUR.split(' - ')[0].replace(/[^0-9]/g, ''), 10),
+                    display: row.costEUR,
+                  }))}
+                />
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                   {/* Living Costs by City */}

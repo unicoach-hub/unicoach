@@ -6,6 +6,7 @@ import {
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import StudyAbroadCTA from '../../../../../components/StudyAbroadCTA';
+import { BarCompare, HookBand } from '../../../../../components/ui/Infographics';
 
 const publicUnis = [
   { rank: 22, name: "Technical University of Munich (TUM)", city: "Munich", type: "TU (Technical University)", fee: "Semester Contribution only (some course fees)", logo: "https://logo.clearbit.com/tum.de" },
@@ -58,6 +59,13 @@ const GermanyPublic = () => {
             Funded by German taxpayers, public institutions charge no tuition fees for international students. Discover the elite academic centers driving technological advancement and sustainable growth in Europe.
           </p>
         </motion.div>
+
+        <HookBand
+          className="mb-12"
+          value="€0"
+          label="tuition at public universities for international students; you pay only a €150 - €350 semester contribution"
+          hi="मुफ़्त"
+        />
 
         {/* 1. WHY PUBLIC UNIVERSITIES ARE FREE BANNER */}
         <div className="bg-indigo-50/50 border border-indigo-100/80 rounded-[32px] p-8 md:p-10 shadow-xs mb-16 grid grid-cols-1 lg:grid-cols-[1fr_400px] gap-8 items-center">
@@ -200,6 +208,24 @@ const GermanyPublic = () => {
               </div>
             ))}
           </div>
+
+          <BarCompare
+            className="mt-8"
+            kicker="What you pay per semester"
+            title="Baden-Württemberg's €1,500 state fee stands out"
+            highlight="Heidelberg University"
+            items={[
+              { label: 'Heidelberg University', value: 1500, display: '€1,500' },
+              { label: 'KIT (Karlsruhe)', value: 1500, display: '€1,500' },
+              { label: 'University of Freiburg', value: 1500, display: '€1,500' },
+              { label: 'RWTH Aachen', value: 350, display: '€350' },
+              { label: 'University of Hamburg', value: 335, display: '€335' },
+              { label: 'Humboldt University Berlin', value: 315, display: '€315' },
+              { label: 'Free University Berlin', value: 310, display: '€310' },
+              { label: 'LMU Munich', value: 300, display: '€300' },
+              { label: 'TU Berlin', value: 300, display: '€300' },
+            ]}
+          />
         </div>
 
         {/* 4. UNDERSTANDING NUMERUS CLAUSUS (NC) VS NC-FREE */}

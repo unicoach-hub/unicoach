@@ -1,5 +1,6 @@
 import React from 'react';
 import { GraduationCap } from 'lucide-react';
+import { BarCompare } from '@/components/ui/Infographics';
 
 const CoursesAndFees = ({ data }) => {
   return (
@@ -16,6 +17,15 @@ const CoursesAndFees = ({ data }) => {
             ))}
           </div>
         </div>
+      )}
+
+      {data?.coursesFees?.length >= 2 && (
+        <BarCompare
+          kicker="Tuition at a glance"
+          title={`Annual tuition at ${data.name}`}
+          items={data.coursesFees.map((c) => ({ label: c.name, value: c.tuition, display: `₹${c.tuition} L/yr` }))}
+          highlight={data.coursesFees.reduce((a, b) => (b.tuition > a.tuition ? b : a)).name}
+        />
       )}
 
       {/* Courses and Fees List */}

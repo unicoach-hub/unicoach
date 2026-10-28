@@ -8,6 +8,7 @@ import {
 import { Link } from 'react-router-dom';
 import StudyAbroadCTA from '../../../../../components/StudyAbroadCTA';
 import { useLead } from '../../../../../context/LeadContext';
+import { HookBand, BarCompare } from '../../../../../components/ui/Infographics';
 
 const SECTIONS = [
   { id: 'why-ma', title: 'Why Study MA?' },
@@ -277,6 +278,8 @@ const ItalyMACourse = () => {
             </p>
           </div>
         </motion.div>
+
+        <HookBand value="1088" label="The year the University of Bologna was founded. Study your MA where the university began." hi="कला" className="mb-12" />
 
         {/* Currency Switcher Tool */}
         <div className="flex justify-center mb-12">
@@ -758,6 +761,13 @@ const ItalyMACourse = () => {
                 </div>
               </div>
 
+              <BarCompare
+                kicker="City-wise"
+                title="Upper monthly expenses by city (EUR)"
+                items={cityLivingCosts.map((row) => ({ label: row.city.split(' (')[0], value: row.costEUR.max, display: `€${row.costEUR.max.toLocaleString()}` }))}
+                className="mb-8"
+              />
+
               {/* City wise costs table */}
               <h3 className="text-base font-black text-slate-905 mb-4">City-Wise Cost Comparison</h3>
               <div className="bg-white border border-slate-100 rounded-[24px] shadow-sm overflow-hidden">
@@ -819,6 +829,14 @@ const ItalyMACourse = () => {
               <p className="text-slate-600 font-semibold leading-relaxed mb-8">
                 Average starting salary ranges for MA graduates reside between €20,000 and €40,000 (~₹20.6L - ₹41.2L per year), depending on the sector and city.
               </p>
+
+              <BarCompare
+                kicker="Salary by specialisation"
+                title="Top of the MA salary range (EUR / year)"
+                items={maSpecializations.map((s) => ({ label: s.name, value: s.salaryEUR.max, display: `€${s.salaryEUR.max.toLocaleString()}` }))}
+                highlight="International Relations"
+                className="mb-8"
+              />
 
               {/* Recruiters card */}
               <div className="bg-white border border-slate-100 rounded-3xl p-6 md:p-8 shadow-xs">

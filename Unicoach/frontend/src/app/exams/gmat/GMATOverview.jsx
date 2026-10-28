@@ -31,6 +31,7 @@ import {
   Globe,
   ExternalLink
 } from 'lucide-react';
+import { StatStrip, TimelineStrip, Donut } from '../../../components/ui/Infographics';
 
 const UniLogo = ({ logo, name, domain }) => {
   const [error, setError] = useState(false);
@@ -270,6 +271,13 @@ const GMATOverview = () => {
                   <li><strong>Data Insights:</strong> A new core section checking critical data interpretation.</li>
                   <li><strong>Modes:</strong> Delivered either at a local test centre or online at home.</li>
                 </ul>
+                <StatStrip
+                  stats={[
+                    { value: '2h 15m', label: 'Total duration, plus an optional 10-minute break' },
+                    { value: '205–805', label: 'Total score range' },
+                    { value: 'US$275', label: 'Test centre fee (US$300 online)' }
+                  ]}
+                />
               </div>
             </section>
 
@@ -283,6 +291,19 @@ const GMATOverview = () => {
                 <p>
                   The GMAT Focus Edition consists of 3 distinct sections. Candidates can choose their own section order at the start of the test.
                 </p>
+                <div>
+                  <Donut
+                    kicker="45 minutes each"
+                    title="Questions per GMAT section"
+                    segments={[
+                      { label: 'Verbal Reasoning', value: 23, display: '23 Qs' },
+                      { label: 'Quantitative Reasoning', value: 21, display: '21 Qs' },
+                      { label: 'Data Insights', value: 20, display: '20 Qs' }
+                    ]}
+                    centerValue="3"
+                    centerLabel="sections"
+                  />
+                </div>
 
                 {/* Pattern Table */}
                 <div className="overflow-x-auto border border-slate-200/60 rounded-2xl my-4">
@@ -408,6 +429,18 @@ const GMATOverview = () => {
                 <p>
                   If you need to change your GMAT exam details, you can reschedule or cancel, but fees apply based on your advance notice window.
                 </p>
+                <div>
+                  <TimelineStrip
+                    kicker="Test centre / online · notice period"
+                    title="Reschedule fee vs cancellation refund"
+                    steps={[
+                      { when: '> 60 days', what: 'Reschedule USD 55 / 60', note: 'Refund USD 110 / 120', highlight: true },
+                      { when: '15 to 60 days', what: 'Reschedule USD 110 / 120', note: 'Refund USD 80 / 90' },
+                      { when: '14 days or less', what: 'Reschedule USD 165 / 180', note: 'Refund USD 55 / 60' },
+                      { when: '< 24 hours', what: 'No rescheduling', note: 'No refund' }
+                    ]}
+                  />
+                </div>
 
                 {/* Reschedule Cancellation Table */}
                 <div className="overflow-x-auto border border-slate-200/60 rounded-2xl my-4">

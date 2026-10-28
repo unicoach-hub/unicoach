@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
-import { Calendar, Clock, User, ArrowLeft, ArrowRight, Sparkles, CheckCircle2, Bookmark, Share2, Check, BookOpen } from 'lucide-react';
+import { Calendar, Clock, User, ArrowLeft, Sparkles, CheckCircle2, Bookmark, Share2, Check, BookOpen } from 'lucide-react';
 import PageLoader from '../../../components/PageLoader';
 import { API_BASE_URL } from '../../../config';
+import { TakeawayBar } from '../../../components/ui/BrandElements';
 
 const BlogDetailPage = () => {
     const { slug } = useParams();
@@ -217,22 +218,10 @@ const BlogDetailPage = () => {
                             )}
                         </div>
 
-                        {/* Free Counselling CTA Card */}
-                        <div className="bg-gradient-to-br from-indigo-900 via-slate-900 to-indigo-950 rounded-3xl p-8 sm:p-10 text-center text-white shadow-xl relative overflow-hidden">
-                            <div className="absolute top-0 right-0 w-64 h-64 bg-indigo-500/20 rounded-full blur-3xl pointer-events-none" />
-                            
-                            <h3 className="text-2xl sm:text-3xl font-black mb-3">Planning to Study Abroad?</h3>
-                            <p className="text-slate-300 text-sm sm:text-base font-medium max-w-lg mx-auto mb-6">
-                                Speak with our senior admissions advisors for profile evaluation, scholarship shortlisting, and step-by-step visa guidance.
-                            </p>
-                            <button 
-                                onClick={() => navigate('/priority-dm')}
-                                className="inline-flex items-center gap-2 px-6 py-3.5 bg-white text-slate-900 font-bold text-xs sm:text-sm rounded-2xl hover:bg-orange-50 transition-all shadow-lg cursor-pointer hover:scale-102"
-                            >
-                                <span>Book Free Profile Evaluation</span>
-                                <ArrowRight size={14} />
-                            </button>
-                        </div>
+                        {/* Free Counselling takeaway bar */}
+                        <TakeawayBar actionLabel="Book free profile evaluation" onAction={() => navigate('/priority-dm')}>
+                            Planning to study abroad? <b>Ask a senior who has done it.</b>
+                        </TakeawayBar>
                     </article>
 
                     {/* Right Sticky Sidebar (4 Columns) */}

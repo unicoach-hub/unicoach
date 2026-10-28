@@ -11,7 +11,7 @@
   flex-direction: column;
   align-items: center;
   gap: 12px;
-  font-family: 'Geist', 'Inter', system-ui, sans-serif;
+  font-family: 'Onest', system-ui, sans-serif;
   color: #202124;
 }
 .pf-container > * { width: 100%; max-width: 680px; }

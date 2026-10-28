@@ -25,6 +25,8 @@ import {
   ExternalLink,
   Info
 } from 'lucide-react';
+import { HookBand, StatStrip, BarCompare, TimelineStrip, Donut, VersusCard } from '../../../components/ui/Infographics';
+import { TapeHeadline, StepCounter, JourneyPills } from '../../../components/ui/BrandElements';
 
 const PTEDetailPage = ({ pageKey }) => {
   const [openFaq, setOpenFaq] = useState({});
@@ -73,6 +75,14 @@ const PTEDetailPage = ({ pageKey }) => {
             <p className="text-slate-655 font-semibold text-xs leading-relaxed">
               PTE evaluates four core English skills: Speaking, Writing, Reading, and Listening using automated AI technology to ensure unbiased and objective outcomes.
             </p>
+            <StatStrip
+              stats={[
+                { value: '2h 15m', label: 'Approximate exam duration' },
+                { value: '24–48h', label: 'Score reports published online' },
+                { value: 'Unlimited', label: 'Free score reports to universities' },
+                { value: '62+', label: 'Authorized test centres in India' }
+              ]}
+            />
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4.5 my-6">
               {[
                 { title: "Duration", desc: "Approximately 2 hours and 15 minutes to complete the full automated exam." },
@@ -96,15 +106,13 @@ const PTEDetailPage = ({ pageKey }) => {
               <span className="w-1.5 h-5 bg-indigo-500 rounded-full inline-block" />
               PTE vs PTE Core: Which Option is Best?
             </h3>
-            <div className="space-y-3 text-xs leading-relaxed font-semibold text-slate-600">
-              <div className="p-4 border border-slate-100 rounded-xl bg-slate-50/50">
-                <strong className="text-slate-800 block mb-0.5">PTE Academic</strong>
-                Designed specifically for candidates seeking undergraduate or postgraduate program admission, or professional licensing globally. Accepted by USA, UK, Canada, Australia, and New Zealand.
-              </div>
-              <div className="p-4 border border-slate-100 rounded-xl bg-slate-50/50">
-                <strong className="text-slate-800 block mb-0.5">PTE Core</strong>
-                Designed specifically for immigration and permanent residency (PR) pathways in Canada. Focuses on practical, everyday English vocabulary instead of academic jargon.
-              </div>
+            <div>
+              <VersusCard
+                kicker="Pick your test"
+                title="PTE Academic vs PTE Core"
+                left={{ title: 'PTE Academic', tag: 'Study', points: ['UG or PG admission and professional licensing', 'Accepted by USA, UK, Canada, Australia and New Zealand'] }}
+                right={{ title: 'PTE Core', tag: 'Canada PR', points: ['Immigration and permanent residency pathways in Canada', 'Practical, everyday English instead of academic jargon'] }}
+              />
             </div>
           </div>
         </div>
@@ -118,6 +126,22 @@ const PTEDetailPage = ({ pageKey }) => {
           <p className="text-slate-655 font-semibold text-xs leading-relaxed">
             The exam takes approximately 2 hours and 15 minutes. Review the duration and structure of each section below:
           </p>
+
+          <HookBand value="10–90" label="Global scale score across 3 sections and 22 task formats" />
+
+          <div>
+            <Donut
+              kicker="Time split"
+              title="Minutes per PTE section"
+              segments={[
+                { label: 'Speaking & Writing', value: 67, display: '54–67 min' },
+                { label: 'Reading', value: 30, display: '29–30 min' },
+                { label: 'Listening', value: 43, display: '30–43 min' }
+              ]}
+              centerValue="3"
+              centerLabel="sections"
+            />
+          </div>
 
           <div className="overflow-x-auto border border-slate-200/60 rounded-2xl my-6 shadow-sm">
             <table className="w-full text-left border-collapse text-xs md:text-sm">
@@ -219,6 +243,8 @@ const PTEDetailPage = ({ pageKey }) => {
             In India, the PTE Academic fee is standardized across centers, though extra charges apply for last-minute schedules.
           </p>
 
+          <HookBand value="₹18,900" label="Standard PTE Academic fee in India, including 18% GST" hi="फ़ीस" />
+
           <div className="space-y-2">
             <h4 className="text-sm font-black text-slate-800">1. PTE Exam Fee Breakdown</h4>
             <div className="overflow-x-auto border border-slate-200/60 rounded-2xl shadow-sm">
@@ -247,11 +273,35 @@ const PTEDetailPage = ({ pageKey }) => {
             </div>
           </div>
 
+          <div>
+            <BarCompare
+              kicker="Fee breakdown"
+              title="What you pay for PTE in India"
+              items={[
+                { label: 'Standard fee (incl. GST)', value: 18900, display: '₹18,900' },
+                { label: 'Base fee (excl. GST)', value: 16017, display: '₹16,017' },
+                { label: 'Late booking surcharge', value: 695, display: '₹695' }
+              ]}
+            />
+          </div>
+
           <div className="space-y-4 pt-4 border-t border-slate-100">
             <h4 className="text-sm font-black text-slate-800">2. Rescheduling & Cancellation Policy</h4>
             <p className="text-xs text-slate-500 font-semibold leading-relaxed">
               If you decide to modify your appointment details, refunds or surcharges depend strictly on your notice buffer:
             </p>
+
+            <div>
+              <TimelineStrip
+                kicker="Notice period"
+                title="How much you get back"
+                steps={[
+                  { when: '14+ days', what: 'Free reschedule', note: '100% refund on cancel', highlight: true },
+                  { when: '7 to 13 days', what: '50% fee charge', note: '50% refund on cancel' },
+                  { when: 'Under 7 days', what: '100% fee charge', note: 'No refund' }
+                ]}
+              />
+            </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {/* Reschedule */}
@@ -311,6 +361,14 @@ const PTEDetailPage = ({ pageKey }) => {
             The PTE is conducted year-round. While scheduling is flexible, we suggest considering these strategic timelines:
           </p>
 
+          <StatStrip
+            stats={[
+              { value: '1.5–2 mo', label: 'Before your university application deadline' },
+              { value: '3 weeks', label: 'Advance booking in peak months (Nov to Jan)' },
+              { value: '16 days', label: 'Gap buffer between retake attempts' }
+            ]}
+          />
+
           <div className="space-y-4">
             <h3 className="text-lg font-black text-slate-900 flex items-center gap-2">
               <span className="w-1.5 h-5 bg-indigo-500 rounded-full inline-block" />
@@ -340,6 +398,17 @@ const PTEDetailPage = ({ pageKey }) => {
 
           <div className="space-y-4">
             <h4 className="text-sm font-black text-slate-850">6-Step Registration Walkthrough</h4>
+            <JourneyPills
+              active={5}
+              steps={[
+                { label: 'Book a Test', sub: 'Pearson PTE site' },
+                { label: 'Destination', sub: 'Study, work or migration' },
+                { label: 'Availability', sub: 'Compare test cities' },
+                { label: 'myPTE', sub: 'Match your passport' },
+                { label: 'Verify ID', sub: 'Surname Dot rule' },
+                { label: 'Pay', sub: '₹18,900 online' }
+              ]}
+            />
             <div className="space-y-2 text-[11px] font-bold text-slate-500">
               {[
                 "1. Visit Pearson PTE: Go to the official Pearson PTE website and click 'Book a Test'.",
@@ -357,7 +426,7 @@ const PTEDetailPage = ({ pageKey }) => {
           </div>
 
           <div className="space-y-4 pt-4 border-t border-slate-100">
-            <h4 className="text-sm font-black text-slate-850">The "Surname Dot" Rule</h4>
+            <TapeHeadline as="h4" lines={[{ text: 'The "Surname Dot" Rule' }]} />
             <p className="text-xs text-slate-500 leading-relaxed font-semibold">
               Indian passports occasionally feature blank fields. Pearson enforces strict matching rules to prevent name discrepancies on test day:
             </p>
@@ -376,6 +445,8 @@ const PTEDetailPage = ({ pageKey }) => {
           <p className="text-slate-655 font-semibold text-xs leading-relaxed">
             Finding a testing center close to you is essential to minimize travel stress on exam day. Key details to check:
           </p>
+
+          <HookBand value="62+" label="Physical PTE test locations across major cities in India" hi="सेंटर" />
 
           <div className="space-y-4">
             <h4 className="text-sm font-black text-slate-800">Physical Test Centers List</h4>
@@ -414,23 +485,29 @@ const PTEDetailPage = ({ pageKey }) => {
             Most candidates receive their PTE results online within **48 hours (2 business days)**. Let's look at the scorecards and requirements:
           </p>
 
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-center">
-            <div className="border border-slate-100 rounded-2xl p-4 bg-slate-50/50">
-              <span className="text-[10px] text-slate-400 font-black uppercase tracking-wider block mb-1">Score Validity</span>
-              <span className="text-lg font-black text-slate-850">2 Years</span>
-            </div>
-            <div className="border border-slate-100 rounded-2xl p-4 bg-slate-50/50">
-              <span className="text-[10px] text-slate-400 font-black uppercase tracking-wider block mb-1">Scale Range</span>
-              <span className="text-lg font-black text-indigo-600">10 - 90 Points</span>
-            </div>
-            <div className="border border-slate-100 rounded-2xl p-4 bg-slate-50/50">
-              <span className="text-[10px] text-slate-400 font-black uppercase tracking-wider block mb-1">Average Delivery</span>
-              <span className="text-lg font-black text-slate-850">24-48 Hours</span>
-            </div>
-          </div>
+          <StatStrip
+            stats={[
+              { value: '2 Years', label: 'Score validity' },
+              { value: '10–90', label: 'Scale range (points)' },
+              { value: '24–48h', label: 'Average result delivery' }
+            ]}
+          />
 
           <div className="space-y-4 pt-4 border-t border-slate-100">
             <h4 className="text-sm font-black text-slate-800">1. Country-wise Intake Targets (2026 Intake)</h4>
+            <div>
+              <BarCompare
+                kicker="Postgraduate"
+                title="PG score targets by destination"
+                highlight="Australia"
+                items={[
+                  { label: 'Australia', value: 65, display: '65+' },
+                  { label: 'Canada', value: 60, display: '60-65+' },
+                  { label: 'United States', value: 60, display: '60-70+' },
+                  { label: 'United Kingdom', value: 58, display: '58-65' }
+                ]}
+              />
+            </div>
             <div className="overflow-x-auto border border-slate-200/60 rounded-2xl shadow-sm">
               <table className="w-full text-left border-collapse text-xs md:text-sm">
                 <thead className="bg-slate-50 text-slate-500 font-bold uppercase border-b border-slate-150">
@@ -494,6 +571,8 @@ const PTEDetailPage = ({ pageKey }) => {
             Booking slots for PTE Academic requires attention to administrative limits:
           </p>
 
+          <HookBand value="2–3 weeks" label="Book at least this far ahead, especially for weekend time slots" hi="जल्दी" />
+
           <div className="space-y-4">
             <h4 className="text-sm font-black text-slate-805">Important Slot Booking Advice</h4>
             <div className="bg-slate-50 border border-slate-150 p-4.5 rounded-2xl text-[11.5px] text-slate-600 font-semibold space-y-2">
@@ -514,6 +593,8 @@ const PTEDetailPage = ({ pageKey }) => {
             PTE Academic preparation depends heavily on understanding AI scoring triggers. Review our study schedules:
           </p>
 
+          <HookBand value="79+" label="The GSE score target this study plan is built around" />
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="border border-slate-100 rounded-2xl p-4 bg-slate-50/50">
               <strong className="text-slate-850 block mb-1 text-xs uppercase tracking-wide text-indigo-700">1-Month Intensive Plan</strong>
@@ -531,6 +612,14 @@ const PTEDetailPage = ({ pageKey }) => {
 
           <div className="space-y-4 pt-4 border-t border-slate-100">
             <h4 className="text-sm font-black text-slate-850">Daily Study Routine Example</h4>
+            <StepCounter
+              items={[
+                { label: 'Morning: Speaking' },
+                { label: 'Afternoon: Reading & Writing' },
+                { label: 'Evening: Listening' },
+                { label: 'Weekend: full mock', highlight: true }
+              ]}
+            />
             <div className="bg-slate-50 p-4.5 rounded-xl border border-slate-100 space-y-2 text-[11px] text-slate-500 font-semibold">
               <p>• <strong>Morning:</strong> Read academic journal summaries and practice Speaking tasks (Describe Image, Repeat Sentence).</p>
               <p>• <strong>Afternoon:</strong> Work on Reading & Writing tasks (Summarize Written Text, Fill in the Blanks).</p>

@@ -23,6 +23,8 @@ import { POPULAR_COURSES, ALL_COUNTRY_OPTIONS } from '../utils/shortlistOptions'
 import { API_BASE_URL } from '../config';
 import { HeroBackButton } from '../components/ui/BackButton';
 import { Muhavra } from '../components/desi/Desi';
+import { StdSign } from '../components/desi/DesiPop';
+import { JourneyPills } from '../components/ui/BrandElements';
 
 const API_URL = API_BASE_URL;
 
@@ -681,8 +683,12 @@ const EligibilityCalculatorPage = () => {
       {/* ───────────────────────────────────────────── */}
       {/* HERO SECTION */}
       {/* ───────────────────────────────────────────── */}
-      <section className="relative pt-16 pb-16 sm:pt-14 sm:pb-20 px-4 sm:px-6 lg:px-8 font-['Geist',sans-serif]">
+      <section className="relative pt-16 pb-16 sm:pt-14 sm:pb-20 px-4 sm:px-6 lg:px-8 font-['Onest',sans-serif]">
         <HeroBackButton />
+        {/* Desi Pop: STD booth style sign with the three result tiers, wide screens only */}
+        <div className="hidden 2xl:block absolute left-8 2xl:left-20 top-1/2 -translate-y-1/2 -rotate-6 z-0 pointer-events-none">
+          <StdSign words={['SAFE', 'TARGET', 'DREAM']} hi="मौका" className="w-[200px]" />
+        </div>
         <div className="max-w-4xl mx-auto text-center">
           <p className="inline-flex items-center gap-2 text-[13px] font-semibold text-[#86351A]"><span className="w-6 h-[2px] bg-[#DE5C2B]" /> Scholarship Calculator</p>
           <h1 className="mt-3 font-outfit text-[32px] sm:text-[46px] font-black tracking-[-0.035em] leading-[1.05] text-[#16130F]">
@@ -703,6 +709,16 @@ const EligibilityCalculatorPage = () => {
               <Award size={14} className="text-[#DE5C2B]" /> 2026 scholarships
             </span>
           </div>
+          <JourneyPills
+            steps={[
+              { label: 'Marks', sub: 'Your scores' },
+              { label: 'Country', sub: 'Where to study' },
+              { label: 'Budget', sub: 'Yearly fees' },
+              { label: 'Results', sub: 'Odds, fees after grants' },
+            ]}
+            active={3}
+            className="mt-6 mx-auto w-fit max-w-full"
+          />
         </div>
       </section>
 
@@ -715,7 +731,7 @@ const EligibilityCalculatorPage = () => {
         {/* TOP: INTERACTIVE INPUT FORM */}
         {/* ======================================================== */}
         {/* Quick starts: one tap fills the form, like Course Finder's quick filters */}
-        <div className="bg-white/70 border border-[#E6E0D4] p-4 sm:p-5 font-['Geist',sans-serif]" style={{ borderRadius: 18 }}>
+        <div className="bg-white/70 border border-[#E6E0D4] p-4 sm:p-5 font-['Onest',sans-serif]" style={{ borderRadius: 18 }}>
           <p className="text-[13.5px] font-semibold text-[#16130F] mb-3">Quick start <span className="font-normal text-[#5B544A]">· tap one to fill the form</span></p>
           <div className="flex flex-wrap gap-2">
             {QUICK_STARTS.map((q) => (

@@ -8,6 +8,7 @@ import {
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import StudyAbroadCTA from '../../../../../components/StudyAbroadCTA';
+import { HookBand, BarCompare } from '../../../../../components/ui/Infographics';
 
 const SECTIONS = [
   { id: 'overview', title: 'Why Study MPH?' },
@@ -155,6 +156,8 @@ const NewZealandMPHCourse = () => {
 
           {/* Right Column: Content Blocks */}
           <div className="lg:col-span-9 space-y-16">
+
+            <HookBand value="NZD 75K-90K" label="starting wage for MPH graduates in New Zealand" hi="सेहत" />
             
             {/* 1. Why Study MPH Overview */}
             <section id="overview" className="scroll-mt-24">
@@ -207,6 +210,18 @@ const NewZealandMPHCourse = () => {
                   </button>
                 </div>
               </div>
+
+              <BarCompare
+                className="mb-8"
+                kicker="Tuition (upper end)"
+                title="MPH tuition by university"
+                items={topMphUnisList.map((uni) => ({
+                  label: uni.name,
+                  value: uni.feeNZDMax,
+                  display: uni.feeNZDMin === uni.feeNZDMax ? formatCost(uni.feeNZDMin) : `${formatCost(uni.feeNZDMin)} - ${formatCost(uni.feeNZDMax)}`,
+                }))}
+                highlight="Massey University"
+              />
 
               <div className="space-y-6">
                 {topMphUnisList.map((uni) => (
@@ -390,6 +405,18 @@ const NewZealandMPHCourse = () => {
                   <Briefcase className="text-indigo-650" size={24} />
                   Career Prospects & Average Starting Salaries
                 </h2>
+
+                <BarCompare
+                  className="mb-6"
+                  kicker="Average salary (NZD)"
+                  title="Top of the pay range by MPH role"
+                  items={[
+                    { label: 'Data Analyst (Health)', value: 95000, display: '$70,000 - $95,000' },
+                    { label: 'Public Health Specialist', value: 90000, display: '$75,000 - $90,000' },
+                    { label: 'Epidemiologist', value: 85000, display: '$60,000 - $85,000' },
+                    { label: 'Health Policy Advisor', value: 85000, display: '$55,000 - $85,000' },
+                  ]}
+                />
 
                 <div className="overflow-x-auto mb-6">
                   <table className="w-full text-left text-sm">

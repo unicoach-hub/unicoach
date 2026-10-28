@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { ArrowUpRight, ArrowRight, ArrowDown, Play, ShieldCheck, Sparkles } from 'lucide-react';
+import { ArrowUpRight, ArrowRight, ArrowDown, Play } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useLead } from '../context/LeadContext';
 // Preloaded critical LCP asset from public directory for instant discovery
 const heroImg = '/image.webp';
 import PriorityDmModal from './PriorityDmModal';
 import { PillButton } from './ui/PillButton';
+import { StatCard } from './ui/BrandElements';
 import { MiniSearchDemo, MiniChatDemo } from './HeroMiniDemos';
 import { TEAM_MENTORS, TEAM_MENTOR_NAMES, mentorLook } from '../utils/teamMentors';
 
@@ -332,38 +333,16 @@ export const Hero = ({ onOpenModal }) => {
               </Link>
             </motion.div>
 
-            {/* ── Sleek Glassmorphic Trust Pills ── */}
+            {/* ── Trust stats as dark stat cards (JobsMatch style) ── */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.35, ease: [0.16, 1, 0.3, 1] }}
-              className="flex flex-wrap items-center gap-2 sm:gap-2.5 max-w-[480px]"
+              className="grid grid-cols-3 gap-2 sm:gap-2.5 max-w-[440px]"
             >
-              {/* Pill 1 */}
-              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/90 hover:bg-white backdrop-blur-md border border-orange-200/80 shadow-2xs transition-all duration-200 hover:scale-105 active:scale-95 cursor-pointer">
-                <span className="w-2 h-2 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.6)] animate-pulse shrink-0" />
-                <span className="text-[12px] font-bold text-slate-800 tracking-tight">
-                  100% Free Guidance
-                </span>
-              </div>
-
-              {/* Pill 2 */}
-              <div
-                className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/90 hover:bg-white backdrop-blur-md border border-orange-200/80 shadow-2xs transition-all duration-200 hover:scale-105 active:scale-95 cursor-pointer"
-              >
-                <Sparkles size={14} className="text-[#DE5C2B]" />
-                <span className="text-[12px] font-bold text-slate-800 tracking-tight">
-                  ₹24Cr+ Scholarships
-                </span>
-              </div>
-
-              {/* Pill 3 */}
-              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/90 hover:bg-white backdrop-blur-md border border-orange-200/80 shadow-2xs transition-all duration-200 hover:scale-105 active:scale-95 cursor-pointer">
-                <ShieldCheck className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
-                <span className="text-[12px] font-bold text-slate-800 tracking-tight">
-                  98.7% Visa Success
-                </span>
-              </div>
+              <StatCard compact value="100%" label="Free guidance" />
+              <StatCard compact value="₹24Cr+" label="Scholarships" />
+              <StatCard compact value="98.7%" label="Visa success" />
             </motion.div>
 
             {/* ── Priority DM Modal Instance (Uses createPortal to body z-[999999]) ── */}

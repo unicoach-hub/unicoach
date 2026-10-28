@@ -349,3 +349,60 @@
 .desi-muhavra { margin: 0 0 10px !important; display: flex; align-items: baseline; flex-wrap: wrap; gap: 6px; line-height: 1.3; }
 .desi-muhavra .hi { font: 400 17px 'Yatra One', sans-serif; color: #C2185B; letter-spacing: 0; }
 .desi-muhavra .en { font: 600 13.5px 'Baloo 2', sans-serif; color: #64748b; }
+
+/* ═════════ Desi Pop (Indian pop-art poster pieces) ═════════ */
+.dp-paper { position: relative; }
+.dp-paper::after {
+  content: ""; position: absolute; inset: 0; pointer-events: none; mix-blend-mode: multiply; opacity: .35;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+.dp-halftone { background-image: radial-gradient(circle, rgba(22,19,15,.22) 1.3px, transparent 1.7px); background-size: 9px 9px; }
+
+/* Railway board */
+.dp-rail { position: relative; width: 100%; max-width: 420px; aspect-ratio: 5 / 4; }
+.dp-rail-sun { position: absolute; width: 46%; aspect-ratio: 1; border-radius: 50%; background: #2A9D8F; left: 4%; top: 2%; }
+.dp-rail-post { position: absolute; bottom: 0; width: 14px; height: 62%; background: #F2C230; border: 2px solid #C99A12; }
+.dp-rail-post--l { left: 18%; }
+.dp-rail-post--r { right: 18%; }
+.dp-rail-board {
+  position: absolute; left: 4%; right: 4%; top: 18%; display: flex; flex-direction: column; align-items: center;
+  background: #F2C230; border: 3px solid #C99A12; padding: 16px 12px 10px; color: #16130F; text-align: center;
+  box-shadow: 0 14px 24px -12px rgba(22,19,15,.45);
+}
+.dp-rail-hi { font-family: 'Khand', 'Teko', sans-serif; font-weight: 700; font-size: clamp(34px, 6vw, 48px); line-height: 1; letter-spacing: 0; }
+.dp-rail-en { font-family: 'Urbanist', sans-serif; font-weight: 900; font-size: clamp(28px, 5vw, 42px); line-height: 1; letter-spacing: .02em; margin-top: 4px; }
+.dp-rail-code { display: flex; justify-content: space-between; width: 100%; margin-top: 10px; font: 700 11px ui-monospace, Menlo, monospace; }
+
+/* STD sign */
+.dp-std {
+  display: flex; position: relative; flex-direction: column; align-items: center; justify-content: center; gap: 0;
+  background: #F2C230; padding: 22px 26px 26px; border-radius: 6px; box-shadow: 6px 6px 0 #16130F; overflow: hidden;
+}
+.dp-std > * { position: relative; z-index: 1; }
+.dp-std-en { font-family: 'Urbanist', sans-serif; font-weight: 900; font-size: 40px; line-height: .95; letter-spacing: -.02em; color: #D7261E; text-shadow: 3px 3px 0 #2B3FA0; }
+.dp-std-hi { font-family: 'Rozha One', serif; font-size: 40px; line-height: 1.05; color: #2B3FA0; margin-top: 6px; }
+.dp-std-arrow { position: relative; width: 70%; height: 12px; background: #D7261E; margin-top: 12px; margin-right: 18px; }
+.dp-std-arrow::after { content: ""; position: absolute; right: -18px; top: -10px; border-left: 20px solid #D7261E; border-top: 16px solid transparent; border-bottom: 16px solid transparent; }
+
+/* Truck-art frame */
+.dp-truck { background: #E4007C; padding: 10px; border-radius: 22px; }
+.dp-truck-in { border: 5px dotted #F2B705; border-radius: 14px; background: #14B8A6; }
+
+/* Postage stamp */
+.dp-stamp { position: relative; width: 112px; aspect-ratio: 4 / 5; padding: 6px; background: radial-gradient(circle, #FAF9F6 4.8px, #1E9E4A 5.2px) -6px -6px / 12px 12px; filter: drop-shadow(2px 3px 0 rgba(22,19,15,.35)); }
+.dp-stamp-face { position: absolute; inset: 6px; background: #1E9E4A; display: flex; flex-direction: column; justify-content: flex-end; padding: 8px; color: #0B2A17; }
+.dp-stamp-value { position: absolute; top: 6px; right: 8px; font: 900 18px 'Urbanist', sans-serif; color: #0B2A17; }
+.dp-stamp-title { font-family: 'Anton', sans-serif; font-size: 26px; line-height: .9; text-transform: uppercase; color: #0B2A17; }
+.dp-stamp-hi { font-family: 'Rozha One', serif; font-size: 15px; line-height: 1.1; color: #EAFFD9; margin-top: 2px; }
+.dp-stamp-note { font: 600 8.5px 'Onest', sans-serif; color: #EAFFD9; margin-top: 4px; }
+
+/* Puffy 3D word */
+.dp-puffy { container-type: inline-size; position: relative; display: grid; place-items: center; background: #F2B705; border-radius: 20px; overflow: hidden; aspect-ratio: 1; width: 100%; max-width: 300px; }
+.dp-puffy::before { content: ""; position: absolute; inset: 0; background-image: radial-gradient(circle, rgba(22,19,15,.16) 1.2px, transparent 1.6px); background-size: 9px 9px; }
+.dp-puffy-frame { position: absolute; inset: 14%; border: 1.5px solid #16130F; }
+.dp-puffy-spark { position: absolute; color: #fff; font-size: 22px; line-height: 1; }
+.dp-puffy-spark--sm { font-size: 14px; }
+.dp-puffy-word {
+  position: relative; font-family: 'Modak', 'Yatra One', sans-serif; font-size: 30cqw; line-height: 1; color: #D22FB9; letter-spacing: 0;
+  text-shadow: 1px 1px 0 #A81B93, 2px 2px 0 #A81B93, 3px 3px 0 #8F1480, 4px 4px 0 #8F1480, 5px 5px 0 #7A0E6D, 6px 6px 0 #7A0E6D, 7px 7px 0 #5E0853, 10px 12px 0 rgba(22,19,15,.18);
+}

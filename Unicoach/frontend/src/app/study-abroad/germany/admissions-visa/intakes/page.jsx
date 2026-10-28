@@ -7,6 +7,7 @@ import {
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import StudyAbroadCTA from '../../../../../components/StudyAbroadCTA';
+import { HookBand, TimelineStrip, VersusCard } from '../../../../../components/ui/Infographics';
 
 const SECTIONS = [
   { id: 'overview', title: 'Germany Intakes Overview' },
@@ -202,6 +203,13 @@ const IntakesGermany = () => {
           </div>
         </div>
 
+        <HookBand
+          className="mb-10"
+          value="2"
+          label="intakes a year: winter starts in October, summer starts in April"
+          hi="दो मौके"
+        />
+
         {/* 2-Column Sidebar Layout */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
           
@@ -291,6 +299,32 @@ const IntakesGermany = () => {
                 </div>
               </div>
 
+              <VersusCard
+                className="mt-6"
+                kicker="Winter vs Summer"
+                title="Which intake opens more doors?"
+                left={{
+                  title: 'Winter 2027',
+                  tag: 'Starts October',
+                  points: [
+                    'Deadline usually 15 July',
+                    'Broad: most public universities participate',
+                    'Full range of Masters across all disciplines',
+                    'High scholarship access: DAAD aligns with winter',
+                  ],
+                }}
+                right={{
+                  title: 'Summer 2027',
+                  tag: 'Starts April',
+                  points: [
+                    'Deadline 15 January (some close in December)',
+                    'Restricted: many do not offer summer to internationals',
+                    'CS and Engineering mostly winter-only at public universities',
+                    'Reduced: most funding windows tied to winter',
+                  ],
+                }}
+              />
+
               <div className="mt-4 p-5 bg-indigo-50 border border-indigo-100 rounded-2xl flex items-start gap-3">
                 <Info size={16} className="text-indigo-650 mt-0.5 shrink-0" />
                 <p className="text-[11px] text-slate-655 font-semibold leading-relaxed">
@@ -319,6 +353,19 @@ const IntakesGermany = () => {
                   </div>
                 ))}
               </div>
+
+              <TimelineStrip
+                className="mt-6"
+                kicker="Winter 2027 deadline run"
+                title="Masters deadlines in date order"
+                steps={[
+                  { when: '15 May 2027', what: 'TU Berlin', note: 'VPD upload for restricted programs' },
+                  { when: '31 May 2027', what: 'TUM', note: 'Most PG programs', highlight: true },
+                  { when: '15 June 2027', what: 'University of Hamburg', note: 'Standard Masters' },
+                  { when: '15 June 2027', what: 'KIT', note: 'CS MSc' },
+                  { when: '15 July 2027', what: 'LMU, RWTH, KIT', note: 'Final international deadlines' },
+                ]}
+              />
 
               <div className="mt-4 p-5 bg-amber-50 border border-amber-200 rounded-2xl flex items-start gap-3">
                 <AlertTriangle size={16} className="text-amber-600 mt-0.5 shrink-0" />

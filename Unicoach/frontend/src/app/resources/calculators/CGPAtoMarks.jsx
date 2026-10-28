@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { JourneyPills } from '../../../components/ui/BrandElements';
 import { Calculator, Sparkles, ArrowRightLeft, HelpCircle, AlertCircle, Award } from 'lucide-react';
 
 const CGPAtoMarks = () => {
@@ -93,6 +94,15 @@ const CGPAtoMarks = () => {
                     <p className="text-slate-500 mt-2 text-[0.95rem] font-semibold">
                         Convert your CGPA to exact obtained marks or vice-versa based on your total maximum exam score.
                     </p>
+                    <JourneyPills
+                        steps={[
+                            { label: 'CGPA', sub: 'Your score' },
+                            { label: '× 9.5 or 10', sub: 'Percentage' },
+                            { label: '× Max marks', sub: '÷ 100' },
+                            { label: 'Marks', sub: 'Obtained' },
+                        ]}
+                        className="mt-6 mx-auto w-fit max-w-full"
+                    />
                 </div>
 
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">

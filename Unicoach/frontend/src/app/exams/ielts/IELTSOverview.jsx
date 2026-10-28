@@ -25,6 +25,7 @@ import {
 import { API_BASE_URL } from '../../../config';
 
 import CapIcon from '../../../components/ui/CapIcon';
+import { StatStrip, Donut } from '../../../components/ui/Infographics';
 const IELTSOverview = () => {
   const [activeSection, setActiveSection] = useState('section-1');
   const [dbBlogs, setDbBlogs] = useState([]);
@@ -287,6 +288,15 @@ const IELTSOverview = () => {
                 <p>
                   It is recognized as a mark of excellence in English by over 12,000 universities and immigration authorities across 150+ countries worldwide. This directly impacts a student's admissions, visa, and scholarship applications.
                 </p>
+
+                <StatStrip
+                  stats={[
+                    { value: '12,000+', label: 'Universities and immigration authorities' },
+                    { value: '150+', label: 'Countries' },
+                    { value: '0–9', label: 'Band score scale' },
+                    { value: '4', label: 'Skills: Listening, Reading, Writing, Speaking' },
+                  ]}
+                />
                 
                 <div className="bg-slate-50 border border-slate-100 rounded-2xl p-6 space-y-4 my-6">
                   <h4 className="font-extrabold text-slate-850 text-sm">Why is IELTS important?</h4>
@@ -472,6 +482,19 @@ const IELTSOverview = () => {
                       Structure: Four audio clips (conversations, monologues in social/educational settings) with 40 questions. Audio clips are played only once. Writing down answers simultaneously is highly recommended!
                     </p>
                   </div>
+                </div>
+
+                <div>
+                  <Donut
+                    kicker="Time per module"
+                    title="How long each IELTS module takes"
+                    segments={[
+                      { label: 'Reading', value: 60, display: '60 min' },
+                      { label: 'Writing', value: 60, display: '60 min' },
+                      { label: 'Listening', value: 30, display: '30 min' },
+                      { label: 'Speaking', value: 12.5, display: '11–14 min' },
+                    ]}
+                  />
                 </div>
                  
                 <div className="overflow-x-auto border border-slate-100 rounded-xl my-6">

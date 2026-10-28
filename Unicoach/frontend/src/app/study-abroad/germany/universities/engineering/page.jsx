@@ -6,6 +6,7 @@ import {
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import StudyAbroadCTA from '../../../../../components/StudyAbroadCTA';
+import { BarCompare, HookBand } from '../../../../../components/ui/Infographics';
 
 const engineeringUnis = [
   {
@@ -124,6 +125,13 @@ const GermanyEngineering = () => {
           </div>
         </div>
 
+        <HookBand
+          className="mb-12"
+          value="760,000+"
+          label="skilled technical workers Germany is short of: engineers are first in line"
+          hi="इंजीनियर"
+        />
+
         {/* 1. DISCIPLINE SALARY CHART */}
         <div className="bg-white/60 border border-white rounded-[32px] p-6 md:p-8 shadow-[0_8px_30px_rgba(0,0,0,0.02)] backdrop-blur-xl mb-16 overflow-hidden">
           <h2 className="text-xl md:text-2xl font-black text-slate-900 mb-2 flex items-center gap-2">
@@ -154,6 +162,17 @@ const GermanyEngineering = () => {
               </tbody>
             </table>
           </div>
+
+          <BarCompare
+            className="mt-6"
+            kicker="Starting salary, top of range"
+            title="Which engineering stream pays most?"
+            items={salariesByDiscipline.map((d) => ({
+              label: d.discipline,
+              value: d.max,
+              display: `€${d.max / 1000}k`,
+            }))}
+          />
         </div>
 
         {/* 2. THE ECTS CREDIT MATCHING NOTICE */}

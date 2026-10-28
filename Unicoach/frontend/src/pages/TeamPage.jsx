@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { ArrowRight, ExternalLink, UserRound } from 'lucide-react';
 import { TEAM_MENTORS, CORE_TEAM, mentorLook } from '../utils/teamMentors';
+import { HookBand } from '../components/ui/Infographics';
 
 const FLAGS = { Ireland: 'ie', Australia: 'au', Europe: 'eu', USA: 'us', UK: 'gb', Canada: 'ca', Germany: 'de' };
 
@@ -11,6 +12,7 @@ const initials = (name) => name.split(' ').map((p) => p[0]).slice(0, 2).join('')
 
 const TeamPage = () => {
   const core = CORE_TEAM.filter((m) => m.name);
+  const mentorRegions = [...new Set(TEAM_MENTORS.map((m) => m.country).filter(Boolean))];
 
   return (
     <div className="bg-[#FAF9F6] min-h-screen pt-28 pb-20">
@@ -27,6 +29,14 @@ const TeamPage = () => {
             Mentors who have studied and worked abroad, and a counselling team that stays with you from shortlist to visa.
           </p>
         </header>
+
+        {/* Hook: mentor count and regions, from the mentor list itself */}
+        <HookBand
+          value={TEAM_MENTORS.length}
+          label={`Mentors who have studied and worked abroad${mentorRegions.length ? `: ${mentorRegions.join(', ')}` : ''}.`}
+          hi="गुरु"
+          className="mt-10 max-w-3xl mx-auto"
+        />
 
         {/* Mentors */}
         <section className="mt-14" aria-labelledby="team-mentors">

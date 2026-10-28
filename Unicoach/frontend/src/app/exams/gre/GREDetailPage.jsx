@@ -25,6 +25,8 @@ import {
   ExternalLink,
   Info
 } from 'lucide-react';
+import { HookBand, StatStrip, BarCompare, Donut, VersusCard } from '../../../components/ui/Infographics';
+import { StepCounter } from '../../../components/ui/BrandElements';
 
 const GREDetailPage = ({ pageKey }) => {
   const [openFaq, setOpenFaq] = useState({});
@@ -73,6 +75,13 @@ const GREDetailPage = ({ pageKey }) => {
             <p className="text-slate-655 font-semibold text-xs leading-relaxed">
               GRE, or Graduate Record Exam, is one of the most common exams required for post-graduate studies abroad. It is conducted by the Educational Testing Services (ETS).
             </p>
+            <StatStrip
+              stats={[
+                { value: '1h 58m', label: 'Shorter GRE General Test' },
+                { value: '5 years', label: 'Score validity from test date' },
+                { value: '21 days', label: 'Minimum gap between attempts' }
+              ]}
+            />
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-4">
               {[
                 { title: "GRE General Test", desc: "Assesses Verbal Reasoning, Quantitative Reasoning, and Analytical Writing skills." },
@@ -112,8 +121,23 @@ const GREDetailPage = ({ pageKey }) => {
             The shorter GRE General Test contains 46 fewer questions compared to the traditional version, making the test faster and less tiring.
           </p>
 
+          <HookBand value="46" label="Fewer questions than the traditional GRE: 55 questions plus 1 essay now" hi="छोटा" />
+
           <div className="space-y-4">
             <h4 className="font-black text-slate-850 text-xs uppercase tracking-wide">GRE Shorter Edition Format</h4>
+            <div>
+              <Donut
+                kicker="Time split"
+                title="Minutes per GRE section"
+                segments={[
+                  { label: 'Quantitative Reasoning', value: 47, display: '47 min' },
+                  { label: 'Verbal Reasoning', value: 41, display: '41 min' },
+                  { label: 'Analytical Writing', value: 30, display: '30 min' }
+                ]}
+                centerValue="118"
+                centerLabel="minutes"
+              />
+            </div>
             <div className="overflow-x-auto border border-slate-200/60 rounded-2xl shadow-sm">
               <table className="w-full text-left border-collapse text-xs md:text-sm">
                 <thead className="bg-slate-50 text-slate-500 font-bold uppercase border-b border-slate-150">
@@ -178,6 +202,8 @@ const GREDetailPage = ({ pageKey }) => {
             From 1 August 2026, the GRE General Test fee in India is US$249 (ETS), plus any applicable tax. Additional service fees apply depending on post-booking requests:
           </p>
 
+          <HookBand value="US$249" label="GRE General Test fee in India from 1 August 2026 (ETS), plus any applicable tax" />
+
           <div className="overflow-x-auto border border-slate-200/60 rounded-2xl shadow-sm">
             <table className="w-full text-left border-collapse text-xs md:text-sm">
               <thead className="bg-slate-50 text-slate-500 font-bold uppercase border-b border-slate-150">
@@ -219,6 +245,20 @@ const GREDetailPage = ({ pageKey }) => {
             </table>
           </div>
 
+          <div>
+            <BarCompare
+              kicker="Extra charges"
+              title="GRE service fees in India (INR)"
+              items={[
+                { label: 'Score review', value: 5900, display: '₹5,900' },
+                { label: 'Rescheduling', value: 5000, display: '₹5,000' },
+                { label: 'Change test centre', value: 5000, display: '₹5,000' },
+                { label: 'Score reinstatement', value: 5000, display: '₹5,000' },
+                { label: 'Extra score report', value: 2900, display: '₹2,900' }
+              ]}
+            />
+          </div>
+
           <div className="bg-slate-50 border border-slate-100 p-4.5 rounded-2xl text-[11px] text-slate-500 font-semibold space-y-2 leading-relaxed">
             <h5 className="font-extrabold text-slate-800 text-xs">Payment Channels & Rescheduling:</h5>
             <p>• <strong>Rescheduling Deadline:</strong> You must reschedule at least 4 days before your test date to avoid forfeiting your entire registration fee. Rescheduling cost is ₹5,000.</p>
@@ -235,6 +275,13 @@ const GREDetailPage = ({ pageKey }) => {
           <p className="text-slate-655 font-semibold text-xs leading-relaxed">
             Unlike other standard academic exams with fixed schedules, the computer-based GRE is offered multiple times a week. Candidates can book slots up to 2-3 months early.
           </p>
+          <StatStrip
+            stats={[
+              { value: '2–3 mo', label: 'How early you can book a slot' },
+              { value: '24/7', label: 'GRE at Home date availability' },
+              { value: '21 days', label: 'Minimum gap between attempts' }
+            ]}
+          />
           <div className="p-4.5 border border-slate-100 rounded-2xl bg-slate-50/50 text-[11px] text-slate-500 font-semibold space-y-2 leading-relaxed">
             <p>• <strong>Year-Round availability:</strong> Test center slots are scheduled dynamically and are open on a rolling basis.</p>
             <p>• <strong>GRE at Home Slots:</strong> Home-testing provides 24/7 date availability, making slot selection convenient.</p>
@@ -250,6 +297,18 @@ const GREDetailPage = ({ pageKey }) => {
         <div className="space-y-6">
           <div className="space-y-3">
             <h4 className="text-sm font-black text-slate-850">Online Registration Steps:</h4>
+            <StepCounter
+              items={[
+                { label: 'ETS account' },
+                { label: 'Match passport' },
+                { label: 'Find centres' },
+                { label: 'Pick test' },
+                { label: 'Centre, date, slot' },
+                { label: 'ID details' },
+                { label: 'Pay US$249', highlight: true },
+                { label: 'Admission ticket' }
+              ]}
+            />
             <div className="space-y-2 text-[11px] font-bold text-slate-500">
               {[
                 "1. Visit the official Educational Testing Services (ETS) portal and create an account.",
@@ -307,8 +366,18 @@ const GREDetailPage = ({ pageKey }) => {
             GRE General Test results are released in <strong>10-15 days</strong> of your exam appointment. You can check them by logging into your ETS dashboard.
           </p>
 
+          <HookBand value="10–15 days" label="Time for GRE General Test results to be released after your exam" />
+
           <div className="space-y-4">
             <h4 className="text-sm font-black text-slate-800">GRE General Test Scoring System</h4>
+            <StatStrip
+              stats={[
+                { value: '130–170', label: 'Verbal Reasoning' },
+                { value: '130–170', label: 'Quantitative Reasoning' },
+                { value: '0–6', label: 'Analytical Writing' },
+                { value: '5 years', label: 'Score validity' }
+              ]}
+            />
             <div className="overflow-x-auto border border-slate-200/60 rounded-2xl shadow-sm">
               <table className="w-full text-left border-collapse text-xs md:text-sm">
                 <thead className="bg-slate-50 text-slate-500 font-bold uppercase border-b border-slate-150">
@@ -399,6 +468,14 @@ const GREDetailPage = ({ pageKey }) => {
             <p className="text-xs text-slate-500 font-semibold leading-relaxed">
               To take the GRE at Home, you must check that your workstation complies with proctoring specs:
             </p>
+            <StepCounter
+              items={[
+                { label: 'Private room' },
+                { label: 'Laptop + fast network' },
+                { label: 'Speaker & mic' },
+                { label: 'Working camera' }
+              ]}
+            />
             <ul className="list-disc list-inside text-[11px] text-slate-500 space-y-1.5 leading-relaxed font-semibold">
               <li>A private room without disturbances or outdoor interruptions.</li>
               <li>A laptop or desktop with proper high-speed network connectivity.</li>
@@ -418,25 +495,15 @@ const GREDetailPage = ({ pageKey }) => {
             Dedicated preparation of 2 to 3 months is optimal for most MS and MBA candidates. Focus on:
           </p>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs font-semibold text-slate-600">
-            <div className="border border-slate-150 rounded-2xl p-5 bg-slate-50/50 space-y-2">
-              <span className="font-extrabold text-slate-800 text-xs flex items-center gap-1.5">
-                <Sparkles size={13} className="text-indigo-500" />
-                Option A: Self Prep
-              </span>
-              <p className="text-[11px] text-slate-500 leading-relaxed font-semibold">
-                Familiarize yourself with ETS exam patterns. Uses official Cambridge guides and practice mocks. Recommended for candidates with high baseline vocabulary.
-              </p>
-            </div>
-            <div className="border border-slate-150 rounded-2xl p-5 bg-slate-50/50 space-y-2">
-              <span className="font-extrabold text-slate-800 text-xs flex items-center gap-1.5">
-                <Sparkles size={13} className="text-indigo-500" />
-                Option B: Guided Coaching
-              </span>
-              <p className="text-[11px] text-slate-500 leading-relaxed font-semibold">
-                Highly recommended for candidates targeting 320+ scores, seeking advice on shortcuts for quantitative topics, and detailed feedback on Analytical Writing essays.
-              </p>
-            </div>
+          <HookBand value="2–3 months" label="Dedicated preparation that is optimal for most MS and MBA candidates" hi="तैयारी" />
+
+          <div>
+            <VersusCard
+              kicker="Choose your route"
+              title="Self prep or guided coaching?"
+              left={{ title: 'Option A: Self Prep', points: ['Familiarize yourself with ETS exam patterns', 'Official guides and practice mocks', 'Best if your baseline vocabulary is high'] }}
+              right={{ title: 'Option B: Guided Coaching', tag: '320+', points: ['For candidates targeting 320+ scores', 'Shortcuts for quantitative topics', 'Detailed feedback on Analytical Writing essays'] }}
+            />
           </div>
         </div>
       )
@@ -449,6 +516,13 @@ const GREDetailPage = ({ pageKey }) => {
           <p className="text-slate-655 font-semibold text-xs leading-relaxed">
             Practice tests are not just for evaluating your score. They help you build critical exam-day endurance and manage time effectively.
           </p>
+          <StatStrip
+            stats={[
+              { value: '41 min', label: 'Verbal Reasoning time limit' },
+              { value: '30 min', label: 'Analyse an Issue essay window' },
+              { value: '2 free', label: 'POWERPREP Online practice tests from ETS' }
+            ]}
+          />
 
           <div className="space-y-4">
             <h4 className="text-sm font-black text-slate-850">Section Practice Guidelines</h4>

@@ -25,6 +25,7 @@ import {
   ExternalLink,
   Sparkles
 } from 'lucide-react';
+import { StatStrip, BarCompare, Donut } from '../../../components/ui/Infographics';
 
 const UniLogo = ({ logo, name, domain }) => {
   const [error, setError] = useState(false);
@@ -256,6 +257,14 @@ const PTEOverview = () => {
                 <p>
                   Conducted by Pearson Language Tests, the <strong>PTE Academic</strong> (Pearson Test of English) evaluates four core skills: <strong>Speaking, Writing, Reading, and Writing</strong> in a computer-based setting. The exam uses advanced AI scoring to ensure unbiased and objective evaluations.
                 </p>
+                <StatStrip
+                  stats={[
+                    { value: '24–48h', label: 'Official score reports' },
+                    { value: '62+', label: 'Test locations in India' },
+                    { value: '₹18,900', label: 'Exam fee incl. 18% GST' },
+                    { value: '2h 15m', label: 'Approximate test time' }
+                  ]}
+                />
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4.5 my-6">
                   {[
                     { title: "Fast Results", desc: "Most students receive their official score reports within 24 to 48 hours." },
@@ -341,6 +350,19 @@ const PTEOverview = () => {
                 <p>
                   The test takes approximately 2 hours and 15 minutes to complete. The structural sections are outlined below:
                 </p>
+                <div>
+                  <Donut
+                    kicker="Time split"
+                    title="Minutes per PTE section"
+                    segments={[
+                      { label: 'Speaking & Writing', value: 67, display: '54–67 min' },
+                      { label: 'Reading', value: 30, display: '29–30 min' },
+                      { label: 'Listening', value: 43, display: '30–43 min' }
+                    ]}
+                    centerValue="3"
+                    centerLabel="sections"
+                  />
+                </div>
                 <div className="overflow-x-auto border border-slate-200/60 rounded-2xl my-3">
                   <table className="w-full text-left border-collapse text-xs">
                     <thead>
@@ -382,6 +404,17 @@ const PTEOverview = () => {
                 <p>
                   PTE fees are standardized. Last-minute bookings or rescheduling buffer rules incur additional fees.
                 </p>
+                <div>
+                  <BarCompare
+                    kicker="Fee breakdown"
+                    title="PTE fees in India (INR)"
+                    items={[
+                      { label: 'Standard fee (with GST)', value: 18900, display: '₹18,900' },
+                      { label: 'Base fee (excl. GST)', value: 16017, display: '₹16,017' },
+                      { label: 'Late booking surcharge', value: 695, display: '₹695' }
+                    ]}
+                  />
+                </div>
                 <div className="overflow-x-auto border border-slate-200/60 rounded-2xl my-3">
                   <table className="w-full text-left border-collapse text-xs">
                     <thead>

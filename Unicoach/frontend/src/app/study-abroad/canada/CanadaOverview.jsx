@@ -11,6 +11,7 @@ import { getUniversityLogo } from '../../../components/logoResolver';
 import { matchesUniversitySearch, getMatchedCoursesForUniversity } from '../../../utils/universitySearchMatcher';
 import SketchHero from '../../../components/SketchHero';
 import PageBackBreadcrumb from '../../../components/common/PageBackBreadcrumb';
+import { HookBand, StatStrip, BarCompare } from '../../../components/ui/Infographics';
 
 // ─────────────────────────────────────────────
 // Canada University Database (for Finder)
@@ -72,6 +73,15 @@ const CanadaOverview = () => {
     return true;
   });
 
+  // Monthly living costs by province (used by the table and the bar chart)
+  const livingCosts = [
+    { s: "Ontario (Toronto, Kitchener)", rent: "C$900 - C$1,400/mo", cad: 1600 },
+    { s: "British Columbia (Vancouver)", rent: "C$950 - C$1,500/mo", cad: 1700 },
+    { s: "Quebec (Montreal)", rent: "C$650 - C$1,000/mo", cad: 1200 },
+    { s: "Alberta (Edmonton, Calgary)", rent: "C$700 - C$1,100/mo", cad: 1300 },
+    { s: "Nova Scotia (Halifax)", rent: "C$600 - C$950/mo", cad: 1150 }
+  ];
+
   return (
     <div className="min-h-screen bg-[#fafcff] relative overflow-hidden pt-28 pb-20 font-sans select-none">
       {/* Ambient background designs */}
@@ -122,19 +132,21 @@ const CanadaOverview = () => {
           </motion.div>
         </div>
 
-        {/* Quick Stats Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-16">
-          {[
-            { val: "100,000+", label: "Indian Students" },
-            { val: "10+", label: "Top 200 QS Universities" },
-            { val: "Up to 3 Yrs", label: "Post-Grad Work Permit" },
-            { val: "1 - 3 Yrs", label: "Average ROI Period" }
-          ].map((stat, idx) => (
-            <div key={idx} className="bg-white/70 border border-white/80 rounded-2xl p-5 shadow-[0_4px_20px_rgba(0,0,0,0.02)] backdrop-blur-md text-left">
-              <p className="text-2xl font-black text-indigo-650">{stat.val}</p>
-              <p className="text-xs text-slate-500 font-bold mt-1 uppercase tracking-wider">{stat.label}</p>
-            </div>
-          ))}
+        {/* Quick Stats: hook number + stat strip */}
+        <div className="mb-16">
+          <HookBand
+            value="Up to 3 Yrs"
+            label="Post-Graduation Work Permit (PGWP) after your studies in Canada"
+            hi="पढ़ो, फिर कमाओ"
+            className="mb-4"
+          />
+          <StatStrip
+            stats={[
+              { value: "100,000+", label: "Indian Students" },
+              { value: "10+", label: "Top 200 QS Universities" },
+              { value: "1 - 3 Yrs", label: "Average ROI Period" }
+            ]}
+          />
         </div>
 
         {/* Global Currency Switcher */}
@@ -221,13 +233,7 @@ const CanadaOverview = () => {
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-slate-100 text-slate-700 font-semibold">
-                      {[
-                        { s: "Ontario (Toronto, Kitchener)", rent: "C$900 - C$1,400/mo", cad: 1600 },
-                        { s: "British Columbia (Vancouver)", rent: "C$950 - C$1,500/mo", cad: 1700 },
-                        { s: "Quebec (Montreal)", rent: "C$650 - C$1,000/mo", cad: 1200 },
-                        { s: "Alberta (Edmonton, Calgary)", rent: "C$700 - C$1,100/mo", cad: 1300 },
-                        { s: "Nova Scotia (Halifax)", rent: "C$600 - C$950/mo", cad: 1150 }
-                      ].map((row, i) => (
+                      {livingCosts.map((row, i) => (
                         <tr key={i} className="hover:bg-slate-50/50 transition-colors">
                           <td className="py-3.5 text-indigo-650 font-black">{row.s}</td>
                           <td className="py-3.5 text-slate-500 font-semibold">{row.rent}</td>
@@ -273,6 +279,14 @@ const CanadaOverview = () => {
               </motion.div>
             )}
           </AnimatePresence>
+
+          <BarCompare
+            kicker="Living costs"
+            title="Average monthly living cost by province"
+            items={livingCosts.map(row => ({ label: row.s, value: row.cad, display: formatCost(row.cad) }))}
+            highlight="Nova Scotia (Halifax)"
+            className="mt-8"
+          />
         </div>
 
         {/* 3. CHEAPEST PROGRAMS BANNER */}

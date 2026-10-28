@@ -18,6 +18,7 @@ import {
   ChevronUp,
   Info
 } from 'lucide-react';
+import { HookBand, VersusCard } from '../../../components/ui/Infographics';
 
 const SATOverview = () => {
   const navigate = useNavigate();
@@ -122,6 +123,8 @@ const SATOverview = () => {
           </div>
         </div>
 
+        <HookBand className="mb-8" value="400–1600" label="Total Digital SAT score range, in 2 hours 14 minutes" hi="स्कोर" />
+
         {/* Grid of Key Facts */}
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-16">
           {keyFacts.map((fact, idx) => (
@@ -130,6 +133,15 @@ const SATOverview = () => {
               <span className="text-sm font-black text-slate-800">{fact.value}</span>
             </div>
           ))}
+        </div>
+
+        <div className="mb-16">
+          <VersusCard
+            kicker="Target scores"
+            title="What score do you need?"
+            left={{ title: 'Ivy League & elite', tag: '1500+', points: ['Puts you in the top tier for Ivy League and elite schools (MIT, Stanford)'] }}
+            right={{ title: 'Top 50 public universities', tag: '1350-1450', points: ['A score of 1350-1450 is highly competitive'] }}
+          />
         </div>
 
         {/* Explorer Hub links */}

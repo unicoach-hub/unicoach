@@ -6,6 +6,7 @@ import {
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import StudyAbroadCTA from '../../../../../components/StudyAbroadCTA';
+import { BarCompare, VersusCard } from '../../../../../components/ui/Infographics';
 import { matchesUniversitySearch, getMatchedCoursesForUniversity } from '../../../../../utils/universitySearchMatcher';
 
 const topUnis = [
@@ -358,6 +359,19 @@ const FranceTopUniversities = () => {
           )}
         </div>
 
+        {/* Tuition at a glance */}
+        <BarCompare
+          className="mb-16"
+          kicker="Annual tuition"
+          title="Yearly fees at France's top universities"
+          highlight="Sciences Po"
+          items={topUnis.map((u) => ({
+            label: u.name.split(' (')[0],
+            value: u.feesEUR,
+            display: `€${u.feesEUR.toLocaleString()}`,
+          }))}
+        />
+
         {/* 2. GRADUATE SALARY OUTLOOK */}
         <div className="bg-white/60 border border-white rounded-[32px] p-6 md:p-8 shadow-[0_8px_30px_rgba(0,0,0,0.02)] backdrop-blur-xl mb-16 overflow-hidden">
           <h2 className="text-xl md:text-2xl font-black text-slate-900 mb-2 flex items-center gap-2">
@@ -365,6 +379,17 @@ const FranceTopUniversities = () => {
             Graduate Salary Expectations (2026/27)
           </h2>
           <p className="text-slate-500 text-xs font-semibold mb-6">Attending an elite French institution provides a direct pipeline to Fortune 500 corporate giants.</p>
+
+          <BarCompare
+            className="mb-8"
+            kicker="Starting package"
+            title="Average starting salary by institution tier (lower end of range)"
+            items={salaryRanges.map((r) => ({
+              label: r.tier.split(' (')[0],
+              value: parseInt(r.eur.split(' - ')[0].replace(/[^0-9]/g, ''), 10),
+              display: r.eur,
+            }))}
+          />
           
           <div className="overflow-x-auto">
             <table className="w-full text-left text-sm">
@@ -391,21 +416,31 @@ const FranceTopUniversities = () => {
         </div>
 
         {/* 3. GRANDES ÉCOLES VS PUBLIC */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
-          <div className="bg-indigo-50/40 border border-indigo-100 rounded-[32px] p-8 shadow-xs">
-            <h3 className="text-lg font-black text-slate-900 mb-3">Grandes Écoles (Elite Colleges)</h3>
-            <p className="text-slate-600 text-xs font-semibold leading-relaxed">
-              Highly selective, specialized public or private institutions focused heavily on Business and Engineering. Admissions require GMAT/GRE, exams, or interviews. They charge higher tuition (€10,000–€30,000/year) but hold exclusive corporate pipelines and guarantee massive ROI with starting salaries exceeding €55,000.
-            </p>
-          </div>
-
-          <div className="bg-white/60 border border-white rounded-[32px] p-8 shadow-xs">
-            <h3 className="text-lg font-black text-slate-900 mb-3">Public Universities</h3>
-            <p className="text-slate-600 text-xs font-semibold leading-relaxed">
-              State-funded, broad-based institutions offering general degrees (Arts, Humanities, Law, Pure Sciences, Medicine). Non-EU international student fees are subsidized by taxpayers to just €2,770 (Licence) or €3,770 (Master's) per year. Ideal for research-oriented pathways.
-            </p>
-          </div>
-        </div>
+        <VersusCard
+          className="mb-12"
+          kicker="Pick your track"
+          title="Grandes Écoles vs Public Universities"
+          left={{
+            title: 'Grandes Écoles',
+            tag: 'Elite',
+            points: [
+              'Highly selective, specialised in Business and Engineering',
+              'Admissions require GMAT/GRE, exams or interviews',
+              'Higher tuition: €10,000–€30,000 per year',
+              'Exclusive corporate pipelines, starting salaries above €55,000',
+            ],
+          }}
+          right={{
+            title: 'Public Universities',
+            tag: 'Subsidised',
+            points: [
+              'State-funded, broad-based general degrees',
+              'Arts, Humanities, Law, Pure Sciences, Medicine',
+              "Non-EU fees just €2,770 (Licence) or €3,770 (Master's) per year",
+              'Ideal for research-oriented pathways',
+            ],
+          }}
+        />
 
 
       {/* CTA Section */}

@@ -8,6 +8,7 @@ import {
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import StudyAbroadCTA from '../../../../../components/StudyAbroadCTA';
+import { HookBand, BarCompare } from '../../../../../components/ui/Infographics';
 
 const SECTIONS = [
   { id: 'why-ma', title: 'Why MA in France?' },
@@ -198,6 +199,12 @@ const FranceMACourse = () => {
             
             {/* 1. Why MA in France? */}
             <section id="why-ma" className="scroll-mt-24">
+              <HookBand
+                value="< €4,000"
+                label="a year: subsidised public-university tuition for an MA in France (non-EU students)"
+                hi="किफ़ायती"
+                className="mb-8"
+              />
               <div className="text-left mb-6">
                 <h2 className="text-2xl font-black text-slate-900 mb-1">🇫🇷 Why Study MA in France?</h2>
                 <p className="text-slate-400 text-xs font-bold uppercase tracking-wider">Acquire creative and humanities credentials in Europe's cultural center</p>
@@ -233,6 +240,18 @@ const FranceMACourse = () => {
                   Top Colleges offering MA Programs
                 </h2>
                 <p className="text-slate-400 text-xs font-bold uppercase tracking-wider mb-6">Explore the primary institutions for humanities, policy studies, and fashion design</p>
+
+                <BarCompare
+                  className="mb-8"
+                  kicker="Fees per year"
+                  title="MA tuition across top French institutions"
+                  highlight="ENS de Lyon"
+                  items={topMaSchools.map((school) => ({
+                    label: school.name,
+                    value: school.feesEUR,
+                    display: `€${school.feesEUR.toLocaleString()}`,
+                  }))}
+                />
 
                 <div className="overflow-x-auto">
                   <table className="w-full text-left text-sm">

@@ -8,6 +8,7 @@ import {
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import StudyAbroadCTA from '../../../../../components/StudyAbroadCTA';
+import { StatStrip, BarCompare } from '../../../../../components/ui/Infographics';
 
 const SECTIONS = [
   { id: 'overview', title: 'Why Study MS in NZ?' },
@@ -161,6 +162,15 @@ const NewZealandMastersCourse = () => {
 
           {/* Right Column: Content Blocks */}
           <div className="lg:col-span-9 space-y-16">
+
+            <StatStrip
+              stats={[
+                { value: '8th', label: 'Safest country in the world' },
+                { value: '95%', label: 'MS graduates employed within 6 months' },
+                { value: '3 yrs', label: 'Open post-study work visa' },
+                { value: '1-2 yrs', label: 'Typical MS duration' },
+              ]}
+            />
             
             {/* 1. Why Study MS in NZ */}
             <section id="overview" className="scroll-mt-24">
@@ -436,6 +446,19 @@ const NewZealandMastersCourse = () => {
                   <Briefcase className="text-indigo-650" size={24} />
                   Jobs & Career Scope (Average MS Salaries)
                 </h2>
+
+                <BarCompare
+                  className="mb-6"
+                  kicker="Average salary (NZD)"
+                  title="Top of the pay range by MS role"
+                  items={[
+                    { label: 'Data Scientist', value: 120000, display: 'NZ$ 90,000 - $120,000' },
+                    { label: 'Project Manager', value: 115000, display: 'NZ$ 80,000 - $115,000' },
+                    { label: 'Software Engineer', value: 110000, display: 'NZ$ 85,000 - $110,000' },
+                    { label: 'Biotechnologist', value: 100000, display: 'NZ$ 75,000 - $100,000' },
+                    { label: 'Environmental Consultant', value: 95000, display: 'NZ$ 70,000 - $95,000' },
+                  ]}
+                />
 
                 <div className="overflow-x-auto">
                   <table className="w-full text-left text-sm">

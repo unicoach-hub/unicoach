@@ -7,6 +7,7 @@ import {
 import ServiceEnquiryForm from '../components/ServiceEnquiryForm';
 import BackButton from '../components/ui/BackButton';
 import { DesiSticker, MemeLine } from '../components/desi/Desi';
+import { CounterBox } from '../components/ui/BrandElements';
 
 const formatINR = (n) =>
   new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(Math.max(0, Math.round(n)));
@@ -171,7 +172,7 @@ const EducationLoanPage = () => {
             <div key={step.title} className="bg-white rounded-2xl border border-slate-200/90 p-5">
               <div className="flex items-center justify-between">
                 <span className="w-10 h-10 rounded-xl bg-orange-50 text-[#DE5C2B] ring-1 ring-orange-100 flex items-center justify-center"><step.icon size={19} /></span>
-                <span className="font-mono text-[13px] font-black text-slate-300">0{i + 1}</span>
+                <CounterBox highlight={i === STEPS.length - 1}>{i + 1}</CounterBox>
               </div>
               <h3 className="mt-4 text-[15px] font-bold text-slate-900">{step.title}</h3>
               <p className="mt-1.5 text-[13px] text-slate-600 leading-relaxed">{step.text}</p>

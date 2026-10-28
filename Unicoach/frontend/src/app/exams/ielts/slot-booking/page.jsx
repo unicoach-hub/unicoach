@@ -21,6 +21,8 @@ import {
   HelpCircle
 } from 'lucide-react';
 import { API_BASE_URL } from '../../../../config';
+import { HookBand } from '../../../../components/ui/Infographics';
+import { JourneyPills } from '../../../../components/ui/BrandElements';
 
 const IELTSSlotBookingPage = () => {
   const [dbBlogs, setDbBlogs] = React.useState([]);
@@ -250,6 +252,17 @@ const IELTSSlotBookingPage = () => {
                 To sit for the IELTS test, candidates have to reserve their spots through one of three primary registration modes:
               </p>
 
+              <JourneyPills
+                className="not-prose"
+                steps={[
+                  { label: 'Format', sub: 'Exam format' },
+                  { label: 'Date & City', sub: 'Dates, location' },
+                  { label: 'Details', sub: 'Fill your info' },
+                  { label: 'Passport', sub: 'Upload scan' },
+                  { label: 'Pay', sub: 'Net Banking, Card, Paytm' },
+                ]}
+              />
+
               <div className="grid grid-cols-1 md:grid-cols-3 gap-5 my-6">
                 <div className="p-5 border border-slate-100 rounded-2xl bg-slate-50/50 space-y-2.5">
                   <h4 className="font-extrabold text-slate-800 text-sm">💻 Online Mode</h4>
@@ -305,6 +318,8 @@ const IELTSSlotBookingPage = () => {
               <p>
                 Plans can change, and IDP allows rescheduling or cancellation of slots under specific guidelines:
               </p>
+
+              <HookBand value="35 days" label="minimum notice to reschedule (INR 4,750 fee). Any later counts as a cancellation." hi="ध्यान दें" />
 
               <div className="bg-slate-50 border border-slate-100 rounded-2xl p-6 space-y-4 my-6">
                 <h4 className="font-extrabold text-slate-850 text-sm">Rescheduling Policies</h4>

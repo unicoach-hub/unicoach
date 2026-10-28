@@ -3,10 +3,12 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Calendar, Clock, CheckCircle2, ArrowRight, Table, AlertCircle, Sparkles, 
   Building, ListFilter, HelpCircle, ChevronDown, Award, Globe, DollarSign, 
-  BookOpen, Compass, ShieldCheck, Check, ShieldAlert, Coins, Users, FileText
+  BookOpen, Compass, ShieldCheck, Check, Coins, Users, FileText
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import StudyAbroadCTA from '../../../../../components/StudyAbroadCTA';
+import { HookBand } from '../../../../../components/ui/Infographics';
+import { JourneyPills, TapeHeadline } from '../../../../../components/ui/BrandElements';
 
 const SECTIONS = [
   { id: 'visa-types', title: 'Visa Classifications' },
@@ -189,6 +191,12 @@ const FranceVisa = () => {
             
             {/* 1. Types of Student Visas */}
             <section id="visa-types" className="scroll-mt-24">
+              <HookBand
+                value="€615"
+                label="a month: the minimum living budget you must prove for a France student visa (€7,380 for one year, excluding tuition)"
+                hi="पैसा"
+                className="mb-8"
+              />
               <div className="text-left mb-6">
                 <h2 className="text-2xl font-black text-slate-900 mb-1">🛂 France Study Visa Classifications</h2>
                 <p className="text-slate-400 text-xs font-bold uppercase tracking-wider">Select the visa subcategory aligned to your study duration</p>
@@ -348,6 +356,16 @@ const FranceVisa = () => {
                 <p className="text-slate-400 text-xs font-bold uppercase tracking-wider">Milestones to complete from admission to visa receipt</p>
               </div>
 
+              <JourneyPills
+                className="mb-8"
+                steps={[
+                  { label: 'EEF', sub: 'Portal registration & fee' },
+                  { label: 'Interview', sub: 'Campus France, 30 min' },
+                  { label: 'Visa form', sub: 'France-Visas online' },
+                  { label: 'VFS', sub: 'Dossier & biometrics' },
+                ]}
+              />
+
               <div className="relative border-l-2 border-indigo-100 pl-6 ml-4 space-y-8 mb-12">
                 {[
                   { step: "Step 1", title: "Études en France (EEF) Portal Registration", desc: "Register on the EEF portal, upload academic transcripts, write your study SOP, and submit the portal fee (~₹18,500 + taxes)." },
@@ -368,10 +386,7 @@ const FranceVisa = () => {
             {/* 6. Pitfalls & Rejection Reasons */}
             <section id="rejections" className="scroll-mt-24">
               <div className="bg-rose-50 border border-rose-200 rounded-[2rem] p-8">
-                <h2 className="text-2xl font-black text-rose-950 mb-2 flex items-center gap-2">
-                  <ShieldAlert className="text-rose-600 animate-pulse" size={24} />
-                  ⚠️ Common Visa Rejections & Pitfalls
-                </h2>
+                <TapeHeadline lines={[{ text: 'Common visa rejections' }, { text: '& pitfalls' }]} className="mb-5" />
                 <p className="text-slate-655 text-sm font-semibold leading-relaxed mb-6">
                   French visa officers evaluate files very thoroughly. Watch out for these common issues that lead to instant rejections:
                 </p>

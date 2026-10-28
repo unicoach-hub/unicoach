@@ -177,9 +177,9 @@
 
   --container-page: 1440px;
 
-  --font-inter: "Geist", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  --font-outfit: "Geist", sans-serif;
-  --font-sans: "Geist", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-inter: "Onest", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-outfit: "Onest", sans-serif;
+  --font-sans: "Onest", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   --font-urbanist: "Urbanist", sans-serif;
 }
 
@@ -313,9 +313,9 @@ body {
     --text-muted: #64748B;
     --border-subtle: #E2E8F0;
 
-    --font-heading: 'Geist', 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    --font-body: 'Geist', 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    --font-display: 'Geist', 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --font-heading: 'Urbanist', 'Onest', 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --font-body: 'Onest', 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --font-display: 'Urbanist', 'Onest', 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   }
 
   * {
@@ -334,13 +334,12 @@ body {
   body {
     background-color: var(--bg-page);
     color: var(--text-primary);
-    font-family: 'Geist', 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-family: 'Onest', 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     min-height: 100vh;
     overflow-x: clip;
     overscroll-behavior-y: none;
     line-height: 1.6;
     letter-spacing: -0.006em;
-    font-feature-settings: 'ss01', 'cv11';
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
@@ -373,7 +372,7 @@ body {
   h4,
   h5,
   h6 {
-    font-family: 'Schibsted Grotesk', 'Geist', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+    font-family: 'Urbanist', 'Onest', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
     letter-spacing: -0.035em !important;
     color: inherit;
     line-height: 1.12 !important;
@@ -388,7 +387,7 @@ body {
 
   /* Refined, clean editorial paragraph rhythm */
   p {
-    font-family: 'Geist', 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-family: 'Onest', 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     line-height: 1.6;
     letter-spacing: -0.005em;
   }
@@ -434,33 +433,41 @@ body {
   font-weight: 650 !important;
 }
 
+/* Urbanist headlines read best heavy (reference: JobsMatch poster headlines) */
+h1, h2,
+h1.font-black, h2.font-black,
+h1.font-extrabold, h2.font-extrabold,
+h1.font-bold, h2.font-bold {
+  font-weight: 800 !important;
+}
+
 /* Typography Utility Classes */
 .font-heading,
 .font-outfit,
 .font-aileron {
-  font-family: 'Schibsted Grotesk', 'Geist', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+  font-family: 'Urbanist', 'Onest', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
   letter-spacing: -0.035em;
 }
 
 .font-urbanist,
 .font-stats {
-  font-family: 'Geist', 'Urbanist', system-ui, -apple-system, sans-serif;
+  font-family: 'Urbanist', 'Onest', system-ui, -apple-system, sans-serif;
   letter-spacing: -0.025em;
 }
 
 .font-jakarta,
 .font-body {
-  font-family: 'Geist', 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-family: 'Onest', 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   letter-spacing: -0.011em;
 }
 
 .font-inter {
-  font-family: 'Geist', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-family: 'Onest', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   letter-spacing: -0.014em;
 }
 
 .font-syne {
-  font-family: 'Geist', 'Plus Jakarta Sans', sans-serif;
+  font-family: 'Onest', 'Plus Jakarta Sans', sans-serif;
 }
 
 .font-caveat {
@@ -885,6 +892,7 @@ body.editorial-page :is(.uppercase):not(header *, footer *, h1, h2) {
 }
 body.editorial-page :is(.font-black):not(header *, footer *) { font-weight: 700 !important; }
 body.editorial-page :is(.font-extrabold):not(header *, footer *) { font-weight: 650 !important; }
+body.editorial-page :is(h1, h2):is(.font-black, .font-extrabold, .font-bold, *):not(header *, footer *) { font-weight: 800 !important; }
 body.editorial-page :is(p, li, td).font-semibold:not(header *, footer *) { font-weight: 450 !important; }
 body.editorial-page :is(.animate-pulse, .animate-ping):not(header *, footer *) { animation: none !important; }
 body.editorial-page :is(h1, h2):not(header *, footer *) { letter-spacing: -0.03em; }

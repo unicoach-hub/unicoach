@@ -5,6 +5,7 @@ import { Search, Filter, X, ChevronDown, Award, MapPin, Building } from 'lucide-
 import StudyAbroadCTA from '../../../../../components/StudyAbroadCTA';
 import { getUniversityLogo } from '../../../../../components/logoResolver';
 import { matchesUniversitySearch, getMatchedCoursesForUniversity } from '../../../../../utils/universitySearchMatcher';
+import { HookBand, BarCompare } from '../../../../../components/ui/Infographics';
 
 const universityDatabase = [
   { id: 1,  name: "University of New South Wales",      city: "Sydney",       state: "New South Wales", location: "Sydney, New South Wales, Australia",        rank: "Rank 19 QS Rankings",  rankValue: 19,   tuition: 25, type: "PUBLIC", logo: "https://logo.clearbit.com/unsw.edu.au",          website: "https://www.unsw.edu.au",          courses: ["Business Analytics","Data Science","Computer Science","Business Administration","Software Engineering","Accounting","Artificial Intelligence / Machine Learning","Economics"], degrees: ["Postgraduate","Ph.D.","Undergraduate"], intakes: ["FEB","JUL","SEP"], description: "A world top-20 university offering a highly regarded Masters in Business Analytics with deep industry ties in Sydney.", eligibility: "GPA 3.5+, IELTS 6.5+", deadline: "Mar 01, 2026" },
@@ -25,6 +26,12 @@ const degreeCategories = ["Postgraduate","Ph.D.","PG Diploma /Certificate","Unde
 const courseCategories = ["Business Analytics","Industrial Engineering","Broadcast Media","Engineering Design","Industrial Design","Physiotherapy","Astronomy","Speech Pathology","Interior Design","Theatre","Social Work","Dental Studies","Animal and Veterinary Studies","Justice studies","Materials and Mineral Engineering","Manufacturing Engineering","General Engineering And Technology","Electronics","Cyber Security","Automotive engineering","Robotics","Physical Sciences","Biochemistry","Information Systems","Philosophy and Religious Studies","History","Media & Communication","Commerce","Public Health","Game Development","Civil Engineering","Mechanical Engineering","Electrical Engineering","Biomedical Engineering","Aerospace Engineering","Mining Engineering","Geomatic Engineering","Engineering Science","Petroleum Engineering","Legal Studies","Law","Music","Archaeology","Dance","Banking and Finance","Teaching / Education studies","Risk Management","Language and Literature","Social and Cultural Courses","Film and TV production","Journalism","Creative Writing","Advertising","Audio Visual Studies","Sociology","Political Science","Occupational Health & Safety","Nursing and midwifery","Chemical Engineering","Mathematics","Statistics","Linguistic","English language","Photography","Animation","International Relations","Behavioural Science","Geography","Psychology","Sport / Exercise Science","Physics","Data Science","Food / Agricultural Science","Accounting","Earth Sciences / Geoscience","Geology","Environmental science / management","Marine science","Human Geography","Arts / Fine Art","Graphic and Design Studies","Creative Arts","Fashion Design","Product Design","Biological Sciences","Genetics","Zoology","Forensics","Biotechnology","Architecture","Construction Management","Landscape design and architecture","Planning","Building Technology","Surveying","International / Global Business","Sales And Marketing","Human resource Management","Business Administration","Project Management","Innovation / Entrepreneurship","Organisation Management","Chemistry","Food And Hospitality","Data Analytics","Pharmacology / Pharmacy","Business Management","Leadership Development","Tourism","Anthropology","Medicine and Medical Studies","Economics","Computer Science","Artificial Intelligence / Machine Learning","Health Sciences / Administration","Information technology","Computer Graphics","Computer Engineering","Environmental Engineering","Software Engineering","Web Development","Management","Interdisciplinary Studies"];
 const cityCategories = ["Adelaide","Brisbane","Melbourne","Sippy Downs","Sydney","Townsville"];
 const intakeCategories = ["FEB","MAR","JUL","SEP","NOV"];
+// Five lowest first-year fees from the list above, for the fee chart under the results
+const lowestFeeUnis = [...new Map(universityDatabase.filter((u) => typeof u.tuition === 'number' && u.tuition > 0).map((u) => [u.name, u])).values()]
+  .sort((a, b) => a.tuition - b.tuition)
+  .slice(0, 5)
+  .map((u) => ({ label: u.name, value: u.tuition, display: `₹${u.tuition} Lakh` }));
+
 const feeRanges = [{ id: "max10", label: "Max ₹10 Lacs", max: 10 },{ id: "max20", label: "Max ₹20 Lacs", max: 20 },{ id: "max30", label: "Max ₹30 Lacs", max: 30 },{ id: "max40", label: "Max ₹40 Lacs", max: 40 },{ id: "above40", label: "₹40 Lacs +", min: 40 }];
 
 const AustraliaBusinessAnalyticsPage = () => {
@@ -103,6 +110,8 @@ const AustraliaBusinessAnalyticsPage = () => {
             Explore Australia's top universities for Masters in Business Analytics — compare QS rankings, tuition fees, cities, and eligibility.
           </p>
         </div>
+
+        <HookBand value={universityDatabase.length} label="Australian universities on this page for Business Analytics. Filter by city, fees and intake below." hi="तुलना करो" className="mb-10" />
 
         <div className="grid grid-cols-1 lg:grid-cols-[290px_1fr] gap-8 items-start">
           {/* Sidebar */}
@@ -252,6 +261,14 @@ const AustraliaBusinessAnalyticsPage = () => {
                 ))}
                 <button disabled={currentPage === totalPages} onClick={() => handlePageChange(currentPage + 1)} className={`w-9 h-9 rounded-xl flex items-center justify-center border font-bold text-xs ${currentPage === totalPages ? 'border-slate-100 text-slate-300 cursor-not-allowed' : 'border-slate-200 text-slate-600 hover:bg-slate-50 cursor-pointer'}`}>Next</button>
               </div>
+            )}
+            {lowestFeeUnis.length >= 3 && (
+              <BarCompare
+                kicker="Budget picks"
+                title="Lowest first-year tuition on this page"
+                items={lowestFeeUnis}
+                className="mt-10"
+              />
             )}
           </main>
         </div>

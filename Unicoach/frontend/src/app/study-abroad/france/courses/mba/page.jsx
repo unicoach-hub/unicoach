@@ -8,6 +8,7 @@ import {
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import StudyAbroadCTA from '../../../../../components/StudyAbroadCTA';
+import { HookBand, BarCompare, Donut } from '../../../../../components/ui/Infographics';
 
 const SECTIONS = [
   { id: 'why-mba', title: 'Why MBA in France?' },
@@ -257,6 +258,12 @@ const FranceMBACourse = () => {
             
             {/* 1. Why MBA in France? */}
             <section id="why-mba" className="scroll-mt-24">
+              <HookBand
+                value="10–16 mo"
+                label="is all most elite French MBA programs take (INSEAD, ESCP, EDHEC), cutting your opportunity cost"
+                hi="फटाफट"
+                className="mb-8"
+              />
               <div className="text-left mb-6">
                 <h2 className="text-2xl font-black text-slate-900 mb-1">🇫🇷 Why Study MBA in France?</h2>
                 <p className="text-slate-400 text-xs font-bold uppercase tracking-wider">Acquire international management credentials from elite European schools</p>
@@ -290,6 +297,18 @@ const FranceMBACourse = () => {
                 <h2 className="text-2xl font-black text-slate-900 mb-1">🏛️ Top Business Schools for MBA</h2>
                 <p className="text-slate-400 text-xs font-bold uppercase tracking-wider">Elite business networks with high Return on Investment (ROI)</p>
               </div>
+
+              <BarCompare
+                className="mb-8"
+                kicker="Programme fees"
+                title="MBA tuition at France's top business schools"
+                highlight="Grenoble Ecole de Management (GEM)"
+                items={topMbaSchools.map((school) => ({
+                  label: school.name,
+                  value: school.feesEUR,
+                  display: `€${school.feesEUR.toLocaleString()}`,
+                }))}
+              />
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {topMbaSchools.map((school, idx) => (
@@ -448,6 +467,17 @@ const FranceMBACourse = () => {
                   💶 Estimated Monthly Living Expenses
                 </h2>
                 <p className="text-slate-400 text-xs font-bold mb-6">A detailed breakdown of monthly living expenditures for MBA students</p>
+
+                <Donut
+                  className="mb-6"
+                  kicker="Monthly budget"
+                  title="Where your monthly money goes"
+                  segments={mbaLivingCosts.map((cost) => ({
+                    label: cost.item,
+                    value: cost.eur,
+                    display: `€${cost.eur}`,
+                  }))}
+                />
 
                 <div className="divide-y divide-slate-100 text-xs font-semibold">
                   {mbaLivingCosts.map((cost, idx) => (

@@ -5,6 +5,7 @@ import {
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import StudyAbroadCTA from '../../../../../components/StudyAbroadCTA';
+import { BarCompare, HookBand } from '../../../../../components/ui/Infographics';
 
 // ─────────────────────────────────────────────
 // DATA SECTION
@@ -148,6 +149,13 @@ const GermanyBestCoursesPage = () => {
           </p>
         </motion.div>
 
+        <HookBand
+          className="mb-10"
+          value="760,000+"
+          label="skilled-labour shortage in Germany: pick a course that fills it for an easier post-graduation visa path"
+          hi="मांग"
+        />
+
         {/* Global Currency Switcher */}
         <div className="flex justify-center mb-12">
           <div className="bg-white border border-slate-200/60 p-1.5 rounded-2xl shadow-md inline-flex items-center gap-1">
@@ -211,6 +219,15 @@ const GermanyBestCoursesPage = () => {
               </table>
             </div>
           </div>
+
+          <BarCompare
+            className="mt-8"
+            kicker="Starting salary, low end of range"
+            title="Top 10 streams ranked by starting pay"
+            items={[...topCoursesMatrix]
+              .sort((a, b) => b.keySalary - a.keySalary)
+              .map((c) => ({ label: c.course, value: c.keySalary, display: `€${Math.round(c.keySalary / 1000)}k+` }))}
+          />
         </div>
 
         {/* 3. DETAILED STREAM ACCORDIONS */}

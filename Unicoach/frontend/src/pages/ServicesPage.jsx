@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import { ArrowRight, ArrowUpRight, CalendarCheck, Check, Compass, FileText, Loader2, Plane, Wallet } from 'lucide-react';
 import { API_BASE_URL } from '../config';
+import { HookBand } from '../components/ui/Infographics';
 
 const API = API_BASE_URL.replace(/\/$/, '');
 const GROUP_ICON = { plan: Compass, apply: FileText, fund: Wallet, visa: Plane };
@@ -174,6 +175,14 @@ const ServicesPage = () => {
             <JourneyLoop />
           </div>
         </section>
+
+        {/* Hook: one call length, straight from the config */}
+        <HookBand
+          value={`${cfg?.durationMin || 60} min`}
+          label="One 1:1 call with our team. Counselling, shortlisting, SOPs, funding and visas, all in one place."
+          hi="एक कॉल"
+          className="mt-12"
+        />
 
         {/* All services */}
         <section id="all-services" className="mt-16 scroll-mt-28">

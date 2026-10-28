@@ -97,6 +97,19 @@ const ieltsData = {
       link: "https://www.amazon.in/s?k=Collins+English+for+IELTS"
     }
   ],
+  // Module times from the prep tip below
+  timeSplit: {
+    kicker: 'Exam time',
+    title: 'The 4 IELTS modules, by minutes',
+    segments: [
+      { label: 'Listening', value: 40, display: '40 min' },
+      { label: 'Reading', value: 60, display: '60 min' },
+      { label: 'Writing', value: 60, display: '60 min' },
+      { label: 'Speaking', value: 14, display: '11–14 min' },
+    ],
+    centerValue: '4',
+    centerLabel: 'modules',
+  },
   prepTips: [
     "Take an initial diagnostic mock test under strict exam timing to baseline your current band score.",
     "Familiarize yourself with the 4 modules: Listening (40 mins), Reading (60 mins), Writing (60 mins), and Speaking (11-14 mins).",

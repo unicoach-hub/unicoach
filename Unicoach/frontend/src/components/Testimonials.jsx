@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Play, X, ChevronLeft, ChevronRight, Volume2, Sparkles } from 'lucide-react';
 
 import { STUDENT_VIDEOS } from '@/data/studentVideos';
+import { GooglyEyes, StickerLabel } from './ui/BrandElements';
 
 const VIDEO_TESTIMONIALS = STUDENT_VIDEOS;
 
@@ -217,6 +218,10 @@ export const Testimonials = () => {
               </span>
             </div>
 
+            <div className="flex items-center gap-3 mb-2" aria-hidden="true">
+              <GooglyEyes size={26} />
+              <StickerLabel tone="mustard" tilt={-4}>real &amp; unscripted</StickerLabel>
+            </div>
             <h2 className="font-outfit text-[28px] sm:text-[36px] lg:text-[42px] font-black text-[#111111] leading-tight tracking-tight">
               Hear what our{' '}
               <span className="relative inline-block text-[#DE5C2B]">

@@ -11,6 +11,8 @@ import {
     HelpCircle,
     PenTool
 } from 'lucide-react';
+import { StdSign } from '../../../../components/desi/DesiPop';
+import { VersusCard } from '../../../../components/ui/Infographics';
 
 const SOPMbaPage = () => {
     const [faqOpen, setFaqOpen] = useState({});
@@ -53,6 +55,10 @@ const SOPMbaPage = () => {
             <div className="uc-clean border-x-0 relative overflow-hidden py-12 md:py-16 px-6 md:px-12 mb-12">
                 <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#DE5C2B_1px,transparent_1px)] [background-size:16px_16px]"></div>
                 <div className="max-w-[1240px] mx-auto relative z-10">
+                    {/* Desi Pop: STD booth style sign, wide screens only */}
+                    <div className="hidden xl:block absolute right-0 top-1/2 -translate-y-1/2 rotate-3 pointer-events-none">
+                        <StdSign words={['USA', 'CANADA', 'UK']} hi="एमबीए" className="w-[210px]" />
+                    </div>
                     <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-indigo-500/20 border border-indigo-400/30 rounded-full text-indigo-300 text-xs font-bold uppercase tracking-wider mb-4">
                         <Sparkles size={12} className="text-indigo-400" />
                         <span>Admissions Guides</span>
@@ -217,6 +223,14 @@ const SOPMbaPage = () => {
                             <h3 className="text-xl font-bold text-slate-800 tracking-tight">
                                 Successful MBA SOP Excerpts
                             </h3>
+
+                            {/* The two excerpts below, side by side */}
+                            <VersusCard
+                                kicker="Two admits, two angles"
+                                title="Ross (USA) vs Rotman (Canada)"
+                                left={{ title: 'Ross, Michigan', tag: 'USA', points: ['Led a team at a Bangalore SaaS startup', '25% increase in user acquisition', 'Draws on the MAP program'] }}
+                                right={{ title: 'Rotman, Toronto', tag: 'Canada', points: ['Four years as a civil engineer in Delhi', 'Drawn to the Creative Destruction Lab', 'Plans to use the PGWP before returning to India'] }}
+                            />
 
                             {/* USA (Ross) */}
                             <div className="bg-white rounded-2xl border border-slate-200/60 p-6 shadow-sm space-y-3">

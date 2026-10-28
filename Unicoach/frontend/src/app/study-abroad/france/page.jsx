@@ -8,6 +8,7 @@ import {
 import { Link } from 'react-router-dom';
 import StudyAbroadCTA from '../../../components/StudyAbroadCTA';
 import { matchesUniversitySearch, getMatchedCoursesForUniversity } from '../../../utils/universitySearchMatcher';
+import { HookBand, StatStrip, BarCompare } from '../../../components/ui/Infographics';
 
 const franceUniversities = [
   { id: 'fr-1', name: "HEC Paris", city: "Jouy-en-Josas (Paris)", rank: "Top Business School", type: "Private / Business", eligibility: "GMAT/GRE, IELTS 7.0+, interview required", website: "https://www.hec.edu", logo: "https://logo.clearbit.com/hec.edu", courses: ["Business Administration", "Management", "Finance", "Marketing", "Business Analytics"] },
@@ -109,19 +110,21 @@ const FranceOverview = () => {
           </motion.div>
         </div>
 
-        {/* Quick Stats Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-16">
-          {[
-            { val: "30,000", label: "Indian Target (2030)" },
-            { val: "1,600+", label: "English Taught Courses" },
-            { val: "5 Years", label: "Post-Study Visa (PG)" },
-            { val: "€2,770", label: "UG Public Tuition / Yr" }
-          ].map((stat, idx) => (
-            <div key={idx} className="bg-white/70 border border-white/80 rounded-2xl p-5 shadow-[0_4px_20px_rgba(0,0,0,0.02)] backdrop-blur-md text-left">
-              <p className="text-2xl font-black text-indigo-650">{stat.val}</p>
-              <p className="text-xs text-slate-500 font-bold mt-1 uppercase tracking-wider">{stat.label}</p>
-            </div>
-          ))}
+        {/* Quick Stats: hook number + stat strip */}
+        <div className="mb-16">
+          <HookBand
+            value="5 Years"
+            label="Post-study visa for postgraduate (Master's) graduates in France"
+            hi="पढ़ो, फिर कमाओ"
+            className="mb-4"
+          />
+          <StatStrip
+            stats={[
+              { value: "30,000", label: "Indian Target (2030)" },
+              { value: "1,600+", label: "English Taught Courses" },
+              { value: "€2,770", label: "UG Public Tuition / Yr" }
+            ]}
+          />
         </div>
 
         {/* Global Currency Switcher */}
@@ -232,6 +235,18 @@ const FranceOverview = () => {
               </motion.div>
             )}
           </AnimatePresence>
+
+          <BarCompare
+            kicker="Living costs"
+            title="Monthly living cost by location (upper end of range)"
+            items={[
+              { label: "Metropolitan Paris", value: 1400, display: formatCost(1400) },
+              { label: "Lyon, Bordeaux, Lille", value: 1000, display: formatCost(1000) },
+              { label: "Smaller student cities", value: 800, display: formatCost(800) }
+            ]}
+            highlight="Smaller student cities"
+            className="mt-8"
+          />
         </div>
 
         {/* 3. SCHOLARSHIPS BANNER */}

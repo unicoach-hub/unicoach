@@ -86,7 +86,7 @@ const Stamp = ({ step, id }) => (
     <g filter={`url(#ink-${id})`} fill="none" stroke={step.color} opacity="0.92">
       <circle cx="120" cy="120" r="112" strokeWidth="5" />
       <circle cx="120" cy="120" r="74" strokeWidth="2" />
-      <text fontFamily="Geist, ui-monospace, monospace" fontSize="13.5" fontWeight="700" letterSpacing="3.2" fill={step.color} stroke="none">
+      <text fontFamily="Onest, ui-monospace, monospace" fontSize="13.5" fontWeight="700" letterSpacing="3.2" fill={step.color} stroke="none">
         <textPath href={`#ring-${id}`} startOffset="0">UNICOACH · STUDY ABROAD · {step.chapter.toUpperCase()} · UNICOACH ·</textPath>
       </text>
       <text x="120" y="98" textAnchor="middle" fontSize="11" fontWeight="700" letterSpacing="3" fill={step.color} stroke="none">★ IN ★</text>

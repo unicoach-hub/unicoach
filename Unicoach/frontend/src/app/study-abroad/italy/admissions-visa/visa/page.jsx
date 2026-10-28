@@ -10,6 +10,8 @@ import { Link } from 'react-router-dom';
 import StudyAbroadCTA from '../../../../../components/StudyAbroadCTA';
 import ShortlistWizardWidget from '../../../../../components/ShortlistWizardWidget';
 import { useLead } from '../../../../../context/LeadContext';
+import { TapeHeadline, JourneyPills } from '../../../../../components/ui/BrandElements';
+import { HookBand } from '../../../../../components/ui/Infographics';
 
 const SECTIONS = [
   { id: 'types', title: 'Which Visa Do You Need?' },
@@ -236,6 +238,8 @@ const ItalyVisa = () => {
           </div>
         </motion.div>
 
+        <HookBand value="90 days" label="the delay one missing stamp, insurance clause or wrong sponsor can add to your Italy visa" hi="सावधान" className="mb-12" />
+
         {/* Currency Switcher */}
         <div className="flex justify-center mb-12">
           <div className="bg-white border border-slate-200/60 p-1.5 rounded-2xl shadow-xs inline-flex items-center gap-1">
@@ -378,6 +382,16 @@ const ItalyVisa = () => {
               <p className="text-slate-600 font-semibold leading-relaxed mb-8">
                 Think of this as a waterfall model—each phase must be 100% complete before moving to the next.
               </p>
+
+              <JourneyPills
+                steps={[
+                  { label: 'Phase 1', sub: 'Academic Clearance' },
+                  { label: 'Phase 2', sub: 'Visa Application' },
+                  { label: 'Phase 3', sub: 'Post-Arrival Legalization' },
+                ]}
+                active={0}
+                className="mb-8"
+              />
 
               {/* Waterfall Steps UI */}
               <div className="space-y-6 relative before:absolute before:left-6 before:top-2 before:bottom-2 before:w-0.5 before:bg-slate-100 before:pointer-events-none">
@@ -1062,9 +1076,9 @@ const ItalyVisa = () => {
 
             {/* Section 10: Common Rejections Causes */}
             <section id="rejections" className="scroll-mt-24">
-              <div className="flex items-center gap-2 mb-6">
-                <span className="w-8 h-8 rounded-lg bg-indigo-50 flex items-center justify-center text-indigo-600 font-black text-sm">10</span>
-                <h2 className="text-2xl md:text-3xl font-black text-slate-900 tracking-tight">🛑 Common Rejection Causes & Prevention</h2>
+              <div className="flex items-start gap-3 mb-7">
+                <span className="w-8 h-8 mt-1 rounded-lg bg-indigo-50 flex items-center justify-center text-indigo-600 font-black text-sm shrink-0">10</span>
+                <TapeHeadline lines={[{ text: 'Common rejection causes' }, { text: '& how to prevent them' }]} />
               </div>
               <p className="text-slate-600 font-semibold leading-relaxed mb-8">
                 Learn from other applicants' mistakes. Protect your dossier against common reasons for visa denial:

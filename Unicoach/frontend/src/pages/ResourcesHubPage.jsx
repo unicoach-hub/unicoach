@@ -7,6 +7,8 @@ import {
   HelpCircle, ShieldCheck, Compass, Users, PhoneCall, Zap
 } from 'lucide-react';
 import { useLead } from '../context/LeadContext';
+import { StdSign } from '../components/desi/DesiPop';
+import { StatStrip } from '../components/ui/Infographics';
 
 const RESOURCE_SECTIONS = [
   {
@@ -123,6 +125,10 @@ const ResourcesHubPage = () => {
       
       {/* ── 1. HERO SECTION ── */}
       <section className="relative pt-12 pb-16 md:pt-16 md:pb-20 px-4 sm:px-6 lg:px-8 bg-[#F6F3EC] border-b border-[#E6E0D4] overflow-hidden">
+        {/* Desi Pop: STD booth style sign, wide screens only */}
+        <div className="hidden 2xl:block absolute left-8 2xl:left-20 top-1/2 -translate-y-1/2 -rotate-6 z-0 pointer-events-none">
+          <StdSign words={['SOP', 'LOR', 'GPA']} hi="मुफ़्त" className="w-[180px]" />
+        </div>
         
 
         <div className="max-w-5xl mx-auto relative z-10 text-center space-y-4">
@@ -189,6 +195,16 @@ const ResourcesHubPage = () => {
       {/* ── 2. RESOURCE CATEGORIES & CARDS ── */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-12">
         
+        {/* Counts straight from the resource list below */}
+        <StatStrip
+          className="pb-8"
+          stats={[
+            { value: RESOURCE_SECTIONS.reduce((n, sec) => n + sec.items.length, 0), label: 'Free guides, tools and calculators' },
+            { value: RESOURCE_SECTIONS.length, label: 'Toolkits, from SOP and LOR to visa and funds' },
+            { value: '2026', label: 'Updated for 2026 admissions' },
+          ]}
+        />
+
         {/* Category Pills */}
         <div className="flex items-center justify-center flex-wrap gap-2 pb-8">
           {categories.map((cat) => (

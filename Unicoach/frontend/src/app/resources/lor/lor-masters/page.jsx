@@ -15,6 +15,8 @@ import {
     CheckCircle,
     AlertTriangle
 } from 'lucide-react';
+import { StdSign } from '../../../../components/desi/DesiPop';
+import { TapeHeadline } from '../../../../components/ui/BrandElements';
 
 const LORMastersPage = () => {
     const navigate = useNavigate();
@@ -123,6 +125,10 @@ const LORMastersPage = () => {
             <div className="uc-clean border-x-0 relative overflow-hidden py-12 md:py-16 px-6 md:px-12 mb-12">
                 <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#DE5C2B_1px,transparent_1px)] [background-size:16px_16px]"></div>
                 <div className="max-w-[1240px] mx-auto relative z-10">
+                    {/* Desi Pop: STD booth style sign with the 3 submission pathways, wide screens only */}
+                    <div className="hidden xl:block absolute right-0 top-1/2 -translate-y-1/2 rotate-3 pointer-events-none">
+                        <StdSign words={['PORTAL', 'EMAIL', 'POST']} hi="सिफ़ारिश" className="w-[200px]" />
+                    </div>
                     <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-indigo-500/20 border border-indigo-400/30 rounded-full text-indigo-300 text-xs font-bold uppercase tracking-wider mb-4">
                         <Sparkles size={12} className="text-indigo-400" />
                         <span>Masters Admissions</span>
@@ -467,9 +473,9 @@ rajesh.k@infosys.com`}
 
                         {/* Common Mistakes */}
                         <div className="bg-rose-50/60 border border-rose-100 text-slate-750 rounded-3xl p-6 md:p-8 shadow-sm space-y-4">
-                            <div className="flex items-center gap-2 text-rose-800">
-                                <AlertTriangle size={24} />
-                                <h3 className="text-lg font-bold tracking-tight">Common LOR Mistakes to Avoid</h3>
+                            <div className="flex items-start gap-3 text-rose-800">
+                                <AlertTriangle size={24} className="mt-1 shrink-0" />
+                                <TapeHeadline as="h3" lines={[{ text: 'Common LOR mistakes' }, { text: 'to avoid' }]} />
                             </div>
                             <ul className="space-y-2 text-xs font-semibold leading-relaxed text-slate-600">
                                 <li className="flex items-start gap-1.5">

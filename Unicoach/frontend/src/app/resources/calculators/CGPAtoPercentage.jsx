@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { HookBand, VersusCard } from '../../../components/ui/Infographics';
 import { Calculator, Sparkles, ArrowRightLeft, HelpCircle, AlertCircle, Award } from 'lucide-react';
 
 const CGPAtoPercentage = () => {
@@ -94,6 +95,13 @@ const CGPAtoPercentage = () => {
                         Convert your academic 10-point CGPA into an equivalent percentage using official CBSE or general university rules.
                     </p>
                 </div>
+
+                <HookBand
+                    value="× 9.5"
+                    label="The CBSE multiplier for CGPA to percentage. A standard 10-point university scale uses × 10."
+                    hi="गुणा"
+                    className="mb-8"
+                />
 
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
                     
@@ -300,6 +308,15 @@ const CGPAtoPercentage = () => {
                     </div>
 
                 </div>
+
+                {/* The two formulas this converter offers, side by side */}
+                <VersusCard
+                    className="mt-8"
+                    kicker="Which formula?"
+                    title="CBSE scale vs university scale"
+                    left={{ title: 'CBSE scale', tag: '× 9.5', points: ['Percentage = CGPA × 9.5', 'Set by CBSE from the last five years of student scores'] }}
+                    right={{ title: 'University scale', tag: '× 10', points: ['Percentage = CGPA × 10', 'Usual for engineering and non-engineering colleges under AICTE'] }}
+                />
             </div>
         </main>
     );

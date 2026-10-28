@@ -7,6 +7,7 @@ import {
 import { Link } from 'react-router-dom';
 import StudyAbroadCTA from '../../../components/StudyAbroadCTA';
 import { matchesUniversitySearch, getMatchedCoursesForUniversity } from '../../../utils/universitySearchMatcher';
+import { HookBand, StatStrip } from '../../../components/ui/Infographics';
 
 const italyUniversities = [
   { id: 'it-1', name: "University of Bologna", city: "Bologna", rank: "#133 Global", type: "Public University", eligibility: "IELTS 6.0+, high school board 75%+, TOLC exam (some)", website: "https://www.unibo.it", logo: "https://logo.clearbit.com/unibo.it", courses: ["Law", "Medicine", "Engineering", "Economics", "Humanities", "Computer Science"] },
@@ -107,19 +108,21 @@ const ItalyOverview = () => {
           </motion.div>
         </div>
 
-        {/* Quick Stats Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-16">
-          {[
-            { val: "€500 - €4,000", label: "Public Tuition / Year" },
-            { val: "DSU Scholarship", label: "100% Free Option" },
-            { val: "20 Hours", label: "Part-Time Work Limit" },
-            { val: "12 Months", label: "Post-Study Stay-Back" }
-          ].map((stat, idx) => (
-            <div key={idx} className="bg-white/70 border border-white/80 rounded-2xl p-5 shadow-xs backdrop-blur-md text-left">
-              <p className="text-xl font-black text-indigo-655">{stat.val}</p>
-              <p className="text-[10px] text-slate-500 font-extrabold mt-1 uppercase tracking-wider">{stat.label}</p>
-            </div>
-          ))}
+        {/* Quick Stats: hook number + stat strip */}
+        <div className="mb-16">
+          <HookBand
+            value="€500 - €4,000"
+            label="Public university tuition per year in Italy"
+            hi="सस्ती पढ़ाई"
+            className="mb-4"
+          />
+          <StatStrip
+            stats={[
+              { value: "DSU Scholarship", label: "100% Free Option" },
+              { value: "20 Hours", label: "Part-Time Work Limit" },
+              { value: "12 Months", label: "Post-Study Stay-Back" }
+            ]}
+          />
         </div>
 
         {/* Currency Switcher */}

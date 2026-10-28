@@ -10,6 +10,7 @@ import { Link } from 'react-router-dom';
 import StudyAbroadCTA from '../../../../../components/StudyAbroadCTA';
 import ShortlistWizardWidget from '../../../../../components/ShortlistWizardWidget';
 import { useLead } from '../../../../../context/LeadContext';
+import { HookBand, BarCompare } from '../../../../../components/ui/Infographics';
 
 import CapIcon from '../../../../../components/ui/CapIcon';
 const SECTIONS = [
@@ -375,6 +376,8 @@ const ItalyTopUniversities = () => {
           </div>
         </motion.div>
 
+        <HookBand value="5,260" label="Indian students are studying in Italy right now, with 6 universities in the QS World Top 300" hi="भारत" className="mb-12" />
+
         {/* Currency Switcher Tool */}
         <div className="flex justify-center mb-12">
           <div className="bg-white border border-slate-200/60 p-1.5 rounded-2xl shadow-xs inline-flex items-center gap-1">
@@ -736,6 +739,13 @@ const ItalyTopUniversities = () => {
                 Daily expenditure budgets differ depending on the type of city you study in. Here is a typical overview:
               </p>
 
+              <BarCompare
+                kicker="Monthly budget"
+                title="Upper living cost by city (EUR / month)"
+                items={cityCosts.map((c) => ({ label: c.city, value: c.costRangeEUR.max, display: `€${c.costRangeEUR.max.toLocaleString()}` }))}
+                className="mb-8"
+              />
+
               {/* Cost of Living highlights */}
               <div className="bg-white border border-slate-100 rounded-3xl p-6 md:p-8 shadow-xs mb-8">
                 <h4 className="font-extrabold text-slate-900 text-sm md:text-base mb-6 flex items-center gap-2">
@@ -863,6 +873,13 @@ const ItalyTopUniversities = () => {
               <p className="text-slate-600 font-semibold leading-relaxed mb-8">
                 Graduates can apply for a 12-month post-study stay-back permit. Here are top roles and average salaries:
               </p>
+
+              <BarCompare
+                kicker="Average pay"
+                title="Average salary by role (EUR / year)"
+                items={[...jobSalaries].sort((a, b) => b.avgSalaryEUR - a.avgSalaryEUR).map((j) => ({ label: j.role, value: j.avgSalaryEUR, display: `€${j.avgSalaryEUR.toLocaleString()}` }))}
+                className="mb-8"
+              />
 
               {/* Jobs Table */}
               <div className="bg-white border border-slate-100 rounded-[24px] shadow-sm overflow-hidden mb-8">

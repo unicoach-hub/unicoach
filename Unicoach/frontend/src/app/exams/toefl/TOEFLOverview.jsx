@@ -25,6 +25,7 @@ import {
   ExternalLink,
   Sparkles
 } from 'lucide-react';
+import { HookBand, BarCompare, Donut } from '../../../components/ui/Infographics';
 
 const UniLogo = ({ logo, name, domain }) => {
   const [error, setError] = useState(false);
@@ -259,6 +260,7 @@ const TOEFLOverview = () => {
                 <p>
                   There are two main types of TOEFL exams: <strong>TOEFL iBT</strong> (internet-based) and <strong>TOEFL Essentials</strong>. TOEFL is accepted by over 12,500 institutions across the world, including the USA, UK, and Canada.
                 </p>
+                <HookBand value="12,500+" label="institutions worldwide accept TOEFL, including the USA, UK and Canada" hi="दुनिया भर" />
                 <div className="bg-indigo-50/10 border border-slate-100 p-4.5 rounded-2xl text-xs text-slate-500 space-y-2 mt-4">
                   <p>• <strong>Academic focus:</strong> TOEFL iBT tests your English in an academic setting.</p>
                   <p>• <strong>General usage:</strong> TOEFL Essentials tests your everyday English.</p>
@@ -320,6 +322,19 @@ const TOEFLOverview = () => {
                       </tr>
                     </tbody>
                   </table>
+                </div>
+                <div>
+                  <BarCompare
+                    kicker="Fee comparison"
+                    title="TOEFL costs in India"
+                    source="ETS India (checked October 2026)"
+                    items={[
+                      { label: 'Registration', value: 15729, display: '₹15,729' },
+                      { label: 'Score review', value: 6695, display: '₹6,695' },
+                      { label: 'Rescheduling', value: 5000, display: '₹5,000' },
+                      { label: 'Late registration', value: 3305, display: '₹3,305' },
+                    ]}
+                  />
                 </div>
               </div>
             </section>
@@ -415,6 +430,20 @@ const TOEFLOverview = () => {
                 <p>
                   TOEFL covers Reading, Listening, Writing and Speaking, in that order. Test time is about 90 minutes; ETS asks you to allow about two hours in total.
                 </p>
+                <div>
+                  <Donut
+                    kicker="Time split"
+                    title="Where your ~90 minutes go"
+                    centerValue="~90"
+                    centerLabel="minutes"
+                    segments={[
+                      { label: 'Reading', value: 30, display: '~30 min' },
+                      { label: 'Listening', value: 29, display: '~29 min' },
+                      { label: 'Writing', value: 23, display: '~23 min' },
+                      { label: 'Speaking', value: 8, display: '~8 min' },
+                    ]}
+                  />
+                </div>
                 <div className="overflow-x-auto border border-slate-200/60 rounded-2xl my-3">
                   <table className="w-full text-left border-collapse text-xs">
                     <thead>

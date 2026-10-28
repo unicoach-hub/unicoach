@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import AiStudyRoadmap from '../components/AiStudyRoadmap';
 import { Compass, Sparkles, CheckCircle2, Calendar, Layers } from 'lucide-react';
 import { HeroBackButton } from '../components/ui/BackButton';
+import { PostageStamp } from '../components/desi/DesiPop';
 
 const AiStudyRoadmapPage = () => {
   useEffect(() => {
@@ -14,6 +15,10 @@ const AiStudyRoadmapPage = () => {
       {/* Clean LeapScholar-Style Hero Section */}
       <section className="relative pt-12 pb-16 sm:pt-14 sm:pb-20 px-4 sm:px-6 lg:px-8 bg-[#F6F3EC] border-b border-[#E6E0D4] overflow-hidden">
         <HeroBackButton />
+        {/* Desi Pop: postage stamp, wide screens only */}
+        <div className="hidden 2xl:block absolute left-10 2xl:left-24 top-1/2 -translate-y-1/2 -rotate-6 z-0 pointer-events-none">
+          <PostageStamp value="6" title="Month Roadmap" hi="योजना" note="Week by week" className="w-[150px]" />
+        </div>
         
 
         <div className="max-w-4xl mx-auto relative z-10 space-y-4 text-center">

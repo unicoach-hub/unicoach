@@ -8,6 +8,7 @@ import {
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import StudyAbroadCTA from '../../../../../components/StudyAbroadCTA';
+import { HookBand, BarCompare } from '../../../../../components/ui/Infographics';
 
 import CapIcon from '../../../../../components/ui/CapIcon';
 const SECTIONS = [
@@ -156,6 +157,8 @@ const NewZealandMACourse = () => {
 
           {/* Right Column: Content Blocks */}
           <div className="lg:col-span-9 space-y-16">
+
+            <HookBand value="3 yrs" label="open post-study work visa for MA graduates; 3-year Indian Bachelor's degrees are widely accepted" hi="खुला रास्ता" />
             
             {/* 1. Why Study MA Overview */}
             <section id="overview" className="scroll-mt-24">
@@ -394,6 +397,18 @@ const NewZealandMACourse = () => {
                   <Briefcase className="text-indigo-650" size={24} />
                   MA Careers & Entry Salaries (2026)
                 </h2>
+
+                <BarCompare
+                  className="mb-6"
+                  kicker="Entry salary (NZD)"
+                  title="Top of the entry pay range by MA domain"
+                  items={[
+                    { label: 'Psychology', value: 80000, display: '$70,000 - $80,000' },
+                    { label: 'Public Policy & IR', value: 75000, display: '$60,000 - $75,000' },
+                    { label: 'Education', value: 65000, display: '$55,000 - $65,000' },
+                    { label: 'Media & Comm', value: 62000, display: '$50,000 - $62,000' },
+                  ]}
+                />
 
                 <div className="overflow-x-auto mb-6">
                   <table className="w-full text-left text-sm">

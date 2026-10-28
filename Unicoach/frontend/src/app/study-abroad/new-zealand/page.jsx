@@ -6,6 +6,7 @@ import {
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import StudyAbroadCTA from '../../../components/StudyAbroadCTA';
+import { HookBand, StatStrip, TimelineStrip } from '../../../components/ui/Infographics';
 
 const NewZealandOverview = () => {
   return (
@@ -71,19 +72,21 @@ const NewZealandOverview = () => {
           </motion.div>
         </div>
 
-        {/* Quick Stats Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-16">
-          {[
-            { val: "All 8 Ranked", label: "QS World Rankings" },
-            { val: "25 Hrs / Wk", label: "Term-Time Work Rights" },
-            { val: "3-Year Post Study", label: "Open Work Visa (Level 7+)" },
-            { val: "Fast Track", label: "Indian Student Visa" }
-          ].map((stat, idx) => (
-            <div key={idx} className="bg-white/70 border border-white/80 rounded-2xl p-5 shadow-xs backdrop-blur-md text-left">
-              <p className="text-xl font-black text-indigo-655">{stat.val}</p>
-              <p className="text-[10px] text-slate-500 font-extrabold mt-1 uppercase tracking-wider">{stat.label}</p>
-            </div>
-          ))}
+        {/* Quick Stats: hook number + stat strip */}
+        <div className="mb-16">
+          <HookBand
+            value="3 Years"
+            label="Open post-study work visa after Level 7+ study in New Zealand"
+            hi="पढ़ो, फिर कमाओ"
+            className="mb-4"
+          />
+          <StatStrip
+            stats={[
+              { value: "All 8 Ranked", label: "QS World Rankings" },
+              { value: "25 Hrs / Wk", label: "Term-Time Work Rights" },
+              { value: "Fast Track", label: "Indian Student Visa" }
+            ]}
+          />
         </div>
 
         {/* SECTION 1: KEY SECTIONS NAVIGATION */}
@@ -136,6 +139,18 @@ const NewZealandOverview = () => {
             </div>
           ))}
         </div>
+
+        {/* Intake cycles */}
+        <TimelineStrip
+          kicker="Intakes"
+          title="When you can start in New Zealand"
+          steps={[
+            { when: "February", what: "Semester 1", highlight: true },
+            { when: "July", what: "Semester 2", note: "Mid-year intake" },
+            { when: "Rolling", what: "Flexible start", note: "At polytechnics (Te Pūkenga)" }
+          ]}
+          className="mb-12"
+        />
 
         {/* SECTION 2: WHY NEW ZEALAND WORKS FOR INDIAN STUDENTS */}
         <div className="bg-white/60 border border-white rounded-[32px] p-8 shadow-[0_8px_30px_rgba(0,0,0,0.02)] backdrop-blur-xl mb-12">

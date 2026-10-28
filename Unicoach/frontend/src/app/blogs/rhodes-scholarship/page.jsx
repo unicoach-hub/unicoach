@@ -14,6 +14,7 @@ import {
     GraduationCap,
     BookOpen
 } from 'lucide-react';
+import { StatStrip, TimelineStrip, VersusCard } from '../../../components/ui/Infographics';
 
 
 const RhodesScholarshipBlogPage = () => {
@@ -147,6 +148,17 @@ const RhodesScholarshipBlogPage = () => {
                     {/* Left Column: Core content (8 columns) */}
                     <div className="lg:col-span-8 space-y-10">
                         
+                        {/* Headline numbers from the quick read and the coverage list */}
+                        <StatStrip
+                            stats={[
+                                { value: '5', label: 'Rhodes Scholarships for India each year' },
+                                { value: '£20,400', label: 'Yearly living stipend, 2025-26' },
+                                { value: '23 July', label: '2026 India application deadline' },
+                                { value: 'Oct 2027', label: 'Oxford studies begin' },
+                            ]}
+                            source="Rhodes Trust"
+                        />
+
                         {/* Quick read box */}
                         <div className="bg-gradient-to-br from-blue-50 to-indigo-50/40 text-slate-800 rounded-3xl p-6 md:p-8 shadow-xs border border-orange-200/80 space-y-4 relative overflow-hidden">
                             <div className="flex items-center gap-2 mb-2 relative z-10">
@@ -245,11 +257,30 @@ const RhodesScholarshipBlogPage = () => {
                             <p className="text-slate-650 text-xs md:text-sm leading-relaxed font-semibold">
                                 The Rhodes Scholarship for India age limit is one of the most searched and most misreported details. For the India constituency, the official criteria are:
                             </p>
+                            <VersusCard
+                                kicker="Two age routes"
+                                title="Which route are you on?"
+                                left={{ title: 'Standard route', tag: '18 to 23', points: ['Aged 18 to 23 on 1 October 2026', 'Born after 1 October 2002 and before 2 October 2008'] }}
+                                right={{ title: 'Older-candidate route', tag: 'Under 27', points: ['Under 27 on 1 October 2026', 'First UG degree requirements completed on or after 1 October 2025'] }}
+                            />
                             <ul className="space-y-2 text-xs font-semibold text-slate-600 list-disc list-inside bg-slate-50 border border-slate-100 p-4.5 rounded-2xl">
                                 <li><strong>Standard route:</strong> Aged 18 to 23 on 1 October 2026 (born after 1 October 2002 and before 2 October 2008).</li>
                                 <li><strong>Older-candidate route:</strong> You must be under 27 on 1 October 2026 (born after 1 October 1999), AND you must have completed the academic requirements for your first undergraduate degree on or after 1 October 2025.</li>
                             </ul>
                         </div>
+
+                        {/* Key dates from this guide */}
+                        <TimelineStrip
+                            kicker="Key dates"
+                            title="Rhodes Scholarship for India, 2026 cycle"
+                            steps={[
+                                { when: '1 June 2026', what: 'Applications open' },
+                                { when: '23 July 2026', what: 'Applications close', note: '23:59 IST', highlight: true },
+                                { when: '1 Oct 2026', what: 'Age is checked on this date' },
+                                { when: 'July 2027', what: 'UG degree completed by' },
+                                { when: 'Oct 2027', what: 'Oxford studies begin' },
+                            ]}
+                        />
 
                         {/* How to Apply */}
                         <div className="bg-white border border-slate-200/60 rounded-3xl p-6 md:p-8 shadow-sm space-y-4">

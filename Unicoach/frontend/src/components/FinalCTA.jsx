@@ -6,6 +6,7 @@ import { useLead } from '../context/LeadContext';
 import worldDots from '../assets/world-dots.svg';
 import { PillButton } from './ui/PillButton';
 import PriorityDmModal from './PriorityDmModal';
+import { PostageStamp } from './desi/DesiPop';
 import { TEAM_MENTORS } from '../utils/teamMentors';
 
 // Route map: positions are % of the dotted world map (src/assets/world-dots.svg, lon -128..158, lat 62..-46).
@@ -154,6 +155,11 @@ export const FinalCTA = ({ onOpenModal }) => {
             transition={{ duration: 0.75, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
             className="relative z-20 max-w-[270px] xs:max-w-[320px] sm:max-w-[380px] lg:max-w-[420px]"
           >
+
+            {/* Desi Pop postage stamp: the call is free */}
+            <div className="hidden sm:block xl:hidden absolute -right-36 lg:-right-44 top-1 rotate-[8deg] pointer-events-none">
+              <PostageStamp value="₹0" title="Free call" hi="यूनिकोच डाक" note="Counselling, no charge" />
+            </div>
 
             {/* Headline matching exact scale of 2nd screenshot */}
             <h2 className="font-outfit text-[22px] xs:text-[25px] sm:text-[32px] lg:text-[38px] font-black text-white leading-[1.12] tracking-tight">

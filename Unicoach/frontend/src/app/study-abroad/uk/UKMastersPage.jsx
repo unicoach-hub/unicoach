@@ -7,6 +7,7 @@ import {
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { getUniversityLogo } from '../../../components/logoResolver';
+import { HookBand, BarCompare } from '../../../components/ui/Infographics';
 
 // Import local UK logo assets
 import OxfordLogo from '@/assets/uk/University of Oxford.png';
@@ -148,6 +149,13 @@ const UKMastersPage = () => {
           </p>
         </motion.div>
 
+        <HookBand
+          value="1 Year"
+          label="is all a UK Masters takes in Computer Science, Data Science or Engineering, per the course guide below."
+          hi="बस एक साल"
+          className="mb-12"
+        />
+
         {/* Currency Selector */}
         <div className="flex justify-center mb-12">
           <div className="bg-white border border-slate-200/60 p-1.5 rounded-2xl shadow-md inline-flex items-center gap-1">
@@ -165,6 +173,14 @@ const UKMastersPage = () => {
             </button>
           </div>
         </div>
+
+        <BarCompare
+          kicker="Average starting salary"
+          title="What each UK Masters stream pays after graduation"
+          items={Object.values(courseDetails).map((c) => ({ label: c.title, value: c.salary, display: `£${c.salary.toLocaleString('en-GB')}/yr` }))}
+          highlight={courseDetails.management.title}
+          className="mb-14"
+        />
 
         {/* Dynamic Specialization Explorer */}
         <div className="mb-20">

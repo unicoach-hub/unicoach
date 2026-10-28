@@ -25,6 +25,7 @@ import {
   ExternalLink,
   Sparkles
 } from 'lucide-react';
+import { StatStrip, BarCompare } from '../../../components/ui/Infographics';
 
 const UniLogo = ({ logo, name, domain }) => {
   const [error, setError] = useState(false);
@@ -259,6 +260,14 @@ const GREOverview = () => {
                 <p>
                   There are two types of GRE: the <strong>GRE General test</strong> and the <strong>GRE Subject test</strong>. The GRE General exam evaluates your Verbal, Quantitative, and Analytical writing skills.
                 </p>
+                <StatStrip
+                  stats={[
+                    { value: '1h 58m', label: 'Shorter GRE General Test' },
+                    { value: 'US$249', label: 'Fee in India from 1 Aug 2026' },
+                    { value: '10–15 days', label: 'Official results released' },
+                    { value: '5 years', label: 'Score validity' }
+                  ]}
+                />
                 <div className="bg-indigo-50/10 border border-slate-100 p-4.5 rounded-2xl text-xs text-slate-500 space-y-2 mt-4">
                   <p>• <strong>Wide Acceptability:</strong> Accepted by over 1,300 business schools in over 72 countries, including the USA, Canada, UK, and more!</p>
                   <p>• <strong>Graduate Preparedness:</strong> Indicates your readiness for university education, making it highly preferred for business and law courses.</p>
@@ -314,6 +323,17 @@ const GREOverview = () => {
                 <p>
                   From 1 August 2026, the GRE General Test fee in India is <strong>US$249</strong> (ETS). You pay in dollars or the rupee equivalent on the day, plus any applicable tax. Additional service fees apply depending on post-registration requests:
                 </p>
+                <div>
+                  <BarCompare
+                    kicker="Extra charges"
+                    title="GRE service fees in India (INR)"
+                    items={[
+                      { label: 'Score review', value: 5900, display: '₹5,900' },
+                      { label: 'Reschedule / centre change', value: 5000, display: '₹5,000' },
+                      { label: 'Extra score report', value: 2900, display: '₹2,900' }
+                    ]}
+                  />
+                </div>
                 <div className="overflow-x-auto border border-slate-200/60 rounded-2xl my-3">
                   <table className="w-full text-left border-collapse text-xs">
                     <thead>
@@ -373,6 +393,14 @@ const GREOverview = () => {
                 <p>
                   The GRE General test score range spans from <strong>130 to 170</strong> for Verbal & Quantitative sections. AW is scored separately.
                 </p>
+                <StatStrip
+                  stats={[
+                    { value: '130–170', label: 'Verbal Reasoning' },
+                    { value: '130–170', label: 'Quantitative Reasoning' },
+                    { value: '0–6', label: 'Analytical Writing' },
+                    { value: '300+', label: 'A good combined score' }
+                  ]}
+                />
                 <div className="overflow-x-auto border border-slate-200/60 rounded-2xl my-3">
                   <table className="w-full text-left border-collapse text-xs">
                     <thead>

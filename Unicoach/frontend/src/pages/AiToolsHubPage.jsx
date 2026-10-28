@@ -10,6 +10,8 @@ import {
 } from 'lucide-react';
 import { useLead } from '../context/LeadContext';
 import { HeroBackButton } from '../components/ui/BackButton';
+import { StdSign } from '../components/desi/DesiPop';
+import { HookBand } from '../components/ui/Infographics';
 
 // Calm paper panels with faint ruled lines instead of stock / AI photos
 const PAPER_PANEL = {
@@ -40,6 +42,10 @@ const AiToolsHubPage = () => {
       {/* ── 1. CINEMATIC HERO SECTION ── */}
       <section className="relative pt-12 pb-16 md:pt-16 md:pb-20 px-4 sm:px-6 lg:px-8 bg-[#F6F3EC] border-b border-[#E6E0D4] overflow-hidden">
         <HeroBackButton fallback="/" />
+        {/* Desi Pop: STD booth style sign, wide screens only */}
+        <div className="hidden 2xl:block absolute left-8 2xl:left-20 top-1/2 -translate-y-1/2 -rotate-6 z-0 pointer-events-none">
+          <StdSign words={['SOP', 'VISA', 'IELTS']} hi="औज़ार" className="w-[180px]" />
+        </div>
         
 
         <div className="max-w-5xl mx-auto relative z-10 text-center space-y-4">
@@ -106,6 +112,12 @@ const AiToolsHubPage = () => {
 
       {/* ── 2. VISUAL BENTO GRID WITH IMAGES & INTERACTIVE PREVIEWS ── */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-10">
+        <HookBand
+          value="7"
+          label="Specialized AI tools, from university shortlists to SOP drafts and visa interview practice. 100% free access."
+          hi="मुफ़्त"
+          className="mb-8"
+        />
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-7">
 

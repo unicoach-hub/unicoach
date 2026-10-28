@@ -6,6 +6,7 @@ import {
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import StudyAbroadCTA from '../../../../../components/StudyAbroadCTA';
+import { HookBand, TimelineStrip } from '../../../../../components/ui/Infographics';
 
 const SECTIONS = [
   { id: 'overview', title: 'Summer Intake Overview' },
@@ -162,6 +163,13 @@ const SummerIntakeGermany = () => {
           </div>
         </div>
 
+        <HookBand
+          className="mb-10"
+          value="Jan 15"
+          label="the hard deadline for most public universities for the April 2027 start"
+          hi="समय पर"
+        />
+
         {/* 2-Column Sidebar Layout */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
           
@@ -245,6 +253,20 @@ const SummerIntakeGermany = () => {
                   </table>
                 </div>
               </div>
+
+              <TimelineStrip
+                className="mt-6"
+                kicker="Summer 2027 deadline run"
+                title="When each window closes"
+                steps={[
+                  { when: 'Nov 30, 2026', what: 'University of Bonn', note: 'Window opens (to Jan 31)' },
+                  { when: 'Dec 15, 2026', what: 'University of Freiburg', note: 'Early!' },
+                  { when: 'Jan 15, 2027', what: 'LMU, RWTH, TU Berlin, Hamburg', note: 'Most public universities', highlight: true },
+                  { when: 'Feb 1, 2027', what: 'Hochschule Munich (FH)', note: 'PRIMUSS Portal' },
+                  { when: 'Feb 15, 2027', what: 'HAW Hamburg (FH)', note: 'Uni-Assist' },
+                  { when: 'March 31, 2027', what: 'Heidelberg University', note: 'Jan 15 to March 31 window' },
+                ]}
+              />
 
               <div className="mt-4 p-5 bg-indigo-50 border border-indigo-100 rounded-2xl flex items-start gap-3">
                 <Info size={16} className="text-indigo-650 mt-0.5 shrink-0" />

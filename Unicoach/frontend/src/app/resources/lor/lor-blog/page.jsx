@@ -14,6 +14,8 @@ import {
     Briefcase,
     FileCheck
 } from 'lucide-react';
+import { PostageStamp } from '../../../../components/desi/DesiPop';
+import { JourneyPills } from '../../../../components/ui/BrandElements';
 
 const LORBlogPage = () => {
     const navigate = useNavigate();
@@ -120,6 +122,10 @@ const LORBlogPage = () => {
             <div className="uc-clean border-x-0 relative overflow-hidden py-12 md:py-16 px-6 md:px-12 mb-12">
                 <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#DE5C2B_1px,transparent_1px)] [background-size:16px_16px]"></div>
                 <div className="max-w-[1240px] mx-auto relative z-10">
+                    {/* Desi Pop: postage stamp with the length rule from the tone tips, wide screens only */}
+                    <div className="hidden xl:block absolute right-6 top-1/2 -translate-y-1/2 rotate-6 pointer-events-none">
+                        <PostageStamp value="1–2" title="Pages max" hi="सिफ़ारिश" note="LOR length" className="w-[150px]" />
+                    </div>
                     <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-indigo-500/20 border border-indigo-400/30 rounded-full text-indigo-300 text-xs font-bold uppercase tracking-wider mb-4">
                         <Sparkles size={12} className="text-indigo-400" />
                         <span>Recommendation Guides</span>
@@ -210,6 +216,15 @@ const LORBlogPage = () => {
                             <h3 className="text-lg font-bold text-slate-800 tracking-tight">
                                 Structure and Paragraph-wise LOR Format
                             </h3>
+                            <JourneyPills
+                                steps={[
+                                    { label: 'Intro', sub: 'Relationship' },
+                                    { label: 'Strengths', sub: 'Skills shown' },
+                                    { label: 'Anecdote', sub: 'One real story' },
+                                    { label: 'Closing', sub: 'Sign off' },
+                                ]}
+                                className="w-fit max-w-full"
+                            />
                             <div className="overflow-x-auto">
                                 <table className="w-full text-left border-collapse text-xs md:text-sm">
                                     <thead>

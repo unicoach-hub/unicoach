@@ -7,6 +7,8 @@ import {
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import StudyAbroadCTA from '../../../../../components/StudyAbroadCTA';
+import { BarCompare } from '../../../../../components/ui/Infographics';
+import { JourneyPills } from '../../../../../components/ui/BrandElements';
 
 const topMastersUnis = [
   {
@@ -270,6 +272,19 @@ const GermanyTopMasters = () => {
             <AlertTriangle size={12} className="text-slate-400 shrink-0" />
             <span>Note: Fees converted at €1 = ₹105.20. Public universities are tuition-free, except for the State of Baden-Württemberg (€1,500/semester) or certain specialized tracks (like TUM).</span>
           </div>
+
+          <BarCompare
+            className="mt-6"
+            kicker="Annual tuition, non-EU"
+            title="Only 4 of the top 10 charge tuition"
+            items={[...topMastersUnis]
+              .sort((a, b) => b.annualTuitionNonEU - a.annualTuitionNonEU)
+              .map((u) => ({
+                label: u.name.replace(/\s*\(.*\)/, ''),
+                value: u.annualTuitionNonEU,
+                display: u.annualTuitionNonEU === 0 ? 'Free' : `€${u.annualTuitionNonEU.toLocaleString()}`,
+              }))}
+          />
         </div>
 
         {/* 2. THE ECTS CREDIT WARNING BANNER */}
@@ -324,6 +339,21 @@ const GermanyTopMasters = () => {
             <h2 className="text-3xl font-black text-slate-900 mb-2">Master's Application Step-by-Step</h2>
             <p className="text-slate-500 text-sm font-bold">Follow this roadmap exactly to avoid delays. Processing can take up to 6 months.</p>
           </div>
+
+          <JourneyPills
+            className="mb-8"
+            active={activeStep}
+            steps={[
+              { label: 'Relevance' },
+              { label: 'Tests' },
+              { label: 'APS' },
+              { label: 'SOP & CV' },
+              { label: 'Apply' },
+              { label: 'Sperrkonto' },
+              { label: 'Visa' },
+              { label: 'Arrival' },
+            ]}
+          />
 
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
             {steps.map((s, idx) => (

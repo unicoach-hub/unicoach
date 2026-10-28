@@ -10,6 +10,7 @@ import StudyAbroadCTA from '../../../components/StudyAbroadCTA';
 import { getUniversityLogo } from '../../../components/logoResolver';
 import { matchesUniversitySearch, getMatchedCoursesForUniversity } from '../../../utils/universitySearchMatcher';
 import SketchHero from '../../../components/SketchHero';
+import { HookBand, StatStrip, BarCompare } from '../../../components/ui/Infographics';
 
 // ─────────────────────────────────────────────
 // Australia Universities Database for Finder
@@ -131,19 +132,21 @@ const StudyInAustralia = () => {
           </motion.div>
         </div>
 
-        {/* Quick Stats Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-16">
-          {[
-            { val: "9 Universities", label: "QS Global Top 100" },
-            { val: "Up to 4 Years", label: "Post-Study PSWV Stay" },
-            { val: "AUD 29,710", label: "Min. Annual Living Proof" },
-            { val: "48 Hrs / Fnight", label: "Session Work Limits" }
-          ].map((stat, idx) => (
-            <div key={idx} className="bg-white/70 border border-white/80 rounded-2xl p-5 shadow-xs backdrop-blur-md">
-              <p className="text-xl md:text-2xl font-black text-amber-600">{stat.val}</p>
-              <p className="text-[10px] text-slate-500 font-extrabold mt-1 uppercase tracking-wider leading-snug">{stat.label}</p>
-            </div>
-          ))}
+        {/* Quick Stats: hook number + stat strip */}
+        <div className="mb-16">
+          <HookBand
+            value="Up to 4 Years"
+            label="Post-study stay (PSWV) for PhD graduates under the Australia-India agreement (AI-ECTA)"
+            hi="पढ़ो, फिर कमाओ"
+            className="mb-4"
+          />
+          <StatStrip
+            stats={[
+              { value: "9 Universities", label: "QS Global Top 100" },
+              { value: "AUD 29,710", label: "Min. Annual Living Proof" },
+              { value: "48 Hrs / Fnight", label: "Session Work Limits" }
+            ]}
+          />
         </div>
 
         {/* INTEGRITY RESET / WARNING BOX */}
@@ -362,6 +365,19 @@ const StudyInAustralia = () => {
                   <div>
                     <h2 className="text-2xl font-black text-slate-900 mb-2">Estimated Costs (Tuition & Living)</h2>
                     <p className="text-slate-500 text-xs font-bold mb-6 uppercase tracking-wider">Toggled Live Exchange Rate: 1 AUD = 56.00 INR</p>
+
+                    <BarCompare
+                      kicker="First-year budget"
+                      title="Where your money goes in year one"
+                      items={[
+                        { label: "Tuition (avg.)", value: 35000, display: formatCost(35000) },
+                        { label: "Living cost proof", value: 29710, display: formatCost(29710) },
+                        { label: "Visa fee (500)", value: 2000, display: formatCost(2000) },
+                        { label: "Return airfare", value: 2000, display: formatCost(2000) },
+                        { label: "OSHC / year", value: 800, display: formatCost(800) }
+                      ]}
+                      className="mb-8"
+                    />
                     
                     <div className="overflow-x-auto mb-8">
                       <table className="w-full text-left text-sm">

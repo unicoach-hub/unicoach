@@ -8,6 +8,7 @@ import {
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import StudyAbroadCTA from '../../../../../components/StudyAbroadCTA';
+import { BarCompare } from '../../../../../components/ui/Infographics';
 import { getUniversityLogo } from '../../../../../components/logoResolver';
 
 // ─────────────────────────────────────────────
@@ -323,6 +324,20 @@ const GermanyMastersPage = () => {
               <span className="text-xs text-slate-400 font-bold">Exchange reference: €1 = ₹107.78</span>
             </div>
           </div>
+
+          <BarCompare
+            className="mt-8"
+            kicker="Annual fees, top of range"
+            title="Same QS league, very different bills"
+            source="Official University Portals"
+            items={[...universities]
+              .sort((a, b) => b.feeEurMax - a.feeEurMax)
+              .map((u) => ({
+                label: u.name.replace(/\s*\(.*\)/, ''),
+                value: u.feeEurMax,
+                display: `€${u.feeEurMax.toLocaleString()}`,
+              }))}
+          />
         </div>
 
         {/* 4. ELIGIBILITY AND ADMISSION CHECKLIST */}
@@ -440,6 +455,15 @@ const GermanyMastersPage = () => {
                 </tbody>
               </table>
             </div>
+
+            <BarCompare
+              className="mt-6"
+              kicker="Before you fly"
+              title="The blocked account dwarfs every other cost"
+              items={[...preArrivalCosts]
+                .sort((a, b) => b.costEur - a.costEur)
+                .map((c) => ({ label: c.item, value: c.costEur, display: `€${c.costEur.toLocaleString()}` }))}
+            />
           </div>
 
         </div>

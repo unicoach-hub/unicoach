@@ -25,6 +25,8 @@ import {
   ExternalLink,
   Info
 } from 'lucide-react';
+import { HookBand, StatStrip, BarCompare, TimelineStrip, Donut, VersusCard } from '../../../components/ui/Infographics';
+import { StepCounter } from '../../../components/ui/BrandElements';
 
 const GMATDetailPage = ({ pageKey }) => {
   const [openFaq, setOpenFaq] = useState({});
@@ -72,6 +74,14 @@ const GMATDetailPage = ({ pageKey }) => {
             <p className="text-slate-650 font-semibold text-xs leading-relaxed">
               GMAT, or Graduate Management Admission Test, is a computer-adaptive test owned and operated by the Graduate Management Admission Council (GMAC).
             </p>
+            <StatStrip
+              stats={[
+                { value: '2h 15m', label: 'Exam length, plus an optional 10-minute break' },
+                { value: '3', label: 'Sections: Quant, Verbal, Data Insights' },
+                { value: '18+', label: 'Minimum age, no upper limit' },
+                { value: '16 days', label: 'Wait before a retake' }
+              ]}
+            />
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4.5 my-6">
               {[
                 { title: "Duration", desc: "2 hours and 15 minutes long (with one optional 10-minute break)." },
@@ -139,6 +149,22 @@ const GMATDetailPage = ({ pageKey }) => {
           <p className="text-slate-650 font-semibold text-xs leading-relaxed">
             The new GMAT structure deals strictly with business readiness. The analytical writing (AWA) has been completely removed.
           </p>
+
+          <HookBand value="205–805" label="Total GMAT score range. Every Focus score ends in 5" hi="स्कोर" />
+
+          <div>
+            <Donut
+              kicker="45 minutes each"
+              title="Questions per GMAT section"
+              segments={[
+                { label: 'Verbal Reasoning', value: 23, display: '23 Qs' },
+                { label: 'Quantitative Reasoning', value: 21, display: '21 Qs' },
+                { label: 'Data Insights', value: 20, display: '20 Qs' }
+              ]}
+              centerValue="64"
+              centerLabel="questions"
+            />
+          </div>
 
           <div className="overflow-x-auto border border-slate-200/60 rounded-2xl my-6 shadow-sm">
             <table className="w-full text-left border-collapse text-xs md:text-sm">
@@ -245,6 +271,19 @@ const GMATDetailPage = ({ pageKey }) => {
             The fee structure varies based on whether you book GMAT as a test center exam or an online exam. Check below for standard and cancellation brackets:
           </p>
 
+          <div>
+            <BarCompare
+              kicker="Exam fee"
+              title="What GMAT costs (USD)"
+              highlight="Online (at home)"
+              items={[
+                { label: 'Online (at home)', value: 300, display: '$300' },
+                { label: 'Test centre', value: 275, display: '$275' },
+                { label: 'Extra score report', value: 35, display: '$35 each' }
+              ]}
+            />
+          </div>
+
           <div className="space-y-2">
             <h4 className="text-sm font-black text-slate-800">1. Base GMAT Exam Fee Breakdown</h4>
             <div className="overflow-x-auto border border-slate-200/60 rounded-2xl shadow-sm">
@@ -278,6 +317,18 @@ const GMATDetailPage = ({ pageKey }) => {
             <p className="text-xs text-slate-500 font-semibold leading-relaxed">
               If you cancel or reschedule too close to the exam appointment, you will receive a smaller refund and pay a higher service fee.
             </p>
+
+            <div>
+              <TimelineStrip
+                kicker="Test centre · notice period"
+                title="Reschedule fee vs cancellation refund"
+                steps={[
+                  { when: '> 60 days', what: 'Reschedule USD 55', note: 'Cancel: USD 110 back', highlight: true },
+                  { when: '15 to 60 days', what: 'Reschedule USD 110', note: 'Cancel: USD 80 back' },
+                  { when: '14 days or less', what: 'Reschedule USD 165', note: 'Cancel: USD 55 back' }
+                ]}
+              />
+            </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {/* Reschedule */}
@@ -346,6 +397,13 @@ const GMATDetailPage = ({ pageKey }) => {
           <p className="text-slate-650 font-semibold text-xs leading-relaxed">
             The online GMAT exam is open daily, 24 hours a day, providing ultimate scheduling flexibility. Physical test center slots depend entirely on local center calendars.
           </p>
+          <StatStrip
+            stats={[
+              { value: '24/7', label: 'Online GMAT open every day' },
+              { value: '2–3 mo', label: 'Book this far ahead for your preferred slot' },
+              { value: '5 years', label: 'Score validity' }
+            ]}
+          />
 
           <div className="space-y-4">
             <h3 className="text-lg font-black text-slate-900 flex items-center gap-2">
@@ -395,8 +453,24 @@ const GMATDetailPage = ({ pageKey }) => {
             You can register for the GMAT starting 6 months before your target test date and up to 24 hours prior to a slot. Early booking is highly recommended.
           </p>
 
+          <HookBand value="6 months" label="Earliest you can register before your test date. The latest is 24 hours before" hi="जल्दी" />
+
           <div className="space-y-3">
             <h4 className="text-sm font-black text-slate-850">10-Step GMAT Registration Process</h4>
+            <StepCounter
+              items={[
+                { label: 'MBA.com account' },
+                { label: 'Match passport' },
+                { label: 'Online or centre' },
+                { label: 'Up to 3 centres' },
+                { label: 'Date & slot' },
+                { label: 'Accommodations' },
+                { label: 'Review rules' },
+                { label: 'Pay by card', highlight: true },
+                { label: 'Confirmation email' },
+                { label: 'Prepare' }
+              ]}
+            />
             <div className="space-y-2 text-[11px] font-bold text-slate-500">
               {[
                 "1. Create your account by visiting the official GMAT website (MBA.com) and logging in.",
@@ -454,20 +528,14 @@ const GMATDetailPage = ({ pageKey }) => {
             The GMAT exam score report highlights individual performances on a standardized scale. Focus edition results are released extremely quickly.
           </p>
 
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-center">
-            <div className="border border-slate-100 rounded-2xl p-4 bg-slate-50/50">
-              <span className="text-[10px] text-slate-400 font-black uppercase tracking-wider block mb-1">Score Validity</span>
-              <span className="text-lg font-black text-slate-850">5 Years</span>
-            </div>
-            <div className="border border-slate-100 rounded-2xl p-4 bg-slate-50/50">
-              <span className="text-[10px] text-slate-400 font-black uppercase tracking-wider block mb-1">Score Scale</span>
-              <span className="text-lg font-black text-indigo-600">205 - 805</span>
-            </div>
-            <div className="border border-slate-100 rounded-2xl p-4 bg-slate-50/50">
-              <span className="text-[10px] text-slate-400 font-black uppercase tracking-wider block mb-1">Delivery Time</span>
-              <span className="text-lg font-black text-slate-850">3-5 Days</span>
-            </div>
-          </div>
+          <StatStrip
+            stats={[
+              { value: '5 Years', label: 'Score validity' },
+              { value: '205–805', label: 'Score scale' },
+              { value: '3-5 Days', label: 'Delivery time' },
+              { value: '5 free', label: 'Score reports to universities' }
+            ]}
+          />
 
           <div className="space-y-4 pt-4 border-t border-slate-100">
             <h4 className="text-sm font-black text-slate-800">1. GMAT Focus Score Scales</h4>
@@ -517,9 +585,13 @@ const GMATDetailPage = ({ pageKey }) => {
             <p className="text-xs text-slate-500 font-semibold leading-relaxed">
               Your exam fee includes sending scores to up to <strong>5 universities free of charge</strong>. The process differs based on delivery format:
             </p>
-            <div className="bg-slate-50 p-4.5 rounded-2xl border border-slate-150/60 text-[11px] text-slate-600 font-semibold leading-relaxed space-y-2">
-              <p>• <strong>Online Exam:</strong> You'll receive an email notification once your score report is ready, after which you have 48 hours to select receivers for free.</p>
-              <p>• <strong>Test Center:</strong> You select the 5 universities before you start the actual exam on the workstation terminal.</p>
+            <div>
+              <VersusCard
+                kicker="Free score reports"
+                title="When you pick your 5 schools"
+                left={{ title: 'Online Exam', tag: '48 hours', points: ['Email notification once your score report is ready', 'Then 48 hours to select receivers for free'] }}
+                right={{ title: 'Test Center', tag: 'Before you start', points: ['Select the 5 universities before you start the exam', 'Done on the workstation terminal'] }}
+              />
             </div>
           </div>
         </div>
@@ -533,6 +605,8 @@ const GMATDetailPage = ({ pageKey }) => {
           <p className="text-slate-650 font-semibold text-xs leading-relaxed">
             The GMAT tests analytics rather than memory. With dedicated study of 3 to 4 months, a high percentile is highly attainable. Explore the section-wise strategy cards:
           </p>
+
+          <HookBand value="3–4 months" label="Dedicated study that makes a high GMAT percentile attainable" hi="तैयारी" />
 
           <div className="space-y-5">
             {/* Verbal */}
@@ -594,6 +668,14 @@ const GMATDetailPage = ({ pageKey }) => {
           <p className="text-slate-650 font-semibold text-xs leading-relaxed">
             Using high-quality practice papers lets you adapt to the adaptive format, get used to the timing constraints, and track your metrics.
           </p>
+          <StatStrip
+            stats={[
+              { value: '800+', label: 'Real past questions in the Official Guide' },
+              { value: '6', label: 'Practice exams in Kaplan Prep Plus' },
+              { value: '300', label: 'Hardest past questions (Official Advanced)' },
+              { value: '2 free', label: 'Full-length adaptive tests on MBA.com' }
+            ]}
+          />
 
           <div className="bg-indigo-50/10 rounded-2xl p-5 border border-indigo-150 space-y-3">
             <h4 className="font-black text-slate-800 text-xs">Top 5 GMAT Books for Preparation</h4>

@@ -8,6 +8,7 @@ import {
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import StudyAbroadCTA from '../../../../../components/StudyAbroadCTA';
+import { HookBand, TimelineStrip } from '../../../../../components/ui/Infographics';
 
 import CapIcon from '../../../../../components/ui/CapIcon';
 const SECTIONS = [
@@ -200,6 +201,12 @@ const FranceMBBSCourse = () => {
             
             {/* 1. Language & Structure Warning */}
             <section id="why-medicine" className="scroll-mt-24">
+              <HookBand
+                value="9–11+ yrs"
+                label="of medical training in France, taught entirely in French at public universities"
+                hi="लंबा सफ़र"
+                className="mb-8"
+              />
               <div className="bg-amber-50 border border-amber-250 rounded-[2rem] p-8">
                 <h2 className="text-2xl font-black text-amber-950 mb-2 flex items-center gap-2">
                   <AlertTriangle className="text-amber-600 animate-pulse" size={24} />
@@ -238,6 +245,17 @@ const FranceMBBSCourse = () => {
                   Structure of French Medical Studies (Cycles)
                 </h2>
                 <p className="text-slate-500 text-xs font-semibold mb-6">Select a training cycle to review duration, structure, and milestones.</p>
+
+                <TimelineStrip
+                  className="mb-8"
+                  kicker="Three cycles"
+                  title="Your path to the Diplôme d'État de Docteur en Médecine"
+                  steps={medicalCycles.map((c) => ({
+                    when: c.duration,
+                    what: c.name,
+                    highlight: c.cycle === 3,
+                  }))}
+                />
 
                 <div className="grid grid-cols-1 lg:grid-cols-[200px_1fr] gap-8">
                   <div className="flex lg:flex-col gap-2 overflow-x-auto pb-4 lg:pb-0 scrollbar-none border-b lg:border-b-0 lg:border-r border-slate-100">

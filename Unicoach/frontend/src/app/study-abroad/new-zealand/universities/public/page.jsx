@@ -7,6 +7,7 @@ import {
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import StudyAbroadCTA from '../../../../../components/StudyAbroadCTA';
+import { HookBand } from '../../../../../components/ui/Infographics';
 
 const SECTIONS = [
   { id: 'overview', title: 'Why Choose Public NZ?' },
@@ -271,6 +272,8 @@ const NewZealandPublic = () => {
 
           {/* Right Column: Content Blocks */}
           <div className="lg:col-span-9 space-y-16">
+
+            <HookBand value="NZD 26,000" label="approximate starting tuition per year (₹13.5 Lakhs) at New Zealand's 8 public universities" hi="सरकारी" />
             
             {/* 1. Why Choose Public NZ */}
             <section id="overview" className="scroll-mt-24">

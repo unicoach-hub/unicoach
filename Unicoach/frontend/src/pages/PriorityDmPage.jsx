@@ -6,6 +6,7 @@ import { SUPPORT_CATEGORIES } from '../components/PriorityDmModal';
 import { API_BASE_URL } from '../config';
 import { TEAM_MENTORS, mentorLook } from '../utils/teamMentors';
 import { Muhavra } from '../components/desi/Desi';
+import { HookBand } from '../components/ui/Infographics';
 
 const PriorityDmPage = () => {
   const [formData, setFormData] = useState({
@@ -93,6 +94,8 @@ const PriorityDmPage = () => {
             <p className="text-[16px] text-slate-600 leading-relaxed max-w-[440px]">
               Skip the queue. Submit your specific visa, admission, or job roadmap inquiry directly to our senior international counsellors and immigration consultants.
             </p>
+
+            <HookBand value="2–4 hrs" label="Response time from our senior specialists" hi="सीधी बात" />
 
             {/* Value Points */}
             <div className="space-y-3 pt-1">

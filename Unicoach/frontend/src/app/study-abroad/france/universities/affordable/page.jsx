@@ -7,6 +7,7 @@ import {
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import StudyAbroadCTA from '../../../../../components/StudyAbroadCTA';
+import { HookBand, BarCompare } from '../../../../../components/ui/Infographics';
 
 const tuitionComparison = [
   {
@@ -207,6 +208,13 @@ const FranceAffordable = () => {
           </p>
         </motion.div>
 
+        <HookBand
+          value="€3.30"
+          label="buys a complete hot three-course meal at a CROUS student cafeteria (€1.00 on a scholarship)"
+          hi="सस्ता"
+          className="mb-10"
+        />
+
         {/* Universal Currency Selector */}
         <div className="flex justify-center mb-12">
           <div className="bg-white border border-slate-200/60 p-1.5 rounded-2xl shadow-sm inline-flex items-center gap-1">
@@ -233,6 +241,18 @@ const FranceAffordable = () => {
             Tuition Fees: Public vs. Private
           </h2>
           <p className="text-slate-500 text-xs font-semibold mb-6">France's public universities offer identical state subsidies to non-EU students, making high-quality study affordable.</p>
+
+          <BarCompare
+            className="mb-8"
+            kicker="Fees per year"
+            title="Annual tuition by institution type (lower end of range)"
+            highlight="Public (Master's Programs)"
+            items={tuitionComparison.map((t) => ({
+              label: t.category.replace('Public Universities ', 'Public '),
+              value: parseInt(t.feesEUR.split(' - ')[0].replace(/[^0-9]/g, ''), 10),
+              display: t.feesEUR.replace(' / year', ''),
+            }))}
+          />
           
           <div className="overflow-x-auto">
             <table className="w-full text-left text-sm">

@@ -10,6 +10,7 @@ import {
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import StudyAbroadCTA from '../../../../../components/StudyAbroadCTA';
+import { HookBand, BarCompare } from '../../../../../components/ui/Infographics';
 
 /* ─── DATA ─────────────────────────────────────────────────────────── */
 
@@ -221,6 +222,8 @@ const ItalyMBBSCourse = () => {
             ))}
           </div>
         </motion.div>
+
+        <HookBand value="₹1L – ₹5L" label="a year in public university tuition for a WHO & NMC approved 6-year MD" hi="डॉक्टर" className="mb-10" />
 
         {/* ── TOC CHIPS ── */}
         <motion.div
@@ -632,6 +635,13 @@ const ItalyMBBSCourse = () => {
         {/* ── COST OF STUDYING ── */}
         <section className="mb-16">
           <SectionHeader icon={Coins} title="Cost of Studying MBBS in Italy" subtitle="Italy offers some of Europe's most affordable medical education. Here's a complete cost breakdown." iconColor="text-emerald-600" />
+          <BarCompare
+            kicker="Annual tuition"
+            title="MBBS fee per year at the top 5 public universities (EUR)"
+            items={topUniversities.map((u) => ({ label: u.name.replace('University of ', '').replace(' University of Rome', ''), value: u.feeEUR, display: `€${u.feeEUR.toLocaleString()}` }))}
+            highlight="Sapienza Rome"
+            className="mb-6"
+          />
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {/* Tuition */}
             <div className="bg-white/60 border border-white rounded-[28px] p-6 md:p-8 shadow-sm">

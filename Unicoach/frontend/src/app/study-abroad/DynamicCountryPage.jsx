@@ -10,6 +10,7 @@ import StudyAbroadCTA from '../../components/StudyAbroadCTA';
 import { getUniversityLogo } from '../../components/logoResolver';
 import { matchesUniversitySearch, getMatchedCoursesForUniversity } from '../../utils/universitySearchMatcher';
 import PageBackBreadcrumb from '../../components/common/PageBackBreadcrumb';
+import { HookBand, StatStrip } from '../../components/ui/Infographics';
 import CourseFinderCard from '../../components/CourseFinderCard';
 import ProgramSelectionTools from '../../components/ProgramSelectionTools';
 import { useProgramSelection } from '../../utils/useProgramSelection';
@@ -257,19 +258,22 @@ export default function DynamicCountryPage() {
             Explore world-class academic institutions, check tuition structures, and start your journey to {country.name} in 2026. Get counselled by expert advisors.
           </p>
 
-          {/* Stats Grid */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-10">
-            {[
-              { val: `${universities.length}`, label: "Listed Universities" },
-              { val: `${country.cities?.length || 0}`, label: "Top Cities" },
-              { val: "English / Native", label: "Languages" },
-              { val: "Available", label: "Post-Study Work Visa" }
-            ].map((stat, idx) => (
-              <div key={idx} className="bg-white/70 border border-white/80 rounded-2xl p-5 shadow-xs backdrop-blur-md">
-                <p className="text-xl font-black text-indigo-650">{stat.val}</p>
-                <p className="text-[10px] text-slate-500 font-extrabold mt-1 uppercase tracking-wider">{stat.label}</p>
-              </div>
-            ))}
+          {/* Hook number + stats */}
+          <div className="mt-10 text-left">
+            {universities.length > 0 && (
+              <HookBand
+                value={`${universities.length}`}
+                label={`Universities in ${country.name} you can browse and shortlist on this page`}
+                className="mb-4"
+              />
+            )}
+            <StatStrip
+              stats={[
+                { value: `${country.cities?.length || 0}`, label: "Top Cities" },
+                { value: "English / Native", label: "Languages" },
+                { value: "Available", label: "Post-Study Work Visa" }
+              ]}
+            />
           </div>
         </motion.div>
 

@@ -21,6 +21,7 @@ import {
   HelpCircle
 } from 'lucide-react';
 import { API_BASE_URL } from '../../../../config';
+import { HookBand, TimelineStrip } from '../../../../components/ui/Infographics';
 
 const IELTSDatesPage = () => {
   const [dbBlogs, setDbBlogs] = React.useState([]);
@@ -298,6 +299,8 @@ const IELTSDatesPage = () => {
                 Ready to take the next step in your IELTS journey? In India, for the paper-delivered IELTS in September 2025, test dates are September 6, 13, 18, and 27, 2025. Some of these dates, like the 13th and 27th, offer both Academic and General Training, while others are Academic only. Computer-delivered IELTS tests are available much more frequently—almost daily at select locations.
               </p>
 
+              <HookBand value="Jan–Mar" label="and June to August are high-demand months in India. Book about 1 month in advance." hi="जल्दी करो" />
+
               {/* Test Finder Dropdown */}
               <div className="bg-indigo-50/40 border border-indigo-100 rounded-2xl p-6">
                 <h4 className="font-extrabold text-slate-805 text-sm mb-3 flex items-center gap-1.5">
@@ -459,6 +462,18 @@ const IELTSDatesPage = () => {
               <p>
                 We recommend registering for your IELTS test <strong>at least 3 to 6 months before your target university application deadline</strong>. This leaves enough room for scheduling slot retakes if necessary or preparing visa materials early. High-demand months in India are January to March (Fall deadlines) and June to August. Booking 1 month in advance is highly recommended.
               </p>
+
+              <div>
+                <TimelineStrip
+                  kicker="Plan backwards"
+                  title="When to book and sit IELTS"
+                  steps={[
+                    { when: '1 month before test', what: 'Book your slot', note: 'Peak months fill fast' },
+                    { when: '3–6 months before deadline', what: 'Take the test', note: 'Room for a retake and visa papers' },
+                    { when: 'Deadline', what: 'University application deadline', highlight: true },
+                  ]}
+                />
+              </div>
 
               <h3 className="text-lg font-black text-slate-900 mt-12 mb-6">Frequently Asked Questions (FAQs) - IELTS Dates</h3>
               <div className="space-y-4">

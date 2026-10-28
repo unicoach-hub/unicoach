@@ -7,6 +7,7 @@ import {
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import StudyAbroadCTA from '../../../../../components/StudyAbroadCTA';
+import { HookBand, TimelineStrip, VersusCard } from '../../../../../components/ui/Infographics';
 
 const SECTIONS = [
   { id: 'overview', title: 'Why New Zealand in 2027?' },
@@ -158,6 +159,8 @@ const NewZealandIntakes = () => {
 
           {/* Right Column: Content Blocks */}
           <div className="lg:col-span-9 space-y-16">
+
+            <HookBand value="25 hrs" label="Work allowed per week during term since 3 November 2025, up from 20" hi="काम भी" />
             
             {/* 1. Why New Zealand in 2027 */}
             <section id="overview" className="scroll-mt-24">
@@ -271,6 +274,14 @@ const NewZealandIntakes = () => {
                   February vs. July 2027 Quick Comparison
                 </h2>
                 <p className="text-slate-400 text-xs font-bold mb-6">Side-by-side comparison for Semester 1 and Semester 2</p>
+
+                <VersusCard
+                  className="mb-6"
+                  kicker="Feb vs July"
+                  title="Which 2027 intake suits you?"
+                  left={{ title: 'February 2027', tag: 'Main intake', points: intakeComparison.map((row) => `${row.feature}: ${row.feb}`) }}
+                  right={{ title: 'July 2027', tag: 'Mid-year', points: intakeComparison.map((row) => `${row.feature}: ${row.july}`) }}
+                />
 
                 <div className="overflow-x-auto">
                   <table className="w-full text-left text-sm">
@@ -518,6 +529,18 @@ const NewZealandIntakes = () => {
                   🏛️ University-Wise Deadlines (2027)
                 </h2>
                 <p className="text-slate-400 text-xs font-bold mb-6">Ensure you apply before dates to secure admission offers</p>
+
+                <TimelineStrip
+                  className="mb-6"
+                  kicker="Feb/Mar 2027 deadlines"
+                  title="Confirmed application deadlines, earliest first"
+                  steps={[
+                    { when: 'Nov 15, 2026', what: 'University of Otago', note: 'Applying from outside NZ', highlight: true },
+                    { when: 'Dec 1, 2026', what: 'Victoria University of Wellington' },
+                    { when: 'Dec 1, 2026', what: 'Lincoln University', note: 'Applying from outside NZ' },
+                    { when: 'Dec 7, 2026', what: 'University of Auckland', note: 'International postgraduate' },
+                  ]}
+                />
 
                 <div className="overflow-x-auto">
                   <table className="w-full text-left text-sm">

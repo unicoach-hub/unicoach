@@ -7,6 +7,7 @@ import {
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import StudyAbroadCTA from '../../../../../components/StudyAbroadCTA';
+import { HookBand, TimelineStrip, BarCompare } from '../../../../../components/ui/Infographics';
 
 const SECTIONS = [
   { id: 'overview', title: 'Why Choose July Intake?' },
@@ -178,6 +179,8 @@ const NewZealandJulyIntake = () => {
 
           {/* Right Column: Content Blocks */}
           <div className="lg:col-span-9 space-y-16">
+
+            <HookBand value="70-80%" label="of all programmes open for the July 2027 intake, with off-peak (faster) visa processing" hi="दूसरा मौका" />
             
             {/* 1. Why Choose July Intake */}
             <section id="overview" className="scroll-mt-24">
@@ -295,20 +298,11 @@ const NewZealandJulyIntake = () => {
                 <p className="text-slate-400 text-xs font-bold uppercase tracking-wider">Month-by-month planning framework</p>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {timelinePhases.map((phase, idx) => (
-                  <div key={idx} className="bg-white border border-slate-150 rounded-2xl p-5 shadow-xs">
-                    <div className="flex items-center justify-between mb-3">
-                      <span className="text-[10px] font-black text-indigo-650 uppercase tracking-wider">{phase.dates}</span>
-                      <span className="w-6 h-6 rounded-full bg-slate-55 flex items-center justify-center text-[10px] text-slate-400 font-black">
-                        0{idx + 1}
-                      </span>
-                    </div>
-                    <h4 className="font-extrabold text-slate-900 text-xs mb-2">{phase.phase}</h4>
-                    <p className="text-slate-500 text-[11px] leading-relaxed font-semibold">{phase.desc}</p>
-                  </div>
-                ))}
-              </div>
+              <TimelineStrip
+                kicker="July 2027"
+                title="Six phases from research to arrival"
+                steps={timelinePhases.map((phase, idx) => ({ when: phase.dates, what: phase.phase, note: phase.desc, highlight: idx === timelinePhases.length - 1 }))}
+              />
             </section>
 
             {/* 5. Cost of Studying */}
@@ -369,6 +363,12 @@ const NewZealandJulyIntake = () => {
                 {/* City Living Cost Table */}
                 <div>
                   <h3 className="font-black text-slate-800 text-sm mb-4">Monthly Expenses & Rents by City</h3>
+                  <BarCompare
+                    className="mb-6"
+                    kicker="Monthly cost (excl. rent)"
+                    title="Auckland is the priciest student city"
+                    items={cityCosts.map((city) => ({ label: city.name, value: city.monthlyCostNZD, display: formatCost(city.monthlyCostNZD) }))}
+                  />
                   <div className="overflow-x-auto">
                     <table className="w-full text-left text-sm">
                       <thead>

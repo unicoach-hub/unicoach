@@ -16,6 +16,7 @@ import {
   TrendingUp,
   Bookmark
 } from 'lucide-react';
+import { BarCompare, Donut } from './ui/Infographics';
 
 const examsList = [
   { key: 'ielts', name: 'IELTS Books', path: '/resources/books/ielts-books', tag: 'Academic & GT' },
@@ -45,6 +46,14 @@ const ExamBooksTemplate = ({ currentExamKey, data }) => {
   };
 
   // Derive unique categories from books
+  // Book prices as listed on each card ("Approx. ₹2,200"), for the price comparison bars
+  const priceBars = data.booksList
+    .map((b) => {
+      const m = /₹\s?([\d,]+)/.exec(b.price || '');
+      return m ? { label: b.name, value: Number(m[1].replace(/,/g, '')), display: b.price.replace(/^Approx\.\s*/i, '') } : null;
+    })
+    .filter(Boolean);
+  const cheapest = priceBars.length ? priceBars.reduce((a, b) => (b.value < a.value ? b : a)).label : undefined;
   const categories = ['all', ...new Set(data.booksList.map(getBookCategory))];
 
   const filteredBooks = selectedCategory === 'all'
@@ -309,6 +318,16 @@ const ExamBooksTemplate = ({ currentExamKey, data }) => {
               </div>
             </section>
 
+            {/* Price comparison of the books above (approximate prices from each card) */}
+            {priceBars.length >= 3 && (
+              <BarCompare
+                kicker="Approx. prices"
+                title="What these books cost"
+                items={priceBars}
+                highlight={cheapest}
+              />
+            )}
+
             {/* Preparation Tips Section */}
             <section className="bg-white rounded-3xl p-6 md:p-8 border border-slate-200 shadow-sm">
               <div className="flex items-center gap-2 mb-6">
@@ -317,6 +336,18 @@ const ExamBooksTemplate = ({ currentExamKey, data }) => {
                   Mentor-Approved Preparation Strategy
                 </h2>
               </div>
+
+              {/* Optional section-time split, built from the page's own prep tips */}
+              {data.timeSplit && (
+                <Donut
+                  kicker={data.timeSplit.kicker}
+                  title={data.timeSplit.title}
+                  segments={data.timeSplit.segments}
+                  centerValue={data.timeSplit.centerValue}
+                  centerLabel={data.timeSplit.centerLabel}
+                  className="mb-6"
+                />
+              )}
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5">
                 {data.prepTips.map((tip, idx) => (

@@ -15,6 +15,7 @@ import { exportUniversitiesToExcel } from '../../utils/excelExporter';
 import { getVerifiedRanking } from '../../utils/ranking';
 import { getOfficialRequirements, getGreText, CHECK_SITE } from '../../utils/requirements';
 import { getOfficialTuition } from '../../utils/dataSourceLabel';
+import { HookBand } from '../../components/ui/Infographics';
 
 const DynamicUniversityPage = () => {
   const { countryCode, slug } = useParams();
@@ -168,6 +169,11 @@ const DynamicUniversityPage = () => {
         
         {/* Left Column (2 Cols) */}
         <div className="lg:col-span-2 space-y-6">
+
+          {/* Ranking hook (only when the ranking comes from an official source) */}
+          {ranking && (
+            <HookBand value={ranking.label} label={ranking.source} />
+          )}
           
           {/* Quick Snapshot Metrics */}
           <div className={`grid grid-cols-2 gap-3.5 ${acceptanceRate !== null ? 'sm:grid-cols-4' : 'sm:grid-cols-3'}`}>

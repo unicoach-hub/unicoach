@@ -12,6 +12,8 @@ import {
     User,
     PenTool
 } from 'lucide-react';
+import { StdSign } from '../../../../components/desi/DesiPop';
+import { JourneyPills } from '../../../../components/ui/BrandElements';
 
 const StatementOfPurposePage = () => {
     const navigate = useNavigate();
@@ -59,6 +61,10 @@ const StatementOfPurposePage = () => {
             <div className="uc-clean border-x-0 relative overflow-hidden py-12 md:py-16 px-6 md:px-12 mb-12">
                 <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#DE5C2B_1px,transparent_1px)] [background-size:16px_16px]"></div>
                 <div className="max-w-[1240px] mx-auto relative z-10">
+                    {/* Desi Pop: STD booth style sign, wide screens only */}
+                    <div className="hidden xl:block absolute right-0 top-1/2 -translate-y-1/2 rotate-3 pointer-events-none">
+                        <StdSign words={['HOOK', 'WHY', 'GOALS']} hi="उद्देश्य" className="w-[190px]" />
+                    </div>
                     <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-indigo-500/20 border border-indigo-400/30 rounded-full text-indigo-300 text-xs font-bold uppercase tracking-wider mb-4">
                         <Sparkles size={12} className="text-indigo-400" />
                         <span>Admissions Guides</span>
@@ -244,6 +250,17 @@ const StatementOfPurposePage = () => {
                                 </div>
                             )}
                         </section>
+
+                        {/* Paragraph plan from the breakdown below, as a quick visual */}
+                        <JourneyPills
+                            steps={[
+                                { label: '¶ 1', sub: 'The hook' },
+                                { label: '¶ 2–3', sub: 'Background' },
+                                { label: '¶ 4–5', sub: 'Why this course' },
+                                { label: '¶ 6–7', sub: 'Goals & conclusion' },
+                            ]}
+                            className="mx-auto w-fit max-w-full"
+                        />
 
                         {/* Formatting Breakdown */}
                         <div className="uc-clean rounded-3xl p-6 md:p-8 relative overflow-hidden shadow-md">

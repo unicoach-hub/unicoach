@@ -17,6 +17,8 @@ import {
   ChevronDown,
   ChevronUp
 } from 'lucide-react';
+import { StatStrip, BarCompare, Donut, TimelineStrip, HookBand } from '../../../components/ui/Infographics';
+import { StepCounter } from '../../../components/ui/BrandElements';
 
 const DuolingoDetailPage = ({ pageKey }) => {
   const navigate = useNavigate();
@@ -56,6 +58,15 @@ const DuolingoDetailPage = ({ pageKey }) => {
             </div>
           </div>
 
+          <StatStrip
+            stats={[
+              { value: '$70', label: 'Test fee (Rs. 6,499)' },
+              { value: '~60 min', label: 'Online, from home' },
+              { value: '48 hrs', label: 'Certified results' },
+              { value: '6,000+', label: 'Universities accept DET' },
+            ]}
+          />
+
           <div className="space-y-3">
             <h3 className="text-lg font-black text-slate-900">Why are Indian students choosing Duolingo?</h3>
             <p className="text-slate-655 font-semibold leading-relaxed">
@@ -90,6 +101,20 @@ const DuolingoDetailPage = ({ pageKey }) => {
           <p className="text-slate-655 font-semibold leading-relaxed">
             The DET is a 60-minute adaptive exam consisting of three key sections:
           </p>
+
+          <div>
+            <Donut
+              kicker="Time split"
+              title="How the 60 minutes divide"
+              centerValue="60"
+              centerLabel="minutes"
+              segments={[
+                { label: 'Setup & Onboarding', value: 5, display: '5 min' },
+                { label: 'Adaptive Test', value: 45, display: '45 min' },
+                { label: 'Writing & Speaking Sample', value: 10, display: '10 min' },
+              ]}
+            />
+          </div>
 
           {/* Section Summary Table */}
           <div className="overflow-x-auto border border-slate-200/60 rounded-2xl shadow-xs">
@@ -245,6 +270,8 @@ const DuolingoDetailPage = ({ pageKey }) => {
             The DET base test fee is <strong className="font-semibold text-slate-900">$70 (~Rs. 6,192)</strong> based on reference exchange rate of 1 USD = Rs. 88.46. Sharing score reports is completely free and unlimited. Below is the updated pricing schedule:
           </p>
 
+          <HookBand value="$70" label="base DET fee (~Rs. 6,192), with unlimited free score sending" hi="सस्ता" />
+
           <div className="overflow-x-auto border border-slate-200/60 rounded-2xl shadow-xs">
             <table className="w-full text-left border-collapse">
               <thead className="bg-slate-50 border-b border-slate-100 text-slate-500 font-semibold uppercase text-xs">
@@ -272,6 +299,19 @@ const DuolingoDetailPage = ({ pageKey }) => {
                 </tr>
               </tbody>
             </table>
+          </div>
+
+          <div>
+            <BarCompare
+              kicker="Price grid"
+              title="DET fee options in INR (approx.)"
+              highlight="Single Test"
+              items={[
+                { label: 'Two-Test Bundle', value: 10427, display: 'Rs. 10,427' },
+                { label: 'Single Test', value: 6192, display: 'Rs. 6,192' },
+                { label: 'Fast Results Add-On', value: 3538, display: 'Rs. 3,538' },
+              ]}
+            />
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -325,6 +365,15 @@ const DuolingoDetailPage = ({ pageKey }) => {
       subtitle: "Document verification rules and system requirements checklist.",
       content: (
         <div className="space-y-6 text-xs md:text-sm font-semibold text-slate-700">
+          <StepCounter
+            items={[
+              { label: 'Valid ID' },
+              { label: 'Computer setup' },
+              { label: 'Secondary camera' },
+              { label: 'Test Room' },
+              { label: 'International Card', highlight: true },
+            ]}
+          />
           <div className="overflow-x-auto border border-slate-200/60 rounded-2xl shadow-xs">
             <table className="w-full text-left border-collapse">
               <thead className="bg-slate-50 border-b border-slate-150 text-slate-500 font-bold uppercase">
@@ -381,6 +430,19 @@ const DuolingoDetailPage = ({ pageKey }) => {
 
           <div className="space-y-4">
             <h3 className="text-base font-black text-slate-900">Score Benchmarks</h3>
+            <div>
+              <BarCompare
+                kicker="Target scores"
+                title="Typical DET score by program level"
+                highlight="Postgraduate"
+                items={[
+                  { label: 'Foundation', value: 95, display: '85–95' },
+                  { label: 'Undergraduate', value: 115, display: '100–115' },
+                  { label: 'Postgraduate', value: 125, display: '115–125' },
+                  { label: 'Competitive', value: 135, display: '125–135+' },
+                ]}
+              />
+            </div>
             <div className="overflow-x-auto border border-slate-200/60 rounded-2xl shadow-xs">
               <table className="w-full text-left border-collapse">
                 <thead className="bg-slate-50 border-b border-slate-150 text-slate-500 font-bold uppercase">
@@ -477,19 +539,16 @@ const DuolingoDetailPage = ({ pageKey }) => {
           <div className="space-y-4 pt-4 border-t border-slate-100">
             <h3 className="text-base font-black text-slate-900">Suggested Daily Study Routine</h3>
             <p className="text-slate-655 font-semibold">Dedicate 45 to 60 minutes daily using this weekly structure:</p>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-              <div className="border border-slate-100 p-4 rounded-xl bg-slate-50/30">
-                <span className="font-black text-xs text-slate-800 block mb-1">Days 1 - 3</span>
-                <p className="text-[11px] text-slate-500 leading-relaxed font-semibold">Vocabulary expansion drills and active listening tests.</p>
-              </div>
-              <div className="border border-slate-100 p-4 rounded-xl bg-slate-50/30">
-                <span className="font-black text-xs text-slate-800 block mb-1">Days 4 - 6</span>
-                <p className="text-[11px] text-slate-500 leading-relaxed font-semibold">Contextual reading comprehension and timed typing/essay writing.</p>
-              </div>
-              <div className="border border-slate-100 p-4 rounded-xl bg-slate-50/30">
-                <span className="font-black text-xs text-slate-800 block mb-1">Day 7</span>
-                <p className="text-[11px] text-slate-500 leading-relaxed font-semibold">Full-length adaptive mock test followed by detailed review.</p>
-              </div>
+            <div>
+              <TimelineStrip
+                kicker="45–60 min a day"
+                title="Your weekly DET routine"
+                steps={[
+                  { when: 'Days 1 - 3', what: 'Vocabulary expansion drills', note: 'Active listening tests' },
+                  { when: 'Days 4 - 6', what: 'Contextual reading comprehension', note: 'Timed typing / essay writing' },
+                  { when: 'Day 7', what: 'Full-length adaptive mock test', note: 'Detailed review', highlight: true },
+                ]}
+              />
             </div>
           </div>
 

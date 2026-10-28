@@ -8,6 +8,7 @@ import {
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import StudyAbroadCTA from '../../../../../components/StudyAbroadCTA';
+import { HookBand, StatStrip, BarCompare } from '../../../../../components/ui/Infographics';
 
 const SECTIONS = [
   { id: 'benefits', title: 'Why Choose France?' },
@@ -175,6 +176,21 @@ const FranceWhyStudy = () => {
             
             {/* 1. Why Choose France? (Benefits Grid) */}
             <section id="benefits" className="scroll-mt-24">
+              <HookBand
+                value="5 years"
+                label="Schengen alumni visa for Indian students who finish a Master's at a French institution"
+                hi="आज़ादी"
+                className="mb-6"
+              />
+              <StatStrip
+                className="mb-8"
+                stats={[
+                  { value: '€2,770', label: "Public university fee cap per year (Bachelor's, non-EU)" },
+                  { value: '€3,770', label: "Public university fee cap per year (Master's, non-EU)" },
+                  { value: '30–50%', label: 'Rent covered by CAF housing subsidy' },
+                  { value: '29', label: 'Schengen countries you can travel to' },
+                ]}
+              />
               <div className="text-left mb-6">
                 <h2 className="text-2xl font-black text-slate-900 mb-1">💡 Key Benefits of Choosing France</h2>
                 <p className="text-slate-400 text-xs font-bold uppercase tracking-wider">Understand how France supports international student cohorts</p>
@@ -237,6 +253,18 @@ const FranceWhyStudy = () => {
                   💼 Professional Career Outcomes
                 </h2>
                 <p className="text-slate-400 text-xs font-bold mb-6">Explore starting salary ranges and recruiting networks in France</p>
+
+                <BarCompare
+                  className="mb-8"
+                  kicker="Starting salary"
+                  title="Where graduates start, by sector (lower end of range)"
+                  highlight="Engineering & Advanced Systems"
+                  items={salaryOutcomes.map((row) => ({
+                    label: row.sector,
+                    value: parseInt(row.avgSal.replace(/[^0-9 -]/g, ''), 10),
+                    display: row.avgSal.replace(' / yr', ''),
+                  }))}
+                />
 
                 <div className="overflow-x-auto">
                   <table className="w-full text-left text-sm">

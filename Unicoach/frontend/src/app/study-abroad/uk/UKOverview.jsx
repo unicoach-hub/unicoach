@@ -11,6 +11,7 @@ import { getUniversityLogo } from '../../../components/logoResolver';
 import { matchesUniversitySearch, getMatchedCoursesForUniversity } from '../../../utils/universitySearchMatcher';
 import SketchHero from '../../../components/SketchHero';
 import PageBackBreadcrumb from '../../../components/common/PageBackBreadcrumb';
+import { HookBand, StatStrip, BarCompare } from '../../../components/ui/Infographics';
 
 // ─────────────────────────────────────────────
 // UK University Database (for Finder)
@@ -99,6 +100,15 @@ const UKOverview = () => {
     return true;
   });
 
+  // Monthly living costs by city (used by the table and the bar chart)
+  const livingCosts = [
+    { s: "London (Inner)", rent: "£900 - £1,200/mo", gbp: 1400 },
+    { s: "London (Outer)", rent: "£700 - £900/mo", gbp: 1100 },
+    { s: "Glasgow & Edinburgh", rent: "£500 - £700/mo", gbp: 950 },
+    { s: "Leeds & Coventry", rent: "£450 - £600/mo", gbp: 800 },
+    { s: "Birmingham & Midlands", rent: "£450 - £650/mo", gbp: 850 }
+  ];
+
   return (
     <div className="min-h-screen bg-[#fafcff] relative overflow-hidden pt-28 pb-20 font-sans select-none">
       {/* Ambient background designs */}
@@ -149,19 +159,21 @@ const UKOverview = () => {
           </motion.div>
         </div>
 
-        {/* Quick Stats Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-16">
-          {[
-            { val: "150,000+", label: "Indian Students" },
-            { val: "30+", label: "Top 200 QS Universities" },
-            { val: "2 Years", label: "Post-Study Work Visa" },
-            { val: "1 - 2 Yrs", label: "Average ROI Period" }
-          ].map((stat, idx) => (
-            <div key={idx} className="bg-white/70 border border-white/80 rounded-2xl p-5 shadow-[0_4px_20px_rgba(0,0,0,0.02)] backdrop-blur-md text-left">
-              <p className="text-2xl font-black text-indigo-655">{stat.val}</p>
-              <p className="text-xs text-slate-500 font-bold mt-1 uppercase tracking-wider">{stat.label}</p>
-            </div>
-          ))}
+        {/* Quick Stats: hook number + stat strip */}
+        <div className="mb-16">
+          <HookBand
+            value="2 Years"
+            label="Post-Study Work Visa after your UK degree"
+            hi="पढ़ो, फिर कमाओ"
+            className="mb-4"
+          />
+          <StatStrip
+            stats={[
+              { value: "150,000+", label: "Indian Students" },
+              { value: "30+", label: "Top 200 QS Universities" },
+              { value: "1 - 2 Yrs", label: "Average ROI Period" }
+            ]}
+          />
         </div>
 
         {/* Global Currency Switcher */}
@@ -248,13 +260,7 @@ const UKOverview = () => {
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-slate-100 text-slate-700 font-semibold">
-                      {[
-                        { s: "London (Inner)", rent: "£900 - £1,200/mo", gbp: 1400 },
-                        { s: "London (Outer)", rent: "£700 - £900/mo", gbp: 1100 },
-                        { s: "Glasgow & Edinburgh", rent: "£500 - £700/mo", gbp: 950 },
-                        { s: "Leeds & Coventry", rent: "£450 - £600/mo", gbp: 800 },
-                        { s: "Birmingham & Midlands", rent: "£450 - £650/mo", gbp: 850 }
-                      ].map((row, i) => (
+                      {livingCosts.map((row, i) => (
                         <tr key={i} className="hover:bg-slate-50/50 transition-colors">
                           <td className="py-3.5 text-indigo-650 font-black">{row.s}</td>
                           <td className="py-3.5 text-slate-500 font-semibold">{row.rent}</td>
@@ -300,6 +306,14 @@ const UKOverview = () => {
               </motion.div>
             )}
           </AnimatePresence>
+
+          <BarCompare
+            kicker="Living costs"
+            title="Average monthly living cost by city"
+            items={livingCosts.map(row => ({ label: row.s, value: row.gbp, display: formatGBPValue(row.gbp) }))}
+            highlight="Leeds & Coventry"
+            className="mt-8"
+          />
         </div>
 
         {/* 3. CHEAPEST PROGRAMS BANNER */}

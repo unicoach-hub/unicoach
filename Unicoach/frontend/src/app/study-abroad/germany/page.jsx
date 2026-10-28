@@ -9,6 +9,7 @@ import { Link } from 'react-router-dom';
 import StudyAbroadCTA from '../../../components/StudyAbroadCTA';
 import { matchesUniversitySearch, getMatchedCoursesForUniversity } from '../../../utils/universitySearchMatcher';
 import SketchHero from '../../../components/SketchHero';
+import { HookBand, StatStrip, BarCompare } from '../../../components/ui/Infographics';
 
 // ─────────────────────────────────────────────
 // Germany University Database (for Finder)
@@ -60,6 +61,15 @@ const GermanyOverview = () => {
     if (searchTerm && !matchesUniversitySearch(uni, searchTerm)) return false;
     return true;
   });
+
+  // Blocked account and living costs (used by the table and the bar chart)
+  const livingCosts = [
+    { item: "Mandatory Blocked Account (Annual)", desc: "Required for student visa; deposited before interview. Yields €992/month.", val: 11904 },
+    { item: "Accommodation (Monthly)", desc: "Shared student flat (WG) or student dormitories. Munich/Berlin are costlier.", val: 450 },
+    { item: "Public Transit Ticket", desc: "Usually included in semester contribution via Semesterticket.", val: 30 },
+    { item: "Health Insurance (Monthly)", desc: "Statutory public health insurance (TK, AOK) mandatory under 30.", val: 120 },
+    { item: "Food & Utilities (Monthly)", desc: "Groceries, internet, mobile bills, personal leisure.", val: 250 }
+  ];
 
   return (
     <div className="min-h-screen bg-[#fafcff] relative overflow-hidden pt-28 pb-20 font-sans select-none">
@@ -115,19 +125,21 @@ const GermanyOverview = () => {
           </motion.div>
         </div>
 
-        {/* Quick Stats Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-16">
-          {[
-            { val: "59,419+", label: "Indian Students" },
-            { val: "1,930+", label: "English Masters Courses" },
-            { val: "18 Months", label: "Post-Study Visa" },
-            { val: "€0", label: "Public Tuition Fee" }
-          ].map((stat, idx) => (
-            <div key={idx} className="bg-white/70 border border-white/80 rounded-2xl p-5 shadow-[0_4px_20px_rgba(0,0,0,0.02)] backdrop-blur-md text-left">
-              <p className="text-2xl font-black text-indigo-650">{stat.val}</p>
-              <p className="text-xs text-slate-500 font-bold mt-1 uppercase tracking-wider">{stat.label}</p>
-            </div>
-          ))}
+        {/* Quick Stats: hook number + stat strip */}
+        <div className="mb-16">
+          <HookBand
+            value="€0"
+            label="Tuition fee at almost all public universities in Germany"
+            hi="मुफ़्त पढ़ाई"
+            className="mb-4"
+          />
+          <StatStrip
+            stats={[
+              { value: "59,419+", label: "Indian Students" },
+              { value: "1,930+", label: "English Masters Courses" },
+              { value: "18 Months", label: "Post-Study Visa" }
+            ]}
+          />
         </div>
 
         {/* Global Currency Switcher */}
@@ -214,13 +226,7 @@ const GermanyOverview = () => {
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-slate-100 text-slate-700 font-semibold">
-                      {[
-                        { item: "Mandatory Blocked Account (Annual)", desc: "Required for student visa; deposited before interview. Yields €992/month.", val: 11904 },
-                        { item: "Accommodation (Monthly)", desc: "Shared student flat (WG) or student dormitories. Munich/Berlin are costlier.", val: 450 },
-                        { item: "Public Transit Ticket", desc: "Usually included in semester contribution via Semesterticket.", val: 30 },
-                        { item: "Health Insurance (Monthly)", desc: "Statutory public health insurance (TK, AOK) mandatory under 30.", val: 120 },
-                        { item: "Food & Utilities (Monthly)", desc: "Groceries, internet, mobile bills, personal leisure.", val: 250 }
-                      ].map((row, i) => (
+                      {livingCosts.map((row, i) => (
                         <tr key={i} className="hover:bg-slate-50/50 transition-colors">
                           <td className="py-3.5 text-indigo-650 font-black">{row.item}</td>
                           <td className="py-3.5 text-slate-550 font-semibold">{row.desc}</td>
@@ -267,6 +273,15 @@ const GermanyOverview = () => {
               </motion.div>
             )}
           </AnimatePresence>
+
+          <BarCompare
+            kicker="Living costs"
+            title="Your main monthly costs in Germany"
+            items={livingCosts
+              .filter(row => row.item.includes('(Monthly)'))
+              .map(row => ({ label: row.item.replace(' (Monthly)', ''), value: row.val, display: formatCost(row.val) }))}
+            className="mt-8"
+          />
         </div>
 
         {/* 3. APS WARNING BANNER */}

@@ -7,6 +7,8 @@ import {
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import StudyAbroadCTA from '../../../../../components/StudyAbroadCTA';
+import { HazardFrame } from '../../../../../components/ui/BrandElements';
+import { TimelineStrip } from '../../../../../components/ui/Infographics';
 
 const SECTIONS = [
   { id: 'overview', title: 'Italy Intakes at a Glance' },
@@ -275,6 +277,13 @@ const ItalyIntakes = () => {
                 The September intake is Italy's main academic start date. It aligns with the traditional academic calendar and offers the widest range of options.
               </p>
 
+              <TimelineStrip
+                kicker="September 2027 route"
+                title="From test scores to the first class"
+                steps={septemberTimeline.map((s) => ({ when: s.timeframe, what: s.action, highlight: s.action === 'Application Deadlines' }))}
+                className="mb-8"
+              />
+
               <h3 className="text-lg font-black text-slate-900 mb-4 flex items-center gap-2">
                 <Award className="text-indigo-600" size={18} />
                 Why Choose September?
@@ -337,15 +346,17 @@ const ItalyIntakes = () => {
               </div>
 
               {/* Critical Tip Card */}
-              <div className="bg-amber-50 border border-amber-200 rounded-2xl p-6 flex items-start gap-4">
-                <AlertTriangle className="text-amber-600 shrink-0 mt-0.5" size={20} />
-                <div>
-                  <h4 className="text-amber-950 font-black text-sm mb-1">Critical Tip</h4>
-                  <p className="text-amber-900 text-xs md:text-sm font-semibold leading-relaxed">
-                    For competitive Master's programs, apply in the earliest rounds (November–January). Most scholarships are allocated during this window.
-                  </p>
+              <HazardFrame>
+                <div className="flex items-start gap-4">
+                  <AlertTriangle className="text-[#16130F] shrink-0 mt-0.5" size={20} />
+                  <div>
+                    <h4 className="text-[#16130F] font-black text-sm mb-1 uppercase tracking-wide">Deadline alert</h4>
+                    <p className="text-[#16130F] text-xs md:text-sm font-semibold leading-relaxed">
+                      For competitive Master's programs, apply in the earliest rounds (November–January). Most scholarships are allocated during this window.
+                    </p>
+                  </div>
                 </div>
-              </div>
+              </HazardFrame>
             </section>
 
             {/* Section 3: February 2027 Intake */}
@@ -357,6 +368,13 @@ const ItalyIntakes = () => {
               <p className="text-slate-600 font-semibold leading-relaxed mb-8">
                 The Spring intake offers a second entry point. It's ideal if you missed September deadlines or need extra preparation time.
               </p>
+
+              <TimelineStrip
+                kicker="February 2027 route"
+                title="A shorter window, so move fast"
+                steps={februaryTimeline.map((s) => ({ when: s.timeframe, what: s.action, highlight: s.action === 'Application Deadlines' }))}
+                className="mb-8"
+              />
 
               <h3 className="text-lg font-black text-slate-900 mb-4 flex items-center gap-2">
                 <Award className="text-indigo-600" size={18} />
