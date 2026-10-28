@@ -2,6 +2,7 @@ import { useMemo, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { AnimatePresence, motion, useMotionValue, useMotionValueEvent, useReducedMotion, useScroll, useSpring, useTransform } from 'framer-motion';
 import { ArrowRight, Check } from 'lucide-react';
+import { UsVisa, SchengenVisa, AuVisa } from './VisaStickers';
 
 // "Your study-abroad passport": a short pinned section where scrolling turns three passport pages.
 // Each page gets a visa sticker (USA, Schengen, Australia) and then its entry stamp. Calm paper palette.
@@ -123,82 +124,16 @@ const VISAS = [
   },
 ];
 
-// Small national-style mark per sticker (stylised, no real seals)
-const VisaMark = ({ v }) => {
-  if (v.key === 'eu') {
-    return (
-      <svg viewBox="0 0 40 40" className="w-full h-full" aria-hidden="true">
-        <rect width="40" height="40" rx="4" fill={v.band} />
-        {Array.from({ length: 12 }, (_, i) => {
-          const a = (i / 12) * Math.PI * 2;
-          return <circle key={i} cx={20 + Math.cos(a) * 11} cy={20 + Math.sin(a) * 11} r="1.9" fill="#E9C46A" />;
-        })}
-      </svg>
-    );
-  }
-  if (v.key === 'au') {
-    return (
-      <svg viewBox="0 0 40 40" className="w-full h-full" aria-hidden="true">
-        <rect width="40" height="40" rx="4" fill={v.band} />
-        {[[13, 12, 3.2], [27, 10, 2.4], [30, 22, 2.6], [22, 30, 3], [18, 21, 1.6]].map(([x, y, r], i) => (
-          <path key={i} fill="#FBEEE6" d={Array.from({ length: 10 }, (_, k) => { const ang = (k * Math.PI) / 5 - Math.PI / 2; const rr = k % 2 ? r * 0.45 : r; return `${k ? 'L' : 'M'}${(x + Math.cos(ang) * rr).toFixed(2)} ${(y + Math.sin(ang) * rr).toFixed(2)}`; }).join(' ') + 'Z'} />
-        ))}
-      </svg>
-    );
-  }
+// Each visa follows its real label's layout (see VisaStickers.jsx); details are made up and marked SPECIMEN
+const STICKER_BY_KEY = { us: UsVisa, eu: SchengenVisa, au: AuVisa };
+const VisaSticker = ({ v }) => {
+  const Sticker = STICKER_BY_KEY[v.key];
   return (
-    <svg viewBox="0 0 40 40" className="w-full h-full" aria-hidden="true">
-      <rect width="40" height="40" rx="4" fill={v.band} />
-      {[0, 1, 2, 3, 4].map((i) => <rect key={i} x="4" y={6 + i * 6} width="32" height="3" rx="1.5" fill={i % 2 ? '#FFFFFF' : v.accent} opacity="0.9" />)}
-    </svg>
+    <div className="relative w-full rounded-[7px] overflow-hidden border shadow-[0_14px_30px_-14px_rgba(22,19,15,0.45)]" style={{ borderColor: 'rgba(22,19,15,0.12)' }}>
+      <Sticker />
+    </div>
   );
 };
-
-const VisaSticker = ({ v }) => (
-  <div className="relative w-full aspect-[1.48/1] rounded-[7px] overflow-hidden border shadow-[0_14px_30px_-14px_rgba(22,19,15,0.45)]" style={{ background: v.paper, borderColor: 'rgba(22,19,15,0.12)' }}>
-    {/* fine guilloche + wavy security print */}
-    <div className="absolute -right-10 -top-12 opacity-60"><Guilloche size={220} color={v.band} opacity={0.18} /></div>
-    <svg className="absolute inset-0 w-full h-full" preserveAspectRatio="none" viewBox="0 0 100 68" aria-hidden="true">
-      {Array.from({ length: 9 }, (_, i) => (
-        <path key={i} d={`M0 ${6 + i * 7} Q 12 ${3 + i * 7} 25 ${6 + i * 7} T 50 ${6 + i * 7} T 75 ${6 + i * 7} T 100 ${6 + i * 7}`} fill="none" stroke={v.band} strokeWidth="0.15" opacity="0.35" />
-      ))}
-    </svg>
-
-    {/* header */}
-    <div className="relative flex items-center gap-2 px-[5%] pt-[3.5%]">
-      <span className="w-[9%] aspect-square shrink-0"><VisaMark v={v} /></span>
-      <span className="font-outfit font-black tracking-[0.18em] text-[17px] sm:text-[19px] leading-none" style={{ color: v.band }}>VISA</span>
-      <span className="ml-auto text-right font-bold tracking-[0.12em] text-[7.5px] sm:text-[8px] leading-tight max-w-[48%]" style={{ color: v.accent }}>{v.title}</span>
-    </div>
-
-    {/* photo + fields */}
-    <div className="relative flex gap-[4%] px-[5%] pt-[3%]">
-      <div className="w-[22%] aspect-[3/4] shrink-0 rounded-[3px] border overflow-hidden" style={{ background: 'rgba(255,255,255,0.55)', borderColor: 'rgba(22,19,15,0.15)' }}>
-        <svg viewBox="0 0 30 40" className="w-full h-full" aria-hidden="true">
-          <circle cx="15" cy="15" r="7" fill="rgba(22,19,15,0.22)" />
-          <path d="M3 40c0-8 5.5-13 12-13s12 5 12 13z" fill="rgba(22,19,15,0.22)" />
-        </svg>
-      </div>
-      <dl className="grid grid-cols-2 gap-x-3 gap-y-[3px] flex-1 min-w-0 font-mono">
-        {v.fields.map(([k, val]) => (
-          <div key={k} className="min-w-0">
-            <dt className="text-[6.5px] sm:text-[7px] uppercase tracking-wide truncate" style={{ color: 'rgba(22,19,15,0.5)' }}>{k}</dt>
-            <dd className="text-[8.5px] sm:text-[9.5px] font-bold truncate" style={{ color: INK }}>{val}</dd>
-          </div>
-        ))}
-      </dl>
-      <span className="absolute right-[5%] -bottom-1 font-outfit font-black text-[18px] opacity-80" style={{ color: v.accent }}>{v.badge}</span>
-    </div>
-
-    {/* machine-readable zone */}
-    <div className="absolute inset-x-0 bottom-0 px-[5%] pb-[3%] pt-[2%] font-mono text-[7px] sm:text-[7.5px] leading-[1.45] tracking-[0.06em] bg-white/35" style={{ color: 'rgba(22,19,15,0.7)' }}>
-      {v.mrz.map((l) => <div key={l} className="truncate">{l}</div>)}
-    </div>
-
-    {/* SPECIMEN: this is an illustration, not a document */}
-    <span className="absolute left-1/2 top-[46%] -translate-x-1/2 -translate-y-1/2 -rotate-[14deg] font-outfit font-black tracking-[0.3em] text-[22px] pointer-events-none select-none" style={{ color: 'rgba(179,64,52,0.28)' }}>SPECIMEN</span>
-  </div>
-);
 
 // One visa page: the sticker goes on, tilts under the cursor, then its entry stamp lands on the corner
 const VisaPage = ({ v, step, reduce }) => {
@@ -216,7 +151,7 @@ const VisaPage = ({ v, step, reduce }) => {
   const onLeave = () => { mx.set(0.5); my.set(0.5); };
 
   return (
-    <motion.div className="relative w-full max-w-[330px]"
+    <motion.div className="relative w-full max-w-[380px]"
       style={reduce ? undefined : { rotateX: rotX, rotateY: rotY, transformPerspective: 900 }}
       onMouseMove={reduce ? undefined : onMove} onMouseLeave={reduce ? undefined : onLeave}
       initial={reduce ? { opacity: 0 } : { opacity: 0, y: -18, rotate: -3, scale: 1.04 }}

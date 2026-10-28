@@ -2,6 +2,7 @@
 // StudentFlashSection.jsx — STUDENT-FIRST "How It Works"
 // 3-step guide: Browse → Book → Get Guidance
 // Accordion on the left drives an interactive, illustrative demo on the right.
+// Look: sky-blue ground, white panel, marigold tiles, blue checks, ink progress bar.
 // Auto-advances through the steps until the visitor interacts (or hovers),
 // and stays still for prefers-reduced-motion users. No API calls — pure mock.
 // ════════════════════════════════════════════════════════════════════════════════
@@ -10,7 +11,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { motion, AnimatePresence, MotionConfig, useInView } from 'framer-motion';
 import { TEAM_MENTORS, mentorLook } from '../../utils/teamMentors';
 import {
-  ChevronDown,
+  Check,
   Search,
   ShieldCheck,
   Video,
@@ -94,6 +95,11 @@ const CHAT_LINES = [
   { from: 'mentor', text: 'Sure, share it here and I\'ll mark it up before Friday.' }
 ];
 
+const INK = '#16130F';
+const MARIGOLD = '#FFC93C';
+const TILE = '#F2F5F9';
+const BLUE = '#2F5BFF';
+
 const panelMotion = {
   initial: { opacity: 0, scale: 0.97, y: 10 },
   animate: { opacity: 1, scale: 1, y: 0 },
@@ -149,8 +155,8 @@ const BrowseDemo = ({ autoPlay, paused, onInteract }) => {
   return (
     <div className="w-full space-y-3">
       {/* Search */}
-      <div className="bg-white rounded-2xl p-3 sm:p-4 shadow-md border border-orange-100/60">
-        <label className="flex items-center gap-3 bg-slate-50 rounded-xl px-4 py-2.5 border border-slate-200/80 focus-within:border-[#DE5C2B] focus-within:ring-2 focus-within:ring-orange-100 transition-colors">
+      <div>
+        <label className="flex items-center gap-3 rounded-2xl px-4 py-3.5 border-2 border-transparent focus-within:border-[#16130F] transition-colors" style={{ background: TILE }}>
           <Search className="w-4 h-4 text-slate-400 shrink-0" aria-hidden="true" />
           <span className="sr-only">Search mentors</span>
           <input
@@ -164,7 +170,7 @@ const BrowseDemo = ({ autoPlay, paused, onInteract }) => {
             placeholder="Search by university, country..."
             className="w-full bg-transparent text-sm text-slate-800 placeholder:text-slate-400 font-medium outline-none"
           />
-          {typing && <span className="w-[2px] h-4 bg-[#DE5C2B] animate-pulse -ml-2 shrink-0" aria-hidden="true" />}
+          {typing && <span className="w-[2px] h-4 bg-[#2F5BFF] animate-pulse -ml-2 shrink-0" aria-hidden="true" />}
           {query && (
             <button
               type="button"
@@ -192,11 +198,10 @@ const BrowseDemo = ({ autoPlay, paused, onInteract }) => {
                 setQuery('');
                 setCountry(c.label);
               }}
-              className={`px-3 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all duration-200 cursor-pointer ${
-                isOn
-                  ? 'bg-[#DE5C2B] text-white shadow-md'
-                  : 'bg-white/90 text-slate-700 border border-slate-200/80 hover:border-orange-300'
+              className={`px-3.5 py-2 rounded-[14px] text-xs font-extrabold flex items-center gap-1.5 transition-all duration-200 cursor-pointer no-shine ${
+                isOn ? 'text-[#16130F] -rotate-2' : 'text-slate-600 hover:text-[#16130F]'
               }`}
+              style={{ background: isOn ? MARIGOLD : TILE }}
             >
               <span aria-hidden="true">{c.flag}</span>
               <span>{c.label}</span>
@@ -216,7 +221,8 @@ const BrowseDemo = ({ autoPlay, paused, onInteract }) => {
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: -8, scale: 0.96 }}
               transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
-              className="bg-white rounded-2xl p-3 sm:p-3.5 shadow-sm border border-orange-100/60 min-w-0"
+              className="rounded-[18px] p-3 sm:p-3.5 min-w-0"
+              style={{ background: TILE }}
             >
               <div className="flex items-center gap-2.5 mb-2 min-w-0">
                 <Avatar mentor={m} />
@@ -226,17 +232,17 @@ const BrowseDemo = ({ autoPlay, paused, onInteract }) => {
                 </div>
               </div>
               <div className="flex items-center gap-1 text-[10px] font-bold">
-                <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md bg-orange-50 text-[#C04A1D] border border-orange-200/70">
+                <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md text-white" style={{ background: BLUE }}>
                   <ShieldCheck className="w-3 h-3" aria-hidden="true" />
                   Verified
                 </span>
-                <span className="text-slate-400 font-medium truncate">{m.country}</span>
+                <span className="text-slate-500 font-medium truncate">{m.country}</span>
               </div>
             </motion.div>
           ))}
         </AnimatePresence>
         {results.length === 0 && (
-          <div className="col-span-2 text-center text-xs text-slate-500 bg-white/70 rounded-2xl border border-dashed border-orange-200 py-6">
+          <div className="col-span-2 text-center text-xs text-slate-500 rounded-2xl border-2 border-dashed border-slate-200 py-6">
             No featured mentor matches this search.
           </div>
         )}
@@ -279,7 +285,7 @@ const BookDemo = ({ autoPlay, onInteract }) => {
   const canBook = dateIdx !== null && time && bookState === 'idle';
 
   return (
-    <div className="w-full bg-white rounded-2xl p-4 sm:p-5 shadow-md border border-orange-100 text-left">
+    <div className="w-full text-left">
       {/* Mentor header */}
       <div className="flex items-center justify-between gap-2 mb-3.5">
         <div className="flex items-center gap-2 min-w-0">
@@ -289,7 +295,7 @@ const BookDemo = ({ autoPlay, onInteract }) => {
             <div className="text-[10px] text-slate-400 font-medium truncate">{PRIMARY_MENTOR.role}</div>
           </div>
         </div>
-        <span className="shrink-0 inline-flex items-center gap-1 text-[10px] font-bold text-[#C04A1D] bg-orange-50 px-2 py-0.5 rounded-md border border-orange-200">
+        <span className="shrink-0 inline-flex items-center gap-1 text-[10px] font-bold text-white px-2 py-0.5 rounded-md" style={{ background: BLUE }}>
           <ShieldCheck className="w-3 h-3" aria-hidden="true" />
           Verified
         </span>
@@ -310,11 +316,10 @@ const BookDemo = ({ autoPlay, onInteract }) => {
                 resetIfBooked();
                 setService(s.id);
               }}
-              className={`flex flex-col items-start gap-1 p-2 sm:p-2.5 rounded-xl border text-left transition-all duration-200 cursor-pointer ${
-                isOn ? 'bg-orange-50/80 border-orange-300 shadow-xs' : 'bg-slate-50 border-slate-100 hover:border-orange-200'
-              }`}
+              className="flex flex-col items-start gap-1 p-2.5 sm:p-3 rounded-[16px] text-left transition-colors duration-300 cursor-pointer no-shine"
+              style={{ background: isOn ? MARIGOLD : TILE }}
             >
-              <s.icon className={`w-4 h-4 ${s.iconClass}`} aria-hidden="true" />
+              <s.icon className="w-4 h-4 text-[#16130F]" aria-hidden="true" />
               <span className="text-[10.5px] sm:text-[11px] font-bold text-slate-800 leading-tight">{s.label}</span>
               <span className="text-[11px] font-black text-slate-900">{s.price}</span>
             </button>
@@ -338,14 +343,15 @@ const BookDemo = ({ autoPlay, onInteract }) => {
                 resetIfBooked();
                 setDateIdx(idx);
               }}
-              className={`relative py-1.5 rounded-xl border text-center transition-colors duration-200 cursor-pointer ${
-                isOn ? 'text-white border-[#DE5C2B]' : 'bg-white text-slate-700 border-slate-200 hover:border-orange-300'
+              className={`relative py-2 rounded-[14px] text-center transition-colors duration-200 cursor-pointer no-shine ${
+                isOn ? 'text-[#16130F]' : 'text-slate-600 hover:text-[#16130F]'
               }`}
+              style={{ background: TILE }}
             >
               {isOn && (
                 <motion.span
                   layoutId="demo-date-pill"
-                  className="absolute inset-0 rounded-[11px] bg-[#DE5C2B]"
+                  className="absolute inset-0 rounded-[14px] bg-[#FFC93C]"
                   transition={{ type: 'spring', stiffness: 420, damping: 34 }}
                 />
               )}
@@ -373,12 +379,12 @@ const BookDemo = ({ autoPlay, onInteract }) => {
                 resetIfBooked();
                 setTime(t.label);
               }}
-              className={`py-1.5 rounded-lg border text-[11px] font-bold transition-colors duration-200 ${
+              className={`py-2 rounded-[12px] text-[11px] font-bold transition-colors duration-200 no-shine ${
                 t.taken
-                  ? 'bg-slate-50 text-slate-300 border-slate-100 line-through cursor-not-allowed'
+                  ? 'bg-[#F2F5F9] text-slate-300 line-through cursor-not-allowed'
                   : isOn
-                    ? 'bg-[#111111] text-white border-[#111111] cursor-pointer'
-                    : 'bg-white text-slate-700 border-slate-200 hover:border-orange-300 cursor-pointer'
+                    ? 'bg-[#16130F] text-white cursor-pointer'
+                    : 'bg-[#F2F5F9] text-slate-700 hover:text-[#16130F] cursor-pointer'
               }`}
             >
               {t.label}
@@ -388,8 +394,8 @@ const BookDemo = ({ autoPlay, onInteract }) => {
       </div>
 
       {/* Book CTA */}
-      <div className="flex items-center justify-between gap-2 pt-2.5 border-t border-slate-100">
-        <div className="flex items-center gap-1.5 text-[10.5px] sm:text-[11px] text-slate-400 font-medium min-w-0">
+      <div className="flex items-center justify-between gap-2 pt-3 border-t border-slate-100">
+        <div className="flex items-center gap-1.5 text-[10.5px] sm:text-[11px] text-slate-500 font-medium min-w-0">
           <CreditCard className="w-3.5 h-3.5 shrink-0" aria-hidden="true" />
           <span className="truncate">Secure payment via Razorpay</span>
         </div>
@@ -404,12 +410,12 @@ const BookDemo = ({ autoPlay, onInteract }) => {
           animate={bookState === 'booked' ? { scale: [1, 1.08, 1] } : { scale: 1 }}
           transition={{ duration: 0.35 }}
           aria-live="polite"
-          className={`shrink-0 inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-bold transition-colors duration-200 ${
+          className={`shrink-0 inline-flex items-center gap-1.5 px-5 py-2.5 rounded-full text-xs font-extrabold transition-colors duration-200 no-shine ${
             bookState === 'booked'
-              ? 'bg-emerald-600 text-white'
+              ? 'bg-[#2F5BFF] text-white'
               : canBook || bookState === 'booking'
-                ? 'bg-[#111111] text-white hover:bg-[#DE5C2B] cursor-pointer'
-                : 'bg-slate-200 text-slate-400 cursor-not-allowed'
+                ? 'bg-[#16130F] text-white cursor-pointer'
+                : 'bg-[#F2F5F9] text-slate-400 cursor-not-allowed'
           }`}
         >
           {bookState === 'booking' && <Loader2 className="w-3.5 h-3.5 animate-spin" aria-hidden="true" />}
@@ -426,10 +432,10 @@ const BookDemo = ({ autoPlay, onInteract }) => {
 // ── STEP 3 DEMO: confirmed session + chat preview ──
 const GuidanceDemo = () => (
   <div className="w-full space-y-3">
-    <div className="bg-white rounded-2xl p-4 sm:p-5 shadow-md border border-orange-100 text-left">
+    <div className="text-left">
       <div className="flex items-center justify-between gap-2 mb-3">
         <div className="flex items-center gap-2 min-w-0">
-          <CalendarCheck className="w-5 h-5 text-emerald-600 shrink-0" aria-hidden="true" />
+          <CalendarCheck className="w-5 h-5 text-[#2F5BFF] shrink-0" aria-hidden="true" />
           <span className="text-sm font-bold text-slate-900 truncate">Session with {PRIMARY_MENTOR.name}</span>
         </div>
         <span className="shrink-0 inline-flex items-center gap-1.5 text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-200">
@@ -442,7 +448,7 @@ const GuidanceDemo = () => (
       </div>
 
       {/* Chat preview */}
-      <div className="space-y-2 bg-slate-50/80 rounded-xl p-3 border border-slate-100">
+      <div className="space-y-2 rounded-[18px] p-3" style={{ background: TILE }}>
         {CHAT_LINES.map((line, idx) => {
           const isMentor = line.from === 'mentor';
           return (
@@ -456,8 +462,8 @@ const GuidanceDemo = () => (
               <div
                 className={`max-w-[85%] px-3 py-2 rounded-2xl text-[11.5px] leading-snug font-medium ${
                   isMentor
-                    ? 'bg-white text-slate-800 border border-orange-100 rounded-bl-md'
-                    : 'bg-[#DE5C2B] text-white rounded-br-md'
+                    ? 'bg-white text-slate-800 rounded-bl-md'
+                    : 'bg-[#2F5BFF] text-white rounded-br-md'
                 }`}
               >
                 {line.text}
@@ -489,19 +495,19 @@ const GuidanceDemo = () => (
     </div>
 
     {/* What You'll Get */}
-    <div className="bg-white rounded-2xl p-3.5 shadow-sm border border-orange-100/60">
+    <div>
       <div className="text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-2">
         What You&apos;ll Get
       </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-3 gap-y-1.5">
+      <div className="grid grid-cols-2 gap-2">
         {[
           { icon: GraduationCap, text: 'Application strategy' },
           { icon: FileText, text: 'SOP & resume tips' },
           { icon: Globe, text: 'Visa & interview prep' },
           { icon: CheckCircle2, text: 'Real campus experience' }
         ].map((item) => (
-          <div key={item.text} className="flex items-center gap-2 text-xs text-slate-700 font-medium">
-            <item.icon className="w-3.5 h-3.5 text-[#DE5C2B] flex-shrink-0" aria-hidden="true" />
+          <div key={item.text} className="flex items-center gap-2 rounded-[14px] px-3 py-2.5 text-xs text-[#16130F] font-bold" style={{ background: MARIGOLD }}>
+            <item.icon className="w-3.5 h-3.5 text-[#16130F] flex-shrink-0" aria-hidden="true" />
             <span>{item.text}</span>
           </div>
         ))}
@@ -531,152 +537,144 @@ export const StudentFlashSection = () => {
 
   const stopAutoPlay = () => setAutoPlay(false);
 
+  const panelPoints = [
+    'Verified seniors from your target universities',
+    'Meet link and calendar invite sent to you',
+    'Secure Razorpay payment, no hidden charges',
+  ];
+
   return (
     <MotionConfig reducedMotion="never">
       <section
         ref={sectionRef}
-        id="how-it-works"
-        className="bg-white py-14 sm:py-20 px-4 sm:px-6 lg:px-12 relative overflow-hidden border-b border-slate-100"
+        id="how-unicoach-works"
+        className="py-14 sm:py-20 px-4 sm:px-6 lg:px-10 relative overflow-hidden"
+        style={{ background: 'linear-gradient(180deg, #8FD3FF 0%, #A6DCFF 100%)' }}
       >
-        <div className="max-w-[1340px] mx-auto">
-
-          {/* ── TWO-COLUMN INTERACTIVE SHOWCASE ── */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-start">
-
-            {/* ════════ LEFT COLUMN: HEADER + NUMBERED ACCORDION STEPS ════════ */}
-            <div className="lg:col-span-6 space-y-6 text-left">
-              {/* ── SECTION HEADER ── */}
-              <div className="max-w-xl">
-                <h2 className="font-outfit text-3xl sm:text-5xl lg:text-5xl font-black text-[#111111] tracking-tight leading-[1.12] mb-3">
-                  How UniCoach <br className="hidden sm:inline" />
-                  <span className="text-[#DE5C2B] font-extrabold">Works</span>
-                </h2>
-                <p className="text-slate-600 text-sm sm:text-base font-normal mb-3">
-                  From discovery to expert guidance — in 3 simple steps
-                </p>
-              </div>
-
-              {/* Accordion Steps */}
-              <div className="space-y-1.5 pt-2">
-                {STEPS.map((step) => {
-                  const isActive = activeStep === step.id;
-
-                  return (
-                    <div
-                      key={step.id}
-                      className={`relative overflow-hidden rounded-2xl transition-all duration-200 border ${
-                        isActive
-                          ? 'bg-orange-50/70 border-orange-200/80 shadow-xs'
-                          : 'bg-transparent border-transparent hover:bg-slate-50'
-                      }`}
-                    >
-                      <h3 className="m-0">
-                        <button
-                          type="button"
-                          id={`how-step-${step.id}`}
-                          aria-expanded={isActive}
-                          aria-controls="how-it-works-demo"
-                          onClick={() => {
-                            stopAutoPlay();
-                            setActiveStep(step.id);
-                          }}
-                          className={`w-full flex items-center justify-between gap-3 text-left cursor-pointer ${
-                            isActive ? 'px-3.5 sm:px-4 pt-3.5 sm:pt-4' : 'p-2.5 sm:p-3'
-                          }`}
-                        >
-                          <span className="flex items-center gap-3.5">
-                            <span className={`text-xs font-mono font-bold ${isActive ? 'text-[#DE5C2B]' : 'text-slate-400'}`}>
-                              {step.number}
-                            </span>
-                            <span className="font-outfit text-sm sm:text-base font-black text-slate-900">
-                              {step.title}
-                            </span>
-                          </span>
-
-                          <ChevronDown
-                            className={`w-4 h-4 text-slate-500 transition-transform duration-300 ${
-                              isActive ? 'rotate-180 text-[#DE5C2B]' : ''
-                            }`}
-                            aria-hidden="true"
-                          />
-                        </button>
-                      </h3>
-
-                      {/* Expanded Description when active */}
-                      {isActive && (
-                        <motion.div
-                          initial={{ opacity: 0, height: 0 }}
-                          animate={{ opacity: 1, height: 'auto' }}
-                          transition={{ duration: 0.2 }}
-                          className="mt-2 pl-10 sm:pl-11 pr-4 pb-3.5 sm:pb-4"
-                        >
-                          <p className="text-xs text-slate-600 leading-relaxed font-normal">
-                            {step.shortDesc}
-                          </p>
-                          <p className="text-[11px] text-slate-400 mt-1">
-                            {step.fullDesc}
-                          </p>
-                        </motion.div>
-                      )}
-
-                      {/* Auto-play progress bar */}
-                      {isActive && isAutoPlaying && (
-                        <div className="absolute left-0 right-0 bottom-0 h-[3px] bg-orange-100/70" aria-hidden="true">
-                          <motion.div
-                            key={`progress-${step.id}`}
-                            className="h-full bg-[#DE5C2B] origin-left"
-                            initial={{ scaleX: 0 }}
-                            animate={{ scaleX: isRunning ? 1 : 0 }}
-                            transition={{ duration: isRunning ? STEP_DURATION_MS / 1000 : 0.2, ease: 'linear' }}
-                          />
-                        </div>
-                      )}
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-
-            {/* ════════ RIGHT COLUMN: INTERACTIVE STUDENT-PERSPECTIVE DEMO ════════ */}
-            <div className="lg:col-span-6 lg:sticky lg:top-28">
-              <div
-                id="how-it-works-demo"
-                onMouseEnter={() => setHovering(true)}
-                onMouseLeave={() => setHovering(false)}
-                onFocusCapture={() => setHovering(true)}
-                onBlurCapture={() => setHovering(false)}
-                className="bg-[#FAF0EB] rounded-[36px] p-4 sm:p-8 sm:min-h-[460px] flex flex-col justify-center relative shadow-inner shadow-orange-100/50 border border-orange-200/50"
-              >
-                <span className="absolute top-3.5 right-5 text-[10px] font-semibold uppercase tracking-wider text-orange-900/40 select-none">
-                  Interactive preview
-                </span>
-
-                <div className="relative min-h-[340px] flex items-center justify-center pt-4 sm:pt-2" aria-labelledby={`how-step-${activeStep}`} role="region">
-                  <AnimatePresence mode="wait">
-                    {activeStep === 0 && (
-                      <motion.div key="step-0" {...panelMotion} className="w-full">
-                        <BrowseDemo autoPlay={isAutoPlaying} paused={!isRunning} onInteract={stopAutoPlay} />
-                      </motion.div>
-                    )}
-
-                    {activeStep === 1 && (
-                      <motion.div key="step-1" {...panelMotion} className="w-full">
-                        <BookDemo autoPlay={isAutoPlaying} onInteract={stopAutoPlay} />
-                      </motion.div>
-                    )}
-
-                    {activeStep === 2 && (
-                      <motion.div key="step-2" {...panelMotion} className="w-full">
-                        <GuidanceDemo />
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </div>
-              </div>
-            </div>
-
+        <div className="max-w-[1320px] mx-auto">
+          {/* ── SECTION HEADER ── */}
+          <div className="text-center max-w-[760px] mx-auto">
+            <h2 className="text-[34px] sm:text-[52px] font-black text-[#16130F] leading-[0.98] tracking-[-0.045em]">
+              How UniCoach works
+            </h2>
+            <p className="mt-3 text-[16px] sm:text-[18px] text-[#16130F]/75">From discovery to expert guidance, in 3 simple steps.</p>
           </div>
 
+          <div className="mt-10 grid grid-cols-1 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] gap-6 lg:gap-10 items-center">
+            {/* ════════ LEFT: STEPS, THE ACTIVE ONE LIFTED ONTO A WHITE CARD ════════ */}
+            <ol className="m-0 p-0 list-none flex flex-col gap-2">
+              {STEPS.map((step) => {
+                const isActive = activeStep === step.id;
+                const isDone = step.id < activeStep;
+                return (
+                  <li key={step.id}>
+                    <h3 className="m-0">
+                      <button
+                        type="button"
+                        id={`how-step-${step.id}`}
+                        aria-expanded={isActive}
+                        aria-controls="how-it-works-demo"
+                        onClick={() => {
+                          stopAutoPlay();
+                          setActiveStep(step.id);
+                        }}
+                        className={`relative overflow-hidden w-full text-left flex items-start gap-4 rounded-[22px] px-4 sm:px-5 py-4 transition-all duration-300 cursor-pointer no-shine ${
+                          isActive ? 'bg-white shadow-[0_18px_40px_-22px_rgba(16,60,110,0.55)] scale-[1.02]' : 'hover:bg-white/40'
+                        }`}
+                      >
+                        <span
+                          className={`shrink-0 grid place-items-center w-11 h-11 rounded-[14px] font-urbanist text-[15px] font-black transition-all ${
+                            isActive ? 'text-[#16130F] -rotate-6' : isDone ? 'bg-white text-[#2F5BFF]' : 'bg-white/70 text-[#16130F]'
+                          }`}
+                          style={isActive ? { background: MARIGOLD } : undefined}
+                        >
+                          {isDone ? <Check size={18} strokeWidth={3} /> : step.number}
+                        </span>
+                        <span className="min-w-0">
+                          <span className="block text-[18px] sm:text-[21px] font-black text-[#16130F] tracking-[-0.02em]">{step.title}</span>
+                          <span className={`block mt-0.5 text-[14.5px] leading-snug ${isActive ? 'text-slate-700' : 'text-[#16130F]/60'}`}>{step.shortDesc}</span>
+                          {isActive && (
+                            <motion.span
+                              initial={{ opacity: 0, height: 0 }}
+                              animate={{ opacity: 1, height: 'auto' }}
+                              transition={{ duration: 0.25 }}
+                              className="block mt-1.5 text-[13px] leading-relaxed text-slate-500"
+                            >
+                              {step.fullDesc}
+                            </motion.span>
+                          )}
+                        </span>
+
+                        {/* Auto-play progress along the bottom of the active card */}
+                        {isActive && isAutoPlaying && (
+                          <span className="absolute left-5 right-5 bottom-0 h-[3px] rounded-full bg-[#F2F5F9]" aria-hidden="true">
+                            <motion.span
+                              key={`progress-${step.id}`}
+                              className="block h-full rounded-full bg-[#FFC93C] origin-left"
+                              initial={{ scaleX: 0 }}
+                              animate={{ scaleX: isRunning ? 1 : 0 }}
+                              transition={{ duration: isRunning ? STEP_DURATION_MS / 1000 : 0.2, ease: 'linear' }}
+                            />
+                          </span>
+                        )}
+                      </button>
+                    </h3>
+                  </li>
+                );
+              })}
+            </ol>
+
+            {/* ════════ RIGHT: THE DEMO ON A WHITE PANEL ════════ */}
+            <div
+              id="how-it-works-demo"
+              onMouseEnter={() => setHovering(true)}
+              onMouseLeave={() => setHovering(false)}
+              onFocusCapture={() => setHovering(true)}
+              onBlurCapture={() => setHovering(false)}
+              className="relative overflow-hidden rounded-[34px] bg-white p-5 sm:p-8 shadow-[0_30px_70px_-36px_rgba(16,60,110,0.6)]"
+            >
+              <div aria-hidden="true" className="absolute -top-24 -right-24 w-72 h-72 rounded-full bg-[radial-gradient(circle,#FFE7A3_0%,transparent_70%)] pointer-events-none" />
+              <p className="relative flex items-center gap-2 text-[14px] sm:text-[15px] font-bold text-[#16130F]/80">
+                <span className="w-3 h-3 rounded-full bg-[#FFC93C]" /> Interactive preview · Step {STEPS[activeStep].number}
+              </p>
+
+              <div className="relative mt-5 min-h-[330px] flex items-center" aria-labelledby={`how-step-${activeStep}`} role="region">
+                <AnimatePresence mode="wait">
+                  {activeStep === 0 && (
+                    <motion.div key="step-0" {...panelMotion} className="w-full">
+                      <BrowseDemo autoPlay={isAutoPlaying} paused={!isRunning} onInteract={stopAutoPlay} />
+                    </motion.div>
+                  )}
+                  {activeStep === 1 && (
+                    <motion.div key="step-1" {...panelMotion} className="w-full">
+                      <BookDemo autoPlay={isAutoPlaying} onInteract={stopAutoPlay} />
+                    </motion.div>
+                  )}
+                  {activeStep === 2 && (
+                    <motion.div key="step-2" {...panelMotion} className="w-full">
+                      <GuidanceDemo />
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+
+              <ul className="relative mt-6 m-0 p-0 list-none flex flex-col gap-2.5">
+                {panelPoints.map((line) => (
+                  <li key={line} className="flex items-center gap-3 text-[14.5px] sm:text-[15.5px] font-bold text-[#16130F]">
+                    <span className="grid place-items-center w-6 h-6 rounded-full text-white shrink-0" style={{ background: BLUE }}><Check size={14} strokeWidth={3} /></span>
+                    {line}
+                  </li>
+                ))}
+              </ul>
+
+              <div className="relative mt-6 rounded-[18px] px-5 py-4 flex items-center justify-between gap-4" style={{ background: INK }}>
+                <span className="text-[15px] sm:text-[17px] font-extrabold text-white tabular-nums">Step {activeStep + 1} of {STEPS.length}</span>
+                <span className="flex-1 max-w-[200px] h-2 rounded-full bg-white/15 overflow-hidden">
+                  <span className="block h-full rounded-full bg-[#FFC93C] transition-[width] duration-500" style={{ width: `${((activeStep + 1) / STEPS.length) * 100}%` }} />
+                </span>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
     </MotionConfig>

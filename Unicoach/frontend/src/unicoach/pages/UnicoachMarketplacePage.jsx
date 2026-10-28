@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useScrollToHash } from '../hooks/useScrollToHash';
 import { StudentHeroSection } from '../components/StudentHeroSection';
+import { HowItWorksSteps } from '../components/HowItWorksSteps';
 import { StudentFlashSection } from '../components/StudentFlashSection';
 import { StudentTestimonialSection } from '../components/StudentTestimonialSection';
 import { BecomeMentorCTA } from '../components/BecomeMentorCTA';
@@ -52,7 +53,8 @@ const UnicoachMarketplacePage = () => {
       {/* ════════ SECTION 1: STUDENT-FIRST HERO ════════ */}
       <StudentHeroSection />
 
-      {/* ════════ SECTION 2: "HOW IT WORKS" FOR STUDENTS ════════ */}
+      {/* ════════ SECTION 2: "HOW IT WORKS" (students / mentors), then the 3-step interactive demo ════════ */}
+      <HowItWorksSteps />
       <StudentFlashSection />
 
       {/* ════════ SECTION 3: TOP MENTORS PREVIEW (full list lives at /unicoach/mentors) ════════ */}

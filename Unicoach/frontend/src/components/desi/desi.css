@@ -359,19 +359,19 @@
 .dp-halftone { background-image: radial-gradient(circle, rgba(22,19,15,.22) 1.3px, transparent 1.7px); background-size: 9px 9px; }
 
 /* Railway board */
-.dp-rail { position: relative; width: 100%; max-width: 420px; aspect-ratio: 5 / 4; }
+.dp-rail { position: relative; width: 100%; max-width: 420px; aspect-ratio: 5 / 4; container-type: inline-size; }
 .dp-rail-sun { position: absolute; width: 46%; aspect-ratio: 1; border-radius: 50%; background: #2A9D8F; left: 4%; top: 2%; }
 .dp-rail-post { position: absolute; bottom: 0; width: 14px; height: 62%; background: #F2C230; border: 2px solid #C99A12; }
 .dp-rail-post--l { left: 18%; }
 .dp-rail-post--r { right: 18%; }
 .dp-rail-board {
   position: absolute; left: 4%; right: 4%; top: 18%; display: flex; flex-direction: column; align-items: center;
-  background: #F2C230; border: 3px solid #C99A12; padding: 16px 12px 10px; color: #16130F; text-align: center;
+  background: #F2C230; border: 3px solid #C99A12; padding: 4cqw 3cqw 2.5cqw; color: #16130F; text-align: center;
   box-shadow: 0 14px 24px -12px rgba(22,19,15,.45);
 }
-.dp-rail-hi { font-family: 'Khand', 'Teko', sans-serif; font-weight: 700; font-size: clamp(34px, 6vw, 48px); line-height: 1; letter-spacing: 0; }
-.dp-rail-en { font-family: 'Urbanist', sans-serif; font-weight: 900; font-size: clamp(28px, 5vw, 42px); line-height: 1; letter-spacing: .02em; margin-top: 4px; }
-.dp-rail-code { display: flex; justify-content: space-between; width: 100%; margin-top: 10px; font: 700 11px ui-monospace, Menlo, monospace; }
+.dp-rail-hi { font-family: 'Khand', 'Teko', sans-serif; font-weight: 700; font-size: 13cqw; line-height: 1; letter-spacing: 0; }
+.dp-rail-en { font-family: 'Urbanist', sans-serif; font-weight: 900; font-size: 10.5cqw; line-height: 1; letter-spacing: .02em; margin-top: 1cqw; white-space: nowrap; }
+.dp-rail-code { display: flex; justify-content: space-between; width: 100%; margin-top: 2.5cqw; font: 700 3.2cqw ui-monospace, Menlo, monospace; }
 
 /* STD sign */
 .dp-std {
@@ -406,3 +406,8 @@
   position: relative; font-family: 'Modak', 'Yatra One', sans-serif; font-size: 30cqw; line-height: 1; color: #D22FB9; letter-spacing: 0;
   text-shadow: 1px 1px 0 #A81B93, 2px 2px 0 #A81B93, 3px 3px 0 #8F1480, 4px 4px 0 #8F1480, 5px 5px 0 #7A0E6D, 6px 6px 0 #7A0E6D, 7px 7px 0 #5E0853, 10px 12px 0 rgba(22,19,15,.18);
 }
+
+/* ShortlistShowcase: the auto bumps gently while it drives */
+@keyframes auto-bump { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-2px); } }
+/* Road dashes sliding past under the moving auto */
+@keyframes road { to { background-position: -64px 0; } }

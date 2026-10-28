@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
 import { TEAM_MENTORS, mentorLook } from '../utils/teamMentors';
 import './desi/desi.css';
+import { RailwayBoard } from './desi/DesiPop';
 
 // Each half of the loop must be wider than the widest screen, otherwise a gap shows mid-loop;
 // with only a few mentors the list is repeated until it is (about 260px per card incl. gap)
@@ -64,6 +65,7 @@ const MentorMarquee = () => {
     <section className="w-full max-w-full pt-5 pb-10 sm:pt-6 sm:pb-12 bg-[#FAF9F6]" aria-labelledby="home-mentors-heading">
       <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-10">
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-6 sm:mb-7">
+          <div className="flex items-center gap-8">
           <div>
             <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white border border-orange-200/90 text-[11.5px] font-bold text-slate-800 shadow-2xs mb-2.5">
               <span className="w-1.5 h-1.5 rounded-full bg-[#DE5C2B]" />
@@ -74,22 +76,29 @@ const MentorMarquee = () => {
                 Talk to seniors who&apos;ve <span className="text-[#DE5C2B]">done it</span>
               </h2>
               {/* Old-film caption, our own line */}
-              <div className="desi-caption desi-caption--inline" aria-label="Anubhavon ki suno, aage badho">
+              {/* Desi Pop: the mentors' station board beside "done it", wide screens only */}
+              <div className="hidden lg:block w-[170px] -my-6 -rotate-3" aria-hidden="true">
+                <RailwayBoard hi="मेंटर जंक्शन" en="MENTOR JN." codeLeft="PF 1:1" codeRight="SENIORS · LIVE" />
+              </div>
+              <div className="lg:hidden"><div className="desi-caption desi-caption--inline" aria-label="Anubhavon ki suno, aage badho">
                 <span className="top">ANUBHAVON KI SUNO,</span>
                 <span className="bar">आगे बढ़ो 🙌</span>
-              </div>
+              </div></div>
             </div>
             <p className="text-[13.5px] sm:text-[14.5px] text-slate-600 mt-1.5 max-w-xl">
               Book a 1:1 call with students who got in, or join their free live sessions.
             </p>
           </div>
-          <Link
-            to="/unicoach#mentors-grid"
-            className="self-start md:self-auto inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-white border border-slate-200 hover:border-[#DE5C2B] hover:text-[#DE5C2B] text-[13px] font-bold text-slate-800 transition-colors"
-          >
-            View all mentors
-            <ArrowRight className="w-4 h-4" aria-hidden="true" />
-          </Link>
+          </div>
+          <div className="flex items-end gap-6 self-start md:self-auto">
+            <Link
+              to="/unicoach#mentors-grid"
+              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-white border border-slate-200 hover:border-[#DE5C2B] hover:text-[#DE5C2B] text-[13px] font-bold text-slate-800 transition-colors"
+            >
+              View all mentors
+              <ArrowRight className="w-4 h-4" aria-hidden="true" />
+            </Link>
+          </div>
         </div>
       </div>
 
