@@ -133,6 +133,7 @@ exports.getAttention = async (req, res) => {
     const WhatsappContact = require('../models/WhatsappContact');
     const WhatsappEvent = require('../models/WhatsappEvent');
     const Campaign = require('../models/Campaign');
+    const Consultation = require('../models/Consultation');
 
     const now = new Date();
     const startOfDay = new Date(now); startOfDay.setHours(0, 0, 0, 0);
@@ -154,6 +155,7 @@ exports.getAttention = async (req, res) => {
       overdueTasks, overdueTaskCount, tasksTodayCount,
       newRequests, pendingMentors, needsAgent, unreadWhatsapp,
       sessionsToday, upcomingEvents, eventsWithoutDate, pausedCampaigns,
+      newConsultations, upcomingConsultationCount, upcomingConsultations,
     ] = await Promise.all([
       Lead.find({ ...leadScope, ...open, nextFollowUpDate: { $lt: startOfDay } }).select(pick).sort({ nextFollowUpDate: 1 }).limit(6).lean(),
       Lead.countDocuments({ ...leadScope, ...open, nextFollowUpDate: { $lt: startOfDay } }),
@@ -172,6 +174,10 @@ exports.getAttention = async (req, res) => {
       own ? [] : Event.find({ published: true, eventStart: { $gte: now, $lte: weekAhead } }).select('title eventStart attendees').sort({ eventStart: 1 }).limit(4).lean(),
       own ? 0 : Event.countDocuments({ published: true, $or: [{ eventStart: null }, { eventStart: { $exists: false } }] }),
       own ? 0 : Campaign.countDocuments({ status: 'paused' }),
+      // Consultation calls booked from /book-consultation: new in the last day, and the next ones coming up
+      own ? 0 : Consultation.countDocuments({ status: 'confirmed', createdAt: { $gte: dayAgo } }),
+      own ? 0 : Consultation.countDocuments({ status: 'confirmed', startsAt: { $gte: now } }),
+      own ? [] : Consultation.find({ status: 'confirmed', startsAt: { $gte: now } }).select('name phone serviceLabel startsAt createdAt').sort({ startsAt: 1 }).limit(4).lean(),
     ]);
 
     return res.json({
@@ -197,6 +203,11 @@ exports.getAttention = async (req, res) => {
       upcomingEvents: upcomingEvents.map((e) => ({ id: e._id, title: e.title, start: e.eventStart, registered: (e.attendees || []).length })),
       eventsWithoutDate,
       pausedCampaigns,
+      consultations: {
+        new: newConsultations,
+        upcoming: upcomingConsultationCount,
+        items: upcomingConsultations.map((c) => ({ id: c._id, name: c.name, phone: c.phone, service: c.serviceLabel, start: c.startsAt, isNew: c.createdAt >= dayAgo })),
+      },
     });
   } catch (err) {
     console.error('Error building attention list:', err);

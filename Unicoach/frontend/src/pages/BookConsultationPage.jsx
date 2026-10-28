@@ -22,6 +22,9 @@ const longDate = (ymd) => new Date(`${ymd}T12:00:00+05:30`).toLocaleDateString('
 const fullDate = (ymd) => new Date(`${ymd}T12:00:00+05:30`).toLocaleDateString('en-IN', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
 const monthKey = (ymd) => ymd.slice(0, 7);
 
+// Price label: 0 means the calls are free right now
+const fee = (price) => (price ? `₹${price}` : 'Free');
+
 const Shell = ({ children }) => (
   <main className="min-h-screen bg-[#FAF9F6] pt-[110px] pb-20 px-4 sm:px-6">
     <div className="max-w-[1180px] mx-auto">{children}</div>
@@ -29,7 +32,7 @@ const Shell = ({ children }) => (
 );
 
 // Step 1 (/book-consultation): pick a service, a day and a time.
-// Step 2 (/book-consultation/confirm): add details, pay ₹500 through Razorpay, done.
+// Step 2 (/book-consultation/confirm): add details, pay through Razorpay (skipped while calls are free), done.
 const BookConsultationFlow = () => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -94,7 +97,7 @@ const BookConsultationFlow = () => {
         <p className="inline-flex items-center gap-2 text-[12px] font-bold tracking-[0.14em] text-[#DE5C2B] uppercase"><CalendarDays size={14} /> Book a consultation</p>
         <h1 className="mt-3 font-outfit text-[34px] sm:text-[46px] font-black tracking-tight text-[#111] leading-tight">Choose a day and a time</h1>
         <p className="mt-3 text-[15px] text-slate-600 max-w-xl mx-auto">
-          A {(cfg?.durationMin || 60) === 60 ? 'one-hour' : `${cfg?.durationMin}-minute`} 1:1 call with our team, ₹{cfg?.price || 500}. Pick any open slot, India time.
+          A {(cfg?.durationMin || 60) === 60 ? 'one-hour' : `${cfg?.durationMin}-minute`} 1:1 call with our team{cfg ? `, ${fee(cfg.price).toLowerCase()}` : ''}. Pick any open slot, India time.
         </p>
         <Link to="/services" className="mt-3 inline-flex items-center gap-1.5 text-[13.5px] font-semibold text-[#DE5C2B] hover:underline">Not sure which service? See all services <ArrowRight size={14} /></Link>
       </div>
@@ -150,7 +153,7 @@ const SidePanel = ({ cfg }) => (
     </ul>
 
     <div className="mt-auto pt-6 border-t border-slate-100 text-[13px]">
-      <p className="flex items-center gap-2 font-semibold text-slate-800"><Clock size={14} className="text-[#DE5C2B]" /> {cfg?.durationMin || 60} min · ₹{cfg?.price || 500} per call</p>
+      <p className="flex items-center gap-2 font-semibold text-slate-800"><Clock size={14} className="text-[#DE5C2B]" /> {cfg?.durationMin || 60} min{cfg ? ` · ${cfg.price ? `₹${cfg.price} per call` : 'free call'}` : ''}</p>
       <p className="mt-1 text-[12px] text-slate-500">Private 1:1 on video. Confirmed by email. All times India time.</p>
     </div>
   </aside>
@@ -215,7 +218,7 @@ const Picker = ({ cfg, service, setService, date, setDate, time, setTime, month,
             {svc && <span className="block text-[12.5px] text-slate-500">{svc.desc}</span>}
           </span>
           <span className="flex items-center gap-3 shrink-0">
-            <span className="text-[13px] font-bold text-[#DE5C2B]">₹{cfg.price}</span>
+            <span className="text-[13px] font-bold text-[#DE5C2B]">{fee(cfg.price)}</span>
             <ChevronDown size={18} className={`text-slate-400 transition-transform ${open ? 'rotate-180' : ''}`} />
           </span>
         </button>
@@ -226,7 +229,7 @@ const Picker = ({ cfg, service, setService, date, setDate, time, setTime, month,
                 <button type="button" onClick={() => { setService(s.key); setOpen(false); }}
                   className={`w-full flex items-center justify-between gap-3 rounded-xl px-3.5 py-2.5 text-left cursor-pointer ${service === s.key ? 'bg-orange-50' : 'hover:bg-slate-50'}`}>
                   <span><span className="block text-[14px] font-semibold text-slate-900">{s.label}</span><span className="block text-[12px] text-slate-500">{s.desc}</span></span>
-                  <span className="flex items-center gap-2 text-[13px] font-bold text-slate-700">₹{cfg.price}{service === s.key && <Check size={15} className="text-[#DE5C2B]" />}</span>
+                  <span className="flex items-center gap-2 text-[13px] font-bold text-slate-700">{fee(cfg.price)}{service === s.key && <Check size={15} className="text-[#DE5C2B]" />}</span>
                 </button>
               </li>
             ))}
@@ -297,9 +300,9 @@ const Picker = ({ cfg, service, setService, date, setDate, time, setTime, month,
       <button type="button" onClick={next}
         className={`no-shine mt-7 w-full h-14 rounded-full font-semibold text-[15px] flex items-center justify-between px-6 transition-colors cursor-pointer ${ready ? 'bg-[#DE5C2B] hover:bg-[#C04A1D] text-white' : 'bg-[#FFE7DC] text-[#C04A1D] hover:bg-[#FFDCCB]'}`}>
         <span>{ready ? `Book ${longDate(date)}, ${to12h(time)}` : !service ? 'Step 1: choose a service ↑' : !date ? 'Step 2: pick a day ↑' : 'Step 3: pick a time ↑'}</span>
-        <span className="flex items-center gap-2"><span className={`px-2.5 py-0.5 rounded-full text-[12.5px] ${ready ? 'bg-white/20' : 'bg-white'}`}>₹{cfg.price}</span><ArrowRight size={17} /></span>
+        <span className="flex items-center gap-2"><span className={`px-2.5 py-0.5 rounded-full text-[12.5px] ${ready ? 'bg-white/20' : 'bg-white'}`}>{fee(cfg.price)}</span><ArrowRight size={17} /></span>
       </button>
-      <p className="mt-2 text-[12px] text-slate-500 text-center">Next you add a few details and pay ₹{cfg.price} to confirm your slot.</p>
+      <p className="mt-2 text-[12px] text-slate-500 text-center">{cfg.price ? `Next you add a few details and pay ₹${cfg.price} to confirm your slot.` : 'Next you add a few details to confirm your free slot.'}</p>
     </div>
   );
 };
@@ -312,7 +315,7 @@ const ConfirmStep = ({ cfg, pick, savedForm }) => {
   const [doneRef, setDoneRef] = useState('');
   const [fieldErr, setFieldErr] = useState({});
   const svc = cfg?.services.find((s) => s.key === pick.service);
-  const price = cfg?.price || 500;
+  const price = cfg?.price ?? 500;
   const set = (k) => (e) => { setForm((f) => ({ ...f, [k]: e.target.value })); setFieldErr((x) => ({ ...x, [k]: '' })); };
   const err = (k) => (fieldErr[k] ? <span className="block mt-1 text-[12px] text-red-600">{fieldErr[k]}</span> : null);
 
@@ -338,7 +341,7 @@ const ConfirmStep = ({ cfg, pick, savedForm }) => {
       // Save the enquiry in the CRM even if the payment is not finished
       fetch(`${API}/leads/book-consultation`, {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name: form.name, email: form.email, phone: form.phone, query: `${svc?.label || pick.service} · ${fullDate(pick.date)} ${to12h(pick.time)}. ${form.notes}`, source: 'Paid consultation booking' }),
+        body: JSON.stringify({ name: form.name, email: form.email, phone: form.phone, query: `${svc?.label || pick.service} · ${fullDate(pick.date)} ${to12h(pick.time)}. ${form.notes}`, source: price ? 'Paid consultation booking' : 'Free consultation booking' }),
       }).catch(() => {});
 
       const r = await fetch(`${API}/consultations`, {
@@ -353,6 +356,12 @@ const ConfirmStep = ({ cfg, pick, savedForm }) => {
       }
       if (r.status === 429) throw new Error('Too many tries from this network. Please wait a few minutes and try again.');
       if (!r.ok) throw new Error(data.message || 'Could not start the booking');
+      if (data.free) {
+        // Free call: the slot is already confirmed, no payment step
+        setDoneRef(data.ref);
+        window.scrollTo(0, 0);
+        return;
+      }
 
       const result = await openRazorpayCheckout(data.order, {
         name: 'UniCoach',
@@ -401,7 +410,7 @@ const ConfirmStep = ({ cfg, pick, savedForm }) => {
             <dt className="text-slate-500">Service</dt><dd className="text-right font-semibold text-slate-900">{svc?.label || '…'}</dd>
             <dt className="text-slate-500">When</dt><dd className="text-right font-semibold text-slate-900">{fullDate(pick.date)}, {to12h(pick.time)}</dd>
             <dt className="text-slate-500">Duration</dt><dd className="text-right font-semibold text-slate-900">{cfg?.durationMin || 60} minutes</dd>
-            <dt className="text-slate-500">Fee</dt><dd className="text-right font-bold text-[#DE5C2B]">₹{price}</dd>
+            <dt className="text-slate-500">Fee</dt><dd className="text-right font-bold text-[#DE5C2B]">{fee(price)}</dd>
           </dl>
 
           <p className="mt-6 text-[11px] font-bold tracking-[0.14em] text-slate-400 uppercase">Your details</p>
@@ -417,9 +426,9 @@ const ConfirmStep = ({ cfg, pick, savedForm }) => {
           {error && <p className="mt-4 text-[13px] text-red-600">{error}</p>}
           <button type="submit" disabled={busy || !cfg}
             className="no-shine mt-6 w-full h-14 rounded-full bg-[#DE5C2B] hover:bg-[#C04A1D] disabled:opacity-60 text-white font-semibold text-[15px] flex items-center justify-center gap-2 cursor-pointer">
-            {busy ? <><Loader2 size={17} className="animate-spin" /> Processing…</> : <>Pay ₹{price} &amp; confirm</>}
+            {busy ? <><Loader2 size={17} className="animate-spin" /> Processing…</> : price ? <>Pay ₹{price} &amp; confirm</> : 'Confirm my free call'}
           </button>
-          <p className="mt-3 flex items-center justify-center gap-1.5 text-[12px] text-slate-500"><ShieldCheck size={13} /> Secure payment by Razorpay: UPI, cards, net banking. See our <Link to="/refund-policy" className="underline">refund policy</Link>.</p>
+          {price > 0 && <p className="mt-3 flex items-center justify-center gap-1.5 text-[12px] text-slate-500"><ShieldCheck size={13} /> Secure payment by Razorpay: UPI, cards, net banking. See our <Link to="/refund-policy" className="underline">refund policy</Link>.</p>}
         </form>
       </div>
     </Shell>

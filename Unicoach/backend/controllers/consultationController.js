@@ -112,14 +112,17 @@ exports.create = async (req, res) => {
     }
 
     const ref = `CONS-${crypto.randomBytes(4).toString('hex').toUpperCase()}`;
-    const order = await createRazorpayOrder({
+    const free = PRICE_INR === 0;
+    // Free calls skip Razorpay and are confirmed as soon as the slot is saved
+    const order = free ? null : await createRazorpayOrder({
       amountINR: PRICE_INR,
       bookingRef: ref,
       notes: { type: 'consultation', service: svc.key, slot: `${date} ${time}` },
     });
 
+    let booking;
     try {
-      await Consultation.create({
+      booking = await Consultation.create({
       ref,
       service: svc.key,
       serviceLabel: svc.label,
@@ -132,13 +135,18 @@ exports.create = async (req, res) => {
       phone: String(phone).trim().slice(0, 30),
       notes: String(notes || '').trim().slice(0, 1500),
       amountINR: PRICE_INR,
-      payment: { orderId: order.orderId, simulated: Boolean(order.simulated) },
+      status: free ? 'confirmed' : 'payment_pending',
+      payment: free ? {} : { orderId: order.orderId, simulated: Boolean(order.simulated) },
       source: String(source || '').slice(0, 80),
       });
     } catch (e) {
       // Two people pressed pay for the same slot at the same moment: the database lets only one through
       if (isDuplicate(e)) return res.status(409).json({ message: TAKEN });
       throw e;
+    }
+    if (free) {
+      sendConfirmation(booking);
+      return res.status(201).json({ ref, free: true });
     }
     return res.status(201).json({
       ref,
@@ -156,7 +164,7 @@ const sendConfirmation = (c) => sendEmail({
   subject: `Your UniCoach consultation is booked: ${prettyWhen(c.date, c.time)}`,
   html: `<p>Hi ${escapeHtml(c.name)},</p>
 <p>Your <b>${escapeHtml(c.serviceLabel)}</b> call with the UniCoach team is confirmed for <b>${prettyWhen(c.date, c.time)} (India time)</b>, ${c.durationMin} minutes.</p>
-<p>We will send the call link before the session. Booking reference: <b>${c.ref}</b>. Amount paid: ₹${c.amountINR}.</p>
+<p>We will send the call link before the session. Booking reference: <b>${c.ref}</b>.${c.amountINR > 0 ? ` Amount paid: ₹${c.amountINR}.` : ''}</p>
 <p>Need to change the time? Just reply to this email.</p>
 <p>Team UniCoach</p>`,
   kind: 'transactional',

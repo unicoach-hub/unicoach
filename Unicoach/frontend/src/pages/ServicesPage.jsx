@@ -9,7 +9,7 @@ const GROUP_ICON = { plan: Compass, apply: FileText, fund: Wallet, visa: Plane }
 const JOURNEY = ['First call', 'Shortlist', 'Applications', 'Funding', 'Visa', 'You fly'];
 
 // Hero infographic 1: a booking that fills itself in, again and again
-const BookingLoop = ({ services }) => {
+const BookingLoop = ({ services, price }) => {
   const reduce = useReducedMotion();
   const [i, setI] = useState(0);
   const [step, setStep] = useState(0); // 0 service, 1 slot, 2 paid
@@ -34,7 +34,7 @@ const BookingLoop = ({ services }) => {
         {[
           ['Service', svc.label],
           ['When', slots[i % slots.length]],
-          ['Paid', '₹500 · UPI'],
+          price ? ['Paid', `₹${price} · UPI`] : ['Fee', 'Free'],
         ].map(([k, v], idx) => (
           <div key={k} className={`flex items-center justify-between rounded-xl px-3.5 py-2.5 border transition-colors duration-300 ${step === idx ? 'border-[#DE5C2B] bg-[#FFF4EE]' : step > idx ? 'border-slate-100 bg-slate-50' : 'border-dashed border-slate-200'}`}>
             <span className="text-[12px] text-slate-500">{k}</span>
@@ -99,7 +99,7 @@ const ServiceCard = ({ s, n, price }) => {
     <motion.article layout className="group rounded-[20px] bg-white border border-slate-200 hover:border-orange-200 hover:shadow-[0_18px_40px_-24px_rgba(222,92,43,0.45)] p-5 flex flex-col transition-shadow">
       <div className="flex items-start justify-between">
         <span className="font-outfit text-[30px] font-black text-slate-200 leading-none group-hover:text-orange-200 transition-colors">{String(n).padStart(2, '0')}</span>
-        <span className="text-[12px] font-bold text-[#DE5C2B] bg-[#FFF4EE] rounded-full px-2.5 py-0.5">₹{price}</span>
+        <span className="text-[12px] font-bold text-[#DE5C2B] bg-[#FFF4EE] rounded-full px-2.5 py-0.5">{price ? `₹${price}` : 'Free'}</span>
       </div>
       <h3 className="mt-3 text-[16.5px] font-bold text-slate-900">{s.label}</h3>
       <p className="mt-1 text-[13.5px] text-slate-500 leading-relaxed">{s.desc}</p>
@@ -152,7 +152,7 @@ const ServicesPage = () => {
             <div className="flex flex-wrap items-center gap-2">
               <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#FFF4EE] border border-orange-100 text-[12px] font-bold text-[#C04A1D] uppercase tracking-[0.1em]">For students</span>
               {cfg && <span className="px-2.5 py-1 rounded-full border border-slate-200 text-[11.5px] font-semibold text-slate-600">{services.length} services</span>}
-              <span className="px-2.5 py-1 rounded-full border border-slate-200 text-[11.5px] font-semibold text-slate-600">₹{cfg?.price || 500} each</span>
+              <span className="px-2.5 py-1 rounded-full border border-slate-200 text-[11.5px] font-semibold text-slate-600">{cfg && !cfg.price ? 'Free' : `₹${cfg?.price ?? 500} each`}</span>
             </div>
             <h1 className="mt-4 font-outfit text-[38px] sm:text-[52px] font-black tracking-tight text-[#111] leading-[1.05]">
               Every step abroad,<br /><span className="text-[#DE5C2B]">one 1:1 call away</span>
@@ -170,7 +170,7 @@ const ServicesPage = () => {
             </div>
           </div>
           <div className="grid sm:grid-cols-[1.25fr_1fr] gap-4">
-            <BookingLoop services={services} />
+            <BookingLoop services={services} price={cfg?.price ?? 500} />
             <JourneyLoop />
           </div>
         </section>

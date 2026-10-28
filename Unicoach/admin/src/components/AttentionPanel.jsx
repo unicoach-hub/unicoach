@@ -83,7 +83,8 @@ const AttentionPanel = () => {
 
   if (!data) return null;
 
-  const urgent = data.followUps.overdue + data.tasks.overdue + data.uncalled.count + data.whatsapp.needsAgent;
+  const consults = data.consultations || { new: 0, upcoming: 0, items: [] };
+  const urgent = data.followUps.overdue + data.tasks.overdue + data.uncalled.count + data.whatsapp.needsAgent + consults.new;
   const rows = [
     ...data.tasks.items.map((t) => ({ key: `t${t.id}`, kind: 'task', to: '/tasks', title: t.title, meta: `Task · due ${when(t.due)}${t.assignee ? ` · ${t.assignee}` : ''}`, badge: t.priority === 'high' ? 'High priority' : 'Overdue' })),
     ...data.followUps.items.map((l) => ({ key: `f${l.id}`, to: '/leads', title: l.name, meta: `Follow-up · ${[l.country, l.phone].filter(Boolean).join(' · ')}`, badge: `due ${ago(l.due)}` })),
@@ -114,6 +115,7 @@ const AttentionPanel = () => {
         <Tile to="/unicoach" icon={<UserAddOutlined />} label="Mentor applications" count={data.pendingMentors} tone="warn" />
         <Tile to="/leads-followup" icon={<ClockCircleOutlined />} label="Follow-up list" count={data.followUpList} />
         <Tile to="/unicoach" icon={<CalendarOutlined />} label="Sessions today" count={data.sessionsToday} />
+        <Tile to="/crm/consultations" icon={<CalendarOutlined />} label="New consultations" count={consults.new} sub={consults.upcoming ? `${consults.upcoming} upcoming` : 'last 24 hours'} tone="warn" />
       </div>
 
       {(data.eventsWithoutDate > 0 || data.pausedCampaigns > 0) && (
@@ -141,7 +143,13 @@ const AttentionPanel = () => {
           ) : rows.slice(0, 6).map((r) => <Row key={r.key} {...r} />)}
         </div>
         <div>
-          <div className="attn-section">Events this week</div>
+          <div className="attn-section">Upcoming consultations</div>
+          {consults.items.length === 0 ? (
+            <div className="attn-empty"><CalendarOutlined /> No consultation calls booked</div>
+          ) : consults.items.map((c) => (
+            <Row key={c.id} kind="event" to="/crm/consultations" title={c.name} meta={`${c.service} · ${when(c.start)}`} badge={c.isNew ? 'New booking' : c.phone} badgeTone={c.isNew ? 'warning' : 'accent'} />
+          ))}
+          <div className="attn-section" style={{ marginTop: 16 }}>Events this week</div>
           {data.upcomingEvents.length === 0 ? (
             <div className="attn-empty"><CalendarOutlined /> No events in the next 7 days</div>
           ) : data.upcomingEvents.map((e) => (

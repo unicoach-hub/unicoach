@@ -44,23 +44,9 @@ const NAV_SECTIONS = [
   {
     label: 'Students & CRM',
     items: [
-      {
-        id: 'crm',
-        label: 'Leads & CRM',
-        icon: <TeamOutlined />,
-        children: [
-          { path: '/leads', label: 'All Leads' },
-          { path: '/leads-converted', label: 'Converted' },
-          { path: '/leads-interested', label: 'Interested' },
-          { path: '/leads-followup', label: 'Follow-up' },
-          { path: '/leads-not-interested', label: 'Not interested' },
-          { path: '/crm/board', label: 'Pipeline Board' },
-          { path: '/crm/pipelines', label: 'CRM Pipelines' },
-          { path: '/crm/forms', label: 'Form Builder' },
-          { path: '/crm/consultations', label: 'Consultation Calls' },
-          { path: '/users', label: 'Registered Users' },
-        ],
-      },
+      // Status views, pipelines and forms open from the Leads page itself
+      { path: '/leads', label: 'Leads', icon: <TeamOutlined />, match: ['/leads', '/crm/board', '/crm/pipelines', '/crm/forms'] },
+      { path: '/crm/consultations', label: 'Consultation Calls', icon: <CalendarOutlined /> },
       { path: '/students/documents', label: 'Student Documents', icon: <FolderOpenOutlined /> },
       { path: '/students/inbox', label: 'Student Inbox', icon: <MessageOutlined />, badge: 'inbox' },
       { path: '/requests', label: 'Support Requests', icon: <CustomerServiceOutlined />, badge: 'requests' },
@@ -259,7 +245,9 @@ const Sidebar = ({ collapsed, onToggle }) => {
                   );
                 }
 
-                const active = isPathActive(location.pathname, item.path, item.exact);
+                const active = item.match
+                  ? item.match.some((p) => location.pathname.startsWith(p))
+                  : isPathActive(location.pathname, item.path, item.exact);
                 const badge = item.badge === 'requests' ? newRequests : item.badge === 'tasks' ? openTasks : item.badge === 'inbox' ? inboxUnread : 0;
                 return withTooltip(
                   badge > 0 ? `${item.label} (${badge} new)` : item.label,

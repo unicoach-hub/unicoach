@@ -1,7 +1,8 @@
-// Paid consultation calls with the UniCoach team (/book-consultation).
+// Consultation calls with the UniCoach team (/book-consultation).
 // Every service is the same price; slots are in India time.
+// 0 = free: bookings are confirmed straight away with no Razorpay step. Set it back to 500 to charge again.
 
-const PRICE_INR = 500;
+const PRICE_INR = 0;
 const DURATION_MIN = 60;
 
 // group: the section on /services. points: what the call covers (shown under "Read more").

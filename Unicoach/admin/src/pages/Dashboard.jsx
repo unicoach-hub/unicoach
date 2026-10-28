@@ -573,7 +573,7 @@ const Dashboard = () => {
             <SectionTitle
               icon={<TrophyOutlined />}
               title="Counsellors"
-              right={<Link to="/users" className="text-[12.5px] font-semibold text-[#DE5C2B] hover:text-[#C04A1D]">Manage</Link>}
+              right={<Link to="/staff" className="text-[12.5px] font-semibold text-[#DE5C2B] hover:text-[#C04A1D]">Manage</Link>}
             />
             {counselors.length === 0 ? (
               <p className="text-[13px] text-[var(--ux-text-3)] py-10 text-center">No leads assigned yet</p>

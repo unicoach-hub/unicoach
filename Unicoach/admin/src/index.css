@@ -4049,7 +4049,7 @@ input[type="date"].form-input::-webkit-calendar-picker-indicator {
 .attn-pulse { width: 10px; height: 10px; border-radius: 50%; box-shadow: 0 0 0 4px rgba(234,88,12,0.12); flex-shrink: 0; }
 .attn-refresh { border: 1px solid #eef0f3; background: #fff; border-radius: 10px; width: 32px; height: 32px; cursor: pointer; color: #64748b; }
 .attn-refresh:hover { color: #111; border-color: #cbd5e1; }
-.attn-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
+.attn-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
 @media (max-width: 1280px) { .attn-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 560px) { .attn-grid { grid-template-columns: 1fr; } }
 .attn-tile { position: relative; display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 14px; border: 1px solid #f0f0ee; background: #fff; text-decoration: none; min-width: 0; transition: background .15s, border-color .15s, transform .15s; }

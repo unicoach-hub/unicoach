@@ -108,7 +108,7 @@ const ConsultationCalls = () => {
     <div className="page-container">
       <Header
         title="Consultation calls"
-        subtitle="Paid ₹500 one-hour calls: bookings, your calendar and the hours you take calls"
+        subtitle="One-hour calls booked from the website: bookings, your calendar and the hours you take calls"
         extra={(
           <div style={{ display: 'flex', gap: 10 }}>
             <Button icon={<DownloadOutlined />} onClick={download} disabled={!data?.items?.length}>Download Excel</Button>
