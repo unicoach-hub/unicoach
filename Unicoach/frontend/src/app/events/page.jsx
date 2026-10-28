@@ -72,6 +72,19 @@ const API_ORIGIN = API_BASE_URL.replace(/\/api$/, '');
 
 
 // Real sign-ups only (registrationCount is kept by POST /events/:id/register)
+// Desi Pop palette: each event card takes the next colour, so the grid reads like a poster wall
+const CARD_TONES = [
+    { btn: '#F2B705', btnText: '#16130F', tagBg: '#FFF4CC', tagText: '#7A5800', tagBorder: '#F2D57A' },
+    { btn: '#14B8A6', btnText: '#16130F', tagBg: '#DDF7F3', tagText: '#0B5F56', tagBorder: '#9EE3D9' },
+    { btn: '#E4007C', btnText: '#FFFFFF', tagBg: '#FFE0F0', tagText: '#A1005A', tagBorder: '#F7A8D2' },
+    { btn: '#2B3FA0', btnText: '#FFFFFF', tagBg: '#E3E7FB', tagText: '#2B3FA0', tagBorder: '#B5BFEE' },
+    { btn: '#DE5C2B', btnText: '#FFFFFF', tagBg: '#FFEDE4', tagText: '#A8411D', tagBorder: '#F5C2A9' },
+    { btn: '#1E9E4A', btnText: '#16130F', tagBg: '#DEF5E5', tagText: '#156B33', tagBorder: '#A3DDB6' },
+];
+const toneFor = (idx) => CARD_TONES[idx % CARD_TONES.length];
+// Poster button: ink border, hard offset shadow that presses in on click
+const POSTER_BTN = 'border-2 border-[#16130F] shadow-[4px_4px_0_#16130F] hover:shadow-[6px_6px_0_#16130F] hover:-translate-x-0.5 hover:-translate-y-0.5 active:translate-x-1 active:translate-y-1 active:shadow-[0_0_0_#16130F] transition-all no-shine';
+
 const registeredLabel = (item) => (item?.registrationCount > 0 ? `${item.registrationCount} Registered` : '');
 
 // Over once the end time (or the start time, when no end is set) has passed; an undated event is still open
@@ -503,7 +516,8 @@ const EventsPage = () => {
                                                     {!isPast && (
                                                         <button
                                                             onClick={() => openRegistration(item)}
-                                                            className="px-4 py-2 rounded-xl bg-[#DE5C2B] text-xs font-bold text-white hover:bg-[#C04A1D] transition-colors shadow-xs cursor-pointer"
+                                                            className={`px-4 py-2 rounded-xl text-xs font-extrabold cursor-pointer ${POSTER_BTN}`}
+                                                            style={{ background: toneFor(idx).btn, color: toneFor(idx).btnText }}
                                                         >
                                                             Register
                                                         </button>
@@ -533,6 +547,7 @@ const EventsPage = () => {
                                     const itemCategory = item.category || item.type;
                                     const isPast = isEventOver(item);
                                     const registered = registeredLabel(item);
+                                    const tone = toneFor(idx);
                                     return (
                                         <motion.div
                                             layout
@@ -584,7 +599,7 @@ const EventsPage = () => {
                                                     </h3>
                                                     <div className="flex flex-wrap gap-1.5 mb-5">
                                                         {Array.isArray(item.tags) ? item.tags.map((tag, i) => (
-                                                            <span key={i} className="text-[10px] font-extrabold text-[#DE5C2B] bg-orange-50 px-2.5 py-0.5 rounded-lg border border-orange-100/60">
+                                                            <span key={i} className="text-[10px] font-extrabold px-2.5 py-0.5 rounded-lg border" style={{ background: tone.tagBg, color: tone.tagText, borderColor: tone.tagBorder }}>
                                                                 #{tag}
                                                             </span>
                                                         )) : null}
@@ -608,7 +623,7 @@ const EventsPage = () => {
                                                                 e.stopPropagation();
                                                                 openDetails(item);
                                                             }}
-                                                            className="w-full py-3.5 rounded-2xl border border-slate-200 text-slate-600 font-bold text-xs hover:bg-slate-50 transition-all cursor-pointer text-center block duration-200"
+                                                            className="w-full py-3.5 rounded-2xl border-2 border-dashed border-slate-300 text-slate-600 font-bold text-xs hover:bg-[#FAF7F0] hover:border-[#16130F] transition-all cursor-pointer text-center block duration-200"
                                                         >
                                                             Event ended · View details
                                                         </button>
@@ -618,7 +633,8 @@ const EventsPage = () => {
                                                                 e.stopPropagation();
                                                                 openRegistration(item);
                                                             }}
-                                                            className="w-full py-3.5 rounded-2xl text-white font-bold text-xs bg-[#DE5C2B] hover:bg-[#C04A1D] shadow-md shadow-orange-500/20 transition-all cursor-pointer text-center block duration-200"
+                                                            className={`w-full py-3.5 rounded-2xl font-extrabold text-[13px] cursor-pointer text-center block duration-200 ${POSTER_BTN}`}
+                                                            style={{ background: tone.btn, color: tone.btnText }}
                                                         >
                                                             {item.ctaLabel || 'Register Free Seat'}
                                                         </button>

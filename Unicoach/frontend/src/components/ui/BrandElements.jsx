@@ -166,20 +166,39 @@ export const StatCard = ({ value, label, compact = false, className = '' }) => (
 );
 
 /* 8. Journey pills joined by a gradient line; `active` marks the current step */
+// Desi Pop step colours: a light tint for upcoming steps, the full colour for the active one
+const PILL_TONES = [
+  { tint: '#FFF4CC', solid: '#F2B705', solidText: INK },
+  { tint: '#DDF7F3', solid: '#14B8A6', solidText: INK },
+  { tint: '#FFE0F0', solid: '#E4007C', solidText: '#FFFFFF' },
+  { tint: '#E3E7FB', solid: '#2B3FA0', solidText: '#FFFFFF' },
+];
+// truck-art style dashed connector in orange, marigold and teal
+const PILL_CONNECTOR = 'repeating-linear-gradient(90deg, #DE5C2B 0 10px, transparent 10px 14px, #F2B705 14px 24px, transparent 24px 28px, #14B8A6 28px 38px, transparent 38px 42px)';
+
 export const JourneyPills = ({ steps, active = steps.length - 1, className = '' }) => (
-  <ol className={`flex items-start overflow-x-auto list-none p-0 m-0 pb-1 ${className}`}>
-    {steps.map((step, i) => (
-      <li key={step.label} className="relative flex flex-col items-center gap-2 shrink-0 w-[86px] sm:w-[128px]">
-        {/* connector runs from this pill's centre to the next one, behind both pills */}
-        {i < steps.length - 1 && <span aria-hidden="true" className="absolute top-[16px] left-1/2 w-full h-[3px] rounded-full bg-gradient-to-r from-[#3B7BF6] to-[#1FBF8F]" />}
-        <span
-          className={`relative rounded-full border-2 px-3 sm:px-3.5 py-1.5 text-[12px] sm:text-[14px] font-urbanist font-extrabold whitespace-nowrap ${i === active ? 'bg-[#3B7BF6] border-[#3B7BF6] text-white' : 'bg-white border-[#C5D6FF] text-[#1F4FC4]'}`}
-        >
-          {step.label}
-        </span>
-        {step.sub && <span className="text-[11.5px] leading-tight text-center text-slate-500 px-1">{step.sub}</span>}
-      </li>
-    ))}
+  <ol className={`flex items-start overflow-x-auto list-none p-0 m-0 pt-1 pb-2 ${className}`}>
+    {steps.map((step, i) => {
+      const tone = PILL_TONES[i % PILL_TONES.length];
+      const on = i === active;
+      return (
+        <li key={step.label} className="relative flex flex-col items-center gap-2 shrink-0 w-[86px] sm:w-[128px]">
+          {/* connector runs from this pill's centre to the next one, behind both pills */}
+          {i < steps.length - 1 && <span aria-hidden="true" className="absolute top-[16px] left-1/2 w-full h-[4px]" style={{ background: PILL_CONNECTOR }} />}
+          <span
+            className="relative rounded-full border-2 border-[#16130F] px-2.5 sm:px-3.5 py-1.5 text-[11.5px] sm:text-[14px] font-urbanist font-extrabold whitespace-nowrap"
+            style={{
+              background: on ? tone.solid : tone.tint,
+              color: on ? tone.solidText : INK,
+              boxShadow: on ? `3px 3px 0 ${INK}` : 'none',
+            }}
+          >
+            {step.label}
+          </span>
+          {step.sub && <span className="text-[11.5px] leading-tight text-center text-slate-500 px-1">{step.sub}</span>}
+        </li>
+      );
+    })}
   </ol>
 );
 
