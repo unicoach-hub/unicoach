@@ -11,13 +11,11 @@ const GROQ_API_URL = 'https://api.groq.com/openai/v1/chat/completions';
 const GROQ_API_KEY = process.env.GROQ_API_KEY;
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
 
+// Text models Groq still serves (checked 28 Oct 2026; compound, compound-mini and qwen3.6 now return 404)
 const AVAILABLE_MODELS = [
   'qwen/qwen3.8-27b',
-  'groq/compound-mini',
-  'qwen/qwen3.6-27b',
   'openai/gpt-oss-120b',
-  'openai/gpt-oss-20b',
-  'groq/compound'
+  'openai/gpt-oss-20b'
 ];
 
 /**
@@ -50,7 +48,10 @@ async function callLLM(messages, options = {}) {
     temperature = 0.3,
     maxTokens = 2500,
     jsonMode = false,
-    preferredModel = null
+    preferredModel = null,
+    // Try OpenAI before Groq (for tasks where OpenAI scores more reliably)
+    openAiFirst = false,
+    openAiModel = 'gpt-4o-mini'
   } = options;
 
   const modelsToTry = preferredModel 
@@ -58,6 +59,53 @@ async function callLLM(messages, options = {}) {
     : AVAILABLE_MODELS;
 
   let lastError = null;
+
+  // OpenAI: the fallback when Groq fails, or the first try with openAiFirst
+  const tryOpenAI = async () => {
+    if (!OPENAI_API_KEY) return null;
+    try {
+      // GPT-5 and o-series models take max_completion_tokens and only their default temperature
+      const reasoning = /^(gpt-5|o\d)/.test(openAiModel);
+      const payload = reasoning
+        ? { model: openAiModel, messages, max_completion_tokens: maxTokens * 3 }
+        : { model: openAiModel, messages, temperature, max_tokens: maxTokens };
+      if (jsonMode) {
+        payload.response_format = { type: 'json_object' };
+      }
+
+      const res = await fetch('https://api.openai.com/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${OPENAI_API_KEY}`
+        },
+        body: JSON.stringify(payload)
+      });
+
+      if (res.ok) {
+        const data = await res.json();
+        const content = data.choices?.[0]?.message?.content;
+        if (content) {
+          return {
+            content,
+            modelUsed: `openai/${openAiModel}`,
+            usage: data.usage || null
+          };
+        }
+      } else {
+        console.warn(`[AI Service] OpenAI ${openAiModel} returned HTTP ${res.status}:`, await res.text());
+      }
+    } catch (openAiErr) {
+      console.warn('[AI Service] OpenAI error:', openAiErr.message);
+      lastError = openAiErr;
+    }
+    return null;
+  };
+
+  if (openAiFirst) {
+    const first = await tryOpenAI();
+    if (first) return first;
+  }
 
   // 1. Try Groq models first
   if (GROQ_API_KEY) {
@@ -107,42 +155,9 @@ async function callLLM(messages, options = {}) {
   }
 
   // 2. Fallback to OpenAI if Groq fails or key unavailable
-  if (OPENAI_API_KEY) {
-    try {
-      const payload = {
-        model: 'gpt-4o-mini',
-        messages,
-        temperature,
-        max_tokens: maxTokens
-      };
-      if (jsonMode) {
-        payload.response_format = { type: 'json_object' };
-      }
-
-      const res = await fetch('https://api.openai.com/v1/chat/completions', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${OPENAI_API_KEY}`
-        },
-        body: JSON.stringify(payload)
-      });
-
-      if (res.ok) {
-        const data = await res.json();
-        const content = data.choices?.[0]?.message?.content;
-        if (content) {
-          return {
-            content,
-            modelUsed: 'openai/gpt-4o-mini',
-            usage: data.usage || null
-          };
-        }
-      }
-    } catch (openAiErr) {
-      console.warn('[AI Service] OpenAI fallback error:', openAiErr.message);
-      lastError = openAiErr;
-    }
+  if (!openAiFirst) {
+    const fallback = await tryOpenAI();
+    if (fallback) return fallback;
   }
 
   throw lastError || new Error('All AI models failed to respond.');
@@ -151,38 +166,91 @@ async function callLLM(messages, options = {}) {
 /**
  * 1. AI IELTS Academic Writing Task 2 Grader
  */
-async function gradeIeltsEssay({ prompt, essay, timeSpent, wordCount }) {
+// IELTS rounding of the mean of the four criteria: .25 goes up to .5, .75 up to the next band
+function ieltsOverallBand(scores) {
+  const valid = scores.map(Number).filter((n) => Number.isFinite(n) && n >= 0 && n <= 9);
+  if (valid.length !== 4) return null;
+  const mean = valid.reduce((a, b) => a + b, 0) / 4;
+  return Math.floor(mean * 2 + 0.5) / 2;
+}
+
+// AI markers squeeze bands toward 5-6: on the 10 official IELTS.org Task 2 samples (28 Oct 2026),
+// gpt-4o-mini scored Band 4 essays about right but Band 8-8.5 essays at 6-7. This line stretches each
+// criterion back out (leave-one-out check: 90% within half a band, against 27% before).
+// Re-fit it if the model or prompt changes.
+const IELTS_CALIBRATION = { slope: 1.75, intercept: -3 };
+const calibrateBand = (score) => {
+  const n = Number(score);
+  if (!Number.isFinite(n)) return score;
+  const v = IELTS_CALIBRATION.slope * n + IELTS_CALIBRATION.intercept;
+  return Math.min(9, Math.max(1, Math.round(v * 2) / 2));
+};
+
+async function gradeIeltsEssay({ prompt, essay, timeSpent, wordCount }, llmOptions = {}) {
   try {
-    const systemPrompt = `You are a certified, veteran Senior IELTS Academic Writing Examiner with 15+ years of British Council & IDP experience.
-You evaluate IELTS Academic Writing Task 2 essays according to official public band descriptors.
+    const systemPrompt = `You are a trained IELTS Writing examiner. You mark Task 2 essays against the public IELTS band descriptors, the same way certificated examiners do.
 
-Be rigorous, realistic, and highly constructive. Calculate the true Overall Band Score (from 1.0 to 9.0 in 0.5 increments, following IELTS rounding rules where .25 rounds up to .5 and .75 rounds up to next whole band).
+Score each of the four criteria on its own, as a whole band (or half band when it sits between two levels), using these descriptor summaries:
 
-Evaluate against the 4 official IELTS criteria:
-1. Task Achievement / Response (Did they address all parts of prompt, clear position, well-supported ideas?)
-2. Coherence and Cohesion (Logical sequencing, paragraphing, cohesive devices, referencing)
-3. Lexical Resource (Range of academic vocabulary, collocations, precision, spelling)
-4. Grammatical Range and Accuracy (Mix of simple/complex structures, punctuation, frequency of errors)
+TASK RESPONSE
+9: fully addresses every part; fully developed position; ideas relevant, extended and well supported.
+8: sufficiently addresses every part; well-developed response with relevant, extended, supported ideas; occasional lapses.
+7: addresses every part; clear position throughout; main ideas extended and supported, though some may over-generalise or lack focus.
+6: addresses every part, some more fully than others; relevant position, though conclusions may be unclear or repetitive; some ideas under-developed.
+5: addresses the task only partly; position not always clear; ideas limited and not well developed; may include irrelevant detail.
+4: responds minimally or partly off-topic; position unclear; few ideas, repetitive or unsupported.
+Copied wording from the question earns no credit, and an essay under 250 words loses Task Response marks.
+
+COHERENCE AND COHESION
+9: cohesion so smooth it attracts no attention; skilful paragraphing.
+8: information and ideas sequenced logically; all aspects of cohesion managed well; paragraphing sufficient and appropriate.
+7: logically organised with clear progression; a range of cohesive devices, with some under- or over-use; a clear central topic in each paragraph.
+6: coherent arrangement and overall progression; cohesive devices effective but sometimes faulty or mechanical; referencing not always clear; paragraphing not always logical.
+5: some organisation but no clear overall progression; cohesive devices inadequate, inaccurate or over-used; repetitive; paragraphing inadequate.
+4: ideas not arranged coherently; no clear progression; basic cohesive devices, often inaccurate or repetitive.
+
+LEXICAL RESOURCE
+9: wide range, used naturally and with sophistication; rare minor slips only.
+8: wide range used fluently and flexibly to convey precise meanings; skilful use of less common items; occasional errors in word choice, spelling or word formation.
+7: enough range for some flexibility and precision; less common items used with awareness of style and collocation; occasional errors in word choice, spelling or word formation.
+6: adequate range; attempts less common vocabulary with some inaccuracy; some spelling or word-formation errors that do not impede communication.
+5: limited range, minimally adequate; noticeable spelling or word-formation errors that may cause the reader some difficulty.
+4: basic vocabulary, used repetitively or inappropriately; errors cause strain for the reader.
+
+GRAMMATICAL RANGE AND ACCURACY
+9: wide range with full flexibility and accuracy; rare minor slips only.
+8: wide range; the majority of sentences error-free; only very occasional errors or inappropriacies.
+7: a variety of complex structures; frequent error-free sentences; good control, with a few errors.
+6: a mix of simple and complex forms; some errors in grammar and punctuation that rarely reduce communication.
+5: limited range; complex sentences attempted but less accurate than simple ones; frequent errors that can cause the reader difficulty.
+4: very limited range; rare subordinate clauses; errors predominate and punctuation is often faulty.
+
+How to mark:
+- Judge each criterion only on its own descriptor. Spelling and grammar mistakes belong to Lexical Resource and Grammatical Range; they do not lower Task Response or Coherence.
+- Real examiners award 7, 8 and even 9 to essays that still contain some errors. Do not cap a well-argued, well-organised essay at 6 because of a handful of slips; match it to the descriptor it fits best.
+- Equally, do not reward length or confident tone on its own: weak ideas or frequent errors keep scores at 5 or below.
+- Decide each score from evidence in the essay.
 
 You MUST respond strictly with a valid JSON object matching this exact schema:
+Write each criterion's feedback first, then its score. Scores are numbers from 1 to 9 in steps of 0.5; the values below are placeholders, not a typical result.
 {
-  "overallBand": 6.5,
+  "overallBand": <mean of the four scores>,
   "criteria": {
     "taskAchievement": {
-      "score": 6.5,
-      "feedback": "Clear explanation of strengths and shortcomings in addressing the prompt."
+      "feedback": "Clear explanation of strengths and shortcomings in addressing the prompt.",
+      "score": <band>
     },
     "coherenceCohesion": {
-      "score": 7.0,
-      "feedback": "Feedback on logical flow, transitions between paragraphs, and paragraph structure."
+      "feedback": "Feedback on logical flow, transitions between paragraphs, and paragraph structure.",
+      "score": <band>
     },
     "lexicalResource": {
-      "score": 6.0,
-      "feedback": "Feedback on vocabulary variety, academic collocations, and informal phrasing."
+      "feedback": "Feedback on vocabulary variety, academic collocations, and informal phrasing.",
+      "score": <band>
     },
     "grammaticalAccuracy": {
-      "score": 6.5,
-      "feedback": "Feedback on complex sentence usage, tense consistency, and common grammatical slips."
+      "feedback": "Feedback on complex sentence usage, tense consistency, and common grammatical slips.",
+      "score": <band>
     }
   },
   "wordCountAnalysis": {
@@ -224,9 +292,17 @@ ${essay}
       { role: 'user', content: userMessage }
     ];
 
-    const response = await callLLM(messages, { jsonMode: true, temperature: 0.2 });
-    const cleaned = cleanJsonResponse(response.content);
-    return JSON.parse(cleaned);
+    // gpt-4o-mini marked the official IELTS.org samples closest to examiner bands, so it goes first
+    const response = await callLLM(messages, { jsonMode: true, temperature: 0, openAiFirst: true, ...llmOptions });
+    const result = JSON.parse(cleanJsonResponse(response.content));
+    // The overall band is the IELTS-rounded mean of the four calibrated criteria, not the model's own guess
+    const c = result.criteria || {};
+    for (const key of ['taskAchievement', 'coherenceCohesion', 'lexicalResource', 'grammaticalAccuracy']) {
+      if (c[key]) c[key].score = calibrateBand(c[key].score);
+    }
+    const overall = ieltsOverallBand([c.taskAchievement?.score, c.coherenceCohesion?.score, c.lexicalResource?.score, c.grammaticalAccuracy?.score]);
+    if (overall !== null) result.overallBand = overall;
+    return result;
   } catch (err) {
     console.warn('[AI Service] gradeIeltsEssay failed:', err.message);
     // No made-up results: the controller returns an error and the student can try again
@@ -987,7 +1063,7 @@ Return STRICTLY a valid JSON object matching this schema:
       { role: 'user', content: userMessage }
     ];
 
-    const response = await callLLM(messages, { jsonMode: true, temperature: 0.25, preferredModel: 'llama-3.1-8b-instant' });
+    const response = await callLLM(messages, { jsonMode: true, temperature: 0.25, preferredModel: 'openai/gpt-oss-20b' });
     const cleaned = cleanJsonResponse(response.content);
     return JSON.parse(cleaned);
   } catch (err) {
@@ -1052,7 +1128,7 @@ ${customPrompt ? `- Custom Instruction: ${customPrompt}` : ''}`;
       { role: 'user', content: userMessage }
     ];
 
-    const response = await callLLM(messages, { jsonMode: true, temperature: 0.35, preferredModel: 'llama-3.1-8b-instant' });
+    const response = await callLLM(messages, { jsonMode: true, temperature: 0.35, preferredModel: 'openai/gpt-oss-20b' });
     const cleaned = cleanJsonResponse(response.content);
     return JSON.parse(cleaned);
   } catch (err) {
