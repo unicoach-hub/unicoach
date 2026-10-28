@@ -31,22 +31,19 @@ const STEPS = [
     id: 0,
     number: '01',
     title: 'Browse Verified Seniors',
-    shortDesc: 'Filter by university, country, degree, or service type — every mentor is admin-verified.',
-    fullDesc: 'Explore Prachi, Nitya, and Manan, and find guidance by mentor name, expertise, or destination country.'
+    shortDesc: 'Every mentor is verified.'
   },
   {
     id: 1,
     number: '02',
     title: 'Book a Session',
-    shortDesc: 'Pick a service, choose your time slot, and pay securely via Razorpay.',
-    fullDesc: 'Select from 1:1 video calls, SOP & resume reviews, priority DM questions, or downloadable guides. Pick a convenient slot from the mentor\'s live calendar, and pay securely — no hidden charges, no platform commission.'
+    shortDesc: 'Pick a service and a slot.'
   },
   {
     id: 2,
     number: '03',
     title: 'Get Expert Guidance',
-    shortDesc: 'Connect directly with your mentor. Real advice from someone who\'s been through it.',
-    fullDesc: 'Get personalized, first-hand advice on university applications, visa interviews, scholarships, SOP writing, and life abroad — from a senior who got admitted to your dream university.'
+    shortDesc: 'Real advice from a senior who got in.'
   }
 ];
 
@@ -593,16 +590,6 @@ export const StudentFlashSection = () => {
                         <span className="min-w-0">
                           <span className="block text-[18px] sm:text-[21px] font-black text-[#16130F] tracking-[-0.02em]">{step.title}</span>
                           <span className={`block mt-0.5 text-[14.5px] leading-snug ${isActive ? 'text-slate-700' : 'text-[#16130F]/60'}`}>{step.shortDesc}</span>
-                          {isActive && (
-                            <motion.span
-                              initial={{ opacity: 0, height: 0 }}
-                              animate={{ opacity: 1, height: 'auto' }}
-                              transition={{ duration: 0.25 }}
-                              className="block mt-1.5 text-[13px] leading-relaxed text-slate-500"
-                            >
-                              {step.fullDesc}
-                            </motion.span>
-                          )}
                         </span>
 
                         {/* Auto-play progress along the bottom of the active card */}
