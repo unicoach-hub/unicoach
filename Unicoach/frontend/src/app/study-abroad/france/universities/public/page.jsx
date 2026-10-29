@@ -202,7 +202,7 @@ const FrancePublic = () => {
         </div>
 
         {/* TAXPAYER SUBSIDY CALLOUT */}
-        <div className="bg-gradient-to-r from-indigo-900 via-indigo-950 to-slate-950 text-white rounded-[32px] p-8 md:p-12 shadow-xl mb-16 relative overflow-hidden">
+        <div className="uc-soft rounded-[32px] p-8 md:p-12 mb-16 relative overflow-hidden">
           <div className="absolute right-[-10%] top-[-20%] w-[380px] h-[380px] bg-white/5 rounded-full blur-3xl pointer-events-none" />
           <div className="grid grid-cols-1 lg:grid-cols-[1fr_360px] gap-8 items-center">
             <div>

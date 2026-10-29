@@ -107,7 +107,7 @@ const TeamPage = () => {
         </section>
 
         {/* CTA */}
-        <section className="mt-16 rounded-[28px] bg-[#111111] text-white p-8 sm:p-10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-5">
+        <section className="uc-soft mt-16 rounded-[28px] p-8 sm:p-10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-5">
           <div>
             <h2 className="font-outfit text-2xl sm:text-3xl font-black">Talk to the team</h2>
             <p className="text-white/70 text-sm mt-1">Free counselling call, no strings attached.</p>

@@ -28,7 +28,7 @@ const ShortlistWizardWidget = ({ title = "Get Your University Shortlist", subtit
   if (isLoggedIn) {
     const studentName = user?.name || verifiedLead?.name || 'Student';
     return (
-      <div className="bg-gradient-to-br from-indigo-900 via-slate-900 to-indigo-950 text-white rounded-3xl p-6 md:p-8 shadow-md border border-indigo-900/50 flex flex-col md:flex-row items-center justify-between gap-6">
+      <div className="uc-soft rounded-3xl p-6 md:p-8 flex flex-col md:flex-row items-center justify-between gap-6">
         <div className="space-y-2 text-left">
           <div className="inline-flex items-center gap-2 px-3 py-1 bg-indigo-500/20 text-indigo-300 rounded-full text-[10px] font-black uppercase tracking-wider">
             <Sparkles size={13} className="text-indigo-400 animate-pulse" /> Profile & Criteria Saved

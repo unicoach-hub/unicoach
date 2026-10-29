@@ -74,10 +74,10 @@ const Home = () => {
         </Suspense>
       </LazySection>
 
-      {/* 04c. Study-abroad passport: scroll turns the pages, each step gets stamped */}
-      <LazySection minHeight="100vh" rootMargin="400px">
-        <Suspense fallback={<SectionPlaceholder minHeight="100vh" />}>
-          <PassportJourney />
+      {/* 04c. Shortlist finder: the auto drives while the search fills itself */}
+      <LazySection minHeight="560px" rootMargin="900px">
+        <Suspense fallback={<SectionPlaceholder minHeight="560px" />}>
+          <ShortlistShowcase />
         </Suspense>
       </LazySection>
 
@@ -87,9 +87,10 @@ const Home = () => {
         </Suspense>
       </LazySection>
 
-      <LazySection minHeight="560px" rootMargin="900px">
-        <Suspense fallback={<SectionPlaceholder minHeight="560px" />}>
-          <ShortlistShowcase />
+      {/* 06b. Study-abroad passport: scroll turns the pages, each step gets stamped */}
+      <LazySection minHeight="100vh" rootMargin="400px">
+        <Suspense fallback={<SectionPlaceholder minHeight="100vh" />}>
+          <PassportJourney />
         </Suspense>
       </LazySection>
 

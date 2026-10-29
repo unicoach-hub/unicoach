@@ -35,8 +35,8 @@ const STEPS = [
   {
     key: 'shortlist', label: 'Shortlist', hi: 'Sahi university',
     student: '7.8 CGPA hai, Ireland mein Data Science. Kaunsi uni?',
-    mentor: 'Dekho, teen category bana di: Dream, Target, Safe.',
-    screen: { title: 'Shortlist · Ireland · MSc Data Science', rows: [['Trinity College Dublin', 'Dream', 54], ['University College Dublin', 'Target', 78], ['University of Galway', 'Safe', 92]] },
+    mentor: 'Dekho, tumhare marks aur budget pe ye shortlist bani hai.',
+    screen: { title: 'Shortlist · Ireland · MSc Data Science', rows: [['Trinity College Dublin', 'Dublin', 54], ['University College Dublin', 'Dublin', 78], ['University of Galway', 'Galway', 92]] },
   },
   {
     key: 'scholarship', label: 'Scholarships', hi: 'Paisa bachao',
@@ -85,7 +85,7 @@ const Wave = ({ on, className = '' }) => (
 );
 
 const Tile = ({ who, speaking, live = false, children }) => (
-  <div className={`relative rounded-2xl overflow-hidden bg-[#1E3368] transition-shadow duration-300 ${speaking ? 'ring-[3px] ring-[#8AB4F8]' : 'ring-0'}`}>
+  <div className={`relative rounded-2xl overflow-hidden bg-[#DCE6FF] transition-shadow duration-300 ${speaking ? 'ring-[3px] ring-[#8AB4F8]' : 'ring-0'}`}>
     {children}
     <span className="absolute left-2 bottom-2 flex items-center gap-1 text-[11px] font-medium text-white bg-black/45 rounded-md px-1.5 py-0.5">
       {speaking || live ? <Wave on /> : <MicOff size={11} className="text-red-400" />} {who}
@@ -100,7 +100,7 @@ const Screen = ({ s }) => (
       {s.screen.rows && s.screen.rows.map(([u, t, p], i) => (
         <motion.div key={u} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + i * 0.14 }} className="flex items-center gap-3 py-1.5 border-b border-slate-100 last:border-0">
           <span className="flex-1 text-[13px] sm:text-[14px] font-semibold text-[#111] truncate">{u}</span>
-          <span className={`text-[10.5px] font-bold px-2 py-0.5 rounded-full ${t === 'Dream' ? 'bg-orange-100 text-orange-700' : t === 'Target' ? 'bg-blue-100 text-blue-700' : 'bg-emerald-100 text-emerald-700'}`}>{t}</span>
+          <span className="text-[10.5px] font-bold px-2 py-0.5 rounded-full bg-blue-50 text-blue-700">{t}</span>
           <span className="w-10 text-right text-[13px] font-bold">{p}%</span>
         </motion.div>
       ))}
@@ -222,23 +222,23 @@ const StudentStory = () => {
         </div>
 
         {/* Video call window */}
-        <div onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)} className="relative rounded-[22px] bg-[#3A150A] p-3 sm:p-4 shadow-[0_40px_80px_-30px_rgba(15,23,42,0.6)]">
-          <div className="flex items-center justify-between text-white/85 text-[12px] px-1 pb-3">
+        <div onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)} className="relative rounded-[22px] bg-white border border-[#E4E1DA] p-3 sm:p-4 shadow-[0_40px_80px_-40px_rgba(15,23,42,0.35)]">
+          <div className="flex items-center justify-between text-slate-700 text-[12px] px-1 pb-3">
             <span className="flex items-center gap-2"><span className="w-2 h-2 rounded-full bg-red-500 animate-pulse" /> UniCoach 1:1 session · {clock}</span>
-            <span className="hidden sm:inline text-white/60">Aarav × Prachi</span>
+            <span className="hidden sm:inline text-slate-400">Aarav × Prachi</span>
           </div>
 
           <div className="grid grid-cols-[1fr_120px] sm:grid-cols-[1fr_150px] gap-3">
             {/* shared screen */}
-            <div className="relative rounded-2xl overflow-hidden bg-[#1E3368] aspect-[4/3] sm:aspect-[16/11]">
+            <div className="relative rounded-2xl overflow-hidden bg-[#EEF2FF] border border-[#E4E8F5] aspect-[4/3] sm:aspect-[16/11]">
               <AnimatePresence mode="wait">
                 {mentorTalking ? (
                   <Screen key={s.key} s={s} />
                 ) : (
-                  <motion.div key={`ask-${step}`} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="absolute inset-0 flex flex-col items-center justify-center gap-4 bg-gradient-to-br from-[#3B2A6B] via-[#2B2D31] to-[#4A2618]">
-                    <motion.span animate={{ scale: [1, 1.06, 1] }} transition={{ duration: 1.2, repeat: Infinity }} className="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-gradient-to-br from-[#485A79] to-[#DE5C2B] grid place-items-center text-white text-[32px] font-bold ring-4 ring-[#8AB4F8]/60">A</motion.span>
-                    <span className="flex items-center gap-2 text-white/85 text-[13px]"><Wave on /> Aarav is asking…</span>
-                    <span className="flex items-center gap-1.5 text-white/45 text-[11.5px]"><MonitorUp size={13} /> Prachi will share her screen next</span>
+                  <motion.div key={`ask-${step}`} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="absolute inset-0 flex flex-col items-center justify-center gap-4 bg-gradient-to-br from-[#EAE5FF] via-[#F6F2EA] to-[#FFE4D6]">
+                    <motion.span animate={{ scale: [1, 1.06, 1] }} transition={{ duration: 1.2, repeat: Infinity }} className="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-gradient-to-br from-[#485A79] to-[#DE5C2B] grid place-items-center text-white text-[32px] font-bold ring-4 ring-[#8AB4F8]/70">A</motion.span>
+                    <span className="flex items-center gap-2 text-slate-700 text-[13px]"><Wave on /> Aarav is asking…</span>
+                    <span className="flex items-center gap-1.5 text-slate-500 text-[11.5px]"><MonitorUp size={13} /> Prachi will share her screen next</span>
                   </motion.div>
                 )}
               </AnimatePresence>
@@ -272,19 +272,19 @@ const StudentStory = () => {
                 </div>
               </Tile>
               <Tile who="Aarav (you)" speaking={!mentorTalking} live={!muted}>
-                <div className={`aspect-square grid place-items-center ${camOn ? 'bg-gradient-to-br from-[#485A79] to-[#DE5C2B]' : 'bg-[#2A4480]'}`}>
-                  <span className="w-12 h-12 rounded-full bg-white/20 grid place-items-center text-white text-[20px] font-bold">A</span>
-                  {!camOn && <span className="absolute top-2 right-2 text-[10px] text-white/70">Camera off</span>}
+                <div className={`aspect-square grid place-items-center ${camOn ? 'bg-gradient-to-br from-[#C9D6FF] to-[#FFC9B0]' : 'bg-[#E3E8F4]'}`}>
+                  <span className="w-12 h-12 rounded-full bg-white/70 grid place-items-center text-[#1B2A4A] text-[20px] font-bold">A</span>
+                  {!camOn && <span className="absolute top-2 right-2 text-[10px] text-slate-500">Camera off</span>}
                 </div>
               </Tile>
             </div>
           </div>
 
           {/* live captions */}
-          {captions && <div className="mt-3 min-h-[48px] rounded-xl bg-[#0F1D45]/80 px-3 py-2 text-[13px] sm:text-[14px] text-white leading-snug">
+          {captions && <div className="mt-3 min-h-[48px] rounded-xl bg-[#F1F4FB] px-3 py-2 text-[13px] sm:text-[14px] text-slate-800 leading-snug">
             <AnimatePresence mode="wait">
               <motion.p key={`${step}-${phase}`} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} transition={{ duration: 0.25 }}>
-                <span className="font-semibold text-[#8AB4F8]">{mentorTalking ? 'Prachi' : 'Aarav'}:</span> {mentorTalking ? s.mentor : s.student}
+                <span className="font-semibold text-[#1A73E8]">{mentorTalking ? 'Prachi' : 'Aarav'}:</span> {mentorTalking ? s.mentor : s.student}
               </motion.p>
             </AnimatePresence>
           </div>}
@@ -292,7 +292,7 @@ const StudentStory = () => {
           {/* session progress (click a segment to jump) */}
           <div className="mt-3 flex gap-1.5">
             {STEPS.map((x, i) => (
-              <button type="button" key={x.key} aria-label={`Go to ${x.label}`} onClick={() => { setStep(i); setPhase(0); setEnded(false); }} className="no-shine flex-1 h-1 rounded-full bg-white/10 overflow-hidden cursor-pointer hover:bg-white/25">
+              <button type="button" key={x.key} aria-label={`Go to ${x.label}`} onClick={() => { setStep(i); setPhase(0); setEnded(false); }} className="no-shine flex-1 h-1 rounded-full bg-slate-200 overflow-hidden cursor-pointer hover:bg-slate-300">
                 <motion.span className="block h-full bg-[#DE5C2B]" animate={{ width: i < step ? '100%' : i === step ? (mentorTalking ? '100%' : '35%') : '0%' }} transition={{ duration: i === step ? (mentorTalking ? PHASE_MS[1] / 1000 : PHASE_MS[0] / 1000) : 0.3, ease: 'linear' }} />
               </button>
             ))}
@@ -308,19 +308,19 @@ const StudentStory = () => {
               { I: MessageSquare, label: captions ? 'Hide captions' : 'Show captions', on: captions, act: () => setCaptions((c) => !c) },
             ].map(({ I, label, on, act }) => (
               <motion.button type="button" key={label} title={label} aria-label={label} onClick={act} whileTap={{ scale: 0.88 }}
-                className={`no-shine w-10 h-10 rounded-full grid place-items-center cursor-pointer transition-colors ${on ? 'bg-[#8AB4F8] text-[#202124]' : 'bg-[#2A4480] text-white hover:bg-[#35529A]'}`}><I size={17} /></motion.button>
+                className={`no-shine w-10 h-10 rounded-full grid place-items-center cursor-pointer transition-colors ${on ? 'bg-[#8AB4F8] text-[#202124]' : 'bg-[#EEF1F8] text-slate-700 hover:bg-[#E1E6F2]'}`}><I size={17} /></motion.button>
             ))}
             <motion.button type="button" title="End call" aria-label="End call" onClick={() => setEnded(true)} whileTap={{ scale: 0.9 }} className="no-shine w-14 h-10 rounded-full grid place-items-center bg-[#EA4335] hover:bg-[#d33426] text-white cursor-pointer"><PhoneOff size={17} /></motion.button>
           </div>
           {/* quick reactions */}
           <div className="mt-2 flex items-center justify-center gap-1.5">
             {['👍', '❤️', '😂', '🔥', '🙏'].map((e) => (
-              <button type="button" key={e} onClick={() => react(e)} aria-label={`React ${e}`} className="no-shine w-8 h-8 rounded-full bg-white/5 hover:bg-white/15 text-[16px] cursor-pointer transition-transform hover:scale-110">{e}</button>
+              <button type="button" key={e} onClick={() => react(e)} aria-label={`React ${e}`} className="no-shine w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-[16px] cursor-pointer transition-transform hover:scale-110">{e}</button>
             ))}
           </div>
           <AnimatePresence>
             {ended && (
-              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="absolute inset-0 z-30 rounded-[22px] bg-[#3A150A]/95 flex flex-col items-center justify-center gap-3 text-white">
+              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="absolute inset-0 z-30 rounded-[22px] bg-white/95 flex flex-col items-center justify-center gap-3 text-slate-900">
                 <p className="text-[16px] font-semibold">You left the session</p>
                 <div className="flex gap-2">
                   <button type="button" onClick={() => setEnded(false)} className="no-shine px-4 h-10 rounded-full bg-[#8AB4F8] text-[#202124] font-semibold text-[13.5px] cursor-pointer">Rejoin</button>

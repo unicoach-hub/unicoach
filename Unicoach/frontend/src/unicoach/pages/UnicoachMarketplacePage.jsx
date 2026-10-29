@@ -99,8 +99,8 @@ const UnicoachMarketplacePage = () => {
 
         {/* ════════ TOP MENTORS GRID ════════ */}
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 max-w-[1000px] mx-auto gap-3.5 sm:gap-4.5 lg:gap-5">
-          {previewMentors.map((m) => (
-            <MentorDirectoryCard key={m._id} mentor={m} />
+          {previewMentors.map((m, i) => (
+            <MentorDirectoryCard key={m._id} mentor={m} index={i} />
           ))}
         </div>
 

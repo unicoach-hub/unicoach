@@ -112,7 +112,7 @@ const Overview = ({ data }) => {
       <div className="space-y-8">
         
         {/* 1. HIGHLIGHTS SECTION */}
-        <div className="bg-gradient-to-br from-indigo-600 via-indigo-700 to-purple-800 text-white rounded-[28px] p-6 md:p-8 shadow-md relative overflow-hidden">
+        <div className="uc-soft rounded-[28px] p-6 md:p-8 relative overflow-hidden">
           <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full blur-3xl pointer-events-none" />
           
           <div className="flex items-center gap-3 mb-6">

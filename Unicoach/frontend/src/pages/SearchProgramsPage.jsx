@@ -204,7 +204,8 @@ const SuggestBox = ({ value, onChange, onEnter, placeholder, className = '' }) =
 };
 const FIELD = 'w-full h-11 px-3 text-[14px] text-[#16130F] bg-[#F8F5EF] border border-[#E6E0D4] outline-none focus:border-[#DE5C2B] focus:bg-white transition-colors';
 
-export default function SearchProgramsPage() {
+// `highlight` lets the student dashboard open the scholarship view without a URL param
+export default function SearchProgramsPage({ highlight } = {}) {
   const navigate = useNavigate();
   const { user, openLoginModal } = useAuth() || {};
 
@@ -489,7 +490,7 @@ export default function SearchProgramsPage() {
   // ── STEP 1 (scholarships): ask what decides eligibility, then show only awards they qualify for ──
   // only a scholarships link (?highlight=scholarship) opens this step; tapping the "Scholarship Available"
   // quick filter on the Course Finder card just adds the filter and keeps the Course Finder in place
-  const wantsScholarship = /scholar/i.test(searchParams.get('highlight') || '');
+  const wantsScholarship = /scholar/i.test(highlight || searchParams.get('highlight') || '');
   const profileReady = !!(profile.nationalityId && profile.highestQualificationId && profile.score !== '');
   if (!started && wantsScholarship) {
     const findScholarships = () => {

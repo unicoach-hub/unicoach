@@ -473,7 +473,7 @@ const NewsroomPage = () => {
                                     Media Resources
                                 </h3>
 
-                                <div className="bg-gradient-to-br from-slate-900 to-indigo-950 border border-slate-800 rounded-[32px] p-6 shadow-xl relative overflow-hidden flex flex-col justify-between min-h-[300px] text-white">
+                                <div className="uc-soft rounded-[32px] p-6 relative overflow-hidden flex flex-col justify-between min-h-[300px]">
                                     <div 
                                         className="absolute inset-0 bg-cover bg-center opacity-10 pointer-events-none"
                                         style={{ backgroundImage: `url('/newsroom_hero.webp')` }}

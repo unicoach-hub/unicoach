@@ -263,16 +263,15 @@ const AiSopGenerator = ({ initialProfile = {} }) => {
   return (
     <div className="space-y-8">
       {/* Header Banner */}
-      <div className="p-6 md:p-8 rounded-[32px] bg-gradient-to-r from-indigo-900 via-indigo-950 to-slate-900 text-white shadow-xl relative overflow-hidden">
-        <div className="absolute right-0 top-0 w-96 h-96 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none" />
+      <div className="uc-soft p-6 md:p-8 rounded-[32px] relative overflow-hidden">
         <div className="relative z-10 space-y-2">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-black bg-indigo-500/30 text-indigo-200 border border-indigo-400/30">
-            <Sparkles size={14} className="text-amber-400" /> Ivy League & Russell Group AI Standard
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-black bg-white text-[#16130F] border border-[#16130F]/10">
+            <Sparkles size={14} className="text-[#DE5C2B]" /> Ivy League & Russell Group AI Standard
           </div>
-          <h2 className="text-2xl md:text-3xl font-black tracking-tight text-white">
+          <h2 className="text-2xl md:text-3xl font-black tracking-tight text-[#16130F]">
             AI Statement of Purpose (SOP) Generator
           </h2>
-          <p className="text-xs md:text-sm text-slate-300 font-medium max-w-2xl leading-relaxed">
+          <p className="text-xs md:text-sm text-[#3D372F] font-medium max-w-2xl leading-relaxed">
             Generate high-conviction, personalized admission essays tailored for top global universities in USA, UK, Canada, Australia & Germany with zero cliché openings.
           </p>
         </div>

@@ -463,7 +463,7 @@ const GermanyPhdPage = () => {
 
           {/* Blocked Account & APS Warning */}
           <div className="lg:col-span-2 space-y-6">
-            <div className="bg-gradient-to-br from-indigo-900 to-slate-950 text-white rounded-[32px] p-8 shadow-md relative overflow-hidden">
+            <div className="uc-soft rounded-[32px] p-8 relative overflow-hidden">
               <div className="absolute top-0 right-0 w-80 h-80 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none" />
               <div className="relative z-10">
                 <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-md bg-indigo-500/20 border border-indigo-500/30 text-indigo-300 text-[10px] font-black uppercase tracking-wider mb-4">

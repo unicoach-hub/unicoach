@@ -25,6 +25,7 @@ import { HeroBackButton } from '../components/ui/BackButton';
 import { Muhavra } from '../components/desi/Desi';
 import { StdSign } from '../components/desi/DesiPop';
 import { JourneyPills } from '../components/ui/BrandElements';
+import { useLocation } from 'react-router-dom';
 
 const API_URL = API_BASE_URL;
 
@@ -114,6 +115,8 @@ const SCHOLARSHIP_TIERS = [
 ];
 
 const EligibilityCalculatorPage = () => {
+  // Inside the student dashboard the page sits in a narrow column, so the side sign would cover the title
+  const inDashboard = useLocation().pathname.startsWith('/dashboard');
   const { openModal } = useLead();
   const { user, token, openLoginModal } = useAuth();
   const resultsRef = useRef(null);
@@ -685,10 +688,10 @@ const EligibilityCalculatorPage = () => {
       {/* ───────────────────────────────────────────── */}
       <section className="relative pt-16 pb-16 sm:pt-14 sm:pb-20 px-4 sm:px-6 lg:px-8 font-['Onest',sans-serif]">
         <HeroBackButton />
-        {/* Desi Pop: STD booth style sign with the three result tiers, wide screens only */}
-        <div className="hidden 2xl:block absolute left-8 2xl:left-20 top-1/2 -translate-y-1/2 -rotate-6 z-0 pointer-events-none">
-          <StdSign words={['SAFE', 'TARGET', 'DREAM']} hi="मौका" className="w-[200px]" />
-        </div>
+        {/* Desi Pop: STD booth style sign with what the calculator weighs, wide screens only (not in the dashboard) */}
+        {!inDashboard && <div className="hidden 2xl:block absolute left-8 2xl:left-20 top-1/2 -translate-y-1/2 -rotate-6 z-0 pointer-events-none">
+          <StdSign words={['MARKS', 'BUDGET', 'GRANTS']} hi="मौका" className="w-[200px]" />
+        </div>}
         <div className="max-w-4xl mx-auto text-center">
           <p className="inline-flex items-center gap-2 text-[13px] font-semibold text-[#86351A]"><span className="w-6 h-[2px] bg-[#DE5C2B]" /> Scholarship Calculator</p>
           <h1 className="mt-3 font-outfit text-[32px] sm:text-[46px] font-black tracking-[-0.035em] leading-[1.05] text-[#16130F]">

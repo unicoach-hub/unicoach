@@ -154,14 +154,14 @@ const useLoop = (ms) => {
   return { ref, tick, go, hover: { onMouseEnter: () => setPaused(true), onMouseLeave: () => setPaused(false) } };
 };
 
-// ── 1. Shortlist: campuses swipe through the middle; each one lands as Dream, Target or Safe and the dart hits ──
+// ── 1. Shortlist: campuses swipe through the middle; each one lands with its country stamp and the dart hits ──
 const SHORTLIST = [
-  { img: 'monash', name: 'Monash University', fit: 'Target', color: '#B48C42' },
-  { img: 'toronto', name: 'University of Toronto', fit: 'Dream', color: '#485A79' },
-  { img: 'trinity', name: 'Trinity College Dublin', fit: 'Target', color: '#B48C42' },
-  { img: 'deakin', name: 'Deakin University', fit: 'Safe', color: '#558563' },
-  { img: 'northeastern', name: 'Northeastern University', fit: 'Dream', color: '#485A79' },
-  { img: 'coventry', name: 'Coventry University', fit: 'Safe', color: '#558563' },
+  { img: 'monash', name: 'Monash University', fit: 'Australia', color: '#B48C42' },
+  { img: 'toronto', name: 'University of Toronto', fit: 'Canada', color: '#C0392B' },
+  { img: 'trinity', name: 'Trinity College Dublin', fit: 'Ireland', color: '#558563' },
+  { img: 'deakin', name: 'Deakin University', fit: 'Australia', color: '#B48C42' },
+  { img: 'northeastern', name: 'Northeastern University', fit: 'USA', color: '#485A79' },
+  { img: 'coventry', name: 'Coventry University', fit: 'UK', color: '#2F5BFF' },
 ];
 const ShortlistArt = () => {
   const { ref, tick, go, hover } = useLoop(2400);
@@ -240,9 +240,7 @@ const ShortlistArt = () => {
               </motion.span>
             </AnimatePresence>
             <span className="block text-[11px] text-slate-500">
-              {['Dream', 'Target', 'Safe'].map((f, i) => (
-                <span key={f} className={f === cur.fit ? 'font-bold' : ''} style={f === cur.fit ? { color: cur.color } : undefined}>{i ? ' · ' : ''}{f}</span>
-              ))}
+              <span className="font-bold" style={{ color: cur.color }}>{cur.fit}</span> · fits your profile
             </span>
           </span>
         </Chip>

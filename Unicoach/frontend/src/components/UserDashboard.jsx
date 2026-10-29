@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, lazy, Suspense } from 'react';
+import React, { useState, useEffect, lazy, Suspense } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useLead } from '../context/LeadContext';
 import { Link, useNavigate } from 'react-router-dom';
@@ -6,14 +6,15 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { 
   User, Mail, Phone, Globe, Calendar, GraduationCap, 
   MapPin, Compass, ClipboardList, CheckCircle2, LogOut, 
-  LayoutDashboard, Keyboard, History, Award, CheckSquare, 
-  Edit3, Trophy, Timer, Flame, Play, RefreshCw, Send, AlertTriangle,
-  Zap, ShieldAlert, Volume2, VolumeX, FileText, Calculator, Sparkles,
+  LayoutDashboard, Award, CheckSquare, 
+  Edit3, RefreshCw, Send, AlertTriangle,
+  Zap, FileText, Calculator, Sparkles,
   BookmarkCheck, Trash2, ExternalLink, ShieldCheck, Target,
   Menu, X, ChevronRight, ChevronDown, Layers, Settings,
   Clock, ArrowRight, ArrowLeft, Check, Plus, MessageCircle, FileCheck, Star, Filter, CheckCircle,
   BookOpen, FileSpreadsheet, Download,
-  School, ClipboardCheck, HandCoins, FilePenLine, Mic, Route, Wallet, ListChecks, NotebookPen, CalendarDays, BookOpenCheck
+  Mic, Route, ListChecks, CalendarDays, BookOpenCheck,
+  Landmark, Plane, Headphones
 } from 'lucide-react';
 import UniversityLogo from './UniversityLogo';
 import PremiumDropdown from './PremiumDropdown';
@@ -27,9 +28,11 @@ import { POPULAR_COURSES, ALL_COUNTRY_OPTIONS } from '../utils/shortlistOptions'
 import { exportUniversitiesToExcel } from '../utils/excelExporter';
 
 // Tools that live in their own tabs load when the tab is opened, so the dashboard itself opens fast
-const UniversityShortlister = lazy(() => import('./UniversityShortlister'));
-const ScholarshipShortlister = lazy(() => import('./ScholarshipShortlister'));
-const IeltsAiEvaluationModal = lazy(() => import('./IeltsAiEvaluationModal'));
+// Same tools as the site's Toolkit menu (components/Navbar.jsx aiToolsNavData), so the dashboard and the site never drift apart
+const SearchProgramsPage = lazy(() => import('../pages/SearchProgramsPage'));
+const EducationLoanPage = lazy(() => import('../pages/EducationLoanPage'));
+const IeltsEvaluatorPage = lazy(() => import('../pages/IeltsEvaluatorPage'));
+const VisaAssistancePage = lazy(() => import('../pages/VisaAssistancePage'));
 const AiSopGenerator = lazy(() => import('./AiSopGenerator'));
 const AiVisaInterviewPrep = lazy(() => import('./AiVisaInterviewPrep'));
 const AiStudyRoadmap = lazy(() => import('./AiStudyRoadmap'));
@@ -39,8 +42,17 @@ import { API_BASE_URL } from '../config';
 import JourneyTracker from './JourneyTracker';
 import { clearUserStorage } from '../utils/userStorage';
 
-import CapIcon from './ui/CapIcon';
 const API_URL = API_BASE_URL;
+
+// Tool tabs that were replaced by the Toolkit tools; tasks saved before the change still use these ids
+const OLD_TOOL_TABS = {
+  shortlister: 'course-finder',
+  'scholarship-shortlister': 'scholarships',
+  'budget-calculator': 'eligibility-calculator',
+  'ielts-simulator': 'ielts-checker',
+  game: 'overview',
+  history: 'overview',
+};
 
 export const DEFAULT_DAILY_TASKS = [
   {
@@ -63,8 +75,8 @@ export const DEFAULT_DAILY_TASKS = [
     priority: 'P0',
     stage: 'Phase 1: Foundation',
     done: false,
-    actionLabel: 'Launch Shortlister',
-    actionTarget: 'shortlister',
+    actionLabel: 'Open Course Finder',
+    actionTarget: 'course-finder',
     estimatedTime: '15 mins'
   },
   {
@@ -75,8 +87,8 @@ export const DEFAULT_DAILY_TASKS = [
     priority: 'P1',
     stage: 'Phase 2: Standardized Tests',
     done: false,
-    actionLabel: 'Start IELTS Mock',
-    actionTarget: 'ielts-simulator',
+    actionLabel: 'Check an Essay',
+    actionTarget: 'ielts-checker',
     estimatedTime: '40 mins'
   },
   {
@@ -99,8 +111,8 @@ export const DEFAULT_DAILY_TASKS = [
     priority: 'P2',
     stage: 'Phase 1: Foundation',
     done: false,
-    actionLabel: 'Calculate Costs',
-    actionTarget: 'budget-calculator',
+    actionLabel: 'Check Costs',
+    actionTarget: 'eligibility-calculator',
     estimatedTime: '10 mins'
   },
   {
@@ -112,7 +124,7 @@ export const DEFAULT_DAILY_TASKS = [
     stage: 'Phase 2: Funding',
     done: false,
     actionLabel: 'Find Scholarships',
-    actionTarget: 'scholarship-shortlister',
+    actionTarget: 'scholarships',
     estimatedTime: '15 mins'
   },
   {
@@ -141,100 +153,6 @@ export const DEFAULT_DAILY_TASKS = [
   }
 ];
 
-const passages = [
-  {
-    id: 1,
-    title: 'Easy - Study Abroad Journey',
-    difficulty: 'Easy',
-    text: 'Studying abroad is a transformative journey that extends far beyond academic learning. It challenges your perspectives, builds global networks, and develops vital life skills.'
-  },
-  {
-    id: 2,
-    title: 'Medium - Statement of Purpose',
-    difficulty: 'Medium',
-    text: 'Writing a compelling Statement of Purpose is key to securing admission. It requires clarity of thought, a logical flow of your past achievements, and a strong explanation of your future goals.'
-  },
-  {
-    id: 3,
-    title: 'Hard - Standardized Exam Strategy',
-    difficulty: 'Hard',
-    text: 'Achieving a high score in standardized tests like IELTS, TOEFL, or GRE requires consistent practice and strategy. Focus on managing your time effectively, understanding the section formats, and refining your language skills.'
-  }
-];
-
-// Confetti particle effect canvas component for victory celebration
-const ConfettiCanvas = () => {
-  const canvasRef = useRef(null);
-  
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
-    
-    let animationFrameId;
-    let particles = [];
-    const colors = ['#B3604E', '#DE5C2B', '#558563', '#B48C42', '#5A7094', '#B3604E'];
-    
-    const resizeCanvas = () => {
-      canvas.width = canvas.parentElement.clientWidth;
-      canvas.height = canvas.parentElement.clientHeight;
-    };
-    resizeCanvas();
-    window.addEventListener('resize', resizeCanvas);
-    
-    for (let i = 0; i < 100; i++) {
-      particles.push({
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height - canvas.height,
-        r: Math.random() * 5 + 3,
-        color: colors[Math.floor(Math.random() * colors.length)],
-        tilt: Math.random() * 10 - 5,
-        tiltAngleIncremental: Math.random() * 0.08 + 0.02,
-        tiltAngle: 0,
-        vy: Math.random() * 2.5 + 1.5,
-        vx: Math.random() * 2 - 1
-      });
-    }
-    
-    const draw = () => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      
-      particles.forEach((p, idx) => {
-        p.tiltAngle += p.tiltAngleIncremental;
-        p.y += p.vy;
-        p.x += p.vx + Math.sin(p.tiltAngle) * 0.4;
-        p.tilt = Math.sin(p.tiltAngle - idx / 3) * 10;
-        
-        ctx.beginPath();
-        ctx.lineWidth = p.r;
-        ctx.strokeStyle = p.color;
-        ctx.moveTo(p.x + p.tilt + p.r / 2, p.y);
-        ctx.lineTo(p.x + p.tilt, p.y + p.tilt + p.r / 2);
-        ctx.stroke();
-      });
-      
-      particles.forEach(p => {
-        if (p.y > canvas.height) {
-          p.y = -10;
-          p.x = Math.random() * canvas.width;
-        }
-      });
-      
-      animationFrameId = requestAnimationFrame(draw);
-    };
-    
-    draw();
-    
-    return () => {
-      cancelAnimationFrame(animationFrameId);
-      window.removeEventListener('resize', resizeCanvas);
-    };
-  }, []);
-  
-  return <canvas ref={canvasRef} className="absolute inset-0 pointer-events-none w-full h-full z-10" />;
-};
-
 const UserDashboard = () => {
   const { user, token, updateUser, logout, openLoginModal } = useAuth();
   // First-visit tour of the student dashboard (skippable; "Take a tour" replays it)
@@ -244,11 +162,11 @@ const UserDashboard = () => {
     { target: '[data-tour="my-tasks"]', title: 'Your study-abroad tasks', body: 'A step-by-step checklist from shortlisting universities to your visa. Tick things off as you go.' },
     { target: '[data-tour="nav-saved-unis"]', title: 'Saved shortlist', body: 'Universities and courses you save while browsing land here, so you can compare them later.' },
     { target: '[data-tour="nav-messages"]', title: 'Messages & documents', body: 'Chat with the UniCoach team and upload your documents (marksheets, passport, SOP) in one place.' },
-    { target: '[data-tour="nav-shortlister"]', title: 'AI University Shortlister', body: 'Tell us your marks, budget and country, and get Safe / Target / Dream universities that fit you.' },
-    { target: '[data-tour="nav-scholarship-shortlister"]', title: 'Scholarship finder', body: '150+ scholarships you may be eligible for, with deadlines and how to apply.' },
-    { target: '[data-tour="nav-sop-builder"]', title: 'SOP & essay help', body: 'Draft your Statement of Purpose with AI, then polish it with a mentor.' },
-    { target: '[data-tour="nav-visa-mock"]', title: 'Visa mock interview', body: 'Practise real visa interview questions by voice and get feedback before the actual interview.' },
-    { target: '[data-tour="nav-ielts-simulator"]', title: 'IELTS writing practice', body: 'Write IELTS answers and get an AI band score with tips to improve.' },
+    { target: '[data-tour="nav-course-finder"]', title: 'Course Finder', body: 'Search programmes worldwide and shortlist the ones that fit your marks and budget.' },
+    { target: '[data-tour="nav-scholarships"]', title: 'Scholarships', body: 'Programmes that come with a scholarship, in the same Course Finder.' },
+    { target: '[data-tour="nav-sop-builder"]', title: 'SOP Writer', body: 'Draft your Statement of Purpose with AI, then polish it with a mentor.' },
+    { target: '[data-tour="nav-visa-mock"]', title: 'AI Mock Visa Interview', body: 'Practise real visa interview questions by voice and get feedback before the actual interview.' },
+    { target: '[data-tour="nav-ielts-checker"]', title: 'IELTS Essay Checker', body: 'Paste an IELTS essay and get a band score with tips to improve.' },
     { target: '[data-tour="nav-profile"]', title: 'Your profile', body: 'Keep your country, intake and education up to date so suggestions stay accurate. That\'s it, all the best! 🎓' },
   ];
   // Only accounts with a mentor profile see the Mentor Studio switch; students see one dashboard
@@ -417,368 +335,6 @@ const UserDashboard = () => {
   const [generatedSop, setGeneratedSop] = useState('');
   const [sopStep, setSopStep] = useState(1); // 1: Profile/Target, 2: Academics/Project, 3: Goals, 4: Preview
 
-  // Budget Calculator State
-  const [calculatorCountry, setCalculatorCountry] = useState('USA');
-  const [calculatorDegree, setCalculatorDegree] = useState('Masters');
-  const [calculatorAccommodation, setCalculatorAccommodation] = useState('Off-Campus Shared');
-
-  // IELTS Simulator State
-  const [ieltsTopic, setIeltsTopic] = useState('');
-  const [ieltsEssay, setIeltsEssay] = useState('');
-  const [ieltsTimeRemaining, setIeltsTimeRemaining] = useState(2400); // 40 mins
-  const [ieltsActive, setIeltsActive] = useState(false);
-  const [ieltsHistory, setIeltsHistory] = useState([]);
-  const [savingIelts, setSavingIelts] = useState(false);
-  const [ieltsMsg, setIeltsMsg] = useState({ type: '', text: '' });
-  const [selectedEvaluation, setSelectedEvaluation] = useState(null);
-  const [isEvaluationModalOpen, setIsEvaluationModalOpen] = useState(false);
-  const ieltsTimerRef = useRef(null);
-
-  const ieltsTopics = [
-    'Some people believe that university education should be free for everyone, while others argue that students should pay for their tuition. Discuss both views and give your opinion.',
-    'Many countries now face major problems with high levels of waste. What are the causes of this problem, and what measures can be taken to reduce waste?',
-    'In many cities, the number of private cars is increasing rapidly, causing traffic congestion and air pollution. What are the effects of this trend, and what are the solutions?',
-    'With the development of technology, online learning is becoming more popular. Do the advantages of this trend outweigh the disadvantages?',
-    'International travel has become cheaper and more common. Some people believe that tourism has positive effects on countries, while others think it has negative impacts. Discuss both views.'
-  ];
-
-  const costDatabase = {
-    USA: {
-      currency: 'USD',
-      symbol: '$',
-      inrRate: 85,
-      tuition: { Masters: 35000, Bachelors: 45000 },
-      living: {
-        rent: { 'On-Campus Dorm': 12000, 'Off-Campus Shared': 7200, 'Private Studio': 16000 },
-        food: 3600,
-        insurance: 1500,
-        transport: 1200,
-        misc: 2000
-      },
-      scholarships: [
-        { name: 'Fulbright-Nehru Master\'s Fellowship', coverage: 'Full Tuition & Living stipend', eligibility: 'Graduate applicants with 3+ years work exp' },
-        { name: 'Inlaks Shivdasani Foundation Scholarship', coverage: 'Up to $100,000', eligibility: 'Indian citizens under 30 with outstanding records' },
-        { name: 'University Merit-Based Waivers', coverage: '10% - 50% tuition waiver', eligibility: 'Auto-considered based on high GPA & GRE/IELTS' }
-      ]
-    },
-    UK: {
-      currency: 'GBP',
-      symbol: '£',
-      inrRate: 110,
-      tuition: { Masters: 22000, Bachelors: 26000 },
-      living: {
-        rent: { 'On-Campus Dorm': 8000, 'Off-Campus Shared': 5400, 'Private Studio': 11000 },
-        food: 3000,
-        insurance: 900,
-        transport: 1000,
-        misc: 1800
-      },
-      scholarships: [
-        { name: 'Chevening Scholarship (UK Govt)', coverage: 'Full Tuition, Flight & living allowance', eligibility: 'Masters applicants with leadership potential' },
-        { name: 'Commonwealth Scholarship', coverage: 'Full tuition & stipend', eligibility: 'Indian citizens applying for Masters/PhD' },
-        { name: 'Great Scholarships', coverage: 'Minimum £10,000 tuition fee contribution', eligibility: 'Indian passport holders holding UK admission offer' }
-      ]
-    },
-    Canada: {
-      currency: 'CAD',
-      symbol: 'C$',
-      inrRate: 63,
-      tuition: { Masters: 28000, Bachelors: 34000 },
-      living: {
-        rent: { 'On-Campus Dorm': 10000, 'Off-Campus Shared': 6600, 'Private Studio': 14000 },
-        food: 3200,
-        insurance: 1100,
-        transport: 950,
-        misc: 1700
-      },
-      scholarships: [
-        { name: 'Vanier Canada Graduate Scholarships', coverage: 'C$50,000 per year (3 years)', eligibility: 'PhD candidates with stellar academic achievements' },
-        { name: 'Lester B. Pearson International Scholarship', coverage: 'Full Tuition, books, residence & incidental fees', eligibility: 'Outstanding international undergrad applicants' },
-        { name: 'Ontario Graduate Scholarship (OGS)', coverage: 'C$15,000 per year', eligibility: 'Meritorious Masters & PhD applicants in Ontario' }
-      ]
-    },
-    Australia: {
-      currency: 'AUD',
-      symbol: 'A$',
-      inrRate: 56,
-      tuition: { Masters: 38000, Bachelors: 42000 },
-      living: {
-        rent: { 'On-Campus Dorm': 14000, 'Off-Campus Shared': 8400, 'Private Studio': 18000 },
-        food: 4000,
-        insurance: 800,
-        transport: 1100,
-        misc: 2200
-      },
-      scholarships: [
-        { name: 'Australia Awards Scholarships', coverage: 'Full Tuition, air travel & living allowance', eligibility: 'Indo-Pacific graduate students' },
-        { name: 'Destination Australia Scholarship', coverage: 'Up to A$15,000 per year', eligibility: 'Students enrolling in regional university campuses' },
-        { name: 'Vice-Chancellor\'s International Scholarships', coverage: '10% to 50% tuition discount', eligibility: 'Awarded dynamically on admission GPA merit' }
-      ]
-    }
-  };
-
-  // Typing Game state
-  const [selectedPassage, setSelectedPassage] = useState(passages[0]);
-  const [userInput, setUserInput] = useState('');
-  const [testStarted, setTestStarted] = useState(false);
-  const [testFinished, setTestFinished] = useState(false);
-  const [timeSpent, setTimeSpent] = useState(0);
-  const [wpm, setWpm] = useState(0);
-  const [accuracy, setAccuracy] = useState(100);
-  const [score, setScore] = useState(0);
-  const [errors, setErrors] = useState(0);
-  
-  // Driving animations state
-  const [streak, setStreak] = useState(0);
-  const [isBoosted, setIsBoosted] = useState(false);
-  const [isCrashed, setIsCrashed] = useState(false);
-  const [spinAngle, setSpinAngle] = useState(0);
-  const [crashesCount, setCrashesCount] = useState(0);
-
-  // Time Limit and Multi-lap Game Loop states
-  const [timeLimit, setTimeLimit] = useState(0); // 0 = Unlimited/Free, 120 = 2m, 180 = 3m, 300 = 5m
-  const [completedLapsChars, setCompletedLapsChars] = useState(0);
-  const [completedLapsErrors, setCompletedLapsErrors] = useState(0);
-
-  // Game loop refs
-  const timerRef = useRef(null);
-  const inputRef = useRef(null);
-  const prevErrorsRef = useRef(0);
-
-  // High-Speed Racing Game Revamp States & Refs
-  const [countdown, setCountdown] = useState(null);
-  const [isMuted, setIsMuted] = useState(() => {
-    if (typeof window !== 'undefined') {
-      return localStorage.getItem('typing_game_muted') === 'true';
-    }
-    return false;
-  });
-
-  const audioCtxRef = useRef(null);
-  const engineOscRef = useRef(null);
-  const engineGainRef = useRef(null);
-
-  const initAudio = () => {
-    if (audioCtxRef.current) return;
-    try {
-      const AudioContext = window.AudioContext || window.webkitAudioContext;
-      if (!AudioContext) return;
-      audioCtxRef.current = new AudioContext();
-    } catch (err) {
-      console.error('Failed to initialize AudioContext', err);
-    }
-  };
-
-  const playSound = (type) => {
-    if (isMuted) return;
-    initAudio();
-    const ctx = audioCtxRef.current;
-    if (!ctx) return;
-    if (ctx.state === 'suspended') {
-      ctx.resume();
-    }
-    
-    try {
-      const now = ctx.currentTime;
-      if (type === 'countdown-tick') {
-        const osc = ctx.createOscillator();
-        const gain = ctx.createGain();
-        osc.type = 'sine';
-        osc.frequency.setValueAtTime(440, now);
-        gain.gain.setValueAtTime(0.04, now);
-        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.1);
-        osc.connect(gain);
-        gain.connect(ctx.destination);
-        osc.start(now);
-        osc.stop(now + 0.1);
-      } else if (type === 'countdown-go') {
-        const osc = ctx.createOscillator();
-        const gain = ctx.createGain();
-        osc.type = 'sine';
-        osc.frequency.setValueAtTime(880, now);
-        gain.gain.setValueAtTime(0.08, now);
-        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.3);
-        osc.connect(gain);
-        gain.connect(ctx.destination);
-        osc.start(now);
-        osc.stop(now + 0.3);
-      } else if (type === 'correct') {
-        const osc = ctx.createOscillator();
-        const gain = ctx.createGain();
-        osc.type = 'sine';
-        const frequency = Math.min(1000, 600 + (streak * 12));
-        osc.frequency.setValueAtTime(frequency, now);
-        gain.gain.setValueAtTime(0.025, now);
-        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.05);
-        osc.connect(gain);
-        gain.connect(ctx.destination);
-        osc.start(now);
-        osc.stop(now + 0.05);
-      } else if (type === 'error') {
-        const osc = ctx.createOscillator();
-        const gain = ctx.createGain();
-        osc.type = 'sawtooth';
-        osc.frequency.setValueAtTime(120, now);
-        gain.gain.setValueAtTime(0.06, now);
-        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.25);
-        osc.connect(gain);
-        gain.connect(ctx.destination);
-        osc.start(now);
-        osc.stop(now + 0.25);
-
-        const osc2 = ctx.createOscillator();
-        const gain2 = ctx.createGain();
-        osc2.type = 'triangle';
-        osc2.frequency.setValueAtTime(800, now);
-        osc2.frequency.exponentialRampToValueAtTime(250, now + 0.18);
-        gain2.gain.setValueAtTime(0.03, now);
-        gain2.gain.exponentialRampToValueAtTime(0.001, now + 0.18);
-        osc2.connect(gain2);
-        gain2.connect(ctx.destination);
-        osc2.start(now);
-        osc2.stop(now + 0.18);
-      } else if (type === 'boost') {
-        const notes = [440, 554, 659, 880, 1109];
-        notes.forEach((freq, i) => {
-          const osc = ctx.createOscillator();
-          const gain = ctx.createGain();
-          osc.type = 'triangle';
-          osc.frequency.setValueAtTime(freq, now + i * 0.04);
-          gain.gain.setValueAtTime(0.03, now + i * 0.04);
-          gain.gain.exponentialRampToValueAtTime(0.001, now + i * 0.04 + 0.12);
-          osc.connect(gain);
-          gain.connect(ctx.destination);
-          osc.start(now + i * 0.04);
-          osc.stop(now + i * 0.04 + 0.12);
-        });
-      } else if (type === 'win') {
-        const notes = [523.25, 659.25, 783.99, 1046.50, 1318.51, 1567.98];
-        notes.forEach((freq, i) => {
-          const osc = ctx.createOscillator();
-          const gain = ctx.createGain();
-          osc.type = 'sine';
-          osc.frequency.setValueAtTime(freq, now + i * 0.08);
-          gain.gain.setValueAtTime(0.05, now + i * 0.08);
-          gain.gain.exponentialRampToValueAtTime(0.001, now + i * 0.08 + 0.25);
-          osc.connect(gain);
-          gain.connect(ctx.destination);
-          osc.start(now + i * 0.08);
-          osc.stop(now + i * 0.08 + 0.25);
-        });
-      }
-    } catch (err) {
-      console.error('Audio playback failed', err);
-    }
-  };
-
-  const startEngineSound = () => {
-    if (isMuted) return;
-    initAudio();
-    const ctx = audioCtxRef.current;
-    if (!ctx) return;
-    if (ctx.state === 'suspended') {
-      ctx.resume();
-    }
-
-    try {
-      stopEngineSound();
-
-      const osc = ctx.createOscillator();
-      const filter = ctx.createBiquadFilter();
-      const gain = ctx.createGain();
-
-      osc.type = 'sawtooth';
-      osc.frequency.setValueAtTime(45, ctx.currentTime);
-      
-      filter.type = 'lowpass';
-      filter.frequency.setValueAtTime(250, ctx.currentTime);
-
-      gain.gain.setValueAtTime(0.015, ctx.currentTime);
-
-      osc.connect(filter);
-      filter.connect(gain);
-      gain.connect(ctx.destination);
-
-      osc.start();
-
-      engineOscRef.current = osc;
-      engineGainRef.current = gain;
-    } catch (err) {
-      console.error('Failed to start engine hum', err);
-    }
-  };
-
-  const updateEnginePitch = (currentWpm, currentGear) => {
-    if (isMuted || !engineOscRef.current || !engineGainRef.current) return;
-    const ctx = audioCtxRef.current;
-    if (!ctx) return;
-    
-    try {
-      const now = ctx.currentTime;
-      let baseFreq = 40;
-      if (currentGear === '1') baseFreq = 45 + currentWpm * 1.5;
-      else if (currentGear === '2') baseFreq = 50 + (currentWpm - 25) * 1.8;
-      else if (currentGear === '3') baseFreq = 55 + (currentWpm - 45) * 2.0;
-      else if (currentGear === '4') baseFreq = 60 + (currentWpm - 65) * 2.2;
-      else if (currentGear === '5') baseFreq = 65 + (currentWpm - 85) * 2.5;
-
-      const targetFreq = Math.min(220, Math.max(40, baseFreq));
-      engineOscRef.current.frequency.setTargetAtTime(targetFreq, now, 0.1);
-      
-      const targetVol = Math.min(0.04, 0.01 + (currentWpm / 150) * 0.03);
-      engineGainRef.current.gain.setTargetAtTime(targetVol, now, 0.1);
-    } catch (err) {
-      console.error('Failed to update engine pitch', err);
-    }
-  };
-
-  const stopEngineSound = () => {
-    try {
-      if (engineOscRef.current) {
-        engineOscRef.current.stop();
-        engineOscRef.current.disconnect();
-        engineOscRef.current = null;
-      }
-      if (engineGainRef.current) {
-        engineGainRef.current.disconnect();
-        engineGainRef.current = null;
-      }
-    } catch (err) {
-      console.error('Failed to stop engine sound', err);
-    }
-  };
-
-  const toggleMute = () => {
-    setIsMuted(prev => {
-      const nextVal = !prev;
-      localStorage.setItem('typing_game_muted', String(nextVal));
-      if (nextVal) {
-        stopEngineSound();
-      } else if (testStarted && !testFinished) {
-        setTimeout(() => startEngineSound(), 50);
-      }
-      return nextVal;
-    });
-  };
-
-  // Update engine hum pitch in real-time based on typing parameters
-  useEffect(() => {
-    if (testStarted && !testFinished && !isMuted) {
-      updateEnginePitch(wpm, getGear());
-    }
-  }, [wpm, testStarted, testFinished, isMuted]);
-
-  // History & Statistics state
-  const [history, setHistory] = useState([]);
-  const [stats, setStats] = useState({
-    totalTests: 0,
-    avgWpm: 0,
-    bestWpm: 0,
-    avgAccuracy: 0,
-    bestScore: 0
-  });
-  const [loadingHistory, setLoadingHistory] = useState(false);
-
   // Redirect if not authenticated, or promote verifiedLead to user
   useEffect(() => {
     if (!user && !verifiedLead) {
@@ -848,175 +404,6 @@ const UserDashboard = () => {
     }
   }, [user, verifiedLead]);
 
-  // Fetch writing history and statistics (with LocalStorage deduplicated backup)
-  const fetchHistoryAndStats = async () => {
-    setLoadingHistory(true);
-    let apiHistory = [];
-    
-    // 1. Fetch from Local Storage (Backup)
-    const localHistoryStr = localStorage.getItem('local_writing_history');
-    let localHistory = localHistoryStr ? JSON.parse(localHistoryStr) : [];
-    
-    // 2. Fetch from Backend (If logged in as full User)
-    if (user && token) {
-      try {
-        const historyRes = await fetch(`${API_URL}/writing/history`, {
-          headers: { Authorization: `Bearer ${token}` }
-        });
-        if (historyRes.ok) {
-          apiHistory = await historyRes.json();
-        }
-
-        const statsRes = await fetch(`${API_URL}/writing/stats`, {
-          headers: { Authorization: `Bearer ${token}` }
-        });
-        if (statsRes.ok) {
-          const statsData = await statsRes.json();
-          setStats(statsData);
-        }
-      } catch (err) {
-        console.error('Failed to load stats/history from backend:', err);
-      }
-    }
-
-    // Combine history, deduplicating entries by createdAt or id
-    const combinedHistory = [...apiHistory];
-    localHistory.forEach(localItem => {
-      const exists = combinedHistory.some(apiItem => 
-        new Date(apiItem.createdAt).getTime() === new Date(localItem.createdAt).getTime()
-      );
-      if (!exists) {
-        combinedHistory.push(localItem);
-      }
-    });
-
-    // Sort by date desc
-    combinedHistory.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-    setHistory(combinedHistory);
-
-    // Calculate guest stats if not logged in
-    if (!user || stats.totalTests === 0) {
-      const sessions = combinedHistory;
-      if (sessions.length > 0) {
-        let totalWpm = 0;
-        let totalAccuracy = 0;
-        let bestWpm = 0;
-        let bestScore = 0;
-
-        sessions.forEach(s => {
-          totalWpm += s.wpm;
-          totalAccuracy += s.accuracy;
-          if (s.wpm > bestWpm) bestWpm = s.wpm;
-          if (s.score > bestScore) bestScore = s.score;
-        });
-
-        setStats({
-          totalTests: sessions.length,
-          avgWpm: Math.round(totalWpm / sessions.length),
-          bestWpm,
-          avgAccuracy: Math.round(totalAccuracy / sessions.length),
-          bestScore
-        });
-      }
-    }
-
-    setLoadingHistory(false);
-  };
-
-  // Delete individual writing session
-  const handleDeleteHistoryItem = async (session) => {
-    if (!window.confirm('Are you sure you want to delete this test record?')) return;
-    
-    // 1. Delete from backend if logged in & has _id
-    if (session._id && token) {
-      try {
-        await fetch(`${API_URL}/writing/session/${session._id}`, {
-          method: 'DELETE',
-          headers: { Authorization: `Bearer ${token}` }
-        });
-      } catch (err) {
-        console.error('Failed to delete session from server:', err);
-      }
-    }
-
-    // 2. Delete from local storage
-    const localHistoryStr = localStorage.getItem('local_writing_history');
-    if (localHistoryStr) {
-      try {
-        const localList = JSON.parse(localHistoryStr);
-        const filtered = localList.filter(item => 
-          (session._id && item._id === session._id) ? false :
-          new Date(item.createdAt).getTime() !== new Date(session.createdAt).getTime()
-        );
-        localStorage.setItem('local_writing_history', JSON.stringify(filtered));
-      } catch (e) {}
-    }
-
-    // 3. Update state
-    const updated = history.filter(item => 
-      item !== session && 
-      (session._id ? item._id !== session._id : new Date(item.createdAt).getTime() !== new Date(session.createdAt).getTime())
-    );
-    setHistory(updated);
-
-    // 4. Recalculate stats
-    if (updated.length > 0) {
-      let totalWpm = 0;
-      let totalAccuracy = 0;
-      let bestWpm = 0;
-      let bestScore = 0;
-
-      updated.forEach(s => {
-        totalWpm += s.wpm;
-        totalAccuracy += s.accuracy;
-        if (s.wpm > bestWpm) bestWpm = s.wpm;
-        if (s.score > bestScore) bestScore = s.score;
-      });
-
-      setStats({
-        totalTests: updated.length,
-        avgWpm: Math.round(totalWpm / updated.length),
-        bestWpm,
-        avgAccuracy: Math.round(totalAccuracy / updated.length),
-        bestScore
-      });
-    } else {
-      setStats({
-        totalTests: 0,
-        avgWpm: 0,
-        bestWpm: 0,
-        avgAccuracy: 0,
-        bestScore: 0
-      });
-    }
-  };
-
-  // Clear all writing history
-  const handleClearAllHistory = async () => {
-    if (!window.confirm('Are you sure you want to clear all test records and history? This cannot be undone.')) return;
-
-    if (token) {
-      try {
-        await fetch(`${API_URL}/writing/history`, {
-          method: 'DELETE',
-          headers: { Authorization: `Bearer ${token}` }
-        });
-      } catch (err) {
-        console.error('Failed to clear history on server:', err);
-      }
-    }
-
-    localStorage.removeItem('local_writing_history');
-    setHistory([]);
-    setStats({
-      totalTests: 0,
-      avgWpm: 0,
-      bestWpm: 0,
-      avgAccuracy: 0,
-      bestScore: 0
-    });
-  };
-
   // SOP Builder Helpers
   const handleGenerateSOP = () => {
     const { name, targetUni, targetCourse, undergradDegree, gpa, experience, keyProject, whyUni, careerGoal } = sopForm;
@@ -1057,98 +444,6 @@ ${name || 'Candidate'}`;
     document.body.removeChild(element);
   };
 
-  // IELTS Simulator Helpers
-  const handleStartIelts = () => {
-    if (!ieltsTopic) {
-      const randomTopic = ieltsTopics[Math.floor(Math.random() * ieltsTopics.length)];
-      setIeltsTopic(randomTopic);
-    }
-    setIeltsEssay('');
-    setIeltsTimeRemaining(2400);
-    setIeltsActive(true);
-    setIeltsMsg({ type: '', text: '' });
-  };
-
-  const handleSaveIeltsAttempt = async () => {
-    if (!ieltsEssay.trim()) {
-      setIeltsMsg({ type: 'error', text: 'Cannot evaluate an empty essay!' });
-      return;
-    }
-    setSavingIelts(true);
-    setIeltsMsg({ type: '', text: '' });
-    try {
-      const words = ieltsEssay.trim().split(/\s+/).filter(Boolean).length;
-      const timeSpent = 2400 - ieltsTimeRemaining;
-      
-      const payload = {
-        prompt: ieltsTopic,
-        essay: ieltsEssay,
-        wordCount: words,
-        timeSpent: timeSpent
-      };
-
-      const res = await fetch(`${API_URL}/ai/grade-ielts`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`
-        },
-        body: JSON.stringify(payload)
-      });
-      
-      const data = await res.json();
-      if (res.ok && data.evaluation) {
-        setIeltsMsg({ type: 'success', text: `Essay evaluated! Overall Band: ${data.evaluation.overallBand}` });
-        setIeltsActive(false);
-        setSelectedEvaluation({
-          ...data.evaluation,
-          prompt: ieltsTopic,
-          essay: ieltsEssay,
-          wordCount: words
-        });
-        setIsEvaluationModalOpen(true);
-        fetchIeltsHistory();
-      } else {
-        setIeltsMsg({ type: 'error', text: data.error || 'Failed to evaluate essay with AI.' });
-      }
-    } catch (err) {
-      console.error(err);
-      setIeltsMsg({ type: 'error', text: 'Network connection failed.' });
-    } finally {
-      setSavingIelts(false);
-    }
-  };
-
-  const fetchIeltsHistory = async () => {
-    if (!token) return;
-    try {
-      const res = await fetch(`${API_URL}/writing/ielts/history`, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-      if (res.ok) {
-        const data = await res.json();
-        setIeltsHistory(data);
-      }
-    } catch (err) {
-      console.error('Failed to load IELTS history:', err);
-    }
-  };
-
-  // IELTS Timer effect
-  useEffect(() => {
-    if (ieltsActive && ieltsTimeRemaining > 0) {
-      ieltsTimerRef.current = setTimeout(() => {
-        setIeltsTimeRemaining(prev => prev - 1);
-      }, 1000);
-    } else if (ieltsTimeRemaining === 0 && ieltsActive) {
-      setIeltsActive(false);
-      setIeltsMsg({ type: 'warning', text: 'Time is up! Please submit your essay now.' });
-    }
-    return () => {
-      if (ieltsTimerRef.current) clearTimeout(ieltsTimerRef.current);
-    };
-  }, [ieltsActive, ieltsTimeRemaining]);
-
   // Always scroll to top immediately whenever activeTab changes
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -1169,15 +464,6 @@ ${name || 'Candidate'}`;
         cancelAnimationFrame(rafId);
         clearTimeout(timerId);
       };
-    }
-  }, [activeTab]);
-
-  useEffect(() => {
-    if (activeTab === 'history' || activeTab === 'game') {
-      fetchHistoryAndStats();
-    }
-    if (activeTab === 'ielts-simulator') {
-      fetchIeltsHistory();
     }
   }, [activeTab]);
 
@@ -1348,7 +634,11 @@ ${name || 'Candidate'}`;
       setActiveTab('overview');
       return;
     }
-    setActiveTab(task.actionTarget);
+    if (task.actionTarget === 'counselling' || task.actionTarget === 'talk-expert') {
+      navigate('/book-consultation');
+      return;
+    }
+    setActiveTab(OLD_TOOL_TABS[task.actionTarget] || task.actionTarget);
   };
 
   // Open 1-Click WhatsApp consultation
@@ -1369,302 +659,10 @@ ${name || 'Candidate'}`;
     setIsWhatsModalOpen(false);
   };
 
-  // Typing Game logic
-  const startTimer = () => {
-    if (timerRef.current) clearInterval(timerRef.current);
-    setTimeSpent(0);
-    timerRef.current = setInterval(() => {
-      setTimeSpent(prev => prev + 1);
-    }, 1000);
-  };
-
-  const stopTimer = () => {
-    if (timerRef.current) {
-      clearInterval(timerRef.current);
-      timerRef.current = null;
-    }
-  };
-
-  useEffect(() => {
-    return () => {
-      stopTimer();
-      stopEngineSound();
-    };
-  }, []);
-
-  const handleStartRace = () => {
-    stopTimer();
-    stopEngineSound();
-    
-    // Play initial sound to unlock AudioContext
-    initAudio();
-    playSound('countdown-tick');
-
-    setUserInput('');
-    setTestStarted(false);
-    setTestFinished(false);
-    setTimeSpent(0);
-    setWpm(0);
-    setAccuracy(100);
-    setScore(0);
-    setErrors(0);
-    setStreak(0);
-    setIsBoosted(false);
-    setIsCrashed(false);
-    setSpinAngle(0);
-    setCrashesCount(0);
-    setCompletedLapsChars(0);
-    setCompletedLapsErrors(0);
-
-    setCountdown(3);
-    
-    let currentCount = 3;
-    const interval = setInterval(() => {
-      currentCount--;
-      if (currentCount > 0) {
-        setCountdown(currentCount);
-        playSound('countdown-tick');
-      } else if (currentCount === 0) {
-        setCountdown('GO!');
-        playSound('countdown-go');
-        
-        setTestStarted(true);
-        startTimer();
-        startEngineSound();
-        
-        setTimeout(() => {
-          if (inputRef.current) {
-            inputRef.current.focus();
-          }
-        }, 50);
-      } else {
-        setCountdown(null);
-        clearInterval(interval);
-      }
-    }, 1000);
-  };
-
-  const handleInputChange = (e) => {
-    const value = e.target.value;
-    
-    // Stop typing if test is finished or not started (countdown is active)
-    if (testFinished || !testStarted || countdown !== null) return;
-
-    const targetText = selectedPassage.text;
-    const typedLength = Math.min(value.length, targetText.length);
-    const sanitizedVal = value.substring(0, typedLength);
-    setUserInput(sanitizedVal);
-
-    // Calculate errors
-    let errCount = 0;
-    for (let i = 0; i < sanitizedVal.length; i++) {
-      if (sanitizedVal[i] !== targetText[i]) {
-        errCount++;
-      }
-    }
-
-    // Play feedback audio
-    if (sanitizedVal.length > userInput.length) {
-      const typedChar = sanitizedVal[sanitizedVal.length - 1];
-      const targetChar = targetText[sanitizedVal.length - 1];
-      if (typedChar === targetChar) {
-        playSound('correct');
-        setStreak(prev => {
-          const nextStreak = prev + 1;
-          if (nextStreak === 12) {
-            playSound('boost');
-            setIsBoosted(true);
-          }
-          return nextStreak;
-        });
-        setIsCrashed(false);
-      } else {
-        playSound('error');
-        setStreak(0);
-        setIsBoosted(false);
-        setIsCrashed(true);
-        setSpinAngle(prev => prev + 360);
-        setCrashesCount(prev => prev + 1);
-      }
-    }
-
-    setErrors(errCount);
-    prevErrorsRef.current = errCount;
-
-    const totalTypedCount = completedLapsChars + sanitizedVal.length;
-    const totalErrorCount = completedLapsErrors + errCount;
-
-    // Live accuracy
-    const currentAccuracy = totalTypedCount > 0 
-      ? Math.max(0, Math.round(((totalTypedCount - totalErrorCount) / totalTypedCount) * 100))
-      : 100;
-    setAccuracy(currentAccuracy);
-
-    // Live WPM
-    const elapsedMinutes = timeSpent > 0 ? timeSpent / 60 : 1 / 60;
-    const calculatedWpm = Math.round((totalTypedCount / 5) / elapsedMinutes);
-    setWpm(calculatedWpm);
-
-    // Check if completed
-    if (sanitizedVal.length === targetText.length) {
-      if (timeLimit > 0) {
-        // Multi-lap loop: save stats for this lap, clear field, keep typing!
-        setCompletedLapsChars(prev => prev + targetText.length);
-        setCompletedLapsErrors(prev => prev + errCount);
-        setUserInput('');
-        playSound('boost'); // Sound representing lap cross!
-      } else {
-        // Finish test immediately if Unlimited/Free mode
-        handleTestComplete(calculatedWpm, currentAccuracy, totalTypedCount);
-      }
-    }
-  };
-
-  const handleTestComplete = async (finalWpm, finalAccuracy, textLength) => {
-    stopTimer();
-    stopEngineSound();
-    setTestFinished(true);
-    setIsBoosted(false);
-    setIsCrashed(false);
-    playSound('win');
-
-    const calculatedScore = Math.max(0, Math.round(finalWpm * (finalAccuracy / 100) - (crashesCount * 5)));
-    setScore(calculatedScore);
-
-    const sessionPayload = {
-      type: 'typing-test',
-      wpm: finalWpm,
-      accuracy: finalAccuracy,
-      score: calculatedScore,
-      textTitle: selectedPassage.title,
-      charactersTyped: textLength,
-      timeSpent: timeSpent || 1,
-      createdAt: new Date().toISOString()
-    };
-
-    // 1. Save locally to LocalStorage
-    try {
-      const localHistoryStr = localStorage.getItem('local_writing_history');
-      const localHistory = localHistoryStr ? JSON.parse(localHistoryStr) : [];
-      localHistory.unshift(sessionPayload);
-      localStorage.setItem('local_writing_history', JSON.stringify(localHistory));
-    } catch (err) {
-      console.error('LocalStorage write failed:', err);
-    }
-
-    // 2. Save session to backend if user is fully registered
-    if (user && token) {
-      try {
-        await fetch(`${API_URL}/writing/session`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`
-          },
-          body: JSON.stringify(sessionPayload)
-        });
-      } catch (err) {
-        console.error('Failed to log session data to backend:', err);
-      }
-    }
-
-    fetchHistoryAndStats();
-  };
-
-  const resetGame = () => {
-    stopTimer();
-    stopEngineSound();
-    setCountdown(null);
-    setUserInput('');
-    setTestStarted(false);
-    setTestFinished(false);
-    setTimeSpent(0);
-    setWpm(0);
-    setAccuracy(100);
-    setScore(0);
-    setErrors(0);
-    setStreak(0);
-    setIsBoosted(false);
-    setIsCrashed(false);
-    setSpinAngle(0);
-    setCrashesCount(0);
-    setCompletedLapsChars(0);
-    setCompletedLapsErrors(0);
-  };
-
-  // Handle time limit expiration
-  useEffect(() => {
-    if (testStarted && !testFinished && timeLimit > 0 && timeSpent >= timeLimit) {
-      const totalTypedCount = completedLapsChars + userInput.length;
-      const totalErrorCount = completedLapsErrors + errors;
-      const currentAccuracy = totalTypedCount > 0 
-        ? Math.max(0, Math.round(((totalTypedCount - totalErrorCount) / totalTypedCount) * 100))
-        : 100;
-      
-      const elapsedMinutes = timeSpent / 60;
-      const calculatedWpm = Math.round((totalTypedCount / 5) / elapsedMinutes);
-
-      handleTestComplete(calculatedWpm, currentAccuracy, totalTypedCount);
-    }
-  }, [timeSpent, testStarted, testFinished, timeLimit, completedLapsChars, userInput.length, errors]);
-
-  // When changing passage
-  useEffect(() => {
-    resetGame();
-  }, [selectedPassage]);
-
   // Determine display info
   const name = user?.name || verifiedLead?.name || 'Guest User';
   const email = user?.email || verifiedLead?.email || 'N/A';
   const displayPhone = user?.phone || verifiedLead?.phone || 'N/A';
-
-  // Calculate game race completion percentage
-  const racePercentage = selectedPassage.text.length > 0 
-    ? Math.min(100, Math.round((userInput.length / selectedPassage.text.length) * 100))
-    : 0;
-
-  // Determine gear shift based on WPM speed
-  const getGear = () => {
-    if (wpm === 0) return 'N';
-    if (wpm < 25) return '1';
-    if (wpm < 45) return '2';
-    if (wpm < 65) return '3';
-    if (wpm < 85) return '4';
-    return '5';
-  };
-
-  // Helper to format seconds as MM:SS
-  const formatTime = (secs) => {
-    const mins = Math.floor(secs / 60);
-    const remainingSecs = secs % 60;
-    return `${mins}:${remainingSecs < 10 ? '0' : ''}${remainingSecs}`;
-  };
-
-  // Helper to render colored characters
-  const renderTextCharacters = () => {
-    const targetText = selectedPassage.text;
-    return targetText.split('').map((char, index) => {
-      let colorClass = 'text-slate-400';
-      let bgClass = '';
-      
-      if (index < userInput.length) {
-        if (userInput[index] === char) {
-          colorClass = 'text-emerald-400 font-bold';
-        } else {
-          colorClass = 'text-rose-500 font-bold underline';
-          bgClass = 'bg-rose-500/20';
-        }
-      } else if (index === userInput.length) {
-        bgClass = 'bg-indigo-500/25 border-b-2 border-indigo-400 animate-pulse';
-      }
-
-      return (
-        <span key={index} className={`${colorClass} ${bgClass} transition-colors duration-75 text-sm md:text-[17px] leading-relaxed font-mono`}>
-          {char}
-        </span>
-      );
-    });
-  };
 
   const navigationGroups = [
     {
@@ -1683,23 +681,23 @@ ${name || 'Candidate'}`;
       ]
     },
     {
-      groupTitle: 'AI ADMISSION TOOLS',
+      groupTitle: 'SHORTLIST & PLAN',
       items: [
-        { id: 'shortlister', label: 'University Shortlister', icon: <School size={16} />, badge: 'AI', badgeColor: 'bg-slate-100 text-slate-600 border border-slate-200/70' },
-        { id: 'eligibility-calculator', label: 'Eligibility Calculator', icon: <ClipboardCheck size={16} />, badge: 'AI', badgeColor: 'bg-slate-100 text-slate-600 border border-slate-200/70' },
-        { id: 'scholarship-shortlister', label: 'Scholarship Finder', icon: <HandCoins size={16} />, badge: '150+', badgeColor: 'bg-slate-100 text-slate-600 border border-slate-200/70' },
-        { id: 'sop-builder', label: 'SOP & Essay Generator', icon: <FilePenLine size={16} />, badge: 'PRO', badgeColor: 'bg-slate-100 text-slate-600 border border-slate-200/70' },
-        { id: 'visa-mock', label: 'Visa Mock Interview', icon: <Mic size={16} />, badge: 'VOICE', badgeColor: 'bg-slate-100 text-slate-600 border border-slate-200/70' },
-        { id: 'study-roadmap', label: 'Study Planner & Roadmap', icon: <Route size={16} />, badge: 'AI', badgeColor: 'bg-slate-100 text-slate-600 border border-slate-200/70' },
-        { id: 'budget-calculator', label: 'Cost & Budget Estimator', icon: <Wallet size={16} /> }
+        { id: 'course-finder', label: 'Course Finder', icon: <GraduationCap size={16} />, badge: '98K+', badgeColor: 'bg-slate-100 text-slate-600 border border-slate-200/70' },
+        { id: 'scholarships', label: 'Scholarships', icon: <Award size={16} />, badge: 'FUNDING', badgeColor: 'bg-slate-100 text-slate-600 border border-slate-200/70' },
+        { id: 'eligibility-calculator', label: 'Admission Chances', icon: <Calculator size={16} />, badge: 'POPULAR', badgeColor: 'bg-slate-100 text-slate-600 border border-slate-200/70' },
+        { id: 'study-roadmap', label: 'AI 6-Month Roadmap', icon: <Compass size={16} />, badge: 'AI', badgeColor: 'bg-slate-100 text-slate-600 border border-slate-200/70' },
+        { id: 'education-loan', label: 'Education Loan', icon: <Landmark size={16} /> }
       ]
     },
     {
-      groupTitle: 'EXAMS & UTILITIES',
+      groupTitle: 'WRITE & PRACTISE',
       items: [
-        { id: 'ielts-simulator', label: 'IELTS Writing AI Mock', icon: <NotebookPen size={16} />, badge: 'MOCK', badgeColor: 'bg-slate-100 text-slate-600 border border-slate-200/70' },
-        { id: 'game', label: 'Speed Typing Test', icon: <Keyboard size={16} /> },
-        { id: 'history', label: 'Performance & History', icon: <History size={16} /> }
+        { id: 'sop-builder', label: 'SOP Writer', icon: <FileText size={16} />, badge: 'AI', badgeColor: 'bg-slate-100 text-slate-600 border border-slate-200/70' },
+        { id: 'visa-mock', label: 'AI Mock Visa Interview', icon: <Mic size={16} />, badge: 'VOICE', badgeColor: 'bg-slate-100 text-slate-600 border border-slate-200/70' },
+        { id: 'ielts-checker', label: 'IELTS Essay Checker', icon: <Sparkles size={16} />, badge: '0-9', badgeColor: 'bg-slate-100 text-slate-600 border border-slate-200/70' },
+        { id: 'visa-departure', label: 'Visa & Pre-Departure', icon: <Plane size={16} /> },
+        { id: 'talk-expert', label: 'Talk to an Expert', icon: <Headphones size={16} />, badge: 'FREE', badgeColor: 'bg-slate-100 text-slate-600 border border-slate-200/70' }
       ]
     },
     // Mentor Studio entry only for accounts that have a mentor profile
@@ -1993,6 +991,10 @@ ${name || 'Candidate'}`;
                               handleOpenMentorStudio();
                               return;
                             }
+                            if (item.id === 'talk-expert') {
+                              navigate('/book-consultation');
+                              return;
+                            }
                             setActiveTab(item.id);
                             if (item.id === 'saved-unis') fetchDbSavedUniversities();
                             setMobileMenuOpen(false);
@@ -2056,27 +1058,63 @@ ${name || 'Candidate'}`;
             <AnimatePresence mode="wait">
 
             
-            {/* SHORTLISTER TAB */}
-            {activeTab === 'shortlister' && (
+            {/* COURSE FINDER (same as Toolkit: Course Finder) */}
+            {activeTab === 'course-finder' && (
               <motion.div
-                key="shortlister"
+                key="course-finder"
                 initial={{ opacity: 0, y: 15 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -15 }}
               >
-                <Suspense fallback={<TabLoading />}><UniversityShortlister user={user} verifiedLead={verifiedLead} /></Suspense>
+                <Suspense fallback={<TabLoading />}><SearchProgramsPage /></Suspense>
               </motion.div>
             )}
 
-            {/* SCHOLARSHIP SHORTLISTER TAB */}
-            {activeTab === 'scholarship-shortlister' && (
+            {/* SCHOLARSHIPS (Course Finder with the scholarship view on) */}
+            {activeTab === 'scholarships' && (
               <motion.div
-                key="scholarship-shortlister"
+                key="scholarships"
                 initial={{ opacity: 0, y: 15 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -15 }}
               >
-                <Suspense fallback={<TabLoading />}><ScholarshipShortlister /></Suspense>
+                <Suspense fallback={<TabLoading />}><SearchProgramsPage key="scholarships" highlight="scholarship" /></Suspense>
+              </motion.div>
+            )}
+
+            {/* EDUCATION LOAN */}
+            {activeTab === 'education-loan' && (
+              <motion.div
+                key="education-loan"
+                initial={{ opacity: 0, y: 15 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -15 }}
+              >
+                <Suspense fallback={<TabLoading />}><EducationLoanPage /></Suspense>
+              </motion.div>
+            )}
+
+            {/* IELTS ESSAY CHECKER */}
+            {activeTab === 'ielts-checker' && (
+              <motion.div
+                key="ielts-checker"
+                initial={{ opacity: 0, y: 15 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -15 }}
+              >
+                <Suspense fallback={<TabLoading />}><IeltsEvaluatorPage /></Suspense>
+              </motion.div>
+            )}
+
+            {/* VISA & PRE-DEPARTURE */}
+            {activeTab === 'visa-departure' && (
+              <motion.div
+                key="visa-departure"
+                initial={{ opacity: 0, y: 15 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -15 }}
+              >
+                <Suspense fallback={<TabLoading />}><VisaAssistancePage /></Suspense>
               </motion.div>
             )}
 
@@ -2429,7 +1467,7 @@ ${name || 'Candidate'}`;
                         <span>Excel</span>
                       </button>
                       <button
-                        onClick={() => setActiveTab('shortlister')}
+                        onClick={() => setActiveTab('course-finder')}
                         className="h-11 px-6 rounded-full bg-[#DE5C2B] hover:bg-[#C04A1D] text-white text-sm font-semibold flex items-center gap-2 transition-colors cursor-pointer whitespace-nowrap"
                       >
                         <Sparkles size={15} /> Find more universities
@@ -2483,7 +1521,7 @@ ${name || 'Candidate'}`;
                         </p>
                       </div>
                       <button
-                        onClick={() => setActiveTab('shortlister')}
+                        onClick={() => setActiveTab('course-finder')}
                         className="px-6 py-3 bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-700 hover:to-blue-700 text-white rounded-2xl text-xs font-black transition-all shadow-md shadow-indigo-150 inline-flex items-center gap-2 cursor-pointer"
                       >
                         <Sparkles size={16} /> Open University Shortlister
@@ -2583,7 +1621,7 @@ ${name || 'Candidate'}`;
                           ))}
                         </div>
                         <div className="flex gap-2">
-                          <button onClick={() => setActiveTab('shortlister')} className="h-11 px-6 rounded-full bg-[#111] hover:bg-black text-white text-sm font-semibold cursor-pointer">Find universities</button>
+                          <button onClick={() => setActiveTab('course-finder')} className="h-11 px-6 rounded-full bg-[#111] hover:bg-black text-white text-sm font-semibold cursor-pointer">Find universities</button>
                           <button onClick={() => { setActiveTab('saved-unis'); fetchDbSavedUniversities(); }} className="h-11 px-6 rounded-full bg-[#F1F0EC] hover:bg-[#E9E7E2] text-slate-800 text-sm font-semibold cursor-pointer">Saved ({dbSavedUnis.length})</button>
                         </div>
                       </div>
@@ -2650,8 +1688,8 @@ ${name || 'Candidate'}`;
                         <p className="text-sm font-semibold text-slate-900 mb-3">Quick tools</p>
                         <div className="space-y-2">
                           {[
-                            ['eligibility-calculator', 'Eligibility calculator', <ClipboardCheck key="i" size={15} />],
-                            ['shortlister', 'University shortlister', <School key="i" size={15} />],
+                            ['eligibility-calculator', 'Admission chances', <Calculator key="i" size={15} />],
+                            ['course-finder', 'Course finder', <GraduationCap key="i" size={15} />],
                             ['daily-tasks', 'Roadmap and tasks', <Route key="i" size={15} />],
                           ].map(([id, label, icon]) => (
                             <button key={id} onClick={() => setActiveTab(id)} className="w-full h-11 px-2 rounded-full bg-white hover:bg-[#FDF3EE] flex items-center gap-3 text-sm text-slate-800 cursor-pointer">
@@ -2915,958 +1953,10 @@ ${name || 'Candidate'}`;
               </motion.div>
             )}
 
-            {/* BUDGET & COST CALCULATOR TAB */}
-            {activeTab === 'budget-calculator' && (() => {
-              const countryData = costDatabase[calculatorCountry];
-              const tuitionFee = countryData.tuition[calculatorDegree];
-              const accommodationFee = countryData.living.rent[calculatorAccommodation];
-              const otherExpenses = countryData.living.food + countryData.living.insurance + countryData.living.transport + countryData.living.misc;
-              const totalNative = tuitionFee + accommodationFee + otherExpenses;
-              const totalINR = totalNative * countryData.inrRate;
-
-              return (
-                <motion.div 
-                  key="budget-calculator"
-                  initial={{ opacity: 0, y: 15 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -15 }}
-                  className="grid grid-cols-1 lg:grid-cols-3 gap-8 max-w-6xl mx-auto"
-                >
-                  {/* Estimator Settings */}
-                  <div className="lg:col-span-2 space-y-6">
-                    <div className="bg-white border border-slate-200/60 p-6 md:p-8 rounded-[32px] shadow-sm space-y-6">
-                      <div className="space-y-1">
-                        <h2 className="text-xl font-black text-slate-800 tracking-tight flex items-center gap-2">
-                          <Calculator className="text-indigo-500" size={20} /> Study Abroad Cost Estimator
-                        </h2>
-                        <p className="text-xs text-slate-400 font-semibold">Estimate your tuition and living costs dynamically based on target metrics.</p>
-                      </div>
-
-                      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        <div className="relative">
-                          <PremiumDropdown
-                            label="Dream Destination"
-                            value={calculatorCountry}
-                            onChange={(val) => setCalculatorCountry(val)}
-                            accent="indigo"
-                            options={Object.keys(costDatabase).map(c => ({
-                              value: c,
-                              label: c,
-                              icon: {
-                                'USA': <img src="https://flagcdn.com/w40/us.png" alt="US" className="w-6 h-4 rounded-sm object-cover" />,
-                                'UK': <img src="https://flagcdn.com/w40/gb.png" alt="UK" className="w-6 h-4 rounded-sm object-cover" />,
-                                'Canada': <img src="https://flagcdn.com/w40/ca.png" alt="CA" className="w-6 h-4 rounded-sm object-cover" />,
-                                'Australia': <img src="https://flagcdn.com/w40/au.png" alt="AU" className="w-6 h-4 rounded-sm object-cover" />,
-                                'Germany': <img src="https://flagcdn.com/w40/de.png" alt="DE" className="w-6 h-4 rounded-sm object-cover" />,
-                                'Ireland': <img src="https://flagcdn.com/w40/ie.png" alt="IE" className="w-6 h-4 rounded-sm object-cover" />,
-                                'New Zealand': <img src="https://flagcdn.com/w40/nz.png" alt="NZ" className="w-6 h-4 rounded-sm object-cover" />,
-                                'France': <img src="https://flagcdn.com/w40/fr.png" alt="FR" className="w-6 h-4 rounded-sm object-cover" />,
-                              }[c] || <Globe size={18} className="text-indigo-500" />,
-                            }))}
-                          />
-                        </div>
-
-                        <div className="relative">
-                          <PremiumDropdown
-                            label="Degree Type"
-                            value={calculatorDegree}
-                            onChange={(val) => setCalculatorDegree(val)}
-                            accent="indigo"
-                            options={[
-                              { value: 'Masters', label: 'Masters / Graduate', icon: '🎓', description: 'Postgraduate programmes' },
-                              { value: 'Bachelors', label: 'Bachelors / Undergrad', icon: '📚', description: 'Undergraduate programmes' },
-                            ]}
-                          />
-                        </div>
-
-                        <div className="relative">
-                          <PremiumDropdown
-                            label="Housing Style"
-                            value={calculatorAccommodation}
-                            onChange={(val) => setCalculatorAccommodation(val)}
-                            accent="indigo"
-                            options={[
-                              { value: 'On-Campus Dorm', label: 'On-Campus Dorm', icon: '🏫', description: 'University managed housing' },
-                              { value: 'Off-Campus Shared', label: 'Off-Campus Shared Room', icon: '🏠', description: 'Shared apartment with roommates' },
-                              { value: 'Private Studio', label: 'Private Studio Apartment', icon: '🏙️', description: 'Independent living' },
-                            ]}
-                          />
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Cost breakdown items list */}
-                    <div className="bg-white border border-slate-200/60 p-6 md:p-8 rounded-[32px] shadow-sm space-y-4">
-                      <h3 className="text-sm font-black text-slate-700 uppercase tracking-wider">Annual Cost Breakdown</h3>
-                      
-                      <div className="space-y-3">
-                        <div className="flex justify-between items-center p-3.5 bg-slate-50 rounded-2xl">
-                          <span className="text-xs md:text-sm font-semibold text-slate-600">Average Tuition Fees</span>
-                          <span className="text-xs md:text-sm font-black text-slate-700">{countryData.symbol}{tuitionFee.toLocaleString()} / year</span>
-                        </div>
-                        <div className="flex justify-between items-center p-3.5 bg-slate-50 rounded-2xl">
-                          <span className="text-xs md:text-sm font-semibold text-slate-600">Rent & Accommodation</span>
-                          <span className="text-xs md:text-sm font-black text-slate-700">{accommodationFee.toLocaleString()} / year</span>
-                        </div>
-                        <div className="flex justify-between items-center p-3.5 bg-slate-50 rounded-2xl">
-                          <span className="text-xs md:text-sm font-semibold text-slate-600">Groceries & Food</span>
-                          <span className="text-xs md:text-sm font-black text-slate-700">{countryData.symbol}{countryData.living.food.toLocaleString()} / year</span>
-                        </div>
-                        <div className="flex justify-between items-center p-3.5 bg-slate-50 rounded-2xl">
-                          <span className="text-xs md:text-sm font-semibold text-slate-600">Mandatory Health Insurance</span>
-                          <span className="text-xs md:text-sm font-black text-slate-700">{countryData.symbol}{countryData.living.insurance.toLocaleString()} / year</span>
-                        </div>
-                        <div className="flex justify-between items-center p-3.5 bg-slate-50 rounded-2xl">
-                          <span className="text-xs md:text-sm font-semibold text-slate-600">Local Transport & Commute</span>
-                          <span className="text-xs md:text-sm font-black text-slate-700">{countryData.symbol}{countryData.living.transport.toLocaleString()} / year</span>
-                        </div>
-                        <div className="flex justify-between items-center p-3.5 bg-slate-50 rounded-2xl">
-                          <span className="text-xs md:text-sm font-semibold text-slate-600">Miscellaneous Books & Supplies</span>
-                          <span className="text-xs md:text-sm font-black text-slate-700">{countryData.symbol}{countryData.living.misc.toLocaleString()} / year</span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Summary / Scholarships Card */}
-                  <div className="space-y-6">
-                    <div className="bg-gradient-to-br from-indigo-600 to-blue-700 text-white p-6 md:p-8 rounded-[32px] shadow-lg shadow-indigo-100 space-y-6">
-                      <div className="space-y-1">
-                        <span className="text-[10px] font-black uppercase text-indigo-100 tracking-wider">Estimated Total Cost</span>
-                        <h3 className="text-xl md:text-2xl font-black">{countryData.symbol}{totalNative.toLocaleString()} <span className="text-xs font-semibold text-indigo-150">/ Year</span></h3>
-                      </div>
-                      <div className="border-t border-white/10 pt-4 space-y-1">
-                        <span className="text-[10px] font-black uppercase text-indigo-150 tracking-wider">Approximate INR Equivalent</span>
-                        <h4 className="text-lg md:text-xl font-black">₹{totalINR.toLocaleString()} <span className="text-xs font-semibold text-indigo-150">/ Year</span></h4>
-                        <p className="text-[10px] text-indigo-100 font-semibold mt-1">Calculated at live conversions: 1 {countryData.currency} = ₹{countryData.inrRate}</p>
-                      </div>
-                    </div>
-
-                    <div className="bg-white border border-slate-200/60 p-6 md:p-8 rounded-[32px] shadow-sm space-y-4">
-                      <h3 className="text-xs font-black text-slate-400 uppercase tracking-wider">Recommended Scholarships ({calculatorCountry})</h3>
-                      <div className="space-y-4">
-                        {countryData.scholarships.map((s, idx) => (
-                          <div key={idx} className="space-y-1 border-b border-slate-100 pb-3 last:border-b-0 last:pb-0">
-                            <h4 className="text-xs font-black text-slate-700">{s.name}</h4>
-                            <p className="text-[11px] text-indigo-600 font-bold">Coverage: {s.coverage}</p>
-                            <p className="text-[10px] text-slate-400 font-semibold">{s.eligibility}</p>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                </motion.div>
-              );
-            })()}
-
-            {/* IELTS EXAM WRITING SIMULATOR TAB */}
-            {activeTab === 'ielts-simulator' && (
-              <motion.div 
-                key="ielts-simulator"
-                initial={{ opacity: 0, y: 15 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -15 }}
-                className="space-y-8 max-w-4xl mx-auto"
-              >
-                {!ieltsActive ? (
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                    {/* Launch Practice Panel */}
-                    <div className="md:col-span-2 bg-white border border-slate-200/60 p-6 md:p-8 rounded-[32px] shadow-sm space-y-6">
-                      <div className="space-y-1">
-                        <h2 className="text-xl font-black text-slate-800 tracking-tight flex items-center gap-2">
-                          <Timer className="text-indigo-500" size={20} /> IELTS Writing Mock Test Simulator
-                        </h2>
-                        <p className="text-xs text-slate-400 font-semibold">Simulate a computer-delivered IELTS Academic Writing Task 2 exam with a live timer.</p>
-                      </div>
-
-                      {ieltsMsg.text && (
-                        <div className={`p-4 rounded-xl text-xs md:text-sm font-bold ${ieltsMsg.type === 'success' ? 'bg-emerald-50 text-emerald-800 border border-emerald-100' : 'bg-rose-50 text-rose-800 border border-rose-100'}`}>
-                          {ieltsMsg.text}
-                        </div>
-                      )}
-
-                      <div className="space-y-4">
-                        <div className="space-y-2">
-                          <label className="block text-xs font-black text-slate-400 uppercase tracking-wider">Select Essay Topic Prompt</label>
-                          <select 
-                            value={ieltsTopic} 
-                            onChange={(e) => setIeltsTopic(e.target.value)}
-                            className="w-full p-3.5 border border-slate-200 rounded-2xl text-sm font-bold bg-white text-slate-700 focus:outline-none focus:border-indigo-500"
-                          >
-                            <option value="">-- Random Selection (Auto-choose) --</option>
-                            {ieltsTopics.map((t, i) => (
-                              <option key={i} value={t}>Topic {i+1}: {t.substring(0, 50)}...</option>
-                            ))}
-                          </select>
-                        </div>
-
-                        <div className="p-4 bg-slate-50 border border-slate-100 rounded-2xl text-xs text-slate-500 leading-relaxed font-semibold">
-                          📝 <strong>IELTS Rules Checklist:</strong> You must write an essay response of at least <strong>250 words</strong> inside the <strong>40-minute</strong> limit. Write in structured paragraphs (Introduction, Body Paragraphs, Conclusion) using appropriate academic style.
-                        </div>
-
-                        <button 
-                          onClick={handleStartIelts}
-                          className="w-full py-4 bg-indigo-600 hover:bg-indigo-700 text-white font-black text-sm rounded-2xl shadow-lg shadow-indigo-150 transition-all flex items-center justify-center gap-2 cursor-pointer"
-                        >
-                          Start 40-Min Simulation Writing 🚀
-                        </button>
-                      </div>
-                    </div>
-
-                    {/* Attempt History logs */}
-                    <div className="bg-white border border-slate-200/60 p-6 md:p-8 rounded-[32px] shadow-sm space-y-6">
-                      <h3 className="text-sm font-black text-slate-700 uppercase tracking-wider">Your Practice Logs</h3>
-                      
-                      <div className="space-y-4 max-h-[350px] overflow-y-auto scrollbar-hide">
-                        {ieltsHistory.length === 0 ? (
-                          <div className="text-center py-8 text-slate-400 font-bold text-xs">
-                            No mock attempts saved yet.
-                          </div>
-                        ) : (
-                          ieltsHistory.map((h, i) => (
-                            <div key={i} className="p-3 bg-slate-50 border border-slate-100 rounded-2xl space-y-2">
-                              <p className="text-[11px] text-slate-600 font-bold line-clamp-2">Topic: "{h.prompt}"</p>
-                              <div className="flex justify-between items-center text-[10px] text-slate-400 font-bold">
-                                <span>📝 {h.wordCount} words</span>
-                                <span>⏱️ {formatTime(h.timeSpent)}</span>
-                              </div>
-                              <span className="text-[9px] text-slate-400 block font-semibold">{new Date(h.createdAt).toLocaleDateString()}</span>
-                            </div>
-                          ))
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                ) : (
-                  <div className="bg-white border border-slate-200/60 p-6 md:p-8 rounded-[32px] shadow-sm space-y-6">
-                    {/* Active Exam Header */}
-                    <div className="flex justify-between items-center border-b border-slate-100 pb-4">
-                      <div>
-                        <span className="text-[9px] font-black uppercase tracking-wider text-red-500 animate-pulse">● Active Writing Simulation</span>
-                        <h3 className="text-base font-black text-slate-800">IELTS Task 2 Academic Essay</h3>
-                      </div>
-                      <div className="px-4 py-2 bg-red-50 border border-red-100 text-red-600 rounded-2xl font-mono font-black text-lg">
-                        ⏱️ {formatTime(ieltsTimeRemaining)}
-                      </div>
-                    </div>
-
-                    {/* Essay Topic Prompt */}
-                    <div className="p-4 bg-indigo-50/50 border border-indigo-100/70 rounded-2xl">
-                      <span className="text-[9px] text-indigo-500 font-black uppercase tracking-wider">Question Prompt</span>
-                      <p className="text-xs md:text-sm font-black text-slate-700 mt-1 leading-relaxed">{ieltsTopic}</p>
-                    </div>
-
-                    {/* Essay writing board */}
-                    <div className="space-y-2">
-                      <div className="flex justify-between items-center">
-                        <label className="text-xs font-black text-slate-400 uppercase tracking-wider">Write your response essay below:</label>
-                        <span className={`text-xs font-black ${ieltsEssay.trim().split(/\s+/).filter(Boolean).length >= 250 ? 'text-emerald-600' : 'text-slate-400'}`}>
-                          Word Count: {ieltsEssay.trim().split(/\s+/).filter(Boolean).length} / 250+
-                        </span>
-                      </div>
-                      <textarea
-                        value={ieltsEssay}
-                        onChange={(e) => setIeltsEssay(e.target.value)}
-                        rows={12}
-                        className="w-full p-4 border border-slate-200 rounded-3xl text-sm md:text-base font-mono focus:outline-none focus:border-indigo-500 leading-relaxed bg-[#fcfdff]"
-                        placeholder="Type your essay response here. Make sure to structure it using appropriate paragraphs and formal academic style..."
-                      />
-                    </div>
-
-                    {/* Submit Options */}
-                    <div className="flex flex-col sm:flex-row gap-4">
-                      <button
-                        onClick={handleSaveIeltsAttempt}
-                        disabled={savingIelts}
-                        className="flex-1 py-4 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white font-black text-sm rounded-2xl shadow-lg shadow-emerald-200 transition-all flex items-center justify-center gap-2.5 cursor-pointer"
-                      >
-                        {savingIelts ? (
-                          <>
-                            <RefreshCw size={18} className="animate-spin" /> Evaluating with AI Examiner...
-                          </>
-                        ) : (
-                          <>
-                            <Sparkles size={18} className="text-amber-300" /> Submit Essay & Get AI Band Score 🤖
-                          </>
-                        )}
-                      </button>
-                      <button
-                        onClick={() => {
-                          if (window.confirm("Are you sure you want to cancel the writing test? Your progress will be lost.")) {
-                            setIeltsActive(false);
-                          }
-                        }}
-                        className="px-6 py-4 border border-slate-200 hover:bg-slate-50 text-slate-500 font-black text-sm rounded-2xl cursor-pointer"
-                      >
-                        Cancel Practice
-                      </button>
-                    </div>
-                  </div>
-                )}
-
-                {/* Attempt History logs with AI Evaluation Viewer */}
-                {!ieltsActive && (
-                  <div className="bg-white border border-slate-200/60 p-6 md:p-8 rounded-[32px] shadow-sm space-y-6">
-                    <div className="flex items-center justify-between">
-                      <h3 className="text-sm font-black text-slate-700 uppercase tracking-wider flex items-center gap-2">
-                        <Award size={16} className="text-indigo-600" /> IELTS Practice & AI Evaluation History
-                      </h3>
-                      <span className="text-xs font-bold text-slate-400">{ieltsHistory.length} Total Attempts</span>
-                    </div>
-                    
-                    <div className="space-y-3 max-h-[350px] overflow-y-auto custom-scrollbar">
-                      {ieltsHistory.length === 0 ? (
-                        <div className="text-center py-8 text-slate-400 font-bold text-xs">
-                          No mock attempts saved yet. Start your first 40-minute simulation above!
-                        </div>
-                      ) : (
-                        ieltsHistory.map((h, i) => {
-                          const evalData = h.aiEvaluation;
-                          return (
-                            <div key={i} className="p-4 bg-slate-50 border border-slate-100 hover:border-indigo-200 rounded-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-3 transition-colors">
-                              <div className="space-y-1">
-                                <p className="text-xs text-slate-800 font-black line-clamp-1">Topic: "{h.prompt}"</p>
-                                <div className="flex flex-wrap items-center gap-3 text-[11px] text-slate-400 font-semibold">
-                                  <span>📝 {h.wordCount} words</span>
-                                  <span>⏱️ {formatTime(h.timeSpent)}</span>
-                                  <span>📅 {new Date(h.createdAt).toLocaleDateString()}</span>
-                                </div>
-                              </div>
-
-                              <div className="flex items-center gap-2 flex-shrink-0">
-                                {evalData?.overallBand && (
-                                  <span className="px-3 py-1 rounded-xl text-xs font-black bg-emerald-50 text-emerald-700 border border-emerald-200">
-                                    Band {evalData.overallBand}
-                                  </span>
-                                )}
-                                {evalData && (
-                                  <button
-                                    onClick={() => {
-                                      setSelectedEvaluation({
-                                        ...evalData,
-                                        prompt: h.prompt,
-                                        essay: h.essay,
-                                        wordCount: h.wordCount
-                                      });
-                                      setIsEvaluationModalOpen(true);
-                                    }}
-                                    className="px-3.5 py-1.5 rounded-xl text-xs font-bold bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border border-indigo-200 transition-colors flex items-center gap-1 cursor-pointer"
-                                  >
-                                    <Sparkles size={12} /> View Report
-                                  </button>
-                                )}
-                              </div>
-                            </div>
-                          );
-                        })
-                      )}
-                    </div>
-                  </div>
-                )}
-              </motion.div>
-            )}
-
-            {/* TYPING GAME TAB */}
-            {activeTab === 'game' && (
-              <motion.div 
-                key="game"
-                initial={{ opacity: 0, y: 15 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -15 }}
-                className="space-y-8 max-w-4xl mx-auto"
-              >
-                <style>{`
-                  @keyframes scrollTrack {
-                    0% { background-position-x: 0px; }
-                    100% { background-position-x: -80px; }
-                  }
-                  .track-scrolling {
-                    background-image: repeating-linear-gradient(90deg, 
-                      transparent, transparent 40px, 
-                      rgba(245, 158, 11, 0.4) 40px, rgba(245, 158, 11, 0.4) 80px
-                    );
-                    background-size: 80px 100%;
-                    animation: scrollTrack var(--scroll-speed, 0s) linear infinite;
-                  }
-                  
-                  @keyframes scrollCurb {
-                    0% { background-position-x: 0px; }
-                    100% { background-position-x: -30px; }
-                  }
-                  .curb-scrolling {
-                    background: repeating-linear-gradient(90deg, #ef4444 0px, #ef4444 15px, #f8fafc 15px, #f8fafc 30px);
-                    background-size: 30px 100%;
-                    animation: scrollCurb var(--scroll-speed, 0s) linear infinite;
-                  }
-                `}</style>
-
-                {/* Passage & Duration Select */}
-                <div className="bg-white border border-slate-200/60 p-6 rounded-3xl shadow-sm flex flex-col xl:flex-row xl:items-center justify-between gap-4">
-                  <div>
-                    <h3 className="text-md md:text-lg font-black text-slate-800 tracking-tight flex items-center gap-2">
-                      <Keyboard className="text-indigo-500" size={18} /> High-Speed Typing Race
-                    </h3>
-                    <p className="text-xs text-slate-400 font-bold mt-0.5">Type correctly to activate Turbo Boost. Mistakes will cause your car to drift or crash!</p>
-                  </div>
-                  <div className="flex flex-wrap items-center gap-3">
-                    {/* Time limit select */}
-                    <div className="flex items-center gap-1 border border-slate-100 bg-slate-50 p-1.5 rounded-2xl">
-                      {[
-                        { label: 'Free Run', val: 0 },
-                        { label: '2 Min', val: 120 },
-                        { label: '3 Min', val: 180 },
-                        { label: '5 Min', val: 300 }
-                      ].map(t => (
-                        <button
-                          key={t.val}
-                          onClick={() => {
-                            setTimeLimit(t.val);
-                            resetGame();
-                          }}
-                          className={`px-3 py-1.5 text-[10px] font-black rounded-xl transition-all cursor-pointer ${
-                            timeLimit === t.val 
-                              ? 'bg-indigo-600 text-white shadow-sm' 
-                              : 'text-slate-500 hover:text-slate-800'
-                          }`}
-                        >
-                          {t.label}
-                        </button>
-                      ))}
-                    </div>
-
-                    {/* Volume Mute Toggle */}
-                    <button
-                      onClick={toggleMute}
-                      className="p-2 border border-slate-200 hover:bg-slate-50 text-slate-600 rounded-xl transition-all cursor-pointer flex items-center justify-center gap-1.5"
-                      title={isMuted ? "Unmute sound effects" : "Mute sound effects"}
-                    >
-                      {isMuted ? (
-                        <>
-                          <VolumeX size={14} className="text-rose-500" />
-                          <span className="text-[10px] font-black uppercase text-rose-500">Muted</span>
-                        </>
-                      ) : (
-                        <>
-                          <Volume2 size={14} className="text-indigo-500" />
-                          <span className="text-[10px] font-black uppercase text-indigo-500">Sound On</span>
-                        </>
-                      )}
-                    </button>
-
-                    <div className="flex gap-2">
-                      {passages.map(p => (
-                        <button
-                          key={p.id}
-                          onClick={() => setSelectedPassage(p)}
-                          className={`px-4 py-2 text-xs font-black rounded-xl transition-all cursor-pointer ${
-                            selectedPassage.id === p.id 
-                              ? 'bg-indigo-600 text-white' 
-                              : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
-                          }`}
-                        >
-                          {p.difficulty}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-
-                {/* Game Canvas Box */}
-                <div className="bg-white border border-slate-200/60 p-6 md:p-8 rounded-[32px] shadow-sm space-y-8 relative overflow-hidden">
-                  
-                  {/* TALLER ENHANCED RACING TRACK */}
-                  <div 
-                    className="relative h-48 border-2 border-slate-700/80 rounded-3xl overflow-hidden flex flex-col justify-between p-2 shadow-inner"
-                    style={{ 
-                      background: 'linear-gradient(180deg, #1e293b 0%, #0f172a 100%)',
-                      boxShadow: 'inset 0 10px 30px rgba(0,0,0,0.9)'
-                    }}
-                  >
-                    {/* START RACE OVERLAY */}
-                    {!testStarted && !testFinished && countdown === null && (
-                      <div className="absolute inset-0 bg-slate-900/60 flex flex-col items-center justify-center z-25 backdrop-blur-sm rounded-3xl">
-                        <button
-                          onClick={handleStartRace}
-                          className="px-8 py-3.5 bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-white font-black text-sm rounded-2xl shadow-xl shadow-emerald-500/20 tracking-wider uppercase transition-all transform hover:scale-105 active:scale-95 cursor-pointer flex items-center gap-2"
-                        >
-                          <Play size={16} fill="white" /> Start Admissions Race 🏎️
-                        </button>
-                        <p className="text-[10px] text-slate-300 font-bold mt-2.5">
-                          Beat the "Admissions Deadline" by typing the passage below!
-                        </p>
-                      </div>
-                    )}
-
-                    {/* COUNTDOWN OVERLAY */}
-                    {countdown !== null && (
-                      <motion.div 
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                        className="absolute inset-0 bg-slate-900/80 flex flex-col items-center justify-center z-30 backdrop-blur-sm rounded-3xl"
-                      >
-                        <motion.div
-                          key={countdown}
-                          initial={{ scale: 0.3, opacity: 0 }}
-                          animate={{ scale: [1, 1.25, 1], opacity: 1 }}
-                          transition={{ duration: 0.8, ease: "easeOut" }}
-                          className={`text-6xl md:text-7xl font-black italic tracking-wider ${
-                            countdown === 'GO!' ? 'text-emerald-400 drop-shadow-[0_0_20px_rgba(52,211,153,0.6)]' : 'text-amber-400 drop-shadow-[0_0_20px_rgba(251,191,36,0.6)]'
-                          }`}
-                        >
-                          {countdown}
-                        </motion.div>
-                        <p className="text-[10px] font-black text-slate-400 mt-2 tracking-widest uppercase">
-                          {countdown === 'GO!' ? 'START TYPING NOW!' : 'PREPARE TO ACCELERATE'}
-                        </p>
-                      </motion.div>
-                    )}
-
-                    {/* Upper curb track boundary */}
-                    <div 
-                      className="h-3 w-full rounded-full curb-scrolling"
-                      style={{ 
-                        '--scroll-speed': wpm > 0 && testStarted && !testFinished ? `${Math.max(0.15, 2 - (wpm / 60))}s` : '0s'
-                      }}
-                    />
-
-                    {/* Milestone Decorators (Study Abroad Admission Journey steps) */}
-                    <div className="absolute inset-x-0 top-6 flex justify-between px-10 text-[10px] md:text-xs select-none opacity-50 font-black text-slate-400">
-                      <span className="flex flex-col items-center">🎒 <span className="hidden sm:inline">Profile</span></span>
-                      <span className="flex flex-col items-center">📝 <span className="hidden sm:inline">Exams</span></span>
-                      <span className="flex flex-col items-center">✉️ <span className="hidden sm:inline">Offers</span></span>
-                      <span className="flex flex-col items-center">🛂 <span className="hidden sm:inline">Visa</span></span>
-                      <span className="flex flex-col items-center"><CapIcon /> <span className="hidden sm:inline">Campus!</span></span>
-                    </div>
-
-                    {/* Middle dashed lane marker */}
-                    <div 
-                      className="w-full h-1 my-auto relative track-scrolling"
-                      style={{
-                        '--scroll-speed': wpm > 0 && testStarted && !testFinished ? `${Math.max(0.15, 2 - (wpm / 60))}s` : '0s'
-                      }}
-                    >
-                      {/* Opponent Car driving at constant target speed */}
-                      {testStarted && !testFinished && (
-                        <motion.div 
-                          className="absolute z-5 select-none flex flex-col items-center"
-                          style={{ top: '-34px', originX: 0.5 }}
-                          animate={{ 
-                            left: `${Math.min(94, Math.round((timeSpent / (timeLimit > 0 ? timeLimit : 22)) * 100))}%` 
-                          }}
-                          transition={{ ease: 'linear' }}
-                        >
-                          <span className="px-1.5 py-0.5 text-[7px] font-black uppercase text-white bg-rose-500 rounded-md shadow-md animate-bounce mb-0.5">⏰ Deadline</span>
-                          <span className="text-xl md:text-2xl drop-shadow-md">🚘</span>
-                        </motion.div>
-                      )}
-                    </div>
-
-                    {/* Player's Car Area */}
-                    <div className="relative h-14 w-full flex items-center">
-                      
-                      {/* Interactive Player Car */}
-                      <motion.div 
-                        className="absolute z-10 flex items-center gap-1.5"
-                        style={{ y: -7 }}
-                        animate={{ 
-                          left: `${Math.max(2, Math.min(92, racePercentage))}%`,
-                          rotate: spinAngle,
-                          x: isCrashed ? [0, -4, 4, -2, 2, 0] : 0 // Shakes car on crash
-                        }}
-                        transition={{ 
-                          rotate: { type: 'spring', stiffness: 60, damping: 10 },
-                          left: { type: 'spring', stiffness: 90, damping: 15 }
-                        }}
-                      >
-                        {/* Floating Combo Bubble */}
-                        {streak > 5 && (
-                          <motion.div 
-                            initial={{ scale: 0.5, y: 10, opacity: 0 }}
-                            animate={{ scale: 1, y: -26, opacity: 1 }}
-                            exit={{ opacity: 0 }}
-                            className={`absolute left-1/2 transform -translate-x-1/2 px-2 py-0.5 text-[8px] font-black uppercase tracking-wider rounded-md text-white whitespace-nowrap select-none shadow-sm z-20 ${
-                              streak >= 40 ? 'bg-gradient-to-r from-rose-500 to-red-600 animate-pulse' :
-                              streak >= 25 ? 'bg-gradient-to-r from-orange-500 to-amber-500' :
-                              streak >= 15 ? 'bg-gradient-to-r from-yellow-400 to-orange-400' :
-                              'bg-indigo-600'
-                            }`}
-                          >
-                            {streak >= 40 ? '🚀 LIGHTSPEED' :
-                             streak >= 25 ? '⚡ HYPER DRIVE' :
-                             streak >= 15 ? '🔥 SUPER STREAK' :
-                             `🎯 STREAK ${streak}`}
-                          </motion.div>
-                        )}
-
-                        {/* Speed Turbo flames */}
-                        {isBoosted && (
-                          <motion.span 
-                            animate={{ scale: [1, 1.4, 1] }} 
-                            transition={{ repeat: Infinity, duration: 0.15 }}
-                            className="text-xl select-none"
-                          >
-                            🔥
-                          </motion.span>
-                        )}
-                        {/* Crash smoke cloud */}
-                        {isCrashed && (
-                          <motion.span 
-                            animate={{ opacity: [1, 0.5, 0] }}
-                            className="text-lg select-none"
-                          >
-                            💨💥
-                          </motion.span>
-                        )}
-                        
-                        <span 
-                          className="text-4xl md:text-5xl drop-shadow-lg select-none"
-                          style={{
-                            filter: isBoosted 
-                              ? 'drop-shadow(0 0 10px #DE5C2B) drop-shadow(0 0 20px #ef4444)' 
-                              : isCrashed 
-                              ? 'grayscale(0.8) sepia(0.3)' 
-                              : 'none',
-                            transition: 'filter 0.2s ease'
-                          }}
-                        >
-                          🏎️
-                        </span>
-                      </motion.div>
-                    </div>
-
-                    {/* Lower curb track boundary */}
-                    <div 
-                      className="h-3 w-full rounded-full curb-scrolling"
-                      style={{ 
-                        '--scroll-speed': wpm > 0 && testStarted && !testFinished ? `${Math.max(0.15, 2 - (wpm / 60))}s` : '0s'
-                      }}
-                    />
-                  </div>
-
-                  {/* Dashboard HUD Controls */}
-                  <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
-                    <div className="p-4 bg-slate-50 border border-slate-100 rounded-2xl text-center flex flex-col items-center justify-center">
-                      <p className="text-xl font-black text-slate-700 mt-1">
-                        {timeLimit > 0 ? formatTime(Math.max(0, timeLimit - timeSpent)) : formatTime(timeSpent)}
-                      </p>
-                      <div className="text-slate-400 font-bold text-[9px] uppercase tracking-wider mt-1.5 flex items-center justify-center gap-1">
-                        <Timer size={10} className="text-indigo-500" /> {timeLimit > 0 ? 'Time Left' : 'Lap Time'}
-                      </div>
-                    </div>
-
-                    {/* Circular Speedometer */}
-                    <div className="p-4 bg-slate-50 border border-slate-100 rounded-2xl flex flex-col items-center justify-center relative overflow-hidden">
-                      <div className="relative w-16 h-16 flex items-center justify-center">
-                        <svg className="absolute w-full h-full transform -rotate-90" viewBox="0 0 100 100">
-                          <circle 
-                            cx="50" 
-                            cy="50" 
-                            r="40" 
-                            fill="transparent" 
-                            stroke="#e2e8f0" 
-                            strokeWidth="8"
-                          />
-                          <motion.circle 
-                            cx="50" 
-                            cy="50" 
-                            r="40" 
-                            fill="transparent" 
-                            stroke={wpm > 80 ? '#B3604E' : wpm > 50 ? '#B48C42' : '#DE5C2B'} 
-                            strokeWidth="8"
-                            strokeDasharray="251.2"
-                            animate={{ strokeDashoffset: 251.2 - (251.2 * Math.min(120, wpm)) / 120 }}
-                            transition={{ type: 'spring', stiffness: 60, damping: 12 }}
-                          />
-                        </svg>
-                        <div className="text-center z-10">
-                          <p className="text-lg font-black text-slate-800 leading-none">{wpm}</p>
-                          <p className="text-[7px] text-slate-400 font-bold uppercase mt-0.5">WPM</p>
-                        </div>
-                      </div>
-                      <div className="text-slate-400 font-bold text-[9px] uppercase tracking-wider mt-1.5 flex items-center justify-center gap-1">
-                        <Flame size={10} className="text-orange-500" /> Speed (WPM)
-                      </div>
-                    </div>
-
-                    <div className="p-4 bg-slate-50 border border-slate-100 rounded-2xl text-center flex flex-col items-center justify-center">
-                      <p className="text-xl font-black text-slate-700 mt-1">{accuracy}%</p>
-                      <div className="text-slate-400 font-bold text-[9px] uppercase tracking-wider mt-1.5 flex items-center justify-center gap-1">
-                        <Award size={10} className="text-emerald-500" /> Driving (ACC)
-                      </div>
-                    </div>
-
-                    <div className="p-4 bg-slate-50 border border-slate-100 rounded-2xl text-center flex flex-col items-center justify-center relative overflow-hidden">
-                      <motion.p 
-                        key={getGear()}
-                        animate={{ scale: [1, 1.3, 1] }}
-                        className="text-xl font-black text-indigo-600 mt-1"
-                      >
-                        {getGear()}
-                      </motion.p>
-                      <div className="text-slate-400 font-bold text-[9px] uppercase tracking-wider mt-1.5 flex items-center justify-center gap-1">
-                        <Zap size={10} className="text-indigo-500" /> Transmission
-                      </div>
-                    </div>
-
-                    <div className="p-4 bg-slate-50 border border-slate-100 rounded-2xl text-center col-span-2 md:col-span-1 flex flex-col items-center justify-center">
-                      <p className="text-xl font-black text-slate-700 mt-1">
-                        {testFinished ? score : Math.max(0, Math.round(wpm * (accuracy / 100) - (crashesCount * 5)))}
-                      </p>
-                      <div className="text-slate-400 font-bold text-[9px] uppercase tracking-wider mt-1.5 flex items-center justify-center gap-1">
-                        <Trophy size={10} className="text-amber-500" /> Score Rating
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Warning Danger Zone HUD */}
-                  {accuracy < 90 && !testFinished && (
-                    <motion.div 
-                      animate={{ opacity: [1, 0.4, 1] }}
-                      transition={{ duration: 1, repeat: Infinity }}
-                      className="flex items-center justify-center gap-2 p-3 bg-rose-50 border border-rose-200 text-rose-800 text-xs font-black rounded-xl"
-                    >
-                      <ShieldAlert size={16} /> Warning: Dangerous Driving! Keep Accuracy above 90% to avoid drifting!
-                    </motion.div>
-                  )}
-
-                  {/* Target Text Box */}
-                  <div className="p-5 md:p-6 bg-slate-900 border border-slate-800 rounded-3xl min-h-[140px] flex items-center leading-relaxed">
-                    <div className="w-full text-justify select-none">
-                      {renderTextCharacters()}
-                    </div>
-                  </div>
-
-                  {/* Input area */}
-                  <div className="space-y-4">
-                    <textarea
-                      ref={inputRef}
-                      value={userInput}
-                      onChange={handleInputChange}
-                      disabled={testFinished || countdown !== null || !testStarted}
-                      placeholder={
-                        countdown !== null 
-                          ? "Race starting... Get ready! 🏁" 
-                          : testStarted 
-                          ? "Type matching characters correctly..." 
-                          : "Click 'Start Admissions Race' above to drive! 🏎️"
-                      }
-                      className="w-full p-4 border border-slate-200 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 rounded-2xl font-mono text-sm leading-relaxed focus:outline-none transition-all resize-none h-28 disabled:bg-slate-50 disabled:text-slate-400"
-                    />
-
-                    <div className="flex justify-between items-center">
-                      <div className="flex items-center gap-4 text-[10px] text-slate-400 font-semibold">
-                        <p className="flex items-center gap-1">
-                          💥 Spins / Drift Crashes: <span className="text-rose-500 font-black">{crashesCount}</span>
-                        </p>
-                        <p className="flex items-center gap-1">
-                          🔥 Perfect Streak: <span className="text-indigo-500 font-black">{streak}</span>
-                        </p>
-                      </div>
-                      <button
-                        onClick={handleStartRace}
-                        className="flex items-center gap-2 px-4 py-2 border border-slate-200 rounded-xl text-xs font-bold text-slate-600 hover:bg-slate-50 cursor-pointer"
-                      >
-                        <RefreshCw size={12} /> Restart Race
-                      </button>
-                    </div>
-                  </div>
-
-                  {/* Completion overlay popup */}
-                  <AnimatePresence>
-                    {testFinished && (
-                      <motion.div 
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        className="absolute inset-0 bg-slate-900/90 flex items-center justify-center p-6 backdrop-blur-sm z-20"
-                      >
-                        {/* Render client-side particle rain */}
-                        <ConfettiCanvas />
-
-                        <motion.div 
-                          initial={{ scale: 0.9, y: 20 }}
-                          animate={{ scale: 1, y: 0 }}
-                          className="bg-white p-6 md:p-8 rounded-[32px] max-w-md w-full border border-slate-100 text-center space-y-6 shadow-2xl z-20 relative"
-                        >
-                          <div className="w-16 h-16 bg-amber-50 text-amber-500 rounded-full flex items-center justify-center text-3xl mx-auto shadow-md select-none">
-                            🏆
-                          </div>
-                          <div>
-                            <h4 className="text-xl font-black text-slate-800 tracking-tight">Race Completed! 🏁</h4>
-                            <p className="text-xs text-slate-400 font-semibold mt-1">Excellent driving parameters. Your record has been logged.</p>
-                          </div>
-                          
-                          <div className="grid grid-cols-3 gap-2 bg-slate-50 p-4 rounded-2xl border border-slate-100">
-                            <div>
-                              <p className="text-[9px] text-slate-400 font-bold uppercase">Avg Speed</p>
-                              <p className="text-md font-black text-slate-750">{wpm} WPM</p>
-                            </div>
-                            <div>
-                              <p className="text-[9px] text-slate-400 font-bold uppercase">Safe Accuracy</p>
-                              <p className="text-md font-black text-slate-750">{accuracy}%</p>
-                            </div>
-                            <div>
-                              <p className="text-[9px] text-slate-400 font-bold uppercase">Drifts/Crashes</p>
-                              <p className="text-md font-black text-rose-500">{crashesCount}</p>
-                            </div>
-                          </div>
-
-                          <div className="p-3 bg-indigo-50 border border-indigo-100 rounded-xl text-xs font-black text-indigo-800">
-                            🏁 Final Score: {score} Points
-                          </div>
-
-                          <div className="flex gap-3">
-                            <button
-                              onClick={handleStartRace}
-                              className="flex-1 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-black text-xs rounded-xl shadow-md cursor-pointer transition-all"
-                            >
-                              Drive Again
-                            </button>
-                            <button
-                              onClick={() => setActiveTab('history')}
-                              className="flex-1 py-3 border border-slate-200 text-slate-600 font-black text-xs rounded-xl cursor-pointer hover:bg-slate-50 transition-all"
-                            >
-                              Check Leaderboard
-                            </button>
-                          </div>
-                        </motion.div>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-
-                </div>
-              </motion.div>
-            )}
-
-            {/* HISTORY & STATS TAB */}
-            {activeTab === 'history' && (
-              <motion.div 
-                key="history"
-                initial={{ opacity: 0, y: 15 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -15 }}
-                className="space-y-8"
-              >
-                {/* Stats Dashboard Grid */}
-                <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-                  {[
-                    { label: 'Total Races', value: stats.totalTests, icon: <Play className="text-indigo-500" />, color: 'from-indigo-500 to-indigo-600' },
-                    { label: 'Average Speed', value: `${stats.avgWpm} WPM`, icon: <Flame className="text-orange-500" />, color: 'from-orange-500 to-orange-600' },
-                    { label: 'Peak Speed', value: `${stats.bestWpm} WPM`, icon: <Award className="text-emerald-500" />, color: 'from-emerald-500 to-emerald-600' },
-                    { label: 'Highest Score', value: stats.bestScore, icon: <Trophy className="text-amber-500" />, color: 'from-amber-500 to-amber-600' }
-                  ].map((stat, idx) => (
-                    <div key={idx} className="bg-white border border-slate-200/60 p-6 rounded-3xl shadow-sm flex items-center justify-between gap-4">
-                      <div>
-                        <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">{stat.label}</p>
-                        <p className="text-2xl font-black text-slate-800 mt-1">{stat.value}</p>
-                      </div>
-                      <div className="w-10 h-10 rounded-2xl bg-slate-50 border border-slate-100 flex items-center justify-center">
-                        {stat.icon}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-
-                {/* History Table */}
-                <div className="bg-white border border-slate-200/60 rounded-[32px] overflow-hidden shadow-sm">
-                  <div className="px-6 py-5 border-b border-slate-100 flex items-center justify-between gap-4 flex-wrap">
-                    <div className="flex items-center gap-3">
-                      <h3 className="text-md md:text-lg font-black text-slate-800 tracking-tight flex items-center gap-2">
-                        <History className="text-indigo-500" size={18} /> Driving Performance Logs
-                      </h3>
-                      <span className="text-[10px] font-black uppercase bg-indigo-50 text-indigo-600 px-2.5 py-0.5 rounded-lg border border-indigo-100">
-                        {history.length} {history.length === 1 ? 'Record' : 'Records'}
-                      </span>
-                    </div>
-
-                    {history.length > 0 && (
-                      <button
-                        onClick={handleClearAllHistory}
-                        className="text-xs font-bold text-rose-600 hover:text-rose-700 bg-rose-50 hover:bg-rose-100/70 border border-rose-200/80 px-3.5 py-1.5 rounded-xl transition-all flex items-center gap-1.5 cursor-pointer"
-                        title="Clear all recorded test history"
-                      >
-                        <Trash2 size={13} />
-                        <span>Clear All History</span>
-                      </button>
-                    )}
-                  </div>
-
-                  <div className="overflow-x-auto">
-                    {loadingHistory ? (
-                      <div className="p-6 space-y-4 animate-pulse">
-                        <div className="h-10 bg-slate-100 rounded-2xl w-full"></div>
-                        <div className="h-10 bg-slate-100 rounded-2xl w-full"></div>
-                        <div className="h-10 bg-slate-100 rounded-2xl w-full"></div>
-                        <div className="h-10 bg-slate-100 rounded-2xl w-full"></div>
-                        <div className="h-10 bg-slate-100 rounded-2xl w-full"></div>
-                      </div>
-                    ) : history.length === 0 ? (
-                      <div className="p-12 text-center space-y-2">
-                        <p className="text-sm font-black text-slate-400">No attempts logged yet!</p>
-                        <p className="text-xs text-slate-400">Complete a typing test under the <strong className="text-slate-600 font-bold">Speed Typing Test</strong> tab to log your first statistics.</p>
-                      </div>
-                    ) : (
-                      <table className="w-full text-left border-collapse">
-                        <thead>
-                          <tr className="bg-slate-50/50 border-b border-slate-100 text-[10px] font-bold text-slate-400 uppercase tracking-wider">
-                            <th className="px-6 py-4">Title</th>
-                            <th className="px-6 py-4">Date</th>
-                            <th className="px-6 py-4">Speed</th>
-                            <th className="px-6 py-4">Accuracy</th>
-                            <th className="px-6 py-4">Final Score</th>
-                            <th className="px-6 py-4 text-right">Action</th>
-                          </tr>
-                        </thead>
-                        <tbody className="divide-y divide-slate-50">
-                          {history.map((session, idx) => (
-                            <tr key={session._id || idx} className="text-xs md:text-sm font-semibold text-slate-700 hover:bg-slate-50/40 group transition-colors">
-                              <td className="px-6 py-4 font-bold text-slate-800">{session.textTitle}</td>
-                              <td className="px-6 py-4 text-slate-400 text-xs">
-                                {new Date(session.createdAt).toLocaleDateString()} at {new Date(session.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                              </td>
-                              <td className="px-6 py-4 text-orange-500 font-black">{session.wpm} WPM</td>
-                              <td className="px-6 py-4 text-emerald-500 font-black">{session.accuracy}%</td>
-                              <td className="px-6 py-4 font-black">
-                                <span className="bg-amber-50 border border-amber-200/50 text-amber-600 px-2.5 py-1 rounded-xl text-xs">
-                                  {session.score} pts
-                                </span>
-                              </td>
-                              <td className="px-6 py-4 text-right">
-                                <button
-                                  onClick={() => handleDeleteHistoryItem(session)}
-                                  className="p-1.5 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-all cursor-pointer opacity-70 group-hover:opacity-100"
-                                  title="Delete this record"
-                                >
-                                  <Trash2 size={15} />
-                                </button>
-                              </td>
-                            </tr>
-                          ))}
-                        </tbody>
-                      </table>
-                    )}
-                  </div>
-                </div>
-              </motion.div>
-            )}
-
           </AnimatePresence>
         </div>
       </div>
 
-      {/* IELTS AI Assessment Report Modal */}
-      {isEvaluationModalOpen && <Suspense fallback={null}><IeltsAiEvaluationModal
-        isOpen={isEvaluationModalOpen}
-        onClose={() => setIsEvaluationModalOpen(false)}
-        evaluation={selectedEvaluation}
-        essayPrompt={selectedEvaluation?.prompt || ieltsTopic}
-        studentEssay={selectedEvaluation?.essay || ieltsEssay}
-        wordCount={selectedEvaluation?.wordCount}
-        onPracticeAgain={() => {
-          setIsEvaluationModalOpen(false);
-          handleStartIelts();
-        }}
-      /></Suspense>}
     </div>
 
     {/* NATIVE MOBILE APP BOTTOM NAVIGATION BAR */}
@@ -4023,6 +2113,11 @@ ${name || 'Candidate'}`;
                           if (item.id === 'mentor-studio') {
                             handleOpenMentorStudio();
                             setMobileToolsSheetOpen(false);
+                            return;
+                          }
+                          if (item.id === 'talk-expert') {
+                            setMobileToolsSheetOpen(false);
+                            navigate('/book-consultation');
                             return;
                           }
                           setActiveTab(item.id);

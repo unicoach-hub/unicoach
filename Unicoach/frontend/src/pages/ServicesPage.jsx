@@ -71,20 +71,20 @@ const JourneyLoop = () => {
     return () => clearTimeout(t);
   }, [n, reduce]);
   return (
-    <div className="rounded-[22px] bg-[#111] text-white p-5">
-      <p className="text-[11px] font-bold tracking-[0.14em] text-white/50 uppercase">From first call to flight</p>
+    <div className="uc-soft rounded-[22px] p-5">
+      <p className="text-[11px] font-bold tracking-[0.14em] text-[#16130F]/60 uppercase">From first call to flight</p>
       <div className="mt-4 relative">
-        <div className="absolute left-[11px] top-2 bottom-2 w-[2px] bg-white/10" />
+        <div className="absolute left-[11px] top-2 bottom-2 w-[2px] bg-[#16130F]/10" />
         <motion.div className="absolute left-[11px] top-2 w-[2px] bg-[#DE5C2B]" animate={{ height: `${(Math.min(n, JOURNEY.length - 1) / (JOURNEY.length - 1)) * 92}%` }} transition={{ duration: 0.5 }} />
         <ul className="space-y-2.5 relative">
           {JOURNEY.map((j, idx) => {
             const on = idx < n;
             return (
               <li key={j} className="flex items-center gap-3">
-                <span className={`w-6 h-6 rounded-full grid place-items-center text-[11px] font-bold transition-colors duration-300 ${on ? 'bg-[#DE5C2B] text-white' : 'bg-white/10 text-white/40'}`}>
+                <span className={`w-6 h-6 rounded-full grid place-items-center text-[11px] font-bold transition-colors duration-300 ${on ? 'bg-[#DE5C2B] text-white' : 'bg-white text-[#16130F]/50'}`}>
                   {on ? <Check size={12} strokeWidth={3} /> : idx + 1}
                 </span>
-                <span className={`text-[13.5px] transition-colors duration-300 ${on ? 'text-white font-semibold' : 'text-white/40'}`}>{j}</span>
+                <span className={`text-[13.5px] transition-colors duration-300 ${on ? 'text-[#16130F] font-semibold' : 'text-[#16130F]/50'}`}>{j}</span>
               </li>
             );
           })}

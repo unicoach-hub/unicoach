@@ -215,7 +215,7 @@ const ItalyVisa = () => {
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.1 }}
-          className="bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-950 rounded-[32px] p-8 md:p-12 shadow-xl mb-16 relative overflow-hidden text-white"
+          className="uc-soft rounded-[32px] p-8 md:p-12 mb-16 relative overflow-hidden"
         >
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_120%,rgba(16,185,129,0.12),transparent_50%)]" />
           <div className="relative z-10 max-w-3xl">
@@ -969,7 +969,7 @@ const ItalyVisa = () => {
               </div>
 
               {/* Sample Answer Template */}
-              <div className="bg-gradient-to-br from-indigo-900 to-indigo-950 text-white rounded-3xl p-6 md:p-8 mb-8 relative overflow-hidden">
+              <div className="uc-soft rounded-3xl p-6 md:p-8 mb-8 relative overflow-hidden">
                 <h4 className="text-indigo-300 font-black text-xs uppercase tracking-wider mb-4">
                   Why do you want to study in Italy? (Sample Answer Template)
                 </h4>
@@ -1211,7 +1211,7 @@ const ItalyVisa = () => {
               </div>
 
               {/* Quick Reference Card */}
-              <div className="bg-slate-900 text-white rounded-[24px] p-6 shadow-sm border border-slate-800">
+              <div className="uc-soft rounded-[24px] p-6">
                 <h4 className="font-black text-xs uppercase tracking-widest text-indigo-400 mb-4 flex items-center gap-1.5">
                   <ShieldCheck size={14} />
                   Quick Reference

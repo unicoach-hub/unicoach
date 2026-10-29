@@ -25,14 +25,16 @@ const useTypingLoop = (items, { typeMs = 55, holdTicks = 22, tickMs = 90, paused
 };
 
 const SEARCHES = [
-  { q: 'MS Data Science', results: [{ t: 'MSc Data Science', c: 'Ireland', fit: 'Safe' }, { t: 'MS Business Analytics', c: 'USA', fit: 'Target' }] },
-  { q: 'MBA Canada', results: [{ t: 'MBA, 1 year', c: 'Canada', fit: 'Target' }, { t: 'Global MBA', c: 'Canada', fit: 'Dream' }] },
-  { q: 'Nursing Australia', results: [{ t: 'Master of Nursing', c: 'Australia', fit: 'Safe' }, { t: 'BSc Nursing', c: 'Australia', fit: 'Target' }] },
+  { q: 'MS Data Science', results: [{ t: 'MSc Data Science', c: 'Ireland', lvl: 'Postgraduate' }, { t: 'MS Business Analytics', c: 'USA', lvl: 'Postgraduate' }] },
+  { q: 'MBA Canada', results: [{ t: 'MBA, 1 year', c: 'Canada', lvl: 'Postgraduate' }, { t: 'Global MBA', c: 'Canada', lvl: 'Postgraduate' }] },
+  { q: 'Nursing Australia', results: [{ t: 'Master of Nursing', c: 'Australia', lvl: 'Postgraduate' }, { t: 'BSc Nursing', c: 'Australia', lvl: 'Undergraduate' }] },
 ];
-const FIT = {
-  Safe: 'bg-emerald-50 text-emerald-700',
-  Target: 'bg-orange-50 text-[#C04A1D]',
-  Dream: 'bg-purple-50 text-purple-700',
+// Country pill colours for the result rows
+const COUNTRY = {
+  Ireland: 'bg-emerald-50 text-emerald-700',
+  USA: 'bg-blue-50 text-blue-700',
+  Canada: 'bg-orange-50 text-[#C04A1D]',
+  Australia: 'bg-purple-50 text-purple-700',
 };
 
 export const MiniSearchDemo = ({ paused }) => {
@@ -57,9 +59,9 @@ export const MiniSearchDemo = ({ paused }) => {
             >
               <span className="min-w-0">
                 <span className="block text-[9.5px] font-bold text-slate-800 truncate">{r.t}</span>
-                <span className="block text-[8.5px] text-slate-500">{r.c}</span>
+                <span className="block text-[8.5px] text-slate-500">{r.lvl}</span>
               </span>
-              <span className={`shrink-0 px-1.5 py-0.5 rounded text-[8px] font-black uppercase ${FIT[r.fit]}`}>{r.fit}</span>
+              <span className={`shrink-0 px-1.5 py-0.5 rounded text-[8px] font-black uppercase ${COUNTRY[r.c]}`}>{r.c}</span>
             </motion.div>
           ))}
         </AnimatePresence>

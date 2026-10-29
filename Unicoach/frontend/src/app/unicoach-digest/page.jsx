@@ -233,7 +233,7 @@ const UniCoachDigestPage = () => {
                             </div>
 
                             <div className="lg:col-span-4 flex flex-col gap-6">
-                                <div className="bg-slate-900 text-white rounded-[28px] p-6 shadow-md relative overflow-hidden flex-grow flex flex-col justify-between min-h-[220px]">
+                                <div className="uc-soft rounded-[28px] p-6 relative overflow-hidden flex-grow flex flex-col justify-between min-h-[220px]">
                                     <div className="absolute -top-12 -right-12 w-44 h-44 bg-[#DE5C2B]/30 rounded-full blur-2xl pointer-events-none" />
                                     <div className="space-y-3 relative z-10 text-left">
                                         <span className="text-[9px] font-extrabold uppercase text-orange-200 tracking-widest block bg-white/10 w-fit px-2.5 py-1 rounded-md">

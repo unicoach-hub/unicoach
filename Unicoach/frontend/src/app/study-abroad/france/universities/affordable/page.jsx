@@ -403,7 +403,7 @@ const FranceAffordable = () => {
             </div>
 
             {/* Calculations Output */}
-            <div className="bg-slate-900 text-white rounded-[28px] p-6 md:p-8 flex flex-col justify-between shadow-xl relative overflow-hidden">
+            <div className="uc-soft rounded-[28px] p-6 md:p-8 flex flex-col justify-between relative overflow-hidden">
               <div className="absolute right-[-10%] top-[-10%] w-[250px] h-[250px] bg-indigo-500/10 rounded-full blur-2xl pointer-events-none" />
               <div>
                 <span className="text-[10px] text-indigo-300 font-black uppercase tracking-wider block mb-1">Monthly Forecast Breakdown</span>

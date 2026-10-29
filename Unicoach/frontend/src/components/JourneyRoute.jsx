@@ -65,7 +65,7 @@ const JourneyRoute = () => {
   }, [inView]);
   const loan = 3000000;
   const emiAmt = Math.round((loan * 0.0085 * (1.0085 ** (emi * 12))) / ((1.0085 ** (emi * 12)) - 1));
-  const unis = [['TU Munich', 'Target', '#DE5C2B'], ['Trinity Dublin', 'Dream', '#DE5C2B'], ['Univ. of Leeds', 'Safe', '#446D50']];
+  const unis = [['TU Munich', 'Germany', '#DE5C2B'], ['Trinity Dublin', 'Ireland', '#446D50'], ['Univ. of Leeds', 'UK', '#2F5BFF']];
   const shownUni = unis[t5 % unis.length];
   const bands = [6, 6.5, 7, 7.5];
 
@@ -98,8 +98,8 @@ const JourneyRoute = () => {
                 <p className="text-[12px] text-slate-500 mt-1.5">chance of admission</p>
               </motion.div>
               <div className="flex gap-2 flex-wrap">
-                {['Dream', 'Target', 'Safe'].map((x, i) => (
-                  <span key={x} className={`text-[12px] font-semibold px-3 py-1 rounded-full ${unis[t5 % 3][1] === x ? 'bg-[#111] text-white' : 'bg-white/70 text-slate-600'}`}>{x} · {[4, 7, 5][i]}</span>
+                {['Marks', 'Scores', 'Budget'].map((x) => (
+                  <span key={x} className="text-[12px] font-semibold px-3 py-1 rounded-full bg-white/70 text-slate-600">✓ {x}</span>
                 ))}
               </div>
             </div>

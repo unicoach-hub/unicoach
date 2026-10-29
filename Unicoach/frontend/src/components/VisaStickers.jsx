@@ -1,28 +1,25 @@
 /**
  * Visa stickers for the passport journey. Each follows the layout of the real
- * label (US, Australia, Schengen) but every detail is made up, the portrait is
- * an illustration, and each carries a SPECIMEN mark. Text sizes use container
+ * label (US, Australia, Schengen) but every detail is made up, the holder is
+ * "YOU" (a photo slot with YOU on it, so the visitor sees their own visa), and
+ * each carries a SPECIMEN mark. Text sizes use container
  * units (cqw) so the whole label scales with its width.
  */
 
 const INK = '#16130F';
 
-// Illustrated student portrait (no real person)
-const Portrait = ({ variant = 'm', bg = '#E8ECEF' }) => (
-  <svg viewBox="0 0 60 75" className="w-full h-full block" aria-hidden="true">
-    <rect width="60" height="75" fill={bg} />
-    {variant === 'f' && <path d="M14 30c0-14 7-21 16-21s16 7 16 21v26H14z" fill="#2A1C16" />}
-    <path d="M8 75c0-12 9-19 22-19s22 7 22 19z" fill={variant === 'f' ? '#7A3B5C' : '#2B3550'} />
-    {variant === 'm' && <path d="M24 56l6 9 6-9z" fill="#F4F4F4" />}
-    <rect x="25" y="46" width="10" height="11" rx="3" fill="#B97A55" />
-    <ellipse cx="30" cy="35" rx="11" ry="13" fill="#C98B63" />
-    {variant === 'm'
-      ? <path d="M19 33c-1-10 4-15 11-15 8 0 12 5 11 15-2-5-6-7-11-7s-9 2-11 7z" fill="#1E1612" />
-      : <path d="M19 34c0-10 5-15 11-15s11 5 11 15c-3-6-7-8-11-8s-8 2-11 8z" fill="#2A1C16" />}
-    <ellipse cx="25.5" cy="36" rx="1.3" ry="1.5" fill="#2A1C16" />
-    <ellipse cx="34.5" cy="36" rx="1.3" ry="1.5" fill="#2A1C16" />
-    <path d="M26.5 42.5c2 1.4 5 1.4 7 0" stroke="#7A4A35" strokeWidth="1" fill="none" strokeLinecap="round" />
-  </svg>
+// The photo slot belongs to the visitor: a soft silhouette with a big "YOU" across it
+const YouPhoto = ({ bg = '#EEF0F1', accent = '#2E4A86' }) => (
+  <div className="relative w-full h-full" style={{ background: bg }}>
+    <svg viewBox="0 0 60 75" className="absolute inset-0 w-full h-full" preserveAspectRatio="xMidYMax meet" aria-hidden="true">
+      <circle cx="30" cy="31" r="12" fill="rgba(22,19,15,0.13)" />
+      <path d="M8 75c0-14 10-22 22-22s22 8 22 22z" fill="rgba(22,19,15,0.13)" />
+    </svg>
+    <span className="absolute inset-[6%] border-dashed rounded-[2px]" style={{ borderWidth: '0.35cqw', borderColor: accent, opacity: 0.55 }} />
+    <span className="absolute inset-0 grid place-items-center">
+      <span className="font-black leading-none -rotate-6" style={{ fontFamily: 'Urbanist, sans-serif', fontSize: '7.4cqw', color: accent, letterSpacing: '-0.02em' }}>YOU</span>
+    </span>
+  </div>
 );
 
 const Specimen = ({ color = 'rgba(179,64,52,0.3)', top = '48%' }) => (
@@ -61,13 +58,13 @@ export const UsVisa = () => (
       <span style={{ fontSize: '4.3cqw', fontWeight: 900, color: '#9E1C24', lineHeight: 1, fontFamily: 'Georgia, serif', WebkitTextStroke: '0.25cqw #FFFFFF', letterSpacing: '0.02em' }}>OF AMERICA</span>
     </div>
     {/* photo */}
-    <div className="absolute left-[7.5%] top-[19%] w-[22%] h-[46%] overflow-hidden"><Portrait variant="m" bg="#EEF0F1" /></div>
+    <div className="absolute left-[7.5%] top-[19%] w-[22%] h-[46%] overflow-hidden"><YouPhoto bg="#EEF0F1" accent="#B3242B" /></div>
     <div className="absolute left-[31.5%] top-[20%] bottom-[34%] w-[0.25%] bg-[#16130F]/60" />
     {/* fields */}
     <Field k="Issuing Post Name" v="MUMBAI" x="33%" y="19%" big />
     <Field k="Control Number" v="20270512340007" x="64%" y="19%" big />
-    <Field k="Surname" v="UNICOACH" x="33%" y="29%" big />
-    <Field k="Given Name" v="STUDENT" x="33%" y="39%" big />
+    <Field k="Surname" v="YOU" x="33%" y="29%" big color="#B3242B" />
+    <Field k="Given Name" v="FUTURE STUDENT" x="33%" y="39%" big />
     <Field k="Visa Type/Class" v="R    F1" x="74%" y="39%" big />
     <Field k="Passport Number" v="UC2027050" x="33%" y="49%" />
     <Field k="Sex" v="M" x="56%" y="49%" />
@@ -79,7 +76,7 @@ export const UsVisa = () => (
     <Field k="Annotation" v="SEVIS N0012345678  STUDENT" x="7.5%" y="69%" />
     {/* MRZ */}
     <div className="absolute left-[6%] right-[6%] bottom-[3%] font-mono leading-[1.3]" style={{ fontSize: '3.3cqw', color: INK, letterSpacing: '0.06em' }}>
-      <div className="whitespace-nowrap overflow-hidden">VNUSAUNICOACH&lt;&lt;STUDENT&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;</div>
+      <div className="whitespace-nowrap overflow-hidden">VNUSAYOU&lt;&lt;FUTURE&lt;STUDENT&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;</div>
       <div className="whitespace-nowrap overflow-hidden">UC2027050&lt;5IND0412042F3206199R1F&lt;&lt;&lt;&lt;&lt;</div>
     </div>
     <Specimen />
@@ -104,7 +101,7 @@ export const AuVisa = () => (
       <div className="absolute left-[4%] top-[8%] leading-[1.5]" style={{ fontSize: '3.3cqw', fontFamily: 'Onest, sans-serif', fontWeight: 600 }}>
         <div style={{ fontWeight: 800, fontSize: '3.8cqw' }}>AUSTRALIA VISA</div>
         <div className="mt-[3cqw]">NEW DELHI</div>
-        <div className="mt-[1.5cqw]">UNICOACH STUDENT</div>
+        <div className="mt-[1.5cqw]" style={{ fontWeight: 900, fontSize: '4.4cqw', color: '#16130F' }}>YOU</div>
         <div className="mt-[0.5cqw] tracking-[0.3em] opacity-60">- - - - - - - - - -</div>
       </div>
       <div className="absolute left-[45%] top-[8%] leading-[1.35]" style={{ fontSize: '3.3cqw' }}>
@@ -158,7 +155,7 @@ export const SchengenVisa = () => (
     <div className="absolute left-[46%] top-[5%] px-[1.2%] border border-[#2E4A86]/50 bg-[#2E4A86]/10" style={{ fontSize: '3.4cqw', fontWeight: 800, color: '#2E4A86' }}>FRA</div>
     <div className="absolute right-[5%] top-[4.5%]" style={{ fontSize: '4.2cqw', fontWeight: 700, letterSpacing: '0.04em' }}>UC2027051</div>
     {/* photo */}
-    <div className="absolute left-[4%] top-[27%] w-[19%] h-[40%] overflow-hidden border border-[#16130F]/15"><Portrait variant="f" bg="#E9ECEE" /></div>
+    <div className="absolute left-[4%] top-[27%] w-[19%] h-[40%] overflow-hidden border border-[#16130F]/15"><YouPhoto bg="#E9ECEE" accent="#2E4A86" /></div>
     {/* fields */}
     <div className="absolute left-[26%] top-[19%]" style={{ fontSize: '2.9cqw', fontWeight: 700 }}>ETATS SCHENGEN</div>
     <div className="absolute left-[26%] top-[28%] grid grid-cols-3 gap-x-[4cqw] gap-y-[1.6cqw] font-mono" style={{ fontSize: '2.8cqw' }}>
@@ -167,11 +164,11 @@ export const SchengenVisa = () => (
       ))}
     </div>
     <div className="absolute left-[26%] top-[57%] font-mono leading-[1.3]" style={{ fontSize: '2.8cqw', fontWeight: 700 }}>
-      <div>UNICOACH&lt;&lt;STUDENT</div>
+      <div style={{ color: '#2E4A86', fontSize: '3.6cqw', fontWeight: 900 }}>YOU&lt;&lt;FUTURE&lt;STUDENT</div>
       <div style={{ fontWeight: 500, opacity: 0.75 }}>ÉTUDIANT · UC2027051</div>
     </div>
     {/* hologram */}
-    <div className="absolute left-[63%] top-[60%] w-[11%] aspect-square rounded-full grid place-items-center"
+    <div className="absolute left-[63%] top-[64%] w-[10%] aspect-square rounded-full grid place-items-center"
       style={{ background: 'conic-gradient(from 30deg, #E9D9A6, #C9E1E8, #E8C9DA, #D6E6C2, #E9D9A6)', boxShadow: 'inset 0 0 0 0.4cqw rgba(46,74,134,0.35)' }}>
       <span style={{ fontSize: '3.4cqw', fontWeight: 900, color: '#2E4A86' }}>EU</span>
     </div>
@@ -179,7 +176,7 @@ export const SchengenVisa = () => (
     <div className="absolute right-[5%] top-[44%] w-[15%] aspect-square border border-[#16130F]/20"><QR /></div>
     {/* MRZ */}
     <div className="absolute left-[4%] right-[4%] bottom-[3.5%] font-mono leading-[1.35] bg-white/30" style={{ fontSize: '3.15cqw', letterSpacing: '0.05em' }}>
-      <div className="whitespace-nowrap overflow-hidden">VDFRAUNICOACH&lt;&lt;STUDENT&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;</div>
+      <div className="whitespace-nowrap overflow-hidden">VDFRAYOU&lt;&lt;FUTURE&lt;STUDENT&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;</div>
       <div className="whitespace-nowrap overflow-hidden">UC20270514IND0412042F2808312&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;</div>
     </div>
     <Specimen top="40%" />

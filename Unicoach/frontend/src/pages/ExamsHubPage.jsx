@@ -428,7 +428,7 @@ const ExamsHubPage = () => {
 
       {/* ── 4. FREE DIAGNOSTIC COUNSELING CTA ── */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20">
-        <div className="relative rounded-3xl overflow-hidden bg-gradient-to-r from-[#0F172A] via-[#1E293B] to-[#0B2068] p-8 sm:p-12 text-white shadow-2xl border border-slate-800">
+        <div className="uc-soft relative rounded-3xl overflow-hidden p-8 sm:p-12">
           <div className="relative z-10 max-w-2xl space-y-4">
             <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#DE5C2B]/20 border border-orange-400/30 text-orange-300 text-xs font-bold">
               <Zap size={14} /> Free Diagnostic & Score Planner

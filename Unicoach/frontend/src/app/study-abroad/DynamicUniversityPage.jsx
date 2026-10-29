@@ -102,7 +102,7 @@ const DynamicUniversityPage = () => {
 
       {/* Hero Section */}
       <div className="max-w-6xl mx-auto px-4 sm:px-6 mt-4">
-        <div className="bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 rounded-[32px] p-6 sm:p-10 text-white shadow-xl relative overflow-hidden">
+        <div className="uc-soft rounded-[32px] p-6 sm:p-10 relative overflow-hidden">
           <div className="absolute top-0 right-0 w-96 h-96 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none" />
           
           <div className="relative z-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
@@ -287,7 +287,7 @@ const DynamicUniversityPage = () => {
           </div>
 
           {/* Quick Apply / Counselling Widget */}
-          <div className="p-6 bg-gradient-to-br from-indigo-900 to-slate-900 rounded-3xl text-white shadow-lg space-y-4">
+          <div className="uc-soft p-6 rounded-3xl space-y-4">
             <div className="flex items-center gap-2 text-indigo-300 text-xs font-bold uppercase tracking-wider">
               <Sparkles size={14} className="text-amber-400" /> Dedicated Guidance
             </div>

@@ -254,7 +254,7 @@ const ItalyFree = () => {
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.1 }}
-          className="bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-950 rounded-[32px] p-8 md:p-12 shadow-xl mb-16 relative overflow-hidden text-white"
+          className="uc-soft rounded-[32px] p-8 md:p-12 mb-16 relative overflow-hidden"
         >
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_120%,rgba(16,185,129,0.12),transparent_50%)]" />
           <div className="relative z-10 max-w-3xl">
@@ -506,7 +506,7 @@ const ItalyFree = () => {
                     </div>
                   </div>
 
-                  <div className="bg-slate-900 text-white rounded-2xl p-6 flex flex-col justify-between relative overflow-hidden">
+                  <div className="uc-soft rounded-2xl p-6 flex flex-col justify-between relative overflow-hidden">
                     <div className="absolute top-0 right-0 w-24 h-24 bg-indigo-500/10 rounded-full blur-xl" />
                     <div>
                       <span className="text-[9px] text-indigo-300 font-black uppercase tracking-wider">Estimated Bracket</span>
@@ -966,7 +966,7 @@ const ItalyFree = () => {
               </div>
 
               {/* Sidebar Quick Advisor CTA */}
-              <div className="bg-gradient-to-br from-indigo-600 to-indigo-800 text-white rounded-[24px] p-6 shadow-sm relative overflow-hidden">
+              <div className="uc-soft rounded-[24px] p-6 relative overflow-hidden">
                 <div className="absolute top-0 right-0 w-[150px] h-[150px] bg-white/10 rounded-full blur-2xl pointer-events-none" />
                 <h5 className="font-black text-sm mb-2 tracking-tight leading-snug">
                   Want to study in Italy for Free?

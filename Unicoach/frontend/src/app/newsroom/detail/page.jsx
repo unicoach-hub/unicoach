@@ -248,7 +248,7 @@ const NewsDetailPage = () => {
                         </div>
 
                         {/* Free Counselling CTA Card */}
-                        <div className="bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 rounded-3xl p-8 sm:p-10 text-center text-white shadow-xl relative overflow-hidden">
+                        <div className="uc-soft rounded-3xl p-8 sm:p-10 text-center relative overflow-hidden">
                             <div className="absolute top-0 right-0 w-64 h-64 bg-indigo-500/20 rounded-full blur-3xl pointer-events-none" />
                             
                             <h3 className="text-2xl sm:text-3xl font-black mb-3">Looking to Study at a Top Global University?</h3>

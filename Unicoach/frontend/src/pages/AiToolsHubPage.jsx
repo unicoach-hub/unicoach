@@ -429,28 +429,28 @@ const AiToolsHubPage = () => {
                   </div>
 
                   <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
-                    Map your GPA, budget, and test scores across 1,500+ universities in USA, UK, Canada, Germany & Australia. Auto-categorize universities into Safe, Target, and Dream institutions.
+                    Map your GPA, budget, and test scores across 1,500+ universities in USA, UK, Canada, Germany & Australia. Get a shortlist that fits your marks and budget, with your chance of getting in at each one.
                   </p>
 
-                  {/* Simulated 3-Tier Admission Badges */}
+                  {/* What the shortlist checks */}
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 pt-1">
                     
                     <div className="bg-emerald-50/70 p-3 rounded-2xl border border-emerald-200/80 text-left space-y-0.5">
-                      <span className="text-[10px] font-black text-emerald-800 uppercase block">🟢 Safe (92% Fit)</span>
-                      <p className="text-xs font-bold text-slate-800">ASU • SUNY Buffalo</p>
-                      <p className="text-[10px] text-slate-500">GPA 7.5+ | No GRE</p>
+                      <span className="text-[10px] font-black text-emerald-800 uppercase block">Your marks</span>
+                      <p className="text-xs font-bold text-slate-800">CGPA • IELTS • GRE</p>
+                      <p className="text-[10px] text-slate-500">Checked against entry requirements</p>
                     </div>
 
                     <div className="bg-orange-50/70 p-3 rounded-2xl border border-orange-200/80 text-left space-y-0.5">
-                      <span className="text-[10px] font-black text-blue-800 uppercase block">🟡 Target (68% Fit)</span>
-                      <p className="text-xs font-bold text-slate-800">Northeastern • NYU</p>
-                      <p className="text-[10px] text-slate-500">GRE 312+ | High Co-op</p>
+                      <span className="text-[10px] font-black text-[#C04A1D] uppercase block">Your budget</span>
+                      <p className="text-xs font-bold text-slate-800">Tuition • Living costs</p>
+                      <p className="text-[10px] text-slate-500">Options that fit what you can spend</p>
                     </div>
 
                     <div className="bg-purple-50/70 p-3 rounded-2xl border border-purple-200/80 text-left space-y-0.5">
-                      <span className="text-[10px] font-black text-purple-800 uppercase block">🔴 Dream (34% Fit)</span>
-                      <p className="text-xs font-bold text-slate-800">Georgia Tech • CMU</p>
-                      <p className="text-[10px] text-slate-500">Top 10 Global Rank</p>
+                      <span className="text-[10px] font-black text-purple-800 uppercase block">Your goals</span>
+                      <p className="text-xs font-bold text-slate-800">Course • Country • Intake</p>
+                      <p className="text-[10px] text-slate-500">Matched to the programs you want</p>
                     </div>
 
                   </div>
@@ -690,7 +690,7 @@ const AiToolsHubPage = () => {
 
       {/* ── 3. BOTTOM COUNSELING STRIP ── */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20">
-        <div className="relative rounded-3xl overflow-hidden bg-gradient-to-r from-[#0F172A] via-[#1E293B] to-[#0B2068] p-8 sm:p-12 text-white shadow-2xl border border-slate-800">
+        <div className="uc-soft relative rounded-3xl overflow-hidden p-8 sm:p-12">
           <div className="relative z-10 max-w-2xl space-y-4">
             <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#DE5C2B]/20 border border-orange-400/30 text-orange-300 text-xs font-bold">
               <Sparkles size={14} /> AI Analysis + Human Expertise

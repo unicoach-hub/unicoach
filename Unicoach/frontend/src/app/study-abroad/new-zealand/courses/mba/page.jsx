@@ -99,7 +99,7 @@ const NewZealandMBACourse = () => {
         </div>
 
         {/* Hero Header Card */}
-        <div className="relative bg-gradient-to-r from-slate-900 to-indigo-950 rounded-[2.5rem] p-8 md:p-14 text-white overflow-hidden mb-12 shadow-xl border border-indigo-950">
+        <div className="uc-soft relative rounded-[2.5rem] p-8 md:p-14 overflow-hidden mb-12">
           <div className="absolute inset-0 z-0 opacity-15 mix-blend-overlay pointer-events-none">
             <img 
               src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=1200&auto=format&fit=crop&q=80" 
@@ -434,7 +434,7 @@ const NewZealandMBACourse = () => {
 
             {/* 8. ROI: Jobs & Salaries */}
             <section id="roi" className="scroll-mt-24">
-              <div className="bg-gradient-to-r from-slate-900 to-indigo-950 text-white rounded-[2rem] p-8">
+              <div className="uc-soft rounded-[2rem] p-8">
                 <h2 className="text-2xl font-black mb-6 flex items-center gap-2">
                   <Compass className="text-indigo-300" size={24} />
                   MBA in New Zealand ROI: Jobs & Salaries

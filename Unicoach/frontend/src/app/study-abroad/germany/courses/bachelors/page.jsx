@@ -543,7 +543,7 @@ const GermanyBachelorsPage = () => {
 
         {/* 7. CAREERS AND STAY-BACK PATHWAYS */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-20">
-          <div className="bg-gradient-to-r from-indigo-900 via-indigo-950 to-slate-950 text-white rounded-[32px] p-8 md:p-12 shadow-xl relative overflow-hidden flex flex-col justify-between">
+          <div className="uc-soft rounded-[32px] p-8 md:p-12 relative overflow-hidden flex flex-col justify-between">
             <div className="absolute right-[-10%] top-[-20%] w-[380px] h-[380px] bg-white/5 rounded-full blur-3xl pointer-events-none" />
             <div>
               <div className="flex items-center gap-2 mb-4">

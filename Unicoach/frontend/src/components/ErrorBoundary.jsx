@@ -54,20 +54,20 @@ class ErrorBoundary extends React.Component {
   render() {
     if (this.state.hasError) {
       return (
-        <div className="min-h-screen bg-slate-900 text-white flex items-center justify-center p-6 select-none font-sans">
-          <div className="max-w-lg w-full bg-slate-800/90 border border-slate-700/80 rounded-3xl p-8 shadow-2xl backdrop-blur-xl text-center space-y-6">
-            <div className="w-16 h-16 mx-auto bg-indigo-500/10 border border-indigo-500/30 rounded-2xl flex items-center justify-center text-3xl text-indigo-400 shadow-inner">
+        <div className="min-h-screen bg-[#F6F3EC] text-[#16130F] flex items-center justify-center p-6 select-none font-sans">
+          <div className="uc-soft max-w-lg w-full rounded-3xl p-8 text-center space-y-6">
+            <div className="w-16 h-16 mx-auto bg-white border border-[#16130F]/10 rounded-2xl flex items-center justify-center text-3xl text-[#DE5C2B]">
               <CapIcon />
             </div>
 
             <div className="space-y-2">
-              <span className="inline-block px-3 py-1 bg-indigo-500/20 text-indigo-300 text-xs font-bold rounded-full tracking-wider uppercase">
+              <span className="inline-block px-3 py-1 bg-white text-[#C04A1D] text-xs font-bold rounded-full tracking-wider uppercase">
                 System Recovery
               </span>
-              <h1 className="text-2xl font-black tracking-tight text-white">
+              <h1 className="text-2xl font-black tracking-tight text-[#16130F]">
                 Something didn't load properly
               </h1>
-              <p className="text-sm text-slate-400 font-medium leading-relaxed">
+              <p className="text-sm text-[#3D372F] font-medium leading-relaxed">
                 We encountered an unexpected rendering hiccup on this page. Your saved data and shortlists are safe.
               </p>
             </div>
@@ -81,15 +81,15 @@ class ErrorBoundary extends React.Component {
               </button>
               <button
                 onClick={this.handleGoHome}
-                className="px-6 py-3.5 bg-slate-700/80 hover:bg-slate-700 text-slate-200 text-sm font-bold rounded-2xl border border-slate-600/60 transition-all cursor-pointer"
+                className="px-6 py-3.5 bg-white hover:bg-[#FAF9F6] text-[#16130F] text-sm font-bold rounded-2xl border border-[#16130F]/10 transition-all cursor-pointer"
               >
                 ⌂ Back to Home
               </button>
             </div>
 
             {import.meta.env.DEV && this.state.error && (
-              <details className="text-left bg-slate-950/60 border border-slate-800 rounded-xl p-3 text-xs text-rose-300 overflow-auto max-h-40">
-                <summary className="cursor-pointer font-bold text-slate-400 select-none">
+              <details className="text-left bg-white border border-[#16130F]/10 rounded-xl p-3 text-xs text-rose-700 overflow-auto max-h-40">
+                <summary className="cursor-pointer font-bold text-slate-600 select-none">
                   Debug Details (Developer View)
                 </summary>
                 <pre className="mt-2 text-[11px] whitespace-pre-wrap">

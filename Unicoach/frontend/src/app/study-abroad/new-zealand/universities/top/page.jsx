@@ -239,7 +239,7 @@ const NewZealandTopUniversities = () => {
         </div>
 
         {/* Hero Header Card */}
-        <div className="relative bg-gradient-to-r from-slate-900 to-indigo-950 rounded-[2.5rem] p-8 md:p-14 text-white overflow-hidden mb-12 shadow-xl border border-indigo-950">
+        <div className="uc-soft relative rounded-[2.5rem] p-8 md:p-14 overflow-hidden mb-12">
           <div className="absolute inset-0 z-0 opacity-15 mix-blend-overlay pointer-events-none">
             <img 
               src="https://images.unsplash.com/photo-1470770841072-f978cf4d019e?w=1200&auto=format&fit=crop&q=80" 

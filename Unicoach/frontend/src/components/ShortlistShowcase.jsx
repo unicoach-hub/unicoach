@@ -30,9 +30,9 @@ const TOOLS = [
     button: 'Find universities',
     matching: 'Matching 1,500+ universities…',
     results: [
-      { name: 'University of Limerick', meta: 'MSc Data Science', tag: 'Safe', pct: 91, color: '#1E9E4A', tint: '#DEF5E5' },
-      { name: 'Trinity College Dublin', meta: 'MSc Data Science', tag: 'Target', pct: 74, color: '#DE5C2B', tint: '#FFEDE4' },
-      { name: 'University College Dublin', meta: 'MSc Data & Computational Science', tag: 'Dream', pct: 58, color: '#2B3FA0', tint: '#E3E7FB' },
+      { name: 'University of Limerick', meta: 'MSc Data Science', tag: 'Limerick', pct: 91, color: '#1E9E4A', tint: '#DEF5E5' },
+      { name: 'Trinity College Dublin', meta: 'MSc Data Science', tag: 'Dublin', pct: 74, color: '#DE5C2B', tint: '#FFEDE4' },
+      { name: 'University College Dublin', meta: 'MSc Data & Computational Science', tag: 'Dublin', pct: 58, color: '#2B3FA0', tint: '#E3E7FB' },
     ],
   },
   {

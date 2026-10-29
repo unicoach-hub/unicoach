@@ -398,7 +398,7 @@ const CourseDetailsPage = () => {
             <div className="bg-white rounded-xl border border-slate-200 p-5 sm:p-6 shadow-xs space-y-4">
               
               {/* University Header Banner with Crest Logo & Verified Badge (No duplicate name!) */}
-              <div className="bg-gradient-to-r from-[#273142] via-[#273142] to-[#151B25] rounded-xl p-4 sm:p-5 text-white flex items-center gap-3.5 shadow-sm relative overflow-hidden">
+              <div className="uc-soft rounded-xl p-4 sm:p-5 flex items-center gap-3.5 relative overflow-hidden">
                 <div className="absolute top-0 right-0 w-28 h-28 bg-white/5 rounded-full blur-xl pointer-events-none" />
                 {/* University Crest / Logo */}
                 <div className="w-14 h-14 rounded-xl bg-white p-2 flex items-center justify-center shrink-0 shadow-sm border border-white/20">

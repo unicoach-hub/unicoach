@@ -19,10 +19,10 @@ const stackingCards = [
     titleLight: 'Shortlist',
     title: 'UniCoach Shortlist',
     highlight: 'The right universities for your profile',
-    subtitle: 'Search 98,000+ programs at 1,300+ universities, then sort them into Dream, Target and Safe with a counsellor who knows how admissions actually go.',
+    subtitle: 'Search 98,000+ programs at 1,300+ universities, then build a shortlist that fits your marks and budget with a counsellor who knows how admissions actually go.',
     bullets: [
       '98,000+ programs to search, filter and shortlist for free',
-      'Dream, Target and Safe options based on your marks and scores',
+      'A shortlist matched to your marks, scores and budget',
       '1:1 calls with seniors studying at the universities you want',
     ],
     ctaText: 'Build My Shortlist',
@@ -129,7 +129,7 @@ const UniversityShortlistMockup = ({
     style={{ borderColor: containerBorder, backgroundColor: panelBg }}
   >
     <div className="space-y-3">
-      {/* 1. Columbia University (MS CS) - Dream Tier */}
+      {/* 1. Columbia University (MS CS) - USA */}
       <div
         className="p-3.5 sm:p-4 rounded-xl sm:rounded-2xl border flex items-center justify-between gap-3 shadow-[0_1px_3px_rgba(0,0,0,0.03)] hover:shadow-xs transition-shadow"
         style={{ backgroundColor: dreamRowBg, borderColor: dreamRowBorder }}
@@ -146,11 +146,11 @@ const UniversityShortlistMockup = ({
             borderColor: dreamBadgeBorder
           }}
         >
-          Dream Tier
+          USA
         </span>
       </div>
 
-      {/* 2. TU Munich (Informatics) - Reach Tier */}
+      {/* 2. TU Munich (Informatics) - Germany */}
       <div
         className="p-3.5 sm:p-4 rounded-xl sm:rounded-2xl border flex items-center justify-between gap-3 shadow-[0_1px_3px_rgba(0,0,0,0.03)] hover:shadow-xs transition-shadow"
         style={{ backgroundColor: reachRowBg, borderColor: reachRowBorder }}
@@ -167,11 +167,11 @@ const UniversityShortlistMockup = ({
             borderColor: reachBadgeBorder
           }}
         >
-          Reach Tier
+          Germany
         </span>
       </div>
 
-      {/* 3. Univ. of Manchester (MSc Data) - Safe Admit */}
+      {/* 3. Univ. of Manchester (MSc Data) - UK */}
       <div
         className="p-3.5 sm:p-4 rounded-xl sm:rounded-2xl border flex items-center justify-between gap-3 shadow-[0_1px_3px_rgba(0,0,0,0.03)] hover:shadow-xs transition-shadow"
         style={{ backgroundColor: safeRowBg, borderColor: safeRowBorder }}
@@ -188,7 +188,7 @@ const UniversityShortlistMockup = ({
             borderColor: safeBadgeBorder
           }}
         >
-          Safe Admit
+          UK
         </span>
       </div>
 
@@ -198,7 +198,7 @@ const UniversityShortlistMockup = ({
         style={{ backgroundColor: oddsBg, borderColor: oddsBorder }}
       >
         <span className="text-[12px] sm:text-[13px] font-semibold text-slate-700">
-          Admission Success Odds:
+          Your chance of getting in:
         </span>
         <div className="text-[14px] sm:text-[15.5px] font-black mt-1 tracking-tight" style={{ color: oddsText }}>
           Your personalised odds after a free profile review

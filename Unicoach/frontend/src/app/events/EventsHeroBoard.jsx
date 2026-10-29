@@ -201,7 +201,7 @@ export const BoardingPassCard = ({ event, hostPhoto, formatDate, formatTime, onR
 export const DepartureBoard = ({ events, photoFor, formatDate, formatTime, onOpen }) => {
   if (!events.length) return null;
   return (
-    <div className="rounded-2xl bg-[#0F172A] text-white p-3 sm:p-4 shadow-[0_20px_50px_-24px_rgba(15,23,42,0.6)]">
+    <div className="uc-soft rounded-2xl p-3 sm:p-4">
       <div className="flex items-center justify-between px-1 pb-2.5 mb-1 border-b border-white/10">
         <span className="inline-flex items-center gap-2 text-[11px] font-black uppercase tracking-[0.2em] text-amber-300">
           <Radio size={13} /> Live departures
