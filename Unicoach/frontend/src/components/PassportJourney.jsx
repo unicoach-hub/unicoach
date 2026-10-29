@@ -6,8 +6,9 @@ import { UsVisa, SchengenVisa, AuVisa } from './VisaStickers';
 
 // "Your study-abroad passport": a short pinned section where scrolling turns three passport pages.
 // Each page gets a visa sticker (USA, Schengen, Australia) and then its entry stamp. Calm paper palette.
-// The passport lies open on a table (tilted back in 3D), follows the cursor a little, and a real page
-// sweeps over the spine on every turn. Arrows, the dots or a click on the page also turn it.
+// The passport starts closed on a table; the first bit of scroll swings the cover open, then the
+// visas follow. It leans towards the cursor and a real page sweeps over the spine on every turn.
+// Arrows, the bars, a tap on the cover or a click on the page also turn it.
 
 const INK = '#16130F';
 const MUTED = '#5B544A';
@@ -190,9 +191,14 @@ const PassportJourney = () => {
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start start', 'end end'] });
   const [idx, setIdx] = useState(0);
   const [dir, setDir] = useState(1);
+  const [closed, setClosed] = useState(true);
+  // slot 0 opens the cover, slots 1..3 are the visas
+  const SLOTS = STEPS.length + 1;
 
   useMotionValueEvent(scrollYProgress, 'change', (v) => {
-    const next = Math.min(STEPS.length - 1, Math.max(0, Math.floor(v * STEPS.length * 0.999)));
+    const slot = Math.min(SLOTS - 1, Math.max(0, Math.floor(v * SLOTS * 0.999)));
+    setClosed(slot === 0);
+    const next = Math.max(0, slot - 1);
     setIdx((cur) => {
       if (next !== cur) setDir(next > cur ? 1 : -1);
       return next;
@@ -216,13 +222,24 @@ const PassportJourney = () => {
   };
   const onTableLeave = () => { tiltX.set(BASE_X); tiltZ.set(BASE_Z); };
 
+  // Cover opening, tied to the first slot of scroll: swings round the spine like a real passport
+  const openRaw = useTransform(scrollYProgress, [0.02, 0.8 / SLOTS], [0, 1], { clamp: true });
+  const openP = useSpring(openRaw, { stiffness: 140, damping: 24 });
+  const coverRot = useTransform(openP, [0, 1], [0, -180]);
+  const coverVis = useTransform(openP, (p) => (p > 0.995 ? 'hidden' : 'visible'));
+  const coverFade = useTransform(openP, [0.55, 1], [1, narrow ? 0 : 1]);
+  // closed, the book sits centred; opening slides it right as the left page appears
+  const bookX = useTransform(openP, [0, 1], [narrow ? '0%' : '-25%', '0%']);
+  const spreadClip = useTransform(openP, (p) => (narrow || p > 0.5 ? 'inset(-60px)' : 'inset(-60px -60px -60px 50%)'));
+  const shadowLeft = useTransform(openP, [0, 1], [narrow ? '-4%' : '46%', '-4%']);
+
   // Turning by click scrolls the page to that visa, so scroll and clicks always agree
   const goTo = (target) => {
     const el = ref.current;
     if (!el) return;
     const t = Math.max(0, Math.min(STEPS.length - 1, target));
     const span = el.offsetHeight - window.innerHeight;
-    const top = el.getBoundingClientRect().top + window.scrollY + span * ((t + 0.5) / STEPS.length);
+    const top = el.getBoundingClientRect().top + window.scrollY + span * ((t + 1.5) / SLOTS);
     window.scrollTo({ top, behavior: 'smooth' });
   };
 
@@ -231,16 +248,31 @@ const PassportJourney = () => {
   const visaOf = (st) => VISAS.find((x) => x.key === st.key);
 
   return (
-    <section ref={ref} aria-label="Your study-abroad passport" style={{ height: `${STEPS.length * 60 + 40}vh`, background: PAPER }} className="relative w-full">
+    <section ref={ref} aria-label="Your study-abroad passport" style={{ height: `${(STEPS.length + 1) * 60 + 40}vh`, background: PAPER }} className="relative w-full">
       <div className="sticky top-0 h-screen overflow-hidden flex items-center">
         <div className="w-full max-w-[1320px] mx-auto px-4 sm:px-8 grid grid-cols-1 lg:grid-cols-[0.85fr_1.15fr] gap-8 lg:gap-14 items-center">
           {/* Left: chapter copy that follows the passport */}
           <div className="min-w-0">
             <p className="flex items-center gap-3 text-[13px]" style={{ color: MUTED }}>
               <span className="inline-block w-10 h-[2px] bg-[#DE5C2B]" />
-              Your study-abroad passport · Visa {idx + 1} of {STEPS.length}
+              {closed ? `Your study-abroad passport · ${STEPS.length} visas inside` : `Your study-abroad passport · Visa ${idx + 1} of ${STEPS.length}`}
             </p>
             <AnimatePresence mode="wait">
+              {closed ? (
+                <motion.div key="closed" initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} transition={{ duration: 0.35 }}>
+                  <p className="mt-6 text-[14px] font-semibold text-[#DE5C2B]">Ready to fly</p>
+                  <h2 className="mt-2 font-outfit text-[30px] sm:text-[54px] lg:text-[64px] font-black leading-[0.98] tracking-[-0.045em]" style={{ color: INK }}>
+                    Your passport. Open it.
+                  </h2>
+                  <p className="mt-4 text-[17px] sm:text-[19px] leading-relaxed max-w-md" style={{ color: MUTED }}>Three visas, three countries. Scroll and we stamp them one by one.</p>
+                  <button type="button" onClick={() => goTo(0)} className="no-shine mt-7 inline-flex items-center gap-3 h-14 pl-6 pr-2 rounded-full border-2 bg-transparent text-[16px] font-semibold transition-colors hover:bg-[#16130F] hover:text-white group cursor-pointer" style={{ borderColor: INK, color: INK }}>
+                    Open the passport
+                    <span className="w-10 h-10 rounded-full grid place-items-center text-white" style={{ background: INK }}>
+                      <ArrowRight size={16} className="transition-transform group-hover:translate-x-0.5" />
+                    </span>
+                  </button>
+                </motion.div>
+              ) : (
               <motion.div key={step.key} initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} transition={{ duration: 0.35 }}>
                 <p className="mt-6 text-[14px] font-semibold" style={{ color: step.color }}>{step.chapter}</p>
                 <h2 className="mt-2 font-outfit text-[30px] sm:text-[54px] lg:text-[64px] font-black leading-[0.98] tracking-[-0.045em]" style={{ color: INK }}>
@@ -254,20 +286,21 @@ const PassportJourney = () => {
                   </span>
                 </Link>
               </motion.div>
+              )}
             </AnimatePresence>
             {/* Progress: tap a bar or the arrows to turn the passport */}
             <div className="mt-10 flex items-center gap-3">
-              <button type="button" onClick={() => goTo(idx - 1)} disabled={idx === 0} aria-label="Previous visa" className="no-shine w-10 h-10 rounded-full border-2 grid place-items-center transition-colors disabled:opacity-30 enabled:hover:bg-[#16130F] enabled:hover:text-white cursor-pointer disabled:cursor-default" style={{ borderColor: INK, color: INK }}>
+              <button type="button" onClick={() => goTo(idx - 1)} disabled={closed || idx === 0} aria-label="Previous visa" className="no-shine w-10 h-10 rounded-full border-2 grid place-items-center transition-colors disabled:opacity-30 enabled:hover:bg-[#16130F] enabled:hover:text-white cursor-pointer disabled:cursor-default" style={{ borderColor: INK, color: INK }}>
                 <ArrowLeft size={16} />
               </button>
               {STEPS.map((s, i) => (
                 <button key={s.key} type="button" onClick={() => goTo(i)} aria-label={`Show ${s.chapter}`} className="no-shine py-3 cursor-pointer">
                   <span className="block h-[3px] w-12 rounded-full overflow-hidden" style={{ background: 'rgba(22,19,15,0.12)' }}>
-                    <motion.span className="block h-full" style={{ background: INK }} animate={{ width: i <= idx ? '100%' : '0%' }} transition={{ duration: 0.4 }} />
+                    <motion.span className="block h-full" style={{ background: INK }} animate={{ width: !closed && i <= idx ? '100%' : '0%' }} transition={{ duration: 0.4 }} />
                   </span>
                 </button>
               ))}
-              <button type="button" onClick={() => goTo(idx + 1)} disabled={idx === STEPS.length - 1} aria-label="Next visa" className="no-shine w-10 h-10 rounded-full border-2 grid place-items-center transition-colors disabled:opacity-30 enabled:hover:bg-[#16130F] enabled:hover:text-white cursor-pointer disabled:cursor-default" style={{ borderColor: INK, color: INK }}>
+              <button type="button" onClick={() => goTo(closed ? 0 : idx + 1)} disabled={!closed && idx === STEPS.length - 1} aria-label="Next visa" className="no-shine w-10 h-10 rounded-full border-2 grid place-items-center transition-colors disabled:opacity-30 enabled:hover:bg-[#16130F] enabled:hover:text-white cursor-pointer disabled:cursor-default" style={{ borderColor: INK, color: INK }}>
                 <ArrowRight size={16} />
               </button>
             </div>
@@ -275,13 +308,27 @@ const PassportJourney = () => {
 
           {/* Right: the open passport, lying on the table */}
           <div style={{ perspective: 1600 }} onMouseMove={onTableMove} onMouseLeave={onTableLeave} className="py-6 min-w-0 lg:px-10">
-            <motion.div className="relative" style={{ rotateX: tiltX, rotateZ: tiltZ, transformStyle: 'preserve-3d', transformOrigin: '50% 60%' }}>
+            <motion.div className="relative" style={{ x: bookX, rotateX: tiltX, rotateZ: tiltZ, transformStyle: 'preserve-3d', transformOrigin: '50% 60%' }}>
               {/* soft shadow on the table */}
-              <div aria-hidden="true" className="absolute -inset-x-6 -bottom-10 h-24 rounded-[50%] blur-2xl pointer-events-none" style={{ background: 'rgba(22,19,15,0.28)', transform: 'translateZ(-40px)' }} />
+              <motion.div aria-hidden="true" className="absolute right-[-4%] -bottom-10 h-24 rounded-[50%] blur-2xl pointer-events-none" style={{ left: shadowLeft, background: 'rgba(22,19,15,0.28)', transform: 'translateZ(-40px)' }} />
+              {/* front cover: swings open round the spine, then the visa pages take over */}
+              <motion.button type="button" aria-label="Open the passport" onClick={() => goTo(0)}
+                className="no-shine absolute top-0 bottom-0 left-0 w-full md:left-1/2 md:w-1/2 z-30 cursor-pointer"
+                style={{ rotateY: coverRot, opacity: coverFade, visibility: coverVis, transformOrigin: 'left center', transformStyle: 'preserve-3d', z: 2 }}>
+                <span className="absolute inset-0 rounded-[10px] md:rounded-l-[3px] overflow-hidden shadow-[8px_10px_24px_-10px_rgba(22,19,15,0.5)]" style={{ backfaceVisibility: 'hidden' }}>
+                  <Cover />
+                  <motion.span animate={closed ? { opacity: [0.45, 1, 0.45] } : { opacity: 0 }} transition={{ duration: 1.8, repeat: Infinity }}
+                    className="absolute bottom-5 inset-x-0 text-center text-[11px] tracking-[0.25em]" style={{ color: GOLD }}>SCROLL OR TAP TO OPEN</motion.span>
+                </span>
+                <span className="absolute inset-0 rounded-[10px] overflow-hidden" style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}>
+                  <Cover />
+                </span>
+              </motion.button>
+              <motion.div className="relative" style={{ clipPath: spreadClip }}>
               {/* page stack peeking out at the edges, like a thick passport */}
               <div className="absolute inset-0 translate-x-[6px] translate-y-[6px] rounded-[10px] border" style={{ background: '#E6EAE3', borderColor: 'rgba(22,19,15,0.08)' }} />
               <div className="absolute inset-0 translate-x-[3px] translate-y-[3px] rounded-[10px] border" style={{ background: '#EDF0EA', borderColor: 'rgba(22,19,15,0.08)' }} />
-              <div className="relative grid grid-cols-1 md:grid-cols-2 rounded-[10px] overflow-hidden shadow-[0_40px_80px_-40px_rgba(22,19,15,0.5)]" style={{ background: PAGE, border: `6px solid ${NAVY}` }}>
+              <div className="relative grid grid-cols-1 md:grid-cols-2 rounded-[10px] overflow-hidden" style={{ background: PAGE, border: `6px solid ${NAVY}` }}>
                 {/* spine: shadow + stitching down the middle */}
                 <div className="hidden md:block absolute top-0 bottom-0 left-1/2 -translate-x-1/2 w-10 z-10 pointer-events-none" style={{ background: 'linear-gradient(90deg, transparent, rgba(22,19,15,0.10) 45%, rgba(22,19,15,0.16) 50%, rgba(22,19,15,0.10) 55%, transparent)' }} />
                 <div className="hidden md:block absolute top-4 bottom-4 left-1/2 w-0 z-10 pointer-events-none" style={{ borderLeft: '1.5px dashed rgba(27,42,74,0.35)' }} />
@@ -332,18 +379,18 @@ const PassportJourney = () => {
                     transition={{ duration: 0.55, ease: [0.2, 0.7, 0.2, 1] }}
                     style={{ transformOrigin: 'left center', background: PAGE }}
                     className={`relative flex flex-col justify-between p-6 min-h-[480px] md:min-h-[520px] ${idx < STEPS.length - 1 ? 'cursor-pointer' : ''}`}
-                    onClick={() => idx < STEPS.length - 1 && goTo(idx + 1)}
+                    onClick={() => (closed ? goTo(0) : idx < STEPS.length - 1 && goTo(idx + 1))}
                   >
                     <SecurityLines />
                     <PageHead left={`Page 0${idx + 1}`} right={step.chapter} />
                     <div className="relative grid grid-cols-[minmax(0,1fr)] place-items-center flex-1 overflow-clip">
                       <div className="absolute inset-0 grid place-items-center"><Guilloche size={420} color={step.color} opacity={0.09} /></div>
                       {/* "checking" scan line, then the visa goes on and gets stamped */}
-                      {!reduce && (
+                      {!reduce && !closed && (
                         <motion.span key={`scan-${step.key}`} className="absolute left-6 right-6 h-[2px] rounded-full" style={{ background: step.color, boxShadow: `0 0 18px ${step.color}` }}
                           initial={{ top: '12%', opacity: 0 }} animate={{ top: ['12%', '88%'], opacity: [0, 0.7, 0] }} transition={{ duration: 0.7, delay: 0.25 }} />
                       )}
-                      <VisaPage key={`visa-${step.key}`} v={visaOf(step)} step={step} reduce={reduce} />
+                      {!closed && <VisaPage key={`visa-${step.key}`} v={visaOf(step)} step={step} reduce={reduce} />}
                       <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: reduce ? 0 : 1.1 }} className="absolute bottom-3 text-[11px]" style={{ color: MUTED }}>
                         Entered · 2027 · 0{idx + 1}
                       </motion.p>
@@ -355,8 +402,9 @@ const PassportJourney = () => {
                   </motion.div>
                 </AnimatePresence>
               </div>
+              </motion.div>
             </motion.div>
-            <p className="mt-8 text-center text-[12px]" style={{ color: MUTED }}>Scroll, tap the page or use the arrows to turn it</p>
+            <p className="mt-8 text-center text-[12px]" style={{ color: MUTED }}>{closed ? 'Scroll or tap the cover to open it' : 'Scroll, tap the page or use the arrows to turn it'}</p>
           </div>
         </div>
       </div>

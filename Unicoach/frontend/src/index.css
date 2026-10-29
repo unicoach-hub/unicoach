@@ -895,7 +895,10 @@ body.editorial-page :is(.font-extrabold):not(header *, footer *) { font-weight: 
 body.editorial-page :is(h1, h2):is(.font-black, .font-extrabold, .font-bold, *):not(header *, footer *) { font-weight: 800 !important; }
 body.editorial-page :is(p, li, td).font-semibold:not(header *, footer *) { font-weight: 450 !important; }
 body.editorial-page :is(.animate-pulse, .animate-ping):not(header *, footer *) { animation: none !important; }
-body.editorial-page :is(h1, h2):not(header *, footer *) { letter-spacing: -0.03em; }
+/* Content pages: calmer headings than the poster style above (open tracking, normal leading) */
+body.editorial-page h1:not(header *, footer *) { letter-spacing: -0.025em !important; line-height: 1.1 !important; }
+body.editorial-page h2:not(header *, footer *) { letter-spacing: -0.018em !important; line-height: 1.15 !important; font-weight: 750 !important; }
+body.editorial-page :is(h3, h4):not(header *, footer *) { letter-spacing: -0.01em !important; line-height: 1.25 !important; }
 body.editorial-page :is(h1, h2) .bg-clip-text:not(header *, footer *) {
   background: none !important;
   -webkit-text-fill-color: #DE5C2B;

@@ -82,13 +82,14 @@ const ExamBooksTemplate = ({ currentExamKey, data }) => {
           <div className="absolute top-0 right-0 w-96 h-96 bg-blue-400/10 rounded-full blur-3xl pointer-events-none" />
           <div className="absolute -bottom-10 -left-10 w-72 h-72 bg-indigo-300/10 rounded-full blur-2xl pointer-events-none" />
 
-          <div className="relative z-10 max-w-3xl">
+          <div className="relative z-10 grid grid-cols-1 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,1fr)] gap-8 lg:gap-10 items-center">
+          <div className="min-w-0">
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 bg-white/10 border border-white/20 rounded-full text-orange-200 text-xs font-bold uppercase tracking-wider mb-4 backdrop-blur-md">
               <Sparkles size={13} className="text-orange-300" />
               <span>Mentor-Curated Study Guides (2025–2026)</span>
             </div>
 
-            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-[42px] font-bold tracking-tight leading-tight text-white mb-3 drop-shadow-sm">
+            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-[42px] font-bold tracking-tight leading-tight text-white mb-3">
               {data.title}
             </h1>
 
@@ -110,6 +111,22 @@ const ExamBooksTemplate = ({ currentExamKey, data }) => {
                 <span className="font-semibold text-white">Verified Test-Taker Ratings</span>
               </div>
             </div>
+          </div>
+
+          {/* Right: the page's own infographic, so it is seen first instead of far down the page */}
+          <div className="min-w-0">
+            {data.timeSplit ? (
+              <Donut
+                kicker={data.timeSplit.kicker}
+                title={data.timeSplit.title}
+                segments={data.timeSplit.segments}
+                centerValue={data.timeSplit.centerValue}
+                centerLabel={data.timeSplit.centerLabel}
+              />
+            ) : priceBars.length >= 3 && (
+              <BarCompare kicker="Approx. prices" title="What these books cost" items={priceBars} highlight={cheapest} />
+            )}
+          </div>
           </div>
         </div>
       </div>
@@ -319,7 +336,7 @@ const ExamBooksTemplate = ({ currentExamKey, data }) => {
             </section>
 
             {/* Price comparison of the books above (approximate prices from each card) */}
-            {priceBars.length >= 3 && (
+            {data.timeSplit && priceBars.length >= 3 && (
               <BarCompare
                 kicker="Approx. prices"
                 title="What these books cost"
@@ -336,18 +353,6 @@ const ExamBooksTemplate = ({ currentExamKey, data }) => {
                   Mentor-Approved Preparation Strategy
                 </h2>
               </div>
-
-              {/* Optional section-time split, built from the page's own prep tips */}
-              {data.timeSplit && (
-                <Donut
-                  kicker={data.timeSplit.kicker}
-                  title={data.timeSplit.title}
-                  segments={data.timeSplit.segments}
-                  centerValue={data.timeSplit.centerValue}
-                  centerLabel={data.timeSplit.centerLabel}
-                  className="mb-6"
-                />
-              )}
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5">
                 {data.prepTips.map((tip, idx) => (
