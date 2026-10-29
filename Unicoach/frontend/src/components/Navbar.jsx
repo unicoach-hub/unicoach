@@ -759,25 +759,30 @@ const Navbar = () => {
         { name: 'Toolkit', path: '/ai-tools', type: 'tools' },
         { name: 'Exams', path: '/exams', type: 'exam' },
         { name: 'Resources', path: '/resources', type: 'resources' },
-        { name: 'Blogs', path: '/blogs' },
+        { name: 'Explore', path: '/blogs', type: 'explore' },
         { name: 'UniCoach', path: '/unicoach', badge: 'New' },
-        { name: 'Digest', path: '/unicoach-digest' },
-        { name: 'Events', path: '/events' },
-        { name: 'Newsroom', path: '/newsroom' },
     ];
+
+    // Blogs, Digest, Events and Newsroom live under one "Explore" dropdown
+    const exploreLinks = [
+        { name: 'Blogs', desc: 'Guides and student stories', path: '/blogs', icon: FileText, tone: '#2F5BFF', soft: '#E7EDFF' },
+        { name: 'Digest', desc: 'Weekly study-abroad news', path: '/unicoach-digest', icon: Newspaper, tone: '#6D3FE0', soft: '#EEE8FD' },
+        { name: 'Events', desc: 'Live sessions with mentors', path: '/events', icon: Calendar, tone: '#0F9F8F', soft: '#DDF5F1' },
+        { name: 'Newsroom', desc: 'UniCoach updates and press', path: '/newsroom', icon: Radio, tone: '#D9573F', soft: '#FCE9E4' },
+    ];
+    const exploreActive = exploreLinks.some((l) => location.pathname.startsWith(l.path));
 
     const isActive = (path) => location.pathname === path;
     const isUnicoachDashboard = location.pathname.startsWith('/unicoach/dashboard');
 
     return (
-        <header
-            className={`fixed top-0 left-0 w-full z-[100] transition-all duration-300
+        <header className="fixed top-0 left-0 w-full z-[100] px-3 md:px-6 pt-2.5 md:pt-3 pointer-events-none">
+            {/* Floating white pill, like a card resting over the page */}
+            <div className={`relative z-[101] pointer-events-auto max-w-[1320px] mx-auto px-3 md:px-5 bg-white rounded-[18px] md:rounded-[22px] border transition-shadow duration-300
                 ${scrolled
-                    ? 'bg-white shadow-[0_4px_30px_rgba(0,0,0,0.06)] border-b border-slate-100'
-                    : 'bg-white border-b border-slate-100/60'}`}
-        >
-            <div className="max-w-[1440px] mx-auto px-4 md:px-8">
-                <div className="flex items-center justify-between h-[74px] md:h-[80px]">
+                    ? 'border-slate-200/70 shadow-[0_10px_34px_-12px_rgba(15,23,42,0.22)]'
+                    : 'border-slate-200/60 shadow-[0_6px_24px_-14px_rgba(15,23,42,0.18)]'}`}>
+                <div className="flex items-center justify-between h-[58px] md:h-[64px]">
 
                     {/* Logo using main logo image */}
                     <div className="flex items-center flex-shrink-0">
@@ -785,7 +790,7 @@ const Navbar = () => {
                         <img
                             src={logo}
                             alt="UniCoach Logo"
-                            className="h-9 md:h-11 w-auto object-contain"
+                            className="h-8 md:h-9 w-auto object-contain"
                             width="164"
                             height="44"
                         />
@@ -830,8 +835,8 @@ const Navbar = () => {
                                             to={link.path}
                                             onClick={() => setActiveDropdown(null)}
                                             data-cursor="pointer"
-                                            className={`group relative flex items-center gap-1.5 px-2.5 xl:px-3 py-1.5 rounded-xl text-[0.875rem] xl:text-[0.94rem] font-semibold tracking-[-0.01em] transition-colors duration-150 whitespace-nowrap
-                                            ${activeDropdown === link.name || isActive(link.path) || (link.type === 'study' && location.pathname.includes('/study-abroad'))
+                                            className={`group relative flex items-center gap-1.5 px-2.5 xl:px-3 py-1.5 rounded-xl text-[0.84rem] xl:text-[0.9rem] font-semibold tracking-[-0.01em] transition-colors duration-150 whitespace-nowrap
+                                            ${activeDropdown === link.name || isActive(link.path) || (link.type === 'study' && location.pathname.includes('/study-abroad')) || (link.type === 'explore' && exploreActive)
                                                     ? 'text-slate-900 bg-slate-100/80'
                                                     : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'}`}
                                         >
@@ -845,10 +850,10 @@ const Navbar = () => {
                                             />
 
                                             {/* Terracotta active line with subtle glow */}
-                                            {((link.type === 'study' && location.pathname.includes('/study-abroad')) || isActive(link.path) || activeDropdown === link.name) && (
+                                            {((link.type === 'study' && location.pathname.includes('/study-abroad')) || (link.type === 'explore' && exploreActive) || isActive(link.path) || activeDropdown === link.name) && (
                                                 <motion.div
                                                     layoutId="navActiveLine"
-                                                    className="absolute bottom-[-16px] left-2 right-2 h-[2.5px] bg-[#DE5C2B] rounded-full shadow-[0_2px_8px_rgba(222,92,43,0.4)]"
+                                                    className="absolute bottom-[-11px] left-2 right-2 h-[2.5px] bg-[#DE5C2B] rounded-full shadow-[0_2px_8px_rgba(222,92,43,0.4)]"
                                                     transition={{ type: 'spring', stiffness: 380, damping: 30 }}
                                                 />
                                             )}
@@ -857,7 +862,7 @@ const Navbar = () => {
                                         <Link
                                             to={link.path}
                                             data-cursor="pointer"
-                                            className={`relative flex items-center gap-1.5 px-2.5 xl:px-3 py-1.5 rounded-xl text-[0.875rem] xl:text-[0.94rem] font-semibold tracking-[-0.01em] transition-colors duration-150 whitespace-nowrap
+                                            className={`relative flex items-center gap-1.5 px-2.5 xl:px-3 py-1.5 rounded-xl text-[0.84rem] xl:text-[0.9rem] font-semibold tracking-[-0.01em] transition-colors duration-150 whitespace-nowrap
                                             ${isActive(link.path)
                                                     ? 'text-slate-900 bg-slate-100/80'
                                                     : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'}`}
@@ -873,7 +878,7 @@ const Navbar = () => {
                                             {isActive(link.path) && (
                                                 <motion.div
                                                     layoutId="navActiveLine"
-                                                    className="absolute bottom-[-16px] left-2 right-2 h-[2.5px] bg-[#DE5C2B] rounded-full shadow-[0_2px_8px_rgba(222,92,43,0.4)]"
+                                                    className="absolute bottom-[-11px] left-2 right-2 h-[2.5px] bg-[#DE5C2B] rounded-full shadow-[0_2px_8px_rgba(222,92,43,0.4)]"
                                                     transition={{ type: 'spring', stiffness: 380, damping: 30 }}
                                                 />
                                             )}
@@ -1167,6 +1172,32 @@ const Navbar = () => {
                                         )}
                                     </AnimatePresence>
 
+                                    {/* EXPLORE dropdown: Blogs, Digest, Events, Newsroom */}
+                                    <AnimatePresence>
+                                        {activeDropdown === link.name && link.type === 'explore' && (
+                                            <motion.div
+                                                initial={{ opacity: 0, y: 15, scale: 0.98 }}
+                                                animate={{ opacity: 1, y: 0, scale: 1 }}
+                                                exit={{ opacity: 0, y: 12, scale: 0.99 }}
+                                                transition={{ duration: 0.2, ease: [0.23, 1, 0.32, 1] }}
+                                                className="absolute top-[calc(100%-4px)] left-[-90px] w-[440px] bg-white rounded-[20px] shadow-[0_24px_60px_-12px_rgba(15,23,42,0.18)] border border-slate-100 p-3 z-50 grid grid-cols-2 gap-1.5 whitespace-normal text-left"
+                                                onMouseEnter={() => open(link.name)}
+                                                onMouseLeave={close}
+                                            >
+                                                {exploreLinks.map(({ name, desc, path, icon: Icon, tone, soft }) => (
+                                                    <Link key={name} to={path} onClick={() => setActiveDropdown(null)}
+                                                        className={`flex items-start gap-3 p-3 rounded-2xl transition-colors hover:bg-slate-50 ${location.pathname.startsWith(path) ? 'bg-slate-50' : ''}`}>
+                                                        <span className="w-9 h-9 rounded-xl grid place-items-center flex-shrink-0" style={{ background: soft, color: tone }}><Icon size={17} /></span>
+                                                        <span className="min-w-0">
+                                                            <span className="block text-[14.5px] font-semibold text-slate-900">{name}</span>
+                                                            <span className="block text-[12.5px] text-slate-500 leading-snug">{desc}</span>
+                                                        </span>
+                                                    </Link>
+                                                ))}
+                                            </motion.div>
+                                        )}
+                                    </AnimatePresence>
+
                                     {/* RESOURCES dropdown */}
                                     <AnimatePresence>
                                         {activeDropdown === link.name && link.type === 'resources' && (
@@ -1403,7 +1434,7 @@ const Navbar = () => {
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: -10 }}
                         transition={{ duration: 0.25, ease: 'easeOut' }}
-                        className="lg:hidden fixed top-[74px] md:top-[80px] left-0 right-0 bottom-0 w-full bg-white border-t border-slate-100 flex flex-col z-[99] overflow-hidden"
+                        className="pointer-events-auto lg:hidden fixed top-0 pt-[76px] md:pt-[84px] left-0 right-0 bottom-0 w-full bg-white flex flex-col z-[99] overflow-hidden"
                     >
                         <div className="max-w-[1360px] w-full mx-auto px-4 pt-3 pb-12 flex-1 overflow-y-auto flex flex-col justify-between">
 
