@@ -1034,13 +1034,12 @@ body.editorial-page :is(a, button)[class*="bg-[#DE5C2B]"]:is([class*="px-6"], [c
 .uc-clean .bg-clip-text, .uc-clean .text-transparent { background-image: none; color: #B8451A; -webkit-text-fill-color: currentColor; }
 /* glow blobs only made sense on dark */
 .uc-clean .absolute[class*="blur-"] { display: none; }
-/* solid buttons and badges keep white text */
-.uc-clean [class*="bg-[#DE5C2B]"], .uc-clean [class*="bg-orange-5"], .uc-clean [class*="bg-orange-6"],
-.uc-clean [class*="bg-indigo-5"]:not([class*="/"]), .uc-clean [class*="bg-indigo-6"]:not([class*="/"]),
-.uc-clean [class*="bg-blue-6"]:not([class*="/"]), .uc-clean [class*="bg-emerald-5"]:not([class*="/"]), .uc-clean [class*="bg-emerald-6"]:not([class*="/"]),
-.uc-clean [class*="bg-[#16130F]"], .uc-clean [class*="bg-[#111111]"] { color: #FFFFFF; }
-.uc-clean [class*="bg-[#DE5C2B]"] .text-white, .uc-clean [class*="bg-orange-6"] .text-white, .uc-clean [class*="bg-indigo-6"] .text-white,
-.uc-clean [class*="bg-[#16130F]"] .text-white, .uc-clean [class*="bg-[#111111]"] .text-white { color: #FFFFFF; }
+/* solid buttons and badges keep white text. Whole class names only (~=), so light shades
+   like bg-orange-50 or hover: variants don't turn a white button's text white */
+.uc-clean :is([class~="bg-[#DE5C2B]"], [class~="bg-[#de5c2b]"], [class~="bg-orange-500"], [class~="bg-orange-600"],
+  [class~="bg-indigo-500"], [class~="bg-indigo-600"], [class~="bg-blue-600"], [class~="bg-emerald-500"], [class~="bg-emerald-600"],
+  [class~="bg-[#16130F]"], [class~="bg-[#111111]"]) { color: #FFFFFF; }
+.uc-clean :is([class~="bg-[#DE5C2B]"], [class~="bg-orange-600"], [class~="bg-indigo-600"], [class~="bg-[#16130F]"], [class~="bg-[#111111]"]) .text-white { color: #FFFFFF; }
 
 /* ═════════════════════════════════════════════════════════
    SOFT PANELS (.uc-soft)

@@ -138,20 +138,35 @@ const VisaSticker = ({ v }) => {
   );
 };
 
-// Wooden rubber stamp: handle, block and inked rubber pad in the visa's colour
-const Stamper = ({ color }) => (
-  <svg viewBox="0 0 100 150" width="100%" height="100%" aria-hidden="true">
+// Glossy 3D rubber stamp: white knob and neck on a block in the visa's colour, with soft highlights
+const Stamper = ({ color, id }) => (
+  <svg viewBox="0 0 120 160" width="100%" height="100%" aria-hidden="true" style={{ overflow: 'visible' }}>
     <defs>
-      <linearGradient id="wood" x1="0" x2="1">
-        <stop offset="0" stopColor="#7A4A26" /><stop offset="0.5" stopColor="#A9703F" /><stop offset="1" stopColor="#6B3F1F" />
+      <radialGradient id={`knob-${id}`} cx="38%" cy="32%" r="70%">
+        <stop offset="0" stopColor="#FFFFFF" /><stop offset="0.55" stopColor="#F1EFEC" /><stop offset="1" stopColor="#C9C4BE" />
+      </radialGradient>
+      <linearGradient id={`neck-${id}`} x1="0" x2="1">
+        <stop offset="0" stopColor="#D8D3CD" /><stop offset="0.45" stopColor="#FFFFFF" /><stop offset="1" stopColor="#CFC9C2" />
+      </linearGradient>
+      <linearGradient id={`block-${id}`} x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stopColor={color} stopOpacity="0.75" /><stop offset="0.35" stopColor={color} /><stop offset="1" stopColor={color} />
       </linearGradient>
     </defs>
-    <circle cx="50" cy="20" r="17" fill="url(#wood)" />
-    <rect x="41" y="30" width="18" height="46" rx="6" fill="url(#wood)" />
-    <rect x="10" y="74" width="80" height="34" rx="7" fill="url(#wood)" />
-    <rect x="10" y="74" width="80" height="6" rx="3" fill="#000" opacity="0.12" />
-    <rect x="13" y="108" width="74" height="14" rx="3" fill="#2A2420" />
-    <rect x="15" y="121" width="70" height="7" rx="2" fill={color} />
+    {/* block: top face, front face, rubber pad */}
+    <path d="M14 98 L60 82 L106 98 L60 114 Z" fill={`url(#block-${id})`} />
+    <path d="M14 98 L60 114 L60 140 L14 124 Z" fill={color} />
+    <path d="M60 114 L106 98 L106 124 L60 140 Z" fill={color} />
+    <path d="M14 98 L60 114 L60 140 L14 124 Z" fill="#000" opacity="0.18" />
+    <path d="M60 114 L106 98 L106 124 L60 140 Z" fill="#000" opacity="0.32" />
+    <path d="M14 124 L60 140 L106 124 L106 129 L60 146 L14 129 Z" fill="#2A2420" opacity="0.85" />
+    <path d="M22 99 L60 86 L98 99" fill="none" stroke="#FFFFFF" strokeOpacity="0.55" strokeWidth="2.5" strokeLinecap="round" />
+    <path d="M18 120 L56 133" stroke="#FFFFFF" strokeOpacity="0.35" strokeWidth="2" strokeLinecap="round" />
+    {/* neck and knob */}
+    <ellipse cx="60" cy="98" rx="17" ry="6" fill="#000" opacity="0.18" />
+    <path d="M47 97 C49 78 52 64 54 52 L66 52 C68 64 71 78 73 97 Z" fill={`url(#neck-${id})`} />
+    <ellipse cx="60" cy="97" rx="13" ry="4.5" fill="#E7E2DC" />
+    <circle cx="60" cy="34" r="24" fill={`url(#knob-${id})`} />
+    <ellipse cx="51" cy="24" rx="8" ry="5" fill="#FFFFFF" opacity="0.9" transform="rotate(-25 51 24)" />
   </svg>
 );
 
@@ -196,13 +211,13 @@ const VisaPage = ({ v, step, reduce }) => {
         transition={{ delay: reduce ? 0 : HIT, duration: 0.12, ease: 'easeOut' }}>
         <Stamp step={step} id={`entry-${step.key}`} />
       </motion.div>
-      {/* the rubber stamp itself: drops, presses (squashes), lifts away */}
+      {/* the 3D rubber stamp: drops, presses (squashes), lifts away */}
       {!reduce && (
-        <motion.div className="absolute right-[6%] bottom-[-3.2rem] w-[42%] pointer-events-none z-20" style={{ aspectRatio: '100 / 150', transformOrigin: '50% 100%', z: 60 }}
-          initial={{ y: '-130%', opacity: 0, rotate: -10 }}
-          animate={{ y: ['-130%', '-118%', '0%', '0%', '-150%'], opacity: [0, 1, 1, 1, 0], scaleY: [1, 1, 0.9, 1, 1] }}
-          transition={{ delay: HIT - 0.45, duration: 1.05, times: [0, 0.18, 0.43, 0.6, 1], ease: ['easeOut', 'easeIn', 'linear', 'easeIn'] }}>
-          <Stamper color={step.color} />
+        <motion.div className="absolute right-[3%] bottom-[-3.4rem] w-[46%] pointer-events-none z-20" style={{ aspectRatio: '120 / 160', transformOrigin: '50% 100%', z: 60, filter: 'drop-shadow(0 18px 18px rgba(22,19,15,0.28))' }}
+          initial={{ y: '-120%', opacity: 0, rotate: -6 }}
+          animate={{ y: ['-120%', '-108%', '0%', '0%', '-130%'], opacity: [0, 1, 1, 1, 0], rotate: [-6, -6, -6, -6, 8], scaleY: [1, 1, 0.9, 1, 1] }}
+          transition={{ delay: HIT - 0.45, duration: 1.2, times: [0, 0.16, 0.38, 0.55, 1], ease: ['easeOut', 'easeIn', 'linear', 'easeIn'] }}>
+          <Stamper color={step.color} id={step.key} />
         </motion.div>
       )}
       {/* little ink puff at the moment of impact */}
