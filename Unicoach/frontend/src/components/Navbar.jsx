@@ -776,9 +776,12 @@ const Navbar = () => {
     const isUnicoachDashboard = location.pathname.startsWith('/unicoach/dashboard');
 
     return (
-        <header className="fixed top-0 left-0 w-full z-[100] px-3 md:px-6 pt-2.5 md:pt-3 pointer-events-none">
+        <header className="fixed top-0 left-0 w-full z-[100] px-3 md:px-8 pt-2.5 md:pt-3 pointer-events-none">
+            {/* Soft periwinkle wash behind the pill at the top of the page; fades out once you scroll */}
+            <div aria-hidden="true" className={`absolute inset-x-0 top-0 h-[80px] md:h-[88px] -z-10 transition-opacity duration-300 ${scrolled ? 'opacity-0' : 'opacity-100'}`}
+                style={{ background: 'linear-gradient(180deg, #C3CEFD 0%, #D6DDFD 55%, rgba(236,222,250,0.6) 82%, rgba(236,222,250,0) 100%)' }} />
             {/* Floating white pill, like a card resting over the page */}
-            <div className={`relative z-[101] pointer-events-auto max-w-[1320px] mx-auto px-3 md:px-5 bg-white rounded-[18px] md:rounded-[22px] border transition-shadow duration-300
+            <div className={`relative z-[101] pointer-events-auto max-w-[1120px] mx-auto px-3 md:px-5 bg-white rounded-[18px] md:rounded-[22px] border transition-shadow duration-300
                 ${scrolled
                     ? 'border-slate-200/70 shadow-[0_10px_34px_-12px_rgba(15,23,42,0.22)]'
                     : 'border-slate-200/60 shadow-[0_6px_24px_-14px_rgba(15,23,42,0.18)]'}`}>
