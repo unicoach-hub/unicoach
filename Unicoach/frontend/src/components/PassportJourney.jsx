@@ -1,13 +1,14 @@
-import { useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { AnimatePresence, motion, useMotionValue, useMotionValueEvent, useReducedMotion, useScroll, useSpring, useTransform } from 'framer-motion';
+import { AnimatePresence, animate, motion, useMotionValue, useMotionValueEvent, useReducedMotion, useScroll, useSpring, useTransform } from 'framer-motion';
 import { ArrowLeft, ArrowRight, Check } from 'lucide-react';
 import { UsVisa, SchengenVisa, AuVisa } from './VisaStickers';
 
 // "Your study-abroad passport": a short pinned section where scrolling turns three passport pages.
 // Each page gets a visa sticker (USA, Schengen, Australia) and then its entry stamp. Calm paper palette.
 // The passport starts closed on a table; the first bit of scroll swings the cover open, then the
-// visas follow. It leans towards the cursor and a real page sweeps over the spine on every turn.
+// visas follow. It leans towards the cursor, and every turn is a real leaf: the page carrying the
+// visa lifts from the spine, bends a little, shows its back, and lands on the other side.
 // Arrows, the bars, a tap on the cover or a click on the page also turn it.
 
 const INK = '#16130F';
@@ -172,7 +173,7 @@ const Stamper = ({ color, id }) => (
 
 // One visa page: the sticker goes on, tilts under the cursor, then a rubber stamp thumps the entry mark onto the corner
 const HIT = 1.5; // seconds after the visa appears that the stamp lands
-const VisaPage = ({ v, step, reduce }) => {
+const VisaPage = ({ v, step, reduce, still = false }) => {
   const mx = useMotionValue(0.5);
   const my = useMotionValue(0.5);
   const rotY = useSpring(useTransform(mx, [0, 1], [-10, 10]), { stiffness: 180, damping: 18 });
@@ -190,11 +191,11 @@ const VisaPage = ({ v, step, reduce }) => {
     <motion.div className="relative w-[92%] sm:w-full mx-auto max-w-[380px]"
       style={reduce ? undefined : { rotateX: rotX, rotateY: rotY, transformPerspective: 900 }}
       onMouseMove={reduce ? undefined : onMove} onMouseLeave={reduce ? undefined : onLeave}
-      initial={reduce ? { opacity: 0 } : { opacity: 0, y: -18, rotate: -3, scale: 1.04 }}
+      initial={still ? false : reduce ? { opacity: 0 } : { opacity: 0, y: -18, rotate: -3, scale: 1.04 }}
       animate={{ opacity: 1, y: 0, rotate: -1.5, scale: 1 }}
       transition={{ delay: reduce ? 0 : 0.45, type: 'spring', stiffness: 320, damping: 26 }}>
       {/* the thump: the sticker jolts down a touch when the stamp hits */}
-      <motion.div initial={false} animate={reduce ? {} : { y: [0, 0, 4, -1, 0], scale: [1, 1, 0.985, 1.003, 1] }}
+      <motion.div initial={false} animate={reduce || still ? {} : { y: [0, 0, 4, -1, 0], scale: [1, 1, 0.985, 1.003, 1] }}
         transition={{ delay: HIT - 0.02, duration: 0.32, times: [0, 0.05, 0.3, 0.65, 1] }}>
       <VisaSticker v={v} />
       </motion.div>
@@ -206,13 +207,13 @@ const VisaPage = ({ v, step, reduce }) => {
       )}
       {/* entry mark: appears the instant the stamp hits */}
       <motion.div className="absolute right-[2%] -bottom-14 w-[52%] aspect-square pointer-events-none"
-        initial={reduce ? { opacity: 0 } : { scale: 1.06, opacity: 0, rotate: -10 }}
+        initial={still ? false : reduce ? { opacity: 0 } : { scale: 1.06, opacity: 0, rotate: -10 }}
         animate={{ scale: 1, opacity: 0.95, rotate: -10 }}
         transition={{ delay: reduce ? 0 : HIT, duration: 0.12, ease: 'easeOut' }}>
         <Stamp step={step} id={`entry-${step.key}`} />
       </motion.div>
       {/* the 3D rubber stamp: drops, presses (squashes), lifts away */}
-      {!reduce && (
+      {!reduce && !still && (
         <motion.div className="absolute right-[3%] bottom-[-3.4rem] w-[46%] pointer-events-none z-20" style={{ aspectRatio: '120 / 160', transformOrigin: '50% 100%', z: 60, filter: 'drop-shadow(0 18px 18px rgba(22,19,15,0.28))' }}
           initial={{ y: '-120%', opacity: 0, rotate: -6 }}
           animate={{ y: ['-120%', '-108%', '0%', '0%', '-130%'], opacity: [0, 1, 1, 1, 0], rotate: [-6, -6, -6, -6, 8], scaleY: [1, 1, 0.9, 1, 1] }}
@@ -221,7 +222,7 @@ const VisaPage = ({ v, step, reduce }) => {
         </motion.div>
       )}
       {/* little ink puff at the moment of impact */}
-      {!reduce && (
+      {!reduce && !still && (
         <motion.span className="absolute right-[4%] bottom-[-2.8rem] w-[46%] aspect-square rounded-full pointer-events-none"
           style={{ border: `2px solid ${step.color}` }}
           initial={{ scale: 0.6, opacity: 0 }} animate={{ scale: [0.6, 1.25], opacity: [0, 0.35, 0] }}
@@ -238,6 +239,113 @@ const Mrz = ({ step, i }) => (
   </div>
 );
 
+const visaOf = (st) => VISAS.find((x) => x.key === st.key);
+
+// Left page of the spread for visa index i (i < 0 shows the inside cover)
+const LeftPage = ({ i }) => {
+  const prev = i >= 0 ? STEPS[i] : null;
+  return (
+    <div className="relative h-full flex flex-col justify-between p-6" style={{ background: PAGE }}>
+      <SecurityLines />
+      {!prev && <Cover />}
+      {prev && <PageHead left="Checked" right={prev.chapter} />}
+      <div className="relative grid grid-cols-[minmax(0,1fr)] place-items-center flex-1">
+        <div className="absolute inset-0 grid place-items-center"><Guilloche size={340} color="#2E5E5A" opacity={0.08} /></div>
+        {prev && (
+          <div className="relative w-full max-w-[290px] grayscale -rotate-2 opacity-50">
+            <VisaSticker v={visaOf(prev)} />
+            <div className="absolute -right-3 -bottom-12 w-[50%] aspect-square -rotate-6"><Stamp step={prev} id={`p${i}`} /></div>
+            <span className="absolute -bottom-3 left-4 inline-flex items-center gap-1 rounded-full bg-white px-2.5 py-1 text-[11px] font-bold text-[#1E8A5A] shadow-sm"><Check size={12} strokeWidth={3} /> Checked</span>
+          </div>
+        )}
+      </div>
+      {prev && (
+        <div className="relative">
+          <p className="text-center text-[15px] mb-3" style={{ color: INK }}>{prev.chapter}. Done.</p>
+          <div className="border-t border-dashed pt-3 opacity-60" style={{ borderColor: 'rgba(22,19,15,0.2)' }}><Mrz step={prev} i={i} /></div>
+        </div>
+      )}
+    </div>
+  );
+};
+
+// Right page for visa index i. `still` = already stamped (used on the turning leaf and when paging back).
+const RightPage = ({ i, still, reduce, hideVisa = false }) => {
+  const step = STEPS[i];
+  return (
+    <div className="relative h-full flex flex-col justify-between p-6" style={{ background: PAGE }}>
+      <SecurityLines />
+      <PageHead left={`Page 0${i + 1}`} right={step.chapter} />
+      <div className="relative grid grid-cols-[minmax(0,1fr)] place-items-center flex-1 overflow-clip">
+        <div className="absolute inset-0 grid place-items-center"><Guilloche size={420} color={step.color} opacity={0.09} /></div>
+        {/* "checking" scan line, then the visa goes on and gets stamped */}
+        {!reduce && !still && !hideVisa && (
+          <motion.span className="absolute left-6 right-6 h-[2px] rounded-full" style={{ background: step.color, boxShadow: `0 0 18px ${step.color}` }}
+            initial={{ top: '12%', opacity: 0 }} animate={{ top: ['12%', '88%'], opacity: [0, 0.7, 0] }} transition={{ duration: 0.7, delay: 0.25 }} />
+        )}
+        {!hideVisa && <VisaPage v={visaOf(step)} step={step} reduce={reduce} still={still} />}
+        <p className="absolute bottom-3 text-[11px]" style={{ color: MUTED }}>Entered · 2027 · 0{i + 1}</p>
+      </div>
+      <div className="relative">
+        <p className="text-center text-[15px] mb-3" style={{ color: INK }}>{step.title}</p>
+        <div className="border-t border-dashed pt-3" style={{ borderColor: 'rgba(22,19,15,0.2)' }}><Mrz step={step} i={i} /></div>
+      </div>
+    </div>
+  );
+};
+
+const TURN_MS = 950;
+
+// One paper leaf turning over the spine. Forward: lifts off the right page and lands on the left.
+// Back: lifts off the left page and lands on the right. On phones (one page) it peels off to the left.
+const Leaf = ({ turn, narrow }) => {
+  const fwd = turn.dir > 0;
+  const rot = useMotionValue(narrow && !fwd ? -180 : 0);
+  useEffect(() => {
+    const target = narrow ? (fwd ? -180 : 0) : fwd ? -180 : 180;
+    const c = animate(rot, target, { duration: TURN_MS / 1000, ease: [0.42, 0.02, 0.22, 1] });
+    return () => c.stop();
+  }, [rot, fwd, narrow]);
+  const a = useTransform(rot, (r) => Math.abs(r)); // 0 → 180 however it turns
+  // the page bends a little mid-turn, like paper, and catches light then shadow
+  const skew = useTransform(a, [0, 90, 180], [0, fwd ? -4 : 4, 0]);
+  const frontShade = useTransform(a, [0, 90], [0, 0.45]);
+  const backShade = useTransform(a, [90, 180], [0.45, 0]);
+  const shine = useTransform(a, [10, 60, 110], [0, 0.55, 0]);
+  const liftShadow = useTransform(a, [0, 50, 120], [0, 0.22, 0]); // on the page it leaves
+  const landShadow = useTransform(a, [70, 150, 180], [0, 0.25, 0]); // on the page it lands on
+
+  const pos = narrow ? { left: 6, right: 6 } : fwd ? { left: '50%', right: 6 } : { left: 6, right: '50%' };
+  const origin = narrow || fwd ? 'left center' : 'right center';
+  const front = narrow ? (fwd ? <RightPage i={turn.from} still /> : <RightPage i={turn.to} still />)
+    : fwd ? <RightPage i={turn.from} still /> : <LeftPage i={turn.from - 1} />;
+  const back = narrow ? null : fwd ? <LeftPage i={turn.to - 1} /> : <RightPage i={turn.to} still />;
+  const leaveSide = narrow ? { left: 6, right: 6 } : fwd ? { left: '50%', right: 6 } : { left: 6, right: '50%' };
+  const landSide = fwd ? { left: 6, right: '50%' } : { left: '50%', right: 6 };
+  const edge = fwd ? 'to left' : 'to right';
+
+  return (
+    <>
+      <motion.div aria-hidden="true" className="absolute top-[6px] bottom-[6px] pointer-events-none" style={{ ...leaveSide, opacity: liftShadow, background: `linear-gradient(${edge}, rgba(22,19,15,0.55), transparent 70%)`, z: 1 }} />
+      {!narrow && <motion.div aria-hidden="true" className="absolute top-[6px] bottom-[6px] pointer-events-none" style={{ ...landSide, opacity: landShadow, background: `linear-gradient(${fwd ? 'to right' : 'to left'}, transparent 20%, rgba(22,19,15,0.5))`, z: 1 }} />}
+      <motion.div aria-hidden="true" className="absolute top-[6px] bottom-[6px] pointer-events-none"
+        style={{ ...pos, rotateY: rot, skewY: skew, transformOrigin: origin, transformStyle: 'preserve-3d', z: 4 }}>
+        <div className="absolute inset-0 overflow-hidden shadow-[0_10px_30px_-12px_rgba(22,19,15,0.45)]" style={{ backfaceVisibility: 'hidden' }}>
+          {front}
+          <motion.div className="absolute inset-0" style={{ opacity: frontShade, background: `linear-gradient(${edge}, rgba(22,19,15,0.6), rgba(22,19,15,0.15) 60%, transparent)` }} />
+          <motion.div className="absolute inset-0" style={{ opacity: shine, background: 'linear-gradient(100deg, transparent 30%, rgba(255,255,255,0.7) 50%, transparent 70%)' }} />
+        </div>
+        {back && (
+          <div className="absolute inset-0 overflow-hidden" style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}>
+            {back}
+            <motion.div className="absolute inset-0" style={{ opacity: backShade, background: `linear-gradient(${fwd ? 'to right' : 'to left'}, rgba(22,19,15,0.55), transparent 65%)` }} />
+          </div>
+        )}
+      </motion.div>
+    </>
+  );
+};
+
 const PassportJourney = () => {
   const ref = useRef(null);
   const reduce = useReducedMotion();
@@ -245,6 +353,10 @@ const PassportJourney = () => {
   const [idx, setIdx] = useState(0);
   const [dir, setDir] = useState(1);
   const [closed, setClosed] = useState(true);
+  const [turn, setTurn] = useState(null); // { from, to, dir, n } while a leaf is turning
+  const idxRef = useRef(0);
+  const turnTimer = useRef(null);
+  const turnCount = useRef(0);
   // slot 0 opens the cover, slots 1..3 are the visas
   const SLOTS = STEPS.length + 1;
 
@@ -252,11 +364,19 @@ const PassportJourney = () => {
     const slot = Math.min(SLOTS - 1, Math.max(0, Math.floor(v * SLOTS * 0.999)));
     setClosed(slot === 0);
     const next = Math.max(0, slot - 1);
-    setIdx((cur) => {
-      if (next !== cur) setDir(next > cur ? 1 : -1);
-      return next;
-    });
+    const from = idxRef.current;
+    if (next === from) return;
+    idxRef.current = next;
+    setIdx(next);
+    setDir(next > from ? 1 : -1);
+    if (!reduce) {
+      turnCount.current += 1;
+      setTurn({ from, to: next, dir: next > from ? 1 : -1, n: turnCount.current });
+      clearTimeout(turnTimer.current);
+      turnTimer.current = setTimeout(() => setTurn(null), TURN_MS + 60);
+    }
   });
+  useEffect(() => () => clearTimeout(turnTimer.current), []);
 
   // Lying on a table: tilted back, a touch rotated, and it leans towards the cursor
   // phones get a gentler tilt so the whole passport stays on screen
@@ -297,8 +417,11 @@ const PassportJourney = () => {
   };
 
   const step = STEPS[idx];
-  const prev = idx > 0 ? STEPS[idx - 1] : null;
-  const visaOf = (st) => VISAS.find((x) => x.key === st.key);
+  // pages lying flat under the turning leaf: they switch to the new spread once it lands
+  const leftShown = turn ? (turn.dir > 0 ? turn.from - 1 : turn.to - 1) : idx - 1;
+  const rightShown = turn ? (turn.dir > 0 ? turn.to : turn.from) : idx;
+  // paging back shows a visa that was already stamped, so it doesn't stamp again
+  const rightStill = dir < 0 || (turn && turn.dir < 0);
 
   return (
     <section ref={ref} aria-label="Your study-abroad passport" style={{ height: `${(STEPS.length + 1) * 60 + 40}vh`, background: PAPER }} className="relative w-full">
@@ -377,6 +500,7 @@ const PassportJourney = () => {
                   <Cover />
                 </span>
               </motion.button>
+              {turn && !closed && <Leaf key={turn.n} turn={turn} narrow={narrow} />}
               <motion.div className="relative" style={{ clipPath: spreadClip }}>
               {/* page stack peeking out at the edges, like a thick passport */}
               <div className="absolute inset-0 translate-x-[6px] translate-y-[6px] rounded-[10px] border" style={{ background: '#E6EAE3', borderColor: 'rgba(22,19,15,0.08)' }} />
@@ -386,74 +510,15 @@ const PassportJourney = () => {
                 <div className="hidden md:block absolute top-0 bottom-0 left-1/2 -translate-x-1/2 w-10 z-10 pointer-events-none" style={{ background: 'linear-gradient(90deg, transparent, rgba(22,19,15,0.10) 45%, rgba(22,19,15,0.16) 50%, rgba(22,19,15,0.10) 55%, transparent)' }} />
                 <div className="hidden md:block absolute top-4 bottom-4 left-1/2 w-0 z-10 pointer-events-none" style={{ borderLeft: '1.5px dashed rgba(27,42,74,0.35)' }} />
                 {/* Left page: the visa before, checked */}
-                <div className="hidden md:flex relative flex-col justify-between p-6 min-h-[520px]">
-                  <SecurityLines />
-                  {!prev && <Cover />}
-                  {prev && <PageHead left="Checked" right={prev.chapter} />}
-                  <div className="relative grid grid-cols-[minmax(0,1fr)] place-items-center flex-1">
-                    <div className="absolute inset-0 grid place-items-center"><Guilloche size={340} color="#2E5E5A" opacity={0.08} /></div>
-                    {prev ? (
-                      <motion.div key={`prev-${prev.key}`} initial={{ opacity: 0 }} animate={{ opacity: 0.5 }} className="relative w-full max-w-[290px] grayscale -rotate-2">
-                        <VisaSticker v={visaOf(prev)} />
-                        <div className="absolute -right-3 -bottom-12 w-[50%] aspect-square -rotate-6"><Stamp step={prev} id={`p${idx}`} /></div>
-                        <span className="absolute -bottom-3 left-4 inline-flex items-center gap-1 rounded-full bg-white px-2.5 py-1 text-[11px] font-bold text-[#1E8A5A] shadow-sm"><Check size={12} strokeWidth={3} /> Checked</span>
-                      </motion.div>
-                    ) : null}
-                  </div>
-                  {prev && (
-                    <div className="relative">
-                      <p className="text-center text-[15px] mb-3" style={{ color: INK }}>{prev.chapter}. Done.</p>
-                      <div className="border-t border-dashed pt-3 opacity-60" style={{ borderColor: 'rgba(22,19,15,0.2)' }}><Mrz step={prev} i={idx - 1} /></div>
-                    </div>
-                  )}
+                <div className="hidden md:block relative min-h-[520px]">
+                  <LeftPage i={leftShown} />
                 </div>
 
-                {/* The page that sweeps over the spine on every turn */}
-                {!reduce && (
-                  <motion.div
-                    key={`sweep-${idx}`}
-                    aria-hidden="true"
-                    className="hidden md:block absolute top-0 bottom-0 w-1/2 z-20 pointer-events-none"
-                    style={{ left: dir > 0 ? '50%' : 0, transformOrigin: dir > 0 ? 'left center' : 'right center', background: `linear-gradient(${dir > 0 ? 90 : 270}deg, rgba(22,19,15,0.10), ${PAGE} 22%, ${PAGE})`, boxShadow: '0 0 30px rgba(22,19,15,0.18)' }}
-                    initial={{ rotateY: 0, opacity: idx === 0 ? 0 : 1 }}
-                    animate={{ rotateY: dir > 0 ? -180 : 180, opacity: [idx === 0 ? 0 : 1, idx === 0 ? 0 : 1, 0] }}
-                    transition={{ duration: 0.75, ease: [0.45, 0.05, 0.25, 1], opacity: { times: [0, 0.85, 1], duration: 0.75 } }}
-                  />
-                )}
-
-                {/* Right page: turns, gets its visa, then stamped. Click it to turn to the next visa. */}
-                <AnimatePresence mode="popLayout" custom={dir} initial={false}>
-                  <motion.div
-                    key={step.key}
-                    custom={dir}
-                    initial={reduce ? { opacity: 0 } : { rotateY: dir > 0 ? 70 : -70, opacity: 0 }}
-                    animate={reduce ? { opacity: 1 } : { rotateY: 0, opacity: 1 }}
-                    exit={reduce ? { opacity: 0 } : { rotateY: dir > 0 ? -70 : 70, opacity: 0 }}
-                    transition={{ duration: 0.55, ease: [0.2, 0.7, 0.2, 1] }}
-                    style={{ transformOrigin: 'left center', background: PAGE }}
-                    className={`relative flex flex-col justify-between p-6 min-h-[480px] md:min-h-[520px] ${idx < STEPS.length - 1 ? 'cursor-pointer' : ''}`}
-                    onClick={() => (closed ? goTo(0) : idx < STEPS.length - 1 && goTo(idx + 1))}
-                  >
-                    <SecurityLines />
-                    <PageHead left={`Page 0${idx + 1}`} right={step.chapter} />
-                    <div className="relative grid grid-cols-[minmax(0,1fr)] place-items-center flex-1 overflow-clip">
-                      <div className="absolute inset-0 grid place-items-center"><Guilloche size={420} color={step.color} opacity={0.09} /></div>
-                      {/* "checking" scan line, then the visa goes on and gets stamped */}
-                      {!reduce && !closed && (
-                        <motion.span key={`scan-${step.key}`} className="absolute left-6 right-6 h-[2px] rounded-full" style={{ background: step.color, boxShadow: `0 0 18px ${step.color}` }}
-                          initial={{ top: '12%', opacity: 0 }} animate={{ top: ['12%', '88%'], opacity: [0, 0.7, 0] }} transition={{ duration: 0.7, delay: 0.25 }} />
-                      )}
-                      {!closed && <VisaPage key={`visa-${step.key}`} v={visaOf(step)} step={step} reduce={reduce} />}
-                      <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: reduce ? 0 : 1.1 }} className="absolute bottom-3 text-[11px]" style={{ color: MUTED }}>
-                        Entered · 2027 · 0{idx + 1}
-                      </motion.p>
-                    </div>
-                    <div className="relative">
-                      <p className="text-center text-[15px] mb-3" style={{ color: INK }}>{step.title}</p>
-                      <div className="border-t border-dashed pt-3" style={{ borderColor: 'rgba(22,19,15,0.2)' }}><Mrz step={step} i={idx} /></div>
-                    </div>
-                  </motion.div>
-                </AnimatePresence>
+                {/* Right page: gets its visa, then stamped. Click it to turn to the next visa. */}
+                <div className={`relative min-h-[480px] md:min-h-[520px] ${idx < STEPS.length - 1 ? 'cursor-pointer' : ''}`}
+                  onClick={() => (closed ? goTo(0) : idx < STEPS.length - 1 && goTo(idx + 1))}>
+                  <RightPage key={`r-${rightShown}-${rightStill ? 's' : 'a'}`} i={rightShown} still={rightStill} reduce={reduce} hideVisa={closed} />
+                </div>
               </div>
               </motion.div>
             </motion.div>
