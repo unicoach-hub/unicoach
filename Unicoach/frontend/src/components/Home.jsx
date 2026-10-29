@@ -81,16 +81,16 @@ const Home = () => {
         </Suspense>
       </LazySection>
 
-      <LazySection minHeight="640px" rootMargin="900px">
-        <Suspense fallback={<SectionPlaceholder minHeight="640px" />}>
-          <FitChecker />
-        </Suspense>
-      </LazySection>
-
-      {/* 06b. Study-abroad passport: scroll turns the pages, each step gets stamped */}
+      {/* 04d. Study-abroad passport, kept between the two yellow sections */}
       <LazySection minHeight="100vh" rootMargin="400px">
         <Suspense fallback={<SectionPlaceholder minHeight="100vh" />}>
           <PassportJourney />
+        </Suspense>
+      </LazySection>
+
+      <LazySection minHeight="640px" rootMargin="900px">
+        <Suspense fallback={<SectionPlaceholder minHeight="640px" />}>
+          <FitChecker />
         </Suspense>
       </LazySection>
 

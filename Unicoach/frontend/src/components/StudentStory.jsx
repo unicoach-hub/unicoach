@@ -42,13 +42,13 @@ const STEPS = [
     key: 'scholarship', label: 'Scholarships', hi: 'Paisa bachao',
     student: 'Fees bahut zyada hai yaar 😅',
     mentor: 'Tension nahi. Tumhare profile pe ye scholarships ban rahi hain.',
-    screen: { title: 'Scholarships you qualify for', big: '₹4,20,000', note: 'Govt. of Ireland + university merit award' },
+    screen: { title: 'Scholarships you qualify for', big: '₹4,20,000', note: 'of ₹18L first-year fees', pct: 23, chips: ['Govt. of Ireland', 'UCD merit award'] },
   },
   {
     key: 'loan', label: 'Loan', hi: 'Fund ka jugaad',
     student: 'Baaki ka paisa? Papa ki FD nahi todni 🙏',
     mentor: 'Bina collateral loan, teen lenders compare kiye.',
-    screen: { title: 'Education loan · no collateral', big: '₹22,600 / month', note: '₹20L · 10 years · 3 lenders compared' },
+    screen: { title: 'Education loan · no collateral · ₹20L', lenders: [['Lender A', 10.5], ['Lender B', 11.2], ['Lender C', 9.8]], emi: '₹22,600 / month' },
   },
   {
     key: 'ielts', label: 'IELTS', hi: 'Score pakka',
@@ -60,17 +60,20 @@ const STEPS = [
     key: 'sop', label: 'SOP', hi: 'Kahani dumdaar',
     student: 'SOP likhna nahi aata 😬',
     mentor: 'Apni kahani sunao, main likhwati hoon. Radio wala kissa daalna!',
-    screen: { title: 'SOP_UCD.docx · reviewed', lines: [96, 100, 82, 90], tag: '✓ Strength 62 → 91' },
+    screen: { title: 'SOP_UCD.docx · reviewed', from: 62, to: 91, checks: ['Opening hook', 'Why this course', 'Career goal'] },
   },
   {
     key: 'visa', label: 'Visa', hi: 'Visa stamp done',
     student: 'VISA APPROVED!!! 🎉',
     mentor: 'Dublin mein milte hain! Airport pick-up ka bhi plan hai 😄',
-    screen: { title: 'Visa status', stamp: 'APPROVED' },
+    screen: { title: 'Visa status · Ireland Stamp 2', track: ['Documents', 'Biometrics', 'Decision'], stamp: 'APPROVED' },
   },
 ];
 
 const REACTIONS = ['👏', '🎯', '💸', '💪', '✍️', '🎉'];
+
+// Warm terracotta-to-salmon palette (cocoa, terracotta, salmon, peach, blush)
+const C = { cocoa: '#5C2E2A', terra: '#A9543F', salmon: '#E39A86', peach: '#F4C7B8', blush: '#FBEAE3', good: '#2F8F6A' };
 
 // how long the student asks, then how long the mentor presents (ms)
 const PHASE_MS = [1100, 2300];
@@ -79,13 +82,13 @@ const PHASE_MS = [1100, 2300];
 const Wave = ({ on, className = '' }) => (
   <span className={`inline-flex items-end gap-[2px] h-3 ${className}`}>
     {[0, 1, 2, 3].map((i) => (
-      <motion.span key={i} className="w-[3px] rounded-full bg-[#8AB4F8]" animate={on ? { height: [3, 12, 5, 10, 3] } : { height: 3 }} transition={on ? { duration: 0.8, repeat: Infinity, delay: i * 0.12 } : { duration: 0.2 }} />
+      <motion.span key={i} className="w-[3px] rounded-full bg-[#F4C7B8]" animate={on ? { height: [3, 12, 5, 10, 3] } : { height: 3 }} transition={on ? { duration: 0.8, repeat: Infinity, delay: i * 0.12 } : { duration: 0.2 }} />
     ))}
   </span>
 );
 
 const Tile = ({ who, speaking, live = false, children }) => (
-  <div className={`relative rounded-2xl overflow-hidden bg-[#DCE6FF] transition-shadow duration-300 ${speaking ? 'ring-[3px] ring-[#8AB4F8]' : 'ring-0'}`}>
+  <div className={`relative rounded-2xl overflow-hidden bg-[#FBEAE3] transition-shadow duration-300 ${speaking ? 'ring-[3px] ring-[#C9705F]' : 'ring-0'}`}>
     {children}
     <span className="absolute left-2 bottom-2 flex items-center gap-1 text-[11px] font-medium text-white bg-black/45 rounded-md px-1.5 py-0.5">
       {speaking || live ? <Wave on /> : <MicOff size={11} className="text-red-400" />} {who}
@@ -93,51 +96,134 @@ const Tile = ({ who, speaking, live = false, children }) => (
   </div>
 );
 
-const Screen = ({ s }) => (
-  <motion.div key={s.key} initial={{ opacity: 0, scale: 0.97 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.35 }} className="absolute inset-0 p-4 sm:p-5 bg-white flex flex-col">
-    <p className="text-[11px] sm:text-[12px] font-semibold text-slate-500">{s.screen.title}</p>
-    <div className="flex-1 flex flex-col justify-center">
-      {s.screen.rows && s.screen.rows.map(([u, t, p], i) => (
-        <motion.div key={u} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + i * 0.14 }} className="flex items-center gap-3 py-1.5 border-b border-slate-100 last:border-0">
-          <span className="flex-1 text-[13px] sm:text-[14px] font-semibold text-[#111] truncate">{u}</span>
-          <span className="text-[10.5px] font-bold px-2 py-0.5 rounded-full bg-blue-50 text-blue-700">{t}</span>
-          <span className="w-10 text-right text-[13px] font-bold">{p}%</span>
-        </motion.div>
-      ))}
-      {s.screen.big && (
-        <>
-          <motion.p initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.12 }} className="text-[30px] sm:text-[38px] font-bold text-[#111] tracking-[-0.03em] leading-none">{s.screen.big}</motion.p>
-          <p className="text-[12.5px] text-slate-500 mt-2">{s.screen.note}</p>
-        </>
-      )}
-      {s.screen.bands && (
-        <div className="flex items-end gap-4 h-[110px]">
-          {s.screen.bands.map(([l, b], i) => (
-            <div key={l} className="flex-1 flex flex-col items-center gap-1">
-              <span className="text-[13px] font-bold text-[#C04A1D]">{b}</span>
-              <motion.div className="w-full rounded-t-lg bg-[#93B4FF]" initial={{ height: 0 }} animate={{ height: `${(b - 5) * 34}px` }} transition={{ delay: 0.1 + i * 0.16, duration: 0.35 }} />
-              <span className="text-[11px] text-slate-500">{l}</span>
+// Each shared screen is a small infographic of that step
+const Screen = ({ s }) => {
+  const sc = s.screen;
+  return (
+    <motion.div key={s.key} initial={{ opacity: 0, scale: 0.97 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.35 }} className="absolute inset-0 p-3 sm:p-5 bg-white flex flex-col">
+      <p className="text-[10.5px] sm:text-[12px] font-semibold text-slate-500 truncate pr-1 sm:pr-28">{sc.title}</p>
+      <div className="flex-1 flex flex-col justify-center min-h-0">
+
+        {/* Shortlist: chance of getting in, as bars */}
+        {sc.rows && (
+          <div className="space-y-2.5">
+            {sc.rows.map(([u, t, p], i) => {
+              const col = p >= 80 ? C.good : p >= 65 ? C.terra : C.salmon;
+              return (
+                <motion.div key={u} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + i * 0.14 }}>
+                  <div className="flex items-center gap-2 text-[12.5px] sm:text-[13.5px]">
+                    <span className="flex-1 font-semibold text-[#111] truncate">{u}</span>
+                    <span className="text-[10px] font-bold px-1.5 py-0.5 rounded-full" style={{ background: C.blush, color: C.terra }}>{t}</span>
+                    <span className="w-9 text-right font-bold" style={{ color: col }}>{p}%</span>
+                  </div>
+                  <div className="mt-1 h-2 rounded-full bg-[#F3ECE7] overflow-hidden">
+                    <motion.div className="h-full rounded-full" style={{ background: col }} initial={{ width: 0 }} animate={{ width: `${p}%` }} transition={{ delay: 0.2 + i * 0.14, duration: 0.5 }} />
+                  </div>
+                </motion.div>
+              );
+            })}
+            <p className="text-[10.5px] text-slate-500 pt-0.5">Chance of getting in, from your marks and budget</p>
+          </div>
+        )}
+
+        {/* Scholarship: how much of the fees it covers */}
+        {sc.pct && (
+          <div className="flex items-center gap-2.5 sm:gap-4">
+            <svg viewBox="0 0 80 80" className="w-[62px] sm:w-[100px] shrink-0 -rotate-90" aria-hidden="true">
+              <circle cx="40" cy="40" r="32" fill="none" stroke={C.blush} strokeWidth="12" />
+              <motion.circle cx="40" cy="40" r="32" fill="none" stroke={C.terra} strokeWidth="12" strokeLinecap="round"
+                strokeDasharray={2 * Math.PI * 32} initial={{ strokeDashoffset: 2 * Math.PI * 32 }} animate={{ strokeDashoffset: 2 * Math.PI * 32 * (1 - sc.pct / 100) }} transition={{ delay: 0.15, duration: 0.7 }} />
+              <text x="40" y="45" textAnchor="middle" transform="rotate(90 40 40)" fontFamily="Urbanist, sans-serif" fontWeight="800" fontSize="16" fill={C.cocoa}>{sc.pct}%</text>
+            </svg>
+            <div className="min-w-0">
+              <p className="text-[19px] sm:text-[30px] font-bold text-[#111] tracking-[-0.03em] leading-none whitespace-nowrap">{sc.big}</p>
+              <p className="text-[10.5px] sm:text-[11.5px] text-slate-500 mt-1">{sc.note}</p>
+              <div className="mt-2 hidden sm:flex flex-wrap gap-1.5">
+                {sc.chips.map((c) => <span key={c} className="text-[10px] font-bold px-2 py-0.5 rounded-full" style={{ background: C.blush, color: C.terra }}>{c}</span>)}
+              </div>
             </div>
-          ))}
-        </div>
-      )}
-      {s.screen.lines && (
-        <div>
-          {s.screen.lines.map((w, i) => (
-            <motion.div key={i} className="h-2.5 rounded-full bg-[#E9E1FF] mb-2.5" initial={{ width: 0 }} animate={{ width: `${w}%` }} transition={{ delay: 0.08 + i * 0.16, duration: 0.35 }} />
-          ))}
-          <motion.span initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.75 }} className="inline-block mt-1 text-[12px] font-semibold text-emerald-700 bg-emerald-50 rounded-full px-2.5 py-0.5">{s.screen.tag}</motion.span>
-        </div>
-      )}
-      {s.screen.stamp && (
-        <div className="relative mx-auto w-[120px] h-[150px] rounded-lg bg-[#1E3A5F] grid place-items-center">
-          <span className="text-[10px] font-bold text-amber-200 tracking-[0.2em]">PASSPORT</span>
-          <motion.span initial={{ scale: 2.4, opacity: 0, rotate: -30 }} animate={{ scale: 1, opacity: 1, rotate: -14 }} transition={{ delay: 0.3, type: 'spring', stiffness: 380, damping: 16 }} className="absolute -right-8 bottom-5 px-3 py-1 rounded-md border-[3px] border-[#7C3F33] text-[#7C3F33] bg-white/95 text-[14px] font-extrabold tracking-wider">{s.screen.stamp}</motion.span>
-        </div>
-      )}
-    </div>
-  </motion.div>
-);
+          </div>
+        )}
+
+        {/* Loan: three lenders' rates compared, best one picked */}
+        {sc.lenders && (() => {
+          const best = Math.min(...sc.lenders.map((l) => l[1]));
+          return (
+            <div className="space-y-1.5 sm:space-y-2">
+              {sc.lenders.map(([n, r], i) => {
+                const on = r === best;
+                return (
+                  <div key={n} className="flex items-center gap-2 sm:gap-2.5 text-[11px] sm:text-[12.5px]">
+                    <span className={`w-[52px] sm:w-16 shrink-0 whitespace-nowrap font-semibold ${on ? 'text-[#111]' : 'text-slate-500'}`}>{n}</span>
+                    <div className="flex-1 h-4 sm:h-5 rounded-md bg-[#F3ECE7] overflow-hidden">
+                      <motion.div className="h-full rounded-md" style={{ background: on ? C.good : C.peach }} initial={{ width: 0 }} animate={{ width: `${(r / 12) * 100}%` }} transition={{ delay: 0.1 + i * 0.14, duration: 0.45 }} />
+                    </div>
+                    <span className="w-10 sm:w-12 text-right font-bold" style={{ color: on ? C.good : C.cocoa }}>{r}%</span>
+                  </div>
+                );
+              })}
+              <p className="pt-1 text-[11px] sm:text-[12.5px] font-semibold text-[#111] leading-snug">Lowest rate · EMI <span className="whitespace-nowrap" style={{ color: C.good }}>{sc.emi}</span></p>
+            </div>
+          );
+        })()}
+
+        {/* IELTS: band climbing to the target line */}
+        {sc.bands && (
+          <div className="relative flex items-end gap-4 h-[110px]">
+            <span className="absolute left-0 right-0 border-t-2 border-dashed" style={{ bottom: `${(7 - 5) * 34 + 18}px`, borderColor: C.good }} />
+            <span className="absolute right-0 text-[10px] font-bold" style={{ bottom: `${(7 - 5) * 34 + 21}px`, color: C.good }}>Target 7</span>
+            {sc.bands.map(([l, b], i) => (
+              <div key={l} className="flex-1 flex flex-col items-center gap-1">
+                <span className="text-[13px] font-bold" style={{ color: C.cocoa }}>{b}</span>
+                <motion.div className="w-full rounded-t-lg" style={{ background: b >= 7 ? C.good : i === 0 ? C.peach : C.salmon }} initial={{ height: 0 }} animate={{ height: `${(b - 5) * 34}px` }} transition={{ delay: 0.1 + i * 0.16, duration: 0.35 }} />
+                <span className="text-[11px] text-slate-500">{l}</span>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {/* SOP: strength meter from before to after, and what got fixed */}
+        {sc.checks && (
+          <div className="flex items-center gap-2 sm:gap-4">
+            <svg viewBox="0 0 110 66" className="w-[78px] sm:w-[130px] shrink-0" aria-hidden="true">
+              <path d="M9 58 A46 46 0 0 1 101 58" fill="none" stroke={C.blush} strokeWidth="11" strokeLinecap="round" />
+              <motion.path d="M9 58 A46 46 0 0 1 101 58" fill="none" stroke={C.good} strokeWidth="11" strokeLinecap="round" pathLength="100"
+                strokeDasharray="100" initial={{ strokeDashoffset: 100 - sc.from }} animate={{ strokeDashoffset: 100 - sc.to }} transition={{ delay: 0.2, duration: 0.8 }} />
+              <text x="55" y="52" textAnchor="middle" fontFamily="Urbanist, sans-serif" fontWeight="800" fontSize="20" fill={C.cocoa}>{sc.to}</text>
+              <text x="55" y="64" textAnchor="middle" fontFamily="Onest, sans-serif" fontSize="8" fill="#64748B">was {sc.from}</text>
+            </svg>
+            <ul className="space-y-1 sm:space-y-1.5 min-w-0">
+              {sc.checks.map((c, i) => (
+                <motion.li key={c} initial={{ opacity: 0, x: -6 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 + i * 0.15 }} className="flex items-center gap-1.5 text-[10.5px] sm:text-[12.5px] font-semibold text-[#111] whitespace-nowrap">
+                  <span className="w-4 h-4 rounded-full grid place-items-center text-white text-[9px]" style={{ background: C.good }}>✓</span>{c}
+                </motion.li>
+              ))}
+            </ul>
+          </div>
+        )}
+
+        {/* Visa: every stage ticked, then the stamp */}
+        {sc.track && (
+          <div>
+            <div className="relative flex items-start justify-between">
+              <span className="absolute left-4 right-4 top-[13px] h-[3px] rounded-full" style={{ background: C.good }} />
+              {[...sc.track, 'Approved'].map((t, i) => (
+                <motion.div key={t} initial={{ scale: 0.6, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} transition={{ delay: 0.1 + i * 0.15 }} className="relative flex flex-col items-center gap-1 w-16">
+                  <span className="w-7 h-7 rounded-full grid place-items-center text-white text-[12px] font-bold" style={{ background: i === sc.track.length ? C.terra : C.good }}>{i === sc.track.length ? '★' : '✓'}</span>
+                  <span className="text-[10.5px] font-semibold text-center text-[#111] leading-tight">{t}</span>
+                </motion.div>
+              ))}
+            </div>
+            <div className="mt-4 flex justify-center">
+              <motion.span initial={{ scale: 2.4, opacity: 0, rotate: -30 }} animate={{ scale: 1, opacity: 1, rotate: -8 }} transition={{ delay: 0.75, type: 'spring', stiffness: 380, damping: 16 }}
+                className="px-4 py-1.5 rounded-md border-[3px] bg-white/95 text-[16px] font-extrabold tracking-wider" style={{ borderColor: C.terra, color: C.terra }}>{sc.stamp}</motion.span>
+            </div>
+          </div>
+        )}
+      </div>
+    </motion.div>
+  );
+};
 
 const StudentStory = () => {
   const ref = useRef(null);
@@ -189,7 +275,7 @@ const StudentStory = () => {
   const clock = `${String(Math.floor(secs / 60)).padStart(2, '0')}:${String(secs % 60).padStart(2, '0')}`;
 
   return (
-    <section ref={ref} className="w-full max-w-full overflow-hidden bg-[#D9ECFF]">
+    <section ref={ref} className="w-full max-w-full overflow-hidden" style={{ background: 'linear-gradient(160deg, #FBEAE3 0%, #F6D2C4 55%, #EDB3A0 100%)' }}>
       <div className="max-w-[1180px] mx-auto px-4 sm:px-6 lg:px-10 py-16 sm:py-24 grid lg:grid-cols-[0.85fr_1.15fr] gap-10 lg:gap-14 items-center">
         <div>
           <span className="text-[13px] font-semibold text-[#86351A]">Student ki kahani</span>
@@ -230,13 +316,13 @@ const StudentStory = () => {
 
           <div className="grid grid-cols-[1fr_120px] sm:grid-cols-[1fr_150px] gap-3">
             {/* shared screen */}
-            <div className="relative rounded-2xl overflow-hidden bg-[#EEF2FF] border border-[#E4E8F5] aspect-[4/3] sm:aspect-[16/11]">
+            <div className="relative rounded-2xl overflow-hidden bg-[#FBEAE3] border border-[#F1DDD4] aspect-[4/3] sm:aspect-[16/11]">
               <AnimatePresence mode="wait">
                 {mentorTalking ? (
                   <Screen key={s.key} s={s} />
                 ) : (
-                  <motion.div key={`ask-${step}`} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="absolute inset-0 flex flex-col items-center justify-center gap-4 bg-gradient-to-br from-[#EAE5FF] via-[#F6F2EA] to-[#FFE4D6]">
-                    <motion.span animate={{ scale: [1, 1.06, 1] }} transition={{ duration: 1.2, repeat: Infinity }} className="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-gradient-to-br from-[#485A79] to-[#DE5C2B] grid place-items-center text-white text-[32px] font-bold ring-4 ring-[#8AB4F8]/70">A</motion.span>
+                  <motion.div key={`ask-${step}`} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="absolute inset-0 flex flex-col items-center justify-center gap-4 bg-gradient-to-br from-[#FBEAE3] via-[#F8DCD0] to-[#F4C7B8]">
+                    <motion.span animate={{ scale: [1, 1.06, 1] }} transition={{ duration: 1.2, repeat: Infinity }} className="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-gradient-to-br from-[#485A79] to-[#DE5C2B] grid place-items-center text-white text-[32px] font-bold ring-4 ring-[#C9705F]/60">A</motion.span>
                     <span className="flex items-center gap-2 text-slate-700 text-[13px]"><Wave on /> Aarav is asking…</span>
                     <span className="flex items-center gap-1.5 text-slate-500 text-[11.5px]"><MonitorUp size={13} /> Prachi will share her screen next</span>
                   </motion.div>
@@ -248,7 +334,7 @@ const StudentStory = () => {
                     className="absolute bottom-4 z-20 text-[28px] pointer-events-none" style={{ left: `${b.x}%` }}>{b.emoji}</motion.span>
                 ))}
               </AnimatePresence>
-              {mentorTalking && <span className="absolute top-2 right-2 z-10 text-[10.5px] font-semibold text-white bg-[#1A73E8] rounded-md px-2 py-0.5">Prachi is presenting</span>}
+              {mentorTalking && <span className="hidden sm:inline absolute top-2 right-2 z-10 text-[10.5px] font-semibold text-white bg-[#A9543F] rounded-md px-2 py-0.5">Prachi is presenting</span>}
               <AnimatePresence>
                 {mentorTalking && (
                   <motion.span
@@ -272,7 +358,7 @@ const StudentStory = () => {
                 </div>
               </Tile>
               <Tile who="Aarav (you)" speaking={!mentorTalking} live={!muted}>
-                <div className={`aspect-square grid place-items-center ${camOn ? 'bg-gradient-to-br from-[#C9D6FF] to-[#FFC9B0]' : 'bg-[#E3E8F4]'}`}>
+                <div className={`aspect-square grid place-items-center ${camOn ? 'bg-gradient-to-br from-[#F4C7B8] to-[#E39A86]' : 'bg-[#EBD9D1]'}`}>
                   <span className="w-12 h-12 rounded-full bg-white/70 grid place-items-center text-[#1B2A4A] text-[20px] font-bold">A</span>
                   {!camOn && <span className="absolute top-2 right-2 text-[10px] text-slate-500">Camera off</span>}
                 </div>
@@ -281,10 +367,10 @@ const StudentStory = () => {
           </div>
 
           {/* live captions */}
-          {captions && <div className="mt-3 min-h-[48px] rounded-xl bg-[#F1F4FB] px-3 py-2 text-[13px] sm:text-[14px] text-slate-800 leading-snug">
+          {captions && <div className="mt-3 min-h-[48px] rounded-xl bg-[#FBEDE7] px-3 py-2 text-[13px] sm:text-[14px] text-slate-800 leading-snug">
             <AnimatePresence mode="wait">
               <motion.p key={`${step}-${phase}`} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} transition={{ duration: 0.25 }}>
-                <span className="font-semibold text-[#1A73E8]">{mentorTalking ? 'Prachi' : 'Aarav'}:</span> {mentorTalking ? s.mentor : s.student}
+                <span className="font-semibold text-[#A9543F]">{mentorTalking ? 'Prachi' : 'Aarav'}:</span> {mentorTalking ? s.mentor : s.student}
               </motion.p>
             </AnimatePresence>
           </div>}
@@ -308,7 +394,7 @@ const StudentStory = () => {
               { I: MessageSquare, label: captions ? 'Hide captions' : 'Show captions', on: captions, act: () => setCaptions((c) => !c) },
             ].map(({ I, label, on, act }) => (
               <motion.button type="button" key={label} title={label} aria-label={label} onClick={act} whileTap={{ scale: 0.88 }}
-                className={`no-shine w-10 h-10 rounded-full grid place-items-center cursor-pointer transition-colors ${on ? 'bg-[#8AB4F8] text-[#202124]' : 'bg-[#EEF1F8] text-slate-700 hover:bg-[#E1E6F2]'}`}><I size={17} /></motion.button>
+                className={`no-shine w-10 h-10 rounded-full grid place-items-center cursor-pointer transition-colors ${on ? 'bg-[#E39A86] text-[#3A1D1A]' : 'bg-[#FBEDE7] text-slate-700 hover:bg-[#F4DCD2]'}`}><I size={17} /></motion.button>
             ))}
             <motion.button type="button" title="End call" aria-label="End call" onClick={() => setEnded(true)} whileTap={{ scale: 0.9 }} className="no-shine w-14 h-10 rounded-full grid place-items-center bg-[#EA4335] hover:bg-[#d33426] text-white cursor-pointer"><PhoneOff size={17} /></motion.button>
           </div>
@@ -323,7 +409,7 @@ const StudentStory = () => {
               <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="absolute inset-0 z-30 rounded-[22px] bg-white/95 flex flex-col items-center justify-center gap-3 text-slate-900">
                 <p className="text-[16px] font-semibold">You left the session</p>
                 <div className="flex gap-2">
-                  <button type="button" onClick={() => setEnded(false)} className="no-shine px-4 h-10 rounded-full bg-[#8AB4F8] text-[#202124] font-semibold text-[13.5px] cursor-pointer">Rejoin</button>
+                  <button type="button" onClick={() => setEnded(false)} className="no-shine px-4 h-10 rounded-full bg-[#E39A86] text-[#3A1D1A] font-semibold text-[13.5px] cursor-pointer">Rejoin</button>
                   <Link to="/unicoach#mentors-grid" className="px-4 h-10 rounded-full bg-[#DE5C2B] text-white font-semibold text-[13.5px] grid place-items-center">Book a real one</Link>
                 </div>
               </motion.div>
