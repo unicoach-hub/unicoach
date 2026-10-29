@@ -990,6 +990,9 @@ body.editorial-page :is(a, button)[class*="bg-[#DE5C2B]"]:is([class*="px-6"], [c
 /* Hero cap tassel: slow idle sway around the point where the cord leaves the brim */
 .uc-tassel-sway { transform-origin: 19.6% 35%; animation: uc-tassel-sway 3s cubic-bezier(.45, 0, .55, 1) infinite alternate; will-change: transform; }
 @keyframes uc-tassel-sway { from { transform: rotate(-7deg); } to { transform: rotate(7deg); } }
+/* gentle float for 3D props (destination cards) */
+@keyframes uc-bob { 0%, 100% { translate: 0 0; } 50% { translate: 0 -7px; } }
+@media (prefers-reduced-motion: reduce) { [class*='uc-bob'] { animation: none !important; } }
 @media (prefers-reduced-motion: reduce) { .uc-tassel-sway { animation: none; } }
 
 /* Brand orange used as *text* is one shade darker, so small labels pass WCAG AA contrast on cream and white */

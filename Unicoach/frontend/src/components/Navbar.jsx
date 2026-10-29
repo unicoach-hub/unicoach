@@ -781,15 +781,15 @@ const Navbar = () => {
             <div aria-hidden="true" className={`absolute inset-x-0 top-0 h-[80px] md:h-[88px] -z-10 transition-opacity duration-300 ${scrolled ? 'opacity-0' : 'opacity-100'}`}
                 style={{ background: 'linear-gradient(180deg, rgba(250,224,209,0.75) 0%, rgba(252,236,226,0.55) 55%, rgba(252,236,226,0) 100%)' }} />
             {/* Floating white pill, like a card resting over the page */}
-            <div className={`relative z-[101] pointer-events-auto max-w-[1120px] mx-auto px-3 md:px-5 bg-white rounded-[18px] md:rounded-[22px] border transition-shadow duration-300
+            <div className={`relative z-[101] pointer-events-auto max-w-[1120px] lg:w-fit mx-auto px-3 md:px-5 lg:px-4 bg-white rounded-[18px] md:rounded-[22px] border transition-shadow duration-300
                 ${scrolled
                     ? 'border-slate-200/70 shadow-[0_10px_34px_-12px_rgba(15,23,42,0.22)]'
                     : 'border-slate-200/60 shadow-[0_6px_24px_-14px_rgba(15,23,42,0.18)]'}`}>
-                <div className="flex items-center justify-between h-[58px] md:h-[64px]">
+                <div className="flex items-center justify-between lg:justify-start lg:gap-4 xl:gap-8 h-[58px] md:h-[64px]">
 
                     {/* Logo using main logo image */}
                     <div className="flex items-center flex-shrink-0">
-                    <Link to="/" className="flex-shrink-0 flex items-center select-none pr-2" data-cursor="pointer">
+                    <Link to="/" className="flex-shrink-0 flex items-center select-none pr-2 lg:pr-0" data-cursor="pointer">
                         <img
                             src={logo}
                             alt="UniCoach Logo"
@@ -1320,7 +1320,7 @@ const Navbar = () => {
                     )}
 
                     {/* Right side controls with ample breathing room */}
-                    <div className="flex items-center gap-2.5 xl:gap-3.5 ml-2 xl:ml-6 flex-shrink-0">
+                    <div className="flex items-center gap-2.5 xl:gap-3.5 ml-2 lg:ml-0 flex-shrink-0">
 
                         {/* Sign in / User profile */}
                         {currentUser ? (

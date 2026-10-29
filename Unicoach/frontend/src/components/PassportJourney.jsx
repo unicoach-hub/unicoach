@@ -87,15 +87,15 @@ const Stamp = ({ step, id }) => (
         <feDisplacementMap in="SourceGraphic" scale="2.2" />
       </filter>
     </defs>
-    <g filter={`url(#ink-${id})`} fill="none" stroke={step.color} opacity="0.92">
-      <circle cx="120" cy="120" r="112" strokeWidth="5" />
-      <circle cx="120" cy="120" r="74" strokeWidth="2" />
+    <g filter={`url(#ink-${id})`} fill="none" stroke={step.color} opacity="0.96">
+      <circle cx="120" cy="120" r="112" strokeWidth="8" />
+      <circle cx="120" cy="120" r="76" strokeWidth="3.5" />
       <text fontFamily="Onest, ui-monospace, monospace" fontSize="13.5" fontWeight="700" letterSpacing="3.2" fill={step.color} stroke="none">
         <textPath href={`#ring-${id}`} startOffset="0">UNICOACH · STUDY ABROAD · {step.chapter.toUpperCase()} · UNICOACH ·</textPath>
       </text>
       <text x="120" y="98" textAnchor="middle" fontSize="11" fontWeight="700" letterSpacing="3" fill={step.color} stroke="none">★ IN ★</text>
-      <rect x="22" y="104" width="196" height="40" rx="3" strokeWidth="3" transform="rotate(-6 120 124)" fill={PAGE} fillOpacity="0.6" />
-      <text x="120" y="136" textAnchor="middle" fontSize={step.stamp.length > 8 ? 25 : 32} fontWeight="900" letterSpacing="1.5" fill={step.color} stroke="none" transform="rotate(-6 120 124)">{step.stamp}</text>
+      <rect x="14" y="100" width="212" height="48" rx="4" strokeWidth="5" transform="rotate(-6 120 124)" fill={PAGE} fillOpacity="0.6" />
+      <text x="120" y="137" textAnchor="middle" fontSize={step.stamp.length > 8 ? 30 : 38} fontWeight="900" letterSpacing="1.5" fill={step.color} stroke="none" transform="rotate(-6 120 124)">{step.stamp}</text>
       <text x="120" y="164" textAnchor="middle" fontSize="8.5" fontWeight="700" letterSpacing="2" fill={step.color} stroke="none">{step.sub}</text>
     </g>
   </svg>
@@ -190,7 +190,7 @@ const VisaPage = ({ v, step, reduce }) => {
         </span>
       )}
       {/* entry mark: appears the instant the stamp hits */}
-      <motion.div className="absolute right-1 -bottom-8 w-[36%] aspect-square pointer-events-none"
+      <motion.div className="absolute right-[2%] -bottom-14 w-[52%] aspect-square pointer-events-none"
         initial={reduce ? { opacity: 0 } : { scale: 1.06, opacity: 0, rotate: -10 }}
         animate={{ scale: 1, opacity: 0.95, rotate: -10 }}
         transition={{ delay: reduce ? 0 : HIT, duration: 0.12, ease: 'easeOut' }}>
@@ -198,7 +198,7 @@ const VisaPage = ({ v, step, reduce }) => {
       </motion.div>
       {/* the rubber stamp itself: drops, presses (squashes), lifts away */}
       {!reduce && (
-        <motion.div className="absolute right-[3%] bottom-[-2.2rem] w-[32%] pointer-events-none z-20" style={{ aspectRatio: '100 / 150', transformOrigin: '50% 100%', z: 60 }}
+        <motion.div className="absolute right-[6%] bottom-[-3.2rem] w-[42%] pointer-events-none z-20" style={{ aspectRatio: '100 / 150', transformOrigin: '50% 100%', z: 60 }}
           initial={{ y: '-130%', opacity: 0, rotate: -10 }}
           animate={{ y: ['-130%', '-118%', '0%', '0%', '-150%'], opacity: [0, 1, 1, 1, 0], scaleY: [1, 1, 0.9, 1, 1] }}
           transition={{ delay: HIT - 0.45, duration: 1.05, times: [0, 0.18, 0.43, 0.6, 1], ease: ['easeOut', 'easeIn', 'linear', 'easeIn'] }}>
@@ -207,7 +207,7 @@ const VisaPage = ({ v, step, reduce }) => {
       )}
       {/* little ink puff at the moment of impact */}
       {!reduce && (
-        <motion.span className="absolute right-[6%] bottom-[-1.4rem] w-[30%] aspect-square rounded-full pointer-events-none"
+        <motion.span className="absolute right-[4%] bottom-[-2.8rem] w-[46%] aspect-square rounded-full pointer-events-none"
           style={{ border: `2px solid ${step.color}` }}
           initial={{ scale: 0.6, opacity: 0 }} animate={{ scale: [0.6, 1.25], opacity: [0, 0.35, 0] }}
           transition={{ delay: HIT, duration: 0.45 }} />
@@ -380,7 +380,7 @@ const PassportJourney = () => {
                     {prev ? (
                       <motion.div key={`prev-${prev.key}`} initial={{ opacity: 0 }} animate={{ opacity: 0.5 }} className="relative w-full max-w-[290px] grayscale -rotate-2">
                         <VisaSticker v={visaOf(prev)} />
-                        <div className="absolute right-0 -bottom-7 w-[34%] aspect-square"><Stamp step={prev} id={`p${idx}`} /></div>
+                        <div className="absolute -right-3 -bottom-12 w-[50%] aspect-square -rotate-6"><Stamp step={prev} id={`p${idx}`} /></div>
                         <span className="absolute -bottom-3 left-4 inline-flex items-center gap-1 rounded-full bg-white px-2.5 py-1 text-[11px] font-bold text-[#1E8A5A] shadow-sm"><Check size={12} strokeWidth={3} /> Checked</span>
                       </motion.div>
                     ) : null}
