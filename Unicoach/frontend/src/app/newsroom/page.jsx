@@ -29,7 +29,6 @@ import {
 import { API_BASE_URL } from '../../config';
 import CoverImage from '../../components/CoverImage';
 import { RailwayBoard } from '../../components/desi/DesiPop';
-import blackLogo from '../../assets/blackunicoachlogo.webp';
 
 // Report cover drawn from the report's own headline number, instead of a stock photo
 const StatCover = ({ stat, label, tone, soft }) => (
@@ -56,8 +55,6 @@ const NewsroomPage = () => {
     const [loadingNews, setLoadingNews] = useState(true);
 
     // Media Kit Download State Simulation
-    const [isDownloading, setIsDownloading] = useState(false);
-    const [downloadProgress, setDownloadProgress] = useState(0);
 
     const API_URL = API_BASE_URL;
 
@@ -113,30 +110,6 @@ const NewsroomPage = () => {
             setMediaForm({ name: '', organization: '', email: '', query: '' });
         }, 2500);
     };
-
-    const handleDownloadMediaKit = () => {
-        if (isDownloading) return;
-        setIsDownloading(true);
-        setDownloadProgress(0);
-    };
-
-    useEffect(() => {
-        if (!isDownloading) return;
-        const interval = setInterval(() => {
-            setDownloadProgress(prev => {
-                if (prev >= 100) {
-                    clearInterval(interval);
-                    setTimeout(() => {
-                        setIsDownloading(false);
-                        alert("Mock Media Kit ZIP Download Complete!");
-                    }, 500);
-                    return 100;
-                }
-                return prev + 10;
-            });
-        }, 150);
-        return () => clearInterval(interval);
-    }, [isDownloading]);
 
     // Fallbacks
     const defaultNewsSlides = [
@@ -485,64 +458,55 @@ const NewsroomPage = () => {
                                 </div>
                             </div>
 
-                            {/* Graphics Panel / Media Kit (4 Columns) */}
+                            {/* Free download for students: a real 2-page PDF in public/downloads */}
                             <div className="lg:col-span-4 space-y-6">
                                 <h3 className="text-xl font-bold tracking-tight text-slate-800 flex items-center gap-2">
-                                    <Download size={20} className="text-indigo-600" />
-                                    Media Resources
+                                    <Download size={20} className="text-[#C9573B]" />
+                                    Free Download
                                 </h3>
 
                                 <div className="rounded-[32px] p-6 relative overflow-hidden flex flex-col justify-between min-h-[300px] border border-[#F3D3C8]" style={{ background: 'linear-gradient(140deg, #FCE6DC 0%, #FBF1EA 55%, #F1ECFB 100%)' }}>
-                                    
                                     <div className="space-y-3 relative z-10 text-left">
-                                        <span className="inline-block text-[10px] font-bold text-[#D9573F] bg-white w-fit px-2.5 py-1 rounded-md border border-[#F3D3C8]">
-                                            Press Kit v2.6
+                                        <span className="inline-block text-[10px] font-bold text-[#C9573B] bg-white w-fit px-2.5 py-1 rounded-md border border-[#F3D3C8]">
+                                            Free PDF · 2 pages
                                         </span>
                                         <h3 className="text-lg font-bold tracking-tight leading-snug">
-                                            Download Corporate Assets & Guidelines
+                                            Study abroad document checklist
                                         </h3>
                                         <p className="text-[#5B544A] text-xs font-semibold leading-relaxed">
-                                            Logos, brand colours, founder bios and headshots in one zip.
+                                            Every document from applying to boarding your flight. Print it and tick as you go.
                                         </p>
-                                        {/* Preview of what is in the kit */}
-                                        <div className="grid grid-cols-2 gap-2 pt-1">
-                                            <div className="bg-white rounded-xl border border-[#EFE3DA] p-3 grid place-items-center h-16">
-                                                <img src={blackLogo} alt="UniCoach logo" className="h-6 w-auto" />
-                                            </div>
-                                            <div className="bg-white rounded-xl border border-[#EFE3DA] p-2.5 flex flex-col justify-center gap-1.5">
-                                                <div className="flex gap-1">
-                                                    {['#DE5C2B', '#F2B705', '#0F9F8F', '#2F5BFF', '#E4007C'].map((c) => <span key={c} className="flex-1 h-5 rounded" style={{ background: c }} />)}
+                                        {/* Preview: a little checklist sheet */}
+                                        <div className="bg-white rounded-xl border border-[#EFE3DA] p-3 space-y-1.5 -rotate-1 shadow-[0_10px_24px_-16px_rgba(22,19,15,0.4)]">
+                                            {[
+                                                ['Passport, valid 6+ months', true, '#C9573B'],
+                                                ['Statement of Purpose', true, '#C9573B'],
+                                                ['Bank statements', true, '#9A6B00'],
+                                                ['Visa appointment', false, '#2F5BFF'],
+                                                ['Forex card', false, '#0F8F80'],
+                                            ].map(([t, done, c]) => (
+                                                <div key={t} className="flex items-center gap-2 text-[11px]">
+                                                    <span className="w-3.5 h-3.5 rounded-[4px] grid place-items-center text-white text-[8px] font-bold flex-shrink-0" style={done ? { background: c } : { border: `1.5px solid ${c}` }}>{done ? '✓' : ''}</span>
+                                                    <span className={done ? 'text-[#8A8275] line-through decoration-[#C9C2B6]' : 'text-[#16130F] font-semibold'}>{t}</span>
                                                 </div>
-                                                <span className="text-[9.5px] font-bold text-[#5B544A]">Brand colours</span>
-                                            </div>
+                                            ))}
                                         </div>
                                         <div className="flex flex-wrap gap-1.5">
-                                            {['Founder bios', 'Headshots', 'Fact sheet'].map((t) => (
-                                                <span key={t} className="text-[10px] font-bold text-[#16130F] bg-white/80 border border-[#EFE3DA] px-2 py-0.5 rounded-full">{t}</span>
+                                            {[['Application', '#C9573B'], ['Money proof', '#9A6B00'], ['Visa', '#2F5BFF'], ['Before you fly', '#0F8F80']].map(([t, c]) => (
+                                                <span key={t} className="text-[10px] font-bold bg-white/80 border border-[#EFE3DA] px-2 py-0.5 rounded-full" style={{ color: c }}>{t}</span>
                                             ))}
                                         </div>
                                     </div>
 
                                     <div className="relative z-10 pt-6">
-                                        {isDownloading ? (
-                                            <div className="space-y-2">
-                                                <div className="flex items-center justify-between text-[10px] text-[#5B544A] font-bold uppercase">
-                                                    <span>Downloading assets...</span>
-                                                    <span>{downloadProgress}%</span>
-                                                </div>
-                                                <div className="w-full h-1.5 bg-white rounded-full overflow-hidden">
-                                                    <div className="h-full bg-[#D9573F] transition-all duration-300" style={{ width: `${downloadProgress}%` }}></div>
-                                                </div>
-                                            </div>
-                                        ) : (
-                                            <button 
-                                                onClick={handleDownloadMediaKit}
-                                                className="no-shine w-full inline-flex items-center justify-center gap-2 text-white font-bold text-xs bg-[#16130F] hover:bg-[#D9573F] p-3.5 rounded-2xl transition-all cursor-pointer shadow-md"
-                                            >
-                                                <Download size={14} />
-                                                <span>Download Media Kit (32MB)</span>
-                                            </button>
-                                        )}
+                                        <a
+                                            href="/downloads/unicoach-study-abroad-document-checklist.pdf"
+                                            download
+                                            className="no-shine w-full inline-flex items-center justify-center gap-2 text-white font-bold text-xs bg-[#16130F] hover:bg-[#C9573B] p-3.5 rounded-2xl transition-all cursor-pointer shadow-md"
+                                        >
+                                            <Download size={14} />
+                                            <span>Download checklist (PDF, 220 KB)</span>
+                                        </a>
                                     </div>
                                 </div>
                             </div>
