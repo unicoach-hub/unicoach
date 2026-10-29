@@ -29,6 +29,19 @@ import {
 import { API_BASE_URL } from '../../config';
 import CoverImage from '../../components/CoverImage';
 import { RailwayBoard } from '../../components/desi/DesiPop';
+import blackLogo from '../../assets/blackunicoachlogo.webp';
+
+// Report cover drawn from the report's own headline number, instead of a stock photo
+const StatCover = ({ stat, label, tone, soft }) => (
+    <div className="absolute inset-0 flex flex-col justify-center px-7" style={{ background: soft }}>
+        <span className="font-urbanist font-extrabold leading-none text-[64px]" style={{ color: tone }}>{stat}%</span>
+        <span className="mt-2 text-[13px] font-semibold text-[#16130F] max-w-[240px] leading-snug">{label}</span>
+        <div className="mt-4 h-3 w-full max-w-[280px] rounded-full bg-white overflow-hidden border border-black/5">
+            <div className="h-full rounded-full" style={{ width: `${stat}%`, background: tone }} />
+        </div>
+        <span className="absolute right-6 bottom-5 text-[10px] font-bold text-[#5B544A]">UniCoach student survey, 2026</span>
+    </div>
+);
 
 const NewsroomPage = () => {
     const navigate = useNavigate();
@@ -148,14 +161,14 @@ const NewsroomPage = () => {
             id: 'rep-1',
             title: "More Students Are Walking In With a Shortlist Already Made",
             description: "Our 2026 student intent index reveals a massive rise in student preparation; over 65% of applicants initiate counselling with specific university targets already in mind.",
-            image: "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=600&auto=format&fit=crop&q=80",
+            stat: 65, statLabel: 'of students arrive with a university shortlist already in mind', tone: '#2F5BFF', soft: '#E7EDFF',
             category: "Student Reports"
         },
         {
             id: 'rep-2',
             title: "Scholarships Are Becoming a Bigger Part of How Students Choose",
             description: "Rising living costs in destination countries place scholarship availability as the top deciding factor for 78% of Indian study abroad students this academic cycle.",
-            image: "https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=600&auto=format&fit=crop&q=80",
+            stat: 78, statLabel: 'say scholarships decide where they apply', tone: '#0F9F8F', soft: '#DDF5F1',
             category: "Student Reports"
         }
     ];
@@ -395,17 +408,17 @@ const NewsroomPage = () => {
                         {/* Mid Row Statistics Dashboard */}
                         <section className="grid grid-cols-1 md:grid-cols-4 gap-6">
                             {[
-                                { label: "Visa Approval Ratio", val: "98.6%", icon: <Award size={20} className="text-emerald-600" /> },
-                                { label: "Partner Universities", val: "500+", icon: <Globe2 size={20} className="text-[#DE5C2B]" /> },
-                                { label: "Physical Centers", val: "15+", icon: <Building2 size={20} className="text-indigo-600" /> },
-                                { label: "Global Alumni", val: "1.2L+", icon: <Users size={20} className="text-purple-600" /> }
+                                { label: "Visa Approval Ratio", val: "98.6%", Icon: Award, c: '#0F9F8F', soft: '#DDF5F1' },
+                                { label: "Partner Universities", val: "500+", Icon: Globe2, c: '#D9573F', soft: '#FCE9E4' },
+                                { label: "Physical Centers", val: "15+", Icon: Building2, c: '#2F5BFF', soft: '#E7EDFF' },
+                                { label: "Global Alumni", val: "1.2L+", Icon: Users, c: '#6D3FE0', soft: '#EEE8FD' }
                             ].map((stat, idx) => (
                                 <div key={idx} className="bg-white border border-slate-200/60 rounded-[28px] p-6 flex items-center gap-4 shadow-sm hover:shadow-md transition-shadow">
-                                    <div className="p-3 bg-indigo-50/80 border border-indigo-100/30 rounded-2xl">
-                                        {stat.icon}
+                                    <div className="p-3 rounded-2xl" style={{ background: stat.soft, color: stat.c }}>
+                                        <stat.Icon size={20} />
                                     </div>
                                     <div className="text-left">
-                                        <span className="block text-2xl font-black text-slate-800">{stat.val}</span>
+                                        <span className="block text-2xl font-black" style={{ color: stat.c }}>{stat.val}</span>
                                         <span className="text-[10px] text-slate-450 font-extrabold uppercase tracking-wider">{stat.label}</span>
                                     </div>
                                 </div>
@@ -441,15 +454,21 @@ const NewsroomPage = () => {
                                             className="bg-white border border-slate-200/60 rounded-[32px] overflow-hidden shadow-sm flex flex-col justify-between group hover:shadow-lg transition-all duration-300 cursor-pointer"
                                         >
                                             <div className="relative aspect-[16/10] bg-slate-900 overflow-hidden flex items-center justify-center">
-                                                <CoverImage
-                                                    src={rep.imageUrl ? getAbsoluteUrl(rep.imageUrl) : rep.image}
-                                                    alt={rep.title}
-                                                    title={rep.title}
-                                                    category={rep.category}
-                                                    className="w-full h-full object-cover group-hover:scale-103 transition-transform duration-500"
-                                                />
-                                                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/40 via-transparent to-transparent opacity-50"></div>
-                                                <span className="absolute bottom-4 left-4 text-[9px] font-extrabold uppercase text-indigo-650 bg-indigo-50 border border-indigo-150 px-2.5 py-0.5 rounded-lg backdrop-blur-sm">
+                                                {!rep.imageUrl && rep.stat ? (
+                                                    <StatCover stat={rep.stat} label={rep.statLabel} tone={rep.tone} soft={rep.soft} />
+                                                ) : (
+                                                    <>
+                                                        <CoverImage
+                                                            src={rep.imageUrl ? getAbsoluteUrl(rep.imageUrl) : rep.image}
+                                                            alt={rep.title}
+                                                            title={rep.title}
+                                                            category={rep.category}
+                                                            className="w-full h-full object-cover group-hover:scale-103 transition-transform duration-500"
+                                                        />
+                                                        <div className="absolute inset-0 bg-gradient-to-t from-slate-950/40 via-transparent to-transparent opacity-50"></div>
+                                                    </>
+                                                )}
+                                                <span className="absolute top-4 left-4 text-[9px] font-extrabold uppercase text-indigo-650 bg-indigo-50 border border-indigo-150 px-2.5 py-0.5 rounded-lg backdrop-blur-sm">
                                                     {rep.category || 'Student Reports'}
                                                 </span>
                                             </div>
@@ -473,39 +492,52 @@ const NewsroomPage = () => {
                                     Media Resources
                                 </h3>
 
-                                <div className="uc-soft rounded-[32px] p-6 relative overflow-hidden flex flex-col justify-between min-h-[300px]">
-                                    <div 
-                                        className="absolute inset-0 bg-cover bg-center opacity-10 pointer-events-none"
-                                        style={{ backgroundImage: `url('/newsroom_hero.webp')` }}
-                                    />
+                                <div className="rounded-[32px] p-6 relative overflow-hidden flex flex-col justify-between min-h-[300px] border border-[#F3D3C8]" style={{ background: 'linear-gradient(140deg, #FCE6DC 0%, #FBF1EA 55%, #F1ECFB 100%)' }}>
                                     
                                     <div className="space-y-3 relative z-10 text-left">
-                                        <span className="text-[9px] font-black uppercase text-indigo-300 bg-indigo-950/40 w-fit px-2.5 py-1 rounded-md border border-indigo-700/30">
+                                        <span className="inline-block text-[10px] font-bold text-[#D9573F] bg-white w-fit px-2.5 py-1 rounded-md border border-[#F3D3C8]">
                                             Press Kit v2.6
                                         </span>
                                         <h3 className="text-lg font-bold tracking-tight leading-snug">
                                             Download Corporate Assets & Guidelines
                                         </h3>
-                                        <p className="text-slate-400 text-xs font-semibold leading-relaxed">
-                                            Access our high-resolution vector logos, executive headshots, brand color guidelines, and founder biographies.
+                                        <p className="text-[#5B544A] text-xs font-semibold leading-relaxed">
+                                            Logos, brand colours, founder bios and headshots in one zip.
                                         </p>
+                                        {/* Preview of what is in the kit */}
+                                        <div className="grid grid-cols-2 gap-2 pt-1">
+                                            <div className="bg-white rounded-xl border border-[#EFE3DA] p-3 grid place-items-center h-16">
+                                                <img src={blackLogo} alt="UniCoach logo" className="h-6 w-auto" />
+                                            </div>
+                                            <div className="bg-white rounded-xl border border-[#EFE3DA] p-2.5 flex flex-col justify-center gap-1.5">
+                                                <div className="flex gap-1">
+                                                    {['#DE5C2B', '#F2B705', '#0F9F8F', '#2F5BFF', '#E4007C'].map((c) => <span key={c} className="flex-1 h-5 rounded" style={{ background: c }} />)}
+                                                </div>
+                                                <span className="text-[9.5px] font-bold text-[#5B544A]">Brand colours</span>
+                                            </div>
+                                        </div>
+                                        <div className="flex flex-wrap gap-1.5">
+                                            {['Founder bios', 'Headshots', 'Fact sheet'].map((t) => (
+                                                <span key={t} className="text-[10px] font-bold text-[#16130F] bg-white/80 border border-[#EFE3DA] px-2 py-0.5 rounded-full">{t}</span>
+                                            ))}
+                                        </div>
                                     </div>
 
                                     <div className="relative z-10 pt-6">
                                         {isDownloading ? (
                                             <div className="space-y-2">
-                                                <div className="flex items-center justify-between text-[10px] text-slate-400 font-bold uppercase">
+                                                <div className="flex items-center justify-between text-[10px] text-[#5B544A] font-bold uppercase">
                                                     <span>Downloading assets...</span>
                                                     <span>{downloadProgress}%</span>
                                                 </div>
-                                                <div className="w-full h-1.5 bg-white/10 rounded-full overflow-hidden">
-                                                    <div className="h-full bg-indigo-500 transition-all duration-300" style={{ width: `${downloadProgress}%` }}></div>
+                                                <div className="w-full h-1.5 bg-white rounded-full overflow-hidden">
+                                                    <div className="h-full bg-[#D9573F] transition-all duration-300" style={{ width: `${downloadProgress}%` }}></div>
                                                 </div>
                                             </div>
                                         ) : (
                                             <button 
                                                 onClick={handleDownloadMediaKit}
-                                                className="w-full inline-flex items-center justify-center gap-2 text-slate-950 font-bold text-xs bg-white hover:bg-indigo-400 hover:text-white p-3.5 rounded-2xl transition-all cursor-pointer shadow-md"
+                                                className="no-shine w-full inline-flex items-center justify-center gap-2 text-white font-bold text-xs bg-[#16130F] hover:bg-[#D9573F] p-3.5 rounded-2xl transition-all cursor-pointer shadow-md"
                                             >
                                                 <Download size={14} />
                                                 <span>Download Media Kit (32MB)</span>

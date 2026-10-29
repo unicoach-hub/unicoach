@@ -1,22 +1,182 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { motion, AnimatePresence } from 'framer-motion';
-import { 
-  Sparkles, Compass, Award, FileText, Mic, 
-  GraduationCap, Calculator, ArrowRight, ShieldCheck, 
-  Clock, CheckCircle2, Zap, Target, Volume2, 
-  ArrowUpRight, Play, Check, ChevronRight, BarChart3,
-  Sliders, Search, Layers, RefreshCw, Star
+import {
+  Sparkles, FileText, GraduationCap, ArrowRight, ShieldCheck, Clock, CheckCircle2, Check,
 } from 'lucide-react';
 import { useLead } from '../context/LeadContext';
 import { HeroBackButton } from '../components/ui/BackButton';
 import { StdSign } from '../components/desi/DesiPop';
 import { HookBand } from '../components/ui/Infographics';
 
-// Calm paper panels with faint ruled lines instead of stock / AI photos
-const PAPER_PANEL = {
-  background: '#F6F3EC',
-  backgroundImage: 'repeating-linear-gradient(0deg, transparent 0 23px, rgba(22,19,15,0.05) 23px 24px)',
+// Small previews of what each tool actually gives you (sample data, labelled as a sample)
+const INK = '#16130F';
+const Sample = () => <span className="absolute top-2 right-3 text-[10px] font-semibold text-[#8A8275]">Sample</span>;
+
+// SOP: the sections a good SOP needs, each one tagged as the AI fills it in
+const SopSheet = () => {
+  const parts = [
+    { tag: 'Opening hook', c: '#D9573F', soft: '#FCE9E4', w: ['92%', '70%'] },
+    { tag: 'Why this course', c: '#2F5BFF', soft: '#E7EDFF', w: ['88%', '60%'] },
+    { tag: 'Projects & skills', c: '#6D3FE0', soft: '#EEE8FD', w: ['95%', '78%'] },
+    { tag: 'Career goal', c: '#0F9F8F', soft: '#DDF5F1', w: ['84%', '52%'] },
+  ];
+  return (
+    <div className="absolute inset-0 grid place-items-center p-5">
+      <div className="w-full max-w-[300px] bg-white rounded-xl border border-[#E6E0D4] shadow-[0_18px_40px_-20px_rgba(22,19,15,0.35)] p-4 -rotate-[1.5deg] group-hover:rotate-0 transition-transform duration-500">
+        <p className="text-[12px] font-bold" style={{ color: INK }}>Statement of Purpose</p>
+        <p className="text-[10px] text-[#8A8275] mb-3">MS Computer Science · Northeastern</p>
+        <div className="space-y-2.5">
+          {parts.map((p) => (
+            <div key={p.tag} className="pl-2.5 border-l-[3px]" style={{ borderColor: p.c }}>
+              <span className="inline-block text-[9.5px] font-bold px-1.5 py-0.5 rounded mb-1" style={{ background: p.soft, color: p.c }}>{p.tag}</span>
+              {p.w.map((w, i) => <span key={i} className="block h-[5px] rounded-full bg-[#ECE7DE] mb-1" style={{ width: w }} />)}
+            </div>
+          ))}
+        </div>
+        <div className="mt-3 pt-2.5 border-t border-dashed border-[#E6E0D4] flex items-center justify-between text-[10px]">
+          <span className="font-semibold text-[#5B544A]">820 / 1000 words</span>
+          <span className="inline-flex items-center gap-1 font-bold text-[#0F9F8F]"><CheckCircle2 size={11} /> Original</span>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// Visa mock: the officer asks, you answer, the answer gets feedback
+const VisaChat = () => (
+  <div className="absolute inset-0 px-4 pt-7 pb-3 flex flex-col gap-2 justify-center" style={{ background: '#EEF2FF' }}>
+    <Sample />
+    <div className="self-start max-w-[82%] bg-white rounded-2xl rounded-tl-sm px-3 py-2 shadow-sm border border-[#DCE3FA]">
+      <p className="text-[9.5px] font-bold text-[#2F5BFF] mb-0.5">Visa officer</p>
+      <p className="text-[11.5px] leading-snug" style={{ color: INK }}>Why this university?</p>
+    </div>
+    <div className="self-end max-w-[82%] rounded-2xl rounded-tr-sm px-3 py-2 shadow-sm" style={{ background: '#2F5BFF' }}>
+      <p className="text-[11.5px] leading-snug text-white">Its co-op term fits my plan to work in data at home.</p>
+    </div>
+    <div className="self-end inline-flex items-center gap-1.5 bg-white rounded-full px-2.5 py-1 text-[10px] font-bold border border-[#DCE3FA]" style={{ color: '#0F9F8F' }}>
+      <Check size={11} strokeWidth={3} /> Clear and specific · add one career detail
+    </div>
+  </div>
+);
+
+// IELTS: the essay comes back with marked fixes
+const EssayMarks = () => (
+  <div className="absolute inset-0 px-4 pt-7 pb-3 flex flex-col justify-center" style={{ background: '#E9F7F4' }}>
+    <Sample />
+    <div className="bg-white rounded-xl border border-[#CDEDE6] p-3 shadow-sm">
+      <p className="text-[9.5px] font-bold text-[#0F9F8F] mb-1.5">Task 2 · your essay</p>
+      <p className="text-[11.5px] leading-[1.7]" style={{ color: INK }}>
+        Many people believe <span className="line-through decoration-[#D9573F] text-[#8A8275]">alot</span>{' '}
+        <span className="font-semibold text-[#0F9F8F]">a lot</span> of cities are{' '}
+        <span className="underline decoration-wavy decoration-[#E8A400] underline-offset-2">very good</span> for students.
+      </p>
+      <div className="mt-2 flex flex-wrap gap-1.5 text-[9.5px] font-bold">
+        <span className="px-1.5 py-0.5 rounded bg-[#FCE9E4] text-[#D9573F]">Spelling fix</span>
+        <span className="px-1.5 py-0.5 rounded bg-[#FFF3D1] text-[#9A6B00]">Try: "well suited"</span>
+      </div>
+    </div>
+  </div>
+);
+
+// Shortlist: real-looking result rows with how well each fits
+const ShortlistRows = () => {
+  const rows = [
+    { u: 'University of Limerick', c: 'Ireland', fit: 91, col: '#0F9F8F' },
+    { u: 'Trinity College Dublin', c: 'Ireland', fit: 74, col: '#2F5BFF' },
+    { u: 'University College Dublin', c: 'Ireland', fit: 58, col: '#6D3FE0' },
+  ];
+  return (
+    <div className="absolute inset-0 flex flex-col justify-center gap-2.5 p-5" style={{ background: '#FDF1EA' }}>
+      <Sample />
+      <div className="flex flex-wrap gap-1.5 text-[10px] font-bold">
+        {['MSc Data Science', 'CGPA 8.2', 'IELTS 7', 'Budget ₹25L'].map((t) => (
+          <span key={t} className="px-2 py-0.5 rounded-full bg-white border border-[#F1D9CC]" style={{ color: INK }}>{t}</span>
+        ))}
+      </div>
+      {rows.map((r) => (
+        <div key={r.u} className="bg-white rounded-xl border border-[#F1E2D8] px-3 py-2.5 shadow-sm">
+          <div className="flex items-center justify-between gap-2 text-[11.5px]">
+            <span className="font-bold truncate" style={{ color: INK }}>{r.u}</span>
+            <span className="font-extrabold" style={{ color: r.col }}>{r.fit}% fit</span>
+          </div>
+          <div className="mt-1.5 h-[6px] rounded-full bg-[#F1ECE4] overflow-hidden">
+            <div className="h-full rounded-full transition-all duration-700 w-0 group-hover:w-[var(--w)]" style={{ '--w': `${r.fit}%`, width: `${r.fit}%`, background: r.col }} />
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+};
+
+// Scholarships: deadlines lined up like tickets
+const ScholarshipTickets = () => {
+  const list = [
+    { n: 'DAAD', c: 'Germany', v: '€934 / month', d: '14 days', col: '#D9573F' },
+    { n: 'Chevening', c: 'UK', v: 'Full fees', d: '41 days', col: '#6D3FE0' },
+    { n: 'Fulbright-Nehru', c: 'USA', v: 'Full funding', d: '62 days', col: '#2F5BFF' },
+  ];
+  return (
+    <div className="absolute inset-0 px-4 pt-7 pb-3 flex flex-col justify-center gap-1.5" style={{ background: '#FFF6DE' }}>
+      <Sample />
+      {list.map((x) => (
+        <div key={x.n} className="flex items-center gap-2.5 bg-white rounded-lg border border-[#F2E3B8] pl-0 pr-2.5 py-1.5 overflow-hidden">
+          <span className="w-1.5 self-stretch" style={{ background: x.col }} />
+          <span className="min-w-0 flex-1">
+            <span className="block text-[11.5px] font-bold truncate" style={{ color: INK }}>{x.n} · {x.c}</span>
+            <span className="block text-[10px] text-[#5B544A]">{x.v}</span>
+          </span>
+          <span className="text-[10px] font-bold whitespace-nowrap" style={{ color: x.col }}>{x.d} left</span>
+        </div>
+      ))}
+    </div>
+  );
+};
+
+// Roadmap: six months, one job each, "you are here" on month 3
+const MonthTrack = () => {
+  const m = ['Shortlist', 'IELTS', 'SOP', 'Apply', 'Offer', 'Visa'];
+  return (
+    <div className="absolute inset-0 px-4 flex flex-col justify-center" style={{ background: '#F1ECFD' }}>
+      <Sample />
+      <div className="relative">
+        <div className="absolute left-3 right-3 top-[11px] h-[3px] rounded-full bg-[#DCD2F7]" />
+        <div className="absolute left-3 top-[11px] h-[3px] rounded-full bg-[#6D3FE0]" style={{ width: '40%' }} />
+        <div className="relative grid grid-cols-6">
+          {m.map((x, i) => (
+            <div key={x} className="flex flex-col items-center gap-1.5">
+              <span className={`w-[25px] h-[25px] rounded-full grid place-items-center text-[10px] font-bold border-2 ${i < 2 ? 'bg-[#6D3FE0] border-[#6D3FE0] text-white' : i === 2 ? 'bg-white border-[#6D3FE0] text-[#6D3FE0]' : 'bg-white border-[#DCD2F7] text-[#8A8275]'}`}>
+                {i < 2 ? <Check size={12} strokeWidth={3} /> : i + 1}
+              </span>
+              <span className={`text-[9.5px] font-semibold text-center leading-tight ${i === 2 ? 'text-[#6D3FE0]' : 'text-[#5B544A]'}`}>{x}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+      <p className="mt-3 text-center text-[10.5px] font-semibold text-[#6D3FE0]">You are here: month 3, SOP drafts</p>
+    </div>
+  );
+};
+
+// Fit calculator: your inputs in, one clear chance meter out
+const FitGauge = () => {
+  const pct = 72;
+  const R = 46; const C = Math.PI * R;
+  return (
+    <div className="absolute inset-0 flex items-center justify-center gap-4 px-4" style={{ background: '#E7EDFF' }}>
+      <Sample />
+      <div className="flex flex-col gap-1 text-[10px] font-bold">
+        {['CGPA 8.2', 'IELTS 7.0', 'Budget ₹25L'].map((t) => (
+          <span key={t} className="px-2 py-0.5 rounded-full bg-white border border-[#D3DCFB]" style={{ color: INK }}>{t}</span>
+        ))}
+      </div>
+      <svg viewBox="0 0 110 66" className="w-[130px] h-auto" aria-hidden="true">
+        <path d="M9 58 A46 46 0 0 1 101 58" fill="none" stroke="#D3DCFB" strokeWidth="11" strokeLinecap="round" />
+        <path d="M9 58 A46 46 0 0 1 101 58" fill="none" stroke="#2F5BFF" strokeWidth="11" strokeLinecap="round" strokeDasharray={`${(pct / 100) * C} ${C}`} />
+        <text x="55" y="50" textAnchor="middle" fontFamily="Urbanist, sans-serif" fontWeight="800" fontSize="20" fill={INK}>{pct}%</text>
+        <text x="55" y="63" textAnchor="middle" fontFamily="Onest, sans-serif" fontSize="8" fill="#5B544A">admit chance</text>
+      </svg>
+    </div>
+  );
 };
 
 const FILTER_CATEGORIES = [
@@ -153,59 +313,59 @@ const AiToolsHubPage = () => {
                   </p>
 
                   {/* Interactive Simulated UI Preview */}
-                  <div className="bg-slate-900 rounded-2xl p-4 sm:p-4.5 text-slate-100 border border-slate-800 shadow-inner space-y-2.5 font-mono">
-                    <div className="flex items-center justify-between border-b border-slate-800 pb-2 text-xs">
+                  <div className="bg-[#FBF7F0] rounded-2xl p-4 sm:p-4.5 text-[#16130F] border border-[#ECE6DA] space-y-2.5">
+                    <div className="flex items-center justify-between border-b border-[#ECE6DA] pb-2 text-xs">
                       <div className="flex items-center gap-2">
                         <div className="w-2.5 h-2.5 rounded-full bg-red-500/80" />
                         <div className="w-2.5 h-2.5 rounded-full bg-yellow-500/80" />
                         <div className="w-2.5 h-2.5 rounded-full bg-green-500/80" />
-                        <span className="text-[11px] text-slate-400 ml-1.5 font-sans font-medium">Prompt Draft</span>
+                        <span className="text-[11px] text-[#5B544A] ml-1.5 font-sans font-semibold">Opening, drafted for you</span>
                       </div>
                       <div className="flex gap-1.5 font-sans">
                         <button 
                           onClick={() => setSopTopic('cs')}
-                          className={`text-[10px] font-bold px-2 py-0.5 rounded cursor-pointer transition-colors ${sopTopic === 'cs' ? 'bg-purple-600 text-white' : 'bg-slate-800 text-slate-400 hover:text-white'}`}
+                          className={`text-[10px] font-bold px-2 py-0.5 rounded cursor-pointer transition-colors ${sopTopic === 'cs' ? 'bg-[#6D3FE0] text-white' : 'bg-white border border-[#E6E0D4] text-[#5B544A] hover:text-[#16130F]'}`}
                         >
                           MS CS
                         </button>
                         <button 
                           onClick={() => setSopTopic('mba')}
-                          className={`text-[10px] font-bold px-2 py-0.5 rounded cursor-pointer transition-colors ${sopTopic === 'mba' ? 'bg-purple-600 text-white' : 'bg-slate-800 text-slate-400 hover:text-white'}`}
+                          className={`text-[10px] font-bold px-2 py-0.5 rounded cursor-pointer transition-colors ${sopTopic === 'mba' ? 'bg-[#6D3FE0] text-white' : 'bg-white border border-[#E6E0D4] text-[#5B544A] hover:text-[#16130F]'}`}
                         >
                           Global MBA
                         </button>
                       </div>
                     </div>
 
-                    <div className="text-[11.5px] sm:text-[12.5px] text-slate-300 leading-relaxed font-sans">
+                    <div className="text-[11.5px] sm:text-[12.5px] text-[#16130F] leading-relaxed font-sans">
                       {sopTopic === 'cs' ? (
                         <>
-                          <p className="text-purple-300 font-semibold mb-0.5">
+                          <p className="text-[#6D3FE0] font-semibold mb-0.5">
                             "Bridging Distributed Systems & Scalable Machine Learning Architectures"
                           </p>
-                          <p className="text-slate-400 text-xs line-clamp-2">
+                          <p className="text-[#5B544A] text-xs line-clamp-2">
                             Having engineered streaming pipelines processing 1.4M events/sec, my aspiration at 
-                            <span className="text-white font-medium"> Northeastern University</span> is to deepen research under Dr. Walker's Distributed AI Lab...
+                            <span className="text-[#16130F] font-semibold"> Northeastern University</span> is to deepen research under Dr. Walker's Distributed AI Lab...
                           </p>
                         </>
                       ) : (
                         <>
-                          <p className="text-purple-300 font-semibold mb-0.5">
+                          <p className="text-[#6D3FE0] font-semibold mb-0.5">
                             "Strategic Scaling & Venture Capital in Cross-Border Tech"
                           </p>
-                          <p className="text-slate-400 text-xs line-clamp-2">
+                          <p className="text-[#5B544A] text-xs line-clamp-2">
                             Leading product operations across 4 Southeast Asian markets exposed the critical gap in tech unit economics. My goal at 
-                            <span className="text-white font-medium"> INSEAD</span> is to synthesize venture valuation models...
+                            <span className="text-[#16130F] font-semibold"> INSEAD</span> is to synthesize venture valuation models...
                           </p>
                         </>
                       )}
                     </div>
 
-                    <div className="flex items-center justify-between text-[10.5px] text-slate-400 pt-1 font-sans border-t border-slate-800/80">
-                      <span className="flex items-center gap-1.5 text-emerald-400 font-semibold">
+                    <div className="flex items-center justify-between text-[10.5px] text-[#5B544A] pt-1 font-sans border-t border-[#ECE6DA]">
+                      <span className="flex items-center gap-1.5 text-[#0F9F8F] font-semibold">
                         <CheckCircle2 size={12} /> 100% Unique • Plagiarism Free
                       </span>
-                      <span className="text-slate-500">Output: 850 Words</span>
+                      <span className="text-[#8A8275]">About 850 words</span>
                     </div>
                   </div>
 
@@ -225,23 +385,8 @@ const AiToolsHubPage = () => {
                 </div>
 
                 {/* Right visual: paper panel (5 cols) */}
-                <div className="lg:col-span-5 relative h-64 sm:h-72 lg:h-full min-h-[250px] rounded-2xl overflow-hidden border border-[#ECE6DA]" style={PAPER_PANEL}>
-                  <FileText aria-hidden="true" strokeWidth={0.9} className="absolute left-1/2 top-[42%] -translate-x-1/2 -translate-y-1/2 w-40 h-40 text-[#16130F]/[0.12] group-hover:scale-105 transition-transform duration-500" />
-                  
-                  {/* Floating Badges */}
-                  <div className="absolute top-3 right-3 bg-white/95 backdrop-blur-md px-2.5 py-1 rounded-full text-[10.5px] font-extrabold text-purple-700 shadow-2xs border border-purple-200">
-                    ✨ Ivy-League Standard
-                  </div>
-
-                  <div className="absolute bottom-3 left-3 right-3 bg-slate-900/90 backdrop-blur-md p-3 rounded-xl border border-slate-700/80 text-white space-y-1">
-                    <div className="flex items-center justify-between text-[10.5px] text-purple-300 font-bold">
-                      <span>Committee Acceptance</span>
-                      <span className="text-emerald-400 font-extrabold">99.2% Rate</span>
-                    </div>
-                    <p className="text-[11px] font-medium text-slate-200 leading-snug">
-                      Tailored for Harvard, Stanford, Northeastern, Oxford & TU Munich
-                    </p>
-                  </div>
+                <div className="lg:col-span-5 relative h-[350px] lg:h-full min-h-[330px] rounded-2xl overflow-hidden border border-[#ECE6DA]">
+                  <SopSheet />
                 </div>
 
               </div>
@@ -255,23 +400,9 @@ const AiToolsHubPage = () => {
               
               <div className="space-y-3.5">
                 
-                {/* Paper header */}
-                <div className="relative h-40 -mx-5 sm:-mx-6 -mt-5 sm:-mt-6 mb-1 overflow-hidden border-b border-[#ECE6DA]" style={PAPER_PANEL}>
-                  <Mic aria-hidden="true" strokeWidth={1} className="absolute -right-5 -bottom-8 w-48 h-48 text-[#16130F]/[0.08] group-hover:scale-105 transition-transform duration-500" />
-
-                  <div className="absolute top-3 left-3 flex items-center gap-2">
-                    <div className="w-8 h-8 rounded-xl bg-white text-[#16130F] border border-[#E6E0D4] flex items-center justify-center shadow-sm">
-                      <Mic size={16} />
-                    </div>
-                    <span className="text-xs font-black text-[#16130F]">US F-1 & Consular Simulator</span>
-                  </div>
-
-                  <div className="absolute bottom-2.5 left-3 right-3 flex items-center justify-between text-[11px]">
-                    <span className="bg-white border border-[#E6E0D4] text-[#16130F] px-2 py-0.5 rounded text-[10px] font-bold">
-                      VO Question Bank
-                    </span>
-                    <span className="text-[#5B544A] font-semibold">Speech & Risk Scorer</span>
-                  </div>
+                {/* What the tool gives you */}
+                <div className="relative h-44 -mx-5 sm:-mx-6 -mt-5 sm:-mt-6 mb-1 overflow-hidden border-b border-[#ECE6DA]">
+                  <VisaChat />
                 </div>
 
                 <div>
@@ -284,31 +415,28 @@ const AiToolsHubPage = () => {
                 </div>
 
                 {/* Simulated Consular Voice UI */}
-                <div className="bg-slate-900 rounded-2xl p-3.5 text-white border border-slate-800 space-y-2.5">
-                  <div className="flex items-center justify-between text-[11px] text-slate-400">
-                    <span className="flex items-center gap-1.5 text-emerald-400 font-bold text-[10.5px]">
-                      <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" /> Consular Officer Prompt
+                <div className="bg-[#F4F6FE] rounded-2xl p-3.5 text-[#16130F] border border-[#DCE3FA] space-y-2.5">
+                  <div className="flex items-center justify-between text-[11px] text-[#5B544A]">
+                    <span className="flex items-center gap-1.5 text-[#2F5BFF] font-bold text-[10.5px]">
+                      <span className="w-2 h-2 rounded-full bg-[#2F5BFF]" /> After each answer you get
                     </span>
-                    <span className="text-[10.5px] bg-slate-800 px-1.5 py-0.5 rounded text-slate-300">USA F-1</span>
+                    <span className="text-[10.5px] bg-white border border-[#DCE3FA] px-1.5 py-0.5 rounded text-[#16130F]">USA F-1</span>
                   </div>
 
-                  <p className="text-[11.5px] font-medium text-slate-200 leading-snug">
-                    "Why did you choose this university, and what are your exact career plans upon graduation?"
-                  </p>
 
                   {/* Simulated Metrics Card */}
-                  <div className="grid grid-cols-3 gap-1.5 bg-slate-800/80 p-2 rounded-xl text-center text-[10px]">
+                  <div className="grid grid-cols-3 gap-1.5 bg-white border border-[#DCE3FA] p-2 rounded-xl text-center text-[10px]">
                     <div>
-                      <span className="block text-slate-400 text-[8.5px] uppercase font-bold">Confidence</span>
-                      <span className="font-extrabold text-emerald-400 text-xs">94%</span>
+                      <span className="block text-[#5B544A] text-[9px] font-bold">Clarity</span>
+                      <span className="font-extrabold text-[#0F9F8F] text-xs">Score</span>
                     </div>
                     <div>
-                      <span className="block text-slate-400 text-[8.5px] uppercase font-bold">Risk Level</span>
-                      <span className="font-extrabold text-emerald-400 text-xs">Low (0.1)</span>
+                      <span className="block text-[#5B544A] text-[9px] font-bold">Red flags</span>
+                      <span className="font-extrabold text-[#D9573F] text-xs">Spotted</span>
                     </div>
                     <div>
-                      <span className="block text-slate-400 text-[8.5px] uppercase font-bold">Return Intent</span>
-                      <span className="font-extrabold text-blue-400 text-xs">Strong</span>
+                      <span className="block text-[#5B544A] text-[9px] font-bold">Better answer</span>
+                      <span className="font-extrabold text-[#2F5BFF] text-xs">Suggested</span>
                     </div>
                   </div>
                 </div>
@@ -334,23 +462,9 @@ const AiToolsHubPage = () => {
               
               <div className="space-y-3.5">
                 
-                {/* Paper header */}
-                <div className="relative h-40 -mx-5 sm:-mx-6 -mt-5 sm:-mt-6 mb-1 overflow-hidden border-b border-[#ECE6DA]" style={PAPER_PANEL}>
-                  <Sparkles aria-hidden="true" strokeWidth={1} className="absolute -right-5 -bottom-8 w-48 h-48 text-[#16130F]/[0.08] group-hover:scale-105 transition-transform duration-500" />
-
-                  <div className="absolute top-3 left-3 flex items-center gap-2">
-                    <div className="w-8 h-8 rounded-xl bg-white text-[#16130F] border border-[#E6E0D4] flex items-center justify-center shadow-sm">
-                      <Sparkles size={16} />
-                    </div>
-                    <span className="text-xs font-black text-[#16130F]">Cambridge Criteria Examiner</span>
-                  </div>
-
-                  <div className="absolute bottom-2.5 left-3 right-3 flex items-center justify-between text-[11px]">
-                    <span className="bg-white border border-[#E6E0D4] text-[#16130F] px-2 py-0.5 rounded text-[10px] font-bold">
-                      Task 1 & Task 2
-                    </span>
-                    <span className="text-[#5B544A] font-semibold">Instant Scoring</span>
-                  </div>
+                {/* What the tool gives you */}
+                <div className="relative h-44 -mx-5 sm:-mx-6 -mt-5 sm:-mt-6 mb-1 overflow-hidden border-b border-[#ECE6DA]">
+                  <EssayMarks />
                 </div>
 
                 <div>
@@ -471,22 +585,8 @@ const AiToolsHubPage = () => {
                 </div>
 
                 {/* Right visual: paper panel (5 cols) */}
-                <div className="lg:col-span-5 relative h-64 sm:h-72 lg:h-full min-h-[250px] rounded-2xl overflow-hidden border border-[#ECE6DA]" style={PAPER_PANEL}>
-                  <GraduationCap aria-hidden="true" strokeWidth={0.9} className="absolute left-1/2 top-[42%] -translate-x-1/2 -translate-y-1/2 w-40 h-40 text-[#16130F]/[0.12] group-hover:scale-105 transition-transform duration-500" />
-                  
-                  <div className="absolute top-3 right-3 bg-white/95 backdrop-blur-md px-2.5 py-1 rounded-full text-[10.5px] font-extrabold text-[#DE5C2B] shadow-2xs border border-orange-200">
-                    1,500+ Global Unis
-                  </div>
-
-                  <div className="absolute bottom-3 left-3 right-3 bg-slate-900/90 backdrop-blur-md p-3 rounded-xl border border-slate-700/80 text-white space-y-1">
-                    <div className="flex items-center justify-between text-[10.5px] text-orange-300 font-bold">
-                      <span>Live Shortlisting</span>
-                      <span className="text-emerald-400 font-extrabold">Instant Match</span>
-                    </div>
-                    <p className="text-[11px] font-medium text-slate-200 leading-snug">
-                      Filter by post-study work permits, fee waivers & starting salaries
-                    </p>
-                  </div>
+                <div className="lg:col-span-5 relative h-[350px] lg:h-full min-h-[330px] rounded-2xl overflow-hidden border border-[#ECE6DA]">
+                  <ShortlistRows />
                 </div>
 
               </div>
@@ -500,23 +600,9 @@ const AiToolsHubPage = () => {
               
               <div className="space-y-3.5">
                 
-                {/* Paper header */}
-                <div className="relative h-40 -mx-5 sm:-mx-6 -mt-5 sm:-mt-6 mb-1 overflow-hidden border-b border-[#ECE6DA]" style={PAPER_PANEL}>
-                  <Award aria-hidden="true" strokeWidth={1} className="absolute -right-5 -bottom-8 w-48 h-48 text-[#16130F]/[0.08] group-hover:scale-105 transition-transform duration-500" />
-
-                  <div className="absolute top-3 left-3 flex items-center gap-2">
-                    <div className="w-8 h-8 rounded-xl bg-white text-[#16130F] border border-[#E6E0D4] flex items-center justify-center shadow-sm">
-                      <Award size={16} />
-                    </div>
-                    <span className="text-xs font-black text-[#16130F]">Live Cutoff Clocks</span>
-                  </div>
-
-                  <div className="absolute bottom-2.5 left-3 right-3 flex items-center justify-between text-[11px]">
-                    <span className="bg-white border border-[#E6E0D4] text-[#16130F] px-2 py-0.5 rounded text-[10px] font-bold">
-                      450+ Active Grants
-                    </span>
-                    <span className="text-[#5B544A] font-semibold">100% Fee Waivers</span>
-                  </div>
+                {/* What the tool gives you */}
+                <div className="relative h-44 -mx-5 sm:-mx-6 -mt-5 sm:-mt-6 mb-1 overflow-hidden border-b border-[#ECE6DA]">
+                  <ScholarshipTickets />
                 </div>
 
                 <div>
@@ -561,23 +647,9 @@ const AiToolsHubPage = () => {
               
               <div className="space-y-3.5">
                 
-                {/* Paper header */}
-                <div className="relative h-40 -mx-5 sm:-mx-6 -mt-5 sm:-mt-6 mb-1 overflow-hidden border-b border-[#ECE6DA]" style={PAPER_PANEL}>
-                  <Compass aria-hidden="true" strokeWidth={1} className="absolute -right-5 -bottom-8 w-48 h-48 text-[#16130F]/[0.08] group-hover:scale-105 transition-transform duration-500" />
-
-                  <div className="absolute top-3 left-3 flex items-center gap-2">
-                    <div className="w-8 h-8 rounded-xl bg-white text-[#16130F] border border-[#E6E0D4] flex items-center justify-center shadow-sm">
-                      <Compass size={16} />
-                    </div>
-                    <span className="text-xs font-black text-[#16130F]">Milestone Engine</span>
-                  </div>
-
-                  <div className="absolute bottom-2.5 left-3 right-3 flex items-center justify-between text-[11px]">
-                    <span className="bg-white border border-[#E6E0D4] text-[#16130F] px-2 py-0.5 rounded text-[10px] font-bold">
-                      Intake 2026 Ready
-                    </span>
-                    <span className="text-[#5B544A] font-semibold">Week-by-Week</span>
-                  </div>
+                {/* What the tool gives you */}
+                <div className="relative h-44 -mx-5 sm:-mx-6 -mt-5 sm:-mt-6 mb-1 overflow-hidden border-b border-[#ECE6DA]">
+                  <MonthTrack />
                 </div>
 
                 <div>
@@ -626,23 +698,9 @@ const AiToolsHubPage = () => {
               
               <div className="space-y-3.5">
                 
-                {/* Paper header */}
-                <div className="relative h-40 -mx-5 sm:-mx-6 -mt-5 sm:-mt-6 mb-1 overflow-hidden border-b border-[#ECE6DA]" style={PAPER_PANEL}>
-                  <Calculator aria-hidden="true" strokeWidth={1} className="absolute -right-5 -bottom-8 w-48 h-48 text-[#16130F]/[0.08] group-hover:scale-105 transition-transform duration-500" />
-
-                  <div className="absolute top-3 left-3 flex items-center gap-2">
-                    <div className="w-8 h-8 rounded-xl bg-white text-[#16130F] border border-[#E6E0D4] flex items-center justify-center shadow-sm">
-                      <Calculator size={16} />
-                    </div>
-                    <span className="text-xs font-black text-[#16130F]">Admit & Aid Calculator</span>
-                  </div>
-
-                  <div className="absolute bottom-2.5 left-3 right-3 flex items-center justify-between text-[11px]">
-                    <span className="bg-white border border-[#E6E0D4] text-[#16130F] px-2 py-0.5 rounded text-[10px] font-bold">
-                      Instant ROI
-                    </span>
-                    <span className="text-[#5B544A] font-semibold">60-Sec Evaluation</span>
-                  </div>
+                {/* What the tool gives you */}
+                <div className="relative h-44 -mx-5 sm:-mx-6 -mt-5 sm:-mt-6 mb-1 overflow-hidden border-b border-[#ECE6DA]">
+                  <FitGauge />
                 </div>
 
                 <div>
