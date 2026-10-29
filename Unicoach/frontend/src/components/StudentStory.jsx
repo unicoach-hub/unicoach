@@ -88,7 +88,7 @@ const Wave = ({ on, className = '' }) => (
 );
 
 const Tile = ({ who, speaking, live = false, children }) => (
-  <div className={`relative rounded-2xl overflow-hidden bg-[#FBEAE3] transition-shadow duration-300 ${speaking ? 'ring-[3px] ring-[#C9705F]' : 'ring-0'}`}>
+  <div className={`relative rounded-2xl overflow-hidden bg-[#F7F1EC] transition-shadow duration-300 ${speaking ? 'ring-[3px] ring-[#C9705F]' : 'ring-0'}`}>
     {children}
     <span className="absolute left-2 bottom-2 flex items-center gap-1 text-[11px] font-medium text-white bg-black/45 rounded-md px-1.5 py-0.5">
       {speaking || live ? <Wave on /> : <MicOff size={11} className="text-red-400" />} {who}
@@ -275,53 +275,54 @@ const StudentStory = () => {
   const clock = `${String(Math.floor(secs / 60)).padStart(2, '0')}:${String(secs % 60).padStart(2, '0')}`;
 
   return (
-    <section ref={ref} className="w-full max-w-full overflow-hidden" style={{ background: 'linear-gradient(160deg, #FBEAE3 0%, #F6D2C4 55%, #EDB3A0 100%)' }}>
-      <div className="max-w-[1180px] mx-auto px-4 sm:px-6 lg:px-10 py-16 sm:py-24 grid lg:grid-cols-[0.85fr_1.15fr] gap-10 lg:gap-14 items-center">
+    <section ref={ref} className="w-full max-w-full overflow-hidden bg-white">
+      <div className="max-w-[1360px] mx-auto px-4 sm:px-8 lg:px-12 py-20 sm:py-28 grid lg:grid-cols-[0.9fr_1.1fr] gap-12 lg:gap-16 items-center">
         <div>
-          <span className="text-[13px] font-semibold text-[#86351A]">Student ki kahani</span>
-          <h2 className="mt-2 font-outfit text-[32px] sm:text-[44px] font-bold text-[#111] leading-[1.05] tracking-[-0.035em]">
-            Ek call se <RotatingCity />
+          <span className="flex items-center gap-3 text-[14px] font-semibold text-[#86351A]"><span className="inline-block w-10 h-[2px] bg-[#DE5C2B]" />Student ki kahani</span>
+          {/* city on its own line, so the heading never jumps as the city changes */}
+          <h2 className="mt-4 font-outfit text-[38px] sm:text-[54px] xl:text-[62px] font-bold text-[#111] leading-[1.02] tracking-[-0.035em]">
+            Ek call se<br /><RotatingCity />
           </h2>
-          <p className="mt-3 text-[15px] sm:text-[17px] text-slate-600 max-w-[460px]">Aarav ne apne senior ke saath 1:1 video session liya. Har sawaal pe screen share, har step pe plan.</p>
+          <p className="mt-5 text-[16px] sm:text-[19px] leading-relaxed text-slate-600 max-w-[540px]">Aarav ne apne senior ke saath 1:1 video session liya. Har sawaal pe screen share, har step pe plan.</p>
 
-          <ol className="mt-7 grid grid-cols-3 gap-2.5 max-w-[460px]">
+          <ol className="mt-9 grid grid-cols-3 gap-3 max-w-[580px]">
             {STEPS.map((x, i) => {
               const done = i < step;
               const now = i === step;
               return (
                 <li key={x.key}>
-                  <button type="button" onClick={() => { setStep(i); setPhase(0); }} className={`no-shine w-full text-left rounded-xl px-3 py-2.5 border transition-all duration-300 cursor-pointer ${now ? 'bg-white border-[#DE5C2B] shadow-[0_8px_20px_-12px_rgba(222,92,43,0.6)]' : done ? 'bg-white border-slate-200' : 'bg-transparent border-slate-200/70 hover:bg-white'}`}>
-                    <span className={`block text-[13.5px] font-semibold leading-tight ${now || done ? 'text-[#111]' : 'text-slate-600'}`}>{done ? '✓ ' : ''}{x.label}</span>
-                    <span className="block text-[11.5px] leading-tight mt-0.5" style={{ fontFamily: "'Yatra One', sans-serif", color: now || done ? '#B8451A' : '#57534E' }}>{x.hi}</span>
+                  <button type="button" onClick={() => { setStep(i); setPhase(0); }} className={`no-shine w-full text-left rounded-2xl px-3.5 sm:px-4 py-3 sm:py-3.5 border transition-all duration-300 cursor-pointer ${now ? 'bg-white border-[#DE5C2B] shadow-[0_10px_24px_-14px_rgba(222,92,43,0.65)]' : done ? 'bg-white border-slate-200' : 'bg-[#FAF8F4] border-[#EEE8DE] hover:bg-white'}`}>
+                    <span className={`block text-[14px] sm:text-[16px] font-semibold leading-tight ${now || done ? 'text-[#111]' : 'text-slate-600'}`}>{done ? '✓ ' : ''}{x.label}</span>
+                    <span className="block text-[12px] sm:text-[13px] leading-tight mt-1" style={{ fontFamily: "'Yatra One', sans-serif", color: now || done ? '#B8451A' : '#57534E' }}>{x.hi}</span>
                   </button>
                 </li>
               );
             })}
           </ol>
 
-          <div className="mt-7">
-            <Link to="/unicoach" className="inline-flex items-center gap-2 h-11 px-5 rounded-full bg-slate-900 hover:bg-[#DE5C2B] text-white text-[14px] font-semibold transition-colors">
+          <div className="mt-9">
+            <Link to="/unicoach" className="inline-flex items-center gap-2 h-12 px-6 rounded-full bg-slate-900 hover:bg-[#DE5C2B] text-white text-[15px] font-semibold transition-colors">
               Book a 1:1 session <ArrowRight size={16} />
             </Link>
-            <p className="mt-3 text-[12.5px] text-slate-600">Calls happen inside UniCoach. No phone numbers shared. Story is illustrative.</p>
+            <p className="mt-4 text-[13px] text-slate-500">Calls happen inside UniCoach. No phone numbers shared. Story is illustrative.</p>
           </div>
         </div>
 
         {/* Video call window */}
-        <div onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)} className="relative rounded-[22px] bg-white border border-[#E4E1DA] p-3 sm:p-4 shadow-[0_40px_80px_-40px_rgba(15,23,42,0.35)]">
-          <div className="flex items-center justify-between text-slate-700 text-[12px] px-1 pb-3">
+        <div onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)} className="relative rounded-[26px] bg-white border border-[#ECE6DA] p-3 sm:p-5 shadow-[0_40px_90px_-40px_rgba(15,23,42,0.32)]">
+          <div className="flex items-center justify-between text-slate-700 text-[12px] sm:text-[13px] px-1 pb-3 sm:pb-4">
             <span className="flex items-center gap-2"><span className="w-2 h-2 rounded-full bg-red-500 animate-pulse" /> UniCoach 1:1 session · {clock}</span>
             <span className="hidden sm:inline text-slate-400">Aarav × Prachi</span>
           </div>
 
-          <div className="grid grid-cols-[1fr_120px] sm:grid-cols-[1fr_150px] gap-3">
+          <div className="grid grid-cols-[1fr_110px] sm:grid-cols-[1fr_170px] xl:grid-cols-[1fr_190px] gap-3 sm:gap-4">
             {/* shared screen */}
-            <div className="relative rounded-2xl overflow-hidden bg-[#FBEAE3] border border-[#F1DDD4] aspect-[4/3] sm:aspect-[16/11]">
+            <div className="relative rounded-2xl overflow-hidden bg-[#FBF7F3] border border-[#EFE6DD] aspect-[4/3] sm:aspect-auto sm:min-h-[300px]">
               <AnimatePresence mode="wait">
                 {mentorTalking ? (
                   <Screen key={s.key} s={s} />
                 ) : (
-                  <motion.div key={`ask-${step}`} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="absolute inset-0 flex flex-col items-center justify-center gap-4 bg-gradient-to-br from-[#FBEAE3] via-[#F8DCD0] to-[#F4C7B8]">
+                  <motion.div key={`ask-${step}`} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="absolute inset-0 flex flex-col items-center justify-center gap-4 bg-gradient-to-br from-[#FDF8F4] via-[#FAF1EA] to-[#F5E6DC]">
                     <motion.span animate={{ scale: [1, 1.06, 1] }} transition={{ duration: 1.2, repeat: Infinity }} className="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-gradient-to-br from-[#485A79] to-[#DE5C2B] grid place-items-center text-white text-[32px] font-bold ring-4 ring-[#C9705F]/60">A</motion.span>
                     <span className="flex items-center gap-2 text-slate-700 text-[13px]"><Wave on /> Aarav is asking…</span>
                     <span className="flex items-center gap-1.5 text-slate-500 text-[11.5px]"><MonitorUp size={13} /> Prachi will share her screen next</span>
@@ -358,7 +359,7 @@ const StudentStory = () => {
                 </div>
               </Tile>
               <Tile who="Aarav (you)" speaking={!mentorTalking} live={!muted}>
-                <div className={`aspect-square grid place-items-center ${camOn ? 'bg-gradient-to-br from-[#F4C7B8] to-[#E39A86]' : 'bg-[#EBD9D1]'}`}>
+                <div className={`aspect-square grid place-items-center ${camOn ? 'bg-gradient-to-br from-[#F8ECE4] to-[#EFD8CB]' : 'bg-[#EEE8E2]'}`}>
                   <span className="w-12 h-12 rounded-full bg-white/70 grid place-items-center text-[#1B2A4A] text-[20px] font-bold">A</span>
                   {!camOn && <span className="absolute top-2 right-2 text-[10px] text-slate-500">Camera off</span>}
                 </div>
@@ -367,7 +368,7 @@ const StudentStory = () => {
           </div>
 
           {/* live captions */}
-          {captions && <div className="mt-3 min-h-[48px] rounded-xl bg-[#FBEDE7] px-3 py-2 text-[13px] sm:text-[14px] text-slate-800 leading-snug">
+          {captions && <div className="mt-3 min-h-[48px] rounded-xl bg-[#FAF6F1] border border-[#F0E8DF] px-3 py-2 text-[13px] sm:text-[14px] text-slate-800 leading-snug">
             <AnimatePresence mode="wait">
               <motion.p key={`${step}-${phase}`} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} transition={{ duration: 0.25 }}>
                 <span className="font-semibold text-[#A9543F]">{mentorTalking ? 'Prachi' : 'Aarav'}:</span> {mentorTalking ? s.mentor : s.student}
@@ -394,7 +395,7 @@ const StudentStory = () => {
               { I: MessageSquare, label: captions ? 'Hide captions' : 'Show captions', on: captions, act: () => setCaptions((c) => !c) },
             ].map(({ I, label, on, act }) => (
               <motion.button type="button" key={label} title={label} aria-label={label} onClick={act} whileTap={{ scale: 0.88 }}
-                className={`no-shine w-10 h-10 rounded-full grid place-items-center cursor-pointer transition-colors ${on ? 'bg-[#E39A86] text-[#3A1D1A]' : 'bg-[#FBEDE7] text-slate-700 hover:bg-[#F4DCD2]'}`}><I size={17} /></motion.button>
+                className={`no-shine w-10 h-10 rounded-full grid place-items-center cursor-pointer transition-colors ${on ? 'bg-[#DE5C2B] text-white' : 'bg-[#F5F1EC] text-slate-700 hover:bg-[#ECE5DD]'}`}><I size={17} /></motion.button>
             ))}
             <motion.button type="button" title="End call" aria-label="End call" onClick={() => setEnded(true)} whileTap={{ scale: 0.9 }} className="no-shine w-14 h-10 rounded-full grid place-items-center bg-[#EA4335] hover:bg-[#d33426] text-white cursor-pointer"><PhoneOff size={17} /></motion.button>
           </div>
@@ -409,7 +410,7 @@ const StudentStory = () => {
               <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="absolute inset-0 z-30 rounded-[22px] bg-white/95 flex flex-col items-center justify-center gap-3 text-slate-900">
                 <p className="text-[16px] font-semibold">You left the session</p>
                 <div className="flex gap-2">
-                  <button type="button" onClick={() => setEnded(false)} className="no-shine px-4 h-10 rounded-full bg-[#E39A86] text-[#3A1D1A] font-semibold text-[13.5px] cursor-pointer">Rejoin</button>
+                  <button type="button" onClick={() => setEnded(false)} className="no-shine px-4 h-10 rounded-full bg-[#DE5C2B] text-white font-semibold text-[13.5px] cursor-pointer">Rejoin</button>
                   <Link to="/unicoach#mentors-grid" className="px-4 h-10 rounded-full bg-[#DE5C2B] text-white font-semibold text-[13.5px] grid place-items-center">Book a real one</Link>
                 </div>
               </motion.div>
