@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { CheckCircle2, Loader2, Lock, ArrowRight } from 'lucide-react';
 import { API_BASE_URL } from '../config';
 import { useAuth } from '../context/AuthContext';
+import CountrySelect from './ui/CountrySelect';
 
 /**
  * Lead-capture form used by the service pages (education loan, visa & pre-departure…).
@@ -14,7 +15,6 @@ import { useAuth } from '../context/AuthContext';
  * Answers are written into the lead's query/notes as "Label: value" lines.
  */
 
-const DESTINATIONS = ['USA', 'UK', 'Canada', 'Australia', 'Germany', 'Ireland', 'France', 'New Zealand', 'Other'];
 const INTAKES = ['Fall 2026', 'Spring 2027', 'Fall 2027', 'Later'];
 
 const inputClass =
@@ -156,10 +156,13 @@ const ServiceEnquiryForm = ({
               </div>
               <div>
                 <Label required>Study destination</Label>
-                <select className={inputClass} value={form.destination} onChange={set('destination')}>
-                  <option value="">Select country</option>
-                  {DESTINATIONS.map((d) => <option key={d} value={d}>{d}</option>)}
-                </select>
+                {/* Every country, searchable, with the popular study destinations pinned on top */}
+                <CountrySelect
+                  value={form.destination}
+                  onChange={(name) => setForm((f) => ({ ...f, destination: name }))}
+                  placeholder="Select country"
+                  extraOptions={['Not decided yet']}
+                />
               </div>
               <div>
                 <Label>Intake</Label>
