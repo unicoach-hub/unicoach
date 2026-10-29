@@ -779,7 +779,7 @@ const Navbar = () => {
         <header className="fixed top-0 left-0 w-full z-[100] px-3 md:px-8 pt-2.5 md:pt-3 pointer-events-none">
             {/* Soft UniCoach peach wash behind the pill at the top of the page; fades out once you scroll */}
             <div aria-hidden="true" className={`absolute inset-x-0 top-0 h-[80px] md:h-[88px] -z-10 transition-opacity duration-300 ${scrolled ? 'opacity-0' : 'opacity-100'}`}
-                style={{ background: 'linear-gradient(180deg, #F9CDB6 0%, #FCDFCF 55%, rgba(253,236,224,0.6) 82%, rgba(253,236,224,0) 100%)' }} />
+                style={{ background: 'linear-gradient(180deg, rgba(250,224,209,0.75) 0%, rgba(252,236,226,0.55) 55%, rgba(252,236,226,0) 100%)' }} />
             {/* Floating white pill, like a card resting over the page */}
             <div className={`relative z-[101] pointer-events-auto max-w-[1120px] mx-auto px-3 md:px-5 bg-white rounded-[18px] md:rounded-[22px] border transition-shadow duration-300
                 ${scrolled
