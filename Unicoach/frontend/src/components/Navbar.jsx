@@ -777,9 +777,9 @@ const Navbar = () => {
 
     return (
         <header className="fixed top-0 left-0 w-full z-[100] px-3 md:px-8 pt-2.5 md:pt-3 pointer-events-none">
-            {/* Soft blush glow centred behind the pill (not a full-width wash, so the hero stays clear); fades on scroll */}
+            {/* Soft blush glow behind the pill, with a very light touch on the right (not a full-width wash, so the hero stays clear); fades on scroll */}
             <div aria-hidden="true" className={`absolute inset-x-0 top-0 h-[110px] md:h-[130px] -z-10 transition-opacity duration-300 ${scrolled ? 'opacity-0' : 'opacity-100'}`}
-                style={{ background: 'radial-gradient(55% 100% at 50% 0%, rgba(239,170,148,0.55) 0%, rgba(246,205,190,0.35) 45%, rgba(251,234,227,0) 75%)' }} />
+                style={{ background: 'radial-gradient(55% 100% at 50% 0%, rgba(239,170,148,0.55) 0%, rgba(246,205,190,0.35) 45%, rgba(251,234,227,0) 75%), radial-gradient(40% 100% at 100% 0%, rgba(239,170,148,0.28) 0%, rgba(251,234,227,0) 70%)' }} />
             {/* Floating white pill, like a card resting over the page */}
             <div className={`relative z-[101] pointer-events-auto max-w-[1120px] lg:w-fit mx-auto px-3 md:px-5 lg:px-4 bg-white rounded-[18px] md:rounded-[22px] border transition-shadow duration-300
                 ${scrolled

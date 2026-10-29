@@ -12,9 +12,8 @@ export const Destinations = ({ onOpenModal }) => {
   const scrollContainerRef = useRef(null);
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  // Editorial cards: a soft colour per country, a small 3D scene and three useful facts.
-  // 3D art: Microsoft Fluent Emoji (MIT), saved in public/images/destinations-3d
-  const art3d = (id) => ({ main: `/images/destinations-3d/${id}-main.png`, a: `/images/destinations-3d/${id}-a.png`, b: `/images/destinations-3d/${id}-b.png` });
+  // Editorial cards: a soft colour per country, a 3D miniature of its landmark and three useful facts.
+  // Renders: graphics/destination-3d/make_landmarks.py, saved in public/images/destinations-3d
   const destinations = [
     { id: 'usa', ...SKETCH_THEMES.usa, name: 'United States', region: 'North America', universities: '4,500+', visa: '1–3 years', length: '1.5–2 years' },
     { id: 'uk', ...SKETCH_THEMES.uk, name: 'United Kingdom', region: 'Europe', universities: '150+', visa: 'Up to 2 years', length: '1 year' },
@@ -185,22 +184,17 @@ export const Destinations = ({ onOpenModal }) => {
                       {dest.name}
                     </h3>
 
-                    {/* 3D scene: the country's icon on a soft disc, two small props floating around it */}
+                    {/* 3D miniature of the country's landmark on a soft disc */}
                     <div className="relative flex-1 min-h-0 my-2 grid place-items-center">
-                      <span aria-hidden="true" className="absolute w-[82%] max-w-[190px] aspect-square rounded-full" style={{ background: 'radial-gradient(circle at 40% 35%, rgba(255,255,255,0.95), rgba(255,255,255,0.35) 70%)' }} />
-                      <span aria-hidden="true" className="absolute bottom-[10%] w-[46%] h-3 rounded-[50%] blur-md" style={{ background: dest.ink, opacity: 0.18 }} />
+                      <span aria-hidden="true" className="absolute w-[86%] max-w-[200px] aspect-square rounded-full" style={{ background: 'radial-gradient(circle at 40% 35%, rgba(255,255,255,0.95), rgba(255,255,255,0.3) 72%)' }} />
                       <img
-                        src={art3d(dest.id).main}
+                        src={`/images/destinations-3d/${dest.id}.webp`}
                         alt=""
                         loading="lazy"
-                        width="256"
-                        height="256"
-                        className={`relative w-[60%] max-w-[140px] h-auto drop-shadow-[0_14px_14px_rgba(15,23,42,0.18)] transition-transform duration-500 ${isActive ? 'scale-[1.08] -translate-y-1' : ''} group-hover:-translate-y-1.5`}
+                        width="480"
+                        height="480"
+                        className={`relative w-[96%] max-w-[215px] h-auto drop-shadow-[0_16px_16px_rgba(15,23,42,0.16)] transition-transform duration-500 ${isActive ? 'scale-[1.05] -translate-y-1' : ''} group-hover:-translate-y-1.5`}
                       />
-                      <img src={art3d(dest.id).a} alt="" loading="lazy" width="256" height="256"
-                        className="absolute left-[2%] top-[4%] w-[30%] max-w-[64px] h-auto -rotate-12 drop-shadow-[0_8px_8px_rgba(15,23,42,0.15)] [animation:uc-bob_4.5s_ease-in-out_infinite]" />
-                      <img src={art3d(dest.id).b} alt="" loading="lazy" width="256" height="256"
-                        className="absolute right-[2%] bottom-[18%] w-[27%] max-w-[58px] h-auto rotate-12 drop-shadow-[0_8px_8px_rgba(15,23,42,0.15)] [animation:uc-bob_5.2s_ease-in-out_infinite_0.8s]" />
                     </div>
 
                     <dl className="text-[12px] sm:text-[12.5px] leading-[1.9]">
