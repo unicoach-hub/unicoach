@@ -15,7 +15,7 @@ const GROUPS = [
 
 const SERVICES = [
   { key: 'counselling', group: 'plan', label: 'Study abroad counselling', desc: 'Country, course and budget: where to start', points: ['Which countries fit your marks and budget', 'Course options and career outcomes', 'A month-by-month plan to your intake'] },
-  { key: 'shortlist', group: 'plan', label: 'University & course shortlisting', desc: 'Safe, target and dream picks for your profile', points: ['8 to 12 universities sorted safe, target and dream', 'Entry requirements and deadlines for each', 'Fees and living costs side by side'] },
+  { key: 'shortlist', group: 'plan', label: 'University & course shortlisting', desc: 'Universities that fit your marks and budget', points: ['8 to 12 universities that fit your profile', 'Entry requirements and deadlines for each', 'Fees and living costs side by side'] },
   { key: 'career', group: 'plan', label: 'Course & career choice', desc: 'Pick a course that leads to a job', points: ['Courses that match your background', 'Job demand and post-study work rules', 'Masters vs PG diploma vs bachelors'] },
   { key: 'sop', group: 'apply', label: 'SOP / LOR / resume review', desc: 'Feedback on your documents before you apply', points: ['Line-by-line feedback on your SOP', 'LOR structure and who to ask', 'A resume that fits university formats'] },
   { key: 'application', group: 'apply', label: 'Application check', desc: 'A second look before you hit submit', points: ['Every document checked against the checklist', 'Common mistakes that cause rejections', 'What to do if an offer is delayed'] },

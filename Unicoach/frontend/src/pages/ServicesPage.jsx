@@ -1,13 +1,28 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
-import { ArrowRight, ArrowUpRight, CalendarCheck, Check, Compass, FileText, Loader2, Plane, Wallet } from 'lucide-react';
+import { ArrowRight, ArrowUpRight, CalendarCheck, Check, ChevronDown, Compass, FileText, Loader2, Plane, Wallet } from 'lucide-react';
 import { API_BASE_URL } from '../config';
 import { HookBand } from '../components/ui/Infographics';
 
 const API = API_BASE_URL.replace(/\/$/, '');
 const GROUP_ICON = { plan: Compass, apply: FileText, fund: Wallet, visa: Plane };
 const JOURNEY = ['First call', 'Shortlist', 'Applications', 'Funding', 'Visa', 'You fly'];
+
+// Service cards are Desi Pop tickets (same look as "Apna ticket chuno" on the career counselling page)
+const TICKET_TONES = [
+  { bg: '#FCE38A', fg: '#16130F' },
+  { bg: '#D0362E', fg: '#FFFFFF' },
+  { bg: '#FFFFFF', fg: '#16130F' },
+  { bg: '#14837E', fg: '#FFFFFF' },
+  { bg: '#FFD9C7', fg: '#16130F' },
+];
+const GROUP_HI = { plan: 'प्लान बनाओ', apply: 'अप्लाई की तैयारी', fund: 'पैसों का जुगाड़', visa: 'वीज़ा और उड़ान' };
+const SERVICE_HI = {
+  counselling: 'शुरुआत यहीं से', shortlist: 'सही यूनिवर्सिटी', career: 'कोर्स और करियर',
+  sop: 'कागज़ पक्के', application: 'सबमिट से पहले', tests: 'स्कोर पक्का',
+  funding: 'पैसों का जुगाड़', budget: 'असली खर्चा', visa: 'वीज़ा की तैयारी', departure: 'उड़ान से पहले',
+};
 
 // Hero infographic 1: a booking that fills itself in, again and again
 const BookingLoop = ({ services, price }) => {
@@ -96,30 +111,36 @@ const JourneyLoop = () => {
 
 const ServiceCard = ({ s, n, price }) => {
   const [open, setOpen] = useState(false);
+  const tone = TICKET_TONES[(n - 1) % TICKET_TONES.length];
+  const dark = tone.fg === '#FFFFFF';
   return (
-    <motion.article layout className="group rounded-[20px] bg-white border border-slate-200 hover:border-orange-200 hover:shadow-[0_18px_40px_-24px_rgba(222,92,43,0.45)] p-5 flex flex-col transition-shadow">
-      <div className="flex items-start justify-between">
-        <span className="font-outfit text-[30px] font-black text-slate-200 leading-none group-hover:text-orange-200 transition-colors">{String(n).padStart(2, '0')}</span>
-        <span className="text-[12px] font-bold text-[#DE5C2B] bg-[#FFF4EE] rounded-full px-2.5 py-0.5">{price ? `₹${price}` : 'Free'}</span>
-      </div>
-      <h3 className="mt-3 text-[16.5px] font-bold text-slate-900">{s.label}</h3>
-      <p className="mt-1 text-[13.5px] text-slate-500 leading-relaxed">{s.desc}</p>
+    <motion.article layout className="relative flex flex-col p-5 pt-6 border-[3px] border-[#16130F] shadow-[5px_5px_0_#16130F] hover:-translate-y-1 hover:shadow-[7px_9px_0_#16130F] transition-[transform,box-shadow] duration-200"
+      style={{ background: tone.bg, color: tone.fg, borderRadius: 14 }}>
+      <span className="absolute -top-3 right-4 w-14 h-14 grid place-items-center rotate-12 rounded-full border-[3px] border-[#16130F] bg-white text-[#16130F] font-['Anton',sans-serif] text-[14px]">{price ? `₹${price}` : 'FREE'}</span>
+      <span className="font-['Khand',sans-serif] text-[13px] font-bold tracking-[0.14em] opacity-75">TICKET NO. {String(n).padStart(2, '0')}</span>
+      <span className="mt-1 font-['Rozha_One',serif] text-[15px] leading-none opacity-90">{SERVICE_HI[s.key] || GROUP_HI[s.group]}</span>
+      <h3 className="mt-1.5 pr-14 font-urbanist font-black text-[21px] leading-tight tracking-tight">{s.label}</h3>
+      <p className="mt-2 text-[14px] leading-relaxed opacity-90">{s.desc}</p>
       <AnimatePresence initial={false}>
         {open && (
           <motion.ul initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }} className="overflow-hidden mt-3 space-y-1.5">
             {(s.points || []).map((p) => (
-              <li key={p} className="flex gap-2 text-[13px] text-slate-700"><Check size={14} className="mt-0.5 text-[#DE5C2B] shrink-0" />{p}</li>
+              <li key={p} className="flex gap-2 text-[13px] font-medium"><Check size={14} strokeWidth={3} className="mt-0.5 shrink-0" />{p}</li>
             ))}
           </motion.ul>
         )}
       </AnimatePresence>
-      <div className="mt-auto pt-4 flex items-center justify-between">
-        <button type="button" onClick={() => setOpen((v) => !v)} className="no-shine inline-flex items-center gap-1 text-[13px] font-semibold text-[#DE5C2B] hover:underline cursor-pointer">
-          {open ? 'Show less' : 'Read more'} <ArrowUpRight size={14} className={open ? 'rotate-90 transition-transform' : 'transition-transform'} />
+      {(s.points || []).length > 0 && (
+        <button type="button" onClick={() => setOpen((v) => !v)} aria-expanded={open}
+          className="no-shine mt-3 self-start inline-flex items-center gap-1 text-[13px] font-bold underline underline-offset-4 decoration-2 cursor-pointer">
+          {open ? 'Kam dikhao' : 'Kya milega?'} <ChevronDown size={14} className={`transition-transform ${open ? 'rotate-180' : ''}`} />
         </button>
-        <Link to={`/book-consultation?service=${s.key}`} className="no-shine inline-flex items-center gap-1.5 h-9 px-4 rounded-full bg-[#111] hover:bg-[#DE5C2B] text-white text-[13px] font-semibold transition-colors">
-          Book now
-        </Link>
+      )}
+      <div className="mt-auto pt-4">
+        <div className="pt-3 border-t-2 border-dashed flex items-center justify-between gap-3" style={{ borderColor: dark ? '#FFFFFF66' : '#16130F55' }}>
+          <span className="font-['Khand',sans-serif] text-[17px] font-bold">Kiraya: ₹{price || 0}</span>
+          <Link to={`/book-consultation?service=${s.key}`} className="no-shine px-3.5 py-1.5 rounded-full bg-[#16130F] text-white text-[12.5px] font-bold hover:bg-black whitespace-nowrap">Ye ticket lo</Link>
+        </div>
       </div>
     </motion.article>
   );
@@ -187,21 +208,26 @@ const ServicesPage = () => {
         {/* All services */}
         <section id="all-services" className="mt-16 scroll-mt-28">
           <p className="text-[11px] font-bold tracking-[0.16em] text-slate-400 uppercase">Everything we do</p>
-          <h2 className="mt-1 font-outfit text-[30px] sm:text-[36px] font-black text-[#111]">All services, one place</h2>
+          <div className="flex flex-wrap items-end justify-between gap-3">
+            <h2 className="mt-1 font-outfit text-[30px] sm:text-[36px] font-black text-[#111]">All services, one place</h2>
+            <p className="text-[14.5px] font-medium text-slate-600">Har service ek 1:1 call hai. <span className="font-['Rozha_One',serif] text-[#C04A1D]">अपना टिकट चुनो।</span></p>
+          </div>
           {error && <p className="mt-4 text-red-600 text-sm">{error}</p>}
           {!cfg && !error && <div className="py-16 flex justify-center"><Loader2 className="w-6 h-6 animate-spin text-[#DE5C2B]" /></div>}
 
-          <div className="mt-6 space-y-10">
+          <div className="mt-8 space-y-12">
             {groups.map((g) => {
               const list = services.filter((s) => s.group === g.key);
               const Icon = GROUP_ICON[g.key] || Compass;
               return (
                 <div key={g.key}>
-                  <div className="flex items-center gap-2">
-                    <span className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white border border-orange-100 text-[12px] font-bold tracking-[0.1em] text-[#C04A1D] uppercase"><Icon size={14} /> {g.label}</span>
-                    <span className="w-6 h-6 rounded-full bg-slate-100 text-[11px] font-bold text-slate-600 grid place-items-center">{list.length}</span>
+                  <div className="flex flex-wrap items-center gap-3">
+                    <span className="inline-flex items-center gap-2 px-3.5 py-1.5 bg-white border-[2.5px] border-[#16130F] shadow-[3px_3px_0_#16130F] text-[13.5px] font-bold text-[#16130F]" style={{ borderRadius: 8 }}>
+                      <Icon size={15} /> {g.label} <span className="font-['Rozha_One',serif] font-normal text-[#C04A1D]">· {GROUP_HI[g.key]}</span>
+                    </span>
+                    <span className="font-['Khand',sans-serif] text-[15px] font-bold text-slate-500">{list.length} {list.length === 1 ? 'ticket' : 'tickets'}</span>
                   </div>
-                  <div className="mt-3 flex flex-col md:flex-row gap-3 [&>*]:flex-1 [&>*]:min-w-0">
+                  <div className="mt-5 flex flex-col md:flex-row gap-6 md:gap-5 [&>*]:flex-1 [&>*]:min-w-0">
                     {list.map((s) => <ServiceCard key={s.key} s={s} n={numberOf[s.key]} price={cfg.price} />)}
                   </div>
                 </div>
