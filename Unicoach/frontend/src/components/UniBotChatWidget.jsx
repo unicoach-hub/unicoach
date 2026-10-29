@@ -147,26 +147,26 @@ const UniBotChatWidget = () => {
       {/* ── Floating Launcher Button (shown only when chat is closed) ── */}
       {!isOpen && (
         <div className="fixed bottom-20 right-3 md:bottom-6 md:right-6 z-40">
+          {/* White pill like the navbar: orange avatar with an online dot, then name + status. Phones get just the round avatar. */}
           <motion.button
-            initial={{ scale: 0, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
+            initial={{ y: 16, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            whileHover={{ y: -2 }}
+            whileTap={{ scale: 0.96 }}
             onClick={() => setIsOpen(true)}
-            className="group relative flex items-center justify-center md:justify-start gap-2.5 w-11 h-11 md:w-auto md:h-auto p-0 md:px-5 md:py-3.5 bg-gradient-to-r from-orange-600 via-[#DE5C2B] to-amber-600 text-white rounded-full shadow-lg shadow-orange-500/30 hover:shadow-orange-500/50 border border-white/20 transition-all cursor-pointer"
+            className="no-shine group relative flex items-center gap-3 p-0 md:p-1.5 md:pr-5 rounded-full md:bg-white md:border md:border-[#ECE6DA] shadow-[0_12px_30px_-12px_rgba(22,19,15,0.35)] hover:shadow-[0_16px_36px_-12px_rgba(222,92,43,0.45)] transition-shadow cursor-pointer"
             aria-label="Open UniBot AI Counsellor"
           >
-            <div className="relative flex items-center justify-center">
-              <div className="w-7 h-7 md:w-8 md:h-8 rounded-full bg-white/20 flex items-center justify-center">
-                <Bot size={15} className="text-white md:hidden" />
-                <Bot size={18} className="text-white hidden md:block" />
-              </div>
-              <span className="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-emerald-400 border-2 border-orange-700 animate-pulse" />
-            </div>
-            <div className="text-left hidden md:block">
-              <span className="block text-xs font-black tracking-wide leading-none">UniBot AI</span>
-              <span className="block text-[10px] text-orange-200 font-semibold mt-0.5">24/7 AI Counsellor</span>
-            </div>
+            <span className="relative w-12 h-12 md:w-11 md:h-11 rounded-full bg-[#DE5C2B] ring-4 ring-white md:ring-0 grid place-items-center flex-shrink-0 transition-transform duration-300 group-hover:rotate-[-8deg]">
+              <Bot size={20} className="text-white" />
+              <span className="absolute bottom-0 right-0 w-3 h-3 rounded-full ring-2 ring-white" style={{ background: '#22C55E' }} />
+            </span>
+            <span className="text-left hidden md:block">
+              <span className="block font-urbanist text-[14.5px] font-extrabold leading-none text-[#16130F]">Ask UniBot</span>
+              <span className="mt-1 flex items-center gap-1.5 text-[11.5px] font-medium leading-none text-[#6B6458]">
+                <span className="w-1.5 h-1.5 rounded-full" style={{ background: '#22C55E' }} /> Online · AI counsellor, 24/7
+              </span>
+            </span>
           </motion.button>
         </div>
       )}
@@ -182,12 +182,12 @@ const UniBotChatWidget = () => {
             className="fixed inset-0 z-[120] w-full h-[100dvh] bg-white flex flex-col md:inset-auto md:fixed md:bottom-6 md:right-6 md:w-[420px] md:h-[600px] md:max-h-[85vh] md:rounded-3xl md:shadow-2xl md:border md:border-slate-200/90 md:overflow-hidden"
           >
             {/* Header */}
-            <div className="p-4 pt-[max(1rem,env(safe-area-inset-top))] md:pt-4 bg-gradient-to-r from-slate-900 via-slate-900 to-slate-900 text-white flex items-center justify-between flex-shrink-0 border-b border-orange-950/40">
+            <div className="p-4 pt-[max(1rem,env(safe-area-inset-top))] md:pt-4 text-[#16130F] flex items-center justify-between flex-shrink-0 border-b border-[#F1E4DA]" style={{ background: 'linear-gradient(120deg, #FCE9E0 0%, #FBF4EE 60%, #FFFFFF 100%)' }}>
               <div className="flex items-center gap-2.5">
                 {/* Mobile Back / Dismiss Arrow */}
                 <button
                   onClick={() => setIsOpen(false)}
-                  className="md:hidden p-2 -ml-2 rounded-xl text-slate-300 hover:text-white hover:bg-white/10 active:scale-90 transition-all cursor-pointer"
+                  className="md:hidden p-2 -ml-2 rounded-xl text-slate-600 hover:text-slate-900 hover:bg-white/70 active:scale-90 transition-all cursor-pointer"
                   aria-label="Close Chat"
                   title="Close"
                 >
@@ -195,18 +195,18 @@ const UniBotChatWidget = () => {
                 </button>
 
                 <div className="relative">
-                  <div className="w-9 h-9 rounded-2xl bg-gradient-to-tr from-orange-500 to-[#DE5C2B] flex items-center justify-center shadow-md">
+                  <div className="w-10 h-10 rounded-full bg-[#DE5C2B] flex items-center justify-center shadow-[0_6px_14px_-6px_rgba(222,92,43,0.7)]">
                     <Bot size={20} className="text-white" />
                   </div>
-                  <span className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-emerald-400 border-2 border-slate-900" />
+                  <span className="absolute bottom-0 right-0 w-3 h-3 rounded-full ring-2 ring-white" style={{ background: '#22C55E' }} />
                 </div>
 
                 <div>
-                  <h3 className="text-sm font-black flex items-center gap-1.5">
-                    UniBot <span className="text-[10px] px-1.5 py-0.5 rounded-md bg-orange-500/20 text-orange-300 border border-orange-400/30 font-bold">AI Counsellor</span>
+                  <h3 className="font-urbanist text-[15px] font-extrabold flex items-center gap-1.5">
+                    UniBot <span className="text-[10px] px-1.5 py-0.5 rounded-md bg-white text-[#C9573B] border border-[#F3D3C8] font-bold">AI Counsellor</span>
                   </h3>
-                  <p className="text-[11px] text-emerald-400 font-semibold flex items-center gap-1">
-                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" /> Active & Ready
+                  <p className="text-[11px] font-semibold flex items-center gap-1" style={{ color: '#15803D' }}>
+                    <span className="w-1.5 h-1.5 rounded-full" style={{ background: '#22C55E' }} /> Online, replies in seconds
                   </p>
                 </div>
               </div>
@@ -216,7 +216,7 @@ const UniBotChatWidget = () => {
                 <button
                   onClick={handleResetChat}
                   title="Clear Chat"
-                  className="p-2 rounded-xl text-slate-300 hover:text-white hover:bg-white/10 transition-colors cursor-pointer active:scale-95"
+                  className="p-2 rounded-xl text-slate-500 hover:text-slate-900 hover:bg-white/70 transition-colors cursor-pointer active:scale-95"
                   aria-label="Clear chat history"
                 >
                   <RotateCcw size={16} />
@@ -224,7 +224,7 @@ const UniBotChatWidget = () => {
                 <button
                   onClick={() => setIsOpen(false)}
                   title="Close Chat"
-                  className="p-2 rounded-xl bg-white/10 hover:bg-white/20 text-white transition-all cursor-pointer active:scale-90"
+                  className="p-2 rounded-xl bg-white/80 hover:bg-white text-slate-700 border border-[#F1E4DA] transition-all cursor-pointer active:scale-90"
                   aria-label="Close chat"
                 >
                   <X size={18} className="stroke-[2.2]" />
