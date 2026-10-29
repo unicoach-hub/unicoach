@@ -12,7 +12,6 @@ import {
   Check,
   Target,
   ShieldCheck,
-  Zap,
   TrendingUp,
   Bookmark
 } from 'lucide-react';
@@ -26,6 +25,23 @@ const examsList = [
   { key: 'gre', name: 'GRE Books', path: '/resources/books/gre-books', tag: 'General Test' },
   { key: 'gmat', name: 'GMAT Books', path: '/resources/books/gmat-books', tag: 'Focus Edition' }
 ];
+
+// One colour per card, from the social palette (rose from the ads, royal blue, violet, teal, rani pink, marigold).
+// Set inline because index.css remaps several Tailwind colour classes on content pages.
+const TONES = [
+  { c: '#D9573F', soft: '#FCE9E4' },
+  { c: '#2F5BFF', soft: '#E7EDFF' },
+  { c: '#6D3FE0', soft: '#EEE8FD' },
+  { c: '#0F9F8F', soft: '#DDF5F1' },
+  { c: '#E4007C', soft: '#FDE4F1' },
+  { c: '#B87A00', soft: '#FFF3D1', btn: '#F2B705', btnText: '#16130F' },
+];
+
+// Sidebar ad: the IELTS evaluator ad on the IELTS page, the counselling ad elsewhere
+const SIDE_AD = {
+  ielts: { src: '/images/ads/ad-ielts.jpg', to: '/ielts-evaluator', alt: 'IELTS writing likh liya? AI se band score check karo' },
+  default: { src: '/images/ads/ad-counselling.jpg', to: '/book-consultation', alt: 'Confused ho? Mentor se pucho: free 1:1 counselling' },
+};
 
 const getBookCategory = (book) => (
   typeof book.category === 'string' && book.category.trim()
@@ -78,7 +94,7 @@ const ExamBooksTemplate = ({ currentExamKey, data }) => {
 
       {/* ── HERO BANNER (UniCoach Brand Blue #111111) ── */}
       <div className="max-w-[1240px] mx-auto px-4 md:px-8 mt-3 mb-8">
-        <div className="uc-clean rounded-3xl p-6 md:p-10 relative overflow-hidden shadow-xl border">
+        <div className="uc-clean rounded-3xl p-6 md:p-10 relative overflow-hidden shadow-xl border" style={{ background: 'repeating-radial-gradient(circle at 88% 50%, rgba(217,87,63,0.07) 0 2px, transparent 2px 26px), linear-gradient(120deg, #FCE3DA 0%, #FBEFEA 45%, #F1ECFB 100%)', borderColor: '#F3D3C8' }}>
           <div className="absolute top-0 right-0 w-96 h-96 bg-blue-400/10 rounded-full blur-3xl pointer-events-none" />
           <div className="absolute -bottom-10 -left-10 w-72 h-72 bg-indigo-300/10 rounded-full blur-2xl pointer-events-none" />
 
@@ -138,12 +154,13 @@ const ExamBooksTemplate = ({ currentExamKey, data }) => {
             Choose Exam Books
           </div>
           <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-hide">
-            {examsList.map((exam) => {
+            {examsList.map((exam, ei) => {
               const isCurrent = exam.key === currentExamKey;
               return (
                 <Link
                   key={exam.key}
                   to={exam.path}
+                  style={isCurrent ? { background: TONES[ei % TONES.length].btn || TONES[ei % TONES.length].c, color: TONES[ei % TONES.length].btnText || '#fff' } : undefined}
                   className={`flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-bold whitespace-nowrap transition-all flex-shrink-0 ${
                     isCurrent
                       ? 'bg-indigo-600 text-white shadow-md shadow-indigo-600/20'
@@ -173,12 +190,13 @@ const ExamBooksTemplate = ({ currentExamKey, data }) => {
                 </h3>
               </div>
               <nav className="flex flex-col gap-1.5">
-                {examsList.map((exam) => {
+                {examsList.map((exam, ei) => {
                   const isCurrent = exam.key === currentExamKey;
                   return (
                     <Link
                       key={exam.key}
                       to={exam.path}
+                      style={isCurrent ? { background: TONES[ei % TONES.length].btn || TONES[ei % TONES.length].c, color: TONES[ei % TONES.length].btnText || '#fff' } : undefined}
                       className={`flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-bold transition-all ${
                         isCurrent
                           ? 'bg-indigo-600 text-white shadow-md shadow-indigo-600/20 font-extrabold'
@@ -196,22 +214,15 @@ const ExamBooksTemplate = ({ currentExamKey, data }) => {
               </nav>
             </div>
 
-            {/* Quick Free Practice Test CTA Card */}
-            <div className="bg-gradient-to-br from-indigo-50 to-blue-50 rounded-2xl p-5 border border-indigo-100 text-slate-800">
-              <div className="w-9 h-9 rounded-xl bg-indigo-600 text-white flex items-center justify-center mb-3 shadow-md shadow-indigo-600/20">
-                <Zap size={18} />
-              </div>
-              <h4 className="font-extrabold text-sm text-slate-900 mb-1">Need Free Evaluation?</h4>
-              <p className="text-xs text-slate-600 leading-relaxed mb-3 font-medium">
-                Book a 1-on-1 diagnostic evaluation with our certified master mentor.
-              </p>
-              <button
-                onClick={() => navigate('/book-consultation')}
-                className="w-full py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-bold text-xs shadow transition-all cursor-pointer"
-              >
-                Book Free Counselling
-              </button>
-            </div>
+            {/* Our ad creative: the whole card is the link */}
+            {(() => {
+              const ad = SIDE_AD[currentExamKey] || SIDE_AD.default;
+              return (
+                <Link to={ad.to} className="block rounded-2xl overflow-hidden border-2 border-[#16130F] shadow-[5px_5px_0_#16130F] transition-transform hover:-translate-y-0.5">
+                  <img src={ad.src} alt={ad.alt} width="640" height="800" loading="lazy" className="block w-full h-auto" />
+                </Link>
+              );
+            })()}
           </aside>
 
           {/* ── CORE CONTENT COLUMN ── */}
@@ -262,6 +273,7 @@ const ExamBooksTemplate = ({ currentExamKey, data }) => {
               {/* Book Cards Grid */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                 {filteredBooks.map((book, idx) => {
+                  const tone = TONES[idx % TONES.length];
                   const amazonSearchUrl = book.link && book.link.startsWith('http') && !book.link.includes('amazon.in/s?')
                     ? book.link
                     : `https://www.amazon.in/s?k=${encodeURIComponent(book.name)}`;
@@ -269,12 +281,13 @@ const ExamBooksTemplate = ({ currentExamKey, data }) => {
                   return (
                     <div
                       key={idx}
-                      className="bg-white rounded-2xl border border-slate-200/80 shadow-sm p-5 md:p-6 hover:shadow-lg hover:border-indigo-200 transition-all flex flex-col justify-between group"
+                      className="bg-white rounded-2xl border border-slate-200/80 shadow-sm p-5 md:p-6 hover:shadow-lg hover:-translate-y-0.5 transition-all flex flex-col justify-between group"
+                      style={{ borderTop: `4px solid ${tone.c}`, '--tone': tone.c }}
                     >
                       <div>
                         {/* Header Badge Row */}
                         <div className="flex flex-wrap items-center justify-between gap-2 mb-3">
-                          <span className="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-extrabold bg-indigo-50 text-indigo-700 border border-indigo-100">
+                          <span className="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-extrabold" style={{ background: tone.soft, color: tone.c }}>
                             {book.bestFor || 'Comprehensive Prep'}
                           </span>
                           <span className="text-xs font-extrabold text-slate-700 bg-slate-100 px-2.5 py-1 rounded-md">
@@ -283,7 +296,7 @@ const ExamBooksTemplate = ({ currentExamKey, data }) => {
                         </div>
 
                         {/* Title & Author/Publisher */}
-                        <h3 className="text-base md:text-lg font-black text-slate-900 group-hover:text-indigo-600 transition-colors leading-snug mb-1">
+                        <h3 className="text-base md:text-lg font-black text-slate-900 group-hover:text-[var(--tone)] transition-colors leading-snug mb-1">
                           {book.name}
                         </h3>
                         {book.publisher && (
@@ -295,7 +308,7 @@ const ExamBooksTemplate = ({ currentExamKey, data }) => {
                         {/* Rating & Review */}
                         <div className="flex items-center gap-1 mb-3">
                           {[1, 2, 3, 4, 5].map((s) => (
-                            <Star key={s} size={13} className="text-amber-400 fill-amber-400" />
+                            <Star key={s} size={14} strokeWidth={1.5} style={{ color: '#E89400', fill: '#FFB400' }} />
                           ))}
                           <span className="text-xs font-bold text-slate-600 ml-1">
                             {book.rating || '4.8'} / 5.0
@@ -323,7 +336,8 @@ const ExamBooksTemplate = ({ currentExamKey, data }) => {
                           href={amazonSearchUrl}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="w-full inline-flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-xl bg-slate-900 text-white text-xs font-bold hover:bg-indigo-600 shadow-sm transition-all"
+                          className="no-shine w-full inline-flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-xl text-xs font-bold shadow-sm transition-all hover:brightness-110"
+                          style={{ background: tone.btn || tone.c, color: tone.btnText || '#fff' }}
                         >
                           <span>Check Price</span>
                           <ExternalLink size={12} />
@@ -334,6 +348,16 @@ const ExamBooksTemplate = ({ currentExamKey, data }) => {
                 })}
               </div>
             </section>
+
+            {/* Phones have no sidebar: the same ad sits under the books */}
+            {(() => {
+              const ad = SIDE_AD[currentExamKey] || SIDE_AD.default;
+              return (
+                <Link to={ad.to} className="lg:hidden block max-w-[360px] mx-auto rounded-2xl overflow-hidden border-2 border-[#16130F] shadow-[5px_5px_0_#16130F]">
+                  <img src={ad.src} alt={ad.alt} width="640" height="800" loading="lazy" className="block w-full h-auto" />
+                </Link>
+              );
+            })()}
 
             {/* Price comparison of the books above (approximate prices from each card) */}
             {data.timeSplit && priceBars.length >= 3 && (
