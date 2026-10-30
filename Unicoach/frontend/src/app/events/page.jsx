@@ -20,6 +20,8 @@ import { eventPath, getSpeakerPhoto, toAbsoluteUrl, toRegistrationUrl } from '..
 import { BoardingPassCard, DepartureBoard } from './EventsHeroBoard';
 import { mentorLook } from '../../utils/teamMentors';
 import { FilmPoster } from '../../components/desi/Desi';
+import { DesiHero, DesiHeading, Sticker } from '../../components/desi/DesiKit';
+import { BookOkCta } from '../../components/desi/BookOkCta';
 
 // Large portraits of our event hosts (cut from their event banners); Admin → Events "Speaker photo" overrides
 const SPEAKER_PORTRAITS = {
@@ -72,18 +74,20 @@ const API_ORIGIN = API_BASE_URL.replace(/\/api$/, '');
 
 
 // Real sign-ups only (registrationCount is kept by POST /events/:id/register)
-// Desi Pop palette: each event card takes the next colour, so the grid reads like a poster wall
+// Desi Pop palette: each event ticket takes the next poster colour, so the grid reads like a poster wall
 const CARD_TONES = [
-    { btn: '#F2B705', btnText: '#16130F', tagBg: '#FFF4CC', tagText: '#7A5800', tagBorder: '#F2D57A' },
-    { btn: '#14B8A6', btnText: '#16130F', tagBg: '#DDF7F3', tagText: '#0B5F56', tagBorder: '#9EE3D9' },
-    { btn: '#E4007C', btnText: '#FFFFFF', tagBg: '#FFE0F0', tagText: '#A1005A', tagBorder: '#F7A8D2' },
-    { btn: '#2B3FA0', btnText: '#FFFFFF', tagBg: '#E3E7FB', tagText: '#2B3FA0', tagBorder: '#B5BFEE' },
-    { btn: '#DE5C2B', btnText: '#FFFFFF', tagBg: '#FFEDE4', tagText: '#A8411D', tagBorder: '#F5C2A9' },
-    { btn: '#1E9E4A', btnText: '#16130F', tagBg: '#DEF5E5', tagText: '#156B33', tagBorder: '#A3DDB6' },
+    { c: '#F2B705', fg: '#16130F', soft: '#FFF1B8' },
+    { c: '#14837E', fg: '#FFFFFF', soft: '#DDF3EF' },
+    { c: '#B8285B', fg: '#FFFFFF', soft: '#FBD9E6' },
+    { c: '#D0362E', fg: '#FFFFFF', soft: '#FCE3DA' },
 ];
 const toneFor = (idx) => CARD_TONES[idx % CARD_TONES.length];
 // Poster button: ink border, hard offset shadow that presses in on click
-const POSTER_BTN = 'border-2 border-[#16130F] shadow-[4px_4px_0_#16130F] hover:shadow-[6px_6px_0_#16130F] hover:-translate-x-0.5 hover:-translate-y-0.5 active:translate-x-1 active:translate-y-1 active:shadow-[0_0_0_#16130F] transition-all no-shine';
+const POSTER_BTN = 'border-[3px] border-[#16130F] shadow-[4px_4px_0_#16130F] hover:shadow-[6px_6px_0_#16130F] hover:-translate-x-0.5 hover:-translate-y-0.5 active:translate-x-1 active:translate-y-1 active:shadow-[0_0_0_#16130F] transition-all no-shine';
+// The departures board (EventsHeroBoard) carries the site-wide .uc-soft wash; on this page it is a cream station board with an ink frame
+const BOARD_SKIN = '[&_.uc-soft.uc-soft.uc-soft.uc-soft]:![background:#FFF6D6] [&_.uc-soft.uc-soft.uc-soft.uc-soft]:![border:3px_solid_#16130F] [&_.uc-soft.uc-soft.uc-soft.uc-soft]:![box-shadow:5px_5px_0_#16130F] [&_.uc-soft.uc-soft.uc-soft.uc-soft]:![border-radius:14px]';
+// Small Hindi kicker label (Rozha One)
+const HI = "font-['Rozha_One',serif] leading-none";
 
 const registeredLabel = (item) => (item?.registrationCount > 0 ? `${item.registrationCount} Registered` : '');
 
@@ -281,11 +285,19 @@ const EventsPage = () => {
     // Real hosts of the published events (no sample speakers)
     const speakersList = speakersFromEvents(eventsList);
 
+    // Ticket stub: day, month, year and weekday from the event start (falls back to the stored date text)
+    const stubFor = (item) => {
+        const label = formatEventDate(item.eventStart);
+        if (!label) return null;
+        const [day, mon, year] = label.split(' ');
+        return { day, mon, year, weekday: getWeekday(item.eventStart) };
+    };
+
     return (
-        <main className="min-h-screen bg-[#F6F3EC] text-slate-800 pt-[76px] pb-20 relative overflow-hidden">
+        <main className="min-h-screen bg-[#FFF6E5] text-[#16130F] font-['Onest',sans-serif] pb-20 relative overflow-hidden">
 
             {/* Floating Toast Notification Box */}
-            <div className="fixed top-6 right-6 z-50 flex flex-col gap-3">
+            <div className="fixed top-6 right-4 sm:right-6 z-50 flex flex-col gap-3">
                 <AnimatePresence>
                     {toasts.map(t => (
                         <motion.div
@@ -293,126 +305,113 @@ const EventsPage = () => {
                             initial={{ opacity: 0, x: 50, scale: 0.9 }}
                             animate={{ opacity: 1, x: 0, scale: 1 }}
                             exit={{ opacity: 0, x: 50, scale: 0.9 }}
-                            className="bg-slate-900 text-white px-5 py-3 rounded-2xl shadow-xl flex items-center gap-3 text-xs font-bold border border-slate-800"
+                            className="bg-[#16130F] text-white px-5 py-3 rounded-[10px] border-[3px] border-[#16130F] shadow-[4px_4px_0_#F2B705] flex items-center gap-3 text-xs font-bold"
                         >
-                            <div className={`w-2 h-2 rounded-full ${t.type === 'error' ? 'bg-red-400' : 'bg-emerald-400'} animate-ping`}></div>
+                            <div className={`w-2.5 h-2.5 rounded-full border-2 border-white ${t.type === 'error' ? 'bg-[#D0362E]' : 'bg-[#14837E]'}`}></div>
                             <span>{t.message}</span>
                         </motion.div>
                     ))}
                 </AnimatePresence>
             </div>
 
-            {/* Clean LeapScholar-Style Hero Section */}
-            <section className="relative pt-12 pb-16 sm:pt-14 sm:pb-20 px-4 sm:px-6 lg:px-8 bg-[#F6F3EC] border-b border-[#E6E0D4] overflow-hidden mb-12">
-                {/* 3D Interactive Spotlight & Tilt Grid Background */}
-
-
-                <div className="max-w-[1280px] mx-auto relative z-10">
-                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
-                        {/* Hero Text */}
-                        <div className="lg:col-span-7 space-y-6 text-left">
-                            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white text-[#DE5C2B] border border-orange-200/80 shadow-xs text-xs font-bold">
-                                <span className="relative flex w-2 h-2">
-                                    <span className="absolute inline-flex h-full w-full rounded-full bg-[#DE5C2B] opacity-60 animate-ping" />
-                                    <span className="relative inline-flex w-2 h-2 rounded-full bg-[#DE5C2B]" />
-                                </span>
-                                <span>Live masterclasses · Free to attend</span>
-                            </div>
-
-                            <h1 className="font-outfit text-[34px] sm:text-5xl lg:text-[56px] font-black tracking-tight text-[#0F172A] leading-[1.03]">
-                                Your study abroad journey <br className="hidden sm:block" />
-                                <span className="relative inline-block text-[#DE5C2B]">
-                                    boards here.
-                                    <svg className="absolute -bottom-2 left-0 w-full h-3 text-orange-300" viewBox="0 0 200 12" preserveAspectRatio="none" aria-hidden="true">
-                                        <path d="M2 9 C 50 2, 120 2, 198 7" stroke="currentColor" strokeWidth="4" fill="none" strokeLinecap="round" />
-                                    </svg>
-                                </span>
-                            </h1>
-
-                            <p className="text-[14px] sm:text-[15.5px] text-slate-600 font-normal max-w-xl leading-relaxed">
-                                Live sessions with seniors who already study and work abroad. Ask your questions on admissions, scholarships, visas and jobs, in real time.
-                            </p>
-
-                            {speakersList.length > 0 && (
-                                <div className="flex items-center gap-3">
-                                    <div className="flex -space-x-3">
-                                        {speakersList.slice(0, 4).map((sp) => (
-                                            sp.image ? (
-                                                <img key={sp.name} src={sp.image} alt={sp.name} style={sp.imageBg ? { background: sp.imageBg } : undefined} className="w-11 h-11 rounded-full object-cover object-top ring-[3px] ring-white shadow-sm" />
-                                            ) : (
-                                                <span key={sp.name} className="w-11 h-11 rounded-full ring-[3px] ring-white bg-orange-100 text-[#DE5C2B] font-black flex items-center justify-center">{sp.name[0]}</span>
-                                            )
-                                        ))}
-                                    </div>
-                                    <p className="text-[13px] font-semibold text-slate-600">
-                                        Hosted by <span className="font-black text-slate-900">{speakersList.slice(0, 3).map((sp) => sp.name).join(', ').replace(/, ([^,]*)$/, ' & $1')}</span>
-                                    </p>
-                                </div>
-                            )}
-
-                            <DepartureBoard
-                                events={upcomingEvents}
-                                photoFor={hostPhotoFor}
+            {/* ── HERO: mustard poster band with the live departures board and the next boarding pass ── */}
+            <DesiHero
+                tone="mustard"
+                sign={{ hi: 'मेला', en: 'LIVE EVENTS' }}
+                title={(
+                    <>
+                        Your study abroad journey <br className="hidden sm:block" />
+                        <span className="relative inline-block mt-1 px-2.5 bg-[#16130F] text-[#F2B705] -rotate-1" style={{ borderRadius: 6 }}>
+                            boards here.
+                        </span>
+                    </>
+                )}
+                subtitle="Live sessions with seniors who already study and work abroad. Ask your questions on admissions, scholarships, visas and jobs, in real time."
+                stickers={(
+                    <Sticker tilt={-1.5}>
+                        <span className="w-2.5 h-2.5 rounded-full bg-[#D0362E] border-2 border-[#16130F] animate-pulse" />
+                        Live masterclasses · Free to attend
+                    </Sticker>
+                )}
+                aside={(
+                    loadingEvents ? (
+                        <div className="bg-white border-[3px] border-[#16130F] rounded-[18px] shadow-[6px_6px_0_#16130F] p-6 space-y-3 animate-pulse" aria-hidden="true">
+                            <div className="h-8 bg-[#FFF1B8] rounded-lg" />
+                            <div className="h-12 bg-[#F3EBDB] rounded-lg" />
+                            <div className="h-5 bg-[#EADFCB] rounded w-11/12" />
+                            <div className="h-20 bg-[#F3EBDB] rounded-xl" />
+                            <div className="h-12 bg-[#EADFCB] rounded-xl" />
+                        </div>
+                    ) : featuredEvent ? (
+                        <div className="rounded-[26px] border-[3px] border-[#16130F] shadow-[7px_7px_0_#16130F] overflow-hidden lg:rotate-[1deg]">
+                            <BoardingPassCard
+                                event={featuredEvent}
+                                hostPhoto={hostPhotoFor(featuredEvent)}
                                 formatDate={formatEventDate}
                                 formatTime={formatEventTime}
-                                onOpen={openDetails}
+                                onRegister={() => openRegistration(featuredEvent)}
+                                onOpen={() => openDetails(featuredEvent)}
                             />
                         </div>
-
-                        {/* Interactive Countdown & Live Ticker Dashboard */}
-                        <div className="lg:col-span-5">
-                            {loadingEvents ? (
-                                <div className="bg-white rounded-[26px] p-6 space-y-3 animate-pulse" aria-hidden="true">
-                                    <div className="h-8 bg-orange-100 rounded-xl" />
-                                    <div className="h-12 bg-slate-100 rounded-xl" />
-                                    <div className="h-5 bg-slate-200 rounded w-11/12" />
-                                    <div className="h-20 bg-slate-100 rounded-2xl" />
-                                    <div className="h-12 bg-slate-200 rounded-2xl" />
-                                </div>
-                            ) : featuredEvent ? (
-                                <BoardingPassCard
-                                    event={featuredEvent}
-                                    hostPhoto={hostPhotoFor(featuredEvent)}
-                                    formatDate={formatEventDate}
-                                    formatTime={formatEventTime}
-                                    onRegister={() => openRegistration(featuredEvent)}
-                                    onOpen={() => openDetails(featuredEvent)}
-                                />
-                            ) : (
-                                <div className="bg-white rounded-[26px] p-8 text-center shadow-sm">
-                                    <h3 className="text-lg font-bold text-slate-900 leading-snug">No upcoming events right now</h3>
-                                    <p className="mt-1.5 text-sm text-slate-500">Check back soon for the next live session.</p>
-                                </div>
-                            )}
+                    ) : (
+                        <div className="bg-white border-[3px] border-[#16130F] rounded-[18px] shadow-[6px_6px_0_#16130F] p-8 text-center">
+                            <p className={`${HI} text-[18px] text-[#D0362E]`}>अगली गाड़ी जल्द</p>
+                            <h3 className="mt-2 font-urbanist text-[20px] font-black text-[#16130F] leading-snug">No upcoming events right now</h3>
+                            <p className="mt-1.5 text-sm text-[#5B544A]">Check back soon for the next live session.</p>
                         </div>
+                    )
+                )}
+            >
+                {speakersList.length > 0 && (
+                    <div className="mt-6 flex items-center gap-3">
+                        <div className="flex -space-x-3 shrink-0">
+                            {speakersList.slice(0, 4).map((sp) => (
+                                sp.image ? (
+                                    <img key={sp.name} src={sp.image} alt={sp.name} style={sp.imageBg ? { background: sp.imageBg } : { background: '#FFF6D6' }} className="w-11 h-11 rounded-full object-cover object-top border-[3px] border-[#16130F]" />
+                                ) : (
+                                    <span key={sp.name} className="w-11 h-11 rounded-full border-[3px] border-[#16130F] bg-[#FFF6D6] text-[#D0362E] font-black flex items-center justify-center">{sp.name[0]}</span>
+                                )
+                            ))}
+                        </div>
+                        <p className="text-[13px] font-semibold text-[#16130F]/80 min-w-0">
+                            Hosted by <span className="font-black text-[#16130F]">{speakersList.slice(0, 3).map((sp) => sp.name).join(', ').replace(/, ([^,]*)$/, ' & $1')}</span>
+                        </p>
                     </div>
-                </div>
-            </section>
+                )}
 
-            {/* Filterable Events Grid Section */}
-            <section id="events-grid" className="max-w-[1240px] mx-auto px-6 md:px-8 mb-16 z-10 relative scroll-mt-24">
+                <div className={`mt-6 ${BOARD_SKIN}`}>
+                    <DepartureBoard
+                        events={upcomingEvents}
+                        photoFor={hostPhotoFor}
+                        formatDate={formatEventDate}
+                        formatTime={formatEventTime}
+                        onOpen={openDetails}
+                    />
+                </div>
+            </DesiHero>
+
+            {/* ── Filterable Events Grid Section ── */}
+            <section id="events-grid" className="max-w-[1240px] mx-auto px-4 sm:px-6 md:px-8 pt-14 mb-16 z-10 relative scroll-mt-24">
 
                 {/* Visual Header */}
-                <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-8 border-b border-slate-200/80 pb-6">
-                    <div>
-                        <h2 className="font-outfit text-2xl md:text-3xl font-black text-slate-900 tracking-tight">
-                            Explore Live & Scheduled Events
-                        </h2>
-                        <p className="text-slate-500 text-xs mt-1 font-semibold uppercase tracking-wider">
+                <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-8 pb-6 border-b-[3px] border-dashed border-[#16130F]">
+                    <div className="min-w-0">
+                        <DesiHeading hi="टिकट खिड़की">Explore Live &amp; Scheduled Events</DesiHeading>
+                        <p className="text-[#5B544A] text-xs mt-2 font-bold uppercase tracking-wider">
                             Choose between direct interactive webinars or dynamic virtual university fairs
                         </p>
                     </div>
 
                     {/* Filter Tabs */}
-                    <div className="flex bg-white p-1.5 border border-slate-200/80 rounded-2xl self-start md:self-center shadow-xs">
+                    <div className="flex flex-wrap gap-2 self-start lg:self-end">
                         {['all', 'webinar', 'fair', 'timeline'].map((type) => (
                             <button
                                 key={type}
                                 onClick={() => setActiveTab(type)}
-                                className={`px-4.5 py-2 text-xs font-bold rounded-xl transition-all duration-200 cursor-pointer capitalize
+                                className={`px-3.5 sm:px-4 py-2 text-xs font-extrabold rounded-lg border-[3px] border-[#16130F] transition-all duration-200 cursor-pointer capitalize
                                     ${activeTab === type
-                                        ? 'bg-[#DE5C2B] text-white shadow-sm shadow-orange-500/20'
-                                        : 'text-slate-600 hover:text-[#DE5C2B]'}`}
+                                        ? 'bg-[#16130F] text-[#F2B705] shadow-[3px_3px_0_#D0362E]'
+                                        : 'bg-white text-[#16130F] hover:bg-[#FFF1B8] shadow-[3px_3px_0_#16130F]'}`}
                             >
                                 {type === 'all' ? 'All Events' : type === 'webinar' ? 'Webinars' : type === 'fair' ? 'Virtual Fairs' : 'Timeline / History'}
                             </button>
@@ -423,16 +422,19 @@ const EventsPage = () => {
                 {/* Calendar Weekday Slider */}
                 {activeTab !== 'timeline' && (
                     <div className="mb-10 text-left">
-                        <span className="block text-[10px] font-black uppercase text-[#DE5C2B] tracking-widest mb-3">Filter by Calendar Timeline</span>
-                        <div className="flex overflow-x-auto gap-3 pb-3 scrollbar-hide">
+                        <span className="flex items-center gap-2 mb-3">
+                            <span className={`${HI} text-[15px] text-[#D0362E]`}>दिन चुनो</span>
+                            <span className="text-[10px] font-black uppercase text-[#16130F] tracking-widest">Filter by Calendar Timeline</span>
+                        </span>
+                        <div className="flex overflow-x-auto gap-2.5 pt-1 pb-3 pl-0.5 scrollbar-hide">
                             {weekdays.map((day) => (
                                 <button
                                     key={day.key}
                                     onClick={() => setSelectedDay(day.key)}
-                                    className={`flex-shrink-0 px-5 py-3 rounded-2xl text-xs font-bold border transition-all duration-250 cursor-pointer
+                                    className={`flex-shrink-0 px-4 py-2.5 rounded-lg text-xs font-extrabold border-2 border-[#16130F] transition-all duration-200 cursor-pointer
                                         ${selectedDay === day.key
-                                            ? 'bg-[#DE5C2B] text-white border-[#DE5C2B] shadow-md shadow-orange-500/20'
-                                            : 'bg-white text-slate-700 border-slate-200/80 hover:text-[#DE5C2B] hover:border-orange-200'}`}
+                                            ? 'bg-[#14837E] text-white shadow-[3px_3px_0_#16130F]'
+                                            : 'bg-[#FFF6D6] text-[#16130F] hover:bg-white shadow-[2px_2px_0_#16130F]'}`}
                                 >
                                     {day.name}
                                 </button>
@@ -445,79 +447,75 @@ const EventsPage = () => {
                 {loadingEvents ? (
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-10">
                         {[1, 2, 3, 4, 5, 6].map((k) => (
-                            <div key={k} className="bg-white border border-slate-200/80 rounded-3xl p-6 animate-pulse space-y-4">
-                                <div className="flex justify-between items-center">
-                                    <div className="h-6 w-20 bg-slate-200 rounded-lg" />
-                                    <div className="h-4 w-16 bg-slate-200 rounded" />
-                                </div>
-                                <div className="h-5 bg-slate-200 rounded w-3/4" />
-                                <div className="h-4 bg-slate-100 rounded w-full" />
-                                <div className="h-4 bg-slate-100 rounded w-2/3" />
-                                <div className="pt-4 border-t border-slate-100 flex justify-between items-center">
-                                    <div className="h-8 w-24 bg-slate-200 rounded-xl" />
-                                    <div className="h-8 w-24 bg-orange-100 rounded-xl" />
+                            <div key={k} className="flex bg-white border-[3px] border-[#16130F] rounded-[14px] shadow-[5px_5px_0_#16130F] overflow-hidden animate-pulse">
+                                <div className="w-[74px] sm:w-[84px] shrink-0 bg-[#FFF1B8] border-r-[3px] border-dashed border-[#16130F]" />
+                                <div className="flex-1 p-5 space-y-4">
+                                    <div className="h-24 bg-[#F3EBDB] rounded-lg" />
+                                    <div className="h-5 bg-[#EADFCB] rounded w-3/4" />
+                                    <div className="h-4 bg-[#F3EBDB] rounded w-full" />
+                                    <div className="h-10 bg-[#FFF1B8] rounded-lg" />
                                 </div>
                             </div>
                         ))}
                     </div>
                 ) : activeTab === 'timeline' ? (
                     filteredEvents.length > 0 ? (
-                        <div className="max-w-3xl mx-auto mt-10 relative border-l-2 border-slate-200 pl-4 md:pl-6 text-left">
+                        <div className="max-w-3xl mx-auto mt-10 relative border-l-[3px] border-[#16130F] pl-3 md:pl-6 text-left">
                             {filteredEvents.map((item, idx) => {
                                 const isPast = isEventOver(item);
                                 const itemCategory = item.category || item.type;
+                                const tone = toneFor(idx);
                                 return (
-                                    <div key={item.id || item._id || idx} className="mb-10 ml-6 relative group text-left">
+                                    <div key={item.id || item._id || idx} className="mb-10 ml-4 md:ml-6 relative group text-left">
                                         {/* Timeline dot */}
-                                        <span className={`absolute -left-[35px] md:-left-[39px] top-1.5 flex items-center justify-center w-4 h-4 rounded-full border-2 bg-white transition-all group-hover:scale-125
-                                            ${isPast ? 'border-slate-400 bg-slate-200' : 'border-[#DE5C2B] bg-orange-50'}`}
-                                        >
-                                            <span className={`w-1.5 h-1.5 rounded-full ${isPast ? 'bg-slate-400' : 'bg-[#DE5C2B]'}`}></span>
-                                        </span>
+                                        <span
+                                            className="absolute -left-[40px] md:-left-[60px] top-4 w-5 h-5 rounded-full border-[3px] border-[#16130F] transition-transform group-hover:scale-125"
+                                            style={{ background: isPast ? '#EADFCB' : tone.c }}
+                                        />
 
                                         {/* Timeline card */}
-                                        <div className="bg-white border border-slate-200/70 p-6 rounded-[24px] shadow-sm hover:shadow-md transition-shadow">
+                                        <div className="bg-white border-[3px] border-[#16130F] p-5 sm:p-6 rounded-[14px] shadow-[5px_5px_0_#16130F]">
                                             <div className="flex flex-wrap items-center justify-between gap-2 mb-2">
-                                                <span className="text-[10px] font-black text-[#DE5C2B] uppercase tracking-widest bg-orange-50 px-2.5 py-0.5 rounded-md border border-orange-100/60">
+                                                <span className="text-[10px] font-black uppercase tracking-widest px-2.5 py-0.5 rounded-md border-2 border-[#16130F]" style={{ background: tone.c, color: tone.fg }}>
                                                     {itemCategory}
                                                 </span>
-                                                <span className="text-[10px] text-slate-500 font-extrabold uppercase">
+                                                <span className={`text-[10px] font-black uppercase px-2 py-0.5 rounded-md border-2 border-[#16130F] ${isPast ? 'bg-[#EADFCB] text-[#5B544A]' : 'bg-[#FFF6D6] text-[#16130F]'}`}>
                                                     {isPast ? 'Completed' : 'Upcoming'}
                                                 </span>
                                             </div>
                                             <h4
                                                 onClick={() => openDetails(item)}
-                                                className="font-bold text-slate-800 text-base mb-2 hover:text-[#DE5C2B] cursor-pointer transition-colors"
+                                                className="font-urbanist font-black text-[#16130F] text-[18px] leading-snug mb-2 hover:text-[#D0362E] cursor-pointer transition-colors"
                                             >
                                                 {item.title}
                                             </h4>
-                                            <p className="text-slate-500 text-xs font-semibold leading-relaxed mb-4 line-clamp-2">
+                                            <p className="text-[#5B544A] text-xs font-semibold leading-relaxed mb-4 line-clamp-2">
                                                 {item.description || item.body?.replace(/<[^>]*>/g, '').slice(0, 150) || 'No description provided.'}
                                             </p>
 
-                                            <div className="flex flex-wrap items-center justify-between gap-4 pt-3 border-t border-slate-100 text-xs text-slate-500 font-bold">
-                                                <div className="flex items-center gap-4">
+                                            <div className="flex flex-wrap items-center justify-between gap-4 pt-3 border-t-2 border-dashed border-[#16130F]/30 text-xs text-[#16130F] font-bold">
+                                                <div className="flex flex-wrap items-center gap-x-4 gap-y-1">
                                                     <span className="flex items-center gap-1">
-                                                        <Calendar size={12} className="text-slate-400" />
+                                                        <Calendar size={12} className="text-[#D0362E]" />
                                                         {formatEventDate(item.eventStart) || item.date}
                                                     </span>
                                                     <span className="flex items-center gap-1">
-                                                        <Clock size={12} className="text-slate-400" />
+                                                        <Clock size={12} className="text-[#D0362E]" />
                                                         {formatEventTime(item.eventStart, item.eventEnd) || item.time}
                                                     </span>
                                                 </div>
-                                                <div className="flex gap-2">
+                                                <div className="flex flex-wrap gap-2">
                                                     <button
                                                         onClick={() => openDetails(item)}
-                                                        className="px-4 py-2 rounded-xl border border-slate-200 text-xs font-bold text-slate-600 hover:bg-slate-50 transition-colors cursor-pointer"
+                                                        className="px-4 py-2 rounded-lg border-2 border-[#16130F] bg-white text-xs font-extrabold text-[#16130F] hover:bg-[#FFF6D6] transition-colors cursor-pointer"
                                                     >
                                                         View Details
                                                     </button>
                                                     {!isPast && (
                                                         <button
                                                             onClick={() => openRegistration(item)}
-                                                            className={`px-4 py-2 rounded-xl text-xs font-extrabold cursor-pointer ${POSTER_BTN}`}
-                                                            style={{ background: toneFor(idx).btn, color: toneFor(idx).btnText }}
+                                                            className={`px-4 py-2 rounded-lg text-xs font-extrabold cursor-pointer ${POSTER_BTN}`}
+                                                            style={{ background: tone.c, color: tone.fg }}
                                                         >
                                                             Register
                                                         </button>
@@ -530,8 +528,9 @@ const EventsPage = () => {
                             })}
                         </div>
                     ) : (
-                        <div className="bg-white border border-slate-200/60 rounded-[32px] p-12 text-center text-slate-500 shadow-sm mt-8">
-                            <span className="block text-xl font-bold mb-2">
+                        <div className="bg-white border-[3px] border-[#16130F] rounded-[14px] shadow-[5px_5px_0_#16130F] p-10 sm:p-12 text-center mt-8">
+                            <p className={`${HI} text-[18px] text-[#D0362E] mb-2`}>खाली प्लेटफ़ॉर्म</p>
+                            <span className="block font-urbanist text-xl font-black text-[#16130F]">
                                 {eventsList.length === 0 ? 'No upcoming events right now — check back soon' : 'No timeline events found'}
                             </span>
                         </div>
@@ -548,6 +547,7 @@ const EventsPage = () => {
                                     const isPast = isEventOver(item);
                                     const registered = registeredLabel(item);
                                     const tone = toneFor(idx);
+                                    const stub = stubFor(item);
                                     return (
                                         <motion.div
                                             layout
@@ -558,87 +558,108 @@ const EventsPage = () => {
                                             transition={{ duration: 0.45, delay: (idx % 3) * 0.06, ease: [0.22, 1, 0.36, 1] }}
                                             key={item.id || item._id}
                                             onClick={() => openDetails(item)}
-                                            className="bg-white border border-slate-200/70 rounded-[28px] overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between group cursor-pointer"
+                                            className="relative flex bg-white border-[3px] border-[#16130F] rounded-[14px] overflow-hidden shadow-[5px_5px_0_#16130F] hover:shadow-[8px_8px_0_#16130F] transition-shadow duration-200 group cursor-pointer"
                                         >
-                                            <div className="relative overflow-hidden aspect-[16/9] bg-slate-900 border-b border-slate-100">
-                                                <img
-                                                    src={item.imageUrl ? getAbsoluteUrl(item.imageUrl) : (item.image || '/events_hero.webp')}
-                                                    alt={item.title}
-                                                    className="w-full h-full object-cover object-center group-hover:scale-103 transition-transform duration-500"
-                                                />
-                                                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-transparent to-transparent opacity-40"></div>
-
-                                                {/* Ribbon Tags */}
-                                                <span className={`absolute top-4 left-4 inline-flex items-center gap-1 px-3 py-1 rounded-xl text-[9px] font-extrabold uppercase tracking-widest border text-white backdrop-blur-md shadow-sm
-                                                    ${itemCategory === 'webinar'
-                                                        ? 'bg-[#DE5C2B]/90 border-orange-400/30'
-                                                        : 'bg-emerald-600/90 border-emerald-400/30'}`}
-                                                >
-                                                    {itemCategory === 'webinar' ? <Video size={9} /> : <MapPin size={9} />}
-                                                    <span>{itemCategory}</span>
-                                                </span>
-
-                                                <button
-                                                    onClick={(e) => handleBookmark(e, item.title)}
-                                                    className="absolute top-4 right-4 bg-white/80 backdrop-blur-md text-slate-600 hover:text-[#DE5C2B] p-2 rounded-xl border border-slate-200/60 cursor-pointer shadow-sm"
-                                                >
-                                                    <Bookmark size={12} />
-                                                </button>
-
-                                                {registered && (
-                                                    <span className="absolute bottom-4 left-4 text-[10px] font-bold text-white flex items-center gap-1 px-3 py-1 rounded-full bg-slate-900/65 backdrop-blur-sm">
-                                                        {registered}
-                                                    </span>
+                                            {/* Ticket stub: the date, torn off along the dashed perforation */}
+                                            <div
+                                                className="w-[74px] sm:w-[84px] shrink-0 flex flex-col items-center justify-center gap-1 text-center py-5 px-1 border-r-[3px] border-dashed border-[#16130F]"
+                                                style={{ background: tone.c, color: tone.fg }}
+                                            >
+                                                {stub ? (
+                                                    <>
+                                                        <span className="text-[10px] font-black uppercase tracking-[0.18em]">{stub.weekday}</span>
+                                                        <span className="font-urbanist font-black text-[38px] sm:text-[42px] leading-none">{stub.day}</span>
+                                                        <span className="text-[12px] font-black uppercase tracking-wider">{stub.mon}</span>
+                                                        <span className="text-[10px] font-bold opacity-80">{stub.year}</span>
+                                                    </>
+                                                ) : (
+                                                    <span className="text-[11px] font-black uppercase leading-tight [writing-mode:vertical-rl] rotate-180">{item.date}</span>
                                                 )}
+                                                <span className={`${HI} mt-2 text-[14px]`}>टिकट</span>
                                             </div>
+                                            {/* Perforation notches */}
+                                            <span aria-hidden="true" className="absolute z-10 left-[61px] sm:left-[71px] -top-[13px] w-[22px] h-[22px] rounded-full bg-[#FFF6E5] border-[3px] border-[#16130F]" />
+                                            <span aria-hidden="true" className="absolute z-10 left-[61px] sm:left-[71px] -bottom-[13px] w-[22px] h-[22px] rounded-full bg-[#FFF6E5] border-[3px] border-[#16130F]" />
 
-                                            <div className="p-6 flex-grow flex flex-col justify-between text-left">
-                                                <div>
-                                                    <h3 className="text-base md:text-lg font-bold text-slate-800 tracking-tight leading-snug mb-3 group-hover:text-[#DE5C2B] transition-colors">
-                                                        {item.title}
-                                                    </h3>
-                                                    <div className="flex flex-wrap gap-1.5 mb-5">
-                                                        {Array.isArray(item.tags) ? item.tags.map((tag, i) => (
-                                                            <span key={i} className="text-[10px] font-extrabold px-2.5 py-0.5 rounded-lg border" style={{ background: tone.tagBg, color: tone.tagText, borderColor: tone.tagBorder }}>
-                                                                #{tag}
-                                                            </span>
-                                                        )) : null}
-                                                    </div>
+                                            <div className="flex-1 min-w-0 flex flex-col">
+                                                <div className="relative overflow-hidden aspect-[16/9] bg-[#16130F] border-b-[3px] border-[#16130F]">
+                                                    <img
+                                                        src={item.imageUrl ? getAbsoluteUrl(item.imageUrl) : (item.image || '/events_hero.webp')}
+                                                        alt={item.title}
+                                                        className="w-full h-full object-cover object-center group-hover:scale-103 transition-transform duration-500"
+                                                    />
+
+                                                    {/* Ribbon Tags */}
+                                                    <span
+                                                        className="absolute top-3 left-3 inline-flex items-center gap-1 px-2.5 py-1 rounded-md text-[9px] font-black uppercase tracking-widest border-2 border-[#16130F] shadow-[2px_2px_0_#16130F]"
+                                                        style={itemCategory === 'webinar' ? { background: '#F2B705', color: '#16130F' } : { background: '#14837E', color: '#FFFFFF' }}
+                                                    >
+                                                        {itemCategory === 'webinar' ? <Video size={9} /> : <MapPin size={9} />}
+                                                        <span>{itemCategory}</span>
+                                                    </span>
+
+                                                    <button
+                                                        onClick={(e) => handleBookmark(e, item.title)}
+                                                        className="absolute top-3 right-3 bg-white text-[#16130F] hover:bg-[#FFF1B8] p-2 rounded-md border-2 border-[#16130F] shadow-[2px_2px_0_#16130F] cursor-pointer"
+                                                    >
+                                                        <Bookmark size={12} />
+                                                    </button>
+
+                                                    {registered && (
+                                                        <span className="absolute bottom-3 left-3 text-[10px] font-black text-[#16130F] flex items-center gap-1 px-2.5 py-0.5 rounded-md bg-white border-2 border-[#16130F]">
+                                                            {registered}
+                                                        </span>
+                                                    )}
                                                 </div>
 
-                                                <div className="pt-4 border-t border-slate-100 space-y-4">
-                                                    <div className="flex items-center justify-between text-xs text-slate-500 font-bold">
-                                                        <div className="flex items-center gap-1.5">
-                                                            <Calendar size={14} className="text-slate-400" />
-                                                            <span>{formatEventDate(item.eventStart) || item.date}</span>
-                                                        </div>
-                                                        <div className="flex items-center gap-1.5">
-                                                            <Clock size={14} className="text-slate-400" />
-                                                            <span>{formatEventTime(item.eventStart, item.eventEnd) || item.time}</span>
+                                                <div className="p-4 sm:p-5 flex-grow flex flex-col justify-between text-left">
+                                                    <div>
+                                                        <h3 className="font-urbanist text-[17px] md:text-[18px] font-black text-[#16130F] tracking-[-0.01em] leading-snug mb-3 group-hover:text-[#D0362E] transition-colors">
+                                                            {item.title}
+                                                        </h3>
+                                                        <div className="flex flex-wrap gap-1.5 mb-4">
+                                                            {Array.isArray(item.tags) ? item.tags.map((tag, i) => (
+                                                                <span key={i} className="text-[10px] font-extrabold px-2 py-0.5 rounded-md border-2 border-[#16130F] text-[#16130F]" style={{ background: tone.soft }}>
+                                                                    #{tag}
+                                                                </span>
+                                                            )) : null}
                                                         </div>
                                                     </div>
-                                                    {isPast ? (
-                                                        <button
-                                                            onClick={(e) => {
-                                                                e.stopPropagation();
-                                                                openDetails(item);
-                                                            }}
-                                                            className="w-full py-3.5 rounded-2xl border-2 border-dashed border-slate-300 text-slate-600 font-bold text-xs hover:bg-[#FAF7F0] hover:border-[#16130F] transition-all cursor-pointer text-center block duration-200"
-                                                        >
-                                                            Event ended · View details
-                                                        </button>
-                                                    ) : (
-                                                        <button
-                                                            onClick={(e) => {
-                                                                e.stopPropagation();
-                                                                openRegistration(item);
-                                                            }}
-                                                            className={`w-full py-3.5 rounded-2xl font-extrabold text-[13px] cursor-pointer text-center block duration-200 ${POSTER_BTN}`}
-                                                            style={{ background: tone.btn, color: tone.btnText }}
-                                                        >
-                                                            {item.ctaLabel || 'Register Free Seat'}
-                                                        </button>
-                                                    )}
+
+                                                    <div className="pt-3 border-t-2 border-dashed border-[#16130F]/30 space-y-3.5">
+                                                        <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-1 text-xs text-[#16130F] font-bold">
+                                                            <div className="flex items-center gap-1.5">
+                                                                <Calendar size={14} className="text-[#D0362E]" />
+                                                                <span>{formatEventDate(item.eventStart) || item.date}</span>
+                                                            </div>
+                                                            <div className="flex items-center gap-1.5">
+                                                                <Clock size={14} className="text-[#D0362E]" />
+                                                                <span>{formatEventTime(item.eventStart, item.eventEnd) || item.time}</span>
+                                                            </div>
+                                                        </div>
+                                                        {isPast ? (
+                                                            <button
+                                                                onClick={(e) => {
+                                                                    e.stopPropagation();
+                                                                    openDetails(item);
+                                                                }}
+                                                                className="w-full py-3 rounded-lg border-[3px] border-dashed border-[#16130F] bg-[#F3EBDB] text-[#5B544A] font-extrabold text-xs hover:bg-white hover:text-[#16130F] transition-all cursor-pointer text-center block duration-200"
+                                                            >
+                                                                Event ended · View details
+                                                            </button>
+                                                        ) : (
+                                                            <button
+                                                                onClick={(e) => {
+                                                                    e.stopPropagation();
+                                                                    openRegistration(item);
+                                                                }}
+                                                                className={`w-full py-3 rounded-lg font-black text-[13px] cursor-pointer text-center block duration-200 ${POSTER_BTN}`}
+                                                                style={{ background: tone.c, color: tone.fg }}
+                                                            >
+                                                                {item.ctaLabel || 'Register Free Seat'}
+                                                            </button>
+                                                        )}
+                                                    </div>
                                                 </div>
                                             </div>
                                         </motion.div>
@@ -647,15 +668,16 @@ const EventsPage = () => {
                             </AnimatePresence>
                         </motion.div>
                     ) : (
-                        <div className="bg-white border border-slate-200/60 rounded-[32px] p-12 text-center text-slate-500 shadow-sm">
+                        <div className="bg-white border-[3px] border-[#16130F] rounded-[14px] shadow-[5px_5px_0_#16130F] p-10 sm:p-12 text-center text-[#5B544A]">
+                            <p className={`${HI} text-[18px] text-[#D0362E] mb-2`}>खाली प्लेटफ़ॉर्म</p>
                             {eventsList.length === 0 ? (
                                 <>
-                                    <span className="block text-xl font-bold mb-2">No upcoming events right now — check back soon</span>
+                                    <span className="block font-urbanist text-xl font-black text-[#16130F] mb-2">No upcoming events right now — check back soon</span>
                                     <p className="text-xs font-semibold">New live sessions are announced here as soon as they are scheduled.</p>
                                 </>
                             ) : (
                                 <>
-                                    <span className="block text-xl font-bold mb-2">No Scheduled Sessions found</span>
+                                    <span className="block font-urbanist text-xl font-black text-[#16130F] mb-2">No Scheduled Sessions found</span>
                                     <p className="text-xs font-semibold">Try selecting another day of the week or clearing the filters.</p>
                                 </>
                             )}
@@ -667,76 +689,73 @@ const EventsPage = () => {
             {/* Retro film-poster banner for our sessions */}
             <FilmPoster />
 
-            {/* Why Attend Section */}
-            <section className="bg-white border border-slate-200/80 py-16 px-6 md:px-12 rounded-[32px] max-w-[1240px] mx-auto mb-16 relative overflow-hidden shadow-sm">
-                <div className="max-w-[1040px] mx-auto relative z-10">
-                    <div className="text-center max-w-2xl mx-auto mb-12">
-                        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-orange-50 border border-orange-200/70 text-[#DE5C2B] text-[10px] font-black uppercase tracking-wider mb-2">
-                            <span>Key Benefits</span>
-                        </div>
-                        <h2 className="font-outfit text-3xl md:text-4xl font-black text-[#0F172A] tracking-tight leading-tight">
-                            Why Attend UniCoach Events?
-                        </h2>
-                        <p className="text-slate-600 mt-2 text-sm font-normal">
+            {/* ── Why Attend Section ── */}
+            <section className="max-w-[1240px] mx-auto px-4 sm:px-6 md:px-8 mb-16 mt-4">
+                <div className="bg-[#14837E] border-[3px] border-[#16130F] rounded-[18px] shadow-[6px_6px_0_#16130F] py-12 md:py-16 px-5 sm:px-8 md:px-12">
+                    <div className="text-center max-w-2xl mx-auto mb-10">
+                        <Sticker bg="#F2B705" tilt={-2} className="mb-4">Key Benefits</Sticker>
+                        <DesiHeading hi="क्यों आना चाहिए?" light>Why Attend UniCoach Events?</DesiHeading>
+                        <p className="text-white/90 mt-2 text-sm font-medium">
                             Get direct counselling pathways, checklist maps, and expert interactions
                         </p>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
                         {[
                             {
-                                icon: <Star size={22} className="text-[#DE5C2B]" />,
+                                icon: <Star size={22} />,
                                 title: "Top Speakers",
                                 desc: "Hear from students already living abroad, university admissions representatives, and global preparation mentors."
                             },
                             {
-                                icon: <Award size={22} className="text-[#DE5C2B]" />,
+                                icon: <Award size={22} />,
                                 title: "Quality Content",
                                 desc: "Obtain personalized templates, visa guides, slot booking strategies, and mock tests straight from the speakers."
                             },
                             {
-                                icon: <Users size={22} className="text-[#DE5C2B]" />,
+                                icon: <Users size={22} />,
                                 title: "Networking",
                                 desc: "Join active study cohorts of peer students from India, build review teams, and plan group travel templates."
                             }
-                        ].map((card, idx) => (
-                            <div key={idx} className="bg-slate-50 border border-slate-200/80 p-8 rounded-3xl text-center space-y-4 hover:border-blue-300 hover:bg-white hover:shadow-md transition-all">
-                                <div className="w-12 h-12 rounded-2xl bg-orange-50 border border-orange-200/80 flex items-center justify-center mx-auto text-[#DE5C2B] shadow-xs">
-                                    {card.icon}
+                        ].map((card, idx) => {
+                            const tone = [CARD_TONES[0], CARD_TONES[2], CARD_TONES[3]][idx];
+                            return (
+                                <div key={idx} className="bg-[#FFF6E5] border-[3px] border-[#16130F] p-7 rounded-[14px] text-center space-y-3 shadow-[5px_5px_0_#16130F]" style={{ transform: `rotate(${[-1, 0.8, -0.6][idx]}deg)` }}>
+                                    <div className="w-12 h-12 rounded-lg border-[3px] border-[#16130F] flex items-center justify-center mx-auto shadow-[2px_2px_0_#16130F]" style={{ background: tone.c, color: tone.fg }}>
+                                        {card.icon}
+                                    </div>
+                                    <h3 className="font-urbanist text-lg font-black text-[#16130F]">{card.title}</h3>
+                                    <p className="text-[#5B544A] text-[13px] leading-relaxed font-normal">
+                                        {card.desc}
+                                    </p>
                                 </div>
-                                <h3 className="text-lg font-bold text-slate-900">{card.title}</h3>
-                                <p className="text-slate-600 text-xs leading-relaxed font-normal">
-                                    {card.desc}
-                                </p>
-                            </div>
-                        ))}
+                            );
+                        })}
                     </div>
                 </div>
             </section>
 
-            {/* Speakers: the real hosts of our events (hidden when there are none) */}
+            {/* ── Speakers: the real hosts of our events (hidden when there are none) ── */}
             {speakersList.length > 0 && (
-            <section className="max-w-[1240px] mx-auto px-6 md:px-8 mb-20 z-10 relative">
-                <div className="text-center max-w-xl mx-auto mb-12">
-                    <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-orange-50 border border-orange-200/70 text-[#DE5C2B] text-[10px] font-black uppercase tracking-wider mb-2">
-                        <span>Global Experts Portfolio</span>
-                    </div>
-                    <h2 className="font-outfit text-3xl md:text-4xl font-black text-slate-900 tracking-tight">
-                        Meet Our Global Mentors & Speakers
-                    </h2>
-                    <p className="text-slate-500 text-xs mt-1 font-semibold uppercase tracking-wider">
+            <section className="max-w-[1240px] mx-auto px-4 sm:px-6 md:px-8 mb-20 z-10 relative">
+                <div className="text-center max-w-xl mx-auto mb-10">
+                    <Sticker bg="#FBD9E6" tilt={1.5} className="mb-4">Global Experts Portfolio</Sticker>
+                    <DesiHeading hi="मंच पर कौन?">Meet Our Global Mentors &amp; Speakers</DesiHeading>
+                    <p className="text-[#5B544A] text-xs mt-2 font-bold uppercase tracking-wider">
                         Learn from students and advisors with verified international acceptances
                     </p>
                 </div>
 
                 <div className={`grid grid-cols-1 sm:grid-cols-2 gap-6 ${speakersList.length >= 4 ? 'lg:grid-cols-4' : 'lg:grid-cols-3 max-w-[1000px] mx-auto'}`}>
-                    {speakersList.map((sp) => (
+                    {speakersList.map((sp, si) => {
+                        const tone = toneFor(si);
+                        return (
                         <div
                             key={sp.name}
-                            className="bg-white border border-slate-200/70 rounded-[28px] overflow-hidden shadow-sm flex flex-col group relative hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300"
+                            className="bg-white border-[3px] border-[#16130F] rounded-[14px] overflow-hidden shadow-[5px_5px_0_#16130F] flex flex-col group relative hover:shadow-[8px_8px_0_#16130F] transition-shadow duration-200"
                         >
                             {/* Speaker image */}
-                            <div className="relative aspect-[10/11] bg-[#F6EBD3] overflow-hidden border-b border-slate-100" style={sp.imageBg ? { background: sp.imageBg } : undefined}>
+                            <div className="relative aspect-[10/11] overflow-hidden border-b-[3px] border-[#16130F]" style={{ background: sp.imageBg || tone.soft }}>
                                 {sp.image ? (
                                     <img
                                         src={sp.image}
@@ -745,14 +764,13 @@ const EventsPage = () => {
                                         className="w-full h-full object-cover object-top group-hover:scale-102 transition-transform duration-500"
                                     />
                                 ) : (
-                                    <div className="w-full h-full grid place-items-center text-5xl font-black text-[#DE5C2B]/60">{sp.name.charAt(0)}</div>
+                                    <div className="w-full h-full grid place-items-center font-urbanist text-6xl font-black text-[#16130F]">{sp.name.charAt(0)}</div>
                                 )}
-                                <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent opacity-60"></div>
 
                                 {/* Quick tags inside image */}
-                                <div className="absolute bottom-3 left-4 flex flex-wrap gap-1">
+                                <div className="absolute bottom-3 left-3 right-3 flex flex-wrap gap-1">
                                     {sp.tags.map((tag, i) => (
-                                        <span key={i} className="text-[9px] font-extrabold text-white bg-[#DE5C2B]/90 px-2 py-0.5 rounded border border-blue-400/20">
+                                        <span key={i} className="text-[9px] font-black uppercase px-2 py-0.5 rounded-md border-2 border-[#16130F] shadow-[2px_2px_0_#16130F]" style={{ background: tone.c, color: tone.fg }}>
                                             {tag}
                                         </span>
                                     ))}
@@ -762,17 +780,17 @@ const EventsPage = () => {
                             {/* Speaker Bio details */}
                             <div className="p-5 space-y-3 flex-grow flex flex-col justify-between text-left">
                                 <div>
-                                    <h4 className="font-bold text-slate-800 text-base leading-snug group-hover:text-[#DE5C2B] transition-colors">{sp.name}</h4>
-                                    <span className="block text-[10px] text-slate-450 font-extrabold uppercase mt-0.5 leading-snug">{sp.role}</span>
-                                    <p className="text-slate-500 text-[11px] font-semibold leading-relaxed mt-2.5 line-clamp-3 group-hover:line-clamp-none transition-all duration-300">
+                                    <h4 className="font-urbanist font-black text-[#16130F] text-[17px] leading-snug group-hover:text-[#D0362E] transition-colors">{sp.name}</h4>
+                                    <span className="block text-[10px] text-[#5B544A] font-extrabold uppercase mt-0.5 leading-snug">{sp.role}</span>
+                                    <p className="text-[#5B544A] text-[12px] font-medium leading-relaxed mt-2.5 line-clamp-3 group-hover:line-clamp-none transition-all duration-300">
                                         {sp.bio}
                                     </p>
                                 </div>
 
-                                <div className="pt-4 border-t border-slate-100 flex items-center justify-between mt-3 select-none">
+                                <div className="pt-4 border-t-2 border-dashed border-[#16130F]/30 flex flex-wrap items-center justify-between gap-2 mt-3 select-none">
                                     <button
                                         onClick={() => requestCounselling(sp.name)}
-                                        className="text-[10px] font-black uppercase text-[#DE5C2B] hover:text-[#C04A1D] flex items-center gap-1 cursor-pointer"
+                                        className="text-[10px] font-black uppercase text-[#16130F] bg-[#F2B705] border-2 border-[#16130F] rounded-md px-2.5 py-1 shadow-[2px_2px_0_#16130F] hover:shadow-[3px_3px_0_#16130F] flex items-center gap-1 cursor-pointer transition-shadow"
                                     >
                                         <span>Request advice</span>
                                         <ArrowRight size={10} />
@@ -786,7 +804,7 @@ const EventsPage = () => {
                                                 target="_blank"
                                                 rel="noopener noreferrer"
                                                 aria-label={`${sp.name} on ${label}`}
-                                                className="text-[10px] font-bold text-slate-400 hover:text-[#DE5C2B] inline-flex items-center gap-1"
+                                                className="text-[10px] font-bold text-[#5B544A] hover:text-[#D0362E] inline-flex items-center gap-1"
                                             >
                                                 {key === 'linkedin' ? <LinkedinIcon size={12} /> : label}
                                             </a>
@@ -795,7 +813,7 @@ const EventsPage = () => {
                                             <button
                                                 type="button"
                                                 onClick={() => navigate(sp.eventLink)}
-                                                className="text-[10px] font-bold text-slate-500 hover:text-[#DE5C2B] cursor-pointer"
+                                                className="text-[10px] font-bold text-[#16130F] underline decoration-2 decoration-[#D0362E] underline-offset-2 hover:text-[#D0362E] cursor-pointer"
                                             >
                                                 View event
                                             </button>
@@ -804,20 +822,19 @@ const EventsPage = () => {
                                 </div>
                             </div>
                         </div>
-                    ))}
+                        );
+                    })}
                 </div>
             </section>
             )}
 
-            {/* FAQs Section */}
-            <section className="max-w-[840px] mx-auto px-6 mb-20">
-                <div className="text-center mb-10">
-                    <h2 className="font-outfit text-2xl md:text-3xl font-black text-slate-900 tracking-tight">
-                        Frequently Asked Questions
-                    </h2>
+            {/* ── FAQs Section ── */}
+            <section className="max-w-[840px] mx-auto px-4 sm:px-6 mb-20">
+                <div className="text-center mb-8">
+                    <DesiHeading hi="पूछताछ खिड़की">Frequently Asked Questions</DesiHeading>
                 </div>
 
-                <div className="space-y-3 text-left">
+                <div className="space-y-4 text-left">
                     {[
                         {
                             q: "Are the webinars free to attend?",
@@ -838,20 +855,22 @@ const EventsPage = () => {
                     ].map((faq, idx) => {
                         const isOpen = !!faqOpen[idx];
                         return (
-                            <div key={idx} className="bg-white rounded-2xl border border-slate-200/70 overflow-hidden shadow-xs transition-all duration-200">
+                            <div key={idx} className={`bg-white rounded-[12px] border-[3px] border-[#16130F] overflow-hidden transition-shadow duration-200 ${isOpen ? 'shadow-[5px_5px_0_#14837E]' : 'shadow-[4px_4px_0_#16130F]'}`}>
                                 <button
                                     onClick={() => toggleFaq(idx)}
-                                    className="w-full flex items-center justify-between p-5 text-left font-bold text-slate-800 hover:text-[#DE5C2B] transition-colors cursor-pointer"
+                                    className="w-full flex items-center justify-between gap-3 p-4 sm:p-5 text-left font-urbanist font-extrabold text-[16px] text-[#16130F] hover:bg-[#FFF6D6] transition-colors cursor-pointer"
                                 >
                                     <span>{faq.q}</span>
-                                    <ChevronDown
-                                        size={16}
-                                        className={`text-slate-400 transition-transform duration-200 ${isOpen ? 'rotate-180 text-[#DE5C2B]' : ''}`}
-                                    />
+                                    <span className={`shrink-0 w-7 h-7 rounded-md border-2 border-[#16130F] grid place-items-center transition-colors ${isOpen ? 'bg-[#F2B705]' : 'bg-white'}`}>
+                                        <ChevronDown
+                                            size={16}
+                                            className={`text-[#16130F] transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}
+                                        />
+                                    </span>
                                 </button>
 
                                 {isOpen && (
-                                    <div className="px-5 pb-5 pt-1 text-slate-600 text-xs md:text-sm border-t border-slate-100 leading-relaxed font-normal">
+                                    <div className="px-4 sm:px-5 pb-5 pt-3 text-[#5B544A] text-[13px] md:text-sm border-t-2 border-dashed border-[#16130F]/30 leading-relaxed font-normal">
                                         {faq.a}
                                     </div>
                                 )}
@@ -861,25 +880,14 @@ const EventsPage = () => {
                 </div>
             </section>
 
-            {/* Bottom CTA Block */}
-            <section className="max-w-[1240px] mx-auto px-6 md:px-8">
-                <div className="bg-gradient-to-br from-blue-50 via-slate-50 to-indigo-50/40 border border-orange-200/80 rounded-[32px] p-8 md:p-14 text-center relative overflow-hidden shadow-sm">
-                    <div className="max-w-xl mx-auto space-y-5 relative z-10">
-                        <h2 className="font-outfit text-2xl md:text-[2.2rem] font-black text-[#0F172A] tracking-tight leading-tight">
-                            Ready to Take the Leap?
-                        </h2>
-                        <p className="text-slate-600 text-sm font-normal leading-relaxed">
-                            Connect with India's finest counsellors and join the biggest study abroad community to plan your admissions.
-                        </p>
-                        <button
-                            onClick={() => navigate('/book-consultation')}
-                            className="inline-flex items-center gap-2 px-7 py-4 rounded-full text-white font-bold text-sm bg-[#DE5C2B] hover:bg-[#C04A1D] shadow-md shadow-orange-500/20 hover:-translate-y-0.5 transition-all cursor-pointer mt-4"
-                        >
-                            <span>Book Free Counselling</span>
-                            <ArrowRight size={15} />
-                        </button>
-                    </div>
-                </div>
+            {/* ── Closing CTA: truck-art Book OK Please ── */}
+            <section className="max-w-[1240px] mx-auto px-4 sm:px-6 md:px-8">
+                <BookOkCta
+                    to="/book-consultation"
+                    hi="शो के बाद भी सवाल?"
+                    text="Session ke baad bhi sawaal baaki hain? Free call pe senior se seedha poochho. 1:1, ek ghante ki baat."
+                    cta="Book Free Counselling"
+                />
             </section>
 
             {/* ══════════════ REGISTRATION MODAL ══════════════ */}
