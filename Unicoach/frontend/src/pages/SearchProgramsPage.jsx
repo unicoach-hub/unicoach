@@ -1,11 +1,12 @@
 import React, { lazy, Suspense, useEffect, useMemo, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { ArrowLeft, Search, SlidersHorizontal, UserCheck, X, Download, FileSpreadsheet, FileText, GitCompare, ChevronDown, ChevronUp, Info, Loader2, CheckCircle2, AlertCircle,
-  Gauge, Coins, Languages, PiggyBank, Briefcase, TrendingUp, Banknote, Building2, Landmark, ClipboardCheck, MapPin, FileClock, Wallet, MicOff, GraduationCap, Award, ClipboardList, Users, Tag } from 'lucide-react';
+  Gauge, Coins, Languages, PiggyBank, Briefcase, TrendingUp, Banknote, Building2, Landmark, ClipboardCheck, MapPin, FileClock, Wallet, MicOff, GraduationCap, Award, ClipboardList, Users, Tag, ExternalLink } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { JourneyPills } from '../components/ui/BrandElements';
 import TutorialVideo from '../components/ui/TutorialVideo';
 import { getSearchConfig, getHighlights, searchCourses, evaluateEligibility, exportSearch, getCourseDetail, getUniversitiesFacet, suggest } from '../utils/searchApi';
+import { hasScholarship, scholarshipRangeText, scholarshipCheckUrl } from '../utils/scholarship';
 // Excel/PDF export libraries are large; load them only when someone exports
 const ExcelColumnExportModal = lazy(() => import('../components/ExcelColumnExportModal'));
 
@@ -65,18 +66,19 @@ const Accordion = ({ title, open, onToggle, children, count }) => (
   </div>
 );
 
-const scholarshipText = (c) => (c.avgScholarship ? `${c.annualFee?.currency || ''} ${Number(c.avgScholarship).toLocaleString()}`.trim() : (c.scholarshipAvailable ? 'Available' : '—'));
-
-// Ticket-style award tag shown on each card while browsing scholarships
-const AwardTag = ({ c }) => (
-  <div className="relative shrink-0 hidden sm:flex items-stretch overflow-hidden border border-[#EAD8AE] bg-[#FBF7EE]" style={{ borderRadius: 8 }}>
-    <div className="grid place-items-center px-2.5 border-r border-dashed border-[#DCBF80]"><Award size={16} className="text-[#977435]" /></div>
-    <div className="px-3 py-1.5 leading-tight">
-      <div className="text-[10px] font-semibold uppercase tracking-wide text-[#977435]">{c.avgScholarship ? 'Avg. scholarship' : 'Scholarship'}</div>
-      <div className="text-[14px] font-bold text-[#4D3C21]">{c.avgScholarship ? scholarshipText(c) : 'Available'}</div>
+// Ticket-style award tag shown on each card while browsing scholarships (range is the university's, not this program's)
+const AwardTag = ({ c }) => {
+  const range = scholarshipRangeText(c.scholarshipRange);
+  return (
+    <div className="relative shrink-0 hidden sm:flex items-stretch overflow-hidden border border-[#EAD8AE] bg-[#FBF7EE]" style={{ borderRadius: 8 }}>
+      <div className="grid place-items-center px-2.5 border-r border-dashed border-[#DCBF80]"><Award size={16} className="text-[#977435]" /></div>
+      <div className="px-3 py-1.5 leading-tight">
+        <div className="text-[14px] font-bold text-[#4D3C21]">Scholarship available</div>
+        {range && <div className="text-[11px] text-[#977435] mt-0.5">{range} at this university</div>}
+      </div>
     </div>
-  </div>
-);
+  );
+};
 
 // One-tap countries on the scholarship band (cf country ids)
 const SCHOLARSHIP_COUNTRIES = [[1, 'USA'], [4, 'UK'], [3, 'Canada'], [2, 'Australia'], [8, 'Ireland'], [9, 'Germany'], [5, 'New Zealand']];
@@ -101,7 +103,7 @@ const ProgramRow = ({ c, selected, onToggleSelect, onView, eligible, reasons, hi
             <ul className="mt-2 text-[12px] text-rose-700 list-disc pl-4">{reasons.slice(0, 2).map((r, i) => <li key={i}>{r}</li>)}</ul>
           )}
         </div>
-        {scholarshipFocus && <AwardTag c={c} />}
+        {scholarshipFocus && hasScholarship(c) && <AwardTag c={c} />}
         <button onClick={() => onView(c)} className="shrink-0 text-white text-[13px] font-medium px-4 py-1.5" style={{ background: BLUE, borderRadius: 4 }}>View</button>
       </div>
       {/* CourseFinder: a green "Open" status chip leads the intake chips */}
@@ -109,12 +111,20 @@ const ProgramRow = ({ c, selected, onToggleSelect, onView, eligible, reasons, hi
         <Chip color="#ddffe5" text="#2E4836">Open</Chip>
         {(c.intakes || []).slice(0, 8).map((i) => <span key={i} className="px-2 py-0.5 bg-slate-100 text-slate-600 text-[11px]" style={{ borderRadius: 2 }}>{i}</span>)}
       </div>
-      {/* CourseFinder stat row: Duration · Tuition/yr · Application Fee · Avg. Scholarship */}
+      {/* CourseFinder stat row: Duration · Tuition/yr · Application Fee · Scholarship (availability + university range, never one amount) */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-3 pt-3 border-t border-slate-100 text-[13px]">
         <div><div className="text-[11px] text-slate-400">Duration</div><div className="font-medium text-slate-700">{c.duration || '—'}</div></div>
         <div><div className="text-[11px] text-slate-400">Tuition / yr</div><div className="font-semibold text-[#DE5C2B]">{money(c.annualFee)}</div></div>
         <div><div className="text-[11px] text-slate-400">Application Fee</div><div className="font-medium text-slate-700">{c.applicationFee?.isWaived ? 'Waived' : money(c.applicationFee)}</div></div>
-        <div><div className="text-[11px] text-slate-400">Avg. Scholarship</div><div className="font-medium text-slate-700">{scholarshipText(c)}</div></div>
+        <div><div className="text-[11px] text-slate-400">Scholarship</div>
+          {hasScholarship(c) ? (
+            <div className="leading-tight">
+              <div className="font-medium text-slate-700">Available</div>
+              {scholarshipRangeText(c.scholarshipRange) && <div className="text-[11.5px] text-slate-500">{scholarshipRangeText(c.scholarshipRange)} (uni-wide)</div>}
+              <a href={scholarshipCheckUrl(c.universityName)} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-[11.5px] font-medium text-[#DE5C2B] hover:underline">Check on university site <ExternalLink size={11} /></a>
+            </div>
+          ) : <div className="font-medium text-slate-700">—</div>}
+        </div>
       </div>
     </div>
   </div>
@@ -864,7 +874,7 @@ export default function SearchProgramsPage({ highlight } = {}) {
                 {eligActive ? <>{eligResult.counts.eligible?.toLocaleString()} scholarship programs you&apos;re eligible to apply to</>
                   : result ? <>{result.total?.toLocaleString()} programs offer a scholarship</> : 'Programs that offer a scholarship'}
               </h2>
-              <p className="mt-1.5 text-[13.5px] text-[#614A26] max-w-xl">Merit, early-bird and bursary awards. The average award is shown on each program, so you can compare before you apply.</p>
+              <p className="mt-1.5 text-[13.5px] text-[#614A26] max-w-xl">Merit, early-bird and bursary awards. Universities set the amount by your marks, as a % of fees or for a few students only, and change it every year, so each program shows the university&apos;s approximate range and a link to check the exact award.</p>
               <div className="mt-4 flex flex-wrap items-center gap-2">
                 <span className="text-[12.5px] font-semibold text-[#614A26] mr-1">Country:</span>
                 <button onClick={() => setCountry('')} className="px-3 py-1.5 text-[12.5px] font-medium border transition-colors" style={{ borderRadius: 999, background: !country ? '#4D3C21' : '#fff', color: !country ? '#fff' : '#4D3C21', borderColor: !country ? '#4D3C21' : '#EAD8AE' }}>All</button>
@@ -1071,7 +1081,9 @@ export default function SearchProgramsPage({ highlight } = {}) {
                     ['Application Fee', (c, d) => (d?.applicationFee?.isWaived ? 'Waived' : (money(d?.applicationFee) !== '—' ? money(d?.applicationFee) : (c.applicationFee?.isWaived ? 'Waived' : money(c.applicationFee))))],
                     ['Yearly Tuition Fee', (c, d) => (money(d?.tuitionFee) !== '—' ? money(d?.tuitionFee) : money(c.annualFee))],
                     ['Deposit', (c, d) => money(d?.deposit)],
-                    ['Average Scholarship', (c, d) => (d?.averageScholarship ? `${d?.tuitionFee?.currency || ''} ${Number(d.averageScholarship).toLocaleString()}`.trim() : '—')],
+                    ['Scholarship', (c, d) => (hasScholarship({ ...c, ...d }) ? [
+                      'Available', scholarshipRangeText(d?.scholarshipRange || c.scholarshipRange) && `${scholarshipRangeText(d?.scholarshipRange || c.scholarshipRange)} (uni-wide)`,
+                    ].filter(Boolean).join(' · ') : '—')],
                     ['QS Ranking', (c, d) => (d?.university?.rankings?.qs ? `#${d.university.rankings.qs}` : '—')],
                   ];
                   return rows.map(([label, fn]) => (

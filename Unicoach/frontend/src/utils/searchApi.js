@@ -46,9 +46,9 @@ export const exportSearch = (filters = {}) =>
   }).then(json);
 
 // profile: { nationalityId, stateId, highestQualificationId, gradingSystem, score, englishExam, backlogs, workExperience }
-export const evaluateEligibility = (filters, profile, { bucket = 'eligible', page = 1, pageSize = 20 } = {}) =>
+export const evaluateEligibility = (filters, profile, { bucket = 'eligible', sort = 'featured', page = 1, pageSize = 20 } = {}) =>
   fetch(`${API_BASE_URL}/search/eligibility`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ filters, profile, bucket, page, pageSize }),
+    body: JSON.stringify({ filters, profile, bucket, sort, page, pageSize }),
   }).then(json);

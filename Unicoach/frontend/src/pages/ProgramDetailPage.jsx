@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { ArrowLeft, Loader2, Lock, Globe, Award, CalendarDays, Clock, MapPin, Wallet, FileText, GraduationCap, ExternalLink } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { getCourseDetail } from '../utils/searchApi';
+import { hasScholarship, scholarshipRangeText, scholarshipCheckUrl } from '../utils/scholarship';
 
 // UniCoach brand accent (was CourseFinder blue #226CF5).
 const BLUE = '#DE5C2B';
@@ -64,7 +65,7 @@ export default function ProgramDetailPage() {
   const eng = d.testRequirements?.english || [];
   const std = d.testRequirements?.standardized || [];
   const intakes = d.intakesList || d.intakes || [];
-  const avgSch = d.averageScholarship ? `${(d.tuitionFee?.currency) || ''} ${Number(d.averageScholarship).toLocaleString()}`.trim() : null;
+  const schRange = scholarshipRangeText(d.scholarshipRange);
 
   return (
     <div className="min-h-screen bg-slate-50 pt-[76px] pb-16 font-['Onest',sans-serif]">
@@ -113,7 +114,12 @@ export default function ProgramDetailPage() {
             <Row label="Application Fee" value={d.applicationFee?.isWaived ? 'Waived' : (money(d.applicationFee) || 'N/A')} />
             <Row label="Yearly Tuition Fee" value={money(d.tuitionFee)} strong />
             {money(d.deposit) && <Row label="Initial Deposit" value={money(d.deposit)} />}
-            {avgSch && <Row label="Average Scholarship" value={avgSch} />}
+            {hasScholarship(d) && <Row label="Scholarship" value={['Available', schRange && `${schRange} at this university`].filter(Boolean).join(' · ')} />}
+            {hasScholarship(d) && (
+              <p className="text-[12px] text-slate-500 pt-1">The award depends on your marks and the university&apos;s current scheme.{' '}
+                <a href={scholarshipCheckUrl(u.name || d.universityName)} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 font-medium text-[#DE5C2B] hover:underline">Check on the university site <ExternalLink size={11} /></a>
+              </p>
+            )}
             {d.tuitionFeeRemarks && <p className="text-[12.5px] text-slate-500 mt-2 pt-2 border-t border-slate-100">{d.tuitionFeeRemarks}</p>}
           </Section>
 

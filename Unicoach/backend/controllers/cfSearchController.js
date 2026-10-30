@@ -31,7 +31,8 @@ const REQUIREMENT_PREDICATE = {
   32: { 'cf.WithoutEnglishProficiency': true }, 23: { greRequired: { $ne: true } },
   24: { 'cf.GmatRequired': { $ne: true } }, 31: { 'cf.WithoutMaths': true },
   100: { isStem: true }, 101: { 'applicationFee.isWaived': true },
-  102: { 'cf.ScholarshipAvailable': true }, 103: { 'cf.FifteenYearsEducation': true },
+  // same set as the "Scholarship Available" quick filter (highlight 2), so both show one count
+  102: { highlightIds: 2 }, 103: { 'cf.FifteenYearsEducation': true },
   104: { 'cf.DisplayIntakes.0': { $exists: true } }, // Open Programs (has open intake)
 };
 const DURATION_BUCKET = { 1: [0, 12], 2: [12, 24], 3: [24, 36], 4: [36, 48], 5: [48, 100000] };
@@ -142,9 +143,41 @@ function buildSort(sortBy) {
   switch (sortBy) {
     case 'tuition-low': return { 'annualFee.amount': 1 };
     case 'tuition-high': return { 'annualFee.amount': -1 };
-    case 'ranking': return { 'cf.QSRanking': 1, 'cf.UniversityOrder': 1 };
+    // rankSort is QS rank with unranked (null/0) pushed last; see withRankSort
+    case 'ranking': return { rankSort: 1, 'cf.UniversityOrder': 1, cfId: 1 };
     default: return { 'cf.UniversityOrder': 1, cfId: 1 }; // Featured
   }
+}
+// aggregation stages that sort by `sortBy` (ranking needs a computed key first)
+function sortStages(sortBy) {
+  const stages = [];
+  if (sortBy === 'ranking') stages.push({ $addFields: { rankSort: { $cond: [{ $gt: ['$cf.QSRanking', 0] }, '$cf.QSRanking', 1e9] } } });
+  stages.push({ $sort: buildSort(sortBy) });
+  return stages;
+}
+
+// Per-program scholarship figures in the catalogue are rough (often one number per university),
+// so cards show the lowest–highest figure across the university's programs instead of one amount.
+// Computed for the whole catalogue in one ~2s query and cached, so searches don't pay for it each time.
+const RANGE_TTL_MS = 6 * 60 * 60 * 1000;
+let rangeCache = { at: 0, promise: null };
+function scholarshipRangesByUni() {
+  if (rangeCache.promise && Date.now() - rangeCache.at < RANGE_TTL_MS) return rangeCache.promise;
+  const promise = CfCourse.aggregate([
+    { $match: { 'cf.AverageScholarship': { $nin: [null, ''] } } },
+    { $project: { cfUniversityId: 1, currency: '$annualFee.currency', amt: { $convert: { input: '$cf.AverageScholarship', to: 'double', onError: null, onNull: null } } } },
+    { $match: { amt: { $gt: 0 } } },
+    { $group: { _id: '$cfUniversityId', min: { $min: '$amt' }, max: { $max: '$amt' }, currency: { $first: '$currency' } } },
+  ], { allowDiskUse: true })
+    .then((agg) => Object.fromEntries(agg.map((a) => [a._id, { min: a.min, max: a.max, currency: a.currency }])))
+    .catch((e) => { rangeCache = { at: 0, promise: null }; throw e; });
+  rangeCache = { at: Date.now(), promise };
+  return promise;
+}
+async function attachScholarshipRanges(rows) {
+  if (!rows.length) return rows;
+  const byUni = await scholarshipRangesByUni().catch(() => ({})); // ranges are extra; never fail a search over them
+  return rows.map((r) => ({ ...r, scholarshipRange: byUni[r.cfUniversityId] || null }));
 }
 
 // ========== ENDPOINTS ==========
@@ -186,7 +219,8 @@ function toExportProgram(c) {
     intakeYear: '2027',
     minIeltsScore: cf.IeltsOverall, minPteScore: cf.PteScore, minDetScore: cf.DETScore, gmatScore: cf.GmatScore,
     pteSubscore: cf.PteNoSectionLessThan,
-    avgScholarship: cf.AverageScholarship,
+    // catalogue amounts are rough, so exports say "available" and point to the university instead of a number
+    avgScholarship: (cf.ScholarshipAvailable || (c.highlightIds || []).includes(2) || Number(cf.AverageScholarship) > 0) ? 'Available (confirm amount with university)' : undefined,
     deadline: cf.ApplicationDeadline,
     concentration: cf.Concentration,
     requirements: cf.EntryRequirement,
@@ -245,12 +279,12 @@ exports.searchCourses = async (req, res) => {
       // out of the heavy `cf` payload, then drop the rest of `cf` from the list response.
       CfCourse.aggregate([
         { $match: match },
-        { $sort: buildSort(sort) },
+        ...sortStages(sort),
         { $skip: skip },
         { $limit: limit },
         { $addFields: { avgScholarship: '$cf.AverageScholarship', scholarshipAvailable: '$cf.ScholarshipAvailable' } },
-        { $project: { cf: 0 } },
-      ]),
+        { $project: { cf: 0, rankSort: 0 } },
+      ], { allowDiskUse: true }),
       CfCourse.countDocuments(match),
       // highlight facet counts over the current (non-highlight) match
       CfCourse.aggregate([
@@ -265,7 +299,7 @@ exports.searchCourses = async (req, res) => {
     facetAgg.forEach(f => { highlightCounts[f._id] = f.count; });
 
     res.json({
-      data,
+      data: await attachScholarshipRanges(data),
       total,
       page: +page,
       pageSize: limit,
@@ -339,6 +373,8 @@ exports.getCourseDetail = async (req, res) => {
         remarks: cf.Remarks,
         scholarshipDetail: cf.ScholarshipDeatil,
         averageScholarship: cf.AverageScholarship,
+        scholarshipAvailable: cf.ScholarshipAvailable || (c.highlightIds || []).includes(2),
+        scholarshipRange: (await attachScholarshipRanges([{ cfUniversityId: c.cfUniversityId }]))[0].scholarshipRange,
         highlightIds: c.highlightIds,
       },
     });
@@ -381,30 +417,45 @@ function evaluate(course, p) {
 // bucket: 'eligible' | 'non-eligible'. Returns segmented, paged results + counts.
 exports.evaluateEligibility = async (req, res) => {
   try {
-    const { filters = {}, profile = {}, bucket = 'eligible', page = 1, pageSize = 20 } = req.body || {};
+    const { filters = {}, profile = {}, bucket = 'eligible', page = 1, pageSize = 20, sort = 'featured' } = req.body || {};
     const match = buildMatch(filters);
     // Eligibility only applies to study levels matching the student's qualification.
     const allowed = QUALIFICATION_LEVELS[String(profile.highestQualificationId)];
     if (allowed) match.cfStudyLevelId = { $in: allowed };
-    const courses = await CfCourse.find(match).lean(); // scoped set (already filtered by level + facets)
+    // Load only what evaluate() and the result card read: the full `cf` blob made this take ~1 min
+    const band = String(profile.gradingSystem || 'OutOf100').replace(/[^A-Za-z0-9]/g, '');
+    const fields = ['cfId', 'courseName', 'universityName', 'countryName', 'cfCountryId', 'cfUniversityId', 'cfStudyLevelId',
+      'degreeLevel', 'duration', 'annualFee', 'applicationFee', 'initialDeposit', 'highlightIds', 'intakes', 'eligibleCountryIds',
+      'cf.AverageScholarship', 'cf.ScholarshipAvailable', 'cf.QSRanking', 'cf.UniversityOrder', `cf.EntryRequirementUg${band}`,
+      `cf.EntryRequirementTwelfth${band}`, 'cf.backlog', 'cf.WorkExp', 'cf.IeltsRequired', 'cf.ToeflRequired', 'cf.PteRequired',
+      'cf.DETRequired', 'cf.IsMOIWaiver', 'cf.WithoutEnglishProficiency'];
+    const courses = await CfCourse.aggregate([
+      { $match: match },
+      { $project: Object.fromEntries(fields.map((f) => [f, 1])) },
+      ...sortStages(sort),
+    ], { allowDiskUse: true }); // scoped set (already filtered by level + facets)
     const eligible = [], nonEligible = [];
     for (const c of courses) {
       const r = evaluate(c, profile);
+      const cf = c.cf || {};
       const row = { cfId: c.cfId, courseName: c.courseName, universityName: c.universityName,
-        countryName: c.countryName, degreeLevel: c.degreeLevel, duration: c.duration,
+        countryName: c.countryName, cfCountryId: c.cfCountryId, cfUniversityId: c.cfUniversityId,
+        degreeLevel: c.degreeLevel, duration: c.duration, intakes: c.intakes,
         annualFee: c.annualFee, applicationFee: c.applicationFee, initialDeposit: c.initialDeposit,
-        highlightIds: c.highlightIds, averageScholarship: (c.cf || {}).AverageScholarship,
+        highlightIds: c.highlightIds, avgScholarship: cf.AverageScholarship, scholarshipAvailable: cf.ScholarshipAvailable,
         eligible: r.eligible, reasons: r.reasons };
       (r.eligible ? eligible : nonEligible).push(row);
     }
     const list = bucket === 'non-eligible' ? nonEligible : eligible;
-    const start = (Math.max(1, +page) - 1) * (+pageSize || 20);
+    const size = Math.min(100, +pageSize || 20);
+    const start = (Math.max(1, +page) - 1) * size;
     res.json({
       counts: { eligible: eligible.length, nonEligible: nonEligible.length },
       bucket,
-      data: list.slice(start, start + (+pageSize || 20)),
+      data: await attachScholarshipRanges(list.slice(start, start + size)),
       total: list.length,
       page: +page,
+      totalPages: Math.ceil(list.length / size),
     });
   } catch (e) { res.status(500).json({ error: e.message }); }
 };
