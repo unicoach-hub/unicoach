@@ -14,7 +14,6 @@ const STAMPS = [
   { id: 'germany', name: 'Germany', hi: 'जर्मनी', tint: '#FFF1B8', universities: '300+', stay: '18 months' },
   { id: 'ireland', name: 'Ireland', hi: 'आयरलैंड', tint: '#DDF3E4', universities: '35+', stay: '1–2 yrs' },
 ];
-const TILT = [-3, 2, -2, 3, -1.5, 2.5];
 
 const DestinationStamps = () => (
   <section id="destinations" className="bg-[#14837E] px-4 sm:px-6 py-14 sm:py-16">
@@ -33,12 +32,12 @@ const DestinationStamps = () => (
       </div>
 
       <div className="mt-9 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-5 sm:gap-6">
-        {STAMPS.map((s, i) => (
+        {STAMPS.map((s) => (
           <Link
             key={s.id}
             to={`/study-abroad/${s.id}`}
-            className="group block bg-white p-2.5 shadow-[4px_4px_0_#0B4F4C] transition-transform duration-300 hover:-translate-y-1.5 hover:rotate-0"
-            style={{ transform: `rotate(${TILT[i]}deg)`, borderRadius: 4, outline: '3px dashed #FFF6E5', outlineOffset: '-7px' }}
+            className="group block bg-white p-2.5 shadow-[4px_4px_0_#0B4F4C] transition-transform duration-300 hover:-translate-y-1.5"
+            style={{ borderRadius: 4, outline: '3px dashed #FFF6E5', outlineOffset: '-7px' }}
           >
             <div className="aspect-square grid place-items-center" style={{ background: s.tint }}>
               <img src={`/images/destinations-3d/${s.id}.webp`} alt="" loading="lazy" width="480" height="480" className="w-[80%] h-auto drop-shadow-md transition-transform duration-300 group-hover:scale-105" />
