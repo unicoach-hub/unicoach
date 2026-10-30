@@ -491,7 +491,7 @@ const resourceDataExtended = {
     CALCULATORS: {
         title: 'ADMISSION & GPA CALCULATORS',
         items: [
-            { name: '✨ Admission & Scholarship Checker', path: '/eligibility-calculator' },
+            { name: 'Admission & Scholarship Checker', path: '/eligibility-calculator' },
             { name: 'CGPA to GPA Calculator', path: '/resources/calculators/cgpa-to-gpa' },
             { name: 'CGPA to Percentage Calculator', path: '/resources/calculators/cgpa-to-percentage' },
             { name: 'CGPA to Marks Calculator', path: '/resources/calculators/cgpa-to-marks' }
@@ -504,6 +504,21 @@ const resourceDataExtended = {
         ]
     }
 };
+
+// Desi Pop colours for the Exams and Resources menus: [background, text]
+const EXAM_TONES = {
+    IELTS: ['#F2B705', '#16130F'], Duolingo: ['#14837E', '#FFFFFF'], SAT: ['#B8285B', '#FFFFFF'], PTE: ['#14837E', '#FFFFFF'],
+    TOEFL: ['#FFD9C2', '#16130F'], GRE: ['#F2B705', '#16130F'], GMAT: ['#B8285B', '#FFFFFF'],
+};
+const EXAM_SECTION_HI = { 'EXAM DETAILS': 'परीक्षा की जानकारी', PRACTICE: 'अभ्यास' };
+const RESOURCE_META = {
+    BOOKS: { hi: 'किताबें', tone: ['#F2B705', '#16130F'] },
+    LOR: { hi: 'सिफ़ारिश पत्र', tone: ['#14837E', '#FFFFFF'] },
+    SOP: { hi: 'एसओपी', tone: ['#B8285B', '#FFFFFF'] },
+    CALCULATORS: { hi: 'हिसाब किताब', tone: ['#D0362E', '#FFFFFF'] },
+    OTHER: { hi: 'और भी', tone: ['#FFD9C2', '#16130F'] },
+};
+const MENU_PANEL = 'bg-[#FFF6E5] rounded-[20px] border-[3px] border-[#16130F] shadow-[6px_6px_0_#16130F]';
 
 const aiToolsNavData = [
     {
@@ -765,10 +780,10 @@ const Navbar = () => {
 
     // Blogs, Digest, Events and Newsroom live under one "Explore" dropdown
     const exploreLinks = [
-        { name: 'Blogs', desc: 'Guides and student stories', path: '/blogs', icon: FileText, tone: '#2F5BFF', soft: '#E7EDFF' },
-        { name: 'Digest', desc: 'Weekly study-abroad news', path: '/unicoach-digest', icon: Newspaper, tone: '#6D3FE0', soft: '#EEE8FD' },
-        { name: 'Events', desc: 'Live sessions with mentors', path: '/events', icon: Calendar, tone: '#0F9F8F', soft: '#DDF5F1' },
-        { name: 'Newsroom', desc: 'UniCoach updates and press', path: '/newsroom', icon: Radio, tone: '#D9573F', soft: '#FCE9E4' },
+        { name: 'Blogs', desc: 'Guides and student stories', path: '/blogs', icon: FileText, tone: '#D0362E', soft: '#FCE3DA' },
+        { name: 'Digest', desc: 'Weekly study-abroad news', path: '/unicoach-digest', icon: Newspaper, tone: '#B8285B', soft: '#FBD9E6' },
+        { name: 'Events', desc: 'Live sessions with mentors', path: '/events', icon: Calendar, tone: '#14837E', soft: '#DDF3EF' },
+        { name: 'Newsroom', desc: 'UniCoach updates and press', path: '/newsroom', icon: Radio, tone: '#DE5C2B', soft: '#FFE7DA' },
     ];
     const exploreActive = exploreLinks.some((l) => location.pathname.startsWith(l.path));
 
@@ -1068,111 +1083,100 @@ const Navbar = () => {
 
                                     {/* EXAMS dropdown */}
                                     <AnimatePresence>
-                                        {activeDropdown === link.name && link.type === 'exam' && (
+                                        {activeDropdown === link.name && link.type === 'exam' && (() => {
+                                            const examData = examDataExtended[activeExam] || examDataExtended.IELTS;
+                                            const [toneBg, toneFg] = EXAM_TONES[activeExam] || EXAM_TONES.IELTS;
+                                            return (
                                             <motion.div
                                                 initial={{ opacity: 0, y: 15, scale: 0.98 }}
                                                 animate={{ opacity: 1, y: 0, scale: 1 }}
                                                 exit={{ opacity: 0, y: 12, scale: 0.99 }}
                                                 transition={{ duration: 0.2, ease: [0.23, 1, 0.32, 1] }}
-                                                className="absolute top-[calc(100%-8px)] left-[-100px] w-[840px] bg-white rounded-[24px] shadow-[0_24px_60px_-12px_rgba(15,23,42,0.18)] border border-slate-100 overflow-hidden z-50 flex whitespace-normal text-left"
+                                                className={`absolute top-[calc(100%-8px)] left-[-100px] w-[860px] ${MENU_PANEL} overflow-hidden z-50 flex whitespace-normal text-left`}
                                                 onMouseEnter={() => open(link.name)}
                                                 onMouseLeave={close}
                                             >
-                                                {/* Left sidebar of exams */}
-                                                <div className="w-[210px] flex-shrink-0 bg-slate-50 border-r border-slate-100 p-4 flex flex-col gap-1">
+                                                {/* Left: exam list, each exam in its own poster colour */}
+                                                <div className="w-[200px] flex-shrink-0 bg-white border-r-[3px] border-[#16130F] p-3.5 flex flex-col gap-1.5">
+                                                    <p className="px-2 pb-1 font-['Rozha_One',serif] text-[15px] leading-none text-[#D0362E]">परीक्षा चुनो</p>
                                                     {Object.keys(examDataExtended).map((exam) => {
                                                         const isActiveExam = activeExam === exam;
+                                                        const [bg, fg] = EXAM_TONES[exam] || EXAM_TONES.IELTS;
                                                         return (
                                                             <button
                                                                 key={exam}
                                                                 onMouseEnter={() => setActiveExam(exam)}
-                                                                className={`w-full flex items-center justify-between px-4 py-2.5 text-[15px] font-semibold rounded-xl transition-colors duration-150 cursor-pointer
-                                                                ${isActiveExam
-                                                                        ? 'bg-white text-slate-900 shadow-[0_1px_3px_rgba(15,23,42,0.08)] ring-1 ring-slate-200/70'
-                                                                        : 'text-slate-600 hover:bg-white/70 hover:text-slate-900'}`}
+                                                                style={isActiveExam ? { background: bg, color: fg } : undefined}
+                                                                className={`no-shine w-full flex items-center justify-between px-3.5 py-2 text-[15px] font-bold rounded-lg border-2 transition-colors duration-150 cursor-pointer
+                                                                ${isActiveExam ? 'border-[#16130F] shadow-[3px_3px_0_#16130F]' : 'border-transparent text-[#3D362E] hover:border-[#16130F] hover:bg-[#FFF6E5]'}`}
                                                             >
-                                                                <span className="truncate">{exam}</span>
-                                                                <ChevronRight
-                                                                    size={14}
-                                                                    className={isActiveExam ? 'text-[#DE5C2B] flex-shrink-0' : 'text-slate-400 flex-shrink-0 transition-transform group-hover:translate-x-0.5'}
-                                                                />
+                                                                <span className="flex items-center gap-2.5 truncate">
+                                                                    <span className="w-2.5 h-2.5 rounded-full border-2 border-[#16130F] flex-shrink-0" style={{ background: bg }} />
+                                                                    {exam}
+                                                                </span>
+                                                                <ChevronRight size={14} className="flex-shrink-0" />
                                                             </button>
                                                         );
                                                     })}
                                                 </div>
 
-                                                {/* Right content area */}
-                                                <div className="flex-1 p-7 flex flex-col min-w-0">
-                                                    {/* Header row containing CTAs */}
-                                                    <div className="flex items-center justify-between gap-3 mb-5">
-                                                        <div className="flex flex-wrap gap-5">
-                                                            {(examDataExtended[activeExam] || examDataExtended.IELTS).headerLinks.map((hLink, i) => (
+                                                {/* Right: the chosen exam's links */}
+                                                <div className="flex-1 p-6 flex flex-col min-w-0">
+                                                    <div className="flex items-start justify-between gap-3 mb-5">
+                                                        <div className="flex flex-wrap gap-2.5">
+                                                            {examData.headerLinks.map((hLink, i) => (
                                                                 <Link
                                                                     key={i}
                                                                     to={hLink.path}
                                                                     onClick={() => setActiveDropdown(null)}
-                                                                    className="inline-flex items-center gap-1 text-[16px] font-semibold text-slate-900 hover:text-[#DE5C2B] transition-colors group"
+                                                                    style={i === 0 ? { background: toneBg, color: toneFg } : undefined}
+                                                                    className={`inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full border-2 border-[#16130F] text-[14px] font-bold shadow-[3px_3px_0_#16130F] transition-transform hover:-translate-y-0.5 ${i === 0 ? '' : 'bg-white text-[#16130F]'}`}
                                                                 >
                                                                     <span>{hLink.name}</span>
-                                                                    <ChevronRight size={16} className="transform group-hover:translate-x-0.5 transition-transform text-[#DE5C2B] flex-shrink-0" />
+                                                                    <ChevronRight size={15} className="flex-shrink-0" />
                                                                 </Link>
                                                             ))}
                                                         </div>
-
                                                         <Link
                                                             to="/exams"
                                                             onClick={() => setActiveDropdown(null)}
-                                                            className="inline-flex items-center gap-1 text-[13.5px] font-semibold text-slate-600 hover:text-[#DE5C2B] transition-colors flex-shrink-0"
+                                                            className="inline-flex items-center gap-1 pt-2 text-[13px] font-bold text-[#16130F] underline decoration-[#D0362E] decoration-2 underline-offset-4 hover:text-[#D0362E] transition-colors flex-shrink-0"
                                                         >
-                                                            <span>View All Exams Hub</span>
+                                                            <span>All exams</span>
                                                             <ArrowRight size={13} />
                                                         </Link>
                                                     </div>
 
-                                                    <div className="w-full h-[1px] bg-slate-100 mb-5" />
+                                                    <div className="w-full border-t-2 border-dashed border-[#16130F33] mb-5" />
 
-                                                    {/* Content Grid */}
-                                                    <div className="grid grid-cols-2 gap-7">
-                                                        {(examDataExtended[activeExam] || examDataExtended.IELTS).sections.map((section, sIdx) => {
+                                                    <div className="grid grid-cols-[1.5fr_1fr] gap-6">
+                                                        {examData.sections.map((section, sIdx) => {
                                                             const isDetails = section.title === 'EXAM DETAILS';
                                                             return (
-                                                                <div key={sIdx} className="min-w-0">
-                                                                    <p className="text-[12px] font-semibold text-slate-400 uppercase tracking-[0.08em] pb-3 mb-4 border-b border-slate-100 truncate">
-                                                                        {section.title}
-                                                                    </p>
-                                                                    {isDetails ? (
-                                                                        <div className="grid grid-cols-2 gap-x-4 gap-y-3">
-                                                                            {section.items.map((item, itemIdx) => (
-                                                                                <Link
-                                                                                    key={itemIdx}
-                                                                                    to={item.path}
-                                                                                    className="block text-[15px] text-slate-700 font-normal hover:text-[#DE5C2B] transition-colors leading-snug whitespace-normal break-words"
-                                                                                >
-                                                                                    {item.name}
-                                                                                </Link>
-                                                                            ))}
-                                                                        </div>
-                                                                    ) : (
-                                                                        <ul className="space-y-3">
-                                                                            {section.items.map((item, itemIdx) => (
-                                                                                <li key={itemIdx} className="min-w-0">
-                                                                                    <Link
-                                                                                        to={item.path}
-                                                                                        className="block text-[15px] text-slate-700 font-normal hover:text-[#DE5C2B] transition-colors leading-snug whitespace-normal break-words"
-                                                                                    >
-                                                                                        {item.name}
-                                                                                    </Link>
-                                                                                </li>
-                                                                            ))}
-                                                                        </ul>
-                                                                    )}
+                                                                <div key={sIdx} className={`min-w-0 ${isDetails ? '' : 'bg-white border-2 border-[#16130F] rounded-xl p-4 shadow-[3px_3px_0_#16130F] self-start'}`}>
+                                                                    <p className="font-['Rozha_One',serif] text-[14px] leading-none text-[#D0362E]">{EXAM_SECTION_HI[section.title] || ''}</p>
+                                                                    <p className="mt-1 mb-3 text-[11.5px] font-black uppercase tracking-[0.12em] text-[#16130F]">{section.title}</p>
+                                                                    <div className={isDetails ? 'grid grid-cols-2 gap-x-4 gap-y-1' : 'flex flex-col gap-1'}>
+                                                                        {section.items.map((item, itemIdx) => (
+                                                                            <Link
+                                                                                key={itemIdx}
+                                                                                to={item.path}
+                                                                                onClick={() => setActiveDropdown(null)}
+                                                                                className="group/ex flex items-center gap-2 -mx-2 px-2 py-1.5 rounded-md text-[14.5px] font-medium text-[#3D362E] hover:bg-white hover:text-[#16130F] leading-snug transition-colors"
+                                                                            >
+                                                                                <span className="w-1.5 h-1.5 rounded-full flex-shrink-0 bg-[#16130F33] group-hover/ex:bg-[#D0362E]" />
+                                                                                <span className="min-w-0">{item.name}</span>
+                                                                            </Link>
+                                                                        ))}
+                                                                    </div>
                                                                 </div>
                                                             );
                                                         })}
                                                     </div>
                                                 </div>
                                             </motion.div>
-                                        )}
+                                            );
+                                        })()}
                                     </AnimatePresence>
 
                                     {/* EXPLORE dropdown: Blogs, Digest, Events, Newsroom */}
@@ -1183,17 +1187,17 @@ const Navbar = () => {
                                                 animate={{ opacity: 1, y: 0, scale: 1 }}
                                                 exit={{ opacity: 0, y: 12, scale: 0.99 }}
                                                 transition={{ duration: 0.2, ease: [0.23, 1, 0.32, 1] }}
-                                                className="absolute top-[calc(100%-4px)] left-[-90px] w-[440px] bg-white rounded-[20px] shadow-[0_24px_60px_-12px_rgba(15,23,42,0.18)] border border-slate-100 p-3 z-50 grid grid-cols-2 gap-1.5 whitespace-normal text-left"
+                                                className={`absolute top-[calc(100%-4px)] left-[-90px] w-[460px] ${MENU_PANEL} p-3 z-50 grid grid-cols-2 gap-2 whitespace-normal text-left`}
                                                 onMouseEnter={() => open(link.name)}
                                                 onMouseLeave={close}
                                             >
-                                                {exploreLinks.map(({ name, desc, path, icon: Icon, tone, soft }) => (
+                                                {exploreLinks.map(({ name, desc, path, icon: Icon, tone }) => (
                                                     <Link key={name} to={path} onClick={() => setActiveDropdown(null)}
-                                                        className={`flex items-start gap-3 p-3 rounded-2xl transition-colors hover:bg-slate-50 ${location.pathname.startsWith(path) ? 'bg-slate-50' : ''}`}>
-                                                        <span className="w-9 h-9 rounded-xl grid place-items-center flex-shrink-0" style={{ background: soft, color: tone }}><Icon size={17} /></span>
+                                                        className={`flex items-start gap-3 p-3 rounded-xl border-2 transition-all hover:bg-white hover:border-[#16130F] hover:shadow-[3px_3px_0_#16130F] ${location.pathname.startsWith(path) ? 'bg-white border-[#16130F] shadow-[3px_3px_0_#16130F]' : 'border-transparent'}`}>
+                                                        <span className="w-9 h-9 rounded-lg border-2 border-[#16130F] grid place-items-center flex-shrink-0" style={{ background: tone, color: '#FFFFFF' }}><Icon size={17} /></span>
                                                         <span className="min-w-0">
-                                                            <span className="block text-[14.5px] font-semibold text-slate-900">{name}</span>
-                                                            <span className="block text-[12.5px] text-slate-500 leading-snug">{desc}</span>
+                                                            <span className="block text-[14.5px] font-bold text-[#16130F]">{name}</span>
+                                                            <span className="block text-[12.5px] text-[#5B544A] leading-snug">{desc}</span>
                                                         </span>
                                                     </Link>
                                                 ))}
@@ -1203,74 +1207,83 @@ const Navbar = () => {
 
                                     {/* RESOURCES dropdown */}
                                     <AnimatePresence>
-                                        {activeDropdown === link.name && link.type === 'resources' && (
+                                        {activeDropdown === link.name && link.type === 'resources' && (() => {
+                                            const tab = resourceDataExtended[activeResourceTab];
+                                            const meta = RESOURCE_META[activeResourceTab] || RESOURCE_META.OTHER;
+                                            return (
                                             <motion.div
                                                 initial={{ opacity: 0, y: 15, scale: 0.98 }}
                                                 animate={{ opacity: 1, y: 0, scale: 1 }}
                                                 exit={{ opacity: 0, y: 12, scale: 0.99 }}
                                                 transition={{ duration: 0.2, ease: [0.23, 1, 0.32, 1] }}
-                                                className="absolute top-[calc(100%-8px)] left-[-150px] w-[740px] bg-white rounded-[24px] shadow-[0_24px_60px_-12px_rgba(15,23,42,0.18)] border border-slate-100 overflow-hidden z-50 flex whitespace-normal text-left"
+                                                className={`absolute top-[calc(100%-8px)] left-[-150px] w-[760px] ${MENU_PANEL} overflow-hidden z-50 flex whitespace-normal text-left`}
                                                 onMouseEnter={() => open(link.name)}
                                                 onMouseLeave={close}
                                             >
-                                                {/* Left sidebar: off-white background styled list of resource categories */}
-                                                <div className="w-[210px] flex-shrink-0 bg-slate-50 border-r border-slate-100 p-4 flex flex-col gap-1">
+                                                {/* Left: resource categories, each in its own poster colour */}
+                                                <div className="w-[200px] flex-shrink-0 bg-white border-r-[3px] border-[#16130F] p-3.5 flex flex-col gap-1.5">
+                                                    <p className="px-2 pb-1 font-['Rozha_One',serif] text-[15px] leading-none text-[#D0362E]">काम की चीज़ें</p>
                                                     {Object.keys(resourceDataExtended).map((tabKey) => {
                                                         const isActiveTab = activeResourceTab === tabKey;
+                                                        const [bg, fg] = (RESOURCE_META[tabKey] || RESOURCE_META.OTHER).tone;
                                                         return (
                                                             <button
                                                                 key={tabKey}
                                                                 onMouseEnter={() => setActiveResourceTab(tabKey)}
-                                                                className={`w-full flex items-center justify-between px-4 py-2.5 text-[15px] font-semibold rounded-xl transition-colors duration-150 cursor-pointer
-                                                                ${isActiveTab
-                                                                        ? 'bg-white text-slate-900 shadow-[0_1px_3px_rgba(15,23,42,0.08)] ring-1 ring-slate-200/70'
-                                                                        : 'text-slate-600 hover:bg-white/70 hover:text-slate-900'}`}
+                                                                style={isActiveTab ? { background: bg, color: fg } : undefined}
+                                                                className={`no-shine w-full flex items-center justify-between px-3.5 py-2 text-[15px] font-bold rounded-lg border-2 transition-colors duration-150 cursor-pointer
+                                                                ${isActiveTab ? 'border-[#16130F] shadow-[3px_3px_0_#16130F]' : 'border-transparent text-[#3D362E] hover:border-[#16130F] hover:bg-[#FFF6E5]'}`}
                                                             >
-                                                                <span className="truncate">{tabKey.length > 3 ? tabKey.charAt(0) + tabKey.slice(1).toLowerCase() : tabKey}</span>
-                                                                <ChevronRight
-                                                                    size={14}
-                                                                    className={isActiveTab ? 'text-[#DE5C2B] flex-shrink-0' : 'text-slate-400 flex-shrink-0'}
-                                                                />
+                                                                <span className="flex items-center gap-2.5 truncate">
+                                                                    <span className="w-2.5 h-2.5 rounded-full border-2 border-[#16130F] flex-shrink-0" style={{ background: bg }} />
+                                                                    {tabKey.length > 3 ? tabKey.charAt(0) + tabKey.slice(1).toLowerCase() : tabKey}
+                                                                </span>
+                                                                <ChevronRight size={14} className="flex-shrink-0" />
                                                             </button>
                                                         );
                                                     })}
                                                 </div>
 
-                                                {/* Right content panel */}
-                                                <div className="flex-1 p-7 flex flex-col justify-start min-w-0">
-                                                    <div className="mb-4 flex items-center justify-between">
-                                                        <h3 className="text-[18px] font-bold text-slate-900 tracking-[-0.02em]">
-                                                            {resourceDataExtended[activeResourceTab].title}
-                                                        </h3>
+                                                {/* Right: the chosen category's links as tiles */}
+                                                <div className="flex-1 p-6 flex flex-col justify-start min-w-0">
+                                                    <div className="mb-4 flex items-end justify-between gap-3">
+                                                        <div className="min-w-0">
+                                                            <p className="font-['Rozha_One',serif] text-[15px] leading-none text-[#D0362E]">{meta.hi}</p>
+                                                            <h3 className="mt-1 font-urbanist text-[19px] font-black text-[#16130F] tracking-[-0.02em] leading-tight">{tab.title}</h3>
+                                                        </div>
                                                         <Link
                                                             to="/resources"
                                                             onClick={() => setActiveDropdown(null)}
-                                                            className="inline-flex items-center gap-1 text-[13.5px] font-semibold text-slate-600 hover:text-[#DE5C2B] transition-colors flex-shrink-0"
+                                                            className="inline-flex items-center gap-1 text-[13px] font-bold text-[#16130F] underline decoration-[#D0362E] decoration-2 underline-offset-4 hover:text-[#D0362E] transition-colors flex-shrink-0"
                                                         >
-                                                            <span>View All Resources</span>
+                                                            <span>All resources</span>
                                                             <ArrowRight size={13} />
                                                         </Link>
                                                     </div>
 
-                                                    <div className="w-full h-[1px] bg-slate-100 mb-5" />
+                                                    <div className="w-full border-t-2 border-dashed border-[#16130F33] mb-4" />
 
-                                                    <div className="grid grid-cols-2 gap-x-6 gap-y-4">
-                                                        {resourceDataExtended[activeResourceTab].items.map((item) => (
+                                                    <div className="grid grid-cols-2 gap-3">
+                                                        {tab.items.map((item, i) => (
                                                             <Link
                                                                 key={item.name}
                                                                 to={item.path}
-                                                                className="flex items-center gap-2 group/item min-w-0"
+                                                                onClick={() => setActiveDropdown(null)}
+                                                                className="group/res flex items-center gap-3 p-3 bg-white rounded-xl border-2 border-[#16130F] shadow-[3px_3px_0_#16130F] transition-transform hover:-translate-y-0.5 min-w-0"
                                                             >
-                                                                <div className="hidden" />
-                                                                <span className="text-[15px] text-slate-700 font-normal group-hover/item:text-[#DE5C2B] transition-colors leading-snug whitespace-normal break-words">
-                                                                    {item.name}
+                                                                <span className="w-8 h-8 rounded-lg border-2 border-[#16130F] grid place-items-center flex-shrink-0 font-urbanist font-black text-[13px]"
+                                                                    style={i === 0 ? { background: meta.tone[0], color: meta.tone[1] } : { background: '#FFF6E5', color: '#16130F' }}>
+                                                                    {String(i + 1).padStart(2, '0')}
                                                                 </span>
+                                                                <span className="flex-1 text-[14.5px] font-bold text-[#16130F] leading-snug min-w-0">{item.name}</span>
+                                                                <ArrowRight size={14} className="flex-shrink-0 text-[#16130F] transition-transform group-hover/res:translate-x-0.5" />
                                                             </Link>
                                                         ))}
                                                     </div>
                                                 </div>
                                             </motion.div>
-                                        )}
+                                            );
+                                        })()}
                                     </AnimatePresence>
 
                                     {/* AI & TOOLS dropdown */}
