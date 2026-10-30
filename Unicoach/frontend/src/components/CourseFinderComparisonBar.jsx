@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
@@ -14,6 +14,14 @@ const CourseFinderComparisonBar = ({
 }) => {
   const [showCompareModal, setShowCompareModal] = useState(false);
 
+  // While the bar is up, the UniBot launcher moves above it (see UniBotChatWidget)
+  const barVisible = Boolean(selectedPrograms && selectedPrograms.length);
+  useEffect(() => {
+    if (!barVisible) return undefined;
+    document.body.dataset.floatingBar = '1';
+    return () => { delete document.body.dataset.floatingBar; };
+  }, [barVisible]);
+
   if (!selectedPrograms || selectedPrograms.length === 0) return null;
 
   return (
@@ -23,23 +31,23 @@ const CourseFinderComparisonBar = ({
         initial={{ y: 50, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         exit={{ y: 50, opacity: 0 }}
-        className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 w-[94%] max-w-2xl"
+        className="fixed bottom-3 sm:bottom-6 left-1/2 -translate-x-1/2 z-50 w-[calc(100%-24px)] sm:w-[94%] max-w-2xl"
       >
-        <div className="bg-[#0F172A] text-white px-5 py-3.5 rounded-2xl shadow-2xl border border-slate-700/80 flex items-center justify-between gap-3 backdrop-blur-md">
+        <div className="bg-[#0F172A] text-white px-3 sm:px-5 py-2.5 sm:py-3.5 rounded-2xl shadow-2xl border border-slate-700/80 flex items-center justify-between gap-3 backdrop-blur-md">
           {/* Selected Count */}
-          <div className="flex items-center gap-2">
-            <span className="w-6 h-6 rounded-full bg-blue-600 text-white font-black text-xs flex items-center justify-center">
+          <div className="flex items-center gap-2 min-w-0">
+            <span className="w-6 h-6 shrink-0 rounded-full bg-blue-600 text-white font-black text-xs flex items-center justify-center">
               {selectedPrograms.length}
             </span>
-            <span className="text-xs sm:text-sm font-bold text-slate-200">
-              {selectedPrograms.length} {selectedPrograms.length === 1 ? 'Program' : 'Programs'} selected
+            <span className="text-xs sm:text-sm font-bold text-slate-200 whitespace-nowrap">
+              <span className="hidden sm:inline">{selectedPrograms.length} {selectedPrograms.length === 1 ? 'Program' : 'Programs'} </span>selected
             </span>
           </div>
 
           <div className="h-4 w-px bg-slate-700 hidden sm:block" />
 
           {/* Action Buttons */}
-          <div className="flex items-center gap-2 sm:gap-3">
+          <div className="flex items-center gap-1.5 sm:gap-3 shrink-0">
             <button
               type="button"
               onClick={onClearSelection}
@@ -74,11 +82,11 @@ const CourseFinderComparisonBar = ({
               <button
                 type="button"
                 onClick={onExportExcel}
-                className="px-3.5 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 active:scale-95 text-slate-200 hover:text-white text-xs font-bold transition flex items-center gap-1.5 border border-slate-700 cursor-pointer shadow-sm"
+                className="px-2.5 sm:px-3.5 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 active:scale-95 text-slate-200 hover:text-white text-xs font-bold transition flex items-center gap-1.5 border border-slate-700 cursor-pointer shadow-sm"
                 title={`Download ${selectedPrograms.length} selected programs in Excel`}
               >
                 <Download size={13} className="text-emerald-400" />
-                <span>Export ({selectedPrograms.length})</span>
+                <span className="hidden sm:inline">Export ({selectedPrograms.length})</span>
               </button>
             )}
           </div>

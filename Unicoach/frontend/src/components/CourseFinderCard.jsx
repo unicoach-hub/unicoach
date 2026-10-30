@@ -321,7 +321,7 @@ const CourseFinderCard = ({
                           </span>
                         </div>
                       ) : (
-                        <div>
+                        <div className="col-span-2 sm:col-span-1">
                           <span className="block text-slate-400 font-medium text-[11px] mb-0.5">Data source</span>
                           <span className={`font-semibold ${prog.isRealData ? 'text-emerald-700' : 'text-amber-700'}`}>
                             {prog.sourceLabel || 'Verify on official site'}

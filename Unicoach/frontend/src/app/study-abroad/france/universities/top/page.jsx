@@ -13,12 +13,12 @@ const topUnis = [
   {
     rank: 1,
     name: "Université PSL (Paris Sciences & Lettres)",
-    qsRank: "#28 Global",
+    qsRank: "#34 Global",
     specializations: "AI, Energy, Life Sciences, Nuclear Science, Fine Arts",
-    feesEUR: 3879,
-    feesINR: "₹ 3.5 Lakh / year",
+    feesEUR: 3950, // 2026-27 national non-EU Master rate; varies by PSL school
+    feesINR: "₹ 4.3 Lakh / year",
     scholarship: "Eiffel Scholarship, Dauphine Foundation Scholarship",
-    logo: "https://logo.clearbit.com/hec.edu", // Fallback placeholder
+    logo: "/logos/verified-Universite PSL.png",
     website: "https://www.psl.eu",
     city: "Paris",
     desc: "A research-intensive powerhouse combining elite institutions such as École Normale Supérieure (ENS) and Mines ParisTech."
@@ -26,51 +26,51 @@ const topUnis = [
   {
     rank: 2,
     name: "Institut Polytechnique de Paris (IP Paris)",
-    qsRank: "#41 Global",
+    qsRank: "#43 Global",
     specializations: "Cybersecurity, Aerospace Engineering, Data Science",
-    feesEUR: 17350, // Average 13000-21750
-    feesINR: "₹ 13.0L - 22.0L / year",
+    feesEUR: 4317, // 2026-27 non-EU national Master; École Polytechnique MScT ~€19,200
+    feesINR: "₹ 4.7L - 21.1L / year",
     scholarship: "Charpak Master's, IP Paris Merit Scholarship",
-    logo: "https://logo.clearbit.com/polytechnique.edu",
-    website: "https://www.polytechnique.edu",
+    logo: "/logos/verified-Institut Polytechnique de Paris.png",
+    website: "https://www.ip-paris.fr",
     city: "Palaiseau (Paris)",
-    desc: "A cluster of 5 prestigious engineering schools (École Polytechnique, ENSTA, ENSAE, Telecom Paris, Telecom SudParis) targetting advanced high-tech applications."
+    desc: "A cluster of 6 prestigious engineering schools (École Polytechnique, ENSTA, École des Ponts, ENSAE, Télécom Paris, Télécom SudParis). Non-EU Master's fees run from ~€4,300/yr (national Master's) to €19,200+ (Polytechnique MScT)."
   },
   {
     rank: 3,
-    name: "Université Paris-Saclay",
-    qsRank: "#70 Global",
-    specializations: "Mathematics, Physics, Natural Sciences, AI",
-    feesEUR: 3770,
-    feesINR: "₹ 3.4 Lakh / year",
-    scholarship: "International Master's IDEX Scholarship (€10,000)",
-    logo: "https://logo.clearbit.com/universite-paris-saclay.fr",
-    website: "https://www.universite-paris-saclay.fr",
-    city: "Orsay (Paris)",
-    desc: "Located in the 'Silicon Valley' of Europe, Paris-Saclay represents 13% of all French scientific research, ranking 15th globally for Math."
+    name: "Sorbonne University",
+    qsRank: "#73 Global",
+    specializations: "Arts & Humanities, Medicine, Life Sciences",
+    feesEUR: 3950, // 2026-27 national non-EU Master rate
+    feesINR: "₹ 4.3 Lakh / year",
+    scholarship: "SMARTS-UP Scholarship (€8,000), Eiffel, Erasmus+",
+    logo: "/logos/verified-Sorbonne University.png",
+    website: "https://www.sorbonne-universite.fr",
+    city: "Paris",
+    desc: "Multidisciplinary global center balancing 13th-century heritage with 21st-century bio-medical innovation. Non-EU students were exempted from the higher fee in 2026-27 (decided yearly)."
   },
   {
     rank: 4,
-    name: "Sorbonne University",
-    qsRank: "#72 Global",
-    specializations: "Arts & Humanities, Medicine, Life Sciences",
-    feesEUR: 3770,
-    feesINR: "₹ 3.4 Lakh / year",
-    scholarship: "SMARTS-UP Scholarship (€8,000), Eiffel, Erasmus+",
-    logo: "https://logo.clearbit.com/sorbonne-universite.fr",
-    website: "https://www.sorbonne-universite.fr",
-    city: "Paris",
-    desc: "Multidisciplinary global center balancing 13th-century heritage with 21st-century bio-medical innovation."
+    name: "Université Paris-Saclay",
+    qsRank: "#76 Global",
+    specializations: "Mathematics, Physics, Natural Sciences, AI",
+    feesEUR: 3950, // 2026-27 national non-EU Master rate
+    feesINR: "₹ 4.3 Lakh / year",
+    scholarship: "International Master's IDEX Scholarship (€10,000)",
+    logo: "/logos/verified-Universite Paris-Saclay.png",
+    website: "https://www.universite-paris-saclay.fr",
+    city: "Orsay (Paris)",
+    desc: "A research powerhouse on the Saclay science cluster south of Paris, especially strong in mathematics and physics. Non-EU students were charged the €255 national rate in 2026-27 (partial exemption, reviewed yearly)."
   },
   {
     rank: 5,
     name: "ENS de Lyon (École Normale Supérieure)",
-    qsRank: "#205 Global",
+    qsRank: "#235 Global",
     specializations: "Fundamental Sciences, Mathematics, Chemistry, Arts",
-    feesEUR: 243,
-    feesINR: "₹ 25,000 / year",
+    feesEUR: 3950, // 2026-27 non-EU Master rate (ens-lyon.fr)
+    feesINR: "₹ 4.3 Lakh / year",
     scholarship: "Ampère Excellence Scholarship (€1,000 / month)",
-    logo: "https://logo.clearbit.com/ens-lyon.fr",
+    logo: "/logos/verified-ENS de Lyon.png",
     website: "https://www.ens-lyon.fr",
     city: "Lyon",
     desc: "An elite public institution focusing specifically on training researchers, professors, and high-level civil servants."
@@ -78,67 +78,67 @@ const topUnis = [
   {
     rank: 6,
     name: "École des Ponts ParisTech",
-    qsRank: "#205 Global",
+    qsRank: "Part of IP Paris (#43)",
     specializations: "Civil Engineering, sustainable Construction, Urban Planning",
-    feesEUR: 7275,
-    feesINR: "₹ 7.5 Lakh / year",
+    feesEUR: 7148, // 2026-27 IP Paris international-track Master, non-EU
+    feesINR: "₹ 7.9 Lakh / year",
     scholarship: "Fondation des Ponts Scholarships, Bourse d'Excellence",
-    logo: "https://logo.clearbit.com/enpc.fr",
+    logo: "/logos/verified-Ecole des Ponts ParisTech.png",
     website: "https://www.ecoledesponts.fr",
-    city: "Paris",
-    desc: "Founded in 1747, it is the world's oldest civil engineering school, famous for blending technical engineering with finance."
+    city: "Champs-sur-Marne (Paris)",
+    desc: "Founded in 1747, it is the world's oldest civil engineering school and, since 2024, a member school of IP Paris."
   },
   {
     rank: 7,
-    name: "Université Paris Cité",
-    qsRank: "#300 Global",
-    specializations: "Health Sciences, Life Sciences, Medicine, Chemistry",
-    feesEUR: 3770,
-    feesINR: "₹ 3.4 Lakh / year",
-    scholarship: "MIEM Excellence Scholarship (€8,000 - €10,000)",
-    logo: "https://logo.clearbit.com/u-paris.fr",
-    website: "https://u-paris.fr",
+    name: "Université Paris 1 Panthéon-Sorbonne",
+    qsRank: "#246 Global",
+    specializations: "Law, Economics, Political Science, Management",
+    feesEUR: 3950, // 2026-27 national non-EU Master rate
+    feesINR: "₹ 4.3 Lakh / year",
+    scholarship: "Charpak Master's, Eiffel Excellence Scholarship",
+    logo: "/logos/verified-Universite Paris 1 Pantheon-Sorbonne.png",
+    website: "https://www.pantheonsorbonne.fr",
     city: "Paris",
-    desc: "A massive clinical research university formed by the merger of Paris Descartes and Paris Diderot."
+    desc: "One of France's leading public universities for law, economics and political science, with strong links to public service."
   },
   {
     rank: 8,
-    name: "Université Paris 1 Panthéon-Sorbonne",
-    qsRank: "#257 Global",
-    specializations: "Law, Economics, Political Science, Management",
-    feesEUR: 3770,
-    feesINR: "₹ 3.4 Lakh / year",
-    scholarship: "Charpak Master's, Eiffel Excellence Scholarship",
-    logo: "https://logo.clearbit.com/univ-paris1.fr",
-    website: "https://www.pantheonsorbonne.fr",
+    name: "Université Paris Cité",
+    qsRank: "#303 Global",
+    specializations: "Health Sciences, Life Sciences, Medicine, Chemistry",
+    feesEUR: 3950, // 2026-27 national non-EU Master rate
+    feesINR: "₹ 4.3 Lakh / year",
+    scholarship: "MIEM Excellence Scholarship (€8,000 - €10,000)",
+    logo: "/logos/verified-Universite Paris Cite.png",
+    website: "https://u-paris.fr",
     city: "Paris",
-    desc: "The premier French public university for legal and economic sciences, training the top echelons of public service."
+    desc: "A major clinical research university formed in 2019 by the merger of Paris Descartes and Paris Diderot. Non-EU students paid the €255 national rate in 2026-27; new non-EU students pay differentiated fees from 2027-28."
   },
   {
     rank: 9,
-    name: "Université Grenoble Alpes (UGA)",
-    qsRank: "#321 Global",
-    specializations: "Nanotechnology, Microelectronics, Statistics, Physics",
-    feesEUR: 3770,
-    feesINR: "₹ 3.4 Lakh / year",
-    scholarship: "Grenoble INP Foundation (€5,000 / yr), UGA IDEX",
-    logo: "https://logo.clearbit.com/univ-grenoble-alpes.fr",
-    website: "https://www.univ-grenoble-alpes.fr",
-    city: "Grenoble",
-    desc: "A major scientific hub in the Alps, widely recognized for high-tech microelectronics and computer systems."
-  },
-  {
-    rank: 10,
     name: "Sciences Po (Paris)",
-    qsRank: "#367 Global",
+    qsRank: "#354 Global",
     specializations: "International Security, Public Policy, Politics",
-    feesEUR: 17500, // Average 14720-20380
-    feesINR: "₹ 13.0L - 18.5L / year",
+    feesEUR: 20640, // 2026-27 graduate rate, non-EEA
+    feesINR: "₹ 22.7 Lakh / year",
     scholarship: "Émile Boutmy Scholarship, Mastercard Foundation",
-    logo: "https://logo.clearbit.com/sciencespo.fr",
+    logo: "/logos/verified-Sciences Po.png",
     website: "https://www.sciencespo.fr",
     city: "Paris",
     desc: "France's leading institution for social sciences, public policy, and diplomacy. Known as the 'Nursery of Presidents'."
+  },
+  {
+    rank: 10,
+    name: "Université Grenoble Alpes (UGA)",
+    qsRank: "#387 Global",
+    specializations: "Nanotechnology, Microelectronics, Statistics, Physics",
+    feesEUR: 3950, // 2026-27 national non-EU Master rate
+    feesINR: "₹ 4.3 Lakh / year",
+    scholarship: "Grenoble INP Foundation (€5,000 / yr), UGA IDEX",
+    logo: "/logos/verified-Universite Grenoble Alpes.png",
+    website: "https://www.univ-grenoble-alpes.fr",
+    city: "Grenoble",
+    desc: "A major scientific hub in the Alps, widely recognized for high-tech microelectronics and computer systems."
   }
 ];
 
@@ -214,7 +214,7 @@ const FranceTopUniversities = () => {
           {/* Quick Stats Grid */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-10">
             {[
-              { val: "PSL #28", label: "Top Rank (QS)" },
+              { val: "PSL #34", label: "Top Rank (QS)" },
               { val: "5-Year Visa", label: "For PG Alumni" },
               { val: "30,000", label: "Indian Target (2030)" },
               { val: "964 Hours", label: "Part-Time Limit" }
@@ -436,7 +436,7 @@ const FranceTopUniversities = () => {
             points: [
               'State-funded, broad-based general degrees',
               'Arts, Humanities, Law, Pure Sciences, Medicine',
-              "Non-EU fees just €2,770 (Licence) or €3,770 (Master's) per year",
+              "Non-EU fees €2,902 (Licence) or €3,950 (Master's) per year in 2026-27",
               'Ideal for research-oriented pathways',
             ],
           }}

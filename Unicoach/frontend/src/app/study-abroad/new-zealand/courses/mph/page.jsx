@@ -23,19 +23,19 @@ const SECTIONS = [
 ];
 
 const topMphUnisList = [
-  { rank: 1, name: "University of Auckland", qs: "#65", feeNZDMin: 52585, feeNZDMax: 55214, spec: "Digital Health, Global Health, Epidemiology", tagline: "NZ'S TOP-RANKED UNIVERSITY", logo: "https://logo.clearbit.com/auckland.ac.nz" },
-  { rank: 2, name: "University of Otago", qs: "#206", feeNZDMin: 47556, feeNZDMax: 47556, spec: "Health Sciences, Policy, Injury Prevention", tagline: "NZ'S OLDEST UNIVERSITY", logo: "https://logo.clearbit.com/otago.ac.nz" },
-  { rank: 3, name: "Victoria University of Wellington", qs: "#241", feeNZDMin: 51050, feeNZDMax: 53600, spec: "Policy, Clinical Research, Health Promotion", tagline: "CAPITAL CITY ADVANTAGE", logo: "https://logo.clearbit.com/wgtn.ac.nz" },
-  { rank: 4, name: "University of Canterbury", qs: "#256", feeNZDMin: 45300, feeNZDMax: 45300, spec: "Community Engagement, Equity focus", tagline: "HIGH STUDENT SATISFACTION", logo: "https://logo.clearbit.com/canterbury.ac.nz" },
-  { rank: 5, name: "Massey University", qs: "#284", feeNZDMin: 38840, feeNZDMax: 46590, spec: "Health Promotion, Practice-focused", tagline: "MOST AFFORDABLE OPTION", logo: "https://logo.clearbit.com/massey.ac.nz" },
-  { rank: 6, name: "Auckland University of Technology (AUT)", qs: "#407", feeNZDMin: 45300, feeNZDMax: 45300, spec: "Social Epidemiology, Pacific Health", tagline: "HIGHEST GRAD EMPLOYMENT RATE", logo: "https://logo.clearbit.com/aut.ac.nz" }
+  { rank: 1, name: "University of Auckland", qs: "#68", feeNZDMin: 57974, feeNZDMax: 57974, spec: "Digital Health, Global Health, Epidemiology", tagline: "NZ'S TOP-RANKED UNIVERSITY", logo: "/logos/verified-University of Auckland.png" },
+  { rank: 2, name: "University of Otago", qs: "#198", feeNZDMin: 49458, feeNZDMax: 49458, spec: "Health Sciences, Policy, Injury Prevention", tagline: "NZ'S OLDEST UNIVERSITY", logo: "/logos/verified-University of Otago.png" },
+  { rank: 3, name: "Victoria University of Wellington", qs: "#241", feeNZDMin: null, feeNZDMax: null, spec: "Policy, Clinical Research, Health Promotion", tagline: "CAPITAL CITY ADVANTAGE", logo: "/logos/verified-Victoria University of Wellington.png" },
+  { rank: 4, name: "University of Canterbury", qs: "#257", feeNZDMin: 47600, feeNZDMax: 47600, spec: "Community Engagement, Equity focus", tagline: "CHRISTCHURCH CAMPUS", logo: "/logos/verified-University of Canterbury.png" },
+  { rank: 5, name: "Massey University", qs: "#215", feeNZDMin: null, feeNZDMax: null, spec: "Health Promotion, Practice-focused", tagline: "PRACTICE-FOCUSED", logo: "/logos/verified-Massey University.png" },
+  { rank: 6, name: "Auckland University of Technology (AUT)", qs: "#431", feeNZDMin: 46522, feeNZDMax: 46522, spec: "Social Epidemiology, Pacific Health", tagline: "CAREER-FOCUSED CITY UNIVERSITY", logo: "/logos/verified-Auckland University of Technology.png" }
 ];
 
 const NewZealandMPHCourse = () => {
   const [activeSection, setActiveSection] = useState('overview');
   const [currency, setCurrency] = useState('INR'); // 'NZD' | 'INR'
   const [faqOpen, setFaqOpen] = useState({});
-  const exchangeRate = 52.00; // Reference 1 NZD = 52 INR for MPH guide
+  const exchangeRate = 56.0; // Reference 1 NZD = 56 INR (Aug 2026)
 
   const formatCost = (valInNZD) => {
     if (currency === 'NZD') {
@@ -189,7 +189,7 @@ const NewZealandMPHCourse = () => {
             {/* 2. Top MPH Universities */}
             <section id="universities" className="scroll-mt-24">
               <div className="text-left mb-6">
-                <h2 className="text-2xl font-black text-slate-900 mb-1">🏛️ Top Universities for MPH (2026 Rankings & Fees)</h2>
+                <h2 className="text-2xl font-black text-slate-900 mb-1">🏛️ Top Universities for MPH (QS 2027 Rankings & Fees)</h2>
                 <p className="text-slate-400 text-xs font-bold uppercase tracking-wider">QS rankings and annual tuition schedules</p>
               </div>
 
@@ -215,12 +215,12 @@ const NewZealandMPHCourse = () => {
                 className="mb-8"
                 kicker="Tuition (upper end)"
                 title="MPH tuition by university"
-                items={topMphUnisList.map((uni) => ({
+                items={topMphUnisList.filter((uni) => uni.feeNZDMax != null).map((uni) => ({
                   label: uni.name,
                   value: uni.feeNZDMax,
                   display: uni.feeNZDMin === uni.feeNZDMax ? formatCost(uni.feeNZDMin) : `${formatCost(uni.feeNZDMin)} - ${formatCost(uni.feeNZDMax)}`,
                 }))}
-                highlight="Massey University"
+                highlight="Auckland University of Technology (AUT)"
               />
 
               <div className="space-y-6">
@@ -232,7 +232,7 @@ const NewZealandMPHCourse = () => {
                           src={uni.logo} 
                           alt="" 
                           className="w-full h-full object-contain"
-                          onError={(e) => e.target.src = 'https://logo.clearbit.com/auckland.ac.nz'}
+                          onError={(e) => { e.target.onerror = null; e.target.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(uni.name)}&background=4F46E5&color=ffffff&bold=true&size=128`; }}
                         />
                       </div>
                       <div>
@@ -251,9 +251,7 @@ const NewZealandMPHCourse = () => {
                       <div>
                         <span className="text-slate-400 font-bold block">Tuition Fee</span>
                         <strong className="text-slate-800 font-extrabold mt-0.5 block">
-                          {uni.feeNZDMin === uni.feeNZDMax 
-                            ? formatCost(uni.feeNZDMin) 
-                            : `${formatCost(uni.feeNZDMin)} - ${formatCost(uni.feeNZDMax)}`}
+                          {uni.feeNZDMin == null ? 'Not verified' : uni.feeNZDMin === uni.feeNZDMax ? formatCost(uni.feeNZDMin) : `${formatCost(uni.feeNZDMin)} - ${formatCost(uni.feeNZDMax)}`}
                         </strong>
                       </div>
                       <div className="col-span-2">
@@ -357,9 +355,9 @@ const NewZealandMPHCourse = () => {
                   <div className="bg-slate-50 p-6 rounded-2xl border border-slate-100">
                     <h4 className="font-extrabold text-slate-805 uppercase tracking-wider mb-3">Total Annual Budget Schedule</h4>
                     <div className="space-y-3">
-                      <p className="flex justify-between border-b border-slate-200 pb-2"><span>Tuition Fees:</span> <strong>NZ$38,840 - $55,214 (₹20L - ₹28L)</strong></p>
-                      <p className="flex justify-between border-b border-slate-200 pb-2"><span>Living Expenses:</span> <strong>NZ$20,000 - $25,000 (₹10.5L - ₹13L)</strong></p>
-                      <p className="flex justify-between"><span>Total Annual Cost:</span> <strong className="text-indigo-650">NZ$58,840 - $80,214 (₹30.5L - ₹41L)</strong></p>
+                      <p className="flex justify-between border-b border-slate-200 pb-2"><span>Tuition Fees:</span> <strong>NZ$46,522 - $57,974 (₹26L - ₹32.5L)</strong></p>
+                      <p className="flex justify-between border-b border-slate-200 pb-2"><span>Living Expenses:</span> <strong>NZ$20,000 - $25,000 (₹11.2L - ₹14L)</strong></p>
+                      <p className="flex justify-between"><span>Total Annual Cost:</span> <strong className="text-indigo-650">NZ$66,522 - $82,974 (₹37.3L - ₹46.5L)</strong></p>
                     </div>
                   </div>
                 </div>
@@ -382,17 +380,17 @@ const NewZealandMPHCourse = () => {
                   <div className="bg-slate-50 p-5 rounded-xl border border-slate-100">
                     <h4 className="font-extrabold text-slate-800 mb-1">Manaaki NZ Scholarships</h4>
                     <p className="text-indigo-655 font-black mb-1">Value: Full Funding</p>
-                    <p className="text-slate-500 text-[11px]">Government-funded. Covers tuition fees, stipends, airfares, and medical insurance.</p>
+                    <p className="text-slate-500 text-[11px]">Government-funded for citizens of eligible countries — check whether India is eligible in the current round.</p>
                   </div>
                   <div className="bg-slate-50 p-5 rounded-xl border border-slate-100">
                     <h4 className="font-extrabold text-slate-800 mb-1">NZ Excellence Awards</h4>
-                    <p className="text-indigo-655 font-black mb-1">Value: Up to NZD 20,000</p>
-                    <p className="text-slate-500 text-[11px]">Offered by the NZ government to support high-performing Indian students.</p>
+                    <p className="text-indigo-655 font-black mb-1">Value: NZD 7,500 – 15,000</p>
+                    <p className="text-slate-500 text-[11px]">Run by Education New Zealand with participating universities for students from India.</p>
                   </div>
                   <div className="bg-slate-50 p-5 rounded-xl border border-slate-100">
                     <h4 className="font-extrabold text-slate-800 mb-1">Auckland India Achievers</h4>
-                    <p className="text-indigo-655 font-black mb-1">Value: Up to NZD 20,000</p>
-                    <p className="text-slate-500 text-[11px]">Exclusive scholarship for Indian nationals joining the University of Auckland.</p>
+                    <p className="text-indigo-655 font-black mb-1">Value: 25% of one year's tuition</p>
+                    <p className="text-slate-500 text-[11px]">For new international Master's students from India at the University of Auckland.</p>
                   </div>
                 </div>
               </div>

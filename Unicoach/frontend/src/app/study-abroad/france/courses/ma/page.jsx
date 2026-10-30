@@ -20,13 +20,13 @@ const SECTIONS = [
 ];
 
 const topMaSchools = [
-  { name: "Sorbonne University", qsRank: "#62 Global", field: "Literature, Philosophy, History, Languages", feesEUR: 3941, location: "Paris", website: "https://www.sorbonne-universite.fr" },
-  { name: "Université PSL", qsRank: "#28 Global", field: "Fine Arts, Social Sciences, Cinema, Design", feesEUR: 3941, location: "Paris", website: "https://www.psl.eu" },
-  { name: "Sciences Po Paris", qsRank: "#367 Global", field: "International Relations, Political Science, Diplomacy", feesEUR: 17500, location: "Paris", website: "https://www.sciencespo.fr" },
+  { name: "Sorbonne University", qsRank: "#73 Global", field: "Literature, Philosophy, History, Languages", feesEUR: 3950, location: "Paris", website: "https://www.sorbonne-universite.fr" },
+  { name: "Université PSL", qsRank: "#34 Global", field: "Fine Arts, Social Sciences, Cinema, Design", feesEUR: 3950, location: "Paris", website: "https://www.psl.eu" },
+  { name: "Sciences Po Paris", qsRank: "#354 Global", field: "International Relations, Political Science, Diplomacy", feesEUR: 20640, location: "Paris", website: "https://www.sciencespo.fr" },
   { name: "IFM (Institut Français de la Mode)", qsRank: "World Class", field: "Fashion Design, Luxury Management", feesEUR: 22000, location: "Paris", website: "https://www.ifmparis.fr" },
-  { name: "ENS de Lyon", qsRank: "#205 Global", field: "Humanities, Foreign Languages, Modern Arts", feesEUR: 243, location: "Lyon", website: "https://www.ens-lyon.fr" },
+  { name: "ENS de Lyon", qsRank: "#235 Global", field: "Humanities, Foreign Languages, Modern Arts", feesEUR: 3950, location: "Lyon", website: "https://www.ens-lyon.fr" },
   { name: "ESMOD Paris", qsRank: "Top Fashion School", field: "Fashion Business, Creative Haute Couture", feesEUR: 15500, location: "Paris", website: "https://www.esmod.com" },
-  { name: "Université Paris Cité", qsRank: "#300 Global", field: "Art History, Cinema Studies, Sociology", feesEUR: 11000, location: "Paris", website: "https://u-paris.fr" }
+  { name: "Université Paris Cité", qsRank: "#303 Global", field: "Art History, Cinema Studies, Sociology", feesEUR: 3950, location: "Paris", website: "https://u-paris.fr" }
 ];
 
 const maSpecializations = [
@@ -258,7 +258,7 @@ const FranceMACourse = () => {
                     <thead>
                       <tr className="border-b border-slate-100 text-slate-400 text-xs font-black uppercase tracking-wider">
                         <th className="pb-3 pr-4">Institution</th>
-                        <th className="pb-3 pr-4 text-center">QS Rank 2026</th>
+                        <th className="pb-3 pr-4 text-center">QS Rank 2027</th>
                         <th className="pb-3 pr-4">Focus Disciplines</th>
                         <th className="pb-3 pr-4">Estimated Tuition Fees</th>
                         <th className="pb-3 pr-4 text-right">Location</th>
@@ -325,7 +325,7 @@ const FranceMACourse = () => {
                       </p>
                     </div>
                     <strong className="text-indigo-650 font-black text-sm md:text-base mt-4 block">
-                      {formatCost(3941)} / year
+                      {formatCost(3950)} / year
                     </strong>
                   </div>
 

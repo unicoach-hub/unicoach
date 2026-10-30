@@ -1,15 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { 
-  Sparkles, Award, BookOpen, Layers, CheckCircle2, Clock, 
-  Send, RefreshCw, AlertCircle, FileText, Check, Copy, HelpCircle 
-} from 'lucide-react';
+import { Sparkles, Clock, RefreshCw, AlertCircle } from 'lucide-react';
 import IeltsAiEvaluationModal from '../components/IeltsAiEvaluationModal';
 import { useAuth } from '../context/AuthContext';
 import { API_BASE_URL } from '../config';
-import { HeroBackButton } from '../components/ui/BackButton';
-import { PostageStamp } from '../components/desi/DesiPop';
-import { DesiSticker, MemeLine } from '../components/desi/Desi';
+import { FinderPage, FinderHero, FinderCard, FinderButton, FINDER_TEXTAREA, FIELD_RADIUS } from '../components/ui/FinderForm';
 
 const API_URL = API_BASE_URL;
 
@@ -123,145 +117,106 @@ const IeltsEvaluatorPage = () => {
     return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
   };
 
+  const activePrompt = customPrompt || selectedPrompt;
+
   return (
-    <div className="min-h-screen bg-[#F6F3EC] pt-[76px] pb-20">
-      {/* Clean LeapScholar-Style Hero Section */}
-      <section className="relative pt-12 pb-16 sm:pt-14 sm:pb-20 px-4 sm:px-6 lg:px-8 bg-[#F6F3EC] border-b border-[#E6E0D4] overflow-hidden">
-        <HeroBackButton />
-        {/* Desi Pop: postage stamp, wide screens only */}
-        <div className="hidden 2xl:block absolute left-10 2xl:left-24 top-1/2 -translate-y-1/2 -rotate-6 z-0 pointer-events-none">
-          <PostageStamp value="0–9" title="Band Score" hi="निबंध" note="Task 2 · 250+ words" className="w-[150px]" />
-        </div>
-        
+    <FinderPage>
+      <FinderHero
+        eyebrow="IELTS Essay Examiner"
+        title="Check your IELTS Task 2 essay"
+        subtitle="Pick a prompt, write your essay, and get a band score (0–9) on all four official criteria with sentence-level tips."
+        steps={[
+          { label: 'Pick a prompt', sub: '3 topics' },
+          { label: 'Write', sub: '250+ words' },
+          { label: 'Grade', sub: 'Free sign in' },
+          { label: 'Band score', sub: 'With tips' },
+        ]}
+        active={0}
+      />
 
-        <div className="max-w-4xl mx-auto relative z-10 space-y-4 text-center">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-bold bg-white text-[#DE5C2B] border border-orange-200/80 shadow-xs">
-            <Award size={14} className="text-[#DE5C2B]" />
-            <span>Cambridge / IDP Criteria Band Score Predictor</span>
-          </div>
-
-          <h1 className="font-outfit text-3xl sm:text-4xl lg:text-[46px] font-black tracking-tight text-[#0F172A] leading-tight">
-            IELTS Writing Task 2{' '}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#DE5C2B] to-[#C04A1D]">AI Examiner</span>
-          </h1>
-          <MemeLine>Band 7 बिना लिखे? सपना है भाई. Pehle essay check karo ✍️</MemeLine>
-
-          <p className="text-[14px] sm:text-[15.5px] text-slate-600 font-normal max-w-2xl mx-auto leading-relaxed">
-            Get instant official band scores (0–9) across Task Response, Coherence & Cohesion, Lexical Resource, and Grammatical Range with detailed sentence-level recommendations.
-          </p>
-        </div>
-      </section>
-
-      {/* Main Simulator Workspace */}
-      <main className="max-w-7xl 2xl:max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 -mt-8 sm:-mt-10 relative z-20">
-        <div className="bg-white rounded-[28px] p-6 md:p-8 border border-slate-200/90 shadow-[0_20px_50px_-12px_rgba(15,23,42,0.08)] space-y-6">
-          {/* Prompt Selection */}
-          <div className="space-y-3">
-            <label className="block text-xs font-black text-slate-700 uppercase tracking-wider">
-              1. Select Essay Prompt or Enter Custom Topic
-            </label>
-
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-              {SAMPLE_PROMPTS.map((p, idx) => (
+      <FinderCard className="mt-8 space-y-5">
+        {/* div, not FinderField: a <label> around several buttons would forward clicks to the first one */}
+        <div className="flex flex-col gap-1.5">
+          <span className="text-[12.5px] font-semibold text-[#16130F]">Essay prompt *</span>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            {SAMPLE_PROMPTS.map((p, idx) => {
+              const on = selectedPrompt === p.prompt && !customPrompt;
+              return (
                 <button
                   key={idx}
                   type="button"
+                  aria-pressed={on}
                   onClick={() => {
                     setSelectedPrompt(p.prompt);
                     setCustomPrompt('');
                   }}
-                  className={`p-3.5 rounded-2xl text-left border transition-all cursor-pointer text-xs ${
-                    selectedPrompt === p.prompt && !customPrompt
-                      ? 'bg-indigo-50/70 border-indigo-500 text-indigo-950 font-bold shadow-xs'
-                      : 'bg-slate-50 border-slate-200 text-slate-600 hover:border-indigo-200'
-                  }`}
+                  className={`p-3.5 text-left border transition-colors text-[13px] ${on ? 'bg-[#16130F] border-[#16130F] text-white' : 'bg-[#F8F5EF] border-[#E6E0D4] text-[#5B544A] hover:border-[#16130F]'}`}
+                  style={FIELD_RADIUS}
                 >
-                  <span className="text-[10px] font-black text-indigo-600 block mb-1">Topic {idx + 1}: {p.topic}</span>
-                  <p className="line-clamp-2 leading-relaxed">{p.prompt}</p>
+                  <span className={`text-[12px] font-semibold block mb-1 ${on ? 'text-white' : 'text-[#16130F]'}`}>Topic {idx + 1}: {p.topic}</span>
+                  <span className="line-clamp-2 leading-relaxed">{p.prompt}</span>
                 </button>
-              ))}
-            </div>
-
-            <div className="p-4 rounded-2xl bg-indigo-50/50 border border-indigo-100 text-xs text-indigo-950">
-              <span className="font-black block mb-1">Active Essay Prompt:</span>
-              <p className="font-semibold text-slate-700 leading-relaxed">
-                {customPrompt || selectedPrompt}
-              </p>
-            </div>
-          </div>
-
-          {/* Writing Area */}
-          <div className="space-y-2">
-            <div className="flex items-center justify-between flex-wrap gap-2">
-              <label className="text-xs font-black text-slate-700 uppercase tracking-wider">
-                2. Write or Paste Your Essay
-              </label>
-
-              <div className="flex items-center gap-2.5 text-xs font-bold flex-shrink-0">
-                <span className={`inline-flex items-center px-3 py-1 rounded-full border whitespace-nowrap text-xs font-bold transition-all shadow-2xs ${
-                  wordCount >= 250 
-                    ? 'bg-emerald-50 text-emerald-700 border-emerald-300' 
-                    : 'bg-amber-50 text-amber-800 border-amber-300'
-                }`}>
-                  {wordCount} / 250+ Words
-                </span>
-
-                <span className="text-slate-600 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-slate-100 border border-slate-200 whitespace-nowrap text-xs font-bold">
-                  <Clock size={13} className="text-slate-500" /> {formatTimer(timerSeconds)}
-                </span>
-              </div>
-            </div>
-
-            <textarea
-              rows={12}
-              value={essay}
-              onChange={(e) => {
-                setEssay(e.target.value);
-                if (!isTimerRunning && e.target.value.length > 0) setIsTimerRunning(true);
-              }}
-              placeholder="Start typing your essay here... Aim for at least 250 words with a structured Introduction, 2 Body Paragraphs, and a Conclusion."
-              className="w-full p-4 rounded-2xl border border-slate-200 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 leading-relaxed font-normal"
-            />
-          </div>
-
-          {errorMsg && (
-            <div className="p-4 rounded-2xl bg-rose-50 border border-rose-200 text-xs font-bold text-rose-800 flex items-center gap-2">
-              <AlertCircle size={16} className="text-rose-600 flex-shrink-0" />
-              {errorMsg}
-            </div>
-          )}
-
-          {/* Action Button */}
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-2">
-            <p className="text-xs text-slate-400 font-semibold">
-              Evaluated strictly on IELTS Task 2 official band scoring criteria.
-            </p>
-
-            <button
-              onClick={handleEvaluate}
-              disabled={loading || wordCount < 50}
-              className="w-full sm:w-auto px-8 py-3.5 rounded-2xl bg-gradient-to-r from-indigo-600 to-indigo-700 hover:from-indigo-700 hover:to-indigo-800 text-white text-sm font-black flex items-center justify-center gap-2 shadow-lg shadow-indigo-600/20 disabled:opacity-50 cursor-pointer transition-all"
-            >
-              {loading ? (
-                <>
-                  <RefreshCw size={16} className="animate-spin" /> Evaluating with AI Examiner...
-                </>
-              ) : (
-                <>
-                  <Sparkles size={16} className="text-amber-400" /> Grade My Essay & Predict Band Score
-                </>
-              )}
-            </button>
+              );
+            })}
           </div>
         </div>
-      </main>
+
+        <div className="p-4 bg-[#F8F5EF] border border-[#E6E0D4] text-[13px]" style={FIELD_RADIUS}>
+          <span className="font-semibold text-[#16130F] block mb-1">Active prompt</span>
+          <p className="text-[#5B544A] leading-relaxed">{activePrompt}</p>
+        </div>
+
+        <div className="flex flex-col gap-1.5">
+          <div className="flex items-center justify-between flex-wrap gap-2">
+            <label htmlFor="ielts-essay" className="text-[12.5px] font-semibold text-[#16130F]">Your essay *</label>
+            <div className="flex items-center gap-2 text-[12px] font-semibold flex-shrink-0">
+              <span className={`inline-flex items-center px-2.5 py-1 rounded-full border whitespace-nowrap ${wordCount >= 250 ? 'bg-emerald-50 text-emerald-700 border-emerald-300' : 'bg-amber-50 text-amber-800 border-amber-300'}`}>
+                {wordCount} / 250+ words
+              </span>
+              <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-white border border-[#E6E0D4] text-[#5B544A] whitespace-nowrap">
+                <Clock size={13} /> {formatTimer(timerSeconds)}
+              </span>
+            </div>
+          </div>
+          <textarea
+            id="ielts-essay"
+            rows={12}
+            value={essay}
+            onChange={(e) => {
+              setEssay(e.target.value);
+              if (!isTimerRunning && e.target.value.length > 0) setIsTimerRunning(true);
+            }}
+            placeholder="Start typing your essay here... Aim for at least 250 words with a structured Introduction, 2 Body Paragraphs, and a Conclusion."
+            className={FINDER_TEXTAREA}
+            style={FIELD_RADIUS}
+          />
+        </div>
+
+        {errorMsg && (
+          <div className="p-3.5 bg-[#FBF2EF] border border-[#C97C6A] text-[13px] font-medium text-[#984D3D] flex items-center gap-2" style={FIELD_RADIUS}>
+            <AlertCircle size={16} className="flex-shrink-0" />
+            {errorMsg}
+          </div>
+        )}
+
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
+          <p className="text-[12.5px] text-[#5B544A]">Graded strictly on the official IELTS Task 2 band criteria.</p>
+          <FinderButton onClick={handleEvaluate} disabled={loading || wordCount < 50} className="w-full sm:w-auto">
+            {loading ? (
+              <><RefreshCw size={16} className="animate-spin" /> Evaluating with AI Examiner...</>
+            ) : (
+              <><Sparkles size={16} /> Grade my essay</>
+            )}
+          </FinderButton>
+        </div>
+      </FinderCard>
 
       {/* AI Evaluation Results Modal */}
       <IeltsAiEvaluationModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         evaluation={evaluation}
-        essayPrompt={customPrompt || selectedPrompt}
+        essayPrompt={activePrompt}
         studentEssay={essay}
         wordCount={wordCount}
         onPracticeAgain={() => {
@@ -271,7 +226,7 @@ const IeltsEvaluatorPage = () => {
           setIsTimerRunning(false);
         }}
       />
-    </div>
+    </FinderPage>
   );
 };
 

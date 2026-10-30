@@ -11,13 +11,11 @@ const yaleData = {
   location: "New Haven, Connecticut, USA",
   city: "New Haven",
   established: 1701,
-  totalStudents: 12060,
-  intlStudents: 2533,
-  studentFacultyRatio: "6:1",
-  acceptanceRate: "6%",
-  accreditation: "New England Association of Schools and Colleges (NEASC)",
-  avgStudyCost: "INR 8.00 L",
-  avgCostOfLiving: "INR 4.00 L",
+  totalStudents: 15564, // NCES College Navigator, Fall 2024
+  studentFacultyRatio: "5:1",
+  acceptanceRate: "4%", // undergraduate, Fall 2024
+  accreditation: "New England Commission of Higher Education (NECHE)",
+  avgStudyCost: "INR 50 L", // GSAS tuition 2026-27 $52,400 at 1 USD = ₹95
   type: "PRIVATE",
   logo: "/assets/usa/yale/logo.png",
   heroImage: "/assets/usa/yale/banner.jpg",
@@ -29,9 +27,7 @@ const yaleData = {
     { name: "Law", count: 1 }
   ],
   intakeDeadlines: [
-    { name: "JAN'2025", status: "Intake Open" },
-    { name: "MAY'2025", status: "Intake Open" },
-    { name: "AUG'2025", status: "Intake Open" }
+    { name: "AUG'2027", status: "Fall entry; deadlines vary by program" }
   ],
   requirements: [
     { 
@@ -40,29 +36,16 @@ const yaleData = {
     }
   ],
   rankings: {
-    "US News": [
-      { category: "Best National Schools - 2025", rank: "5" },
-      { category: "Best World Ranking Schools - 2023", rank: "11" }
-    ],
     "QS Rankings": [
-      { category: "Best World Ranking Schools - 2025", rank: "23" },
-      { category: "Best World Ranking Schools - 2023", rank: "18" },
-      { category: "Best World Ranking Schools - 2022", rank: "14" }
-    ],
-    "Times Higher Education": [
-      { category: "Best World Ranking Schools - 2023", rank: "9" },
-      { category: "Best University Ranking Schools - 2022", rank: "9" }
-    ],
-    "Webometrics - World": [
-      { category: "Best World Ranking Schools - 2023", rank: "14" }
+      { category: "World University Rankings - 2027", rank: "16" }
     ]
   },
   coursesFees: [
-    { name: "MArch I", duration: "36 Months", tuition: 8.00 }
+    { name: "MArch I", duration: "36 Months", tuition: 61 } // 2025-26 tuition $64,400 at 1 USD = ₹95
   ],
   longDescription: `Yale University, established in 1701, has a rich history that dates back to its founding. Over the years, it has grown into one of the most prestigious institutions in the world, known for its commitment to excellence in education and research.
 
-The student body at Yale is diverse and vibrant, with a total enrollment of 12060 students. Among them, 2533 are international students, representing a wide array of cultures and backgrounds. This diversity enriches the learning environment and fosters global perspectives.
+The student body at Yale is diverse, with a total enrollment of about 15,500 students (Fall 2024), including international students from many countries. This diversity enriches the learning environment and fosters global perspectives.
 
 Located in New Haven, Yale's campus is a blend of historic architecture and modern facilities. Key facilities include:
 • Yale University Library, one of the largest academic libraries in the world
@@ -77,7 +60,7 @@ Yale offers a wide range of programs that are both popular and aligned with indu
 • Political Science
 • Engineering
 
-The university has an acceptance rate of 6%, making it competitive yet accessible. Yale supports international students with various services, including orientation programs, visa assistance, and cultural integration activities.
+Admission is highly selective: Yale admitted about 4% of undergraduate applicants for Fall 2024. Yale supports international students with various services, including orientation programs, visa assistance, and cultural integration activities.
 
 Yale University is accredited by the following bodies:
 • New England Commission of Higher Education
@@ -126,10 +109,10 @@ In conclusion, Yale University stands out for its quality education, commitment 
     "Special Attractions"
   ],
   alumni: [
-    { name: "Bill Clinton", profession: "U.S. President" },
+    { name: "Bill Clinton", profession: "Former U.S. President" },
     { name: "Meryl Streep", profession: "Actress" },
     { name: "Paul Krugman", profession: "Nobel Laureate Economist" },
-    { name: "Indra Nooyi", profession: "CEO of PepsiCo" },
+    { name: "Indra Nooyi", profession: "Former CEO of PepsiCo" },
     { name: "Jodie Foster", profession: "Actress & Director" }
   ],
   blogs: [
@@ -162,7 +145,7 @@ In conclusion, Yale University stands out for its quality education, commitment 
   faqs: [
     {
       question: "Is Yale University a good university?",
-      answer: "Yes, Yale University is one of the world's most prestigious Ivy League research universities, ranked #5 in Best National Schools (US News 2025) and #9 in Times Higher Education (2023)."
+      answer: "Yes, Yale University is one of the world's most prestigious Ivy League research universities, ranked #16 in the QS World University Rankings 2027."
     },
     {
       question: "How do I get admission to Yale University?",
@@ -178,23 +161,23 @@ In conclusion, Yale University stands out for its quality education, commitment 
     },
     {
       question: "Is Yale University good for international students?",
-      answer: "Yes, Yale hosts over 2,500 international students from 120+ countries and offers dedicated support including visa, OPT/CPT, and cultural adjustment services."
+      answer: "Yes, Yale enrols international students across its schools, and its Office of International Students & Scholars supports them with visa, OPT/CPT and orientation services."
     },
     {
       question: "What is the ranking of Yale University?",
-      answer: "Yale is ranked #5 in Best National Schools (US News 2025), #23 in QS Rankings (2025), and #9 in Times Higher Education (2023)."
+      answer: "Yale is ranked #16 in the QS World University Rankings 2027."
     },
     {
       question: "What is the pass rate for Yale University?",
-      answer: "Yale has an average graduation rate of over 97% and selective admission with a 6% acceptance rate."
+      answer: "Yale's six-year graduation rate is 96% (students who began in Fall 2018), and about 4% of undergraduate applicants were admitted for Fall 2024."
     },
     {
       question: "How many students are at Yale University?",
-      answer: "Yale has a total enrollment of approximately 12,060 students, representing a tight-knit scholarly community."
+      answer: "Yale had a total enrollment of about 15,564 students in Fall 2024 (6,814 undergraduate and 8,750 graduate)."
     },
     {
       question: "How hard is it to get into Yale University?",
-      answer: "With a 6% acceptance rate, admission to Yale is highly selective, evaluating academic achievements, extracurricular highlights, and essays."
+      answer: "With about 4% of undergraduate applicants admitted, admission to Yale is highly selective, evaluating academic achievements, extracurricular highlights, and essays."
     },
     {
       question: "Is Yale University accredited?",
@@ -202,7 +185,7 @@ In conclusion, Yale University stands out for its quality education, commitment 
     },
     {
       question: "Who are the notable alumni of Yale University and what are their professions?",
-      answer: "Notable alumni include Bill Clinton (U.S. President), Meryl Streep (Actress), Paul Krugman (Nobel Laureate Economist), Indra Nooyi (CEO of PepsiCo), and Jodie Foster (Actress & Director)."
+      answer: "Notable alumni include Bill Clinton (U.S. President), Meryl Streep (Actress), Paul Krugman (Nobel Laureate Economist), Indra Nooyi (former CEO of PepsiCo), and Jodie Foster (Actress & Director)."
     }
   ]
 };

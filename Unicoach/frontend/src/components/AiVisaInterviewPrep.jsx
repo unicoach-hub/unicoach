@@ -1,11 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { 
-  ShieldCheck, Award, Mic, MicOff, Send, Sparkles, 
-  RotateCcw, CheckCircle2, AlertTriangle, ArrowRight, 
-  Globe, Volume2, User, Bot, HelpCircle, FileText, Check, Copy
+import {
+  ShieldCheck, Mic, MicOff, Sparkles, RotateCcw, CheckCircle2,
+  AlertTriangle, ArrowRight, Bot, FileText
 } from 'lucide-react';
-import PremiumDropdown from './PremiumDropdown';
+import { FinderCard, FinderField, FinderButton, FinderChip, FINDER_TEXTAREA, FIELD_RADIUS } from './ui/FinderForm';
 import { useAuth } from '../context/AuthContext';
 import { API_BASE_URL } from '../config';
 
@@ -85,21 +84,6 @@ const AiVisaInterviewPrep = ({ studentProfile = {} }) => {
   const [evalError, setEvalError] = useState('');
   const recognitionRef = useRef(null);
   
-  // Interactive Banner Mouse Tracking
-  const [bannerMousePos, setBannerMousePos] = useState({ x: -1000, y: -1000 });
-  const [isBannerHovered, setIsBannerHovered] = useState(false);
-  const bannerRef = useRef(null);
-
-  const handleBannerMouseMove = (e) => {
-    if (!bannerRef.current) return;
-    const rect = bannerRef.current.getBoundingClientRect();
-    setBannerMousePos({
-      x: e.clientX - rect.left,
-      y: e.clientY - rect.top
-    });
-    setIsBannerHovered(true);
-  };
-
   const countryConfig = VISA_QUESTION_SETS[selectedCountry] || VISA_QUESTION_SETS.USA;
   const currentQuestion = countryConfig.questions[currentQuestionIdx];
 
@@ -258,209 +242,51 @@ const AiVisaInterviewPrep = ({ studentProfile = {} }) => {
 
   return (
     <div className="space-y-8">
-      {/* Top Banner - AI Visa Interview Studio */}
-      <div
-        ref={bannerRef}
-        onMouseMove={handleBannerMouseMove}
-        onMouseEnter={() => setIsBannerHovered(true)}
-        onMouseLeave={() => {
-          setIsBannerHovered(false);
-          setBannerMousePos({ x: -1000, y: -1000 });
-        }}
-        className="group relative p-6 sm:p-8 md:p-9 rounded-[28px] bg-white border border-slate-200 hover:border-orange-200 shadow-[0_1px_2px_rgba(15,23,42,0.04),0_18px_40px_-22px_rgba(15,23,42,0.18)] transition-colors duration-300 overflow-hidden"
-      >
-        {/* Soft warm glow that follows the cursor */}
-        <div
-          className="absolute inset-0 pointer-events-none transition-opacity duration-300"
-          style={{
-            opacity: isBannerHovered ? 1 : 0,
-            background: `radial-gradient(520px circle at ${bannerMousePos.x}px ${bannerMousePos.y}px, rgba(222, 92, 43, 0.07) 0%, transparent 70%)`
-          }}
-        />
-
-        {/* Warm corner wash */}
-        <div className="absolute -top-32 -right-24 w-[420px] h-[420px] bg-[#FFE3D1]/45 rounded-full blur-3xl pointer-events-none" />
-
-        <div className="relative z-10 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-8">
-
-          {/* Left Column: Heading, Badges, and Country Quick Selectors */}
-          <div className="space-y-4 max-w-2xl">
-            {/* Top Status Badges */}
-            <div className="flex flex-wrap items-center gap-2.5">
-              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-bold bg-orange-50 text-[#C04A1D] border border-orange-200/80">
-                <ShieldCheck size={14} className="text-[#DE5C2B]" /> AI Visa Officer Simulator
-              </div>
-              <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-                <span>Station Online</span>
-              </div>
-            </div>
-
-            {/* Title */}
-            <div className="space-y-1.5">
-              <h2 className="text-2xl sm:text-3xl lg:text-[34px] font-black text-slate-900 tracking-tight leading-tight">
-                AI Mock Visa Interview <span className="text-[#DE5C2B]">Studio</span>
-              </h2>
-              <p className="text-xs sm:text-sm text-slate-600 font-medium leading-relaxed">
-                Practice high-stakes student visa interview questions with instant consular feedback, Section 214(b) risk detection, and model answers.
-              </p>
-            </div>
-
-            {/* Interactive Destination Selector Chips */}
-            <div className="space-y-2 pt-1">
-              <div className="flex items-center gap-2 text-[11px] font-extrabold uppercase tracking-wider text-slate-500">
-                <Globe size={13} className="text-[#DE5C2B]" />
-                <span>Select Target Embassy Route:</span>
-              </div>
-
-              <div className="flex flex-wrap items-center gap-2">
-                {[
-                  { key: 'USA', label: 'USA (F-1)', flag: 'https://flagcdn.com/w40/us.png' },
-                  { key: 'UK', label: 'UK (Student)', flag: 'https://flagcdn.com/w40/gb.png' },
-                  { key: 'Canada', label: 'Canada (SP)', flag: 'https://flagcdn.com/w40/ca.png' },
-                  { key: 'Germany', label: 'Germany (Visa)', flag: 'https://flagcdn.com/w40/de.png' },
-                  { key: 'Australia', label: 'Australia (500)', flag: 'https://flagcdn.com/w40/au.png' }
-                ].map((item) => {
-                  const isActive = selectedCountry === item.key;
-                  return (
-                    <button
-                      key={item.key}
-                      type="button"
-                      aria-pressed={isActive}
-                      onClick={() => {
-                        setSelectedCountry(item.key);
-                        handleRestart();
-                      }}
-                      className={`inline-flex items-center gap-2 px-3.5 py-2 rounded-full text-xs font-bold border transition-colors duration-200 cursor-pointer ${
-                        isActive
-                          ? 'bg-[#111111] text-white border-[#111111]'
-                          : 'bg-white text-slate-700 border-slate-200 hover:border-slate-300 hover:bg-slate-50'
-                      }`}
-                    >
-                      <img src={item.flag} alt="" className="w-4 h-3 rounded-xs object-cover" />
-                      <span>{item.label}</span>
-                    </button>
-                  );
-                })}
-              </div>
+      {/* Setup card in the Course Finder look: pick the visa route */}
+      <FinderCard>
+        <div className="grid grid-cols-1 lg:grid-cols-[1.4fr_1fr] gap-4 lg:gap-6 items-start">
+          <div className="flex flex-col gap-1.5 min-w-0">
+            <span className="text-[12.5px] font-semibold text-[#16130F]">Visa route</span>
+            <div className="flex flex-wrap items-center gap-2">
+              {[
+                { key: 'USA', label: 'USA (F-1)', flag: 'https://flagcdn.com/w40/us.png' },
+                { key: 'UK', label: 'UK (Student)', flag: 'https://flagcdn.com/w40/gb.png' },
+                { key: 'Canada', label: 'Canada (SP)', flag: 'https://flagcdn.com/w40/ca.png' },
+                { key: 'Germany', label: 'Germany (Visa)', flag: 'https://flagcdn.com/w40/de.png' },
+                { key: 'Australia', label: 'Australia (500)', flag: 'https://flagcdn.com/w40/au.png' }
+              ].map((item) => (
+                <FinderChip
+                  key={item.key}
+                  on={selectedCountry === item.key}
+                  onClick={() => {
+                    setSelectedCountry(item.key);
+                    handleRestart();
+                  }}
+                >
+                  <img src={item.flag} alt="" className="w-4 h-3 rounded-xs object-cover" />
+                  <span>{item.label}</span>
+                </FinderChip>
+              ))}
             </div>
           </div>
 
-          {/* Right Column: Interview setup panel */}
-          <div className="w-full lg:w-auto flex-shrink-0">
-            <div className="bg-[#FAF9F6] border border-slate-200 rounded-2xl p-5 space-y-4 lg:min-w-[300px]">
-
-              {/* Header inside panel */}
-              <div className="flex items-center justify-between border-b border-slate-200 pb-3">
-                <div className="flex items-center gap-2">
-                  <div className="w-2 h-2 rounded-full bg-emerald-500" />
-                  <span className="text-xs font-black text-slate-800 uppercase tracking-wide">Consular Telemetry</span>
-                </div>
-                <span className="text-[10px] font-bold px-2 py-0.5 rounded-md bg-white text-slate-700 border border-slate-200">
-                  {countryConfig.visaType.split(' ')[0]} Active
-                </span>
-              </div>
-
-              {/* Animated Audio Equalizer Visualizer */}
-              <div className="space-y-1.5 bg-white p-3 rounded-xl border border-slate-200">
-                <div className="flex items-center justify-between text-[11px] text-slate-500 font-semibold">
-                  <span className="flex items-center gap-1.5">
-                    <Volume2 size={12} className="text-[#DE5C2B]" /> Voice & Speech Engine
-                  </span>
-                  <span className="text-emerald-600 text-[10px] font-bold">READY</span>
-                </div>
-
-                <div className="flex items-end justify-between gap-1 h-7 pt-1">
-                  {[35, 65, 90, 50, 80, 100, 45, 85, 60, 95, 40, 75, 55].map((val, idx) => (
-                    <motion.div
-                      key={idx}
-                      animate={{
-                        height: isBannerHovered
-                          ? [`${val * 0.3}%`, `${val}%`, `${val * 0.45}%`]
-                          : [`${val * 0.25}%`, `${val * 0.6}%`, `${val * 0.25}%`]
-                      }}
-                      transition={{
-                        duration: 0.9 + (idx % 4) * 0.2,
-                        repeat: Infinity,
-                        ease: 'easeInOut',
-                        delay: idx * 0.06
-                      }}
-                      className="w-1 bg-[#DE5C2B]/75 rounded-full"
-                    />
-                  ))}
-                </div>
-              </div>
-
-              {/* Consular Key Parameters */}
-              <div className="grid grid-cols-2 gap-2 text-left">
-                <div className="bg-white p-2.5 rounded-xl border border-slate-200">
-                  <div className="text-[10px] text-slate-500 font-bold uppercase">Section 214(b)</div>
-                  <div className="text-xs font-black text-emerald-600 mt-0.5 flex items-center gap-1">
-                    <CheckCircle2 size={12} /> Armed & Active
-                  </div>
-                </div>
-                <div className="bg-white p-2.5 rounded-xl border border-slate-200">
-                  <div className="text-[10px] text-slate-500 font-bold uppercase">Consular Standard</div>
-                  <div className="text-xs font-black text-slate-900 mt-0.5 flex items-center gap-1">
-                    <Award size={12} className="text-[#DE5C2B]" /> {selectedCountry} Embassy
-                  </div>
-                </div>
-              </div>
-
-              {/* Quick Start Button */}
-              <button
-                type="button"
-                onClick={() => {
-                  const el = document.getElementById('visa-interview-workspace');
-                  if (el) el.scrollIntoView({ behavior: 'smooth' });
-                }}
-                className="w-full py-2.5 px-4 rounded-full bg-[#111111] hover:bg-black text-white text-xs font-bold flex items-center justify-center gap-2 cursor-pointer transition-colors"
-              >
-                <Mic size={14} />
-                <span>Begin Consular Drill</span>
-                <ArrowRight size={13} className="text-white/80" />
-              </button>
-
+          <div className="flex items-start gap-3 p-3 bg-[#F8F5EF] border border-[#E6E0D4] min-w-0" style={FIELD_RADIUS}>
+            <img src={countryConfig.flag} alt={selectedCountry} className="w-7 h-5 rounded-sm object-cover mt-0.5 flex-shrink-0" />
+            <div className="min-w-0">
+              <p className="text-[14px] font-semibold text-[#16130F] leading-snug">{countryConfig.countryName} ({countryConfig.visaType})</p>
+              <p className="text-[12px] text-[#5B544A] leading-snug mt-0.5">{countryConfig.consularRule}</p>
             </div>
           </div>
-
         </div>
-      </div>
+        <p className="mt-4 pt-4 border-t border-[#ECE6DA] flex items-center justify-center gap-2 text-[13px] text-[#5B544A] text-center">
+          <Mic size={14} className="text-[#DE5C2B] shrink-0" />
+          Answer each officer question by typing or with your mic, then get a score, red flags and a model answer.
+        </p>
+      </FinderCard>
 
       {/* Main Container */}
-      <div id="visa-interview-workspace" className="bg-white border border-slate-200/80 rounded-[32px] shadow-sm p-6 md:p-8 space-y-8">
-        
-        {/* Country Selector Header */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-100 pb-6">
-          <div className="space-y-1">
-            <span className="text-[10px] font-black text-slate-400 uppercase tracking-wider">Target Visa Destination</span>
-            <div className="flex items-center gap-2">
-              <img src={countryConfig.flag} alt={selectedCountry} className="w-7 h-5 rounded-sm object-cover shadow-sm" />
-              <h3 className="text-base font-black text-slate-900">{countryConfig.countryName} ({countryConfig.visaType})</h3>
-            </div>
-            <p className="text-[11px] font-semibold text-slate-500">⚖️ {countryConfig.consularRule}</p>
-          </div>
-
-          {!interviewComplete && (
-            <div className="w-full sm:w-64">
-              <PremiumDropdown
-                value={selectedCountry}
-                onChange={(val) => {
-                  setSelectedCountry(val);
-                  handleRestart();
-                }}
-                accent="orange"
-                options={[
-                  { value: 'USA', label: 'USA (F-1 Visa)', icon: <img src="https://flagcdn.com/w40/us.png" alt="US" className="w-6 h-4 rounded-sm object-cover" /> },
-                  { value: 'UK', label: 'UK (Student Route)', icon: <img src="https://flagcdn.com/w40/gb.png" alt="UK" className="w-6 h-4 rounded-sm object-cover" /> },
-                  { value: 'Canada', label: 'Canada (Study Permit)', icon: <img src="https://flagcdn.com/w40/ca.png" alt="CA" className="w-6 h-4 rounded-sm object-cover" /> },
-                  { value: 'Germany', label: 'Germany (National Visa)', icon: <img src="https://flagcdn.com/w40/de.png" alt="DE" className="w-6 h-4 rounded-sm object-cover" /> },
-                  { value: 'Australia', label: 'Australia (Subclass 500)', icon: <img src="https://flagcdn.com/w40/au.png" alt="AU" className="w-6 h-4 rounded-sm object-cover" /> }
-                ]}
-              />
-            </div>
-          )}
-        </div>
+      <FinderCard>
+      <div id="visa-interview-workspace" className="space-y-8">
 
         {/* ======================================================== */}
         {/* INTERVIEW IN PROGRESS */}
@@ -505,57 +331,32 @@ const AiVisaInterviewPrep = ({ studentProfile = {} }) => {
               </div>
             </div>
 
-            {/* Student Answer Input Box (Mic + Text) */}
+            {/* Student answer (mic or text) */}
             {!activeFeedback && (
-              <form onSubmit={handleEvaluateAnswer} className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <label className="text-xs font-black text-slate-600 uppercase tracking-wider flex items-center gap-1.5">
-                    <User size={15} className="text-[#DE5C2B]" /> Your Spoken / Written Response:
-                  </label>
-                  <button
-                    type="button"
-                    onClick={toggleListening}
-                    className={`px-3.5 py-1.5 rounded-full text-xs font-bold border transition-colors flex items-center gap-1.5 cursor-pointer ${
-                      isListening
-                        ? 'bg-rose-500 text-white border-rose-500 animate-pulse'
-                        : 'bg-white text-slate-700 border-slate-200 hover:border-[#DE5C2B] hover:text-[#DE5C2B]'
-                    }`}
-                  >
+              <form onSubmit={handleEvaluateAnswer} className="space-y-3">
+                <FinderField label="Your answer *" error={evalError || undefined}>
+                  <textarea
+                    rows={4}
+                    value={studentAnswer}
+                    onChange={(e) => setStudentAnswer(e.target.value)}
+                    placeholder="Speak into your microphone or type your answer clearly. Be direct, confident, and specific..."
+                    className={FINDER_TEXTAREA}
+                    style={FIELD_RADIUS}
+                  />
+                </FinderField>
+
+                <div className="flex flex-col-reverse sm:flex-row sm:items-center sm:justify-between gap-3">
+                  <FinderChip on={isListening} onClick={toggleListening} className={`justify-center ${isListening ? 'animate-pulse' : ''}`}>
                     {isListening ? <MicOff size={14} /> : <Mic size={14} />}
-                    {isListening ? 'Stop Recording' : 'Speak with Mic'}
-                  </button>
-                </div>
-
-                <textarea
-                  rows={4}
-                  value={studentAnswer}
-                  onChange={(e) => setStudentAnswer(e.target.value)}
-                  placeholder="Speak into your microphone or type your answer clearly. Be direct, confident, and specific..."
-                  className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl text-xs md:text-sm font-semibold text-slate-800 focus:outline-none focus:border-[#DE5C2B] focus:ring-2 focus:ring-orange-100 focus:bg-white transition-all leading-relaxed"
-                />
-
-                {evalError && (
-                  <p role="alert" className="text-xs font-semibold text-rose-700 bg-rose-50 border border-rose-200 rounded-xl px-4 py-3">
-                    {evalError}
-                  </p>
-                )}
-
-                <div className="flex justify-end gap-3">
-                  <button
-                    type="submit"
-                    disabled={!studentAnswer.trim() || evaluating}
-                    className="px-6 py-3 bg-[#111111] hover:bg-black text-white rounded-full text-xs md:text-sm font-bold transition-colors flex items-center gap-2 cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
-                  >
+                    {isListening ? 'Stop recording' : 'Speak with mic'}
+                  </FinderChip>
+                  <FinderButton type="submit" disabled={!studentAnswer.trim() || evaluating} className="w-full sm:w-auto disabled:cursor-not-allowed">
                     {evaluating ? (
-                      <>
-                        <RotateCcw size={16} className="animate-spin" /> Consular Officer is Evaluating...
-                      </>
+                      <><RotateCcw size={16} className="animate-spin" /> Officer is evaluating…</>
                     ) : (
-                      <>
-                        <Sparkles size={16} /> Submit Answer for AI Critique <ArrowRight size={16} />
-                      </>
+                      <><Sparkles size={16} /> Submit answer <ArrowRight size={16} /></>
                     )}
-                  </button>
+                  </FinderButton>
                 </div>
               </form>
             )}
@@ -720,6 +521,7 @@ const AiVisaInterviewPrep = ({ studentProfile = {} }) => {
         )}
 
       </div>
+      </FinderCard>
     </div>
   );
 };

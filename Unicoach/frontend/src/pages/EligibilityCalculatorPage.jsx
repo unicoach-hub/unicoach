@@ -3,10 +3,10 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Calculator, Sparkles, Award, ShieldCheck, Target, 
   Compass, CheckCircle2, AlertCircle, ArrowRight, Download, 
-  Calendar, GraduationCap, DollarSign, Globe, BookOpen, 
+  Calendar, DollarSign, Globe, BookOpen, 
   HelpCircle, ExternalLink, RefreshCw, FileText, PhoneCall,
   ChevronRight, BookmarkCheck, SlidersHorizontal, ArrowLeft,
-  Banknote, Wallet, Check, AlertTriangle, School, Printer, Eye, X
+  Check, AlertTriangle, Printer, Eye, X
 } from 'lucide-react';
 import ALL_UNIVERSITIES from '../data/universities';
 import PremiumDropdown from '../components/PremiumDropdown';
@@ -21,11 +21,7 @@ import { getVerifiedRanking } from '../utils/ranking';
 import { getOfficialRequirements } from '../utils/requirements';
 import { POPULAR_COURSES, ALL_COUNTRY_OPTIONS } from '../utils/shortlistOptions';
 import { API_BASE_URL } from '../config';
-import { HeroBackButton } from '../components/ui/BackButton';
-import { Muhavra } from '../components/desi/Desi';
-import { StdSign } from '../components/desi/DesiPop';
-import { JourneyPills } from '../components/ui/BrandElements';
-import { useLocation } from 'react-router-dom';
+import { FinderPage, FinderHero, FinderCard, FinderButton, FinderChip, FIELD_RADIUS } from '../components/ui/FinderForm';
 
 const API_URL = API_BASE_URL;
 
@@ -116,7 +112,6 @@ const SCHOLARSHIP_TIERS = [
 
 const EligibilityCalculatorPage = () => {
   // Inside the student dashboard the page sits in a narrow column, so the side sign would cover the title
-  const inDashboard = useLocation().pathname.startsWith('/dashboard');
   const { openModal } = useLead();
   const { user, token, openLoginModal } = useAuth();
   const resultsRef = useRef(null);
@@ -275,7 +270,9 @@ const EligibilityCalculatorPage = () => {
     const unisToUse = unisForCountry.length > 0 ? unisForCountry : ALL_UNIVERSITIES.slice(0, 20);
 
     unisToUse.forEach(uni => {
-      const minGpa = parseFloat(uni.minGpaPercent) || (uni.rankingNum < 50 ? 82 : uni.rankingNum < 150 ? 72 : 62);
+      // No published cut-off: estimate from the QS rank (unranked counts as the lowest band)
+      const rankNum = uni.rankingNum || Infinity;
+      const minGpa = parseFloat(uni.minGpaPercent) || (rankNum < 50 ? 82 : rankNum < 150 ? 72 : 62);
       const minIelts = parseFloat(uni.minIeltsScore) || 6.0;
 
       // Score comparison
@@ -284,8 +281,8 @@ const EligibilityCalculatorPage = () => {
 
       // Approximate Base Annual Tuition in Local Currency & INR
       let baseTuitionLocal = countryMeta.avgTuition;
-      if (uni.rankingNum < 30) baseTuitionLocal = Math.round(countryMeta.avgTuition * 1.35);
-      else if (uni.rankingNum > 100) baseTuitionLocal = Math.round(countryMeta.avgTuition * 0.75);
+      if (rankNum < 30) baseTuitionLocal = Math.round(countryMeta.avgTuition * 1.35);
+      else if (rankNum > 100) baseTuitionLocal = Math.round(countryMeta.avgTuition * 0.75);
 
       // Germany: public universities charge little or no tuition, so there is no merit discount to estimate
       const lowTuitionCountry = targetCountry === 'Germany';
@@ -679,99 +676,35 @@ const EligibilityCalculatorPage = () => {
     </div>
   );
 
+  const EDUCATION_LEVELS = [
+    { id: "Bachelor's Degree", label: "Bachelor's Degree", sub: "B.Tech, B.Sc, B.Com, BBA (Applying for Master's/MBA)" },
+    { id: "12th Grade / High School", label: "12th Grade / High School", sub: "CBSE / ICSE / State Board (Applying for Undergrad)" },
+    { id: "Master's Degree", label: "Master's Degree", sub: "M.Tech, M.Sc, MBA (Applying for PhD / Exec)" },
+  ];
+
   return (
     <>
-      <div className="min-h-screen pt-[76px] pb-24 print:hidden" style={{ background: '#F6F3EC' }}>
-      
-      {/* ───────────────────────────────────────────── */}
-      {/* HERO SECTION */}
-      {/* ───────────────────────────────────────────── */}
-      <section className="relative pt-16 pb-16 sm:pt-14 sm:pb-20 px-4 sm:px-6 lg:px-8 font-['Onest',sans-serif]">
-        <HeroBackButton />
-        {/* Desi Pop: STD booth style sign with what the calculator weighs, wide screens only (not in the dashboard) */}
-        {!inDashboard && <div className="hidden 2xl:block absolute left-8 2xl:left-20 top-1/2 -translate-y-1/2 -rotate-6 z-0 pointer-events-none">
-          <StdSign words={['MARKS', 'BUDGET', 'GRANTS']} hi="मौका" className="w-[200px]" />
-        </div>}
-        <div className="max-w-4xl mx-auto text-center">
-          <p className="inline-flex items-center gap-2 text-[13px] font-semibold text-[#86351A]"><span className="w-6 h-[2px] bg-[#DE5C2B]" /> Scholarship Calculator</p>
-          <h1 className="mt-3 font-outfit text-[32px] sm:text-[46px] font-black tracking-[-0.035em] leading-[1.05] text-[#16130F]">
-            Find scholarships you qualify for
-          </h1>
-          <p className="mt-3 text-[15px] sm:text-[17px] text-[#5B544A] max-w-2xl mx-auto">
-            Add your marks, country and budget. See your admission odds, fees after grants and matching scholarships. Free, sign in only to unlock results.
-          </p>
+      <FinderPage className="print:hidden">
+      <FinderHero
+        eyebrow="Scholarship Calculator"
+        title="Find scholarships you qualify for"
+        subtitle="Add your marks, country and budget. See your admission odds, fees after grants and matching scholarships. Free, sign in only to unlock results."
+        steps={[
+          { label: 'Marks', sub: 'Your scores' },
+          { label: 'Country', sub: 'Where to study' },
+          { label: 'Budget', sub: 'Yearly fees' },
+          { label: 'Results', sub: 'Odds, fees after grants' },
+        ]}
+        active={0}
+      />
 
-          <div className="mt-5 flex flex-wrap items-center justify-center gap-2 text-[13px] font-medium text-[#16130F]">
-            <span className="inline-flex items-center gap-1.5 bg-white px-3 py-1.5 border border-[#E6E0D4]" style={{ borderRadius: 999 }}>
-              <CheckCircle2 size={14} className="text-[#DE5C2B]" /> 800+ university cutoffs
-            </span>
-            <span className="inline-flex items-center gap-1.5 bg-white px-3 py-1.5 border border-[#E6E0D4]" style={{ borderRadius: 999 }}>
-              <Banknote size={14} className="text-[#DE5C2B]" /> Fees after grant
-            </span>
-            <span className="inline-flex items-center gap-1.5 bg-white px-3 py-1.5 border border-[#E6E0D4]" style={{ borderRadius: 999 }}>
-              <Award size={14} className="text-[#DE5C2B]" /> 2026 scholarships
-            </span>
-          </div>
-          <JourneyPills
-            steps={[
-              { label: 'Marks', sub: 'Your scores' },
-              { label: 'Country', sub: 'Where to study' },
-              { label: 'Budget', sub: 'Yearly fees' },
-              { label: 'Results', sub: 'Odds, fees after grants' },
-            ]}
-            active={3}
-            className="mt-6 mx-auto w-fit max-w-full"
-          />
-        </div>
-      </section>
-
-      {/* ───────────────────────────────────────────── */}
-      {/* MAIN CALCULATOR WORKSPACE */}
-      {/* ───────────────────────────────────────────── */}
-      <main className="max-w-7xl mx-auto px-4 md:px-8 -mt-8 sm:-mt-10 relative z-20 space-y-8">
-        
-        {/* ======================================================== */}
-        {/* TOP: INTERACTIVE INPUT FORM */}
-        {/* ======================================================== */}
-        {/* Quick starts: one tap fills the form, like Course Finder's quick filters */}
-        <div className="bg-white/70 border border-[#E6E0D4] p-4 sm:p-5 font-['Onest',sans-serif]" style={{ borderRadius: 18 }}>
-          <p className="text-[13.5px] font-semibold text-[#16130F] mb-3">Quick start <span className="font-normal text-[#5B544A]">· tap one to fill the form</span></p>
-          <div className="flex flex-wrap gap-2">
-            {QUICK_STARTS.map((q) => (
-              <button key={q.label} type="button"
-                onClick={() => {
-                  handleEducationChange(q.level);
-                  setTargetDegree(q.degree);
-                  setTargetCountry(q.country);
-                  setTargetMajor(q.major);
-                  setAnnualBudgetInr(q.budget);
-                  setHasCalculated(false);
-                  document.getElementById('scholarship-form')?.scrollIntoView({ behavior: 'smooth' });
-                }}
-                className="inline-flex items-center gap-1.5 text-[13px] font-medium px-3 py-2 border border-[#E6E0D4] bg-white text-[#16130F] hover:border-[#DE5C2B] hover:text-[#DE5C2B] transition-colors cursor-pointer"
-                style={{ borderRadius: 999 }}>
-                <span aria-hidden>{q.flag}</span> {q.label}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        <div id="scholarship-form"className="bg-white p-6 md:p-8 border border-[#E6E0D4] shadow-[0_24px_60px_-36px_rgba(22,19,15,0.35)] space-y-6 scroll-mt-24" style={{ borderRadius: 18 }}>
-
-          <div className="flex items-center justify-between border-b border-[#ECE6DA] pb-4 flex-wrap gap-3">
-            <div className="space-y-1">
-              <div className="inline-flex items-center gap-1.5 text-[11px] font-bold text-[#DE5C2B] uppercase tracking-wider bg-[#FDF4EF] px-2.5 py-0.5 rounded-full border border-[#F3C9B4]">
-                <span>Step 1</span>
-                <span className="text-[#F3C9B4]">•</span>
-                <span>Academic & Financial Background</span>
-              </div>
-              <h2 className="text-xl md:text-2xl font-black text-slate-900 tracking-tight">
-                Enter Your Parameters
-              </h2>
-              <Muhavra hi="पहले तौलो, फिर बोलो।" en="Apply karne se pehle chances check karo." className="mt-1" />
-            </div>
-
+      <div className="mt-8 space-y-6">
+        {/* Calculator card: same field look as the Course Finder search card */}
+        <FinderCard className="space-y-5">
+          <div id="scholarship-form" className="flex items-center justify-between flex-wrap gap-3 scroll-mt-24">
+            <p className="text-[15px] font-semibold text-[#16130F]">Your details</p>
             <button
+              type="button"
               onClick={() => {
                 setEducationLevel("Bachelor's Degree");
                 setPercentage(76);
@@ -784,167 +717,101 @@ const EligibilityCalculatorPage = () => {
                 setIeltsScore(6.5);
                 setHasCalculated(false);
               }}
-              className="text-xs font-semibold text-slate-500 hover:text-indigo-600 flex items-center gap-1.5 px-3 py-1.5 rounded-xl hover:bg-slate-50 border border-slate-200/60 transition-all cursor-pointer"
+              className="text-[12.5px] font-medium text-[#5B544A] hover:text-[#DE5C2B] inline-flex items-center gap-1.5 transition-colors cursor-pointer"
             >
-              <RefreshCw size={13} /> Reset Form
+              <RefreshCw size={13} /> Reset
             </button>
           </div>
 
-          {/* 1. CURRENT QUALIFICATION LEVEL SELECTOR (Crystal Clear Radio Cards) */}
-          <div className="space-y-2.5">
-            <div className="flex items-center justify-between flex-wrap gap-1">
-              <label className="text-xs font-bold text-slate-700 uppercase tracking-wide">
-                Current / Highest Completed Education Level <span className="text-rose-500">*</span>
-              </label>
-              <span className="text-[11px] text-slate-400 font-medium">Select which qualification marks you are entering</span>
-            </div>
-
+          <div className="flex flex-col gap-1.5">
+            <span className="text-[12.5px] font-semibold text-[#16130F]">Highest completed education *</span>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-              {[
-                { 
-                  id: "Bachelor's Degree", 
-                  label: "Bachelor's Degree", 
-                  sub: "B.Tech, B.Sc, B.Com, BBA (Applying for Master's/MBA)", 
-                  icon: <GraduationCap size={17} /> 
-                },
-                { 
-                  id: "12th Grade / High School", 
-                  label: "12th Grade / High School", 
-                  sub: "CBSE / ICSE / State Board (Applying for Undergrad)", 
-                  icon: <School size={17} /> 
-                },
-                { 
-                  id: "Master's Degree", 
-                  label: "Master's Degree", 
-                  sub: "M.Tech, M.Sc, MBA (Applying for PhD / Exec)", 
-                  icon: <BookOpen size={17} /> 
-                }
-              ].map(item => {
+              {EDUCATION_LEVELS.map((item) => {
                 const isSelected = educationLevel === item.id;
                 return (
                   <button
                     key={item.id}
                     type="button"
+                    aria-pressed={isSelected}
                     onClick={() => handleEducationChange(item.id)}
-                    className={`p-3.5 rounded-2xl border text-left transition-all duration-150 cursor-pointer flex flex-col justify-between gap-2.5 ${
-                      isSelected
-                        ? 'border-indigo-600 bg-indigo-50/70 shadow-xs ring-2 ring-indigo-500/20'
-                        : 'border-slate-200 hover:border-slate-300 hover:bg-slate-50/60 bg-white'
-                    }`}
+                    className={`p-3.5 border text-left transition-colors cursor-pointer ${isSelected ? 'bg-[#16130F] border-[#16130F] text-white' : 'bg-[#F8F5EF] border-[#E6E0D4] text-[#16130F] hover:border-[#16130F]'}`}
+                    style={FIELD_RADIUS}
                   >
-                    <div className="flex items-center justify-between w-full">
-                      <div className={`w-8 h-8 rounded-xl flex items-center justify-center transition-colors ${isSelected ? 'bg-indigo-600 text-white' : 'bg-slate-100 text-slate-600'}`}>
-                        {item.icon}
-                      </div>
-                      {isSelected && (
-                        <span className="w-5 h-5 rounded-full bg-indigo-600 text-white flex items-center justify-center text-[10px] font-bold shadow-xs">
-                          ✓
-                        </span>
-                      )}
-                    </div>
-                    <div>
-                      <p className={`text-xs font-bold ${isSelected ? 'text-indigo-950' : 'text-slate-800'}`}>
-                        {item.label}
-                      </p>
-                      <p className="text-[11px] text-slate-500 font-normal leading-tight mt-0.5">
-                        {item.sub}
-                      </p>
-                    </div>
+                    <span className="text-[13.5px] font-semibold flex items-center justify-between gap-2">
+                      {item.label} {isSelected && <Check size={15} className="shrink-0" />}
+                    </span>
+                    <span className={`block text-[12px] leading-snug mt-0.5 ${isSelected ? 'text-white/75' : 'text-[#5B544A]'}`}>{item.sub}</span>
                   </button>
                 );
               })}
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            
-            {/* 2. Target Destination */}
-            <div className="space-y-2">
-              <label className="text-xs font-black text-slate-700 uppercase tracking-wider">Target Destination *</label>
-              <PremiumDropdown
-                value={targetCountry}
-                onChange={setTargetCountry}
-                accent="indigo"
-                searchable={true}
-                searchPlaceholder="Search 160+ countries (e.g. USA, Germany)..."
-                options={ALL_COUNTRY_OPTIONS.filter(c => c.value !== 'All')}
-              />
-            </div>
-
-            {/* 3. Target Degree */}
-            <div className="space-y-2">
-              <label className="text-xs font-black text-slate-700 uppercase tracking-wider">Target Degree Abroad *</label>
-              <PremiumDropdown
-                value={targetDegree}
-                onChange={setTargetDegree}
-                accent="indigo"
-                options={[
-                  { value: "Master's", label: "Master's (MS / MSc / MA)", shortLabel: "Master's", icon: '🎓' },
-                  { value: 'MBA', label: 'MBA / Business Management', shortLabel: 'MBA', icon: '💼' },
-                  { value: "Bachelor's", label: "Bachelor's (BS / BA / BEng)", shortLabel: "Bachelor's", icon: '🏫' }
-                ]}
-              />
-            </div>
-
-            {/* 4. Field of Study */}
-            <div className="space-y-2">
-              <label className="text-xs font-black text-slate-700 uppercase tracking-wider">Field of Study / Major *</label>
-              <PremiumDropdown
-                value={targetMajor}
-                onChange={setTargetMajor}
-                accent="indigo"
-                searchable={true}
-                creatable={true}
-                defaultIcon={<BookOpen size={16} className="text-indigo-500" />}
-                searchPlaceholder="Search or type custom course..."
-                placeholder="Select or enter your course..."
-                options={POPULAR_COURSES}
-              />
-            </div>
-
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 items-start">
+            <PremiumDropdown
+              label="Country *"
+              value={targetCountry}
+              onChange={setTargetCountry}
+              accent="indigo"
+              searchable={true}
+              searchPlaceholder="Search 160+ countries (e.g. USA, Germany)..."
+              options={ALL_COUNTRY_OPTIONS.filter(c => c.value !== 'All')}
+            />
+            <PremiumDropdown
+              label="Degree abroad *"
+              value={targetDegree}
+              onChange={setTargetDegree}
+              accent="indigo"
+              options={[
+                { value: "Master's", label: "Master's (MS / MSc / MA)", shortLabel: "Master's", icon: '🎓' },
+                { value: 'MBA', label: 'MBA / Business Management', shortLabel: 'MBA', icon: '💼' },
+                { value: "Bachelor's", label: "Bachelor's (BS / BA / BEng)", shortLabel: "Bachelor's", icon: '🏫' }
+              ]}
+            />
+            <PremiumDropdown
+              label="Field of study *"
+              value={targetMajor}
+              onChange={setTargetMajor}
+              accent="indigo"
+              searchable={true}
+              creatable={true}
+              defaultIcon={<BookOpen size={16} className="text-indigo-500" />}
+              searchPlaceholder="Search or type custom course..."
+              placeholder="Select or enter your course..."
+              options={POPULAR_COURSES}
+            />
+            <PremiumDropdown
+              label="IELTS / English score"
+              value={ieltsScore}
+              onChange={(val) => setIeltsScore(parseFloat(val))}
+              accent="indigo"
+              options={[
+                { value: 6.0, label: '6.0 Band (Entry Level)', icon: '📝' },
+                { value: 6.5, label: '6.5 Band (Competent)', icon: '📝' },
+                { value: 7.0, label: '7.0 Band (Good User)', icon: '🌟' },
+                { value: 7.5, label: '7.5+ Band (Very Good)', icon: '👑' },
+                { value: 8.0, label: '8.0+ Band (Expert)', icon: '🏆' }
+              ]}
+            />
           </div>
 
-          {/* DUAL PARAMETERS ROW: Contextual Score Box (Left) + Affordability Budget (Right) */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            
-            {/* 5. Academic Score Section (With Dynamic Title & Explanation) */}
-            <div className="p-6 rounded-2xl bg-gradient-to-br from-indigo-50/60 via-slate-50 to-blue-50/40 border border-indigo-100/80 space-y-4">
-              <div className="flex items-center justify-between flex-wrap gap-2">
-                <div className="space-y-0.5">
-                  <span className="text-[9px] font-black uppercase tracking-wider text-indigo-700 bg-indigo-100/70 px-2 py-0.5 rounded">
-                    {scoreCardMeta.badge}
-                  </span>
-                  <label className="text-xs font-black text-slate-900 block mt-1">
-                    {scoreCardMeta.title}
-                  </label>
-                  <p className="text-[10.5px] text-slate-500 font-medium max-w-sm leading-snug">
-                    {scoreCardMeta.subtitle}
-                  </p>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
+            {/* Academic score: label and hint follow the education level */}
+            <div className="p-4 bg-[#F8F5EF] border border-[#E6E0D4] space-y-3" style={{ borderRadius: 14 }}>
+              <div className="flex items-start justify-between flex-wrap gap-2">
+                <div className="min-w-0">
+                  <p className="text-[12.5px] font-semibold text-[#16130F]">{scoreCardMeta.title}</p>
+                  <p className="text-[11.5px] text-[#5B544A] leading-snug max-w-sm mt-0.5">{scoreCardMeta.subtitle}</p>
                 </div>
-
-                <div className="flex items-center gap-1 bg-white p-1 rounded-xl border border-slate-200 shadow-2xs">
-                  <button
-                    onClick={() => setScoreType('percentage')}
-                    className={`px-2.5 py-1 rounded-lg text-xs font-black transition-all cursor-pointer ${
-                      scoreType === 'percentage' ? 'bg-indigo-600 text-white shadow-xs' : 'text-slate-600 hover:text-slate-900'
-                    }`}
-                  >
-                    Percentage (%)
-                  </button>
-                  <button
-                    onClick={() => setScoreType('cgpa')}
-                    className={`px-2.5 py-1 rounded-lg text-xs font-black transition-all cursor-pointer ${
-                      scoreType === 'cgpa' ? 'bg-indigo-600 text-white shadow-xs' : 'text-slate-600 hover:text-slate-900'
-                    }`}
-                  >
-                    CGPA (10.0)
-                  </button>
+                <div className="flex items-center gap-1.5">
+                  <FinderChip on={scoreType === 'percentage'} onClick={() => setScoreType('percentage')} className="!py-1.5">Percentage</FinderChip>
+                  <FinderChip on={scoreType === 'cgpa'} onClick={() => setScoreType('cgpa')} className="!py-1.5">CGPA (10)</FinderChip>
                 </div>
               </div>
 
               {scoreType === 'percentage' ? (
-                <div className="space-y-3">
-                  <div className="flex items-center justify-between gap-4">
+                <>
+                  <div className="flex items-center gap-4">
                     <input
                       type="range"
                       min="50"
@@ -952,32 +819,20 @@ const EligibilityCalculatorPage = () => {
                       step="1"
                       value={percentage}
                       onChange={(e) => setPercentage(parseFloat(e.target.value))}
-                      className="w-full h-3 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-indigo-600"
+                      aria-label="Percentage"
+                      className="w-full h-2 bg-[#E6E0D4] rounded-lg appearance-none cursor-pointer accent-[#DE5C2B]"
                     />
-                    <div className="w-20 text-right bg-white px-3 py-1.5 rounded-xl border border-indigo-100 shadow-2xs">
-                      <span className="text-xl font-black text-indigo-700">{percentage}%</span>
-                    </div>
+                    <span className="w-20 shrink-0 text-right bg-white px-3 py-1.5 border border-[#E6E0D4] text-[18px] font-bold text-[#16130F]" style={FIELD_RADIUS}>{percentage}%</span>
                   </div>
-
-                  {/* Quick Score Preset Pills */}
-                  <div className="flex items-center gap-1.5 flex-wrap text-xs">
-                    <span className="text-[10px] font-bold text-slate-400">Presets:</span>
+                  <div className="flex items-center gap-1.5 flex-wrap">
                     {[60, 68, 75, 82, 90, 95].map(val => (
-                      <button
-                        key={val}
-                        onClick={() => setPercentage(val)}
-                        className={`px-2 py-0.5 rounded-md text-[11px] font-bold transition-all cursor-pointer ${
-                          percentage === val ? 'bg-indigo-600 text-white' : 'bg-white hover:bg-slate-100 text-slate-600 border border-slate-200'
-                        }`}
-                      >
-                        {val}%
-                      </button>
+                      <FinderChip key={val} on={percentage === val} onClick={() => setPercentage(val)} className="!px-2.5 !py-1 !text-[12px]">{val}%</FinderChip>
                     ))}
                   </div>
-                </div>
+                </>
               ) : (
-                <div className="space-y-3">
-                  <div className="flex items-center justify-between gap-4">
+                <>
+                  <div className="flex items-center gap-4">
                     <input
                       type="range"
                       min="5.0"
@@ -985,117 +840,90 @@ const EligibilityCalculatorPage = () => {
                       step="0.1"
                       value={cgpa}
                       onChange={(e) => setCgpa(parseFloat(e.target.value))}
-                      className="w-full h-3 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-indigo-600"
+                      aria-label="CGPA"
+                      className="w-full h-2 bg-[#E6E0D4] rounded-lg appearance-none cursor-pointer accent-[#DE5C2B]"
                     />
-                    <div className="w-24 text-right bg-white px-3 py-1.5 rounded-xl border border-indigo-100 shadow-2xs">
-                      <span className="text-xl font-black text-indigo-700">{cgpa} / 10</span>
-                    </div>
+                    <span className="w-24 shrink-0 text-right bg-white px-3 py-1.5 border border-[#E6E0D4] text-[18px] font-bold text-[#16130F]" style={FIELD_RADIUS}>{cgpa} / 10</span>
                   </div>
-
-                  <div className="text-xs font-bold text-indigo-600 text-right">
-                    ≈ {normalizedPercentage}% Converted Academic Percentage
-                  </div>
-                </div>
+                  <p className="text-[12px] font-medium text-[#5B544A] text-right">≈ {normalizedPercentage}% converted percentage</p>
+                </>
               )}
             </div>
 
-            {/* 6. Annual Fees & Budget Affordability Section */}
-            <div className="p-6 rounded-2xl bg-gradient-to-br from-emerald-50/60 via-slate-50 to-amber-50/40 border border-emerald-100/80 space-y-4">
-              <div className="flex items-center justify-between flex-wrap gap-2">
-                <div>
-                  <label className="text-xs font-black text-slate-900 uppercase tracking-wider flex items-center gap-1.5">
-                    <Wallet size={15} className="text-emerald-600" /> Max Annual Tuition Budget (Affordability) *
-                  </label>
-                  <p className="text-[11px] text-slate-500 font-medium">How much tuition fees can you afford per year?</p>
+            {/* Yearly tuition budget */}
+            <div className="p-4 bg-[#F8F5EF] border border-[#E6E0D4] space-y-3" style={{ borderRadius: 14 }}>
+              <div className="flex items-start justify-between flex-wrap gap-2">
+                <div className="min-w-0">
+                  <p className="text-[12.5px] font-semibold text-[#16130F]">Max yearly tuition budget *</p>
+                  <p className="text-[11.5px] text-[#5B544A] leading-snug mt-0.5">How much tuition fees can you afford per year?</p>
                 </div>
-
-                <div className="text-right bg-white px-3.5 py-1.5 rounded-xl border border-emerald-200 shadow-2xs">
-                  <span className="text-xl font-black text-emerald-700">₹{annualBudgetInr} Lakhs</span>
-                  <span className="text-[10px] text-slate-400 block font-bold">≈ {budgetInNativeCurrency}</span>
+                <div className="text-right bg-white px-3 py-1.5 border border-[#E6E0D4]" style={FIELD_RADIUS}>
+                  <span className="text-[18px] font-bold text-[#16130F]">₹{annualBudgetInr} Lakhs</span>
+                  <span className="text-[11px] text-[#5B544A] block">≈ {budgetInNativeCurrency}</span>
                 </div>
               </div>
-
-              <div className="space-y-3">
-                <input
-                  type="range"
-                  min="5"
-                  max="60"
-                  step="1"
-                  value={annualBudgetInr}
-                  onChange={(e) => setAnnualBudgetInr(parseFloat(e.target.value))}
-                  className="w-full h-3 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-emerald-600"
-                />
-
-                {/* Quick Budget Presets */}
-                <div className="flex items-center gap-1.5 flex-wrap text-xs">
-                  <span className="text-[10px] font-bold text-slate-400">Quick Tiers:</span>
-                  {[
-                    { label: 'Under ₹12L (Budget)', val: 12 },
-                    { label: '₹20L (Standard)', val: 20 },
-                    { label: '₹30L (Target)', val: 30 },
-                    { label: '₹45L+ (Premium)', val: 45 }
-                  ].map(b => (
-                    <button
-                      key={b.val}
-                      onClick={() => setAnnualBudgetInr(b.val)}
-                      className={`px-2 py-0.5 rounded-md text-[11px] font-bold transition-all cursor-pointer ${
-                        annualBudgetInr === b.val ? 'bg-emerald-600 text-white' : 'bg-white hover:bg-slate-100 text-slate-600 border border-slate-200'
-                      }`}
-                    >
-                      {b.label}
-                    </button>
-                  ))}
-                </div>
-              </div>
-            </div>
-
-          </div>
-
-          {/* 7. IELTS & Big Action Button Row */}
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-end">
-            <div className="md:col-span-4 space-y-2">
-              <label className="text-xs font-black text-slate-700 uppercase tracking-wider">IELTS / English Score</label>
-              <PremiumDropdown
-                value={ieltsScore}
-                onChange={(val) => setIeltsScore(parseFloat(val))}
-                accent="indigo"
-                options={[
-                  { value: 6.0, label: '6.0 Band (Entry Level)', icon: '📝' },
-                  { value: 6.5, label: '6.5 Band (Competent)', icon: '📝' },
-                  { value: 7.0, label: '7.0 Band (Good User)', icon: '🌟' },
-                  { value: 7.5, label: '7.5+ Band (Very Good)', icon: '👑' },
-                  { value: 8.0, label: '8.0+ Band (Expert)', icon: '🏆' }
-                ]}
+              <input
+                type="range"
+                min="5"
+                max="60"
+                step="1"
+                value={annualBudgetInr}
+                onChange={(e) => setAnnualBudgetInr(parseFloat(e.target.value))}
+                aria-label="Yearly tuition budget in lakhs"
+                className="w-full h-2 bg-[#E6E0D4] rounded-lg appearance-none cursor-pointer accent-[#DE5C2B]"
               />
-            </div>
-
-            {/* GIANT ACTION BUTTON */}
-            <div className="md:col-span-8">
-              <button
-                onClick={handleCalculate}
-                disabled={isCalculating}
-                className="w-full py-4.5 bg-gradient-to-r from-[#DE5C2B] via-orange-600 to-[#C04A1D] hover:from-[#C04A1D] hover:to-[#A73D14] hover:via-[#B8431A] text-white rounded-2xl font-black text-sm md:text-base transition-all shadow-xl shadow-indigo-200 flex items-center justify-center gap-3 cursor-pointer group hover:scale-[1.01] active:scale-[0.99]"
-              >
-                {isCalculating ? (
-                  <>
-                    <RefreshCw className="animate-spin" size={18} />
-                    <span>
-                      {calcStep === 1 && 'Scanning 800+ university cutoffs & tuition fees...'}
-                      {calcStep === 2 && `Matching ${normalizedPercentage}% (${educationLevel}) with scholarship grants...`}
-                      {calcStep === 3 && `Filtering colleges within ₹${annualBudgetInr} Lakhs budget...`}
-                    </span>
-                  </>
-                ) : (
-                  <>
-                    <Sparkles className="text-amber-300 group-hover:rotate-12 transition-transform" size={20} />
-                    <span>🚀 Check Eligibility & Shortlist Universities</span>
-                    <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
-                  </>
-                )}
-              </button>
+              <div className="flex items-center gap-1.5 flex-wrap">
+                {[
+                  { label: 'Under ₹12L (Budget)', val: 12 },
+                  { label: '₹20L (Standard)', val: 20 },
+                  { label: '₹30L (Target)', val: 30 },
+                  { label: '₹45L+ (Premium)', val: 45 }
+                ].map(b => (
+                  <FinderChip key={b.val} on={annualBudgetInr === b.val} onClick={() => setAnnualBudgetInr(b.val)} className="!px-2.5 !py-1 !text-[12px]">{b.label}</FinderChip>
+                ))}
+              </div>
             </div>
           </div>
 
+          <div className="flex justify-end">
+            <FinderButton onClick={handleCalculate} disabled={isCalculating} className="w-full sm:w-auto">
+              {isCalculating ? (
+                <>
+                  <RefreshCw className="animate-spin shrink-0" size={16} />
+                  <span className="truncate">
+                    {calcStep === 1 && 'Scanning 800+ university cutoffs & tuition fees...'}
+                    {calcStep === 2 && `Matching ${normalizedPercentage}% (${educationLevel}) with scholarship grants...`}
+                    {calcStep === 3 && `Filtering colleges within ₹${annualBudgetInr} Lakhs budget...`}
+                  </span>
+                </>
+              ) : (
+                <>
+                  <Calculator size={16} /> Check eligibility <ArrowRight size={16} />
+                </>
+              )}
+            </FinderButton>
+          </div>
+        </FinderCard>
+
+        {/* Quick starts: one tap fills the form, like Course Finder's quick filters */}
+        <div className="bg-white/70 border border-[#E6E0D4] p-4 sm:p-5" style={{ borderRadius: 18 }}>
+          <p className="text-[13.5px] font-semibold text-[#16130F] mb-3">Quick start <span className="font-normal text-[#5B544A]">· tap one to fill the form</span></p>
+          <div className="flex flex-wrap gap-2">
+            {QUICK_STARTS.map((q) => (
+              <FinderChip key={q.label} on={false}
+                onClick={() => {
+                  handleEducationChange(q.level);
+                  setTargetDegree(q.degree);
+                  setTargetCountry(q.country);
+                  setTargetMajor(q.major);
+                  setAnnualBudgetInr(q.budget);
+                  setHasCalculated(false);
+                  document.getElementById('scholarship-form')?.scrollIntoView({ behavior: 'smooth' });
+                }}>
+                <span aria-hidden>{q.flag}</span> {q.label}
+              </FinderChip>
+            ))}
+          </div>
         </div>
 
         {/* ======================================================== */}
@@ -1494,7 +1322,7 @@ const EligibilityCalculatorPage = () => {
 
         </div>
 
-      </main>
+      </div>
 
       {/* AI Modals */}
       <UniversityAiExplainerModal
@@ -1511,7 +1339,7 @@ const EligibilityCalculatorPage = () => {
         studentProfile={{ gpaPercent: normalizedPercentage, targetCountry, targetScore: normalizedPercentage }}
       />
 
-    </div>
+      </FinderPage>
 
       {/* ──────────────────────────────────────────────────────── */}
       {/* DEDICATED OFFICIAL PRINTABLE REPORT (Visible only on print) */}

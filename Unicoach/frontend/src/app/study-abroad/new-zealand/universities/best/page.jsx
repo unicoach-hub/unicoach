@@ -24,178 +24,178 @@ const top8Unis = [
   {
     rank: 1,
     name: "University of Auckland",
-    qsRank: "#65",
+    qsRank: "#68",
     popular: "Engineering, IT, Data Science",
-    feesTotalNZD: 45050,
-    tagline: "ONLY NZ UNI IN TOP 100 GLOBALLY",
-    logo: "https://logo.clearbit.com/auckland.ac.nz",
+    feesTotalNZD: 45857,
+    tagline: "NZ'S HIGHEST-RANKED UNIVERSITY (QS 2027)",
+    logo: "/logos/verified-University of Auckland.png",
     website: "https://www.auckland.ac.nz",
     city: "Auckland",
     founded: "1883",
-    students: "10,000+",
-    acceptance: "~45%",
+    students: "QS 2027: #68",
+    acceptance: "auckland.ac.nz",
     strengths: [
-      "Only NZ university in top 100 globally",
+      "Only New Zealand university in the QS 2027 top 100",
       "Auckland Bioengineering Institute",
-      "Triple Crown Business School",
-      "Global MBA tailored for Asia-Pacific"
+      "Triple-crown accredited Business School (AACSB, EQUIS, AMBA)",
+      "Wide range of undergraduate and postgraduate programmes"
     ],
-    ugFees: "NZ$40,000 – NZ$58,000",
-    pgFees: "NZ$44,000 – NZ$60,000+"
+    ugFees: "NZ$42,200 – NZ$60,900 (2027; Medicine higher)",
+    pgFees: "NZ$45,900 – NZ$58,300 per 120 points (2027)"
   },
   {
     rank: 2,
     name: "University of Otago",
-    qsRank: "#197",
+    qsRank: "#198",
     popular: "Health Sciences, Dentistry, Medicine, Psychology, Finance",
-    feesTotalNZD: 38000,
-    tagline: "NZ'S ONLY DENTAL SCHOOL",
-    logo: "https://logo.clearbit.com/otago.ac.nz",
+    feesTotalNZD: 32499,
+    tagline: "NZ'S OLDEST UNIVERSITY (1869)",
+    logo: "/logos/verified-University of Otago.png",
     website: "https://www.otago.ac.nz",
     city: "Dunedin",
     founded: "1869",
-    students: "3,000+",
-    acceptance: "65%",
+    students: "QS 2027: #198",
+    acceptance: "otago.ac.nz",
     strengths: [
-      "NZ's only dental school",
-      "NZ's first medical school",
-      "Powerhouse in biomedical & clinical research",
-      "Lively student culture"
+      "New Zealand's oldest university",
+      "New Zealand's national centre for dentistry",
+      "Strong in biomedical & clinical research",
+      "Lively student culture in Dunedin"
     ],
-    ugFees: "NZ$38,000 – NZ$48,000",
-    pgFees: "NZ$41,000 – NZ$58,000"
+    ugFees: "NZ$35,600 – NZ$52,400 (2026; Medicine/Dentistry higher)",
+    pgFees: "NZ$32,500 – NZ$51,900 per year (2026)"
   },
   {
     rank: 3,
     name: "Massey University",
-    qsRank: "#230",
+    qsRank: "#215",
     popular: "Aviation, Veterinary Science, Agribusiness, Creative Arts",
-    feesTotalNZD: 32000,
-    tagline: "ONLY UNIVERSITY WITH AVIATION DEGREES",
-    logo: "https://logo.clearbit.com/massey.ac.nz",
+    feesTotalNZD: 40010,
+    tagline: "AVIATION & VETERINARY SCIENCE",
+    logo: "/logos/verified-Massey University.png",
     website: "https://www.massey.ac.nz",
-    city: "Palmerston North & Auckland",
+    city: "Palmerston North, Auckland & Wellington",
     founded: "1927",
-    students: "5,000+",
-    acceptance: "65%",
+    students: "QS 2027: #215",
+    acceptance: "massey.ac.nz",
     strengths: [
-      "Only university with Aviation degrees",
-      "Only university with Veterinary Science",
+      "School of Aviation with its own fleet and airfield",
+      "Veterinary Science (BVSc)",
       "'Hands-on' practical approach",
-      "Agri-Food research powerhouse"
+      "Agri-food research"
     ],
-    ugFees: "NZ$34,000 – NZ$46,000",
-    pgFees: "NZ$39,000 – NZ$52,000"
+    ugFees: "NZ$35,250 – NZ$46,950 (2027; Vet Science & Aviation higher)",
+    pgFees: "NZ$37,000 – NZ$52,720 per 120 credits (2027)"
   },
   {
     rank: 4,
     name: "Victoria University of Wellington",
-    qsRank: "#240",
+    qsRank: "#241",
     popular: "Public Policy, Accounting, Law, Architecture, AI",
-    feesTotalNZD: 34000,
+    feesTotalNZD: 40124,
     tagline: "LOCATED IN CAPITAL CITY - GOVT CONNECTIONS",
-    logo: "https://logo.clearbit.com/wgtn.ac.nz",
+    logo: "/logos/verified-Victoria University of Wellington.png",
     website: "https://www.wgtn.ac.nz",
     city: "Wellington",
     founded: "1897",
-    students: "3,500+",
-    acceptance: "64%",
+    students: "QS 2027: #241",
+    acceptance: "wgtn.ac.nz",
     strengths: [
-      "Front-row seat to government & creative sectors",
-      "Strong emphasis on international law & policy",
-      "Connection with Wētā Workshop (film industry)",
-      "Strongest option for Law & Public Policy"
+      "Close to government & creative sectors",
+      "Strong emphasis on law & public policy",
+      "Wellington's film and creative industry nearby",
+      "Good option for Law & Public Policy"
     ],
-    ugFees: "NZ$34,000 – NZ$45,000",
-    pgFees: "NZ$36,000 – NZ$50,000"
+    ugFees: "NZ$35,700 – NZ$49,200 (2027)",
+    pgFees: "NZ$40,100 – NZ$52,400 per 120 points (2027)"
   },
   {
     rank: 5,
     name: "University of Canterbury",
-    qsRank: "#261",
+    qsRank: "#257",
     popular: "Civil Engineering, Environmental Science, Fine Arts",
-    feesTotalNZD: 35000,
-    tagline: "ENGINEERING HUB - QUAKE CENTRE",
-    logo: "https://logo.clearbit.com/canterbury.ac.nz",
+    feesTotalNZD: 36000,
+    tagline: "ENGINEERING HUB - CHRISTCHURCH",
+    logo: "/logos/verified-University of Canterbury.png",
     website: "https://www.canterbury.ac.nz",
     city: "Christchurch",
     founded: "1873",
-    students: "4,000+",
-    acceptance: "50%",
+    students: "QS 2027: #257",
+    acceptance: "canterbury.ac.nz",
     strengths: [
-      "Engineering hub with global industry links",
-      "Quake Centre (earthquake engineering research)",
-      "HIT Lab (AR/VR technology)",
-      "Strong global engineering connections"
+      "Engineering school with industry links",
+      "Earthquake engineering research",
+      "HIT Lab NZ (AR/VR technology)",
+      "Large campus in Christchurch"
     ],
-    ugFees: "NZ$35,000 – NZ$48,000",
-    pgFees: "NZ$38,000 – NZ$52,000"
+    ugFees: "NZ$35,610 – NZ$54,180 (2027)",
+    pgFees: "NZ$54,000 – NZ$71,400 for a whole 180-point Master's (2027)"
   },
   {
     rank: 6,
     name: "University of Waikato",
-    qsRank: "#281",
+    qsRank: "#293",
     popular: "Computer Science, MBA, AI, Cybersecurity, Nursing",
-    feesTotalNZD: 33000,
+    feesTotalNZD: 39580,
     tagline: "TRIPLE CROWN BUSINESS SCHOOL",
-    logo: "https://logo.clearbit.com/waikato.ac.nz",
+    logo: "/logos/verified-University of Waikato.png",
     website: "https://www.waikato.ac.nz",
     city: "Hamilton",
     founded: "1964",
-    students: "2,500+",
-    acceptance: "70%",
+    students: "QS 2027: #293",
+    acceptance: "waikato.ac.nz",
     strengths: [
-      "Triple Crown Business School (top 1% globally)",
-      "First Cybersecurity Lab in NZ",
-      "World leader in digital defence & cloud security",
+      "Triple-crown accredited Management School (AACSB, EQUIS, AMBA)",
+      "Home to New Zealand's first cyber security lab",
+      "Master's in Cyber Security, Data Science and AI",
       "Laid-back, community-oriented atmosphere"
     ],
-    ugFees: "NZ$32,000 – NZ$44,000",
-    pgFees: "NZ$35,000 – NZ$48,000"
+    ugFees: "NZ$32,400 – NZ$48,345 (2026)",
+    pgFees: "NZ$39,580+ per 120 points (2026; MBA NZ$65,700)"
   },
   {
     rank: 7,
     name: "Lincoln University",
-    qsRank: "#407",
+    qsRank: "#419",
     popular: "Agribusiness, Food Technology, Wine Science, Viticulture",
-    feesTotalNZD: 31000,
+    feesTotalNZD: 39300,
     tagline: "SPECIALIST LAND-BASED UNIVERSITY",
-    logo: "https://logo.clearbit.com/lincoln.ac.nz",
+    logo: "/logos/verified-Lincoln University.png",
     website: "https://www.lincoln.ac.nz",
     city: "Lincoln (Christchurch)",
     founded: "1878",
-    students: "1,500+",
-    acceptance: "60%",
+    students: "QS 2027: #419",
+    acceptance: "lincoln.ac.nz",
     strengths: [
       "Specialist land-based university",
-      "World-class agribusiness & food innovation",
-      "Environmental management & climate change adaptation",
-      "Billion-dollar agriculture industry connections"
+      "Agribusiness & food innovation",
+      "Environmental management",
+      "Close links with New Zealand's agriculture sector"
     ],
-    ugFees: "NZ$31,000 – NZ$40,000",
-    pgFees: "NZ$33,000 – NZ$45,000"
+    ugFees: "NZ$37,000 – NZ$39,000 (2027)",
+    pgFees: "NZ$59,000 – NZ$66,000 for a whole 180-credit Master's (2027)"
   },
   {
     rank: 8,
     name: "Auckland University of Technology (AUT)",
-    qsRank: "#410",
+    qsRank: "#431",
     popular: "Hospitality, IT, Digital Media, Sports Science",
-    feesTotalNZD: 33000,
-    tagline: "HIGHEST GRADUATE EMPLOYMENT RATE",
-    logo: "https://logo.clearbit.com/aut.ac.nz",
+    feesTotalNZD: 39022,
+    tagline: "CAREER-FOCUSED CITY UNIVERSITY",
+    logo: "/logos/verified-Auckland University of Technology.png",
     website: "https://www.aut.ac.nz",
     city: "Auckland",
     founded: "2000",
-    students: "5,500+",
-    acceptance: "50%",
+    students: "QS 2027: #431",
+    acceptance: "aut.ac.nz",
     strengths: [
-      "Highest graduate employment rate in NZ",
-      "Modern, fast-paced, work-focused environment",
-      "Future Work Research Institute (AI & automation)",
-      "Sports Performance research (internationally known)"
+      "Modern, work-focused learning environment",
+      "Central Auckland city campus",
+      "Creative technologies and digital media",
+      "Sport and health science programmes"
     ],
-    ugFees: "NZ$33,000 – NZ$48,000",
-    pgFees: "NZ$38,000 – NZ$55,000"
+    ugFees: "NZ$36,500 – NZ$48,900 (2026, incl. levy)",
+    pgFees: "NZ$39,000 – NZ$52,300 per 120 points (2026, incl. levy)"
   }
 ];
 
@@ -203,7 +203,7 @@ const NewZealandBest = () => {
   const [activeSection, setActiveSection] = useState('overview');
   const [currency, setCurrency] = useState('INR'); // 'NZD' | 'INR'
   const [faqOpen, setFaqOpen] = useState({});
-  const exchangeRate = 55.0; // Reference 1 NZD ≈ 55 INR
+  const exchangeRate = 56.0; // Reference 1 NZD ≈ 56 INR (Aug 2026)
 
   const formatCost = (valInNZD) => {
     if (currency === 'NZD') {
@@ -343,7 +343,7 @@ const NewZealandBest = () => {
                     "25 hours/week work rights (up from 20 hours)",
                     "Fast-track visa processing with local IQA exemptions",
                     "Up to 4 years post-study work visa for PhDs (3 years for UG/PG)",
-                    "All 8 public universities in the top 3% globally"
+                    "All 8 universities in the QS 2027 top 500"
                   ].map((item, idx) => (
                     <div key={idx} className="flex items-center gap-3 bg-white p-4 rounded-xl border border-slate-100">
                       <Check className="text-teal-600 shrink-0" size={16} strokeWidth={3} />
@@ -357,7 +357,7 @@ const NewZealandBest = () => {
             {/* 2. Top 8 Universities */}
             <section id="rankings" className="scroll-mt-24">
               <div className="text-left mb-6">
-                <h2 className="text-2xl font-black text-slate-900 mb-1">🏛️ Top 8 Universities in New Zealand (2026 Rankings & Fees)</h2>
+                <h2 className="text-2xl font-black text-slate-900 mb-1">🏛️ Top 8 Universities in New Zealand (QS 2027 Rankings & Fees)</h2>
                 <p className="text-slate-400 text-xs font-bold uppercase tracking-wider">QS global positions and fee conversions</p>
               </div>
 
@@ -381,7 +381,7 @@ const NewZealandBest = () => {
 
               <BarCompare
                 className="mb-8"
-                kicker="Estimated fees per year"
+                kicker="Typical Master's fee per year (lower end)"
                 title="Yearly cost at the top 8"
                 items={top8Unis.map((uni) => ({ label: uni.name, value: uni.feesTotalNZD, display: formatCost(uni.feesTotalNZD) }))}
               />
@@ -412,8 +412,8 @@ const NewZealandBest = () => {
 
                     <div className="grid grid-cols-2 md:grid-cols-3 gap-6 text-xs border-t md:border-t-0 border-slate-100 pt-4 md:pt-0 shrink-0">
                       <div>
-                        <span className="text-slate-400 font-bold block">Est. Annual Fee</span>
-                        <strong className="text-slate-800 font-extrabold mt-0.5 block">{formatCost(uni.feesTotalNZD)} / year</strong>
+                        <span className="text-slate-400 font-bold block">Typical Master's Fee</span>
+                        <strong className="text-slate-800 font-extrabold mt-0.5 block">from {formatCost(uni.feesTotalNZD)} / year</strong>
                       </div>
                       <div>
                         <span className="text-slate-400 font-bold block">Key Strength</span>
@@ -462,11 +462,11 @@ const NewZealandBest = () => {
                         <strong className="text-slate-800 font-extrabold mt-0.5 block">{uni.city}</strong>
                       </div>
                       <div>
-                        <span className="text-slate-400 block text-[10px] font-bold">International Students</span>
+                        <span className="text-slate-400 block text-[10px] font-bold">QS Ranking</span>
                         <strong className="text-slate-800 font-extrabold mt-0.5 block">{uni.students}</strong>
                       </div>
                       <div>
-                        <span className="text-slate-400 block text-[10px] font-bold">Acceptance Rate</span>
+                        <span className="text-slate-400 block text-[10px] font-bold">Official Website</span>
                         <strong className="text-slate-800 font-extrabold mt-0.5 block">{uni.acceptance}</strong>
                       </div>
                     </div>
@@ -510,13 +510,13 @@ const NewZealandBest = () => {
                   <div className="bg-slate-50 p-6 rounded-2xl border border-slate-100">
                     <h4 className="font-extrabold text-slate-800 uppercase tracking-wider mb-2">📚 Bachelor's Programs</h4>
                     <p className="text-slate-500 leading-relaxed">
-                      Minimum **60% – 70%** overall in Class 12. Accepted boards include CBSE, ICSE, and recognized State Boards.
+                      Class 12 from CBSE, ICSE or a recognised State Board. Minimum marks differ by university and programme — check each programme page.
                     </p>
                   </div>
                   <div className="bg-slate-50 p-6 rounded-2xl border border-slate-100">
                     <h4 className="font-extrabold text-slate-800 uppercase tracking-wider mb-2">📚 Master's Programs</h4>
                     <p className="text-slate-500 leading-relaxed">
-                      Relevant Bachelor's degree from a recognized Indian university with a minimum of **60% or a CGPA of 6.0**.
+                      Relevant Bachelor's degree from a recognised Indian university. Minimum grades differ by university and programme — check each programme page.
                     </p>
                   </div>
                 </div>
@@ -648,7 +648,7 @@ const NewZealandBest = () => {
                 {[
                   { q: "How does the India-NZ FTA benefit international students in 2026?", a: "The FTA increased weekly work hours to 25 hours, introduced IQA qualifications exemptions for most Indian boards, and granted up to 4 years post-study work visa options for PhD researchers." },
                   { q: "What is the IQA assessment exemption?", a: "Immigration NZ no longer requires Indian students from accredited boards to verify high school or college credentials with the NZQA, saving thousands in processing fees and reducing visa timelines." },
-                  { q: "Which NZ university ranks highest globally?", a: "The University of Auckland ranks #65 in the world, making it the highest-ranked and only Top-100 university in New Zealand." },
+                  { q: "Which NZ university ranks highest globally?", a: "The University of Auckland ranks #68 in the QS World University Rankings 2027, making it the highest-ranked and only top-100 university in New Zealand." },
                   { q: "Is the IELTS test mandatory for a visa?", a: "The visa itself doesn't mandate a specific test score; however, institutions require proof of English proficiency (IELTS 6.0/6.5 or PTE 50/58) for admissions." }
                 ].map((faq, idx) => {
                   const isOpen = !!faqOpen[idx];

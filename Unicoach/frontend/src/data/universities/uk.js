@@ -1,4 +1,5 @@
-// API Verified UK Universities Dataset (Deduplicated & Clean)
+// Static fallback list. Ranks: QS World University Rankings 2027 (only where QS lists the institution).
+// Fees only where checked against the university's own fee page; otherwise pages link to the university.
 export const UNIVERSITIES_UK = [
   {
     "_id": "uk-bcu",
@@ -11,16 +12,10 @@ export const UNIVERSITIES_UK = [
     "location": "Birmingham, England, UK",
     "logo": "https://www.google.com/s2/favicons?domain=www.bcu.ac.uk&sz=128",
     "website": "https://www.bcu.ac.uk",
-    "rank": "Rank 88 US News",
-    "rankingNum": 88,
-    "tuition": "GBP 18,570/yr",
-    "tuitionFeeUSD": 23500,
-    "acceptanceRate": 68,
+    "rank": "1001-1200",
+    "rankingNum": 1001,
+    "tuition": "₹25 Lakh/yr (official fee)",
     "type": "PUBLIC",
-    "minGpaPercent": 65,
-    "minIeltsScore": 6.0,
-    "minToeflScore": 80,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -41,7 +36,9 @@ export const UNIVERSITIES_UK = [
       "BEng (Hons) Mechanical Engineering",
       "MBA International Business",
       "MSc Digital Marketing"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027",
+    "tuitionVerified": true
   },
   {
     "_id": "uk-1",
@@ -54,16 +51,9 @@ export const UNIVERSITIES_UK = [
     "location": "Edinburgh, UK",
     "logo": "https://www.google.com/s2/favicons?domain=www.ed.ac.uk&sz=128",
     "website": "https://www.ed.ac.uk/",
-    "rank": "Rank 22 QS Rankings",
-    "rankingNum": 22,
-    "tuition": "42 Lakh INR",
-    "tuitionFeeUSD": 22000,
-    "acceptanceRate": 35,
+    "rank": "35",
+    "rankingNum": 35,
     "type": "PUBLIC",
-    "minGpaPercent": 70,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -116,7 +106,8 @@ export const UNIVERSITIES_UK = [
       "Public Health",
       "Sociology",
       "Animal and Veterinary Studies"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027"
   },
   {
     "_id": "uk-2",
@@ -129,16 +120,10 @@ export const UNIVERSITIES_UK = [
     "location": "Manchester, UK",
     "logo": "https://www.google.com/s2/favicons?domain=www.manchester.ac.uk&sz=128",
     "website": "https://www.manchester.ac.uk/",
-    "rank": "Rank 32 Times Higher Education",
-    "rankingNum": 32,
-    "tuition": "₹20 Lakh INR/yr",
-    "tuitionFeeUSD": 22000,
-    "acceptanceRate": 35,
+    "rank": "=40",
+    "rankingNum": 40,
+    "tuition": "₹53 Lakh/yr (official fee)",
     "type": "PUBLIC",
-    "minGpaPercent": 70,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -168,7 +153,9 @@ export const UNIVERSITIES_UK = [
       "Medicine and Medical Studies",
       "Law",
       "Psychology"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027",
+    "tuitionVerified": true
   },
   {
     "_id": "uk-3",
@@ -181,16 +168,10 @@ export const UNIVERSITIES_UK = [
     "location": "London, UK",
     "logo": "https://www.google.com/s2/favicons?domain=www.kcl.ac.uk&sz=128",
     "website": "https://www.kcl.ac.uk/",
-    "rank": "Rank 40 QS Rankings",
-    "rankingNum": 40,
-    "tuition": "43 Lakh INR",
-    "tuitionFeeUSD": 22000,
-    "acceptanceRate": 35,
+    "rank": "37",
+    "rankingNum": 37,
+    "tuition": "₹55 Lakh/yr (official fee)",
     "type": "PUBLIC",
-    "minGpaPercent": 70,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -246,7 +227,9 @@ export const UNIVERSITIES_UK = [
       "Artificial Intelligence / Machine Learning",
       "Health Sciences / Administration",
       "Information technology"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027",
+    "tuitionVerified": true
   },
   {
     "_id": "uk-4",
@@ -259,16 +242,7 @@ export const UNIVERSITIES_UK = [
     "location": "London, UK",
     "logo": "https://www.google.com/s2/favicons?domain=london.ac.uk&sz=128",
     "website": "https://london.ac.uk/",
-    "rank": "Rank 44 QS Rankings",
-    "rankingNum": 44,
-    "tuition": "18 Lakh INR",
-    "tuitionFeeUSD": 22000,
-    "acceptanceRate": 35,
     "type": "PUBLIC",
-    "minGpaPercent": 70,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -318,16 +292,10 @@ export const UNIVERSITIES_UK = [
     "location": "London, UK",
     "logo": "https://www.google.com/s2/favicons?domain=www.lse.ac.uk&sz=128",
     "website": "https://www.lse.ac.uk",
-    "rank": "Rank 45 QS Rankings",
-    "rankingNum": 45,
-    "tuition": "33 Lakh INR",
-    "tuitionFeeUSD": 22000,
-    "acceptanceRate": 35,
+    "rank": "62",
+    "rankingNum": 62,
+    "tuition": "₹54 Lakh/yr (official fee)",
     "type": "PUBLIC",
-    "minGpaPercent": 70,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -361,7 +329,9 @@ export const UNIVERSITIES_UK = [
       "Media & Communication",
       "Geography",
       "Human Geography"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027",
+    "tuitionVerified": true
   },
   {
     "_id": "uk-6",
@@ -374,16 +344,10 @@ export const UNIVERSITIES_UK = [
     "location": "Bristol, UK",
     "logo": "https://www.google.com/s2/favicons?domain=www.bristol.ac.uk&sz=128",
     "website": "https://www.bristol.ac.uk",
-    "rank": "Rank 55 QS Rankings",
-    "rankingNum": 55,
-    "tuition": "33 Lakh INR",
-    "tuitionFeeUSD": 22000,
-    "acceptanceRate": 60,
+    "rank": "57",
+    "rankingNum": 57,
+    "tuition": "₹48 Lakh/yr (official fee)",
     "type": "PUBLIC",
-    "minGpaPercent": 60,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -426,7 +390,9 @@ export const UNIVERSITIES_UK = [
       "Music",
       "Theatre",
       "Architecture"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027",
+    "tuitionVerified": true
   },
   {
     "_id": "uk-7",
@@ -439,16 +405,10 @@ export const UNIVERSITIES_UK = [
     "location": "Coventry, UK",
     "logo": "https://www.google.com/s2/favicons?domain=warwick.ac.uk&sz=128",
     "website": "https://warwick.ac.uk",
-    "rank": "Rank 67 QS Rankings",
-    "rankingNum": 67,
-    "tuition": "31 Lakh INR",
-    "tuitionFeeUSD": 22000,
-    "acceptanceRate": 60,
+    "rank": "=68",
+    "rankingNum": 68,
+    "tuition": "₹50 Lakh/yr (official fee)",
     "type": "PUBLIC",
-    "minGpaPercent": 60,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -486,7 +446,9 @@ export const UNIVERSITIES_UK = [
       "Theatre",
       "Statistics",
       "Data Science"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027",
+    "tuitionVerified": true
   },
   {
     "_id": "uk-8",
@@ -499,16 +461,10 @@ export const UNIVERSITIES_UK = [
     "location": "Leeds, UK",
     "logo": "https://www.google.com/s2/favicons?domain=www.leeds.ac.uk&sz=128",
     "website": "https://www.leeds.ac.uk",
-    "rank": "Rank 75 QS Rankings",
-    "rankingNum": 75,
-    "tuition": "29 Lakh INR",
-    "tuitionFeeUSD": 22000,
-    "acceptanceRate": 60,
+    "rank": "=77",
+    "rankingNum": 77,
+    "tuition": "₹44 Lakh/yr (official fee)",
     "type": "PUBLIC",
-    "minGpaPercent": 60,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -556,7 +512,9 @@ export const UNIVERSITIES_UK = [
       "Banking and Finance",
       "Accounting",
       "Sales And Marketing"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027",
+    "tuitionVerified": true
   },
   {
     "_id": "uk-9",
@@ -569,16 +527,10 @@ export const UNIVERSITIES_UK = [
     "location": "Glasgow, UK",
     "logo": "https://www.google.com/s2/favicons?domain=www.gla.ac.uk&sz=128",
     "website": "https://www.gla.ac.uk",
-    "rank": "Rank 76 QS Rankings",
-    "rankingNum": 76,
-    "tuition": "32 Lakh INR",
-    "tuitionFeeUSD": 22000,
-    "acceptanceRate": 60,
+    "rank": "80",
+    "rankingNum": 80,
+    "tuition": "₹45 Lakh/yr (official fee)",
     "type": "PUBLIC",
-    "minGpaPercent": 60,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -649,7 +601,9 @@ export const UNIVERSITIES_UK = [
       "Media & Communication",
       "Teaching / Education studies",
       "Social Work"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027",
+    "tuitionVerified": true
   },
   {
     "_id": "uk-10",
@@ -662,16 +616,10 @@ export const UNIVERSITIES_UK = [
     "location": "Durham, UK",
     "logo": "https://www.google.com/s2/favicons?domain=www.durham.ac.uk&sz=128",
     "website": "https://www.durham.ac.uk",
-    "rank": "Rank 78 QS Rankings",
-    "rankingNum": 78,
-    "tuition": "28 Lakh INR",
-    "tuitionFeeUSD": 22000,
-    "acceptanceRate": 60,
+    "rank": "85",
+    "rankingNum": 85,
+    "tuition": "₹45 Lakh/yr (official fee)",
     "type": "PUBLIC",
-    "minGpaPercent": 60,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -721,7 +669,9 @@ export const UNIVERSITIES_UK = [
       "Biochemistry",
       "Music",
       "Theatre"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027",
+    "tuitionVerified": true
   },
   {
     "_id": "uk-11",
@@ -734,16 +684,10 @@ export const UNIVERSITIES_UK = [
     "location": "Southampton, UK",
     "logo": "https://www.google.com/s2/favicons?domain=www.southampton.ac.uk&sz=128",
     "website": "https://www.southampton.ac.uk",
-    "rank": "Rank 81 QS Rankings",
-    "rankingNum": 81,
-    "tuition": "26 Lakh INR",
-    "tuitionFeeUSD": 22000,
-    "acceptanceRate": 60,
+    "rank": "=111",
+    "rankingNum": 111,
+    "tuition": "₹47 Lakh/yr (official fee)",
     "type": "PUBLIC",
-    "minGpaPercent": 60,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -785,7 +729,9 @@ export const UNIVERSITIES_UK = [
       "Architecture",
       "Pharmacology / Pharmacy",
       "Medicine and Medical Studies"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027",
+    "tuitionVerified": true
   },
   {
     "_id": "uk-12",
@@ -798,16 +744,10 @@ export const UNIVERSITIES_UK = [
     "location": "Birmingham, UK",
     "logo": "https://www.google.com/s2/favicons?domain=www.birmingham.ac.uk&sz=128",
     "website": "https://www.birmingham.ac.uk",
-    "rank": "Rank 84 QS Rankings",
-    "rankingNum": 84,
-    "tuition": "9 Lakh INR",
-    "tuitionFeeUSD": 22000,
-    "acceptanceRate": 60,
+    "rank": "=68",
+    "rankingNum": 68,
+    "tuition": "₹46 Lakh/yr (official fee)",
     "type": "PUBLIC",
-    "minGpaPercent": 60,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -847,7 +787,9 @@ export const UNIVERSITIES_UK = [
       "Archaeology",
       "Geography",
       "Philosophy and Religious Studies"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027",
+    "tuitionVerified": true
   },
   {
     "_id": "uk-13",
@@ -860,16 +802,10 @@ export const UNIVERSITIES_UK = [
     "location": "St Andrews, UK",
     "logo": "https://www.google.com/s2/favicons?domain=www.st-andrews.ac.uk&sz=128",
     "website": "https://www.st-andrews.ac.uk",
-    "rank": "Rank 95 QS Rankings",
-    "rankingNum": 95,
-    "tuition": "34 Lakh INR",
-    "tuitionFeeUSD": 22000,
-    "acceptanceRate": 60,
+    "rank": "=115",
+    "rankingNum": 115,
+    "tuition": "₹42 Lakh/yr (official fee)",
     "type": "PUBLIC",
-    "minGpaPercent": 60,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -920,7 +856,9 @@ export const UNIVERSITIES_UK = [
       "Economics",
       "Computer Science",
       "Management"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027",
+    "tuitionVerified": true
   },
   {
     "_id": "uk-14",
@@ -933,16 +871,10 @@ export const UNIVERSITIES_UK = [
     "location": "Nottingham, UK",
     "logo": "https://www.google.com/s2/favicons?domain=www.nottingham.ac.uk&sz=128",
     "website": "https://www.nottingham.ac.uk",
-    "rank": "Rank 100 QS Rankings",
-    "rankingNum": 100,
-    "tuition": "27 Lakh INR",
-    "tuitionFeeUSD": 22000,
-    "acceptanceRate": 60,
+    "rank": "=98",
+    "rankingNum": 98,
+    "tuition": "₹45 Lakh/yr (official fee)",
     "type": "PUBLIC",
-    "minGpaPercent": 60,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -988,7 +920,9 @@ export const UNIVERSITIES_UK = [
       "Environmental science / management",
       "Pharmacology / Pharmacy",
       "Medicine and Medical Studies"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027",
+    "tuitionVerified": true
   },
   {
     "_id": "uk-15",
@@ -1001,16 +935,10 @@ export const UNIVERSITIES_UK = [
     "location": "Sheffield, UK",
     "logo": "https://www.google.com/s2/favicons?domain=www.sheffield.ac.uk&sz=128",
     "website": "https://www.sheffield.ac.uk",
-    "rank": "Rank 104 QS Rankings",
-    "rankingNum": 104,
-    "tuition": "19 Lakh INR",
-    "tuitionFeeUSD": 22000,
-    "acceptanceRate": 60,
+    "rank": "=82",
+    "rankingNum": 82,
+    "tuition": "₹44 Lakh/yr (official fee)",
     "type": "PUBLIC",
-    "minGpaPercent": 60,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -1058,7 +986,9 @@ export const UNIVERSITIES_UK = [
       "Journalism",
       "Music",
       "Archaeology"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027",
+    "tuitionVerified": true
   },
   {
     "_id": "uk-16",
@@ -1071,16 +1001,10 @@ export const UNIVERSITIES_UK = [
     "location": "Newcastle upon Tyne, UK",
     "logo": "https://www.google.com/s2/favicons?domain=www.ncl.ac.uk&sz=128",
     "website": "https://www.ncl.ac.uk/",
-    "rank": "Rank 110 QS Rankings",
-    "rankingNum": 110,
-    "tuition": "3 Lakh INR",
-    "tuitionFeeUSD": 22000,
-    "acceptanceRate": 60,
+    "rank": "149",
+    "rankingNum": 149,
+    "tuition": "₹42 Lakh/yr (official fee)",
     "type": "PUBLIC",
-    "minGpaPercent": 60,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -1119,7 +1043,9 @@ export const UNIVERSITIES_UK = [
       "Medicine and Medical Studies",
       "Dental Studies",
       "Pharmacology / Pharmacy"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027",
+    "tuitionVerified": true
   },
   {
     "_id": "uk-17",
@@ -1132,16 +1058,9 @@ export const UNIVERSITIES_UK = [
     "location": "Lancaster, UK",
     "logo": "https://www.google.com/s2/favicons?domain=www.lancaster.ac.uk&sz=128",
     "website": "https://www.lancaster.ac.uk",
-    "rank": "Rank 122 QS Rankings",
-    "rankingNum": 122,
-    "tuition": "24 Lakh INR",
-    "tuitionFeeUSD": 22000,
-    "acceptanceRate": 60,
+    "rank": "164",
+    "rankingNum": 164,
     "type": "PUBLIC",
-    "minGpaPercent": 60,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -1185,7 +1104,8 @@ export const UNIVERSITIES_UK = [
       "Management",
       "Artificial Intelligence / Machine Learning",
       "Data Science"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027"
   },
   {
     "_id": "uk-18",
@@ -1198,16 +1118,10 @@ export const UNIVERSITIES_UK = [
     "location": "London, UK",
     "logo": "https://www.google.com/s2/favicons?domain=www.qmul.ac.uk&sz=128",
     "website": "https://www.qmul.ac.uk",
-    "rank": "Rank 145 QS Rankings",
-    "rankingNum": 145,
-    "tuition": "30 Lakh INR",
-    "tuitionFeeUSD": 22000,
-    "acceptanceRate": 60,
+    "rank": "103",
+    "rankingNum": 103,
+    "tuition": "₹47 Lakh/yr (official fee)",
     "type": "PUBLIC",
-    "minGpaPercent": 60,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -1246,7 +1160,9 @@ export const UNIVERSITIES_UK = [
       "Environmental science / management",
       "Arts / Fine Art",
       "Music"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027",
+    "tuitionVerified": true
   },
   {
     "_id": "uk-19",
@@ -1259,16 +1175,9 @@ export const UNIVERSITIES_UK = [
     "location": "Bath, UK",
     "logo": "https://www.google.com/s2/favicons?domain=www.bath.ac.uk&sz=128",
     "website": "https://www.bath.ac.uk",
-    "rank": "Rank 148 QS Rankings",
-    "rankingNum": 148,
-    "tuition": "28 Lakh INR",
-    "tuitionFeeUSD": 22000,
-    "acceptanceRate": 60,
+    "rank": "125",
+    "rankingNum": 125,
     "type": "PUBLIC",
-    "minGpaPercent": 60,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -1300,7 +1209,8 @@ export const UNIVERSITIES_UK = [
       "Sociology",
       "Environmental science / management",
       "Sport / Exercise Science"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027"
   },
   {
     "_id": "uk-20",
@@ -1313,16 +1223,9 @@ export const UNIVERSITIES_UK = [
     "location": "Exeter, UK",
     "logo": "https://www.google.com/s2/favicons?domain=www.exeter.ac.uk&sz=128",
     "website": "https://www.exeter.ac.uk",
-    "rank": "Rank 153 QS Rankings",
-    "rankingNum": 153,
-    "tuition": "14 Lakh INR",
-    "tuitionFeeUSD": 22000,
-    "acceptanceRate": 60,
+    "rank": "136",
+    "rankingNum": 136,
     "type": "PUBLIC",
-    "minGpaPercent": 60,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -1382,7 +1285,8 @@ export const UNIVERSITIES_UK = [
       "Computer Science",
       "Economics",
       "Management"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027"
   },
   {
     "_id": "uk-21",
@@ -1395,16 +1299,9 @@ export const UNIVERSITIES_UK = [
     "location": "Cardiff, UK",
     "logo": "https://www.google.com/s2/favicons?domain=www.cardiff.ac.uk&sz=128",
     "website": "https://www.cardiff.ac.uk",
-    "rank": "Rank 154 QS Rankings",
-    "rankingNum": 154,
-    "tuition": "30 Lakh INR",
-    "tuitionFeeUSD": 22000,
-    "acceptanceRate": 60,
+    "rank": "=179",
+    "rankingNum": 179,
     "type": "PUBLIC",
-    "minGpaPercent": 60,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -1447,7 +1344,8 @@ export const UNIVERSITIES_UK = [
       "Economics",
       "Accounting",
       "Banking and Finance"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027"
   },
   {
     "_id": "uk-22",
@@ -1460,16 +1358,9 @@ export const UNIVERSITIES_UK = [
     "location": "York, UK",
     "logo": "https://www.google.com/s2/favicons?domain=www.york.ac.uk&sz=128",
     "website": "https://www.york.ac.uk",
-    "rank": "Rank 162 QS Rankings",
-    "rankingNum": 162,
-    "tuition": "31 Lakh INR",
-    "tuitionFeeUSD": 22000,
-    "acceptanceRate": 60,
+    "rank": "=158",
+    "rankingNum": 158,
     "type": "PUBLIC",
-    "minGpaPercent": 60,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -1505,7 +1396,8 @@ export const UNIVERSITIES_UK = [
       "Music",
       "Teaching / Education studies",
       "Media & Communication"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027"
   },
   {
     "_id": "uk-23",
@@ -1518,16 +1410,10 @@ export const UNIVERSITIES_UK = [
     "location": "Liverpool, UK",
     "logo": "https://www.google.com/s2/favicons?domain=www.liverpool.ac.uk&sz=128",
     "website": "https://www.liverpool.ac.uk",
-    "rank": "Rank 176 QS Rankings",
-    "rankingNum": 176,
-    "tuition": "21 Lakh INR",
-    "tuitionFeeUSD": 22000,
-    "acceptanceRate": 60,
+    "rank": "139",
+    "rankingNum": 139,
+    "tuition": "₹44 Lakh/yr (official fee)",
     "type": "PUBLIC",
-    "minGpaPercent": 60,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -1594,7 +1480,9 @@ export const UNIVERSITIES_UK = [
       "Sport / Exercise Science",
       "Animal and Veterinary Studies",
       "Zoology"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027",
+    "tuitionVerified": true
   },
   {
     "_id": "uk-24",
@@ -1607,16 +1495,9 @@ export const UNIVERSITIES_UK = [
     "location": "Loughborough, UK",
     "logo": "https://www.google.com/s2/favicons?domain=www.lboro.ac.uk&sz=128",
     "website": "https://www.lboro.ac.uk",
-    "rank": "Rank 212 QS Rankings",
-    "rankingNum": 212,
-    "tuition": "32 Lakh INR",
-    "tuitionFeeUSD": 22000,
-    "acceptanceRate": 60,
+    "rank": "203",
+    "rankingNum": 203,
     "type": "PUBLIC",
-    "minGpaPercent": 60,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -1655,7 +1536,8 @@ export const UNIVERSITIES_UK = [
       "Project Management",
       "Data Science",
       "Artificial Intelligence / Machine Learning"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027"
   },
   {
     "_id": "uk-25",
@@ -1668,16 +1550,9 @@ export const UNIVERSITIES_UK = [
     "location": "Aberdeen, UK",
     "logo": "https://www.google.com/s2/favicons?domain=www.abdn.ac.uk&sz=128",
     "website": "https://www.abdn.ac.uk/",
-    "rank": "Rank 220 QS Rankings",
-    "rankingNum": 220,
-    "tuition": "18 Lakh INR",
-    "tuitionFeeUSD": 22000,
-    "acceptanceRate": 60,
+    "rank": "288",
+    "rankingNum": 288,
     "type": "PUBLIC",
-    "minGpaPercent": 60,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -1735,7 +1610,8 @@ export const UNIVERSITIES_UK = [
       "Teaching / Education studies",
       "Theatre",
       "Zoology"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027"
   },
   {
     "_id": "uk-26",
@@ -1748,16 +1624,9 @@ export const UNIVERSITIES_UK = [
     "location": "Reading, UK",
     "logo": "https://www.google.com/s2/favicons?domain=www.reading.ac.uk&sz=128",
     "website": "https://www.reading.ac.uk",
-    "rank": "Rank 229 QS Rankings",
-    "rankingNum": 229,
-    "tuition": "27 Lakh INR",
-    "tuitionFeeUSD": 22000,
-    "acceptanceRate": 60,
+    "rank": "=196",
+    "rankingNum": 196,
     "type": "PUBLIC",
-    "minGpaPercent": 60,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -1798,7 +1667,8 @@ export const UNIVERSITIES_UK = [
       "Psychology",
       "Physics",
       "Philosophy and Religious Studies"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027"
   },
   {
     "_id": "uk-27",
@@ -1811,16 +1681,9 @@ export const UNIVERSITIES_UK = [
     "location": "Belfast, UK",
     "logo": "https://www.google.com/s2/favicons?domain=www.qub.ac.uk&sz=128",
     "website": "https://www.qub.ac.uk/",
-    "rank": "Rank 233 QS Rankings",
-    "rankingNum": 233,
-    "tuition": "25 Lakh INR",
-    "tuitionFeeUSD": 22000,
-    "acceptanceRate": 60,
+    "rank": "=174",
+    "rankingNum": 174,
     "type": "PUBLIC",
-    "minGpaPercent": 60,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -1864,7 +1727,8 @@ export const UNIVERSITIES_UK = [
       "Food / Agricultural Science",
       "Forensics",
       "Biochemistry"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027"
   },
   {
     "_id": "uk-28",
@@ -1877,16 +1741,9 @@ export const UNIVERSITIES_UK = [
     "location": "Brighton, UK",
     "logo": "https://www.google.com/s2/favicons?domain=www.sussex.ac.uk&sz=128",
     "website": "https://www.sussex.ac.uk",
-    "rank": "Rank 240 QS Rankings",
-    "rankingNum": 240,
-    "tuition": "25 Lakh INR",
-    "tuitionFeeUSD": 22000,
-    "acceptanceRate": 60,
+    "rank": "=273",
+    "rankingNum": 273,
     "type": "PUBLIC",
-    "minGpaPercent": 60,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -1926,7 +1783,8 @@ export const UNIVERSITIES_UK = [
       "Teaching / Education studies",
       "Mechanical Engineering",
       "Information technology"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027"
   },
   {
     "_id": "uk-29",
@@ -1939,16 +1797,7 @@ export const UNIVERSITIES_UK = [
     "location": "Cranfield, UK",
     "logo": "https://www.google.com/s2/favicons?domain=www.cranfield.ac.uk&sz=128",
     "website": "https://www.cranfield.ac.uk",
-    "rank": "Rank 267 QS Rankings",
-    "rankingNum": 267,
-    "tuition": "55 Lakh INR",
-    "tuitionFeeUSD": 22000,
-    "acceptanceRate": 60,
     "type": "PUBLIC",
-    "minGpaPercent": 60,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -1993,16 +1842,9 @@ export const UNIVERSITIES_UK = [
     "location": "Leicester, UK",
     "logo": "https://www.google.com/s2/favicons?domain=le.ac.uk&sz=128",
     "website": "https://le.ac.uk",
-    "rank": "Rank 272 QS Rankings",
-    "rankingNum": 272,
-    "tuition": "13 Lakh INR",
-    "tuitionFeeUSD": 22000,
-    "acceptanceRate": 60,
+    "rank": "=314",
+    "rankingNum": 314,
     "type": "PUBLIC",
-    "minGpaPercent": 60,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -2044,7 +1886,8 @@ export const UNIVERSITIES_UK = [
       "Political Science",
       "Psychology",
       "Sociology"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027"
   },
   {
     "_id": "uk-31",
@@ -2057,16 +1900,9 @@ export const UNIVERSITIES_UK = [
     "location": "Glasgow, UK",
     "logo": "https://www.google.com/s2/favicons?domain=www.strath.ac.uk&sz=128",
     "website": "https://www.strath.ac.uk",
-    "rank": "Rank 276 QS Rankings",
-    "rankingNum": 276,
-    "tuition": "23 Lakh INR",
-    "tuitionFeeUSD": 22000,
-    "acceptanceRate": 60,
+    "rank": "=230",
+    "rankingNum": 230,
     "type": "PUBLIC",
-    "minGpaPercent": 60,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -2114,7 +1950,8 @@ export const UNIVERSITIES_UK = [
       "Language and Literature",
       "Arts / Fine Art",
       "Graphic and Design Studies"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027"
   },
   {
     "_id": "uk-32",
@@ -2127,16 +1964,8 @@ export const UNIVERSITIES_UK = [
     "location": "London, UK",
     "logo": "https://www.google.com/s2/favicons?domain=www.lshtm.ac.uk&sz=128",
     "website": "https://www.lshtm.ac.uk",
-    "rank": "Rank 279 QS Rankings",
-    "rankingNum": 279,
-    "tuition": "26 Lakh INR",
-    "tuitionFeeUSD": 22000,
-    "acceptanceRate": 60,
+    "tuition": "₹40 Lakh/yr (official fee)",
     "type": "PUBLIC",
-    "minGpaPercent": 60,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -2159,7 +1988,8 @@ export const UNIVERSITIES_UK = [
       "Economics",
       "Sociology",
       "Anthropology"
-    ]
+    ],
+    "tuitionVerified": true
   },
   {
     "_id": "uk-33",
@@ -2172,16 +2002,9 @@ export const UNIVERSITIES_UK = [
     "location": "Norwich, UK",
     "logo": "https://www.google.com/s2/favicons?domain=www.uea.ac.uk&sz=128",
     "website": "https://www.uea.ac.uk",
-    "rank": "Rank 295 QS Rankings",
-    "rankingNum": 295,
-    "tuition": "27 Lakh INR",
-    "tuitionFeeUSD": 22000,
-    "acceptanceRate": 60,
+    "rank": "=381",
+    "rankingNum": 381,
     "type": "PUBLIC",
-    "minGpaPercent": 60,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -2229,7 +2052,8 @@ export const UNIVERSITIES_UK = [
       "Law",
       "Pharmacology / Pharmacy",
       "Philosophy and Religious Studies"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027"
   },
   {
     "_id": "uk-34",
@@ -2242,16 +2066,9 @@ export const UNIVERSITIES_UK = [
     "location": "Egham, UK",
     "logo": "https://www.google.com/s2/favicons?domain=www.royalholloway.ac.uk&sz=128",
     "website": "https://www.royalholloway.ac.uk/",
-    "rank": "Rank 308 QS Rankings",
-    "rankingNum": 308,
-    "tuition": "24 Lakh INR",
-    "tuitionFeeUSD": 22000,
-    "acceptanceRate": 60,
+    "rank": "=485",
+    "rankingNum": 485,
     "type": "PUBLIC",
-    "minGpaPercent": 60,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -2286,7 +2103,8 @@ export const UNIVERSITIES_UK = [
       "Cyber Security",
       "Artificial Intelligence / Machine Learning",
       "Data Science"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027"
   },
   {
     "_id": "uk-35",
@@ -2299,16 +2117,9 @@ export const UNIVERSITIES_UK = [
     "location": "London, UK",
     "logo": "https://www.google.com/s2/favicons?domain=www.brunel.ac.uk&sz=128",
     "website": "https://www.brunel.ac.uk/",
-    "rank": "Rank 343 QS Rankings",
-    "rankingNum": 343,
-    "tuition": "24 Lakh INR",
-    "tuitionFeeUSD": 22000,
-    "acceptanceRate": 60,
+    "rank": "353",
+    "rankingNum": 353,
     "type": "PUBLIC",
-    "minGpaPercent": 60,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -2340,7 +2151,8 @@ export const UNIVERSITIES_UK = [
       "Environmental science / management",
       "Mathematics",
       "Physics"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027"
   },
   {
     "_id": "uk-36",
@@ -2353,16 +2165,9 @@ export const UNIVERSITIES_UK = [
     "location": "Guildford, UK",
     "logo": "https://www.google.com/s2/favicons?domain=www.surrey.ac.uk&sz=128",
     "website": "https://www.surrey.ac.uk",
-    "rank": "Rank 347 QS Rankings",
-    "rankingNum": 347,
-    "tuition": "27 Lakh INR",
-    "tuitionFeeUSD": 22000,
-    "acceptanceRate": 60,
+    "rank": "=246",
+    "rankingNum": 246,
     "type": "PUBLIC",
-    "minGpaPercent": 60,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -2398,7 +2203,8 @@ export const UNIVERSITIES_UK = [
       "Environmental science / management",
       "Music",
       "Theatre"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027"
   },
   {
     "_id": "uk-37",
@@ -2411,16 +2217,9 @@ export const UNIVERSITIES_UK = [
     "location": "Canterbury, UK",
     "logo": "https://www.google.com/s2/favicons?domain=www.kent.ac.uk&sz=128",
     "website": "https://www.kent.ac.uk",
-    "rank": "Rank 375 QS Rankings",
-    "rankingNum": 375,
-    "tuition": "25 Lakh INR",
-    "tuitionFeeUSD": 22000,
-    "acceptanceRate": 60,
+    "rank": "415",
+    "rankingNum": 415,
     "type": "PUBLIC",
-    "minGpaPercent": 60,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -2463,7 +2262,8 @@ export const UNIVERSITIES_UK = [
       "Information technology",
       "Cyber Security",
       "Electronics"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027"
   },
   {
     "_id": "uk-38",
@@ -2476,16 +2276,9 @@ export const UNIVERSITIES_UK = [
     "location": "London, UK",
     "logo": "https://www.google.com/s2/favicons?domain=www.soas.ac.uk&sz=128",
     "website": "https://www.soas.ac.uk",
-    "rank": "Rank 379 QS Rankings",
-    "rankingNum": 379,
-    "tuition": "27 Lakh INR",
-    "tuitionFeeUSD": 22000,
-    "acceptanceRate": 60,
+    "rank": "=458",
+    "rankingNum": 458,
     "type": "PUBLIC",
-    "minGpaPercent": 60,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -2528,7 +2321,8 @@ export const UNIVERSITIES_UK = [
       "Anthropology",
       "Economics",
       "Management"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027"
   },
   {
     "_id": "uk-39",
@@ -2541,16 +2335,9 @@ export const UNIVERSITIES_UK = [
     "location": "Swansea, UK",
     "logo": "https://www.google.com/s2/favicons?domain=www.swansea.ac.uk&sz=128",
     "website": "https://www.swansea.ac.uk",
-    "rank": "Rank 425 QS Rankings",
-    "rankingNum": 425,
-    "tuition": "24 Lakh INR",
-    "tuitionFeeUSD": 22000,
-    "acceptanceRate": 60,
+    "rank": "=322",
+    "rankingNum": 322,
     "type": "PUBLIC",
-    "minGpaPercent": 60,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -2602,7 +2389,8 @@ export const UNIVERSITIES_UK = [
       "Medicine and Medical Studies",
       "Health Sciences / Administration",
       "Sport / Exercise Science"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027"
   },
   {
     "_id": "uk-40",
@@ -2615,16 +2403,9 @@ export const UNIVERSITIES_UK = [
     "location": "Stirling, UK",
     "logo": "https://www.google.com/s2/favicons?domain=www.stir.ac.uk&sz=128",
     "website": "https://www.stir.ac.uk",
-    "rank": "Rank 431 QS Rankings",
-    "rankingNum": 431,
-    "tuition": "22 Lakh INR",
-    "tuitionFeeUSD": 22000,
-    "acceptanceRate": 60,
+    "rank": "=560",
+    "rankingNum": 560,
     "type": "PUBLIC",
-    "minGpaPercent": 60,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -2672,7 +2453,8 @@ export const UNIVERSITIES_UK = [
       "Health Sciences / Administration",
       "Information technology",
       "Management"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027"
   },
   {
     "_id": "uk-41",
@@ -2685,16 +2467,10 @@ export const UNIVERSITIES_UK = [
     "location": "Dundee, UK",
     "logo": "https://www.google.com/s2/favicons?domain=www.dundee.ac.uk&sz=128",
     "website": "https://www.dundee.ac.uk",
-    "rank": "Rank 441 QS Rankings",
-    "rankingNum": 441,
-    "tuition": "28 Lakh INR",
-    "tuitionFeeUSD": 22000,
-    "acceptanceRate": 60,
+    "rank": "=447",
+    "rankingNum": 447,
+    "tuition": "₹30 Lakh/yr (official fee)",
     "type": "PUBLIC",
-    "minGpaPercent": 60,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -2728,7 +2504,9 @@ export const UNIVERSITIES_UK = [
       "Physics",
       "Physiotherapy",
       "Psychology"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027",
+    "tuitionVerified": true
   },
   {
     "_id": "uk-42",
@@ -2741,16 +2519,9 @@ export const UNIVERSITIES_UK = [
     "location": "Colchester, UK",
     "logo": "https://www.google.com/s2/favicons?domain=www.essex.ac.uk&sz=128",
     "website": "https://www.essex.ac.uk/",
-    "rank": "Rank 459 QS Rankings",
-    "rankingNum": 459,
-    "tuition": "24 Lakh INR",
-    "tuitionFeeUSD": 22000,
-    "acceptanceRate": 60,
+    "rank": "=438",
+    "rankingNum": 438,
     "type": "PUBLIC",
-    "minGpaPercent": 60,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -2804,7 +2575,8 @@ export const UNIVERSITIES_UK = [
       "International / Global Business",
       "Data Science",
       "Business Analytics"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027"
   },
   {
     "_id": "uk-43",
@@ -2817,16 +2589,9 @@ export const UNIVERSITIES_UK = [
     "location": "Birmingham, UK",
     "logo": "https://www.google.com/s2/favicons?domain=www.aston.ac.uk&sz=128",
     "website": "https://www.aston.ac.uk",
-    "rank": "Rank 461 QS Rankings",
-    "rankingNum": 461,
-    "tuition": "26 Lakh INR",
-    "tuitionFeeUSD": 22000,
-    "acceptanceRate": 60,
+    "rank": "=416",
+    "rankingNum": 416,
     "type": "PUBLIC",
-    "minGpaPercent": 60,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -2866,7 +2631,8 @@ export const UNIVERSITIES_UK = [
       "Cyber Security",
       "Business Analytics",
       "Data Science"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027"
   },
   {
     "_id": "uk-44",
@@ -2879,16 +2645,10 @@ export const UNIVERSITIES_UK = [
     "location": "London, UK",
     "logo": "https://www.google.com/s2/favicons?domain=www.gold.ac.uk&sz=128",
     "website": "https://www.gold.ac.uk",
-    "rank": "Rank 461 QS Rankings",
-    "rankingNum": 461,
-    "tuition": "23 Lakh INR",
-    "tuitionFeeUSD": 22000,
-    "acceptanceRate": 60,
+    "rank": "701-710",
+    "rankingNum": 701,
+    "tuition": "₹29 Lakh/yr (official fee)",
     "type": "PUBLIC",
-    "minGpaPercent": 60,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -2918,7 +2678,9 @@ export const UNIVERSITIES_UK = [
       "Photography",
       "Animation",
       "Psychology"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027",
+    "tuitionVerified": true
   },
   {
     "_id": "uk-45",
@@ -2931,16 +2693,9 @@ export const UNIVERSITIES_UK = [
     "location": "Bangor, UK",
     "logo": "https://www.google.com/s2/favicons?domain=www.bangor.ac.uk&sz=128",
     "website": "https://www.bangor.ac.uk",
-    "rank": "Rank 481 QS Rankings",
-    "rankingNum": 481,
-    "tuition": "22 Lakh INR",
-    "tuitionFeeUSD": 22000,
-    "acceptanceRate": 60,
+    "rank": "=567",
+    "rankingNum": 567,
     "type": "PUBLIC",
-    "minGpaPercent": 60,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -2974,7 +2729,8 @@ export const UNIVERSITIES_UK = [
       "Sociology",
       "Electrical Engineering",
       "Geology"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027"
   },
   {
     "_id": "uk-46",
@@ -2987,16 +2743,10 @@ export const UNIVERSITIES_UK = [
     "location": "Coventry, UK",
     "logo": "https://www.google.com/s2/favicons?domain=www.coventry.ac.uk&sz=128",
     "website": "https://www.coventry.ac.uk/",
-    "rank": "Rank 571 QS Rankings",
-    "rankingNum": 571,
-    "tuition": "18 Lakh INR",
-    "tuitionFeeUSD": 22000,
-    "acceptanceRate": 60,
+    "rank": "=581",
+    "rankingNum": 581,
+    "tuition": "₹25 Lakh/yr (official fee)",
     "type": "PUBLIC",
-    "minGpaPercent": 60,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -3036,7 +2786,9 @@ export const UNIVERSITIES_UK = [
       "Physiotherapy",
       "Sport / Exercise Science",
       "Biological Sciences"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027",
+    "tuitionVerified": true
   },
   {
     "_id": "uk-47",
@@ -3049,16 +2801,9 @@ export const UNIVERSITIES_UK = [
     "location": "Belfast, UK",
     "logo": "https://www.google.com/s2/favicons?domain=www.ulster.ac.uk&sz=128",
     "website": "https://www.ulster.ac.uk",
-    "rank": "Rank 601 QS Rankings",
-    "rankingNum": 601,
-    "tuition": "20 Lakh INR",
-    "tuitionFeeUSD": 22000,
-    "acceptanceRate": 60,
+    "rank": "=595",
+    "rankingNum": 595,
     "type": "PUBLIC",
-    "minGpaPercent": 60,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -3097,7 +2842,8 @@ export const UNIVERSITIES_UK = [
       "Environmental science / management",
       "Sales And Marketing",
       "Political Science"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027"
   },
   {
     "_id": "uk-48",
@@ -3110,16 +2856,9 @@ export const UNIVERSITIES_UK = [
     "location": "Aberystwyth, UK",
     "logo": "https://www.google.com/s2/favicons?domain=www.aber.ac.uk&sz=128",
     "website": "https://www.aber.ac.uk",
-    "rank": "Rank 601 QS Rankings",
-    "rankingNum": 601,
-    "tuition": "19 Lakh INR",
-    "tuitionFeeUSD": 22000,
-    "acceptanceRate": 60,
+    "rank": "801-850",
+    "rankingNum": 801,
     "type": "PUBLIC",
-    "minGpaPercent": 60,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -3153,7 +2892,8 @@ export const UNIVERSITIES_UK = [
       "Environmental science / management",
       "Business Administration",
       "Accounting"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027"
   },
   {
     "_id": "uk-49",
@@ -3166,16 +2906,9 @@ export const UNIVERSITIES_UK = [
     "location": "Portsmouth, UK",
     "logo": "https://www.google.com/s2/favicons?domain=www.port.ac.uk&sz=128",
     "website": "https://www.port.ac.uk",
-    "rank": "Rank 651 QS Rankings",
-    "rankingNum": 651,
-    "tuition": "21 Lakh INR",
-    "tuitionFeeUSD": 22000,
-    "acceptanceRate": 60,
+    "rank": "=662",
+    "rankingNum": 662,
     "type": "PUBLIC",
-    "minGpaPercent": 60,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -3215,7 +2948,8 @@ export const UNIVERSITIES_UK = [
       "Geography",
       "Sport / Exercise Science",
       "Journalism"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027"
   },
   {
     "_id": "uk-50",
@@ -3228,16 +2962,9 @@ export const UNIVERSITIES_UK = [
     "location": "Plymouth, UK",
     "logo": "https://www.google.com/s2/favicons?domain=www.plymouth.ac.uk&sz=128",
     "website": "https://www.plymouth.ac.uk",
-    "rank": "Rank 651 QS Rankings",
-    "rankingNum": 651,
-    "tuition": "22 Lakh INR",
-    "tuitionFeeUSD": 22000,
-    "acceptanceRate": 60,
+    "rank": "=691",
+    "rankingNum": 691,
     "type": "PUBLIC",
-    "minGpaPercent": 60,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -3271,7 +2998,8 @@ export const UNIVERSITIES_UK = [
       "Dental Studies",
       "Arts / Fine Art",
       "Mathematics"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027"
   },
   {
     "_id": "uk-51",
@@ -3284,16 +3012,10 @@ export const UNIVERSITIES_UK = [
     "location": "London, UK",
     "logo": "https://www.google.com/s2/favicons?domain=www.westminster.ac.uk&sz=128",
     "website": "https://www.westminster.ac.uk",
-    "rank": "Rank 651 QS Rankings",
-    "rankingNum": 651,
-    "tuition": "18 Lakh INR",
-    "tuitionFeeUSD": 22000,
-    "acceptanceRate": 60,
+    "rank": "851-900",
+    "rankingNum": 851,
+    "tuition": "₹27 Lakh/yr (official fee)",
     "type": "PUBLIC",
-    "minGpaPercent": 60,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -3349,7 +3071,9 @@ export const UNIVERSITIES_UK = [
       "Sociology",
       "Software Engineering",
       "Tourism"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027",
+    "tuitionVerified": true
   },
   {
     "_id": "uk-52",
@@ -3362,16 +3086,10 @@ export const UNIVERSITIES_UK = [
     "location": "Keele, UK",
     "logo": "https://www.google.com/s2/favicons?domain=www.keele.ac.uk&sz=128",
     "website": "https://www.keele.ac.uk",
-    "rank": "Rank 701 QS Rankings",
-    "rankingNum": 701,
-    "tuition": "20 Lakh INR",
-    "tuitionFeeUSD": 22000,
-    "acceptanceRate": 60,
+    "rank": "801-850",
+    "rankingNum": 801,
+    "tuition": "₹24 Lakh/yr (official fee)",
     "type": "PUBLIC",
-    "minGpaPercent": 60,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -3415,7 +3133,9 @@ export const UNIVERSITIES_UK = [
       "Economics",
       "Computer Science",
       "Health Sciences / Administration"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027",
+    "tuitionVerified": true
   },
   {
     "_id": "uk-53",
@@ -3428,16 +3148,9 @@ export const UNIVERSITIES_UK = [
     "location": "Newcastle upon Tyne, UK",
     "logo": "https://www.google.com/s2/favicons?domain=www.northumbria.ac.uk&sz=128",
     "website": "https://www.northumbria.ac.uk",
-    "rank": "Rank 701 QS Rankings",
-    "rankingNum": 701,
-    "tuition": "19 Lakh INR",
-    "tuitionFeeUSD": 22000,
-    "acceptanceRate": 60,
+    "rank": "=528",
+    "rankingNum": 528,
     "type": "PUBLIC",
-    "minGpaPercent": 60,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -3477,7 +3190,8 @@ export const UNIVERSITIES_UK = [
       "Biological Sciences",
       "Physics",
       "Mathematics"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027"
   },
   {
     "_id": "uk-54",
@@ -3490,16 +3204,9 @@ export const UNIVERSITIES_UK = [
     "location": "Nottingham, UK",
     "logo": "https://www.google.com/s2/favicons?domain=www.ntu.ac.uk&sz=128",
     "website": "https://www.ntu.ac.uk",
-    "rank": "Rank 801 QS Rankings",
-    "rankingNum": 801,
-    "tuition": "21 Lakh INR",
-    "tuitionFeeUSD": 22000,
-    "acceptanceRate": 60,
+    "rank": "=639",
+    "rankingNum": 639,
     "type": "PUBLIC",
-    "minGpaPercent": 60,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -3560,7 +3267,8 @@ export const UNIVERSITIES_UK = [
       "Software Engineering",
       "Sport / Exercise Science",
       "Theatre"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027"
   },
   {
     "_id": "uk-55",
@@ -3573,16 +3281,9 @@ export const UNIVERSITIES_UK = [
     "location": "Hull, UK",
     "logo": "https://www.google.com/s2/favicons?domain=www.hull.ac.uk&sz=128",
     "website": "https://www.hull.ac.uk",
-    "rank": "Rank 801 QS Rankings",
-    "rankingNum": 801,
-    "tuition": "21 Lakh INR",
-    "tuitionFeeUSD": 22000,
-    "acceptanceRate": 60,
+    "rank": "=575",
+    "rankingNum": 575,
     "type": "PUBLIC",
-    "minGpaPercent": 60,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -3625,7 +3326,8 @@ export const UNIVERSITIES_UK = [
       "Banking and Finance",
       "Sales And Marketing",
       "Human resource Management"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027"
   },
   {
     "_id": "uk-56",
@@ -3638,16 +3340,9 @@ export const UNIVERSITIES_UK = [
     "location": "Manchester, UK",
     "logo": "https://www.google.com/s2/favicons?domain=www.mmu.ac.uk&sz=128",
     "website": "https://www.mmu.ac.uk",
-    "rank": "Rank 801 QS Rankings",
-    "rankingNum": 801,
-    "tuition": "24 Lakh INR",
-    "tuitionFeeUSD": 22000,
-    "acceptanceRate": 60,
+    "rank": "=600",
+    "rankingNum": 600,
     "type": "PUBLIC",
-    "minGpaPercent": 60,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -3705,7 +3400,8 @@ export const UNIVERSITIES_UK = [
       "Teaching / Education studies",
       "Theatre",
       "Tourism"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027"
   },
   {
     "_id": "uk-57",
@@ -3718,16 +3414,9 @@ export const UNIVERSITIES_UK = [
     "location": "Bournemouth, UK",
     "logo": "https://www.google.com/s2/favicons?domain=www.bournemouth.ac.uk&sz=128",
     "website": "https://www.bournemouth.ac.uk",
-    "rank": "Rank 801 QS Rankings",
+    "rank": "801-850",
     "rankingNum": 801,
-    "tuition": "20 Lakh INR",
-    "tuitionFeeUSD": 22000,
-    "acceptanceRate": 60,
     "type": "PUBLIC",
-    "minGpaPercent": 60,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -3802,7 +3491,8 @@ export const UNIVERSITIES_UK = [
       "Computer Engineering",
       "Software Engineering",
       "Management"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027"
   },
   {
     "_id": "uk-58",
@@ -3815,16 +3505,10 @@ export const UNIVERSITIES_UK = [
     "location": "London, UK",
     "logo": "https://www.google.com/s2/favicons?domain=www.mdx.ac.uk&sz=128",
     "website": "https://www.mdx.ac.uk",
-    "rank": "Rank 801 QS Rankings",
-    "rankingNum": 801,
-    "tuition": "20 Lakh INR",
-    "tuitionFeeUSD": 22000,
-    "acceptanceRate": 60,
+    "rank": "901-950",
+    "rankingNum": 901,
+    "tuition": "₹25 Lakh/yr (official fee)",
     "type": "PUBLIC",
-    "minGpaPercent": 60,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -3860,7 +3544,9 @@ export const UNIVERSITIES_UK = [
       "Sociology",
       "Political Science",
       "Biological Sciences"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027",
+    "tuitionVerified": true
   },
   {
     "_id": "uk-59",
@@ -3873,16 +3559,10 @@ export const UNIVERSITIES_UK = [
     "location": "Oxford, UK",
     "logo": "https://www.google.com/s2/favicons?domain=www.brookes.ac.uk&sz=128",
     "website": "https://www.brookes.ac.uk",
-    "rank": "Rank 801 QS Rankings",
-    "rankingNum": 801,
-    "tuition": "19 Lakh INR",
-    "tuitionFeeUSD": 22000,
-    "acceptanceRate": 60,
+    "rank": "=411",
+    "rankingNum": 411,
+    "tuition": "₹27 Lakh/yr (official fee)",
     "type": "PUBLIC",
-    "minGpaPercent": 60,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -3939,7 +3619,9 @@ export const UNIVERSITIES_UK = [
       "Software Engineering",
       "Sport / Exercise Science",
       "Tourism"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027",
+    "tuitionVerified": true
   },
   {
     "_id": "uk-60",
@@ -3952,16 +3634,10 @@ export const UNIVERSITIES_UK = [
     "location": "Lincoln, UK",
     "logo": "https://www.google.com/s2/favicons?domain=www.lincoln.ac.uk&sz=128",
     "website": "https://www.lincoln.ac.uk",
-    "rank": "Rank 801 QS Rankings",
-    "rankingNum": 801,
-    "tuition": "23 Lakh INR",
-    "tuitionFeeUSD": 22000,
-    "acceptanceRate": 60,
+    "rank": "851-900",
+    "rankingNum": 851,
+    "tuition": "₹25 Lakh/yr (official fee)",
     "type": "PUBLIC",
-    "minGpaPercent": 60,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -4011,7 +3687,9 @@ export const UNIVERSITIES_UK = [
       "Chemistry",
       "Physics",
       "Mathematics"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027",
+    "tuitionVerified": true
   },
   {
     "_id": "uk-61",
@@ -4024,16 +3702,10 @@ export const UNIVERSITIES_UK = [
     "location": "Huddersfield, UK",
     "logo": "https://www.google.com/s2/favicons?domain=www.hud.ac.uk&sz=128",
     "website": "https://www.hud.ac.uk/",
-    "rank": "Rank 801 QS Rankings",
-    "rankingNum": 801,
-    "tuition": "₹20 Lakh INR/yr",
-    "tuitionFeeUSD": 22000,
-    "acceptanceRate": 60,
+    "rank": "=521",
+    "rankingNum": 521,
+    "tuition": "₹24 Lakh/yr (official fee)",
     "type": "PUBLIC",
-    "minGpaPercent": 60,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -4073,7 +3745,9 @@ export const UNIVERSITIES_UK = [
       "Chemistry",
       "Mathematics",
       "Forensics"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027",
+    "tuitionVerified": true
   },
   {
     "_id": "uk-62",
@@ -4086,16 +3760,10 @@ export const UNIVERSITIES_UK = [
     "location": "Cambridge, UK",
     "logo": "https://www.google.com/s2/favicons?domain=aru.ac.uk&sz=128",
     "website": "https://aru.ac.uk",
-    "rank": "Rank 1001 QS Rankings",
+    "rank": "1001-1200",
     "rankingNum": 1001,
-    "tuition": "19 Lakh INR",
-    "tuitionFeeUSD": 22000,
-    "acceptanceRate": 60,
+    "tuition": "₹27 Lakh/yr (official fee)",
     "type": "PUBLIC",
-    "minGpaPercent": 60,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -4135,7 +3803,9 @@ export const UNIVERSITIES_UK = [
       "Electrical Engineering",
       "Mechanical Engineering",
       "Civil Engineering"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027",
+    "tuitionVerified": true
   },
   {
     "_id": "uk-63",
@@ -4148,16 +3818,10 @@ export const UNIVERSITIES_UK = [
     "location": "London, UK",
     "logo": "https://www.google.com/s2/favicons?domain=www.lsbu.ac.uk&sz=128",
     "website": "https://www.lsbu.ac.uk",
-    "rank": "Rank 1201 QS Rankings",
-    "rankingNum": 1201,
-    "tuition": "19 Lakh INR",
-    "tuitionFeeUSD": 22000,
-    "acceptanceRate": 60,
+    "rank": "901-950",
+    "rankingNum": 901,
+    "tuition": "₹24 Lakh/yr (official fee)",
     "type": "PUBLIC",
-    "minGpaPercent": 60,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -4198,7 +3862,9 @@ export const UNIVERSITIES_UK = [
       "Food And Hospitality",
       "Tourism",
       "Sport / Exercise Science"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027",
+    "tuitionVerified": true
   },
   {
     "_id": "uk-64",
@@ -4211,16 +3877,10 @@ export const UNIVERSITIES_UK = [
     "location": "Leeds, UK",
     "logo": "https://www.google.com/s2/favicons?domain=www.leedsbeckett.ac.uk&sz=128",
     "website": "https://www.leedsbeckett.ac.uk/",
-    "rank": "Rank 64 QS Rankings",
-    "rankingNum": 64,
-    "tuition": "13 Lakh INR",
-    "tuitionFeeUSD": 22000,
-    "acceptanceRate": 60,
+    "rank": "1001-1200",
+    "rankingNum": 1001,
+    "tuition": "₹24 Lakh/yr (official fee)",
     "type": "PUBLIC",
-    "minGpaPercent": 60,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -4269,7 +3929,9 @@ export const UNIVERSITIES_UK = [
       "Sport / Exercise Science",
       "Sports Management",
       "Tourism"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027",
+    "tuitionVerified": true
   },
   {
     "_id": "uk-65",
@@ -4282,16 +3944,8 @@ export const UNIVERSITIES_UK = [
     "location": "London, UK",
     "logo": "https://www.google.com/s2/favicons?domain=www.rcm.ac.uk&sz=128",
     "website": "https://www.rcm.ac.uk",
-    "rank": "Rank 65 QS Rankings",
-    "rankingNum": 65,
-    "tuition": "34 Lakh INR",
-    "tuitionFeeUSD": 22000,
-    "acceptanceRate": 60,
+    "tuition": "₹44 Lakh/yr (official fee)",
     "type": "PUBLIC",
-    "minGpaPercent": 60,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -4306,7 +3960,8 @@ export const UNIVERSITIES_UK = [
     ],
     "courses": [
       "Music"
-    ]
+    ],
+    "tuitionVerified": true
   },
   {
     "_id": "uk-66",
@@ -4319,16 +3974,9 @@ export const UNIVERSITIES_UK = [
     "location": "Northampton, UK",
     "logo": "https://www.google.com/s2/favicons?domain=www.northampton.ac.uk&sz=128",
     "website": "https://www.northampton.ac.uk",
-    "rank": "Rank 66 QS Rankings",
-    "rankingNum": 66,
-    "tuition": "20 Lakh INR",
-    "tuitionFeeUSD": 22000,
-    "acceptanceRate": 60,
+    "rank": "1201-1400",
+    "rankingNum": 1201,
     "type": "PUBLIC",
-    "minGpaPercent": 60,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -4386,7 +4034,8 @@ export const UNIVERSITIES_UK = [
       "Sport / Exercise Science",
       "Teaching / Education studies",
       "Theatre"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027"
   },
   {
     "_id": "uk-67",
@@ -4399,16 +4048,10 @@ export const UNIVERSITIES_UK = [
     "location": "London, UK",
     "logo": "https://www.google.com/s2/favicons?domain=www.gre.ac.uk&sz=128",
     "website": "https://www.gre.ac.uk",
-    "rank": "Rank 67 QS Rankings",
-    "rankingNum": 67,
-    "tuition": "{'id': 16221, 'tuition_fee_min': '10', 'tuition_fee_max': '10'} INR/yr",
-    "tuitionFeeUSD": 22000,
-    "acceptanceRate": 60,
+    "rank": "791-800",
+    "rankingNum": 791,
+    "tuition": "₹25 Lakh/yr (official fee)",
     "type": "PUBLIC",
-    "minGpaPercent": 60,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -4438,7 +4081,9 @@ export const UNIVERSITIES_UK = [
       "Pharmacology / Pharmacy",
       "Psychology",
       "Software Engineering"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027",
+    "tuitionVerified": true
   },
   {
     "_id": "uk-68",
@@ -4451,16 +4096,7 @@ export const UNIVERSITIES_UK = [
     "location": "Plymouth, UK",
     "logo": "https://www.google.com/s2/favicons?domain=www.marjon.ac.uk&sz=128",
     "website": "https://www.marjon.ac.uk",
-    "rank": "Rank 68 QS Rankings",
-    "rankingNum": 68,
-    "tuition": "17 Lakh INR",
-    "tuitionFeeUSD": 22000,
-    "acceptanceRate": 60,
     "type": "PUBLIC",
-    "minGpaPercent": 60,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -4497,16 +4133,7 @@ export const UNIVERSITIES_UK = [
     "location": "Leeds, UK",
     "logo": "https://www.google.com/s2/favicons?domain=www.leedstrinity.ac.uk&sz=128",
     "website": "https://www.leedstrinity.ac.uk",
-    "rank": "Rank 69 QS Rankings",
-    "rankingNum": 69,
-    "tuition": "14 Lakh INR",
-    "tuitionFeeUSD": 22000,
-    "acceptanceRate": 60,
     "type": "PUBLIC",
-    "minGpaPercent": 60,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -4549,16 +4176,7 @@ export const UNIVERSITIES_UK = [
     "location": "Gloucester, UK",
     "logo": "https://www.google.com/s2/favicons?domain=www.glos.ac.uk&sz=128",
     "website": "https://www.glos.ac.uk",
-    "rank": "Rank 70 QS Rankings",
-    "rankingNum": 70,
-    "tuition": "21 Lakh INR",
-    "tuitionFeeUSD": 22000,
-    "acceptanceRate": 60,
     "type": "PUBLIC",
-    "minGpaPercent": 60,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -4602,16 +4220,9 @@ export const UNIVERSITIES_UK = [
     "location": "Cardiff, UK",
     "logo": "https://www.google.com/s2/favicons?domain=www.southwales.ac.uk&sz=128",
     "website": "https://www.southwales.ac.uk/",
-    "rank": "Rank 71 QS Rankings",
-    "rankingNum": 71,
-    "tuition": "19 Lakh INR",
-    "tuitionFeeUSD": 22000,
-    "acceptanceRate": 60,
+    "rank": "1201-1400",
+    "rankingNum": 1201,
     "type": "PUBLIC",
-    "minGpaPercent": 60,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -4653,7 +4264,8 @@ export const UNIVERSITIES_UK = [
       "Law",
       "Nursing and midwifery",
       "Sport / Exercise Science"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027"
   },
   {
     "_id": "uk-72",
@@ -4666,16 +4278,9 @@ export const UNIVERSITIES_UK = [
     "location": "Derby, UK",
     "logo": "https://www.google.com/s2/favicons?domain=www.derby.ac.uk&sz=128",
     "website": "https://www.derby.ac.uk",
-    "rank": "Rank 72 QS Rankings",
-    "rankingNum": 72,
-    "tuition": "18 Lakh INR",
-    "tuitionFeeUSD": 22000,
-    "acceptanceRate": 60,
+    "rank": "1201-1400",
+    "rankingNum": 1201,
     "type": "PUBLIC",
-    "minGpaPercent": 60,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -4722,7 +4327,8 @@ export const UNIVERSITIES_UK = [
       "Mathematics",
       "Sociology",
       "Environmental science / management"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027"
   },
   {
     "_id": "uk-73",
@@ -4735,16 +4341,7 @@ export const UNIVERSITIES_UK = [
     "location": "Bath, UK",
     "logo": "https://www.google.com/s2/favicons?domain=www.bathspa.ac.uk&sz=128",
     "website": "https://www.bathspa.ac.uk/",
-    "rank": "Rank 73 QS Rankings",
-    "rankingNum": 73,
-    "tuition": "19 Lakh INR",
-    "tuitionFeeUSD": 22000,
-    "acceptanceRate": 60,
     "type": "PUBLIC",
-    "minGpaPercent": 60,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -4787,16 +4384,7 @@ export const UNIVERSITIES_UK = [
     "location": "Gloucester, UK",
     "logo": "https://www.google.com/s2/favicons?domain=www.hartpury.ac.uk&sz=128",
     "website": "https://www.hartpury.ac.uk",
-    "rank": "Rank 74 QS Rankings",
-    "rankingNum": 74,
-    "tuition": "19 Lakh INR",
-    "tuitionFeeUSD": 22000,
-    "acceptanceRate": 60,
     "type": "PUBLIC",
-    "minGpaPercent": 60,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -4830,16 +4418,7 @@ export const UNIVERSITIES_UK = [
     "location": "Middlesbrough, UK",
     "logo": "https://www.google.com/s2/favicons?domain=www.tees.ac.uk&sz=128",
     "website": "https://www.tees.ac.uk",
-    "rank": "Rank 75 QS Rankings",
-    "rankingNum": 75,
-    "tuition": "20 Lakh INR",
-    "tuitionFeeUSD": 22000,
-    "acceptanceRate": 60,
     "type": "PUBLIC",
-    "minGpaPercent": 60,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -4917,16 +4496,7 @@ export const UNIVERSITIES_UK = [
     "location": "London, UK",
     "logo": "https://www.google.com/s2/favicons?domain=www.ram.ac.uk&sz=128",
     "website": "https://www.ram.ac.uk",
-    "rank": "Rank 76 QS Rankings",
-    "rankingNum": 76,
-    "tuition": "36 Lakh INR",
-    "tuitionFeeUSD": 22000,
-    "acceptanceRate": 60,
     "type": "PUBLIC",
-    "minGpaPercent": 60,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -4954,16 +4524,7 @@ export const UNIVERSITIES_UK = [
     "location": "Chichester, UK",
     "logo": "https://www.google.com/s2/favicons?domain=www.chi.ac.uk&sz=128",
     "website": "https://www.chi.ac.uk",
-    "rank": "Rank 77 QS Rankings",
-    "rankingNum": 77,
-    "tuition": "20 Lakh INR",
-    "tuitionFeeUSD": 22000,
-    "acceptanceRate": 60,
     "type": "PUBLIC",
-    "minGpaPercent": 60,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -5004,16 +4565,9 @@ export const UNIVERSITIES_UK = [
     "location": "Leicester, UK",
     "logo": "https://www.google.com/s2/favicons?domain=www.dmu.ac.uk&sz=128",
     "website": "https://www.dmu.ac.uk",
-    "rank": "Rank 78 QS Rankings",
-    "rankingNum": 78,
-    "tuition": "18 Lakh INR",
-    "tuitionFeeUSD": 22000,
-    "acceptanceRate": 60,
+    "rank": "851-900",
+    "rankingNum": 851,
     "type": "PUBLIC",
-    "minGpaPercent": 60,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -5078,7 +4632,8 @@ export const UNIVERSITIES_UK = [
       "Sociology",
       "Sport / Exercise Science",
       "Theatre"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027"
   },
   {
     "_id": "uk-79",
@@ -5091,16 +4646,7 @@ export const UNIVERSITIES_UK = [
     "location": "Cirencester, UK",
     "logo": "https://www.google.com/s2/favicons?domain=www.rau.ac.uk&sz=128",
     "website": "https://www.rau.ac.uk",
-    "rank": "Rank 79 QS Rankings",
-    "rankingNum": 79,
-    "tuition": "18 Lakh INR",
-    "tuitionFeeUSD": 22000,
-    "acceptanceRate": 60,
     "type": "PUBLIC",
-    "minGpaPercent": 60,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -5137,16 +4683,10 @@ export const UNIVERSITIES_UK = [
     "location": "Bristol, UK",
     "logo": "https://www.google.com/s2/favicons?domain=www.uwe.ac.uk&sz=128",
     "website": "https://www.uwe.ac.uk/",
-    "rank": "Rank 80 QS Rankings",
-    "rankingNum": 80,
-    "tuition": "18 Lakh INR",
-    "tuitionFeeUSD": 22000,
-    "acceptanceRate": 60,
+    "rank": "761-770",
+    "rankingNum": 761,
+    "tuition": "₹23 Lakh/yr (official fee)",
     "type": "PUBLIC",
-    "minGpaPercent": 60,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -5204,7 +4744,9 @@ export const UNIVERSITIES_UK = [
       "Social Work",
       "Software Engineering",
       "Sport / Exercise Science"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027",
+    "tuitionVerified": true
   },
   {
     "_id": "uk-81",
@@ -5217,16 +4759,10 @@ export const UNIVERSITIES_UK = [
     "location": "Wolverhampton, UK",
     "logo": "https://www.google.com/s2/favicons?domain=www.wlv.ac.uk&sz=128",
     "website": "https://www.wlv.ac.uk",
-    "rank": "Rank 81 QS Rankings",
-    "rankingNum": 81,
-    "tuition": "19 Lakh INR",
-    "tuitionFeeUSD": 22000,
-    "acceptanceRate": 60,
+    "rank": "1001-1200",
+    "rankingNum": 1001,
+    "tuition": "₹24 Lakh/yr (official fee)",
     "type": "PUBLIC",
-    "minGpaPercent": 60,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -5260,7 +4796,9 @@ export const UNIVERSITIES_UK = [
       "Journalism",
       "Social Work",
       "Cyber Security"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027",
+    "tuitionVerified": true
   },
   {
     "_id": "uk-82",
@@ -5273,16 +4811,10 @@ export const UNIVERSITIES_UK = [
     "location": "London, UK",
     "logo": "https://www.google.com/s2/favicons?domain=www.uel.ac.uk&sz=128",
     "website": "https://www.uel.ac.uk",
-    "rank": "Rank 82 QS Rankings",
-    "rankingNum": 82,
-    "tuition": "19 Lakh INR",
-    "tuitionFeeUSD": 22000,
-    "acceptanceRate": 60,
+    "rank": "1001-1200",
+    "rankingNum": 1001,
+    "tuition": "₹22 Lakh/yr (official fee)",
     "type": "PUBLIC",
-    "minGpaPercent": 60,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -5320,7 +4852,9 @@ export const UNIVERSITIES_UK = [
       "Biological Sciences",
       "Chemistry",
       "Mathematics"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027",
+    "tuitionVerified": true
   },
   {
     "_id": "uk-86",
@@ -5333,16 +4867,10 @@ export const UNIVERSITIES_UK = [
     "location": "Birmingham, UK",
     "logo": "https://www.google.com/s2/favicons?domain=www.bcu.ac.uk&sz=128",
     "website": "https://www.bcu.ac.uk/",
-    "rank": "Rank 86 QS Rankings",
-    "rankingNum": 86,
-    "tuition": "21 Lakh INR",
-    "tuitionFeeUSD": 22000,
-    "acceptanceRate": 60,
+    "rank": "1001-1200",
+    "rankingNum": 1001,
+    "tuition": "₹25 Lakh/yr (official fee)",
     "type": "PUBLIC",
-    "minGpaPercent": 60,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -5388,7 +4916,9 @@ export const UNIVERSITIES_UK = [
       "Software Engineering",
       "Sport / Exercise Science",
       "Teaching / Education studies"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027",
+    "tuitionVerified": true
   },
   {
     "_id": "uk-87",
@@ -5401,16 +4931,7 @@ export const UNIVERSITIES_UK = [
     "location": "Winchester, UK",
     "logo": "https://www.google.com/s2/favicons?domain=www.winchester.ac.uk&sz=128",
     "website": "https://www.winchester.ac.uk",
-    "rank": "Rank 87 QS Rankings",
-    "rankingNum": 87,
-    "tuition": "20 Lakh INR",
-    "tuitionFeeUSD": 22000,
-    "acceptanceRate": 60,
     "type": "PUBLIC",
-    "minGpaPercent": 60,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -5452,16 +4973,7 @@ export const UNIVERSITIES_UK = [
     "location": "Southampton, UK",
     "logo": "https://www.google.com/s2/favicons?domain=www.solent.ac.uk&sz=128",
     "website": "https://www.solent.ac.uk",
-    "rank": "Rank 88 QS Rankings",
-    "rankingNum": 88,
-    "tuition": "18 Lakh INR",
-    "tuitionFeeUSD": 22000,
-    "acceptanceRate": 60,
     "type": "PUBLIC",
-    "minGpaPercent": 60,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -5509,16 +5021,7 @@ export const UNIVERSITIES_UK = [
     "location": "Ipswich, UK",
     "logo": "https://www.google.com/s2/favicons?domain=www.uos.ac.uk&sz=128",
     "website": "https://www.uos.ac.uk",
-    "rank": "Rank 89 QS Rankings",
-    "rankingNum": 89,
-    "tuition": "16 Lakh INR",
-    "tuitionFeeUSD": 22000,
-    "acceptanceRate": 60,
     "type": "PUBLIC",
-    "minGpaPercent": 60,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -5562,16 +5065,7 @@ export const UNIVERSITIES_UK = [
     "location": "London, UK",
     "logo": "https://www.google.com/s2/favicons?domain=www.law.ac.uk&sz=128",
     "website": "https://www.law.ac.uk/",
-    "rank": "Rank 90 QS Rankings",
-    "rankingNum": 90,
-    "tuition": "20 Lakh INR",
-    "tuitionFeeUSD": 22000,
-    "acceptanceRate": 60,
     "type": "PUBLIC",
-    "minGpaPercent": 60,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -5603,16 +5097,9 @@ export const UNIVERSITIES_UK = [
     "location": "Sheffield, UK",
     "logo": "https://www.google.com/s2/favicons?domain=www.shu.ac.uk&sz=128",
     "website": "https://www.shu.ac.uk",
-    "rank": "Rank 91 QS Rankings",
-    "rankingNum": 91,
-    "tuition": "20 Lakh INR",
-    "tuitionFeeUSD": 22000,
-    "acceptanceRate": 60,
+    "rank": "1001-1200",
+    "rankingNum": 1001,
     "type": "PUBLIC",
-    "minGpaPercent": 60,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -5690,7 +5177,8 @@ export const UNIVERSITIES_UK = [
       "Computer Engineering",
       "Software Engineering",
       "Management"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027"
   },
   {
     "_id": "uk-92",
@@ -5703,16 +5191,7 @@ export const UNIVERSITIES_UK = [
     "location": "Leeds, UK",
     "logo": "https://www.google.com/s2/favicons?domain=www.leeds-art.ac.uk&sz=128",
     "website": "https://www.leeds-art.ac.uk",
-    "rank": "Rank 92 QS Rankings",
-    "rankingNum": 92,
-    "tuition": "9 Lakh INR",
-    "tuitionFeeUSD": 22000,
-    "acceptanceRate": 60,
     "type": "PUBLIC",
-    "minGpaPercent": 60,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -5749,16 +5228,9 @@ export const UNIVERSITIES_UK = [
     "location": "London, UK",
     "logo": "https://www.google.com/s2/favicons?domain=www.bbk.ac.uk&sz=128",
     "website": "https://www.bbk.ac.uk/",
-    "rank": "Rank 93 QS Rankings",
-    "rankingNum": 93,
-    "tuition": "18 Lakh INR",
-    "tuitionFeeUSD": 22000,
-    "acceptanceRate": 60,
+    "rank": "=354",
+    "rankingNum": 354,
     "type": "PUBLIC",
-    "minGpaPercent": 60,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -5791,7 +5263,8 @@ export const UNIVERSITIES_UK = [
       "Chemistry",
       "Biological Sciences",
       "Philosophy and Religious Studies"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027"
   },
   {
     "_id": "uk-94",
@@ -5804,16 +5277,7 @@ export const UNIVERSITIES_UK = [
     "location": "Ormskirk, UK",
     "logo": "https://www.google.com/s2/favicons?domain=www.edgehill.ac.uk&sz=128",
     "website": "https://www.edgehill.ac.uk",
-    "rank": "Rank 94 QS Rankings",
-    "rankingNum": 94,
-    "tuition": "16 Lakh INR",
-    "tuitionFeeUSD": 22000,
-    "acceptanceRate": 60,
     "type": "PUBLIC",
-    "minGpaPercent": 60,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -5883,16 +5347,7 @@ export const UNIVERSITIES_UK = [
     "location": "York, UK",
     "logo": "https://www.google.com/s2/favicons?domain=www.yorksj.ac.uk&sz=128",
     "website": "https://www.yorksj.ac.uk/",
-    "rank": "Rank 95 QS Rankings",
-    "rankingNum": 95,
-    "tuition": "18 Lakh INR",
-    "tuitionFeeUSD": 22000,
-    "acceptanceRate": 60,
     "type": "PUBLIC",
-    "minGpaPercent": 60,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -5945,16 +5400,7 @@ export const UNIVERSITIES_UK = [
     "location": "Buckingham, UK",
     "logo": "https://www.google.com/s2/favicons?domain=www.buckingham.ac.uk&sz=128",
     "website": "https://www.buckingham.ac.uk",
-    "rank": "Rank 96 QS Rankings",
-    "rankingNum": 96,
-    "tuition": "54 Lakh INR",
-    "tuitionFeeUSD": 22000,
-    "acceptanceRate": 60,
     "type": "PUBLIC",
-    "minGpaPercent": 60,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -5992,16 +5438,7 @@ export const UNIVERSITIES_UK = [
     "location": "Dundee, UK",
     "logo": "https://www.google.com/s2/favicons?domain=www.abertay.ac.uk&sz=128",
     "website": "https://www.abertay.ac.uk",
-    "rank": "Rank 97 QS Rankings",
-    "rankingNum": 97,
-    "tuition": "17 Lakh INR",
-    "tuitionFeeUSD": 22000,
-    "acceptanceRate": 60,
     "type": "PUBLIC",
-    "minGpaPercent": 60,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -6040,16 +5477,7 @@ export const UNIVERSITIES_UK = [
     "location": "Leeds, UK",
     "logo": "https://www.google.com/s2/favicons?domain=www.leedsconservatoire.ac.uk&sz=128",
     "website": "https://www.leedsconservatoire.ac.uk",
-    "rank": "Rank 98 QS Rankings",
-    "rankingNum": 98,
-    "tuition": "24 Lakh INR",
-    "tuitionFeeUSD": 22000,
-    "acceptanceRate": 60,
     "type": "PUBLIC",
-    "minGpaPercent": 60,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -6082,16 +5510,7 @@ export const UNIVERSITIES_UK = [
     "location": "Liverpool, UK",
     "logo": "https://www.google.com/s2/favicons?domain=www.hope.ac.uk&sz=128",
     "website": "https://www.hope.ac.uk",
-    "rank": "Rank 99 QS Rankings",
-    "rankingNum": 99,
-    "tuition": "18 Lakh INR",
-    "tuitionFeeUSD": 22000,
-    "acceptanceRate": 60,
     "type": "PUBLIC",
-    "minGpaPercent": 60,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -6133,16 +5552,7 @@ export const UNIVERSITIES_UK = [
     "location": "London, UK",
     "logo": "https://www.google.com/s2/favicons?domain=www.gsmd.ac.uk&sz=128",
     "website": "https://www.gsmd.ac.uk",
-    "rank": "Rank 100 QS Rankings",
-    "rankingNum": 100,
-    "tuition": "31 Lakh INR",
-    "tuitionFeeUSD": 22000,
-    "acceptanceRate": 60,
     "type": "PUBLIC",
-    "minGpaPercent": 60,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -6171,16 +5581,7 @@ export const UNIVERSITIES_UK = [
     "location": "Glasgow, UK",
     "logo": "https://www.google.com/s2/favicons?domain=www.rcs.ac.uk&sz=128",
     "website": "https://www.rcs.ac.uk",
-    "rank": "Rank 101 QS Rankings",
-    "rankingNum": 101,
-    "tuition": "35 Lakh INR",
-    "tuitionFeeUSD": 22000,
-    "acceptanceRate": 60,
     "type": "PUBLIC",
-    "minGpaPercent": 60,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -6210,16 +5611,7 @@ export const UNIVERSITIES_UK = [
     "location": "Plymouth, UK",
     "logo": "https://www.google.com/s2/favicons?domain=www.aup.ac.uk&sz=128",
     "website": "https://www.aup.ac.uk",
-    "rank": "Rank 102 QS Rankings",
-    "rankingNum": 102,
-    "tuition": "21 Lakh INR",
-    "tuitionFeeUSD": 22000,
-    "acceptanceRate": 60,
     "type": "PUBLIC",
-    "minGpaPercent": 60,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -6259,16 +5651,7 @@ export const UNIVERSITIES_UK = [
     "location": "London, UK",
     "logo": "https://www.google.com/s2/favicons?domain=www.regents.ac.uk&sz=128",
     "website": "https://www.regents.ac.uk",
-    "rank": "Rank 103 QS Rankings",
-    "rankingNum": 103,
-    "tuition": "30 Lakh INR",
-    "tuitionFeeUSD": 22000,
-    "acceptanceRate": 60,
     "type": "PUBLIC",
-    "minGpaPercent": 60,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -6306,16 +5689,7 @@ export const UNIVERSITIES_UK = [
     "location": "Sidcup, UK",
     "logo": "https://www.google.com/s2/favicons?domain=www.bruford.ac.uk&sz=128",
     "website": "https://www.bruford.ac.uk",
-    "rank": "Rank 104 QS Rankings",
-    "rankingNum": 104,
-    "tuition": "₹20 Lakh INR/yr",
-    "tuitionFeeUSD": 22000,
-    "acceptanceRate": 60,
     "type": "PUBLIC",
-    "minGpaPercent": 60,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -6351,16 +5725,7 @@ export const UNIVERSITIES_UK = [
     "location": "London, UK",
     "logo": "https://www.google.com/s2/favicons?domain=www.ravensbourne.ac.uk&sz=128",
     "website": "https://www.ravensbourne.ac.uk/",
-    "rank": "Rank 105 QS Rankings",
-    "rankingNum": 105,
-    "tuition": "13 Lakh INR",
-    "tuitionFeeUSD": 22000,
-    "acceptanceRate": 60,
     "type": "PUBLIC",
-    "minGpaPercent": 60,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -6405,16 +5770,7 @@ export const UNIVERSITIES_UK = [
     "location": "Wrexham, UK",
     "logo": "https://www.google.com/s2/favicons?domain=www.wrexham.ac.uk&sz=128",
     "website": "https://www.wrexham.ac.uk",
-    "rank": "Rank 106 QS Rankings",
-    "rankingNum": 106,
-    "tuition": "15 Lakh INR",
-    "tuitionFeeUSD": 22000,
-    "acceptanceRate": 60,
     "type": "PUBLIC",
-    "minGpaPercent": 60,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -6453,16 +5809,9 @@ export const UNIVERSITIES_UK = [
     "location": "Edinburgh, UK",
     "logo": "https://www.google.com/s2/favicons?domain=www.qmu.ac.uk&sz=128",
     "website": "https://www.qmu.ac.uk",
-    "rank": "Rank 107 QS Rankings",
-    "rankingNum": 107,
-    "tuition": "12 Lakh INR",
-    "tuitionFeeUSD": 22000,
-    "acceptanceRate": 60,
+    "rank": "1201-1400",
+    "rankingNum": 1201,
     "type": "PUBLIC",
-    "minGpaPercent": 60,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -6498,7 +5847,8 @@ export const UNIVERSITIES_UK = [
       "Tourism",
       "Health Sciences / Administration",
       "Management"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027"
   },
   {
     "_id": "uk-108",
@@ -6511,16 +5861,7 @@ export const UNIVERSITIES_UK = [
     "location": "Liverpool, UK",
     "logo": "https://www.google.com/s2/favicons?domain=www.lstmed.ac.uk&sz=128",
     "website": "https://www.lstmed.ac.uk/",
-    "rank": "Rank 108 QS Rankings",
-    "rankingNum": 108,
-    "tuition": "17 Lakh INR",
-    "tuitionFeeUSD": 22000,
-    "acceptanceRate": 60,
     "type": "PUBLIC",
-    "minGpaPercent": 60,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -6552,16 +5893,7 @@ export const UNIVERSITIES_UK = [
     "location": "Twickenham, UK",
     "logo": "https://www.google.com/s2/favicons?domain=www.stmarys.ac.uk&sz=128",
     "website": "https://www.stmarys.ac.uk",
-    "rank": "Rank 109 QS Rankings",
-    "rankingNum": 109,
-    "tuition": "19 Lakh INR",
-    "tuitionFeeUSD": 22000,
-    "acceptanceRate": 60,
     "type": "PUBLIC",
-    "minGpaPercent": 60,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -6598,16 +5930,7 @@ export const UNIVERSITIES_UK = [
     "location": "London, UK",
     "logo": "https://www.google.com/s2/favicons?domain=www.trinitylaban.ac.uk&sz=128",
     "website": "https://www.trinitylaban.ac.uk",
-    "rank": "Rank 110 QS Rankings",
-    "rankingNum": 110,
-    "tuition": "31 Lakh INR",
-    "tuitionFeeUSD": 22000,
-    "acceptanceRate": 60,
     "type": "PUBLIC",
-    "minGpaPercent": 60,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -6637,16 +5960,7 @@ export const UNIVERSITIES_UK = [
     "location": "High Wycombe, UK",
     "logo": "https://www.google.com/s2/favicons?domain=www.bucks.ac.uk&sz=128",
     "website": "https://www.bucks.ac.uk",
-    "rank": "Rank 111 QS Rankings",
-    "rankingNum": 111,
-    "tuition": "19 Lakh INR",
-    "tuitionFeeUSD": 22000,
-    "acceptanceRate": 60,
     "type": "PUBLIC",
-    "minGpaPercent": 60,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -6691,16 +6005,7 @@ export const UNIVERSITIES_UK = [
     "location": "Leeds, UK",
     "logo": "https://www.google.com/s2/favicons?domain=www.nscd.ac.uk&sz=128",
     "website": "https://www.nscd.ac.uk",
-    "rank": "Rank 112 QS Rankings",
-    "rankingNum": 112,
-    "tuition": "26 Lakh INR",
-    "tuitionFeeUSD": 22000,
-    "acceptanceRate": 60,
     "type": "PUBLIC",
-    "minGpaPercent": 60,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -6728,16 +6033,7 @@ export const UNIVERSITIES_UK = [
     "location": "Birmingham, UK",
     "logo": "https://www.google.com/s2/favicons?domain=www.ucb.ac.uk&sz=128",
     "website": "https://www.ucb.ac.uk",
-    "rank": "Rank 113 QS Rankings",
-    "rankingNum": 113,
-    "tuition": "17 Lakh INR",
-    "tuitionFeeUSD": 22000,
-    "acceptanceRate": 60,
     "type": "PUBLIC",
-    "minGpaPercent": 60,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -6772,16 +6068,7 @@ export const UNIVERSITIES_UK = [
     "location": "Bournemouth, UK",
     "logo": "https://www.google.com/s2/favicons?domain=aub.ac.uk&sz=128",
     "website": "https://aub.ac.uk",
-    "rank": "Rank 114 QS Rankings",
-    "rankingNum": 114,
-    "tuition": "24 Lakh INR",
-    "tuitionFeeUSD": 22000,
-    "acceptanceRate": 60,
     "type": "PUBLIC",
-    "minGpaPercent": 60,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -6821,16 +6108,9 @@ export const UNIVERSITIES_UK = [
     "location": "Bradford, UK",
     "logo": "https://www.google.com/s2/favicons?domain=www.bradford.ac.uk&sz=128",
     "website": "https://www.bradford.ac.uk",
-    "rank": "Rank 115 QS Rankings",
-    "rankingNum": 115,
-    "tuition": "25 Lakh INR",
-    "tuitionFeeUSD": 22000,
-    "acceptanceRate": 60,
+    "rank": "=497",
+    "rankingNum": 497,
     "type": "PUBLIC",
-    "minGpaPercent": 60,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -6876,7 +6156,8 @@ export const UNIVERSITIES_UK = [
       "History",
       "Political Science",
       "International Relations"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027"
   },
   {
     "_id": "uk-116",
@@ -6889,16 +6170,7 @@ export const UNIVERSITIES_UK = [
     "location": "London, UK",
     "logo": "https://www.google.com/s2/favicons?domain=www.sas.ac.uk&sz=128",
     "website": "https://www.sas.ac.uk/",
-    "rank": "Rank 116 QS Rankings",
-    "rankingNum": 116,
-    "tuition": "20 Lakh INR",
-    "tuitionFeeUSD": 22000,
-    "acceptanceRate": 60,
     "type": "PUBLIC",
-    "minGpaPercent": 60,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -6937,16 +6209,7 @@ export const UNIVERSITIES_UK = [
     "location": "Edinburgh, UK",
     "logo": "https://www.google.com/s2/favicons?domain=www.sruc.ac.uk&sz=128",
     "website": "https://www.sruc.ac.uk/",
-    "rank": "Rank 117 QS Rankings",
-    "rankingNum": 117,
-    "tuition": "19 Lakh INR",
-    "tuitionFeeUSD": 22000,
-    "acceptanceRate": 60,
     "type": "PUBLIC",
-    "minGpaPercent": 60,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -6981,16 +6244,9 @@ export const UNIVERSITIES_UK = [
     "location": "Brighton, UK",
     "logo": "https://www.google.com/s2/favicons?domain=www.brighton.ac.uk&sz=128",
     "website": "https://www.brighton.ac.uk",
-    "rank": "Rank 118 QS Rankings",
-    "rankingNum": 118,
-    "tuition": "21 Lakh INR",
-    "tuitionFeeUSD": 22000,
-    "acceptanceRate": 60,
+    "rank": "901-950",
+    "rankingNum": 901,
     "type": "PUBLIC",
-    "minGpaPercent": 60,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -7037,7 +6293,8 @@ export const UNIVERSITIES_UK = [
       "Psychology",
       "Sociology",
       "Sport / Exercise Science"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027"
   },
   {
     "_id": "uk-119",
@@ -7050,16 +6307,9 @@ export const UNIVERSITIES_UK = [
     "location": "London, UK",
     "logo": "https://www.google.com/s2/favicons?domain=www.londonmet.ac.uk&sz=128",
     "website": "https://www.londonmet.ac.uk",
-    "rank": "Rank 119 QS Rankings",
-    "rankingNum": 119,
-    "tuition": "23 Lakh INR",
-    "tuitionFeeUSD": 22000,
-    "acceptanceRate": 60,
+    "rank": "1001-1200",
+    "rankingNum": 1001,
     "type": "PUBLIC",
-    "minGpaPercent": 60,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -7093,7 +6343,8 @@ export const UNIVERSITIES_UK = [
       "Pharmacology / Pharmacy",
       "Psychology",
       "Social Work"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027"
   },
   {
     "_id": "uk-120",
@@ -7106,16 +6357,7 @@ export const UNIVERSITIES_UK = [
     "location": "Inverness, UK",
     "logo": "https://www.google.com/s2/favicons?domain=www.uhi.ac.uk&sz=128",
     "website": "https://www.uhi.ac.uk",
-    "rank": "Rank 120 QS Rankings",
-    "rankingNum": 120,
-    "tuition": "12 Lakh INR",
-    "tuitionFeeUSD": 22000,
-    "acceptanceRate": 60,
     "type": "PUBLIC",
-    "minGpaPercent": 60,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -7160,16 +6402,9 @@ export const UNIVERSITIES_UK = [
     "location": "Edinburgh, UK",
     "logo": "https://www.google.com/s2/favicons?domain=www.napier.ac.uk&sz=128",
     "website": "https://www.napier.ac.uk",
-    "rank": "Rank 121 QS Rankings",
-    "rankingNum": 121,
-    "tuition": "21 Lakh INR",
-    "tuitionFeeUSD": 22000,
-    "acceptanceRate": 60,
+    "rank": "801-850",
+    "rankingNum": 801,
     "type": "PUBLIC",
-    "minGpaPercent": 60,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -7210,7 +6445,8 @@ export const UNIVERSITIES_UK = [
       "Food And Hospitality",
       "Tourism",
       "Sport / Exercise Science"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027"
   },
   {
     "_id": "uk-122",
@@ -7223,16 +6459,7 @@ export const UNIVERSITIES_UK = [
     "location": "London, UK",
     "logo": "https://www.google.com/s2/favicons?domain=www.richmond.ac.uk&sz=128",
     "website": "https://www.richmond.ac.uk",
-    "rank": "Rank 122 QS Rankings",
-    "rankingNum": 122,
-    "tuition": "21 Lakh INR",
-    "tuitionFeeUSD": 22000,
-    "acceptanceRate": 60,
     "type": "PUBLIC",
-    "minGpaPercent": 60,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -7269,16 +6496,9 @@ export const UNIVERSITIES_UK = [
     "location": "Liverpool, UK",
     "logo": "https://www.google.com/s2/favicons?domain=www.ljmu.ac.uk&sz=128",
     "website": "https://www.ljmu.ac.uk",
-    "rank": "Rank 123 QS Rankings",
-    "rankingNum": 123,
-    "tuition": "13 Lakh INR",
-    "tuitionFeeUSD": 22000,
-    "acceptanceRate": 60,
+    "rank": "851-900",
+    "rankingNum": 851,
     "type": "PUBLIC",
-    "minGpaPercent": 60,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -7343,7 +6563,8 @@ export const UNIVERSITIES_UK = [
       "Sociology",
       "Sport / Exercise Science",
       "Sports Management"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027"
   },
   {
     "_id": "uk-124",
@@ -7356,16 +6577,7 @@ export const UNIVERSITIES_UK = [
     "location": "Chester, UK",
     "logo": "https://www.google.com/s2/favicons?domain=www.chester.ac.uk&sz=128",
     "website": "https://www.chester.ac.uk",
-    "rank": "Rank 124 QS Rankings",
-    "rankingNum": 124,
-    "tuition": "17 Lakh INR",
-    "tuitionFeeUSD": 22000,
-    "acceptanceRate": 60,
     "type": "PUBLIC",
-    "minGpaPercent": 60,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -7441,16 +6653,7 @@ export const UNIVERSITIES_UK = [
     "location": "Paisley, UK",
     "logo": "https://www.google.com/s2/favicons?domain=www.uws.ac.uk&sz=128",
     "website": "https://www.uws.ac.uk/",
-    "rank": "Rank 125 QS Rankings",
-    "rankingNum": 125,
-    "tuition": "12 Lakh INR",
-    "tuitionFeeUSD": 22000,
-    "acceptanceRate": 60,
     "type": "PUBLIC",
-    "minGpaPercent": 60,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -7499,16 +6702,7 @@ export const UNIVERSITIES_UK = [
     "location": "Sunderland, UK",
     "logo": "https://www.google.com/s2/favicons?domain=www.sunderland.ac.uk&sz=128",
     "website": "https://www.sunderland.ac.uk",
-    "rank": "Rank 126 QS Rankings",
-    "rankingNum": 126,
-    "tuition": "20 Lakh INR",
-    "tuitionFeeUSD": 22000,
-    "acceptanceRate": 60,
     "type": "PUBLIC",
-    "minGpaPercent": 60,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -7555,16 +6749,9 @@ export const UNIVERSITIES_UK = [
     "location": "Canterbury, UK",
     "logo": "https://www.google.com/s2/favicons?domain=www.canterbury.ac.uk&sz=128",
     "website": "https://www.canterbury.ac.uk",
-    "rank": "Rank 127 QS Rankings",
-    "rankingNum": 127,
-    "tuition": "19 Lakh INR",
-    "tuitionFeeUSD": 22000,
-    "acceptanceRate": 60,
+    "rank": "1401+",
+    "rankingNum": 1401,
     "type": "PUBLIC",
-    "minGpaPercent": 60,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -7598,7 +6785,8 @@ export const UNIVERSITIES_UK = [
       "Sport / Exercise Science",
       "Economics",
       "Law"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027"
   },
   {
     "_id": "uk-128",
@@ -7611,16 +6799,9 @@ export const UNIVERSITIES_UK = [
     "location": "Hatfield, UK",
     "logo": "https://www.google.com/s2/favicons?domain=www.herts.ac.uk&sz=128",
     "website": "https://www.herts.ac.uk",
-    "rank": "Rank 128 QS Rankings",
-    "rankingNum": 128,
-    "tuition": "19 Lakh INR",
-    "tuitionFeeUSD": 22000,
-    "acceptanceRate": 60,
+    "rank": "851-900",
+    "rankingNum": 851,
     "type": "PUBLIC",
-    "minGpaPercent": 60,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -7657,7 +6838,8 @@ export const UNIVERSITIES_UK = [
       "Mathematics",
       "Physics",
       "Chemistry"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027"
   },
   {
     "_id": "uk-129",
@@ -7670,16 +6852,9 @@ export const UNIVERSITIES_UK = [
     "location": "Aberdeen, UK",
     "logo": "https://www.google.com/s2/favicons?domain=www.rgu.ac.uk&sz=128",
     "website": "https://www.rgu.ac.uk",
-    "rank": "Rank 129 QS Rankings",
-    "rankingNum": 129,
-    "tuition": "19 Lakh INR",
-    "tuitionFeeUSD": 22000,
-    "acceptanceRate": 60,
+    "rank": "1001-1200",
+    "rankingNum": 1001,
     "type": "PUBLIC",
-    "minGpaPercent": 60,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -7709,7 +6884,8 @@ export const UNIVERSITIES_UK = [
       "Petroleum Engineering",
       "Graphic and Design Studies",
       "Film and TV production"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027"
   },
   {
     "_id": "uk-130",
@@ -7722,16 +6898,9 @@ export const UNIVERSITIES_UK = [
     "location": "Preston, UK",
     "logo": "https://www.google.com/s2/favicons?domain=www.uclan.ac.uk&sz=128",
     "website": "https://www.uclan.ac.uk",
-    "rank": "Rank 130 QS Rankings",
-    "rankingNum": 130,
-    "tuition": "16 Lakh INR",
-    "tuitionFeeUSD": 22000,
-    "acceptanceRate": 60,
+    "rank": "1001-1200",
+    "rankingNum": 1001,
     "type": "PUBLIC",
-    "minGpaPercent": 60,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -7770,7 +6939,8 @@ export const UNIVERSITIES_UK = [
       "Sport / Exercise Science",
       "Food And Hospitality",
       "Tourism"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027"
   },
   {
     "_id": "uk-131",
@@ -7783,16 +6953,7 @@ export const UNIVERSITIES_UK = [
     "location": "London, UK",
     "logo": "https://www.google.com/s2/favicons?domain=www.ese.ac.uk&sz=128",
     "website": "https://www.ese.ac.uk",
-    "rank": "Rank 131 QS Rankings",
-    "rankingNum": 131,
-    "tuition": "11 Lakh INR",
-    "tuitionFeeUSD": 22000,
-    "acceptanceRate": 60,
     "type": "PUBLIC",
-    "minGpaPercent": 60,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -7826,16 +6987,7 @@ export const UNIVERSITIES_UK = [
     "location": "London, UK",
     "logo": "https://www.google.com/s2/favicons?domain=www.bpp.com&sz=128",
     "website": "https://www.bpp.com",
-    "rank": "Rank 132 QS Rankings",
-    "rankingNum": 132,
-    "tuition": "13 Lakh INR",
-    "tuitionFeeUSD": 22000,
-    "acceptanceRate": 60,
     "type": "PUBLIC",
-    "minGpaPercent": 60,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -7872,16 +7024,7 @@ export const UNIVERSITIES_UK = [
     "location": "Newport, UK",
     "logo": "https://www.google.com/s2/favicons?domain=www.harper-adams.ac.uk&sz=128",
     "website": "https://www.harper-adams.ac.uk/",
-    "rank": "Rank 133 QS Rankings",
-    "rankingNum": 133,
-    "tuition": "20 Lakh INR",
-    "tuitionFeeUSD": 22000,
-    "acceptanceRate": 60,
     "type": "PUBLIC",
-    "minGpaPercent": 60,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -7918,16 +7061,7 @@ export const UNIVERSITIES_UK = [
     "location": "Lincoln, UK",
     "logo": "https://www.google.com/s2/favicons?domain=www.bishopg.ac.uk&sz=128",
     "website": "https://www.bishopg.ac.uk",
-    "rank": "Rank 134 QS Rankings",
-    "rankingNum": 134,
-    "tuition": "16 Lakh INR",
-    "tuitionFeeUSD": 22000,
-    "acceptanceRate": 60,
     "type": "PUBLIC",
-    "minGpaPercent": 60,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -7964,16 +7098,7 @@ export const UNIVERSITIES_UK = [
     "location": "Lancaster, UK",
     "logo": "https://www.google.com/s2/favicons?domain=www.cumbria.ac.uk&sz=128",
     "website": "https://www.cumbria.ac.uk",
-    "rank": "Rank 135 QS Rankings",
-    "rankingNum": 135,
-    "tuition": "16 Lakh INR",
-    "tuitionFeeUSD": 22000,
-    "acceptanceRate": 60,
     "type": "PUBLIC",
-    "minGpaPercent": 60,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -8021,16 +7146,9 @@ export const UNIVERSITIES_UK = [
     "location": "London, UK",
     "logo": "https://www.google.com/s2/favicons?domain=www.roehampton.ac.uk&sz=128",
     "website": "https://www.roehampton.ac.uk/",
-    "rank": "Rank 136 QS Rankings",
-    "rankingNum": 136,
-    "tuition": "20 Lakh INR",
-    "tuitionFeeUSD": 22000,
-    "acceptanceRate": 60,
+    "rank": "1001-1200",
+    "rankingNum": 1001,
     "type": "PUBLIC",
-    "minGpaPercent": 60,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -8063,7 +7181,8 @@ export const UNIVERSITIES_UK = [
       "History",
       "Biological Sciences",
       "Computer Science"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027"
   },
   {
     "_id": "uk-137",
@@ -8076,16 +7195,9 @@ export const UNIVERSITIES_UK = [
     "location": "Glasgow, UK",
     "logo": "https://www.google.com/s2/favicons?domain=www.gcu.ac.uk&sz=128",
     "website": "https://www.gcu.ac.uk",
-    "rank": "Rank 137 QS Rankings",
-    "rankingNum": 137,
-    "tuition": "18 Lakh INR",
-    "tuitionFeeUSD": 22000,
-    "acceptanceRate": 60,
+    "rank": "1001-1200",
+    "rankingNum": 1001,
     "type": "PUBLIC",
-    "minGpaPercent": 60,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -8122,7 +7234,8 @@ export const UNIVERSITIES_UK = [
       "Media & Communication",
       "Risk Management",
       "Legal Studies"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027"
   },
   {
     "_id": "uk-138",
@@ -8135,16 +7248,7 @@ export const UNIVERSITIES_UK = [
     "location": "Stoke-on-Trent, UK",
     "logo": "https://www.google.com/s2/favicons?domain=www.staffs.ac.uk&sz=128",
     "website": "https://www.staffs.ac.uk",
-    "rank": "Rank 138 QS Rankings",
-    "rankingNum": 138,
-    "tuition": "20 Lakh INR",
-    "tuitionFeeUSD": 22000,
-    "acceptanceRate": 60,
     "type": "PUBLIC",
-    "minGpaPercent": 60,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -8187,16 +7291,7 @@ export const UNIVERSITIES_UK = [
     "location": "Falmouth, UK",
     "logo": "https://www.google.com/s2/favicons?domain=www.falmouth.ac.uk&sz=128",
     "website": "https://www.falmouth.ac.uk",
-    "rank": "Rank 139 QS Rankings",
-    "rankingNum": 139,
-    "tuition": "21 Lakh INR",
-    "tuitionFeeUSD": 22000,
-    "acceptanceRate": 60,
     "type": "PUBLIC",
-    "minGpaPercent": 60,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -8242,16 +7337,7 @@ export const UNIVERSITIES_UK = [
     "location": "London, UK",
     "logo": "https://www.google.com/s2/favicons?domain=courtauld.ac.uk&sz=128",
     "website": "https://courtauld.ac.uk/",
-    "rank": "Rank 140 QS Rankings",
-    "rankingNum": 140,
-    "tuition": "31 Lakh INR",
-    "tuitionFeeUSD": 22000,
-    "acceptanceRate": 60,
     "type": "PUBLIC",
-    "minGpaPercent": 60,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -8280,16 +7366,7 @@ export const UNIVERSITIES_UK = [
     "location": "Cardiff, UK",
     "logo": "https://www.google.com/s2/favicons?domain=www.cardiffmet.ac.uk&sz=128",
     "website": "https://www.cardiffmet.ac.uk/",
-    "rank": "Rank 141 QS Rankings",
-    "rankingNum": 141,
-    "tuition": "19 Lakh INR",
-    "tuitionFeeUSD": 22000,
-    "acceptanceRate": 60,
     "type": "PUBLIC",
-    "minGpaPercent": 60,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -8336,16 +7413,7 @@ export const UNIVERSITIES_UK = [
     "location": "London, UK",
     "logo": "https://www.google.com/s2/favicons?domain=www.cssd.ac.uk&sz=128",
     "website": "https://www.cssd.ac.uk/",
-    "rank": "Rank 142 QS Rankings",
-    "rankingNum": 142,
-    "tuition": "13 Lakh INR",
-    "tuitionFeeUSD": 22000,
-    "acceptanceRate": 60,
     "type": "PUBLIC",
-    "minGpaPercent": 60,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -8378,16 +7446,7 @@ export const UNIVERSITIES_UK = [
     "location": "Farnham, UK",
     "logo": "https://www.google.com/s2/favicons?domain=www.uca.ac.uk&sz=128",
     "website": "https://www.uca.ac.uk/",
-    "rank": "Rank 143 QS Rankings",
-    "rankingNum": 143,
-    "tuition": "21 Lakh INR",
-    "tuitionFeeUSD": 22000,
-    "acceptanceRate": 60,
     "type": "PUBLIC",
-    "minGpaPercent": 60,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -8428,16 +7487,7 @@ export const UNIVERSITIES_UK = [
     "location": "London, UK",
     "logo": "https://ui-avatars.com/api/?name=Walbrook%20Institute&background=0284c7&color=fff&bold=true&size=128",
     "website": "https://www.gov.uk",
-    "rank": "Rank 144 QS Rankings",
-    "rankingNum": 144,
-    "tuition": "12 Lakh INR",
-    "tuitionFeeUSD": 22000,
-    "acceptanceRate": 60,
     "type": "PUBLIC",
-    "minGpaPercent": 60,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -8469,16 +7519,7 @@ export const UNIVERSITIES_UK = [
     "location": "Manchester, UK",
     "logo": "https://www.google.com/s2/favicons?domain=www.rncm.ac.uk&sz=128",
     "website": "https://www.rncm.ac.uk",
-    "rank": "Rank 145 QS Rankings",
-    "rankingNum": 145,
-    "tuition": "35 Lakh INR",
-    "tuitionFeeUSD": 22000,
-    "acceptanceRate": 60,
     "type": "PUBLIC",
-    "minGpaPercent": 60,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -8506,16 +7547,7 @@ export const UNIVERSITIES_UK = [
     "location": "Lampeter, UK",
     "logo": "https://www.google.com/s2/favicons?domain=www.uwtsd.ac.uk&sz=128",
     "website": "https://www.uwtsd.ac.uk/",
-    "rank": "Rank 146 QS Rankings",
-    "rankingNum": 146,
-    "tuition": "19 Lakh INR",
-    "tuitionFeeUSD": 22000,
-    "acceptanceRate": 60,
     "type": "PUBLIC",
-    "minGpaPercent": 60,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -8569,16 +7601,7 @@ export const UNIVERSITIES_UK = [
     "location": "Norwich, UK",
     "logo": "https://www.google.com/s2/favicons?domain=www.nua.ac.uk&sz=128",
     "website": "https://www.nua.ac.uk/",
-    "rank": "Rank 147 QS Rankings",
-    "rankingNum": 147,
-    "tuition": "22 Lakh INR",
-    "tuitionFeeUSD": 22000,
-    "acceptanceRate": 60,
     "type": "PUBLIC",
-    "minGpaPercent": 60,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -8615,16 +7638,9 @@ export const UNIVERSITIES_UK = [
     "location": "Salford, UK",
     "logo": "https://www.google.com/s2/favicons?domain=www.salford.ac.uk&sz=128",
     "website": "https://www.salford.ac.uk/",
-    "rank": "Rank 148 QS Rankings",
-    "rankingNum": 148,
-    "tuition": "16 Lakh INR",
-    "tuitionFeeUSD": 22000,
-    "acceptanceRate": 60,
+    "rank": "1001-1200",
+    "rankingNum": 1001,
     "type": "PUBLIC",
-    "minGpaPercent": 60,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -8664,7 +7680,8 @@ export const UNIVERSITIES_UK = [
       "Theatre",
       "Music",
       "Teaching / Education studies"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027"
   },
   {
     "_id": "uk-149",
@@ -8677,16 +7694,7 @@ export const UNIVERSITIES_UK = [
     "location": "London, UK",
     "logo": "https://www.google.com/s2/favicons?domain=www.rvc.ac.uk&sz=128",
     "website": "https://www.rvc.ac.uk",
-    "rank": "Rank 149 QS Rankings",
-    "rankingNum": 149,
-    "tuition": "57 Lakh INR",
-    "tuitionFeeUSD": 22000,
-    "acceptanceRate": 60,
     "type": "PUBLIC",
-    "minGpaPercent": 60,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -8719,16 +7727,7 @@ export const UNIVERSITIES_UK = [
     "location": "United Kingdom",
     "logo": "https://www.google.com/s2/favicons?domain=www.wales.ac.uk&sz=128",
     "website": "https://www.wales.ac.uk",
-    "rank": "Rank 150 QS Rankings",
-    "rankingNum": 150,
-    "tuition": "19 Lakh INR",
-    "tuitionFeeUSD": 22000,
-    "acceptanceRate": 60,
     "type": "PUBLIC",
-    "minGpaPercent": 60,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -8770,16 +7769,7 @@ export const UNIVERSITIES_UK = [
     "location": "Birmingham, UK",
     "logo": "https://www.google.com/s2/favicons?domain=www.newman.ac.uk&sz=128",
     "website": "https://www.newman.ac.uk",
-    "rank": "Rank 151 QS Rankings",
-    "rankingNum": 151,
-    "tuition": "15 Lakh INR",
-    "tuitionFeeUSD": 22000,
-    "acceptanceRate": 60,
     "type": "PUBLIC",
-    "minGpaPercent": 60,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -8816,16 +7806,7 @@ export const UNIVERSITIES_UK = [
     "location": "Luton, UK",
     "logo": "https://www.google.com/s2/favicons?domain=www.beds.ac.uk&sz=128",
     "website": "https://www.beds.ac.uk",
-    "rank": "Rank 152 QS Rankings",
-    "rankingNum": 152,
-    "tuition": "19 Lakh INR",
-    "tuitionFeeUSD": 22000,
-    "acceptanceRate": 60,
     "type": "PUBLIC",
-    "minGpaPercent": 60,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -8867,16 +7848,7 @@ export const UNIVERSITIES_UK = [
     "location": "London, UK",
     "logo": "https://www.google.com/s2/favicons?domain=www.uwl.ac.uk&sz=128",
     "website": "https://www.uwl.ac.uk",
-    "rank": "Rank 153 QS Rankings",
-    "rankingNum": 153,
-    "tuition": "19 Lakh INR",
-    "tuitionFeeUSD": 22000,
-    "acceptanceRate": 60,
     "type": "PUBLIC",
-    "minGpaPercent": 60,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -8925,16 +7897,7 @@ export const UNIVERSITIES_UK = [
     "location": "Liverpool, UK",
     "logo": "https://www.google.com/s2/favicons?domain=www.lipa.ac.uk&sz=128",
     "website": "https://www.lipa.ac.uk",
-    "rank": "Rank 154 QS Rankings",
-    "rankingNum": 154,
-    "tuition": "23 Lakh INR",
-    "tuitionFeeUSD": 22000,
-    "acceptanceRate": 60,
     "type": "PUBLIC",
-    "minGpaPercent": 60,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -8957,5 +7920,3 @@ export const UNIVERSITIES_UK = [
     ]
   }
 ];
-
-export default UNIVERSITIES_UK;

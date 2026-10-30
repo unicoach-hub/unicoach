@@ -8,19 +8,13 @@ import CoursesAndFees from './CoursesAndFees';
 
 const oxfordData = {
   name: "University of Oxford",
-  location: "Oxford - Mississippi, UK", // Matches user prompt's specific location string
+  location: "Oxford, England, UK",
   city: "Oxford",
   established: 1096,
-  totalStudents: 26455,
-  intlStudents: 11500,
-  studentFacultyRatio: "11:1",
-  acceptanceRate: "17%",
-  accreditation: "Association of MBAs (AMBA)",
-  avgStudyCost: "INR 1.50 L",
-  avgCostOfLiving: "INR 0.80 L",
+  type: "PUBLIC",
   logo: "/logos/University of Oxford.png",
   heroImage: "/images/universities/oxford.jpg",
-  description: "Welcome to the University of Oxford, established in 1096, making it one of the oldest and most prestigious institutions in the world. Over the centuries, Oxford has grown into a vibrant community of 24,000 students, with 8000 international students contributing to its diverse and inclusive environment.\n\nThe university's historic campus is renowned for its stunning architecture and picturesque surroundings. Notable facilities include the Bodleian Library, Ashmolean Museum, and numerous colleges scattered throughout the city of Oxford.\n\nAt Oxford, you can choose from a wide range of programmes, with a focus on academic excellence and industry relevance. Popular areas of study include Humanities, Sciences, Social Sciences, and Business.\n\nIntake Periods: The university offers multiple intake periods throughout the year, providing flexibility for international students.\nSupport Services: International students can benefit from a range of support services, including language classes, cultural integration programs, and academic advising.\n\nThe University of Oxford holds Association of MBAs (AMBA) from the Association of MBAs (AMBA), ensuring the highest standards of education and professional development.",
+  description: "The University of Oxford is the oldest university in the English-speaking world; there is evidence of teaching there from 1096. It is a collegiate university, with teaching and student life organised across its colleges and departments.\n\nThe city of Oxford is home to the university's historic buildings and facilities, including the Bodleian Libraries and the Ashmolean Museum.\n\nOxford offers taught and research postgraduate courses across Humanities, Mathematical, Physical and Life Sciences, Medical Sciences and Social Sciences. Most postgraduate courses start in October, and each course has its own fixed application deadlines.\n\nOxford is ranked 4th in the world in the QS World University Rankings 2027.",
   topCourses: [
     { name: "Banking and Finance", count: 3 },
     { name: "Biochemistry", count: 1 },
@@ -29,40 +23,21 @@ const oxfordData = {
     { name: "Engineering Science", count: 1 }
   ],
   intakeDeadlines: [
-    { name: "MAY'2025", status: "Intake Open" },
-    { name: "JUN'2025", status: "Intake Open" },
-    { name: "SEP'2025", status: "Intake Open" },
-    { name: "OCT'2025", status: "Intake Open" },
-    { name: "NOV'2025", status: "Intake Open" }
+    { name: "OCT'2026", status: "Intake Open" }
   ],
   requirements: [
-    { title: "TOEFL iBT Score", detail: "110+ minimum cutoff required for English proficiency verification." },
-    { title: "IELTS Academic Band", detail: "7.5+ minimum band required for admission, with no band less than 7.0." },
-    { title: "GRE General Score", detail: "Recommended for all computational, economic, and scientific streams." },
-    { title: "Undergraduate Degree", detail: "First-class honors degree expected (minimum equivalent of 3.8+ GPA)." }
+    { title: "English Language", detail: "IELTS, TOEFL or another accepted test; each course sets either Oxford's standard or higher English level. Check the course page." },
+    { title: "Undergraduate Degree", detail: "Typically a first-class or strong upper second-class UK degree, or the international equivalent; the exact requirement varies by course." },
+    { title: "Course-specific Requirements", detail: "Some courses ask for GRE/GMAT scores, written work or a research proposal. Check the course page." }
   ],
   rankings: {
-    "Times Higher Education": [
-      { category: "Best World Ranking Schools - 2023", rank: "1" },
-      { category: "Best University Ranking Schools - 2022", rank: "1" }
-    ],
-    "US News": [
-      { category: "Best World Ranking Schools - 2023", rank: "5" },
-      { category: "Best World Ranking Schools - 2022", rank: "5" }
-    ],
-    "Webometrics - World": [
-      { category: "Best World Ranking Schools - 2023", rank: "5" }
-    ],
     "QS Rankings": [
-      { category: "Best World Ranking Schools - 2023", rank: "4" },
-      { category: "Best World Ranking Schools - 2022", rank: "4" }
+      { category: "QS World University Rankings 2027", rank: "4" }
+    ],
+    "Times Higher Education": [
+      { category: "THE World University Rankings 2026", rank: "1" }
     ]
   },
-  coursesFees: [
-    { name: "MSc in Law and Finance", duration: "10 Months", tuition: 52.77 },
-    { name: "MSc in Mathematical and Computational Finance", duration: "10 Months", tuition: 41.47 },
-    { name: "MSc in Financial Economics", duration: "9 Months", tuition: 58.72 }
-  ],
   placements: {
     description: "The University of Oxford provides comprehensive placement assistance for international students to help them transition into the workforce. The Career Service at Oxford offers career counseling sessions to guide students in making informed decisions about their career paths. They also conduct various workshops and seminars on topics such as resume writing, interview skills, and job search strategies to enhance students' employability skills. Additionally, the university organizes job fairs and networking events where students can connect with potential employers from various industries.",
     services: [
@@ -87,9 +62,8 @@ const oxfordData = {
   ],
   alumni: [
     { name: "Stephen Hawking", profession: "Physicist" },
-    { name: "Indira Gandhi", profession: "Politician" },
+    { name: "Indira Gandhi", profession: "Politician (studied at Somerville College)" },
     { name: "J.R.R. Tolkien", profession: "Author" },
-    { name: "Emma Watson", profession: "Actress" },
     { name: "Malala Yousafzai", profession: "Activist" }
   ],
   blogs: [

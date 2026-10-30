@@ -8,6 +8,7 @@ import StudyAbroadCTA from '../../../../../components/StudyAbroadCTA';
 import { getUniversityLogo } from '../../../../../components/logoResolver';
 import { matchesUniversitySearch, getMatchedCoursesForUniversity } from '../../../../../utils/universitySearchMatcher';
 import { HookBand, BarCompare } from '../../../../../components/ui/Infographics';
+import { FinderCard, FinderField, FinderChip, FINDER_FIELD, FIELD_RADIUS } from '../../../../../components/ui/FinderForm';
 
 // ─────────────────────────────────────────────
 // Ireland University Database — Data Science
@@ -19,9 +20,9 @@ const universityDatabase = [
     city: "Dublin",
     state: "Leinster",
     location: "Dublin, Leinster, Ireland",
-    rank: "Rank 171 QS Rankings",
-    rankValue: 171,
-    tuition: 21,
+    rank: "Rank 118 QS Rankings",
+    rankValue: 118,
+    tuition: null,
     type: "PUBLIC",
     logo: "https://logo.clearbit.com/ucd.ie",
     website: "https://www.ucd.ie",
@@ -33,10 +34,10 @@ const universityDatabase = [
       "Business Analytics", "Artificial Intelligence / Machine Learning"
     ],
     degrees: ["Postgraduate", "Ph.D.", "Undergraduate"],
-    intakes: ["JAN", "SEP"],
-    description: "Ireland's largest and most globally connected university, offering a world-class MSc in Data Science with strong links to Dublin's thriving tech sector.",
-    eligibility: "GPA 3.3+, IELTS 6.5+ or equivalent",
-    deadline: "Mar 15, 2026"
+    intakes: ["SEP"],
+    description: "Ireland's largest university, offering data science and analytics master's programmes close to Dublin's tech sector.",
+    eligibility: "Bachelor's degree + IELTS/TOEFL",
+    deadline: "Varies by course"
   },
   {
     id: 2,
@@ -46,7 +47,7 @@ const universityDatabase = [
     location: "Athlone, Westmeath, Ireland",
     rank: "Rank --",
     rankValue: 9999,
-    tuition: 14,
+    tuition: 20,
     type: "PUBLIC",
     logo: "https://logo.clearbit.com/tus.ie",
     website: "https://www.tus.ie",
@@ -57,9 +58,9 @@ const universityDatabase = [
     ],
     degrees: ["Postgraduate", "Undergraduate", "PG Diploma /Certificate"],
     intakes: ["SEP"],
-    description: "A growing technological university in the Midlands offering an applied MSc in Data Science, combining practical skills with cutting-edge analytics.",
-    eligibility: "GPA 2.8+, IELTS 6.0+ or equivalent",
-    deadline: "May 15, 2026"
+    description: "A technological university offering an MSc in Data Analytics at its Athlone and Limerick campuses.",
+    eligibility: "Bachelor's degree, IELTS 6.5+",
+    deadline: "Varies by course"
   }
 ];
 
@@ -235,13 +236,13 @@ const IrelandDataSciencePage = () => {
         <div className="grid grid-cols-1 lg:grid-cols-[290px_1fr] gap-8 items-start">
 
           {/* Sidebar */}
-          <aside className="sticky top-28 bg-white/70 backdrop-blur-xl border border-white/80 rounded-[28px] p-6 shadow-[0_12px_40px_rgba(0,0,0,0.02)] z-30">
-            <div className="flex items-center justify-between pb-4 border-b border-slate-100 mb-5">
-              <span className="flex items-center gap-2 text-sm font-black text-slate-800 uppercase tracking-wider">
-                <Filter size={15} className="text-cyan-600" />
+          <aside className="sticky top-28 bg-white border border-[#E6E0D4] p-5 shadow-[0_24px_60px_-36px_rgba(22,19,15,0.35)] z-30" style={{ borderRadius: 18 }}>
+            <div className="flex items-center justify-between pb-4 border-b border-[#ECE6DA] mb-5">
+              <span className="flex items-center gap-2 text-[14px] font-semibold text-[#16130F]">
+                <Filter size={15} className="text-[#DE5C2B]" />
                 Filters
               </span>
-              <button onClick={handleClearAll} className="text-xs font-bold text-cyan-600 hover:text-cyan-800 cursor-pointer transition-colors">
+              <button onClick={handleClearAll} className="text-[12.5px] font-semibold text-[#DE5C2B] hover:text-[#86351A] cursor-pointer transition-colors">
                 Clear All
               </button>
             </div>
@@ -250,16 +251,16 @@ const IrelandDataSciencePage = () => {
 
               {/* Fees */}
               <div>
-                <button onClick={() => toggleAccordion('fees')} className="w-full flex items-center justify-between font-bold text-xs text-slate-700 uppercase tracking-wider mb-3.5">
+                <button onClick={() => toggleAccordion('fees')} className="w-full flex items-center justify-between text-[12.5px] font-semibold text-[#16130F] mb-3.5">
                   <span>1st Year Fees</span>
-                  <ChevronDown size={14} className={`transform transition-transform text-slate-400 ${openAccordions.fees ? 'rotate-180 text-cyan-600' : ''}`} />
+                  <ChevronDown size={14} className={`transform transition-transform text-[#9A9184] ${openAccordions.fees ? 'rotate-180 text-[#DE5C2B]' : ''}`} />
                 </button>
                 <AnimatePresence initial={false}>
                   {openAccordions.fees && (
                     <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }} className="overflow-hidden space-y-2.5 pl-0.5">
                       {feeRanges.map(range => (
-                        <label key={range.id} className="flex items-center gap-3 text-xs font-bold text-slate-600 hover:text-cyan-600 cursor-pointer select-none">
-                          <input type="checkbox" checked={selectedFees.includes(range.id)} onChange={() => handleFilterToggle(range.id, selectedFees, setSelectedFees)} className="w-4 h-4 rounded border-slate-300 text-cyan-600 focus:ring-cyan-500 cursor-pointer" />
+                        <label key={range.id} className="flex items-center gap-3 text-[13px] text-[#16130F] hover:text-[#DE5C2B] cursor-pointer select-none">
+                          <input type="checkbox" checked={selectedFees.includes(range.id)} onChange={() => handleFilterToggle(range.id, selectedFees, setSelectedFees)} className="w-4 h-4 rounded border-[#E6E0D4] accent-[#DE5C2B] cursor-pointer" />
                           <span>{range.label}</span>
                         </label>
                       ))}
@@ -268,20 +269,20 @@ const IrelandDataSciencePage = () => {
                 </AnimatePresence>
               </div>
 
-              <div className="w-full h-[1px] bg-slate-100" />
+              <div className="w-full h-[1px] bg-[#ECE6DA]" />
 
               {/* Degree */}
               <div>
-                <button onClick={() => toggleAccordion('degree')} className="w-full flex items-center justify-between font-bold text-xs text-slate-700 uppercase tracking-wider mb-3.5">
+                <button onClick={() => toggleAccordion('degree')} className="w-full flex items-center justify-between text-[12.5px] font-semibold text-[#16130F] mb-3.5">
                   <span>Degree</span>
-                  <ChevronDown size={14} className={`transform transition-transform text-slate-400 ${openAccordions.degree ? 'rotate-180 text-cyan-600' : ''}`} />
+                  <ChevronDown size={14} className={`transform transition-transform text-[#9A9184] ${openAccordions.degree ? 'rotate-180 text-[#DE5C2B]' : ''}`} />
                 </button>
                 <AnimatePresence initial={false}>
                   {openAccordions.degree && (
                     <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }} className="overflow-hidden space-y-2.5 pl-0.5">
                       {degreeCategories.map(deg => (
-                        <label key={deg} className="flex items-center gap-3 text-xs font-bold text-slate-600 hover:text-cyan-600 cursor-pointer select-none">
-                          <input type="checkbox" checked={selectedDegrees.includes(deg)} onChange={() => handleFilterToggle(deg, selectedDegrees, setSelectedDegrees)} className="w-4 h-4 rounded border-slate-300 text-cyan-600 focus:ring-cyan-500 cursor-pointer" />
+                        <label key={deg} className="flex items-center gap-3 text-[13px] text-[#16130F] hover:text-[#DE5C2B] cursor-pointer select-none">
+                          <input type="checkbox" checked={selectedDegrees.includes(deg)} onChange={() => handleFilterToggle(deg, selectedDegrees, setSelectedDegrees)} className="w-4 h-4 rounded border-[#E6E0D4] accent-[#DE5C2B] cursor-pointer" />
                           <span>{deg}</span>
                         </label>
                       ))}
@@ -290,20 +291,20 @@ const IrelandDataSciencePage = () => {
                 </AnimatePresence>
               </div>
 
-              <div className="w-full h-[1px] bg-slate-100" />
+              <div className="w-full h-[1px] bg-[#ECE6DA]" />
 
               {/* Courses */}
               <div>
-                <button onClick={() => toggleAccordion('courses')} className="w-full flex items-center justify-between font-bold text-xs text-slate-700 uppercase tracking-wider mb-3.5">
+                <button onClick={() => toggleAccordion('courses')} className="w-full flex items-center justify-between text-[12.5px] font-semibold text-[#16130F] mb-3.5">
                   <span>Courses</span>
-                  <ChevronDown size={14} className={`transform transition-transform text-slate-400 ${openAccordions.courses ? 'rotate-180 text-cyan-600' : ''}`} />
+                  <ChevronDown size={14} className={`transform transition-transform text-[#9A9184] ${openAccordions.courses ? 'rotate-180 text-[#DE5C2B]' : ''}`} />
                 </button>
                 <AnimatePresence initial={false}>
                   {openAccordions.courses && (
                     <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }} className="overflow-hidden space-y-2.5 pl-0.5 max-h-[220px] overflow-y-auto">
                       {courseCategories.map(course => (
-                        <label key={course} className="flex items-center gap-3 text-xs font-bold text-slate-600 hover:text-cyan-600 cursor-pointer select-none">
-                          <input type="checkbox" checked={selectedCourses.includes(course)} onChange={() => handleFilterToggle(course, selectedCourses, setSelectedCourses)} className="w-4 h-4 rounded border-slate-300 text-cyan-600 focus:ring-cyan-500 cursor-pointer" />
+                        <label key={course} className="flex items-center gap-3 text-[13px] text-[#16130F] hover:text-[#DE5C2B] cursor-pointer select-none">
+                          <input type="checkbox" checked={selectedCourses.includes(course)} onChange={() => handleFilterToggle(course, selectedCourses, setSelectedCourses)} className="w-4 h-4 rounded border-[#E6E0D4] accent-[#DE5C2B] cursor-pointer" />
                           <span>{course}</span>
                         </label>
                       ))}
@@ -312,20 +313,20 @@ const IrelandDataSciencePage = () => {
                 </AnimatePresence>
               </div>
 
-              <div className="w-full h-[1px] bg-slate-100" />
+              <div className="w-full h-[1px] bg-[#ECE6DA]" />
 
               {/* Cities */}
               <div>
-                <button onClick={() => toggleAccordion('cities')} className="w-full flex items-center justify-between font-bold text-xs text-slate-700 uppercase tracking-wider mb-3.5">
+                <button onClick={() => toggleAccordion('cities')} className="w-full flex items-center justify-between text-[12.5px] font-semibold text-[#16130F] mb-3.5">
                   <span>Cities</span>
-                  <ChevronDown size={14} className={`transform transition-transform text-slate-400 ${openAccordions.cities ? 'rotate-180 text-cyan-600' : ''}`} />
+                  <ChevronDown size={14} className={`transform transition-transform text-[#9A9184] ${openAccordions.cities ? 'rotate-180 text-[#DE5C2B]' : ''}`} />
                 </button>
                 <AnimatePresence initial={false}>
                   {openAccordions.cities && (
                     <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }} className="overflow-hidden space-y-2.5 pl-0.5">
                       {cityCategories.map(city => (
-                        <label key={city} className="flex items-center gap-3 text-xs font-bold text-slate-600 hover:text-cyan-600 cursor-pointer select-none">
-                          <input type="checkbox" checked={selectedCities.includes(city)} onChange={() => handleFilterToggle(city, selectedCities, setSelectedCities)} className="w-4 h-4 rounded border-slate-300 text-cyan-600 focus:ring-cyan-500 cursor-pointer" />
+                        <label key={city} className="flex items-center gap-3 text-[13px] text-[#16130F] hover:text-[#DE5C2B] cursor-pointer select-none">
+                          <input type="checkbox" checked={selectedCities.includes(city)} onChange={() => handleFilterToggle(city, selectedCities, setSelectedCities)} className="w-4 h-4 rounded border-[#E6E0D4] accent-[#DE5C2B] cursor-pointer" />
                           <span>{city}</span>
                         </label>
                       ))}
@@ -334,20 +335,20 @@ const IrelandDataSciencePage = () => {
                 </AnimatePresence>
               </div>
 
-              <div className="w-full h-[1px] bg-slate-100" />
+              <div className="w-full h-[1px] bg-[#ECE6DA]" />
 
               {/* Intake */}
               <div>
-                <button onClick={() => toggleAccordion('intake')} className="w-full flex items-center justify-between font-bold text-xs text-slate-700 uppercase tracking-wider mb-3.5">
+                <button onClick={() => toggleAccordion('intake')} className="w-full flex items-center justify-between text-[12.5px] font-semibold text-[#16130F] mb-3.5">
                   <span>Intake</span>
-                  <ChevronDown size={14} className={`transform transition-transform text-slate-400 ${openAccordions.intake ? 'rotate-180 text-cyan-600' : ''}`} />
+                  <ChevronDown size={14} className={`transform transition-transform text-[#9A9184] ${openAccordions.intake ? 'rotate-180 text-[#DE5C2B]' : ''}`} />
                 </button>
                 <AnimatePresence initial={false}>
                   {openAccordions.intake && (
                     <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }} className="overflow-hidden space-y-2.5 pl-0.5">
                       {intakeCategories.map(intake => (
-                        <label key={intake} className="flex items-center gap-3 text-xs font-bold text-slate-600 hover:text-cyan-600 cursor-pointer select-none">
-                          <input type="checkbox" checked={selectedIntakes.includes(intake)} onChange={() => handleFilterToggle(intake, selectedIntakes, setSelectedIntakes)} className="w-4 h-4 rounded border-slate-300 text-cyan-600 focus:ring-cyan-500 cursor-pointer" />
+                        <label key={intake} className="flex items-center gap-3 text-[13px] text-[#16130F] hover:text-[#DE5C2B] cursor-pointer select-none">
+                          <input type="checkbox" checked={selectedIntakes.includes(intake)} onChange={() => handleFilterToggle(intake, selectedIntakes, setSelectedIntakes)} className="w-4 h-4 rounded border-[#E6E0D4] accent-[#DE5C2B] cursor-pointer" />
                           <span>{intake}</span>
                         </label>
                       ))}
@@ -363,45 +364,44 @@ const IrelandDataSciencePage = () => {
           <main className="flex-1 flex flex-col gap-6">
 
             {/* Search and Sort */}
-            <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4 bg-white/50 border border-white/60 p-5 rounded-[24px] backdrop-blur-md shadow-sm">
-              <div className="flex-1 relative">
-                <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-slate-400" size={17} />
-                <input
-                  type="text"
-                  value={searchTerm}
-                  onChange={(e) => { setSearchTerm(e.target.value); setCurrentPage(1); }}
-                  placeholder="Search by course (e.g. Data Science, AI, CS), university, city..."
-                  className="w-full bg-slate-50 border border-slate-100 rounded-xl pl-12 pr-4 py-2.5 text-xs font-semibold outline-none focus:border-cyan-400 transition-colors"
-                />
-              </div>
-              <div className="flex items-center justify-between gap-4">
-                <p className="text-xs font-bold text-slate-500">
-                  <span className="text-slate-800 font-black">{sortedUniversities.length}</span> Universities Found
-                </p>
-                <div className="flex items-center gap-2">
-                  <span className="text-xs text-slate-400 font-bold">Sort By:</span>
-                  <select value={sortBy} onChange={(e) => setSortBy(e.target.value)} className="bg-slate-50 border border-slate-100 rounded-xl px-3 py-2 text-xs font-bold outline-none cursor-pointer text-slate-700 focus:border-cyan-400 transition-colors">
+            <FinderCard>
+              <div className="grid grid-cols-1 sm:grid-cols-[1fr_220px] xl:grid-cols-[1fr_220px_auto] gap-3 items-end">
+                <FinderField label="Search">
+                  <div className="relative">
+                    <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#5B544A] pointer-events-none" />
+                    <input
+                      type="text"
+                      value={searchTerm}
+                      onChange={(e) => { setSearchTerm(e.target.value); setCurrentPage(1); }}
+                      placeholder="Search by course (e.g. Data Science, AI, CS), university, city..."
+                      className={`${FINDER_FIELD} pl-10`}
+                      style={FIELD_RADIUS}
+                    />
+                  </div>
+                </FinderField>
+                <FinderField label="Sort by">
+                  <select value={sortBy} onChange={(e) => setSortBy(e.target.value)} className={`${FINDER_FIELD} cursor-pointer`} style={FIELD_RADIUS}>
                     <option value="rank">QS Rankings</option>
                     <option value="fees">Tuition Fee: Low to High</option>
                     <option value="name">Alphabetical (A-Z)</option>
                   </select>
-                </div>
+                </FinderField>
+                <p className="text-[13.5px] text-[#5B544A] whitespace-nowrap sm:col-span-2 xl:col-span-1 xl:h-11 xl:flex xl:items-center">
+                  <span className="font-bold text-[#16130F]">{sortedUniversities.length}</span>&nbsp;universities
+                </p>
               </div>
-            </div>
+            </FinderCard>
 
             {/* Active Chips */}
             {activeChips.length > 0 && (
-              <div className="flex flex-wrap gap-2 items-center bg-cyan-50/30 border border-cyan-100/50 p-3.5 rounded-2xl">
-                <span className="text-[10px] text-cyan-500 font-black uppercase tracking-wider mr-1.5">Active:</span>
+              <div className="flex flex-wrap gap-2 items-center bg-white/70 border border-[#E6E0D4] p-3.5" style={{ borderRadius: 18 }}>
+                <span className="text-[13.5px] font-semibold text-[#16130F] mr-1">Active filters</span>
                 {activeChips.map((chip, idx) => (
-                  <div key={idx} className="flex items-center gap-1.5 px-3 py-1 bg-white border border-cyan-100 rounded-full text-xs font-bold text-cyan-700 shadow-sm">
-                    <span>{chip.label}</span>
-                    <button onClick={() => handleRemoveChip(chip)} className="text-slate-400 hover:text-cyan-600 transition-colors cursor-pointer">
-                      <X size={12} className="stroke-[2.5]" />
-                    </button>
-                  </div>
+                  <FinderChip key={idx} on onClick={() => handleRemoveChip(chip)} aria-label={`Remove ${chip.label}`}>
+                    {chip.label} <X size={13} className="stroke-[2.5]" />
+                  </FinderChip>
                 ))}
-                <button onClick={handleClearAll} className="text-[11px] font-black text-cyan-600 hover:underline ml-2 cursor-pointer">Clear All</button>
+                <button onClick={handleClearAll} className="text-[13px] font-semibold text-[#DE5C2B] hover:text-[#86351A] ml-1 cursor-pointer">Clear All</button>
               </div>
             )}
 

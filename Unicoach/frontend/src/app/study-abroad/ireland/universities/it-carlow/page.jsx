@@ -7,20 +7,20 @@ import CoursesAndFees from './CoursesAndFees';
 
 
 const itCarlowData = {
-  name: "Institute of Technology - Carlow",
+  name: "SETU Carlow (formerly Institute of Technology Carlow)",
   country: "Ireland",
-  location: "Carlow, Ulster, Ireland",
+  location: "Carlow, Leinster, Ireland",
   city: "Carlow",
-  established: 1970,
-  totalStudents: 10650,
-  intlStudents: 1598,
+  established: 2022,
+  totalStudents: null,
+  intlStudents: null,
   type: "PUBLIC",
   studentFacultyRatio: "15:1",
-  acceptanceRate: "75%",
-  accreditation: "Engineering Council (EC)",
+  acceptanceRate: null,
+  accreditation: null,
   avgStudyCost: "INR 0.50 L",
   avgCostOfLiving: "INR 0.25 L",
-  logo: "https://logo.clearbit.com/itcarlow.ie",
+  logo: "/logos/verified-South East Technological University.png",
   heroImage: "https://images.unsplash.com/photo-1590523277543-a94d2e4eb00b?w=1200",
   topCourses: [
     { name: "Business Administration", count: 1 },
@@ -29,37 +29,18 @@ const itCarlowData = {
     { name: "Graphic and Design Studies", count: 1 },
     { name: "Information technology", count: 1 }
   ],
-  featuredCourse: {
-    name: "Master of Business",
-    duration: "12 Months",
-    tuition: 11.22
-  },
+  featuredCourse: null,
   intakeDeadlines: [
-    { name: "JAN'2025", status: "Intake Open" },
-    { name: "AUG'2025", status: "Intake Open" },
-    { name: "SEP'2025", status: "Intake Open" }
+    { name: "SEP'2026", status: "Intake Open" }
   ],
   requirements: [
-    { title: "IELTS Academic Band", detail: "6.0 minimum overall band required for postgraduate programmes." },
-    { title: "TOEFL iBT Score", detail: "79+ minimum score required for admission to most programmes." },
-    { title: "Undergraduate Degree", detail: "Honours Bachelor's degree (Level 8) or equivalent qualification." }
+    { title: "English Language", detail: "IELTS, TOEFL iBT or another accepted test is required; the minimum score varies by programme." },
+    { title: "Undergraduate Degree", detail: "An honours bachelor's degree (Level 8) or equivalent for master's programmes." }
   ],
-  rankings: {
-    "Webometrics - National": [
-      { category: "Best University Ranking Schools - 2022", rank: "18" }
-    ],
-    "Webometrics - World": [
-      { category: "Best World Ranking Schools - 2022", rank: "4901" }
-    ]
-  },
-  coursesFees: [
-    { name: "Master of Business", duration: "12 Months", tuition: 11.22 },
-    { name: "MSc in Data Science", duration: "12 Months", tuition: 10.50 },
-    { name: "BSc in Software Development", duration: "48 Months", tuition: 9.80 },
-    { name: "BA in Graphic Design", duration: "36 Months", tuition: 9.00 }
-  ],
-  description: "Founded in 1970, the Institute of Technology Carlow is a leading regional institution in Ireland offering practical, career-focused programmes in engineering, business, technology, and the arts. Accredited by the Engineering Council, it delivers industry-relevant education to a diverse student community.",
-  longDescription: "Founded in 1970, the Institute of Technology Carlow has grown to become a leading institution in Ireland's higher education landscape. It serves a total student population of 10,650, including 1,598 international students from across the globe.\n\nThe campus is located in the heart of Carlow, a vibrant town with a strong student community and excellent connectivity to Dublin and other major cities. Our state-of-the-art facilities are designed to provide a superior learning experience.\n\nKey campus features include:\n- Modern engineering and science laboratories\n- Business and computing resource centres\n- Student accommodation and support services\n- Sports facilities and recreational areas\n\nWe offer a range of popular programmes in engineering, business, technology, and the arts, all designed to equip you for success in your chosen field. With an acceptance rate of 75% and multiple intake periods, we welcome students from all backgrounds.\n\nAccredited by the Engineering Council (EC), our commitment to excellence is recognised by industry leaders worldwide.",
+  rankings: null,
+  coursesFees: [],
+  description: "SETU Carlow is the Carlow campus of South East Technological University (SETU), formed on 1 May 2022 when the Institute of Technology Carlow (founded 1970) merged with Waterford Institute of Technology. It offers career-focused programmes in engineering, computing, business and the arts.",
+  longDescription: "South East Technological University (SETU) was formed on 1 May 2022 by merging the Institute of Technology Carlow and Waterford Institute of Technology. The former IT Carlow campus is now SETU Carlow, and applications go through SETU (setu.ie).\n\nSETU Carlow offers programmes in engineering, computing, business, science and the arts. Check setu.ie for current courses, fees and English language requirements.",
   studentLife: [
     "Student Groups and Organizations",
     "Libraries and Study Resources",
@@ -69,12 +50,7 @@ const itCarlowData = {
     "Social and Recreational Spots",
     "Special Attractions"
   ],
-  alumni: [
-    { name: "John Murphy", profession: "Entrepreneur" },
-    { name: "Sarah O'Connor", profession: "Scientist" },
-    { name: "Michael Byrne", profession: "Politician" },
-    { name: "Aisling Doyle", profession: "Artist" }
-  ],
+  alumni: null,
   costOfLiving: {
     description: "Carlow is one of Ireland's most affordable college towns, offering students a cost-effective base for their studies. Housing options range from on-campus accommodation to private rentals in the town centre. Transportation to Dublin and other cities is convenient with regular bus and rail services.",
     inr: "0.75 L",
@@ -91,26 +67,33 @@ const itCarlowData = {
     description: "IT Carlow offers extensive placement assistance to international students to help them secure job opportunities after graduation. The Career Services team provides personalised guidance, workshops on resume writing and interview skills, job fairs, and an online job portal. The institute has strong links with major multinational employers operating in Ireland.",
     services: [
       "Job Fairs and Networking Events",
-      "Internships and Placement Support",
-      "OPT and CPT Guidance"
+      "Internships and Placement Support"
     ],
     recruiters: [
-      "IBM", "Intel Corporation", "Boston Scientific", "Eir", "Accenture",
-      "Medtronic", "Pfizer", "SAP", "Ericsson", "Johnson & Johnson"
+      "IBM",
+      "Intel Corporation",
+      "Boston Scientific",
+      "Eir",
+      "Accenture",
+      "Medtronic",
+      "Pfizer",
+      "SAP",
+      "Ericsson",
+      "Johnson & Johnson"
     ]
   },
   faqs: [
-    { question: "Is Institute of Technology Carlow a good choice for international students?", answer: "Yes, IT Carlow is a welcoming institution with dedicated international student support, affordable fees, and strong industry connections." },
-    { question: "What programmes are offered at IT Carlow?", answer: "IT Carlow offers programmes in engineering, business administration, data science, graphic design, and information technology." },
-    { question: "What is the acceptance rate at IT Carlow?", answer: "The acceptance rate is approximately 75%, making it accessible to a wide range of qualified applicants." },
-    { question: "What are the English language requirements at IT Carlow?", answer: "Most programmes require IELTS 6.0 or TOEFL iBT 79+ for international students." },
-    { question: "Does IT Carlow offer scholarships to international students?", answer: "Yes, IT Carlow offers merit-based scholarships and tuition reductions for high-achieving international students." }
+    { question: "Does Institute of Technology Carlow still exist?", answer: "IT Carlow merged with Waterford Institute of Technology on 1 May 2022 to form South East Technological University (SETU). The Carlow campus continues as SETU Carlow." },
+    { question: "How do I apply to SETU Carlow?", answer: "International students apply through SETU's website (setu.ie). Check the course page for entry requirements, fees and deadlines." },
+    { question: "Is SETU ranked in the QS World University Rankings?", answer: "SETU is not ranked in the QS World University Rankings 2027." },
+    { question: "What programmes are offered at SETU Carlow?", answer: "Programmes include engineering, business, computing and data science, design and the arts." }
   ],
   blogs: [
     { title: "Part-Time Jobs in Ireland for Students: Top Opportunities & Salary", readTime: "13 mins read", date: "Mar 15, 2025" },
     { title: "Highest Paying Jobs in Ireland for Indians: Complete Details!", readTime: "13 mins read", date: "Mar 15, 2025" },
     { title: "Jobs in Ireland for Indians: How to find out job opportunities in 2024-2025", readTime: "12 mins read", date: "Mar 15, 2025" }
-  ]
+  ],
+  rank: "Not ranked in QS World University Rankings 2027"
 };
 
 const ITCarlowPage = () => {

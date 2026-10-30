@@ -5,6 +5,7 @@ import {
   Search, Filter, X, ChevronDown, Award, MapPin, 
   Building, Globe, Check, Info, Calendar, BookOpen, Clock, AlertCircle
 } from 'lucide-react';
+import { FinderCard, FinderField, FinderChip, FINDER_FIELD, FIELD_RADIUS } from '../../../components/ui/FinderForm';
 import { getUniversityLogo } from '../../../components/logoResolver';
 import { matchesUniversitySearch, getMatchedCoursesForUniversity } from '../../../utils/universitySearchMatcher';
 
@@ -40,18 +41,18 @@ const universityDatabase = [
     city: "London",
     state: "London",
     location: "London, England, UK",
-    rank: "Rank 1 QS Rankings",
-    rankValue: 1,
-    tuition: 32,
+    rank: "Not ranked (QS 2027)",
+    rankValue: 9999,
+    tuition: 51,
     type: "PUBLIC",
     logo: "https://logo.clearbit.com/rca.ac.uk",
     website: "https://www.rca.ac.uk",
     courses: ["Arts / Fine Art", "Product Design", "Graphic and Design Studies"],
     degrees: ["Postgraduate"],
-    intakes: ["AUG", "SEP"],
-    description: "World's most influential postgraduate art and design institution offering degrees in fine art, design, and architecture.",
-    eligibility: "GPA 3.0+, IELTS 6.5+, Portfolio required",
-    deadline: "Jan 12, 2026"
+    intakes: ["SEP"],
+    description: "Postgraduate-only art and design university offering Master's and research degrees in fine art, design, architecture and communication.",
+    eligibility: "Bachelor's degree + portfolio + English test (IELTS/TOEFL/PTE)",
+    deadline: "Varies by course"
   },
   {
     id: 2,
@@ -59,18 +60,18 @@ const universityDatabase = [
     city: "London",
     state: "London",
     location: "London, England, UK",
-    rank: "Rank 2 QS Rankings",
-    rankValue: 2,
-    tuition: 34,
+    rank: "Rank 851-900 QS Rankings",
+    rankValue: 851,
+    tuition: 40,
     type: "PUBLIC",
     logo: "https://logo.clearbit.com/arts.ac.uk",
     website: "https://www.arts.ac.uk",
     courses: ["Arts / Fine Art", "Fashion Design", "Graphic and Design Studies"],
     degrees: ["Postgraduate", "Undergraduate"],
-    intakes: ["AUG", "SEP"],
+    intakes: ["SEP"],
     description: "Europe's largest specialist art and design university, offering courses in art, design, fashion, and communication.",
-    eligibility: "GPA 3.0+, IELTS 6.5+, Portfolio required",
-    deadline: "Jan 25, 2026"
+    eligibility: "Bachelor's degree + portfolio (most courses) + English test (IELTS/TOEFL/PTE)",
+    deadline: "Rolling, varies by course"
   },
   {
     id: 3,
@@ -80,16 +81,16 @@ const universityDatabase = [
     location: "London, England, UK",
     rank: "Rank 2 QS Rankings",
     rankValue: 2,
-    tuition: 49,
+    tuition: 62,
     type: "PUBLIC",
     logo: ImperialLogo,
     website: "https://www.imperial.ac.uk",
     courses: ["Computer Science", "Artificial Intelligence / Machine Learning", "Biomedical Engineering", "Mechanical Engineering"],
     degrees: ["Postgraduate", "Ph.D.", "Undergraduate"],
-    intakes: ["AUG", "SEP"],
+    intakes: ["SEP"],
     description: "World-class university focusing on science, engineering, medicine, and business, with top-ranked computational research.",
-    eligibility: "GPA 3.8+, IELTS 7.5+, TOEFL 100+, GRE recommended",
-    deadline: "Jan 08, 2026"
+    eligibility: "Bachelor's degree + English test (IELTS/TOEFL/PTE); grade requirement varies by course",
+    deadline: "Varies by course"
   },
   {
     id: 4,
@@ -97,18 +98,18 @@ const universityDatabase = [
     city: "London",
     state: "London",
     location: "London, England, UK",
-    rank: "Rank 4 QS Rankings",
-    rankValue: 4,
-    tuition: 143,
+    rank: "Not ranked (QS 2027)",
+    rankValue: 9999,
+    tuition: 68,
     type: "PUBLIC",
     logo: "https://logo.clearbit.com/london.edu",
     website: "https://www.london.edu",
     courses: ["Business Administration", "Banking and Finance", "Management", "Business Management"],
     degrees: ["Postgraduate"],
-    intakes: ["AUG", "JAN"],
+    intakes: ["AUG"],
     description: "World-leading business school offering top-ranked MBA, Finance, and Management executive courses.",
-    eligibility: "GPA 3.5+, IELTS 7.5+, GMAT 700+ required, 3+ years work exp",
-    deadline: "Feb 05, 2026"
+    eligibility: "Bachelor's degree + English test; GMAT/GRE may be required; MBA needs work experience",
+    deadline: "Fixed application rounds"
   },
   {
     id: 5,
@@ -116,18 +117,18 @@ const universityDatabase = [
     city: "London",
     state: "London",
     location: "London, England, UK",
-    rank: "Rank 9 QS Rankings",
-    rankValue: 9,
-    tuition: 48,
+    rank: "Rank 8 QS Rankings",
+    rankValue: 8,
+    tuition: 57,
     type: "PUBLIC",
     logo: UCLLogo,
     website: "https://www.ucl.ac.uk",
     courses: ["Computer Science", "Data Science", "Medicine and Medical Studies", "Architecture"],
     degrees: ["Postgraduate", "Ph.D.", "Undergraduate"],
-    intakes: ["AUG", "SEP"],
+    intakes: ["SEP"],
     description: "A highly prestigious, multidisciplinary research hub in central London with pioneering AI and computational programs.",
-    eligibility: "GPA 3.7+, IELTS 7.5+, TOEFL 100+",
-    deadline: "Jan 15, 2026"
+    eligibility: "Bachelor's degree + English test (IELTS/TOEFL/PTE); grade requirement varies by course",
+    deadline: "Varies by course"
   },
   {
     id: 6,
@@ -135,9 +136,9 @@ const universityDatabase = [
     city: "London",
     state: "London",
     location: "London, England, UK",
-    rank: "Rank 40 QS Rankings",
-    rankValue: 40,
-    tuition: 43,
+    rank: "Rank 37 QS Rankings",
+    rankValue: 37,
+    tuition: 55,
     type: "PUBLIC",
     logo: KCLLogo,
     website: "https://www.kcl.ac.uk",
@@ -145,8 +146,8 @@ const universityDatabase = [
     degrees: ["Postgraduate", "Undergraduate"],
     intakes: ["SEP"],
     description: "Distinguished research university focusing on science, medicine, humanities, and international affairs.",
-    eligibility: "GPA 3.6+, IELTS 7.0+, TOEFL 95+",
-    deadline: "Jan 25, 2026"
+    eligibility: "Bachelor's degree + English test (IELTS/TOEFL/PTE); grade requirement varies by course",
+    deadline: "Rolling, varies by course"
   },
   {
     id: 7,
@@ -154,18 +155,18 @@ const universityDatabase = [
     city: "London",
     state: "London",
     location: "London, England, UK",
-    rank: "Rank 44 QS Rankings",
-    rankValue: 44,
-    tuition: 18,
+    rank: "Not ranked (QS 2027)",
+    rankValue: 9999,
+    tuition: null,
     type: "PUBLIC",
     logo: UOLLogo,
     website: "https://www.london.ac.uk",
     courses: ["Business Administration", "Economics", "Computer Science"],
     degrees: ["Postgraduate", "Undergraduate"],
     intakes: ["AUG", "SEP", "JAN"],
-    description: "Pioneering federal university system offering highly cost-effective and globally accessible degrees.",
-    eligibility: "GPA 3.0+, IELTS 6.5+, TOEFL 85+",
-    deadline: "May 01, 2026"
+    description: "Federal university made up of several London institutions; its own degrees are offered mainly through online and distance learning.",
+    eligibility: "Bachelor's degree + English test (IELTS/TOEFL/PTE); grade requirement varies by course",
+    deadline: "Varies by course"
   },
   {
     id: 8,
@@ -173,9 +174,9 @@ const universityDatabase = [
     city: "London",
     state: "London",
     location: "London, England, UK",
-    rank: "Rank 45 QS Rankings",
-    rankValue: 45,
-    tuition: 33,
+    rank: "Rank 62 QS Rankings",
+    rankValue: 62,
+    tuition: 54,
     type: "PUBLIC",
     logo: "https://logo.clearbit.com/lse.ac.uk",
     website: "https://www.lse.ac.uk",
@@ -183,8 +184,8 @@ const universityDatabase = [
     degrees: ["Postgraduate", "Ph.D."],
     intakes: ["SEP"],
     description: "World-famous specialist university for social sciences, economics, finance, and global politics.",
-    eligibility: "GPA 3.7+, IELTS 7.5+, GRE/GMAT recommended",
-    deadline: "Dec 15, 2025"
+    eligibility: "Bachelor's degree + English test (IELTS/TOEFL/PTE); grade requirement varies by course",
+    deadline: "Varies by course"
   },
   {
     id: 9,
@@ -192,9 +193,9 @@ const universityDatabase = [
     city: "London",
     state: "London",
     location: "London, England, UK",
-    rank: "Rank 145 QS Rankings",
-    rankValue: 145,
-    tuition: 30,
+    rank: "Rank 103 QS Rankings",
+    rankValue: 103,
+    tuition: 47,
     type: "PUBLIC",
     logo: "https://logo.clearbit.com/qmul.ac.uk",
     website: "https://www.qmul.ac.uk",
@@ -202,8 +203,8 @@ const universityDatabase = [
     degrees: ["Postgraduate", "Undergraduate"],
     intakes: ["SEP", "JAN"],
     description: "A prominent Russell Group research university in east London with excellent engineering and medicine programs.",
-    eligibility: "GPA 3.2+, IELTS 6.5+, TOEFL 90+",
-    deadline: "Feb 15, 2026"
+    eligibility: "Bachelor's degree + English test (IELTS/TOEFL/PTE); grade requirement varies by course",
+    deadline: "Rolling, varies by course"
   },
   {
     id: 10,
@@ -211,9 +212,9 @@ const universityDatabase = [
     city: "London",
     state: "London",
     location: "London, England, UK",
-    rank: "Rank 279 QS Rankings",
-    rankValue: 279,
-    tuition: 26,
+    rank: "Not ranked (QS 2027)",
+    rankValue: 9999,
+    tuition: 40,
     type: "PUBLIC",
     logo: "https://logo.clearbit.com/lshtm.ac.uk",
     website: "https://www.lshtm.ac.uk",
@@ -221,37 +222,37 @@ const universityDatabase = [
     degrees: ["Postgraduate", "Ph.D."],
     intakes: ["SEP"],
     description: "A leading postgraduate institute dedicated to public health, global medicine, and tropical epidemiology.",
-    eligibility: "GPA 3.3+, IELTS 7.0+, TOEFL 95+",
-    deadline: "Mar 01, 2026"
+    eligibility: "Bachelor's degree + English test (IELTS/TOEFL/PTE); grade requirement varies by course",
+    deadline: "Varies by course"
   },
   {
     id: 11,
-    name: "Brunel University London",
+    name: "Brunel University of London",
     city: "London",
     state: "London",
     location: "London, England, UK",
-    rank: "Rank 343 QS Rankings",
-    rankValue: 343,
-    tuition: 24,
+    rank: "Rank 353 QS Rankings",
+    rankValue: 353,
+    tuition: 33,
     type: "PUBLIC",
     logo: "https://logo.clearbit.com/brunel.ac.uk",
     website: "https://www.brunel.ac.uk",
     courses: ["Engineering Design", "Computer Science", "Physiotherapy"],
     degrees: ["Postgraduate", "Undergraduate"],
     intakes: ["SEP", "JAN"],
-    description: "Highly practical, industry-oriented university in west London known for engineering and health sciences.",
-    eligibility: "GPA 2.8+, IELTS 6.5+, TOEFL 80+",
-    deadline: "Jun 30, 2026"
+    description: "Practical, industry-oriented university in Uxbridge, west London, known for engineering, computing and health sciences.",
+    eligibility: "Bachelor's degree + English test (IELTS/TOEFL/PTE); grade requirement varies by course",
+    deadline: "Rolling, varies by course"
   },
   {
     id: 12,
-    name: "SOAS, University of London",
+    name: "SOAS University of London",
     city: "London",
     state: "London",
     location: "London, England, UK",
-    rank: "Rank 379 QS Rankings",
-    rankValue: 379,
-    tuition: 27,
+    rank: "Rank 458 QS Rankings",
+    rankValue: 458,
+    tuition: 38,
     type: "PUBLIC",
     logo: "https://logo.clearbit.com/soas.ac.uk",
     website: "https://www.soas.ac.uk",
@@ -259,8 +260,8 @@ const universityDatabase = [
     degrees: ["Postgraduate", "Undergraduate"],
     intakes: ["SEP"],
     description: "Specialist higher education institution focusing on study of Asia, Africa, and the Middle East.",
-    eligibility: "GPA 3.0+, IELTS 7.0+, TOEFL 95+",
-    deadline: "Jun 30, 2026"
+    eligibility: "Bachelor's degree + English test (IELTS/TOEFL/PTE); grade requirement varies by course",
+    deadline: "Rolling, varies by course"
   },
   {
     id: 13,
@@ -268,9 +269,9 @@ const universityDatabase = [
     city: "London",
     state: "London",
     location: "London, England, UK",
-    rank: "Rank 461 QS Rankings",
-    rankValue: 461,
-    tuition: 23,
+    rank: "Rank 701-710 QS Rankings",
+    rankValue: 701,
+    tuition: 29,
     type: "PUBLIC",
     logo: "https://logo.clearbit.com/gold.ac.uk",
     website: "https://www.gold.ac.uk",
@@ -278,8 +279,8 @@ const universityDatabase = [
     degrees: ["Postgraduate", "Undergraduate"],
     intakes: ["SEP"],
     description: "Highly renowned for creative arts, humanities, media and communication programs with global impact.",
-    eligibility: "GPA 3.0+, IELTS 6.5+, Portfolio/Writing samples required",
-    deadline: "May 15, 2026"
+    eligibility: "Bachelor's degree + English test (IELTS/TOEFL/PTE); grade requirement varies by course",
+    deadline: "Rolling, varies by course"
   },
   {
     id: 14,
@@ -287,9 +288,9 @@ const universityDatabase = [
     city: "London",
     state: "London",
     location: "London, England, UK",
-    rank: "Rank 601 QS Rankings",
-    rankValue: 601,
-    tuition: 19,
+    rank: "Rank 686 QS Rankings",
+    rankValue: 686,
+    tuition: 30,
     type: "PUBLIC",
     logo: "https://logo.clearbit.com/kingston.ac.uk",
     website: "https://www.kingston.ac.uk",
@@ -297,8 +298,8 @@ const universityDatabase = [
     degrees: ["Postgraduate", "Undergraduate"],
     intakes: ["SEP", "JAN"],
     description: "Diverse and vibrant university in southwest London focusing on creative, professional, and technical studies.",
-    eligibility: "GPA 2.5+, IELTS 6.0+, TOEFL 80+",
-    deadline: "Jul 15, 2026"
+    eligibility: "Bachelor's degree + English test (IELTS/TOEFL/PTE); grade requirement varies by course",
+    deadline: "Rolling, varies by course"
   },
   {
     id: 15,
@@ -306,9 +307,9 @@ const universityDatabase = [
     city: "London",
     state: "London",
     location: "London, England, UK",
-    rank: "Rank 651 QS Rankings",
-    rankValue: 651,
-    tuition: 18,
+    rank: "Rank 851-900 QS Rankings",
+    rankValue: 851,
+    tuition: 27,
     type: "PUBLIC",
     logo: "https://logo.clearbit.com/westminster.ac.uk",
     website: "https://www.westminster.ac.uk",
@@ -316,8 +317,8 @@ const universityDatabase = [
     degrees: ["Postgraduate", "Undergraduate"],
     intakes: ["SEP", "JAN"],
     description: "Metropolitan university offering strong media, architecture, business and computer science courses.",
-    eligibility: "GPA 2.8+, IELTS 6.5+, TOEFL 85+",
-    deadline: "Jun 15, 2026"
+    eligibility: "Bachelor's degree + English test (IELTS/TOEFL/PTE); grade requirement varies by course",
+    deadline: "Rolling, varies by course"
   },
   {
     id: 16,
@@ -325,9 +326,9 @@ const universityDatabase = [
     city: "London",
     state: "London",
     location: "London, England, UK",
-    rank: "Rank 801 QS Rankings",
-    rankValue: 801,
-    tuition: 20,
+    rank: "Rank 901-950 QS Rankings",
+    rankValue: 901,
+    tuition: 25,
     type: "PUBLIC",
     logo: "https://logo.clearbit.com/mdx.ac.uk",
     website: "https://www.mdx.ac.uk",
@@ -335,8 +336,8 @@ const universityDatabase = [
     degrees: ["Postgraduate", "Undergraduate"],
     intakes: ["SEP", "JAN"],
     description: "Diverse educational institution in north London offering career-focused, practical learning formats.",
-    eligibility: "GPA 2.5+, IELTS 6.0+, TOEFL 75+",
-    deadline: "Jul 15, 2026"
+    eligibility: "Bachelor's degree + English test (IELTS/TOEFL/PTE); grade requirement varies by course",
+    deadline: "Rolling, varies by course"
   },
   {
     id: 17,
@@ -344,18 +345,18 @@ const universityDatabase = [
     city: "London",
     state: "London",
     location: "London, England, UK",
-    rank: "Rank 1201 QS Rankings",
-    rankValue: 1201,
-    tuition: 19,
+    rank: "Rank 901-950 QS Rankings",
+    rankValue: 901,
+    tuition: 24,
     type: "PUBLIC",
     logo: "https://logo.clearbit.com/lsbu.ac.uk",
     website: "https://www.lsbu.ac.uk",
     courses: ["Construction Management", "General Engineering And Technology", "Physiotherapy"],
     degrees: ["Postgraduate", "Undergraduate"],
-    intakes: ["SEP", "JAN"],
+    intakes: ["SEP", "JAN", "MAY"],
     description: "Offers courses focused on employability, professional accreditations, and strong industry links.",
-    eligibility: "GPA 2.5+, IELTS 6.0+, TOEFL 78+",
-    deadline: "Jul 31, 2026"
+    eligibility: "Bachelor's degree + English test (IELTS/TOEFL/PTE); grade requirement varies by course",
+    deadline: "Rolling, varies by course"
   },
   {
     id: 18,
@@ -363,18 +364,18 @@ const universityDatabase = [
     city: "London",
     state: "London",
     location: "London, England, UK",
-    rank: "Rank 350 QS Rankings",
-    rankValue: 350,
-    tuition: 53,
+    rank: "Rank 361 QS Rankings",
+    rankValue: 361,
+    tuition: 26,
     type: "PUBLIC",
     logo: "https://logo.clearbit.com/city.ac.uk",
-    website: "https://www.city.ac.uk",
+    website: "https://www.citystgeorges.ac.uk",
     courses: ["Banking and Finance", "Journalism", "Computer Science"],
     degrees: ["Postgraduate", "Undergraduate"],
-    intakes: ["SEP", "JAN"],
-    description: "Leading institution for business, journalism, engineering, and medical sciences.",
-    eligibility: "GPA 3.0+, IELTS 6.5+, TOEFL 90+",
-    deadline: "Jun 30, 2026"
+    intakes: ["SEP"],
+    description: "London university formed by the 2024 merger of City and St George's, known for business (Bayes), journalism, law, health and medical sciences.",
+    eligibility: "Bachelor's degree + English test (IELTS/TOEFL/PTE); grade requirement varies by course",
+    deadline: "Rolling, varies by course"
   },
   {
     id: 19,
@@ -382,9 +383,9 @@ const universityDatabase = [
     city: "London",
     state: "London",
     location: "London, England, UK",
-    rank: "Rank 3 QS Performing Arts",
-    rankValue: 300,
-    tuition: 34,
+    rank: "Not ranked (QS 2027)",
+    rankValue: 9999,
+    tuition: 44,
     type: "PUBLIC",
     logo: "https://logo.clearbit.com/rcm.ac.uk",
     website: "https://www.rcm.ac.uk",
@@ -392,8 +393,8 @@ const universityDatabase = [
     degrees: ["Postgraduate", "Undergraduate"],
     intakes: ["SEP"],
     description: "One of the world's greatest conservatoires, offering training from undergraduate to doctoral levels.",
-    eligibility: "Audition required, IELTS 5.5+",
-    deadline: "Oct 15, 2025"
+    eligibility: "Audition required + English test",
+    deadline: "Fixed annual deadline (audition-based)"
   },
   {
     id: 20,
@@ -401,18 +402,18 @@ const universityDatabase = [
     city: "London",
     state: "London",
     location: "London, England, UK",
-    rank: "Rank 800 QS Rankings",
-    rankValue: 800,
-    tuition: 17,
+    rank: "Rank 791-800 QS Rankings",
+    rankValue: 791,
+    tuition: 25,
     type: "PUBLIC",
     logo: "https://logo.clearbit.com/gre.ac.uk",
     website: "https://www.gre.ac.uk",
     courses: ["Computer Science", "Information technology", "Tourism"],
     degrees: ["Postgraduate", "Undergraduate"],
-    intakes: ["SEP", "JAN", "MAY"],
+    intakes: ["SEP", "JAN"],
     description: "Vibrant university located on historical heritage campuses, offering modern, practical courses.",
-    eligibility: "GPA 2.5+, IELTS 6.0+, TOEFL 79+",
-    deadline: "Aug 01, 2026"
+    eligibility: "Bachelor's degree + English test (IELTS/TOEFL/PTE); grade requirement varies by course",
+    deadline: "Rolling, varies by course"
   },
   {
     id: 21,
@@ -420,18 +421,18 @@ const universityDatabase = [
     city: "Oxford",
     state: "Oxfordshire",
     location: "Oxford, Oxfordshire, UK",
-    rank: "Rank 3 QS Rankings",
-    rankValue: 3,
-    tuition: 35,
+    rank: "Rank 4 QS Rankings",
+    rankValue: 4,
+    tuition: null,
     type: "PUBLIC",
     logo: OxfordLogo,
     website: "https://www.ox.ac.uk",
     courses: ["Computer Science", "Law", "Medicine and Medical Studies", "Economics", "Banking and Finance", "Biochemistry", "Business Administration", "Data Science", "Engineering Science"],
     degrees: ["Postgraduate", "Ph.D.", "Undergraduate"],
-    intakes: ["SEP", "MAY", "JUN", "OCT", "NOV"],
+    intakes: ["OCT"],
     description: "The oldest university in the English-speaking world, offering world-leading computational, mathematical, and law studies.",
-    eligibility: "GPA 3.8+, IELTS 7.5+, TOEFL 110+, GRE recommended",
-    deadline: "Jan 09, 2026"
+    eligibility: "Bachelor's degree + English test (IELTS/TOEFL/PTE); grade requirement varies by course",
+    deadline: "Fixed course deadlines, varies by course"
   },
   {
     id: 22,
@@ -439,18 +440,18 @@ const universityDatabase = [
     city: "Cambridge",
     state: "Cambridgeshire",
     location: "Cambridge, Cambridgeshire, UK",
-    rank: "Rank 2 QS Rankings",
-    rankValue: 2,
-    tuition: 29,
+    rank: "Rank 6 QS Rankings",
+    rankValue: 6,
+    tuition: 65,
     type: "PUBLIC",
     logo: CambridgeLogo,
     website: "https://www.cam.ac.uk",
     courses: ["Computer Science", "Mathematics", "Engineering Science"],
     degrees: ["Postgraduate", "Ph.D.", "Undergraduate"],
-    intakes: ["SEP"],
+    intakes: ["OCT"],
     description: "A world-renowned institution with outstanding research histories in algorithms, computing networks, and natural sciences.",
-    eligibility: "GPA 3.8+, IELTS 7.5+, TOEFL 100+, GRE/GMAT waiver available",
-    deadline: "Jan 07, 2026"
+    eligibility: "Bachelor's degree + English test (IELTS/TOEFL/PTE); grade requirement varies by course",
+    deadline: "Fixed course deadlines, varies by course"
   },
   {
     id: 23,
@@ -458,18 +459,18 @@ const universityDatabase = [
     city: "Coventry",
     state: "West Midlands",
     location: "Coventry, West Midlands, UK",
-    rank: "Rank 571 QS Rankings",
-    rankValue: 571,
-    tuition: 18,
+    rank: "Rank 581 QS Rankings",
+    rankValue: 581,
+    tuition: 25,
     type: "PUBLIC",
     logo: "https://logo.clearbit.com/coventry.ac.uk",
     website: "https://www.coventry.ac.uk",
     courses: ["Business Management", "Computer Science", "Physiotherapy"],
     degrees: ["Postgraduate", "Undergraduate"],
     intakes: ["SEP", "JAN", "MAY"],
-    description: "Modern, dynamic university focused on excellent career growth support and outstanding student satisfaction metrics.",
-    eligibility: "GPA 2.5+, IELTS 6.0+, TOEFL 79+",
-    deadline: "Jul 01, 2026"
+    description: "Modern, career-focused university in Coventry with multiple intakes a year for many postgraduate courses.",
+    eligibility: "Bachelor's degree + English test (IELTS/TOEFL/PTE); grade requirement varies by course",
+    deadline: "Rolling, varies by course"
   },
   {
     id: 24,
@@ -477,9 +478,9 @@ const universityDatabase = [
     city: "Leeds",
     state: "West Yorkshire",
     location: "Leeds, West Yorkshire, UK",
-    rank: "Rank 75 QS Rankings",
-    rankValue: 75,
-    tuition: 29,
+    rank: "Rank 77 QS Rankings",
+    rankValue: 77,
+    tuition: 44,
     type: "PUBLIC",
     logo: LeedsLogo,
     website: "https://www.leeds.ac.uk",
@@ -487,8 +488,8 @@ const universityDatabase = [
     degrees: ["Postgraduate", "Undergraduate", "Ph.D."],
     intakes: ["SEP"],
     description: "A prestigious Russell Group university offering comprehensive postgraduate degrees in engineering, computing, and clinical sciences.",
-    eligibility: "GPA 3.0+, IELTS 6.5+, TOEFL 92+",
-    deadline: "Jun 30, 2026"
+    eligibility: "Bachelor's degree + English test (IELTS/TOEFL/PTE); grade requirement varies by course",
+    deadline: "Rolling, varies by course"
   },
   {
     id: 25,
@@ -496,9 +497,9 @@ const universityDatabase = [
     city: "London",
     state: "London",
     location: "London, England, UK",
-    rank: "Rank 900 QS Rankings",
-    rankValue: 900,
-    tuition: 15,
+    rank: "Rank 1001-1200 QS Rankings",
+    rankValue: 1001,
+    tuition: 22,
     type: "PUBLIC",
     logo: "https://logo.clearbit.com/uel.ac.uk",
     website: "https://www.uel.ac.uk",
@@ -506,27 +507,27 @@ const universityDatabase = [
     degrees: ["Postgraduate", "Undergraduate"],
     intakes: ["SEP", "JAN", "MAY"],
     description: "Highly diverse, career-first public university providing affordable computational science, management, and physiotherapy courses.",
-    eligibility: "GPA 2.5+, IELTS 6.0+, TOEFL 79+",
-    deadline: "Aug 01, 2026"
+    eligibility: "Bachelor's degree + English test (IELTS/TOEFL/PTE); grade requirement varies by course",
+    deadline: "Rolling, varies by course"
   },
   {
     id: 26,
     name: "University of Glasgow",
     city: "Glasgow",
-    state: "Lanarkshire",
+    state: "Glasgow City",
     location: "Glasgow, Scotland, UK",
-    rank: "Rank 76 QS Rankings",
-    rankValue: 76,
-    tuition: 32,
+    rank: "Rank 80 QS Rankings",
+    rankValue: 80,
+    tuition: 45,
     type: "PUBLIC",
     logo: GlasgowLogo,
     website: "https://www.gla.ac.uk",
     courses: ["Computer Science", "Medicine and Medical Studies", "Law", "Physiotherapy"],
     degrees: ["Postgraduate", "Undergraduate", "Ph.D."],
-    intakes: ["SEP", "JAN"],
+    intakes: ["SEP"],
     description: "Historic Scottish university combining ancient academic history with cutting-edge laboratories in medical and computing sciences.",
-    eligibility: "GPA 3.0+, IELTS 6.5+, TOEFL 92+",
-    deadline: "Jun 15, 2026"
+    eligibility: "Bachelor's degree + English test (IELTS/TOEFL/PTE); grade requirement varies by course",
+    deadline: "Rolling, varies by course"
   },
   {
     id: 27,
@@ -534,28 +535,28 @@ const universityDatabase = [
     city: "Birmingham",
     state: "West Midlands",
     location: "Birmingham, West Midlands, UK",
-    rank: "Rank 84 QS Rankings",
-    rankValue: 84,
-    tuition: 9,
+    rank: "Rank 68 QS Rankings",
+    rankValue: 68,
+    tuition: 46,
     type: "PUBLIC",
     logo: BirminghamLogo,
-    website: "https://www.bham.ac.uk",
+    website: "https://www.birmingham.ac.uk",
     courses: ["Computer Science", "Physiotherapy", "Mechanical Engineering"],
     degrees: ["Postgraduate", "Undergraduate", "Ph.D."],
-    intakes: ["SEP"],
+    intakes: ["SEP", "JAN"],
     description: "Russell Group civic university offering premier academic specializations in advanced robotics, computing, and clinical therapies.",
-    eligibility: "GPA 3.0+, IELTS 6.5+, TOEFL 90+",
-    deadline: "Jul 01, 2026"
+    eligibility: "Bachelor's degree + English test (IELTS/TOEFL/PTE); grade requirement varies by course",
+    deadline: "Rolling, varies by course"
   },
   {
     id: 28,
     name: "University of Edinburgh",
     city: "Edinburgh",
-    state: "Midlothian",
+    state: "City of Edinburgh",
     location: "Edinburgh, Scotland, UK",
-    rank: "Rank 22 QS Rankings",
-    rankValue: 22,
-    tuition: 42,
+    rank: "Rank 35 QS Rankings",
+    rankValue: 35,
+    tuition: null,
     type: "PUBLIC",
     logo: EdinburghLogo,
     website: "https://www.ed.ac.uk",
@@ -563,8 +564,8 @@ const universityDatabase = [
     degrees: ["Postgraduate", "Undergraduate", "Ph.D."],
     intakes: ["SEP"],
     description: "One of the world's top research centers, pioneering computational logic, cognitive science, and machine learning models.",
-    eligibility: "GPA 3.3+, IELTS 7.0+, TOEFL 100+",
-    deadline: "Jun 15, 2026"
+    eligibility: "Bachelor's degree + English test (IELTS/TOEFL/PTE); grade requirement varies by course",
+    deadline: "Varies by course"
   },
   {
     id: 29,
@@ -572,18 +573,18 @@ const universityDatabase = [
     city: "Manchester",
     state: "Greater Manchester",
     location: "Manchester, England, UK",
-    rank: "Rank 32 QS Rankings",
-    rankValue: 32,
-    tuition: 24,
+    rank: "Rank 40 QS Rankings",
+    rankValue: 40,
+    tuition: 53,
     type: "PUBLIC",
     logo: ManchesterLogo,
     website: "https://www.manchester.ac.uk",
     courses: ["Computer Science", "Business Administration", "Management", "Data Science"],
     degrees: ["Postgraduate", "Undergraduate", "Ph.D."],
-    intakes: ["SEP", "JAN"],
+    intakes: ["SEP"],
     description: "Renowned for science and engineering excellence, offering stellar careers across computational fields.",
-    eligibility: "GPA 3.2+, IELTS 6.5+, TOEFL 90+",
-    deadline: "Jun 30, 2026"
+    eligibility: "Bachelor's degree + English test (IELTS/TOEFL/PTE); grade requirement varies by course",
+    deadline: "Rolling, varies by course"
   },
   {
     id: 30,
@@ -591,9 +592,9 @@ const universityDatabase = [
     city: "Bristol",
     state: "Bristol",
     location: "Bristol, England, UK",
-    rank: "Rank 55 QS Rankings",
-    rankValue: 55,
-    tuition: 33,
+    rank: "Rank 57 QS Rankings",
+    rankValue: 57,
+    tuition: 48,
     type: "PUBLIC",
     logo: BristolLogo,
     website: "https://www.bristol.ac.uk",
@@ -601,8 +602,8 @@ const universityDatabase = [
     degrees: ["Postgraduate", "Undergraduate"],
     intakes: ["SEP"],
     description: "Top-tier Russell Group research university offering highly competitive computational and network systems programs.",
-    eligibility: "GPA 3.3+, IELTS 6.5+, TOEFL 95+",
-    deadline: "Jun 15, 2026"
+    eligibility: "Bachelor's degree + English test (IELTS/TOEFL/PTE); grade requirement varies by course",
+    deadline: "Rolling, varies by course"
   },
   {
     id: 31,
@@ -610,9 +611,9 @@ const universityDatabase = [
     city: "Coventry",
     state: "West Midlands",
     location: "Coventry, England, UK",
-    rank: "Rank 67 QS Rankings",
-    rankValue: 67,
-    tuition: 31,
+    rank: "Rank 68 QS Rankings",
+    rankValue: 68,
+    tuition: 50,
     type: "PUBLIC",
     logo: WarwickLogo,
     website: "https://warwick.ac.uk",
@@ -620,8 +621,8 @@ const universityDatabase = [
     degrees: ["Postgraduate", "Undergraduate"],
     intakes: ["SEP"],
     description: "Renowned for mathematically intense computational theory and top business analytics routes.",
-    eligibility: "GPA 3.4+, IELTS 7.0+, TOEFL 98+",
-    deadline: "Jul 31, 2026"
+    eligibility: "Bachelor's degree + English test (IELTS/TOEFL/PTE); grade requirement varies by course",
+    deadline: "Rolling, varies by course"
   },
   {
     id: 32,
@@ -629,9 +630,9 @@ const universityDatabase = [
     city: "Durham",
     state: "County Durham",
     location: "Durham, England, UK",
-    rank: "Rank 78 QS Rankings",
-    rankValue: 78,
-    tuition: 28,
+    rank: "Rank 85 QS Rankings",
+    rankValue: 85,
+    tuition: 45,
     type: "PUBLIC",
     logo: DurhamLogo,
     website: "https://www.durham.ac.uk",
@@ -639,8 +640,8 @@ const universityDatabase = [
     degrees: ["Postgraduate", "Undergraduate"],
     intakes: ["SEP"],
     description: "Prestigious collegiate institution delivering outstanding computing laboratories and academic rigor.",
-    eligibility: "GPA 3.2+, IELTS 6.5+, TOEFL 92+",
-    deadline: "Jun 30, 2026"
+    eligibility: "Bachelor's degree + English test (IELTS/TOEFL/PTE); grade requirement varies by course",
+    deadline: "Rolling, varies by course"
   },
   {
     id: 33,
@@ -648,9 +649,9 @@ const universityDatabase = [
     city: "Southampton",
     state: "Hampshire",
     location: "Southampton, England, UK",
-    rank: "Rank 81 QS Rankings",
-    rankValue: 81,
-    tuition: 26,
+    rank: "Rank 111 QS Rankings",
+    rankValue: 111,
+    tuition: 47,
     type: "PUBLIC",
     logo: SouthamptonLogo,
     website: "https://www.southampton.ac.uk",
@@ -658,8 +659,8 @@ const universityDatabase = [
     degrees: ["Postgraduate", "Undergraduate"],
     intakes: ["SEP"],
     description: "Global pioneer in Web Science, cybersecurity, and advanced engineering technologies.",
-    eligibility: "GPA 3.0+, IELTS 6.5+, TOEFL 90+",
-    deadline: "Jul 15, 2026"
+    eligibility: "Bachelor's degree + English test (IELTS/TOEFL/PTE); grade requirement varies by course",
+    deadline: "Rolling, varies by course"
   },
   {
     id: 34,
@@ -667,18 +668,18 @@ const universityDatabase = [
     city: "St Andrews",
     state: "Fife",
     location: "St Andrews, Scotland, UK",
-    rank: "Rank 95 QS Rankings",
-    rankValue: 95,
-    tuition: 34,
+    rank: "Rank 115 QS Rankings",
+    rankValue: 115,
+    tuition: 42,
     type: "PUBLIC",
     logo: StAndrewsLogo,
     website: "https://www.st-andrews.ac.uk",
     courses: ["Computer Science", "Data Science", "Software Engineering"],
     degrees: ["Postgraduate", "Undergraduate"],
-    intakes: ["SEP"],
-    description: "Scotland's oldest university, legendary for logic, computer architecture, and outstanding student ratios.",
-    eligibility: "GPA 3.5+, IELTS 7.0+, TOEFL 100+",
-    deadline: "Jun 15, 2026"
+    intakes: ["SEP", "JAN"],
+    description: "Scotland's oldest university (founded 1413), a small, research-intensive university in the coastal town of St Andrews.",
+    eligibility: "Bachelor's degree + English test (IELTS/TOEFL/PTE); grade requirement varies by course",
+    deadline: "Rolling, varies by course"
   },
   {
     id: 35,
@@ -686,18 +687,18 @@ const universityDatabase = [
     city: "Nottingham",
     state: "Nottinghamshire",
     location: "Nottingham, England, UK",
-    rank: "Rank 100 QS Rankings",
-    rankValue: 100,
-    tuition: 27,
+    rank: "Rank 98 QS Rankings",
+    rankValue: 98,
+    tuition: 45,
     type: "PUBLIC",
     logo: NottinghamLogo,
     website: "https://www.nottingham.ac.uk",
     courses: ["Computer Science", "Data Science", "Information Systems"],
     degrees: ["Postgraduate", "Undergraduate"],
-    intakes: ["SEP", "JAN"],
+    intakes: ["SEP"],
     description: "Highly research-focused with global campuses, offering excellent digital computing systems curricula.",
-    eligibility: "GPA 3.0+, IELTS 6.5+, TOEFL 90+",
-    deadline: "Jul 31, 2026"
+    eligibility: "Bachelor's degree + English test (IELTS/TOEFL/PTE); grade requirement varies by course",
+    deadline: "Rolling, varies by course"
   },
   {
     id: 36,
@@ -705,9 +706,9 @@ const universityDatabase = [
     city: "Sheffield",
     state: "South Yorkshire",
     location: "Sheffield, England, UK",
-    rank: "Rank 104 QS Rankings",
-    rankValue: 104,
-    tuition: 19,
+    rank: "Rank 82 QS Rankings",
+    rankValue: 82,
+    tuition: 44,
     type: "PUBLIC",
     logo: SheffieldLogo,
     website: "https://www.sheffield.ac.uk",
@@ -715,8 +716,8 @@ const universityDatabase = [
     degrees: ["Postgraduate", "Undergraduate"],
     intakes: ["SEP"],
     description: "Vibrant engineering school featuring large-scale computing systems and speech/cognitive research.",
-    eligibility: "GPA 3.0+, IELTS 6.5+, TOEFL 88+",
-    deadline: "Jun 30, 2026"
+    eligibility: "Bachelor's degree + English test (IELTS/TOEFL/PTE); grade requirement varies by course",
+    deadline: "Rolling, varies by course"
   },
   {
     id: 37,
@@ -724,18 +725,18 @@ const universityDatabase = [
     city: "Newcastle upon Tyne",
     state: "Tyne and Wear",
     location: "Newcastle upon Tyne, England, UK",
-    rank: "Rank 110 QS Rankings",
-    rankValue: 110,
-    tuition: 3,
+    rank: "Rank 149 QS Rankings",
+    rankValue: 149,
+    tuition: 42,
     type: "PUBLIC",
     logo: NewcastleLogo,
     website: "https://www.ncl.ac.uk",
     courses: ["Computer Science", "Data Science", "Information technology"],
     degrees: ["Postgraduate", "Undergraduate"],
     intakes: ["SEP"],
-    description: "Academically renowned Russell Group university with highly affordable digital computing tuition.",
-    eligibility: "GPA 3.0+, IELTS 6.5+, TOEFL 90+",
-    deadline: "Jun 30, 2026"
+    description: "Russell Group research university in Newcastle upon Tyne with strong computing, engineering and medical programmes.",
+    eligibility: "Bachelor's degree + English test (IELTS/TOEFL/PTE); grade requirement varies by course",
+    deadline: "Rolling, varies by course"
   },
   {
     id: 38,
@@ -743,37 +744,37 @@ const universityDatabase = [
     city: "Liverpool",
     state: "Merseyside",
     location: "Liverpool, England, UK",
-    rank: "Rank 176 QS Rankings",
-    rankValue: 176,
-    tuition: 21,
+    rank: "Rank 139 QS Rankings",
+    rankValue: 139,
+    tuition: 44,
     type: "PUBLIC",
     logo: "https://logo.clearbit.com/liverpool.ac.uk",
     website: "https://www.liverpool.ac.uk",
     courses: ["Physiotherapy", "Medicine and Medical Studies", "Public Health"],
     degrees: ["Postgraduate", "Undergraduate"],
     intakes: ["SEP", "JAN"],
-    description: "Highly ranked public research university offering state-of-the-art physiotherapy laboratories.",
-    eligibility: "GPA 2.8+, IELTS 6.5+, TOEFL 88+",
-    deadline: "Jul 31, 2026"
+    description: "Russell Group research university in Liverpool with strong health, medical and life sciences programmes.",
+    eligibility: "Bachelor's degree + English test (IELTS/TOEFL/PTE); grade requirement varies by course",
+    deadline: "Rolling, varies by course"
   },
   {
     id: 39,
     name: "University of Dundee",
     city: "Dundee",
-    state: "Angus",
+    state: "Dundee City",
     location: "Dundee, Scotland, UK",
-    rank: "Rank 441 QS Rankings",
-    rankValue: 441,
-    tuition: 28,
+    rank: "Rank 447 QS Rankings",
+    rankValue: 447,
+    tuition: 30,
     type: "PUBLIC",
     logo: "https://logo.clearbit.com/dundee.ac.uk",
     website: "https://www.dundee.ac.uk",
     courses: ["Physiotherapy", "Medicine and Medical Studies", "Public Health"],
     degrees: ["Postgraduate", "Undergraduate"],
-    intakes: ["SEP"],
+    intakes: ["SEP", "JAN"],
     description: "Outstanding Scottish institution famous for clinical education, medical research, and physiotherapy.",
-    eligibility: "GPA 2.8+, IELTS 6.5+, TOEFL 90+",
-    deadline: "Jun 15, 2026"
+    eligibility: "Bachelor's degree + English test (IELTS/TOEFL/PTE); grade requirement varies by course",
+    deadline: "Rolling, varies by course"
   },
   {
     id: 40,
@@ -781,9 +782,9 @@ const universityDatabase = [
     city: "Belfast",
     state: "Antrim",
     location: "Belfast, Northern Ireland, UK",
-    rank: "Rank 601 QS Rankings",
-    rankValue: 601,
-    tuition: 20,
+    rank: "Rank 595 QS Rankings",
+    rankValue: 595,
+    tuition: null,
     type: "PUBLIC",
     logo: "https://logo.clearbit.com/ulster.ac.uk",
     website: "https://www.ulster.ac.uk",
@@ -791,8 +792,8 @@ const universityDatabase = [
     degrees: ["Postgraduate", "Undergraduate"],
     intakes: ["SEP", "JAN"],
     description: "Renowned clinic-led health sciences and physiotherapy training paths in Northern Ireland.",
-    eligibility: "GPA 2.5+, IELTS 6.0+, TOEFL 80+",
-    deadline: "Jul 15, 2026"
+    eligibility: "Bachelor's degree + English test (IELTS/TOEFL/PTE); grade requirement varies by course",
+    deadline: "Rolling, varies by course"
   },
   {
     id: 41,
@@ -800,18 +801,18 @@ const universityDatabase = [
     city: "Keele",
     state: "Staffordshire",
     location: "Keele, England, UK",
-    rank: "Rank 701 QS Rankings",
-    rankValue: 701,
-    tuition: 20,
+    rank: "Rank 801-850 QS Rankings",
+    rankValue: 801,
+    tuition: 24,
     type: "PUBLIC",
     logo: "https://logo.clearbit.com/keele.ac.uk",
     website: "https://www.keele.ac.uk",
     courses: ["Physiotherapy", "Medicine and Medical Studies", "Public Health"],
     degrees: ["Postgraduate", "Undergraduate"],
-    intakes: ["SEP"],
+    intakes: ["SEP", "JAN"],
     description: "Large, beautiful campus university specializing in health sciences and clinical physical therapy.",
-    eligibility: "GPA 2.7+, IELTS 6.5+, TOEFL 85+",
-    deadline: "Jun 30, 2026"
+    eligibility: "Bachelor's degree + English test (IELTS/TOEFL/PTE); grade requirement varies by course",
+    deadline: "Rolling, varies by course"
   },
   {
     id: 42,
@@ -819,18 +820,18 @@ const universityDatabase = [
     city: "Nottingham",
     state: "Nottinghamshire",
     location: "Nottingham, England, UK",
-    rank: "Rank 801 QS Rankings",
-    rankValue: 801,
-    tuition: 21,
+    rank: "Rank 639 QS Rankings",
+    rankValue: 639,
+    tuition: null,
     type: "PUBLIC",
     logo: "https://logo.clearbit.com/ntu.ac.uk",
     website: "https://www.ntu.ac.uk",
     courses: ["Physiotherapy", "Sports Management", "Management"],
     degrees: ["Postgraduate", "Undergraduate"],
     intakes: ["SEP", "JAN"],
-    description: "Outstanding employment rates with highly practical, accredited sports therapies and clinical courses.",
-    eligibility: "GPA 2.5+, IELTS 6.5+, TOEFL 83+",
-    deadline: "Jul 31, 2026"
+    description: "Large modern university in Nottingham offering practical, industry-linked courses in business, health, sport and technology.",
+    eligibility: "Bachelor's degree + English test (IELTS/TOEFL/PTE); grade requirement varies by course",
+    deadline: "Rolling, varies by course"
   },
   {
     id: 43,
@@ -838,18 +839,18 @@ const universityDatabase = [
     city: "Manchester",
     state: "Greater Manchester",
     location: "Manchester, England, UK",
-    rank: "Rank 801 QS Rankings",
-    rankValue: 801,
-    tuition: 24,
+    rank: "Rank 600 QS Rankings",
+    rankValue: 600,
+    tuition: null,
     type: "PUBLIC",
     logo: "https://logo.clearbit.com/mmu.ac.uk",
     website: "https://www.mmu.ac.uk",
     courses: ["Physiotherapy", "Sports Management", "Management"],
     degrees: ["Postgraduate", "Undergraduate"],
-    intakes: ["SEP", "JAN"],
+    intakes: ["SEP"],
     description: "Modern university in central Manchester providing fully chartered clinical physiotherapy degrees.",
-    eligibility: "GPA 2.5+, IELTS 6.5+, TOEFL 85+",
-    deadline: "Jul 15, 2026"
+    eligibility: "Bachelor's degree + English test (IELTS/TOEFL/PTE); grade requirement varies by course",
+    deadline: "Rolling, varies by course"
   },
   {
     id: 44,
@@ -857,18 +858,18 @@ const universityDatabase = [
     city: "Bournemouth",
     state: "Dorset",
     location: "Bournemouth, England, UK",
-    rank: "Rank 801 QS Rankings",
+    rank: "Rank 801-850 QS Rankings",
     rankValue: 801,
-    tuition: 20,
+    tuition: null,
     type: "PUBLIC",
     logo: "https://logo.clearbit.com/bournemouth.ac.uk",
     website: "https://www.bournemouth.ac.uk",
     courses: ["Physiotherapy", "Sports Management", "Tourism"],
     degrees: ["Postgraduate", "Undergraduate"],
     intakes: ["SEP", "JAN"],
-    description: "Leading coastal educational facility specializing in occupational health and physical therapies.",
-    eligibility: "GPA 2.5+, IELTS 6.0+, TOEFL 80+",
-    deadline: "Aug 01, 2026"
+    description: "Modern university on England's south coast offering career-focused courses in health, media, tourism and business.",
+    eligibility: "Bachelor's degree + English test (IELTS/TOEFL/PTE); grade requirement varies by course",
+    deadline: "Rolling, varies by course"
   },
   {
     id: 45,
@@ -876,9 +877,9 @@ const universityDatabase = [
     city: "Oxford",
     state: "Oxfordshire",
     location: "Oxford, England, UK",
-    rank: "Rank 801 QS Rankings",
-    rankValue: 801,
-    tuition: 19,
+    rank: "Rank 411 QS Rankings",
+    rankValue: 411,
+    tuition: 27,
     type: "PUBLIC",
     logo: "https://logo.clearbit.com/brookes.ac.uk",
     website: "https://www.brookes.ac.uk",
@@ -886,8 +887,8 @@ const universityDatabase = [
     degrees: ["Postgraduate", "Undergraduate"],
     intakes: ["SEP", "JAN"],
     description: "Dynamic modern university in Oxford providing highly competitive, chartered physical therapy routes.",
-    eligibility: "GPA 2.6+, IELTS 6.0+, TOEFL 80+",
-    deadline: "Jun 30, 2026"
+    eligibility: "Bachelor's degree + English test (IELTS/TOEFL/PTE); grade requirement varies by course",
+    deadline: "Rolling, varies by course"
   },
   {
     id: 46,
@@ -895,9 +896,9 @@ const universityDatabase = [
     city: "Lincoln",
     state: "Lincolnshire",
     location: "Lincoln, England, UK",
-    rank: "Rank 801 QS Rankings",
-    rankValue: 801,
-    tuition: 23,
+    rank: "Rank 851-900 QS Rankings",
+    rankValue: 851,
+    tuition: 25,
     type: "PUBLIC",
     logo: "https://logo.clearbit.com/lincoln.ac.uk",
     website: "https://www.lincoln.ac.uk",
@@ -905,8 +906,8 @@ const universityDatabase = [
     degrees: ["Postgraduate", "Undergraduate"],
     intakes: ["SEP", "JAN"],
     description: "Historic city campus offering extensive laboratory settings and patient-led physiotherapy practices.",
-    eligibility: "GPA 2.5+, IELTS 6.0+, TOEFL 79+",
-    deadline: "Jul 15, 2026"
+    eligibility: "Bachelor's degree + English test (IELTS/TOEFL/PTE); grade requirement varies by course",
+    deadline: "Rolling, varies by course"
   },
   {
     id: 47,
@@ -914,9 +915,9 @@ const universityDatabase = [
     city: "Huddersfield",
     state: "West Yorkshire",
     location: "Huddersfield, England, UK",
-    rank: "Rank 801 QS Rankings",
-    rankValue: 801,
-    tuition: null,
+    rank: "Rank 521 QS Rankings",
+    rankValue: 521,
+    tuition: 24,
     type: "PUBLIC",
     logo: "https://logo.clearbit.com/hud.ac.uk",
     website: "https://www.hud.ac.uk",
@@ -924,8 +925,8 @@ const universityDatabase = [
     degrees: ["Postgraduate", "Undergraduate"],
     intakes: ["SEP", "JAN"],
     description: "Vibrant Yorkshire campus renowned for high student satisfaction and physical therapy studies.",
-    eligibility: "GPA 2.5+, IELTS 6.0+, TOEFL 80+",
-    deadline: "Jul 31, 2026"
+    eligibility: "Bachelor's degree + English test (IELTS/TOEFL/PTE); grade requirement varies by course",
+    deadline: "Rolling, varies by course"
   },
   {
     id: 48,
@@ -933,9 +934,9 @@ const universityDatabase = [
     city: "Cambridge",
     state: "Cambridgeshire",
     location: "Cambridge, England, UK",
-    rank: "Rank 1001 QS Rankings",
+    rank: "Rank 1001-1200 QS Rankings",
     rankValue: 1001,
-    tuition: 19,
+    tuition: 27,
     type: "PUBLIC",
     logo: "https://logo.clearbit.com/aru.ac.uk",
     website: "https://www.aru.ac.uk",
@@ -943,8 +944,8 @@ const universityDatabase = [
     degrees: ["Postgraduate", "Undergraduate"],
     intakes: ["SEP", "JAN"],
     description: "Modern university with strong professional clinical health partnerships across East Anglia.",
-    eligibility: "GPA 2.5+, IELTS 6.0+, TOEFL 80+",
-    deadline: "Jul 15, 2026"
+    eligibility: "Bachelor's degree + English test (IELTS/TOEFL/PTE); grade requirement varies by course",
+    deadline: "Rolling, varies by course"
   },
   {
     id: 49,
@@ -952,18 +953,18 @@ const universityDatabase = [
     city: "Leeds",
     state: "West Yorkshire",
     location: "Leeds, England, UK",
-    rank: "Rank --",
-    rankValue: 2000,
-    tuition: 13,
+    rank: "Rank 1001-1200 QS Rankings",
+    rankValue: 1001,
+    tuition: 24,
     type: "PUBLIC",
     logo: "https://logo.clearbit.com/leedsbeckett.ac.uk",
     website: "https://www.leedsbeckett.ac.uk",
     courses: ["Physiotherapy", "Sports Management", "Management"],
     degrees: ["Postgraduate", "Undergraduate"],
-    intakes: ["SEP", "JAN"],
+    intakes: ["SEP"],
     description: "Vibrant university in Leeds known for sports science, athletic training, and clinical physiotherapy.",
-    eligibility: "GPA 2.5+, IELTS 6.0+, TOEFL 79+",
-    deadline: "Jun 30, 2026"
+    eligibility: "Bachelor's degree + English test (IELTS/TOEFL/PTE); grade requirement varies by course",
+    deadline: "Rolling, varies by course"
   },
   {
     id: 50,
@@ -971,18 +972,18 @@ const universityDatabase = [
     city: "Bristol",
     state: "Bristol",
     location: "Bristol, England, UK",
-    rank: "Rank --",
-    rankValue: 2000,
-    tuition: 18,
+    rank: "Rank 761-770 QS Rankings",
+    rankValue: 761,
+    tuition: 23,
     type: "PUBLIC",
     logo: "https://logo.clearbit.com/uwe.ac.uk",
     website: "https://www.uwe.ac.uk",
     courses: ["Physiotherapy", "Sports Management", "Management"],
     degrees: ["Postgraduate", "Undergraduate"],
     intakes: ["SEP", "JAN"],
-    description: "Modern campus-based Bristol university with top-tier physiotherapy clinics and nursing routes.",
-    eligibility: "GPA 2.5+, IELTS 6.0+, TOEFL 80+",
-    deadline: "Jun 15, 2026"
+    description: "Modern university in Bristol (UWE Bristol) offering practical courses in health, engineering, computing and business.",
+    eligibility: "Bachelor's degree + English test (IELTS/TOEFL/PTE); grade requirement varies by course",
+    deadline: "Rolling, varies by course"
   },
   {
     id: 51,
@@ -990,9 +991,9 @@ const universityDatabase = [
     city: "Wolverhampton",
     state: "West Midlands",
     location: "Wolverhampton, West Midlands, UK",
-    rank: "Rank --",
-    rankValue: 2000,
-    tuition: 19,
+    rank: "Rank 1001-1200 QS Rankings",
+    rankValue: 1001,
+    tuition: 24,
     type: "PUBLIC",
     logo: "https://logo.clearbit.com/wlv.ac.uk",
     website: "https://www.wlv.ac.uk",
@@ -1000,8 +1001,8 @@ const universityDatabase = [
     degrees: ["Postgraduate", "Undergraduate"],
     intakes: ["SEP", "JAN"],
     description: "Career-first educational institution in West Midlands with great clinical physical therapy setups.",
-    eligibility: "GPA 2.4+, IELTS 6.0+, TOEFL 78+",
-    deadline: "Aug 01, 2026"
+    eligibility: "Bachelor's degree + English test (IELTS/TOEFL/PTE); grade requirement varies by course",
+    deadline: "Rolling, varies by course"
   },
   {
     id: 52,
@@ -1009,9 +1010,9 @@ const universityDatabase = [
     city: "Birmingham",
     state: "West Midlands",
     location: "Birmingham, England, UK",
-    rank: "Rank --",
-    rankValue: 2000,
-    tuition: 21,
+    rank: "Rank 1001-1200 QS Rankings",
+    rankValue: 1001,
+    tuition: 25,
     type: "PUBLIC",
     logo: "https://logo.clearbit.com/bcu.ac.uk",
     website: "https://www.bcu.ac.uk",
@@ -1019,8 +1020,8 @@ const universityDatabase = [
     degrees: ["Postgraduate", "Undergraduate"],
     intakes: ["SEP", "JAN"],
     description: "Leading metropolitan university in Birmingham with outstanding clinical simulation labs for physiotherapy.",
-    eligibility: "GPA 2.5+, IELTS 6.0+, TOEFL 80+",
-    deadline: "Jul 01, 2026"
+    eligibility: "Bachelor's degree + English test (IELTS/TOEFL/PTE); grade requirement varies by course",
+    deadline: "Rolling, varies by course"
   }
 ];
 
@@ -1305,15 +1306,15 @@ const UKCourseListingPage = ({ courseOverride = null }) => {
         <div className="grid grid-cols-1 lg:grid-cols-[290px_1fr] gap-8 items-start">
           
           {/* Sidebar */}
-          <aside className="sticky top-28 bg-white/70 backdrop-blur-xl border border-white/80 rounded-[28px] p-6 shadow-[0_12px_40px_rgba(0,0,0,0.02)] z-30">
-            <div className="flex items-center justify-between pb-4 border-b border-slate-100 mb-5">
-              <span className="flex items-center gap-2 text-sm font-black text-slate-800 uppercase tracking-wider">
-                <Filter size={15} className="text-indigo-650" />
+          <aside className="sticky top-28 bg-white border border-[#E6E0D4] p-5 shadow-[0_24px_60px_-36px_rgba(22,19,15,0.35)] z-30" style={{ borderRadius: 18 }}>
+            <div className="flex items-center justify-between pb-4 border-b border-[#ECE6DA] mb-5">
+              <span className="flex items-center gap-2 text-[14px] font-semibold text-[#16130F]">
+                <Filter size={15} className="text-[#DE5C2B]" />
                 Filters
               </span>
               <button 
                 onClick={handleClearAll}
-                className="text-xs font-bold text-indigo-650 hover:text-indigo-850 cursor-pointer transition-colors"
+                className="text-[12.5px] font-semibold text-[#DE5C2B] hover:underline cursor-pointer"
               >
                 Clear All
               </button>
@@ -1325,10 +1326,10 @@ const UKCourseListingPage = ({ courseOverride = null }) => {
               <div>
                 <button
                   onClick={() => toggleAccordion('fees')}
-                  className="w-full flex items-center justify-between font-bold text-xs text-slate-700 uppercase tracking-wider mb-3.5"
+                  className="w-full flex items-center justify-between text-[12.5px] font-semibold text-[#16130F] mb-3"
                 >
                   <span>1st Year Fees</span>
-                  <ChevronDown size={14} className={`transform transition-transform text-slate-400 ${openAccordions.fees ? 'rotate-180 text-indigo-650' : ''}`} />
+                  <ChevronDown size={14} className={`transform transition-transform text-[#9A9184] ${openAccordions.fees ? 'rotate-180 text-[#DE5C2B]' : ''}`} />
                 </button>
                 <AnimatePresence initial={false}>
                   {openAccordions.fees && (
@@ -1339,12 +1340,12 @@ const UKCourseListingPage = ({ courseOverride = null }) => {
                       className="overflow-hidden space-y-2.5 pl-0.5"
                     >
                       {feeRanges.map(range => (
-                        <label key={range.id} className="flex items-center gap-3 text-xs font-bold text-slate-600 hover:text-indigo-600 cursor-pointer select-none">
+                        <label key={range.id} className="flex items-center gap-2.5 text-[13px] text-[#16130F] hover:text-[#DE5C2B] cursor-pointer select-none">
                           <input 
                             type="checkbox"
                             checked={selectedFees.includes(range.id)}
                             onChange={() => handleFilterToggle(range.id, selectedFees, setSelectedFees)}
-                            className="w-4 h-4 rounded border-slate-350 text-indigo-650 focus:ring-indigo-500 cursor-pointer"
+                            className="w-4 h-4 rounded border-[#E6E0D4] accent-[#DE5C2B] cursor-pointer"
                           />
                           <span>{range.label}</span>
                         </label>
@@ -1354,16 +1355,16 @@ const UKCourseListingPage = ({ courseOverride = null }) => {
                 </AnimatePresence>
               </div>
 
-              <div className="w-full h-[1px] bg-slate-100" />
+              <div className="w-full h-[1px] bg-[#ECE6DA]" />
 
               {/* Degree */}
               <div>
                 <button
                   onClick={() => toggleAccordion('degree')}
-                  className="w-full flex items-center justify-between font-bold text-xs text-slate-700 uppercase tracking-wider mb-3.5"
+                  className="w-full flex items-center justify-between text-[12.5px] font-semibold text-[#16130F] mb-3"
                 >
                   <span>Degree</span>
-                  <ChevronDown size={14} className={`transform transition-transform text-slate-400 ${openAccordions.degree ? 'rotate-180 text-indigo-650' : ''}`} />
+                  <ChevronDown size={14} className={`transform transition-transform text-[#9A9184] ${openAccordions.degree ? 'rotate-180 text-[#DE5C2B]' : ''}`} />
                 </button>
                 <AnimatePresence initial={false}>
                   {openAccordions.degree && (
@@ -1374,12 +1375,12 @@ const UKCourseListingPage = ({ courseOverride = null }) => {
                       className="overflow-hidden space-y-2.5 pl-0.5"
                     >
                       {degreeCategories.map(deg => (
-                        <label key={deg} className="flex items-center gap-3 text-xs font-bold text-slate-600 hover:text-indigo-600 cursor-pointer select-none">
+                        <label key={deg} className="flex items-center gap-2.5 text-[13px] text-[#16130F] hover:text-[#DE5C2B] cursor-pointer select-none">
                           <input 
                             type="checkbox"
                             checked={selectedDegrees.includes(deg)}
                             onChange={() => handleFilterToggle(deg, selectedDegrees, setSelectedDegrees)}
-                            className="w-4 h-4 rounded border-slate-350 text-indigo-650 focus:ring-indigo-500 cursor-pointer"
+                            className="w-4 h-4 rounded border-[#E6E0D4] accent-[#DE5C2B] cursor-pointer"
                           />
                           <span>{deg}</span>
                         </label>
@@ -1389,16 +1390,16 @@ const UKCourseListingPage = ({ courseOverride = null }) => {
                 </AnimatePresence>
               </div>
 
-              <div className="w-full h-[1px] bg-slate-100" />
+              <div className="w-full h-[1px] bg-[#ECE6DA]" />
 
               {/* Courses */}
               <div>
                 <button
                   onClick={() => toggleAccordion('courses')}
-                  className="w-full flex items-center justify-between font-bold text-xs text-slate-700 uppercase tracking-wider mb-3.5"
+                  className="w-full flex items-center justify-between text-[12.5px] font-semibold text-[#16130F] mb-3"
                 >
                   <span>Courses</span>
-                  <ChevronDown size={14} className={`transform transition-transform text-slate-400 ${openAccordions.courses ? 'rotate-180 text-indigo-650' : ''}`} />
+                  <ChevronDown size={14} className={`transform transition-transform text-[#9A9184] ${openAccordions.courses ? 'rotate-180 text-[#DE5C2B]' : ''}`} />
                 </button>
                 <AnimatePresence initial={false}>
                   {openAccordions.courses && (
@@ -1409,12 +1410,12 @@ const UKCourseListingPage = ({ courseOverride = null }) => {
                       className="overflow-hidden space-y-2.5 pl-0.5 max-h-[220px] overflow-y-auto"
                     >
                       {courseCategories.map(course => (
-                        <label key={course} className="flex items-center gap-3 text-xs font-bold text-slate-600 hover:text-indigo-600 cursor-pointer select-none">
+                        <label key={course} className="flex items-center gap-2.5 text-[13px] text-[#16130F] hover:text-[#DE5C2B] cursor-pointer select-none">
                           <input 
                             type="checkbox"
                             checked={selectedCourses.includes(course)}
                             onChange={() => handleFilterToggle(course, selectedCourses, setSelectedCourses)}
-                            className="w-4 h-4 rounded border-slate-350 text-indigo-650 focus:ring-indigo-500 cursor-pointer"
+                            className="w-4 h-4 rounded border-[#E6E0D4] accent-[#DE5C2B] cursor-pointer"
                           />
                           <span>{course}</span>
                         </label>
@@ -1424,16 +1425,16 @@ const UKCourseListingPage = ({ courseOverride = null }) => {
                 </AnimatePresence>
               </div>
 
-              <div className="w-full h-[1px] bg-slate-100" />
+              <div className="w-full h-[1px] bg-[#ECE6DA]" />
 
               {/* Cities */}
               <div>
                 <button
                   onClick={() => toggleAccordion('cities')}
-                  className="w-full flex items-center justify-between font-bold text-xs text-slate-700 uppercase tracking-wider mb-3.5"
+                  className="w-full flex items-center justify-between text-[12.5px] font-semibold text-[#16130F] mb-3"
                 >
                   <span>Cities</span>
-                  <ChevronDown size={14} className={`transform transition-transform text-slate-400 ${openAccordions.cities ? 'rotate-180 text-indigo-650' : ''}`} />
+                  <ChevronDown size={14} className={`transform transition-transform text-[#9A9184] ${openAccordions.cities ? 'rotate-180 text-[#DE5C2B]' : ''}`} />
                 </button>
                 <AnimatePresence initial={false}>
                   {openAccordions.cities && (
@@ -1444,12 +1445,12 @@ const UKCourseListingPage = ({ courseOverride = null }) => {
                       className="overflow-hidden space-y-2.5 pl-0.5 max-h-[220px] overflow-y-auto"
                     >
                       {cityCategories.map(city => (
-                        <label key={city} className="flex items-center gap-3 text-xs font-bold text-slate-600 hover:text-indigo-600 cursor-pointer select-none">
+                        <label key={city} className="flex items-center gap-2.5 text-[13px] text-[#16130F] hover:text-[#DE5C2B] cursor-pointer select-none">
                           <input 
                             type="checkbox"
                             checked={selectedCities.includes(city)}
                             onChange={() => handleFilterToggle(city, selectedCities, setSelectedCities)}
-                            className="w-4 h-4 rounded border-slate-350 text-indigo-650 focus:ring-indigo-500 cursor-pointer"
+                            className="w-4 h-4 rounded border-[#E6E0D4] accent-[#DE5C2B] cursor-pointer"
                           />
                           <span>{city}</span>
                         </label>
@@ -1459,16 +1460,16 @@ const UKCourseListingPage = ({ courseOverride = null }) => {
                 </AnimatePresence>
               </div>
 
-              <div className="w-full h-[1px] bg-slate-100" />
+              <div className="w-full h-[1px] bg-[#ECE6DA]" />
 
               {/* Intake */}
               <div>
                 <button
                   onClick={() => toggleAccordion('intake')}
-                  className="w-full flex items-center justify-between font-bold text-xs text-slate-700 uppercase tracking-wider mb-3.5"
+                  className="w-full flex items-center justify-between text-[12.5px] font-semibold text-[#16130F] mb-3"
                 >
                   <span>Intake</span>
-                  <ChevronDown size={14} className={`transform transition-transform text-slate-400 ${openAccordions.intake ? 'rotate-180 text-indigo-650' : ''}`} />
+                  <ChevronDown size={14} className={`transform transition-transform text-[#9A9184] ${openAccordions.intake ? 'rotate-180 text-[#DE5C2B]' : ''}`} />
                 </button>
                 <AnimatePresence initial={false}>
                   {openAccordions.intake && (
@@ -1479,12 +1480,12 @@ const UKCourseListingPage = ({ courseOverride = null }) => {
                       className="overflow-hidden space-y-2.5 pl-0.5"
                     >
                       {intakeCategories.map(intake => (
-                        <label key={intake} className="flex items-center gap-3 text-xs font-bold text-slate-600 hover:text-indigo-600 cursor-pointer select-none">
+                        <label key={intake} className="flex items-center gap-2.5 text-[13px] text-[#16130F] hover:text-[#DE5C2B] cursor-pointer select-none">
                           <input 
                             type="checkbox"
                             checked={selectedIntakes.includes(intake)}
                             onChange={() => handleFilterToggle(intake, selectedIntakes, setSelectedIntakes)}
-                            className="w-4 h-4 rounded border-slate-350 text-indigo-650 focus:ring-indigo-500 cursor-pointer"
+                            className="w-4 h-4 rounded border-[#E6E0D4] accent-[#DE5C2B] cursor-pointer"
                           />
                           <span>{intake}</span>
                         </label>
@@ -1501,59 +1502,46 @@ const UKCourseListingPage = ({ courseOverride = null }) => {
           <main className="flex-1 flex flex-col gap-6">
             
             {/* Search and Sort */}
-            <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4 bg-white/50 border border-white/60 p-5 rounded-[24px] backdrop-blur-md shadow-sm">
-              <div className="flex-1 relative">
-                <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-slate-400" size={17} />
-                <input 
-                  type="text"
-                  value={searchTerm}
-                  onChange={(e) => { setSearchTerm(e.target.value); setCurrentPage(1); }}
-                  placeholder="Search by course (e.g. CS, MBA, LLM), university, city..."
-                  className="w-full bg-slate-50 border border-slate-100 rounded-xl pl-12 pr-4 py-2.5 text-xs font-semibold outline-none focus:border-indigo-400 transition-colors"
-                />
-              </div>
-
-              <div className="flex items-center justify-between gap-4">
-                <p className="text-xs font-bold text-slate-550">
-                  <span className="text-slate-800 font-black">{sortedUniversities.length}</span> Universities Found
-                </p>
-
-                <div className="flex items-center gap-2">
-                  <span className="text-xs text-slate-400 font-bold">Sort By:</span>
-                  <select 
-                    value={sortBy}
-                    onChange={(e) => setSortBy(e.target.value)}
-                    className="bg-slate-50 border border-slate-100 rounded-xl px-3 py-2 text-xs font-bold outline-none cursor-pointer text-slate-700 focus:border-indigo-400 transition-colors"
-                  >
+            <FinderCard>
+              <div className="grid grid-cols-1 sm:grid-cols-[1fr_220px] lg:grid-cols-[1fr_220px_auto] gap-3 items-end">
+                <FinderField label="Search">
+                  <div className="relative">
+                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-[#5B544A] pointer-events-none" size={16} />
+                    <input
+                      type="text"
+                      value={searchTerm}
+                      onChange={(e) => { setSearchTerm(e.target.value); setCurrentPage(1); }}
+                      placeholder="Search by course (e.g. CS, MBA, LLM), university, city..."
+                      className={`${FINDER_FIELD} pl-10`}
+                      style={FIELD_RADIUS}
+                    />
+                  </div>
+                </FinderField>
+                <FinderField label="Sort by">
+                  <select value={sortBy} onChange={(e) => setSortBy(e.target.value)} className={`${FINDER_FIELD} cursor-pointer`} style={FIELD_RADIUS}>
                     <option value="rank">QS Rankings</option>
                     <option value="fees">Tuition Fee: Low to High</option>
                     <option value="name">Alphabetical (A-Z)</option>
                   </select>
-                </div>
+                </FinderField>
+                <p className="text-[13.5px] text-[#5B544A] sm:col-span-2 lg:col-span-1 lg:h-11 flex items-center lg:justify-end whitespace-nowrap">
+                  <span className="font-bold text-[#16130F] mr-1">{sortedUniversities.length}</span> {sortedUniversities.length === 1 ? 'university' : 'universities'}
+                </p>
               </div>
-            </div>
+            </FinderCard>
 
             {/* Active Chips */}
             {activeChips.length > 0 && (
-              <div className="flex flex-wrap gap-2 items-center bg-indigo-50/30 border border-indigo-100/50 p-3.5 rounded-2xl">
-                <span className="text-[10px] text-indigo-500 font-black uppercase tracking-wider mr-1.5">Active:</span>
+              <div className="flex flex-wrap gap-2 items-center bg-white/70 border border-[#E6E0D4] p-3.5" style={{ borderRadius: 18 }}>
+                <span className="text-[13px] font-semibold text-[#16130F] mr-1">Active filters</span>
                 {activeChips.map((chip, idx) => (
-                  <div 
-                    key={idx} 
-                    className="flex items-center gap-1.5 px-3 py-1 bg-white border border-indigo-100 rounded-full text-xs font-bold text-indigo-650 shadow-sm"
-                  >
-                    <span>{chip.label}</span>
-                    <button 
-                      onClick={() => handleRemoveChip(chip)}
-                      className="text-slate-400 hover:text-indigo-600 transition-colors cursor-pointer"
-                    >
-                      <X size={12} className="stroke-[2.5]" />
-                    </button>
-                  </div>
+                  <FinderChip key={idx} on aria-pressed={undefined} aria-label={`Remove ${chip.label}`} onClick={() => handleRemoveChip(chip)}>
+                    {chip.label} <X size={13} className="stroke-[2.5]" />
+                  </FinderChip>
                 ))}
-                <button 
+                <button
                   onClick={handleClearAll}
-                  className="text-[11px] font-black text-indigo-650 hover:underline ml-2 cursor-pointer"
+                  className="text-[12.5px] font-semibold text-[#DE5C2B] hover:underline ml-1 cursor-pointer"
                 >
                   Clear All
                 </button>

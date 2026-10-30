@@ -14,16 +14,15 @@ import { BarCompare, Donut } from '../../../../../components/ui/Infographics';
 // ─────────────────────────────────────────────
 
 const universities = [
-  { name: "Technical University of Munich (TUM)", rank: "#28", fields: "Engineering, Computer Science, Physics", feeMin: 0, feeMax: 500, link: "https://www.tum.de" },
-  { name: "Heidelberg University", rank: "#50", fields: "Medicine, Chemistry, Life Sciences", feeMin: 0, feeMax: 1500, link: "https://www.uni-heidelberg.de" },
-  { name: "Ludwig Maximilian University of Munich (LMU)", rank: "#59", fields: "Humanities, Physics, Psychology", feeMin: 0, feeMax: 400, link: "https://www.lmu.de" },
-  { name: "RWTH Aachen University", rank: "#99", fields: "Mechanical & Chemical Engineering", feeMin: 0, feeMax: 600, link: "https://www.rwth-aachen.de" },
-  { name: "Humboldt University of Berlin", rank: "#120", fields: "Social Sciences, Physics, Economics", feeMin: 0, feeMax: 800, link: "https://www.hu-berlin.de" },
-  { name: "University of Freiburg", rank: "#138", fields: "Biotechnology, Chemistry, Environmental Sciences", feeMin: 0, feeMax: 1500, link: "https://www.uni-freiburg.de" },
-  { name: "Free University of Berlin", rank: "#150", fields: "Political Science, Sociology, Humanities", feeMin: 0, feeMax: 700, link: "https://www.fu-berlin.de" },
-  { name: "Karlsruhe Institute of Technology (KIT)", rank: "#167", fields: "Electrical Engineering, Computer Science, Physics", feeMin: 0, feeMax: 600, link: "https://www.kit.edu" },
-  { name: "University of Tübingen", rank: "#177", fields: "Medicine, Neuroscience, Theology", feeMin: 0, feeMax: 1000, link: "https://www.uni-tuebingen.de" },
-  { name: "University of Göttingen", rank: "#189", fields: "Physics, Biology, Agricultural Sciences", feeMin: 0, feeMax: 500, link: "https://www.uni-goettingen.de" }
+  { name: "Technical University of Munich (TUM)", rank: "#25", fields: "Engineering, Computer Science, Physics", feeMin: 0, feeMax: 500, link: "https://www.tum.de" },
+  { name: "Ludwig Maximilian University of Munich (LMU)", rank: "#61", fields: "Humanities, Physics, Psychology", feeMin: 0, feeMax: 400, link: "https://www.lmu.de" },
+  { name: "Heidelberg University", rank: "#86", fields: "Medicine, Chemistry, Life Sciences", feeMin: 0, feeMax: 1500, link: "https://www.uni-heidelberg.de" },
+  { name: "Free University of Berlin", rank: "#98", fields: "Political Science, Sociology, Humanities", feeMin: 0, feeMax: 700, link: "https://www.fu-berlin.de" },
+  { name: "RWTH Aachen University", rank: "#104", fields: "Mechanical & Chemical Engineering", feeMin: 0, feeMax: 600, link: "https://www.rwth-aachen.de" },
+  { name: "Karlsruhe Institute of Technology (KIT)", rank: "#110", fields: "Electrical Engineering, Computer Science, Physics", feeMin: 0, feeMax: 600, link: "https://www.kit.edu" },
+  { name: "Humboldt University of Berlin", rank: "#140", fields: "Social Sciences, Physics, Economics", feeMin: 0, feeMax: 800, link: "https://www.hu-berlin.de" },
+  { name: "University of Freiburg", rank: "#245", fields: "Biotechnology, Chemistry, Environmental Sciences", feeMin: 0, feeMax: 1500, link: "https://www.uni-freiburg.de" },
+  { name: "University of Tübingen", rank: "#230", fields: "Medicine, Neuroscience, Theology", feeMin: 0, feeMax: 1000, link: "https://www.uni-tuebingen.de" }
 ];
 
 const specialisations = {
@@ -363,7 +362,7 @@ const GermanyPhdPage = () => {
                 <thead>
                   <tr className="bg-slate-50/80 border-b border-slate-100 text-slate-400 text-xs font-black uppercase tracking-wider">
                     <th className="py-4 px-6">University</th>
-                    <th className="py-4 px-6 text-center">QS Rank 2026</th>
+                    <th className="py-4 px-6 text-center">QS Rank 2027</th>
                     <th className="py-4 px-6">Popular PhD Fields</th>
                     <th className="py-4 px-6 text-right">Avg. Semester Contribution (EUR)</th>
                     <th className="py-4 px-6 text-right">Estimated Fee (INR)</th>

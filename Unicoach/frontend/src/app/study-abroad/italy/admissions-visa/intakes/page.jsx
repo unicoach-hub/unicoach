@@ -86,9 +86,9 @@ const tuitionFees = [
 
 const scholarshipsList = [
   { name: "Italian Government Scholarship", offeredBy: "MAECI (Ministry of Foreign Affairs)", amount: "~€9,000 (₹9,32,220)" },
-  { name: "International Talents @Unibo", offeredBy: "University of Bologna", amount: "€4,500 + tuition waiver" },
-  { name: "Excellence Scholarships", offeredBy: "University of Milan", amount: "~€8,000 (₹8,28,640)" },
-  { name: "Padua International Excellence", offeredBy: "University of Padua", amount: "~€8,000 (₹8,28,640) per year" }
+  { name: "International Talents @Unibo", offeredBy: "University of Bologna", amount: "Set in each year's call — check unibo.it" },
+  { name: "Excellence Scholarships", offeredBy: "University of Milan", amount: "Set in each year's call — check unimi.it" },
+  { name: "Padua International Excellence", offeredBy: "University of Padua", amount: "Set in each year's call — check unipd.it" }
 ];
 
 const applicationSteps = [

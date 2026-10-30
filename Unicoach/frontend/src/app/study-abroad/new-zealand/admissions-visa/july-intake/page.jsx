@@ -22,13 +22,13 @@ const SECTIONS = [
 ];
 
 const universityDeadlines = [
-  { name: "University of Auckland", rank: "#65", deadline: "Early July", popular: "Architecture, Health Sciences, Engineering" },
-  { name: "University of Otago", rank: "#214", deadline: "April 30", popular: "Research, Data Science, Humanities" },
-  { name: "Victoria University of Wellington", rank: "#244", deadline: "May 1", popular: "Law, Design, Innovation, Business" },
-  { name: "University of Canterbury", rank: "#261", deadline: "April 30", popular: "Engineering, Psychology, Environmental Science" },
-  { name: "Massey University", rank: "#239", deadline: "May 1", popular: "Aviation, Business, Veterinary Science" },
-  { name: "University of Waikato", rank: "#250", deadline: "May 31", popular: "Cyber Security, Management, Science" },
-  { name: "Auckland University of Technology (AUT)", rank: "#412", deadline: "April 30", popular: "IT, Visual Arts, Creative Technologies" }
+  { name: "University of Auckland", rank: "#68", deadline: "June 8 (international)", popular: "Architecture, Health Sciences, Engineering" },
+  { name: "University of Otago", rank: "#198", deadline: "April 30", popular: "Research, Data Science, Humanities" },
+  { name: "Massey University", rank: "#215", deadline: "May 1", popular: "Aviation, Business, Veterinary Science" },
+  { name: "Victoria University of Wellington", rank: "#241", deadline: "May 1 (some programmes March 1)", popular: "Law, Design, Innovation, Business" },
+  { name: "University of Canterbury", rank: "#257", deadline: "May 1", popular: "Engineering, Psychology, Environmental Science" },
+  { name: "University of Waikato", rank: "#293", deadline: "Rolling", popular: "Cyber Security, Management, Science" },
+  { name: "Auckland University of Technology (AUT)", rank: "#431", deadline: "Varies by programme", popular: "IT, Visual Arts, Creative Technologies" }
 ];
 
 const timelinePhases = [

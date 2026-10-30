@@ -12,7 +12,7 @@ import { HookBand, BarCompare } from '../../../../../components/ui/Infographics'
 const publicUnis = [
   {
     name: "Université Paris-Saclay",
-    qsRank: "#70 Global",
+    qsRank: "#76 Global",
     city: "Orsay (Paris)",
     strengths: "Mathematics, Physics, Engineering, Artificial Intelligence",
     logo: "https://logo.clearbit.com/universite-paris-saclay.fr",

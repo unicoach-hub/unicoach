@@ -1,4 +1,5 @@
-// API Verified France Universities Dataset (Deduplicated & Clean)
+// Static fallback list. Ranks: QS World University Rankings 2027 (only where QS lists the institution).
+// Fees only where checked against the university's own fee page; otherwise pages link to the university.
 export const UNIVERSITIES_FRANCE = [
   {
     "_id": "france-1",
@@ -11,16 +12,7 @@ export const UNIVERSITIES_FRANCE = [
     "location": "Paris, France",
     "logo": "https://www.google.com/s2/favicons?domain=escp.eu&sz=128",
     "website": "https://escp.eu/",
-    "rank": "Rank 15 QS Rankings",
-    "rankingNum": 15,
-    "tuition": "27 Lakh INR",
-    "tuitionFeeUSD": 18000,
-    "acceptanceRate": 25,
     "type": "PUBLIC",
-    "minGpaPercent": 75,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -57,16 +49,7 @@ export const UNIVERSITIES_FRANCE = [
     "location": "Jouy-en-Josas, France",
     "logo": "https://www.google.com/s2/favicons?domain=www.hec.edu&sz=128",
     "website": "https://www.hec.edu",
-    "rank": "Rank 24 QS Rankings",
-    "rankingNum": 24,
-    "tuition": "36 Lakh INR",
-    "tuitionFeeUSD": 18000,
-    "acceptanceRate": 25,
     "type": "PUBLIC",
-    "minGpaPercent": 75,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -104,16 +87,7 @@ export const UNIVERSITIES_FRANCE = [
     "location": "Paris, France",
     "logo": "https://www.google.com/s2/favicons?domain=www.psl.eu&sz=128",
     "website": "https://www.psl.eu/en",
-    "rank": "Rank 26 QS Rankings",
-    "rankingNum": 26,
-    "tuition": "{'id': 15773, 'tuition_fee_min': '18096', 'tuition_fee_max': '18096'} INR/yr",
-    "tuitionFeeUSD": 18000,
-    "acceptanceRate": 25,
     "type": "PUBLIC",
-    "minGpaPercent": 75,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -167,16 +141,7 @@ export const UNIVERSITIES_FRANCE = [
     "location": "Cergy, France",
     "logo": "https://www.google.com/s2/favicons?domain=www.essec.edu&sz=128",
     "website": "https://www.essec.edu",
-    "rank": "Rank 42 QS Rankings",
-    "rankingNum": 42,
-    "tuition": "54 Lakh INR",
-    "tuitionFeeUSD": 18000,
-    "acceptanceRate": 50,
     "type": "PUBLIC",
-    "minGpaPercent": 65,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -216,16 +181,9 @@ export const UNIVERSITIES_FRANCE = [
     "location": "Palaiseau, France",
     "logo": "https://www.google.com/s2/favicons?domain=www.ip-paris.fr&sz=128",
     "website": "https://www.ip-paris.fr/en",
-    "rank": "Rank 48 QS Rankings",
-    "rankingNum": 48,
-    "tuition": "19 Lakh INR",
-    "tuitionFeeUSD": 18000,
-    "acceptanceRate": 50,
+    "rank": "=43",
+    "rankingNum": 43,
     "type": "PUBLIC",
-    "minGpaPercent": 65,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -249,7 +207,8 @@ export const UNIVERSITIES_FRANCE = [
       "Artificial Intelligence / Machine Learning",
       "Data Science",
       "Cyber Security"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027"
   },
   {
     "_id": "france-6",
@@ -262,16 +221,9 @@ export const UNIVERSITIES_FRANCE = [
     "location": "Paris, France",
     "logo": "https://www.google.com/s2/favicons?domain=www.sorbonne-universite.fr&sz=128",
     "website": "https://www.sorbonne-universite.fr/",
-    "rank": "Rank 59 QS Rankings",
-    "rankingNum": 59,
-    "tuition": "3 Lakh INR",
-    "tuitionFeeUSD": 18000,
-    "acceptanceRate": 50,
+    "rank": "73",
+    "rankingNum": 73,
     "type": "PUBLIC",
-    "minGpaPercent": 65,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -305,7 +257,8 @@ export const UNIVERSITIES_FRANCE = [
       "Arts / Fine Art",
       "Music",
       "Environmental science / management"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027"
   },
   {
     "_id": "france-7",
@@ -318,16 +271,9 @@ export const UNIVERSITIES_FRANCE = [
     "location": "Gif-sur-Yvette, France",
     "logo": "https://www.google.com/s2/favicons?domain=www.universite-paris-saclay.fr&sz=128",
     "website": "https://www.universite-paris-saclay.fr/en",
-    "rank": "Rank 69 QS Rankings",
-    "rankingNum": 69,
-    "tuition": "{'id': 15957, 'tuition_fee_min': '18406', 'tuition_fee_max': '18406'} INR/yr",
-    "tuitionFeeUSD": 18000,
-    "acceptanceRate": 50,
+    "rank": "76",
+    "rankingNum": 76,
     "type": "PUBLIC",
-    "minGpaPercent": 65,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -361,7 +307,8 @@ export const UNIVERSITIES_FRANCE = [
       "Political Science",
       "Business Administration",
       "Management"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027"
   },
   {
     "_id": "france-8",
@@ -374,16 +321,7 @@ export const UNIVERSITIES_FRANCE = [
     "location": "Gif-sur-Yvette, France",
     "logo": "https://www.google.com/s2/favicons?domain=www.centralesupelec.fr&sz=128",
     "website": "https://www.centralesupelec.fr/",
-    "rank": "Rank 138 QS Rankings",
-    "rankingNum": 138,
-    "tuition": "6 Lakh INR",
-    "tuitionFeeUSD": 18000,
-    "acceptanceRate": 50,
     "type": "PUBLIC",
-    "minGpaPercent": 65,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -430,16 +368,7 @@ export const UNIVERSITIES_FRANCE = [
     "location": "Marne-la-Vallée, France",
     "logo": "https://www.google.com/s2/favicons?domain=www.enpc.fr&sz=128",
     "website": "https://www.enpc.fr/",
-    "rank": "Rank 174 QS Rankings",
-    "rankingNum": 174,
-    "tuition": "14 Lakh INR",
-    "tuitionFeeUSD": 18000,
-    "acceptanceRate": 50,
     "type": "PUBLIC",
-    "minGpaPercent": 65,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -483,16 +412,9 @@ export const UNIVERSITIES_FRANCE = [
     "location": "Paris, France",
     "logo": "https://www.google.com/s2/favicons?domain=www.sciencespo.fr&sz=128",
     "website": "https://www.sciencespo.fr",
-    "rank": "Rank 224 QS Rankings",
-    "rankingNum": 224,
-    "tuition": "13 Lakh INR",
-    "tuitionFeeUSD": 18000,
-    "acceptanceRate": 50,
+    "rank": "=354",
+    "rankingNum": 354,
     "type": "PUBLIC",
-    "minGpaPercent": 65,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -518,7 +440,8 @@ export const UNIVERSITIES_FRANCE = [
       "Business Administration",
       "Human resource Management",
       "International / Global Business"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027"
   },
   {
     "_id": "france-11",
@@ -531,16 +454,9 @@ export const UNIVERSITIES_FRANCE = [
     "location": "Paris, France",
     "logo": "https://www.google.com/s2/favicons?domain=u-paris.fr&sz=128",
     "website": "https://u-paris.fr/en/",
-    "rank": "Rank 253 QS Rankings",
-    "rankingNum": 253,
-    "tuition": "{'id': 15679, 'tuition_fee_min': '18096', 'tuition_fee_max': '18096'} INR/yr",
-    "tuitionFeeUSD": 18000,
-    "acceptanceRate": 50,
+    "rank": "=303",
+    "rankingNum": 303,
     "type": "PUBLIC",
-    "minGpaPercent": 65,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -573,7 +489,8 @@ export const UNIVERSITIES_FRANCE = [
       "Nursing and midwifery",
       "Environmental science / management",
       "Earth Sciences / Geoscience"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027"
   },
   {
     "_id": "france-12",
@@ -586,16 +503,9 @@ export const UNIVERSITIES_FRANCE = [
     "location": "Grenoble, France",
     "logo": "https://www.google.com/s2/favicons?domain=www.univ-grenoble-alpes.fr&sz=128",
     "website": "https://www.univ-grenoble-alpes.fr/",
-    "rank": "Rank 368 QS Rankings",
-    "rankingNum": 368,
-    "tuition": "4 Lakh INR",
-    "tuitionFeeUSD": 18000,
-    "acceptanceRate": 50,
+    "rank": "387",
+    "rankingNum": 387,
     "type": "PUBLIC",
-    "minGpaPercent": 65,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -626,7 +536,8 @@ export const UNIVERSITIES_FRANCE = [
       "Chemical Engineering",
       "Business Administration",
       "Management"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027"
   },
   {
     "_id": "france-13",
@@ -639,16 +550,9 @@ export const UNIVERSITIES_FRANCE = [
     "location": "Lyon, France",
     "logo": "https://www.google.com/s2/favicons?domain=www.univ-lyon1.fr&sz=128",
     "website": "https://www.univ-lyon1.fr",
-    "rank": "Rank 387 QS Rankings",
-    "rankingNum": 387,
-    "tuition": "3 Lakh INR",
-    "tuitionFeeUSD": 18000,
-    "acceptanceRate": 50,
+    "rank": "=613",
+    "rankingNum": 613,
     "type": "PUBLIC",
-    "minGpaPercent": 65,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -680,7 +584,8 @@ export const UNIVERSITIES_FRANCE = [
       "Civil Engineering",
       "Physiotherapy",
       "Sport / Exercise Science"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027"
   },
   {
     "_id": "france-14",
@@ -693,16 +598,9 @@ export const UNIVERSITIES_FRANCE = [
     "location": "Marseille, France",
     "logo": "https://www.google.com/s2/favicons?domain=www.univ-amu.fr&sz=128",
     "website": "https://www.univ-amu.fr/",
-    "rank": "Rank 387 QS Rankings",
-    "rankingNum": 387,
-    "tuition": "3 Lakh INR",
-    "tuitionFeeUSD": 18000,
-    "acceptanceRate": 50,
+    "rank": "=443",
+    "rankingNum": 443,
     "type": "PUBLIC",
-    "minGpaPercent": 65,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -743,7 +641,8 @@ export const UNIVERSITIES_FRANCE = [
       "Arts / Fine Art",
       "Music",
       "Teaching / Education studies"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027"
   },
   {
     "_id": "france-15",
@@ -756,16 +655,9 @@ export const UNIVERSITIES_FRANCE = [
     "location": "Strasbourg, France",
     "logo": "https://www.google.com/s2/favicons?domain=www.unistra.fr&sz=128",
     "website": "https://www.unistra.fr",
-    "rank": "Rank 421 QS Rankings",
-    "rankingNum": 421,
-    "tuition": "3 Lakh INR",
-    "tuitionFeeUSD": 18000,
-    "acceptanceRate": 50,
+    "rank": "=456",
+    "rankingNum": 456,
     "type": "PUBLIC",
-    "minGpaPercent": 65,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -804,7 +696,8 @@ export const UNIVERSITIES_FRANCE = [
       "Political Science",
       "Psychology",
       "Sociology"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027"
   },
   {
     "_id": "france-16",
@@ -817,16 +710,9 @@ export const UNIVERSITIES_FRANCE = [
     "location": "Montpellier, France",
     "logo": "https://www.google.com/s2/favicons?domain=www.umontpellier.fr&sz=128",
     "website": "https://www.umontpellier.fr",
-    "rank": "Rank 461 QS Rankings",
-    "rankingNum": 461,
-    "tuition": "3 Lakh INR",
-    "tuitionFeeUSD": 18000,
-    "acceptanceRate": 50,
+    "rank": "473",
+    "rankingNum": 473,
     "type": "PUBLIC",
-    "minGpaPercent": 65,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -859,7 +745,8 @@ export const UNIVERSITIES_FRANCE = [
       "Language and Literature",
       "Food / Agricultural Science",
       "Architecture"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027"
   },
   {
     "_id": "france-17",
@@ -872,16 +759,9 @@ export const UNIVERSITIES_FRANCE = [
     "location": "Bordeaux, France",
     "logo": "https://www.google.com/s2/favicons?domain=www.u-bordeaux.fr&sz=128",
     "website": "https://www.u-bordeaux.fr/",
-    "rank": "Rank 601 QS Rankings",
-    "rankingNum": 601,
-    "tuition": "3 Lakh INR",
-    "tuitionFeeUSD": 18000,
-    "acceptanceRate": 50,
+    "rank": "=485",
+    "rankingNum": 485,
     "type": "PUBLIC",
-    "minGpaPercent": 65,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -915,7 +795,8 @@ export const UNIVERSITIES_FRANCE = [
       "Electrical Engineering",
       "Chemical Engineering",
       "Business Administration"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027"
   },
   {
     "_id": "france-18",
@@ -928,16 +809,9 @@ export const UNIVERSITIES_FRANCE = [
     "location": "Lille, France",
     "logo": "https://www.google.com/s2/favicons?domain=www.univ-lille.fr&sz=128",
     "website": "https://www.univ-lille.fr",
-    "rank": "Rank 651 QS Rankings",
-    "rankingNum": 651,
-    "tuition": "3 Lakh INR",
-    "tuitionFeeUSD": 18000,
-    "acceptanceRate": 50,
+    "rank": "=686",
+    "rankingNum": 686,
     "type": "PUBLIC",
-    "minGpaPercent": 65,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -972,7 +846,8 @@ export const UNIVERSITIES_FRANCE = [
       "Mechanical Engineering",
       "Electrical Engineering",
       "Civil Engineering"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027"
   },
   {
     "_id": "france-19",
@@ -985,16 +860,9 @@ export const UNIVERSITIES_FRANCE = [
     "location": "Toulouse, France",
     "logo": "https://www.google.com/s2/favicons?domain=www.univ-tlse3.fr&sz=128",
     "website": "https://www.univ-tlse3.fr/",
-    "rank": "Rank 801 QS Rankings",
-    "rankingNum": 801,
-    "tuition": "3 Lakh INR",
-    "tuitionFeeUSD": 18000,
-    "acceptanceRate": 50,
+    "rank": "=565",
+    "rankingNum": 565,
     "type": "PUBLIC",
-    "minGpaPercent": 65,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -1034,7 +902,8 @@ export const UNIVERSITIES_FRANCE = [
       "Information technology",
       "Computer Engineering",
       "Environmental Engineering"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027"
   },
   {
     "_id": "france-20",
@@ -1047,16 +916,9 @@ export const UNIVERSITIES_FRANCE = [
     "location": "Nancy, France",
     "logo": "https://www.google.com/s2/favicons?domain=www.univ-lorraine.fr&sz=128",
     "website": "https://www.univ-lorraine.fr/",
-    "rank": "Rank 20 QS Rankings",
-    "rankingNum": 20,
-    "tuition": "3 Lakh INR",
-    "tuitionFeeUSD": 18000,
-    "acceptanceRate": 25,
+    "rank": "801-850",
+    "rankingNum": 801,
     "type": "PUBLIC",
-    "minGpaPercent": 75,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -1088,7 +950,8 @@ export const UNIVERSITIES_FRANCE = [
       "Medicine and Medical Studies",
       "Pharmacology / Pharmacy",
       "Food / Agricultural Science"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027"
   },
   {
     "_id": "france-21",
@@ -1101,16 +964,9 @@ export const UNIVERSITIES_FRANCE = [
     "location": "Nantes, France",
     "logo": "https://www.google.com/s2/favicons?domain=www.univ-nantes.fr&sz=128",
     "website": "https://www.univ-nantes.fr/",
-    "rank": "Rank 21 QS Rankings",
-    "rankingNum": 21,
-    "tuition": "3 Lakh INR",
-    "tuitionFeeUSD": 18000,
-    "acceptanceRate": 25,
+    "rank": "901-950",
+    "rankingNum": 901,
     "type": "PUBLIC",
-    "minGpaPercent": 75,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -1150,7 +1006,8 @@ export const UNIVERSITIES_FRANCE = [
       "Philosophy and Religious Studies",
       "Teaching / Education studies",
       "Geography"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027"
   },
   {
     "_id": "france-22",
@@ -1163,16 +1020,7 @@ export const UNIVERSITIES_FRANCE = [
     "location": "Toulouse, France",
     "logo": "https://www.google.com/s2/favicons?domain=www.ut-capitole.fr&sz=128",
     "website": "https://www.ut-capitole.fr",
-    "rank": "Rank 22 QS Rankings",
-    "rankingNum": 22,
-    "tuition": "3 Lakh INR",
-    "tuitionFeeUSD": 18000,
-    "acceptanceRate": 25,
     "type": "PUBLIC",
-    "minGpaPercent": 75,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -1208,16 +1056,9 @@ export const UNIVERSITIES_FRANCE = [
     "location": "Dijon, France",
     "logo": "https://www.google.com/s2/favicons?domain=www.u-bourgogne.fr&sz=128",
     "website": "https://www.u-bourgogne.fr/",
-    "rank": "Rank 23 QS Rankings",
-    "rankingNum": 23,
-    "tuition": "{'id': 15168, 'tuition_fee_min': '18406', 'tuition_fee_max': '18406'} INR/yr",
-    "tuitionFeeUSD": 18000,
-    "acceptanceRate": 25,
+    "rank": "1201-1400",
+    "rankingNum": 1201,
     "type": "PUBLIC",
-    "minGpaPercent": 75,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -1247,7 +1088,8 @@ export const UNIVERSITIES_FRANCE = [
       "Computer Science",
       "Medicine and Medical Studies",
       "Pharmacology / Pharmacy"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027"
   },
   {
     "_id": "france-24",
@@ -1260,16 +1102,7 @@ export const UNIVERSITIES_FRANCE = [
     "location": "Orléans, France",
     "logo": "https://www.google.com/s2/favicons?domain=www.univ-orleans.fr&sz=128",
     "website": "https://www.univ-orleans.fr",
-    "rank": "Rank 24 QS Rankings",
-    "rankingNum": 24,
-    "tuition": "{'id': 15178, 'tuition_fee_min': '25128', 'tuition_fee_max': '25128'} INR/yr",
-    "tuitionFeeUSD": 18000,
-    "acceptanceRate": 25,
     "type": "PUBLIC",
-    "minGpaPercent": 75,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -1312,16 +1145,7 @@ export const UNIVERSITIES_FRANCE = [
     "location": "Lille, France",
     "logo": "https://www.google.com/s2/favicons?domain=www.skema-bs.fr&sz=128",
     "website": "https://www.skema-bs.fr/",
-    "rank": "Rank 25 QS Rankings",
-    "rankingNum": 25,
-    "tuition": "14 Lakh INR",
-    "tuitionFeeUSD": 18000,
-    "acceptanceRate": 25,
     "type": "PUBLIC",
-    "minGpaPercent": 75,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -1359,16 +1183,7 @@ export const UNIVERSITIES_FRANCE = [
     "location": "Le Havre, France",
     "logo": "https://www.google.com/s2/favicons?domain=www.univ-lehavre.fr&sz=128",
     "website": "https://www.univ-lehavre.fr/",
-    "rank": "Rank 26 QS Rankings",
-    "rankingNum": 26,
-    "tuition": "3 Lakh INR",
-    "tuitionFeeUSD": 18000,
-    "acceptanceRate": 25,
     "type": "PUBLIC",
-    "minGpaPercent": 75,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -1410,16 +1225,7 @@ export const UNIVERSITIES_FRANCE = [
     "location": "Lille, France",
     "logo": "https://www.google.com/s2/favicons?domain=www.edhec.edu&sz=128",
     "website": "https://www.edhec.edu/",
-    "rank": "Rank 27 QS Rankings",
-    "rankingNum": 27,
-    "tuition": "22 Lakh INR",
-    "tuitionFeeUSD": 18000,
-    "acceptanceRate": 25,
     "type": "PUBLIC",
-    "minGpaPercent": 75,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -1457,16 +1263,7 @@ export const UNIVERSITIES_FRANCE = [
     "location": "Paris, France",
     "logo": "https://www.google.com/s2/favicons?domain=www.u-paris2.fr&sz=128",
     "website": "https://www.u-paris2.fr",
-    "rank": "Rank 28 QS Rankings",
-    "rankingNum": 28,
-    "tuition": "3 Lakh INR",
-    "tuitionFeeUSD": 18000,
-    "acceptanceRate": 25,
     "type": "PUBLIC",
-    "minGpaPercent": 75,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -1502,16 +1299,7 @@ export const UNIVERSITIES_FRANCE = [
     "location": "Gif-sur-Yvette, France",
     "logo": "https://www.google.com/s2/favicons?domain=ens-paris-saclay.fr&sz=128",
     "website": "https://ens-paris-saclay.fr/",
-    "rank": "Rank 29 QS Rankings",
-    "rankingNum": 29,
-    "tuition": "{'id': 14354, 'tuition_fee_min': '25128', 'tuition_fee_max': '25128'} INR/yr",
-    "tuitionFeeUSD": 18000,
-    "acceptanceRate": 25,
     "type": "PUBLIC",
-    "minGpaPercent": 75,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -1548,16 +1336,9 @@ export const UNIVERSITIES_FRANCE = [
     "location": "Caen, France",
     "logo": "https://www.google.com/s2/favicons?domain=www.unicaen.fr&sz=128",
     "website": "https://www.unicaen.fr",
-    "rank": "Rank 31 QS Rankings",
-    "rankingNum": 31,
-    "tuition": "{'id': 14733, 'tuition_fee_min': '28747', 'tuition_fee_max': '28747'} INR/yr",
-    "tuitionFeeUSD": 18000,
-    "acceptanceRate": 50,
+    "rank": "1201-1400",
+    "rankingNum": 1201,
     "type": "PUBLIC",
-    "minGpaPercent": 65,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -1587,7 +1368,8 @@ export const UNIVERSITIES_FRANCE = [
       "Pharmacology / Pharmacy",
       "Computer Science",
       "Information technology"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027"
   },
   {
     "_id": "france-32",
@@ -1600,16 +1382,9 @@ export const UNIVERSITIES_FRANCE = [
     "location": "Rouen, France",
     "logo": "https://www.google.com/s2/favicons?domain=www.univ-rouen.fr&sz=128",
     "website": "https://www.univ-rouen.fr/",
-    "rank": "Rank 32 QS Rankings",
-    "rankingNum": 32,
-    "tuition": "3 Lakh INR",
-    "tuitionFeeUSD": 18000,
-    "acceptanceRate": 50,
+    "rank": "1401+",
+    "rankingNum": 1401,
     "type": "PUBLIC",
-    "minGpaPercent": 65,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -1638,7 +1413,8 @@ export const UNIVERSITIES_FRANCE = [
       "Biological Sciences",
       "Computer Science",
       "Business Administration"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027"
   },
   {
     "_id": "france-34",
@@ -1651,16 +1427,9 @@ export const UNIVERSITIES_FRANCE = [
     "location": "Limoges, France",
     "logo": "https://www.google.com/s2/favicons?domain=www.unilim.fr&sz=128",
     "website": "https://www.unilim.fr",
-    "rank": "Rank 34 QS Rankings",
-    "rankingNum": 34,
-    "tuition": "3 Lakh INR",
-    "tuitionFeeUSD": 18000,
-    "acceptanceRate": 50,
+    "rank": "1401+",
+    "rankingNum": 1401,
     "type": "PUBLIC",
-    "minGpaPercent": 65,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -1689,7 +1458,8 @@ export const UNIVERSITIES_FRANCE = [
       "Electrical Engineering",
       "Mechanical Engineering",
       "Computer Science"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027"
   },
   {
     "_id": "france-35",
@@ -1702,16 +1472,7 @@ export const UNIVERSITIES_FRANCE = [
     "location": "Lyon, France",
     "logo": "https://www.google.com/s2/favicons?domain=www.em-lyon.com&sz=128",
     "website": "https://www.em-lyon.com",
-    "rank": "Rank 35 QS Rankings",
-    "rankingNum": 35,
-    "tuition": "12 Lakh INR",
-    "tuitionFeeUSD": 18000,
-    "acceptanceRate": 50,
     "type": "PUBLIC",
-    "minGpaPercent": 65,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -1751,16 +1512,9 @@ export const UNIVERSITIES_FRANCE = [
     "location": "Poitiers, France",
     "logo": "https://www.google.com/s2/favicons?domain=www.univ-poitiers.fr&sz=128",
     "website": "https://www.univ-poitiers.fr",
-    "rank": "Rank 36 QS Rankings",
-    "rankingNum": 36,
-    "tuition": "3 Lakh INR",
-    "tuitionFeeUSD": 18000,
-    "acceptanceRate": 50,
+    "rank": "1201-1400",
+    "rankingNum": 1201,
     "type": "PUBLIC",
-    "minGpaPercent": 65,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -1792,7 +1546,8 @@ export const UNIVERSITIES_FRANCE = [
       "Philosophy and Religious Studies",
       "Teaching / Education studies",
       "Sport / Exercise Science"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027"
   },
   {
     "_id": "france-37",
@@ -1805,16 +1560,7 @@ export const UNIVERSITIES_FRANCE = [
     "location": "Marne-la-Vallée, France",
     "logo": "https://www.google.com/s2/favicons?domain=www.univ-gustave-eiffel.fr&sz=128",
     "website": "https://www.univ-gustave-eiffel.fr/",
-    "rank": "Rank 37 QS Rankings",
-    "rankingNum": 37,
-    "tuition": "{'id': 15567, 'tuition_fee_min': '18406', 'tuition_fee_max': '18406'} INR/yr",
-    "tuitionFeeUSD": 18000,
-    "acceptanceRate": 50,
     "type": "PUBLIC",
-    "minGpaPercent": 65,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -1854,16 +1600,7 @@ export const UNIVERSITIES_FRANCE = [
     "location": "Clermont-Ferrand, France",
     "logo": "https://www.google.com/s2/favicons?domain=www.uca.fr&sz=128",
     "website": "https://www.uca.fr",
-    "rank": "Rank 38 QS Rankings",
-    "rankingNum": 38,
-    "tuition": "{'id': 16027, 'tuition_fee_min': '18406', 'tuition_fee_max': '18406'} INR/yr",
-    "tuitionFeeUSD": 18000,
-    "acceptanceRate": 50,
     "type": "PUBLIC",
-    "minGpaPercent": 65,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -1907,16 +1644,9 @@ export const UNIVERSITIES_FRANCE = [
     "location": "Lyon, France",
     "logo": "https://www.google.com/s2/favicons?domain=www.ens-lyon.fr&sz=128",
     "website": "https://www.ens-lyon.fr/",
-    "rank": "Rank 39 QS Rankings",
-    "rankingNum": 39,
-    "tuition": "3 Lakh INR",
-    "tuitionFeeUSD": 18000,
-    "acceptanceRate": 50,
+    "rank": "=235",
+    "rankingNum": 235,
     "type": "PUBLIC",
-    "minGpaPercent": 65,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -1940,7 +1670,8 @@ export const UNIVERSITIES_FRANCE = [
       "Geography",
       "Philosophy and Religious Studies",
       "Earth Sciences / Geoscience"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027"
   },
   {
     "_id": "france-40",
@@ -1953,16 +1684,7 @@ export const UNIVERSITIES_FRANCE = [
     "location": "Rouen, France",
     "logo": "https://www.google.com/s2/favicons?domain=neoma-bs.com&sz=128",
     "website": "https://neoma-bs.com/",
-    "rank": "Rank 40 QS Rankings",
-    "rankingNum": 40,
-    "tuition": "13 Lakh INR",
-    "tuitionFeeUSD": 18000,
-    "acceptanceRate": 50,
     "type": "PUBLIC",
-    "minGpaPercent": 65,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -1999,16 +1721,7 @@ export const UNIVERSITIES_FRANCE = [
     "location": "Lyon, France",
     "logo": "https://www.google.com/s2/favicons?domain=www.insa-lyon.fr&sz=128",
     "website": "https://www.insa-lyon.fr",
-    "rank": "Rank 41 QS Rankings",
-    "rankingNum": 41,
-    "tuition": "4 Lakh INR",
-    "tuitionFeeUSD": 18000,
-    "acceptanceRate": 50,
     "type": "PUBLIC",
-    "minGpaPercent": 65,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -2047,16 +1760,7 @@ export const UNIVERSITIES_FRANCE = [
     "location": "Besançon, France",
     "logo": "https://www.google.com/s2/favicons?domain=www.univ-fcomte.fr&sz=128",
     "website": "https://www.univ-fcomte.fr/",
-    "rank": "Rank 44 QS Rankings",
-    "rankingNum": 44,
-    "tuition": "{'id': 15731, 'tuition_fee_min': '15701', 'tuition_fee_max': '15701'} INR/yr",
-    "tuitionFeeUSD": 18000,
-    "acceptanceRate": 50,
     "type": "PUBLIC",
-    "minGpaPercent": 65,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -2099,16 +1803,7 @@ export const UNIVERSITIES_FRANCE = [
     "location": "Versailles, France",
     "logo": "https://www.google.com/s2/favicons?domain=www.uvsq.fr&sz=128",
     "website": "https://www.uvsq.fr",
-    "rank": "Rank 45 QS Rankings",
-    "rankingNum": 45,
-    "tuition": "3 Lakh INR",
-    "tuitionFeeUSD": 18000,
-    "acceptanceRate": 50,
     "type": "PUBLIC",
-    "minGpaPercent": 65,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -2150,16 +1845,9 @@ export const UNIVERSITIES_FRANCE = [
     "location": "Rennes, France",
     "logo": "https://www.google.com/s2/favicons?domain=www.univ-rennes1.fr&sz=128",
     "website": "https://www.univ-rennes1.fr/",
-    "rank": "Rank 47 QS Rankings",
-    "rankingNum": 47,
-    "tuition": "3 Lakh INR",
-    "tuitionFeeUSD": 18000,
-    "acceptanceRate": 50,
+    "rank": "731-740",
+    "rankingNum": 731,
     "type": "PUBLIC",
-    "minGpaPercent": 65,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -2187,7 +1875,8 @@ export const UNIVERSITIES_FRANCE = [
       "Electrical Engineering",
       "Civil Engineering",
       "Mechanical Engineering"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027"
   },
   {
     "_id": "france-50",
@@ -2200,16 +1889,7 @@ export const UNIVERSITIES_FRANCE = [
     "location": "Chambéry, France",
     "logo": "https://www.google.com/s2/favicons?domain=www.univ-smb.fr&sz=128",
     "website": "https://www.univ-smb.fr/",
-    "rank": "Rank 50 QS Rankings",
-    "rankingNum": 50,
-    "tuition": "3 Lakh INR",
-    "tuitionFeeUSD": 18000,
-    "acceptanceRate": 50,
     "type": "PUBLIC",
-    "minGpaPercent": 65,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -2240,5 +1920,3 @@ export const UNIVERSITIES_FRANCE = [
     ]
   }
 ];
-
-export default UNIVERSITIES_FRANCE;

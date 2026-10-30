@@ -8,20 +8,16 @@ import CoursesAndFees from './CoursesAndFees';
 
 const coventryData = {
   name: "Coventry University",
-  location: "Coventry, UK",
+  location: "Coventry, West Midlands, UK",
   city: "Coventry",
   established: 1843,
-  totalStudents: 50000,
-  intlStudents: 13000,
-  studentFacultyRatio: "18:1",
-  acceptanceRate: "65%",
   accreditation: "Association to Advance Collegiate Schools of Business (AACSB)",
   avgStudyCost: "INR 5.00 L",
   avgCostOfLiving: "INR 2.00 L",
   type: "PUBLIC",
-  logo: "https://logo.clearbit.com/coventry.ac.uk",
+  logo: "/logos/verified-Coventry University.png",
   heroImage: "https://images.unsplash.com/photo-1590012314607-cda9d9b699ae?w=1200",
-  description: "Coventry University, established in 1843, has a rich history of providing quality education and fostering innovation. Over the years, it has grown significantly, evolving into a vibrant institution known for its commitment to student success and community engagement.\n\nWith a total enrollment of 50000, Coventry University boasts a diverse student body, including 13000 international students from various countries. This multicultural environment enriches your learning experience and prepares you for a global career.\n\nLocated in Coventry, the campus is equipped with state-of-the-art facilities designed to support your academic journey. Key facilities include modern lecture halls, extensive library resources, research centers, sports facilities, and student accommodation options.\n\nCoventry University offers a range of programs that align with industry needs, ensuring you receive relevant education. Popular areas of study include Engineering, Business, Health, Arts, and Social Sciences.\n\nThe university offers multiple intake periods throughout the year and provides robust support services for international students, including orientation programs and dedicated advisors.\n\nIn conclusion, Coventry University stands out for its quality education, diverse programs, and commitment to preparing you for a successful career in a globalized world.",
+  description: "Coventry University traces its history to the Coventry School of Design, founded in 1843, and became a university in 1992.\n\nIt is ranked 581 in the world in the QS World University Rankings 2027.\n\nThe main campus is in Coventry city centre. Popular areas of study include Engineering, Business, Health, Computing and Arts.\n\nMany postgraduate courses have several start dates a year (for example January, March, May, July, September and November), and the university provides support services for international students.",
   topCourses: [
     { name: "Accounting", count: 8 },
     { name: "Advertising", count: 2 },
@@ -38,33 +34,17 @@ const coventryData = {
     { name: "NOV'2025", status: "Intake Open" }
   ],
   requirements: [
-    { title: "TOEFL iBT Score", detail: "79+ minimum cutoff required for English proficiency verification." },
-    { title: "IELTS Academic Band", detail: "6.0+ minimum band required for admission, with no band less than 5.5." },
-    { title: "Undergraduate Degree", detail: "Bachelor's degree expected with a GPA of 2.5+ or 55%+ equivalent." }
+    { title: "English Language", detail: "IELTS, TOEFL, PTE or another accepted test; the minimum score depends on the course. Check the course page." },
+    { title: "Undergraduate Degree", detail: "A bachelor's degree in a relevant subject; the minimum grade (UK 2:1 or 2:2 equivalent) depends on the course." }
   ],
   rankings: {
     "QS Rankings": [
-      { category: "Best World Ranking Schools - 2025", rank: "526" },
-      { category: "Best World Ranking Schools - 2024", rank: "526 - 1500" },
-      { category: "Best World Ranking Schools - 2023", rank: "651" }
-    ],
-    "Times Higher Education": [
-      { category: "Best World Ranking Schools - 2023", rank: "801 - 1000" },
-      { category: "Best World Ranking Schools - 2022", rank: "610 - 800" }
-    ],
-    "Guardian Global": [
-      { category: "Best National Schools - 2025", rank: "42" },
-      { category: "Best National Schools - 2024", rank: "46" }
-    ],
-    "UK QS Ranking": [
-      { category: "Best Schools - 2023", rank: "54" }
+      { category: "QS World University Rankings 2027", rank: "581" },
+      { category: "QS World University Rankings 2025", rank: "=531" }
     ]
   },
   coursesFees: [
-    { name: "BSc (Hons) in Accounting and Finance", duration: "36 Months", tuition: 17.73 },
-    { name: "BSc (Hons) in Accounting and Finance for International Students (Top Up)", duration: "12 Months", tuition: 17.73 },
-    { name: "MSc in Professional Accounting", duration: "12 Months", tuition: 21.17 },
-    { name: "BA (Hons) in International Finance and Accounting", duration: "36 Months", tuition: 17.73 }
+    { name: "MSc in Computer Science (2026-27, international fee)", duration: "Full-time", tuition: 25 }
   ],
   costOfLiving: {
     description: "Coventry University, located in the vibrant city of Coventry, offers a diverse and enriching experience for international students. The cost of living in Coventry is relatively moderate compared to other major UK cities. Students can expect to spend a significant portion of their budget on housing, books/supplies, transportation, and personal leisure.",
@@ -83,7 +63,6 @@ const coventryData = {
       "Job Fairs and Networking Events",
       "Internships and Placement Support",
       "Online Job Portal",
-      "OPT and CPT Guidance",
       "Visa and Work Authorisation Guidance",
       "Cultural Adjustment"
     ],
@@ -100,12 +79,6 @@ const coventryData = {
     "Housing",
     "Social and Recreational Spots",
     "Special Attractions"
-  ],
-  alumni: [
-    { name: "Sir John Egan", profession: "Business Leader" },
-    { name: "Emma Willis", profession: "Fashion Designer" },
-    { name: "Moazzam Begg", profession: "Human Rights Activist" },
-    { name: "Karen Carney", profession: "Footballer" }
   ],
   blogs: [
     { title: "How To Get Jobs In UK In 2025: Process, Eligibility & Visa", readTime: "11 mins read", date: "Mar 15, 2025" },

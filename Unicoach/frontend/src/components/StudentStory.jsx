@@ -194,8 +194,8 @@ const Screen = ({ s }) => {
             </svg>
             <ul className="space-y-1 sm:space-y-1.5 min-w-0">
               {sc.checks.map((c, i) => (
-                <motion.li key={c} initial={{ opacity: 0, x: -6 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 + i * 0.15 }} className="flex items-center gap-1.5 text-[10.5px] sm:text-[12.5px] font-semibold text-[#111] whitespace-nowrap">
-                  <span className="w-4 h-4 rounded-full grid place-items-center text-white text-[9px]" style={{ background: C.good }}>✓</span>{c}
+                <motion.li key={c} initial={{ opacity: 0, x: -6 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 + i * 0.15 }} className="flex items-start gap-1.5 text-[10.5px] sm:text-[12.5px] leading-tight font-semibold text-[#111] sm:whitespace-nowrap">
+                  <span className="w-4 h-4 shrink-0 rounded-full grid place-items-center text-white text-[9px]" style={{ background: C.good }}>✓</span>{c}
                 </motion.li>
               ))}
             </ul>
@@ -386,7 +386,7 @@ const StudentStory = () => {
           </div>
 
           {/* controls */}
-          <div className="mt-3 flex items-center justify-center gap-2.5">
+          <div className="mt-3 flex items-center justify-center gap-1.5 sm:gap-2.5">
             {[
               { I: muted ? MicOff : Mic, label: muted ? 'Unmute' : 'Mute', on: !muted, act: () => setMuted((m) => !m) },
               { I: camOn ? Video : VideoOff, label: camOn ? 'Turn camera off' : 'Turn camera on', on: false, act: () => setCamOn((c) => !c) },
@@ -395,9 +395,9 @@ const StudentStory = () => {
               { I: MessageSquare, label: captions ? 'Hide captions' : 'Show captions', on: captions, act: () => setCaptions((c) => !c) },
             ].map(({ I, label, on, act }) => (
               <motion.button type="button" key={label} title={label} aria-label={label} onClick={act} whileTap={{ scale: 0.88 }}
-                className={`no-shine w-10 h-10 rounded-full grid place-items-center cursor-pointer transition-colors ${on ? 'bg-[#DE5C2B] text-white' : 'bg-[#F5F1EC] text-slate-700 hover:bg-[#ECE5DD]'}`}><I size={17} /></motion.button>
+                className={`no-shine w-9 h-9 sm:w-10 sm:h-10 rounded-full grid place-items-center cursor-pointer transition-colors ${on ? 'bg-[#DE5C2B] text-white' : 'bg-[#F5F1EC] text-slate-700 hover:bg-[#ECE5DD]'}`}><I size={17} /></motion.button>
             ))}
-            <motion.button type="button" title="End call" aria-label="End call" onClick={() => setEnded(true)} whileTap={{ scale: 0.9 }} className="no-shine w-14 h-10 rounded-full grid place-items-center bg-[#EA4335] hover:bg-[#d33426] text-white cursor-pointer"><PhoneOff size={17} /></motion.button>
+            <motion.button type="button" title="End call" aria-label="End call" onClick={() => setEnded(true)} whileTap={{ scale: 0.9 }} className="no-shine w-12 h-9 sm:w-14 sm:h-10 rounded-full grid place-items-center bg-[#EA4335] hover:bg-[#d33426] text-white cursor-pointer"><PhoneOff size={17} /></motion.button>
           </div>
           {/* quick reactions */}
           <div className="mt-2 flex items-center justify-center gap-1.5">

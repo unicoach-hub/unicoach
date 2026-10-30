@@ -7,11 +7,11 @@ import CoursesAndFees from './CoursesAndFees';
 
 export const harvardData = {
   name: "Harvard University",
-  location: "Cambridge - Massachusetts, Massachusetts, USA",
+  location: "Cambridge, Massachusetts, USA",
   city: "Cambridge",
   established: 1636,
-  totalStudents: 57786,
-  intlStudents: 7274,
+  totalStudents: 24317, // harvard.edu/about (undergraduate + graduate)
+  intlStudents: 6800, // approx., Harvard figure reported in 2025
   type: "PRIVATE",
   logo: "/assets/usa/harvard/logo_icon.png",
   heroImage: "/assets/usa/harvard/banner.jpg",
@@ -23,40 +23,22 @@ export const harvardData = {
     { name: "Teaching / Education studies", count: 1 }
   ],
   intakeDeadlines: [
-    { name: "JAN'2025", status: "Intake Open" },
-    { name: "MAY'2025", status: "Intake Open" },
-    { name: "AUG'2025", status: "Intake Open" },
-    { name: "SEP'2025", status: "Intake Open" }
+    { name: "AUG'2027", status: "Fall entry; deadlines vary by program" }
   ],
   requirements: [
-    { title: "TOEFL iBT Score", detail: "100+ minimum cutoff required for English proficiency verification." },
-    { title: "IELTS Academic Band", detail: "7.5+ minimum band required for admission." },
-    { title: "GRE General Score", detail: "Recommended for all engineering and scientific computational streams." },
-    { title: "Undergraduate Degree", detail: "16 years of prior education expected with a GPA of 3.8+." }
+    { title: "English Proficiency", detail: "TOEFL iBT or IELTS Academic required unless you qualify for a waiver; minimum scores vary by program." },
+    { title: "GRE / GMAT", detail: "Required, optional or not accepted depending on the program. Check the department's admissions page." },
+    { title: "Undergraduate Degree", detail: "A bachelor's degree equivalent to a U.S. four-year degree is generally expected. No single university-wide GPA cutoff is published." }
   ],
   rankings: {
-    "Times Higher Education": [
-      { category: "Best World Ranking Schools - 2023", rank: "2" },
-      { category: "Best University Ranking Schools - 2022", rank: "2" }
-    ],
-    "US News": [
-      { category: "Best National Schools - 2025", rank: "3" },
-      { category: "Best World Ranking Schools - 2023", rank: "1" },
-      { category: "Best University Ranking Schools - 2022", rank: "2" }
-    ],
     "QS Rankings": [
-      { category: "Best World Ranking Schools - 2025", rank: "4" },
-      { category: "Best World Ranking Schools - 2023", rank: "5" },
-      { category: "Best World Ranking Schools - 2022", rank: "5" }
-    ],
-    "Webometrics - World": [
-      { category: "Best World Ranking Schools - 2023", rank: "1" }
+      { category: "World University Rankings - 2027", rank: "5" }
     ]
   },
   coursesFees: [
-    { name: "Master Of Architecture I", duration: "42 Months", tuition: 44 },
-    { name: "MS in Computer Science", duration: "24 Months", tuition: 52 },
-    { name: "MS in Data Science", duration: "18 Months", tuition: 52 }
+    // ₹ Lakh/yr at 1 USD = ₹95. GSD Master's tuition 2026-27 $64,000; SEAS SM Data Science first year 2026-27 $67,504
+    { name: "Master Of Architecture I", duration: "42 Months", tuition: 61 },
+    { name: "SM in Data Science", duration: "18 Months", tuition: 64 }
   ],
   description: "Harvard is the oldest institution of higher learning in the United States. Founded in 1636, it is devoted to excellence in teaching, learning, and research, and to developing leaders in many disciplines who make a difference globally."
 };

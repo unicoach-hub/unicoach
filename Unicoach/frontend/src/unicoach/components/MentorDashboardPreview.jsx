@@ -65,17 +65,18 @@ const OverviewView = ({ reduced }) => (
   <Panel title="Welcome back, Your Name 👋" subtitle="Last 7 days">
     <div className="grid grid-cols-3 gap-2 mb-3">
       {[
-        { label: 'Profile Views', value: '1,284', icon: Eye, tone: 'text-indigo-600', delta: '+18%' },
-        { label: 'Gross Volume (₹)', value: '₹24,850', icon: TrendingUp, tone: 'text-emerald-600', delta: '+₹6,200' },
-        { label: 'Bookings Count', value: '17', icon: Users, tone: 'text-[#DE5C2B]', delta: '+5' },
+        { label: 'Profile Views', short: 'Views', value: '1,284', icon: Eye, tone: 'text-indigo-600', delta: '+18%' },
+        { label: 'Gross Volume (₹)', short: 'Earned', value: '₹24,850', icon: TrendingUp, tone: 'text-emerald-600', delta: '+₹6,200' },
+        { label: 'Bookings Count', short: 'Bookings', value: '17', icon: Users, tone: 'text-[#DE5C2B]', delta: '+5' },
       ].map((k) => (
         <div key={k.label} className="rounded-xl border border-slate-100 bg-[#FAF9F6] px-2.5 py-2">
           <div className="flex items-center gap-1.5 mb-1">
-            <k.icon className={`w-3.5 h-3.5 ${k.tone}`} />
-            <span className="text-[9.5px] sm:text-[10px] font-bold text-slate-500 truncate">{k.label}</span>
+            <k.icon className={`w-3.5 h-3.5 shrink-0 ${k.tone}`} />
+            {/* Short label on phones, where three tiles share one row */}
+            <span className="text-[9.5px] sm:text-[10px] font-bold text-slate-500 truncate"><span className="sm:hidden">{k.short}</span><span className="hidden sm:inline">{k.label}</span></span>
           </div>
           <div className="font-outfit text-sm sm:text-base font-black text-slate-900">{k.value}</div>
-          <span className="text-[9.5px] font-bold text-emerald-600">{k.delta} this week</span>
+          <span className="block text-[9.5px] font-bold text-emerald-600 whitespace-nowrap">{k.delta}<span className="hidden sm:inline"> this week</span></span>
         </div>
       ))}
     </div>

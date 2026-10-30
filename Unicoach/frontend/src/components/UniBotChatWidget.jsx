@@ -146,7 +146,7 @@ const UniBotChatWidget = () => {
     <>
       {/* ── Floating Launcher Button (shown only when chat is closed) ── */}
       {!isOpen && (
-        <div className="fixed bottom-20 right-3 md:bottom-6 md:right-6 z-40">
+        <div className="fixed bottom-20 right-3 md:bottom-6 md:right-6 z-40 transition-[bottom] [body[data-floating-bar]_&]:bottom-[84px] md:[body[data-floating-bar]_&]:bottom-[96px]">
           {/* White pill like the navbar: orange avatar with an online dot, then name + status. Phones get just the round avatar. */}
           <motion.button
             initial={{ y: 16, opacity: 0 }}

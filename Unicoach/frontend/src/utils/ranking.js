@@ -30,7 +30,8 @@ export const getVerifiedRanking = (uni) => {
   const rank = Number(uni && uni.rankingNum);
   if (!uni || !uni.rankingSource || !(rank > 0)) return null;
 
-  const m = typeof uni.rank === 'string' && uni.rank.trim().match(/^=?\s*(\d+)\s*(?:[-–]\s*(\d+)|(\+))?$/);
+  // Also accepts a label this helper already made ("#1201–1400 · QS 2027"), since some mapped records store that in `rank`
+  const m = typeof uni.rank === 'string' && uni.rank.trim().match(/^#?=?\s*(\d+)\s*(?:[-–]\s*(\d+)|(\+))?(?:\s*·.*)?$/);
   const label = m ? `#${m[1]}${m[2] ? `–${m[2]}` : (m[3] || '')}` : `#${rank}`;
 
   return {

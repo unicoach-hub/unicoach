@@ -12,15 +12,13 @@ const torontoData = {
   location: "Toronto, Ontario, Canada",
   city: "Toronto",
   established: 1827,
-  totalStudents: 84000,
-  intlStudents: 20160,
+  totalStudents: 103140,
+  intlStudents: 27897,
   type: "PUBLIC",
-  studentFacultyRatio: "16:1",
-  acceptanceRate: "43%",
-  accreditation: "Association of Universities and Colleges of Canada (AUCC)",
-  avgStudyCost: "INR 6.00 L",
+  accreditation: "Member of Universities Canada (formerly AUCC) and the Association of American Universities (AAU)",
+  avgStudyCost: "INR 52.00 L",
   avgCostOfLiving: "INR 3.00 L",
-  logo: "https://logo.clearbit.com/utoronto.ca",
+  logo: "/logos/verified-University of Toronto.png",
   heroImage: "https://images.unsplash.com/photo-1517935706615-2717063c2225?w=1200",
   topCourses: [
     { name: "Aerospace Engineering", count: 1 },
@@ -30,22 +28,20 @@ const torontoData = {
     { name: "Business Administration", count: 4 }
   ],
   intakeDeadlines: [
-    { name: "JAN'2025", status: "Intake Open" },
-    { name: "MAR'2025", status: "Intake Open" },
-    { name: "MAY'2025", status: "Intake Open" },
-    { name: "AUG'2025", status: "Intake Open" },
-    { name: "SEP'2025", status: "Intake Open" }
+    { name: "SEP", status: "Main intake" },
+    { name: "JAN", status: "Select programs" }
   ],
   requirements: [
-    { title: "IELTS Academic Band", detail: "7.0 minimum band required for admission, with no band less than 6.5." },
-    { title: "TOEFL iBT Score", detail: "100+ minimum cutoff required for English proficiency verification." },
-    { title: "Undergraduate Degree", detail: "Four-year bachelor's degree with a minimum GPA of B+ or equivalent." }
+    { title: "IELTS / TOEFL", detail: "Required if your degree was not taught in English. The School of Graduate Studies sets the minimum scores, and some programs ask for higher." },
+    { title: "Undergraduate Degree", detail: "Four-year bachelor's degree (or equivalent) with a final-year average of at least mid-B; many programs ask for more." }
   ],
   rankings: {
     "Webometrics - National": [
       { category: "Best Schools - 2023", rank: "1" }
     ],
     "QS Rankings": [
+      { category: "Best World Ranking Schools - 2027", rank: "32" },
+      { category: "Best World Ranking Schools - 2026", rank: "29" },
       { category: "Best World Ranking Schools - 2025", rank: "25" },
       { category: "Best World Ranking Schools - 2024", rank: "21" },
       { category: "Best World Ranking Schools - 2023", rank: "34" },
@@ -56,10 +52,11 @@ const torontoData = {
     ]
   },
   coursesFees: [
-    { name: "Master of Applied Science (MASc) Aerospace Engineering", duration: "20 Months", tuition: 38.23 }
+    { name: "Master of Applied Science (MASc) Aerospace Engineering", duration: "20 Months", tuition: 25 },
+    { name: "Master of Engineering (MEng), course-based", duration: "12 to 24 Months", tuition: 52 }
   ],
-  description: "The University of Toronto, established in 1827, has grown into one of the leading institutions of higher education in Canada and the world. With a rich history that spans over a century, it has evolved into a vibrant academic community known for its research excellence and diverse programs.",
-  longDescription: "The University of Toronto, established in 1827, has grown into one of the leading institutions of higher education in Canada and the world. With a rich history that spans over a century, it has evolved into a vibrant academic community known for its research excellence and diverse programs.\n\nWith a total enrollment of 84000, you will find a dynamic student body that includes 20160 international students from various countries. This diversity enriches the campus experience, fostering a global perspective among students.\n\nThe university is located in Toronto, offering a beautiful and urban campus environment. Key facilities include:\n- State-of-the-art libraries\n- Research centers\n- Modern classrooms and laboratories\n- Student recreation and wellness centers\n\nThe University of Toronto offers a wide range of programs that are aligned with industry needs. Some popular programs include:\n- Engineering\n- Business Administration\n- Computer Science\n- Health Sciences\n\nThe acceptance rate stands at 43%, with multiple intake periods throughout the year. The university provides extensive support services for international students, ensuring a smooth transition and a successful academic journey.\n\nIn conclusion, the University of Toronto stands out for its commitment to quality education and career readiness, preparing you to excel in your chosen field.",
+  description: "The University of Toronto, established in 1827, has grown into one of the leading institutions of higher education in Canada and the world. With a history of nearly two centuries, it has evolved into a vibrant academic community known for its research excellence and diverse programs.",
+  longDescription: "The University of Toronto, established in 1827, has grown into one of the leading institutions of higher education in Canada and the world. With a history of nearly two centuries, it has evolved into a vibrant academic community known for its research excellence and diverse programs.\n\nWith a total enrolment of about 103,000 (Fall 2025), you will find a dynamic student body that includes nearly 28,000 international students from various countries. This diversity enriches the campus experience, fostering a global perspective among students.\n\nThe university is located in Toronto, offering a beautiful and urban campus environment. Key facilities include:\n- State-of-the-art libraries\n- Research centers\n- Modern classrooms and laboratories\n- Student recreation and wellness centers\n\nThe University of Toronto offers a wide range of programs that are aligned with industry needs. Some popular programs include:\n- Engineering\n- Business Administration\n- Computer Science\n- Health Sciences\n\nMost graduate programs start in September, and some also admit students in January. The university provides extensive support services for international students, ensuring a smooth transition and a successful academic journey.\n\nIn conclusion, the University of Toronto stands out for its commitment to quality education and career readiness, preparing you to excel in your chosen field.",
   studentLife: [
     "Student Groups and Organizations",
     "Libraries and Study Resources",
@@ -73,8 +70,7 @@ const torontoData = {
     { name: "Margaret Atwood", profession: "Author" },
     { name: "Lester B. Pearson", profession: "Prime Minister" },
     { name: "Donald Sutherland", profession: "Actor" },
-    { name: "Roberta Bondar", profession: "Astronaut" },
-    { name: "David Suzuki", profession: "Environmental Activist" }
+    { name: "Roberta Bondar", profession: "Astronaut" }
   ],
   costOfLiving: {
     description: "The estimated yearly cost of living for an international student attending the University of Toronto is a crucial factor to consider when planning your education abroad. Toronto, being a vibrant and multicultural city, offers a range of living experiences, but it also comes with its costs. Housing is one of the most significant expenses, with options ranging from on-campus residences to off-campus apartments. Books and supplies are another essential cost, as academic materials are necessary for success in your studies. Transportation costs can vary depending on your proximity to the campus and your preferred mode of travel. Personal expenses include daily necessities and leisure activities, which are vital for a balanced student life. Miscellaneous expenses cover unexpected costs that may arise during your stay. Overall, the cost of living in Toronto requires careful budgeting to ensure a comfortable and fulfilling student experience.",
@@ -93,29 +89,28 @@ const torontoData = {
     services: [
       "Internships and Placement Support",
       "Online Job Portal",
-      "OPT and CPT Guidance",
-      "Visa and Work Authorisation Guidance",
+      "Visa and Work Permit Guidance",
       "Cultural Adjustment"
     ],
     recruiters: [
       "Google", "Amazon", "Royal Bank of Canada", "Deloitte", "IBM",
       "McKinsey & Company", "Bell", "CIBC", "Toronto-Dominion Bank", "Scotiabank",
-      "RevOps", "Accenture", "BMO Financial Group", "Manulife", "Shopify",
+      "Accenture", "BMO Financial Group", "Manulife", "Shopify",
       "PwC", "Microsoft", "Sun Life Financial", "Rogers Communications", "Canadian Tire Corporation"
     ]
   },
   faqs: [
-    { question: "Is University of Toronto a good university?", answer: "Yes, the University of Toronto is consistently ranked as the top university in Canada and one of the top public universities in the world." },
+    { question: "Is University of Toronto a good university?", answer: "Yes. The University of Toronto is one of Canada's two highest-ranked universities, placed 32nd in the world in the QS World University Rankings 2027." },
     { question: "How do I get admission to University of Toronto?", answer: "Admission is highly competitive and is based on excellent academic standing, specific course requirements, and proof of English proficiency." },
     { question: "Is University of Toronto public or private?", answer: "The University of Toronto is a public research university funded by the province of Ontario." },
     { question: "Why choose University of Toronto?", answer: "It offers world-class research opportunities, a prestigious global reputation, top-tier faculty, and a vibrant location in downtown Toronto." },
-    { question: "Is University of Toronto good for international students?", answer: "Yes, it hosts over 20,000 international students and provides extensive academic, career, and personal support systems." },
-    { question: "What is the ranking of University of Toronto?", answer: "It is ranked #1 in Canada by Webometrics and Times Higher Education, and #25 globally in the 2025 QS World University Rankings." },
+    { question: "Is University of Toronto good for international students?", answer: "Yes, it hosts nearly 28,000 international students and provides extensive academic, career, and personal support systems." },
+    { question: "What is the ranking of University of Toronto?", answer: "It is ranked #32 in the world (2nd in Canada, after McGill) in the QS World University Rankings 2027, and #1 in Canada by Times Higher Education." },
     { question: "What is the pass rate for University of Toronto?", answer: "The graduation and success rates are extremely high, with graduates highly sought after by top global employers." },
-    { question: "How many students are at University of Toronto?", answer: "It has a total enrollment of approximately 84,000 students, including over 20,160 international students." },
-    { question: "How hard is it to get into University of Toronto?", answer: "With an acceptance rate of 43%, admission is competitive, particularly for popular programs like Engineering and Computer Science." },
-    { question: "Is University of Toronto accredited?", answer: "Yes, it is accredited by the Association of Universities and Colleges of Canada (AUCC) and the Association of American Universities (AAU)." },
-    { question: "Who are the notable alumni of University of Toronto and what are their professions?", answer: "Notable alumni include Margaret Atwood (Author), Lester B. Pearson (Prime Minister), Donald Sutherland (Actor), Roberta Bondar (Astronaut), and David Suzuki (Environmental Activist)." }
+    { question: "How many students are at University of Toronto?", answer: "It has a total enrolment of about 103,000 students (Fall 2025), including nearly 28,000 international students." },
+    { question: "How hard is it to get into University of Toronto?", answer: "Admission is competitive, particularly for popular programs like Engineering and Computer Science. The university does not publish one overall acceptance rate." },
+    { question: "Is University of Toronto accredited?", answer: "Canada has no national accreditation body; universities are created by provincial law. The University of Toronto is a public university under Ontario law, a member of Universities Canada and of the Association of American Universities (AAU)." },
+    { question: "Who are the notable alumni of University of Toronto and what are their professions?", answer: "Notable alumni include Margaret Atwood (Author), Lester B. Pearson (Prime Minister), Donald Sutherland (Actor), and Roberta Bondar (Astronaut)." }
   ],
   blogs: [
     { title: "Steps to get a job in Canada from India", readTime: "19 mins read", date: "Mar 15, 2025" },

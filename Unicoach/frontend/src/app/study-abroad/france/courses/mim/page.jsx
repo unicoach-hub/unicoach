@@ -311,7 +311,7 @@ const FranceMIMCourse = () => {
                       <span className="text-[10px] text-slate-400 font-semibold block mt-0.5">Government-subsidized MIM tracks</span>
                     </div>
                     <span className="font-black text-indigo-650 text-xs md:text-sm">
-                      {formatCost(3770)} / year
+                      {formatCost(3950)} / year
                     </span>
                   </div>
 

@@ -235,7 +235,7 @@ const StudyInAustralia = () => {
                           <CheckCircle2 className="text-amber-600 flex-shrink-0 mt-0.5" size={18} />
                           <div>
                             <h4 className="font-extrabold text-slate-900 text-sm">Elite Academic Reputation</h4>
-                            <p className="text-xs text-slate-550 font-semibold mt-1">9 Australian universities are ranked in the top 100 worldwide (QS 2026 Rankings), providing cutting-edge research and premium international standards.</p>
+                            <p className="text-xs text-slate-550 font-semibold mt-1">9 Australian universities are ranked in the top 100 worldwide (QS 2027 Rankings), providing cutting-edge research and premium international standards.</p>
                           </div>
                         </div>
                         <div className="flex gap-3">

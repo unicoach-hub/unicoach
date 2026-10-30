@@ -42,92 +42,102 @@ const topTenMsUnis = [
   { 
     rank: "#1",
     name: "Politecnico di Milano", 
-    qsRank: "QS #111-123", 
+    qsRank: "QS #87", 
     strength: "Engineering, Design, AI", 
-    feesEUR: { min: 3000, max: 3900 },
-    highlights: ["World leader: Engineering, Architecture, Design", "Corporate partners: Ferrari, Google, IBM", "DSU Lombardy: Full fees + €7,800 stipend"],
-    reqs: "IELTS 6.0 | Min 70% GPA"
+    feesEUR: { min: 157, max: 3943 },
+    feeNote: "2026/27, set by ISEE. Non-EU students admitted with a foreign Bachelor's pay the maximum unless they hold a scholarship.",
+    highlights: ["Italy's highest-ranked university in QS 2027", "Schools of Engineering, Architecture and Design", "DSU Lombardia regional grant (income-based)"],
+    reqs: "Relevant Bachelor's degree | English requirement varies by programme"
   },
   { 
     rank: "#2",
-    name: "University of Bologna", 
-    qsRank: "QS #133-185", 
-    strength: "Data Science, Law", 
-    feesEUR: { min: 1500, max: 3000 },
-    highlights: ["Oldest university in the Western world (1088)", "Most organised DSU system (ER.GO)", "Action 1 & 2: €11,000 merit grants"],
-    reqs: "IELTS 6.5 | CV evaluation"
+    name: "Sapienza University of Rome", 
+    qsRank: "QS #111", 
+    strength: "Physics, Humanities", 
+    feesEUR: { min: 300, max: 300 },
+    feeNote: "Fixed fee for students from India whose family income is only abroad (Band A).",
+    highlights: ["Founded in 1303", "Strong in Physics, Aerospace and Classics", "DiSCo Lazio regional grant (income-based)"],
+    reqs: "Relevant Bachelor's degree | English requirement varies by programme"
   },
   { 
     rank: "#3",
-    name: "Sapienza University of Rome", 
-    qsRank: "QS #132-203", 
-    strength: "Physics, Humanities", 
-    feesEUR: { min: 1000, max: 2500 },
-    highlights: ["Europe's largest university by enrollment", "Research powerhouse: Physics, Aerospace, Classics", "DiscoLazio: Accommodation + cash stipend"],
-    reqs: "IELTS 5.5-6.0 | Pre-selection required"
+    name: "University of Bologna", 
+    qsRank: "QS #123", 
+    strength: "Data Science, Law", 
+    feesEUR: { min: 157, max: 2550 },
+    feeNote: "2026/27, set by ISEE (some programmes up to €4,080). Non-OECD nationals (India included) with income only abroad can opt for a flat €1,200 + €157.",
+    highlights: ["Oldest university in the Western world (1088)", "ER.GO regional grant (income-based)", "Unibo Action 1 & 2 study grants"],
+    reqs: "Relevant Bachelor's degree | English requirement varies by programme"
   },
   { 
     rank: "#4",
     name: "University of Padua", 
-    qsRank: "QS #216-242", 
+    qsRank: "QS #204", 
     strength: "Psychology, Physics", 
-    feesEUR: { min: 1200, max: 3000 },
-    highlights: ["Galileo's university | First to award woman a degree", "Top for scientific research & human rights", "ESU Padova + €8,000 Excellence Scholarship"],
-    reqs: "IELTS 6.5 | Strong academic credentials"
+    feesEUR: { min: 0, max: 3000 },
+    feeNote: "Official range: €0 to about €3,000 per year depending on ISEE.",
+    highlights: ["Founded in 1222 | Galileo taught here", "First 2027/28 window for foreign-qualification applicants closes 15 Nov 2026", "ESU Padova grant + Padua International Excellence Scholarship"],
+    reqs: "Relevant Bachelor's degree | English requirement varies by programme"
   },
   { 
     rank: "#5",
     name: "Politecnico di Torino", 
-    qsRank: "QS #241-334", 
+    qsRank: "QS #206", 
     strength: "Automotive Tech, ICT", 
-    feesEUR: { min: 2800, max: 3500 },
-    highlights: ["Italy's automotive heart", "Close partnerships with FIAT, industrial hub of Turin", "EDISU Piemonte + TOPoliTO scholarships"],
-    reqs: "IELTS 5.5 | TIL entrance test"
+    feesEUR: { min: 600, max: 3600 },
+    feeNote: "Non-EU students: fee set by your country's GDP at purchasing-power parity, €600–€3,600 (2025/26 rules).",
+    highlights: ["Engineering and architecture university in Turin", "Strong automotive and mechanical engineering", "EDISU Piemonte regional grant (income-based)"],
+    reqs: "Relevant Bachelor's degree | English requirement varies by programme"
   },
   { 
     rank: "#6",
     name: "University of Milan", 
-    qsRank: "QS #276-350", 
+    qsRank: "QS #270", 
     strength: "Life Sciences, Biotech", 
-    feesEUR: { min: 1000, max: 3000 },
-    highlights: ["'La Statale' | Only Italian LERU member", "Top for Biotechnology, Law, Economics", "DSU Milano + €8,000 Excellence Scholarships"],
-    reqs: "IELTS 6.0 | Related Bachelor's degree"
+    feesEUR: { min: 346, max: 4307 },
+    feeNote: "2026/27 with family income only abroad: set by country group and programme area.",
+    highlights: ["'La Statale' | Member of LERU", "Strong in Life Sciences, Law and Economics", "DSU regional grant (income-based)"],
+    reqs: "Relevant Bachelor's degree | English requirement varies by programme"
   },
   { 
     rank: "#7",
     name: "University of Pisa", 
-    qsRank: "QS #349-422", 
+    qsRank: "QS #341", 
     strength: "Computer Science, Physics", 
-    feesEUR: { min: 1200, max: 3000 },
-    highlights: ["Elite Scuola Normale Superiore partnership", "Premier scientific centre in Europe", "DSU Toscana + €6,500-8,000 merit grants"],
-    reqs: "Academic record + consular interview"
+    feesEUR: { min: 156, max: 3056 },
+    feeNote: "Up to €2,900 + €156. With income abroad, €2,900 is multiplied by a country coefficient.",
+    highlights: ["Founded in 1343", "Strong in Physics, Mathematics and Computer Science", "DSU Toscana regional grant (income-based)"],
+    reqs: "Relevant Bachelor's degree | English requirement varies by programme"
   },
   { 
     rank: "#8",
-    name: "University of Turin", 
-    qsRank: "QS #371-510", 
-    strength: "Biotechnology, Food Science", 
-    feesEUR: { min: 900, max: 2800 },
-    highlights: ["Strong research focus in biotech & food science", "EDISU Piemonte scholarship support", "Affordable living in Turin"],
-    reqs: "IELTS 5.5-6.0 | Bachelor's in related field"
+    name: "UCSC (Cattolica)", 
+    qsRank: "QS #388", 
+    strength: "Social Sciences, Management", 
+    feesEUR: { min: 3300, max: 11800 },
+    feeNote: "Private university; fee set by family income bracket (2026/27). A separate rate for international students was not verified.",
+    highlights: ["Private university with campuses in Milan, Rome and other cities", "English-taught business and economics Master's", "Fee bands linked to family income"],
+    reqs: "Relevant Bachelor's degree | English requirement varies by programme"
   },
   { 
     rank: "#9",
-    name: "Bocconi University", 
-    qsRank: "Top 100 (Business)", 
-    strength: "Finance, MBA", 
-    feesEUR: { min: 14000, max: 18000 },
-    highlights: ["Prestigious private business school", "Top-tier global placements & career recruiting", "Strong alumni network globally"],
-    reqs: "GMAT 600+ | IELTS 7.0 | Private university"
+    name: "University of Turin", 
+    qsRank: "QS #405", 
+    strength: "Biotechnology, Food Science", 
+    feesEUR: { min: 456, max: 1156 },
+    feeNote: "Students resident abroad without ISEE: €300–€1,000 by country GDP + €156 (2025/26).",
+    highlights: ["Large public university in Turin", "EDISU Piemonte scholarship support", "Affordable living in Turin"],
+    reqs: "Relevant Bachelor's degree | English requirement varies by programme"
   },
   { 
     rank: "#10",
-    name: "UCSC (Cattolica)", 
-    qsRank: "QS #491-560", 
-    strength: "Social Sciences, Management", 
-    feesEUR: { min: 10000, max: 14000 },
-    highlights: ["Largest private university in Europe", "Strong corporate networking & internships", "English-taught business masters"],
-    reqs: "IELTS 6.5 | Private university"
+    name: "Bocconi University", 
+    qsRank: "Not in QS overall ranking", 
+    strength: "Finance, Management", 
+    feesEUR: { min: 18550, max: 18550 },
+    feeNote: "MSc first-year fee, 2026/27 (lower rates only with need-based waivers).",
+    highlights: ["Private university specialising in business and economics", "Strong finance and consulting recruiting", "Selective admissions"],
+    reqs: "Admission test score + English certificate | Check programme page"
   }
 ];
 
@@ -150,9 +160,9 @@ const specializations = [
 ];
 
 const costOfStudy = [
-  { type: "Public Universities", feesEUR: { min: 900, max: 4000 }, advantage: "Subsidized based on income (ISEE)" },
-  { type: "Private Universities", feesEUR: { min: 6000, max: 25000 }, advantage: "Specialized focus & industry networking" },
-  { type: "MBA / Elite Business", feesEUR: { min: 12000, max: 38000 }, advantage: "Global placements & employer reputation" }
+  { type: "Public Universities", feesEUR: { min: 150, max: 4300 }, advantage: "Subsidized based on income (ISEE)" },
+  { type: "Private Universities", feesEUR: { min: 3300, max: 18550 }, advantage: "Specialized focus & industry networking" },
+  { type: "MBA / Elite Business", feesEUR: { min: 54000, max: 86000 }, advantage: "Global placements & employer reputation" }
 ];
 
 const costOfLiving = [
@@ -195,7 +205,7 @@ const ItalyMastersCourse = () => {
   const [selectedCountry, setSelectedCountry] = useState('Italy');
   const { openEligibilityModal } = useLead();
 
-  const exchangeRate = 103.0; // Target rate: €1 = ₹103.0
+  const exchangeRate = 110.0; // Target rate: €1 = ₹110 (Aug 2026)
 
   useEffect(() => {
     const handleScroll = () => {
@@ -234,6 +244,7 @@ const ItalyMastersCourse = () => {
   };
 
   const formatRange = (minEUR, maxEUR) => {
+    if (minEUR === maxEUR) return formatCost(minEUR);
     if (currency === 'EUR') {
       return `€${minEUR.toLocaleString()} – €${maxEUR.toLocaleString()}`;
     }
@@ -471,7 +482,7 @@ const ItalyMastersCourse = () => {
             <section id="top-unis" className="scroll-mt-24">
               <div className="flex items-center gap-2 mb-6">
                 <span className="w-8 h-8 rounded-lg bg-indigo-50 flex items-center justify-center text-indigo-600 font-black text-sm">02</span>
-                <h2 className="text-2xl md:text-3xl font-black text-slate-900 tracking-tight">🏛️ Top 10 MS Universities in Italy (2026 Rankings)</h2>
+                <h2 className="text-2xl md:text-3xl font-black text-slate-900 tracking-tight">🏛️ Top 10 MS Universities in Italy (QS 2027 Rankings)</h2>
               </div>
               <p className="text-slate-600 font-semibold leading-relaxed mb-8">
                 Detailed breakdowns of the top ten public and private universities in Italy for Master's programs:
@@ -499,6 +510,7 @@ const ItalyMastersCourse = () => {
                         <span className="text-sm font-black text-slate-800">
                           {formatRange(uni.feesEUR.min, uni.feesEUR.max)} / year
                         </span>
+                        {uni.feeNote && <span className="text-[11px] text-slate-500 font-semibold block mt-1">{uni.feeNote}</span>}
                       </div>
                       <div>
                         <strong className="text-slate-900 block mb-1">🎯 Admission Requirements:</strong>
@@ -540,7 +552,7 @@ const ItalyMastersCourse = () => {
                         <tr key={idx} className="hover:bg-slate-50/50 transition-colors">
                           <td className="p-4 text-slate-900 font-bold">{uni.name}</td>
                           <td className="p-4 text-indigo-700 font-bold">{uni.qsRank}</td>
-                          <td className="p-4">€{uni.feesEUR.min.toLocaleString()} - €{uni.feesEUR.max.toLocaleString()}</td>
+                          <td className="p-4">{uni.feesEUR.min === uni.feesEUR.max ? `€${uni.feesEUR.min.toLocaleString()}` : `€${uni.feesEUR.min.toLocaleString()} - €${uni.feesEUR.max.toLocaleString()}`}</td>
                           <td className="p-4">{formatRange(uni.feesEUR.min, uni.feesEUR.max)}</td>
                           <td className="p-4 text-slate-600">{uni.strength.split(', ')[0]}</td>
                         </tr>

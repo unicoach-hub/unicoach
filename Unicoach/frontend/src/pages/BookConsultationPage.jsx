@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Link, useLocation, useNavigate, useSearchParams } from 'react-router-dom';
-import { ArrowLeft, ArrowRight, CalendarDays, Check, ChevronDown, ChevronLeft, ChevronRight, Clock, Compass, FileText, Loader2, Map, MessageCircle, ShieldCheck } from 'lucide-react';
+import { ArrowLeft, ArrowRight, CalendarDays, Check, ChevronDown, ChevronLeft, ChevronRight, Clock, Compass, FileText, Loader2, Map, MessageCircle, Mic, MonitorUp, PhoneOff, ShieldCheck, Video } from 'lucide-react';
 import { API_BASE_URL } from '../config';
 import { openRazorpayCheckout } from '../unicoach/utils/razorpayCheckout';
 import { TEAM_MENTORS, mentorLook } from '../utils/teamMentors';
@@ -136,6 +136,8 @@ const BookConsultationFlow = () => {
           )}
         </section>
       </div>
+
+      <CallPreview />
     </Shell>
   );
 };
@@ -445,6 +447,84 @@ const ConfirmStep = ({ cfg, pick, savedForm }) => {
     </Shell>
   );
 };
+
+// What the 1:1 video call looks like: the mentor shares a screen with your shortlist while you talk it through
+const SHARED_ROWS = [
+  ['University College Dublin', 'MSc Cyber Security', 'Reach'],
+  ['University of Limerick', 'MSc Cyber Security', 'Good fit'],
+  ['Dublin City University', 'MSc Security & Forensics', 'Good fit'],
+  ['Munster Tech University', 'MSc Cybersecurity', 'Safe'],
+];
+const CALL_STEPS = [
+  ['Before', 'Video call link aata hai email pe. Bas apne marks aur budget ready rakho.'],
+  ['On the call', 'Mentor screen share karke tumhare profile pe real shortlist, fees aur rent dikhata hai.'],
+  ['After', 'Shortlist aur next steps tumhare paas, koi pressure nahi.'],
+];
+
+const CallPreview = () => (
+  <section className="mt-12 grid lg:grid-cols-[0.8fr_1.2fr] gap-8 lg:gap-12 items-center bg-white border border-slate-200 rounded-[28px] p-6 sm:p-10">
+    <div>
+      <h2 className="font-outfit text-[28px] sm:text-[36px] font-black tracking-[-0.03em] leading-[1.08] text-[#111]">Call pe asli mein kya hota hai</h2>
+      <p className="mt-3 text-[15px] text-slate-600 leading-relaxed max-w-md">1:1 video call, ek ghanta. Koi sales pitch nahi.</p>
+      <ol className="mt-6 space-y-4">
+        {CALL_STEPS.map(([t, d], i) => (
+          <li key={t} className="flex gap-3">
+            <span className="shrink-0 w-7 h-7 rounded-full bg-[#16130F] text-white grid place-items-center text-[12.5px] font-bold">{i + 1}</span>
+            <div>
+              <p className="text-[14.5px] font-bold text-[#16130F]">{t}</p>
+              <p className="text-[13.5px] text-slate-600 leading-snug">{d}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+    </div>
+
+    {/* video call window, an illustration of a typical call */}
+    <figure aria-label="Example of a 1:1 video call" className="relative rounded-[18px] bg-[#1F1F1F] p-3 sm:p-4 shadow-[0_30px_60px_-30px_rgba(15,23,42,0.6)]">
+      <div className="flex items-center justify-between text-[11.5px] text-white/70 px-1 pb-2.5">
+        <span className="inline-flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-[#E5484D]" /> 1:1 session · 24:18</span>
+        <span>Mentor is presenting</span>
+      </div>
+      <div className="relative rounded-[12px] bg-white overflow-hidden">
+        {/* the shared screen: a shortlist */}
+        <div className="px-4 pt-3.5 pb-24 sm:pb-[6.5rem]">
+          <p className="text-[12px] font-bold text-[#16130F]">Shortlist · Ireland · Cyber Security · Budget ₹20L</p>
+          <div className="mt-2.5 divide-y divide-slate-100 text-[11.5px] sm:text-[12.5px]">
+            {SHARED_ROWS.map(([u, c, fit]) => (
+              <div key={u} className="grid grid-cols-[1.4fr_1.3fr_0.7fr] gap-2 py-1.5 items-center">
+                <span className="font-semibold text-[#16130F] truncate">{u}</span>
+                <span className="text-slate-500 truncate">{c}</span>
+                <span className={`justify-self-start px-2 py-0.5 rounded-full text-[10.5px] font-bold ${fit === 'Reach' ? 'bg-[#FDE3DA] text-[#86351A]' : fit === 'Safe' ? 'bg-[#E4F3EA] text-[#1E6B47]' : 'bg-[#FFF4CC] text-[#7A5A00]'}`}>{fit}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+        {/* live caption */}
+        <p className="absolute left-3 right-[34%] bottom-3 rounded-md bg-black/75 px-2.5 py-1.5 text-[11.5px] sm:text-[12.5px] leading-snug text-white">
+          <span className="font-bold text-[#F5B48C]">Mentor:</span> UCD reach hai, Limerick aur DCU tumhare marks pe fit hain.
+        </p>
+        {/* self view */}
+        <div className="absolute right-3 bottom-3 w-[28%] aspect-video rounded-lg bg-[#3A3A3A] grid place-items-center border border-white/20">
+          <span className="w-8 h-8 rounded-full bg-[#5B544A] grid place-items-center text-white text-[12px] font-bold">You</span>
+        </div>
+      </div>
+      {/* mentor tile + call controls */}
+      <div className="mt-3 flex items-center justify-between gap-3">
+        <div className="flex items-center gap-2 rounded-lg bg-[#2C2C2C] px-2.5 py-1.5">
+          <span className="w-7 h-7 rounded-full bg-[#DE5C2B] grid place-items-center text-white text-[12px] font-bold">M</span>
+          <span className="text-[12px] text-white">Mentor · Ireland</span>
+        </div>
+        <div className="flex items-center gap-2" aria-hidden="true">
+          {[Mic, Video, MonitorUp].map((Icon, i) => (
+            <span key={i} className="w-9 h-9 rounded-full bg-[#3C3C3C] grid place-items-center text-white"><Icon size={16} /></span>
+          ))}
+          <span className="w-11 h-9 rounded-full bg-[#E5484D] grid place-items-center text-white"><PhoneOff size={16} /></span>
+        </div>
+      </div>
+      <figcaption className="mt-2.5 text-center text-[11px] text-white/50">Example call. Your shortlist depends on your profile.</figcaption>
+    </figure>
+  </section>
+);
 
 // Start each visit fresh (e.g. sent back to the calendar because the slot was taken), using what
 // the navigation carried in its state instead of whatever the previous screen had picked

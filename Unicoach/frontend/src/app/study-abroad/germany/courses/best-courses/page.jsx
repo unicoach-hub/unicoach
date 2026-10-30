@@ -30,8 +30,8 @@ const courseDetails = {
     desc: "Germany employs over 1.5 million engineers, making it one of the largest engineering industries in the world. The engineering sector contributes significantly to Germany's GDP, accounting for more than 25%.",
     unis: [
       { name: "Technical University of Munich", fee: "€4,000 – €12,000/year" },
-      { name: "Technical University of Berlin", fee: "€600/year (semester fee)" },
-      { name: "RWTH Aachen University", fee: "€608/year (semester fee)" }
+      { name: "Technical University of Berlin", fee: "~€760/year (semester fee)" },
+      { name: "RWTH Aachen University", fee: "~€600–700/year (semester fee)" }
     ],
     jobs: [
       { role: "Mechanical Engineer", sal: 51800 },
@@ -44,9 +44,9 @@ const courseDetails = {
     title: "Computer Science",
     desc: "Germany's computing market generates billions in revenue, with a continuous demand for software developers, IT project leads, and cloud architects across all sectors.",
     unis: [
-      { name: "Technical University of Munich", fee: "€4,000 – €12,005/year" },
-      { name: "Technical University of Berlin", fee: "€600/year" },
-      { name: "Karlsruhe Institute of Technology", fee: "€3,000/year" }
+      { name: "Technical University of Munich", fee: "€4,000 – €12,000/year" },
+      { name: "Technical University of Berlin", fee: "~€760/year" },
+      { name: "Karlsruhe Institute of Technology", fee: "€3,000/year + €368 semester fees" }
     ],
     jobs: [
       { role: "Data Scientist", sal: 56600 },
@@ -74,9 +74,9 @@ const courseDetails = {
     title: "Medicine and Dentistry",
     desc: "A stable and growing industry with highly subsidized public training. Reaching state validation (Approbation) enables clinical medical practice across the entire EU.",
     unis: [
-      { name: "Universität Heidelberg", fee: "€300/year" },
+      { name: "Universität Heidelberg", fee: "€3,000/year + ~€380 semester fees" },
       { name: "Universität Regensburg", fee: "€360/year" },
-      { name: "Albert-Ludwigs-Universität Freiburg", fee: "€3,000/year" }
+      { name: "Albert-Ludwigs-Universität Freiburg", fee: "€3,000/year + €380 semester fees" }
     ],
     jobs: [
       { role: "Surgeon", sal: 65000 },

@@ -24,19 +24,19 @@ const SECTIONS = [
 ];
 
 const topMaUnisList = [
-  { rank: 1, name: "University of Auckland", qs: "#65", feeNZD: 32000, spec: "Linguistics, English Literature, Sociology", tagline: "NZ'S TOP-RANKED UNIVERSITY", logo: "https://logo.clearbit.com/auckland.ac.nz" },
-  { rank: 2, name: "University of Otago", qs: "#197", feeNZD: 30500, spec: "History, Psychology, Anthropology, Philosophy", tagline: "NZ'S OLDEST UNIVERSITY", logo: "https://logo.clearbit.com/otago.ac.nz" },
-  { rank: 3, name: "Victoria University of Wellington", qs: "#240", feeNZD: 29000, spec: "Political Science, Media Studies, Creative Writing", tagline: "CAPITAL CITY ADVANTAGE", logo: "https://logo.clearbit.com/wgtn.ac.nz" },
-  { rank: 4, name: "University of Canterbury", qs: "#261", feeNZD: 28500, spec: "Sociology, Geography, Education, TESOL", tagline: "CREATIVE LEARNING ENVIRONMENT", logo: "https://logo.clearbit.com/canterbury.ac.nz" },
-  { rank: 5, name: "Massey University", qs: "#230", feeNZD: 27000, spec: "Creative Writing, Applied Linguistics, Social Work", tagline: "PRACTICAL RESEARCH LEADER", logo: "https://logo.clearbit.com/massey.ac.nz" },
-  { rank: 6, name: "University of Waikato", qs: "#281", feeNZD: 26000, spec: "History, Psychology, Screen and Media Studies", tagline: "EXCELLENT VALUE & STUDENT SATISFACTION", logo: "https://logo.clearbit.com/waikato.ac.nz" }
+  { rank: 1, name: "University of Auckland", qs: "#68", feeNZD: 45857, spec: "Linguistics, English Literature, Sociology", tagline: "NZ'S TOP-RANKED UNIVERSITY", logo: "/logos/verified-University of Auckland.png" },
+  { rank: 2, name: "University of Otago", qs: "#198", feeNZD: 32499, spec: "History, Psychology, Anthropology, Philosophy", tagline: "NZ'S OLDEST UNIVERSITY", logo: "/logos/verified-University of Otago.png" },
+  { rank: 3, name: "Massey University", qs: "#215", feeNZD: 40010, spec: "Creative Writing, Applied Linguistics, Social Work", tagline: "PRACTICAL LEARNING", logo: "/logos/verified-Massey University.png" },
+  { rank: 4, name: "Victoria University of Wellington", qs: "#241", feeNZD: 40600, spec: "Political Science, Media Studies, Creative Writing", tagline: "CAPITAL CITY ADVANTAGE", logo: "/logos/verified-Victoria University of Wellington.png" },
+  { rank: 5, name: "University of Canterbury", qs: "#257", feeNZD: 36000, spec: "Sociology, Geography, Education, TESOL", tagline: "CHRISTCHURCH CAMPUS", logo: "/logos/verified-University of Canterbury.png" },
+  { rank: 6, name: "University of Waikato", qs: "#293", feeNZD: 39580, spec: "History, Psychology, Screen and Media Studies", tagline: "GOOD VALUE", logo: "/logos/verified-University of Waikato.png" }
 ];
 
 const NewZealandMACourse = () => {
   const [activeSection, setActiveSection] = useState('overview');
   const [currency, setCurrency] = useState('INR'); // 'NZD' | 'INR'
   const [faqOpen, setFaqOpen] = useState({});
-  const exchangeRate = 52.55; // Reference 1 NZD = 52.55 INR for MA guide
+  const exchangeRate = 56.0; // Reference 1 NZD = 56 INR (Aug 2026)
 
   const formatCost = (valInNZD) => {
     if (currency === 'NZD') {
@@ -200,14 +200,14 @@ const NewZealandMACourse = () => {
 
               <div className="space-y-4">
                 {[
-                  { name: "Master of Education (MEd)", unis: "Auckland, Canterbury, AUT", criteria: "B.Ed or relevant, GPE 5.0 (65-75%)", career: "Secondary School Teacher", greenList: "✅ Tier 2 Green List" },
-                  { name: "Master of Arts in Psychology", unis: "Auckland, Otago, Waikato", criteria: "3-year BA Psychology degree, 70%+", career: "Educational Psychologist", greenList: "✅ Tier 1 Straight to Residence" },
-                  { name: "Master of Communication Studies", unis: "AUT, Auckland, Massey", criteria: "Relevant degree, GPE 5.0 (65%+)", career: "Media Advisor, Digital Strategist", greenList: "❌ N/A" },
-                  { name: "Master of International Relations (MIR)", unis: "Victoria Wellington, Auckland", criteria: "Any Bachelor's, B average (65%+)", career: "Policy Analyst", greenList: "✅ Tier 2 Green List" },
-                  { name: "Master of Social Work (Applied)", unis: "Massey, Waikato, Auckland", criteria: "Relevant degree, 60-70%, experience preferred", career: "Social Worker", greenList: "✅ Tier 2 Green List" },
-                  { name: "Master of Digital Business", unis: "Waikato, EIT", criteria: "Business/IT degree, B- average", career: "Digital Transformation Consultant", greenList: "❌ N/A" },
-                  { name: "Master of Applied Linguistics (TESOL)", unis: "Massey, Canterbury, Auckland", criteria: "Relevant degree, B average, teaching experience", career: "Language Consultant, Lecturer", greenList: "❌ N/A" },
-                  { name: "Master of Arts in Geography", unis: "Auckland, Canterbury, Massey", criteria: "Geography major, B average in final year", career: "Environmental Consultant, Town Planner", greenList: "❌ N/A" }
+                  { name: "Master of Education (MEd)", unis: "Auckland, Canterbury, AUT", criteria: "B.Ed or relevant degree; minimum grade varies by university", career: "Secondary School Teacher", greenList: "✅ Tier 2 Green List" },
+                  { name: "Master of Arts in Psychology", unis: "Auckland, Otago, Waikato", criteria: "BA in Psychology; minimum grade varies by university", career: "Educational Psychologist", greenList: "✅ Tier 1 Straight to Residence" },
+                  { name: "Master of Communication Studies", unis: "AUT, Auckland, Massey", criteria: "Relevant degree; minimum grade varies by university", career: "Media Advisor, Digital Strategist", greenList: "❌ N/A" },
+                  { name: "Master of International Relations (MIR)", unis: "Victoria Wellington, Auckland", criteria: "Bachelor's degree; minimum grade varies by university", career: "Policy Analyst", greenList: "✅ Tier 2 Green List" },
+                  { name: "Master of Social Work (Applied)", unis: "Massey, Waikato, Auckland", criteria: "Relevant degree; experience may be required", career: "Social Worker", greenList: "✅ Tier 2 Green List" },
+                  { name: "Master of Digital Business", unis: "Waikato, EIT", criteria: "Business/IT degree; minimum grade varies", career: "Digital Transformation Consultant", greenList: "❌ N/A" },
+                  { name: "Master of Applied Linguistics (TESOL)", unis: "Massey, Canterbury, Auckland", criteria: "Relevant degree; teaching experience may be required", career: "Language Consultant, Lecturer", greenList: "❌ N/A" },
+                  { name: "Master of Arts in Geography", unis: "Auckland, Canterbury, Massey", criteria: "Geography major; minimum grade varies by university", career: "Environmental Consultant, Town Planner", greenList: "❌ N/A" }
                 ].map((course, idx) => (
                   <div key={idx} className="bg-white border border-slate-200/60 rounded-2xl p-5 shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-4">
                     <div>
@@ -316,7 +316,7 @@ const NewZealandMACourse = () => {
                   <div className="bg-slate-50 p-6 rounded-2xl border border-slate-100">
                     <h4 className="font-extrabold text-slate-805 uppercase tracking-wider mb-3">Fee Comparison Schedules</h4>
                     <div className="space-y-3">
-                      <p className="flex justify-between border-b border-slate-200 pb-2"><span>Tuition ranges:</span> <strong>NZ$20,000 – $45,000 / yr</strong></p>
+                      <p className="flex justify-between border-b border-slate-200 pb-2"><span>Tuition ranges:</span> <strong>NZ$32,500 – $58,300 / yr</strong></p>
                       <p className="flex justify-between border-b border-slate-200 pb-2"><span>Official Living Proof:</span> <strong>NZ$20,000 / yr</strong></p>
                       <p className="flex justify-between"><span>Health Insurance:</span> <strong>NZ$600 – $900 / yr</strong></p>
                     </div>
@@ -340,23 +340,23 @@ const NewZealandMACourse = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-xs font-semibold">
                   <div className="bg-slate-50 p-5 rounded-2xl border border-slate-100">
                     <h4 className="font-extrabold text-slate-805 uppercase tracking-wider mb-1">🌟 NZ Excellence Awards (NZEA)</h4>
-                    <p className="text-indigo-650 font-black mb-1">Value: NZ$10,000 – $20,000</p>
-                    <p className="text-slate-500">Government scholarships designated for Indian nationals at PG levels.</p>
+                    <p className="text-indigo-650 font-black mb-1">Value: NZ$7,500 – $15,000</p>
+                    <p className="text-slate-500">Run by Education New Zealand with participating universities for students from India.</p>
                   </div>
                   <div className="bg-slate-50 p-5 rounded-2xl border border-slate-100">
                     <h4 className="font-extrabold text-slate-805 uppercase tracking-wider mb-1"><CapIcon /> Auckland India High Achiever</h4>
-                    <p className="text-indigo-655 font-black mb-1">Value: Up to NZ$20,000</p>
-                    <p className="text-slate-500">Offered by Auckland University for outstanding Indian applicants (80%+ in UG).</p>
+                    <p className="text-indigo-655 font-black mb-1">Value: 25% of one year's tuition</p>
+                    <p className="text-slate-500">Offered by the University of Auckland to new international Master's students from India.</p>
                   </div>
                   <div className="bg-slate-50 p-5 rounded-2xl border border-slate-100">
                     <h4 className="font-extrabold text-slate-805 uppercase tracking-wider mb-1">💼 Otago Global Scholarship</h4>
                     <p className="text-indigo-655 font-black mb-1">Value: NZ$15,000</p>
-                    <p className="text-slate-500">Automatically assessed scholarship for incoming Indian passport holders.</p>
+                    <p className="text-slate-500">For new undergraduate students holding a nominated passport (India included) — not for Master's.</p>
                   </div>
                   <div className="bg-slate-50 p-5 rounded-2xl border border-slate-100">
                     <h4 className="font-extrabold text-slate-805 uppercase tracking-wider mb-1">🏛️ Manaaki New Zealand Scholarship</h4>
                     <p className="text-indigo-655 font-black mb-1">Value: Full Funding</p>
-                    <p className="text-slate-500">Government funded. Covers tuition, monthly allowances, airfare and health insurance.</p>
+                    <p className="text-slate-500">Government funded for citizens of eligible countries — check whether India is eligible in the current round.</p>
                   </div>
                 </div>
               </div>

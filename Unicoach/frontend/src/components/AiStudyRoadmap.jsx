@@ -7,6 +7,7 @@ import {
   GraduationCap, Briefcase, BookOpen
 } from 'lucide-react';
 import PremiumDropdown from './PremiumDropdown';
+import { FinderCard, FinderButton } from './ui/FinderForm';
 import { ALL_COUNTRY_OPTIONS, POPULAR_COURSES } from '../utils/shortlistOptions';
 import { useAuth } from '../context/AuthContext';
 import { API_BASE_URL } from '../config';
@@ -129,28 +130,12 @@ const AiStudyRoadmap = ({ studentProfile = {} }) => {
 
   return (
     <div className="space-y-8">
-      {/* Parameters Selector Bar */}
-      <div className="bg-white border border-slate-200/80 p-6 md:p-7 rounded-[32px] shadow-sm space-y-5">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-4">
-          <div>
-            <h3 className="text-base font-black text-slate-800 flex items-center gap-2">
-              <Compass size={18} className="text-indigo-600" /> Milestone Configuration
-            </h3>
-            <p className="text-xs text-slate-400 font-semibold mt-0.5">Customize your target intake and current preparedness</p>
-          </div>
-          <button
-            onClick={handleGenerateRoadmap}
-            disabled={loading}
-            className="text-xs font-black text-indigo-600 hover:text-indigo-800 flex items-center gap-1.5 cursor-pointer disabled:opacity-40"
-          >
-            <RefreshCw size={13} className={loading ? 'animate-spin' : ''} /> Regenerate Planner
-          </button>
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      {/* Parameters card, in the Course Finder look: labelled fields in one row, dark action at the end */}
+      <FinderCard>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-[1fr_1fr_1fr_1.2fr_1.2fr_auto] gap-3 items-start">
           <div>
             <PremiumDropdown
-              label="Target Intake"
+              label="Intake"
               labelIcon={<Calendar size={14} className="text-indigo-600" />}
               value={formData.targetIntake}
               onChange={(val) => setFormData(prev => ({ ...prev, targetIntake: val }))}
@@ -161,7 +146,7 @@ const AiStudyRoadmap = ({ studentProfile = {} }) => {
 
           <div>
             <PremiumDropdown
-              label="Target Destination"
+              label="Country"
               labelIcon={<Globe size={14} className="text-indigo-600" />}
               value={formData.targetCountry}
               onChange={(val) => setFormData(prev => ({ ...prev, targetCountry: val }))}
@@ -174,7 +159,7 @@ const AiStudyRoadmap = ({ studentProfile = {} }) => {
 
           <div>
             <PremiumDropdown
-              label="Target Degree"
+              label="Degree"
               labelIcon={<GraduationCap size={14} className="text-indigo-600" />}
               value={formData.targetDegree}
               onChange={(val) => setFormData(prev => ({ ...prev, targetDegree: val }))}
@@ -189,7 +174,7 @@ const AiStudyRoadmap = ({ studentProfile = {} }) => {
 
           <div>
             <PremiumDropdown
-              label="Target Major / Program"
+              label="Program or major"
               labelIcon={<BookOpen size={14} className="text-indigo-600 flex-shrink-0" />}
               value={formData.targetMajor}
               onChange={(val) => setFormData(prev => ({ ...prev, targetMajor: val }))}
@@ -205,7 +190,7 @@ const AiStudyRoadmap = ({ studentProfile = {} }) => {
 
           <div>
             <PremiumDropdown
-              label="Current Progress Stage"
+              label="Where you are now"
               labelIcon={<Target size={14} className="text-indigo-600" />}
               value={formData.currentStage}
               onChange={(val) => setFormData(prev => ({ ...prev, currentStage: val }))}
@@ -218,36 +203,15 @@ const AiStudyRoadmap = ({ studentProfile = {} }) => {
               ]}
             />
           </div>
+          <FinderButton type="button" onClick={handleGenerateRoadmap} disabled={loading} className="w-full lg:w-auto self-start lg:mt-[26px]">
+            {loading ? <><RefreshCw size={16} className="animate-spin" /> Generating…</> : <><Sparkles size={16} /> Generate</>}
+          </FinderButton>
         </div>
-
-        {/* Clear, Prominent Action Bar */}
-        <div className="pt-4 border-t border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-          <div className="flex items-center gap-2 text-xs font-semibold text-slate-500">
-            <Sparkles size={15} className="text-amber-500 flex-shrink-0 animate-pulse" />
-            <span>Click to calculate customized deadlines, exam milestones & visa windows</span>
-          </div>
-
-          <button
-            type="button"
-            onClick={handleGenerateRoadmap}
-            disabled={loading}
-            className="w-full sm:w-auto px-8 py-3.5 bg-gradient-to-r from-indigo-600 via-indigo-700 to-blue-600 hover:from-indigo-700 hover:to-blue-700 text-white rounded-2xl text-xs sm:text-sm font-black transition-all shadow-md shadow-indigo-200/80 hover:shadow-lg hover:shadow-indigo-300/80 active:scale-[0.99] flex items-center justify-center gap-2.5 cursor-pointer disabled:opacity-50"
-          >
-            {loading ? (
-              <>
-                <RefreshCw size={16} className="animate-spin" />
-                <span>Generating 6-Month Roadmap...</span>
-              </>
-            ) : (
-              <>
-                <Sparkles size={16} className="text-amber-300" />
-                <span>Generate Strategic 6-Month Roadmap</span>
-                <ArrowRight size={16} />
-              </>
-            )}
-          </button>
-        </div>
-      </div>
+        <p className="mt-4 pt-4 border-t border-[#ECE6DA] flex items-center justify-center gap-2 text-[13px] text-[#5B544A] text-center">
+          <Sparkles size={14} className="text-[#DE5C2B] shrink-0" />
+          Pick your intake, country and stage, then press Generate for deadlines, exam milestones and visa windows.
+        </p>
+      </FinderCard>
 
       {errorMsg && (
         <div className="p-4 rounded-2xl bg-rose-50 border border-rose-200 text-xs font-bold text-rose-800 flex items-center gap-2">

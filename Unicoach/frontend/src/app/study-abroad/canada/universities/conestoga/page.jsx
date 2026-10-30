@@ -12,15 +12,11 @@ const conestogaData = {
   location: "Kitchener, Ontario, Canada",
   city: "Kitchener",
   established: 1967,
-  totalStudents: 22500,
-  intlStudents: 9450,
   type: "PUBLIC",
-  studentFacultyRatio: "20:1",
-  acceptanceRate: "65%",
-  accreditation: "Association to Advance Collegiate Schools of Business (AACSB)",
+  accreditation: "Public college of applied arts and technology, Ontario",
   avgStudyCost: "INR 5.00 L",
   avgCostOfLiving: "INR 3.00 L",
-  logo: "https://logo.clearbit.com/conestogac.on.ca",
+  logo: "/logos/verified-Conestoga College.png",
   heroImage: "https://images.unsplash.com/photo-1569982175971-d92b01cf8694?w=1200",
   topCourses: [
     { name: "Accounting", count: 8 },
@@ -47,15 +43,9 @@ const conestogaData = {
       { category: "Best University Ranking Schools - 2022", rank: "79" }
     ]
   },
-  coursesFees: [
-    { name: "BBA (Honours) in Accounting, Audit and Information Technology", duration: "48 Months", tuition: 10.03 },
-    { name: "Advanced Diploma in Business Administration (Accounting)", duration: "36 Months", tuition: 9.16 },
-    { name: "Graduate Certificate in Professional Accounting Practice", duration: "12 Months", tuition: 14.93 },
-    { name: "Certificate in Bookkeeping", duration: "12 Months", tuition: 9.46 },
-    { name: "Diploma in Payroll and Bookkeeping", duration: "24 Months", tuition: 9.45 }
-  ],
-  description: "Conestoga College was established in 1967 and has since grown into a leading institution in Canada, known for its commitment to providing quality education and practical training. Over the years, it has expanded its programs and facilities to meet the evolving needs of students and the workforce.",
-  longDescription: "Conestoga College was established in 1967 and has since grown into a leading institution in Canada, known for its commitment to providing quality education and practical training. Over the years, it has expanded its programs and facilities to meet the evolving needs of students and the workforce.\n\nWith a total enrollment of 22500, Conestoga College boasts a diverse student body, including 9450 international students from various countries. This multicultural environment enriches your learning experience and prepares you for a global career.\n\nLocated in Kitchener, the college features modern campuses equipped with state-of-the-art facilities. Key facilities include:\n- Advanced laboratories and workshops\n- Libraries with extensive resources\n- Student centers offering various services\n- Sports and recreational facilities\n\nConestoga College offers a wide range of programs designed to align with industry demands. Some popular programs include:\n- Business Administration\n- Engineering Technology\n- Information Technology\n- Health Sciences\n\nThe college has an acceptance rate of 65%, with multiple intake periods throughout the year. Conestoga provides robust support services for international students, ensuring a smooth transition and successful academic journey.\n\nIn conclusion, Conestoga College stands out for its quality education, industry-aligned programs, and commitment to student success, preparing you for a rewarding career in your chosen field.",
+  coursesFees: [],
+  description: "Conestoga College is a public college founded by the Government of Ontario in 1967. Its main campus, Doon, is in Kitchener, and it has several other locations in the region. It is known for practical, career-focused diplomas, graduate certificates and degrees.",
+  longDescription: "Conestoga College is a public college founded by the Government of Ontario in 1967. Its main campus, Doon, is in Kitchener, and it has several other locations in the region. It is known for practical, career-focused diplomas, graduate certificates and degrees.",
   studentLife: [
     "Student Groups and Organizations",
     "Libraries and Study Resources",
@@ -65,13 +55,8 @@ const conestogaData = {
     "Social and Recreational Spots",
     "Special Attractions"
   ],
-  alumni: [
-    { name: "Katherine Ryan", profession: "Comedian" },
-    { name: "Chris Hadfield", profession: "Astronaut" },
-    { name: "Arjun Bhasin", profession: "Fashion Designer" },
-    { name: "Karen Redman", profession: "Politician" },
-    { name: "John Baker", profession: "Entrepreneur" }
-  ],
+  // Alumni removed until each name can be checked against a reliable source
+  alumni: null,
   costOfLiving: {
     description: "Attending Conestoga College in Kitchener as an international student involves several living expenses. Housing is often the most significant cost, with options ranging from on-campus residences to off-campus apartments. Students should budget for books and supplies, which are essential for academic success. Transportation costs can vary depending on whether students use public transit or have a personal vehicle. Personal expenses, including clothing, entertainment, and dining out, should also be considered. Miscellaneous expenses might include health insurance, phone bills, and other unexpected costs. Overall, the cost of living in Kitchener is moderate compared to larger Canadian cities, but students should plan carefully to ensure they can cover all necessary expenses while studying.",
     inr: "8.20 L",
@@ -89,7 +74,6 @@ const conestogaData = {
     services: [
       "Internships and Placement Support",
       "Online Job Portal",
-      "OPT and CPT Guidance",
       "Visa and Work Authorisation Guidance",
       "Cultural Adjustment"
     ],
@@ -107,17 +91,13 @@ const conestogaData = {
     ]
   },
   faqs: [
-    { question: "Is Conestoga College a good university?", answer: "Yes, Conestoga College is a highly respected public institution in Canada, known for its focus on practical training, industry partnerships, and high graduate employment rates." },
+    { question: "Is Conestoga College a good college?", answer: "Conestoga is a large public college in Ontario, known for practical training and industry partnerships." },
     { question: "How do I get admission to Conestoga College?", answer: "Admission requires submitting an online application, transcripts, and proof of English proficiency (like IELTS or TOEFL). Criteria vary by program." },
     { question: "Is Conestoga College public or private?", answer: "Conestoga College is a public college established in 1967, funded by the Ontario provincial government." },
     { question: "Why choose Conestoga College?", answer: "Students choose Conestoga College for its modern campuses, industry-aligned programs, career support, and lower cost of living compared to larger metropolitan areas." },
-    { question: "Is Conestoga College good for international students?", answer: "Absolutely. With over 9,450 international students, it provides dedicated support, orientations, cultural events, and co-op opportunities to help transition into Canada." },
-    { question: "What is the ranking of Conestoga College?", answer: "According to Webometrics, it ranks #77 nationally and #6008 globally in 2023." },
-    { question: "What is the pass rate for Conestoga College?", answer: "The pass and graduation rates are very high, and over 87% of graduates secure employment within six months of graduation." },
-    { question: "How many students are at Conestoga College?", answer: "Conestoga College has a total enrollment of approximately 22,500 students, including 9,450 international students." },
-    { question: "How hard is it to get into Conestoga College?", answer: "The acceptance rate is approximately 65%, making it moderately accessible for qualified applicants." },
-    { question: "Is Conestoga College accredited?", answer: "Yes, Conestoga is fully accredited by the Ontario Ministry of Colleges and Universities as well as specific program bodies." },
-    { question: "Who are the notable alumni of Conestoga College and what are their professions?", answer: "Notable alumni include Katherine Ryan (Comedian), Chris Hadfield (Astronaut), Karen Redman (Politician), and John Baker (Entrepreneur)." }
+    { question: "Is Conestoga College good for international students?", answer: "Conestoga has one of the largest international student populations among Canadian colleges and offers orientation and support services for international students." },
+    { question: "What is the ranking of Conestoga College?", answer: "Colleges such as Conestoga are not ranked by QS. Webometrics placed it #77 in Canada and #6008 globally in 2023." },
+    { question: "Is Conestoga College recognised?", answer: "Yes. Conestoga is a public college under Ontario law. Some programs also hold accreditation from professional bodies; check the program page." },
   ],
   blogs: [
     { title: "Steps to get a job in Canada from India", readTime: "19 mins read", date: "Mar 15, 2025" },

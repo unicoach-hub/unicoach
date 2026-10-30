@@ -14,16 +14,15 @@ import { BarCompare } from '../../../../../components/ui/Infographics';
 // ─────────────────────────────────────────────
 
 const universities = [
-  { name: "Technical University of Munich (TUM)", rank: "22", programs: "Management & Technology, Aerospace, Computer Science", duration: "3 Years", logo: "https://logo.clearbit.com/tum.de", link: "https://www.tum.de" },
-  { name: "Ludwig-Maximilians-Universität München (LMU)", rank: "58", programs: "Business Administration, Economics, Biology, Physics", duration: "3 Years", logo: "https://logo.clearbit.com/lmu.de", link: "https://www.lmu.de" },
-  { name: "Universität Heidelberg", rank: "80", programs: "Medicine, Life Sciences, Physics, Molecular Biotechnology", duration: "3 Years", logo: "https://logo.clearbit.com/uni-heidelberg.de", link: "https://www.uni-heidelberg.de" },
-  { name: "Freie Universität Berlin", rank: "88", programs: "International Relations, Psychology, North American Studies", duration: "3 Years", logo: "https://logo.clearbit.com/fu-berlin.de", link: "https://www.fu-berlin.de" },
-  { name: "RWTH Aachen University", rank: "105", programs: "Mechanical Engineering, Civil Engineering, Computer Science", duration: "3–3.5 Years", logo: "https://logo.clearbit.com/rwth-aachen.de", link: "https://www.rwth-aachen.de" },
-  { name: "University of Freiburg", rank: "112", programs: "Environmental Science, Economics, Computer Science", duration: "3 Years", logo: "https://logo.clearbit.com/uni-freiburg.de", link: "https://www.uni-freiburg.de" },
-  { name: "Humboldt University of Berlin", rank: "120", programs: "Law, Political Science, Philosophy, Social Sciences", duration: "3 Years", logo: "https://logo.clearbit.com/hu-berlin.de", link: "https://www.hu-berlin.de" },
-  { name: "University of Mannheim", rank: "135", programs: "Business Administration (BBA), Economics, Social Sciences", duration: "3 Years", logo: "https://logo.clearbit.com/uni-mannheim.de", link: "https://www.uni-mannheim.de" },
-  { name: "Karlsruhe Institute of Technology (KIT)", rank: "140", programs: "Mechanical Engineering, Physics, Data Science", duration: "3 Years", logo: "https://logo.clearbit.com/kit.edu", link: "https://www.kit.edu" },
-  { name: "University of Bonn", rank: "150", programs: "Mathematics, Economics, Computer Science, Cyber Security", duration: "3 Years", logo: "https://logo.clearbit.com/uni-bonn.de", link: "https://www.uni-bonn.de" }
+  { name: "Technical University of Munich (TUM)", rank: "25", programs: "Management & Technology, Aerospace, Computer Science", duration: "3 Years", logo: "/logos/verified-Technical University of Munich.png", link: "https://www.tum.de" },
+  { name: "Ludwig-Maximilians-Universität München (LMU)", rank: "61", programs: "Business Administration, Economics, Biology, Physics", duration: "3 Years", logo: "/logos/verified-Ludwig Maximilian University of Munich.png", link: "https://www.lmu.de" },
+  { name: "Universität Heidelberg", rank: "86", programs: "Medicine, Life Sciences, Physics, Molecular Biotechnology", duration: "3 Years", logo: "/logos/verified-Heidelberg University.png", link: "https://www.uni-heidelberg.de" },
+  { name: "Freie Universität Berlin", rank: "98", programs: "International Relations, Psychology, North American Studies", duration: "3 Years", logo: "/logos/verified-Free University of Berlin.png", link: "https://www.fu-berlin.de" },
+  { name: "RWTH Aachen University", rank: "104", programs: "Mechanical Engineering, Civil Engineering, Computer Science", duration: "3–3.5 Years", logo: "/logos/verified-RWTH Aachen University.png", link: "https://www.rwth-aachen.de" },
+  { name: "Karlsruhe Institute of Technology (KIT)", rank: "110", programs: "Mechanical Engineering, Physics, Data Science", duration: "3 Years", logo: "/logos/verified-Karlsruhe Institute of Technology.png", link: "https://www.kit.edu" },
+  { name: "Humboldt University of Berlin", rank: "140", programs: "Law, Political Science, Philosophy, Social Sciences", duration: "3 Years", logo: "/logos/verified-Humboldt University of Berlin.png", link: "https://www.hu-berlin.de" },
+  { name: "University of Freiburg", rank: "245", programs: "Environmental Science, Economics, Computer Science", duration: "3 Years", logo: "/logos/verified-University of Freiburg.png", link: "https://www.uni-freiburg.de" },
+  { name: "University of Bonn", rank: "209", programs: "Mathematics, Economics, Computer Science, Cyber Security", duration: "3 Years", logo: "https://logo.clearbit.com/uni-bonn.de", link: "https://www.uni-bonn.de" }
 ];
 
 const specialisations = {
@@ -301,7 +300,7 @@ const GermanyBachelorsPage = () => {
                 <thead>
                   <tr className="bg-slate-50/80 border-b border-slate-100 text-slate-400 text-xs font-black uppercase tracking-wider">
                     <th className="py-4 px-6">University</th>
-                    <th className="py-4 px-6 text-center">QS 2026 Rank</th>
+                    <th className="py-4 px-6 text-center">QS 2027 Rank</th>
                     <th className="py-4 px-6">Popular Programs</th>
                     <th className="py-4 px-6 text-center">Duration</th>
                     <th className="py-4 px-6 text-center">Action</th>

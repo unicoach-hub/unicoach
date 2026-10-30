@@ -5,6 +5,7 @@ import { ArrowLeft } from 'lucide-react';
 // "Back" pill at the top left of every page (just under the navbar; scrolls away with the page).
 // Not on the homepage, dashboards, sign-in screens or Course Finder (own Back), and it steps aside when the page
 // already has its own back link near the top ("Back to all articles" and the like).
+// Hidden on phones: they have a system back gesture, and the pill landed on top of centred page badges.
 const PageBackButton = () => {
   const { pathname, search } = useLocation();
   const navigate = useNavigate();
@@ -36,7 +37,7 @@ const PageBackButton = () => {
     const nudged = [];
     const fit = () => {
       const btn = ref.current;
-      if (!btn) return;
+      if (!btn || !btn.offsetParent) return; // hidden on phones
       const r = btn.getBoundingClientRect();
       const y = r.top + r.height / 2;
       for (const x of [r.left + 8, r.left + r.width / 2, r.right - 6]) {
@@ -69,7 +70,7 @@ const PageBackButton = () => {
       ref={ref}
       onClick={goBack}
       aria-label="Go back"
-      className="no-shine absolute z-40 top-[86px] md:top-[94px] left-4 sm:left-6 lg:left-10 inline-flex items-center gap-1.5 h-9 pl-3 pr-4 rounded-full bg-white/90 backdrop-blur border border-slate-200 text-[13.5px] font-semibold text-slate-700 hover:text-slate-950 hover:border-slate-300 shadow-[0_2px_8px_rgba(15,23,42,0.06)] transition-colors cursor-pointer"
+      className="no-shine absolute z-40 top-[86px] md:top-[94px] left-4 sm:left-6 lg:left-10 hidden sm:inline-flex items-center gap-1.5 h-9 pl-3 pr-4 rounded-full bg-white/90 backdrop-blur border border-slate-200 text-[13.5px] font-semibold text-slate-700 hover:text-slate-950 hover:border-slate-300 shadow-[0_2px_8px_rgba(15,23,42,0.06)] transition-colors cursor-pointer"
     >
       <ArrowLeft size={16} strokeWidth={2.2} />
       Back

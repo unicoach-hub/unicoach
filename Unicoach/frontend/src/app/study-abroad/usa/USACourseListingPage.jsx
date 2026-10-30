@@ -4,32 +4,6 @@ import logoUpenn from '../../../assets/usa/Philadelphia/University of Pennsylvan
 import logoGeorgiaTech from '../../../assets/usa/Atlanta/Georgia Institute of Technology.png';
 import { matchesUniversitySearch, getMatchedCoursesForUniversity } from '../../../utils/universitySearchMatcher';
 
-const logoBentley = `https://ui-avatars.com/api/?name=${encodeURIComponent((typeof uni !== 'undefined' && uni && uni.name) ? uni.name : 'U')}&background=4F46E5&color=ffffff&bold=true&size=128`;
-const logoMit = `https://ui-avatars.com/api/?name=${encodeURIComponent((typeof uni !== 'undefined' && uni && uni.name) ? uni.name : 'U')}&background=4F46E5&color=ffffff&bold=true&size=128`;
-const logoHarvard = `https://ui-avatars.com/api/?name=${encodeURIComponent((typeof uni !== 'undefined' && uni && uni.name) ? uni.name : 'U')}&background=4F46E5&color=ffffff&bold=true&size=128`;
-const logoCaltech = `https://ui-avatars.com/api/?name=${encodeURIComponent((typeof uni !== 'undefined' && uni && uni.name) ? uni.name : 'U')}&background=4F46E5&color=ffffff&bold=true&size=128`;
-const logoBerkeley = `https://ui-avatars.com/api/?name=${encodeURIComponent((typeof uni !== 'undefined' && uni && uni.name) ? uni.name : 'U')}&background=4F46E5&color=ffffff&bold=true&size=128`;
-const logoWashingtonAndLee = `https://ui-avatars.com/api/?name=${encodeURIComponent((typeof uni !== 'undefined' && uni && uni.name) ? uni.name : 'U')}&background=4F46E5&color=ffffff&bold=true&size=128`;
-const logoCornell = `https://ui-avatars.com/api/?name=${encodeURIComponent((typeof uni !== 'undefined' && uni && uni.name) ? uni.name : 'U')}&background=4F46E5&color=ffffff&bold=true&size=128`;
-const logoYale = `https://ui-avatars.com/api/?name=${encodeURIComponent((typeof uni !== 'undefined' && uni && uni.name) ? uni.name : 'U')}&background=4F46E5&color=ffffff&bold=true&size=128`;
-const logoWesleyan = `https://ui-avatars.com/api/?name=${encodeURIComponent((typeof uni !== 'undefined' && uni && uni.name) ? uni.name : 'U')}&background=4F46E5&color=ffffff&bold=true&size=128`;
-const logoPrinceton = `https://ui-avatars.com/api/?name=${encodeURIComponent((typeof uni !== 'undefined' && uni && uni.name) ? uni.name : 'U')}&background=4F46E5&color=ffffff&bold=true&size=128`;
-const logoMichigan = `https://ui-avatars.com/api/?name=${encodeURIComponent((typeof uni !== 'undefined' && uni && uni.name) ? uni.name : 'U')}&background=4F46E5&color=ffffff&bold=true&size=128`;
-const logoJhu = `https://ui-avatars.com/api/?name=${encodeURIComponent((typeof uni !== 'undefined' && uni && uni.name) ? uni.name : 'U')}&background=4F46E5&color=ffffff&bold=true&size=128`;
-const logoRichmond = `https://ui-avatars.com/api/?name=${encodeURIComponent((typeof uni !== 'undefined' && uni && uni.name) ? uni.name : 'U')}&background=4F46E5&color=ffffff&bold=true&size=128`;
-const logoUcla = `https://ui-avatars.com/api/?name=${encodeURIComponent((typeof uni !== 'undefined' && uni && uni.name) ? uni.name : 'U')}&background=4F46E5&color=ffffff&bold=true&size=128`;
-const logoUtAustin = `https://ui-avatars.com/api/?name=${encodeURIComponent((typeof uni !== 'undefined' && uni && uni.name) ? uni.name : 'U')}&background=4F46E5&color=ffffff&bold=true&size=128`;
-const logoColumbia = `https://ui-avatars.com/api/?name=${encodeURIComponent((typeof uni !== 'undefined' && uni && uni.name) ? uni.name : 'U')}&background=4F46E5&color=ffffff&bold=true&size=128`;
-const logoNyu = `https://ui-avatars.com/api/?name=${encodeURIComponent((typeof uni !== 'undefined' && uni && uni.name) ? uni.name : 'U')}&background=4F46E5&color=ffffff&bold=true&size=128`;
-const logoCmu = `https://ui-avatars.com/api/?name=${encodeURIComponent((typeof uni !== 'undefined' && uni && uni.name) ? uni.name : 'U')}&background=4F46E5&color=ffffff&bold=true&size=128`;
-const logoUcsd = `https://ui-avatars.com/api/?name=${encodeURIComponent((typeof uni !== 'undefined' && uni && uni.name) ? uni.name : 'U')}&background=4F46E5&color=ffffff&bold=true&size=128`;
-const logoWashington = `https://ui-avatars.com/api/?name=${encodeURIComponent((typeof uni !== 'undefined' && uni && uni.name) ? uni.name : 'U')}&background=4F46E5&color=ffffff&bold=true&size=128`;
-const logoUiuc = `https://ui-avatars.com/api/?name=${encodeURIComponent((typeof uni !== 'undefined' && uni && uni.name) ? uni.name : 'U')}&background=4F46E5&color=ffffff&bold=true&size=128`;
-const logoUwMadison = `https://ui-avatars.com/api/?name=${encodeURIComponent((typeof uni !== 'undefined' && uni && uni.name) ? uni.name : 'U')}&background=4F46E5&color=ffffff&bold=true&size=128`;
-const logoNjit = `https://ui-avatars.com/api/?name=${encodeURIComponent((typeof uni !== 'undefined' && uni && uni.name) ? uni.name : 'U')}&background=4F46E5&color=ffffff&bold=true&size=128`;
-const logoPurdue = `https://ui-avatars.com/api/?name=${encodeURIComponent((typeof uni !== 'undefined' && uni && uni.name) ? uni.name : 'U')}&background=4F46E5&color=ffffff&bold=true&size=128`;
-const logoUsc = `https://ui-avatars.com/api/?name=${encodeURIComponent((typeof uni !== 'undefined' && uni && uni.name) ? uni.name : 'U')}&background=4F46E5&color=ffffff&bold=true&size=128`;
-const logoOhioState = `https://ui-avatars.com/api/?name=${encodeURIComponent((typeof uni !== 'undefined' && uni && uni.name) ? uni.name : 'U')}&background=4F46E5&color=ffffff&bold=true&size=128`;
 
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
@@ -38,6 +12,7 @@ import {
   Search, Filter, X, ChevronDown, Award, MapPin, 
   DollarSign, Building, Globe, Check, Info, Calendar, BookOpen, Clock, AlertCircle
 } from 'lucide-react';
+import { FinderCard, FinderField, FinderChip, FINDER_FIELD, FIELD_RADIUS } from '../../../components/ui/FinderForm';
 import { HookBand, BarCompare } from '../../../components/ui/Infographics';
 
 // ─────────────────────────────────────────────
@@ -45,42 +20,23 @@ import { HookBand, BarCompare } from '../../../components/ui/Infographics';
 // ─────────────────────────────────────────────
 const universityDatabase = [
   {
-    id: 1,
-    name: "Rollins College",
-    city: "Winter Park",
-    state: "Florida",
-    location: "Winter Park, Florida, USA",
-    rank: "Rank 1 US News",
-    rankValue: 1,
-    tuition: 69, // in ₹ Lakhs/yr
-    type: "PUBLIC",
-    logo: "https://logo.clearbit.com/rollins.edu",
-    website: "https://www.rollins.edu",
-    courses: ["Computer Science"],
-    degrees: ["Postgraduate"],
-    intakes: ["AUG", "SEP"],
-    description: "Known for liberal arts education with excellent computing foundations and low student-to-faculty ratios.",
-    eligibility: "GPA 3.0+, IELTS 6.5+, TOEFL 80+",
-    deadline: "Dec 15, 2026"
-  },
-  {
     id: 2,
     name: "Bentley University",
     city: "Waltham",
     state: "Massachusetts",
     location: "Waltham, Massachusetts, USA",
-    rank: "Rank 1 US News",
-    rankValue: 1,
-    tuition: null, // -/-
-    type: "PUBLIC",
-    logo: logoBentley,
+    rank: "Not ranked (QS 2027)",
+    rankValue: 9999,
+    tuition: 48, // ₹ Lakhs/yr, international Master's tuition at 1 USD = ₹95
+    type: "PRIVATE",
+    logo: "/logos/verified-Bentley University.png",
     website: "https://www.bentley.edu",
-    courses: ["Computer Science", "Data Science", "Business Analytics", "Information technology"],
+    courses: ["Business Analytics", "Information Systems"],
     degrees: ["Postgraduate"],
-    intakes: ["AUG", "JAN"],
-    description: "Highly focused on integration of business disciplines with computer science and data analytics.",
-    eligibility: "GPA 3.2+, IELTS 7.0+, TOEFL 90+, GRE/GMAT waiver available",
-    deadline: "Feb 01, 2026"
+    intakes: ["AUG"],
+    description: "Business-focused private university. Its STEM-designated MS in Business Analytics (30 credits) covers Python, machine learning and big data; it does not offer an MS in Computer Science.",
+    eligibility: "Recognised bachelor's degree; TOEFL/IELTS unless waived (minimum scores vary by program); GRE required, optional or not accepted depending on program",
+    deadline: "Varies by program (fall deadlines usually fall between Dec and Feb)"
   },
   {
     id: 3,
@@ -90,16 +46,16 @@ const universityDatabase = [
     location: "Cambridge, Massachusetts, USA",
     rank: "Rank 1 QS Rankings",
     rankValue: 1,
-    tuition: 55,
-    type: "PUBLIC",
-    logo: logoMit,
+    tuition: 63, // ₹ Lakhs/yr, international Master's tuition at 1 USD = ₹95
+    type: "PRIVATE",
+    logo: "/logos/verified-Massachusetts Institute of Technology.png",
     website: "https://www.mit.edu",
-    courses: ["Computer Science", "Artificial Intelligence / Machine Learning", "Software Engineering"],
-    degrees: ["Postgraduate", "Ph.D."],
-    intakes: ["AUG", "SEP"],
-    description: "Pioneering computing laboratory, birthplace of core AI concepts and advanced systems research.",
-    eligibility: "GPA 3.9+, IELTS 7.5+, TOEFL 100+, GRE required (V: 160+, Q: 168+)",
-    deadline: "Dec 15, 2026"
+    courses: ["Computer Science", "Artificial Intelligence / Machine Learning"],
+    degrees: ["Ph.D."],
+    intakes: ["SEP"],
+    description: "Private research university, No. 1 in the QS World University Rankings 2027. EECS admits graduate students to its doctoral program; it has no standalone Master's in Computer Science for external applicants.",
+    eligibility: "Recognised bachelor's degree; TOEFL/IELTS unless waived (minimum scores vary by program); GRE required, optional or not accepted depending on program",
+    deadline: "Varies by program (fall deadlines usually fall between Dec and Feb)"
   },
   {
     id: 4,
@@ -107,18 +63,18 @@ const universityDatabase = [
     city: "Cambridge",
     state: "Massachusetts",
     location: "Cambridge, Massachusetts, USA",
-    rank: "Rank 4 QS Rankings",
-    rankValue: 4,
-    tuition: 52,
-    type: "PUBLIC",
-    logo: logoHarvard,
+    rank: "Rank 5 QS Rankings",
+    rankValue: 5,
+    tuition: 64, // ₹ Lakhs/yr, international Master's tuition at 1 USD = ₹95
+    type: "PRIVATE",
+    logo: "/logos/verified-Harvard University.png",
     website: "https://www.harvard.edu",
-    courses: ["Computer Science", "Data Science", "Management"],
+    courses: ["Data Science", "Computer Science"],
     degrees: ["Postgraduate", "Ph.D."],
     intakes: ["AUG"],
-    description: "World-class computational science and engineering programs focusing on algorithmic foundations and big data.",
-    eligibility: "GPA 3.9+, IELTS 7.5+, TOEFL 100+, GRE recommended",
-    deadline: "Dec 01, 2026"
+    description: "Private Ivy League university founded in 1636. The John A. Paulson School of Engineering and Applied Sciences offers master's degrees in Data Science and in Computational Science and Engineering.",
+    eligibility: "Recognised bachelor's degree; TOEFL/IELTS unless waived (minimum scores vary by program); GRE required, optional or not accepted depending on program",
+    deadline: "Varies by program (fall deadlines usually fall between Dec and Feb)"
   },
   {
     id: 5,
@@ -126,18 +82,18 @@ const universityDatabase = [
     city: "Stanford",
     state: "California",
     location: "Stanford, California, USA",
-    rank: "Rank 5 QS Rankings",
-    rankValue: 5,
-    tuition: 60,
-    type: "PUBLIC",
+    rank: "Rank 2 QS Rankings",
+    rankValue: 2,
+    tuition: 66, // ₹ Lakhs/yr, international Master's tuition at 1 USD = ₹95
+    type: "PRIVATE",
     logo: logoStanford,
     website: "https://www.stanford.edu",
     courses: ["Computer Science", "Data Science", "Artificial Intelligence / Machine Learning"],
     degrees: ["Postgraduate", "Ph.D."],
-    intakes: ["AUG", "SEP"],
-    description: "At the heart of Silicon Valley, driving technology research, tech startups, and industrial AI applications.",
-    eligibility: "GPA 3.9+, IELTS 7.5+, TOEFL 100+, GRE required",
-    deadline: "Dec 08, 2026"
+    intakes: ["SEP"],
+    description: "Private research university in Silicon Valley, founded in 1885. Offers an MS in Computer Science with AI and systems specialisations.",
+    eligibility: "Recognised bachelor's degree; TOEFL/IELTS unless waived (minimum scores vary by program); GRE required, optional or not accepted depending on program",
+    deadline: "Varies by program (fall deadlines usually fall between Dec and Feb)"
   },
   {
     id: 6,
@@ -145,18 +101,18 @@ const universityDatabase = [
     city: "Pasadena",
     state: "California",
     location: "Pasadena, California, USA",
-    rank: "Rank 6 QS Rankings",
-    rankValue: 6,
-    tuition: 58,
-    type: "PUBLIC",
-    logo: logoCaltech,
+    rank: "Rank 7 QS Rankings",
+    rankValue: 7,
+    tuition: 65, // ₹ Lakhs/yr, international Master's tuition at 1 USD = ₹95
+    type: "PRIVATE",
+    logo: "/logos/verified-California Institute of Technology.png",
     website: "https://www.caltech.edu",
     courses: ["Computer Science"],
-    degrees: ["Postgraduate", "Ph.D."],
-    intakes: ["AUG"],
-    description: "Highly selective, offering elite computational research in scientific computing and robotics.",
-    eligibility: "GPA 3.9+, IELTS 7.5+, TOEFL 100+, GRE required",
-    deadline: "Dec 15, 2026"
+    degrees: ["Ph.D."],
+    intakes: ["SEP"],
+    description: "Small, highly selective private science and engineering institute. Graduate admission in Computing and Mathematical Sciences is to the PhD program.",
+    eligibility: "Recognised bachelor's degree; TOEFL/IELTS unless waived (minimum scores vary by program); GRE required, optional or not accepted depending on program",
+    deadline: "Varies by program (fall deadlines usually fall between Dec and Feb)"
   },
   {
     id: 7,
@@ -164,18 +120,18 @@ const universityDatabase = [
     city: "Berkeley",
     state: "California",
     location: "Berkeley, California, USA",
-    rank: "Rank 10 QS Rankings",
-    rankValue: 10,
-    tuition: 48,
+    rank: "Rank 20 QS Rankings",
+    rankValue: 20,
+    tuition: 59, // ₹ Lakhs/yr, international Master's tuition at 1 USD = ₹95
     type: "PUBLIC",
-    logo: logoBerkeley,
+    logo: "/logos/verified-University of California, Berkeley.png",
     website: "https://www.berkeley.edu",
     courses: ["Computer Science", "Data Science", "Information Systems"],
     degrees: ["Postgraduate", "Ph.D."],
-    intakes: ["AUG", "SEP"],
-    description: "Leading center for databases, cloud infrastructure, cryptography, and deep learning architectures.",
-    eligibility: "GPA 3.8+, IELTS 7.0+, TOEFL 90+, GRE required",
-    deadline: "Dec 05, 2026"
+    intakes: ["AUG"],
+    description: "Flagship public university of the University of California system. EECS offers a professional Master of Engineering (MEng); the School of Information offers the MIMS. Fee shown is the 2026-27 non-resident MEng rate.",
+    eligibility: "Recognised bachelor's degree; TOEFL/IELTS unless waived (minimum scores vary by program); GRE required, optional or not accepted depending on program",
+    deadline: "Varies by program (fall deadlines usually fall between Dec and Feb)"
   },
   {
     id: 8,
@@ -183,37 +139,18 @@ const universityDatabase = [
     city: "Chicago",
     state: "Illinois",
     location: "Chicago, Illinois, USA",
-    rank: "Rank 10 QS Rankings",
-    rankValue: 10,
-    tuition: 54,
-    type: "PUBLIC",
+    rank: "Rank 24 QS Rankings",
+    rankValue: 24,
+    tuition: 63, // ₹ Lakhs/yr, international Master's tuition at 1 USD = ₹95
+    type: "PRIVATE",
     logo: logoChicago,
     website: "https://www.uchicago.edu",
-    courses: ["Computer Science", "Data Science", "Business Analytics"],
+    courses: ["Computer Science", "Data Science"],
     degrees: ["Postgraduate", "Ph.D."],
-    intakes: ["AUG", "JAN"],
-    description: "Strong theoretical computer science, economics-focused data modeling, and machine learning research.",
-    eligibility: "GPA 3.7+, IELTS 7.5+, TOEFL 100+, GRE required",
-    deadline: "Jan 15, 2026"
-  },
-  {
-    id: 9,
-    name: "Washington and Lee University",
-    city: "Lexington",
-    state: "Virginia",
-    location: "Lexington, Virginia, USA",
-    rank: "Rank 11 US News",
-    rankValue: 11,
-    tuition: 62,
-    type: "PUBLIC",
-    logo: logoWashingtonAndLee,
-    website: "https://www.wlu.edu",
-    courses: ["Computer Science"],
-    degrees: ["Postgraduate"],
-    intakes: ["AUG"],
-    description: "Elite private liberal arts education with strong computational and math modeling courses.",
-    eligibility: "GPA 3.5+, IELTS 7.0+, TOEFL 95+",
-    deadline: "Jan 15, 2026"
+    intakes: ["SEP"],
+    description: "Private research university on a quarter system. The Masters Program in Computer Science (MPCS) and the MS in Applied Data Science are its main professional master's options.",
+    eligibility: "Recognised bachelor's degree; TOEFL/IELTS unless waived (minimum scores vary by program); GRE required, optional or not accepted depending on program",
+    deadline: "Varies by program (fall deadlines usually fall between Dec and Feb)"
   },
   {
     id: 10,
@@ -221,18 +158,18 @@ const universityDatabase = [
     city: "Philadelphia",
     state: "Pennsylvania",
     location: "Philadelphia, Pennsylvania, USA",
-    rank: "Rank 12 QS Rankings",
-    rankValue: 12,
-    tuition: 56,
-    type: "PUBLIC",
+    rank: "Rank 15 QS Rankings",
+    rankValue: 15,
+    tuition: 67, // ₹ Lakhs/yr, international Master's tuition at 1 USD = ₹95
+    type: "PRIVATE",
     logo: logoUpenn,
     website: "https://www.upenn.edu",
     courses: ["Computer Science", "Data Science"],
     degrees: ["Postgraduate", "Ph.D."],
-    intakes: ["AUG", "SEP"],
-    description: "Outstanding Ivy League MS programs in Computer & Information Science, and Data Science.",
-    eligibility: "GPA 3.8+, IELTS 7.5+, TOEFL 100+, GRE required",
-    deadline: "Dec 15, 2026"
+    intakes: ["AUG"],
+    description: "Private Ivy League university. Penn Engineering offers MSE degrees in Computer and Information Science and in Data Science.",
+    eligibility: "Recognised bachelor's degree; TOEFL/IELTS unless waived (minimum scores vary by program); GRE required, optional or not accepted depending on program",
+    deadline: "Varies by program (fall deadlines usually fall between Dec and Feb)"
   },
   {
     id: 11,
@@ -240,18 +177,18 @@ const universityDatabase = [
     city: "Ithaca",
     state: "New York",
     location: "Ithaca, New York, USA",
-    rank: "Rank 13 QS Rankings",
-    rankValue: 13,
-    tuition: 58,
-    type: "PUBLIC",
-    logo: logoCornell,
+    rank: "Rank 16 QS Rankings",
+    rankValue: 16,
+    tuition: 70, // ₹ Lakhs/yr, international Master's tuition at 1 USD = ₹95
+    type: "PRIVATE",
+    logo: "/logos/verified-Cornell University.png",
     website: "https://www.cornell.edu",
     courses: ["Computer Science", "Data Science"],
     degrees: ["Postgraduate", "Ph.D."],
-    intakes: ["AUG", "SEP"],
-    description: "Famous for its computer science department, specializing in artificial intelligence and systems engineering.",
-    eligibility: "GPA 3.8+, IELTS 7.5+, TOEFL 100+, GRE required",
-    deadline: "Dec 15, 2026"
+    intakes: ["AUG"],
+    description: "Private Ivy League university with some state-supported colleges. Cornell Engineering offers a one-year professional MEng in Computer Science in Ithaca.",
+    eligibility: "Recognised bachelor's degree; TOEFL/IELTS unless waived (minimum scores vary by program); GRE required, optional or not accepted depending on program",
+    deadline: "Varies by program (fall deadlines usually fall between Dec and Feb)"
   },
   {
     id: 12,
@@ -261,35 +198,16 @@ const universityDatabase = [
     location: "New Haven, Connecticut, USA",
     rank: "Rank 16 QS Rankings",
     rankValue: 16,
-    tuition: 62,
-    type: "PUBLIC",
-    logo: logoYale,
+    tuition: 50, // ₹ Lakhs/yr, international Master's tuition at 1 USD = ₹95
+    type: "PRIVATE",
+    logo: "/logos/verified-Yale University.png",
     website: "https://www.yale.edu",
     courses: ["Computer Science"],
     degrees: ["Postgraduate", "Ph.D."],
     intakes: ["AUG"],
-    description: "Ivy league private research university offering strong computing foundations, cybersecurity and bioinformatics.",
-    eligibility: "GPA 3.8+, IELTS 7.5+, TOEFL 100+, GRE required",
-    deadline: "Dec 15, 2026"
-  },
-  {
-    id: 13,
-    name: "Smith College",
-    city: "Northampton",
-    state: "Massachusetts",
-    location: "Northampton, Massachusetts, USA",
-    rank: "Rank 16 US News",
-    rankValue: 16,
-    tuition: 44,
-    type: "PUBLIC",
-    logo: "https://logo.clearbit.com/smith.edu",
-    website: "https://www.smith.edu",
-    courses: ["Computer Science"],
-    degrees: ["Postgraduate"],
-    intakes: ["AUG"],
-    description: "Leading liberal arts institution offering custom computing specialization options.",
-    eligibility: "GPA 3.4+, IELTS 7.0+, TOEFL 90+",
-    deadline: "Jan 15, 2026"
+    description: "Private Ivy League research university founded in 1701. The Graduate School of Arts and Sciences offers an MS in Computer Science.",
+    eligibility: "Recognised bachelor's degree; TOEFL/IELTS unless waived (minimum scores vary by program); GRE required, optional or not accepted depending on program",
+    deadline: "Varies by program (fall deadlines usually fall between Dec and Feb)"
   },
   {
     id: 14,
@@ -297,18 +215,18 @@ const universityDatabase = [
     city: "Middletown",
     state: "Connecticut",
     location: "Middletown, Connecticut, USA",
-    rank: "Rank 17 US News",
-    rankValue: 17,
-    tuition: 80,
-    type: "PUBLIC",
-    logo: logoWesleyan,
+    rank: "Not ranked (QS 2027)",
+    rankValue: 9999,
+    tuition: null, // ₹ Lakhs/yr, international Master's tuition at 1 USD = ₹95
+    type: "PRIVATE",
+    logo: "/logos/verified-Wesleyan University.png",
     website: "https://www.wesleyan.edu",
     courses: ["Computer Science"],
     degrees: ["Postgraduate"],
-    intakes: ["AUG", "SEP"],
-    description: "Academically rigorous, project-oriented courses in databases, computing systems, and networking.",
-    eligibility: "GPA 3.5+, IELTS 7.0+, TOEFL 95+",
-    deadline: "Feb 01, 2026"
+    intakes: ["AUG"],
+    description: "Private liberal arts university with a small two-year MA in Computer Science. Most full-time MA students receive tuition remission and a stipend in return for teaching assistant duties.",
+    eligibility: "Recognised bachelor's degree; TOEFL/IELTS unless waived (minimum scores vary by program); GRE required, optional or not accepted depending on program",
+    deadline: "Varies by program (fall deadlines usually fall between Dec and Feb)"
   },
   {
     id: 15,
@@ -316,18 +234,18 @@ const universityDatabase = [
     city: "Princeton",
     state: "New Jersey",
     location: "Princeton, New Jersey, USA",
-    rank: "Rank 17 QS Rankings",
-    rankValue: 17,
-    tuition: 55,
-    type: "PUBLIC",
-    logo: logoPrinceton,
+    rank: "Rank 27 QS Rankings",
+    rankValue: 27,
+    tuition: 62, // ₹ Lakhs/yr, international Master's tuition at 1 USD = ₹95
+    type: "PRIVATE",
+    logo: "/logos/verified-Princeton University.png",
     website: "https://www.princeton.edu",
     courses: ["Computer Science"],
     degrees: ["Postgraduate", "Ph.D."],
     intakes: ["AUG"],
-    description: "Exemplary research environment for algorithms, computer theory, machine learning, and systems.",
-    eligibility: "GPA 3.9+, IELTS 7.5+, TOEFL 100+, GRE recommended",
-    deadline: "Dec 15, 2026"
+    description: "Private Ivy League research university. Computer Science offers a small Master of Science in Engineering (MSE) alongside its PhD program.",
+    eligibility: "Recognised bachelor's degree; TOEFL/IELTS unless waived (minimum scores vary by program); GRE required, optional or not accepted depending on program",
+    deadline: "Varies by program (fall deadlines usually fall between Dec and Feb)"
   },
   {
     id: 16,
@@ -335,18 +253,18 @@ const universityDatabase = [
     city: "Ann Arbor",
     state: "Michigan",
     location: "Ann Arbor, Michigan, USA",
-    rank: "Rank 21 QS Rankings",
-    rankValue: 21,
-    tuition: 49,
+    rank: "Rank 51 QS Rankings",
+    rankValue: 51,
+    tuition: 65, // ₹ Lakhs/yr, international Master's tuition at 1 USD = ₹95
     type: "PUBLIC",
-    logo: logoMichigan,
-    website: "https://www.umich.edu",
+    logo: "/logos/verified-University of Michigan.png",
+    website: "https://umich.edu",
     courses: ["Computer Science", "Data Science"],
     degrees: ["Postgraduate", "Ph.D."],
-    intakes: ["AUG", "SEP"],
-    description: "Top-tier public engineering programs in computer graphics, security, databases, and data processing.",
-    eligibility: "GPA 3.7+, IELTS 7.0+, TOEFL 95+, GRE required",
-    deadline: "Dec 15, 2026"
+    intakes: ["AUG"],
+    description: "Large public research university. The College of Engineering offers MS degrees in Computer Science and Engineering and in Data Science.",
+    eligibility: "Recognised bachelor's degree; TOEFL/IELTS unless waived (minimum scores vary by program); GRE required, optional or not accepted depending on program",
+    deadline: "Varies by program (fall deadlines usually fall between Dec and Feb)"
   },
   {
     id: 17,
@@ -354,37 +272,18 @@ const universityDatabase = [
     city: "Baltimore",
     state: "Maryland",
     location: "Baltimore, Maryland, USA",
-    rank: "Rank 24 QS Rankings",
-    rankValue: 24,
-    tuition: 59,
-    type: "PUBLIC",
-    logo: logoJhu,
+    rank: "Rank 20 QS Rankings",
+    rankValue: 20,
+    tuition: 65, // ₹ Lakhs/yr, international Master's tuition at 1 USD = ₹95
+    type: "PRIVATE",
+    logo: "/logos/verified-Johns Hopkins University.png",
     website: "https://www.jhu.edu",
     courses: ["Computer Science", "Data Science"],
     degrees: ["Postgraduate", "Ph.D."],
-    intakes: ["AUG", "JAN"],
-    description: "World leader in bioinformatics, health informatics, and data systems architectures.",
-    eligibility: "GPA 3.6+, IELTS 7.0+, TOEFL 100+, GRE required",
-    deadline: "Jan 15, 2026"
-  },
-  {
-    id: 18,
-    name: "University of Richmond",
-    city: "Richmond",
-    state: "Virginia",
-    location: "Richmond, Virginia, USA",
-    rank: "Rank 28 US News",
-    rankValue: 28,
-    tuition: 60,
-    type: "PUBLIC",
-    logo: logoRichmond,
-    website: "https://www.richmond.edu",
-    courses: ["Computer Science"],
-    degrees: ["Postgraduate"],
     intakes: ["AUG"],
-    description: "Academically sound computational foundations, close collaboration with industry experts.",
-    eligibility: "GPA 3.2+, IELTS 6.5+, TOEFL 85+",
-    deadline: "Feb 15, 2026"
+    description: "Private research university. The Whiting School of Engineering offers full-time MSE degrees in Computer Science and in Data Science.",
+    eligibility: "Recognised bachelor's degree; TOEFL/IELTS unless waived (minimum scores vary by program); GRE required, optional or not accepted depending on program",
+    deadline: "Varies by program (fall deadlines usually fall between Dec and Feb)"
   },
   {
     id: 19,
@@ -392,18 +291,18 @@ const universityDatabase = [
     city: "Los Angeles",
     state: "California",
     location: "Los Angeles, California, USA",
-    rank: "Rank 29 QS Rankings",
-    rankValue: 29,
-    tuition: 71,
+    rank: "Rank 49 QS Rankings",
+    rankValue: 49,
+    tuition: 29, // ₹ Lakhs/yr, international Master's tuition at 1 USD = ₹95
     type: "PUBLIC",
-    logo: logoUcla,
+    logo: "/logos/verified-University of California, Los Angeles.png",
     website: "https://www.ucla.edu",
     courses: ["Computer Science", "Data Science"],
     degrees: ["Postgraduate", "Ph.D."],
-    intakes: ["AUG", "SEP"],
-    description: "Acclaimed public research university known for deep neural network, computer system, and database studies.",
-    eligibility: "GPA 3.7+, IELTS 7.0+, TOEFL 90+, GRE required",
-    deadline: "Dec 15, 2026"
+    intakes: ["SEP"],
+    description: "Public research university in the University of California system, on a quarter calendar. Fee shown is 2026-27 non-resident graduate tuition and fees; some professional master's programs charge more.",
+    eligibility: "Recognised bachelor's degree; TOEFL/IELTS unless waived (minimum scores vary by program); GRE required, optional or not accepted depending on program",
+    deadline: "Varies by program (fall deadlines usually fall between Dec and Feb)"
   },
   {
     id: 20,
@@ -411,18 +310,18 @@ const universityDatabase = [
     city: "Austin",
     state: "Texas",
     location: "Austin, Texas, USA",
-    rank: "Rank 32 QS Rankings",
-    rankValue: 32,
-    tuition: 56,
+    rank: "Rank 72 QS Rankings",
+    rankValue: 72,
+    tuition: 18, // ₹ Lakhs/yr, international Master's tuition at 1 USD = ₹95
     type: "PUBLIC",
-    logo: logoUtAustin,
+    logo: "/logos/verified-The University of Texas at Austin.png",
     website: "https://www.utexas.edu",
     courses: ["Computer Science", "Data Science"],
     degrees: ["Postgraduate", "Ph.D."],
-    intakes: ["AUG", "JAN"],
-    description: "Highly ranked, offering exceptional industry alignment with the booming Austin silicon and software hub.",
-    eligibility: "GPA 3.6+, IELTS 7.0+, TOEFL 90+, GRE required",
-    deadline: "Dec 15, 2026"
+    intakes: ["AUG"],
+    description: "Flagship public university of Texas, in the state capital's growing tech hub. Fee shown is non-resident graduate tuition for 9 credit hours per semester.",
+    eligibility: "Recognised bachelor's degree; TOEFL/IELTS unless waived (minimum scores vary by program); GRE required, optional or not accepted depending on program",
+    deadline: "Varies by program (fall deadlines usually fall between Dec and Feb)"
   },
   {
     id: 21,
@@ -430,18 +329,18 @@ const universityDatabase = [
     city: "New York",
     state: "New York",
     location: "New York, New York, USA",
-    rank: "Rank 34 QS Rankings",
-    rankValue: 34,
-    tuition: null,
-    type: "PUBLIC",
-    logo: logoColumbia,
+    rank: "Rank 43 QS Rankings",
+    rankValue: 43,
+    tuition: 62, // ₹ Lakhs/yr, international Master's tuition at 1 USD = ₹95
+    type: "PRIVATE",
+    logo: "/logos/Columbia_University_in_the_City_of_New_York.webp",
     website: "https://www.columbia.edu",
     courses: ["Data Science", "Computer Science", "Business Analytics"],
     degrees: ["Postgraduate", "Ph.D."],
-    intakes: ["AUG", "SEP"],
-    description: "Prestigious Ivy League department offering deep studies in natural language processing and computer systems.",
-    eligibility: "GPA 3.7+, IELTS 7.5+, TOEFL 100+, GRE required",
-    deadline: "Jan 15, 2026"
+    intakes: ["AUG"],
+    description: "Private Ivy League university in Manhattan. Columbia Engineering offers MS degrees in Computer Science and Data Science, charged per credit point.",
+    eligibility: "Recognised bachelor's degree; TOEFL/IELTS unless waived (minimum scores vary by program); GRE required, optional or not accepted depending on program",
+    deadline: "Varies by program (fall deadlines usually fall between Dec and Feb)"
   },
   {
     id: 22,
@@ -449,18 +348,18 @@ const universityDatabase = [
     city: "New York City",
     state: "New York",
     location: "New York City, New York, USA",
-    rank: "Rank 38 QS Rankings",
-    rankValue: 38,
-    tuition: 55,
-    type: "PUBLIC",
-    logo: logoNyu,
+    rank: "Rank 58 QS Rankings",
+    rankValue: 58,
+    tuition: null, // ₹ Lakhs/yr, international Master's tuition at 1 USD = ₹95
+    type: "PRIVATE",
+    logo: "/logos/New_York_University.webp",
     website: "https://www.nyu.edu",
-    courses: ["Data Science", "Computer Science", "Information Systems"],
-    degrees: ["Postgraduate"],
-    intakes: ["AUG", "JAN"],
-    description: "Courant Institute of Mathematical Sciences provides premier research in statistical and computational DS.",
-    eligibility: "GPA 3.5+, IELTS 7.0+, TOEFL 100+, GRE required",
-    deadline: "Jan 05, 2026"
+    courses: ["Data Science", "Computer Science"],
+    degrees: ["Postgraduate", "Ph.D."],
+    intakes: ["AUG"],
+    description: "Private research university in Manhattan. MS Computer Science is offered by both the Courant Institute and the Tandon School of Engineering; the Center for Data Science offers an MS in Data Science.",
+    eligibility: "Recognised bachelor's degree; TOEFL/IELTS unless waived (minimum scores vary by program); GRE required, optional or not accepted depending on program",
+    deadline: "Varies by program (fall deadlines usually fall between Dec and Feb)"
   },
   {
     id: 23,
@@ -468,18 +367,18 @@ const universityDatabase = [
     city: "Pittsburgh",
     state: "Pennsylvania",
     location: "Pittsburgh, Pennsylvania, USA",
-    rank: "Rank 52 QS Rankings",
-    rankValue: 52,
-    tuition: 59,
-    type: "PUBLIC",
-    logo: logoCmu,
+    rank: "Rank 55 QS Rankings",
+    rankValue: 55,
+    tuition: 59, // ₹ Lakhs/yr, international Master's tuition at 1 USD = ₹95
+    type: "PRIVATE",
+    logo: "/logos/verified-Carnegie Mellon University.png",
     website: "https://www.cmu.edu",
     courses: ["Data Science", "Computer Science", "Robotics", "Software Engineering"],
     degrees: ["Postgraduate", "Ph.D."],
-    intakes: ["AUG", "SEP"],
-    description: "First School of Computer Science in the US. Pioneers in machine learning, human-computer interaction, and software design.",
-    eligibility: "GPA 3.8+, IELTS 7.5+, TOEFL 100+, GRE required",
-    deadline: "Dec 10, 2026"
+    intakes: ["AUG"],
+    description: "Private research university. The School of Computer Science runs master's programs in computer science, machine learning, robotics and software engineering.",
+    eligibility: "Recognised bachelor's degree; TOEFL/IELTS unless waived (minimum scores vary by program); GRE required, optional or not accepted depending on program",
+    deadline: "Varies by program (fall deadlines usually fall between Dec and Feb)"
   },
   {
     id: 24,
@@ -487,18 +386,18 @@ const universityDatabase = [
     city: "San Diego",
     state: "California",
     location: "San Diego, California, USA",
-    rank: "Rank 62 QS Rankings",
-    rankValue: 62,
-    tuition: 50,
+    rank: "Rank 81 QS Rankings",
+    rankValue: 81,
+    tuition: 29, // ₹ Lakhs/yr, international Master's tuition at 1 USD = ₹95
     type: "PUBLIC",
-    logo: logoUcsd,
-    website: "https://www.ucsd.edu",
+    logo: "/logos/verified-University of California, San Diego.png",
+    website: "https://ucsd.edu",
     courses: ["Data Science", "Computer Science"],
     degrees: ["Postgraduate", "Ph.D."],
-    intakes: ["AUG", "SEP"],
-    description: "High-impact computing research located along the Biotech Beach, strong data engineering focus.",
-    eligibility: "GPA 3.5+, IELTS 7.0+, TOEFL 90+, GRE required",
-    deadline: "Dec 15, 2026"
+    intakes: ["SEP"],
+    description: "Public research university in the University of California system, on a quarter calendar. Fee shown is 2026-27 non-resident graduate tuition; some professional master's programs charge more.",
+    eligibility: "Recognised bachelor's degree; TOEFL/IELTS unless waived (minimum scores vary by program); GRE required, optional or not accepted depending on program",
+    deadline: "Varies by program (fall deadlines usually fall between Dec and Feb)"
   },
   {
     id: 25,
@@ -506,18 +405,18 @@ const universityDatabase = [
     city: "Seattle",
     state: "Washington",
     location: "Seattle, Washington, USA",
-    rank: "Rank 63 QS Rankings",
-    rankValue: 63,
-    tuition: 39,
+    rank: "Rank 94 QS Rankings",
+    rankValue: 94,
+    tuition: 31, // ₹ Lakhs/yr, international Master's tuition at 1 USD = ₹95
     type: "PUBLIC",
-    logo: logoWashington,
+    logo: "/logos/University_of_Washington.webp",
     website: "https://www.washington.edu",
     courses: ["Data Science", "Computer Science"],
     degrees: ["Postgraduate", "Ph.D."],
-    intakes: ["AUG", "JAN"],
-    description: "Direct ties to Microsoft and Amazon tech hubs. Outstanding programs in machine learning and databases.",
-    eligibility: "GPA 3.6+, IELTS 7.0+, TOEFL 92+, GRE required",
-    deadline: "Jan 15, 2026"
+    intakes: ["SEP"],
+    description: "Public research university in Seattle, close to the headquarters of Amazon and Microsoft. Fee shown is the standard non-resident graduate rate; many CS and data science master's programs are self-sustaining with their own fees.",
+    eligibility: "Recognised bachelor's degree; TOEFL/IELTS unless waived (minimum scores vary by program); GRE required, optional or not accepted depending on program",
+    deadline: "Varies by program (fall deadlines usually fall between Dec and Feb)"
   },
   {
     id: 26,
@@ -525,18 +424,18 @@ const universityDatabase = [
     city: "Urbana-Champaign",
     state: "Illinois",
     location: "Urbana-Champaign, Illinois, USA",
-    rank: "Rank 64 QS Rankings",
-    rankValue: 64,
-    tuition: 35,
+    rank: "Rank 74 QS Rankings",
+    rankValue: 74,
+    tuition: 38, // ₹ Lakhs/yr, international Master's tuition at 1 USD = ₹95
     type: "PUBLIC",
-    logo: logoUiuc,
-    website: "https://www.illinois.edu",
+    logo: "/logos/verified-University of Illinois Urbana-Champaign.png",
+    website: "https://illinois.edu",
     courses: ["Data Science", "Computer Science", "Computer Engineering"],
     degrees: ["Postgraduate", "Ph.D."],
-    intakes: ["AUG", "JAN"],
-    description: "Distinguished computing history (birthplace of Mosaic web browser). Leaders in high-performance computing.",
-    eligibility: "GPA 3.5+, IELTS 7.0+, TOEFL 100+, GRE required",
-    deadline: "Jan 15, 2026"
+    intakes: ["AUG"],
+    description: "Public research university. The Mosaic web browser was developed at its National Center for Supercomputing Applications (NCSA). Fee shown is the 2026-27 engineering (including CS) graduate rate.",
+    eligibility: "Recognised bachelor's degree; TOEFL/IELTS unless waived (minimum scores vary by program); GRE required, optional or not accepted depending on program",
+    deadline: "Varies by program (fall deadlines usually fall between Dec and Feb)"
   },
   {
     id: 27,
@@ -544,18 +443,18 @@ const universityDatabase = [
     city: "Madison",
     state: "Wisconsin",
     location: "Madison, Wisconsin, USA",
-    rank: "Rank 83 QS Rankings",
-    rankValue: 83,
-    tuition: 37,
+    rank: "Rank 131 QS Rankings",
+    rankValue: 131,
+    tuition: 23, // ₹ Lakhs/yr, international Master's tuition at 1 USD = ₹95
     type: "PUBLIC",
-    logo: logoUwMadison,
+    logo: "/logos/University_of_Wisconsin-Madison.webp",
     website: "https://www.wisc.edu",
     courses: ["Data Science", "Computer Science"],
     degrees: ["Postgraduate", "Ph.D."],
-    intakes: ["AUG", "SEP"],
-    description: "Academically renowned public school with highly integrated databases and computing theory programs.",
-    eligibility: "GPA 3.4+, IELTS 7.0+, TOEFL 92+, GRE required",
-    deadline: "Dec 15, 2026"
+    intakes: ["AUG"],
+    description: "Flagship public research university of Wisconsin. Fee shown is 2026-27 non-resident graduate tuition; some professional master's programs charge more.",
+    eligibility: "Recognised bachelor's degree; TOEFL/IELTS unless waived (minimum scores vary by program); GRE required, optional or not accepted depending on program",
+    deadline: "Varies by program (fall deadlines usually fall between Dec and Feb)"
   },
   {
     id: 28,
@@ -563,18 +462,18 @@ const universityDatabase = [
     city: "Atlanta",
     state: "Georgia",
     location: "Atlanta, Georgia, USA",
-    rank: "Rank 88 QS Rankings",
-    rankValue: 88,
-    tuition: 31,
+    rank: "Rank 142 QS Rankings",
+    rankValue: 142,
+    tuition: 31, // ₹ Lakhs/yr, international Master's tuition at 1 USD = ₹95
     type: "PUBLIC",
     logo: logoGeorgiaTech,
     website: "https://www.gatech.edu",
-    courses: ["Data Science", "Computer Science", "Cyber Security", "Information Systems"],
+    courses: ["Data Science", "Computer Science", "Cyber Security"],
     degrees: ["Postgraduate", "Ph.D."],
-    intakes: ["AUG", "JAN"],
-    description: "Highly ranked public research institute, known for massive-scale systems and advanced machine learning models.",
-    eligibility: "GPA 3.5+, IELTS 7.0+, TOEFL 90+, GRE required",
-    deadline: "Jan 15, 2026"
+    intakes: ["AUG"],
+    description: "Public research university in Atlanta. The College of Computing offers an MS in Computer Science; Georgia Tech also runs an interdisciplinary MS in Analytics and an MS in Cybersecurity.",
+    eligibility: "Recognised bachelor's degree; TOEFL/IELTS unless waived (minimum scores vary by program); GRE required, optional or not accepted depending on program",
+    deadline: "Varies by program (fall deadlines usually fall between Dec and Feb)"
   },
   {
     id: 29,
@@ -582,18 +481,18 @@ const universityDatabase = [
     city: "Newark",
     state: "New Jersey",
     location: "Newark, New Jersey, USA",
-    rank: "Rank 97 US News",
-    rankValue: 97,
-    tuition: 35,
+    rank: "Rank 741-750 QS Rankings",
+    rankValue: 741,
+    tuition: 35, // ₹ Lakhs/yr, international Master's tuition at 1 USD = ₹95
     type: "PUBLIC",
-    logo: logoNjit,
+    logo: "/logos/New_Jersey_Institute_of_Technology.webp",
     website: "https://www.njit.edu",
     courses: ["Data Science", "Computer Science"],
     degrees: ["Postgraduate"],
-    intakes: ["AUG", "JAN"],
-    description: "Excellent value public university providing deep technical specialization in data warehousing and systems.",
-    eligibility: "GPA 3.0+, IELTS 6.5+, TOEFL 79+, GRE required",
-    deadline: "Feb 15, 2026"
+    intakes: ["AUG"],
+    description: "Public technological university in Newark, near New York City. Graduate tuition is charged per credit (2026-27 non-resident rate shown for 18 credits a year).",
+    eligibility: "Recognised bachelor's degree; TOEFL/IELTS unless waived (minimum scores vary by program); GRE required, optional or not accepted depending on program",
+    deadline: "Varies by program (fall deadlines usually fall between Dec and Feb)"
   },
   {
     id: 30,
@@ -601,18 +500,18 @@ const universityDatabase = [
     city: "West Lafayette",
     state: "Indiana",
     location: "West Lafayette, Indiana, USA",
-    rank: "Rank 99 QS Rankings",
-    rankValue: 99,
-    tuition: 30,
+    rank: "Rank 100 QS Rankings",
+    rankValue: 100,
+    tuition: 29, // ₹ Lakhs/yr, international Master's tuition at 1 USD = ₹95
     type: "PUBLIC",
-    logo: logoPurdue,
+    logo: "/logos/Purdue_University.webp",
     website: "https://www.purdue.edu",
     courses: ["Data Science", "Computer Science"],
     degrees: ["Postgraduate", "Ph.D."],
-    intakes: ["AUG", "JAN"],
-    description: "Acclaimed engineering school with comprehensive STEM OPT designated data modeling degrees.",
-    eligibility: "GPA 3.3+, IELTS 7.0+, TOEFL 80+, GRE required",
-    deadline: "Jan 15, 2026"
+    intakes: ["AUG"],
+    description: "Public research university with large engineering and computer science schools. Fee shown is the 2025-26 international graduate rate for CS/engineering, including mandatory fees.",
+    eligibility: "Recognised bachelor's degree; TOEFL/IELTS unless waived (minimum scores vary by program); GRE required, optional or not accepted depending on program",
+    deadline: "Varies by program (fall deadlines usually fall between Dec and Feb)"
   },
   {
     id: 31,
@@ -620,18 +519,18 @@ const universityDatabase = [
     city: "Los Angeles",
     state: "California",
     location: "Los Angeles, California, USA",
-    rank: "Rank 116 QS Rankings",
-    rankValue: 116,
-    tuition: 65,
-    type: "PUBLIC",
-    logo: logoUsc,
+    rank: "Rank 153 QS Rankings",
+    rankValue: 153,
+    tuition: 63, // ₹ Lakhs/yr, international Master's tuition at 1 USD = ₹95
+    type: "PRIVATE",
+    logo: "/logos/University_of_Southern_California.webp",
     website: "https://www.usc.edu",
     courses: ["Data Science", "Computer Science", "Information Systems"],
     degrees: ["Postgraduate", "Ph.D."],
-    intakes: ["AUG", "JAN"],
-    description: "Large private computing department with massive industry networks throughout California.",
-    eligibility: "GPA 3.4+, IELTS 7.0+, TOEFL 90+, GRE required",
-    deadline: "Jan 15, 2026"
+    intakes: ["AUG"],
+    description: "Private research university in Los Angeles. Viterbi School of Engineering charges per unit (2026-27 rate shown for 24 units a year).",
+    eligibility: "Recognised bachelor's degree; TOEFL/IELTS unless waived (minimum scores vary by program); GRE required, optional or not accepted depending on program",
+    deadline: "Varies by program (fall deadlines usually fall between Dec and Feb)"
   },
   {
     id: 32,
@@ -639,18 +538,18 @@ const universityDatabase = [
     city: "Columbus",
     state: "Ohio",
     location: "Columbus, Ohio, USA",
-    rank: "Rank 140 QS Rankings",
-    rankValue: 140,
-    tuition: 25,
+    rank: "Rank 201 QS Rankings",
+    rankValue: 201,
+    tuition: 41, // ₹ Lakhs/yr, international Master's tuition at 1 USD = ₹95
     type: "PUBLIC",
-    logo: logoOhioState,
+    logo: "/logos/The_Ohio_State_University.webp",
     website: "https://www.osu.edu",
     courses: ["Data Science", "Computer Science"],
     degrees: ["Postgraduate", "Ph.D."],
-    intakes: ["AUG", "SEP"],
-    description: "Dynamic public research university with excellent, cost-effective computing and analytics facilities.",
-    eligibility: "GPA 3.0+, IELTS 6.5+, TOEFL 79+, GRE required",
-    deadline: "Feb 01, 2026"
+    intakes: ["AUG"],
+    description: "Large public research university in Columbus. Fee shown is 2025-26 non-resident graduate tuition, surcharge and fees.",
+    eligibility: "Recognised bachelor's degree; TOEFL/IELTS unless waived (minimum scores vary by program); GRE required, optional or not accepted depending on program",
+    deadline: "Varies by program (fall deadlines usually fall between Dec and Feb)"
   }
 ];
 
@@ -907,15 +806,15 @@ const USACourseListingPage = ({ courseOverride = null }) => {
         <div className="grid grid-cols-1 lg:grid-cols-[290px_1fr] gap-8 items-start">
           
           {/* 1. FILTER SIDEBAR (Glassmorphic Styled panel) */}
-          <aside className="sticky top-28 bg-white/70 backdrop-blur-xl border border-white/80 rounded-[28px] p-6 shadow-[0_12px_40px_rgba(0,0,0,0.02)] z-30">
-            <div className="flex items-center justify-between pb-4 border-b border-slate-100 mb-5">
-              <span className="flex items-center gap-2 text-sm font-black text-slate-800 uppercase tracking-wider">
-                <Filter size={15} className="text-indigo-650" />
+          <aside className="sticky top-28 bg-white border border-[#E6E0D4] p-5 shadow-[0_24px_60px_-36px_rgba(22,19,15,0.35)] z-30" style={{ borderRadius: 18 }}>
+            <div className="flex items-center justify-between pb-4 border-b border-[#ECE6DA] mb-5">
+              <span className="flex items-center gap-2 text-[14px] font-semibold text-[#16130F]">
+                <Filter size={15} className="text-[#DE5C2B]" />
                 Filters
               </span>
               <button 
                 onClick={handleClearAll}
-                className="text-xs font-bold text-indigo-650 hover:text-indigo-850 cursor-pointer transition-colors"
+                className="text-[12.5px] font-semibold text-[#DE5C2B] hover:underline cursor-pointer"
               >
                 Clear All
               </button>
@@ -928,10 +827,10 @@ const USACourseListingPage = ({ courseOverride = null }) => {
               <div>
                 <button
                   onClick={() => toggleAccordion('fees')}
-                  className="w-full flex items-center justify-between font-bold text-xs text-slate-700 uppercase tracking-wider mb-3.5"
+                  className="w-full flex items-center justify-between text-[12.5px] font-semibold text-[#16130F] mb-3"
                 >
                   <span>1st Year Fees</span>
-                  <ChevronDown size={14} className={`transform transition-transform text-slate-400 ${openAccordions.fees ? 'rotate-180 text-indigo-650' : ''}`} />
+                  <ChevronDown size={14} className={`transform transition-transform text-[#9A9184] ${openAccordions.fees ? 'rotate-180 text-[#DE5C2B]' : ''}`} />
                 </button>
                 <AnimatePresence initial={false}>
                   {openAccordions.fees && (
@@ -942,12 +841,12 @@ const USACourseListingPage = ({ courseOverride = null }) => {
                       className="overflow-hidden space-y-2.5 pl-0.5"
                     >
                       {feeRanges.map(range => (
-                        <label key={range.id} className="flex items-center gap-3 text-xs font-bold text-slate-600 hover:text-indigo-600 cursor-pointer select-none">
+                        <label key={range.id} className="flex items-center gap-2.5 text-[13px] text-[#16130F] hover:text-[#DE5C2B] cursor-pointer select-none">
                           <input 
                             type="checkbox"
                             checked={selectedFees.includes(range.id)}
                             onChange={() => handleFilterToggle(range.id, selectedFees, setSelectedFees)}
-                            className="w-4 h-4 rounded border-slate-350 text-indigo-600 focus:ring-indigo-500 cursor-pointer"
+                            className="w-4 h-4 rounded border-[#E6E0D4] accent-[#DE5C2B] cursor-pointer"
                           />
                           <span>{range.label}</span>
                         </label>
@@ -957,16 +856,16 @@ const USACourseListingPage = ({ courseOverride = null }) => {
                 </AnimatePresence>
               </div>
 
-              <div className="w-full h-[1px] bg-slate-100" />
+              <div className="w-full h-[1px] bg-[#ECE6DA]" />
 
               {/* Filter Section: Degree */}
               <div>
                 <button
                   onClick={() => toggleAccordion('degree')}
-                  className="w-full flex items-center justify-between font-bold text-xs text-slate-700 uppercase tracking-wider mb-3.5"
+                  className="w-full flex items-center justify-between text-[12.5px] font-semibold text-[#16130F] mb-3"
                 >
                   <span>Degree</span>
-                  <ChevronDown size={14} className={`transform transition-transform text-slate-400 ${openAccordions.degree ? 'rotate-180 text-indigo-650' : ''}`} />
+                  <ChevronDown size={14} className={`transform transition-transform text-[#9A9184] ${openAccordions.degree ? 'rotate-180 text-[#DE5C2B]' : ''}`} />
                 </button>
                 <AnimatePresence initial={false}>
                   {openAccordions.degree && (
@@ -977,12 +876,12 @@ const USACourseListingPage = ({ courseOverride = null }) => {
                       className="overflow-hidden space-y-2.5 pl-0.5"
                     >
                       {degreeCategories.map(deg => (
-                        <label key={deg} className="flex items-center gap-3 text-xs font-bold text-slate-600 hover:text-indigo-600 cursor-pointer select-none">
+                        <label key={deg} className="flex items-center gap-2.5 text-[13px] text-[#16130F] hover:text-[#DE5C2B] cursor-pointer select-none">
                           <input 
                             type="checkbox"
                             checked={selectedDegrees.includes(deg)}
                             onChange={() => handleFilterToggle(deg, selectedDegrees, setSelectedDegrees)}
-                            className="w-4 h-4 rounded border-slate-350 text-indigo-600 focus:ring-indigo-500 cursor-pointer"
+                            className="w-4 h-4 rounded border-[#E6E0D4] accent-[#DE5C2B] cursor-pointer"
                           />
                           <span>{deg}</span>
                         </label>
@@ -992,16 +891,16 @@ const USACourseListingPage = ({ courseOverride = null }) => {
                 </AnimatePresence>
               </div>
 
-              <div className="w-full h-[1px] bg-slate-100" />
+              <div className="w-full h-[1px] bg-[#ECE6DA]" />
 
               {/* Filter Section: Courses */}
               <div>
                 <button
                   onClick={() => toggleAccordion('courses')}
-                  className="w-full flex items-center justify-between font-bold text-xs text-slate-700 uppercase tracking-wider mb-3.5"
+                  className="w-full flex items-center justify-between text-[12.5px] font-semibold text-[#16130F] mb-3"
                 >
                   <span>Courses</span>
-                  <ChevronDown size={14} className={`transform transition-transform text-slate-400 ${openAccordions.courses ? 'rotate-180 text-indigo-650' : ''}`} />
+                  <ChevronDown size={14} className={`transform transition-transform text-[#9A9184] ${openAccordions.courses ? 'rotate-180 text-[#DE5C2B]' : ''}`} />
                 </button>
                 <AnimatePresence initial={false}>
                   {openAccordions.courses && (
@@ -1012,12 +911,12 @@ const USACourseListingPage = ({ courseOverride = null }) => {
                       className="overflow-hidden space-y-2.5 pl-0.5"
                     >
                       {courseCategories.map(course => (
-                        <label key={course} className="flex items-center gap-3 text-xs font-bold text-slate-600 hover:text-indigo-600 cursor-pointer select-none">
+                        <label key={course} className="flex items-center gap-2.5 text-[13px] text-[#16130F] hover:text-[#DE5C2B] cursor-pointer select-none">
                           <input 
                             type="checkbox"
                             checked={selectedCourses.includes(course)}
                             onChange={() => handleFilterToggle(course, selectedCourses, setSelectedCourses)}
-                            className="w-4 h-4 rounded border-slate-350 text-indigo-600 focus:ring-indigo-500 cursor-pointer"
+                            className="w-4 h-4 rounded border-[#E6E0D4] accent-[#DE5C2B] cursor-pointer"
                           />
                           <span>{course}</span>
                         </label>
@@ -1027,16 +926,16 @@ const USACourseListingPage = ({ courseOverride = null }) => {
                 </AnimatePresence>
               </div>
 
-              <div className="w-full h-[1px] bg-slate-100" />
+              <div className="w-full h-[1px] bg-[#ECE6DA]" />
 
               {/* Filter Section: Cities */}
               <div>
                 <button
                   onClick={() => toggleAccordion('cities')}
-                  className="w-full flex items-center justify-between font-bold text-xs text-slate-700 uppercase tracking-wider mb-3.5"
+                  className="w-full flex items-center justify-between text-[12.5px] font-semibold text-[#16130F] mb-3"
                 >
                   <span>Cities</span>
-                  <ChevronDown size={14} className={`transform transition-transform text-slate-400 ${openAccordions.cities ? 'rotate-180 text-indigo-650' : ''}`} />
+                  <ChevronDown size={14} className={`transform transition-transform text-[#9A9184] ${openAccordions.cities ? 'rotate-180 text-[#DE5C2B]' : ''}`} />
                 </button>
                 <AnimatePresence initial={false}>
                   {openAccordions.cities && (
@@ -1047,12 +946,12 @@ const USACourseListingPage = ({ courseOverride = null }) => {
                       className="overflow-hidden space-y-2.5 pl-0.5"
                     >
                       {cityCategories.map(city => (
-                        <label key={city} className="flex items-center gap-3 text-xs font-bold text-slate-600 hover:text-indigo-600 cursor-pointer select-none">
+                        <label key={city} className="flex items-center gap-2.5 text-[13px] text-[#16130F] hover:text-[#DE5C2B] cursor-pointer select-none">
                           <input 
                             type="checkbox"
                             checked={selectedCities.includes(city)}
                             onChange={() => handleFilterToggle(city, selectedCities, setSelectedCities)}
-                            className="w-4 h-4 rounded border-slate-350 text-indigo-600 focus:ring-indigo-500 cursor-pointer"
+                            className="w-4 h-4 rounded border-[#E6E0D4] accent-[#DE5C2B] cursor-pointer"
                           />
                           <span>{city}</span>
                         </label>
@@ -1062,16 +961,16 @@ const USACourseListingPage = ({ courseOverride = null }) => {
                 </AnimatePresence>
               </div>
 
-              <div className="w-full h-[1px] bg-slate-100" />
+              <div className="w-full h-[1px] bg-[#ECE6DA]" />
 
               {/* Filter Section: Intake */}
               <div>
                 <button
                   onClick={() => toggleAccordion('intake')}
-                  className="w-full flex items-center justify-between font-bold text-xs text-slate-700 uppercase tracking-wider mb-3.5"
+                  className="w-full flex items-center justify-between text-[12.5px] font-semibold text-[#16130F] mb-3"
                 >
                   <span>Intake</span>
-                  <ChevronDown size={14} className={`transform transition-transform text-slate-400 ${openAccordions.intake ? 'rotate-180 text-indigo-650' : ''}`} />
+                  <ChevronDown size={14} className={`transform transition-transform text-[#9A9184] ${openAccordions.intake ? 'rotate-180 text-[#DE5C2B]' : ''}`} />
                 </button>
                 <AnimatePresence initial={false}>
                   {openAccordions.intake && (
@@ -1082,12 +981,12 @@ const USACourseListingPage = ({ courseOverride = null }) => {
                       className="overflow-hidden space-y-2.5 pl-0.5"
                     >
                       {intakeCategories.map(intake => (
-                        <label key={intake} className="flex items-center gap-3 text-xs font-bold text-slate-600 hover:text-indigo-600 cursor-pointer select-none">
+                        <label key={intake} className="flex items-center gap-2.5 text-[13px] text-[#16130F] hover:text-[#DE5C2B] cursor-pointer select-none">
                           <input 
                             type="checkbox"
                             checked={selectedIntakes.includes(intake)}
                             onChange={() => handleFilterToggle(intake, selectedIntakes, setSelectedIntakes)}
-                            className="w-4 h-4 rounded border-slate-350 text-indigo-600 focus:ring-indigo-500 cursor-pointer"
+                            className="w-4 h-4 rounded border-[#E6E0D4] accent-[#DE5C2B] cursor-pointer"
                           />
                           <span>{intake}</span>
                         </label>
@@ -1104,59 +1003,46 @@ const USACourseListingPage = ({ courseOverride = null }) => {
           <main className="flex-1 flex flex-col gap-6">
             
             {/* Search, Sort and Summary header */}
-            <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4 bg-white/50 border border-white/60 p-5 rounded-[24px] backdrop-blur-md shadow-sm">
-              <div className="flex-1 relative">
-                <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-slate-400" size={17} />
-                <input 
-                  type="text"
-                  value={searchTerm}
-                  onChange={(e) => { setSearchTerm(e.target.value); setCurrentPage(1); }}
-                  placeholder="Search by course (e.g. CS, MBA, Data Science), university, city, or state..."
-                  className="w-full bg-slate-50 border border-slate-100 rounded-xl pl-12 pr-4 py-2.5 text-xs font-semibold outline-none focus:border-indigo-400 transition-colors"
-                />
-              </div>
-
-              <div className="flex items-center justify-between gap-4">
-                <p className="text-xs font-bold text-slate-500">
-                  <span className="text-slate-800 font-black">{sortedUniversities.length}</span> Universities Found
-                </p>
-
-                <div className="flex items-center gap-2">
-                  <span className="text-xs text-slate-400 font-bold">Sort By:</span>
-                  <select 
-                    value={sortBy}
-                    onChange={(e) => setSortBy(e.target.value)}
-                    className="bg-slate-50 border border-slate-100 rounded-xl px-3 py-2 text-xs font-bold outline-none cursor-pointer text-slate-700 focus:border-indigo-400 transition-colors"
-                  >
+            <FinderCard>
+              <div className="grid grid-cols-1 sm:grid-cols-[1fr_220px] lg:grid-cols-[1fr_220px_auto] gap-3 items-end">
+                <FinderField label="Search">
+                  <div className="relative">
+                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-[#5B544A] pointer-events-none" size={16} />
+                    <input
+                      type="text"
+                      value={searchTerm}
+                      onChange={(e) => { setSearchTerm(e.target.value); setCurrentPage(1); }}
+                      placeholder="Search by course (e.g. CS, MBA, Data Science), university, city, or state..."
+                      className={`${FINDER_FIELD} pl-10`}
+                      style={FIELD_RADIUS}
+                    />
+                  </div>
+                </FinderField>
+                <FinderField label="Sort by">
+                  <select value={sortBy} onChange={(e) => setSortBy(e.target.value)} className={`${FINDER_FIELD} cursor-pointer`} style={FIELD_RADIUS}>
                     <option value="rank">QS / US News Rank</option>
                     <option value="fees">Tuition Fee: Low to High</option>
                     <option value="name">Alphabetical (A-Z)</option>
                   </select>
-                </div>
+                </FinderField>
+                <p className="text-[13.5px] text-[#5B544A] sm:col-span-2 lg:col-span-1 lg:h-11 flex items-center lg:justify-end whitespace-nowrap">
+                  <span className="font-bold text-[#16130F] mr-1">{sortedUniversities.length}</span> {sortedUniversities.length === 1 ? 'university' : 'universities'}
+                </p>
               </div>
-            </div>
+            </FinderCard>
 
             {/* Active Filter Chips bar */}
             {activeChips.length > 0 && (
-              <div className="flex flex-wrap gap-2 items-center bg-indigo-50/30 border border-indigo-100/50 p-3.5 rounded-2xl">
-                <span className="text-[10px] text-indigo-500 font-black uppercase tracking-wider mr-1.5">Active:</span>
+              <div className="flex flex-wrap gap-2 items-center bg-white/70 border border-[#E6E0D4] p-3.5" style={{ borderRadius: 18 }}>
+                <span className="text-[13px] font-semibold text-[#16130F] mr-1">Active filters</span>
                 {activeChips.map((chip, idx) => (
-                  <div 
-                    key={idx} 
-                    className="flex items-center gap-1.5 px-3 py-1 bg-white border border-indigo-100 rounded-full text-xs font-bold text-indigo-650 shadow-sm"
-                  >
-                    <span>{chip.label}</span>
-                    <button 
-                      onClick={() => handleRemoveChip(chip)}
-                      className="text-slate-400 hover:text-indigo-600 transition-colors cursor-pointer"
-                    >
-                      <X size={12} className="stroke-[2.5]" />
-                    </button>
-                  </div>
+                  <FinderChip key={idx} on aria-pressed={undefined} aria-label={`Remove ${chip.label}`} onClick={() => handleRemoveChip(chip)}>
+                    {chip.label} <X size={13} className="stroke-[2.5]" />
+                  </FinderChip>
                 ))}
-                <button 
+                <button
                   onClick={handleClearAll}
-                  className="text-[11px] font-black text-indigo-650 hover:underline ml-2 cursor-pointer"
+                  className="text-[12.5px] font-semibold text-[#DE5C2B] hover:underline ml-1 cursor-pointer"
                 >
                   Clear All
                 </button>

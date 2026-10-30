@@ -21,146 +21,158 @@ const SECTIONS = [
   { id: 'faq', title: 'Frequently Asked Questions' }
 ];
 
+const UNI_REQ = "Bachelor's: entry set per programme + IELTS (usually 6.0+) | Master's: relevant Bachelor's + IELTS (usually 6.5+); exact minimums vary by programme";
+
 const topNZUnis = [
   {
     rank: 1,
     name: "University of Auckland",
-    qsRank: "#65",
+    qsRank: "#68",
     popular: "Engineering, IT, MBA, Data Science, Health Sciences",
-    feesTotalNZD: 45000,
-    scholarship: "India High Achievers Scholarship (Up to NZ$20,000)",
-    logo: "https://logo.clearbit.com/auckland.ac.nz",
+    feesTotalNZD: 45857,
+    feeNote: "2027, per 120 points: most Master's NZ$45,900–NZ$58,300 (Business ~NZ$50,500)",
+    scholarship: "University of Auckland India High Achievers Scholarship (25% of one year's tuition; new Master's students from India)",
+    logo: "/logos/verified-University of Auckland.png",
     website: "https://www.auckland.ac.nz",
     city: "Auckland",
-    desc: "New Zealand's flagship institution, ranked #65 globally. Boasts elite triple-accredited business school and state-of-the-art bioengineering cluster.",
-    deadlines: "Feb 2026: Dec 8, 2025 | July 2026: May 1, 2026",
-    requirements: "Bachelor's: 75-80% (Best 4 subjects) + IELTS 6.0 | Master's: Relevant Bachelor's (60%+) + IELTS 6.5"
+    desc: "New Zealand's highest-ranked university (QS 2027: #68). Its Business School holds triple-crown accreditation (AACSB, EQUIS and AMBA).",
+    deadlines: "Feb 2027: international applicants advised to apply by 1 Dec 2026 | July 2027: 8 Jun 2027 (international)",
+    requirements: UNI_REQ
   },
   {
     rank: 2,
     name: "University of Otago",
-    qsRank: "#197",
+    qsRank: "#198",
     popular: "Medicine, Dentistry, Finance, Psychology, Data Science",
-    feesTotalNZD: 38000,
-    scholarship: "Vice-Chancellor's Scholarship for Indians (NZ$10,000)",
-    logo: "https://logo.clearbit.com/otago.ac.nz",
+    feesTotalNZD: 32499,
+    feeNote: "2026, per full-time year: Humanities ~NZ$32,500, Business ~NZ$40,700, Sciences ~NZ$47,000, Health ~NZ$49,500–51,900",
+    scholarship: "Vice-Chancellor's International Postgraduate Scholarship (NZ$10,000; coursework Master's — confirm 2027 round)",
+    logo: "/logos/verified-University of Otago.png",
     website: "https://www.otago.ac.nz",
     city: "Dunedin",
-    desc: "New Zealand's oldest university (est. 1869). Extremely student-centric campus in Dunedin, renowned for health sciences and clinical research.",
-    deadlines: "Feb 2026: Nov 15, 2025 | July 2026: April 30, 2026",
-    requirements: "Bachelor's: 75%+ + IELTS 6.0 | Master's: Relevant Bachelor's (B avg) + IELTS 6.5"
+    desc: "New Zealand's oldest university (founded 1869), based in Dunedin. Known for health sciences and home to New Zealand's national centre for dentistry.",
+    deadlines: "Feb 2027: 15 Nov 2026 | July 2027: 30 Apr 2027",
+    requirements: UNI_REQ
   },
   {
     rank: 3,
     name: "Massey University",
-    qsRank: "#230",
+    qsRank: "#215",
     popular: "Aviation, Veterinary Science, Agribusiness, Creative Arts",
-    feesTotalNZD: 32000,
-    scholarship: "Massey International Excellence Scholarship (NZ$5,000 - $10,000)",
-    logo: "https://logo.clearbit.com/massey.ac.nz",
+    feesTotalNZD: 40010,
+    feeNote: "2027, most taught Master's NZ$40,010–NZ$52,720 per 120 credits",
+    scholarship: "Massey Postgraduate International Study Grant (NZ$10,000, 2027)",
+    logo: "/logos/verified-Massey University.png",
     website: "https://www.massey.ac.nz",
-    city: "Palmerston North & Auckland",
-    desc: "Famous for highly practical, hands-on learning across agricultural sciences, aviation, and veterinary medicine. Operates its own flight training academy.",
-    deadlines: "Feb 2026: Oct 31, 2025 (Standard) / Dec 15 (MBA) | July 2026: May 1, 2026",
-    requirements: "Bachelor's: 75% (Best 4 subjects) + IELTS 6.0 | Master's: Relevant Bachelor's + IELTS 6.5"
+    city: "Palmerston North, Auckland & Wellington",
+    desc: "Known for practical learning in agriculture, aviation and veterinary science. Its School of Aviation runs its own fleet and airfield for flight training.",
+    deadlines: "Feb 2027: 31 Oct 2026 | July 2027: 1 May 2027",
+    requirements: UNI_REQ
   },
   {
     rank: 4,
     name: "Victoria University of Wellington",
-    qsRank: "#240",
+    qsRank: "#241",
     popular: "Law, Political Science, Architecture, AI, Design",
-    feesTotalNZD: 34000,
-    scholarship: "Tongarewa Scholarship (Up to NZ$10,000)",
-    logo: "https://logo.clearbit.com/wgtn.ac.nz",
+    feesTotalNZD: 40124,
+    feeNote: "2027, postgraduate NZ$40,100–NZ$52,400 per 120 points",
+    scholarship: "VUW Postgraduate International Scholarship (NZ$10,000 fee credit)",
+    logo: "/logos/verified-Victoria University of Wellington.png",
     website: "https://www.wgtn.ac.nz",
     city: "Wellington",
-    desc: "Located in the capital city Wellington, offering unparalleled networking opportunities with government ministries, embassies, and film production hubs.",
-    deadlines: "Feb 2026: Jan 20, 2026 (General) / Dec 1 (Limited) | July 2026: June 19, 2026",
-    requirements: "Bachelor's: 75% overall + IELTS 6.0 | Master's: Bachelor's 60%+ + IELTS 6.5"
+    desc: "Located in the capital city Wellington, close to government ministries, embassies and the city's film and creative industries.",
+    deadlines: "Feb 2027: 8 Dec 2026 (some Master's earlier) | July 2027: 1 May 2027",
+    requirements: UNI_REQ
   },
   {
     rank: 5,
     name: "University of Canterbury",
-    qsRank: "#261",
+    qsRank: "#257",
     popular: "Civil Engineering, Forestry, Fine Arts, Science",
-    feesTotalNZD: 35000,
-    scholarship: "UC International First Year Scholarship (NZ$15,000)",
-    logo: "https://logo.clearbit.com/canterbury.ac.nz",
+    feesTotalNZD: 36000,
+    feeNote: "2027: whole 180-point Master's from NZ$54,000 (about NZ$36,000 per 120 points)",
+    scholarship: "UC International First Year Scholarship (NZ$15,000, first-year undergraduates)",
+    logo: "/logos/verified-University of Canterbury.png",
     website: "https://www.canterbury.ac.nz",
     city: "Christchurch",
-    desc: "An engineering powerhouse located on the South Island. Strong industry ties in seismic and civil engineering, connected to rebuild schemes.",
-    deadlines: "Feb 2026: Oct-Nov 2025 (Recommended) | July 2026: May 1, 2026",
-    requirements: "Bachelor's: 75%+ + IELTS 6.0 | Master's: Relevant Bachelor's + IELTS 6.5"
+    desc: "Christchurch-based university with a strong engineering school, especially civil and earthquake engineering.",
+    deadlines: "Feb 2027: 1 Dec 2026 | July 2027: 1 May 2027",
+    requirements: UNI_REQ
   },
   {
     rank: 6,
     name: "University of Waikato",
-    qsRank: "#281",
+    qsRank: "#293",
     popular: "Computer Science, MBA, Cybersecurity, Management",
-    feesTotalNZD: 33000,
-    scholarship: "Waikato International Excellence Scholarship (Up to NZ$15,000)",
-    logo: "https://logo.clearbit.com/waikato.ac.nz",
+    feesTotalNZD: 39580,
+    feeNote: "2026, 120-point Master's from NZ$39,580 (MBA NZ$65,700)",
+    scholarship: "Vice-Chancellor's International Excellence Scholarship for India (Up to NZ$15,000)",
+    logo: "/logos/verified-University of Waikato.png",
     website: "https://www.waikato.ac.nz",
     city: "Hamilton",
-    desc: "Triple-Crown accredited business school. Housed the country's first dedicated Cybersecurity Laboratory, making it a tech and IT leader.",
-    deadlines: "Feb 2026: Dec 1, 2025 (General) | July 2026: May 1, 2026",
-    requirements: "Bachelor's: 70%+ + IELTS 6.0 | Master's: Relevant Bachelor's + IELTS 6.5"
+    desc: "Its Management School is triple-crown accredited (AACSB, EQUIS, AMBA), and it is home to New Zealand's first cyber security lab.",
+    deadlines: "Rolling — international applications are processed on an ongoing basis",
+    requirements: UNI_REQ
   },
   {
     rank: 7,
     name: "Lincoln University",
-    qsRank: "#407",
+    qsRank: "#419",
     popular: "Agribusiness, Viticulture, Food Science, Tourism",
-    feesTotalNZD: 31000,
-    scholarship: "Lincoln University International Grants (Up to NZ$5,000)",
-    logo: "https://logo.clearbit.com/lincoln.ac.nz",
+    feesTotalNZD: 39300,
+    feeNote: "2027: whole 180-credit Master's NZ$59,000–NZ$66,000 (about NZ$39,300+ per 120 credits)",
+    scholarship: "Taught Master's Merit Scholarship (Up to NZ$15,000)",
+    logo: "/logos/verified-Lincoln University.png",
     website: "https://www.lincoln.ac.nz",
     city: "Christchurch",
-    desc: "Specialist land-based university leading sustainable agriculture, viticulture (wine science), resource management, and agribusiness research.",
-    deadlines: "Feb 2026: Dec 1, 2025 (Recommended) | July 2026: March-April 2026",
-    requirements: "Bachelor's: 70%+ + IELTS 6.0 | Master's: Relevant Bachelor's + IELTS 6.5"
+    desc: "New Zealand's specialist land-based university: agriculture, viticulture and wine science, resource management and agribusiness.",
+    deadlines: "2027 dates not yet published — check lincoln.ac.nz",
+    requirements: UNI_REQ
   },
   {
     rank: 8,
     name: "Auckland University of Technology (AUT)",
-    qsRank: "#410",
+    qsRank: "#431",
     popular: "Hospitality, IT, Creative Technologies, Sports Science",
-    feesTotalNZD: 33000,
-    scholarship: "AUT International Student Scholarships (Up to NZ$7,500)",
-    logo: "https://logo.clearbit.com/aut.ac.nz",
+    feesTotalNZD: 39022,
+    feeNote: "2026 incl. levy, most Master's NZ$39,000–NZ$52,300 per 120 points (MBA NZ$64,082)",
+    scholarship: "AUT International Scholarships – South Asia (NZ$7,000 postgraduate)",
+    logo: "/logos/verified-Auckland University of Technology.png",
     website: "https://www.aut.ac.nz",
     city: "Auckland",
-    desc: "Modern and fast-growing university focused on practical, hands-on, career-oriented learning and strong corporate integration.",
-    deadlines: "Feb 2026: Dec 1, 2025 (General) | July 2026: May 1, 2026",
-    requirements: "Bachelor's: 70%+ + IELTS 6.0 | Master's: Relevant Bachelor's + IELTS 6.5"
+    desc: "Modern university in central Auckland focused on practical, career-oriented learning.",
+    deadlines: "No single deadline — apply early (by early December for Semester 1); dates vary by programme",
+    requirements: UNI_REQ
   },
   {
     rank: 9,
     name: "Unitec Institute of Technology",
-    qsRank: "Category 1",
+    qsRank: "Not ranked",
     popular: "Construction Management, Nursing, Cybersecurity, Architecture",
-    feesTotalNZD: 22050,
-    scholarship: "Unitec International Study Grant (Up to NZ$2,500 auto-applied)",
-    logo: "https://logo.clearbit.com/unitec.ac.nz",
+    feesTotalNZD: 27207,
+    feeNote: "Bachelor of Computing Systems, per 120 credits (year not stated on the page)",
+    scholarship: "Check unitec.ac.nz for current international scholarships",
+    logo: "/logos/verified-Unitec Institute of Technology.png",
     website: "https://www.unitec.ac.nz",
     city: "Auckland",
-    desc: "New Zealand's largest public polytechnic, delivering day-one ready vocational training and applied degrees alongside industry partners.",
-    deadlines: "Rolling Basis (Apply 3-4 months before start)",
-    requirements: "Bachelor's: 70% average + IELTS 6.0 | Master's: Relevant Bachelor's 65%+ + IELTS 6.5"
+    desc: "Auckland institute of technology offering applied degrees; independent from Te Pūkenga (NZIST) since 1 January 2026.",
+    deadlines: "Varies by programme — check unitec.ac.nz",
+    requirements: "Entry set per programme + English requirement (check the programme page)"
   },
   {
     rank: 10,
     name: "Otago Polytechnic",
-    qsRank: "Category 1",
+    qsRank: "Not ranked",
     popular: "Applied Management, Product Design, IT, Horticulture",
-    feesTotalNZD: 20000,
-    scholarship: "Otago Polytechnic International 2026 (Up to NZ$4,000)",
-    logo: "https://logo.clearbit.com/op.ac.nz",
+    feesTotalNZD: null,
+    feeNote: "Fee not verified — check op.ac.nz",
+    scholarship: "Check op.ac.nz for current international scholarships",
+    logo: "https://ui-avatars.com/api/?name=Otago+Polytechnic&background=4F46E5&color=ffffff&bold=true&size=128",
     website: "https://www.op.ac.nz",
     city: "Dunedin",
-    desc: "Otago's leading applied training hub. Renowned for very high graduate employment statistics and pathways into Green List jobs.",
-    deadlines: "Rolling Basis (Apply 3-4 months before start)",
-    requirements: "Bachelor's: 75% average + IELTS 6.0 | Master's: Relevant Bachelor's + IELTS 6.5"
+    desc: "Dunedin-based institute of technology offering applied degrees and postgraduate qualifications.",
+    deadlines: "Varies by programme — check op.ac.nz",
+    requirements: "Entry set per programme + English requirement (check the programme page)"
   }
 ];
 
@@ -170,9 +182,10 @@ const NewZealandTopUniversities = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCity, setSelectedCity] = useState('All');
   const [faqOpen, setFaqOpen] = useState({});
-  const exchangeRate = 55.0; // Reference 1 NZD ≈ 55 INR
+  const exchangeRate = 56.0; // Reference 1 NZD ≈ 56 INR (Aug 2026)
 
   const formatCost = (valInNZD) => {
+    if (valInNZD == null) return 'Not verified';
     if (currency === 'NZD') {
       return `NZ$ ${valInNZD.toLocaleString()}`;
     }
@@ -251,7 +264,7 @@ const NewZealandTopUniversities = () => {
           <div className="relative z-10 max-w-3xl">
             <span className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-indigo-500/20 border border-indigo-500/30 text-indigo-300 text-xs font-extrabold uppercase tracking-widest mb-6">
               <Building size={14} />
-              QS Rankings 2026
+              QS Rankings 2027
             </span>
             <h1 className="text-3xl md:text-5xl font-black leading-tight tracking-tight mb-6">
               Top 10 Universities in New Zealand 2026: Complete Guide for Indian Students
@@ -300,7 +313,7 @@ const NewZealandTopUniversities = () => {
           {/* Right Column: Content Blocks */}
           <div className="lg:col-span-9 space-y-16">
 
-            <HookBand value="Top 3%" label="All 8 New Zealand public universities rank in the top 3% globally" hi="टॉप क्लास" />
+            <HookBand value="Top 500" label="All 8 New Zealand universities are in the QS World University Rankings 2027 top 500" hi="टॉप क्लास" />
             
             {/* 1. Why New Zealand in 2026 */}
             <section id="overview" className="scroll-mt-24">
@@ -310,16 +323,16 @@ const NewZealandTopUniversities = () => {
                   💡 Why New Zealand in 2026?
                 </h2>
                 <p className="text-slate-655 text-sm font-semibold leading-relaxed mb-6">
-                  With visa requirements tightening in Canada and the UK, Indian applicants are turning to New Zealand. Choosing a course that aligns with the **Green List** is crucial to avoid PR path hurdles. New Zealand's public research universities all rank in the top 3% globally and offer a safe, high-ROI alternative.
+                  With visa requirements tightening in Canada and the UK, Indian applicants are turning to New Zealand. Choosing a course that aligns with the **Green List** is crucial to avoid PR path hurdles. All 8 of New Zealand's universities are in the QS World University Rankings 2027 top 500, and they offer a safe alternative.
                 </p>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {[
-                    "All 8 public universities in the top 3% globally",
+                    "All 8 universities in the QS 2027 top 500",
                     "New work rights: 25 hours/week during term time",
                     "Up to 3-year post-study work visa",
                     "Fast-track Green List residency pathways",
-                    "Tuition costs 10-20% lower than UK or Australia"
+                    "Typical Master's tuition starts around NZ$32,500–NZ$46,000 a year"
                   ].map((item, idx) => (
                     <div key={idx} className="flex items-center gap-3 bg-white p-4 rounded-xl border border-slate-100">
                       <Check className="text-teal-600 shrink-0" size={16} strokeWidth={3} />
@@ -333,7 +346,7 @@ const NewZealandTopUniversities = () => {
             {/* 2. Top 10 Rankings */}
             <section id="rankings" className="scroll-mt-24">
               <div className="text-left mb-6">
-                <h2 className="text-2xl font-black text-slate-900 mb-1">🏛️ Top 10 Universities in New Zealand (2026 Rankings)</h2>
+                <h2 className="text-2xl font-black text-slate-900 mb-1">🏛️ Top 10 Universities in New Zealand (QS 2027 Rankings)</h2>
                 <p className="text-slate-400 text-xs font-bold uppercase tracking-wider">QS rankings and estimated yearly costs in INR</p>
               </div>
 
@@ -368,9 +381,9 @@ const NewZealandTopUniversities = () => {
 
               <BarCompare
                 className="mb-8"
-                kicker="Estimated fees per year"
+                kicker="Typical Master's fee per year (lower end)"
                 title="Yearly cost across the top 10"
-                items={topNZUnis.map((uni) => ({ label: uni.name, value: uni.feesTotalNZD, display: formatCost(uni.feesTotalNZD) }))}
+                items={topNZUnis.filter((uni) => uni.feesTotalNZD != null).map((uni) => ({ label: uni.name, value: uni.feesTotalNZD, display: formatCost(uni.feesTotalNZD) }))}
               />
 
               <div className="space-y-6">
@@ -384,7 +397,7 @@ const NewZealandTopUniversities = () => {
                           src={uni.logo} 
                           alt="" 
                           className="w-full h-full object-contain"
-                          onError={(e) => e.target.src = 'https://logo.clearbit.com/auckland.ac.nz'}
+                          onError={(e) => { e.target.onerror = null; e.target.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(uni.name)}&background=4F46E5&color=ffffff&bold=true&size=128`; }}
                         />
                       </div>
                       <div>
@@ -409,7 +422,8 @@ const NewZealandTopUniversities = () => {
                     <div className="grid grid-cols-2 md:grid-cols-3 gap-6 text-xs border-t md:border-t-0 border-slate-100 pt-4 md:pt-0 shrink-0">
                       <div>
                         <span className="text-slate-400 font-bold block">Est. Tuition Fee</span>
-                        <strong className="text-slate-800 font-extrabold mt-0.5 block">{formatCost(uni.feesTotalNZD)} / year</strong>
+                        <strong className="text-slate-800 font-extrabold mt-0.5 block">{uni.feesTotalNZD != null ? `from ${formatCost(uni.feesTotalNZD)} / year` : formatCost(null)}</strong>
+                        {uni.feeNote && <span className="text-[10px] text-slate-400 font-semibold block mt-0.5 max-w-[220px]">{uni.feeNote}</span>}
                       </div>
                       <div>
                         <span className="text-slate-400 font-bold block">Popular Fields</span>
@@ -477,7 +491,7 @@ const NewZealandTopUniversities = () => {
               <div className="bg-white border border-slate-200/65 rounded-[2rem] p-6 md:p-8 shadow-sm">
                 <h2 className="text-xl md:text-2xl font-black text-slate-900 mb-2 flex items-center gap-2">
                   <Award className="text-indigo-650" size={22} />
-                  🏆 Scholarships for Indian Students (2026)
+                  🏆 Scholarships for Indian Students (2027 intakes)
                 </h2>
                 <p className="text-slate-400 text-xs font-bold mb-6">Key funding awards and tuition discount programs</p>
 
@@ -512,7 +526,7 @@ const NewZealandTopUniversities = () => {
               <div className="bg-white border border-slate-200/65 rounded-[2rem] p-6 md:p-8 shadow-sm">
                 <h2 className="text-xl md:text-2xl font-black text-slate-900 mb-2 flex items-center gap-2">
                   <Calendar className="text-indigo-650" size={22} />
-                  📅 University Application Deadlines 2026
+                  📅 University Application Deadlines 2027 Intakes
                 </h2>
                 <p className="text-slate-400 text-xs font-bold mb-6">Cutoffs for February and July academic terms</p>
 
@@ -588,7 +602,7 @@ const NewZealandTopUniversities = () => {
               <div className="space-y-4">
                 {[
                   { q: "Is New Zealand safe for Indian students?", a: "Yes, New Zealand is consistently ranked among the top 3 safest and most peaceful countries in the Global Peace Index, featuring a welcoming, multicultural society." },
-                  { q: "Are public universities better than polytechnics?", a: "Public universities focus on academic research and degree-level theory. Category 1 polytechnics (Te Pūkenga) specialize in practical, vocational, hands-on training with high industry placement rates." },
+                  { q: "Are public universities better than polytechnics?", a: "Public universities focus on academic research and degree-level theory. Institutes of technology and polytechnics (such as Unitec and Otago Polytechnic) focus on practical, vocational, hands-on training." },
                   { q: "What is the Green List?", a: "A list of high-demand, skilled occupations published by Immigration New Zealand. Studying a qualification mapped to this list grants direct fast-track PR pathways." },
                   { q: "Can I work part-time in New Zealand?", a: "Yes, international students are legally allowed to work up to 25 hours per week during term time and full-time during holidays." }
                 ].map((faq, idx) => {

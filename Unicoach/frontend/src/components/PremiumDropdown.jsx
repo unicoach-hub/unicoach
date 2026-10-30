@@ -11,7 +11,7 @@ import OptionIcon from './ui/OptionIcon';
  *  - onChange: (value) => void
  *  - options: [{ value, label, shortLabel?, icon?, description? }]
  *  - label: field label text
- *  - labelIcon: React node for the label icon
+ *  - labelIcon: accepted for older callers, not shown (labels follow the Course Finder style)
  *  - placeholder: placeholder text when no selection
  *  - accent: 'emerald' | 'indigo' | 'blue' | 'violet' | 'orange' (default: 'emerald')
  *  - searchable: boolean (enables search filter input inside dropdown)
@@ -131,9 +131,9 @@ const PremiumDropdown = ({
   return (
     <div className={`relative space-y-1.5 ${className}`} ref={containerRef}>
       {/* Label */}
+      {/* Label in the Course Finder style: plain, no icon */}
       {label && (
-        <label className="text-[11.5px] font-bold text-slate-700 flex items-center gap-1.5 select-none">
-          {labelIcon}
+        <label className="text-[12.5px] font-semibold text-[#16130F] flex items-center gap-1.5 select-none">
           <span>{label}</span>
         </label>
       )}
@@ -148,14 +148,15 @@ const PremiumDropdown = ({
           setIsOpen(prev => !prev);
         }}
         className={`
-          relative w-full px-3.5 py-2.5 text-left rounded-xl text-xs md:text-sm font-semibold
-          transition-all duration-200 cursor-pointer
+          relative w-full h-11 px-3 text-left text-[14px]
+          transition-colors duration-200 cursor-pointer
           flex items-center justify-between gap-2 border
           ${isOpen
-            ? `bg-white ${theme.openBorder}`
-            : 'bg-slate-50/80 hover:bg-white border-slate-200/90 hover:border-slate-300 shadow-2xs hover:shadow-xs'
+            ? 'bg-white border-[#DE5C2B]'
+            : 'bg-[#F8F5EF] hover:bg-white border-[#E6E0D4] hover:border-[#C9BFAE]'
           }
         `}
+        style={{ borderRadius: 10 }}
       >
         <span className="flex items-center gap-2 min-w-0 flex-1 truncate">
           {displayIcon && (
@@ -165,7 +166,7 @@ const PremiumDropdown = ({
           )}
           <span 
             title={typeof displayLabel === 'string' ? displayLabel : (selectedOption?.label || '')}
-            className={`truncate ${selectedOption || value ? 'text-slate-800 font-bold' : 'text-slate-400 font-medium'}`}
+            className={`truncate ${selectedOption || value ? 'text-[#16130F] font-medium' : 'text-[#9A9184]'}`}
           >
             {displayLabel}
           </span>
@@ -175,7 +176,7 @@ const PremiumDropdown = ({
           transition={{ duration: 0.2, ease: 'easeInOut' }}
           className="flex-shrink-0"
         >
-          <ChevronDown size={15} className={isOpen ? theme.chevron : 'text-slate-400'} />
+          <ChevronDown size={15} className={isOpen ? 'text-[#DE5C2B]' : 'text-[#5B544A]'} />
         </motion.span>
       </button>
 

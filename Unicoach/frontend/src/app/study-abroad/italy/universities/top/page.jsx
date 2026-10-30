@@ -40,83 +40,86 @@ const countryShortlistOptions = [
   { name: 'Other', flag: '🌍' }
 ];
 
+const ENGLISH_REQ = "Varies by programme — usually IELTS/TOEFL or proof of English-medium study; check the programme page";
+
 const topUnisList = [
   {
     name: "Politecnico di Milano",
-    qsRank: "#98",
-    logo: "https://logo.clearbit.com/polimi.it",
+    qsRank: "QS #87",
+    logo: "/logos/verified-Politecnico di Milano.png",
     city: "Milan",
-    tagline: "First Italian University to Enter Global Top 100",
-    students: "48,000+ (8,800+ international)",
-    highlights: ["#7 Architecture worldwide", "#6 Art & Design worldwide", "#12 Mechanical Engineering"],
-    tuitionEUR: { min: 900, max: 3800 },
-    employerRep: "90.1/100",
-    uniqueProgram: "Master of Science in Food Design",
+    tagline: "Italy's highest-ranked university (QS 2027)",
+    students: "Public technical university",
+    highlights: ["Founded in 1863", "QS World University Rankings 2027: #87", "Schools of Engineering, Architecture and Design"],
+    tuitionEUR: { min: 157, max: 3943 },
+    tuitionNote: "2026/27, set by ISEE. Non-EU students admitted to a Master's with a foreign degree pay the maximum (€3,943) unless they hold a scholarship.",
+    employerRep: "www.polimi.it",
+    uniqueProgram: "English-taught MSc programmes in Engineering, Architecture and Design",
     courses: [
-      { name: "Aerospace Engineering", duration: "2-3 years", focus: "Design, propulsion, systems" },
-      { name: "Industrial Engineering", duration: "2-3 years", focus: "Manufacturing, automation" },
-      { name: "Architecture", duration: "3-5 years", focus: "Urban design, sustainable building" },
-      { name: "Art & Design", duration: "2-3 years", focus: "Product, visual, interior design" }
+      { name: "Aerospace Engineering", duration: "2 years (MSc)", focus: "Design, propulsion, systems" },
+      { name: "Mechanical Engineering", duration: "2 years (MSc)", focus: "Manufacturing, automation" },
+      { name: "Architecture", duration: "2 years (MSc)", focus: "Urban design, sustainable building" },
+      { name: "Design", duration: "2 years (MSc)", focus: "Product, communication, interior design" }
     ],
-    bachelorsReq: "High school diploma; IELTS 6.0 / TOEFL 78",
-    mastersReq: "Bachelor's degree; IELTS 6.0 / TOEFL 78",
-    scholarships: ["Merit-based scholarships", "Regional DSU grants", "International student awards"],
-    notableAlumni: "Giuseppe Di Franco (Director of Lutech Group)"
+    bachelorsReq: "Secondary school diploma + admission test; English requirement varies by programme",
+    mastersReq: "Relevant Bachelor's degree (evaluated by the programme); " + ENGLISH_REQ,
+    scholarships: ["Polimi merit scholarships for international students", "Regional DSU grant (income-based)"]
   },
   {
     name: "Sapienza University of Rome",
-    qsRank: "#128",
-    logo: "https://logo.clearbit.com/uniroma1.it",
+    qsRank: "QS #111",
+    logo: "/logos/verified-Sapienza University of Rome.png",
     city: "Rome",
-    tagline: "Europe's Largest University by Enrollment",
-    students: "115,000+ (1,956+ from 87 countries)",
-    highlights: ["#14 Arts & Humanities", "#1 History of Art globally", "Elite Research Medical School"],
-    tuitionEUR: { min: 1000, max: 3000 },
-    employerRep: "82.5/100",
+    tagline: "Rome's historic public university, founded in 1303",
+    students: "Public university",
+    highlights: ["Founded in 1303", "QS World University Rankings 2027: =111", "Strong in Classics, Physics, Engineering and Medicine"],
+    tuitionEUR: { min: 300, max: 300 },
+    tuitionNote: "Fixed fee for students from India whose family income is only abroad (Band A). Students with income in Italy pay by ISEE.",
+    employerRep: "www.uniroma1.it",
     uniqueProgram: "Classics and Ancient History",
     courses: [
-      { name: "History of Art", duration: "2-3 years", focus: "Renaissance, Baroque, Modern Art" },
-      { name: "Aerospace Engineering", duration: "2-3 years", focus: "Satellite design, aerodynamics" },
-      { name: "Civil Engineering", duration: "3-5 years", focus: "Infrastructure, urban planning" },
-      { name: "Economics", duration: "2-3 years", focus: "Finance, policy, development" }
+      { name: "Art History", duration: "2 years (Master's)", focus: "Renaissance, Baroque, Modern Art" },
+      { name: "Aerospace Engineering", duration: "2 years (Master's)", focus: "Satellite design, aerodynamics" },
+      { name: "Civil Engineering", duration: "2 years (Master's)", focus: "Infrastructure, urban planning" },
+      { name: "Economics", duration: "2 years (Master's)", focus: "Finance, policy, development" }
     ],
-    bachelorsReq: "High school diploma; IELTS 5.5 / TOEFL 80; SAT 960",
-    mastersReq: "Bachelor's degree; IELTS 5.5 / TOEFL 80",
-    scholarships: ["LazioDiSCo Regional Grants", "Sapienza International Welcome Awards"],
-    notableAlumni: "Serge Haroche (2012 Nobel Prize in Physics)"
+    bachelorsReq: "Secondary school diploma; entrance test for some programmes; English or Italian requirement varies by programme",
+    mastersReq: "Relevant Bachelor's degree (evaluated by the programme); " + ENGLISH_REQ,
+    scholarships: ["DiSCo Lazio regional grant (income-based)", "Sapienza scholarships for international students"]
   },
   {
     name: "University of Bologna",
-    qsRank: "#138",
-    logo: "https://logo.clearbit.com/unibo.it",
+    qsRank: "QS #123",
+    logo: "/logos/verified-University of Bologna.png",
     city: "Bologna",
-    tagline: "Oldest University in the Western World",
-    students: "85,000+ (6,502+ international)",
-    highlights: ["Founded in 1088", "#38 Law globally", "Top 50 for Quality Education (UN SDG)"],
-    tuitionEUR: { min: 2000, max: 3900 },
-    employerRep: "87.9/100",
+    tagline: "Founded in 1088 — the oldest university in the Western world",
+    students: "Public university",
+    highlights: ["Founded in 1088", "QS World University Rankings 2027: =123", "Campuses in Bologna, Cesena, Forlì, Ravenna and Rimini"],
+    tuitionEUR: { min: 157, max: 2550 },
+    tuitionNote: "2026/27, set by ISEE (some programmes up to €4,080). Non-OECD nationals (India included) with income only abroad can opt for a flat €1,200 + €157.",
+    employerRep: "www.unibo.it",
     uniqueProgram: "Advanced Automotive Engineering",
     courses: [
-      { name: "Law", duration: "3-5 years", focus: "International, European, Corporate" },
+      { name: "Law", duration: "2 years (Master's)", focus: "International, European, Corporate" },
       { name: "Medicine", duration: "6 years", focus: "Clinical research, surgery" },
-      { name: "Art History", duration: "2-3 years", focus: "Renaissance, restoration, curation" },
-      { name: "Agriculture", duration: "2-3 years", focus: "Sustainable farming, food science" }
+      { name: "Art History", duration: "2 years (Master's)", focus: "Renaissance, restoration, curation" },
+      { name: "Agriculture", duration: "2 years (Master's)", focus: "Sustainable farming, food science" }
     ],
-    bachelorsReq: "High school diploma; IELTS 5.5-6.5 / TOEFL 80-99",
-    mastersReq: "Bachelor's degree; IELTS 5.5-6.5 / TOEFL 80-99",
-    scholarships: ["International Talents @Unibo (80 grants)", "ER.GO Regional Scholarships"],
-    notableAlumni: "Giulia Bosi (Law graduate)"
+    bachelorsReq: "Secondary school diploma; admission test for some programmes; English requirement varies by programme",
+    mastersReq: "Relevant Bachelor's degree (evaluated by the programme); " + ENGLISH_REQ,
+    scholarships: ["Unibo Action 1 & 2 study grants", "ER.GO regional grant (income-based)"]
   },
   {
     name: "University of Padua",
-    qsRank: "#233",
-    logo: "https://logo.clearbit.com/unipd.it",
+    qsRank: "QS #204",
+    logo: "/logos/verified-University of Padua.png",
     city: "Padua",
-    tagline: "Elite Research in Medicine & Sciences",
-    students: "65,000+ (4,103+ international)",
-    highlights: ["Founded in 1222", "#8 in Europe", "Elite Science and Space research labs"],
-    tuitionEUR: { min: 1000, max: 2600 },
-    employerRep: "81.4/100",
+    tagline: "Founded in 1222 — Galileo taught here",
+    students: "Public university",
+    highlights: ["Founded in 1222", "QS World University Rankings 2027: #204", "First 2027/28 application window for foreign-qualification applicants closes 15 Nov 2026"],
+    tuitionEUR: { min: 0, max: 3000 },
+    tuitionNote: "Official range: €0 to about €3,000 per year depending on ISEE; no-tax area up to €30,000 ISEE.",
+    employerRep: "www.unipd.it",
     uniqueProgram: "Galilean School of Higher Education",
     courses: [
       { name: "Biology", duration: "3 years", focus: "Molecular, environmental, marine" },
@@ -124,70 +127,69 @@ const topUnisList = [
       { name: "Law", duration: "5 years", focus: "International, corporate, criminal" },
       { name: "Data Science", duration: "2 years", focus: "Business analytics, AI, machine learning" }
     ],
-    bachelorsReq: "High school diploma; IELTS 6.0 / TOEFL 80",
-    mastersReq: "Bachelor's degree; IELTS 6.0 / TOEFL 80",
-    scholarships: ["Padua International Excellence (€8,000)", "ESU Regional Scholarships"],
-    notableAlumni: "Federica Bevilacqua (Pharmacy graduate)"
+    bachelorsReq: "Secondary school diploma; admission test for some programmes; English requirement varies by programme",
+    mastersReq: "Relevant Bachelor's degree (evaluated by the programme); " + ENGLISH_REQ,
+    scholarships: ["Padua International Excellence Scholarship", "ESU Padova regional grant (income-based)"]
   },
   {
     name: "University of Milan",
-    qsRank: "#276",
-    logo: "https://logo.clearbit.com/unimi.it",
+    qsRank: "QS #270",
+    logo: "/logos/verified-University of Milan.png",
     city: "Milan",
-    tagline: "'La Statale' - Top Research University",
-    students: "60,000+ (3,200+ international)",
-    highlights: ["Founded in 1924", "#276 QS 2026", "83 Graduate + 111 Postgraduate programs"],
-    tuitionEUR: { min: 150, max: 1100 },
-    employerRep: "84.2/100",
+    tagline: "'La Statale' — Milan's state university",
+    students: "Public university",
+    highlights: ["Founded in 1924", "QS World University Rankings 2027: =270", "Member of LERU (League of European Research Universities)"],
+    tuitionEUR: { min: 346, max: 4307 },
+    tuitionNote: "2026/27 for students with family income only abroad: €146 first instalment + €200–€4,101 second instalment (plus up to €60 regional-tax top-up), set by country group and programme area.",
+    employerRep: "www.unimi.it",
     uniqueProgram: "Humanities & Cultural Heritage",
     courses: [
       { name: "Political Science", duration: "3 years", focus: "International relations, policy" },
       { name: "Sociology", duration: "3 years", focus: "Social research, demographics" },
       { name: "Medicine", duration: "6 years", focus: "Clinical research, healthcare" }
     ],
-    bachelorsReq: "High school diploma; IELTS 5.5-6.5 / TOEFL 72-94",
-    mastersReq: "Bachelor's degree; IELTS 5.5-6.5 / TOEFL 72-94",
-    scholarships: ["Excellence Scholarships Program (55 awards of €8,000)", "DSU Lombardia Grants"],
-    notableAlumni: "Giuseppe Levi (Anatomist and Professor)"
+    bachelorsReq: "Secondary school diploma; admission test for some programmes; English requirement varies by programme",
+    mastersReq: "Relevant Bachelor's degree (evaluated by the programme); " + ENGLISH_REQ,
+    scholarships: ["UNIMI scholarships for international students", "DSU regional grant (income-based)"]
   },
   {
     name: "University of Pisa",
-    qsRank: "#343",
-    logo: "https://logo.clearbit.com/unipi.it",
+    qsRank: "QS #341",
+    logo: "/logos/verified-University of Pisa.png",
     city: "Pisa",
-    tagline: "Best Global Position in a Decade",
-    students: "50,000+ (2,500+ international)",
-    highlights: ["Founded in 1343", "#142 in Europe", "Physics and Mathematics Excellence"],
-    tuitionEUR: { min: 850, max: 2100 },
-    employerRep: "79.8/100",
-    uniqueProgram: "Theoretical Physics & Computing",
+    tagline: "Founded in 1343 — Galileo's home university",
+    students: "Public university",
+    highlights: ["Founded in 1343", "QS World University Rankings 2027: #341", "Strong in Physics, Mathematics and Computer Science"],
+    tuitionEUR: { min: 156, max: 3056 },
+    tuitionNote: "€140 regional tax + €16 stamp + up to €2,900 contribution. For students with income abroad, €2,900 is multiplied by a country coefficient.",
+    employerRep: "www.unipi.it",
+    uniqueProgram: "Physics & Computer Science",
     courses: [
       { name: "Physics", duration: "3 years", focus: "Theoretical, quantum, astrophysics" },
       { name: "Mathematics", duration: "3 years", focus: "Pure, applied, statistics" },
       { name: "Civil Engineering", duration: "3 years", focus: "Structural, geotechnical, transport" },
       { name: "Computer Science", duration: "2 years", focus: "AI, cybersecurity, data sciences" }
     ],
-    bachelorsReq: "High school diploma; IELTS 6.5 / TOEFL iBT 80",
-    mastersReq: "Bachelor's degree; IELTS 6.5 / TOEFL iBT 80",
-    scholarships: ["DSU Toscana Scholarship", "Galileo Galilei Merit Grants"],
-    notableAlumni: "Galileo Galilei (Physicist and Astronomer)"
+    bachelorsReq: "Secondary school diploma; English or Italian requirement varies by programme",
+    mastersReq: "Relevant Bachelor's degree (evaluated by the programme); " + ENGLISH_REQ,
+    scholarships: ["DSU Toscana regional grant (income-based)", "University of Pisa international scholarships"]
   }
 ];
 
 const popularMasters = [
-  { course: "MSc in Architecture & Landscape Design", uni: "Politecnico di Milano", feeEUR: 3880 },
-  { course: "Master in Business Administration (MBA)", uni: "Polimi Graduate School of Management", feeEUR: 33000 },
-  { course: "MSc in Management - Fashion & Luxury Goods", uni: "LUISS Business School", feeEUR: 15500 },
-  { course: "MSc in Data Science for Business", uni: "University of Padua", feeEUR: 2330 },
-  { course: "MA in Art History", uni: "Sapienza University of Rome", feeEUR: 2420 }
+  { course: "MSc programmes (non-EU, foreign Bachelor's)", uni: "Politecnico di Milano", feeEUR: 3943 },
+  { course: "International Full-Time MBA (Oct 2027 intake)", uni: "MIP Politecnico di Milano Graduate School of Business", feeEUR: 54000 },
+  { course: "MSc programmes (first year, 2026/27)", uni: "Bocconi University", feeEUR: 18550 },
+  { course: "Master's degree programmes (2027/28)", uni: "LUISS Guido Carli", feeEUR: 16000 },
+  { course: "Master's degree (students from India with income only abroad)", uni: "Sapienza University of Rome", feeEUR: 300 }
 ];
 
 const popularFields = [
-  { field: "Fine Arts", enrollment: "5,356+", topUnis: "Sapienza, Bologna" },
-  { field: "Medicine", enrollment: "Top 100 globally", topUnis: "Milan, Bologna, Padua" },
-  { field: "Engineering", enrollment: "Top 50 globally", topUnis: "Politecnico Milano, Pisa" },
-  { field: "Architecture", enrollment: "#7 globally", topUnis: "Politecnico Milano, Florence" },
-  { field: "Law", enrollment: "#38 globally", topUnis: "Bologna, Rome" }
+  { field: "Arts & Humanities", enrollment: "Many English-taught Master's", topUnis: "Sapienza, Bologna" },
+  { field: "Medicine", enrollment: "English-taught via IMAT", topUnis: "Milan, Bologna, Padua" },
+  { field: "Engineering", enrollment: "Many English-taught MSc", topUnis: "Politecnico Milano, Politecnico Torino, Pisa" },
+  { field: "Architecture & Design", enrollment: "English-taught MSc available", topUnis: "Politecnico Milano, Florence" },
+  { field: "Law", enrollment: "Mostly Italian-taught; some English", topUnis: "Bologna, Rome" }
 ];
 
 const scholarshipsList = [
@@ -199,21 +201,21 @@ const scholarshipsList = [
   },
   {
     name: "International Talents @Unibo",
-    amount: "€4,500 stipend + full tuition waiver",
-    coverage: "Covers tuition fees and annual living stipend",
-    details: "80 scholarships available at University of Bologna. SAT/GRE test scores required. Must be under 30 years old."
+    amount: "Amount set in each year's call",
+    coverage: "Merit scholarship for international students",
+    details: "Offered by the University of Bologna. Number of awards, amount, test-score rules and age limits change every year — read the current call on unibo.it."
   },
   {
     name: "Excellence Scholarships Program",
-    amount: "€8,000 cash grant + tuition waiver",
-    coverage: "Covers full tuition + living allowance",
-    details: "55 awards available at University of Milan. For first-year Master's students based on academic profile."
+    amount: "Amount set in each year's call",
+    coverage: "Merit scholarship for international students",
+    details: "Offered by the University of Milan for international Master's students. Check unimi.it for the current number of awards, amount and deadline."
   },
   {
     name: "Padua International Excellence",
-    amount: "€8,000 stipend + full fee waiver",
-    coverage: "Covers full tuition + living expenses",
-    details: "59 scholarships available at University of Padua. For Bachelor's or Master's taught in English. Valid for 2-3 years."
+    amount: "Amount set in each year's call",
+    coverage: "Merit scholarship for international students",
+    details: "Offered by the University of Padua for English-taught Bachelor's and Master's programmes. Check unipd.it for the current number of awards, amount and deadline."
   }
 ];
 
@@ -248,7 +250,7 @@ const jobSalaries = [
 ];
 
 const faqs = [
-  { q: "Which is the best university in Italy for international students?", a: "Politecnico di Milano is the highest-ranked Italian university (QS #98 for 2026), making it excellent for Engineering and Architecture. For law and classics, Sapienza University of Rome and University of Bologna are highly recommended." },
+  { q: "Which is the best university in Italy for international students?", a: "Politecnico di Milano is the highest-ranked Italian university (QS #87 in the 2027 rankings), making it excellent for Engineering and Architecture. For law and classics, Sapienza University of Rome and University of Bologna are highly recommended." },
   { q: "Can I study in Italy for free?", a: "Yes. Public universities offer near-zero tuition through the ISEE Parificato indicator, and regional DSU scholarships provide full fee waivers plus €7,200 annual cash stipends to qualifying low-income students." },
   { q: "Do Italian universities teach in English?", a: "Yes. There are over 500 English-taught programs across public and private universities in disciplines like Engineering, Economics, Fashion, Medicine, and Arts." },
   { q: "What is the intake schedule in Italy?", a: "The Fall intake (September/October) is the primary option with 80% of program availability. The Spring intake (February/March) is secondary with limited course selection." },
@@ -264,7 +266,7 @@ const ItalyTopUniversities = () => {
   const [selectedCountry, setSelectedCountry] = useState('Italy');
   const { openEligibilityModal } = useLead();
 
-  const exchangeRate = 103.0; // Target rate: €1 = ₹103.0
+  const exchangeRate = 110.0; // Target rate: €1 = ₹110 (Aug 2026)
 
   useEffect(() => {
     const handleScroll = () => {
@@ -303,6 +305,7 @@ const ItalyTopUniversities = () => {
   };
 
   const formatRange = (minEUR, maxEUR) => {
+    if (minEUR === maxEUR) return formatCost(minEUR);
     if (currency === 'EUR') {
       return `€${minEUR.toLocaleString()} – €${maxEUR.toLocaleString()}`;
     }
@@ -368,7 +371,7 @@ const ItalyTopUniversities = () => {
               Italy isn't just about pizza, pasta, and espresso.
             </h2>
             <p className="text-slate-350 text-sm md:text-base font-semibold leading-relaxed mb-4">
-              It is home to <strong className="text-indigo-300">6 universities ranked in the QS World Top 300</strong> for 2026. It's where the oldest university in the Western world still stands, and right now, over <strong className="text-indigo-300">5,260 Indian students</strong> are pursuing their dreams there.
+              It is home to <strong className="text-indigo-300">6 universities ranked in the QS World Top 300</strong> for 2027. It's where the oldest university in the Western world still stands, and right now, over <strong className="text-indigo-300">5,260 Indian students</strong> are pursuing their dreams there.
             </p>
             <p className="text-emerald-400 text-sm md:text-base font-extrabold leading-relaxed">
               Whether you're passionate about engineering, art history, medicine, or fashion—Italy has a program for you.
@@ -421,7 +424,7 @@ const ItalyTopUniversities = () => {
                   </div>
                   <h4 className="font-extrabold text-slate-900 text-sm mb-2">World-Class Education</h4>
                   <p className="text-slate-500 text-xs font-semibold leading-relaxed">
-                    6 Italian universities stand strong in the QS World Top 300 rankings for 2026.
+                    6 Italian universities stand strong in the QS World Top 300 rankings for 2027.
                   </p>
                 </div>
 
@@ -538,7 +541,7 @@ const ItalyTopUniversities = () => {
             <section id="top-unis" className="scroll-mt-24">
               <div className="flex items-center gap-2 mb-6">
                 <span className="w-8 h-8 rounded-lg bg-indigo-50 flex items-center justify-center text-indigo-600 font-black text-sm">02</span>
-                <h2 className="text-2xl md:text-3xl font-black text-slate-900 tracking-tight">🏛️ Top 6 Universities in Italy (2026 Rankings)</h2>
+                <h2 className="text-2xl md:text-3xl font-black text-slate-900 tracking-tight">🏛️ Top 6 Universities in Italy (QS 2027 Rankings)</h2>
               </div>
               <p className="text-slate-600 font-semibold leading-relaxed mb-8">
                 Detailed breakdowns of the six leading institutions in Italy, including location snapshots, academic strengths, and average fees.
@@ -569,11 +572,11 @@ const ItalyTopUniversities = () => {
                         <strong className="text-slate-900">{uni.city}, Italy</strong>
                       </div>
                       <div>
-                        <span className="text-slate-400 block mb-1"><CapIcon /> Student Enrollment</span>
+                        <span className="text-slate-400 block mb-1"><CapIcon /> Type</span>
                         <strong className="text-slate-900">{uni.students}</strong>
                       </div>
                       <div>
-                        <span className="text-slate-400 block mb-1">💼 Employer Reputation</span>
+                        <span className="text-slate-400 block mb-1">🌐 Official Website</span>
                         <strong className="text-slate-900">{uni.employerRep}</strong>
                       </div>
                     </div>
@@ -596,6 +599,7 @@ const ItalyTopUniversities = () => {
                           <span className="text-base font-black text-slate-800">
                             {formatRange(uni.tuitionEUR.min, uni.tuitionEUR.max)} / year
                           </span>
+                          {uni.tuitionNote && <span className="text-[11px] text-slate-500 font-semibold block mt-1">{uni.tuitionNote}</span>}
                         </div>
                         <div>
                           <strong className="text-slate-900 block mb-1.5">🌟 Unique Specialized Course:</strong>
@@ -642,7 +646,6 @@ const ItalyTopUniversities = () => {
                             </span>
                           ))}
                         </div>
-                        <p className="text-[11px] text-slate-400 mt-2"><strong>Notable Alumni:</strong> {uni.notableAlumni}</p>
                       </div>
                     </div>
                   </div>
@@ -843,10 +846,10 @@ const ItalyTopUniversities = () => {
                     🍁 Fall Intake (Sept/Oct)
                   </span>
                   <div className="space-y-2 text-xs font-semibold text-slate-600">
-                    <p>🚀 <strong>Applications Open:</strong> November 2025</p>
-                    <p>⏰ <strong>Early Deadlines:</strong> January – February 2026</p>
-                    <p>🚫 <strong>Final Deadline:</strong> May 15, 2026 (non-EU)</p>
-                    <p className="text-emerald-600 font-bold pt-2 border-t border-slate-50">✓ Default primary choice (80% enrollment and scholarship slots).</p>
+                    <p>🚀 <strong>Applications Open:</strong> Autumn of the year before (e.g. Padua's first 2027/28 window closes 15 Nov 2026)</p>
+                    <p>⏰ <strong>Deadlines:</strong> Set by each university and programme, often in several rounds</p>
+                    <p>🚫 <strong>Non-EU students:</strong> Leave time for pre-enrolment on Universitaly and the visa</p>
+                    <p className="text-emerald-600 font-bold pt-2 border-t border-slate-50">✓ Main intake — most programmes start in September/October.</p>
                   </div>
                 </div>
 
@@ -855,8 +858,8 @@ const ItalyTopUniversities = () => {
                     🌸 Spring Intake (Feb/Mar)
                   </span>
                   <div className="space-y-2 text-xs font-semibold text-slate-600">
-                    <p>🚀 <strong>Applications Open:</strong> July 2026</p>
-                    <p>⏰ <strong>Application Deadline:</strong> Oct – Dec 2026</p>
+                    <p>🚀 <strong>Availability:</strong> Only a small number of programmes</p>
+                    <p>⏰ <strong>Application Deadline:</strong> Set by each programme — check its call</p>
                     <p>🚫 <strong>Classes Start:</strong> Late Feb / Early Mar 2027</p>
                     <p className="text-indigo-650 font-bold pt-2 border-t border-slate-50">✓ Secondary choice with limited course and scholarship options.</p>
                   </div>

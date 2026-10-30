@@ -1,8 +1,6 @@
 import React, { useEffect } from 'react';
 import AiStudyRoadmap from '../components/AiStudyRoadmap';
-import { Compass, Sparkles, CheckCircle2, Calendar, Layers } from 'lucide-react';
-import { HeroBackButton } from '../components/ui/BackButton';
-import { PostageStamp } from '../components/desi/DesiPop';
+import { FinderPage, FinderHero } from '../components/ui/FinderForm';
 
 const AiStudyRoadmapPage = () => {
   useEffect(() => {
@@ -11,50 +9,24 @@ const AiStudyRoadmapPage = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-[#F6F3EC] pt-[76px] pb-20">
-      {/* Clean LeapScholar-Style Hero Section */}
-      <section className="relative pt-12 pb-16 sm:pt-14 sm:pb-20 px-4 sm:px-6 lg:px-8 bg-[#F6F3EC] border-b border-[#E6E0D4] overflow-hidden">
-        <HeroBackButton />
-        {/* Desi Pop: postage stamp, wide screens only */}
-        <div className="hidden 2xl:block absolute left-10 2xl:left-24 top-1/2 -translate-y-1/2 -rotate-6 z-0 pointer-events-none">
-          <PostageStamp value="6" title="Month Roadmap" hi="योजना" note="Week by week" className="w-[150px]" />
-        </div>
-        
-
-        <div className="max-w-4xl mx-auto relative z-10 space-y-4 text-center">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-bold bg-white text-[#DE5C2B] border border-orange-200/80 shadow-xs">
-            <Compass size={14} className="text-[#DE5C2B]" />
-            <span>Milestone & Timeline Action Planner</span>
-          </div>
-
-          <h1 className="font-outfit text-3xl sm:text-4xl lg:text-[46px] font-black tracking-tight text-[#0F172A] leading-tight">
-            AI 6-Month Strategic{' '}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#DE5C2B] to-[#C04A1D]">Admissions Roadmap</span>
-          </h1>
-
-          <p className="text-[14px] sm:text-[15.5px] text-slate-600 font-normal max-w-2xl mx-auto leading-relaxed">
-            Get a tailored, week-by-week admissions timeline synchronized with priority scholarship deadlines, visa appointments, and exam targets.
-          </p>
-
-          <div className="flex flex-wrap items-center justify-center gap-2.5 pt-2 text-xs text-slate-700 font-semibold">
-            <span className="flex items-center gap-1.5 bg-white/95 px-3.5 py-1.5 rounded-full border border-slate-200 shadow-xs backdrop-blur-xs">
-              <Calendar size={13} className="text-[#DE5C2B]" /> Intake & Country Customized
-            </span>
-            <span className="flex items-center gap-1.5 bg-white/95 px-3.5 py-1.5 rounded-full border border-slate-200 shadow-xs backdrop-blur-xs">
-              <CheckCircle2 size={13} className="text-emerald-600" /> Interactive Task Checklist
-            </span>
-            <span className="flex items-center gap-1.5 bg-white/95 px-3.5 py-1.5 rounded-full border border-slate-200 shadow-xs backdrop-blur-xs">
-              <Layers size={13} className="text-amber-500" /> Urgent Weekly Priorities
-            </span>
-          </div>
-        </div>
-      </section>
-
-      {/* Main Roadmap Tool */}
-      <main className="max-w-7xl 2xl:max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 -mt-8 sm:-mt-10 relative z-20">
+    <FinderPage>
+      {/* Same hero and card layout as the Course Finder */}
+      <FinderHero
+        eyebrow="AI Study Roadmap"
+        title="Your 6-month admissions roadmap"
+        subtitle="Pick your intake, country and stage. Get a week-by-week plan for exams, applications, scholarships and visa."
+        steps={[
+          { label: 'About you', sub: 'Intake, country' },
+          { label: 'Generate', sub: 'Free' },
+          { label: 'Weekly plan', sub: 'Deadlines' },
+          { label: 'Tick tasks', sub: 'Track progress' },
+        ]}
+        active={0}
+      />
+      <div className="mt-8">
         <AiStudyRoadmap />
-      </main>
-    </div>
+      </div>
+    </FinderPage>
   );
 };
 

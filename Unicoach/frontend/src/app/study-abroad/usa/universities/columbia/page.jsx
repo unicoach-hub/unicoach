@@ -11,13 +11,11 @@ const columbiaData = {
   location: "New York City, New York, USA",
   city: "New York City",
   established: 1754,
-  totalStudents: 32000,
-  intlStudents: 11600,
+  totalStudents: 35173, // NCES College Navigator, Fall 2024
   studentFacultyRatio: "6:1",
-  acceptanceRate: "6%",
+  acceptanceRate: "4%", // undergraduate, Fall 2024
   accreditation: "Middle States Commission on Higher Education (MSCHE)",
-  avgStudyCost: "INR 1.50 L",
-  avgCostOfLiving: "INR 0.75 L",
+  avgStudyCost: "INR 62 L", // Columbia Engineering MS 2025-26: $2,700/point x 24 points at 1 USD = ₹95
   type: "PRIVATE",
   logo: "/assets/usa/columbia/logo.png",
   heroImage: "/assets/usa/columbia/banner.jpg",
@@ -29,9 +27,7 @@ const columbiaData = {
     { name: "Computer Science", count: 1 }
   ],
   intakeDeadlines: [
-    { name: "JAN'2025", status: "Intake Open" },
-    { name: "AUG'2025", status: "Intake Open" },
-    { name: "SEP'2025", status: "Intake Open" }
+    { name: "SEP'2027", status: "Fall entry; deadlines vary by program" }
   ],
   requirements: [
     { 
@@ -40,36 +36,16 @@ const columbiaData = {
     }
   ],
   rankings: {
-    "Times Higher Education": [
-      { category: "Best World Ranking Schools - 2023", rank: "11" },
-      { category: "Best University Ranking Schools - 2022", rank: "16" },
-      { category: "Best World Ranking Schools - 2022", rank: "11" }
-    ],
-    "US News": [
-      { category: "Best National Schools - 2025", rank: "13" },
-      { category: "Best World Ranking Schools - 2023", rank: "7" },
-      { category: "Best University Ranking Schools - 2022", rank: "6" }
-    ],
     "QS Rankings": [
-      { category: "Best World Ranking Schools - 2025", rank: "34" },
-      { category: "Best World Ranking Schools - 2024", rank: "23" },
-      { category: "Best World Ranking Schools - 2023", rank: "22" },
-      { category: "Best World Ranking Schools - 2022", rank: "19" }
-    ],
-    "Webometrics - World": [
-      { category: "Best World Ranking Schools - 2023", rank: "9" },
-      { category: "Best World Ranking Schools - 2022", rank: "9" }
-    ],
-    "Webometrics - National": [
-      { category: "Best University Ranking Schools - 2022", rank: "8" }
+      { category: "World University Rankings - 2027", rank: "43" }
     ]
   },
   coursesFees: [
-    { name: "MS in Financial Engineering", duration: "24 Months", tuition: 38.39 }
+    { name: "MS in Financial Engineering", duration: "24 Months", tuition: 46 } // 36 points x $2,700 (2025-26) = $97,200 for the program, about $48,600 a year at 1 USD = ₹95
   ],
   longDescription: `Columbia University, established in 1754, has a rich history as one of the oldest institutions of higher education in the United States. Over the years, it has grown into a prestigious university known for its rigorous academic standards and commitment to research and innovation.
 
-With a total enrollment of 32000, you will find a vibrant and diverse student body. The university prides itself on its international representation, with 11600 students from various countries, creating a multicultural environment that enhances your educational experience.
+With a total enrollment of about 35,000 students (Fall 2024), you will find a vibrant and diverse student body, with a large share of international students that creates a multicultural environment.
 
 Located in the heart of New York City, Columbia's campus features a blend of historic and modern architecture. Key facilities include:
 • The Butler Library, one of the largest university libraries in the country
@@ -82,11 +58,11 @@ Columbia offers a wide range of programs that align with industry demands. Some 
 • Journalism
 • International and Public Affairs
 
-The university has an acceptance rate of 6%, with multiple intake periods throughout the year. Columbia provides robust support services for international students, ensuring a smooth transition and a fulfilling academic journey.
+Admission is highly selective: Columbia admitted about 4% of undergraduate applicants for Fall 2024. Most graduate programs admit students for the fall term. Columbia provides robust support services for international students, ensuring a smooth transition and a fulfilling academic journey.
 
 Columbia University is accredited by the following bodies:
 • Middle States Commission on Higher Education
-• Association of American Universities
+• Program-level accreditors such as ABET (engineering) and AACSB (business)
 
 In conclusion, Columbia University stands out for its quality education and commitment to preparing you for a successful career in a globalized world.`,
   costOfLiving: {
@@ -121,7 +97,7 @@ In conclusion, Columbia University stands out for its quality education and comm
       "Google",
       "Microsoft",
       "Amazon",
-      "Facebook",
+      "Meta",
       "Apple"
     ]
   },
@@ -137,9 +113,9 @@ In conclusion, Columbia University stands out for its quality education and comm
   alumni: [
     { name: "Barack Obama", profession: "President" },
     { name: "Warren Buffett", profession: "Investor" },
-    { name: "Spike Lee", profession: "Filmmaker" },
+    { name: "Madeleine Albright", profession: "U.S. Secretary of State" },
     { name: "Ruth Bader Ginsburg", profession: "Supreme Court Justice" },
-    { name: "Alicia Keys", profession: "Singer" }
+    { name: "Kathryn Bigelow", profession: "Film Director" }
   ],
   blogs: [
     {
@@ -176,7 +152,7 @@ In conclusion, Columbia University stands out for its quality education and comm
   faqs: [
     {
       question: "Is Columbia University a good university?",
-      answer: "Yes, Columbia University is one of the world's most prestigious Ivy League research universities, ranked #13 nationally by US News (2025) and #11 globally by Times Higher Education (2023)."
+      answer: "Yes, Columbia University is one of the world's most prestigious Ivy League research universities, ranked #43 in the QS World University Rankings 2027."
     },
     {
       question: "How do I get admission to Columbia University?",
@@ -192,23 +168,23 @@ In conclusion, Columbia University stands out for its quality education and comm
     },
     {
       question: "Is Columbia University good for international students?",
-      answer: "Yes, it is highly diverse, hosting over 11,600 international students from more than 150 countries with dedicated counseling and CPT/OPT placement support."
+      answer: "Yes, it enrols a large international student body, and its International Students and Scholars Office provides visa, CPT and OPT guidance."
     },
     {
       question: "What is the ranking of Columbia University?",
-      answer: "Columbia is ranked #34 globally in QS Rankings (2025), #11 in Times Higher Education (2023), and #13 in US National Universities (2025)."
+      answer: "Columbia is ranked #43 in the QS World University Rankings 2027."
     },
     {
       question: "What is the pass rate for Columbia University?",
-      answer: "Columbia has a graduation rate of 96% and an extremely selective acceptance rate of 6%."
+      answer: "Columbia's six-year graduation rate is 96% (students who began in Fall 2018), and about 4% of undergraduate applicants were admitted for Fall 2024."
     },
     {
       question: "How many students are at Columbia University?",
-      answer: "Columbia University has a total student population of approximately 32,000 students."
+      answer: "Columbia had a total enrollment of about 35,173 students in Fall 2024 (9,164 undergraduate and 26,009 graduate)."
     },
     {
       question: "How hard is it to get into Columbia University?",
-      answer: "With an acceptance rate of only 6%, getting into Columbia is extremely competitive, requiring exceptional academic merit and outstanding extracurricular leadership."
+      answer: "With only about 4% of undergraduate applicants admitted, getting into Columbia is extremely competitive, requiring exceptional academic merit and outstanding extracurricular leadership."
     },
     {
       question: "Is Columbia University accredited?",
@@ -216,7 +192,7 @@ In conclusion, Columbia University stands out for its quality education and comm
     },
     {
       question: "Who are the notable alumni of Columbia University and what are their professions?",
-      answer: "Notable alumni include Barack Obama (former US President), Warren Buffett (legendary Investor), Spike Lee (renowned Filmmaker), Ruth Bader Ginsburg (Supreme Court Justice), and Alicia Keys (Grammy-winning Singer)."
+      answer: "Notable alumni include Barack Obama (former US President), Warren Buffett (investor), Madeleine Albright (U.S. Secretary of State), Ruth Bader Ginsburg (Supreme Court Justice), and Kathryn Bigelow (film director)."
     }
   ]
 };

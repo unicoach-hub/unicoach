@@ -41,116 +41,126 @@ const topTenPublicUnis = [
   {
     rank: "#1",
     name: "Politecnico di Milano",
-    qsRank: "QS #98",
-    feesEUR: { min: 3500, max: 3900 },
+    qsRank: "QS #87",
+    feesEUR: { min: 157, max: 3943 },
+    feeNote: "2026/27, set by ISEE. Non-EU students admitted to a Master's with a foreign degree pay the maximum unless they hold a scholarship.",
     focus: "Engineering, Design, Architecture",
-    highlights: ["World leader: Engineering, Architecture, Design", "Corporate partners: Ferrari, Google, IBM", "DSU Lombardy: Full fees + €7,800 stipend"],
-    reqs: "IELTS 6.0 | Min 70% GPA"
+    highlights: ["Italy's highest-ranked university in QS 2027", "Schools of Engineering, Architecture and Design", "DSU Lombardia regional grant (income-based)"],
+    reqs: "Varies by programme | Relevant Bachelor's degree"
   },
   {
     rank: "#2",
     name: "Sapienza University of Rome",
-    qsRank: "QS #128",
-    feesEUR: { min: 1000, max: 2500 },
+    qsRank: "QS #111",
+    feesEUR: { min: 300, max: 300 },
+    feeNote: "Fixed fee for students from India whose family income is only abroad (Band A). With income in Italy, the fee is set by ISEE.",
     focus: "Physics, Aerospace, Classics",
-    highlights: ["Europe's largest university by enrollment", "Research powerhouse: Physics, Aerospace, Classics", "DiscoLazio: Accommodation + cash stipend"],
-    reqs: "IELTS 5.5-6.0 | Pre-selection required"
+    highlights: ["Founded in 1303", "Strong in Physics, Aerospace and Classics", "DiSCo Lazio regional grant (income-based)"],
+    reqs: "Varies by programme | Relevant Bachelor's degree"
   },
   {
     rank: "#3",
     name: "University of Bologna",
-    qsRank: "QS #138",
-    feesEUR: { min: 2000, max: 3000 },
+    qsRank: "QS #123",
+    feesEUR: { min: 157, max: 2550 },
+    feeNote: "2026/27, set by ISEE (some programmes up to €4,080). Non-OECD nationals (India included) with income only abroad can opt for a flat €1,200 + €157.",
     focus: "Law, Medicine, Arts & Humanities",
-    highlights: ["Oldest university in the Western world (1088)", "Most organised DSU system (ER.GO)", "Action 1 & 2: €11,000 merit grants"],
-    reqs: "IELTS 6.5 | CV evaluation"
+    highlights: ["Founded in 1088 — oldest university in the Western world", "ER.GO regional grant (income-based)", "Unibo Action 1 & 2 study grants"],
+    reqs: "Varies by programme | Relevant Bachelor's degree"
   },
   {
     rank: "#4",
     name: "University of Padua",
-    qsRank: "QS #233",
-    feesEUR: { min: 2500, max: 3000 },
+    qsRank: "QS #204",
+    feesEUR: { min: 0, max: 3000 },
+    feeNote: "Official range: €0 to about €3,000 per year depending on ISEE.",
     focus: "Sciences, Scientific Research, Medicine",
-    highlights: ["Galileo's university | First to award woman a degree", "Top for scientific research & human rights", "ESU Padova + €8,000 Excellence Scholarship"],
-    reqs: "IELTS 6.5 | Strong academic credentials"
+    highlights: ["Founded in 1222 | Galileo taught here", "First 2027/28 window for foreign-qualification applicants closes 15 Nov 2026", "ESU Padova grant + Padua International Excellence Scholarship"],
+    reqs: "Varies by programme | Relevant Bachelor's degree"
   },
   {
     rank: "#5",
     name: "Politecnico di Torino",
-    qsRank: "QS #301",
-    feesEUR: { min: 2600, max: 3200 },
+    qsRank: "QS #206",
+    feesEUR: { min: 600, max: 3600 },
+    feeNote: "Non-EU students: fee set by your country's GDP at purchasing-power parity, between €600 and €3,600 (2025/26 rules).",
     focus: "Automotive & Mechanical Engineering",
-    highlights: ["Italy's automotive heart", "Close partnerships with FIAT, industrial hub of Turin", "EDISU Piemonte + TOPoliTO scholarships"],
-    reqs: "IELTS 5.5 | TIL entrance test"
+    highlights: ["Engineering and architecture university in Turin", "Strong automotive and mechanical engineering", "EDISU Piemonte regional grant (income-based)"],
+    reqs: "Varies by programme | Relevant Bachelor's degree"
   },
   {
     rank: "#6",
     name: "University of Milan",
-    qsRank: "QS #276",
-    feesEUR: { min: 2000, max: 2500 },
+    qsRank: "QS #270",
+    feesEUR: { min: 346, max: 4307 },
+    feeNote: "2026/27 with family income only abroad: €146 + €200–€4,101 (plus regional-tax top-up), set by country group and programme area.",
     focus: "Biotechnology, Law, Economics",
-    highlights: ["'La Statale' | Only Italian LERU member", "Top for Biotechnology, Law, Economics", "DSU Milano + €8,000 Excellence Scholarships"],
-    reqs: "IELTS 6.0 | Related Bachelor's degree"
+    highlights: ["'La Statale' | Member of LERU", "Strong in Life Sciences, Law and Economics", "DSU regional grant (income-based)"],
+    reqs: "Varies by programme | Relevant Bachelor's degree"
   },
   {
     rank: "#7",
     name: "University of Pisa",
-    qsRank: "QS #343",
-    feesEUR: { min: 2400, max: 3000 },
+    qsRank: "QS #341",
+    feesEUR: { min: 156, max: 3056 },
+    feeNote: "€156 regional tax + stamp, plus up to €2,900. With income abroad, €2,900 is multiplied by a country coefficient.",
     focus: "Physics, Mathematics, Engineering Sciences",
-    highlights: ["Elite Scuola Normale Superiore partnership", "Premier scientific centre in Europe", "DSU Toscana + €6,500-8,000 merit grants"],
-    reqs: "Academic record + consular interview"
+    highlights: ["Founded in 1343", "Strong in Physics, Mathematics and Computer Science", "DSU Toscana regional grant (income-based)"],
+    reqs: "Varies by programme | Relevant Bachelor's degree"
   },
   {
     rank: "#8",
     name: "Tor Vergata University of Rome",
-    qsRank: "QS #490",
-    feesEUR: { min: 950, max: 3000 },
+    qsRank: "QS #342",
+    feesEUR: { min: 1156, max: 2656 },
+    feeNote: "Flat fee for non-EU students with family income abroad: €1,000 + €156; some MSc courses (e.g. Business Administration, Finance & Banking) €2,500 + €156.",
     focus: "Finance, Economics, Global Governance",
-    highlights: ["Modern 'American-style' campus model", "Top for Finance, Global Governance, Economics", "Flexible enrollment options"],
-    reqs: "GRE (sometimes) | IELTS 6.5"
+    highlights: ["Campus university in south-east Rome", "English-taught Economics and Finance Master's", "DiSCo Lazio regional grant (income-based)"],
+    reqs: "Varies by programme | Relevant Bachelor's degree"
   },
   {
     rank: "#9",
-    name: "University of Naples Federico II",
-    qsRank: "QS #496",
-    feesEUR: { min: 1000, max: 2000 },
-    focus: "Medicine, Engineering, Sciences",
-    highlights: ["Oldest non-sectarian university (1224)", "ADISURC DSU regional scholarship support", "Lowest living costs in Southern Italy"],
-    reqs: "IELTS 6.0 | Pre-acceptance letter"
+    name: "University of Pavia",
+    qsRank: "QS #395",
+    feesEUR: { min: 400, max: 400 },
+    feeNote: "Non-EU flat rate by citizenship; India is in bracket 1 (2025/26). Flat rates run from €400 to €4,500.",
+    focus: "Medicine, Sciences, Economics",
+    highlights: ["Historic university town near Milan", "Collegiate system of university colleges", "EDiSU Pavia regional grant (income-based)"],
+    reqs: "Varies by programme | Relevant Bachelor's degree"
   },
   {
     rank: "#10",
-    name: "University of Florence",
-    qsRank: "QS #459",
-    feesEUR: { min: 2000, max: 2500 },
-    focus: "Architecture, Industrial Design, Arts",
-    highlights: ["Located in the birthplace of the Renaissance", "Top for Architecture, Design, Social Sciences", "DSU Toscana portfolio evaluations"],
-    reqs: "IELTS 6.0 | Portfolio for Design programs"
+    name: "University of Naples Federico II",
+    qsRank: "QS #401",
+    feesEUR: { min: 156, max: 156 },
+    feeNote: "Non-EU students paid only the €140 regional fee + €16 stamp under the 2024/25 rules. Confirm the current year with the university.",
+    focus: "Medicine, Engineering, Sciences",
+    highlights: ["Founded in 1224 by Emperor Frederick II", "Large public university in Naples", "ADISURC regional grant (income-based)"],
+    reqs: "Varies by programme | Relevant Bachelor's degree"
   }
 ];
 
 const otherAffordableUnis = [
-  { name: "University of Messina", feeEUR: 256, feeNotes: "Fixed for Indian students", location: "Sicily", highlight: "Cheapest fixed tuition in Italy", livingEUR: 450 },
-  { name: "University of Calabria", feeEUR: 800, feeNotes: "€0 - €1,600 range", location: "Cosenza", highlight: "Free food + housing for winners", livingEUR: 420 },
-  { name: "University of Siena", feeEUR: 455, feeNotes: "€360 - €550 range", location: "Tuscany", highlight: "Peaceful, safe student city", livingEUR: 630 },
-  { name: "University of Pavia", feeEUR: 1850, feeNotes: "€400 - €3,300 range", location: "Near Milan", highlight: "Low rent, close to Milan's job market", livingEUR: 730 },
-  { name: "University of Catania", feeEUR: 600, feeNotes: "€300 - €900 range", location: "Sicily", highlight: "Extreme affordability for canteens/rooms", livingEUR: 420 },
-  { name: "University of Genoa", feeEUR: 1950, feeNotes: "€1,100 - €2,800 range", location: "Genoa", highlight: "Excellent maritime & robotics courses", livingEUR: 680 },
-  { name: "University of Cassino", feeEUR: 1200, feeNotes: "€1,000 - €1,400 range", location: "Cassino", highlight: "Flexible admission criteria for MBA", livingEUR: 510 }
+  { name: "University of Messina", feeEUR: 256, feeNotes: "India is in Group B; fixed fee", location: "Sicily", highlight: "Low fixed fee for students from India", livingEUR: 450 },
+  { name: "University of Calabria", feeEUR: 1000, feeNotes: "Flat international-student fee incl. regional tax, 2026/27", location: "Rende (Cosenza)", highlight: "Campus-based university in Calabria", livingEUR: 420 },
+  { name: "University of Siena", feeEUR: 500, feeNotes: "Minimum for students without an Italian ISEE, plus regional tax, 2026/27", location: "Tuscany", highlight: "Peaceful, safe student city", livingEUR: 630 },
+  { name: "University of Turin", feeEUR: 456, feeNotes: "€300 + €156 for countries with GDP (PPP) up to €26,000, 2025/26", location: "Turin", highlight: "Large public university in Piedmont", livingEUR: 600 },
+  { name: "University of Catania", feeEUR: 306, feeNotes: "Fee for non-EU students living abroad", location: "Sicily", highlight: "Low fixed fee for non-EU students", livingEUR: 420 },
+  { name: "University of Genoa", feeEUR: 3300, feeNotes: "€0 – €3,300 by ISEE; the maximum applies if you have no ISEE, 2026/27", location: "Genoa", highlight: "Engineering, maritime and robotics programmes", livingEUR: 680 },
+  { name: "University of Cassino", feeEUR: 756, feeNotes: "India is in Group A: €600 + €156, 2026/27", location: "Cassino", highlight: "Fee set by country group", livingEUR: 510 }
 ];
 
 const deadlinesList = [
-  { name: "Politecnico Milano", date: "February 2026", note: "First intake closes early" },
-  { name: "Sapienza Rome", date: "Dec 2025 – May 2026", note: "Pre-selection windows open" },
-  { name: "Bologna", date: "April 2026", note: "Scholarship priority deadline" },
-  { name: "Padua", date: "February 2026", note: "Early intake closing" },
-  { name: "Torino", date: "March – April 2026", note: "Non-EU applicants round" },
-  { name: "Milan", date: "May 2026", note: "Most English programs finalize" },
-  { name: "Pisa", date: "April 30, 2026", note: "Final documentation round" },
-  { name: "Tor Vergata", date: "February 2026", note: "Final round closes" },
-  { name: "Naples", date: "May 31, 2026", note: "Pre-acceptance required" },
-  { name: "Florence", date: "February 2026", note: "First round closes" }
+  { name: "Politecnico Milano", date: "Check programme call", note: "Several application rounds; dates change every year" },
+  { name: "Sapienza Rome", date: "Check programme call", note: "Each Master's sets its own pre-evaluation dates" },
+  { name: "Bologna", date: "Check programme call", note: "Each Master's sets its own call and deadline" },
+  { name: "Padua", date: "15 Nov 2026", note: "First 2027/28 window for foreign-qualification applicants" },
+  { name: "Torino", date: "Check programme call", note: "Non-EU applicants apply in set periods" },
+  { name: "Milan", date: "Check programme call", note: "Deadlines differ by programme" },
+  { name: "Pisa", date: "Check programme call", note: "Deadlines differ by programme" },
+  { name: "Tor Vergata", date: "Check programme call", note: "Deadlines differ by programme" },
+  { name: "Pavia", date: "Check programme call", note: "Deadlines differ by programme" },
+  { name: "Naples", date: "Check programme call", note: "Deadlines differ by programme" }
 ];
 
 const salariesSector = [
@@ -165,7 +175,7 @@ const faqsList = [
   { q: "Is Italy costly for Indian students?", a: "No. The average annual budget is €8,000 – €12,000 (~₹8.4L – ₹12.6L) which comfortably covers tuition, rent, groceries, public transport, and health insurance." },
   { q: "Is IELTS compulsory for Italy?", a: "Not always. Many public universities accept a Medium of Instruction (MOI) certificate from your previous university. You can skip IELTS/TOEFL if your earlier degree was taught in English." },
   { q: "Does Italy give 100% scholarships?", a: "Yes. DSU Regional is need-based and covers 100% tuition waivers + free dorms + meals + cash stipend. MAECI is merit-based and covers tuition + monthly stipend. Invest Your Talent covers tuition + stipends + guaranteed internships." },
-  { q: "Are public universities in Italy free?", a: "Not entirely, but heavily subsidized. Minimum tuition is €500-€800/year, and maximum is €3,000-€4,000/year. With a DSU scholarship, tuition is reduced to €0 for eligible students." },
+  { q: "Are public universities in Italy free?", a: "Not entirely, but heavily subsidized. Fees depend on the university and on family income (ISEE) or your country of origin — from about €150–€300/year at the low end to about €3,000–€4,300/year at the maximum. With a DSU scholarship, tuition is reduced to €0 for eligible students." },
   { q: "What's the minimum bank balance for a visa?", a: "You need to show at least €7,000 (~₹7.4 Lakhs) in your bank account as a financial reserve for the student visa." },
   { q: "Can I work part-time while studying?", a: "Yes. 20 hours/week during term. Average hourly pay is €8-€12, which easily covers monthly food, transit, and personal expenses." },
   { q: "What is CIMEA?", a: "A digital comparability statement that validates your Indian degree and confirms its equivalent status in the Italian educational framework. It is required for university enrollment and visa processing." }
@@ -180,7 +190,7 @@ const ItalyPublic = () => {
   const [selectedCountry, setSelectedCountry] = useState('Italy');
   const { openEligibilityModal } = useLead();
 
-  const exchangeRate = 103.0; // Target rate: €1 = ₹103.0
+  const exchangeRate = 110.0; // Target rate: €1 = ₹110 (Aug 2026)
 
   useEffect(() => {
     const handleScroll = () => {
@@ -219,6 +229,7 @@ const ItalyPublic = () => {
   };
 
   const formatRange = (minEUR, maxEUR) => {
+    if (minEUR === maxEUR) return formatCost(minEUR);
     if (currency === 'EUR') {
       return `€${minEUR.toLocaleString()} – €${maxEUR.toLocaleString()}`;
     }
@@ -284,7 +295,7 @@ const ItalyPublic = () => {
               Want a world-class degree without the US/UK price tag?
             </h2>
             <p className="text-slate-350 text-sm md:text-base font-semibold leading-relaxed mb-4">
-              Italy's public universities offer exactly that. With tuition ranging from €500 to €4,000 per year (~₹45,000 – ₹3.6 Lakhs), and DSU scholarships covering 100% of costs plus a €7,800 (~₹8.2 Lakhs) yearly stipend, it's one of Europe's best-kept secrets.
+              Italy's public universities offer exactly that. With tuition ranging from about €150 to €4,300 per year (~₹16,500 – ₹4.7 Lakhs), depending on the university, your country and your family income, and DSU scholarships covering 100% of costs plus a €7,800 (~₹8.2 Lakhs) yearly stipend, it's one of Europe's best-kept secrets.
             </p>
             <p className="text-emerald-400 text-sm md:text-base font-extrabold leading-relaxed">
               Degrees recognised worldwide • 500+ programs taught in English • 12-month post-study work visa • Gateway to 29 European countries
@@ -405,7 +416,7 @@ const ItalyPublic = () => {
             <section id="top-10" className="scroll-mt-24">
               <div className="flex items-center gap-2 mb-6">
                 <span className="w-8 h-8 rounded-lg bg-indigo-50 flex items-center justify-center text-indigo-600 font-black text-sm">02</span>
-                <h2 className="text-2xl md:text-3xl font-black text-slate-900 tracking-tight">🏛️ Top 10 Public Universities in Italy (2026)</h2>
+                <h2 className="text-2xl md:text-3xl font-black text-slate-900 tracking-tight">🏛️ Top 10 Public Universities in Italy (QS 2027)</h2>
               </div>
               <p className="text-slate-600 font-semibold leading-relaxed mb-8">
                 Detailed breakdowns of the top ten public universities in Italy, highlighting their specializations, tuition ranges, and scholarships.
@@ -433,6 +444,7 @@ const ItalyPublic = () => {
                         <span className="text-sm font-black text-slate-800">
                           {formatRange(uni.feesEUR.min, uni.feesEUR.max)} / year
                         </span>
+                        {uni.feeNote && <span className="text-[11px] text-slate-500 font-semibold block mt-1">{uni.feeNote}</span>}
                       </div>
                       <div>
                         <strong className="text-slate-900 block mb-1">🎯 Admission Requirements:</strong>
@@ -466,11 +478,11 @@ const ItalyPublic = () => {
                     <thead>
                       <tr className="bg-slate-50 border-b border-slate-100 text-[10px] text-slate-400 font-black uppercase">
                         <th className="p-4">University</th>
-                        <th className="p-4">QS 2026</th>
+                        <th className="p-4">QS 2027</th>
                         <th className="p-4">Tuition (EUR)</th>
                         <th className="p-4">Tuition (INR)</th>
                         <th className="p-4">Best For</th>
-                        <th className="p-4">IELTS</th>
+                        <th className="p-4">English Test</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-slate-100 font-semibold text-slate-700">
@@ -478,7 +490,7 @@ const ItalyPublic = () => {
                         <tr key={idx} className="hover:bg-slate-50/50 transition-colors">
                           <td className="p-4 text-slate-900 font-bold">{uni.name}</td>
                           <td className="p-4 font-bold text-indigo-700">{uni.qsRank}</td>
-                          <td className="p-4">€{uni.feesEUR.min} - €{uni.feesEUR.max}</td>
+                          <td className="p-4">{uni.feesEUR.min === uni.feesEUR.max ? `€${uni.feesEUR.min}` : `€${uni.feesEUR.min} - €${uni.feesEUR.max}`}</td>
                           <td className="p-4">{formatRange(uni.feesEUR.min, uni.feesEUR.max)}</td>
                           <td className="p-4 text-slate-600">{uni.focus.split(', ')[0]}</td>
                           <td className="p-4 font-black">{uni.reqs.split(' | ')[0].replace('IELTS ', '')}</td>
@@ -597,7 +609,7 @@ const ItalyPublic = () => {
                     <thead>
                       <tr className="bg-slate-50 border-b border-slate-100 text-[10px] text-slate-400 font-black uppercase">
                         <th className="p-4">University</th>
-                        <th className="p-4">2026 Deadline</th>
+                        <th className="p-4">2027/28 Deadline</th>
                         <th className="p-4">Notes</th>
                       </tr>
                     </thead>

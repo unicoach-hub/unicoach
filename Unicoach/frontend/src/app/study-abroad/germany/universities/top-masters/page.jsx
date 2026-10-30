@@ -12,7 +12,7 @@ import { JourneyPills } from '../../../../../components/ui/BrandElements';
 
 const topMastersUnis = [
   {
-    rank: 22,
+    rank: 25,
     name: "Technical University of Munich (TUM)",
     courses: "Engineering, AI, Data Science, M.Sc. Management & Technology",
     semesterFee: 350,
@@ -24,7 +24,7 @@ const topMastersUnis = [
     website: "https://www.tum.de"
   },
   {
-    rank: 58,
+    rank: 61,
     name: "LMU Munich",
     courses: "Life Sciences, Economics, Data Science, Molecular & Cellular Biology",
     semesterFee: 300,
@@ -36,7 +36,7 @@ const topMastersUnis = [
     website: "https://www.lmu.de"
   },
   {
-    rank: 80,
+    rank: 86,
     name: "Heidelberg University",
     courses: "Medicine, Biosciences, Physics, Biomedical Engineering",
     semesterFee: 150,
@@ -48,7 +48,7 @@ const topMastersUnis = [
     website: "https://www.uni-heidelberg.de"
   },
   {
-    rank: 88,
+    rank: 98,
     name: "Free University Berlin",
     courses: "Social Sciences, Biology, International Relations, Bioinformatics",
     semesterFee: 350,
@@ -60,19 +60,7 @@ const topMastersUnis = [
     website: "https://www.fu-berlin.de"
   },
   {
-    rank: 98,
-    name: "KIT (Karlsruhe)",
-    courses: "Engineering, IT, Energy Technology, Informatics (CS)",
-    semesterFee: 150,
-    annualTuitionNonEU: 3000,
-    eligibility: "GPA 7.8/10+. Math-heavy; requirements verify advanced mathematics covered in Bachelor's.",
-    highlights: "A double-entity: both an elite university and a national large-scale Helmholtz research center.",
-    scholarship: "KIT International Excellence Grants",
-    logo: "https://logo.clearbit.com/kit.edu",
-    website: "https://www.kit.edu"
-  },
-  {
-    rank: 105,
+    rank: 104,
     name: "RWTH Aachen",
     courses: "Mechanical Engineering, Automotive Systems, Software Systems",
     semesterFee: 350,
@@ -84,7 +72,19 @@ const topMastersUnis = [
     website: "https://www.rwth-aachen.de"
   },
   {
-    rank: 130,
+    rank: 110,
+    name: "KIT (Karlsruhe)",
+    courses: "Engineering, IT, Energy Technology, Informatics (CS)",
+    semesterFee: 150,
+    annualTuitionNonEU: 3000,
+    eligibility: "GPA 7.8/10+. Math-heavy; requirements verify advanced mathematics covered in Bachelor's.",
+    highlights: "A double-entity: both an elite university and a national large-scale Helmholtz research center.",
+    scholarship: "KIT International Excellence Grants",
+    logo: "https://logo.clearbit.com/kit.edu",
+    website: "https://www.kit.edu"
+  },
+  {
+    rank: 140,
     name: "Humboldt Univ. Berlin",
     courses: "Psychology, History, M.Sc. Economics, Mind and Brain",
     semesterFee: 315,
@@ -96,7 +96,7 @@ const topMastersUnis = [
     website: "https://www.hu-berlin.de"
   },
   {
-    rank: 145,
+    rank: 158,
     name: "TU Berlin",
     courses: "Architecture, Innovation Management, Computer Science",
     semesterFee: 300,
@@ -108,7 +108,7 @@ const topMastersUnis = [
     website: "https://www.tu.berlin"
   },
   {
-    rank: 193,
+    rank: 209,
     name: "University of Hamburg",
     courses: "Environmental Sciences, Data Science, Climate System Sciences",
     semesterFee: 350,
@@ -120,7 +120,7 @@ const topMastersUnis = [
     website: "https://www.uni-hamburg.de"
   },
   {
-    rank: 201,
+    rank: 245,
     name: "University of Freiburg",
     courses: "Renewable Energy, Biotechnology, Microsystems Engineering",
     semesterFee: 150,
@@ -451,7 +451,7 @@ const GermanyTopMasters = () => {
               { q: "Is a master's degree free in Germany?", a: "Yes, at almost all public universities, tuition is free. Non-EU international students only pay a nominal semester administrative fee of €150-€350 (which includes local transit passes). However, the State of Baden-Württemberg charges €1,500/semester, and certain courses (like specific master's programs at TUM) charge tuition." },
               { q: "How much bank balance is required for the student visa?", a: "To cover living costs for your first academic year, you must deposit €11,904 in a blocked account (Sperrkonto). Upon arrival, you can withdraw €992 per month to cover rent, insurance, and utilities." },
               { q: "Can I study in Germany without IELTS?", a: "If your previous degree was taught entirely in English, some universities allow a Medium of Instruction (MOI) certificate. However, top-ranked public universities (like TUM or RWTH Aachen) and visa officers strongly recommend or require an official IELTS (6.5+) or TOEFL (90+) score." },
-              { q: "What is the rank 1 university in Germany for MS?", a: "For 2026, the Technical University of Munich (TUM) remains the highest-ranked institution in Germany, placed 22nd globally in the QS World University Rankings, known for STEM, informatics, and management." }
+              { q: "What is the rank 1 university in Germany for MS?", a: "In the QS World University Rankings 2027, the Technical University of Munich (TUM) remains the highest-ranked institution in Germany, placed 25th globally, known for STEM, informatics, and management." }
             ].map((faq, i) => (
               <div key={i} className="p-4 bg-slate-50 rounded-2xl border border-slate-100">
                 <p className="font-black text-slate-800 mb-1.5">Q: {faq.q}</p>

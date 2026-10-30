@@ -1,4 +1,5 @@
-// API Verified Canada Universities Dataset (Statistics Canada 109 + Top Colleges)
+// Static fallback list. Ranks: QS World University Rankings 2027 (only where QS lists the institution).
+// Fees only where checked against the university's own fee page; otherwise pages link to the university.
 export const UNIVERSITIES_CANADA = [
   {
     "_id": "canada-1",
@@ -11,16 +12,10 @@ export const UNIVERSITIES_CANADA = [
     "location": "Toronto, Ontario, Canada",
     "logo": "https://www.google.com/s2/favicons?domain=www.utoronto.ca&sz=128",
     "website": "https://www.utoronto.ca",
-    "rank": "Rank 21 QS Rankings",
-    "rankingNum": 21,
-    "tuition": "41 Lakh INR",
-    "tuitionFeeUSD": 20000,
-    "acceptanceRate": 30,
+    "rank": "32",
+    "rankingNum": 32,
+    "tuition": "₹52 Lakh/yr (official fee)",
     "type": "PUBLIC",
-    "minGpaPercent": 75,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -112,7 +107,8 @@ export const UNIVERSITIES_CANADA = [
       "Software Engineering"
     ],
     "description": "Canada's flagship university and top-ranked institution globally (#21 QS), global epicenter of artificial intelligence, Rotman School of Management, and medicine.",
-    "eligibility": "GPA 3.6+, IELTS 7.0+ or equivalent"
+    "rankingSource": "QS World University Rankings 2027",
+    "tuitionVerified": true
   },
   {
     "_id": "canada-25",
@@ -125,16 +121,7 @@ export const UNIVERSITIES_CANADA = [
     "location": "Edmonton, Alberta, Canada",
     "logo": "https://www.google.com/s2/favicons?domain=www.macewan.ca&sz=128",
     "website": "https://www.macewan.ca",
-    "rank": "Rank 25 QS Rankings",
-    "rankingNum": 25,
-    "tuition": "14 Lakh INR",
-    "tuitionFeeUSD": 20000,
-    "acceptanceRate": 30,
     "type": "PUBLIC",
-    "minGpaPercent": 75,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -179,8 +166,7 @@ export const UNIVERSITIES_CANADA = [
       "Sociology",
       "Theatre"
     ],
-    "description": "Vibrant downtown university in Edmonton offering teaching-focused programs in business, arts, science, nursing, and communications.",
-    "eligibility": "GPA 2.8+, IELTS 6.5+ or equivalent"
+    "description": "Vibrant downtown university in Edmonton offering teaching-focused programs in business, arts, science, nursing, and communications."
   },
   {
     "_id": "canada-25",
@@ -193,16 +179,7 @@ export const UNIVERSITIES_CANADA = [
     "location": "Edmonton, Alberta, Canada",
     "logo": "https://www.google.com/s2/favicons?domain=www.macewan.ca&sz=128",
     "website": "https://www.macewan.ca",
-    "rank": "Rank 25 QS Rankings",
-    "rankingNum": 25,
-    "tuition": "14 Lakh INR",
-    "tuitionFeeUSD": 20000,
-    "acceptanceRate": 30,
     "type": "PUBLIC",
-    "minGpaPercent": 75,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -247,8 +224,7 @@ export const UNIVERSITIES_CANADA = [
       "Sociology",
       "Theatre"
     ],
-    "description": "Vibrant downtown university in Edmonton offering teaching-focused programs in business, arts, science, nursing, and communications.",
-    "eligibility": "GPA 2.8+, IELTS 6.5+ or equivalent"
+    "description": "Vibrant downtown university in Edmonton offering teaching-focused programs in business, arts, science, nursing, and communications."
   },
   {
     "_id": "canada-26",
@@ -261,16 +237,7 @@ export const UNIVERSITIES_CANADA = [
     "location": "Thunder Bay, Ontario, Canada",
     "logo": "https://www.google.com/s2/favicons?domain=www.lakeheadu.ca&sz=128",
     "website": "https://www.lakeheadu.ca",
-    "rank": "Rank 26 QS Rankings",
-    "rankingNum": 26,
-    "tuition": "16 Lakh INR",
-    "tuitionFeeUSD": 20000,
-    "acceptanceRate": 30,
     "type": "PUBLIC",
-    "minGpaPercent": 75,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -317,8 +284,7 @@ export const UNIVERSITIES_CANADA = [
       "Theatre",
       "Arts / Fine Art"
     ],
-    "description": "Dynamic university with campuses in Thunder Bay and Orillia, offering popular master's in computer science, civil/mechanical engineering, and business.",
-    "eligibility": "GPA 2.7+, IELTS 6.5+ or equivalent"
+    "description": "Dynamic university with campuses in Thunder Bay and Orillia, offering popular master's in computer science, civil/mechanical engineering, and business."
   },
   {
     "_id": "canada-27",
@@ -331,16 +297,7 @@ export const UNIVERSITIES_CANADA = [
     "location": "Quebec City, Canada",
     "logo": "https://www.google.com/s2/favicons?domain=inrs.ca&sz=128",
     "website": "https://inrs.ca/",
-    "rank": "Rank 27 QS Rankings",
-    "rankingNum": 27,
-    "tuition": "10 Lakh INR",
-    "tuitionFeeUSD": 20000,
-    "acceptanceRate": 30,
     "type": "PUBLIC",
-    "minGpaPercent": 75,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -376,16 +333,7 @@ export const UNIVERSITIES_CANADA = [
     "location": "Quebec City, Quebec, Canada",
     "logo": "https://www.google.com/s2/favicons?domain=inrs.ca&sz=128",
     "website": "https://inrs.ca/",
-    "rank": "Rank 27 QS Rankings",
-    "rankingNum": 27,
-    "tuition": "10 Lakh INR",
-    "tuitionFeeUSD": 20000,
-    "acceptanceRate": 30,
     "type": "PUBLIC",
-    "minGpaPercent": 75,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -409,8 +357,7 @@ export const UNIVERSITIES_CANADA = [
       "Physics",
       "Mathematics"
     ],
-    "description": "Premier graduate-only research institute leading Canadian research in nanotechnology, photonics, telecommunications, water science, and public health.",
-    "eligibility": "GPA 3.2+, IELTS 6.5+ or equivalent"
+    "description": "Premier graduate-only research institute leading Canadian research in nanotechnology, photonics, telecommunications, water science, and public health."
   },
   {
     "_id": "canada-27",
@@ -423,16 +370,7 @@ export const UNIVERSITIES_CANADA = [
     "location": "Quebec City, Quebec, Canada",
     "logo": "https://www.google.com/s2/favicons?domain=inrs.ca&sz=128",
     "website": "https://inrs.ca/",
-    "rank": "Rank 27 QS Rankings",
-    "rankingNum": 27,
-    "tuition": "10 Lakh INR",
-    "tuitionFeeUSD": 20000,
-    "acceptanceRate": 30,
     "type": "PUBLIC",
-    "minGpaPercent": 75,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -456,8 +394,7 @@ export const UNIVERSITIES_CANADA = [
       "Physics",
       "Mathematics"
     ],
-    "description": "Premier graduate-only research institute leading Canadian research in nanotechnology, photonics, telecommunications, water science, and public health.",
-    "eligibility": "GPA 3.2+, IELTS 6.5+ or equivalent"
+    "description": "Premier graduate-only research institute leading Canadian research in nanotechnology, photonics, telecommunications, water science, and public health."
   },
   {
     "_id": "canada-28",
@@ -470,16 +407,7 @@ export const UNIVERSITIES_CANADA = [
     "location": "Athabasca, Alberta, Canada",
     "logo": "https://www.google.com/s2/favicons?domain=www.athabascau.ca&sz=128",
     "website": "https://www.athabascau.ca/",
-    "rank": "Rank 28 QS Rankings",
-    "rankingNum": 28,
-    "tuition": "10 Lakh INR",
-    "tuitionFeeUSD": 20000,
-    "acceptanceRate": 30,
     "type": "PUBLIC",
-    "minGpaPercent": 75,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -505,8 +433,7 @@ export const UNIVERSITIES_CANADA = [
       "Psychology",
       "Interdisciplinary Studies"
     ],
-    "description": "Canada's foremost open and online university, pioneer in flexible online master's in Information Systems (MSc IS) and MBA for working professionals.",
-    "eligibility": "GPA 2.7+, IELTS 6.5+ or equivalent"
+    "description": "Canada's foremost open and online university, pioneer in flexible online master's in Information Systems (MSc IS) and MBA for working professionals."
   },
   {
     "_id": "canada-29",
@@ -519,16 +446,7 @@ export const UNIVERSITIES_CANADA = [
     "location": "Surrey, British Columbia, Canada",
     "logo": "https://www.google.com/s2/favicons?domain=www.kpu.ca&sz=128",
     "website": "https://www.kpu.ca/",
-    "rank": "Rank 29 QS Rankings",
-    "rankingNum": 29,
-    "tuition": "14 Lakh INR",
-    "tuitionFeeUSD": 20000,
-    "acceptanceRate": 30,
     "type": "PUBLIC",
-    "minGpaPercent": 75,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -557,8 +475,7 @@ export const UNIVERSITIES_CANADA = [
       "Justice studies",
       "Food And Hospitality"
     ],
-    "description": "Canada's only polytechnic university with 5 campuses in Metro Vancouver, offering hands-on technical degrees, post-baccalaureate diplomas, and Wilson School of Design.",
-    "eligibility": "GPA 2.7+, IELTS 6.5+ or equivalent"
+    "description": "Canada's only polytechnic university with 5 campuses in Metro Vancouver, offering hands-on technical degrees, post-baccalaureate diplomas, and Wilson School of Design."
   },
   {
     "_id": "canada-2",
@@ -571,16 +488,10 @@ export const UNIVERSITIES_CANADA = [
     "location": "Montreal, Quebec, Canada",
     "logo": "https://www.google.com/s2/favicons?domain=www.mcgill.ca&sz=128",
     "website": "https://www.mcgill.ca",
-    "rank": "Rank 30 QS Rankings",
+    "rank": "30",
     "rankingNum": 30,
-    "tuition": "23 Lakh INR",
-    "tuitionFeeUSD": 20000,
-    "acceptanceRate": 30,
+    "tuition": "₹22 Lakh/yr (official fee)",
     "type": "PUBLIC",
-    "minGpaPercent": 75,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -647,7 +558,8 @@ export const UNIVERSITIES_CANADA = [
       "Geography"
     ],
     "description": "One of the most prestigious universities in North America, boasting 12 Nobel laureates and world-leading research in AI, medicine, and engineering.",
-    "eligibility": "GPA 3.6+, IELTS 7.0+ or equivalent"
+    "rankingSource": "QS World University Rankings 2027",
+    "tuitionVerified": true
   },
   {
     "_id": "canada-30",
@@ -660,16 +572,7 @@ export const UNIVERSITIES_CANADA = [
     "location": "Camrose, Canada",
     "logo": "https://www.google.com/s2/favicons?domain=www.ualberta.ca&sz=128",
     "website": "https://www.ualberta.ca/augustana/index.html",
-    "rank": "Rank 30 QS Rankings",
-    "rankingNum": 30,
-    "tuition": "37 Lakh INR",
-    "tuitionFeeUSD": 20000,
-    "acceptanceRate": 30,
     "type": "PUBLIC",
-    "minGpaPercent": 75,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -710,16 +613,9 @@ export const UNIVERSITIES_CANADA = [
     "location": "Regina, Saskatchewan, Canada",
     "logo": "https://www.google.com/s2/favicons?domain=www.uregina.ca&sz=128",
     "website": "https://www.uregina.ca",
-    "rank": "Rank 31 QS Rankings",
-    "rankingNum": 31,
-    "tuition": "20 Lakh INR",
-    "tuitionFeeUSD": 20000,
-    "acceptanceRate": 30,
+    "rank": "1001-1200",
+    "rankingNum": 1001,
     "type": "PUBLIC",
-    "minGpaPercent": 75,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -775,7 +671,7 @@ export const UNIVERSITIES_CANADA = [
       "Film and TV production"
     ],
     "description": "Pioneer in co-op education in Saskatchewan, offering renowned programs in computer science, petroleum systems engineering, software systems, and MBA.",
-    "eligibility": "GPA 2.8+, IELTS 6.5+ or equivalent"
+    "rankingSource": "QS World University Rankings 2027"
   },
   {
     "_id": "canada-32",
@@ -788,16 +684,7 @@ export const UNIVERSITIES_CANADA = [
     "location": "Regina, Canada",
     "logo": "https://www.google.com/s2/favicons?domain=www.fnuniv.ca&sz=128",
     "website": "https://www.fnuniv.ca/",
-    "rank": "Rank 32 QS Rankings",
-    "rankingNum": 32,
-    "tuition": "13 Lakh INR",
-    "tuitionFeeUSD": 20000,
-    "acceptanceRate": 30,
     "type": "PUBLIC",
-    "minGpaPercent": 75,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -836,16 +723,7 @@ export const UNIVERSITIES_CANADA = [
     "location": "Nanaimo, British Columbia, Canada",
     "logo": "https://www.google.com/s2/favicons?domain=www.viu.ca&sz=128",
     "website": "https://www.viu.ca",
-    "rank": "Rank 33 QS Rankings",
-    "rankingNum": 33,
-    "tuition": "15 Lakh INR",
-    "tuitionFeeUSD": 20000,
-    "acceptanceRate": 30,
     "type": "PUBLIC",
-    "minGpaPercent": 75,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -875,8 +753,7 @@ export const UNIVERSITIES_CANADA = [
       "Food And Hospitality",
       "Tourism"
     ],
-    "description": "Dynamic coastal university on Vancouver Island, popular among international students for its dual-degree MBA/MScIB and computer science.",
-    "eligibility": "GPA 2.7+, IELTS 6.5+ or equivalent"
+    "description": "Dynamic coastal university on Vancouver Island, popular among international students for its dual-degree MBA/MScIB and computer science."
   },
   {
     "_id": "canada-3",
@@ -889,16 +766,10 @@ export const UNIVERSITIES_CANADA = [
     "location": "Vancouver, British Columbia, Canada",
     "logo": "https://www.google.com/s2/favicons?domain=www.ubc.ca&sz=128",
     "website": "https://www.ubc.ca/",
-    "rank": "Rank 34 QS Rankings",
-    "rankingNum": 34,
-    "tuition": "32 Lakh INR",
-    "tuitionFeeUSD": 20000,
-    "acceptanceRate": 30,
+    "rank": "45",
+    "rankingNum": 45,
+    "tuition": "₹19 Lakh/yr (official fee)",
     "type": "PUBLIC",
-    "minGpaPercent": 75,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -957,7 +828,8 @@ export const UNIVERSITIES_CANADA = [
       "Environmental Engineering"
     ],
     "description": "World top-tier research institution (#34 QS) located in spectacular Vancouver and Okanagan, renowned for Sauder School of Business, AI, and forestry.",
-    "eligibility": "GPA 3.6+, IELTS 7.0+ or equivalent"
+    "rankingSource": "QS World University Rankings 2027",
+    "tuitionVerified": true
   },
   {
     "_id": "canada-34",
@@ -970,16 +842,7 @@ export const UNIVERSITIES_CANADA = [
     "location": "Oshawa, Ontario, Canada",
     "logo": "https://www.google.com/s2/favicons?domain=ontariotechu.ca&sz=128",
     "website": "https://ontariotechu.ca/",
-    "rank": "Rank 34 QS Rankings",
-    "rankingNum": 34,
-    "tuition": "23 Lakh INR",
-    "tuitionFeeUSD": 20000,
-    "acceptanceRate": 30,
     "type": "PUBLIC",
-    "minGpaPercent": 75,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -1014,8 +877,7 @@ export const UNIVERSITIES_CANADA = [
       "Cyber Security",
       "Forensics"
     ],
-    "description": "Modern, STEM-focused institution renowned for automotive engineering, nuclear engineering, cybersecurity, computer science, and game development.",
-    "eligibility": "GPA 2.9+, IELTS 6.5+ or equivalent"
+    "description": "Modern, STEM-focused institution renowned for automotive engineering, nuclear engineering, cybersecurity, computer science, and game development."
   },
   {
     "_id": "canada-35",
@@ -1028,16 +890,7 @@ export const UNIVERSITIES_CANADA = [
     "location": "Antigonish, Nova Scotia, Canada",
     "logo": "https://www.google.com/s2/favicons?domain=www.stfx.ca&sz=128",
     "website": "https://www.stfx.ca/",
-    "rank": "Rank 35 QS Rankings",
-    "rankingNum": 35,
-    "tuition": "9 Lakh INR",
-    "tuitionFeeUSD": 20000,
-    "acceptanceRate": 30,
     "type": "PUBLIC",
-    "minGpaPercent": 75,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -1072,8 +925,7 @@ export const UNIVERSITIES_CANADA = [
       "Language and Literature",
       "Philosophy and Religious Studies"
     ],
-    "description": "Top undergraduate university in Canada, famous for the Schwartz School of Business, Coady Institute, and close-knit collegiate atmosphere.",
-    "eligibility": "GPA 2.8+, IELTS 6.5+ or equivalent"
+    "description": "Top undergraduate university in Canada, famous for the Schwartz School of Business, Coady Institute, and close-knit collegiate atmosphere."
   },
   {
     "_id": "canada-36",
@@ -1086,16 +938,7 @@ export const UNIVERSITIES_CANADA = [
     "location": "Calgary, Alberta, Canada",
     "logo": "https://www.google.com/s2/favicons?domain=www.mtroyal.ca&sz=128",
     "website": "https://www.mtroyal.ca",
-    "rank": "Rank 36 QS Rankings",
-    "rankingNum": 36,
-    "tuition": "11 Lakh INR",
-    "tuitionFeeUSD": 20000,
-    "acceptanceRate": 30,
     "type": "PUBLIC",
-    "minGpaPercent": 75,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -1138,8 +981,7 @@ export const UNIVERSITIES_CANADA = [
       "Sociology",
       "Theatre"
     ],
-    "description": "Student-centered university in Calgary known for aviation, business (Bissett School of Business), computer science, and communications.",
-    "eligibility": "GPA 2.8+, IELTS 6.5+ or equivalent"
+    "description": "Student-centered university in Calgary known for aviation, business (Bissett School of Business), computer science, and communications."
   },
   {
     "_id": "canada-37",
@@ -1152,16 +994,7 @@ export const UNIVERSITIES_CANADA = [
     "location": "Brandon, Manitoba, Canada",
     "logo": "https://www.google.com/s2/favicons?domain=www.brandonu.ca&sz=128",
     "website": "https://www.brandonu.ca/",
-    "rank": "Rank 37 QS Rankings",
-    "rankingNum": 37,
-    "tuition": "5 Lakh INR",
-    "tuitionFeeUSD": 20000,
-    "acceptanceRate": 30,
     "type": "PUBLIC",
-    "minGpaPercent": 75,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -1193,8 +1026,7 @@ export const UNIVERSITIES_CANADA = [
       "Computer Science",
       "Economics"
     ],
-    "description": "Distinguished undergraduate university in Manitoba, renowned for its School of Music, environmental sciences, nursing, and education.",
-    "eligibility": "GPA 2.6+, IELTS 6.5+ or equivalent"
+    "description": "Distinguished undergraduate university in Manitoba, renowned for its School of Music, environmental sciences, nursing, and education."
   },
   {
     "_id": "canada-38",
@@ -1207,16 +1039,7 @@ export const UNIVERSITIES_CANADA = [
     "location": "Chicoutimi, Quebec, Canada",
     "logo": "https://www.google.com/s2/favicons?domain=www.uqac.ca&sz=128",
     "website": "https://www.uqac.ca/",
-    "rank": "Rank 38 QS Rankings",
-    "rankingNum": 38,
-    "tuition": "6 Lakh INR",
-    "tuitionFeeUSD": 20000,
-    "acceptanceRate": 30,
     "type": "PUBLIC",
-    "minGpaPercent": 75,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -1251,8 +1074,7 @@ export const UNIVERSITIES_CANADA = [
       "History",
       "Language and Literature"
     ],
-    "description": "Public university renowned for video game design, aluminum technology, digital arts, forestry, and Arctic engineering.",
-    "eligibility": "GPA 2.6+, IELTS 6.5+ or equivalent"
+    "description": "Public university renowned for video game design, aluminum technology, digital arts, forestry, and Arctic engineering."
   },
   {
     "_id": "canada-39",
@@ -1265,16 +1087,7 @@ export const UNIVERSITIES_CANADA = [
     "location": "Edmonton, Alberta, Canada",
     "logo": "https://www.google.com/s2/favicons?domain=www.kingsu.ca&sz=128",
     "website": "https://www.kingsu.ca/",
-    "rank": "Rank 39 QS Rankings",
-    "rankingNum": 39,
-    "tuition": "23 Lakh INR",
-    "tuitionFeeUSD": 20000,
-    "acceptanceRate": 30,
     "type": "PUBLIC",
-    "minGpaPercent": 75,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -1299,8 +1112,7 @@ export const UNIVERSITIES_CANADA = [
       "Economics",
       "Music"
     ],
-    "description": "Christian university in Edmonton offering accredited degrees in business, computing science, chemistry, and environmental studies.",
-    "eligibility": "GPA 2.6+, IELTS 6.5+ or equivalent"
+    "description": "Christian university in Edmonton offering accredited degrees in business, computing science, chemistry, and environmental studies."
   },
   {
     "_id": "canada-39",
@@ -1313,16 +1125,7 @@ export const UNIVERSITIES_CANADA = [
     "location": "Edmonton, Alberta, Canada",
     "logo": "https://www.google.com/s2/favicons?domain=www.kingsu.ca&sz=128",
     "website": "https://www.kingsu.ca/",
-    "rank": "Rank 39 QS Rankings",
-    "rankingNum": 39,
-    "tuition": "23 Lakh INR",
-    "tuitionFeeUSD": 20000,
-    "acceptanceRate": 30,
     "type": "PUBLIC",
-    "minGpaPercent": 75,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -1347,8 +1150,7 @@ export const UNIVERSITIES_CANADA = [
       "Economics",
       "Music"
     ],
-    "description": "Christian university in Edmonton offering accredited degrees in business, computing science, chemistry, and environmental studies.",
-    "eligibility": "GPA 2.6+, IELTS 6.5+ or equivalent"
+    "description": "Christian university in Edmonton offering accredited degrees in business, computing science, chemistry, and environmental studies."
   },
   {
     "_id": "canada-40",
@@ -1361,16 +1163,7 @@ export const UNIVERSITIES_CANADA = [
     "location": "London, Ontario, Canada",
     "logo": "https://www.google.com/s2/favicons?domain=huronatwestern.ca&sz=128",
     "website": "https://huronatwestern.ca",
-    "rank": "Rank 40 QS Rankings",
-    "rankingNum": 40,
-    "tuition": "35 Lakh INR",
-    "tuitionFeeUSD": 20000,
-    "acceptanceRate": 30,
     "type": "PUBLIC",
-    "minGpaPercent": 75,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -1393,8 +1186,7 @@ export const UNIVERSITIES_CANADA = [
       "Philosophy and Religious Studies",
       "Social and Cultural Courses"
     ],
-    "description": "Founding college of Western University, dedicated to ethical leadership, liberal arts, management, and theology.",
-    "eligibility": "GPA 2.9+, IELTS 6.5+ or equivalent"
+    "description": "Founding college of Western University, dedicated to ethical leadership, liberal arts, management, and theology."
   },
   {
     "_id": "canada-41",
@@ -1407,16 +1199,7 @@ export const UNIVERSITIES_CANADA = [
     "location": "Ottawa, Canada",
     "logo": "https://www.google.com/s2/favicons?domain=telfer.uottawa.ca&sz=128",
     "website": "https://telfer.uottawa.ca/",
-    "rank": "Rank 41 QS Rankings",
-    "rankingNum": 41,
-    "tuition": "23 Lakh INR",
-    "tuitionFeeUSD": 20000,
-    "acceptanceRate": 55,
     "type": "PUBLIC",
-    "minGpaPercent": 65,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -1458,16 +1241,7 @@ export const UNIVERSITIES_CANADA = [
     "location": "Lethbridge, Alberta, Canada",
     "logo": "https://www.google.com/s2/favicons?domain=www.uleth.ca&sz=128",
     "website": "https://www.uleth.ca",
-    "rank": "Rank 42 QS Rankings",
-    "rankingNum": 42,
-    "tuition": "13 Lakh INR",
-    "tuitionFeeUSD": 20000,
-    "acceptanceRate": 55,
     "type": "PUBLIC",
-    "minGpaPercent": 65,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -1502,8 +1276,7 @@ export const UNIVERSITIES_CANADA = [
       "Nursing and midwifery",
       "Management"
     ],
-    "description": "Pioneering research university in southern Alberta, home to the Canadian Centre for Behavioural Neuroscience, Dhillon School of Business, and Computer Science.",
-    "eligibility": "GPA 2.8+, IELTS 6.5+ or equivalent"
+    "description": "Pioneering research university in southern Alberta, home to the Canadian Centre for Behavioural Neuroscience, Dhillon School of Business, and Computer Science."
   },
   {
     "_id": "canada-43",
@@ -1516,16 +1289,9 @@ export const UNIVERSITIES_CANADA = [
     "location": "Sherbrooke, Quebec, Canada",
     "logo": "https://www.google.com/s2/favicons?domain=www.usherbrooke.ca&sz=128",
     "website": "https://www.usherbrooke.ca",
-    "rank": "Rank 43 QS Rankings",
-    "rankingNum": 43,
-    "tuition": "14 Lakh INR",
-    "tuitionFeeUSD": 20000,
-    "acceptanceRate": 55,
+    "rank": "951-1000",
+    "rankingNum": 951,
     "type": "PUBLIC",
-    "minGpaPercent": 65,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -1556,7 +1322,7 @@ export const UNIVERSITIES_CANADA = [
       "Architecture"
     ],
     "description": "Renowned for its practical cooperative education system, quantum computing research, biotechnology, and medical sciences.",
-    "eligibility": "GPA 2.9+, IELTS 6.5+ or equivalent"
+    "rankingSource": "QS World University Rankings 2027"
   },
   {
     "_id": "canada-48",
@@ -1569,16 +1335,7 @@ export const UNIVERSITIES_CANADA = [
     "location": "Kamloops, British Columbia, Canada",
     "logo": "https://www.google.com/s2/favicons?domain=www.tru.ca&sz=128",
     "website": "https://www.tru.ca",
-    "rank": "Rank 48 QS Rankings",
-    "rankingNum": 48,
-    "tuition": "14 Lakh INR",
-    "tuitionFeeUSD": 20000,
-    "acceptanceRate": 55,
     "type": "PUBLIC",
-    "minGpaPercent": 65,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -1608,8 +1365,7 @@ export const UNIVERSITIES_CANADA = [
       "Psychology",
       "Tourism"
     ],
-    "description": "Comprehensive public institution in British Columbia offering flexible post-baccalaureate diplomas and master's in business, data science, and tourism.",
-    "eligibility": "GPA 2.7+, IELTS 6.5+ or equivalent"
+    "description": "Comprehensive public institution in British Columbia offering flexible post-baccalaureate diplomas and master's in business, data science, and tourism."
   },
   {
     "_id": "canada-49",
@@ -1622,16 +1378,7 @@ export const UNIVERSITIES_CANADA = [
     "location": "Toronto, Ontario, Canada",
     "logo": "https://www.google.com/s2/favicons?domain=www.utoronto.ca&sz=128",
     "website": "https://www.utoronto.ca/",
-    "rank": "Rank 49 QS Rankings",
-    "rankingNum": 49,
-    "tuition": "46 Lakh INR",
-    "tuitionFeeUSD": 20000,
-    "acceptanceRate": 55,
     "type": "PUBLIC",
-    "minGpaPercent": 65,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -1656,8 +1403,7 @@ export const UNIVERSITIES_CANADA = [
       "Economics",
       "English language"
     ],
-    "description": "Federated college with the University of Toronto, renowned for book and media studies, Celtic studies, media ecology, and theology.",
-    "eligibility": "GPA 3.0+, IELTS 6.5+ or equivalent"
+    "description": "Federated college with the University of Toronto, renowned for book and media studies, Celtic studies, media ecology, and theology."
   },
   {
     "_id": "canada-50",
@@ -1670,16 +1416,7 @@ export const UNIVERSITIES_CANADA = [
     "location": "Victoria, British Columbia, Canada",
     "logo": "https://www.google.com/s2/favicons?domain=www.royalroads.ca&sz=128",
     "website": "https://www.royalroads.ca",
-    "rank": "Rank 50 QS Rankings",
-    "rankingNum": 50,
-    "tuition": "26 Lakh INR",
-    "tuitionFeeUSD": 20000,
-    "acceptanceRate": 55,
     "type": "PUBLIC",
-    "minGpaPercent": 65,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -1704,8 +1441,7 @@ export const UNIVERSITIES_CANADA = [
       "Psychology",
       "International Relations"
     ],
-    "description": "Located on the historic Hatley Castle estate in Victoria, specializing in executive leadership, global management, project management, and sustainability.",
-    "eligibility": "GPA 3.0+, IELTS 6.5+ or equivalent"
+    "description": "Located on the historic Hatley Castle estate in Victoria, specializing in executive leadership, global management, project management, and sustainability."
   },
   {
     "_id": "canada-51",
@@ -1718,16 +1454,7 @@ export const UNIVERSITIES_CANADA = [
     "location": "Montreal, Canada",
     "logo": "https://www.google.com/s2/favicons?domain=www.etsmtl.ca&sz=128",
     "website": "https://www.etsmtl.ca/",
-    "rank": "Rank 51 QS Rankings",
-    "rankingNum": 51,
-    "tuition": "11 Lakh INR",
-    "tuitionFeeUSD": 20000,
-    "acceptanceRate": 55,
     "type": "PUBLIC",
-    "minGpaPercent": 65,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -1768,16 +1495,7 @@ export const UNIVERSITIES_CANADA = [
     "location": "Montreal, Quebec, Canada",
     "logo": "https://www.google.com/s2/favicons?domain=www.etsmtl.ca&sz=128",
     "website": "https://www.etsmtl.ca/",
-    "rank": "Rank 51 QS Rankings",
-    "rankingNum": 51,
-    "tuition": "11 Lakh INR",
-    "tuitionFeeUSD": 20000,
-    "acceptanceRate": 55,
     "type": "PUBLIC",
-    "minGpaPercent": 65,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -1806,8 +1524,7 @@ export const UNIVERSITIES_CANADA = [
       "Project Management",
       "Business Administration"
     ],
-    "description": "Canada's top applied engineering university with extensive industry partnerships in Montreal, producing one in four engineers in Quebec.",
-    "eligibility": "GPA 2.9+, IELTS 6.5+ or equivalent"
+    "description": "Canada's top applied engineering university with extensive industry partnerships in Montreal, producing one in four engineers in Quebec."
   },
   {
     "_id": "canada-51",
@@ -1820,16 +1537,7 @@ export const UNIVERSITIES_CANADA = [
     "location": "Montreal, Quebec, Canada",
     "logo": "https://www.google.com/s2/favicons?domain=www.etsmtl.ca&sz=128",
     "website": "https://www.etsmtl.ca/",
-    "rank": "Rank 51 QS Rankings",
-    "rankingNum": 51,
-    "tuition": "11 Lakh INR",
-    "tuitionFeeUSD": 20000,
-    "acceptanceRate": 55,
     "type": "PUBLIC",
-    "minGpaPercent": 65,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -1858,8 +1566,7 @@ export const UNIVERSITIES_CANADA = [
       "Project Management",
       "Business Administration"
     ],
-    "description": "Canada's top applied engineering university with extensive industry partnerships in Montreal, producing one in four engineers in Quebec.",
-    "eligibility": "GPA 2.9+, IELTS 6.5+ or equivalent"
+    "description": "Canada's top applied engineering university with extensive industry partnerships in Montreal, producing one in four engineers in Quebec."
   },
   {
     "_id": "canada-52",
@@ -1872,16 +1579,7 @@ export const UNIVERSITIES_CANADA = [
     "location": "Abbotsford, British Columbia, Canada",
     "logo": "https://www.google.com/s2/favicons?domain=www.ufv.ca&sz=128",
     "website": "https://www.ufv.ca",
-    "rank": "Rank 52 QS Rankings",
-    "rankingNum": 52,
-    "tuition": "12 Lakh INR",
-    "tuitionFeeUSD": 20000,
-    "acceptanceRate": 55,
     "type": "PUBLIC",
-    "minGpaPercent": 65,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -1916,8 +1614,7 @@ export const UNIVERSITIES_CANADA = [
       "Theatre",
       "Justice studies"
     ],
-    "description": "Fully accredited university situated east of Vancouver in the scenic Fraser Valley, focusing on undergraduate research, computing, business, and aviation.",
-    "eligibility": "GPA 2.7+, IELTS 6.5+ or equivalent"
+    "description": "Fully accredited university situated east of Vancouver in the scenic Fraser Valley, focusing on undergraduate research, computing, business, and aviation."
   },
   {
     "_id": "canada-54",
@@ -1930,16 +1627,7 @@ export const UNIVERSITIES_CANADA = [
     "location": "Langley, Canada",
     "logo": "https://www.google.com/s2/favicons?domain=www.twu.ca&sz=128",
     "website": "https://www.twu.ca",
-    "rank": "Rank 54 QS Rankings",
-    "rankingNum": 54,
-    "tuition": "23 Lakh INR",
-    "tuitionFeeUSD": 20000,
-    "acceptanceRate": 55,
     "type": "PUBLIC",
-    "minGpaPercent": 65,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -1984,16 +1672,7 @@ export const UNIVERSITIES_CANADA = [
     "location": "Sackville, New Brunswick, Canada",
     "logo": "https://www.google.com/s2/favicons?domain=www.mta.ca&sz=128",
     "website": "https://www.mta.ca/",
-    "rank": "Rank 55 QS Rankings",
-    "rankingNum": 55,
-    "tuition": "14 Lakh INR",
-    "tuitionFeeUSD": 20000,
-    "acceptanceRate": 55,
     "type": "PUBLIC",
-    "minGpaPercent": 65,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -2028,8 +1707,7 @@ export const UNIVERSITIES_CANADA = [
       "Environmental science / management",
       "Philosophy and Religious Studies"
     ],
-    "description": "Consistently ranked Canada's #1 undergraduate university by Maclean's magazine, renowned for liberal arts, science research, and fine arts.",
-    "eligibility": "GPA 3.0+, IELTS 6.5+ or equivalent"
+    "description": "Consistently ranked Canada's #1 undergraduate university by Maclean's magazine, renowned for liberal arts, science research, and fine arts."
   },
   {
     "_id": "canada-56",
@@ -2042,16 +1720,7 @@ export const UNIVERSITIES_CANADA = [
     "location": "Sydney, Nova Scotia, Canada",
     "logo": "https://www.google.com/s2/favicons?domain=www.cbu.ca&sz=128",
     "website": "https://www.cbu.ca",
-    "rank": "Rank 56 QS Rankings",
-    "rankingNum": 56,
-    "tuition": "15 Lakh INR",
-    "tuitionFeeUSD": 20000,
-    "acceptanceRate": 55,
     "type": "PUBLIC",
-    "minGpaPercent": 65,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -2085,8 +1754,7 @@ export const UNIVERSITIES_CANADA = [
       "Sales And Marketing",
       "Human resource Management"
     ],
-    "description": "Innovative post-secondary institution in Sydney, Nova Scotia, popular among international students for Business, IT, Engineering Tech, and Public Health.",
-    "eligibility": "GPA 2.5+, IELTS 6.5+ or equivalent"
+    "description": "Innovative post-secondary institution in Sydney, Nova Scotia, popular among international students for Business, IT, Engineering Tech, and Public Health."
   },
   {
     "_id": "canada-57",
@@ -2099,16 +1767,7 @@ export const UNIVERSITIES_CANADA = [
     "location": "Charlottetown, Prince Edward Island, Canada",
     "logo": "https://www.google.com/s2/favicons?domain=www.upei.ca&sz=128",
     "website": "https://www.upei.ca",
-    "rank": "Rank 57 QS Rankings",
-    "rankingNum": 57,
-    "tuition": "6 Lakh INR",
-    "tuitionFeeUSD": 20000,
-    "acceptanceRate": 55,
     "type": "PUBLIC",
-    "minGpaPercent": 65,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -2136,8 +1795,7 @@ export const UNIVERSITIES_CANADA = [
       "Health Sciences / Administration",
       "Animal and Veterinary Studies"
     ],
-    "description": "Public university in Charlottetown known for veterinary medicine, nursing, sustainable design engineering, and business administration.",
-    "eligibility": "GPA 2.6+, IELTS 6.5+ or equivalent"
+    "description": "Public university in Charlottetown known for veterinary medicine, nursing, sustainable design engineering, and business administration."
   },
   {
     "_id": "canada-59",
@@ -2150,16 +1808,9 @@ export const UNIVERSITIES_CANADA = [
     "location": "Fredericton, New Brunswick, Canada",
     "logo": "https://www.google.com/s2/favicons?domain=www.unb.ca&sz=128",
     "website": "https://www.unb.ca",
-    "rank": "Rank 59 QS Rankings",
-    "rankingNum": 59,
-    "tuition": "14 Lakh INR",
-    "tuitionFeeUSD": 20000,
-    "acceptanceRate": 55,
+    "rank": "=677",
+    "rankingNum": 677,
     "type": "PUBLIC",
-    "minGpaPercent": 65,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -2199,7 +1850,7 @@ export const UNIVERSITIES_CANADA = [
       "Law"
     ],
     "description": "Canada's oldest English-language university, pioneer in computer science, cybersecurity, forestry, and engineering innovation.",
-    "eligibility": "GPA 2.8+, IELTS 6.5+ or equivalent"
+    "rankingSource": "QS World University Rankings 2027"
   },
   {
     "_id": "canada-61",
@@ -2212,16 +1863,7 @@ export const UNIVERSITIES_CANADA = [
     "location": "Ancaster, Canada",
     "logo": "https://www.google.com/s2/favicons?domain=www.redeemer.ca&sz=128",
     "website": "https://www.redeemer.ca",
-    "rank": "Rank 61 QS Rankings",
-    "rankingNum": 61,
-    "tuition": "14 Lakh INR",
-    "tuitionFeeUSD": 20000,
-    "acceptanceRate": 55,
     "type": "PUBLIC",
-    "minGpaPercent": 65,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -2262,16 +1904,7 @@ export const UNIVERSITIES_CANADA = [
     "location": "Gatineau, Quebec, Canada",
     "logo": "https://www.google.com/s2/favicons?domain=uqo.ca&sz=128",
     "website": "https://uqo.ca",
-    "rank": "Rank 62 QS Rankings",
-    "rankingNum": 62,
-    "tuition": "25 Lakh INR",
-    "tuitionFeeUSD": 20000,
-    "acceptanceRate": 55,
     "type": "PUBLIC",
-    "minGpaPercent": 65,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -2299,8 +1932,7 @@ export const UNIVERSITIES_CANADA = [
       "Nursing and midwifery",
       "Health Sciences / Administration"
     ],
-    "description": "Located across the river from Canada's capital Ottawa, specializing in project management, cybersecurity, computer science, and social sciences.",
-    "eligibility": "GPA 2.6+, IELTS 6.5+ or equivalent"
+    "description": "Located across the river from Canada's capital Ottawa, specializing in project management, cybersecurity, computer science, and social sciences."
   },
   {
     "_id": "canada-64",
@@ -2313,16 +1945,7 @@ export const UNIVERSITIES_CANADA = [
     "location": "Wolfville, Nova Scotia, Canada",
     "logo": "https://www.google.com/s2/favicons?domain=www.acadiau.ca&sz=128",
     "website": "https://www.acadiau.ca/",
-    "rank": "Rank 64 QS Rankings",
-    "rankingNum": 64,
-    "tuition": "10 Lakh INR",
-    "tuitionFeeUSD": 20000,
-    "acceptanceRate": 55,
     "type": "PUBLIC",
-    "minGpaPercent": 65,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -2357,8 +1980,7 @@ export const UNIVERSITIES_CANADA = [
       "Environmental science / management",
       "Arts / Fine Art"
     ],
-    "description": "High-ranking primarily undergraduate university located in Wolfville, Nova Scotia with vibrant student community and co-op opportunities.",
-    "eligibility": "GPA 2.7+, IELTS 6.5+ or equivalent"
+    "description": "High-ranking primarily undergraduate university located in Wolfville, Nova Scotia with vibrant student community and co-op opportunities."
   },
   {
     "_id": "canada-67",
@@ -2371,16 +1993,7 @@ export const UNIVERSITIES_CANADA = [
     "location": "Sherbrooke, Quebec, Canada",
     "logo": "https://www.google.com/s2/favicons?domain=www.ubishops.ca&sz=128",
     "website": "https://www.ubishops.ca/",
-    "rank": "Rank 67 QS Rankings",
-    "rankingNum": 67,
-    "tuition": "18 Lakh INR",
-    "tuitionFeeUSD": 20000,
-    "acceptanceRate": 55,
     "type": "PUBLIC",
-    "minGpaPercent": 65,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -2411,8 +2024,7 @@ export const UNIVERSITIES_CANADA = [
       "Music",
       "Theatre"
     ],
-    "description": "English-language university located in the picturesque Eastern Townships of Quebec, offering student-centric education and Williams School of Business.",
-    "eligibility": "GPA 2.8+, IELTS 6.5+ or equivalent"
+    "description": "English-language university located in the picturesque Eastern Townships of Quebec, offering student-centric education and Williams School of Business."
   },
   {
     "_id": "canada-68",
@@ -2425,16 +2037,7 @@ export const UNIVERSITIES_CANADA = [
     "location": "Kingston, Canada",
     "logo": "https://www.google.com/s2/favicons?domain=www.rmc-cmr.ca&sz=128",
     "website": "https://www.rmc-cmr.ca/",
-    "rank": "Rank 68 QS Rankings",
-    "rankingNum": 68,
-    "tuition": "10 Lakh INR",
-    "tuitionFeeUSD": 20000,
-    "acceptanceRate": 55,
     "type": "PUBLIC",
-    "minGpaPercent": 65,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -2476,16 +2079,7 @@ export const UNIVERSITIES_CANADA = [
     "location": "Squamish, Canada",
     "logo": "https://www.google.com/s2/favicons?domain=questu.ca&sz=128",
     "website": "https://questu.ca/",
-    "rank": "Rank 69 QS Rankings",
-    "rankingNum": 69,
-    "tuition": "22 Lakh INR",
-    "tuitionFeeUSD": 20000,
-    "acceptanceRate": 55,
     "type": "PUBLIC",
-    "minGpaPercent": 65,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -2520,16 +2114,7 @@ export const UNIVERSITIES_CANADA = [
     "location": "London, Canada",
     "logo": "https://www.google.com/s2/favicons?domain=www.brescia.uwo.ca&sz=128",
     "website": "https://www.brescia.uwo.ca/",
-    "rank": "Rank 71 QS Rankings",
-    "rankingNum": 71,
-    "tuition": "19 Lakh INR",
-    "tuitionFeeUSD": 20000,
-    "acceptanceRate": 55,
     "type": "PUBLIC",
-    "minGpaPercent": 65,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -2564,16 +2149,7 @@ export const UNIVERSITIES_CANADA = [
     "location": "Edmonton, Alberta, Canada",
     "logo": "https://www.google.com/s2/favicons?domain=www.concordia.ab.ca&sz=128",
     "website": "https://www.concordia.ab.ca",
-    "rank": "Rank 73 QS Rankings",
-    "rankingNum": 73,
-    "tuition": "5 Lakh INR",
-    "tuitionFeeUSD": 20000,
-    "acceptanceRate": 55,
     "type": "PUBLIC",
-    "minGpaPercent": 65,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -2600,8 +2176,7 @@ export const UNIVERSITIES_CANADA = [
       "History",
       "Medicine and Medical Studies"
     ],
-    "description": "Renowned boutique university in Edmonton with premier master's degrees in Information Systems Security Management (MISSM) and Information Systems Assurance.",
-    "eligibility": "GPA 2.8+, IELTS 6.5+ or equivalent"
+    "description": "Renowned boutique university in Edmonton with premier master's degrees in Information Systems Security Management (MISSM) and Information Systems Assurance."
   },
   {
     "_id": "canada-77",
@@ -2614,16 +2189,7 @@ export const UNIVERSITIES_CANADA = [
     "location": "North Bay, Ontario, Canada",
     "logo": "https://www.google.com/s2/favicons?domain=www.nipissingu.ca&sz=128",
     "website": "https://www.nipissingu.ca/",
-    "rank": "Rank 77 QS Rankings",
-    "rankingNum": 77,
-    "tuition": "12 Lakh INR",
-    "tuitionFeeUSD": 20000,
-    "acceptanceRate": 55,
     "type": "PUBLIC",
-    "minGpaPercent": 65,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -2661,8 +2227,7 @@ export const UNIVERSITIES_CANADA = [
       "Philosophy and Religious Studies",
       "Computer Engineering"
     ],
-    "description": "Primarily undergraduate institution in North Bay, Ontario with excellence in teacher education, arts, nursing, business, and environmental science.",
-    "eligibility": "GPA 2.6+, IELTS 6.5+ or equivalent"
+    "description": "Primarily undergraduate institution in North Bay, Ontario with excellence in teacher education, arts, nursing, business, and environmental science."
   },
   {
     "_id": "canada-78",
@@ -2675,16 +2240,7 @@ export const UNIVERSITIES_CANADA = [
     "location": "Toronto, Canada",
     "logo": "https://www.google.com/s2/favicons?domain=www.ocadu.ca&sz=128",
     "website": "https://www.ocadu.ca/",
-    "rank": "Rank 78 QS Rankings",
-    "rankingNum": 78,
-    "tuition": "₹18 Lakh INR/yr",
-    "tuitionFeeUSD": 20000,
-    "acceptanceRate": 55,
     "type": "PUBLIC",
-    "minGpaPercent": 65,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -2723,16 +2279,7 @@ export const UNIVERSITIES_CANADA = [
     "location": "Trois-Rivières, Quebec, Canada",
     "logo": "https://www.google.com/s2/favicons?domain=www.uqtr.ca&sz=128",
     "website": "https://www.uqtr.ca",
-    "rank": "Rank 79 QS Rankings",
-    "rankingNum": 79,
-    "tuition": "₹18 Lakh INR/yr",
-    "tuitionFeeUSD": 20000,
-    "acceptanceRate": 55,
     "type": "PUBLIC",
-    "minGpaPercent": 65,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -2764,8 +2311,7 @@ export const UNIVERSITIES_CANADA = [
       "Computer Science",
       "Information technology"
     ],
-    "description": "Comprehensive university famous for hydrogen energy research, chiropractic medicine, industrial engineering, and biotechnology.",
-    "eligibility": "GPA 2.7+, IELTS 6.5+ or equivalent"
+    "description": "Comprehensive university famous for hydrogen energy research, chiropractic medicine, industrial engineering, and biotechnology."
   },
   {
     "_id": "canada-80",
@@ -2778,16 +2324,7 @@ export const UNIVERSITIES_CANADA = [
     "location": "London, Ontario, Canada",
     "logo": "https://www.google.com/s2/favicons?domain=www.kings.uwo.ca&sz=128",
     "website": "https://www.kings.uwo.ca/",
-    "rank": "Rank 80 QS Rankings",
-    "rankingNum": 80,
-    "tuition": "32 Lakh INR",
-    "tuitionFeeUSD": 20000,
-    "acceptanceRate": 55,
     "type": "PUBLIC",
-    "minGpaPercent": 65,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -2816,8 +2353,7 @@ export const UNIVERSITIES_CANADA = [
       "Social Work",
       "Philosophy and Religious Studies"
     ],
-    "description": "Affiliated with Western University, renowned for finance, social work, management and organizational studies, and social justice.",
-    "eligibility": "GPA 2.9+, IELTS 6.5+ or equivalent"
+    "description": "Affiliated with Western University, renowned for finance, social work, management and organizational studies, and social justice."
   },
   {
     "_id": "canada-80",
@@ -2830,16 +2366,7 @@ export const UNIVERSITIES_CANADA = [
     "location": "London, Ontario, Canada",
     "logo": "https://www.google.com/s2/favicons?domain=www.kings.uwo.ca&sz=128",
     "website": "https://www.kings.uwo.ca/",
-    "rank": "Rank 80 QS Rankings",
-    "rankingNum": 80,
-    "tuition": "32 Lakh INR",
-    "tuitionFeeUSD": 20000,
-    "acceptanceRate": 55,
     "type": "PUBLIC",
-    "minGpaPercent": 65,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -2868,8 +2395,7 @@ export const UNIVERSITIES_CANADA = [
       "Social Work",
       "Philosophy and Religious Studies"
     ],
-    "description": "Affiliated with Western University, renowned for finance, social work, management and organizational studies, and social justice.",
-    "eligibility": "GPA 2.9+, IELTS 6.5+ or equivalent"
+    "description": "Affiliated with Western University, renowned for finance, social work, management and organizational studies, and social justice."
   },
   {
     "_id": "canada-81",
@@ -2882,16 +2408,7 @@ export const UNIVERSITIES_CANADA = [
     "location": "Halifax, Nova Scotia, Canada",
     "logo": "https://www.google.com/s2/favicons?domain=ukings.ca&sz=128",
     "website": "https://ukings.ca/",
-    "rank": "Rank 81 QS Rankings",
-    "rankingNum": 81,
-    "tuition": "32 Lakh INR",
-    "tuitionFeeUSD": 20000,
-    "acceptanceRate": 55,
     "type": "PUBLIC",
-    "minGpaPercent": 65,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -2913,8 +2430,7 @@ export const UNIVERSITIES_CANADA = [
       "Political Science",
       "Sociology"
     ],
-    "description": "Canada's oldest chartered university, highly regarded for journalism, contemporary studies, humanities, and fine arts.",
-    "eligibility": "GPA 2.8+, IELTS 6.5+ or equivalent"
+    "description": "Canada's oldest chartered university, highly regarded for journalism, contemporary studies, humanities, and fine arts."
   },
   {
     "_id": "canada-83",
@@ -2927,16 +2443,9 @@ export const UNIVERSITIES_CANADA = [
     "location": "St. Catharines, Ontario, Canada",
     "logo": "https://www.google.com/s2/favicons?domain=brocku.ca&sz=128",
     "website": "https://brocku.ca",
-    "rank": "Rank 83 QS Rankings",
-    "rankingNum": 83,
-    "tuition": "20 Lakh INR",
-    "tuitionFeeUSD": 20000,
-    "acceptanceRate": 55,
+    "rank": "1201-1400",
+    "rankingNum": 1201,
     "type": "PUBLIC",
-    "minGpaPercent": 65,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -2976,7 +2485,7 @@ export const UNIVERSITIES_CANADA = [
       "Environmental science / management"
     ],
     "description": "Located near Niagara Falls, home of the Goodman School of Business, co-op education leaders, computer science, and viticulture research.",
-    "eligibility": "GPA 2.8+, IELTS 6.5+ or equivalent"
+    "rankingSource": "QS World University Rankings 2027"
   },
   {
     "_id": "canada-84",
@@ -2989,16 +2498,7 @@ export const UNIVERSITIES_CANADA = [
     "location": "Rimouski, Quebec, Canada",
     "logo": "https://www.google.com/s2/favicons?domain=www.uqar.ca&sz=128",
     "website": "https://www.uqar.ca",
-    "rank": "Rank 84 QS Rankings",
-    "rankingNum": 84,
-    "tuition": "13 Lakh INR",
-    "tuitionFeeUSD": 20000,
-    "acceptanceRate": 55,
     "type": "PUBLIC",
-    "minGpaPercent": 65,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -3028,8 +2528,7 @@ export const UNIVERSITIES_CANADA = [
       "Psychology",
       "Geography"
     ],
-    "description": "Renowned center of excellence in marine sciences, oceanography, wind energy, and regional development located on the St. Lawrence estuary.",
-    "eligibility": "GPA 2.6+, IELTS 6.5+ or equivalent"
+    "description": "Renowned center of excellence in marine sciences, oceanography, wind energy, and regional development located on the St. Lawrence estuary."
   },
   {
     "_id": "canada-86",
@@ -3042,16 +2541,7 @@ export const UNIVERSITIES_CANADA = [
     "location": "Grande Prairie, Canada",
     "logo": "https://www.google.com/s2/favicons?domain=www.nwpolytech.ca&sz=128",
     "website": "https://www.nwpolytech.ca",
-    "rank": "Rank 86 QS Rankings",
-    "rankingNum": 86,
-    "tuition": "10 Lakh INR",
-    "tuitionFeeUSD": 20000,
-    "acceptanceRate": 55,
     "type": "PUBLIC",
-    "minGpaPercent": 65,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -3087,16 +2577,7 @@ export const UNIVERSITIES_CANADA = [
     "location": "Sault Ste. Marie, Ontario, Canada",
     "logo": "https://www.google.com/s2/favicons?domain=algomau.ca&sz=128",
     "website": "https://algomau.ca/",
-    "rank": "Rank 87 QS Rankings",
-    "rankingNum": 87,
-    "tuition": "13 Lakh INR",
-    "tuitionFeeUSD": 20000,
-    "acceptanceRate": 55,
     "type": "PUBLIC",
-    "minGpaPercent": 65,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -3121,8 +2602,7 @@ export const UNIVERSITIES_CANADA = [
       "Environmental science / management",
       "Arts / Fine Art"
     ],
-    "description": "Student-centered university with campuses in Sault Ste. Marie and Brampton, offering popular degrees in computer science, business, and biology.",
-    "eligibility": "GPA 2.5+, IELTS 6.0+ or equivalent"
+    "description": "Student-centered university with campuses in Sault Ste. Marie and Brampton, offering popular degrees in computer science, business, and biology."
   },
   {
     "_id": "canada-4",
@@ -3135,16 +2615,10 @@ export const UNIVERSITIES_CANADA = [
     "location": "Edmonton, Alberta, Canada",
     "logo": "https://www.google.com/s2/favicons?domain=www.ualberta.ca&sz=128",
     "website": "https://www.ualberta.ca/",
-    "rank": "Rank 111 QS Rankings",
-    "rankingNum": 111,
-    "tuition": "22 Lakh INR",
-    "tuitionFeeUSD": 20000,
-    "acceptanceRate": 55,
+    "rank": "97",
+    "rankingNum": 97,
+    "tuition": "₹13 Lakh/yr (official fee)",
     "type": "PUBLIC",
-    "minGpaPercent": 65,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -3247,7 +2721,8 @@ export const UNIVERSITIES_CANADA = [
       "Management"
     ],
     "description": "Top 5 Canadian research university and global AI powerhouse (Amii), world-leading in reinforcement learning, energy systems, Alberta School of Business, and medicine.",
-    "eligibility": "GPA 3.4+, IELTS 6.5+ or equivalent"
+    "rankingSource": "QS World University Rankings 2027",
+    "tuitionVerified": true
   },
   {
     "_id": "canada-5",
@@ -3260,16 +2735,10 @@ export const UNIVERSITIES_CANADA = [
     "location": "Waterloo, Ontario, Canada",
     "logo": "https://www.google.com/s2/favicons?domain=uwaterloo.ca&sz=128",
     "website": "https://uwaterloo.ca/",
-    "rank": "Rank 112 QS Rankings",
-    "rankingNum": 112,
-    "tuition": "₹18 Lakh INR/yr",
-    "tuitionFeeUSD": 20000,
-    "acceptanceRate": 55,
+    "rank": "=113",
+    "rankingNum": 113,
+    "tuition": "₹35 Lakh/yr (official fee)",
     "type": "PUBLIC",
-    "minGpaPercent": 65,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -3349,7 +2818,8 @@ export const UNIVERSITIES_CANADA = [
       "Management"
     ],
     "description": "World leader in cooperative education (co-op) and Canada's top institution for Computer Science, Quantum Computing, Software Engineering, and Math.",
-    "eligibility": "GPA 3.5+, IELTS 7.0+ or equivalent"
+    "rankingSource": "QS World University Rankings 2027",
+    "tuitionVerified": true
   },
   {
     "_id": "canada-6",
@@ -3362,16 +2832,10 @@ export const UNIVERSITIES_CANADA = [
     "location": "London, Canada",
     "logo": "https://www.google.com/s2/favicons?domain=www.uwo.ca&sz=128",
     "website": "https://www.uwo.ca",
-    "rank": "Rank 114 QS Rankings",
-    "rankingNum": 114,
-    "tuition": "54 Lakh INR",
-    "tuitionFeeUSD": 20000,
-    "acceptanceRate": 55,
+    "rank": "=142",
+    "rankingNum": 142,
+    "tuition": "₹32 Lakh/yr (official fee)",
     "type": "PUBLIC",
-    "minGpaPercent": 65,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -3412,7 +2876,9 @@ export const UNIVERSITIES_CANADA = [
       "Journalism",
       "Nursing and midwifery",
       "Health Sciences / Administration"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027",
+    "tuitionVerified": true
   },
   {
     "_id": "canada-statcan-61",
@@ -3425,16 +2891,9 @@ export const UNIVERSITIES_CANADA = [
     "location": "London, Ontario, Canada",
     "logo": null,
     "website": "https://www.uwo.ca",
-    "rank": "Rank 114 QS Rankings",
-    "rankingNum": 114,
-    "tuition": "34 Lakh INR",
-    "tuitionFeeUSD": 33000,
-    "acceptanceRate": 31,
+    "rank": "=142",
+    "rankingNum": 142,
     "type": "PUBLIC",
-    "minGpaPercent": 82,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 92,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -3456,7 +2915,7 @@ export const UNIVERSITIES_CANADA = [
       "Finance"
     ],
     "description": "Major Canadian research university (#114 QS), world-famous for Ivey Business School, medicine, neuroscience, computer science, and engineering.",
-    "eligibility": "GPA 3.4+, IELTS 6.5+ or equivalent"
+    "rankingSource": "QS World University Rankings 2027"
   },
   {
     "_id": "canada-statcan-61",
@@ -3469,16 +2928,9 @@ export const UNIVERSITIES_CANADA = [
     "location": "London, Ontario, Canada",
     "logo": null,
     "website": "https://www.uwo.ca",
-    "rank": "Rank 114 QS Rankings",
-    "rankingNum": 114,
-    "tuition": "34 Lakh INR",
-    "tuitionFeeUSD": 33000,
-    "acceptanceRate": 31,
+    "rank": "=142",
+    "rankingNum": 142,
     "type": "PUBLIC",
-    "minGpaPercent": 82,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 92,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -3500,7 +2952,7 @@ export const UNIVERSITIES_CANADA = [
       "Finance"
     ],
     "description": "Major Canadian research university (#114 QS), world-famous for Ivey Business School, medicine, neuroscience, computer science, and engineering.",
-    "eligibility": "GPA 3.4+, IELTS 6.5+ or equivalent"
+    "rankingSource": "QS World University Rankings 2027"
   },
   {
     "_id": "canada-7",
@@ -3513,16 +2965,10 @@ export const UNIVERSITIES_CANADA = [
     "location": "Montreal, Quebec, Canada",
     "logo": "https://www.google.com/s2/favicons?domain=www.umontreal.ca&sz=128",
     "website": "https://www.umontreal.ca/",
-    "rank": "Rank 141 QS Rankings",
-    "rankingNum": 141,
-    "tuition": "18 Lakh INR",
-    "tuitionFeeUSD": 20000,
-    "acceptanceRate": 55,
+    "rank": "=162",
+    "rankingNum": 162,
+    "tuition": "₹16 Lakh/yr (official fee)",
     "type": "PUBLIC",
-    "minGpaPercent": 65,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -3568,7 +3014,8 @@ export const UNIVERSITIES_CANADA = [
       "Media & Communication"
     ],
     "description": "Major French-language research university in Montreal, home to Mila (Montreal Institute for Learning Algorithms) and global pioneer in Deep Learning.",
-    "eligibility": "GPA 3.2+, IELTS 6.5+ or French B2"
+    "rankingSource": "QS World University Rankings 2027",
+    "tuitionVerified": true
   },
   {
     "_id": "canada-8",
@@ -3581,16 +3028,10 @@ export const UNIVERSITIES_CANADA = [
     "location": "Calgary, Alberta, Canada",
     "logo": "https://www.google.com/s2/favicons?domain=www.ucalgary.ca&sz=128",
     "website": "https://www.ucalgary.ca",
-    "rank": "Rank 182 QS Rankings",
-    "rankingNum": 182,
-    "tuition": "1 Lakh INR",
-    "tuitionFeeUSD": 20000,
-    "acceptanceRate": 55,
+    "rank": "249",
+    "rankingNum": 249,
+    "tuition": "₹15 Lakh/yr (official fee)",
     "type": "PUBLIC",
-    "minGpaPercent": 65,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -3654,7 +3095,8 @@ export const UNIVERSITIES_CANADA = [
       "Sport / Exercise Science"
     ],
     "description": "Top research university in Alberta's corporate energy capital, home to Schulich School of Engineering, Haskayne School of Business, and Cumming School of Medicine.",
-    "eligibility": "GPA 3.3+, IELTS 6.5+ or equivalent"
+    "rankingSource": "QS World University Rankings 2027",
+    "tuitionVerified": true
   },
   {
     "_id": "canada-9",
@@ -3667,16 +3109,10 @@ export const UNIVERSITIES_CANADA = [
     "location": "Hamilton, Ontario, Canada",
     "logo": "https://www.google.com/s2/favicons?domain=www.mcmaster.ca&sz=128",
     "website": "https://www.mcmaster.ca/",
-    "rank": "Rank 189 QS Rankings",
-    "rankingNum": 189,
-    "tuition": "26 Lakh INR",
-    "tuitionFeeUSD": 20000,
-    "acceptanceRate": 55,
+    "rank": "=174",
+    "rankingNum": 174,
+    "tuition": "₹38 Lakh/yr (official fee)",
     "type": "PUBLIC",
-    "minGpaPercent": 65,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -3757,7 +3193,8 @@ export const UNIVERSITIES_CANADA = [
       "Software Engineering"
     ],
     "description": "World-renowned research university and member of U15, birth place of problem-based learning in medicine, DeGroote School of Business, and engineering.",
-    "eligibility": "GPA 3.4+, IELTS 6.5+ or equivalent"
+    "rankingSource": "QS World University Rankings 2027",
+    "tuitionVerified": true
   },
   {
     "_id": "canada-10",
@@ -3770,16 +3207,9 @@ export const UNIVERSITIES_CANADA = [
     "location": "Ottawa, Ontario, Canada",
     "logo": "https://www.google.com/s2/favicons?domain=www.uottawa.ca&sz=128",
     "website": "https://www.uottawa.ca",
-    "rank": "Rank 203 QS Rankings",
-    "rankingNum": 203,
-    "tuition": "16 Lakh INR",
-    "tuitionFeeUSD": 20000,
-    "acceptanceRate": 55,
+    "rank": "=228",
+    "rankingNum": 228,
     "type": "PUBLIC",
-    "minGpaPercent": 65,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -3826,7 +3256,7 @@ export const UNIVERSITIES_CANADA = [
       "Social Work"
     ],
     "description": "Largest bilingual (English-French) university in the world, situated in the heart of Canada's capital next to federal ministries and tech tech corridors.",
-    "eligibility": "GPA 3.2+, IELTS 6.5+ or equivalent"
+    "rankingSource": "QS World University Rankings 2027"
   },
   {
     "_id": "canada-11",
@@ -3839,16 +3269,10 @@ export const UNIVERSITIES_CANADA = [
     "location": "Kingston, Ontario, Canada",
     "logo": "https://www.google.com/s2/favicons?domain=www.queensu.ca&sz=128",
     "website": "https://www.queensu.ca/",
-    "rank": "Rank 209 QS Rankings",
-    "rankingNum": 209,
-    "tuition": "17 Lakh INR",
-    "tuitionFeeUSD": 20000,
-    "acceptanceRate": 55,
+    "rank": "=179",
+    "rankingNum": 179,
+    "tuition": "₹20 Lakh/yr (official fee)",
     "type": "PUBLIC",
-    "minGpaPercent": 65,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -3884,7 +3308,8 @@ export const UNIVERSITIES_CANADA = [
       "Language and Literature"
     ],
     "description": "Prestigious Canadian research university in Kingston, home of Smith School of Business, high student satisfaction, and top-tier computing and law.",
-    "eligibility": "GPA 3.3+, IELTS 7.0+ or equivalent"
+    "rankingSource": "QS World University Rankings 2027",
+    "tuitionVerified": true
   },
   {
     "_id": "canada-12",
@@ -3897,16 +3322,10 @@ export const UNIVERSITIES_CANADA = [
     "location": "Halifax, Nova Scotia, Canada",
     "logo": "https://www.google.com/s2/favicons?domain=www.dal.ca&sz=128",
     "website": "https://www.dal.ca",
-    "rank": "Rank 308 QS Rankings",
-    "rankingNum": 308,
-    "tuition": "22 Lakh INR",
-    "tuitionFeeUSD": 20000,
-    "acceptanceRate": 55,
+    "rank": "298",
+    "rankingNum": 298,
+    "tuition": "₹24 Lakh/yr (official fee)",
     "type": "PUBLIC",
-    "minGpaPercent": 65,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -3960,7 +3379,8 @@ export const UNIVERSITIES_CANADA = [
       "Social Work"
     ],
     "description": "Member of the U15 group of Canadian research universities, leading in medicine, oceanography, computer science, law, and business.",
-    "eligibility": "GPA 3.2+, IELTS 7.0+ or equivalent"
+    "rankingSource": "QS World University Rankings 2027",
+    "tuitionVerified": true
   },
   {
     "_id": "canada-13",
@@ -3973,16 +3393,10 @@ export const UNIVERSITIES_CANADA = [
     "location": "Saskatoon, Saskatchewan, Canada",
     "logo": "https://www.google.com/s2/favicons?domain=www.usask.ca&sz=128",
     "website": "https://www.usask.ca",
-    "rank": "Rank 317 QS Rankings",
-    "rankingNum": 317,
-    "tuition": "₹18 Lakh INR/yr",
-    "tuitionFeeUSD": 20000,
-    "acceptanceRate": 55,
+    "rank": "=411",
+    "rankingNum": 411,
+    "tuition": "₹12 Lakh/yr (official fee)",
     "type": "PUBLIC",
-    "minGpaPercent": 65,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -4033,7 +3447,8 @@ export const UNIVERSITIES_CANADA = [
       "Language and Literature"
     ],
     "description": "U15 medical doctoral research university, home to the Canadian Light Source synchrotron, Edwards School of Business, agriculture, and vaccines research.",
-    "eligibility": "GPA 3.1+, IELTS 6.5+ or equivalent"
+    "rankingSource": "QS World University Rankings 2027",
+    "tuitionVerified": true
   },
   {
     "_id": "canada-14",
@@ -4046,16 +3461,10 @@ export const UNIVERSITIES_CANADA = [
     "location": "Burnaby, British Columbia, Canada",
     "logo": "https://www.google.com/s2/favicons?domain=www.sfu.ca&sz=128",
     "website": "https://www.sfu.ca",
-    "rank": "Rank 318 QS Rankings",
-    "rankingNum": 318,
-    "tuition": "23 Lakh INR",
-    "tuitionFeeUSD": 20000,
-    "acceptanceRate": 55,
+    "rank": "312",
+    "rankingNum": 312,
+    "tuition": "₹15 Lakh/yr (official fee)",
     "type": "PUBLIC",
-    "minGpaPercent": 65,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -4096,7 +3505,8 @@ export const UNIVERSITIES_CANADA = [
       "Artificial Intelligence / Machine Learning"
     ],
     "description": "Consistently ranked Canada's #1 comprehensive university by Maclean's, famed for Beedie School of Business, computing science, big data, and interactive tech.",
-    "eligibility": "GPA 3.2+, IELTS 7.0+ or equivalent"
+    "rankingSource": "QS World University Rankings 2027",
+    "tuitionVerified": true
   },
   {
     "_id": "canada-statcan-22",
@@ -4109,16 +3519,7 @@ export const UNIVERSITIES_CANADA = [
     "location": "Montreal, Quebec, Canada",
     "logo": null,
     "website": "https://www.hec.ca",
-    "rank": "Rank 350 QS Rankings",
-    "rankingNum": 350,
-    "tuition": "29 Lakh INR",
-    "tuitionFeeUSD": 27500,
-    "acceptanceRate": 35,
     "type": "PUBLIC",
-    "minGpaPercent": 78,
-    "minIeltsScore": 7,
-    "minToeflScore": 95,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -4138,8 +3539,7 @@ export const UNIVERSITIES_CANADA = [
       "Supply Chain Management",
       "Global Business"
     ],
-    "description": "Triple-accredited (AACSB, AMBA, EQUIS) world-class business school in Montreal, renowned for international MBA, finance, and supply chain.",
-    "eligibility": "GPA 3.3+, IELTS 7.0+ or equivalent"
+    "description": "Triple-accredited (AACSB, AMBA, EQUIS) world-class business school in Montreal, renowned for international MBA, finance, and supply chain."
   },
   {
     "_id": "canada-statcan-22",
@@ -4152,16 +3552,7 @@ export const UNIVERSITIES_CANADA = [
     "location": "Montreal, Quebec, Canada",
     "logo": null,
     "website": "https://www.hec.ca",
-    "rank": "Rank 350 QS Rankings",
-    "rankingNum": 350,
-    "tuition": "29 Lakh INR",
-    "tuitionFeeUSD": 27500,
-    "acceptanceRate": 35,
     "type": "PUBLIC",
-    "minGpaPercent": 78,
-    "minIeltsScore": 7,
-    "minToeflScore": 95,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -4181,8 +3572,7 @@ export const UNIVERSITIES_CANADA = [
       "Supply Chain Management",
       "Global Business"
     ],
-    "description": "Triple-accredited (AACSB, AMBA, EQUIS) world-class business school in Montreal, renowned for international MBA, finance, and supply chain.",
-    "eligibility": "GPA 3.3+, IELTS 7.0+ or equivalent"
+    "description": "Triple-accredited (AACSB, AMBA, EQUIS) world-class business school in Montreal, renowned for international MBA, finance, and supply chain."
   },
   {
     "_id": "canada-15",
@@ -4195,16 +3585,10 @@ export const UNIVERSITIES_CANADA = [
     "location": "Victoria, British Columbia, Canada",
     "logo": "https://www.google.com/s2/favicons?domain=www.uvic.ca&sz=128",
     "website": "https://www.uvic.ca",
-    "rank": "Rank 359 QS Rankings",
-    "rankingNum": 359,
-    "tuition": "5 Lakh INR",
-    "tuitionFeeUSD": 20000,
-    "acceptanceRate": 55,
+    "rank": "=370",
+    "rankingNum": 370,
+    "tuition": "₹6 Lakh/yr (official fee)",
     "type": "PUBLIC",
-    "minGpaPercent": 65,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -4247,7 +3631,8 @@ export const UNIVERSITIES_CANADA = [
       "Law"
     ],
     "description": "Top-tier Canadian research university situated on Vancouver Island, known for Gustavson School of Business, ocean sciences, computer science, and engineering.",
-    "eligibility": "GPA 3.2+, IELTS 6.5+ or equivalent"
+    "rankingSource": "QS World University Rankings 2027",
+    "tuitionVerified": true
   },
   {
     "_id": "canada-statcan-21",
@@ -4260,16 +3645,7 @@ export const UNIVERSITIES_CANADA = [
     "location": "Montreal, Quebec, Canada",
     "logo": null,
     "website": "https://www.polymtl.ca",
-    "rank": "Rank 400 QS Rankings",
-    "rankingNum": 400,
-    "tuition": "25 Lakh INR",
-    "tuitionFeeUSD": 23500,
-    "acceptanceRate": 45,
     "type": "PUBLIC",
-    "minGpaPercent": 75,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 85,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -4290,8 +3666,7 @@ export const UNIVERSITIES_CANADA = [
       "Cybersecurity",
       "Chemical Engineering"
     ],
-    "description": "One of Canada's leading engineering schools and largest research hubs in aerospace, biomedical, civil, and software engineering.",
-    "eligibility": "GPA 3.0+, IELTS 6.5+ or equivalent"
+    "description": "One of Canada's leading engineering schools and largest research hubs in aerospace, biomedical, civil, and software engineering."
   },
   {
     "_id": "canada-16",
@@ -4304,16 +3679,10 @@ export const UNIVERSITIES_CANADA = [
     "location": "Quebec City, Quebec, Canada",
     "logo": "https://www.google.com/s2/favicons?domain=www.ulaval.ca&sz=128",
     "website": "https://www.ulaval.ca/",
-    "rank": "Rank 411 QS Rankings",
-    "rankingNum": 411,
-    "tuition": "17 Lakh INR",
-    "tuitionFeeUSD": 20000,
-    "acceptanceRate": 55,
+    "rank": "=526",
+    "rankingNum": 526,
+    "tuition": "₹18 Lakh/yr (official fee)",
     "type": "PUBLIC",
-    "minGpaPercent": 65,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -4358,7 +3727,8 @@ export const UNIVERSITIES_CANADA = [
       "Geography"
     ],
     "description": "Historic research institution in Quebec City, known for northern studies, forestry, engineering, life sciences, and business administration.",
-    "eligibility": "GPA 3.0+, IELTS 6.5+ or equivalent"
+    "rankingSource": "QS World University Rankings 2027",
+    "tuitionVerified": true
   },
   {
     "_id": "canada-17",
@@ -4371,16 +3741,10 @@ export const UNIVERSITIES_CANADA = [
     "location": "Montreal, Quebec, Canada",
     "logo": "https://www.google.com/s2/favicons?domain=www.concordia.ca&sz=128",
     "website": "https://www.concordia.ca",
-    "rank": "Rank 456 QS Rankings",
-    "rankingNum": 456,
-    "tuition": "13 Lakh INR",
-    "tuitionFeeUSD": 20000,
-    "acceptanceRate": 55,
+    "rank": "=497",
+    "rankingNum": 497,
+    "tuition": "₹12 Lakh/yr (official fee)",
     "type": "PUBLIC",
-    "minGpaPercent": 65,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -4424,7 +3788,8 @@ export const UNIVERSITIES_CANADA = [
       "Teaching / Education studies"
     ],
     "description": "Dynamic, modern urban university in downtown Montreal featuring Gina Cody School of Engineering & Computer Science and John Molson School of Business.",
-    "eligibility": "GPA 3.0+, IELTS 6.5+ or equivalent"
+    "rankingSource": "QS World University Rankings 2027",
+    "tuitionVerified": true
   },
   {
     "_id": "canada-statcan-66",
@@ -4437,16 +3802,9 @@ export const UNIVERSITIES_CANADA = [
     "location": "Toronto, Ontario, Canada",
     "logo": null,
     "website": "https://www.yorku.ca",
-    "rank": "Rank 456 QS Rankings",
-    "rankingNum": 456,
-    "tuition": "28 Lakh INR",
-    "tuitionFeeUSD": 26500,
-    "acceptanceRate": 48,
+    "rank": "=322",
+    "rankingNum": 322,
     "type": "PUBLIC",
-    "minGpaPercent": 75,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 90,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -4469,7 +3827,7 @@ export const UNIVERSITIES_CANADA = [
       "Osgoode Law"
     ],
     "description": "Canada's third-largest university in Toronto, home to Schulich School of Business (#1 in Canada), Osgoode Hall Law School, and Lassonde School of Engineering.",
-    "eligibility": "GPA 3.2+, IELTS 6.5+ or equivalent"
+    "rankingSource": "QS World University Rankings 2027"
   },
   {
     "_id": "canada-18",
@@ -4482,16 +3840,10 @@ export const UNIVERSITIES_CANADA = [
     "location": "Guelph, Ontario, Canada",
     "logo": "https://www.google.com/s2/favicons?domain=www.uoguelph.ca&sz=128",
     "website": "https://www.uoguelph.ca/",
-    "rank": "Rank 571 QS Rankings",
-    "rankingNum": 571,
-    "tuition": "24 Lakh INR",
-    "tuitionFeeUSD": 20000,
-    "acceptanceRate": 55,
+    "rank": "=546",
+    "rankingNum": 546,
+    "tuition": "₹14 Lakh/yr (official fee)",
     "type": "PUBLIC",
-    "minGpaPercent": 65,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -4526,7 +3878,8 @@ export const UNIVERSITIES_CANADA = [
       "Physics"
     ],
     "description": "Top-ranked comprehensive university known for veterinary medicine (OVC), agricultural science, computer science, engineering, and food security.",
-    "eligibility": "GPA 3.1+, IELTS 6.5+ or equivalent"
+    "rankingSource": "QS World University Rankings 2027",
+    "tuitionVerified": true
   },
   {
     "_id": "canada-statcan-27",
@@ -4539,16 +3892,7 @@ export const UNIVERSITIES_CANADA = [
     "location": "Montreal, Quebec, Canada",
     "logo": null,
     "website": "https://uqam.ca",
-    "rank": "Rank 600 QS Rankings",
-    "rankingNum": 600,
-    "tuition": "20 Lakh INR",
-    "tuitionFeeUSD": 19000,
-    "acceptanceRate": 56,
     "type": "PUBLIC",
-    "minGpaPercent": 70,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 85,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -4568,8 +3912,7 @@ export const UNIVERSITIES_CANADA = [
       "Sciences de l'environnement",
       "Communication"
     ],
-    "description": "Major public university in downtown Montreal with prominent faculties in management (ESG UQAM), design, communications, science, and education.",
-    "eligibility": "GPA 2.8+, IELTS 6.5+ or French B2"
+    "description": "Major public university in downtown Montreal with prominent faculties in management (ESG UQAM), design, communications, science, and education."
   },
   {
     "_id": "canada-19",
@@ -4582,16 +3925,7 @@ export const UNIVERSITIES_CANADA = [
     "location": "Waterloo, Ontario, Canada",
     "logo": "https://www.google.com/s2/favicons?domain=www.wlu.ca&sz=128",
     "website": "https://www.wlu.ca",
-    "rank": "Rank 601 QS Rankings",
-    "rankingNum": 601,
-    "tuition": "23 Lakh INR",
-    "tuitionFeeUSD": 20000,
-    "acceptanceRate": 55,
     "type": "PUBLIC",
-    "minGpaPercent": 65,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -4626,8 +3960,7 @@ export const UNIVERSITIES_CANADA = [
       "Geography",
       "Environmental science / management"
     ],
-    "description": "Premier university in Waterloo, home to the Lazaridis School of Business & Economics, user experience design, and computer science.",
-    "eligibility": "GPA 3.0+, IELTS 6.5+ or equivalent"
+    "description": "Premier university in Waterloo, home to the Lazaridis School of Business & Economics, user experience design, and computer science."
   },
   {
     "_id": "canada-20",
@@ -4640,16 +3973,10 @@ export const UNIVERSITIES_CANADA = [
     "location": "Ottawa, Ontario, Canada",
     "logo": "https://www.google.com/s2/favicons?domain=carleton.ca&sz=128",
     "website": "https://carleton.ca",
-    "rank": "Rank 651 QS Rankings",
-    "rankingNum": 651,
-    "tuition": "₹18 Lakh INR/yr",
-    "tuitionFeeUSD": 20000,
-    "acceptanceRate": 55,
+    "rank": "801-850",
+    "rankingNum": 801,
+    "tuition": "₹21 Lakh/yr (official fee)",
     "type": "PUBLIC",
-    "minGpaPercent": 65,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -4735,7 +4062,8 @@ export const UNIVERSITIES_CANADA = [
       "Management"
     ],
     "description": "Canada's capital university, famed for Sprott School of Business, public policy, computer science, aerospace engineering, and international affairs.",
-    "eligibility": "GPA 3.0+, IELTS 6.5+ or equivalent"
+    "rankingSource": "QS World University Rankings 2027",
+    "tuitionVerified": true
   },
   {
     "_id": "canada-21",
@@ -4748,16 +4076,9 @@ export const UNIVERSITIES_CANADA = [
     "location": "Winnipeg, Manitoba, Canada",
     "logo": "https://www.google.com/s2/favicons?domain=umanitoba.ca&sz=128",
     "website": "https://umanitoba.ca/",
-    "rank": "Rank 651 QS Rankings",
-    "rankingNum": 651,
-    "tuition": "21 Lakh INR",
-    "tuitionFeeUSD": 20000,
-    "acceptanceRate": 55,
+    "rank": "=560",
+    "rankingNum": 560,
     "type": "PUBLIC",
-    "minGpaPercent": 65,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -4841,7 +4162,7 @@ export const UNIVERSITIES_CANADA = [
       "Management"
     ],
     "description": "Manitoba's premier research-intensive U15 university, known for Asper School of Business, medical sciences, engineering, and agricultural tech.",
-    "eligibility": "GPA 3.0+, IELTS 6.5+ or equivalent"
+    "rankingSource": "QS World University Rankings 2027"
   },
   {
     "_id": "canada-22",
@@ -4854,16 +4175,9 @@ export const UNIVERSITIES_CANADA = [
     "location": "St. John's, Newfoundland and Labrador, Canada",
     "logo": "https://www.google.com/s2/favicons?domain=www.mun.ca&sz=128",
     "website": "https://www.mun.ca",
-    "rank": "Rank 701 QS Rankings",
-    "rankingNum": 701,
-    "tuition": "18 Lakh INR",
-    "tuitionFeeUSD": 20000,
-    "acceptanceRate": 55,
+    "rank": "721-730",
+    "rankingNum": 721,
     "type": "PUBLIC",
-    "minGpaPercent": 65,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -4908,7 +4222,7 @@ export const UNIVERSITIES_CANADA = [
       "Geology"
     ],
     "description": "Largest university in Atlantic Canada, offering comprehensive undergraduate and postgraduate programs with world-renowned faculties in marine science, engineering, and medicine.",
-    "eligibility": "GPA 2.8+, IELTS 6.5+ or equivalent"
+    "rankingSource": "QS World University Rankings 2027"
   },
   {
     "_id": "canada-statcan-13",
@@ -4921,16 +4235,7 @@ export const UNIVERSITIES_CANADA = [
     "location": "Halifax, Nova Scotia, Canada",
     "logo": null,
     "website": "https://www.smu.ca",
-    "rank": "Rank 750 QS Rankings",
-    "rankingNum": 750,
-    "tuition": "19 Lakh INR",
-    "tuitionFeeUSD": 17500,
-    "acceptanceRate": 70,
     "type": "PUBLIC",
-    "minGpaPercent": 66,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 80,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -4950,8 +4255,7 @@ export const UNIVERSITIES_CANADA = [
       "Computing and Information Systems",
       "Astrophysics"
     ],
-    "description": "Home of the prestigious Sobey School of Business in Halifax, with top-tier programs in Finance, Computing Science, and International Development.",
-    "eligibility": "GPA 2.7+, IELTS 6.5+ or equivalent"
+    "description": "Home of the prestigious Sobey School of Business in Halifax, with top-tier programs in Finance, Computing Science, and International Development."
   },
   {
     "_id": "canada-statcan-78",
@@ -4964,16 +4268,7 @@ export const UNIVERSITIES_CANADA = [
     "location": "Winnipeg, Manitoba, Canada",
     "logo": null,
     "website": "https://www.uwinnipeg.ca",
-    "rank": "Rank 750 QS Rankings",
-    "rankingNum": 750,
-    "tuition": "19 Lakh INR",
-    "tuitionFeeUSD": 17800,
-    "acceptanceRate": 65,
     "type": "PUBLIC",
-    "minGpaPercent": 68,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 86,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -4993,8 +4288,7 @@ export const UNIVERSITIES_CANADA = [
       "Data Science",
       "Bioscience"
     ],
-    "description": "Centrally located downtown university with standout programs in Applied Computer Science and Society, Economics, Bioscience, and Business.",
-    "eligibility": "GPA 2.8+, IELTS 6.5+ or equivalent"
+    "description": "Centrally located downtown university with standout programs in Applied Computer Science and Society, Economics, Bioscience, and Business."
   },
   {
     "_id": "canada-statcan-99",
@@ -5007,16 +4301,9 @@ export const UNIVERSITIES_CANADA = [
     "location": "Prince George, British Columbia, Canada",
     "logo": null,
     "website": "https://www.unbc.ca",
-    "rank": "Rank 750 QS Rankings",
-    "rankingNum": 750,
-    "tuition": "19 Lakh INR",
-    "tuitionFeeUSD": 17500,
-    "acceptanceRate": 68,
+    "rank": "1201-1400",
+    "rankingNum": 1201,
     "type": "PUBLIC",
-    "minGpaPercent": 68,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 85,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -5037,7 +4324,7 @@ export const UNIVERSITIES_CANADA = [
       "Health Sciences"
     ],
     "description": "Canada's Green University, ranked #1 or #2 primarily undergraduate university by Maclean's, leading in natural resources, engineering, computer science, and MBA.",
-    "eligibility": "GPA 2.8+, IELTS 6.5+ or equivalent"
+    "rankingSource": "QS World University Rankings 2027"
   },
   {
     "_id": "canada-statcan-68",
@@ -5050,16 +4337,7 @@ export const UNIVERSITIES_CANADA = [
     "location": "Oshawa, Ontario, Canada",
     "logo": null,
     "website": "https://ontariotechu.ca",
-    "rank": "Rank 750 QS Rankings",
-    "rankingNum": 750,
-    "tuition": "25 Lakh INR",
-    "tuitionFeeUSD": 23500,
-    "acceptanceRate": 65,
     "type": "PUBLIC",
-    "minGpaPercent": 70,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 87,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -5079,8 +4357,7 @@ export const UNIVERSITIES_CANADA = [
       "Information Technology Security",
       "Business Analytics"
     ],
-    "description": "Modern, STEM-focused institution renowned for automotive engineering, nuclear engineering, cybersecurity, computer science, and game development.",
-    "eligibility": "GPA 2.9+, IELTS 6.5+ or equivalent"
+    "description": "Modern, STEM-focused institution renowned for automotive engineering, nuclear engineering, cybersecurity, computer science, and game development."
   },
   {
     "_id": "canada-statcan-99",
@@ -5093,16 +4370,9 @@ export const UNIVERSITIES_CANADA = [
     "location": "Prince George, British Columbia, Canada",
     "logo": null,
     "website": "https://www.unbc.ca",
-    "rank": "Rank 750 QS Rankings",
-    "rankingNum": 750,
-    "tuition": "19 Lakh INR",
-    "tuitionFeeUSD": 17500,
-    "acceptanceRate": 68,
+    "rank": "1201-1400",
+    "rankingNum": 1201,
     "type": "PUBLIC",
-    "minGpaPercent": 68,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 85,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -5123,7 +4393,7 @@ export const UNIVERSITIES_CANADA = [
       "Health Sciences"
     ],
     "description": "Canada's Green University, ranked #1 or #2 primarily undergraduate university by Maclean's, leading in natural resources, engineering, computer science, and MBA.",
-    "eligibility": "GPA 2.8+, IELTS 6.5+ or equivalent"
+    "rankingSource": "QS World University Rankings 2027"
   },
   {
     "_id": "canada-statcan-106",
@@ -5136,16 +4406,7 @@ export const UNIVERSITIES_CANADA = [
     "location": "Vancouver, British Columbia, Canada",
     "logo": null,
     "website": "https://www.ecuad.ca",
-    "rank": "Rank 780 QS Rankings",
-    "rankingNum": 780,
-    "tuition": "25 Lakh INR",
-    "tuitionFeeUSD": 23000,
-    "acceptanceRate": 48,
     "type": "PUBLIC",
-    "minGpaPercent": 70,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 84,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -5165,8 +4426,7 @@ export const UNIVERSITIES_CANADA = [
       "Industrial Design",
       "Film + Screen Arts"
     ],
-    "description": "Canada's top-ranked university for Art & Design (QS Top 30 globally), located in Vancouver with world-leading animation, industrial design, and interaction design.",
-    "eligibility": "Portfolio + GPA 2.8+, IELTS 6.5+"
+    "description": "Canada's top-ranked university for Art & Design (QS Top 30 globally), located in Vancouver with world-leading animation, industrial design, and interaction design."
   },
   {
     "_id": "canada-statcan-106",
@@ -5179,16 +4439,7 @@ export const UNIVERSITIES_CANADA = [
     "location": "Vancouver, British Columbia, Canada",
     "logo": null,
     "website": "https://www.ecuad.ca",
-    "rank": "Rank 780 QS Rankings",
-    "rankingNum": 780,
-    "tuition": "25 Lakh INR",
-    "tuitionFeeUSD": 23000,
-    "acceptanceRate": 48,
     "type": "PUBLIC",
-    "minGpaPercent": 70,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 84,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -5208,8 +4459,7 @@ export const UNIVERSITIES_CANADA = [
       "Industrial Design",
       "Film + Screen Arts"
     ],
-    "description": "Canada's top-ranked university for Art & Design (QS Top 30 globally), located in Vancouver with world-leading animation, industrial design, and interaction design.",
-    "eligibility": "Portfolio + GPA 2.8+, IELTS 6.5+"
+    "description": "Canada's top-ranked university for Art & Design (QS Top 30 globally), located in Vancouver with world-leading animation, industrial design, and interaction design."
   },
   {
     "_id": "canada-statcan-56",
@@ -5222,16 +4472,7 @@ export const UNIVERSITIES_CANADA = [
     "location": "Peterborough, Ontario, Canada",
     "logo": null,
     "website": "https://www.trentu.ca",
-    "rank": "Rank 800 QS Rankings",
-    "rankingNum": 800,
-    "tuition": "22 Lakh INR",
-    "tuitionFeeUSD": 20500,
-    "acceptanceRate": 68,
     "type": "PUBLIC",
-    "minGpaPercent": 68,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 85,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -5251,8 +4492,7 @@ export const UNIVERSITIES_CANADA = [
       "Environmental Life Sciences",
       "Business Administration"
     ],
-    "description": "Ontario's #1 undergraduate university for over 12 consecutive years, featuring master's in Big Data Analytics, Forensic Science, and Environmental Studies.",
-    "eligibility": "GPA 2.8+, IELTS 6.5+ or equivalent"
+    "description": "Ontario's #1 undergraduate university for over 12 consecutive years, featuring master's in Big Data Analytics, Forensic Science, and Environmental Studies."
   },
   {
     "_id": "canada-statcan-67",
@@ -5265,16 +4505,7 @@ export const UNIVERSITIES_CANADA = [
     "location": "Toronto, Ontario, Canada",
     "logo": null,
     "website": "https://www.ocadu.ca",
-    "rank": "Rank 800 QS Rankings",
-    "rankingNum": 800,
-    "tuition": "27 Lakh INR",
-    "tuitionFeeUSD": 25000,
-    "acceptanceRate": 50,
     "type": "PUBLIC",
-    "minGpaPercent": 70,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -5295,8 +4526,7 @@ export const UNIVERSITIES_CANADA = [
       "Contemporary Art",
       "Advertising"
     ],
-    "description": "Canada's premier art, design, and digital media university located in downtown Toronto next to the Art Gallery of Ontario.",
-    "eligibility": "Portfolio + GPA 2.8+, IELTS 6.5+"
+    "description": "Canada's premier art, design, and digital media university located in downtown Toronto next to the Art Gallery of Ontario."
   },
   {
     "_id": "canada-statcan-67",
@@ -5309,16 +4539,7 @@ export const UNIVERSITIES_CANADA = [
     "location": "Toronto, Ontario, Canada",
     "logo": null,
     "website": "https://www.ocadu.ca",
-    "rank": "Rank 800 QS Rankings",
-    "rankingNum": 800,
-    "tuition": "27 Lakh INR",
-    "tuitionFeeUSD": 25000,
-    "acceptanceRate": 50,
     "type": "PUBLIC",
-    "minGpaPercent": 70,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -5339,8 +4560,7 @@ export const UNIVERSITIES_CANADA = [
       "Contemporary Art",
       "Advertising"
     ],
-    "description": "Canada's premier art, design, and digital media university located in downtown Toronto next to the Art Gallery of Ontario.",
-    "eligibility": "Portfolio + GPA 2.8+, IELTS 6.5+"
+    "description": "Canada's premier art, design, and digital media university located in downtown Toronto next to the Art Gallery of Ontario."
   },
   {
     "_id": "canada-23",
@@ -5353,16 +4573,9 @@ export const UNIVERSITIES_CANADA = [
     "location": "Windsor, Ontario, Canada",
     "logo": "https://www.google.com/s2/favicons?domain=www.uwindsor.ca&sz=128",
     "website": "https://www.uwindsor.ca",
-    "rank": "Rank 801 QS Rankings",
-    "rankingNum": 801,
-    "tuition": "₹18 Lakh INR/yr",
-    "tuitionFeeUSD": 20000,
-    "acceptanceRate": 55,
+    "rank": "=537",
+    "rankingNum": 537,
     "type": "PUBLIC",
-    "minGpaPercent": 65,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -5411,7 +4624,7 @@ export const UNIVERSITIES_CANADA = [
       "Law"
     ],
     "description": "Strategically located at North America's busiest border crossing, internationally renowned for automotive engineering, Master of Applied Computing (MAC), and MBA.",
-    "eligibility": "GPA 2.9+, IELTS 6.5+ or equivalent"
+    "rankingSource": "QS World University Rankings 2027"
   },
   {
     "_id": "canada-24",
@@ -5424,16 +4637,9 @@ export const UNIVERSITIES_CANADA = [
     "location": "Toronto, Canada",
     "logo": "https://www.google.com/s2/favicons?domain=www.torontomu.ca&sz=128",
     "website": "https://www.torontomu.ca/",
-    "rank": "Rank 801 QS Rankings",
-    "rankingNum": 801,
-    "tuition": "18 Lakh INR",
-    "tuitionFeeUSD": 20000,
-    "acceptanceRate": 55,
+    "rank": "669",
+    "rankingNum": 669,
     "type": "PUBLIC",
-    "minGpaPercent": 65,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -5501,7 +4707,8 @@ export const UNIVERSITIES_CANADA = [
       "Environmental Engineering",
       "Software Engineering",
       "Management"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027"
   },
   {
     "_id": "canada-statcan-47",
@@ -5514,16 +4721,9 @@ export const UNIVERSITIES_CANADA = [
     "location": "Toronto, Ontario, Canada",
     "logo": null,
     "website": "https://www.torontomu.ca",
-    "rank": "Rank 801 QS Rankings",
-    "rankingNum": 801,
-    "tuition": "25 Lakh INR",
-    "tuitionFeeUSD": 23500,
-    "acceptanceRate": 50,
+    "rank": "669",
+    "rankingNum": 669,
     "type": "PUBLIC",
-    "minGpaPercent": 72,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -5545,7 +4745,7 @@ export const UNIVERSITIES_CANADA = [
       "Fashion Design"
     ],
     "description": "Urban innovation leader in downtown Toronto, home to the DMZ incubator, Ted Rogers School of Management, engineering, and digital media.",
-    "eligibility": "GPA 3.0+, IELTS 6.5+ or equivalent"
+    "rankingSource": "QS World University Rankings 2027"
   },
   {
     "_id": "canada-statcan-47",
@@ -5558,16 +4758,9 @@ export const UNIVERSITIES_CANADA = [
     "location": "Toronto, Ontario, Canada",
     "logo": null,
     "website": "https://www.torontomu.ca",
-    "rank": "Rank 801 QS Rankings",
-    "rankingNum": 801,
-    "tuition": "25 Lakh INR",
-    "tuitionFeeUSD": 23500,
-    "acceptanceRate": 50,
+    "rank": "669",
+    "rankingNum": 669,
     "type": "PUBLIC",
-    "minGpaPercent": 72,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -5589,7 +4782,7 @@ export const UNIVERSITIES_CANADA = [
       "Fashion Design"
     ],
     "description": "Urban innovation leader in downtown Toronto, home to the DMZ incubator, Ted Rogers School of Management, engineering, and digital media.",
-    "eligibility": "GPA 3.0+, IELTS 6.5+ or equivalent"
+    "rankingSource": "QS World University Rankings 2027"
   },
   {
     "_id": "canada-statcan-41",
@@ -5602,16 +4795,7 @@ export const UNIVERSITIES_CANADA = [
     "location": "Sudbury, Ontario, Canada",
     "logo": null,
     "website": "https://laurentian.ca",
-    "rank": "Rank 850 QS Rankings",
-    "rankingNum": 850,
-    "tuition": "22 Lakh INR",
-    "tuitionFeeUSD": 20500,
-    "acceptanceRate": 70,
     "type": "PUBLIC",
-    "minGpaPercent": 66,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 80,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -5631,8 +4815,7 @@ export const UNIVERSITIES_CANADA = [
       "Master of Business Administration",
       "Sports Administration"
     ],
-    "description": "Bilingual university in Greater Sudbury with world-renowned strengths in mineral exploration, mining engineering, forensics, and health sciences.",
-    "eligibility": "GPA 2.7+, IELTS 6.5+ or equivalent"
+    "description": "Bilingual university in Greater Sudbury with world-renowned strengths in mineral exploration, mining engineering, forensics, and health sciences."
   },
   {
     "_id": "canada-statcan-104",
@@ -5645,16 +4828,7 @@ export const UNIVERSITIES_CANADA = [
     "location": "North Vancouver, British Columbia, Canada",
     "logo": null,
     "website": "https://www.capilanou.ca",
-    "rank": "Rank 850 QS Rankings",
-    "rankingNum": 850,
-    "tuition": "21 Lakh INR",
-    "tuitionFeeUSD": 19500,
-    "acceptanceRate": 65,
     "type": "PUBLIC",
-    "minGpaPercent": 66,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 83,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -5674,8 +4848,7 @@ export const UNIVERSITIES_CANADA = [
       "Tourism Management",
       "Performing Arts"
     ],
-    "description": "Teaching-focused university in North Vancouver celebrated for motion picture arts, 3D animation, business administration, and tourism management.",
-    "eligibility": "GPA 2.7+, IELTS 6.5+ or equivalent"
+    "description": "Teaching-focused university in North Vancouver celebrated for motion picture arts, 3D animation, business administration, and tourism management."
   },
   {
     "_id": "canada-statcan-41",
@@ -5688,16 +4861,7 @@ export const UNIVERSITIES_CANADA = [
     "location": "Sudbury, Ontario, Canada",
     "logo": null,
     "website": "https://laurentian.ca",
-    "rank": "Rank 850 QS Rankings",
-    "rankingNum": 850,
-    "tuition": "22 Lakh INR",
-    "tuitionFeeUSD": 20500,
-    "acceptanceRate": 70,
     "type": "PUBLIC",
-    "minGpaPercent": 66,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 80,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -5717,8 +4881,7 @@ export const UNIVERSITIES_CANADA = [
       "Master of Business Administration",
       "Sports Administration"
     ],
-    "description": "Bilingual university in Greater Sudbury with world-renowned strengths in mineral exploration, mining engineering, forensics, and health sciences.",
-    "eligibility": "GPA 2.7+, IELTS 6.5+ or equivalent"
+    "description": "Bilingual university in Greater Sudbury with world-renowned strengths in mineral exploration, mining engineering, forensics, and health sciences."
   },
   {
     "_id": "canada-statcan-10",
@@ -5731,16 +4894,7 @@ export const UNIVERSITIES_CANADA = [
     "location": "Halifax, Nova Scotia, Canada",
     "logo": null,
     "website": "https://nscad.ca",
-    "rank": "Rank 880 QS Rankings",
-    "rankingNum": 880,
-    "tuition": "21 Lakh INR",
-    "tuitionFeeUSD": 19500,
-    "acceptanceRate": 63,
     "type": "PUBLIC",
-    "minGpaPercent": 65,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 85,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -5761,8 +4915,7 @@ export const UNIVERSITIES_CANADA = [
       "Photography",
       "Film and Animation"
     ],
-    "description": "Premier Canadian post-secondary institution dedicated to visual arts, interdisciplinary design, media arts, and fine craft.",
-    "eligibility": "Portfolio + GPA 2.7+, IELTS 6.5+"
+    "description": "Premier Canadian post-secondary institution dedicated to visual arts, interdisciplinary design, media arts, and fine craft."
   },
   {
     "_id": "canada-statcan-16",
@@ -5775,16 +4928,7 @@ export const UNIVERSITIES_CANADA = [
     "location": "Moncton, New Brunswick, Canada",
     "logo": null,
     "website": "https://www.umoncton.ca",
-    "rank": "Rank 890 QS Rankings",
-    "rankingNum": 890,
-    "tuition": "15 Lakh INR",
-    "tuitionFeeUSD": 14000,
-    "acceptanceRate": 74,
     "type": "PUBLIC",
-    "minGpaPercent": 64,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 80,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -5805,8 +4949,7 @@ export const UNIVERSITIES_CANADA = [
       "Santé publique",
       "Sciences infirmières"
     ],
-    "description": "Canada's largest francophone university outside Quebec, offering strong programs in law, engineering, computer science, and business.",
-    "eligibility": "French/English proficiency + GPA 2.5+"
+    "description": "Canada's largest francophone university outside Quebec, offering strong programs in law, engineering, computer science, and business."
   },
   {
     "_id": "canada-statcan-31",
@@ -5819,16 +4962,7 @@ export const UNIVERSITIES_CANADA = [
     "location": "Quebec City, Quebec, Canada",
     "logo": null,
     "website": "https://www.enap.ca",
-    "rank": "Rank 900 Global Rankings",
-    "rankingNum": 900,
-    "tuition": "18 Lakh INR",
-    "tuitionFeeUSD": 17000,
-    "acceptanceRate": 60,
     "type": "PUBLIC",
-    "minGpaPercent": 70,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 85,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -5847,8 +4981,7 @@ export const UNIVERSITIES_CANADA = [
       "Health Administration",
       "Public Policy Analysis"
     ],
-    "description": "One of the largest public administration universities in the world, educating civil servants, diplomats, and international policymakers.",
-    "eligibility": "GPA 3.0+, IELTS 6.5+ or equivalent"
+    "description": "One of the largest public administration universities in the world, educating civil servants, diplomats, and international policymakers."
   },
   {
     "_id": "canada-statcan-51",
@@ -5861,16 +4994,7 @@ export const UNIVERSITIES_CANADA = [
     "location": "Toronto, Ontario, Canada",
     "logo": null,
     "website": "https://www.trinity.utoronto.ca",
-    "rank": "Rank 900 Global Rankings",
-    "rankingNum": 900,
-    "tuition": "25 Lakh INR",
-    "tuitionFeeUSD": 23000,
-    "acceptanceRate": 45,
     "type": "PUBLIC",
-    "minGpaPercent": 75,
-    "minIeltsScore": 7,
-    "minToeflScore": 90,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -5890,8 +5014,7 @@ export const UNIVERSITIES_CANADA = [
       "Public Policy",
       "Theology"
     ],
-    "description": "Highly selective and distinguished college of the University of Toronto, prominent in international relations, ethics, society & law, and immunology.",
-    "eligibility": "GPA 3.3+, IELTS 7.0+ or equivalent"
+    "description": "Highly selective and distinguished college of the University of Toronto, prominent in international relations, ethics, society & law, and immunology."
   },
   {
     "_id": "canada-statcan-52",
@@ -5904,16 +5027,7 @@ export const UNIVERSITIES_CANADA = [
     "location": "Toronto, Ontario, Canada",
     "logo": null,
     "website": "https://www.vicu.utoronto.ca",
-    "rank": "Rank 900 Global Rankings",
-    "rankingNum": 900,
-    "tuition": "25 Lakh INR",
-    "tuitionFeeUSD": 23000,
-    "acceptanceRate": 50,
     "type": "PUBLIC",
-    "minGpaPercent": 74,
-    "minIeltsScore": 7,
-    "minToeflScore": 90,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -5933,8 +5047,7 @@ export const UNIVERSITIES_CANADA = [
       "Education and Society",
       "Theology"
     ],
-    "description": "Federated college within the University of Toronto, known for literature, renaissance studies, creative arts, and Emmanuel College theology.",
-    "eligibility": "GPA 3.2+, IELTS 7.0+ or equivalent"
+    "description": "Federated college within the University of Toronto, known for literature, renaissance studies, creative arts, and Emmanuel College theology."
   },
   {
     "_id": "canada-statcan-31",
@@ -5947,16 +5060,7 @@ export const UNIVERSITIES_CANADA = [
     "location": "Quebec City, Quebec, Canada",
     "logo": null,
     "website": "https://www.enap.ca",
-    "rank": "Rank 900 Global Rankings",
-    "rankingNum": 900,
-    "tuition": "18 Lakh INR",
-    "tuitionFeeUSD": 17000,
-    "acceptanceRate": 60,
     "type": "PUBLIC",
-    "minGpaPercent": 70,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 85,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -5975,8 +5079,7 @@ export const UNIVERSITIES_CANADA = [
       "Health Administration",
       "Public Policy Analysis"
     ],
-    "description": "One of the largest public administration universities in the world, educating civil servants, diplomats, and international policymakers.",
-    "eligibility": "GPA 3.0+, IELTS 6.5+ or equivalent"
+    "description": "One of the largest public administration universities in the world, educating civil servants, diplomats, and international policymakers."
   },
   {
     "_id": "canada-statcan-52",
@@ -5989,16 +5092,7 @@ export const UNIVERSITIES_CANADA = [
     "location": "Toronto, Ontario, Canada",
     "logo": null,
     "website": "https://www.vicu.utoronto.ca",
-    "rank": "Rank 900 Global Rankings",
-    "rankingNum": 900,
-    "tuition": "25 Lakh INR",
-    "tuitionFeeUSD": 23000,
-    "acceptanceRate": 50,
     "type": "PUBLIC",
-    "minGpaPercent": 74,
-    "minIeltsScore": 7,
-    "minToeflScore": 90,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -6018,8 +5112,7 @@ export const UNIVERSITIES_CANADA = [
       "Education and Society",
       "Theology"
     ],
-    "description": "Federated college within the University of Toronto, known for literature, renaissance studies, creative arts, and Emmanuel College theology.",
-    "eligibility": "GPA 3.2+, IELTS 7.0+ or equivalent"
+    "description": "Federated college within the University of Toronto, known for literature, renaissance studies, creative arts, and Emmanuel College theology."
   },
   {
     "_id": "canada-statcan-9",
@@ -6032,16 +5125,7 @@ export const UNIVERSITIES_CANADA = [
     "location": "Halifax, Nova Scotia, Canada",
     "logo": null,
     "website": "https://www.msvu.ca",
-    "rank": "Rank 920 QS Rankings",
-    "rankingNum": 920,
-    "tuition": "17 Lakh INR",
-    "tuitionFeeUSD": 16000,
-    "acceptanceRate": 74,
     "type": "PUBLIC",
-    "minGpaPercent": 64,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 80,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -6062,8 +5146,7 @@ export const UNIVERSITIES_CANADA = [
       "Child & Youth Study",
       "Psychology"
     ],
-    "description": "Recognized for programs in applied human nutrition, education, communications, public relations, and business administration.",
-    "eligibility": "GPA 2.6+, IELTS 6.5+ or equivalent"
+    "description": "Recognized for programs in applied human nutrition, education, communications, public relations, and business administration."
   },
   {
     "_id": "canada-statcan-28",
@@ -6076,16 +5159,7 @@ export const UNIVERSITIES_CANADA = [
     "location": "Rouyn-Noranda, Quebec, Canada",
     "logo": null,
     "website": "https://www.uqat.ca",
-    "rank": "Rank 950 Global Rankings",
-    "rankingNum": 950,
-    "tuition": "15 Lakh INR",
-    "tuitionFeeUSD": 14500,
-    "acceptanceRate": 72,
     "type": "PUBLIC",
-    "minGpaPercent": 62,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 80,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -6105,8 +5179,7 @@ export const UNIVERSITIES_CANADA = [
       "Management",
       "Nursing"
     ],
-    "description": "Specialized institution focusing on mining engineering, forestry, 3D animation, digital creation, and Indigenous studies.",
-    "eligibility": "GPA 2.5+, IELTS 6.5+ or equivalent"
+    "description": "Specialized institution focusing on mining engineering, forestry, 3D animation, digital creation, and Indigenous studies."
   },
   {
     "_id": "canada-statcan-35",
@@ -6119,16 +5192,7 @@ export const UNIVERSITIES_CANADA = [
     "location": "Quebec City, Quebec, Canada",
     "logo": null,
     "website": "https://www.teluq.ca",
-    "rank": "Rank 950 Global Rankings",
-    "rankingNum": 950,
-    "tuition": "14 Lakh INR",
-    "tuitionFeeUSD": 13000,
-    "acceptanceRate": 80,
     "type": "PUBLIC",
-    "minGpaPercent": 60,
-    "minIeltsScore": 6,
-    "minToeflScore": 78,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -6148,8 +5212,7 @@ export const UNIVERSITIES_CANADA = [
       "Communication",
       "Education"
     ],
-    "description": "North America's French-language distance learning university, offering flexible bachelor's and master's degrees in business, technology, and arts.",
-    "eligibility": "GPA 2.4+, IELTS 6.0+ or equivalent"
+    "description": "North America's French-language distance learning university, offering flexible bachelor's and master's degrees in business, technology, and arts."
   },
   {
     "_id": "canada-statcan-58",
@@ -6162,16 +5225,7 @@ export const UNIVERSITIES_CANADA = [
     "location": "Waterloo, Ontario, Canada",
     "logo": null,
     "website": "https://www.sju.ca",
-    "rank": "Rank 950 Global Rankings",
-    "rankingNum": 950,
-    "tuition": "22 Lakh INR",
-    "tuitionFeeUSD": 20000,
-    "acceptanceRate": 65,
     "type": "PUBLIC",
-    "minGpaPercent": 68,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 85,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -6191,8 +5245,7 @@ export const UNIVERSITIES_CANADA = [
       "Religious Studies",
       "Psychology"
     ],
-    "description": "Federated university of the University of Waterloo, providing liberal arts education, small seminar classes, and community engagement.",
-    "eligibility": "GPA 2.8+, IELTS 6.5+ or equivalent"
+    "description": "Federated university of the University of Waterloo, providing liberal arts education, small seminar classes, and community engagement."
   },
   {
     "_id": "canada-statcan-77",
@@ -6205,16 +5258,7 @@ export const UNIVERSITIES_CANADA = [
     "location": "Winnipeg, Manitoba, Canada",
     "logo": null,
     "website": "https://ustboniface.ca",
-    "rank": "Rank 950 Global Rankings",
-    "rankingNum": 950,
-    "tuition": "16 Lakh INR",
-    "tuitionFeeUSD": 15000,
-    "acceptanceRate": 74,
     "type": "PUBLIC",
-    "minGpaPercent": 62,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 80,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -6234,8 +5278,7 @@ export const UNIVERSITIES_CANADA = [
       "Sciences infirmières",
       "Arts et sciences"
     ],
-    "description": "The first post-secondary educational institution in Western Canada and primary French-language university in Manitoba.",
-    "eligibility": "French/English proficiency + GPA 2.5+"
+    "description": "The first post-secondary educational institution in Western Canada and primary French-language university in Manitoba."
   },
   {
     "_id": "canada-statcan-109",
@@ -6248,16 +5291,7 @@ export const UNIVERSITIES_CANADA = [
     "location": "Whitehorse, Yukon, Canada",
     "logo": null,
     "website": "https://www.yukonu.ca",
-    "rank": "Rank 950 Global Rankings",
-    "rankingNum": 950,
-    "tuition": "16 Lakh INR",
-    "tuitionFeeUSD": 14800,
-    "acceptanceRate": 75,
     "type": "PUBLIC",
-    "minGpaPercent": 62,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 80,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -6277,8 +5311,7 @@ export const UNIVERSITIES_CANADA = [
       "Northern Studies",
       "Renewable Energy in Cold Climates"
     ],
-    "description": "Canada's only university in the North, leading research in cold climate innovation, northern environmental sciences, and Indigenous self-determination.",
-    "eligibility": "GPA 2.5+, IELTS 6.5+ or equivalent"
+    "description": "Canada's only university in the North, leading research in cold climate innovation, northern environmental sciences, and Indigenous self-determination."
   },
   {
     "_id": "canada-statcan-35",
@@ -6291,16 +5324,7 @@ export const UNIVERSITIES_CANADA = [
     "location": "Quebec City, Quebec, Canada",
     "logo": null,
     "website": "https://www.teluq.ca",
-    "rank": "Rank 950 Global Rankings",
-    "rankingNum": 950,
-    "tuition": "14 Lakh INR",
-    "tuitionFeeUSD": 13000,
-    "acceptanceRate": 80,
     "type": "PUBLIC",
-    "minGpaPercent": 60,
-    "minIeltsScore": 6,
-    "minToeflScore": 78,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -6320,8 +5344,7 @@ export const UNIVERSITIES_CANADA = [
       "Communication",
       "Education"
     ],
-    "description": "North America's French-language distance learning university, offering flexible bachelor's and master's degrees in business, technology, and arts.",
-    "eligibility": "GPA 2.4+, IELTS 6.0+ or equivalent"
+    "description": "North America's French-language distance learning university, offering flexible bachelor's and master's degrees in business, technology, and arts."
   },
   {
     "_id": "canada-statcan-17",
@@ -6334,16 +5357,7 @@ export const UNIVERSITIES_CANADA = [
     "location": "Fredericton, New Brunswick, Canada",
     "logo": null,
     "website": "https://www.stu.ca",
-    "rank": "Rank 980 Global Rankings",
-    "rankingNum": 980,
-    "tuition": "17 Lakh INR",
-    "tuitionFeeUSD": 15500,
-    "acceptanceRate": 72,
     "type": "PUBLIC",
-    "minGpaPercent": 64,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 80,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -6364,8 +5378,7 @@ export const UNIVERSITIES_CANADA = [
       "Journalism",
       "Education"
     ],
-    "description": "Premier liberal arts institution situated in Fredericton, focusing on humanities, social work, criminology, and education.",
-    "eligibility": "GPA 2.6+, IELTS 6.5+ or equivalent"
+    "description": "Premier liberal arts institution situated in Fredericton, focusing on humanities, social work, criminology, and education."
   },
   {
     "_id": "canada-statcan-45",
@@ -6378,16 +5391,7 @@ export const UNIVERSITIES_CANADA = [
     "location": "Ottawa, Ontario, Canada",
     "logo": null,
     "website": "https://ustpaul.ca",
-    "rank": "Rank 980 Global Rankings",
-    "rankingNum": 980,
-    "tuition": "16 Lakh INR",
-    "tuitionFeeUSD": 15000,
-    "acceptanceRate": 70,
     "type": "PUBLIC",
-    "minGpaPercent": 64,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 80,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -6407,8 +5411,7 @@ export const UNIVERSITIES_CANADA = [
       "Social Innovation",
       "Human Relations"
     ],
-    "description": "Federated university of the University of Ottawa, dedicated to social justice, conflict studies, counseling, and public ethics.",
-    "eligibility": "GPA 2.6+, IELTS 6.5+ or equivalent"
+    "description": "Federated university of the University of Ottawa, dedicated to social justice, conflict studies, counseling, and public ethics."
   },
   {
     "_id": "canada-statcan-59",
@@ -6421,16 +5424,7 @@ export const UNIVERSITIES_CANADA = [
     "location": "Waterloo, Ontario, Canada",
     "logo": null,
     "website": "https://uwaterloo.ca/renison",
-    "rank": "Rank 980 Global Rankings",
-    "rankingNum": 980,
-    "tuition": "21 Lakh INR",
-    "tuitionFeeUSD": 19500,
-    "acceptanceRate": 68,
     "type": "PUBLIC",
-    "minGpaPercent": 67,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 85,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -6449,8 +5443,7 @@ export const UNIVERSITIES_CANADA = [
       "English Language Studies",
       "Social Development Studies"
     ],
-    "description": "Affiliated with the University of Waterloo, specializing in social work, East Asian studies, and international student language immersion.",
-    "eligibility": "GPA 2.7+, IELTS 6.5+ or equivalent"
+    "description": "Affiliated with the University of Waterloo, specializing in social work, East Asian studies, and international student language immersion."
   },
   {
     "_id": "canada-statcan-60",
@@ -6463,16 +5456,7 @@ export const UNIVERSITIES_CANADA = [
     "location": "Waterloo, Ontario, Canada",
     "logo": null,
     "website": "https://uwaterloo.ca/conrad-grebel-university-college",
-    "rank": "Rank 980 Global Rankings",
-    "rankingNum": 980,
-    "tuition": "21 Lakh INR",
-    "tuitionFeeUSD": 19500,
-    "acceptanceRate": 65,
     "type": "PUBLIC",
-    "minGpaPercent": 67,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 85,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -6491,8 +5475,7 @@ export const UNIVERSITIES_CANADA = [
       "Music",
       "Conflict Resolution"
     ],
-    "description": "Affiliated with the University of Waterloo, known for peace and conflict studies, music, theological studies, and community culture.",
-    "eligibility": "GPA 2.7+, IELTS 6.5+ or equivalent"
+    "description": "Affiliated with the University of Waterloo, known for peace and conflict studies, music, theological studies, and community culture."
   },
   {
     "_id": "canada-statcan-75",
@@ -6505,16 +5488,7 @@ export const UNIVERSITIES_CANADA = [
     "location": "Winnipeg, Manitoba, Canada",
     "logo": null,
     "website": "https://www.cmu.ca",
-    "rank": "Rank 980 Global Rankings",
-    "rankingNum": 980,
-    "tuition": "16 Lakh INR",
-    "tuitionFeeUSD": 15200,
-    "acceptanceRate": 72,
     "type": "PUBLIC",
-    "minGpaPercent": 64,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 80,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -6534,8 +5508,7 @@ export const UNIVERSITIES_CANADA = [
       "Communications",
       "Environmental Studies"
     ],
-    "description": "Christian liberal arts university in Winnipeg offering programs in peace and conflict resolution, business, communications, and music.",
-    "eligibility": "GPA 2.6+, IELTS 6.5+ or equivalent"
+    "description": "Christian liberal arts university in Winnipeg offering programs in peace and conflict resolution, business, communications, and music."
   },
   {
     "_id": "canada-statcan-70",
@@ -6548,16 +5521,7 @@ export const UNIVERSITIES_CANADA = [
     "location": "Sudbury, Ontario, Canada",
     "logo": null,
     "website": "https://usudbury.ca",
-    "rank": "Rank 1000 Global Rankings",
-    "rankingNum": 1000,
-    "tuition": "16 Lakh INR",
-    "tuitionFeeUSD": 15000,
-    "acceptanceRate": 75,
     "type": "PUBLIC",
-    "minGpaPercent": 62,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 80,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -6576,8 +5540,7 @@ export const UNIVERSITIES_CANADA = [
       "Religious Studies",
       "Folklore and Heritage"
     ],
-    "description": "Bilingual and Indigenous-focused university in Greater Sudbury, offering courses in philosophy, Indigenous studies, and folklore.",
-    "eligibility": "GPA 2.5+, IELTS 6.5+ or equivalent"
+    "description": "Bilingual and Indigenous-focused university in Greater Sudbury, offering courses in philosophy, Indigenous studies, and folklore."
   },
   {
     "_id": "canada-statcan-80",
@@ -6590,16 +5553,7 @@ export const UNIVERSITIES_CANADA = [
     "location": "Regina, Saskatchewan, Canada",
     "logo": null,
     "website": "https://campioncollege.ca",
-    "rank": "Rank 1000 Global Rankings",
-    "rankingNum": 1000,
-    "tuition": "18 Lakh INR",
-    "tuitionFeeUSD": 17000,
-    "acceptanceRate": 72,
     "type": "PUBLIC",
-    "minGpaPercent": 64,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 80,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -6619,8 +5573,7 @@ export const UNIVERSITIES_CANADA = [
       "English",
       "Media Studies"
     ],
-    "description": "Federated college of the University of Regina offering arts, sciences, and media studies with personalized student support.",
-    "eligibility": "GPA 2.6+, IELTS 6.5+ or equivalent"
+    "description": "Federated college of the University of Regina offering arts, sciences, and media studies with personalized student support."
   },
   {
     "_id": "canada-statcan-81",
@@ -6633,16 +5586,7 @@ export const UNIVERSITIES_CANADA = [
     "location": "Regina, Saskatchewan, Canada",
     "logo": null,
     "website": "https://www.luthercollege.edu",
-    "rank": "Rank 1000 Global Rankings",
-    "rankingNum": 1000,
-    "tuition": "18 Lakh INR",
-    "tuitionFeeUSD": 17000,
-    "acceptanceRate": 72,
     "type": "PUBLIC",
-    "minGpaPercent": 64,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 80,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -6661,8 +5605,7 @@ export const UNIVERSITIES_CANADA = [
       "Social Sciences",
       "Interdisciplinary Studies"
     ],
-    "description": "Federated college providing liberal arts and sciences with a focus on global education and community.",
-    "eligibility": "GPA 2.6+, IELTS 6.5+ or equivalent"
+    "description": "Federated college providing liberal arts and sciences with a focus on global education and community."
   },
   {
     "_id": "canada-statcan-86",
@@ -6675,16 +5618,7 @@ export const UNIVERSITIES_CANADA = [
     "location": "Saskatoon, Saskatchewan, Canada",
     "logo": null,
     "website": "https://stmcollege.ca",
-    "rank": "Rank 1000 Global Rankings",
-    "rankingNum": 1000,
-    "tuition": "19 Lakh INR",
-    "tuitionFeeUSD": 18000,
-    "acceptanceRate": 70,
     "type": "PUBLIC",
-    "minGpaPercent": 65,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 80,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -6704,8 +5638,7 @@ export const UNIVERSITIES_CANADA = [
       "Political Studies",
       "Sociology"
     ],
-    "description": "Federated Catholic liberal arts college with the University of Saskatchewan, offering degrees in arts and sciences.",
-    "eligibility": "GPA 2.7+, IELTS 6.5+ or equivalent"
+    "description": "Federated Catholic liberal arts college with the University of Saskatchewan, offering degrees in arts and sciences."
   },
   {
     "_id": "canada-statcan-95",
@@ -6718,16 +5651,7 @@ export const UNIVERSITIES_CANADA = [
     "location": "Calgary, Alberta, Canada",
     "logo": null,
     "website": "https://ambrose.edu",
-    "rank": "Rank 1000 Global Rankings",
-    "rankingNum": 1000,
-    "tuition": "17 Lakh INR",
-    "tuitionFeeUSD": 16000,
-    "acceptanceRate": 72,
     "type": "PUBLIC",
-    "minGpaPercent": 64,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 80,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -6747,8 +5671,7 @@ export const UNIVERSITIES_CANADA = [
       "Theological Studies",
       "Psychology"
     ],
-    "description": "Comprehensive university in Calgary with programs in arts, science, education, business administration, and seminary studies.",
-    "eligibility": "GPA 2.5+, IELTS 6.5+ or equivalent"
+    "description": "Comprehensive university in Calgary with programs in arts, science, education, business administration, and seminary studies."
   },
   {
     "_id": "canada-statcan-80",
@@ -6761,16 +5684,7 @@ export const UNIVERSITIES_CANADA = [
     "location": "Regina, Saskatchewan, Canada",
     "logo": null,
     "website": "https://campioncollege.ca",
-    "rank": "Rank 1000 Global Rankings",
-    "rankingNum": 1000,
-    "tuition": "18 Lakh INR",
-    "tuitionFeeUSD": 17000,
-    "acceptanceRate": 72,
     "type": "PUBLIC",
-    "minGpaPercent": 64,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 80,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -6790,8 +5704,7 @@ export const UNIVERSITIES_CANADA = [
       "English",
       "Media Studies"
     ],
-    "description": "Federated college of the University of Regina offering arts, sciences, and media studies with personalized student support.",
-    "eligibility": "GPA 2.6+, IELTS 6.5+ or equivalent"
+    "description": "Federated college of the University of Regina offering arts, sciences, and media studies with personalized student support."
   },
   {
     "_id": "canada-statcan-81",
@@ -6804,16 +5717,7 @@ export const UNIVERSITIES_CANADA = [
     "location": "Regina, Saskatchewan, Canada",
     "logo": null,
     "website": "https://www.luthercollege.edu",
-    "rank": "Rank 1000 Global Rankings",
-    "rankingNum": 1000,
-    "tuition": "18 Lakh INR",
-    "tuitionFeeUSD": 17000,
-    "acceptanceRate": 72,
     "type": "PUBLIC",
-    "minGpaPercent": 64,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 80,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -6832,8 +5736,7 @@ export const UNIVERSITIES_CANADA = [
       "Social Sciences",
       "Interdisciplinary Studies"
     ],
-    "description": "Federated college providing liberal arts and sciences with a focus on global education and community.",
-    "eligibility": "GPA 2.6+, IELTS 6.5+ or equivalent"
+    "description": "Federated college providing liberal arts and sciences with a focus on global education and community."
   },
   {
     "_id": "canada-statcan-11",
@@ -6846,16 +5749,7 @@ export const UNIVERSITIES_CANADA = [
     "location": "Pointe-de-l'Église, Nova Scotia, Canada",
     "logo": null,
     "website": "https://www.usainteanne.ca",
-    "rank": "Rank 1050 Global Rankings",
-    "rankingNum": 1050,
-    "tuition": "14 Lakh INR",
-    "tuitionFeeUSD": 13000,
-    "acceptanceRate": 78,
     "type": "PUBLIC",
-    "minGpaPercent": 60,
-    "minIeltsScore": 6,
-    "minToeflScore": 78,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -6875,8 +5769,7 @@ export const UNIVERSITIES_CANADA = [
       "Sciences",
       "Social Sciences"
     ],
-    "description": "Only French-language post-secondary institution in Nova Scotia, offering immersion education, business, science, and education degrees.",
-    "eligibility": "French/English proficiency + GPA 2.4+"
+    "description": "Only French-language post-secondary institution in Nova Scotia, offering immersion education, business, science, and education degrees."
   },
   {
     "_id": "canada-statcan-71",
@@ -6889,16 +5782,7 @@ export const UNIVERSITIES_CANADA = [
     "location": "Hearst, Ontario, Canada",
     "logo": null,
     "website": "https://www.uhearst.ca",
-    "rank": "Rank 1050 Global Rankings",
-    "rankingNum": 1050,
-    "tuition": "15 Lakh INR",
-    "tuitionFeeUSD": 14000,
-    "acceptanceRate": 78,
     "type": "PUBLIC",
-    "minGpaPercent": 60,
-    "minIeltsScore": 6,
-    "minToeflScore": 78,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -6917,8 +5801,7 @@ export const UNIVERSITIES_CANADA = [
       "Psychologie",
       "Gestion et développement communautaire"
     ],
-    "description": "French-language university in Northern Ontario operating on a unique block course format (one course at a time) with campuses in Hearst, Kapuskasing, and Timmins.",
-    "eligibility": "French proficiency + GPA 2.4+"
+    "description": "French-language university in Northern Ontario operating on a unique block course format (one course at a time) with campuses in Hearst, Kapuskasing, and Timmins."
   },
   {
     "_id": "canada-statcan-91",
@@ -6931,16 +5814,7 @@ export const UNIVERSITIES_CANADA = [
     "location": "Lacombe, Alberta, Canada",
     "logo": null,
     "website": "https://www.burmanu.ca",
-    "rank": "Rank 1050 Global Rankings",
-    "rankingNum": 1050,
-    "tuition": "16 Lakh INR",
-    "tuitionFeeUSD": 15000,
-    "acceptanceRate": 75,
     "type": "PUBLIC",
-    "minGpaPercent": 62,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 80,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -6960,8 +5834,7 @@ export const UNIVERSITIES_CANADA = [
       "Wellness Management",
       "Psychology"
     ],
-    "description": "Independent degree-granting institution in Lacombe, Alberta, offering programs in biology, education, business, and wellness.",
-    "eligibility": "GPA 2.5+, IELTS 6.5+ or equivalent"
+    "description": "Independent degree-granting institution in Lacombe, Alberta, offering programs in biology, education, business, and wellness."
   },
   {
     "_id": "canada-statcan-4",
@@ -6974,16 +5847,7 @@ export const UNIVERSITIES_CANADA = [
     "location": "Wolfville, Nova Scotia, Canada",
     "logo": null,
     "website": "https://acadiadiv.ca",
-    "rank": "Rank 1100 Global Rankings",
-    "rankingNum": 1100,
-    "tuition": "12 Lakh INR",
-    "tuitionFeeUSD": 11000,
-    "acceptanceRate": 75,
     "type": "PUBLIC",
-    "minGpaPercent": 60,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 80,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -7004,8 +5868,7 @@ export const UNIVERSITIES_CANADA = [
       "Leadership",
       "Christian Ethics"
     ],
-    "description": "Affiliated theological seminary of Acadia University located on the Wolfville campus, providing theological education, counseling, and ministry studies.",
-    "eligibility": "GPA 2.5+, IELTS 6.5+ or equivalent"
+    "description": "Affiliated theological seminary of Acadia University located on the Wolfville campus, providing theological education, counseling, and ministry studies."
   },
   {
     "_id": "canada-statcan-53",
@@ -7018,16 +5881,7 @@ export const UNIVERSITIES_CANADA = [
     "location": "Toronto, Ontario, Canada",
     "logo": null,
     "website": "https://knox.utoronto.ca",
-    "rank": "Rank 1100 Global Rankings",
-    "rankingNum": 1100,
-    "tuition": "14 Lakh INR",
-    "tuitionFeeUSD": 13000,
-    "acceptanceRate": 75,
     "type": "PUBLIC",
-    "minGpaPercent": 62,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 80,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -7046,8 +5900,7 @@ export const UNIVERSITIES_CANADA = [
       "Theological Studies",
       "Pastoral Leadership"
     ],
-    "description": "Theological college affiliated with the Presbyterian Church in Canada and the University of Toronto.",
-    "eligibility": "GPA 2.5+, IELTS 6.5+ or equivalent"
+    "description": "Theological college affiliated with the Presbyterian Church in Canada and the University of Toronto."
   },
   {
     "_id": "canada-statcan-54",
@@ -7060,16 +5913,7 @@ export const UNIVERSITIES_CANADA = [
     "location": "Toronto, Ontario, Canada",
     "logo": null,
     "website": "https://www.wycliffecollege.ca",
-    "rank": "Rank 1100 Global Rankings",
-    "rankingNum": 1100,
-    "tuition": "14 Lakh INR",
-    "tuitionFeeUSD": 13000,
-    "acceptanceRate": 75,
     "type": "PUBLIC",
-    "minGpaPercent": 62,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 80,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -7088,8 +5932,7 @@ export const UNIVERSITIES_CANADA = [
       "Missional Leadership",
       "Christian Education"
     ],
-    "description": "Anglican theological seminary located in downtown Toronto at the center of the University of Toronto campus.",
-    "eligibility": "GPA 2.5+, IELTS 6.5+ or equivalent"
+    "description": "Anglican theological seminary located in downtown Toronto at the center of the University of Toronto campus."
   },
   {
     "_id": "canada-statcan-55",
@@ -7102,16 +5945,7 @@ export const UNIVERSITIES_CANADA = [
     "location": "Toronto, Ontario, Canada",
     "logo": null,
     "website": "https://regiscollege.ca",
-    "rank": "Rank 1100 Global Rankings",
-    "rankingNum": 1100,
-    "tuition": "14 Lakh INR",
-    "tuitionFeeUSD": 13000,
-    "acceptanceRate": 75,
     "type": "PUBLIC",
-    "minGpaPercent": 62,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 80,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -7130,8 +5964,7 @@ export const UNIVERSITIES_CANADA = [
       "Ignatian Spirituality",
       "Social Justice & Ethics"
     ],
-    "description": "The Jesuit Graduate Faculty of Theology at the University of Toronto, focusing on Christian theology, ethics, and spirituality.",
-    "eligibility": "GPA 2.5+, IELTS 6.5+ or equivalent"
+    "description": "The Jesuit Graduate Faculty of Theology at the University of Toronto, focusing on Christian theology, ethics, and spirituality."
   },
   {
     "_id": "canada-statcan-72",
@@ -7144,16 +5977,7 @@ export const UNIVERSITIES_CANADA = [
     "location": "Sudbury, Ontario, Canada",
     "logo": null,
     "website": "https://www.huntingtonu.ca",
-    "rank": "Rank 1100 Global Rankings",
-    "rankingNum": 1100,
-    "tuition": "16 Lakh INR",
-    "tuitionFeeUSD": 15000,
-    "acceptanceRate": 75,
     "type": "PUBLIC",
-    "minGpaPercent": 62,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 80,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -7172,8 +5996,7 @@ export const UNIVERSITIES_CANADA = [
       "Ethics",
       "Religious Studies"
     ],
-    "description": "Independent university in Northern Ontario specializing in gerontology, communication, and theological ethics.",
-    "eligibility": "GPA 2.5+, IELTS 6.5+ or equivalent"
+    "description": "Independent university in Northern Ontario specializing in gerontology, communication, and theological ethics."
   },
   {
     "_id": "canada-statcan-73",
@@ -7186,16 +6009,7 @@ export const UNIVERSITIES_CANADA = [
     "location": "Sudbury, Ontario, Canada",
     "logo": null,
     "website": "https://thorneloe.ca",
-    "rank": "Rank 1100 Global Rankings",
-    "rankingNum": 1100,
-    "tuition": "15 Lakh INR",
-    "tuitionFeeUSD": 14500,
-    "acceptanceRate": 75,
     "type": "PUBLIC",
-    "minGpaPercent": 62,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 80,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -7214,8 +6028,7 @@ export const UNIVERSITIES_CANADA = [
       "Theatre and Fine Arts",
       "Women and Gender Studies"
     ],
-    "description": "Higher education institution in Sudbury offering studies in theology, classical civilizations, women's studies, and fine arts.",
-    "eligibility": "GPA 2.5+, IELTS 6.5+ or equivalent"
+    "description": "Higher education institution in Sudbury offering studies in theology, classical civilizations, women's studies, and fine arts."
   },
   {
     "_id": "canada-statcan-5",
@@ -7228,16 +6041,7 @@ export const UNIVERSITIES_CANADA = [
     "location": "Halifax, Nova Scotia, Canada",
     "logo": null,
     "website": "https://www.astheology.ns.ca",
-    "rank": "Rank 1150 Global Rankings",
-    "rankingNum": 1150,
-    "tuition": "13 Lakh INR",
-    "tuitionFeeUSD": 11500,
-    "acceptanceRate": 80,
     "type": "PUBLIC",
-    "minGpaPercent": 60,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 80,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -7257,8 +6061,7 @@ export const UNIVERSITIES_CANADA = [
       "Religious Studies",
       "Counseling"
     ],
-    "description": "Ecumenical graduate theological school in Halifax, Nova Scotia, offering degrees in divinity, theological studies, and interfaith leadership.",
-    "eligibility": "GPA 2.5+, IELTS 6.5+ or equivalent"
+    "description": "Ecumenical graduate theological school in Halifax, Nova Scotia, offering degrees in divinity, theological studies, and interfaith leadership."
   },
   {
     "_id": "canada-statcan-37",
@@ -7271,16 +6074,7 @@ export const UNIVERSITIES_CANADA = [
     "location": "St. Catharines, Ontario, Canada",
     "logo": null,
     "website": "https://concordiaseminary.ca",
-    "rank": "Rank 1150 Global Rankings",
-    "rankingNum": 1150,
-    "tuition": "12 Lakh INR",
-    "tuitionFeeUSD": 11000,
-    "acceptanceRate": 75,
     "type": "PUBLIC",
-    "minGpaPercent": 60,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 80,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -7299,8 +6093,7 @@ export const UNIVERSITIES_CANADA = [
       "Biblical Theology",
       "Pastoral Ministry"
     ],
-    "description": "Theological institution affiliated with Brock University, training pastors and ministry scholars for Christian leadership.",
-    "eligibility": "GPA 2.5+, IELTS 6.5+ or equivalent"
+    "description": "Theological institution affiliated with Brock University, training pastors and ministry scholars for Christian leadership."
   },
   {
     "_id": "canada-statcan-49",
@@ -7313,16 +6106,7 @@ export const UNIVERSITIES_CANADA = [
     "location": "Toronto, Ontario, Canada",
     "logo": null,
     "website": "https://staugustines.on.ca",
-    "rank": "Rank 1150 Global Rankings",
-    "rankingNum": 1150,
-    "tuition": "13 Lakh INR",
-    "tuitionFeeUSD": 12000,
-    "acceptanceRate": 75,
     "type": "PUBLIC",
-    "minGpaPercent": 62,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 80,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -7341,8 +6125,7 @@ export const UNIVERSITIES_CANADA = [
       "Pastoral Ministry",
       "Religious Leadership"
     ],
-    "description": "Catholic theological seminary located in Scarborough (Toronto), affiliated with the Toronto School of Theology and University of Toronto.",
-    "eligibility": "GPA 2.5+, IELTS 6.5+ or equivalent"
+    "description": "Catholic theological seminary located in Scarborough (Toronto), affiliated with the Toronto School of Theology and University of Toronto."
   },
   {
     "_id": "canada-statcan-83",
@@ -7355,16 +6138,7 @@ export const UNIVERSITIES_CANADA = [
     "location": "Saskatoon, Saskatchewan, Canada",
     "logo": null,
     "website": "https://emmanuelstchad.ca",
-    "rank": "Rank 1150 Global Rankings",
-    "rankingNum": 1150,
-    "tuition": "13 Lakh INR",
-    "tuitionFeeUSD": 12000,
-    "acceptanceRate": 75,
     "type": "PUBLIC",
-    "minGpaPercent": 60,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 80,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -7383,8 +6157,7 @@ export const UNIVERSITIES_CANADA = [
       "Pastoral Ministry",
       "Ecumenical Studies"
     ],
-    "description": "Theological college affiliated with the University of Saskatchewan serving the Anglican Church in Western Canada.",
-    "eligibility": "GPA 2.5+, IELTS 6.5+ or equivalent"
+    "description": "Theological college affiliated with the University of Saskatchewan serving the Anglican Church in Western Canada."
   },
   {
     "_id": "canada-statcan-37",
@@ -7397,16 +6170,7 @@ export const UNIVERSITIES_CANADA = [
     "location": "Saskatoon, Saskatchewan, Canada",
     "logo": null,
     "website": "https://concordiaseminary.ca",
-    "rank": "Rank 1150 Global Rankings",
-    "rankingNum": 1150,
-    "tuition": "12 Lakh INR",
-    "tuitionFeeUSD": 11000,
-    "acceptanceRate": 75,
     "type": "PUBLIC",
-    "minGpaPercent": 60,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 80,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -7425,8 +6189,7 @@ export const UNIVERSITIES_CANADA = [
       "Biblical Theology",
       "Pastoral Ministry"
     ],
-    "description": "Theological institution affiliated with Brock University, training pastors and ministry scholars for Christian leadership.",
-    "eligibility": "GPA 2.5+, IELTS 6.5+ or equivalent"
+    "description": "Theological institution affiliated with Brock University, training pastors and ministry scholars for Christian leadership."
   },
   {
     "_id": "canada-statcan-85",
@@ -7439,16 +6202,7 @@ export const UNIVERSITIES_CANADA = [
     "location": "Saskatoon, Saskatchewan, Canada",
     "logo": null,
     "website": "https://standrews.ca",
-    "rank": "Rank 1150 Global Rankings",
-    "rankingNum": 1150,
-    "tuition": "13 Lakh INR",
-    "tuitionFeeUSD": 12000,
-    "acceptanceRate": 75,
     "type": "PUBLIC",
-    "minGpaPercent": 60,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 80,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -7466,8 +6220,7 @@ export const UNIVERSITIES_CANADA = [
       "Master of Theological Studies",
       "Spiritual Care"
     ],
-    "description": "Theological college of the United Church of Canada, situated on the campus of the University of Saskatchewan.",
-    "eligibility": "GPA 2.5+, IELTS 6.5+ or equivalent"
+    "description": "Theological college of the United Church of Canada, situated on the campus of the University of Saskatchewan."
   },
   {
     "_id": "canada-statcan-87",
@@ -7480,16 +6233,7 @@ export const UNIVERSITIES_CANADA = [
     "location": "Saskatoon, Saskatchewan, Canada",
     "logo": null,
     "website": "https://www.horizon.edu",
-    "rank": "Rank 1150 Global Rankings",
-    "rankingNum": 1150,
-    "tuition": "12 Lakh INR",
-    "tuitionFeeUSD": 11000,
-    "acceptanceRate": 78,
     "type": "PUBLIC",
-    "minGpaPercent": 60,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 80,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -7508,8 +6252,7 @@ export const UNIVERSITIES_CANADA = [
       "Pastoral Ministry",
       "Theology"
     ],
-    "description": "Christian post-secondary institution preparing students for ministry, leadership, and community development.",
-    "eligibility": "GPA 2.5+, IELTS 6.5+ or equivalent"
+    "description": "Christian post-secondary institution preparing students for ministry, leadership, and community development."
   },
   {
     "_id": "canada-statcan-37",
@@ -7522,16 +6265,7 @@ export const UNIVERSITIES_CANADA = [
     "location": "Saskatoon, Saskatchewan, Canada",
     "logo": null,
     "website": "https://concordiaseminary.ca",
-    "rank": "Rank 1150 Global Rankings",
-    "rankingNum": 1150,
-    "tuition": "12 Lakh INR",
-    "tuitionFeeUSD": 11000,
-    "acceptanceRate": 75,
     "type": "PUBLIC",
-    "minGpaPercent": 60,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 80,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -7550,8 +6284,7 @@ export const UNIVERSITIES_CANADA = [
       "Biblical Theology",
       "Pastoral Ministry"
     ],
-    "description": "Theological institution affiliated with Brock University, training pastors and ministry scholars for Christian leadership.",
-    "eligibility": "GPA 2.5+, IELTS 6.5+ or equivalent"
+    "description": "Theological institution affiliated with Brock University, training pastors and ministry scholars for Christian leadership."
   },
   {
     "_id": "canada-statcan-85",
@@ -7564,16 +6297,7 @@ export const UNIVERSITIES_CANADA = [
     "location": "Saskatoon, Saskatchewan, Canada",
     "logo": null,
     "website": "https://standrews.ca",
-    "rank": "Rank 1150 Global Rankings",
-    "rankingNum": 1150,
-    "tuition": "13 Lakh INR",
-    "tuitionFeeUSD": 12000,
-    "acceptanceRate": 75,
     "type": "PUBLIC",
-    "minGpaPercent": 60,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 80,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -7591,9 +6315,6 @@ export const UNIVERSITIES_CANADA = [
       "Master of Theological Studies",
       "Spiritual Care"
     ],
-    "description": "Theological college of the United Church of Canada, situated on the campus of the University of Saskatchewan.",
-    "eligibility": "GPA 2.5+, IELTS 6.5+ or equivalent"
+    "description": "Theological college of the United Church of Canada, situated on the campus of the University of Saskatchewan."
   }
 ];
-
-export default UNIVERSITIES_CANADA;

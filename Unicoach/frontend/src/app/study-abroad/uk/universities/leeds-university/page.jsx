@@ -8,20 +8,16 @@ import CoursesAndFees from './CoursesAndFees';
 
 const leedsData = {
   name: "University of Leeds",
-  location: "Leeds, UK",
+  location: "Leeds, West Yorkshire, UK",
   city: "Leeds",
   established: 1904,
-  totalStudents: 39000,
-  intlStudents: 12000,
-  studentFacultyRatio: "16:1",
-  acceptanceRate: "64%",
   accreditation: "AACSB",
   avgStudyCost: "INR 60.00 L",
   avgCostOfLiving: "INR 18.00 L",
   type: "PUBLIC",
-  logo: "https://logo.clearbit.com/leeds.ac.uk",
+  logo: "/logos/verified-University of Leeds.png",
   heroImage: "https://images.unsplash.com/photo-1564981797816-1043664bf78d?w=1200",
-  description: "The University of Leeds, established in 1904, stands as a prestigious institution of academic excellence and innovation.\n\nThe institution boasts a student body of over 39,800 individuals, contributing to its multicultural academic community. Its commitment to education is evident in its awarding 29 National Teaching Fellowships to its esteemed staff.\n\nWith a proud placement among the top 100 (#82) universities worldwide, the University of Leeds offers a wide variety of more than 470 courses across its seven faculties.\n\nIt further demonstrates its commitment to accessibility by offering three intakes in autumn, spring, and summer, catering to learners from all walks of life.\n\nThe University of Leeds has one main campus in the picturesque Woodhouse area, close to the Leeds city centre.\n\nWhether you're interested in business, science, arts, or any other field, the University of Leeds has the expertise and support to help you succeed in pursuing your professional dreams.",
+  description: "The University of Leeds received its royal charter in 1904 and is a member of the Russell Group of research-intensive UK universities.\n\nIt is ranked 77th in the world in the QS World University Rankings 2027.\n\nThe University of Leeds has one main campus in the Woodhouse area, close to Leeds city centre, and offers undergraduate, taught postgraduate and research degrees across a wide range of subjects.\n\nMost taught Master's courses start in September; check each course page for start dates and application deadlines.",
   topCourses: [
     { name: "Accounting", count: 4 },
     { name: "Advertising", count: 2 },
@@ -30,43 +26,20 @@ const leedsData = {
     { name: "Architecture", count: 5 }
   ],
   intakeDeadlines: [
-    { name: "JAN'2025", status: "Closed" },
-    { name: "SEP'2025", status: "Closed" }
+    { name: "SEP'2026", status: "Intake Open" }
   ],
   requirements: [
-    { title: "TOEFL iBT Score", detail: "92+ minimum cutoff required for English proficiency verification." },
-    { title: "IELTS Academic Band", detail: "6.5+ minimum band required for admission, with no band less than 6.0." },
-    { title: "Undergraduate Degree", detail: "Bachelor's degree expected with a GPA of 3.0+ (or 60%+ equivalent)." }
+    { title: "English Language", detail: "IELTS, TOEFL, PTE or another accepted test; the minimum score depends on the course. Check the course page." },
+    { title: "Undergraduate Degree", detail: "A bachelor's degree in a relevant subject; the minimum grade (UK 2:1 or 2:2 equivalent) depends on the course." }
   ],
   rankings: {
     "QS Rankings": [
-      { category: "Best World Ranking Schools - 2025", rank: "82" },
-      { category: "Best World Ranking Schools - 2024", rank: "75" },
-      { category: "Best World Ranking Schools - 2023", rank: "86" },
-      { category: "Best World Ranking Schools - 2022", rank: "92" }
-    ],
-    "Guardian Global": [
-      { category: "Best National Schools - 2025", rank: "37" },
-      { category: "Best National Schools - 2024", rank: "27" },
-      { category: "Best National Schools - 2023", rank: "20" },
-      { category: "Best National Schools - 2022", rank: "16" }
-    ],
-    "Times Higher Education": [
-      { category: "Best World Ranking Schools - 2023", rank: "128" },
-      { category: "Best University Ranking Schools - 2022", rank: "127" }
-    ],
-    "US News": [
-      { category: "Best World Ranking Schools - 2023", rank: "140" }
-    ],
-    "Complete University Guide": [
-      { category: "Best National Schools - 2024", rank: "23 - 1500" }
+      { category: "QS World University Rankings 2027", rank: "=77" },
+      { category: "QS World University Rankings 2025", rank: "82" }
     ]
   },
   coursesFees: [
-    { name: "BSc in Accounting and Finance (With Study abroad)", duration: "48 Months", tuition: 35.29 },
-    { name: "MSc in Accounting and Finance", duration: "12 Months", tuition: 42.81 },
-    { name: "BSc in Accounting and Finance", duration: "36 Months", tuition: 35.29 },
-    { name: "BSc in Accounting and Finance (With Placement)", duration: "48 Months", tuition: 35.60 }
+    { name: "MSc in Advanced Computer Science (Sept 2027, international fee)", duration: "12 Months", tuition: 44 }
   ],
   costOfLiving: {
     description: "Generally, the cost of living in the UK while studying at Leeds can be around INR 40K per week for undergraduate and postgraduate students.",
@@ -79,7 +52,7 @@ const leedsData = {
     ]
   },
   placements: {
-    description: "Have you heard the University of Leeds has been ranked among the top 10 universities in the UK for graduate recruitment in previous years?",
+    description: "The University of Leeds Careers Centre supports students with placements, internships and graduate job applications.",
     services: [
       "Integrated Placements",
       "Summer Internships",
@@ -97,15 +70,12 @@ const leedsData = {
   ],
   alumni: [
     { name: "Hage Geingob", profession: "President of Namibia" },
-    { name: "Timothy Allen", profession: "Photojournalist" },
-    { name: "Mark Byford", profession: "Director-General of BBC" },
+    { name: "Mark Byford", profession: "Former Deputy Director-General of the BBC" },
     { name: "Richard Quest", profession: "Reporter for CNN" },
     { name: "Anita Rani", profession: "English Radio and TV Presenter" },
     { name: "Jay Rayner", profession: "Writer and Restaurant Critic" },
     { name: "Alan Yentob", profession: "BBC Creative Director" },
-    { name: "Jacky Fleming", profession: "Award-Winning Cartoonist" },
-    { name: "Piers Sellers", profession: "NASA Astronaut" },
-    { name: "Subir Raha", profession: "Business Leader" }
+    { name: "Piers Sellers", profession: "NASA Astronaut" }
   ],
   blogs: [
     { title: "How To Get Jobs In UK In 2025: Process, Eligibility & Visa", readTime: "11 mins read", date: "Mar 15, 2025" },

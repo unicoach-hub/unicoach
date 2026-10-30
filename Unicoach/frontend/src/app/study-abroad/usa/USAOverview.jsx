@@ -43,29 +43,29 @@ const UniLogo = ({ logo, name }) => {
 // ─────────────────────────────────────────────
 const masterUniversities = [
   // Atlanta
-  { id: 'atl-1', name: "Georgia Institute of Technology", city: "Atlanta", rank: "88 QS", tuition: 43000, type: "PUBLIC", website: "https://www.gatech.edu", eligibility: "GPA 3.5+, IELTS 7.0+, GRE required", logo: "https://logo.clearbit.com/gatech.edu" },
-  { id: 'atl-2', name: "Emory University", city: "Atlanta", rank: "155 QS", tuition: 59000, type: "PRIVATE", website: "https://www.emory.edu", eligibility: "GPA 3.5+, IELTS 7.0+, GRE/GMAT required", logo: "https://logo.clearbit.com/emory.edu" },
+  { id: 'atl-1', name: "Georgia Institute of Technology", city: "Atlanta", rank: "142 QS", tuition: 32116, type: "PUBLIC", website: "https://www.gatech.edu", eligibility: "Bachelor's degree + IELTS/TOEFL; grade requirement varies by course", logo: "https://logo.clearbit.com/gatech.edu" },
+  { id: 'atl-2', name: "Emory University", city: "Atlanta", rank: "183 QS", tuition: 69900, type: "PRIVATE", website: "https://www.emory.edu", eligibility: "Bachelor's degree + IELTS/TOEFL; grade requirement varies by course", logo: "https://logo.clearbit.com/emory.edu" },
   { id: 'atl-3', name: "Georgia State University", city: "Atlanta", rank: "299 US News", tuition: 27000, type: "PUBLIC", website: "https://www.gsu.edu", eligibility: "GPA 3.0+, IELTS 6.5+, GRE required", logo: "https://logo.clearbit.com/gsu.edu" },
   
   // Boston
-  { id: 'bos-1', name: "Massachusetts Institute of Technology (MIT)", city: "Boston", rank: "1 QS", tuition: 59750, type: "PRIVATE", website: "https://www.mit.edu", eligibility: "GPA 3.9+, IELTS 7.5+, GRE required", logo: "https://logo.clearbit.com/mit.edu" },
-  { id: 'bos-2', name: "Harvard University", city: "Boston", rank: "5 QS", tuition: 56200, type: "PRIVATE", website: "https://www.harvard.edu", eligibility: "GPA 3.9+, IELTS 7.5+, GRE required", logo: "https://logo.clearbit.com/harvard.edu" },
-  { id: 'bos-3', name: "Northeastern University", city: "Boston", rank: "375 QS", tuition: 48000, type: "PRIVATE", website: "https://www.northeastern.edu", eligibility: "GPA 3.2+, IELTS 6.5+, GRE/TOEFL", logo: "https://logo.clearbit.com/northeastern.edu" },
+  { id: 'bos-1', name: "Massachusetts Institute of Technology (MIT)", city: "Boston", rank: "1 QS", tuition: 66720, type: "PRIVATE", website: "https://www.mit.edu", eligibility: "Bachelor's degree + IELTS/TOEFL; grade requirement varies by course", logo: "https://logo.clearbit.com/mit.edu" },
+  { id: 'bos-2', name: "Harvard University", city: "Boston", rank: "5 QS", tuition: 67504, type: "PRIVATE", website: "https://www.harvard.edu", eligibility: "Bachelor's degree + IELTS/TOEFL; grade requirement varies by course", logo: "https://logo.clearbit.com/harvard.edu" },
+  { id: 'bos-3', name: "Northeastern University", city: "Boston", rank: "385 QS", tuition: 30752, type: "PRIVATE", website: "https://www.northeastern.edu", eligibility: "Bachelor's degree + IELTS/TOEFL; grade requirement varies by course", logo: "https://logo.clearbit.com/northeastern.edu" },
   
   // Chicago
-  { id: 'chi-1', name: "University of Chicago", city: "Chicago", rank: "13 QS", tuition: 61500, type: "PRIVATE", website: "https://www.uchicago.edu", eligibility: "GPA 3.8+, IELTS 7.5+, GRE/GMAT", logo: "https://logo.clearbit.com/uchicago.edu" },
-  { id: 'chi-2', name: "Northwestern University", city: "Chicago", rank: "35 QS", tuition: 58000, type: "PRIVATE", website: "https://www.northwestern.edu", eligibility: "GPA 3.7+, IELTS 7.5+, GRE/GMAT", logo: "https://logo.clearbit.com/northwestern.edu" },
-  { id: 'chi-3', name: "University of Illinois Chicago (UIC)", city: "Chicago", rank: "323 QS", tuition: 31000, type: "PUBLIC", website: "https://www.uic.edu", eligibility: "GPA 3.0+, IELTS 6.5+, TOEFL 80+", logo: "https://logo.clearbit.com/uic.edu" },
+  { id: 'chi-1', name: "University of Chicago", city: "Chicago", rank: "24 QS", tuition: 66762, type: "PRIVATE", website: "https://www.uchicago.edu", eligibility: "Bachelor's degree + IELTS/TOEFL; grade requirement varies by course", logo: "https://logo.clearbit.com/uchicago.edu" },
+  { id: 'chi-2', name: "Northwestern University", city: "Chicago", rank: "45 QS", tuition: 70986, type: "PRIVATE", website: "https://www.northwestern.edu", eligibility: "Bachelor's degree + IELTS/TOEFL; grade requirement varies by course", logo: "https://logo.clearbit.com/northwestern.edu" },
+  { id: 'chi-3', name: "University of Illinois Chicago (UIC)", city: "Chicago", rank: "370 QS", tuition: 32019, type: "PUBLIC", website: "https://www.uic.edu", eligibility: "Bachelor's degree + IELTS/TOEFL; grade requirement varies by course", logo: "https://logo.clearbit.com/uic.edu" },
   
   // Los Angeles
-  { id: 'la-1', name: "California Institute of Technology (Caltech)", city: "Los Angeles", rank: "10 QS", tuition: 60800, type: "PRIVATE", website: "https://www.caltech.edu", eligibility: "GPA 3.9+, IELTS 7.5+, GRE required", logo: "https://logo.clearbit.com/caltech.edu" },
-  { id: 'la-2', name: "University of California, Los Angeles (UCLA)", city: "Los Angeles", rank: "42 QS", tuition: 32200, type: "PUBLIC", website: "https://www.ucla.edu", eligibility: "GPA 3.6+, IELTS 7.0+, GRE required", logo: "https://logo.clearbit.com/ucla.edu" },
-  { id: 'la-3', name: "University of Southern California (USC)", city: "Los Angeles", rank: "116 QS", tuition: 52000, type: "PRIVATE", website: "https://www.usc.edu", eligibility: "GPA 3.4+, IELTS 7.0+, GRE required", logo: "https://logo.clearbit.com/usc.edu" },
+  { id: 'la-1', name: "California Institute of Technology (Caltech)", city: "Los Angeles", rank: "7 QS", tuition: 68574, type: "PRIVATE", website: "https://www.caltech.edu", eligibility: "Bachelor's degree + IELTS/TOEFL; grade requirement varies by course", logo: "https://logo.clearbit.com/caltech.edu" },
+  { id: 'la-2', name: "University of California, Los Angeles (UCLA)", city: "Los Angeles", rank: "49 QS", tuition: 30710, type: "PUBLIC", website: "https://www.ucla.edu", eligibility: "Bachelor's degree + IELTS/TOEFL; grade requirement varies by course", logo: "https://logo.clearbit.com/ucla.edu" },
+  { id: 'la-3', name: "University of Southern California (USC)", city: "Los Angeles", rank: "153 QS", tuition: 65808, type: "PRIVATE", website: "https://www.usc.edu", eligibility: "Bachelor's degree + IELTS/TOEFL; grade requirement varies by course", logo: "https://logo.clearbit.com/usc.edu" },
   
   // Philadelphia
-  { id: 'phi-1', name: "University of Pennsylvania (UPenn)", city: "Philadelphia", rank: "15 QS", tuition: 56000, type: "PRIVATE", website: "https://www.upenn.edu", eligibility: "GPA 3.8+, IELTS 7.5+, GRE required", logo: "https://logo.clearbit.com/upenn.edu" },
+  { id: 'phi-1', name: "University of Pennsylvania (UPenn)", city: "Philadelphia", rank: "15 QS", tuition: 70600, type: "PRIVATE", website: "https://www.upenn.edu", eligibility: "Bachelor's degree + IELTS/TOEFL; grade requirement varies by course", logo: "https://logo.clearbit.com/upenn.edu" },
   { id: 'phi-2', name: "Temple University", city: "Philadelphia", rank: "121 US News", tuition: 31000, type: "PUBLIC", website: "https://www.temple.edu", eligibility: "GPA 3.0+, IELTS 6.5+, GRE required", logo: "https://logo.clearbit.com/temple.edu" },
-  { id: 'phi-3', name: "Drexel University", city: "Philadelphia", rank: "651 QS", tuition: 55000, type: "PUBLIC", website: "https://www.drexel.edu", eligibility: "GPA 3.3+, IELTS 6.5+, GRE required", logo: "https://logo.clearbit.com/drexel.edu" },
+  { id: 'phi-3', name: "Drexel University", city: "Philadelphia", rank: "771-780 QS", tuition: 37800, type: "PRIVATE", website: "https://www.drexel.edu", eligibility: "Bachelor's degree + IELTS/TOEFL; grade requirement varies by course", logo: "https://logo.clearbit.com/drexel.edu" },
 ];
 
 const USAOverview = () => {
@@ -76,7 +76,7 @@ const USAOverview = () => {
   const [selectedCity, setSelectedCity] = useState('All');
   const [selectedFeeLimit, setSelectedFeeLimit] = useState('All'); // 'All' | '30000' | '50000'
 
-  const exchangeRate = 88.22;
+  const exchangeRate = 95; // 1 USD ≈ ₹95 (Aug 2026)
 
   // Currency Converter helper
   const formatCost = (valInUSD) => {
@@ -349,7 +349,7 @@ const USAOverview = () => {
           {/* Ranking tab switches */}
           <div className="flex border-b border-slate-200 mb-8 overflow-x-auto gap-2">
             {[
-              { id: 'qs', label: 'QS Top 2026 Rankings' },
+              { id: 'qs', label: 'QS Top 2027 Rankings' },
               { id: 'specialization', label: 'Best by Specialization' },
               { id: 'one-year', label: 'Accelerated 1-Year MS' }
             ].map(tab => (
@@ -381,11 +381,11 @@ const USAOverview = () => {
                     <tbody className="divide-y divide-slate-100 text-slate-700 font-semibold">
                       {[
                         { rank: "1", name: "Massachusetts Institute of Technology (MIT)", loc: "Cambridge, MA" },
-                        { rank: "3", name: "Stanford University", loc: "Stanford, CA" },
+                        { rank: "2", name: "Stanford University", loc: "Stanford, CA" },
                         { rank: "5", name: "Harvard University", loc: "Cambridge, MA" },
-                        { rank: "10", name: "California Institute of Technology (Caltech)", loc: "Pasadena, CA" },
-                        { rank: "13", name: "University of Chicago", loc: "Chicago, IL" },
-                        { rank: "15", name: "University of Pennsylvania", loc: "Philadelphia, PA" }
+                        { rank: "7", name: "California Institute of Technology (Caltech)", loc: "Pasadena, CA" },
+                        { rank: "15", name: "University of Pennsylvania", loc: "Philadelphia, PA" },
+                        { rank: "24", name: "University of Chicago", loc: "Chicago, IL" }
                       ].map((row, i) => (
                         <tr key={i} className="hover:bg-slate-50/50 transition-colors">
                           <td className="py-3.5 text-indigo-650 font-black">{row.rank}</td>

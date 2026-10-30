@@ -8,6 +8,7 @@ import {
     ExternalLink, MapPin, DollarSign, Award, Building, Globe, Check, CheckCircle2,
     Sparkles, BookOpen
 } from 'lucide-react';
+import { FinderCard, FinderField, FINDER_FIELD, FIELD_RADIUS } from './ui/FinderForm';
 import { getUniversityLogo } from './logoResolver';
 import PageLoader from './PageLoader';
 import { matchesUniversitySearch, getMatchedCoursesForUniversity } from '../utils/universitySearchMatcher';
@@ -19,6 +20,8 @@ import { useProgramSelection } from '../utils/useProgramSelection';
 const UNI_PAGE_SIZE = 10;
 import { API_BASE_URL } from '../config';
 import { getOfficialRequirements, getGreText, CHECK_SITE } from '../utils/requirements';
+import { getVerifiedRanking } from '../utils/ranking';
+import { getOfficialTuition } from '../utils/dataSourceLabel';
 
 const API_URL = API_BASE_URL;
 
@@ -322,14 +325,17 @@ const CityUniversitiesTemplate = ({
                         const mapped = data.map(uni => {
                           // Requirements only when taken from the official site; the raw DB record holds defaults
                           const req = getOfficialRequirements(uni);
+                          // Rank only from an imported ranking file, fee only from an official source; otherwise "check site"
+                          const ranking = getVerifiedRanking(uni);
+                          const fee = getOfficialTuition(uni, { preferGraduate: true });
                           return {
                             id: uni._id,
                             name: uni.name,
                             location: uni.city ? `${uni.city}, ${uni.country?.name || ''}` : uni.country?.name || '',
-                            rank: uni.rank || '--',
-                            rankingNum: uni.rankingNum,
+                            rank: ranking ? ranking.shortLabel : '--',
+                            rankingNum: ranking ? ranking.rank : null,
                             rankingSource: uni.rankingSource,
-                            tuition: uni.tuition || '--',
+                            tuition: fee ? fee.localText : CHECK_SITE,
                             type: uni.type ? uni.type.toUpperCase() : 'PUBLIC',
                             logo: uni.logo || `https://ui-avatars.com/api/?name=${encodeURIComponent((typeof uni !== 'undefined' && uni && uni.name) ? uni.name : 'U')}&background=4F46E5&color=ffffff&bold=true&size=128`,
                             website: uni.website || '#',
@@ -384,14 +390,13 @@ const CityUniversitiesTemplate = ({
     // Sort logic
     const sortedUniversities = [...filteredUniversities].sort((a, b) => {
         if (sortBy === 'rank') {
-            if (a.rank === '--') return 1;
-            if (b.rank === '--') return -1;
-            return parseInt(a.rank) - parseInt(b.rank);
+            const ar = a.rankingNum || Number.POSITIVE_INFINITY;
+            const br = b.rankingNum || Number.POSITIVE_INFINITY;
+            return ar - br;
         }
         if (sortBy === 'tuition') {
-            const aVal = parseInt(a.tuition.replace(/[^0-9]/g, ''));
-            const bVal = parseInt(b.tuition.replace(/[^0-9]/g, ''));
-            return aVal - bVal;
+            const fee = (u) => parseInt(String(u.tuition).replace(/[^0-9]/g, ''), 10) || Number.POSITIVE_INFINITY;
+            return fee(a) - fee(b);
         }
         return a.name.localeCompare(b.name);
     });
@@ -494,53 +499,61 @@ const CityUniversitiesTemplate = ({
                     </motion.div>
                 )}
 
-                {/* Search and Filter Bar - Glassmorphic */}
+                {/* Search and Filter Bar */}
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.1 }}
-                    className="flex flex-col md:flex-row gap-4 mb-8 bg-white/60 backdrop-blur-xl p-4 rounded-3xl border border-white shadow-[0_8px_30px_rgb(0,0,0,0.04)]"
+                    className="mb-8"
                 >
-                    <div className="flex-1 relative group">
-                        <Search className="absolute left-5 top-1/2 transform -translate-y-1/2 text-gray-400 group-focus-within:text-[#DE5C2B] transition-colors" size={20} />
-                        <input
-                            type="text"
-                            placeholder="Search universities by course (e.g. CS, MBA, Data Science), name, or city..."
-                            value={searchTerm}
-                            onChange={(e) => setSearchTerm(e.target.value)}
-                            className="w-full pl-14 pr-6 py-4 bg-white/80 border border-gray-100 rounded-2xl focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 outline-none transition-all shadow-sm font-medium text-gray-700"
-                        />
-                    </div>
-                    <div className="flex gap-3">
-                        <button
-                            onClick={() => setIsFilterOpen(!isFilterOpen)}
-                            data-cursor="hover"
-                            className={`flex items-center gap-2 px-8 py-4 rounded-2xl transition-all font-semibold shadow-sm border ${
-                                isFilterOpen 
-                                ? 'bg-[#DE5C2B] text-white border-blue-600 hover:bg-[#C04A1D] shadow-orange-500/20' 
-                                : 'bg-white/80 border-gray-100 text-gray-700 hover:bg-gray-50'
-                            }`}
-                        >
-                            <Filter size={20} />
-                            Filters
-                            {Object.values(selectedFilters).flat().length > 1 && (
-                                <span className={`ml-2 px-2.5 py-0.5 text-xs rounded-full ${isFilterOpen ? 'bg-white/20' : 'bg-orange-100 text-[#C04A1D]'}`}>
-                                    {Object.values(selectedFilters).flat().length - 1} {/* -1 to ignore default city */}
-                                </span>
-                            )}
-                        </button>
-                        <select
-                            value={sortBy}
-                            onChange={(e) => setSortBy(e.target.value)}
-                            data-cursor="pointer"
-                            className="px-6 py-4 bg-white/80 border border-gray-100 rounded-2xl focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 outline-none shadow-sm font-semibold text-gray-700 appearance-none cursor-pointer"
-                            style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%236B7280'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E")`, backgroundPosition: 'right 1rem center', backgroundRepeat: 'no-repeat', backgroundSize: '1.5em 1.5em', paddingRight: '3rem' }}
-                        >
-                            <option value="rank">Sort by Rank</option>
-                            <option value="tuition">Sort by Tuition</option>
-                            <option value="name">Sort by Name</option>
-                        </select>
-                    </div>
+                    <FinderCard>
+                        <div className="grid grid-cols-1 sm:grid-cols-[1fr_auto_200px] gap-3 items-end">
+                            <FinderField label="Search">
+                                <div className="relative">
+                                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-[#5B544A] pointer-events-none" size={16} />
+                                    <input
+                                        type="text"
+                                        placeholder="Search universities by course (e.g. CS, MBA, Data Science), name, or city..."
+                                        value={searchTerm}
+                                        onChange={(e) => setSearchTerm(e.target.value)}
+                                        className={`${FINDER_FIELD} pl-10`}
+                                        style={FIELD_RADIUS}
+                                    />
+                                </div>
+                            </FinderField>
+                            <button
+                                onClick={() => setIsFilterOpen(!isFilterOpen)}
+                                data-cursor="hover"
+                                className={`h-11 px-5 inline-flex items-center justify-center gap-2 text-[14px] font-semibold border transition-colors ${
+                                    isFilterOpen
+                                    ? 'bg-[#16130F] text-white border-[#16130F] hover:bg-[#DE5C2B] hover:border-[#DE5C2B]'
+                                    : 'bg-white text-[#16130F] border-[#E6E0D4] hover:border-[#16130F]'
+                                }`}
+                                style={FIELD_RADIUS}
+                            >
+                                <Filter size={16} />
+                                Filters
+                                {Object.values(selectedFilters).flat().length > 1 && (
+                                    <span className={`ml-1 px-2 py-0.5 text-[11.5px] rounded-full ${isFilterOpen ? 'bg-white/20' : 'bg-[#FDF4EF] text-[#DE5C2B]'}`}>
+                                        {Object.values(selectedFilters).flat().length - 1} {/* -1 to ignore default city */}
+                                    </span>
+                                )}
+                            </button>
+                            <FinderField label="Sort by">
+                                <select
+                                    value={sortBy}
+                                    onChange={(e) => setSortBy(e.target.value)}
+                                    data-cursor="pointer"
+                                    className={`${FINDER_FIELD} cursor-pointer`}
+                                    style={FIELD_RADIUS}
+                                >
+                                    <option value="rank">Sort by Rank</option>
+                                    <option value="tuition">Sort by Tuition</option>
+                                    <option value="name">Sort by Name</option>
+                                </select>
+                            </FinderField>
+                        </div>
+                    </FinderCard>
                 </motion.div>
 
                 {/* Sliding Filters Panel */}
@@ -551,16 +564,17 @@ const CityUniversitiesTemplate = ({
                             animate={{ opacity: 1, height: 'auto', y: 0 }}
                             exit={{ opacity: 0, height: 0, y: -20 }}
                             transition={{ duration: 0.4, ease: [0.04, 0.62, 0.23, 0.98] }}
-                            className="bg-white/80 backdrop-blur-xl rounded-3xl shadow-[0_20px_40px_rgb(0,0,0,0.06)] border border-white overflow-hidden mb-8"
+                            className="bg-white border border-[#E6E0D4] shadow-[0_24px_60px_-36px_rgba(22,19,15,0.35)] overflow-hidden mb-8"
+                            style={{ borderRadius: 18 }}
                         >
-                            <div className="p-8">
-                                <div className="flex justify-between items-center mb-6 border-b border-gray-100 pb-4">
-                                    <h3 className="text-xl font-bold text-gray-900 flex items-center gap-2">
-                                        <Filter size={24} className="text-[#DE5C2B]" /> Advanced Filters
+                            <div className="p-5 sm:p-6">
+                                <div className="flex justify-between items-center mb-6 border-b border-[#ECE6DA] pb-4">
+                                    <h3 className="text-[15px] font-semibold text-[#16130F] flex items-center gap-2">
+                                        <Filter size={16} className="text-[#DE5C2B]" /> Advanced Filters
                                     </h3>
                                     <button
                                         onClick={clearAllFilters}
-                                        className="text-sm px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg transition-colors font-semibold"
+                                        className="text-[12.5px] font-semibold text-[#DE5C2B] hover:underline"
                                         data-cursor="pointer"
                                     >
                                         Clear All
@@ -570,25 +584,25 @@ const CityUniversitiesTemplate = ({
                                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
                                     {/* City Filter (Read-only representation) */}
                                     <div>
-                                        <h4 className="font-semibold text-gray-900 mb-3 text-sm uppercase tracking-wider">Target City</h4>
+                                        <h4 className="text-[12.5px] font-semibold text-[#16130F] mb-3">Target City</h4>
                                         <div className="space-y-2">
                                             <label className="flex items-center gap-3 cursor-pointer group">
-                                                <div className="w-5 h-5 rounded border border-blue-500 bg-[#DE5C2B] flex items-center justify-center text-white">
-                                                    <Check size={14} />
+                                                <div className="w-4 h-4 rounded border border-[#DE5C2B] bg-[#DE5C2B] flex items-center justify-center text-white">
+                                                    <Check size={12} />
                                                 </div>
-                                                <span className="text-gray-700 font-medium group-hover:text-[#DE5C2B] transition-colors">{cityName}</span>
+                                                <span className="text-[13px] text-[#16130F] group-hover:text-[#DE5C2B] transition-colors">{cityName}</span>
                                             </label>
                                         </div>
                                     </div>
 
                                     {/* Fees Filter */}
                                     <div>
-                                        <h4 className="font-semibold text-gray-900 mb-3 text-sm uppercase tracking-wider">1st Year Fees</h4>
+                                        <h4 className="text-[12.5px] font-semibold text-[#16130F] mb-3">1st Year Fees</h4>
                                         <div className="space-y-3">
                                             {filterCategories.fees.map((fee) => (
                                                 <label key={fee.value} className="flex items-center gap-3 cursor-pointer group" data-cursor="pointer">
-                                                    <div className={`w-5 h-5 rounded border flex items-center justify-center transition-colors ${selectedFilters.fees.includes(fee.value) ? 'bg-[#DE5C2B] border-blue-600 text-white' : 'border-gray-300 group-hover:border-blue-400 bg-white'}`}>
-                                                        {selectedFilters.fees.includes(fee.value) && <Check size={14} />}
+                                                    <div className={`w-4 h-4 rounded border flex items-center justify-center transition-colors ${selectedFilters.fees.includes(fee.value) ? 'bg-[#DE5C2B] border-[#DE5C2B] text-white' : 'border-[#E6E0D4] group-hover:border-[#DE5C2B] bg-white'}`}>
+                                                        {selectedFilters.fees.includes(fee.value) && <Check size={12} />}
                                                     </div>
                                                     <input
                                                         type="checkbox"
@@ -596,7 +610,7 @@ const CityUniversitiesTemplate = ({
                                                         checked={selectedFilters.fees.includes(fee.value)}
                                                         onChange={() => handleFilterChange('fees', fee.value)}
                                                     />
-                                                    <span className="text-gray-600 font-medium group-hover:text-gray-900 transition-colors">{fee.label}</span>
+                                                    <span className="text-[13px] text-[#16130F] group-hover:text-[#DE5C2B] transition-colors">{fee.label}</span>
                                                 </label>
                                             ))}
                                         </div>
@@ -604,12 +618,12 @@ const CityUniversitiesTemplate = ({
 
                                     {/* Degree Filter */}
                                     <div>
-                                        <h4 className="font-semibold text-gray-900 mb-3 text-sm uppercase tracking-wider">Degree Level</h4>
+                                        <h4 className="text-[12.5px] font-semibold text-[#16130F] mb-3">Degree Level</h4>
                                         <div className="space-y-3">
                                             {filterCategories.degree.map((degree) => (
                                                 <label key={degree.value} className="flex items-center gap-3 cursor-pointer group" data-cursor="pointer">
-                                                    <div className={`w-5 h-5 rounded border flex items-center justify-center transition-colors ${selectedFilters.degree.includes(degree.value) ? 'bg-[#DE5C2B] border-blue-600 text-white' : 'border-gray-300 group-hover:border-blue-400 bg-white'}`}>
-                                                        {selectedFilters.degree.includes(degree.value) && <Check size={14} />}
+                                                    <div className={`w-4 h-4 rounded border flex items-center justify-center transition-colors ${selectedFilters.degree.includes(degree.value) ? 'bg-[#DE5C2B] border-[#DE5C2B] text-white' : 'border-[#E6E0D4] group-hover:border-[#DE5C2B] bg-white'}`}>
+                                                        {selectedFilters.degree.includes(degree.value) && <Check size={12} />}
                                                     </div>
                                                     <input
                                                         type="checkbox"
@@ -617,7 +631,7 @@ const CityUniversitiesTemplate = ({
                                                         checked={selectedFilters.degree.includes(degree.value)}
                                                         onChange={() => handleFilterChange('degree', degree.value)}
                                                     />
-                                                    <span className="text-gray-600 font-medium group-hover:text-gray-900 transition-colors">{degree.label}</span>
+                                                    <span className="text-[13px] text-[#16130F] group-hover:text-[#DE5C2B] transition-colors">{degree.label}</span>
                                                 </label>
                                             ))}
                                         </div>
@@ -625,12 +639,12 @@ const CityUniversitiesTemplate = ({
 
                                     {/* Intake Filter */}
                                     <div>
-                                        <h4 className="font-semibold text-gray-900 mb-3 text-sm uppercase tracking-wider">Intake</h4>
+                                        <h4 className="text-[12.5px] font-semibold text-[#16130F] mb-3">Intake</h4>
                                         <div className="space-y-3">
                                             {filterCategories.intake.map((intake) => (
                                                 <label key={intake.value} className="flex items-center gap-3 cursor-pointer group" data-cursor="pointer">
-                                                    <div className={`w-5 h-5 rounded border flex items-center justify-center transition-colors ${selectedFilters.intake.includes(intake.value) ? 'bg-[#DE5C2B] border-blue-600 text-white' : 'border-gray-300 group-hover:border-blue-400 bg-white'}`}>
-                                                        {selectedFilters.intake.includes(intake.value) && <Check size={14} />}
+                                                    <div className={`w-4 h-4 rounded border flex items-center justify-center transition-colors ${selectedFilters.intake.includes(intake.value) ? 'bg-[#DE5C2B] border-[#DE5C2B] text-white' : 'border-[#E6E0D4] group-hover:border-[#DE5C2B] bg-white'}`}>
+                                                        {selectedFilters.intake.includes(intake.value) && <Check size={12} />}
                                                     </div>
                                                     <input
                                                         type="checkbox"
@@ -638,7 +652,7 @@ const CityUniversitiesTemplate = ({
                                                         checked={selectedFilters.intake.includes(intake.value)}
                                                         onChange={() => handleFilterChange('intake', intake.value)}
                                                     />
-                                                    <span className="text-gray-600 font-medium group-hover:text-gray-900 transition-colors">{intake.label}</span>
+                                                    <span className="text-[13px] text-[#16130F] group-hover:text-[#DE5C2B] transition-colors">{intake.label}</span>
                                                 </label>
                                             ))}
                                         </div>
@@ -648,7 +662,8 @@ const CityUniversitiesTemplate = ({
                                 <div className="mt-8 flex justify-end">
                                     <button
                                         onClick={() => setIsFilterOpen(false)}
-                                        className="px-8 py-3 bg-gray-900 text-white rounded-xl hover:bg-black transition-colors font-semibold shadow-lg shadow-gray-900/20"
+                                        className="h-11 px-6 inline-flex items-center justify-center text-white text-[14px] font-semibold bg-[#16130F] hover:bg-[#DE5C2B] transition-colors"
+                                        style={FIELD_RADIUS}
                                         data-cursor="pointer"
                                     >
                                         Show {sortedUniversities.length} Results
@@ -670,8 +685,8 @@ const CityUniversitiesTemplate = ({
                             <span>Loading verified universities in {cityName}...</span>
                         </div>
                     ) : (
-                        <p className="text-gray-700 font-bold text-lg">
-                            {sortedUniversities.length} Universities Found
+                        <p className="text-[13.5px] text-[#5B544A]">
+                            <span className="font-bold text-[#16130F]">{sortedUniversities.length}</span> {sortedUniversities.length === 1 ? 'university' : 'universities'}
                         </p>
                     )}
                 </div>

@@ -9,6 +9,7 @@ import StudyAbroadCTA from '../../../../../components/StudyAbroadCTA';
 import { getUniversityLogo } from '../../../../../components/logoResolver';
 import { matchesUniversitySearch, getMatchedCoursesForUniversity } from '../../../../../utils/universitySearchMatcher';
 import { HookBand, BarCompare } from '../../../../../components/ui/Infographics';
+import { FinderCard, FinderField, FinderChip, FINDER_FIELD, FIELD_RADIUS } from '../../../../../components/ui/FinderForm';
 
 // ─────────────────────────────────────────────
 // Combined Canada University Database (20 Institutions)
@@ -20,18 +21,18 @@ const universityDatabase = [
     city: "Toronto",
     state: "Ontario",
     location: "Toronto, Ontario, Canada",
-    rank: "Rank 21 QS Rankings",
-    rankValue: 21,
-    tuition: 41,
+    rank: "Rank 32 QS Rankings",
+    rankValue: 32,
+    tuition: 52,
     type: "PUBLIC",
     logo: "https://logo.clearbit.com/utoronto.ca",
     website: "https://www.utoronto.ca",
     courses: ["Computer Science", "Artificial Intelligence / Machine Learning", "Data Science", "Software Engineering", "Management", "Business Administration", "Engineering Science"],
     degrees: ["Postgraduate", "Ph.D.", "Undergraduate"],
     intakes: ["JAN", "SEP"],
-    description: "Canada's top-ranked university, offering world-renowned programs in research, computing, medicine, and humanities.",
-    eligibility: "GPA 3.8+, IELTS 7.0+ or equivalent",
-    deadline: "Jan 15, 2026"
+    description: "One of Canada's top-ranked universities, offering world-renowned programs in research, computing, medicine, and humanities.",
+    eligibility: "Bachelor's degree + IELTS/TOEFL; min. GPA varies by program",
+    deadline: "Varies by program"
   },
   {
     id: 2,
@@ -41,16 +42,16 @@ const universityDatabase = [
     location: "Montreal, Quebec, Canada",
     rank: "Rank 30 QS Rankings",
     rankValue: 30,
-    tuition: 23,
+    tuition: 22,
     type: "PUBLIC",
     logo: "https://logo.clearbit.com/mcgill.ca",
     website: "https://www.mcgill.ca",
     courses: ["Computer Science", "Artificial Intelligence / Machine Learning", "Data Science", "Software Engineering", "Management", "Business Administration", "Economics", "Medicine and Medical Studies"],
     degrees: ["Postgraduate", "Ph.D.", "Undergraduate"],
     intakes: ["JAN", "SEP"],
-    description: "One of Canada's most prestigious universities, attracting top students from around the world to its Montreal campus.",
-    eligibility: "GPA 3.7+, IELTS 6.5+ or equivalent",
-    deadline: "Jan 15, 2026"
+    description: "Canada's highest-ranked university in the QS 2027 rankings, attracting top students from around the world to its Montreal campus.",
+    eligibility: "Bachelor's degree + IELTS/TOEFL; min. GPA varies by program",
+    deadline: "Varies by program"
   },
   {
     id: 3,
@@ -58,18 +59,18 @@ const universityDatabase = [
     city: "Vancouver",
     state: "British Columbia",
     location: "Vancouver, British Columbia, Canada",
-    rank: "Rank 34 QS Rankings",
-    rankValue: 34,
-    tuition: 32,
+    rank: "Rank 45 QS Rankings",
+    rankValue: 45,
+    tuition: 19,
     type: "PUBLIC",
     logo: "https://logo.clearbit.com/ubc.ca",
     website: "https://www.ubc.ca",
     courses: ["Computer Science", "Artificial Intelligence / Machine Learning", "Data Science", "Software Engineering", "Management", "Business Administration", "Economics"],
     degrees: ["Postgraduate", "Ph.D.", "Undergraduate"],
     intakes: ["JAN", "SEP"],
-    description: "A global center for research and teaching, consistently ranked among the top 40 universities in the world.",
-    eligibility: "GPA 3.5+, IELTS 6.5+ or equivalent",
-    deadline: "Jan 15, 2026"
+    description: "A global centre for research and teaching, ranked 45th in the world in the QS World University Rankings 2027.",
+    eligibility: "Bachelor's degree + IELTS/TOEFL; min. GPA varies by program",
+    deadline: "Varies by program"
   },
   {
     id: 4,
@@ -77,9 +78,9 @@ const universityDatabase = [
     city: "Edmonton",
     state: "Alberta",
     location: "Edmonton, Alberta, Canada",
-    rank: "Rank 111 QS Rankings",
-    rankValue: 111,
-    tuition: 22,
+    rank: "Rank 97 QS Rankings",
+    rankValue: 97,
+    tuition: 13,
     type: "PUBLIC",
     logo: "https://logo.clearbit.com/ualberta.ca",
     website: "https://www.ualberta.ca",
@@ -87,8 +88,8 @@ const universityDatabase = [
     degrees: ["Postgraduate", "Ph.D.", "Undergraduate"],
     intakes: ["JAN", "MAY", "SEP"],
     description: "A world-class, research-driven university offering leading programs in energy, computing sciences, and health.",
-    eligibility: "GPA 3.2+, IELTS 6.5+ or equivalent",
-    deadline: "Feb 01, 2026"
+    eligibility: "Bachelor's degree + IELTS/TOEFL; min. GPA varies by program",
+    deadline: "Varies by program"
   },
   {
     id: 5,
@@ -96,9 +97,9 @@ const universityDatabase = [
     city: "Waterloo",
     state: "Ontario",
     location: "Waterloo, Ontario, Canada",
-    rank: "Rank 112 QS Rankings",
-    rankValue: 112,
-    tuition: null,
+    rank: "Rank 113 QS Rankings",
+    rankValue: 113,
+    tuition: 35,
     type: "PUBLIC",
     logo: "https://logo.clearbit.com/uwaterloo.ca",
     website: "https://uwaterloo.ca",
@@ -106,8 +107,8 @@ const universityDatabase = [
     degrees: ["Postgraduate", "Ph.D.", "Undergraduate"],
     intakes: ["JAN", "MAY", "SEP"],
     description: "World-famous for its co-operative education program, engineering, and computer science degrees.",
-    eligibility: "GPA 3.5+, IELTS 7.0+ or equivalent",
-    deadline: "Feb 01, 2026"
+    eligibility: "Bachelor's degree + IELTS/TOEFL; min. GPA varies by program",
+    deadline: "Varies by program"
   },
   {
     id: 6,
@@ -115,9 +116,9 @@ const universityDatabase = [
     city: "London",
     state: "Ontario",
     location: "London, Ontario, Canada",
-    rank: "Rank 114 QS Rankings",
-    rankValue: 114,
-    tuition: 54,
+    rank: "Rank 142 QS Rankings",
+    rankValue: 142,
+    tuition: 32,
     type: "PUBLIC",
     logo: "https://logo.clearbit.com/uwo.ca",
     website: "https://www.uwo.ca",
@@ -125,8 +126,8 @@ const universityDatabase = [
     degrees: ["Postgraduate", "Ph.D.", "Undergraduate"],
     intakes: ["JAN", "SEP"],
     description: "One of Canada's top research-intensive universities, offering excellent undergraduate and graduate programs.",
-    eligibility: "GPA 3.3+, IELTS 7.0+ or equivalent",
-    deadline: "Jan 15, 2026"
+    eligibility: "Bachelor's degree + IELTS/TOEFL; min. GPA varies by program",
+    deadline: "Varies by program"
   },
   {
     id: 7,
@@ -134,9 +135,9 @@ const universityDatabase = [
     city: "Montreal",
     state: "Quebec",
     location: "Montreal, Quebec, Canada",
-    rank: "Rank 141 QS Rankings",
-    rankValue: 141,
-    tuition: 18,
+    rank: "Rank 162 QS Rankings",
+    rankValue: 162,
+    tuition: 16,
     type: "PUBLIC",
     logo: "https://logo.clearbit.com/umontreal.ca",
     website: "https://www.umontreal.ca",
@@ -144,8 +145,8 @@ const universityDatabase = [
     degrees: ["Postgraduate", "Ph.D.", "Undergraduate"],
     intakes: ["JAN", "SEP"],
     description: "A leading French-language public research university located on Mount Royal in Montreal, Quebec.",
-    eligibility: "French proficiency or GPA 3.0+, IELTS 6.5+ or equivalent",
-    deadline: "Feb 01, 2026"
+    eligibility: "Bachelor's degree + French proficiency (programs taught in French)",
+    deadline: "Varies by program"
   },
   {
     id: 8,
@@ -153,18 +154,18 @@ const universityDatabase = [
     city: "Calgary",
     state: "Alberta",
     location: "Calgary, Alberta, Canada",
-    rank: "Rank 182 QS Rankings",
-    rankValue: 182,
-    tuition: 1,
+    rank: "Rank 249 QS Rankings",
+    rankValue: 249,
+    tuition: 15,
     type: "PUBLIC",
     logo: "https://logo.clearbit.com/ucalgary.ca",
     website: "https://www.ucalgary.ca",
     courses: ["Computer Science", "Software Engineering", "Management", "Business Administration", "Engineering Science"],
     degrees: ["Postgraduate", "Ph.D.", "Undergraduate"],
     intakes: ["JAN", "MAY", "SEP"],
-    description: "A leading Canadian university located in the nation's most enterprising city, known for start-ups and innovation.",
-    eligibility: "GPA 3.0+, IELTS 6.5+ or equivalent",
-    deadline: "Feb 01, 2026"
+    description: "A research-intensive university in Calgary, known for engineering, energy research, and entrepreneurship.",
+    eligibility: "Bachelor's degree + IELTS/TOEFL; min. GPA varies by program",
+    deadline: "Varies by program"
   },
   {
     id: 9,
@@ -172,9 +173,9 @@ const universityDatabase = [
     city: "Hamilton",
     state: "Ontario",
     location: "Hamilton, Ontario, Canada",
-    rank: "Rank 189 QS Rankings",
-    rankValue: 189,
-    tuition: 26,
+    rank: "Rank 174 QS Rankings",
+    rankValue: 174,
+    tuition: 38,
     type: "PUBLIC",
     logo: "https://logo.clearbit.com/mcmaster.ca",
     website: "https://www.mcmaster.ca",
@@ -182,8 +183,8 @@ const universityDatabase = [
     degrees: ["Postgraduate", "Ph.D.", "Undergraduate"],
     intakes: ["JAN", "SEP"],
     description: "Research-intensive public university globally renowned for its innovative medical school and problem-based learning.",
-    eligibility: "GPA 3.2+, IELTS 6.5+ or equivalent",
-    deadline: "Jan 15, 2026"
+    eligibility: "Bachelor's degree + IELTS/TOEFL; min. GPA varies by program",
+    deadline: "Varies by program"
   },
   {
     id: 10,
@@ -191,9 +192,9 @@ const universityDatabase = [
     city: "Ottawa",
     state: "Ontario",
     location: "Ottawa, Ontario, Canada",
-    rank: "Rank 203 QS Rankings",
-    rankValue: 203,
-    tuition: 16,
+    rank: "Rank 228 QS Rankings",
+    rankValue: 228,
+    tuition: null,
     type: "PUBLIC",
     logo: "https://logo.clearbit.com/uottawa.ca",
     website: "https://www.uottawa.ca",
@@ -201,8 +202,8 @@ const universityDatabase = [
     degrees: ["Postgraduate", "Ph.D.", "Undergraduate"],
     intakes: ["JAN", "SEP"],
     description: "The largest bilingual (English-French) university in the world, offering excellent public administration and sciences.",
-    eligibility: "GPA 3.0+, IELTS 6.5+ or equivalent",
-    deadline: "Mar 01, 2026"
+    eligibility: "Bachelor's degree + English or French test; min. GPA varies by program",
+    deadline: "Varies by program"
   },
   {
     id: 11,
@@ -210,9 +211,9 @@ const universityDatabase = [
     city: "Kingston",
     state: "Ontario",
     location: "Kingston, Ontario, Canada",
-    rank: "Rank 209 QS Rankings",
-    rankValue: 209,
-    tuition: 17,
+    rank: "Rank 179 QS Rankings",
+    rankValue: 179,
+    tuition: 20,
     type: "PUBLIC",
     logo: "https://logo.clearbit.com/queensu.ca",
     website: "https://www.queensu.ca",
@@ -220,8 +221,8 @@ const universityDatabase = [
     degrees: ["Postgraduate", "Ph.D.", "Undergraduate"],
     intakes: ["JAN", "SEP"],
     description: "A prestigious, historic Canadian university known for student engagement, research excellence, and business studies.",
-    eligibility: "GPA 3.2+, IELTS 6.5+ or equivalent",
-    deadline: "Mar 01, 2026"
+    eligibility: "Bachelor's degree + IELTS/TOEFL; min. GPA varies by program",
+    deadline: "Varies by program"
   },
   {
     id: 12,
@@ -229,9 +230,9 @@ const universityDatabase = [
     city: "Halifax",
     state: "Nova Scotia",
     location: "Halifax, Nova Scotia, Canada",
-    rank: "Rank 308 QS Rankings",
-    rankValue: 308,
-    tuition: 22,
+    rank: "Rank 298 QS Rankings",
+    rankValue: 298,
+    tuition: 24,
     type: "PUBLIC",
     logo: "https://logo.clearbit.com/dal.ca",
     website: "https://www.dal.ca",
@@ -239,8 +240,8 @@ const universityDatabase = [
     degrees: ["Postgraduate", "Ph.D.", "Undergraduate"],
     intakes: ["JAN", "SEP"],
     description: "Dalhousie University is one of Canada's leading research-intensive universities, offering a wide range of academic programs in Halifax.",
-    eligibility: "GPA 3.0+, IELTS 6.5+ or equivalent",
-    deadline: "Jan 12, 2026"
+    eligibility: "Bachelor's degree + IELTS/TOEFL; min. GPA varies by program",
+    deadline: "Varies by program"
   },
   {
     id: 13,
@@ -248,9 +249,9 @@ const universityDatabase = [
     city: "Saskatoon",
     state: "Saskatchewan",
     location: "Saskatoon, Saskatchewan, Canada",
-    rank: "Rank 317 QS Rankings",
-    rankValue: 317,
-    tuition: null,
+    rank: "Rank 411 QS Rankings",
+    rankValue: 411,
+    tuition: 12,
     type: "PUBLIC",
     logo: "https://logo.clearbit.com/usask.ca",
     website: "https://www.usask.ca",
@@ -258,8 +259,8 @@ const universityDatabase = [
     degrees: ["Postgraduate", "Ph.D.", "Undergraduate"],
     intakes: ["JAN", "SEP"],
     description: "A member of the U15 group of Canadian research universities, noted for agricultural sciences and medicine.",
-    eligibility: "GPA 3.0+, IELTS 6.5+ or equivalent",
-    deadline: "Mar 01, 2026"
+    eligibility: "Bachelor's degree + IELTS/TOEFL; min. GPA varies by program",
+    deadline: "Varies by program"
   },
   {
     id: 14,
@@ -267,9 +268,9 @@ const universityDatabase = [
     city: "Burnaby",
     state: "British Columbia",
     location: "Burnaby, British Columbia, Canada",
-    rank: "Rank 318 QS Rankings",
-    rankValue: 318,
-    tuition: 23,
+    rank: "Rank 312 QS Rankings",
+    rankValue: 312,
+    tuition: 15,
     type: "PUBLIC",
     logo: "https://logo.clearbit.com/sfu.ca",
     website: "https://www.sfu.ca",
@@ -277,8 +278,8 @@ const universityDatabase = [
     degrees: ["Postgraduate", "Ph.D.", "Undergraduate"],
     intakes: ["JAN", "SEP"],
     description: "A leading comprehensive university with campuses in Vancouver, Burnaby, and Surrey, renowned for computing sciences.",
-    eligibility: "GPA 3.0+, IELTS 6.5+ or equivalent",
-    deadline: "Feb 15, 2026"
+    eligibility: "Bachelor's degree + IELTS/TOEFL; min. GPA varies by program",
+    deadline: "Varies by program"
   },
   {
     id: 15,
@@ -286,18 +287,18 @@ const universityDatabase = [
     city: "Victoria",
     state: "British Columbia",
     location: "Victoria, British Columbia, Canada",
-    rank: "Rank 359 QS Rankings",
-    rankValue: 359,
-    tuition: 5,
+    rank: "Rank 370 QS Rankings",
+    rankValue: 370,
+    tuition: 6,
     type: "PUBLIC",
     logo: "https://logo.clearbit.com/uvic.ca",
     website: "https://www.uvic.ca",
     courses: ["Computer Science", "Software Engineering", "Management"],
     degrees: ["Postgraduate", "Ph.D.", "Undergraduate"],
     intakes: ["JAN", "SEP"],
-    description: "Consistently ranked among the top universities in Canada for scientific impact, earth sciences, and computer science.",
-    eligibility: "GPA 3.0+, IELTS 6.5+ or equivalent",
-    deadline: "Feb 15, 2026"
+    description: "A research university on Vancouver Island, known for its co-op program, ocean and climate research, and engineering and computer science.",
+    eligibility: "Bachelor's degree + IELTS/TOEFL; min. GPA varies by program",
+    deadline: "Varies by program"
   },
   {
     id: 16,
@@ -305,18 +306,18 @@ const universityDatabase = [
     city: "Quebec City",
     state: "Quebec",
     location: "Quebec City, Quebec, Canada",
-    rank: "Rank 411 QS Rankings",
-    rankValue: 411,
-    tuition: 17,
+    rank: "Rank 526 QS Rankings",
+    rankValue: 526,
+    tuition: 18,
     type: "PUBLIC",
     logo: "https://logo.clearbit.com/ulaval.ca",
     website: "https://www.ulaval.ca",
     courses: ["Computer Science", "Software Engineering", "History", "Forestry Studies"],
     degrees: ["Postgraduate", "Ph.D.", "Undergraduate"],
     intakes: ["JAN", "SEP"],
-    description: "The oldest French-language university in North America, offering top-tier research in forestry and humanities.",
-    eligibility: "French proficiency or GPA 2.8+, IELTS 6.5+ or equivalent",
-    deadline: "Feb 01, 2026"
+    description: "The oldest French-language university in North America; most programs are taught in French. Strong in forestry and humanities research.",
+    eligibility: "Bachelor's degree + French proficiency (programs taught in French)",
+    deadline: "Varies by program"
   },
   {
     id: 17,
@@ -324,9 +325,9 @@ const universityDatabase = [
     city: "Montreal",
     state: "Quebec",
     location: "Montreal, Quebec, Canada",
-    rank: "Rank 456 QS Rankings",
-    rankValue: 456,
-    tuition: 13,
+    rank: "Rank 497 QS Rankings",
+    rankValue: 497,
+    tuition: 12,
     type: "PUBLIC",
     logo: "https://logo.clearbit.com/concordia.ca",
     website: "https://www.concordia.ca",
@@ -334,8 +335,8 @@ const universityDatabase = [
     degrees: ["Postgraduate", "Ph.D.", "Undergraduate"],
     intakes: ["JAN", "SEP"],
     description: "A vibrant, modern university in downtown Montreal known for its flexible learning styles and strong business school.",
-    eligibility: "GPA 3.0+, IELTS 6.5+ or equivalent",
-    deadline: "Feb 15, 2026"
+    eligibility: "Bachelor's degree + IELTS/TOEFL; min. GPA varies by program",
+    deadline: "Varies by program"
   },
   {
     id: 18,
@@ -343,9 +344,9 @@ const universityDatabase = [
     city: "Guelph",
     state: "Ontario",
     location: "Guelph, Ontario, Canada",
-    rank: "Rank 571 QS Rankings",
-    rankValue: 571,
-    tuition: 24,
+    rank: "Rank 546 QS Rankings",
+    rankValue: 546,
+    tuition: 14,
     type: "PUBLIC",
     logo: "https://logo.clearbit.com/uoguelph.ca",
     website: "https://www.uoguelph.ca",
@@ -353,8 +354,8 @@ const universityDatabase = [
     degrees: ["Postgraduate", "Ph.D.", "Undergraduate"],
     intakes: ["JAN", "SEP"],
     description: "Renowned for veterinary medicine, agricultural science, life sciences, and community engagement.",
-    eligibility: "GPA 3.0+, IELTS 6.5+ or equivalent",
-    deadline: "Mar 01, 2026"
+    eligibility: "Bachelor's degree + IELTS/TOEFL; min. GPA varies by program",
+    deadline: "Varies by program"
   },
   {
     id: 19,
@@ -362,9 +363,9 @@ const universityDatabase = [
     city: "Waterloo",
     state: "Ontario",
     location: "Waterloo, Ontario, Canada",
-    rank: "Rank 601 QS Rankings",
-    rankValue: 601,
-    tuition: 23,
+    rank: "Not ranked (QS 2027)",
+    rankValue: 9999,
+    tuition: 16,
     type: "PUBLIC",
     logo: "https://logo.clearbit.com/wlu.ca",
     website: "https://www.wlu.ca",
@@ -372,8 +373,8 @@ const universityDatabase = [
     degrees: ["Postgraduate", "Ph.D.", "Undergraduate"],
     intakes: ["JAN", "SEP"],
     description: "A leading public university known for its business school, music programs, and strong student-centric focus.",
-    eligibility: "GPA 2.8+, IELTS 6.5+ or equivalent",
-    deadline: "Mar 01, 2026"
+    eligibility: "Bachelor's degree + IELTS/TOEFL; min. GPA varies by program",
+    deadline: "Varies by program"
   },
   {
     id: 20,
@@ -381,9 +382,9 @@ const universityDatabase = [
     city: "Ottawa",
     state: "Ontario",
     location: "Ottawa, Ontario, Canada",
-    rank: "Rank 651 QS Rankings",
-    rankValue: 651,
-    tuition: null,
+    rank: "Rank 801-850 QS Rankings",
+    rankValue: 801,
+    tuition: 21,
     type: "PUBLIC",
     logo: "https://logo.clearbit.com/carleton.ca",
     website: "https://carleton.ca",
@@ -391,8 +392,8 @@ const universityDatabase = [
     degrees: ["Postgraduate", "Ph.D.", "Undergraduate"],
     intakes: ["JAN", "SEP"],
     description: "A public university in Ottawa, offering strong engineering, public affairs, journalism, and high-tech programs.",
-    eligibility: "GPA 2.8+, IELTS 6.5+ or equivalent",
-    deadline: "Feb 01, 2026"
+    eligibility: "Bachelor's degree + IELTS/TOEFL; min. GPA varies by program",
+    deadline: "Varies by program"
   }
 ];
 
@@ -620,15 +621,15 @@ const CanadaMastersCoursePage = () => {
         <div className="grid grid-cols-1 lg:grid-cols-[290px_1fr] gap-8 items-start">
           
           {/* Sidebar */}
-          <aside className="sticky top-28 bg-white/70 backdrop-blur-xl border border-white/80 rounded-[28px] p-6 shadow-[0_12px_40px_rgba(0,0,0,0.02)] z-30">
-            <div className="flex items-center justify-between pb-4 border-b border-slate-100 mb-5">
-              <span className="flex items-center gap-2 text-sm font-black text-slate-800 uppercase tracking-wider">
-                <Filter size={15} className="text-indigo-650" />
+          <aside className="sticky top-28 bg-white border border-[#E6E0D4] p-5 shadow-[0_24px_60px_-36px_rgba(22,19,15,0.35)] z-30" style={{ borderRadius: 18 }}>
+            <div className="flex items-center justify-between pb-4 border-b border-[#ECE6DA] mb-5">
+              <span className="flex items-center gap-2 text-[14px] font-semibold text-[#16130F]">
+                <Filter size={15} className="text-[#DE5C2B]" />
                 Filters
               </span>
               <button 
                 onClick={handleClearAll}
-                className="text-xs font-bold text-indigo-650 hover:text-indigo-850 cursor-pointer transition-colors"
+                className="text-[12.5px] font-semibold text-[#DE5C2B] hover:text-[#86351A] cursor-pointer transition-colors"
               >
                 Clear All
               </button>
@@ -640,10 +641,10 @@ const CanadaMastersCoursePage = () => {
               <div>
                 <button
                   onClick={() => toggleAccordion('fees')}
-                  className="w-full flex items-center justify-between font-bold text-xs text-slate-700 uppercase tracking-wider mb-3.5"
+                  className="w-full flex items-center justify-between text-[12.5px] font-semibold text-[#16130F] mb-3.5"
                 >
                   <span>1st Year Fees</span>
-                  <ChevronDown size={14} className={`transform transition-transform text-slate-400 ${openAccordions.fees ? 'rotate-180 text-indigo-650' : ''}`} />
+                  <ChevronDown size={14} className={`transform transition-transform text-[#9A9184] ${openAccordions.fees ? 'rotate-180 text-[#DE5C2B]' : ''}`} />
                 </button>
                 <AnimatePresence initial={false}>
                   {openAccordions.fees && (
@@ -654,12 +655,12 @@ const CanadaMastersCoursePage = () => {
                       className="overflow-hidden space-y-2.5 pl-0.5"
                     >
                       {feeRanges.map(range => (
-                        <label key={range.id} className="flex items-center gap-3 text-xs font-bold text-slate-600 hover:text-indigo-600 cursor-pointer select-none">
+                        <label key={range.id} className="flex items-center gap-3 text-[13px] text-[#16130F] hover:text-[#DE5C2B] cursor-pointer select-none">
                           <input 
                             type="checkbox"
                             checked={selectedFees.includes(range.id)}
                             onChange={() => handleFilterToggle(range.id, selectedFees, setSelectedFees)}
-                            className="w-4 h-4 rounded border-slate-350 text-indigo-650 focus:ring-indigo-500 cursor-pointer"
+                            className="w-4 h-4 rounded border-[#E6E0D4] accent-[#DE5C2B] cursor-pointer"
                           />
                           <span>{range.label}</span>
                         </label>
@@ -669,16 +670,16 @@ const CanadaMastersCoursePage = () => {
                 </AnimatePresence>
               </div>
 
-              <div className="w-full h-[1px] bg-slate-100" />
+              <div className="w-full h-[1px] bg-[#ECE6DA]" />
 
               {/* Degree */}
               <div>
                 <button
                   onClick={() => toggleAccordion('degree')}
-                  className="w-full flex items-center justify-between font-bold text-xs text-slate-700 uppercase tracking-wider mb-3.5"
+                  className="w-full flex items-center justify-between text-[12.5px] font-semibold text-[#16130F] mb-3.5"
                 >
                   <span>Degree</span>
-                  <ChevronDown size={14} className={`transform transition-transform text-slate-400 ${openAccordions.degree ? 'rotate-180 text-indigo-650' : ''}`} />
+                  <ChevronDown size={14} className={`transform transition-transform text-[#9A9184] ${openAccordions.degree ? 'rotate-180 text-[#DE5C2B]' : ''}`} />
                 </button>
                 <AnimatePresence initial={false}>
                   {openAccordions.degree && (
@@ -689,12 +690,12 @@ const CanadaMastersCoursePage = () => {
                       className="overflow-hidden space-y-2.5 pl-0.5"
                     >
                       {degreeCategories.map(deg => (
-                        <label key={deg} className="flex items-center gap-3 text-xs font-bold text-slate-600 hover:text-indigo-600 cursor-pointer select-none">
+                        <label key={deg} className="flex items-center gap-3 text-[13px] text-[#16130F] hover:text-[#DE5C2B] cursor-pointer select-none">
                           <input 
                             type="checkbox"
                             checked={selectedDegrees.includes(deg)}
                             onChange={() => handleFilterToggle(deg, selectedDegrees, setSelectedDegrees)}
-                            className="w-4 h-4 rounded border-slate-350 text-indigo-650 focus:ring-indigo-500 cursor-pointer"
+                            className="w-4 h-4 rounded border-[#E6E0D4] accent-[#DE5C2B] cursor-pointer"
                           />
                           <span>{deg}</span>
                         </label>
@@ -704,16 +705,16 @@ const CanadaMastersCoursePage = () => {
                 </AnimatePresence>
               </div>
 
-              <div className="w-full h-[1px] bg-slate-100" />
+              <div className="w-full h-[1px] bg-[#ECE6DA]" />
 
               {/* Courses */}
               <div>
                 <button
                   onClick={() => toggleAccordion('courses')}
-                  className="w-full flex items-center justify-between font-bold text-xs text-slate-700 uppercase tracking-wider mb-3.5"
+                  className="w-full flex items-center justify-between text-[12.5px] font-semibold text-[#16130F] mb-3.5"
                 >
                   <span>Courses</span>
-                  <ChevronDown size={14} className={`transform transition-transform text-slate-400 ${openAccordions.courses ? 'rotate-180 text-indigo-650' : ''}`} />
+                  <ChevronDown size={14} className={`transform transition-transform text-[#9A9184] ${openAccordions.courses ? 'rotate-180 text-[#DE5C2B]' : ''}`} />
                 </button>
                 <AnimatePresence initial={false}>
                   {openAccordions.courses && (
@@ -724,12 +725,12 @@ const CanadaMastersCoursePage = () => {
                       className="overflow-hidden space-y-2.5 pl-0.5 max-h-[220px] overflow-y-auto"
                     >
                       {courseCategories.map(course => (
-                        <label key={course} className="flex items-center gap-3 text-xs font-bold text-slate-600 hover:text-indigo-600 cursor-pointer select-none">
+                        <label key={course} className="flex items-center gap-3 text-[13px] text-[#16130F] hover:text-[#DE5C2B] cursor-pointer select-none">
                           <input 
                             type="checkbox"
                             checked={selectedCourses.includes(course)}
                             onChange={() => handleFilterToggle(course, selectedCourses, setSelectedCourses)}
-                            className="w-4 h-4 rounded border-slate-350 text-indigo-650 focus:ring-indigo-500 cursor-pointer"
+                            className="w-4 h-4 rounded border-[#E6E0D4] accent-[#DE5C2B] cursor-pointer"
                           />
                           <span>{course}</span>
                         </label>
@@ -739,16 +740,16 @@ const CanadaMastersCoursePage = () => {
                 </AnimatePresence>
               </div>
 
-              <div className="w-full h-[1px] bg-slate-100" />
+              <div className="w-full h-[1px] bg-[#ECE6DA]" />
 
               {/* Cities */}
               <div>
                 <button
                   onClick={() => toggleAccordion('cities')}
-                  className="w-full flex items-center justify-between font-bold text-xs text-slate-700 uppercase tracking-wider mb-3.5"
+                  className="w-full flex items-center justify-between text-[12.5px] font-semibold text-[#16130F] mb-3.5"
                 >
                   <span>Cities</span>
-                  <ChevronDown size={14} className={`transform transition-transform text-slate-400 ${openAccordions.cities ? 'rotate-180 text-indigo-650' : ''}`} />
+                  <ChevronDown size={14} className={`transform transition-transform text-[#9A9184] ${openAccordions.cities ? 'rotate-180 text-[#DE5C2B]' : ''}`} />
                 </button>
                 <AnimatePresence initial={false}>
                   {openAccordions.cities && (
@@ -759,12 +760,12 @@ const CanadaMastersCoursePage = () => {
                       className="overflow-hidden space-y-2.5 pl-0.5 max-h-[220px] overflow-y-auto"
                     >
                       {cityCategories.map(city => (
-                        <label key={city} className="flex items-center gap-3 text-xs font-bold text-slate-600 hover:text-indigo-600 cursor-pointer select-none">
+                        <label key={city} className="flex items-center gap-3 text-[13px] text-[#16130F] hover:text-[#DE5C2B] cursor-pointer select-none">
                           <input 
                             type="checkbox"
                             checked={selectedCities.includes(city)}
                             onChange={() => handleFilterToggle(city, selectedCities, setSelectedCities)}
-                            className="w-4 h-4 rounded border-slate-350 text-indigo-650 focus:ring-indigo-500 cursor-pointer"
+                            className="w-4 h-4 rounded border-[#E6E0D4] accent-[#DE5C2B] cursor-pointer"
                           />
                           <span>{city}</span>
                         </label>
@@ -774,16 +775,16 @@ const CanadaMastersCoursePage = () => {
                 </AnimatePresence>
               </div>
 
-              <div className="w-full h-[1px] bg-slate-100" />
+              <div className="w-full h-[1px] bg-[#ECE6DA]" />
 
               {/* Intake */}
               <div>
                 <button
                   onClick={() => toggleAccordion('intake')}
-                  className="w-full flex items-center justify-between font-bold text-xs text-slate-700 uppercase tracking-wider mb-3.5"
+                  className="w-full flex items-center justify-between text-[12.5px] font-semibold text-[#16130F] mb-3.5"
                 >
                   <span>Intake</span>
-                  <ChevronDown size={14} className={`transform transition-transform text-slate-400 ${openAccordions.intake ? 'rotate-180 text-indigo-650' : ''}`} />
+                  <ChevronDown size={14} className={`transform transition-transform text-[#9A9184] ${openAccordions.intake ? 'rotate-180 text-[#DE5C2B]' : ''}`} />
                 </button>
                 <AnimatePresence initial={false}>
                   {openAccordions.intake && (
@@ -794,12 +795,12 @@ const CanadaMastersCoursePage = () => {
                       className="overflow-hidden space-y-2.5 pl-0.5"
                     >
                       {intakeCategories.map(intake => (
-                        <label key={intake} className="flex items-center gap-3 text-xs font-bold text-slate-600 hover:text-indigo-600 cursor-pointer select-none">
+                        <label key={intake} className="flex items-center gap-3 text-[13px] text-[#16130F] hover:text-[#DE5C2B] cursor-pointer select-none">
                           <input 
                             type="checkbox"
                             checked={selectedIntakes.includes(intake)}
                             onChange={() => handleFilterToggle(intake, selectedIntakes, setSelectedIntakes)}
-                            className="w-4 h-4 rounded border-slate-350 text-indigo-650 focus:ring-indigo-500 cursor-pointer"
+                            className="w-4 h-4 rounded border-[#E6E0D4] accent-[#DE5C2B] cursor-pointer"
                           />
                           <span>{intake}</span>
                         </label>
@@ -816,62 +817,44 @@ const CanadaMastersCoursePage = () => {
           <main className="flex-1 flex flex-col gap-6">
             
             {/* Search and Sort */}
-            <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4 bg-white/50 border border-white/60 p-5 rounded-[24px] backdrop-blur-md shadow-sm">
-              <div className="flex-1 relative">
-                <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-slate-400" size={17} />
-                <input 
-                  type="text"
-                  value={searchTerm}
-                  onChange={(e) => { setSearchTerm(e.target.value); setCurrentPage(1); }}
-                  placeholder="Search by course (e.g. CS, MBA, Data Science), university, city..."
-                  className="w-full bg-slate-50 border border-slate-100 rounded-xl pl-12 pr-4 py-2.5 text-xs font-semibold outline-none focus:border-indigo-400 transition-colors"
-                />
-              </div>
-
-              <div className="flex items-center justify-between gap-4">
-                <p className="text-xs font-bold text-slate-550">
-                  <span className="text-slate-800 font-black">{sortedUniversities.length}</span> Universities Found
-                </p>
-
-                <div className="flex items-center gap-2">
-                  <span className="text-xs text-slate-400 font-bold">Sort By:</span>
-                  <select 
-                    value={sortBy}
-                    onChange={(e) => setSortBy(e.target.value)}
-                    className="bg-slate-50 border border-slate-100 rounded-xl px-3 py-2 text-xs font-bold outline-none cursor-pointer text-slate-700 focus:border-indigo-400 transition-colors"
-                  >
+            <FinderCard>
+              <div className="grid grid-cols-1 sm:grid-cols-[1fr_220px] xl:grid-cols-[1fr_220px_auto] gap-3 items-end">
+                <FinderField label="Search">
+                  <div className="relative">
+                    <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#5B544A] pointer-events-none" />
+                    <input
+                      type="text"
+                      value={searchTerm}
+                      onChange={(e) => { setSearchTerm(e.target.value); setCurrentPage(1); }}
+                      placeholder="Search by course (e.g. CS, MBA, Data Science), university, city..."
+                      className={`${FINDER_FIELD} pl-10`}
+                      style={FIELD_RADIUS}
+                    />
+                  </div>
+                </FinderField>
+                <FinderField label="Sort by">
+                  <select value={sortBy} onChange={(e) => setSortBy(e.target.value)} className={`${FINDER_FIELD} cursor-pointer`} style={FIELD_RADIUS}>
                     <option value="rank">QS Rankings</option>
                     <option value="fees">Tuition Fee: Low to High</option>
                     <option value="name">Alphabetical (A-Z)</option>
                   </select>
-                </div>
+                </FinderField>
+                <p className="text-[13.5px] text-[#5B544A] whitespace-nowrap sm:col-span-2 xl:col-span-1 xl:h-11 xl:flex xl:items-center">
+                  <span className="font-bold text-[#16130F]">{sortedUniversities.length}</span>&nbsp;universities
+                </p>
               </div>
-            </div>
+            </FinderCard>
 
             {/* Active Chips */}
             {activeChips.length > 0 && (
-              <div className="flex flex-wrap gap-2 items-center bg-indigo-50/30 border border-indigo-100/50 p-3.5 rounded-2xl">
-                <span className="text-[10px] text-indigo-500 font-black uppercase tracking-wider mr-1.5">Active:</span>
+              <div className="flex flex-wrap gap-2 items-center bg-white/70 border border-[#E6E0D4] p-3.5" style={{ borderRadius: 18 }}>
+                <span className="text-[13.5px] font-semibold text-[#16130F] mr-1">Active filters</span>
                 {activeChips.map((chip, idx) => (
-                  <div 
-                    key={idx} 
-                    className="flex items-center gap-1.5 px-3 py-1 bg-white border border-indigo-100 rounded-full text-xs font-bold text-indigo-650 shadow-sm"
-                  >
-                    <span>{chip.label}</span>
-                    <button 
-                      onClick={() => handleRemoveChip(chip)}
-                      className="text-slate-400 hover:text-indigo-600 transition-colors cursor-pointer"
-                    >
-                      <X size={12} className="stroke-[2.5]" />
-                    </button>
-                  </div>
+                  <FinderChip key={idx} on onClick={() => handleRemoveChip(chip)} aria-label={`Remove ${chip.label}`}>
+                    {chip.label} <X size={13} className="stroke-[2.5]" />
+                  </FinderChip>
                 ))}
-                <button 
-                  onClick={handleClearAll}
-                  className="text-[11px] font-black text-indigo-650 hover:underline ml-2 cursor-pointer"
-                >
-                  Clear All
-                </button>
+                <button onClick={handleClearAll} className="text-[13px] font-semibold text-[#DE5C2B] hover:text-[#86351A] ml-1 cursor-pointer">Clear All</button>
               </div>
             )}
 

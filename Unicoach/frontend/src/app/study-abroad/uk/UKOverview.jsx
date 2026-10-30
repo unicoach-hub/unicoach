@@ -18,44 +18,44 @@ import { HookBand, StatStrip, BarCompare } from '../../../components/ui/Infograp
 // ─────────────────────────────────────────────
 const masterUniversities = [
   // London
-  { id: 'lon-1', name: "Imperial College London", city: "London", rank: "2 QS", tuition: 49, type: "PUBLIC", website: "https://www.imperial.ac.uk", eligibility: "GPA 3.7+, IELTS 7.5+, GRE recommended", logo: "https://logo.clearbit.com/imperial.ac.uk", courses: ["Computer Science", "Engineering Science", "Data Science", "Medicine", "Business Administration", "Artificial Intelligence"] },
-  { id: 'lon-2', name: "University College London (UCL)", city: "London", rank: "9 QS", tuition: 48, type: "PUBLIC", website: "https://www.ucl.ac.uk", eligibility: "GPA 3.6+, IELTS 7.5+", logo: "https://logo.clearbit.com/ucl.ac.uk", courses: ["Computer Science", "Data Science", "Architecture", "Law", "Medicine", "Psychology", "Economics"] },
-  { id: 'lon-3', name: "King's College London (KCL)", city: "London", rank: "40 QS", tuition: 43, type: "PUBLIC", website: "https://www.kcl.ac.uk", eligibility: "GPA 3.5+, IELTS 7.0+", logo: "https://logo.clearbit.com/kcl.ac.uk", courses: ["Law", "Medicine", "Nursing", "Computer Science", "International Relations", "Business Administration"] },
-  { id: 'lon-4', name: "London Business School", city: "London", rank: "4 QS", tuition: 143, type: "PUBLIC", website: "https://www.london.edu", eligibility: "GMAT 700+, IELTS 7.5+, 3+ yrs exp", logo: "https://logo.clearbit.com/london.edu", courses: ["Business Administration", "Finance", "Management", "Business Analytics", "Marketing"] },
+  { id: 'lon-1', name: "Imperial College London", city: "London", rank: "2 QS", tuition: 62, type: "PUBLIC", website: "https://www.imperial.ac.uk", eligibility: "Bachelor's degree + IELTS/TOEFL; grade requirement varies by course", logo: "https://logo.clearbit.com/imperial.ac.uk", courses: ["Computer Science", "Engineering Science", "Data Science", "Medicine", "Business Administration", "Artificial Intelligence"] },
+  { id: 'lon-2', name: "University College London (UCL)", city: "London", rank: "8 QS", tuition: 57, type: "PUBLIC", website: "https://www.ucl.ac.uk", eligibility: "Bachelor's degree + IELTS/TOEFL; grade requirement varies by course", logo: "https://logo.clearbit.com/ucl.ac.uk", courses: ["Computer Science", "Data Science", "Architecture", "Law", "Medicine", "Psychology", "Economics"] },
+  { id: 'lon-3', name: "King's College London (KCL)", city: "London", rank: "37 QS", tuition: 55, type: "PUBLIC", website: "https://www.kcl.ac.uk", eligibility: "Bachelor's degree + IELTS/TOEFL; grade requirement varies by course", logo: "https://logo.clearbit.com/kcl.ac.uk", courses: ["Law", "Medicine", "Nursing", "Computer Science", "International Relations", "Business Administration"] },
+  { id: 'lon-4', name: "London Business School", city: "London", rank: "Not QS-ranked", tuition: 68, type: "PRIVATE", website: "https://www.london.edu", eligibility: "Bachelor's degree + IELTS/TOEFL; grade requirement varies by course", logo: "https://logo.clearbit.com/london.edu", courses: ["Business Administration", "Finance", "Management", "Business Analytics", "Marketing"] },
   
   // Oxford / Cambridge
-  { id: 'ox-1', name: "University of Oxford", city: "Oxford", rank: "3 QS", tuition: 35, type: "PUBLIC", website: "https://www.ox.ac.uk", eligibility: "GPA 3.8+, IELTS 7.5+, GRE recommended", logo: "https://logo.clearbit.com/ox.ac.uk", courses: ["Computer Science", "Law", "Philosophy", "Medicine", "Business Administration", "Mathematics", "Physics"] },
-  { id: 'cam-1', name: "University of Cambridge", city: "Cambridge", rank: "2 QS", tuition: 29, type: "PUBLIC", website: "https://www.cam.ac.uk", eligibility: "GPA 3.8+, IELTS 7.5+, GRE/GMAT waiver", logo: "https://logo.clearbit.com/cam.ac.uk", courses: ["Computer Science", "Engineering Science", "Natural Sciences", "Mathematics", "Law", "Medicine"] },
+  { id: 'ox-1', name: "University of Oxford", city: "Oxford", rank: "4 QS", tuition: null, type: "PUBLIC", website: "https://www.ox.ac.uk", eligibility: "Bachelor's degree + IELTS/TOEFL; grade requirement varies by course", logo: "https://logo.clearbit.com/ox.ac.uk", courses: ["Computer Science", "Law", "Philosophy", "Medicine", "Business Administration", "Mathematics", "Physics"] },
+  { id: 'cam-1', name: "University of Cambridge", city: "Cambridge", rank: "6 QS", tuition: 65, type: "PUBLIC", website: "https://www.cam.ac.uk", eligibility: "Bachelor's degree + IELTS/TOEFL; grade requirement varies by course", logo: "https://logo.clearbit.com/cam.ac.uk", courses: ["Computer Science", "Engineering Science", "Natural Sciences", "Mathematics", "Law", "Medicine"] },
   
   // Glasgow
-  { id: 'gla-1', name: "University of Glasgow", city: "Glasgow", rank: "76 QS", tuition: 32, type: "PUBLIC", website: "https://www.gla.ac.uk", eligibility: "GPA 3.0+, IELTS 6.5+", logo: "https://logo.clearbit.com/gla.ac.uk", courses: ["Computer Science", "Medicine", "Engineering Science", "Business Administration", "Law"] },
+  { id: 'gla-1', name: "University of Glasgow", city: "Glasgow", rank: "80 QS", tuition: 45, type: "PUBLIC", website: "https://www.gla.ac.uk", eligibility: "Bachelor's degree + IELTS/TOEFL; grade requirement varies by course", logo: "https://logo.clearbit.com/gla.ac.uk", courses: ["Computer Science", "Medicine", "Engineering Science", "Business Administration", "Law"] },
   
   // Leeds
-  { id: 'lee-1', name: "University of Leeds", city: "Leeds", rank: "75 QS", tuition: 29, type: "PUBLIC", website: "https://www.leeds.ac.uk", eligibility: "GPA 3.0+, IELTS 6.5+", logo: "https://logo.clearbit.com/leeds.ac.uk", courses: ["Business Administration", "Engineering Science", "Computer Science", "Communication", "Law"] },
+  { id: 'lee-1', name: "University of Leeds", city: "Leeds", rank: "77 QS", tuition: 44, type: "PUBLIC", website: "https://www.leeds.ac.uk", eligibility: "Bachelor's degree + IELTS/TOEFL; grade requirement varies by course", logo: "https://logo.clearbit.com/leeds.ac.uk", courses: ["Business Administration", "Engineering Science", "Computer Science", "Communication", "Law"] },
   
   // Birmingham
-  { id: 'bir-1', name: "University of Birmingham", city: "Birmingham", rank: "84 QS", tuition: 9, type: "PUBLIC", website: "https://www.bham.ac.uk", eligibility: "GPA 3.0+, IELTS 6.5+", logo: "https://logo.clearbit.com/bham.ac.uk", courses: ["Engineering Science", "Computer Science", "Business Administration", "Medicine", "Psychology"] },
+  { id: 'bir-1', name: "University of Birmingham", city: "Birmingham", rank: "68 QS", tuition: 46, type: "PUBLIC", website: "https://www.bham.ac.uk", eligibility: "Bachelor's degree + IELTS/TOEFL; grade requirement varies by course", logo: "https://logo.clearbit.com/bham.ac.uk", courses: ["Engineering Science", "Computer Science", "Business Administration", "Medicine", "Psychology"] },
   
   // Edinburgh
-  { id: 'edi-1', name: "University of Edinburgh", city: "Edinburgh", rank: "22 QS", tuition: 42, type: "PUBLIC", website: "https://www.ed.ac.uk", eligibility: "GPA 3.3+, IELTS 7.0+", logo: "https://logo.clearbit.com/ed.ac.uk", courses: ["Artificial Intelligence", "Computer Science", "Medicine", "Data Science", "Law", "Business Administration"] },
+  { id: 'edi-1', name: "University of Edinburgh", city: "Edinburgh", rank: "35 QS", tuition: null, type: "PUBLIC", website: "https://www.ed.ac.uk", eligibility: "Bachelor's degree + IELTS/TOEFL; grade requirement varies by course", logo: "https://logo.clearbit.com/ed.ac.uk", courses: ["Artificial Intelligence", "Computer Science", "Medicine", "Data Science", "Law", "Business Administration"] },
   
   // Coventry
-  { id: 'cov-1', name: "Coventry University", city: "Coventry", rank: "571 QS", tuition: 18, type: "PUBLIC", website: "https://www.coventry.ac.uk", eligibility: "GPA 2.5+, IELTS 6.0+", logo: "https://logo.clearbit.com/coventry.ac.uk", courses: ["Automotive Engineering", "Computer Science", "Business Administration", "Design", "Cyber Security"] },
+  { id: 'cov-1', name: "Coventry University", city: "Coventry", rank: "581 QS", tuition: 25, type: "PUBLIC", website: "https://www.coventry.ac.uk", eligibility: "Bachelor's degree + IELTS/TOEFL; grade requirement varies by course", logo: "https://logo.clearbit.com/coventry.ac.uk", courses: ["Automotive Engineering", "Computer Science", "Business Administration", "Design", "Cyber Security"] },
 
   // Manchester
-  { id: 'man-1', name: "University of Manchester", city: "Manchester", rank: "32 QS", tuition: 24, type: "PUBLIC", website: "https://www.manchester.ac.uk", eligibility: "GPA 3.2+, IELTS 6.5+", logo: "https://logo.clearbit.com/manchester.ac.uk", courses: ["Computer Science", "Engineering Science", "Business Administration", "Economics", "Data Science"] },
+  { id: 'man-1', name: "University of Manchester", city: "Manchester", rank: "40 QS", tuition: 53, type: "PUBLIC", website: "https://www.manchester.ac.uk", eligibility: "Bachelor's degree + IELTS/TOEFL; grade requirement varies by course", logo: "https://logo.clearbit.com/manchester.ac.uk", courses: ["Computer Science", "Engineering Science", "Business Administration", "Economics", "Data Science"] },
 
   // Bristol
-  { id: 'bri-1', name: "University of Bristol", city: "Bristol", rank: "55 QS", tuition: 33, type: "PUBLIC", website: "https://www.bristol.ac.uk", eligibility: "GPA 3.3+, IELTS 6.5+", logo: "https://logo.clearbit.com/bristol.ac.uk", courses: ["Computer Science", "Engineering Science", "Law", "Economics", "Aerospace Engineering"] },
+  { id: 'bri-1', name: "University of Bristol", city: "Bristol", rank: "57 QS", tuition: 48, type: "PUBLIC", website: "https://www.bristol.ac.uk", eligibility: "Bachelor's degree + IELTS/TOEFL; grade requirement varies by course", logo: "https://logo.clearbit.com/bristol.ac.uk", courses: ["Computer Science", "Engineering Science", "Law", "Economics", "Aerospace Engineering"] },
 
   // Warwick
-  { id: 'war-1', name: "University of Warwick", city: "Coventry", rank: "67 QS", tuition: 31, type: "PUBLIC", website: "https://warwick.ac.uk", eligibility: "GPA 3.4+, IELTS 7.0+", logo: "https://logo.clearbit.com/warwick.ac.uk" },
+  { id: 'war-1', name: "University of Warwick", city: "Coventry", rank: "68 QS", tuition: 50, type: "PUBLIC", website: "https://warwick.ac.uk", eligibility: "Bachelor's degree + IELTS/TOEFL; grade requirement varies by course", logo: "https://logo.clearbit.com/warwick.ac.uk" },
 
   // Durham
-  { id: 'dur-1', name: "Durham University", city: "Durham", rank: "78 QS", tuition: 28, type: "PUBLIC", website: "https://www.durham.ac.uk", eligibility: "GPA 3.2+, IELTS 6.5+", logo: "https://logo.clearbit.com/durham.ac.uk" },
+  { id: 'dur-1', name: "Durham University", city: "Durham", rank: "85 QS", tuition: 45, type: "PUBLIC", website: "https://www.durham.ac.uk", eligibility: "Bachelor's degree + IELTS/TOEFL; grade requirement varies by course", logo: "https://logo.clearbit.com/durham.ac.uk" },
 
   // Southampton
-  { id: 'sot-1', name: "University of Southampton", city: "Southampton", rank: "81 QS", tuition: 26, type: "PUBLIC", website: "https://www.southampton.ac.uk", eligibility: "GPA 3.0+, IELTS 6.5+", logo: "https://logo.clearbit.com/southampton.ac.uk" }
+  { id: 'sot-1', name: "University of Southampton", city: "Southampton", rank: "111 QS", tuition: 47, type: "PUBLIC", website: "https://www.southampton.ac.uk", eligibility: "Bachelor's degree + IELTS/TOEFL; grade requirement varies by course", logo: "https://logo.clearbit.com/southampton.ac.uk" }
 ];
 
 const UKOverview = () => {
@@ -66,10 +66,11 @@ const UKOverview = () => {
   const [selectedCity, setSelectedCity] = useState('All');
   const [selectedFeeLimit, setSelectedFeeLimit] = useState('All'); // 'All' | '20' | '40'
 
-  const exchangeRate = 105.50; // 1 GBP ≈ 105.50 INR
+  const exchangeRate = 128; // 1 GBP ≈ ₹128 (Aug 2026)
 
   // Currency Converter helper (tuition parameter is in INR Lakhs)
   const formatCost = (valInINRLakh) => {
+    if (valInINRLakh == null) return 'See course page';
     if (currency === 'INR') {
       return `₹ ${valInINRLakh.toFixed(2)} Lakh`;
     }
@@ -346,7 +347,7 @@ const UKOverview = () => {
 
           <div className="flex border-b border-slate-200 mb-8 overflow-x-auto gap-2">
             {[
-              { id: 'qs', label: 'QS Top 2026 Rankings' },
+              { id: 'qs', label: 'QS Top 2027 Rankings' },
               { id: 'specialization', label: 'Best by Specialization' },
               { id: 'one-year', label: 'Fast-track 1-Year MBA/MSc' }
             ].map(tab => (
@@ -378,11 +379,11 @@ const UKOverview = () => {
                     <tbody className="divide-y divide-slate-100 text-slate-700 font-semibold">
                       {[
                         { rank: "2", name: "Imperial College London", loc: "London" },
-                        { rank: "2", name: "University of Cambridge", loc: "Cambridge" },
-                        { rank: "3", name: "University of Oxford", loc: "Oxford" },
-                        { rank: "9", name: "University College London (UCL)", loc: "London" },
-                        { rank: "22", name: "University of Edinburgh", loc: "Edinburgh" },
-                        { rank: "40", name: "King's College London (KCL)", loc: "London" }
+                        { rank: "4", name: "University of Oxford", loc: "Oxford" },
+                        { rank: "6", name: "University of Cambridge", loc: "Cambridge" },
+                        { rank: "8", name: "University College London (UCL)", loc: "London" },
+                        { rank: "35", name: "University of Edinburgh", loc: "Edinburgh" },
+                        { rank: "37", name: "King's College London (KCL)", loc: "London" }
                       ].map((row, i) => (
                         <tr key={i} className="hover:bg-slate-50/50 transition-colors">
                           <td className="py-3.5 text-indigo-650 font-black">{row.rank}</td>

@@ -32,13 +32,14 @@ import { RailwayBoard } from '../../components/desi/DesiPop';
 
 // Report cover drawn from the report's own headline number, instead of a stock photo
 const StatCover = ({ stat, label, tone, soft }) => (
-    <div className="absolute inset-0 flex flex-col justify-center px-7" style={{ background: soft }}>
-        <span className="font-urbanist font-extrabold leading-none text-[64px]" style={{ color: tone }}>{stat}%</span>
+    <div className="absolute inset-0 flex flex-col justify-center px-5 sm:px-7 pt-8" style={{ background: soft }}>
+        <span className="font-urbanist font-extrabold leading-none text-[52px] sm:text-[64px]" style={{ color: tone }}>{stat}%</span>
         <span className="mt-2 text-[13px] font-semibold text-[#16130F] max-w-[240px] leading-snug">{label}</span>
         <div className="mt-4 h-3 w-full max-w-[280px] rounded-full bg-white overflow-hidden border border-black/5">
             <div className="h-full rounded-full" style={{ width: `${stat}%`, background: tone }} />
         </div>
-        <span className="absolute right-6 bottom-5 text-[10px] font-bold text-[#5B544A]">UniCoach student survey, 2026</span>
+        {/* In the flow on phones so it can't sit on top of the bar */}
+        <span className="mt-2 sm:mt-0 sm:absolute sm:right-6 sm:bottom-5 text-[10px] font-bold text-[#5B544A]">UniCoach student survey, 2026</span>
     </div>
 );
 
@@ -240,8 +241,8 @@ const NewsroomPage = () => {
             <div className="max-w-[1240px] mx-auto px-4 sm:px-6 md:px-8 mb-10 relative z-20">
                 <div className="bg-white p-3.5 sm:p-4 rounded-3xl border border-slate-200/80 shadow-sm flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-4">
                     
-                    {/* Category Filter Tabs - Wrapping Pills without ugly scrollbars */}
-                    <div className="flex flex-wrap items-center gap-2">
+                    {/* Category tabs: one swipeable row on phones, wrapping pills on wider screens */}
+                    <div className="flex flex-nowrap sm:flex-wrap items-center gap-2 overflow-x-auto -mx-1 px-1 pb-1 sm:pb-0 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
                         {NEWS_TABS.map((tab) => {
                             const isActive = activeTab === tab.key;
                             const count = tab.key === 'overview' ? dbNews.length : getTabCategoryNews(tab.key).length;
@@ -249,7 +250,7 @@ const NewsroomPage = () => {
                                 <button
                                     key={tab.key}
                                     onClick={() => setActiveTab(tab.key)}
-                                    className={`inline-flex items-center gap-2 px-3.5 py-2 rounded-2xl text-xs font-bold transition-all duration-200 cursor-pointer ${
+                                    className={`shrink-0 whitespace-nowrap inline-flex items-center gap-2 px-3.5 py-2 rounded-2xl text-xs font-bold transition-all duration-200 cursor-pointer ${
                                         isActive 
                                             ? 'bg-slate-900 text-white shadow-md shadow-slate-900/20 border border-slate-900' 
                                             : 'bg-slate-50 text-slate-700 border border-slate-200/80 hover:bg-slate-100 hover:text-indigo-600'
@@ -270,7 +271,7 @@ const NewsroomPage = () => {
                     </div>
 
                     {/* Search Input */}
-                    <div className="relative min-w-[220px] sm:min-w-[260px]">
+                    <div className="relative sm:min-w-[260px]">
                         <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" size={15} />
                         <input 
                             type="text" 

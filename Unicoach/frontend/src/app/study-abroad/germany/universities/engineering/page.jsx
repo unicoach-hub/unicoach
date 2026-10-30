@@ -12,7 +12,7 @@ const engineeringUnis = [
   {
     name: "Technical University of Munich (TUM)",
     city: "Munich",
-    qsRank: "#22 Global",
+    qsRank: "#25 Global",
     notableFor: "Mechanical Engineering, informatics, Aerospace, Management & Tech",
     avgStarting: 70000,
     recruiters: ["BMW", "Siemens", "Audi", "Google"],

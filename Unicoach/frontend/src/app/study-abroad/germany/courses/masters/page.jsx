@@ -16,16 +16,16 @@ import { getUniversityLogo } from '../../../../../components/logoResolver';
 // ─────────────────────────────────────────────
 
 const universities = [
-  { name: "Technical University of Munich (TUM)", rank: "#22", feeEurMin: 4000, feeEurMax: 12000, logo: "https://logo.clearbit.com/tum.de", link: "https://www.tum.de" },
-  { name: "Ludwig Maximilian University (LMU)", rank: "#58", feeEurMin: 300, feeEurMax: 700, logo: "https://logo.clearbit.com/lmu.de", link: "https://www.lmu.de" },
-  { name: "Heidelberg University", rank: "#80", feeEurMin: 3000, feeEurMax: 3500, logo: "https://logo.clearbit.com/uni-heidelberg.de", link: "https://www.uni-heidelberg.de" },
-  { name: "Free University of Berlin (FU Berlin)", rank: "#88", feeEurMin: 620, feeEurMax: 760, logo: "https://logo.clearbit.com/fu-berlin.de", link: "https://www.fu-berlin.de" },
-  { name: "Karlsruhe Institute of Technology (KIT)", rank: "#98", feeEurMin: 3000, feeEurMax: 3600, logo: "https://logo.clearbit.com/kit.edu", link: "https://www.kit.edu" },
-  { name: "RWTH Aachen University", rank: "#105", feeEurMin: 600, feeEurMax: 800, logo: "https://logo.clearbit.com/rwth-aachen.de", link: "https://www.rwth-aachen.de" },
-  { name: "Humboldt University of Berlin", rank: "#130", feeEurMin: 630, feeEurMax: 700, logo: "https://logo.clearbit.com/hu-berlin.de", link: "https://www.hu-berlin.de" },
-  { name: "Technical University of Berlin", rank: "#145", feeEurMin: 600, feeEurMax: 660, logo: "https://logo.clearbit.com/tu.berlin", link: "https://www.tu.berlin" },
-  { name: "University of Hamburg", rank: "#193", feeEurMin: 670, feeEurMax: 720, logo: "https://logo.clearbit.com/uni-hamburg.de", link: "https://www.uni-hamburg.de" },
-  { name: "University of Freiburg", rank: "#201", feeEurMin: 3300, feeEurMax: 3700, logo: "https://logo.clearbit.com/uni-freiburg.de", link: "https://www.uni-freiburg.de" }
+  { name: "Technical University of Munich (TUM)", rank: "#25", feeEurMin: 8000, feeEurMax: 12000, logo: "/logos/verified-Technical University of Munich.png", link: "https://www.tum.de" },
+  { name: "Ludwig Maximilian University (LMU)", rank: "#61", feeEurMin: 170, feeEurMax: 200, logo: "/logos/verified-Ludwig Maximilian University of Munich.png", link: "https://www.lmu.de" },
+  { name: "Heidelberg University", rank: "#86", feeEurMin: 3000, feeEurMax: 3500, logo: "/logos/verified-Heidelberg University.png", link: "https://www.uni-heidelberg.de" },
+  { name: "Free University of Berlin (FU Berlin)", rank: "#98", feeEurMin: 620, feeEurMax: 760, logo: "/logos/verified-Free University of Berlin.png", link: "https://www.fu-berlin.de" },
+  { name: "RWTH Aachen University", rank: "#104", feeEurMin: 600, feeEurMax: 800, logo: "/logos/verified-RWTH Aachen University.png", link: "https://www.rwth-aachen.de" },
+  { name: "Karlsruhe Institute of Technology (KIT)", rank: "#110", feeEurMin: 3000, feeEurMax: 3600, logo: "/logos/verified-Karlsruhe Institute of Technology.png", link: "https://www.kit.edu" },
+  { name: "Humboldt University of Berlin", rank: "#140", feeEurMin: 700, feeEurMax: 770, logo: "/logos/verified-Humboldt University of Berlin.png", link: "https://www.hu-berlin.de" },
+  { name: "Technical University of Berlin", rank: "#158", feeEurMin: 740, feeEurMax: 760, logo: "/logos/verified-Technical University of Berlin.png", link: "https://www.tu.berlin" },
+  { name: "University of Hamburg", rank: "#209", feeEurMin: 780, feeEurMax: 810, logo: "/logos/verified-University of Hamburg.png", link: "https://www.uni-hamburg.de" },
+  { name: "University of Freiburg", rank: "#245", feeEurMin: 3300, feeEurMax: 3700, logo: "/logos/verified-University of Freiburg.png", link: "https://www.uni-freiburg.de" }
 ];
 
 const specialisations = {
@@ -51,7 +51,7 @@ const specialisations = {
     bestFor: "People with a background in math, statistics, or engineering who want to connect 'Big Data' to business strategy.",
     insight: "Master Predictive Modeling, Data Visualization, and Statistical Computing. The course often involves 'capstone projects' where you solve actual data bottlenecks for partner companies.",
     skills: ["Python/R for Data Science", "Big Data Frameworks (Hadoop/Spark)", "Business Intelligence"],
-    fees: "€700/year (Semester Contribution) at FU Berlin."
+    fees: "~€750/year (Semester Contribution) at FU Berlin."
   },
   mgmt: {
     title: "Business Administration & Management (MiM/MBA)",
@@ -262,7 +262,7 @@ const GermanyMastersPage = () => {
         {/* 3. UNIVERSITIES TABLE */}
         <div className="mb-20">
           <div className="text-left mb-8 max-w-2xl">
-            <h2 className="text-3xl font-black text-slate-900 mb-3 tracking-tight">Top Universities in Germany (QS 2026 Rankings)</h2>
+            <h2 className="text-3xl font-black text-slate-900 mb-3 tracking-tight">Top Universities in Germany (QS 2027 Rankings)</h2>
             <p className="text-slate-500 text-sm font-bold">Compare elite public universities charging €0 or nominal semester fees, avoiding massive debt common in US/UK.</p>
           </div>
 
@@ -320,7 +320,7 @@ const GermanyMastersPage = () => {
               </table>
             </div>
             <div className="bg-slate-50 px-6 py-4 border-t border-slate-100 text-center md:text-left flex flex-col md:flex-row justify-between items-center gap-2">
-              <span className="text-xs text-slate-400 font-bold">Source: Official University Portals (e.g. TUM.de, Uni-Heidelberg.de) mapped to QS 2026 Rankings</span>
+              <span className="text-xs text-slate-400 font-bold">Source: Official University Portals (e.g. TUM.de, Uni-Heidelberg.de) mapped to QS 2027 Rankings</span>
               <span className="text-xs text-slate-400 font-bold">Exchange reference: €1 = ₹107.78</span>
             </div>
           </div>

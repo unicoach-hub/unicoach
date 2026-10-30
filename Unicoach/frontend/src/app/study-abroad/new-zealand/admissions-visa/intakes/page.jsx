@@ -24,14 +24,14 @@ const SECTIONS = [
 
 // Feb/Mar 2027 deadlines confirmed on each university's site in October 2026; July 2027 dates are not out yet
 const universityDeadlines = [
-  { name: "University of Auckland", feb: "Dec 7, 2026 (international postgraduate)", july: "Not yet published" },
-  { name: "University of Otago", feb: "Nov 15, 2026 (applying from outside NZ)", july: "Not yet published" },
-  { name: "Victoria University of Wellington", feb: "Dec 1, 2026", july: "Not yet published" },
-  { name: "Lincoln University", feb: "Dec 1, 2026 (applying from outside NZ)", july: "Jun 1, 2027 (applying from outside NZ)" },
-  { name: "University of Canterbury", feb: "Check university site", july: "Not yet published" },
-  { name: "Massey University", feb: "Check university site", july: "Not yet published" },
-  { name: "University of Waikato", feb: "Check university site", july: "Not yet published" },
-  { name: "Auckland University of Technology (AUT)", feb: "Check university site", july: "Not yet published" }
+  { name: "University of Auckland", feb: "Dec 1, 2026 (international applicants advised; postgraduate close Dec 8)", july: "Jun 8, 2027 (international, sub-doctoral)" },
+  { name: "University of Otago", feb: "Nov 15, 2026 (applying from outside NZ)", july: "Apr 30, 2027" },
+  { name: "Massey University", feb: "Oct 31, 2026", july: "May 1, 2027" },
+  { name: "Victoria University of Wellington", feb: "Dec 8, 2026 (some Master's Oct 1 / Nov 1)", july: "May 1, 2027 (some Mar 1)" },
+  { name: "University of Canterbury", feb: "Dec 1, 2026", july: "May 1, 2027" },
+  { name: "Lincoln University", feb: "Not yet confirmed — check lincoln.ac.nz", july: "Not yet confirmed" },
+  { name: "University of Waikato", feb: "Rolling (processed on an ongoing basis)", july: "Rolling" },
+  { name: "Auckland University of Technology (AUT)", feb: "Apply by early December; varies by programme", july: "Varies by programme" }
 ];
 
 const intakeComparison = [
@@ -535,10 +535,11 @@ const NewZealandIntakes = () => {
                   kicker="Feb/Mar 2027 deadlines"
                   title="Confirmed application deadlines, earliest first"
                   steps={[
+                    { when: 'Oct 31, 2026', what: 'Massey University' },
                     { when: 'Nov 15, 2026', what: 'University of Otago', note: 'Applying from outside NZ', highlight: true },
-                    { when: 'Dec 1, 2026', what: 'Victoria University of Wellington' },
-                    { when: 'Dec 1, 2026', what: 'Lincoln University', note: 'Applying from outside NZ' },
-                    { when: 'Dec 7, 2026', what: 'University of Auckland', note: 'International postgraduate' },
+                    { when: 'Dec 1, 2026', what: 'University of Auckland', note: 'Advised for international applicants' },
+                    { when: 'Dec 1, 2026', what: 'University of Canterbury' },
+                    { when: 'Dec 8, 2026', what: 'Victoria University of Wellington', note: 'Some Master\'s close earlier' },
                   ]}
                 />
 
@@ -700,7 +701,7 @@ const NewZealandIntakes = () => {
               <div className="space-y-4">
                 {[
                   { q: "Which is the best intake for New Zealand?", a: "February is the best intake if you want maximum program choices and scholarship opportunities. July is the best choice if you need more time for preparations or want a faster visa process." },
-                  { q: "When should I apply for the February 2027 intake?", a: "Now, if you have not already. Otago closes on 15 November 2026 for students applying from outside NZ, Victoria and Lincoln on 1 December 2026, and Auckland on 7 December 2026 for international postgraduates. Apply early: offers and visas take time." },
+                  { q: "When should I apply for the February 2027 intake?", a: "Now, if you have not already. Massey closes on 31 October 2026, Otago on 15 November 2026 for students applying from outside NZ, Canterbury on 1 December 2026, and Victoria on 8 December 2026. Auckland asks international applicants to apply by 1 December 2026. Apply early: offers and visas take time." },
                   { q: "Can I work while studying?", a: "Yes. Since 3 November 2025, tertiary students can work up to 25 hours a week during term and full-time in scheduled holidays. Research master's students starting from late 2026 may have different conditions, so check Immigration New Zealand." },
                   { q: "What is the duration of the Post-Study Work Visa?", a: "Bachelor's degrees, Master's degrees, and PhD programs all grant a standard 3-year Post-Study Work Visa (PSWV) in New Zealand." },
                   { q: "How long does it take to process a NZ Student Visa?", a: "Average visa processing times range between 30 to 45 working days (~6-8 weeks). The July intake offers faster off-peak processing." },

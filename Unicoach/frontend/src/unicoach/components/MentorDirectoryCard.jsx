@@ -67,17 +67,18 @@ export const MentorDirectoryCard = ({ mentor: m, index = 0 }) => {
         </div>
 
         {/* Bottom Pricing & CTA Strip */}
-        <div className="mt-3 rounded-[16px] px-3 py-2.5 flex items-center justify-between gap-2" style={{ background: tone.tint }}>
-          <div>
-            <span className="text-[9px] font-bold uppercase block leading-none" style={{ color: tone.deep, opacity: 0.75 }}>
+        <div className="mt-3 rounded-[16px] px-2.5 sm:px-3 py-2.5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2" style={{ background: tone.tint }}>
+          {/* Phones: price on top, full-width button below (two columns leave no room side by side) */}
+          <div className="flex items-baseline justify-between gap-2 sm:block min-w-0">
+            <span className="text-[9px] font-bold uppercase block leading-none whitespace-nowrap" style={{ color: tone.deep, opacity: 0.75 }}>
               Sessions from
             </span>
-            <div className="font-outfit text-xs sm:text-[13px] font-black leading-tight mt-0.5" style={{ color: tone.deep }}>
+            <div className="font-outfit text-xs sm:text-[13px] font-black leading-tight sm:mt-0.5 whitespace-nowrap" style={{ color: tone.deep }}>
               {formatPrice(m.startingPriceINR)}
             </div>
           </div>
 
-          <span className="inline-flex items-center gap-1 px-3 py-1.5 rounded-full text-[11px] font-extrabold transition-all shadow-2xs" style={{ background: tone.solid, color: tone.text }}>
+          <span className="inline-flex items-center justify-center gap-1 px-3 py-1.5 rounded-full text-[11px] font-extrabold whitespace-nowrap transition-all shadow-2xs" style={{ background: tone.solid, color: tone.text }}>
             <span>View Sessions</span>
             <ArrowUpRight className="w-3 h-3 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
           </span>

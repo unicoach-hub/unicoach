@@ -39,77 +39,55 @@ const countryShortlistOptions = [
 ];
 
 const topMbaColleges = [
-  { 
+  {
     rank: "#1",
-    name: "SDA Bocconi School of Management", 
-    qsRank: "QS #11", 
-    feesEUR: { min: 1700, max: 2400 }, 
-    deadline: "April 15",
+    name: "SDA Bocconi School of Management",
+    qsRank: "Bocconi: not in QS overall ranking",
+    feesEUR: { min: 86000, max: 86000 },
+    feeNote: "Full-Time MBA, class starting September 2027 (whole programme, 4 instalments).",
+    deadline: "Several rounds — check sdabocconi.it",
     focus: "Finance, Consulting, Luxury",
-    highlights: ["Italy's top MBA - globally ranked", "Close ties with elite fashion houses and consulting firms", "Double degree exchange programs available"]
+    highlights: ["Bocconi's graduate school of management in Milan", "Full-Time MBA taught in English", "Application fee €120"]
   },
-  { 
+  {
     rank: "#2",
-    name: "ESCP Europe Business School", 
-    qsRank: "QS #21-50", 
-    feesEUR: { min: 21500, max: 21500 }, 
-    deadline: "March 14 / April 3 / April 18 / May 5",
-    focus: "International Business, Strategy",
-    highlights: ["Pan-European campuses for multi-country experience", "Excellent career network across major EU capitals", "96% employment rate within 3 months"]
-  },
-  { 
-    rank: "#3",
-    name: "Politecnico di Milano (MIP)", 
-    qsRank: "QS #111", 
-    feesEUR: { min: 170, max: 4000 }, 
-    deadline: "May 15",
+    name: "MIP Politecnico di Milano Graduate School of Business",
+    qsRank: "Polimi: QS #87 (overall)",
+    feesEUR: { min: 54000, max: 54000 },
+    feeNote: "International Full-Time MBA, October 2027 intake (€58,000 if company-sponsored).",
+    deadline: "Several rounds — check gsom.polimi.it",
     focus: "Industrial Management, Business Analytics",
-    highlights: ["Most affordable top-tier public MBA option", "Strong engineering and data analytics integration", "Close partnerships with technology leaders"]
+    highlights: ["Business school of Italy's highest-ranked university", "Strong engineering and data analytics integration", "Application fee €150"]
   },
-  { 
-    rank: "#4",
-    name: "LUISS Guido Carli", 
-    qsRank: "QS #82", 
-    feesEUR: { min: 26000, max: 26000 }, 
-    deadline: "April 30",
+  {
+    rank: "#3",
+    name: "LUISS Business School",
+    qsRank: "LUISS: not in QS overall ranking",
+    feesEUR: null,
+    feeNote: "MBA fee not verified — check the official site.",
+    deadline: "Check official site",
     focus: "Luxury Management, Finance",
-    highlights: ["Rome-based boutique corporate network", "Specialized Luxury and Fashion retail partnerships", "Excellent alumni base in consulting"]
+    highlights: ["Business school of LUISS Guido Carli, Rome", "MBA and specialised Master's programmes", "Rome-based corporate network"]
   },
-  { 
+  {
+    rank: "#4",
+    name: "ESCP Business School (Turin campus)",
+    qsRank: "Not in QS overall ranking",
+    feesEUR: null,
+    feeNote: "Fee not verified — check the official site.",
+    deadline: "Check official site",
+    focus: "International Business, Strategy",
+    highlights: ["Multi-campus European business school", "Programmes can combine several European campuses", "Turin is one of its campuses"]
+  },
+  {
     rank: "#5",
-    name: "MIB Trieste School of Management", 
-    qsRank: "QS #151", 
-    feesEUR: { min: 25000, max: 25000 }, 
-    deadline: "August 6",
+    name: "MIB Trieste School of Management",
+    qsRank: "Not in QS overall ranking",
+    feesEUR: null,
+    feeNote: "Fee not verified — check the official site.",
+    deadline: "Check official site",
     focus: "International Business, Marketing",
-    highlights: ["AMBA accredited programs", "Highly international student group", "Guaranteed corporate internships"]
-  },
-  { 
-    rank: "#6",
-    name: "University of Pisa", 
-    qsRank: "QS #382", 
-    feesEUR: { min: 2500, max: 2500 }, 
-    deadline: "February 28",
-    focus: "General Management",
-    highlights: ["Subsidized public university fees", "Historic academic heritage", "Generalist business focus"]
-  },
-  { 
-    rank: "#7",
-    name: "University of Siena (Economics & Mgmt)", 
-    qsRank: "QS #691-700", 
-    feesEUR: { min: 1000, max: 3000 }, 
-    deadline: "May 6",
-    focus: "Economics, Business",
-    highlights: ["Affordable living costs in Siena", "Strong theoretical foundation in economics", "Friendly student ecosystem"]
-  },
-  { 
-    rank: "#8",
-    name: "I.P.E. Business School", 
-    qsRank: "QS #101", 
-    feesEUR: { min: 82300, max: 82300 }, 
-    deadline: "September 1",
-    focus: "Executive Education",
-    highlights: ["Corporate executive-focused curriculum", "Excellent regional Italian placements", "Strong industrial linkages"]
+    highlights: ["Business school in Trieste", "International MBA taught in English", "Check accreditation and placement data on the official site"]
   }
 ];
 
@@ -123,8 +101,8 @@ const specializationsList = [
 ];
 
 const annualCostsList = [
-  { cat: "Tuition (Public)", eur: { min: 170, max: 5000 } },
-  { cat: "Tuition (Private)", eur: { min: 20000, max: 40000 } },
+  { cat: "Tuition (Public Master's)", eur: { min: 150, max: 4300 } },
+  { cat: "Tuition (Full-Time MBA)", eur: { min: 54000, max: 86000 } },
   { cat: "Accommodation", eur: { min: 3000, max: 10000 } },
   { cat: "Food", eur: { min: 3000, max: 4300 } },
   { cat: "Health Insurance", eur: { min: 700, max: 700 } },
@@ -134,9 +112,9 @@ const annualCostsList = [
 
 const scholarshipsList = [
   { name: "Italian Government (MAECI)", body: "Ministry of Foreign Affairs", amountEUR: 9000, desc: "Covers tuition + living expenses + health insurance" },
-  { name: "International Talents @Unibo", body: "University of Bologna", amountEUR: 4200, desc: "Tuition waiver + cash stipend for top international students" },
-  { name: "Excellence Scholarships", body: "University of Milan", amountEUR: 8000, desc: "Tuition waiver + living support" },
-  { name: "Padua International Excellence", body: "University of Padua", amountEUR: 8000, desc: "Covers tuition fees and monthly living budget" }
+  { name: "International Talents @Unibo", body: "University of Bologna", amountEUR: null, desc: "Merit scholarship for international Master's students + amount set in each year's call" },
+  { name: "Excellence Scholarships", body: "University of Milan", amountEUR: null, desc: "Merit scholarship for international Master's students + amount set in each year's call" },
+  { name: "Padua International Excellence", body: "University of Padua", amountEUR: null, desc: "Merit scholarship for international students + amount set in each year's call" }
 ];
 
 const salariesList = [
@@ -148,18 +126,18 @@ const salariesList = [
 ];
 
 const globalComparisonList = [
-  { country: "Italy", feeEUR: { min: 20000, max: 40000 }, duration: "12 months", recovery: "2 – 3 years" },
+  { country: "Italy", feeEUR: { min: 54000, max: 86000 }, duration: "12 months", recovery: "2 – 3 years" },
   { country: "USA", feeEUR: { min: 55000, max: 92000 }, duration: "18-24 months", recovery: "4 – 6 years" },
   { country: "UK", feeEUR: { min: 35000, max: 138000 }, duration: "12-15 months", recovery: "3 – 5 years" },
   { country: "Germany", feeEUR: { min: 80000, max: 90000 }, duration: "12-18 months", recovery: "3 – 4 years" }
 ];
 
 const faqsList = [
-  { q: "Is Italy good for an MBA?", a: "Yes, Italy hosts triple-accredited elite schools like SDA Bocconi (#11 globally) and Politecnico di Milano. It offers competitive global salaries, particularly in finance, strategy, and luxury management, at a fraction of US or UK costs." },
-  { q: "How much does an MBA cost in Italy?", a: "Public MBA programs can range from €170 to €5,000/year (~₹16,000 - ₹5.1 Lakhs). Private top-tier business schools range from €20,000 to €40,000/year (~₹20.6L - ₹41.2L)." },
+  { q: "Is Italy good for an MBA?", a: "Yes, Italy hosts well-known business schools such as SDA Bocconi and MIP Politecnico di Milano. It offers competitive global salaries, particularly in finance, strategy, and luxury management, at a fraction of US or UK costs." },
+  { q: "How much does an MBA cost in Italy?", a: "Full-time MBAs at the best-known schools cost about €54,000 (MIP Politecnico di Milano, Oct 2027 intake) to €86,000 (SDA Bocconi, Sep 2027 class) for the whole programme (~₹59L – ₹95L). Regular public-university Master's degrees in management cost far less (about €150 – €4,300/year)." },
   { q: "Can I get permanent residency (PR) after an MBA in Italy?", a: "Yes. Graduates receive a 12-month post-study stay-back permit. Once you find a job, your permit can be converted to an EU Blue Card or a standard work permit, paving the path to permanent residency." },
   { q: "What is the average salary after an MBA in Italy?", a: "The average post-MBA salary is around €30,000 – €50,000 (~₹28L - ₹47 Lakhs/year) for mid-level professionals. Senior managers and consultants in fashion/finance can exceed €60,000 - €80,000." },
-  { q: "Is GMAT/GRE mandatory for MBA admissions in Italy?", a: "For elite private schools like Bocconi, a GMAT (600+) or GRE (310+) is highly recommended. Some public universities and schools offer test waivers based on relevant professional work experience." }
+  { q: "Is GMAT/GRE mandatory for MBA admissions in Italy?", a: "Requirements differ by school: some ask for a GMAT/GRE score or their own admission test, and some can waive it for experienced candidates. Check each school's current admission page for minimum scores." }
 ];
 
 const ItalyMBACourse = () => {
@@ -171,7 +149,7 @@ const ItalyMBACourse = () => {
   const [selectedCountry, setSelectedCountry] = useState('Italy');
   const { openEligibilityModal } = useLead();
 
-  const exchangeRate = 103.0; // Target rate: €1 = ₹103.0
+  const exchangeRate = 110.0; // Target rate: €1 = ₹110 (Aug 2026)
 
   useEffect(() => {
     const handleScroll = () => {
@@ -210,6 +188,7 @@ const ItalyMBACourse = () => {
   };
 
   const formatRange = (minEUR, maxEUR) => {
+    if (minEUR === maxEUR) return formatCost(minEUR);
     if (currency === 'EUR') {
       return `€${minEUR.toLocaleString()} – €${maxEUR.toLocaleString()}`;
     }
@@ -293,7 +272,7 @@ const ItalyMBACourse = () => {
               Over 93,000 international students chose Italy in 2023—including 6,100 from India.
             </h2>
             <p className="text-slate-350 text-sm md:text-base font-semibold leading-relaxed mb-4">
-              Italy isn't just about pasta and fashion. It's home to SDA Bocconi, ranked #11 globally for MBA programs. It offers affordable tuition, world-class education, and a direct path to Europe's most prestigious business sectors—finance, luxury management, and consulting.
+              Italy isn't just about pasta and fashion. It's home to SDA Bocconi and MIP Politecnico di Milano, both with English-taught full-time MBAs. It offers affordable tuition, world-class education, and a direct path to Europe's most prestigious business sectors—finance, luxury management, and consulting.
             </p>
             <p className="text-emerald-400 text-sm md:text-base font-extrabold leading-relaxed">
               Globally ranked programs at half the US/UK cost • Average salary of ₹47 Lakhs/year post-MBA • EU Blue Card access = work across Europe • 12-month post-study work permit
@@ -353,7 +332,7 @@ const ItalyMBACourse = () => {
                   </div>
                   <h4 className="font-extrabold text-slate-905 text-sm mb-2">World-Class Ranks</h4>
                   <p className="text-slate-500 text-xs font-semibold leading-relaxed">
-                    SDA Bocconi ranks #11 globally for its MBA. Internationally recognized credentials.
+                    SDA Bocconi and MIP Politecnico di Milano are internationally recognised business schools.
                   </p>
                 </div>
 
@@ -537,8 +516,9 @@ const ItalyMBACourse = () => {
                       <div>
                         <strong className="text-slate-900 block mb-1">💰 Tuition Fees:</strong>
                         <span className="text-sm font-black text-slate-800">
-                          {formatRange(uni.feesEUR.min, uni.feesEUR.max)} / year
+                          {uni.feesEUR ? formatRange(uni.feesEUR.min, uni.feesEUR.max) : 'Not verified'}
                         </span>
+                        {uni.feeNote && <span className="text-[11px] text-slate-500 font-semibold block mt-1">{uni.feeNote}</span>}
                       </div>
                       <div>
                         <strong className="text-slate-900 block mb-1">📅 Application Deadline:</strong>
@@ -581,8 +561,8 @@ const ItalyMBACourse = () => {
                         <tr key={idx} className="hover:bg-slate-50/50 transition-colors">
                           <td className="p-4 text-slate-900 font-bold">{uni.name}</td>
                           <td className="p-4 font-bold text-indigo-700">{uni.qsRank}</td>
-                          <td className="p-4">€{uni.feesEUR.min.toLocaleString()} – €{uni.feesEUR.max.toLocaleString()}</td>
-                          <td className="p-4">{formatRange(uni.feesEUR.min, uni.feesEUR.max)}</td>
+                          <td className="p-4">{uni.feesEUR ? (uni.feesEUR.min === uni.feesEUR.max ? `€${uni.feesEUR.min.toLocaleString()}` : `€${uni.feesEUR.min.toLocaleString()} – €${uni.feesEUR.max.toLocaleString()}`) : 'Not verified'}</td>
+                          <td className="p-4">{uni.feesEUR ? formatRange(uni.feesEUR.min, uni.feesEUR.max) : '—'}</td>
                           <td className="p-4 text-indigo-650 font-bold">{uni.deadline.split(' / ')[0]}</td>
                           <td className="p-4 text-slate-600">{uni.focus}</td>
                         </tr>
@@ -592,7 +572,7 @@ const ItalyMBACourse = () => {
                 </div>
               </div>
               <p className="text-[10px] text-slate-400 font-semibold mt-3 italic">
-                * Note: SDA Bocconi average annual tuition listed reflects highly subsidized public-equivalent program options or specific scholarships. Full-time international MBA base fees may vary up to €65,000.
+                * Note: Fees are for the whole full-time MBA programme as published by each school (SDA Bocconi: class starting Sep 2027; MIP: Oct 2027 intake). Where a fee says "Not verified", check the school's official site.
               </p>
             </section>
 
@@ -795,7 +775,7 @@ const ItalyMBACourse = () => {
                 {scholarshipsList.map((sch, idx) => (
                   <div key={idx} className="bg-white border border-slate-100 rounded-2xl p-5 hover:shadow-md transition-shadow">
                     <span className="px-2 py-0.5 bg-emerald-50 text-emerald-800 text-[10px] font-black rounded-md uppercase tracking-wider block w-fit mb-3">
-                      Value: {formatCost(sch.amountEUR)}
+                      Value: {sch.amountEUR ? formatCost(sch.amountEUR) : 'Varies — see call'}
                     </span>
                     <h4 className="font-extrabold text-slate-900 text-sm mb-2">{sch.name}</h4>
                     <p className="text-slate-500 text-xs font-semibold leading-relaxed mb-1"><strong>Offering Body:</strong> {sch.body}</p>
@@ -823,8 +803,8 @@ const ItalyMBACourse = () => {
                         <tr key={idx} className="hover:bg-slate-50/50 transition-colors">
                           <td className="p-4 text-slate-900 font-bold">{sch.name}</td>
                           <td className="p-4 text-slate-500">{sch.body}</td>
-                          <td className="p-4">€{sch.amountEUR.toLocaleString()}</td>
-                          <td className="p-4 text-indigo-650 font-bold">~{formatCost(sch.amountEUR)}</td>
+                          <td className="p-4">{sch.amountEUR ? `€${sch.amountEUR.toLocaleString()}` : 'Varies'}</td>
+                          <td className="p-4 text-indigo-650 font-bold">{sch.amountEUR ? `~${formatCost(sch.amountEUR)}` : 'See official call'}</td>
                           <td className="p-4 text-slate-655 text-xs">{sch.desc.split(' + ')[0]}</td>
                         </tr>
                       ))}

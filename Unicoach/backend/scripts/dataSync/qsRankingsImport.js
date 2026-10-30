@@ -38,6 +38,21 @@ const COUNTRY_ALIASES = {
 // QS institution name → our university name, for names that normalising can't reconcile
 const NAME_ALIASES = {
   'technical university of munich': 'Technische Universität München',
+  'unsw sydney': 'University of New South Wales',
+  'universite paris sciences et lettres': 'Université PSL (Paris Sciences & Lettres)',
+  'university of michigan': 'University of Michigan-Ann Arbor',
+  'adelaide university': 'University of Adelaide', // merged successor of Adelaide + UniSA (2026)
+  'heidelberg university': 'Ruprecht-Karls-Universität Heidelberg', // our "Heidelberg University" is the one in Ohio
+  'karlsruhe institute of technology': 'Karlsruher Institut für Technologie',
+  'university of newcastle australia': 'University of Newcastle',
+  'university of freiburg': 'Albert-Ludwigs-Universität Freiburg im Breisgau',
+  'university of cologne': 'Universität zu Köln',
+  'ollscoil na gaillimhe university of galway': 'University of Galway',
+  'brunel university of london': 'Brunel University London',
+  'virginia tech': 'Virginia Polytechnic Institute and State University',
+  'university of wurzburg': 'Julius-Maximilians-Universität Würzburg',
+  'university of bayreuth': 'Universität Bayreuth',
+  'university of milano bicocca': 'University of Milan-Bicocca',
 };
 
 /* ---------- minimal .xlsx reader (zip + XML), no dependencies ---------- */

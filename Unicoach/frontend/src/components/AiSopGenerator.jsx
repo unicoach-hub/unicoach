@@ -2,10 +2,11 @@ import React, { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Sparkles, FileText, Download, Copy, Check, RefreshCw, 
-  GraduationCap, Globe, BookOpen, Briefcase, Target, Award,
-  CheckCircle2, ChevronRight, AlertCircle, Compass, Building
+  GraduationCap, BookOpen, Briefcase, Award,
+  CheckCircle2, AlertCircle, Compass, Building
 } from 'lucide-react';
 import PremiumDropdown from './PremiumDropdown';
+import { FinderCard, FinderField, FinderButton, FINDER_FIELD, FINDER_TEXTAREA, FIELD_RADIUS } from './ui/FinderForm';
 import { POPULAR_COURSES, ALL_COUNTRY_OPTIONS } from '../utils/shortlistOptions';
 import { getVerifiedRanking } from '../utils/ranking';
 import { ALL_UNIVERSITIES } from '../data/universities';
@@ -262,32 +263,10 @@ const AiSopGenerator = ({ initialProfile = {} }) => {
 
   return (
     <div className="space-y-8">
-      {/* Header Banner */}
-      <div className="uc-soft p-6 md:p-8 rounded-[32px] relative overflow-hidden">
-        <div className="relative z-10 space-y-2">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-black bg-white text-[#16130F] border border-[#16130F]/10">
-            <Sparkles size={14} className="text-[#DE5C2B]" /> Ivy League & Russell Group AI Standard
-          </div>
-          <h2 className="text-2xl md:text-3xl font-black tracking-tight text-[#16130F]">
-            AI Statement of Purpose (SOP) Generator
-          </h2>
-          <p className="text-xs md:text-sm text-[#3D372F] font-medium max-w-2xl leading-relaxed">
-            Generate high-conviction, personalized admission essays tailored for top global universities in USA, UK, Canada, Australia & Germany with zero cliché openings.
-          </p>
-        </div>
-      </div>
-
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10">
-        {/* Left Form: Profile Inputs (Expanded 6 Cols on lg, 5 on xl) */}
-        <div className="lg:col-span-6 xl:col-span-5 bg-white border border-slate-200/80 p-6 md:p-8 rounded-[32px] shadow-sm space-y-6">
-          <div className="border-b border-slate-100 pb-3">
-            <h3 className="text-base font-black text-slate-800 flex items-center gap-2">
-              <FileText size={18} className="text-indigo-600" /> Essay Parameters
-            </h3>
-            <p className="text-xs text-slate-400 font-semibold mt-0.5">Customize your background and target program</p>
-          </div>
-
-          <form onSubmit={handleGenerate} className="space-y-5">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-start">
+        {/* Form card in the Course Finder look */}
+        <FinderCard className="lg:col-span-6 xl:col-span-5">
+          <form onSubmit={handleGenerate} className="space-y-4">
             {errorMsg && (
               <div className="p-3.5 rounded-xl bg-rose-50 border border-rose-200 text-xs font-bold text-rose-800 flex items-center gap-2">
                 <AlertCircle size={16} className="text-rose-600 flex-shrink-0" />
@@ -295,73 +274,48 @@ const AiSopGenerator = ({ initialProfile = {} }) => {
               </div>
             )}
 
-            {/* Destination & Degree Row */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div>
-                <PremiumDropdown
-                  label="Target Destination"
-                  labelIcon={<Globe size={14} className="text-indigo-600" />}
-                  value={formData.targetCountry}
-                  onChange={(val) => handleInputChange('targetCountry', val)}
-                  accent="indigo"
-                  searchable={true}
-                  searchPlaceholder="Search 160+ countries..."
-                  options={ALL_COUNTRY_OPTIONS.filter(c => c.value !== 'All')}
-                />
-              </div>
-
-              <div>
-                <PremiumDropdown
-                  label="Target Degree"
-                  labelIcon={<GraduationCap size={14} className="text-indigo-600 flex-shrink-0" />}
-                  value={formData.targetDegree}
-                  onChange={(val) => handleInputChange('targetDegree', val)}
-                  accent="indigo"
-                  options={[
-                    { value: "Master's", label: "Master's (MS / MA / MSc)", shortLabel: "Master's", icon: <GraduationCap size={14} className="text-indigo-600" /> },
-                    { value: 'MBA', label: 'MBA / Business Master', shortLabel: 'MBA', icon: <Briefcase size={14} className="text-indigo-600" /> },
-                    { value: "Bachelor's", label: "Bachelor's (BS / BA / BEng)", shortLabel: "Bachelor's", icon: <BookOpen size={14} className="text-indigo-600" /> },
-                    { value: 'PhD', label: 'PhD / Doctorate', shortLabel: 'PhD / Doctorate', icon: <Award size={14} className="text-indigo-600" /> },
-                  ]}
-                />
-              </div>
-            </div>
-
-            {/* Target Major / Program - Full Width */}
-            <div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <PremiumDropdown
-                label="Target Major / Program"
-                labelIcon={<BookOpen size={14} className="text-indigo-600 flex-shrink-0" />}
-                value={formData.targetMajor}
-                onChange={(val) => handleInputChange('targetMajor', val)}
+                label="Country *"
+                value={formData.targetCountry}
+                onChange={(val) => handleInputChange('targetCountry', val)}
                 accent="indigo"
                 searchable={true}
-                creatable={true}
-                defaultIcon={<BookOpen size={14} className="text-indigo-600" />}
-                searchPlaceholder="Search or enter major..."
-                placeholder="e.g. Computer Science"
-                options={POPULAR_COURSES}
+                searchPlaceholder="Search 160+ countries..."
+                options={ALL_COUNTRY_OPTIONS.filter(c => c.value !== 'All')}
               />
-            </div>
 
-            {/* Target University & Tone: full width each, so long names and the count badge fit */}
-            <div className="grid grid-cols-1 gap-5">
-              <div>
+              <PremiumDropdown
+                label="Degree"
+                value={formData.targetDegree}
+                onChange={(val) => handleInputChange('targetDegree', val)}
+                accent="indigo"
+                options={[
+                  { value: "Master's", label: "Master's (MS / MA / MSc)", shortLabel: "Master's", icon: <GraduationCap size={14} className="text-indigo-600" /> },
+                  { value: 'MBA', label: 'MBA / Business Master', shortLabel: 'MBA', icon: <Briefcase size={14} className="text-indigo-600" /> },
+                  { value: "Bachelor's", label: "Bachelor's (BS / BA / BEng)", shortLabel: "Bachelor's", icon: <BookOpen size={14} className="text-indigo-600" /> },
+                  { value: 'PhD', label: 'PhD / Doctorate', shortLabel: 'PhD / Doctorate', icon: <Award size={14} className="text-indigo-600" /> },
+                ]}
+              />
+
+              <div className="sm:col-span-2">
                 <PremiumDropdown
-                  label={
-                    <span className="flex items-center justify-between gap-2 w-full">
-                      <span className="whitespace-nowrap">Target University</span>
-                      {universityOptions.length > 0 && (
-                        <span
-                          className="text-[10px] font-bold text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded-full border border-indigo-200/60 whitespace-nowrap"
-                          title={`${universityOptions.length} universities in ${selectedCountryLabel}`}
-                        >
-                          {universityOptions.length} universities
-                        </span>
-                      )}
-                    </span>
-                  }
-                  labelIcon={<GraduationCap size={14} className="text-indigo-600 flex-shrink-0" />}
+                  label="Program or major *"
+                  value={formData.targetMajor}
+                  onChange={(val) => handleInputChange('targetMajor', val)}
+                  accent="indigo"
+                  searchable={true}
+                  creatable={true}
+                  defaultIcon={<BookOpen size={14} className="text-indigo-600" />}
+                  searchPlaceholder="Search or enter major..."
+                  placeholder="e.g. Computer Science"
+                  options={POPULAR_COURSES}
+                />
+              </div>
+
+              <div className="sm:col-span-2 flex flex-col gap-1.5">
+                <PremiumDropdown
+                  label="University"
                   value={formData.targetUniversity}
                   onChange={(val) => handleInputChange('targetUniversity', val)}
                   accent="indigo"
@@ -380,12 +334,14 @@ const AiSopGenerator = ({ initialProfile = {} }) => {
                   }
                   options={universityOptions}
                 />
+                {universityOptions.length > 0 && (
+                  <span className="text-[11.5px] text-[#5B544A] leading-tight">{universityOptions.length} universities in {selectedCountryLabel}</span>
+                )}
               </div>
 
-              <div>
+              <div className="sm:col-span-2">
                 <PremiumDropdown
-                  label="Essay Tone"
-                  labelIcon={<Building size={14} className="text-indigo-600 flex-shrink-0" />}
+                  label="Essay tone"
                   value={formData.tone}
                   onChange={(val) => handleInputChange('tone', val)}
                   accent="indigo"
@@ -397,85 +353,61 @@ const AiSopGenerator = ({ initialProfile = {} }) => {
                   ]}
                 />
               </div>
+
+              <FinderField label="Academic background and GPA *" className="sm:col-span-2">
+                <input
+                  type="text"
+                  placeholder="e.g. B.Tech Computer Science, 8.2 CGPA from Anna University"
+                  value={formData.academicBackground}
+                  onChange={(e) => handleInputChange('academicBackground', e.target.value)}
+                  className={FINDER_FIELD}
+                  style={FIELD_RADIUS}
+                />
+              </FinderField>
+
+              <FinderField label="Work or internship experience">
+                <textarea
+                  rows={3}
+                  placeholder="e.g. 2 years as Software Engineer at Infosys working on microservices"
+                  value={formData.workExperience}
+                  onChange={(e) => handleInputChange('workExperience', e.target.value)}
+                  className={`${FINDER_TEXTAREA} resize-none`}
+                  style={FIELD_RADIUS}
+                />
+              </FinderField>
+
+              <FinderField label="Key projects and achievements">
+                <textarea
+                  rows={3}
+                  placeholder="e.g. Published IEEE paper on NLP, built AI healthcare prediction app"
+                  value={formData.keyProjects}
+                  onChange={(e) => handleInputChange('keyProjects', e.target.value)}
+                  className={`${FINDER_TEXTAREA} resize-none`}
+                  style={FIELD_RADIUS}
+                />
+              </FinderField>
+
+              <FinderField label="Career goal *" className="sm:col-span-2">
+                <input
+                  type="text"
+                  placeholder="e.g. Become Senior ML Architect driving healthcare AI automation"
+                  value={formData.careerGoals}
+                  onChange={(e) => handleInputChange('careerGoals', e.target.value)}
+                  className={FINDER_FIELD}
+                  style={FIELD_RADIUS}
+                />
+              </FinderField>
             </div>
 
-            {/* Academic Background & GPA */}
-            <div className="space-y-1.5">
-              <label className="text-[11.5px] font-bold text-slate-700 flex items-center gap-1.5">
-                <Award size={14} className="text-indigo-600 flex-shrink-0" />
-                <span>Academic Background & GPA</span>
-              </label>
-              <input
-                type="text"
-                placeholder="e.g. B.Tech Computer Science, 8.2 CGPA from Anna University"
-                value={formData.academicBackground}
-                onChange={(e) => handleInputChange('academicBackground', e.target.value)}
-                className="w-full px-3.5 py-2.5 bg-slate-50/70 hover:bg-slate-50 focus:bg-white border border-slate-200/90 focus:border-indigo-500 focus:ring-3 focus:ring-indigo-500/10 rounded-xl text-xs font-semibold text-slate-800 focus:outline-none transition-all placeholder:text-slate-400"
-              />
-            </div>
-
-            {/* Work Experience */}
-            <div className="space-y-1.5">
-              <label className="text-[11.5px] font-bold text-slate-700 flex items-center gap-1.5">
-                <Briefcase size={14} className="text-indigo-600 flex-shrink-0" />
-                <span>Work / Internship Experience</span>
-              </label>
-              <textarea
-                rows={2}
-                placeholder="e.g. 2 years as Software Engineer at Infosys working on microservices"
-                value={formData.workExperience}
-                onChange={(e) => handleInputChange('workExperience', e.target.value)}
-                className="w-full px-3.5 py-2.5 bg-slate-50/70 hover:bg-slate-50 focus:bg-white border border-slate-200/90 focus:border-indigo-500 focus:ring-3 focus:ring-indigo-500/10 rounded-xl text-xs font-semibold text-slate-800 focus:outline-none transition-all placeholder:text-slate-400 resize-none"
-              />
-            </div>
-
-            {/* Key Projects */}
-            <div className="space-y-1.5">
-              <label className="text-[11.5px] font-bold text-slate-700 flex items-center gap-1.5">
-                <Target size={14} className="text-indigo-600 flex-shrink-0" />
-                <span>Key Projects & Achievements</span>
-              </label>
-              <textarea
-                rows={2}
-                placeholder="e.g. Published IEEE paper on NLP, built AI healthcare prediction app"
-                value={formData.keyProjects}
-                onChange={(e) => handleInputChange('keyProjects', e.target.value)}
-                className="w-full px-3.5 py-2.5 bg-slate-50/70 hover:bg-slate-50 focus:bg-white border border-slate-200/90 focus:border-indigo-500 focus:ring-3 focus:ring-indigo-500/10 rounded-xl text-xs font-semibold text-slate-800 focus:outline-none transition-all placeholder:text-slate-400 resize-none"
-              />
-            </div>
-
-            {/* Career Goals */}
-            <div className="space-y-1.5">
-              <label className="text-[11.5px] font-bold text-slate-700 flex items-center gap-1.5">
-                <Compass size={14} className="text-indigo-600 flex-shrink-0" />
-                <span>Future Career Vision</span>
-              </label>
-              <input
-                type="text"
-                placeholder="e.g. Become Senior ML Architect driving healthcare AI automation"
-                value={formData.careerGoals}
-                onChange={(e) => handleInputChange('careerGoals', e.target.value)}
-                className="w-full px-3.5 py-2.5 bg-slate-50/70 hover:bg-slate-50 focus:bg-white border border-slate-200/90 focus:border-indigo-500 focus:ring-3 focus:ring-indigo-500/10 rounded-xl text-xs font-semibold text-slate-800 focus:outline-none transition-all placeholder:text-slate-400"
-              />
-            </div>
-
-            <button
-              type="submit"
-              disabled={loading}
-              className="w-full py-3.5 bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-700 hover:to-blue-700 text-white rounded-2xl text-xs md:text-sm font-bold transition-all shadow-md shadow-indigo-200/60 hover:shadow-lg hover:shadow-indigo-300/60 active:scale-[0.99] flex items-center justify-center gap-2 cursor-pointer mt-2"
-            >
+            <FinderButton type="submit" disabled={loading} className="w-full">
               {loading ? (
-                <>
-                  <RefreshCw size={16} className="animate-spin" /> Drafting Statement of Purpose...
-                </>
+                <><RefreshCw size={16} className="animate-spin" /> Drafting your SOP…</>
               ) : (
-                <>
-                  <Sparkles size={16} /> Generate Bespoke SOP <ChevronRight size={16} />
-                </>
+                <><Sparkles size={16} /> Generate SOP</>
               )}
-            </button>
+            </FinderButton>
           </form>
-        </div>
+        </FinderCard>
 
         {/* Right Pane: Generated Result / Empty State (6 Cols on lg, 7 on xl) */}
         <div className="lg:col-span-6 xl:col-span-7 space-y-6">
@@ -527,7 +459,7 @@ const AiSopGenerator = ({ initialProfile = {} }) => {
               <div className="space-y-1">
                 <h3 className="text-base font-black text-slate-700">No SOP Generated Yet</h3>
                 <p className="text-xs text-slate-400 font-semibold max-w-sm mx-auto">
-                  Fill in your target university and academic parameters on the left, then click <strong>"Generate Bespoke SOP"</strong>.
+                  Fill in your target university and academic parameters on the left, then click <strong>"Generate SOP"</strong>.
                 </p>
               </div>
             </div>

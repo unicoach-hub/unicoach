@@ -14,9 +14,10 @@ const stanfordData = {
   location: "Stanford, California, USA",
   city: "Stanford",
   established: 1885,
-  totalStudents: 15424,
-  intlStudents: 2005,
-  type: "PUBLIC",
+  totalStudents: 18625, // NCES College Navigator, Fall 2024
+  studentFacultyRatio: "6:1",
+  acceptanceRate: "4%", // undergraduate, Fall 2024
+  type: "PRIVATE",
   logo: StanfordLogo,
   heroImage: "https://images.unsplash.com/photo-1576267423445-b2e0074d68a4?w=1200",
   topCourses: [
@@ -27,45 +28,23 @@ const stanfordData = {
     { name: "Economics", count: 1 }
   ],
   intakeDeadlines: [
-    { name: "JAN'2025", status: "Intake Open" },
-    { name: "APR'2025", status: "Intake Open" },
-    { name: "AUG'2025", status: "Intake Open" },
-    { name: "SEP'2025", status: "Intake Open" }
+    { name: "SEP'2027", status: "Autumn quarter entry" }
   ],
   requirements: [
-    { title: "TOEFL iBT Score", detail: "100+ minimum cutoff required for admissions." },
-    { title: "IELTS Academic Band", detail: "7.5+ minimum band required for English proficiency." },
-    { title: "GRE General Score", detail: "Required for Engineering and MS program admissions." },
-    { title: "Undergraduate GPA", detail: "3.85+ on a 4.0 scale represents average target scores." }
+    { title: "English Proficiency", detail: "An English test (TOEFL iBT) is required for most international applicants unless waived. Check Stanford Graduate Admissions for the current minimum and accepted tests." },
+    { title: "GRE General Score", detail: "Requirement varies by department. Check your program's admissions page." },
+    { title: "Undergraduate Degree", detail: "A bachelor's degree equivalent to a U.S. four-year degree. No university-wide GPA cutoff is published." }
   ],
   rankings: {
-    "Webometrics - World": [
-      { category: "Best World Ranking Schools - 2023", rank: "59" },
-      { category: "Best World Ranking Schools - 2022", rank: "2" }
-    ],
     "QS Rankings": [
-      { category: "Best World Ranking Schools - 2025", rank: "6" },
-      { category: "Best World Ranking Schools - 2024", rank: "5" },
-      { category: "Best World Ranking Schools - 2023", rank: "6" },
-      { category: "Best World Ranking Schools - 2022", rank: "3" }
-    ],
-    "Times Higher Education": [
-      { category: "Best World Ranking Schools - 2023", rank: "6" },
-      { category: "Best World Ranking Schools - 2022", rank: "4" }
-    ],
-    "US News": [
-      { category: "Best National Schools - 2025", rank: "4" },
-      { category: "Best World Ranking Schools - 2023", rank: "9" }
-    ],
-    "Webometrics - National": [
-      { category: "Best University Ranking Schools - 2022", rank: "2" }
+      { category: "World University Rankings - 2027", rank: "2" }
     ]
   },
   coursesFees: [
-    { name: "Msc Finance", duration: "18 Months", tuition: 60 },
-    { name: "MS in Computer Science", duration: "24 Months", tuition: 60 }
+    // Engineering graduate tuition 2026-27: $23,239 x 3 quarters = $69,717 = ₹66 Lakh at 1 USD = ₹95
+    { name: "MS in Computer Science", duration: "24 Months", tuition: 66 }
   ],
-  description: "Stanford University is one of the world's leading research institutions. Located in Stanford, California, it is known for its academic strength, close proximity to Silicon Valley tech giants, and exceptionally high rate of startup incubation.",
+  description: "Stanford University is one of the world's leading research institutions. Located in Stanford, California, it is known for its academic strength and its close ties to Silicon Valley's technology companies and startups.",
   blogs: [
     {
       title: "Fresher Jobs In USA For Indians In 2024: Top Roles, Salary & More",

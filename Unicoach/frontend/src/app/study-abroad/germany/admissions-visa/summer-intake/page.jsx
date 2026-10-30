@@ -18,14 +18,14 @@ const SECTIONS = [
 ];
 
 const summerUnis = [
-  { name: "TU Munich (QS: 22)", programs: "Data Engineering, Automotive, Aerospace", deadline: "Jan 15-31, 2027 (varies)", route: "Direct Portal" },
-  { name: "LMU Munich (QS: 58)", programs: "Data Science, Business Administration", deadline: "January 15, 2027", route: "Direct Portal" },
-  { name: "Heidelberg University (QS: 80)", programs: "Molecular Biosciences, Economics", deadline: "Jan 15 - March 31, 2027", route: "Direct Portal" },
-  { name: "RWTH Aachen (QS: 105)", programs: "Electrical Engineering, Automotive", deadline: "January 15, 2027", route: "Direct Portal" },
-  { name: "TU Berlin (QS: 145)", programs: "Space Engineering, Computer Science", deadline: "January 15, 2027", route: "Uni-Assist (VPD)" },
-  { name: "University of Hamburg (QS: 193)", programs: "Data Science, Marine Ecosystem Dynamics", deadline: "January 15, 2027", route: "Uni-Assist" },
-  { name: "University of Freiburg (QS: 201)", programs: "Renewable Energy, Embedded Systems", deadline: "December 15, 2026 (Early!)", route: "Uni-Assist" },
-  { name: "University of Bonn (QS: 207)", programs: "Economics, Agricultural Sciences", deadline: "Nov 30, 2026 - Jan 31, 2027", route: "Direct Portal" },
+  { name: "TU Munich (QS: 25)", programs: "Data Engineering, Automotive, Aerospace", deadline: "Jan 15-31, 2027 (varies)", route: "Direct Portal" },
+  { name: "LMU Munich (QS: 61)", programs: "Data Science, Business Administration", deadline: "January 15, 2027", route: "Direct Portal" },
+  { name: "Heidelberg University (QS: 86)", programs: "Molecular Biosciences, Economics", deadline: "Jan 15 - March 31, 2027", route: "Direct Portal" },
+  { name: "RWTH Aachen (QS: 104)", programs: "Electrical Engineering, Automotive", deadline: "January 15, 2027", route: "Direct Portal" },
+  { name: "TU Berlin (QS: 158)", programs: "Space Engineering, Computer Science", deadline: "January 15, 2027", route: "Uni-Assist (VPD)" },
+  { name: "University of Hamburg (QS: 209)", programs: "Data Science, Marine Ecosystem Dynamics", deadline: "January 15, 2027", route: "Uni-Assist" },
+  { name: "University of Bonn (QS: 209)", programs: "Economics, Agricultural Sciences", deadline: "Nov 30, 2026 - Jan 31, 2027", route: "Direct Portal" },
+  { name: "University of Freiburg (QS: 245)", programs: "Renewable Energy, Embedded Systems", deadline: "December 15, 2026 (Early!)", route: "Uni-Assist" },
   { name: "Hochschule Munich (FH)", programs: "MBA, International Business", deadline: "February 1, 2027", route: "PRIMUSS Portal" },
   { name: "HAW Hamburg (FH)", programs: "Information Engineering, Renewable Energies", deadline: "February 15, 2027", route: "Uni-Assist" }
 ];

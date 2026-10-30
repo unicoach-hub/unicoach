@@ -12,7 +12,7 @@ import { StatStrip, BarCompare } from '../../../../../components/ui/Infographics
 
 const SECTIONS = [
   { id: 'overview', title: 'Why Study MS in NZ?' },
-  { id: 'rankings', title: 'Top 10 MS Universities' },
+  { id: 'rankings', title: 'Top 8 MS Universities' },
   { id: 'specialisations', title: 'Top Specialisations' },
   { id: 'types', title: 'Types of MS Programs' },
   { id: 'curriculum', title: 'Course Curriculum' },
@@ -25,23 +25,21 @@ const SECTIONS = [
 ];
 
 const topMsUnisList = [
-  { rank: 1, name: "University of Auckland", qs: "#65", feeNZD: 15000, feeINR: "₹7.5L", spec: "Data Science, Engineering, Computer Science", tagline: "NZ'S TOP-RANKED UNIVERSITY", logo: "https://logo.clearbit.com/auckland.ac.nz" },
-  { rank: 2, name: "University of Otago", qs: "#197", feeNZD: 13000, feeINR: "₹6.5L", spec: "Health Sciences, Biotechnology, Psychology", tagline: "NZ'S OLDEST UNIVERSITY", logo: "https://logo.clearbit.com/otago.ac.nz" },
-  { rank: 3, name: "Massey University", qs: "#230", feeNZD: 11000, feeINR: "₹5.5L", spec: "Agriculture, Veterinary Science, Food Technology", tagline: "APPLIED LEARNING LEADER", logo: "https://logo.clearbit.com/massey.ac.nz" },
-  { rank: 4, name: "Victoria Univ. Wellington", qs: "#240", feeNZD: 12000, feeINR: "₹6.0L", spec: "Environmental Science, Public Policy", tagline: "#1 IN NZ FOR RESEARCH INTENSITY", logo: "https://logo.clearbit.com/wgtn.ac.nz" },
-  { rank: 5, name: "University of Canterbury", qs: "#261", feeNZD: 14000, feeINR: "₹7.0L", spec: "Engineering, Environmental Science", tagline: "ENGINEERING CAPITAL OF NZ", logo: "https://logo.clearbit.com/canterbury.ac.nz" },
-  { rank: 6, name: "University of Waikato", qs: "#281", feeNZD: 10000, feeINR: "₹5.0L", spec: "Computer Science, Cybersecurity, AI", tagline: "MOST AFFORDABLE TOP UNI", logo: "https://logo.clearbit.com/waikato.ac.nz" },
-  { rank: 7, name: "Lincoln University", qs: "#407", feeNZD: 10000, feeINR: "₹5.0L", spec: "Agribusiness, Food Science, Viticulture", tagline: "SPECIALIST LAND-BASED UNIVERSITY", logo: "https://logo.clearbit.com/lincoln.ac.nz" },
-  { rank: 8, name: "AUT (Auckland)", qs: "#410", feeNZD: 12000, feeINR: "₹6.0L", spec: "IT, Sport Science, Creative Technologies", tagline: "HIGHEST GRAD EMPLOYMENT RATE", logo: "https://logo.clearbit.com/aut.ac.nz" },
-  { rank: 9, name: "Univ. of South Pacific", qs: "N/A", feeNZD: 13000, feeINR: "₹6.5L", spec: "Environmental Science, Marine Biology", tagline: "PACIFIC MARINE POWERHOUSE", logo: "https://logo.clearbit.com/usp.ac.fj" },
-  { rank: 10, name: "Eastern Institute of Tech", qs: "N/A", feeNZD: 9000, feeINR: "₹4.5L", spec: "Environmental Science, IT, Business", tagline: "MOST AFFORDABLE OPTION", logo: "https://logo.clearbit.com/eit.ac.nz" }
+  { rank: 1, name: "University of Auckland", qs: "#68", feeNZD: 45857, feeINR: "₹25.7L", spec: "Data Science, Engineering, Computer Science", tagline: "NZ'S TOP-RANKED UNIVERSITY", logo: "/logos/verified-University of Auckland.png" },
+  { rank: 2, name: "University of Otago", qs: "#198", feeNZD: 32499, feeINR: "₹18.2L", spec: "Health Sciences, Biotechnology, Psychology", tagline: "NZ'S OLDEST UNIVERSITY", logo: "/logos/verified-University of Otago.png" },
+  { rank: 3, name: "Massey University", qs: "#215", feeNZD: 37000, feeINR: "₹20.7L", spec: "Agriculture, Veterinary Science, Food Technology", tagline: "APPLIED LEARNING", logo: "/logos/verified-Massey University.png" },
+  { rank: 4, name: "Victoria Univ. Wellington", qs: "#241", feeNZD: 40124, feeINR: "₹22.5L", spec: "Environmental Science, Public Policy", tagline: "IN THE CAPITAL CITY", logo: "/logos/verified-Victoria University of Wellington.png" },
+  { rank: 5, name: "University of Canterbury", qs: "#257", feeNZD: 36000, feeINR: "₹20.2L", spec: "Engineering, Environmental Science", tagline: "STRONG ENGINEERING SCHOOL", logo: "/logos/verified-University of Canterbury.png" },
+  { rank: 6, name: "University of Waikato", qs: "#293", feeNZD: 39580, feeINR: "₹22.2L", spec: "Computer Science, Cybersecurity, AI", tagline: "NZ'S FIRST CYBER SECURITY LAB", logo: "/logos/verified-University of Waikato.png" },
+  { rank: 7, name: "Lincoln University", qs: "#419", feeNZD: 39300, feeINR: "₹22.0L", spec: "Agribusiness, Food Science, Viticulture", tagline: "SPECIALIST LAND-BASED UNIVERSITY", logo: "/logos/verified-Lincoln University.png" },
+  { rank: 8, name: "AUT (Auckland)", qs: "#431", feeNZD: 39022, feeINR: "₹21.9L", spec: "IT, Sport Science, Creative Technologies", tagline: "CAREER-FOCUSED CITY UNIVERSITY", logo: "/logos/verified-Auckland University of Technology.png" }
 ];
 
 const NewZealandMastersCourse = () => {
   const [activeSection, setActiveSection] = useState('overview');
   const [currency, setCurrency] = useState('INR'); // 'NZD' | 'INR'
   const [faqOpen, setFaqOpen] = useState({});
-  const exchangeRate = 53.70; // 1 NZD = 53.70 INR for MS guide
+  const exchangeRate = 56.0; // 1 NZD = 56 INR (Aug 2026)
 
   const formatCost = (valInNZD) => {
     if (currency === 'NZD') {
@@ -120,7 +118,7 @@ const NewZealandMastersCourse = () => {
               MS in New Zealand 2026: Complete Guide for International Students
             </h1>
             <p className="text-indigo-200/90 text-sm md:text-base leading-relaxed mb-6 font-medium">
-              Explore 1-2 year coursework and research MS options. Get global rankings, salary scope, and cost schedules across the top 10 universities.
+              Explore 1-2 year coursework and research MS options. Get global rankings, salary scope, and cost schedules across New Zealand's 8 universities.
             </p>
             <div className="flex flex-wrap items-center gap-4 text-xs font-semibold text-slate-400">
               <span className="flex items-center gap-1.5 bg-slate-955/60 px-3 py-1.5 rounded-lg border border-slate-800">
@@ -185,7 +183,7 @@ const NewZealandMastersCourse = () => {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {[
-                    "8 public universities inside the top 3% globally",
+                    "All 8 universities in the QS 2027 top 500",
                     "95% of MS graduates employed within 6 months",
                     "3-year open post-study work visa rights",
                     "Flexible coursework vs research-focused structures"
@@ -199,11 +197,11 @@ const NewZealandMastersCourse = () => {
               </div>
             </section>
 
-            {/* 2. Top 10 MS Universities */}
+            {/* 2. Top 8 MS Universities */}
             <section id="rankings" className="scroll-mt-24">
               <div className="text-left mb-6">
-                <h2 className="text-2xl font-black text-slate-900 mb-1">🏛️ Top 10 Universities for MS (2026 Rankings & Fees)</h2>
-                <p className="text-slate-400 text-xs font-bold uppercase tracking-wider">QS rankings and average yearly tuition costs</p>
+                <h2 className="text-2xl font-black text-slate-900 mb-1">🏛️ Top 8 Universities for MS (QS 2027 Rankings & Fees)</h2>
+                <p className="text-slate-400 text-xs font-bold uppercase tracking-wider">QS 2027 rankings and typical starting Master's fee per year (120 points)</p>
               </div>
 
               {/* Currency Selector */}
@@ -233,7 +231,7 @@ const NewZealandMastersCourse = () => {
                           src={uni.logo} 
                           alt="" 
                           className="w-full h-full object-contain"
-                          onError={(e) => e.target.src = 'https://logo.clearbit.com/auckland.ac.nz'}
+                          onError={(e) => { e.target.onerror = null; e.target.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(uni.name)}&background=4F46E5&color=ffffff&bold=true&size=128`; }}
                         />
                       </div>
                       <div>
@@ -251,7 +249,7 @@ const NewZealandMastersCourse = () => {
 
                     <div className="grid grid-cols-2 md:grid-cols-3 gap-6 text-xs border-t md:border-t-0 border-slate-100 pt-4 md:pt-0 shrink-0">
                       <div>
-                        <span className="text-slate-400 font-bold block">Avg. Tuition Fee</span>
+                        <span className="text-slate-400 font-bold block">Tuition From</span>
                         <strong className="text-slate-800 font-extrabold mt-0.5 block">{formatCost(uni.feeNZD)} / year</strong>
                       </div>
                       <div>
@@ -409,7 +407,7 @@ const NewZealandMastersCourse = () => {
                 </div>
 
                 <div className="bg-sky-50/50 p-5 rounded-2xl border border-sky-100 text-xs text-sky-950 font-semibold leading-relaxed">
-                  <strong>💡 Annual Budget Summary:</strong> Tuition fees range from **₹5L – ₹12.5L** per year. Average living budget requirements show **₹8L – ₹10.5L** per year.
+                  <strong>💡 Annual Budget Summary:</strong> Typical Master's tuition ranges from about **₹18L – ₹33L** per year (NZ$32,500 – NZ$58,300). Average living budget requirements show **₹8L – ₹10.5L** per year.
                 </div>
               </div>
             </section>

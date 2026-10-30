@@ -1,4 +1,5 @@
-// API Verified Australia Universities Dataset (Deduplicated & Clean)
+// Static fallback list. Ranks: QS World University Rankings 2027 (only where QS lists the institution).
+// Fees only where checked against the university's own fee page; otherwise pages link to the university.
 export const UNIVERSITIES_AUSTRALIA = [
   {
     "_id": "australia-1",
@@ -11,16 +12,10 @@ export const UNIVERSITIES_AUSTRALIA = [
     "location": "Melbourne, Australia",
     "logo": "https://www.google.com/s2/favicons?domain=www.unimelb.edu.au&sz=128",
     "website": "https://www.unimelb.edu.au/",
-    "rank": "Rank 14 QS Rankings",
-    "rankingNum": 14,
-    "tuition": "19 Lakh INR",
-    "tuitionFeeUSD": 18000,
-    "acceptanceRate": 25,
+    "rank": "=22",
+    "rankingNum": 22,
+    "tuition": "₹43 Lakh/yr (official fee)",
     "type": "PUBLIC",
-    "minGpaPercent": 75,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -81,7 +76,9 @@ export const UNIVERSITIES_AUSTRALIA = [
       "Construction Management",
       "Planning",
       "Graphic and Design Studies"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027",
+    "tuitionVerified": true
   },
   {
     "_id": "australia-2",
@@ -94,16 +91,8 @@ export const UNIVERSITIES_AUSTRALIA = [
     "location": "Sydney, Australia",
     "logo": "https://www.google.com/s2/favicons?domain=www.unsw.edu.au&sz=128",
     "website": "https://www.unsw.edu.au",
-    "rank": "Rank 19 QS Rankings",
-    "rankingNum": 19,
-    "tuition": "25 Lakh INR",
-    "tuitionFeeUSD": 18000,
-    "acceptanceRate": 25,
+    "tuition": "₹42 Lakh/yr (official fee)",
     "type": "PUBLIC",
-    "minGpaPercent": 75,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -202,7 +191,8 @@ export const UNIVERSITIES_AUSTRALIA = [
       "Environmental Engineering",
       "Software Engineering",
       "Management"
-    ]
+    ],
+    "tuitionVerified": true
   },
   {
     "_id": "australia-3",
@@ -215,16 +205,9 @@ export const UNIVERSITIES_AUSTRALIA = [
     "location": "Sydney, Australia",
     "logo": "https://www.google.com/s2/favicons?domain=www.sydney.edu.au&sz=128",
     "website": "https://www.sydney.edu.au",
-    "rank": "Rank 19 QS Rankings",
-    "rankingNum": 19,
-    "tuition": "27 Lakh INR",
-    "tuitionFeeUSD": 18000,
-    "acceptanceRate": 25,
+    "rank": "28",
+    "rankingNum": 28,
     "type": "PUBLIC",
-    "minGpaPercent": 75,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -303,7 +286,8 @@ export const UNIVERSITIES_AUSTRALIA = [
       "Sport / Exercise Science",
       "Statistics",
       "Animal and Veterinary Studies"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027"
   },
   {
     "_id": "australia-4",
@@ -316,16 +300,10 @@ export const UNIVERSITIES_AUSTRALIA = [
     "location": "Canberra, Australia",
     "logo": "https://www.google.com/s2/favicons?domain=www.anu.edu.au&sz=128",
     "website": "https://www.anu.edu.au",
-    "rank": "Rank 34 QS Rankings",
-    "rankingNum": 34,
-    "tuition": "23 Lakh INR",
-    "tuitionFeeUSD": 18000,
-    "acceptanceRate": 50,
+    "rank": "29",
+    "rankingNum": 29,
+    "tuition": "₹38 Lakh/yr (official fee)",
     "type": "PUBLIC",
-    "minGpaPercent": 65,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -387,7 +365,9 @@ export const UNIVERSITIES_AUSTRALIA = [
       "Information technology",
       "Environmental Engineering",
       "Anthropology"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027",
+    "tuitionVerified": true
   },
   {
     "_id": "australia-5",
@@ -400,16 +380,9 @@ export const UNIVERSITIES_AUSTRALIA = [
     "location": "Melbourne, Australia",
     "logo": "https://www.google.com/s2/favicons?domain=www.monash.edu&sz=128",
     "website": "https://www.monash.edu/",
-    "rank": "Rank 42 QS Rankings",
-    "rankingNum": 42,
-    "tuition": "17 Lakh INR",
-    "tuitionFeeUSD": 18000,
-    "acceptanceRate": 50,
+    "rank": "31",
+    "rankingNum": 31,
     "type": "PUBLIC",
-    "minGpaPercent": 65,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -491,7 +464,8 @@ export const UNIVERSITIES_AUSTRALIA = [
       "Environmental Engineering",
       "Software Engineering",
       "Medicine and Medical Studies"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027"
   },
   {
     "_id": "australia-6",
@@ -504,16 +478,10 @@ export const UNIVERSITIES_AUSTRALIA = [
     "location": "Brisbane, Australia",
     "logo": "https://www.google.com/s2/favicons?domain=www.uq.edu.au&sz=128",
     "website": "https://www.uq.edu.au",
-    "rank": "Rank 43 QS Rankings",
-    "rankingNum": 43,
-    "tuition": "20 Lakh INR",
-    "tuitionFeeUSD": 18000,
-    "acceptanceRate": 50,
+    "rank": "=40",
+    "rankingNum": 40,
+    "tuition": "₹41 Lakh/yr (official fee)",
     "type": "PUBLIC",
-    "minGpaPercent": 65,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -577,7 +545,9 @@ export const UNIVERSITIES_AUSTRALIA = [
       "Philosophy and Religious Studies",
       "Language and Literature",
       "Public Health"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027",
+    "tuitionVerified": true
   },
   {
     "_id": "australia-7",
@@ -590,16 +560,9 @@ export const UNIVERSITIES_AUSTRALIA = [
     "location": "Perth, Australia",
     "logo": "https://www.google.com/s2/favicons?domain=www.uwa.edu.au&sz=128",
     "website": "https://www.uwa.edu.au",
-    "rank": "Rank 72 QS Rankings",
-    "rankingNum": 72,
-    "tuition": "23 Lakh INR",
-    "tuitionFeeUSD": 18000,
-    "acceptanceRate": 50,
+    "rank": "=77",
+    "rankingNum": 77,
     "type": "PUBLIC",
-    "minGpaPercent": 65,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -643,7 +606,8 @@ export const UNIVERSITIES_AUSTRALIA = [
       "Marine science",
       "Geology",
       "Food / Agricultural Science"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027"
   },
   {
     "_id": "australia-8",
@@ -656,16 +620,9 @@ export const UNIVERSITIES_AUSTRALIA = [
     "location": "Adelaide, Australia",
     "logo": "https://www.google.com/s2/favicons?domain=www.adelaide.edu.au&sz=128",
     "website": "https://www.adelaide.edu.au/",
-    "rank": "Rank 89 QS Rankings",
-    "rankingNum": 89,
-    "tuition": "28 Lakh INR",
-    "tuitionFeeUSD": 18000,
-    "acceptanceRate": 50,
+    "rank": "79",
+    "rankingNum": 79,
     "type": "PUBLIC",
-    "minGpaPercent": 65,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -728,7 +685,8 @@ export const UNIVERSITIES_AUSTRALIA = [
       "Political Science",
       "Sociology",
       "Anthropology"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027"
   },
   {
     "_id": "australia-9",
@@ -741,16 +699,9 @@ export const UNIVERSITIES_AUSTRALIA = [
     "location": "Sydney, Australia",
     "logo": "https://www.google.com/s2/favicons?domain=www.uts.edu.au&sz=128",
     "website": "https://www.uts.edu.au",
-    "rank": "Rank 90 QS Rankings",
-    "rankingNum": 90,
-    "tuition": "40 Lakh INR",
-    "tuitionFeeUSD": 18000,
-    "acceptanceRate": 50,
+    "rank": "=87",
+    "rankingNum": 87,
     "type": "PUBLIC",
-    "minGpaPercent": 65,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -807,7 +758,8 @@ export const UNIVERSITIES_AUSTRALIA = [
       "Software Engineering",
       "Social Work",
       "Speech Pathology"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027"
   },
   {
     "_id": "australia-10",
@@ -820,16 +772,9 @@ export const UNIVERSITIES_AUSTRALIA = [
     "location": "Sydney, Australia",
     "logo": "https://www.google.com/s2/favicons?domain=www.mq.edu.au&sz=128",
     "website": "https://www.mq.edu.au",
-    "rank": "Rank 130 QS Rankings",
-    "rankingNum": 130,
-    "tuition": "26 Lakh INR",
-    "tuitionFeeUSD": 18000,
-    "acceptanceRate": 50,
+    "rank": "=126",
+    "rankingNum": 126,
     "type": "PUBLIC",
-    "minGpaPercent": 65,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -899,7 +844,8 @@ export const UNIVERSITIES_AUSTRALIA = [
       "Health Sciences / Administration",
       "Information technology",
       "Management"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027"
   },
   {
     "_id": "australia-11",
@@ -912,16 +858,10 @@ export const UNIVERSITIES_AUSTRALIA = [
     "location": "Melbourne, Australia",
     "logo": "https://www.google.com/s2/favicons?domain=www.rmit.edu.au&sz=128",
     "website": "https://www.rmit.edu.au/",
-    "rank": "Rank 140 QS Rankings",
-    "rankingNum": 140,
-    "tuition": "12 Lakh INR",
-    "tuitionFeeUSD": 18000,
-    "acceptanceRate": 50,
+    "rank": "=119",
+    "rankingNum": 119,
+    "tuition": "₹32 Lakh/yr (official fee)",
     "type": "PUBLIC",
-    "minGpaPercent": 65,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -994,7 +934,9 @@ export const UNIVERSITIES_AUSTRALIA = [
       "Software Engineering",
       "Web Development",
       "Management"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027",
+    "tuitionVerified": true
   },
   {
     "_id": "australia-12",
@@ -1007,16 +949,10 @@ export const UNIVERSITIES_AUSTRALIA = [
     "location": "Wollongong, Australia",
     "logo": "https://www.google.com/s2/favicons?domain=www.uow.edu.au&sz=128",
     "website": "https://www.uow.edu.au",
-    "rank": "Rank 162 QS Rankings",
-    "rankingNum": 162,
-    "tuition": "21 Lakh INR",
-    "tuitionFeeUSD": 18000,
-    "acceptanceRate": 50,
+    "rank": "195",
+    "rankingNum": 195,
+    "tuition": "₹29 Lakh/yr (official fee)",
     "type": "PUBLIC",
-    "minGpaPercent": 65,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -1071,7 +1007,9 @@ export const UNIVERSITIES_AUSTRALIA = [
       "Political Science",
       "Sociology",
       "International Relations"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027",
+    "tuitionVerified": true
   },
   {
     "_id": "australia-13",
@@ -1084,16 +1022,9 @@ export const UNIVERSITIES_AUSTRALIA = [
     "location": "Newcastle, Australia",
     "logo": "https://www.google.com/s2/favicons?domain=www.newcastle.edu.au&sz=128",
     "website": "https://www.newcastle.edu.au",
-    "rank": "Rank 173 QS Rankings",
-    "rankingNum": 173,
-    "tuition": "₹15 Lakh INR/yr",
-    "tuitionFeeUSD": 18000,
-    "acceptanceRate": 50,
+    "rank": "244",
+    "rankingNum": 244,
     "type": "PUBLIC",
-    "minGpaPercent": 65,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -1134,7 +1065,8 @@ export const UNIVERSITIES_AUSTRALIA = [
       "History",
       "Political Science",
       "Sociology"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027"
   },
   {
     "_id": "australia-14",
@@ -1147,16 +1079,9 @@ export const UNIVERSITIES_AUSTRALIA = [
     "location": "Perth, Australia",
     "logo": "https://www.google.com/s2/favicons?domain=www.curtin.edu.au&sz=128",
     "website": "https://www.curtin.edu.au",
-    "rank": "Rank 183 QS Rankings",
-    "rankingNum": 183,
-    "tuition": "12 Lakh INR",
-    "tuitionFeeUSD": 18000,
-    "acceptanceRate": 50,
+    "rank": "189",
+    "rankingNum": 189,
     "type": "PUBLIC",
-    "minGpaPercent": 65,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -1206,7 +1131,8 @@ export const UNIVERSITIES_AUSTRALIA = [
       "Biological Sciences",
       "Geology",
       "Environmental science / management"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027"
   },
   {
     "_id": "australia-15",
@@ -1219,16 +1145,9 @@ export const UNIVERSITIES_AUSTRALIA = [
     "location": "Brisbane, Australia",
     "logo": "https://www.google.com/s2/favicons?domain=www.qut.edu.au&sz=128",
     "website": "https://www.qut.edu.au",
-    "rank": "Rank 189 QS Rankings",
-    "rankingNum": 189,
-    "tuition": "20 Lakh INR",
-    "tuitionFeeUSD": 18000,
-    "acceptanceRate": 50,
+    "rank": "240",
+    "rankingNum": 240,
     "type": "PUBLIC",
-    "minGpaPercent": 65,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -1317,7 +1236,8 @@ export const UNIVERSITIES_AUSTRALIA = [
       "Surveying",
       "Theatre",
       "Web Development"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027"
   },
   {
     "_id": "australia-16",
@@ -1330,16 +1250,9 @@ export const UNIVERSITIES_AUSTRALIA = [
     "location": "Melbourne, Australia",
     "logo": "https://www.google.com/s2/favicons?domain=www.deakin.edu.au&sz=128",
     "website": "https://www.deakin.edu.au",
-    "rank": "Rank 266 QS Rankings",
-    "rankingNum": 266,
-    "tuition": "18 Lakh INR",
-    "tuitionFeeUSD": 18000,
-    "acceptanceRate": 50,
+    "rank": "227",
+    "rankingNum": 227,
     "type": "PUBLIC",
-    "minGpaPercent": 65,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -1400,7 +1313,8 @@ export const UNIVERSITIES_AUSTRALIA = [
       "Software Engineering",
       "Sociology",
       "Sport / Exercise Science"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027"
   },
   {
     "_id": "australia-17",
@@ -1413,16 +1327,10 @@ export const UNIVERSITIES_AUSTRALIA = [
     "location": "Melbourne, Australia",
     "logo": "https://www.google.com/s2/favicons?domain=www.swinburne.edu.au&sz=128",
     "website": "https://www.swinburne.edu.au",
-    "rank": "Rank 285 QS Rankings",
-    "rankingNum": 285,
-    "tuition": "19 Lakh INR",
-    "tuitionFeeUSD": 18000,
-    "acceptanceRate": 50,
+    "rank": "291",
+    "rankingNum": 291,
+    "tuition": "₹31 Lakh/yr (official fee)",
     "type": "PUBLIC",
-    "minGpaPercent": 65,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -1488,7 +1396,9 @@ export const UNIVERSITIES_AUSTRALIA = [
       "Management",
       "Animation",
       "Photography"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027",
+    "tuitionVerified": true
   },
   {
     "_id": "australia-18",
@@ -1501,16 +1411,9 @@ export const UNIVERSITIES_AUSTRALIA = [
     "location": "Hobart, Australia",
     "logo": "https://www.google.com/s2/favicons?domain=www.utas.edu.au&sz=128",
     "website": "https://www.utas.edu.au",
-    "rank": "Rank 293 QS Rankings",
-    "rankingNum": 293,
-    "tuition": "19 Lakh INR",
-    "tuitionFeeUSD": 18000,
-    "acceptanceRate": 50,
+    "rank": "311",
+    "rankingNum": 311,
     "type": "PUBLIC",
-    "minGpaPercent": 65,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -1554,7 +1457,8 @@ export const UNIVERSITIES_AUSTRALIA = [
       "Arts / Fine Art",
       "Music",
       "Mathematics"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027"
   },
   {
     "_id": "australia-19",
@@ -1567,16 +1471,10 @@ export const UNIVERSITIES_AUSTRALIA = [
     "location": "Brisbane, Australia",
     "logo": "https://www.google.com/s2/favicons?domain=www.griffith.edu.au&sz=128",
     "website": "https://www.griffith.edu.au",
-    "rank": "Rank 300 QS Rankings",
-    "rankingNum": 300,
-    "tuition": "19 Lakh INR",
-    "tuitionFeeUSD": 18000,
-    "acceptanceRate": 50,
+    "rank": "=230",
+    "rankingNum": 230,
+    "tuition": "₹30 Lakh/yr (official fee)",
     "type": "PUBLIC",
-    "minGpaPercent": 65,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -1634,7 +1532,9 @@ export const UNIVERSITIES_AUSTRALIA = [
       "Sport / Exercise Science",
       "Tourism",
       "Animal and Veterinary Studies"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027",
+    "tuitionVerified": true
   },
   {
     "_id": "australia-20",
@@ -1647,16 +1547,10 @@ export const UNIVERSITIES_AUSTRALIA = [
     "location": "Melbourne, Australia",
     "logo": "https://www.google.com/s2/favicons?domain=www.latrobe.edu.au&sz=128",
     "website": "https://www.latrobe.edu.au/",
-    "rank": "Rank 316 QS Rankings",
-    "rankingNum": 316,
-    "tuition": "12 Lakh INR",
-    "tuitionFeeUSD": 18000,
-    "acceptanceRate": 50,
+    "rank": "=241",
+    "rankingNum": 241,
+    "tuition": "₹29 Lakh/yr (official fee)",
     "type": "PUBLIC",
-    "minGpaPercent": 65,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -1715,7 +1609,9 @@ export const UNIVERSITIES_AUSTRALIA = [
       "Information technology",
       "Environmental Engineering",
       "Software Engineering"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027",
+    "tuitionVerified": true
   },
   {
     "_id": "australia-21",
@@ -1728,16 +1624,7 @@ export const UNIVERSITIES_AUSTRALIA = [
     "location": "Adelaide, Australia",
     "logo": "https://www.google.com/s2/favicons?domain=www.unisa.edu.au&sz=128",
     "website": "https://www.unisa.edu.au/",
-    "rank": "Rank 326 QS Rankings",
-    "rankingNum": 326,
-    "tuition": "19 Lakh INR",
-    "tuitionFeeUSD": 18000,
-    "acceptanceRate": 50,
     "type": "PUBLIC",
-    "minGpaPercent": 65,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -1794,16 +1681,10 @@ export const UNIVERSITIES_AUSTRALIA = [
     "location": "Adelaide, Australia",
     "logo": "https://www.google.com/s2/favicons?domain=www.flinders.edu.au&sz=128",
     "website": "https://www.flinders.edu.au",
-    "rank": "Rank 431 QS Rankings",
-    "rankingNum": 431,
-    "tuition": "6 Lakh INR",
-    "tuitionFeeUSD": 18000,
-    "acceptanceRate": 50,
+    "rank": "=374",
+    "rankingNum": 374,
+    "tuition": "₹29 Lakh/yr (official fee)",
     "type": "PUBLIC",
-    "minGpaPercent": 65,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -1849,7 +1730,9 @@ export const UNIVERSITIES_AUSTRALIA = [
       "Computer Science",
       "Health Sciences / Administration",
       "Information technology"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027",
+    "tuitionVerified": true
   },
   {
     "_id": "australia-23",
@@ -1862,16 +1745,10 @@ export const UNIVERSITIES_AUSTRALIA = [
     "location": "Perth, Australia",
     "logo": "https://www.google.com/s2/favicons?domain=www.murdoch.edu.au&sz=128",
     "website": "https://www.murdoch.edu.au",
-    "rank": "Rank 431 QS Rankings",
-    "rankingNum": 431,
-    "tuition": "21 Lakh INR",
-    "tuitionFeeUSD": 18000,
-    "acceptanceRate": 50,
+    "rank": "422",
+    "rankingNum": 422,
+    "tuition": "₹25 Lakh/yr (official fee)",
     "type": "PUBLIC",
-    "minGpaPercent": 65,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -1913,7 +1790,9 @@ export const UNIVERSITIES_AUSTRALIA = [
       "Psychology",
       "Social Work",
       "Sport / Exercise Science"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027",
+    "tuitionVerified": true
   },
   {
     "_id": "australia-24",
@@ -1926,16 +1805,10 @@ export const UNIVERSITIES_AUSTRALIA = [
     "location": "Townsville, Australia",
     "logo": "https://www.google.com/s2/favicons?domain=www.jcu.edu.au&sz=128",
     "website": "https://www.jcu.edu.au",
-    "rank": "Rank 461 QS Rankings",
-    "rankingNum": 461,
-    "tuition": "20 Lakh INR",
-    "tuitionFeeUSD": 18000,
-    "acceptanceRate": 50,
+    "rank": "=438",
+    "rankingNum": 438,
+    "tuition": "₹25 Lakh/yr (official fee)",
     "type": "PUBLIC",
-    "minGpaPercent": 65,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -1999,7 +1872,9 @@ export const UNIVERSITIES_AUSTRALIA = [
       "Health Sciences / Administration",
       "Information technology",
       "Environmental Engineering"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027",
+    "tuitionVerified": true
   },
   {
     "_id": "australia-25",
@@ -2012,16 +1887,9 @@ export const UNIVERSITIES_AUSTRALIA = [
     "location": "Canberra, Australia",
     "logo": "https://www.google.com/s2/favicons?domain=www.canberra.edu.au&sz=128",
     "website": "https://www.canberra.edu.au/",
-    "rank": "Rank 511 QS Rankings",
-    "rankingNum": 511,
-    "tuition": "17 Lakh INR",
-    "tuitionFeeUSD": 18000,
-    "acceptanceRate": 50,
+    "rank": "=477",
+    "rankingNum": 477,
     "type": "PUBLIC",
-    "minGpaPercent": 65,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -2060,7 +1928,8 @@ export const UNIVERSITIES_AUSTRALIA = [
       "Economics",
       "Health Sciences / Administration",
       "Management"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027"
   },
   {
     "_id": "australia-26",
@@ -2073,16 +1942,10 @@ export const UNIVERSITIES_AUSTRALIA = [
     "location": "Sydney, Australia",
     "logo": "https://www.google.com/s2/favicons?domain=www.westernsydney.edu.au&sz=128",
     "website": "https://www.westernsydney.edu.au/",
-    "rank": "Rank 641 QS Rankings",
-    "rankingNum": 641,
-    "tuition": "21 Lakh INR",
-    "tuitionFeeUSD": 18000,
-    "acceptanceRate": 50,
+    "rank": "=370",
+    "rankingNum": 370,
+    "tuition": "₹28 Lakh/yr (official fee)",
     "type": "PUBLIC",
-    "minGpaPercent": 65,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -2116,7 +1979,9 @@ export const UNIVERSITIES_AUSTRALIA = [
       "Architecture",
       "Health Sciences / Administration",
       "Commerce"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027",
+    "tuitionVerified": true
   },
   {
     "_id": "australia-27",
@@ -2129,16 +1994,10 @@ export const UNIVERSITIES_AUSTRALIA = [
     "location": "Melbourne, Australia",
     "logo": "https://www.google.com/s2/favicons?domain=www.vu.edu.au&sz=128",
     "website": "https://www.vu.edu.au",
-    "rank": "Rank 651 QS Rankings",
-    "rankingNum": 651,
-    "tuition": "16 Lakh INR",
-    "tuitionFeeUSD": 18000,
-    "acceptanceRate": 50,
+    "rank": "=696",
+    "rankingNum": 696,
+    "tuition": "₹26 Lakh/yr (official fee)",
     "type": "PUBLIC",
-    "minGpaPercent": 65,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -2172,7 +2031,9 @@ export const UNIVERSITIES_AUSTRALIA = [
       "Sport / Exercise Science",
       "Media & Communication",
       "Law"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027",
+    "tuitionVerified": true
   },
   {
     "_id": "australia-28",
@@ -2185,16 +2046,9 @@ export const UNIVERSITIES_AUSTRALIA = [
     "location": "Perth, Australia",
     "logo": "https://www.google.com/s2/favicons?domain=www.ecu.edu.au&sz=128",
     "website": "https://www.ecu.edu.au",
-    "rank": "Rank 651 QS Rankings",
-    "rankingNum": 651,
-    "tuition": "12 Lakh INR",
-    "tuitionFeeUSD": 18000,
-    "acceptanceRate": 50,
+    "rank": "545",
+    "rankingNum": 545,
     "type": "PUBLIC",
-    "minGpaPercent": 65,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -2231,7 +2085,8 @@ export const UNIVERSITIES_AUSTRALIA = [
       "Civil Engineering",
       "Sport / Exercise Science",
       "Health Sciences / Administration"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027"
   },
   {
     "_id": "australia-29",
@@ -2244,16 +2099,9 @@ export const UNIVERSITIES_AUSTRALIA = [
     "location": "Sydney, Australia",
     "logo": "https://www.google.com/s2/favicons?domain=www.acu.edu.au&sz=128",
     "website": "https://www.acu.edu.au",
-    "rank": "Rank 801 QS Rankings",
-    "rankingNum": 801,
-    "tuition": "13 Lakh INR",
-    "tuitionFeeUSD": 18000,
-    "acceptanceRate": 50,
+    "rank": "851-900",
+    "rankingNum": 851,
     "type": "PUBLIC",
-    "minGpaPercent": 65,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -2284,7 +2132,8 @@ export const UNIVERSITIES_AUSTRALIA = [
       "Business Management",
       "Health Sciences / Administration",
       "Information technology"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027"
   },
   {
     "_id": "australia-30",
@@ -2297,16 +2146,9 @@ export const UNIVERSITIES_AUSTRALIA = [
     "location": "Bathurst, Australia",
     "logo": "https://www.google.com/s2/favicons?domain=www.csu.edu.au&sz=128",
     "website": "https://www.csu.edu.au",
-    "rank": "Rank 30 QS Rankings",
-    "rankingNum": 30,
-    "tuition": "19 Lakh INR",
-    "tuitionFeeUSD": 18000,
-    "acceptanceRate": 25,
+    "rank": "951-1000",
+    "rankingNum": 951,
     "type": "PUBLIC",
-    "minGpaPercent": 75,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -2352,7 +2194,8 @@ export const UNIVERSITIES_AUSTRALIA = [
       "Sociology",
       "Sport / Exercise Science",
       "Tourism"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027"
   },
   {
     "_id": "australia-31",
@@ -2365,16 +2208,7 @@ export const UNIVERSITIES_AUSTRALIA = [
     "location": "Ballarat, Australia",
     "logo": "https://www.google.com/s2/favicons?domain=federation.edu.au&sz=128",
     "website": "https://federation.edu.au",
-    "rank": "Rank 31 QS Rankings",
-    "rankingNum": 31,
-    "tuition": "15 Lakh INR",
-    "tuitionFeeUSD": 18000,
-    "acceptanceRate": 50,
     "type": "PUBLIC",
-    "minGpaPercent": 65,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -2423,16 +2257,9 @@ export const UNIVERSITIES_AUSTRALIA = [
     "location": "Sippy Downs, Australia",
     "logo": "https://www.google.com/s2/favicons?domain=www.usc.edu.au&sz=128",
     "website": "https://www.usc.edu.au",
-    "rank": "Rank 32 QS Rankings",
-    "rankingNum": 32,
-    "tuition": "16 Lakh INR",
-    "tuitionFeeUSD": 18000,
-    "acceptanceRate": 50,
+    "rank": "851-900",
+    "rankingNum": 851,
     "type": "PUBLIC",
-    "minGpaPercent": 65,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -2478,7 +2305,8 @@ export const UNIVERSITIES_AUSTRALIA = [
       "Information technology",
       "Economics",
       "Tourism"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027"
   },
   {
     "_id": "australia-33",
@@ -2491,16 +2319,10 @@ export const UNIVERSITIES_AUSTRALIA = [
     "location": "Toowoomba, Australia",
     "logo": "https://www.google.com/s2/favicons?domain=www.usq.edu.au&sz=128",
     "website": "https://www.usq.edu.au",
-    "rank": "Rank 33 QS Rankings",
-    "rankingNum": 33,
-    "tuition": "16 Lakh INR",
-    "tuitionFeeUSD": 18000,
-    "acceptanceRate": 50,
+    "rank": "=411",
+    "rankingNum": 411,
+    "tuition": "₹23 Lakh/yr (official fee)",
     "type": "PUBLIC",
-    "minGpaPercent": 65,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -2550,7 +2372,9 @@ export const UNIVERSITIES_AUSTRALIA = [
       "Mathematics",
       "Statistics",
       "Psychology"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027",
+    "tuitionVerified": true
   },
   {
     "_id": "australia-34",
@@ -2563,16 +2387,7 @@ export const UNIVERSITIES_AUSTRALIA = [
     "location": "Rockhampton, Australia",
     "logo": "https://www.google.com/s2/favicons?domain=www.cqu.edu.au&sz=128",
     "website": "https://www.cqu.edu.au/",
-    "rank": "Rank 34 QS Rankings",
-    "rankingNum": 34,
-    "tuition": "17 Lakh INR",
-    "tuitionFeeUSD": 18000,
-    "acceptanceRate": 50,
     "type": "PUBLIC",
-    "minGpaPercent": 65,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -2619,16 +2434,9 @@ export const UNIVERSITIES_AUSTRALIA = [
     "location": "Fremantle, Australia",
     "logo": "https://www.google.com/s2/favicons?domain=www.notredame.edu.au&sz=128",
     "website": "https://www.notredame.edu.au",
-    "rank": "Rank 37 QS Rankings",
-    "rankingNum": 37,
-    "tuition": "₹15 Lakh INR/yr",
-    "tuitionFeeUSD": 18000,
-    "acceptanceRate": 50,
+    "rank": "1201-1400",
+    "rankingNum": 1201,
     "type": "PUBLIC",
-    "minGpaPercent": 65,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -2652,7 +2460,8 @@ export const UNIVERSITIES_AUSTRALIA = [
       "Theatre",
       "Music",
       "Health Sciences / Administration"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027"
   },
   {
     "_id": "australia-40",
@@ -2665,16 +2474,8 @@ export const UNIVERSITIES_AUSTRALIA = [
     "location": "Melbourne, Australia",
     "logo": "https://www.google.com/s2/favicons?domain=www.divinity.edu.au&sz=128",
     "website": "https://www.divinity.edu.au",
-    "rank": "Rank 40 QS Rankings",
-    "rankingNum": 40,
-    "tuition": "10 Lakh INR",
-    "tuitionFeeUSD": 18000,
-    "acceptanceRate": 50,
+    "tuition": "₹14 Lakh/yr (official fee)",
     "type": "PUBLIC",
-    "minGpaPercent": 65,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -2689,7 +2490,8 @@ export const UNIVERSITIES_AUSTRALIA = [
     ],
     "courses": [
       "Philosophy and Religious Studies"
-    ]
+    ],
+    "tuitionVerified": true
   },
   {
     "_id": "australia-41",
@@ -2702,16 +2504,10 @@ export const UNIVERSITIES_AUSTRALIA = [
     "location": "Darwin, Australia",
     "logo": "https://www.google.com/s2/favicons?domain=www.cdu.edu.au&sz=128",
     "website": "https://www.cdu.edu.au",
-    "rank": "Rank 41 QS Rankings",
-    "rankingNum": 41,
-    "tuition": "16 Lakh INR",
-    "tuitionFeeUSD": 18000,
-    "acceptanceRate": 50,
+    "rank": "=551",
+    "rankingNum": 551,
+    "tuition": "₹24 Lakh/yr (official fee)",
     "type": "PUBLIC",
-    "minGpaPercent": 65,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -2742,8 +2538,8 @@ export const UNIVERSITIES_AUSTRALIA = [
       "Economics",
       "Psychology",
       "Social Work"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027",
+    "tuitionVerified": true
   }
 ];
-
-export default UNIVERSITIES_AUSTRALIA;

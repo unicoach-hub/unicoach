@@ -81,10 +81,10 @@ const iseeChecklist = [
 ];
 
 const lowCostUnis = [
-  { name: "University of Bologna", fee: "€157 – €4,080 (~₹16k – ₹4.19 Lakh)", note: "Founded in 1088 - oldest university in the West" },
-  { name: "University of Turin", fee: "~€300 (~₹30,877)", note: "Strong in Economics, Law, and Medicine" },
-  { name: "Sapienza University of Rome", fee: "~€300 (~₹30,877)", note: "Largest university in Europe by enrollment" },
-  { name: "University of Florence", fee: "€156 – €2,800 (~₹16k – ₹2.88 Lakh)", note: "Excellent for Architecture and Art History" }
+  { name: "University of Bologna", fee: "€157 – €4,080 by ISEE, 2026/27 (~₹17K – ₹4.5 Lakh)", note: "Founded in 1088 - oldest university in the West" },
+  { name: "University of Turin", fee: "€300 + €156 if resident abroad without ISEE, for countries with GDP (PPP) up to €26,000, 2025/26 (~₹50,000)", note: "Strong in Economics, Law, and Medicine" },
+  { name: "Sapienza University of Rome", fee: "€300 fixed for students from India with income only abroad (~₹33,000)", note: "Founded in 1303 - Rome's historic public university" },
+  { name: "University of Florence", fee: "Set by ISEE — check unifi.it for current amounts", note: "Excellent for Architecture and Art History" }
 ];
 
 const timelinePhases = [

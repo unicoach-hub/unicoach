@@ -60,6 +60,48 @@ const VisaAssistancePage = () => {
               </li>
             ))}
           </ul>
+          {/* Red-pen proof fills the space beside the tall form: the UK funds rule most refusals trip on (gov.uk/student-visa/money) */}
+          <div className="mt-12 max-w-xl">
+            <h2 className="font-outfit text-[24px] sm:text-[30px] font-black text-[#111111] tracking-[-0.03em] leading-[1.08]">Visa marks se nahi, ek galat date se reject hota hai.</h2>
+            <p className="mt-3 text-[14.5px] text-slate-600 leading-relaxed">
+              Bank statement, offer letter, loan letter. Hum official rule ke saath tumhara asli document red pen se check karte hain, file karne se pehle.
+            </p>
+            <div className="mt-9 mr-2">
+            <figure className="relative bg-white border border-slate-200 rounded-md shadow-[0_18px_40px_-18px_rgba(22,19,15,0.35)] px-5 pt-5 pb-10 rotate-[1deg] text-[13.5px] leading-relaxed text-slate-800">
+              <figcaption className="text-[13px] font-bold text-slate-900 pb-2 border-b border-slate-200">UK Student visa: financial evidence</figcaption>
+              <p className="mt-3">You must show you have enough money to pay your course fees and living costs.</p>
+              <p className="mt-3">
+                The money must have been held in your account for{' '}
+                <mark className="bg-[#FFE36E] px-0.5">at least 28 consecutive days.</mark>
+              </p>
+              <p className="mt-3">
+                The end date of the 28-day period must be{' '}
+                <span className="relative inline-block font-semibold">
+                  within 31 days
+                  <svg aria-hidden="true" viewBox="0 0 120 40" preserveAspectRatio="none" className="absolute -inset-x-2 -inset-y-1.5 w-[calc(100%+16px)] h-[calc(100%+12px)] overflow-visible pointer-events-none">
+                    <ellipse cx="60" cy="20" rx="58" ry="17" fill="none" stroke="#D0312D" strokeWidth="2.5" transform="rotate(-3 60 20)" vectorEffect="non-scaling-stroke" />
+                  </svg>
+                </span>{' '}
+                of the date you apply.
+              </p>
+              <p className="mt-3 text-slate-500">Statements must show the account holder&apos;s name, the bank&apos;s name and the balance.</p>
+              <span className="absolute -top-4 right-4 rotate-[5deg] text-[22px] leading-none text-[#D0312D]" style={{ fontFamily: "'Caveat', cursive", fontWeight: 700 }}>
+                28 se ek din bhi kam = refusal
+              </span>
+              <span className="absolute -bottom-3 left-6 -rotate-3 text-[22px] leading-none text-[#D0312D]" style={{ fontFamily: "'Caveat', cursive", fontWeight: 700 }}>
+                Purana statement = seedha refusal risk
+              </span>
+            </figure>
+            </div>
+            <div className="mt-8 flex flex-wrap gap-3">
+              <a href="#visa-form" className="inline-flex items-center gap-2 px-5 py-3 rounded-full bg-[#DE5C2B] hover:bg-[#C04A1D] text-white text-[14px] font-bold transition-colors">
+                Get a free document check <ArrowRight size={15} />
+              </a>
+              <a href="https://www.gov.uk/student-visa/money" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-5 py-3 rounded-full bg-white border border-slate-300 hover:border-slate-900 text-[14px] font-bold text-slate-900 transition-colors">
+                Read the rules
+              </a>
+            </div>
+          </div>
         </motion.div>
 
         <div id="visa-form" className="lg:col-span-5 lg:sticky lg:top-[100px] scroll-mt-28">
@@ -92,12 +134,33 @@ const VisaAssistancePage = () => {
           ))}
         </div>
         <TruckArtFrame className="mt-12">
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-5 px-6 py-7 sm:px-10 sm:py-8 text-center sm:text-left">
-            <div>
+          <div className="flex flex-col xl:flex-row items-center justify-between gap-7 xl:gap-8 px-6 py-7 sm:px-10 sm:py-8 text-center xl:text-left">
+            <div className="xl:shrink-0">
               <p className="font-['Rozha_One',serif] text-[22px] sm:text-[26px] leading-none text-[#16130F]">ये हमारी</p>
               <p className="font-['Anton',sans-serif] uppercase text-[40px] sm:text-[52px] leading-[0.95] text-[#F2B705] [text-shadow:3px_3px_0_#16130F]">Visa</p>
               <p className="font-['Rozha_One',serif] text-[22px] sm:text-[26px] leading-none text-[#16130F]">लग गई है!</p>
-              <p className="mt-3 text-[13.5px] font-semibold text-[#08332F] max-w-sm">Your turn next. One advisor, every document checked before you file.</p>
+              <p className="mt-3 text-[13.5px] font-semibold text-[#08332F] max-w-sm mx-auto xl:mx-0">Your turn next. One advisor, every document checked before you file.</p>
+            </div>
+            {/* passport with an approved stamp, and what gets checked before filing */}
+            <div className="flex flex-col sm:flex-row items-center gap-6 sm:gap-8">
+              <div className="relative shrink-0" aria-hidden="true">
+                <div className="w-[112px] h-[150px] rounded-xl bg-[#1F2A5C] border-2 border-[#16130F] shadow-[4px_4px_0_#16130F] -rotate-6 flex flex-col items-center justify-center gap-2">
+                  <span className="w-11 h-11 rounded-full border-2 border-[#F2B705] flex items-center justify-center">
+                    <Plane size={20} className="text-[#F2B705]" />
+                  </span>
+                  <span className="font-['Anton',sans-serif] uppercase tracking-[0.14em] text-[13px] text-[#F2B705]">Passport</span>
+                </div>
+                <span className="absolute -right-8 -bottom-3 rotate-[-14deg] rounded-full border-[3px] border-[#E4007C] bg-white/90 px-3 py-1.5 font-['Anton',sans-serif] uppercase text-[14px] leading-none tracking-wide text-[#E4007C]">
+                  Visa approved
+                </span>
+              </div>
+              <ul className="shrink-0 grid grid-cols-1 min-[420px]:grid-cols-2 xl:grid-cols-1 gap-2 text-left">
+                {['Funds proof', 'Forms filled right', 'Mock interview', 'Appointment booked'].map((item) => (
+                  <li key={item} className="inline-flex items-center gap-1.5 whitespace-nowrap rounded-full bg-white border-2 border-[#16130F] px-3 py-1.5 text-[12.5px] font-bold text-[#16130F]">
+                    <CircleCheck size={15} className="text-[#0E9F8E] shrink-0" /> {item}
+                  </li>
+                ))}
+              </ul>
             </div>
             <a href="#visa-form" className="shrink-0 inline-flex items-center gap-2 px-6 py-3.5 rounded-full bg-[#16130F] hover:bg-black text-[#F2B705] text-[14px] font-bold shadow-[3px_3px_0_#F2B705] transition-colors">
               Talk to a visa advisor <ArrowRight size={15} />

@@ -6,10 +6,10 @@ import logoNortheastern from '../../../assets/usa/Boston/Northeastern University
 import logoEmory from '../../../assets/usa/Atlanta/Emory University.png';
 import { API_BASE_URL } from '../../../config';
 
-const logoMit = `https://ui-avatars.com/api/?name=${encodeURIComponent((typeof uni !== 'undefined' && uni && uni.name) ? uni.name : 'U')}&background=4F46E5&color=ffffff&bold=true&size=128`;
-const logoCaltech = `https://ui-avatars.com/api/?name=${encodeURIComponent((typeof uni !== 'undefined' && uni && uni.name) ? uni.name : 'U')}&background=4F46E5&color=ffffff&bold=true&size=128`;
-const logoHarvard = `https://ui-avatars.com/api/?name=${encodeURIComponent((typeof uni !== 'undefined' && uni && uni.name) ? uni.name : 'U')}&background=4F46E5&color=ffffff&bold=true&size=128`;
-const logoNorthwestern = `https://ui-avatars.com/api/?name=${encodeURIComponent((typeof uni !== 'undefined' && uni && uni.name) ? uni.name : 'U')}&background=4F46E5&color=ffffff&bold=true&size=128`;
+const logoMit = "/logos/verified-Massachusetts Institute of Technology.png";
+const logoCaltech = "/logos/verified-California Institute of Technology.png";
+const logoHarvard = "/logos/verified-Harvard University.png";
+const logoNorthwestern = "/logos/verified-Northwestern University.png";
 
 import React, { useState, useMemo, useRef, useEffect } from 'react';
 import { motion, AnimatePresence, useMotionValue, useSpring, useTransform } from 'framer-motion';
@@ -19,6 +19,7 @@ import {
   Search, Filter, Info, Briefcase, GraduationCap, Check,
   Wallet, Percent, Plane, FileText, CreditCard, TrendingUp, X, Sparkles, AlertCircle, Compass
 } from 'lucide-react';
+import { FinderCard, FinderField, FinderChip, FINDER_FIELD, FIELD_RADIUS } from '../../../components/ui/FinderForm';
 import { Link } from 'react-router-dom';
 import { useLead } from '../../../context/LeadContext';
 import { getByCountry } from '@/data/universities';
@@ -210,11 +211,11 @@ const courseDetails = {
     growth: "+22% (Much faster than average)",
     subjects: ["Machine Learning & Deep Learning", "Advanced Algorithms", "Software Architecture", "Cloud Computing & DevOps", "Human-Computer Interaction"],
     universities: [
-      { name: "Massachusetts Institute of Technology (MIT)", city: "Boston", tuition: 59750, rank: "1 QS", logo: logoMit, url: "https://www.mit.edu" },
-      { name: "Stanford University", city: "Stanford", tuition: 58000, rank: "3 QS", logo: logoStanford, url: "https://www.stanford.edu" },
-      { name: "California Institute of Technology (Caltech)", city: "Pasadena", tuition: 60800, rank: "10 QS", logo: logoCaltech, url: "https://www.caltech.edu" },
-      { name: "Georgia Institute of Technology", city: "Atlanta", tuition: 43000, rank: "88 QS", logo: logoGeorgiaTech, url: "https://www.gatech.edu" },
-      { name: "University of Illinois Chicago (UIC)", city: "Chicago", tuition: 31000, rank: "323 QS", logo: "https://logo.clearbit.com/uic.edu", url: "https://www.uic.edu" }
+      { name: "Massachusetts Institute of Technology (MIT)", city: "Cambridge", tuition: 66720, rank: "1 QS", logo: logoMit, url: "https://www.mit.edu" },
+      { name: "Stanford University", city: "Stanford", tuition: 69717, rank: "3 QS", logo: logoStanford, url: "https://www.stanford.edu" },
+      { name: "California Institute of Technology (Caltech)", city: "Pasadena", tuition: 68574, rank: "10 QS", logo: logoCaltech, url: "https://www.caltech.edu" },
+      { name: "Georgia Institute of Technology", city: "Atlanta", tuition: 32116, rank: "123 QS", logo: logoGeorgiaTech, url: "https://www.gatech.edu" },
+      { name: "University of Illinois Chicago (UIC)", city: "Chicago", tuition: 32019, rank: "334 QS", logo: "/logos/verified-University of Illinois Chicago.png", url: "https://www.uic.edu" }
     ]
   },
   data: {
@@ -224,11 +225,11 @@ const courseDetails = {
     growth: "+35% (Top emerging field)",
     subjects: ["Big Data Infrastructure", "Statistical Modelling", "Predictive Analytics", "Data Visualization", "Natural Language Processing"],
     universities: [
-      { name: "Harvard University", city: "Boston", tuition: 56200, rank: "5 QS", logo: logoHarvard, url: "https://www.harvard.edu" },
-      { name: "University of Chicago", city: "Chicago", tuition: 61500, rank: "13 QS", logo: logoChicago, url: "https://www.uchicago.edu" },
-      { name: "University of Pennsylvania (UPenn)", city: "Philadelphia", tuition: 56000, rank: "15 QS", logo: logoUpenn, url: "https://www.upenn.edu" },
-      { name: "Northeastern University", city: "Boston", tuition: 48000, rank: "375 QS", logo: logoNortheastern, url: "https://www.northeastern.edu" },
-      { name: "California State University, Long Beach", city: "Long Beach", tuition: 17922, rank: "Public", logo: "https://logo.clearbit.com/csulb.edu", url: "https://www.csulb.edu" }
+      { name: "Harvard University", city: "Cambridge", tuition: 67504, rank: "5 QS", logo: logoHarvard, url: "https://www.harvard.edu" },
+      { name: "University of Chicago", city: "Chicago", tuition: 57456, rank: "13 QS", logo: logoChicago, url: "https://www.uchicago.edu" },
+      { name: "University of Pennsylvania (UPenn)", city: "Philadelphia", tuition: 70600, rank: "15 QS", logo: logoUpenn, url: "https://www.upenn.edu" },
+      { name: "Northeastern University", city: "Boston", tuition: 30752, rank: "384 QS", logo: logoNortheastern, url: "https://www.northeastern.edu" },
+      { name: "California State University, Long Beach", city: "Long Beach", tuition: 17026, rank: "Public", logo: "/logos/verified-California State University, Long Beach.png", url: "https://www.csulb.edu" }
     ]
   },
   analytics: {
@@ -238,10 +239,10 @@ const courseDetails = {
     growth: "+15% (High business demand)",
     subjects: ["Managerial Decision Making", "Operations Research", "Financial Econometrics", "Marketing Analytics", "Database Management Systems"],
     universities: [
-      { name: "University of Chicago", city: "Chicago", tuition: 61500, rank: "13 QS", logo: logoChicago, url: "https://www.uchicago.edu" },
-      { name: "Northwestern University", city: "Chicago", tuition: 58000, rank: "35 QS", logo: logoNorthwestern, url: "https://www.northwestern.edu" },
-      { name: "Emory University", city: "Atlanta", tuition: 59000, rank: "155 QS", logo: logoEmory, url: "https://www.emory.edu" },
-      { name: "Northeastern University", city: "Boston", tuition: 48000, rank: "375 QS", logo: logoNortheastern, url: "https://www.northeastern.edu" }
+      { name: "University of Chicago", city: "Chicago", tuition: 57456, rank: "13 QS", logo: logoChicago, url: "https://www.uchicago.edu" },
+      { name: "Northwestern University", city: "Evanston", tuition: 70986, rank: "42 QS", logo: logoNorthwestern, url: "https://www.northwestern.edu" },
+      { name: "Emory University", city: "Atlanta", tuition: 69900, rank: "182 QS", logo: logoEmory, url: "https://www.emory.edu" },
+      { name: "Northeastern University", city: "Boston", tuition: 30752, rank: "384 QS", logo: logoNortheastern, url: "https://www.northeastern.edu" }
     ]
   },
   engineering: {
@@ -251,11 +252,11 @@ const courseDetails = {
     growth: "+10% (Steady career paths)",
     subjects: ["Advanced Solid Mechanics", "Dynamic Systems & Controls", "Microelectronics & VLSI", "Robotics & Automation", "Materials Science"],
     universities: [
-      { name: "Massachusetts Institute of Technology (MIT)", city: "Boston", tuition: 59750, rank: "1 QS", logo: logoMit, url: "https://www.mit.edu" },
-      { name: "Stanford University", city: "Stanford", tuition: 58000, rank: "3 QS", logo: logoStanford, url: "https://www.stanford.edu" },
-      { name: "Georgia Institute of Technology", city: "Atlanta", tuition: 43000, rank: "88 QS", logo: logoGeorgiaTech, url: "https://www.gatech.edu" },
-      { name: "Drexel University", city: "Philadelphia", tuition: 55000, rank: "651 QS", logo: "https://logo.clearbit.com/drexel.edu", url: "https://www.drexel.edu" },
-      { name: "University of Texas at Tyler", city: "Tyler", tuition: 11968, rank: "Public", logo: "https://logo.clearbit.com/uttyler.edu", url: "https://www.uttyler.edu" }
+      { name: "Massachusetts Institute of Technology (MIT)", city: "Cambridge", tuition: 66720, rank: "1 QS", logo: logoMit, url: "https://www.mit.edu" },
+      { name: "Stanford University", city: "Stanford", tuition: 69717, rank: "3 QS", logo: logoStanford, url: "https://www.stanford.edu" },
+      { name: "Georgia Institute of Technology", city: "Atlanta", tuition: 32116, rank: "123 QS", logo: logoGeorgiaTech, url: "https://www.gatech.edu" },
+      { name: "Drexel University", city: "Philadelphia", tuition: 37800, rank: "711-720 QS", logo: "/logos/verified-Drexel University.png", url: "https://www.drexel.edu" },
+      { name: "University of Texas at Tyler", city: "Tyler", tuition: 15948, rank: "Public", logo: "/logos/verified-University of Texas at Tyler.png", url: "https://www.uttyler.edu" }
     ]
   },
   management: {
@@ -265,10 +266,9 @@ const courseDetails = {
     growth: "+18% (Executive leadership roles)",
     subjects: ["Corporate Finance Strategy", "Global Supply Chains", "Strategic Management", "Organizational Behavior", "Mergers & Acquisitions"],
     universities: [
-      { name: "Harvard University", city: "Boston", tuition: 56200, rank: "5 QS", logo: logoHarvard, url: "https://www.harvard.edu" },
-      { name: "University of Chicago", city: "Chicago", tuition: 61500, rank: "13 QS", logo: logoChicago, url: "https://www.uchicago.edu" },
-      { name: "Stanford University", city: "Stanford", tuition: 58000, rank: "3 QS", logo: logoStanford, url: "https://www.stanford.edu" },
-      { name: "Emory University", city: "Atlanta", tuition: 59000, rank: "155 QS", logo: logoEmory, url: "https://www.emory.edu" }
+      // MBA tuition 2026-27 (Booth: chicagobooth.edu; GSB first-year: gsb.stanford.edu)
+      { name: "Stanford University", city: "Stanford", tuition: 89187, rank: "3 QS", logo: logoStanford, url: "https://www.stanford.edu" },
+      { name: "University of Chicago", city: "Chicago", tuition: 89976, rank: "13 QS", logo: logoChicago, url: "https://www.uchicago.edu" }
     ]
   }
 };
@@ -288,7 +288,7 @@ const USAMastersPage = () => {
   const [currency, setCurrency] = useState('INR'); // 'USD' | 'INR'
   const [activeTab, setActiveTab] = useState('overview'); // 'overview' | 'costs' | 'admissions' | 'jobs'
   
-  const exchangeRate = 88.22;
+  const exchangeRate = 95;
   const currentDetails = courseDetails[activeSpec];
 
   // Price formatting helper (input: USD)
@@ -692,7 +692,7 @@ const USAMastersPage = () => {
                 <div className="bg-white/80 border border-slate-100 p-6 rounded-[28px] shadow-sm">
                   <h4 className="font-extrabold text-slate-900 text-lg mb-2">Top 200 Stage</h4>
                   <p className="text-slate-500 text-xs font-semibold leading-relaxed">
-                    U.S. institutions dominate rankings, with over 50 universities securely positioned within the global top 200 in 2026.
+                    U.S. institutions lead the rankings, with 38 universities in the global top 200 of the QS World University Rankings 2027.
                   </p>
                 </div>
                 <div className="bg-white/80 border border-slate-100 p-6 rounded-[28px] shadow-sm">
@@ -783,11 +783,11 @@ const USAMastersPage = () => {
                 </div>
               </div>
 
-              {/* QS World University Rankings 2026 Table */}
+              {/* QS World University Rankings 2027 Table */}
               <div className="bg-white border border-slate-100 rounded-[32px] p-6 md:p-8 shadow-sm">
                 <h3 className="text-2xl font-black text-slate-900 mb-6 flex items-center gap-2">
                   <Award size={22} className="text-indigo-600" />
-                  Top Universities in USA: QS Rankings 2026
+                  Top Universities in USA: QS Rankings 2027
                 </h3>
                 <div className="overflow-x-auto">
                   <table className="w-full text-left text-xs border-collapse">
@@ -801,15 +801,15 @@ const USAMastersPage = () => {
                     <tbody className="divide-y divide-slate-100 font-bold text-slate-700">
                       {[
                         { rank: 1, name: "Massachusetts Institute of Technology (MIT)", loc: "Cambridge, United States" },
-                        { rank: 3, name: "Stanford University", loc: "Stanford, United States" },
+                        { rank: 2, name: "Stanford University", loc: "Stanford, United States" },
                         { rank: 5, name: "Harvard University", loc: "Cambridge, United States" },
-                        { rank: 10, name: "California Institute of Technology (Caltech)", loc: "Pasadena, United States" },
-                        { rank: 13, name: "University of Chicago", loc: "Chicago, United States" },
+                        { rank: 7, name: "California Institute of Technology (Caltech)", loc: "Pasadena, United States" },
                         { rank: 15, name: "University of Pennsylvania", loc: "Philadelphia, United States" },
                         { rank: 16, name: "Cornell University", loc: "Ithaca, United States" },
-                        { rank: 21, name: "Yale University", loc: "New Haven, United States" },
-                        { rank: 24, name: "Johns Hopkins University", loc: "Baltimore, United States" },
-                        { rank: 45, name: "University of Michigan–Ann Arbor", loc: "Ann Arbor, United States" },
+                        { rank: 16, name: "Yale University", loc: "New Haven, United States" },
+                        { rank: 20, name: "Johns Hopkins University", loc: "Baltimore, United States" },
+                        { rank: 20, name: "University of California, Berkeley (UCB)", loc: "Berkeley, United States" },
+                        { rank: 24, name: "University of Chicago", loc: "Chicago, United States" },
                       ].map((uni, idx) => (
                         <tr key={idx} className="hover:bg-slate-50/50 transition-colors">
                           <td className="py-3 text-center">
@@ -844,9 +844,6 @@ const USAMastersPage = () => {
                     </thead>
                     <tbody className="divide-y divide-slate-100 font-bold text-slate-700">
                       {[
-                        { rank: 1, subject: "Arts and Humanities", name: "Massachusetts Institute of Technology (MIT)", loc: "Cambridge, United States" },
-                        { rank: 4, subject: "Arts and Humanities", name: "Stanford University", loc: "Stanford, United States" },
-                        { rank: 5, subject: "Arts and Humanities", name: "University of California, Berkeley (UCB)", loc: "Berkeley, United States" },
                         { rank: 1, subject: "Engineering & Technology", name: "Massachusetts Institute of Technology (MIT)", loc: "Cambridge, United States" },
                         { rank: 3, subject: "Engineering & Technology", name: "Stanford University", loc: "Stanford, United States" },
                         { rank: 6, subject: "Engineering & Technology", name: "University of California, Berkeley (UCB)", loc: "Berkeley, United States" },
@@ -911,18 +908,18 @@ const USAMastersPage = () => {
                 <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-8 items-start">
                   
                   {/* Left Sidebar: Filters Checklist */}
-                  <aside className="bg-white border border-slate-100 rounded-[32px] p-6 space-y-6 shadow-sm sticky top-28 z-20">
+                  <aside className="bg-white border border-[#E6E0D4] p-5 space-y-5 shadow-[0_24px_60px_-36px_rgba(22,19,15,0.35)] sticky top-28 z-20" style={{ borderRadius: 18 }}>
                     
                     {/* Header */}
-                    <div className="flex items-center justify-between pb-4 border-b border-slate-100">
-                      <div className="flex items-center gap-2 text-slate-900 font-extrabold text-sm">
-                        <Filter size={16} className="text-indigo-600" />
+                    <div className="flex items-center justify-between pb-4 border-b border-[#ECE6DA]">
+                      <div className="flex items-center gap-2 text-[14px] font-semibold text-[#16130F]">
+                        <Filter size={16} className="text-[#DE5C2B]" />
                         <span>Filters</span>
                       </div>
                       {activeChips.length > 0 && (
                         <button 
                           onClick={handleClearAll}
-                          className="text-xs font-black text-indigo-650 hover:underline cursor-pointer"
+                          className="text-[12.5px] font-semibold text-[#DE5C2B] hover:underline cursor-pointer"
                         >
                           Clear All
                         </button>
@@ -930,13 +927,13 @@ const USAMastersPage = () => {
                     </div>
 
                     {/* Fees Accordion */}
-                    <div className="border-b border-slate-100 pb-5">
+                    <div className="border-b border-[#ECE6DA] pb-5">
                       <button 
                         onClick={() => toggleAccordion('fees')}
-                        className="w-full flex items-center justify-between font-extrabold text-xs text-slate-700 uppercase tracking-wider mb-3 cursor-pointer text-left"
+                        className="w-full flex items-center justify-between text-[12.5px] font-semibold text-[#16130F] mb-3 cursor-pointer text-left"
                       >
                         <span>1st Year Fees</span>
-                        <ChevronDown size={14} className={`text-slate-400 transition-transform ${openAccordions.fees ? 'rotate-180' : ''}`} />
+                        <ChevronDown size={14} className={`transition-transform ${openAccordions.fees ? 'rotate-180 text-[#DE5C2B]' : 'text-[#9A9184]'}`} />
                       </button>
                       
                       {openAccordions.fees && (
@@ -947,9 +944,9 @@ const USAMastersPage = () => {
                                 type="checkbox"
                                 checked={selectedFees.includes(range.id)}
                                 onChange={() => handleFilterToggle(range.id, selectedFees, setSelectedFees)}
-                                className="w-4.5 h-4.5 rounded border-slate-200 text-indigo-600 focus:ring-indigo-500 cursor-pointer"
+                                className="w-4 h-4 rounded border-[#E6E0D4] accent-[#DE5C2B] cursor-pointer shrink-0"
                               />
-                              <span className="text-xs font-bold text-slate-600 hover:text-slate-800 transition-colors">
+                              <span className="text-[13px] text-[#16130F] hover:text-[#DE5C2B] transition-colors">
                                 {range.label}
                               </span>
                             </label>
@@ -959,13 +956,13 @@ const USAMastersPage = () => {
                     </div>
 
                     {/* Degree Accordion */}
-                    <div className="border-b border-slate-100 pb-5">
+                    <div className="border-b border-[#ECE6DA] pb-5">
                       <button 
                         onClick={() => toggleAccordion('degree')}
-                        className="w-full flex items-center justify-between font-extrabold text-xs text-slate-700 uppercase tracking-wider mb-3 cursor-pointer text-left"
+                        className="w-full flex items-center justify-between text-[12.5px] font-semibold text-[#16130F] mb-3 cursor-pointer text-left"
                       >
                         <span>Degree</span>
-                        <ChevronDown size={14} className={`text-slate-400 transition-transform ${openAccordions.degree ? 'rotate-180' : ''}`} />
+                        <ChevronDown size={14} className={`transition-transform ${openAccordions.degree ? 'rotate-180 text-[#DE5C2B]' : 'text-[#9A9184]'}`} />
                       </button>
                       
                       {openAccordions.degree && (
@@ -976,9 +973,9 @@ const USAMastersPage = () => {
                                 type="checkbox"
                                 checked={selectedDegrees.includes(degree)}
                                 onChange={() => handleFilterToggle(degree, selectedDegrees, setSelectedDegrees)}
-                                className="w-4.5 h-4.5 rounded border-slate-200 text-indigo-600 focus:ring-indigo-500 cursor-pointer"
+                                className="w-4 h-4 rounded border-[#E6E0D4] accent-[#DE5C2B] cursor-pointer shrink-0"
                               />
-                              <span className="text-xs font-bold text-slate-600 hover:text-slate-800 transition-colors">
+                              <span className="text-[13px] text-[#16130F] hover:text-[#DE5C2B] transition-colors">
                                 {degree}
                               </span>
                             </label>
@@ -988,26 +985,26 @@ const USAMastersPage = () => {
                     </div>
 
                     {/* Courses Accordion */}
-                    <div className="border-b border-slate-100 pb-5">
+                    <div className="border-b border-[#ECE6DA] pb-5">
                       <button 
                         onClick={() => toggleAccordion('courses')}
-                        className="w-full flex items-center justify-between font-extrabold text-xs text-slate-700 uppercase tracking-wider mb-3 cursor-pointer text-left"
+                        className="w-full flex items-center justify-between text-[12.5px] font-semibold text-[#16130F] mb-3 cursor-pointer text-left"
                       >
                         <span>Courses</span>
-                        <ChevronDown size={14} className={`text-slate-400 transition-transform ${openAccordions.courses ? 'rotate-180' : ''}`} />
+                        <ChevronDown size={14} className={`transition-transform ${openAccordions.courses ? 'rotate-180 text-[#DE5C2B]' : 'text-[#9A9184]'}`} />
                       </button>
                       
                       {openAccordions.courses && (
                         <div className="space-y-3">
                           {/* Search Courses inside filter */}
                           <div className="relative">
-                            <Search className="absolute left-3 top-2.5 text-slate-400" size={13} />
+                            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-[#5B544A] pointer-events-none" size={13} />
                             <input 
                               type="text"
                               value={courseSearch}
                               onChange={(e) => setCourseSearch(e.target.value)}
                               placeholder="Search courses..."
-                              className="w-full bg-slate-50 border border-slate-100 rounded-xl pl-8 pr-3 py-1.5 text-[11px] font-semibold outline-none focus:border-indigo-400 transition-colors"
+                              className="w-full h-9 bg-[#F8F5EF] border border-[#E6E0D4] rounded-[10px] pl-8 pr-3 text-[12.5px] text-[#16130F] outline-none focus:border-[#DE5C2B] focus:bg-white transition-colors placeholder:text-[#9A9184]"
                             />
                           </div>
 
@@ -1021,9 +1018,9 @@ const USAMastersPage = () => {
                                     type="checkbox"
                                     checked={selectedCourses.includes(course)}
                                     onChange={() => handleFilterToggle(course, selectedCourses, setSelectedCourses)}
-                                    className="w-4.5 h-4.5 rounded border-slate-200 text-indigo-600 focus:ring-indigo-500 cursor-pointer"
+                                    className="w-4 h-4 rounded border-[#E6E0D4] accent-[#DE5C2B] cursor-pointer shrink-0"
                                   />
-                                  <span className="text-xs font-bold text-slate-600 hover:text-slate-800 transition-colors line-clamp-1">
+                                  <span className="text-[13px] text-[#16130F] hover:text-[#DE5C2B] transition-colors line-clamp-1">
                                     {course}
                                   </span>
                                 </label>
@@ -1033,7 +1030,7 @@ const USAMastersPage = () => {
                           {courseCategories.filter(c => c.toLowerCase().includes(courseSearch.toLowerCase())).length > 8 && (
                             <button
                               onClick={() => setShowAllCourses(!showAllCourses)}
-                              className="text-[11px] font-black text-indigo-650 hover:underline cursor-pointer"
+                              className="text-[12.5px] font-semibold text-[#DE5C2B] hover:underline cursor-pointer"
                             >
                               {showAllCourses ? 'Show Less' : `+${courseCategories.length - 8} More`}
                             </button>
@@ -1046,23 +1043,23 @@ const USAMastersPage = () => {
                     <div className="pb-2">
                       <button 
                         onClick={() => toggleAccordion('cities')}
-                        className="w-full flex items-center justify-between font-extrabold text-xs text-slate-700 uppercase tracking-wider mb-3 cursor-pointer text-left"
+                        className="w-full flex items-center justify-between text-[12.5px] font-semibold text-[#16130F] mb-3 cursor-pointer text-left"
                       >
                         <span>Cities</span>
-                        <ChevronDown size={14} className={`text-slate-400 transition-transform ${openAccordions.cities ? 'rotate-180' : ''}`} />
+                        <ChevronDown size={14} className={`transition-transform ${openAccordions.cities ? 'rotate-180 text-[#DE5C2B]' : 'text-[#9A9184]'}`} />
                       </button>
                       
                       {openAccordions.cities && (
                         <div className="space-y-3">
                           {/* Search Cities inside filter */}
                           <div className="relative">
-                            <Search className="absolute left-3 top-2.5 text-slate-400" size={13} />
+                            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-[#5B544A] pointer-events-none" size={13} />
                             <input 
                               type="text"
                               value={citySearch}
                               onChange={(e) => setCitySearch(e.target.value)}
                               placeholder="Search cities..."
-                              className="w-full bg-slate-50 border border-slate-100 rounded-xl pl-8 pr-3 py-1.5 text-[11px] font-semibold outline-none focus:border-indigo-400 transition-colors"
+                              className="w-full h-9 bg-[#F8F5EF] border border-[#E6E0D4] rounded-[10px] pl-8 pr-3 text-[12.5px] text-[#16130F] outline-none focus:border-[#DE5C2B] focus:bg-white transition-colors placeholder:text-[#9A9184]"
                             />
                           </div>
 
@@ -1075,9 +1072,9 @@ const USAMastersPage = () => {
                                     type="checkbox"
                                     checked={selectedCities.includes(city)}
                                     onChange={() => handleFilterToggle(city, selectedCities, setSelectedCities)}
-                                    className="w-4.5 h-4.5 rounded border-slate-200 text-indigo-600 focus:ring-indigo-500 cursor-pointer"
+                                    className="w-4 h-4 rounded border-[#E6E0D4] accent-[#DE5C2B] cursor-pointer shrink-0"
                                   />
-                                  <span className="text-xs font-bold text-slate-600 hover:text-slate-800 transition-colors">
+                                  <span className="text-[13px] text-[#16130F] hover:text-[#DE5C2B] transition-colors">
                                     {city}
                                   </span>
                                 </label>
@@ -1093,59 +1090,46 @@ const USAMastersPage = () => {
                   <main className="space-y-6">
                     
                     {/* Search bar & Sort Controls */}
-                    <div className="bg-white border border-slate-100 rounded-[28px] p-6 shadow-sm flex flex-col md:flex-row gap-4 items-center justify-between">
-                      <div className="relative w-full md:max-w-md">
-                        <Search className="absolute left-4 top-3 text-slate-455" size={16} />
-                        <input 
-                          type="text"
-                          value={searchTerm}
-                          onChange={(e) => { setSearchTerm(e.target.value); setVisibleCount(18); }}
-                          placeholder="Search by course (e.g. CS, MBA, Data Science), university, city, or state..."
-                          className="w-full bg-slate-50 border border-slate-100 rounded-2xl pl-12 pr-4 py-2.5 text-xs font-semibold outline-none focus:border-indigo-400 transition-colors"
-                        />
-                      </div>
-
-                      <div className="flex items-center justify-between w-full md:w-auto gap-6 flex-shrink-0">
-                        <p className="text-xs font-bold text-slate-500">
-                          <span className="text-slate-850 font-black text-sm">{sortedUniversities.length}</span> Universities
-                        </p>
-
-                        <div className="flex items-center gap-2">
-                          <span className="text-xs text-slate-400 font-bold">Sort By:</span>
-                          <select 
-                            value={sortBy}
-                            onChange={(e) => setSortBy(e.target.value)}
-                            className="bg-slate-50 border border-slate-100 rounded-xl px-3 py-2 text-xs font-bold outline-none cursor-pointer text-slate-700 focus:border-indigo-400 transition-colors"
-                          >
+                    <FinderCard>
+                      <div className="grid grid-cols-1 sm:grid-cols-[1fr_220px] lg:grid-cols-[1fr_220px_auto] gap-3 items-end">
+                        <FinderField label="Search">
+                          <div className="relative">
+                            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-[#5B544A] pointer-events-none" size={16} />
+                            <input
+                              type="text"
+                              value={searchTerm}
+                              onChange={(e) => { setSearchTerm(e.target.value); setVisibleCount(18); }}
+                              placeholder="Search by course (e.g. CS, MBA, Data Science), university, city, or state..."
+                              className={`${FINDER_FIELD} pl-10`}
+                              style={FIELD_RADIUS}
+                            />
+                          </div>
+                        </FinderField>
+                        <FinderField label="Sort by">
+                          <select value={sortBy} onChange={(e) => setSortBy(e.target.value)} className={`${FINDER_FIELD} cursor-pointer`} style={FIELD_RADIUS}>
                             <option value="rank">QS / US News Rank</option>
                             <option value="fees">Tuition Fee: Low to High</option>
                             <option value="name">Alphabetical (A-Z)</option>
                           </select>
-                        </div>
+                        </FinderField>
+                        <p className="text-[13.5px] text-[#5B544A] sm:col-span-2 lg:col-span-1 lg:h-11 flex items-center lg:justify-end whitespace-nowrap">
+                          <span className="font-bold text-[#16130F] mr-1">{sortedUniversities.length}</span> {sortedUniversities.length === 1 ? 'university' : 'universities'}
+                        </p>
                       </div>
-                    </div>
+                    </FinderCard>
 
                     {/* Active Filter Chips bar */}
                     {activeChips.length > 0 && (
-                      <div className="flex flex-wrap gap-2 items-center bg-indigo-50/20 border border-indigo-100/50 p-4 rounded-2xl">
-                        <span className="text-[10px] text-indigo-555 font-black uppercase tracking-wider mr-1.5">Active Filters:</span>
+                      <div className="flex flex-wrap gap-2 items-center bg-white/70 border border-[#E6E0D4] p-3.5" style={{ borderRadius: 18 }}>
+                        <span className="text-[13px] font-semibold text-[#16130F] mr-1">Active filters</span>
                         {activeChips.map((chip, idx) => (
-                          <div 
-                            key={idx} 
-                            className="flex items-center gap-1.5 px-3 py-1 bg-white border border-indigo-100/60 rounded-full text-xs font-bold text-indigo-650 shadow-sm"
-                          >
-                            <span>{chip.label}</span>
-                            <button 
-                              onClick={() => handleRemoveChip(chip)}
-                              className="text-slate-400 hover:text-indigo-655 transition-colors cursor-pointer"
-                            >
-                              <X size={12} className="stroke-[2.5]" />
-                            </button>
-                          </div>
+                          <FinderChip key={idx} on aria-pressed={undefined} aria-label={`Remove ${chip.label}`} onClick={() => handleRemoveChip(chip)}>
+                            {chip.label} <X size={13} className="stroke-[2.5]" />
+                          </FinderChip>
                         ))}
-                        <button 
+                        <button
                           onClick={handleClearAll}
-                          className="text-[11px] font-black text-indigo-650 hover:underline ml-2 cursor-pointer"
+                          className="text-[12.5px] font-semibold text-[#DE5C2B] hover:underline ml-1 cursor-pointer"
                         >
                           Clear All
                         </button>
@@ -1224,7 +1208,7 @@ const USAMastersPage = () => {
               <div className="bg-slate-50 border border-slate-200/60 p-5 rounded-2xl flex items-center gap-3.5">
                 <Info size={22} className="text-indigo-650 flex-shrink-0" />
                 <p className="text-xs text-slate-655 font-semibold leading-relaxed">
-                  Budget planning is crucial. A Master's degree in the U.S. typically runs between <strong>₹15 Lakh to ₹1.1 Crore</strong> depending on public vs private status, program ranking, and destination cities. Exchange rate calculation: <strong>1 USD = ~₹88.22</strong>.
+                  Budget planning is crucial. A Master's degree in the U.S. typically runs between <strong>₹15 Lakh to ₹1.1 Crore</strong> depending on public vs private status, program ranking, and destination cities. Exchange rate calculation: <strong>1 USD = ~₹95</strong>.
                 </p>
               </div>
 
@@ -1326,11 +1310,11 @@ const USAMastersPage = () => {
                     </thead>
                     <tbody className="divide-y divide-slate-100 font-bold text-slate-700">
                       {[
-                        { name: "California State University, Long Beach", prog: "MS in Data Science", tuition: 17922, unit: "/year" },
-                        { name: "Wright State University", prog: "MS in Cybersecurity", tuition: 13740, unit: "/year" },
-                        { name: "University of Texas at Tyler", prog: "MS in Electrical Engineering", tuition: 1968, unit: "/year" },
-                        { name: "South Dakota State University", prog: "MS in Computer Science", tuition: 673, unit: "/credit hour", raw: true },
-                        { name: "Mississippi State University", prog: "MS in Mechanical Engineering", tuition: 435.75, unit: "/credit hour", raw: true }
+                        { name: "California State University, Long Beach", prog: "MS in Computer Science", tuition: 17026, unit: "/year" },
+                        { name: "Wright State University", prog: "MS in Cybersecurity", tuition: 27800, unit: "/year" },
+                        { name: "University of Texas at Tyler", prog: "MS in Electrical Engineering", tuition: 15948, unit: "/year" },
+                        { name: "South Dakota State University", prog: "MS in Computer Science", tuition: 689.15, unit: "/credit hour", raw: true },
+                        { name: "Mississippi State University", prog: "MS in Mechanical Engineering", tuition: 30086, unit: "/year" }
                       ].map((row, idx) => (
                         <tr key={idx} className="hover:bg-slate-50/50 transition-colors">
                           <td className="py-3 text-slate-900">{row.name}</td>

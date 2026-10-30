@@ -18,142 +18,145 @@ const SECTIONS = [
   { id: 'faq', title: 'Frequently Asked Questions' }
 ];
 
+const REQ_UG = "Set per programme + IELTS (usually 6.0+)";
+const REQ_PG = "Relevant Bachelor's + IELTS (usually 6.5+); minimum grades vary";
+
 const publicUnisList = [
   {
     rank: 1,
     name: "University of Auckland",
-    qs: "#65",
+    qs: "#68",
     courses: "Engineering, Data Science, Business",
-    ugFees: "₹21.5L - 30.2L",
-    pgFees: "₹19.1L - 31.9L",
+    ugFees: "₹23.6L - 34.1L",
+    pgFees: "₹25.7L - 32.6L",
     tagline: "NZ'S TOP-RANKED UNIVERSITY",
     location: "Auckland (heart of the city)",
     founded: "1883",
-    scholarship: "India High Achievers Scholarship: Up to ₹5.2L",
-    whyUoA: "UniServices ($114M bridge), speed networking, deep tech/med ties",
-    reqUG: "75-80% in XII + IELTS 6.0",
-    reqPG: "60-70% in Bachelor's + IELTS 6.5",
+    scholarship: "India High Achievers Scholarship: 25% of one year's tuition (new Master's students)",
+    whyUoA: "City-centre campus, triple-crown Business School, strong research and industry links",
+    reqUG: REQ_UG,
+    reqPG: REQ_PG,
     intakes: "February & July",
-    logo: "https://logo.clearbit.com/auckland.ac.nz"
+    logo: "/logos/verified-University of Auckland.png"
   },
   {
     rank: 2,
     name: "University of Otago",
-    qs: "#197",
+    qs: "#198",
     courses: "Medicine, Dentistry, Psychology, Finance",
-    ugFees: "₹21.3L - 25.4L",
-    pgFees: "₹21.8L - 36.2L",
+    ugFees: "₹19.9L - 29.3L",
+    pgFees: "₹18.2L - 29.1L",
     tagline: "NZ'S OLDEST UNIVERSITY - RESIDENTIAL CAMPUS",
     location: "Dunedin (true university city)",
     founded: "1869",
-    scholarship: "VC's Excellence: Up to NZ$35,000 (₹18.5L) for UG",
-    whyUoA: "UniFlats with Kiwi hosts, bagpipe processions, Gigatown ultra-fast net",
-    reqUG: "75% in XII + IELTS 6.0",
-    reqPG: "65%+ in Bachelor's + IELTS 6.5",
+    scholarship: "VC's Scholarship for International Students: NZ$10,000 (₹5.6L) for UG",
+    whyUoA: "Residential university city with colleges and student flats close to campus",
+    reqUG: REQ_UG,
+    reqPG: REQ_PG,
     intakes: "February (Main) & July",
-    logo: "https://logo.clearbit.com/otago.ac.nz"
+    logo: "/logos/verified-University of Otago.png"
   },
   {
     rank: 3,
     name: "Massey University",
-    qs: "#230",
+    qs: "#215",
     courses: "Aviation, Veterinary Science, Agriculture",
-    ugFees: "₹18.1L - 24.1L",
-    pgFees: "₹20.5L - 32.3L",
-    tagline: "ONLY UNIVERSITY WITH AVIATION DEGREES",
+    ugFees: "₹19.7L - 26.3L",
+    pgFees: "₹20.7L - 29.5L",
+    tagline: "AVIATION & VETERINARY SCIENCE",
     location: "Auckland, Wellington, Palmerston North",
     founded: "1927",
-    scholarship: "Massey University Excellence: NZ$5,000 (₹2.6L)",
-    whyUoA: "Choose your vibe, state-of-the-art food plants, working farms",
-    reqUG: "75% in XII + IELTS 6.0",
-    reqPG: "60-65% in Bachelor's + IELTS 6.5",
+    scholarship: "Undergraduate International Study Grant: NZ$15,000 (₹8.4L), 2027",
+    whyUoA: "Choose your campus city; working farms, food technology and its own flight school",
+    reqUG: REQ_UG,
+    reqPG: REQ_PG,
     intakes: "February & July",
-    logo: "https://logo.clearbit.com/massey.ac.nz"
+    logo: "/logos/verified-Massey University.png"
   },
   {
     rank: 4,
     name: "Victoria University of Wellington",
-    qs: "#240",
+    qs: "#241",
     courses: "Law, Public Policy, Architecture, AI",
-    ugFees: "₹17.5L - 23.3L",
-    pgFees: "₹18.5L - 24.9L",
-    tagline: "#1 IN NZ FOR RESEARCH INTENSITY",
+    ugFees: "₹20.0L - 27.6L",
+    pgFees: "₹22.5L - 29.3L",
+    tagline: "IN THE CAPITAL CITY",
     location: "Wellington (political & creative capital)",
     founded: "1897",
-    scholarship: "Tongarewa Scholarship: Up to NZ$10,000 (₹5.3L)",
-    whyUoA: "Coolest capital, steps away from Parliament, NGO internships",
-    reqUG: "75% in XII + IELTS 6.0",
-    reqPG: "65% in Bachelor's + IELTS 6.5",
-    intakes: "February, July & November",
-    logo: "https://logo.clearbit.com/wgtn.ac.nz"
+    scholarship: "VUW Undergraduate International Scholarship: NZ$15,000 (₹8.4L)",
+    whyUoA: "Steps away from Parliament, government agencies and NGOs",
+    reqUG: REQ_UG,
+    reqPG: REQ_PG,
+    intakes: "February & July",
+    logo: "/logos/verified-Victoria University of Wellington.png"
   },
   {
     rank: 5,
     name: "University of Canterbury",
-    qs: "#261",
+    qs: "#257",
     courses: "Civil Engineering, Forestry, Disaster Management",
-    ugFees: "₹18.0L - 23.5L",
-    pgFees: "₹17.8L - 25.4L",
-    tagline: "ENGINEERING CAPITAL OF NZ",
+    ugFees: "₹19.9L - 30.3L",
+    pgFees: "₹20.2L - 26.7L",
+    tagline: "STRONG ENGINEERING SCHOOL",
     location: "Christchurch (South Island)",
     founded: "1873",
-    scholarship: "UC India High Achievers: Up to NZ$15,000 (₹7.9L)",
-    whyUoA: "Self-contained green campus, 100+ clubs, alps proximity, STEM careers",
-    reqUG: "75-80% in XII + IELTS 6.0",
-    reqPG: "65-70% in Bachelor's + IELTS 6.5",
+    scholarship: "UC International First Year Scholarship: NZ$15,000 (₹8.4L)",
+    whyUoA: "Self-contained green campus, close to the Southern Alps, STEM careers",
+    reqUG: REQ_UG,
+    reqPG: REQ_PG,
     intakes: "February & July",
-    logo: "https://logo.clearbit.com/canterbury.ac.nz"
+    logo: "/logos/verified-University of Canterbury.png"
   },
   {
     rank: 6,
     name: "University of Waikato",
-    qs: "#281",
+    qs: "#293",
     courses: "Cybersecurity, AI, Management (Triple Crown)",
-    ugFees: "₹17.1L - 22.3L",
-    pgFees: "₹18.5L - 25.4L",
-    tagline: "TECH INNOVATION HUB - NZ'S FIRST INTERNET",
-    location: "Hamilton (tech-heavy city)",
+    ugFees: "₹18.1L - 27.1L",
+    pgFees: "₹22.2L - 36.8L",
+    tagline: "TRIPLE-CROWN MANAGEMENT SCHOOL",
+    location: "Hamilton",
     founded: "1964",
-    scholarship: "VC's International Excellence: NZ$15,000 (₹7.9L) discount",
-    whyUoA: "Relaxed multicultural vibe, Village Green campus, ag-tech ties",
-    reqUG: "75% in XII + IELTS 6.0",
-    reqPG: "60% in Bachelor's + IELTS 6.5",
-    intakes: "February, July & November",
-    logo: "https://logo.clearbit.com/waikato.ac.nz"
+    scholarship: "VC's International Excellence Scholarship for India: Up to NZ$15,000 (₹8.4L)",
+    whyUoA: "Relaxed multicultural campus; home to NZ's first cyber security lab",
+    reqUG: REQ_UG,
+    reqPG: REQ_PG,
+    intakes: "February & July (plus a November trimester for some programmes)",
+    logo: "/logos/verified-University of Waikato.png"
   },
   {
     rank: 7,
     name: "Lincoln University",
-    qs: "#407",
+    qs: "#419",
     courses: "Agribusiness, Food Science, Viticulture",
-    ugFees: "₹15.7L - 16.7L",
-    pgFees: "₹16.9L - 18.8L",
+    ugFees: "₹20.7L - 21.8L",
+    pgFees: "₹22.0L - 24.6L",
     tagline: "SPECIALIST LAND-BASED UNIVERSITY",
     location: "Lincoln (specialist green campus)",
     founded: "1878",
-    scholarship: "International Taught Master Merit: NZ$10,000 (₹5.3L)",
-    whyUoA: "Family atmosphere, hands-on vineyard field trips, 6% faster jobs",
-    reqUG: "70% in XII + IELTS 6.0",
-    reqPG: "60% in Bachelor's + IELTS 6.5",
-    intakes: "February, July & November",
-    logo: "https://logo.clearbit.com/lincoln.ac.nz"
+    scholarship: "Taught Master's Merit Scholarship: NZ$7,000 – NZ$15,000 (₹3.9L – ₹8.4L)",
+    whyUoA: "Small campus, hands-on field trips, close links with the agriculture sector",
+    reqUG: REQ_UG,
+    reqPG: REQ_PG,
+    intakes: "February & July",
+    logo: "/logos/verified-Lincoln University.png"
   },
   {
     rank: 8,
     name: "Auckland University of Technology (AUT)",
-    qs: "#410",
+    qs: "#431",
     courses: "Sport Science, Nursing, Creative Technologies",
-    ugFees: "₹18.1L - 22.6L",
-    pgFees: "₹20.0L - 32.9L",
-    tagline: "HIGHEST GRADUATE EMPLOYMENT RATE",
+    ugFees: "₹20.4L - 27.4L",
+    pgFees: "₹21.8L - 29.3L",
+    tagline: "CAREER-FOCUSED CITY UNIVERSITY",
     location: "Auckland (downtown urban hub)",
     founded: "2000",
-    scholarship: "AUT South Asia International: Up to NZ$7,000 (₹3.7L)",
-    whyUoA: "Urban campus, tech startup feel, career labs for Indian students",
-    reqUG: "75% in XII + IELTS 6.0",
-    reqPG: "60-65% in Bachelor's + IELTS 6.5",
+    scholarship: "AUT International Scholarships – South Asia: NZ$7,000 (₹3.9L) for postgraduates",
+    whyUoA: "Urban campus with a practical, work-focused approach",
+    reqUG: REQ_UG,
+    reqPG: REQ_PG,
     intakes: "February & July",
-    logo: "https://logo.clearbit.com/aut.ac.nz"
+    logo: "/logos/verified-Auckland University of Technology.png"
   }
 ];
 
@@ -230,7 +233,7 @@ const NewZealandPublic = () => {
               Public Universities in New Zealand 2026: Rankings, Fees & PR Guide
             </h1>
             <p className="text-indigo-200/90 text-sm md:text-base leading-relaxed mb-6 font-medium">
-              Every single public university in New Zealand is government-funded, ranks in the top 3% globally, and offers fast-track PR options for Indian students.
+              Every single public university in New Zealand is government-funded, is in the QS World University Rankings 2027 top 500, and offers fast-track PR options for Indian students.
             </p>
             <div className="flex flex-wrap items-center gap-4 text-xs font-semibold text-slate-400">
               <span className="flex items-center gap-1.5 bg-slate-955/60 px-3 py-1.5 rounded-lg border border-slate-800">
@@ -288,7 +291,7 @@ const NewZealandPublic = () => {
 
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-6">
                   {[
-                    { label: "Globally Ranked", val: "Top 3% globally" },
+                    { label: "Globally Ranked", val: "All 8 in QS 2027 top 500" },
                     { label: "Affordable", val: "20-30% less than US/UK" },
                     { label: "Work Rights", val: "25 hours/week" },
                     { label: "Government Funded", val: "100% public funding" },

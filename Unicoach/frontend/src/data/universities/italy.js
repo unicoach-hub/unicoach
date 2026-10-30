@@ -1,4 +1,5 @@
-// API Verified Italy Universities Dataset (Deduplicated & Clean)
+// Static fallback list. Ranks: QS World University Rankings 2027 (only where QS lists the institution).
+// Fees only where checked against the university's own fee page; otherwise pages link to the university.
 export const UNIVERSITIES_ITALY = [
   {
     "_id": "italy-1",
@@ -11,16 +12,9 @@ export const UNIVERSITIES_ITALY = [
     "location": "Milan, Italy",
     "logo": "https://www.google.com/s2/favicons?domain=www.polimi.it&sz=128",
     "website": "https://www.polimi.it/en/",
-    "rank": "Rank 123 QS Rankings",
-    "rankingNum": 123,
-    "tuition": "4 Lakh INR",
-    "tuitionFeeUSD": 18000,
-    "acceptanceRate": 50,
+    "rank": "=87",
+    "rankingNum": 87,
     "type": "PUBLIC",
-    "minGpaPercent": 65,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -70,7 +64,8 @@ export const UNIVERSITIES_ITALY = [
       "Software Engineering",
       "Environmental Engineering",
       "Management"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027"
   },
   {
     "_id": "italy-2",
@@ -83,16 +78,9 @@ export const UNIVERSITIES_ITALY = [
     "location": "Bologna, Italy",
     "logo": "https://www.google.com/s2/favicons?domain=www.unibo.it&sz=128",
     "website": "https://www.unibo.it/en",
-    "rank": "Rank 154 QS Rankings",
-    "rankingNum": 154,
-    "tuition": "1 Lakh INR",
-    "tuitionFeeUSD": 18000,
-    "acceptanceRate": 50,
+    "rank": "=123",
+    "rankingNum": 123,
     "type": "PUBLIC",
-    "minGpaPercent": 65,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -141,7 +129,8 @@ export const UNIVERSITIES_ITALY = [
       "Sociology",
       "Statistics",
       "Animal and Veterinary Studies"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027"
   },
   {
     "_id": "italy-3",
@@ -154,16 +143,9 @@ export const UNIVERSITIES_ITALY = [
     "location": "Rome, Italy",
     "logo": "https://www.google.com/s2/favicons?domain=www.uniroma1.it&sz=128",
     "website": "https://www.uniroma1.it/en",
-    "rank": "Rank 171 QS Rankings",
-    "rankingNum": 171,
-    "tuition": "1 Lakh INR",
-    "tuitionFeeUSD": 18000,
-    "acceptanceRate": 50,
+    "rank": "=111",
+    "rankingNum": 111,
     "type": "PUBLIC",
-    "minGpaPercent": 65,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -209,7 +191,8 @@ export const UNIVERSITIES_ITALY = [
       "Geology",
       "Environmental science / management",
       "Biotechnology"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027"
   },
   {
     "_id": "italy-4",
@@ -222,16 +205,9 @@ export const UNIVERSITIES_ITALY = [
     "location": "Padua, Italy",
     "logo": "https://www.google.com/s2/favicons?domain=www.unipd.it&sz=128",
     "website": "https://www.unipd.it/en/",
-    "rank": "Rank 219 QS Rankings",
-    "rankingNum": 219,
-    "tuition": "{'id': 14428, 'tuition_fee_min': '21199', 'tuition_fee_max': '21199'} INR/yr",
-    "tuitionFeeUSD": 18000,
-    "acceptanceRate": 50,
+    "rank": "204",
+    "rankingNum": 204,
     "type": "PUBLIC",
-    "minGpaPercent": 65,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -292,7 +268,8 @@ export const UNIVERSITIES_ITALY = [
       "Computer Science",
       "Information technology",
       "Environmental Engineering"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027"
   },
   {
     "_id": "italy-5",
@@ -305,16 +282,9 @@ export const UNIVERSITIES_ITALY = [
     "location": "Turin, Italy",
     "logo": "https://www.google.com/s2/favicons?domain=www.polito.it&sz=128",
     "website": "https://www.polito.it",
-    "rank": "Rank 315 QS Rankings",
-    "rankingNum": 315,
-    "tuition": "4 Lakh INR",
-    "tuitionFeeUSD": 18000,
-    "acceptanceRate": 50,
+    "rank": "=206",
+    "rankingNum": 206,
     "type": "PUBLIC",
-    "minGpaPercent": 65,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -345,7 +315,8 @@ export const UNIVERSITIES_ITALY = [
       "Engineering Design",
       "Cyber Security",
       "Management"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027"
   },
   {
     "_id": "italy-6",
@@ -358,16 +329,9 @@ export const UNIVERSITIES_ITALY = [
     "location": "Milan, Italy",
     "logo": "https://www.google.com/s2/favicons?domain=www.unimi.it&sz=128",
     "website": "https://www.unimi.it",
-    "rank": "Rank 316 QS Rankings",
-    "rankingNum": 316,
-    "tuition": "1 Lakh INR",
-    "tuitionFeeUSD": 18000,
-    "acceptanceRate": 50,
+    "rank": "=270",
+    "rankingNum": 270,
     "type": "PUBLIC",
-    "minGpaPercent": 65,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -397,7 +361,8 @@ export const UNIVERSITIES_ITALY = [
       "Sociology",
       "Psychology",
       "Philosophy and Religious Studies"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027"
   },
   {
     "_id": "italy-7",
@@ -410,16 +375,7 @@ export const UNIVERSITIES_ITALY = [
     "location": "Milan, Italy",
     "logo": "https://www.google.com/s2/favicons?domain=www.unibocconi.eu&sz=128",
     "website": "https://www.unibocconi.eu/",
-    "rank": "Rank 330 QS Rankings",
-    "rankingNum": 330,
-    "tuition": "17 Lakh INR",
-    "tuitionFeeUSD": 18000,
-    "acceptanceRate": 50,
     "type": "PUBLIC",
-    "minGpaPercent": 65,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -457,16 +413,9 @@ export const UNIVERSITIES_ITALY = [
     "location": "Turin, Italy",
     "logo": "https://www.google.com/s2/favicons?domain=www.unito.it&sz=128",
     "website": "https://www.unito.it",
-    "rank": "Rank 364 QS Rankings",
-    "rankingNum": 364,
-    "tuition": "1 Lakh INR",
-    "tuitionFeeUSD": 18000,
-    "acceptanceRate": 50,
+    "rank": "405",
+    "rankingNum": 405,
     "type": "PUBLIC",
-    "minGpaPercent": 65,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -497,7 +446,8 @@ export const UNIVERSITIES_ITALY = [
       "Animal and Veterinary Studies",
       "Food / Agricultural Science",
       "Teaching / Education studies"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027"
   },
   {
     "_id": "italy-9",
@@ -510,16 +460,9 @@ export const UNIVERSITIES_ITALY = [
     "location": "Pisa, Italy",
     "logo": "https://www.google.com/s2/favicons?domain=www.unipi.it&sz=128",
     "website": "https://www.unipi.it/",
-    "rank": "Rank 388 QS Rankings",
-    "rankingNum": 388,
-    "tuition": "3 Lakh INR",
-    "tuitionFeeUSD": 18000,
-    "acceptanceRate": 50,
+    "rank": "341",
+    "rankingNum": 341,
     "type": "PUBLIC",
-    "minGpaPercent": 65,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -555,7 +498,8 @@ export const UNIVERSITIES_ITALY = [
       "Political Science",
       "Philosophy and Religious Studies",
       "Psychology"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027"
   },
   {
     "_id": "italy-10",
@@ -568,16 +512,9 @@ export const UNIVERSITIES_ITALY = [
     "location": "Trento, Italy",
     "logo": "https://www.google.com/s2/favicons?domain=www.unitn.it&sz=128",
     "website": "https://www.unitn.it/",
-    "rank": "Rank 389 QS Rankings",
-    "rankingNum": 389,
-    "tuition": "1 Lakh INR",
-    "tuitionFeeUSD": 18000,
-    "acceptanceRate": 50,
+    "rank": "=438",
+    "rankingNum": 438,
     "type": "PUBLIC",
-    "minGpaPercent": 65,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -606,7 +543,8 @@ export const UNIVERSITIES_ITALY = [
       "Biological Sciences",
       "Environmental science / management",
       "International Relations"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027"
   },
   {
     "_id": "italy-11",
@@ -619,16 +557,9 @@ export const UNIVERSITIES_ITALY = [
     "location": "Naples, Italy",
     "logo": "https://www.google.com/s2/favicons?domain=www.unina.it&sz=128",
     "website": "https://www.unina.it",
-    "rank": "Rank 424 QS Rankings",
-    "rankingNum": 424,
-    "tuition": "2 Lakh INR",
-    "tuitionFeeUSD": 18000,
-    "acceptanceRate": 50,
+    "rank": "401",
+    "rankingNum": 401,
     "type": "PUBLIC",
-    "minGpaPercent": 65,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -671,7 +602,8 @@ export const UNIVERSITIES_ITALY = [
       "History",
       "Philosophy and Religious Studies",
       "Psychology"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027"
   },
   {
     "_id": "italy-12",
@@ -684,16 +616,9 @@ export const UNIVERSITIES_ITALY = [
     "location": "Florence, Italy",
     "logo": "https://www.google.com/s2/favicons?domain=www.unifi.it&sz=128",
     "website": "https://www.unifi.it",
-    "rank": "Rank 432 QS Rankings",
-    "rankingNum": 432,
-    "tuition": "{'id': 15232, 'tuition_fee_min': '16131', 'tuition_fee_max': '16131'} INR/yr",
-    "tuitionFeeUSD": 18000,
-    "acceptanceRate": 50,
+    "rank": "=409",
+    "rankingNum": 409,
     "type": "PUBLIC",
-    "minGpaPercent": 65,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -746,7 +671,8 @@ export const UNIVERSITIES_ITALY = [
       "Music",
       "Graphic and Design Studies",
       "Teaching / Education studies"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027"
   },
   {
     "_id": "italy-13",
@@ -759,16 +685,9 @@ export const UNIVERSITIES_ITALY = [
     "location": "Genoa, Italy",
     "logo": "https://www.google.com/s2/favicons?domain=unige.it&sz=128",
     "website": "https://unige.it/",
-    "rank": "Rank 551 QS Rankings",
-    "rankingNum": 551,
-    "tuition": "3 Lakh INR",
-    "tuitionFeeUSD": 18000,
-    "acceptanceRate": 50,
+    "rank": "=502",
+    "rankingNum": 502,
     "type": "PUBLIC",
-    "minGpaPercent": 65,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -819,7 +738,8 @@ export const UNIVERSITIES_ITALY = [
       "Information technology",
       "Computer Engineering",
       "Environmental Engineering"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027"
   },
   {
     "_id": "italy-14",
@@ -832,16 +752,9 @@ export const UNIVERSITIES_ITALY = [
     "location": "Rome, Italy",
     "logo": "https://www.google.com/s2/favicons?domain=web.uniroma2.it&sz=128",
     "website": "https://web.uniroma2.it/en",
-    "rank": "Rank 650 QS Rankings",
-    "rankingNum": 650,
-    "tuition": "1 Lakh INR",
-    "tuitionFeeUSD": 18000,
-    "acceptanceRate": 50,
+    "rank": "=342",
+    "rankingNum": 342,
     "type": "PUBLIC",
-    "minGpaPercent": 65,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -877,7 +790,8 @@ export const UNIVERSITIES_ITALY = [
       "History",
       "Language and Literature",
       "Philosophy and Religious Studies"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027"
   },
   {
     "_id": "italy-15",
@@ -890,16 +804,9 @@ export const UNIVERSITIES_ITALY = [
     "location": "Milan, Italy",
     "logo": "https://www.google.com/s2/favicons?domain=www.unimib.it&sz=128",
     "website": "https://www.unimib.it/",
-    "rank": "Rank 651 QS Rankings",
-    "rankingNum": 651,
-    "tuition": "{'id': 15973, 'tuition_fee_min': '16131', 'tuition_fee_max': '16131'} INR/yr",
-    "tuitionFeeUSD": 18000,
-    "acceptanceRate": 50,
+    "rank": "544",
+    "rankingNum": 544,
     "type": "PUBLIC",
-    "minGpaPercent": 65,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -928,7 +835,8 @@ export const UNIVERSITIES_ITALY = [
       "Medicine and Medical Studies",
       "Law",
       "Teaching / Education studies"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027"
   },
   {
     "_id": "italy-16",
@@ -941,16 +849,9 @@ export const UNIVERSITIES_ITALY = [
     "location": "Rome, Italy",
     "logo": "https://www.google.com/s2/favicons?domain=www.uniroma3.it&sz=128",
     "website": "https://www.uniroma3.it/",
-    "rank": "Rank 801 QS Rankings",
-    "rankingNum": 801,
-    "tuition": "2 Lakh INR",
-    "tuitionFeeUSD": 18000,
-    "acceptanceRate": 50,
+    "rank": "851-900",
+    "rankingNum": 851,
     "type": "PUBLIC",
-    "minGpaPercent": 65,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -986,7 +887,8 @@ export const UNIVERSITIES_ITALY = [
       "Teaching / Education studies",
       "Business Administration",
       "Accounting"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027"
   },
   {
     "_id": "italy-17",
@@ -999,16 +901,9 @@ export const UNIVERSITIES_ITALY = [
     "location": "Pavia, Italy",
     "logo": "https://www.google.com/s2/favicons?domain=web-en.unipv.it&sz=128",
     "website": "https://web-en.unipv.it/",
-    "rank": "Rank 801 QS Rankings",
-    "rankingNum": 801,
-    "tuition": "{'id': 14673, 'tuition_fee_min': '41364', 'tuition_fee_max': '41364'} INR/yr",
-    "tuitionFeeUSD": 18000,
-    "acceptanceRate": 50,
+    "rank": "=395",
+    "rankingNum": 395,
     "type": "PUBLIC",
-    "minGpaPercent": 65,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -1041,7 +936,8 @@ export const UNIVERSITIES_ITALY = [
       "Language and Literature",
       "History",
       "Psychology"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027"
   },
   {
     "_id": "italy-18",
@@ -1054,16 +950,7 @@ export const UNIVERSITIES_ITALY = [
     "location": "Venice, Italy",
     "logo": "https://www.google.com/s2/favicons?domain=www.unive.it&sz=128",
     "website": "https://www.unive.it",
-    "rank": "Rank 801 QS Rankings",
-    "rankingNum": 801,
-    "tuition": "2 Lakh INR",
-    "tuitionFeeUSD": 18000,
-    "acceptanceRate": 50,
     "type": "PUBLIC",
-    "minGpaPercent": 65,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -1110,16 +997,7 @@ export const UNIVERSITIES_ITALY = [
     "location": "Bergamo, Italy",
     "logo": "https://www.google.com/s2/favicons?domain=www.unibg.it&sz=128",
     "website": "https://www.unibg.it/",
-    "rank": "Rank 19 QS Rankings",
-    "rankingNum": 19,
-    "tuition": "₹15 Lakh INR/yr",
-    "tuitionFeeUSD": 18000,
-    "acceptanceRate": 25,
     "type": "PUBLIC",
-    "minGpaPercent": 75,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -1156,16 +1034,9 @@ export const UNIVERSITIES_ITALY = [
     "location": "Messina, Italy",
     "logo": "https://www.google.com/s2/favicons?domain=www.unime.it&sz=128",
     "website": "https://www.unime.it",
-    "rank": "Rank 20 QS Rankings",
-    "rankingNum": 20,
-    "tuition": "{'id': 16131, 'tuition_fee_min': '16131', 'tuition_fee_max': '16131'} INR/yr",
-    "tuitionFeeUSD": 18000,
-    "acceptanceRate": 25,
+    "rank": "761-770",
+    "rankingNum": 761,
     "type": "PUBLIC",
-    "minGpaPercent": 75,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -1193,7 +1064,8 @@ export const UNIVERSITIES_ITALY = [
       "Physics",
       "Chemistry",
       "Biological Sciences"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027"
   },
   {
     "_id": "italy-21",
@@ -1206,16 +1078,9 @@ export const UNIVERSITIES_ITALY = [
     "location": "Bolzano, Italy",
     "logo": "https://www.google.com/s2/favicons?domain=www.unibz.it&sz=128",
     "website": "https://www.unibz.it",
-    "rank": "Rank 21 QS Rankings",
-    "rankingNum": 21,
-    "tuition": "2 Lakh INR",
-    "tuitionFeeUSD": 18000,
-    "acceptanceRate": 25,
+    "rank": "=608",
+    "rankingNum": 608,
     "type": "PUBLIC",
-    "minGpaPercent": 75,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -1239,7 +1104,8 @@ export const UNIVERSITIES_ITALY = [
       "Graphic and Design Studies",
       "Creative Arts",
       "Language and Literature"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027"
   },
   {
     "_id": "italy-22",
@@ -1252,16 +1118,9 @@ export const UNIVERSITIES_ITALY = [
     "location": "Ancona, Italy",
     "logo": "https://www.google.com/s2/favicons?domain=www.univpm.it&sz=128",
     "website": "https://www.univpm.it",
-    "rank": "Rank 22 QS Rankings",
-    "rankingNum": 22,
-    "tuition": "{'id': 15968, 'tuition_fee_min': '16131', 'tuition_fee_max': '16131'} INR/yr",
-    "tuitionFeeUSD": 18000,
-    "acceptanceRate": 25,
+    "rank": "=662",
+    "rankingNum": 662,
     "type": "PUBLIC",
-    "minGpaPercent": 75,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -1285,7 +1144,8 @@ export const UNIVERSITIES_ITALY = [
       "Computer Engineering",
       "Industrial Engineering",
       "Environmental Engineering"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027"
   },
   {
     "_id": "italy-23",
@@ -1298,16 +1158,7 @@ export const UNIVERSITIES_ITALY = [
     "location": "Foggia, Italy",
     "logo": "https://www.google.com/s2/favicons?domain=www.unifg.it&sz=128",
     "website": "https://www.unifg.it",
-    "rank": "Rank 23 QS Rankings",
-    "rankingNum": 23,
-    "tuition": "2 Lakh INR",
-    "tuitionFeeUSD": 18000,
-    "acceptanceRate": 25,
     "type": "PUBLIC",
-    "minGpaPercent": 75,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -1344,16 +1195,9 @@ export const UNIVERSITIES_ITALY = [
     "location": "Milan, Italy",
     "logo": "https://www.google.com/s2/favicons?domain=www.unisr.it&sz=128",
     "website": "https://www.unisr.it/",
-    "rank": "Rank 24 QS Rankings",
-    "rankingNum": 24,
-    "tuition": "21 Lakh INR",
-    "tuitionFeeUSD": 18000,
-    "acceptanceRate": 25,
+    "rank": "=465",
+    "rankingNum": 465,
     "type": "PUBLIC",
-    "minGpaPercent": 75,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -1374,7 +1218,8 @@ export const UNIVERSITIES_ITALY = [
       "Biological Sciences",
       "Biotechnology",
       "Philosophy and Religious Studies"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027"
   },
   {
     "_id": "italy-25",
@@ -1387,16 +1232,9 @@ export const UNIVERSITIES_ITALY = [
     "location": "Naples, Italy",
     "logo": "https://www.google.com/s2/favicons?domain=www.uniparthenope.it&sz=128",
     "website": "https://www.uniparthenope.it",
-    "rank": "Rank 25 QS Rankings",
-    "rankingNum": 25,
-    "tuition": "1 Lakh INR",
-    "tuitionFeeUSD": 18000,
-    "acceptanceRate": 25,
+    "rank": "1001-1200",
+    "rankingNum": 1001,
     "type": "PUBLIC",
-    "minGpaPercent": 75,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -1421,7 +1259,8 @@ export const UNIVERSITIES_ITALY = [
       "Architecture",
       "Mathematics",
       "Physics"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027"
   },
   {
     "_id": "italy-26",
@@ -1434,16 +1273,9 @@ export const UNIVERSITIES_ITALY = [
     "location": "Perugia, Italy",
     "logo": "https://www.google.com/s2/favicons?domain=www.unipg.it&sz=128",
     "website": "https://www.unipg.it/",
-    "rank": "Rank 26 QS Rankings",
-    "rankingNum": 26,
-    "tuition": "{'id': 16176, 'tuition_fee_min': '15511', 'tuition_fee_max': '15511'} INR/yr",
-    "tuitionFeeUSD": 18000,
-    "acceptanceRate": 25,
+    "rank": "1001-1200",
+    "rankingNum": 1001,
     "type": "PUBLIC",
-    "minGpaPercent": 75,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -1472,7 +1304,8 @@ export const UNIVERSITIES_ITALY = [
       "Language and Literature",
       "Teaching / Education studies",
       "Food / Agricultural Science"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027"
   },
   {
     "_id": "italy-27",
@@ -1485,16 +1318,9 @@ export const UNIVERSITIES_ITALY = [
     "location": "Sassari, Italy",
     "logo": "https://www.google.com/s2/favicons?domain=www.uniss.it&sz=128",
     "website": "https://www.uniss.it",
-    "rank": "Rank 27 QS Rankings",
-    "rankingNum": 27,
-    "tuition": "₹15 Lakh INR/yr",
-    "tuitionFeeUSD": 18000,
-    "acceptanceRate": 25,
+    "rank": "1201-1400",
+    "rankingNum": 1201,
     "type": "PUBLIC",
-    "minGpaPercent": 75,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -1518,7 +1344,8 @@ export const UNIVERSITIES_ITALY = [
       "Political Science",
       "Nursing and midwifery",
       "Chemistry"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027"
   },
   {
     "_id": "italy-28",
@@ -1531,16 +1358,7 @@ export const UNIVERSITIES_ITALY = [
     "location": "Pisa, Italy",
     "logo": "https://www.google.com/s2/favicons?domain=www.sns.it&sz=128",
     "website": "https://www.sns.it/en",
-    "rank": "Rank 28 QS Rankings",
-    "rankingNum": 28,
-    "tuition": "₹15 Lakh INR/yr",
-    "tuitionFeeUSD": 18000,
-    "acceptanceRate": 25,
     "type": "PUBLIC",
-    "minGpaPercent": 75,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -1577,16 +1395,7 @@ export const UNIVERSITIES_ITALY = [
     "location": "Rome, Italy",
     "logo": "https://www.google.com/s2/favicons?domain=www.unilink.it&sz=128",
     "website": "https://www.unilink.it",
-    "rank": "Rank 29 QS Rankings",
-    "rankingNum": 29,
-    "tuition": "₹15 Lakh INR/yr",
-    "tuitionFeeUSD": 18000,
-    "acceptanceRate": 25,
     "type": "PUBLIC",
-    "minGpaPercent": 75,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -1621,16 +1430,7 @@ export const UNIVERSITIES_ITALY = [
     "location": "Varese, Italy",
     "logo": "https://www.google.com/s2/favicons?domain=www.uninsubria.it&sz=128",
     "website": "https://www.uninsubria.it",
-    "rank": "Rank 30 QS Rankings",
-    "rankingNum": 30,
-    "tuition": "{'id': 14372, 'tuition_fee_min': '36813', 'tuition_fee_max': '36813'} INR/yr",
-    "tuitionFeeUSD": 18000,
-    "acceptanceRate": 25,
     "type": "PUBLIC",
-    "minGpaPercent": 75,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -1667,16 +1467,9 @@ export const UNIVERSITIES_ITALY = [
     "location": "Ferrara, Italy",
     "logo": "https://www.google.com/s2/favicons?domain=www.unife.it&sz=128",
     "website": "https://www.unife.it",
-    "rank": "Rank 31 QS Rankings",
-    "rankingNum": 31,
-    "tuition": "₹15 Lakh INR/yr",
-    "tuitionFeeUSD": 18000,
-    "acceptanceRate": 50,
+    "rank": "901-950",
+    "rankingNum": 901,
     "type": "PUBLIC",
-    "minGpaPercent": 65,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -1708,7 +1501,8 @@ export const UNIVERSITIES_ITALY = [
       "History",
       "Legal Studies",
       "Law"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027"
   },
   {
     "_id": "italy-32",
@@ -1721,16 +1515,9 @@ export const UNIVERSITIES_ITALY = [
     "location": "Siena, Italy",
     "logo": "https://www.google.com/s2/favicons?domain=www.unisi.it&sz=128",
     "website": "https://www.unisi.it/",
-    "rank": "Rank 32 QS Rankings",
-    "rankingNum": 32,
-    "tuition": "1 Lakh INR",
-    "tuitionFeeUSD": 18000,
-    "acceptanceRate": 50,
+    "rank": "=572",
+    "rankingNum": 572,
     "type": "PUBLIC",
-    "minGpaPercent": 65,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -1758,7 +1545,8 @@ export const UNIVERSITIES_ITALY = [
       "Computer Science",
       "Medicine and Medical Studies",
       "Pharmacology / Pharmacy"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027"
   },
   {
     "_id": "italy-33",
@@ -1771,16 +1559,9 @@ export const UNIVERSITIES_ITALY = [
     "location": "Cagliari, Italy",
     "logo": "https://www.google.com/s2/favicons?domain=www.unica.it&sz=128",
     "website": "https://www.unica.it/",
-    "rank": "Rank 33 QS Rankings",
-    "rankingNum": 33,
-    "tuition": "3 Lakh INR",
-    "tuitionFeeUSD": 18000,
-    "acceptanceRate": 50,
+    "rank": "1201-1400",
+    "rankingNum": 1201,
     "type": "PUBLIC",
-    "minGpaPercent": 65,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -1815,7 +1596,8 @@ export const UNIVERSITIES_ITALY = [
       "Food / Agricultural Science",
       "Earth Sciences / Geoscience",
       "Geology"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027"
   },
   {
     "_id": "italy-38",
@@ -1828,16 +1610,9 @@ export const UNIVERSITIES_ITALY = [
     "location": "Salerno, Italy",
     "logo": "https://www.google.com/s2/favicons?domain=www.unisa.it&sz=128",
     "website": "https://www.unisa.it",
-    "rank": "Rank 38 QS Rankings",
-    "rankingNum": 38,
-    "tuition": "4 Lakh INR",
-    "tuitionFeeUSD": 18000,
-    "acceptanceRate": 50,
+    "rank": "851-900",
+    "rankingNum": 851,
     "type": "PUBLIC",
-    "minGpaPercent": 65,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -1876,7 +1651,8 @@ export const UNIVERSITIES_ITALY = [
       "Language and Literature",
       "History",
       "Philosophy and Religious Studies"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027"
   },
   {
     "_id": "italy-39",
@@ -1889,16 +1665,9 @@ export const UNIVERSITIES_ITALY = [
     "location": "Udine, Italy",
     "logo": "https://www.google.com/s2/favicons?domain=www.uniud.it&sz=128",
     "website": "https://www.uniud.it/",
-    "rank": "Rank 39 QS Rankings",
-    "rankingNum": 39,
-    "tuition": "4 Lakh INR",
-    "tuitionFeeUSD": 18000,
-    "acceptanceRate": 50,
+    "rank": "1001-1200",
+    "rankingNum": 1001,
     "type": "PUBLIC",
-    "minGpaPercent": 65,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -1927,7 +1696,8 @@ export const UNIVERSITIES_ITALY = [
       "Law",
       "Medicine and Medical Studies",
       "Language and Literature"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027"
   },
   {
     "_id": "italy-40",
@@ -1940,16 +1710,9 @@ export const UNIVERSITIES_ITALY = [
     "location": "Verona, Italy",
     "logo": "https://www.google.com/s2/favicons?domain=www.univr.it&sz=128",
     "website": "https://www.univr.it/",
-    "rank": "Rank 40 QS Rankings",
-    "rankingNum": 40,
-    "tuition": "1 Lakh INR",
-    "tuitionFeeUSD": 18000,
-    "acceptanceRate": 50,
+    "rank": "781-790",
+    "rankingNum": 781,
     "type": "PUBLIC",
-    "minGpaPercent": 65,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -1982,7 +1745,8 @@ export const UNIVERSITIES_ITALY = [
       "Physics",
       "History",
       "Philosophy and Religious Studies"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027"
   },
   {
     "_id": "italy-41",
@@ -1995,16 +1759,9 @@ export const UNIVERSITIES_ITALY = [
     "location": "Rende, Italy",
     "logo": "https://www.google.com/s2/favicons?domain=www.unical.it&sz=128",
     "website": "https://www.unical.it/",
-    "rank": "Rank 41 QS Rankings",
-    "rankingNum": 41,
-    "tuition": "1 Lakh INR",
-    "tuitionFeeUSD": 18000,
-    "acceptanceRate": 50,
+    "rank": "851-900",
+    "rankingNum": 851,
     "type": "PUBLIC",
-    "minGpaPercent": 65,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -2036,7 +1793,8 @@ export const UNIVERSITIES_ITALY = [
       "Psychology",
       "Medicine and Medical Studies",
       "Pharmacology / Pharmacy"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027"
   },
   {
     "_id": "italy-42",
@@ -2049,16 +1807,7 @@ export const UNIVERSITIES_ITALY = [
     "location": "Venice, Italy",
     "logo": "https://www.google.com/s2/favicons?domain=www.iuav.it&sz=128",
     "website": "https://www.iuav.it",
-    "rank": "Rank 42 QS Rankings",
-    "rankingNum": 42,
-    "tuition": "3 Lakh INR",
-    "tuitionFeeUSD": 18000,
-    "acceptanceRate": 50,
     "type": "PUBLIC",
-    "minGpaPercent": 65,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -2092,16 +1841,9 @@ export const UNIVERSITIES_ITALY = [
     "location": "Brescia, Italy",
     "logo": "https://www.google.com/s2/favicons?domain=www.unibs.it&sz=128",
     "website": "https://www.unibs.it/",
-    "rank": "Rank 43 QS Rankings",
-    "rankingNum": 43,
-    "tuition": "3 Lakh INR",
-    "tuitionFeeUSD": 18000,
-    "acceptanceRate": 50,
+    "rank": "=581",
+    "rankingNum": 581,
     "type": "PUBLIC",
-    "minGpaPercent": 65,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -2126,7 +1868,8 @@ export const UNIVERSITIES_ITALY = [
       "Mathematics",
       "Medicine and Medical Studies",
       "Law"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027"
   },
   {
     "_id": "italy-44",
@@ -2139,16 +1882,9 @@ export const UNIVERSITIES_ITALY = [
     "location": "Modena, Italy",
     "logo": "https://www.google.com/s2/favicons?domain=www.unimore.it&sz=128",
     "website": "https://www.unimore.it/",
-    "rank": "Rank 44 QS Rankings",
-    "rankingNum": 44,
-    "tuition": "4 Lakh INR",
-    "tuitionFeeUSD": 18000,
-    "acceptanceRate": 50,
+    "rank": "801-850",
+    "rankingNum": 801,
     "type": "PUBLIC",
-    "minGpaPercent": 65,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -2174,7 +1910,8 @@ export const UNIVERSITIES_ITALY = [
       "Physics",
       "Biological Sciences",
       "Architecture"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027"
   },
   {
     "_id": "italy-45",
@@ -2187,16 +1924,9 @@ export const UNIVERSITIES_ITALY = [
     "location": "L'Aquila, Italy",
     "logo": "https://www.google.com/s2/favicons?domain=www.univaq.it&sz=128",
     "website": "https://www.univaq.it",
-    "rank": "Rank 45 QS Rankings",
-    "rankingNum": 45,
-    "tuition": "1 Lakh INR",
-    "tuitionFeeUSD": 18000,
-    "acceptanceRate": 50,
+    "rank": "1001-1200",
+    "rankingNum": 1001,
     "type": "PUBLIC",
-    "minGpaPercent": 65,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -2227,7 +1957,8 @@ export const UNIVERSITIES_ITALY = [
       "Business Administration",
       "Psychology",
       "Medicine and Medical Studies"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027"
   },
   {
     "_id": "italy-46",
@@ -2240,16 +1971,9 @@ export const UNIVERSITIES_ITALY = [
     "location": "Catania, Italy",
     "logo": "https://www.google.com/s2/favicons?domain=www.unict.it&sz=128",
     "website": "https://www.unict.it/",
-    "rank": "Rank 46 QS Rankings",
-    "rankingNum": 46,
-    "tuition": "1 Lakh INR",
-    "tuitionFeeUSD": 18000,
-    "acceptanceRate": 50,
+    "rank": "851-900",
+    "rankingNum": 851,
     "type": "PUBLIC",
-    "minGpaPercent": 65,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -2283,7 +2007,8 @@ export const UNIVERSITIES_ITALY = [
       "Dental Studies",
       "Pharmacology / Pharmacy",
       "Teaching / Education studies"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027"
   },
   {
     "_id": "italy-47",
@@ -2296,16 +2021,9 @@ export const UNIVERSITIES_ITALY = [
     "location": "Palermo, Italy",
     "logo": "https://www.google.com/s2/favicons?domain=www.unipa.it&sz=128",
     "website": "https://www.unipa.it",
-    "rank": "Rank 47 QS Rankings",
-    "rankingNum": 47,
-    "tuition": "{'id': 16030, 'tuition_fee_min': '21302', 'tuition_fee_max': '21302'} INR/yr",
-    "tuitionFeeUSD": 18000,
-    "acceptanceRate": 50,
+    "rank": "801-850",
+    "rankingNum": 801,
     "type": "PUBLIC",
-    "minGpaPercent": 65,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -2338,7 +2056,8 @@ export const UNIVERSITIES_ITALY = [
       "Physics",
       "Political Science",
       "Psychology"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027"
   },
   {
     "_id": "italy-48",
@@ -2351,16 +2070,7 @@ export const UNIVERSITIES_ITALY = [
     "location": "Perugia, Italy",
     "logo": "https://www.google.com/s2/favicons?domain=www.unistrapg.it&sz=128",
     "website": "https://www.unistrapg.it",
-    "rank": "Rank 48 QS Rankings",
-    "rankingNum": 48,
-    "tuition": "{'id': 15929, 'tuition_fee_min': '15511', 'tuition_fee_max': '15511'} INR/yr",
-    "tuitionFeeUSD": 18000,
-    "acceptanceRate": 50,
     "type": "PUBLIC",
-    "minGpaPercent": 65,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -2392,16 +2102,7 @@ export const UNIVERSITIES_ITALY = [
     "location": "Pisa, Italy",
     "logo": "https://www.google.com/s2/favicons?domain=www.santannapisa.it&sz=128",
     "website": "https://www.santannapisa.it",
-    "rank": "Rank 53 QS Rankings",
-    "rankingNum": 53,
-    "tuition": "3 Lakh INR",
-    "tuitionFeeUSD": 18000,
-    "acceptanceRate": 50,
     "type": "PUBLIC",
-    "minGpaPercent": 65,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -2438,16 +2139,7 @@ export const UNIVERSITIES_ITALY = [
     "location": "Teramo, Italy",
     "logo": "https://www.google.com/s2/favicons?domain=www.unite.it&sz=128",
     "website": "https://www.unite.it",
-    "rank": "Rank 56 QS Rankings",
-    "rankingNum": 56,
-    "tuition": "{'id': 15736, 'tuition_fee_min': '5170', 'tuition_fee_max': '5170'} INR/yr",
-    "tuitionFeeUSD": 18000,
-    "acceptanceRate": 50,
     "type": "PUBLIC",
-    "minGpaPercent": 65,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -2480,16 +2172,7 @@ export const UNIVERSITIES_ITALY = [
     "location": "Siena, Italy",
     "logo": "https://www.google.com/s2/favicons?domain=www.unistrasi.it&sz=128",
     "website": "https://www.unistrasi.it",
-    "rank": "Rank 57 QS Rankings",
-    "rankingNum": 57,
-    "tuition": "1 Lakh INR",
-    "tuitionFeeUSD": 18000,
-    "acceptanceRate": 50,
     "type": "PUBLIC",
-    "minGpaPercent": 65,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -2523,16 +2206,7 @@ export const UNIVERSITIES_ITALY = [
     "location": "Vercelli, Italy",
     "logo": "https://www.google.com/s2/favicons?domain=www.uniupo.it&sz=128",
     "website": "https://www.uniupo.it",
-    "rank": "Rank 59 QS Rankings",
-    "rankingNum": 59,
-    "tuition": "{'id': 15806, 'tuition_fee_min': '16131', 'tuition_fee_max': '16131'} INR/yr",
-    "tuitionFeeUSD": 18000,
-    "acceptanceRate": 50,
     "type": "PUBLIC",
-    "minGpaPercent": 65,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "minGreScore": 0,
     "greRequired": false,
     "scholarshipAvailable": true,
     "degreeLevels": [
@@ -2560,5 +2234,3 @@ export const UNIVERSITIES_ITALY = [
     ]
   }
 ];
-
-export default UNIVERSITIES_ITALY;

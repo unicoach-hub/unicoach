@@ -8,52 +8,38 @@ import CoursesAndFees from './CoursesAndFees';
 
 const cambridgeData = {
   name: "University of Cambridge",
-  location: "Cambridge - Massachusetts, UK", // Matches user prompt's specific location string
+  location: "Cambridge, England, UK",
   city: "Cambridge",
   established: 1209,
-  totalStudents: 24270,
-  intlStudents: 9949,
   type: "PUBLIC",
   logo: "/logos/University of Cambridge.jpg",
   heroImage: "/images/universities/cambridge.jpg",
-  description: "The University of Cambridge, established in 1209, is one of the oldest, largest and most prestigious universities in the world. Renowned for its academic excellence and pioneering research, it has produced some of the world's most influential scientists, writers, and political leaders.\n\nWith a collegiate system consisting of 31 colleges, Cambridge offers a unique, close-knit learning community. Students benefit from individual or small-group supervisions with world-leading authorities in their respective fields.\n\nThe university provides top-tier facilities including the Cambridge University Library, university museums, and extensive sports facilities. It is consistently ranked among the top universities globally for research output, teaching quality, and graduate employability.",
+  description: "The University of Cambridge, established in 1209, is one of the oldest and most prestigious universities in the world. Renowned for its academic excellence and pioneering research, it has produced some of the world's most influential scientists, writers, and political leaders.\n\nWith a collegiate system consisting of 31 colleges, Cambridge offers a unique, close-knit learning community. Students benefit from individual or small-group supervisions with world-leading authorities in their respective fields.\n\nThe university provides top-tier facilities including the Cambridge University Library, university museums, and extensive sports facilities. It is ranked 6th in the world in the QS World University Rankings 2027.",
   topCourses: [
     { name: "Banking and Finance", count: 1 },
     { name: "Business Administration", count: 2 },
     { name: "Philosophy and Religious Studies", count: 1 }
   ],
   intakeDeadlines: [
-    { name: "JAN'2025", status: "Intake Open" },
-    { name: "SEP'2025", status: "Intake Open" },
-    { name: "OCT'2025", status: "Intake Open" }
+    { name: "OCT'2026", status: "Intake Open" }
   ],
   requirements: [
-    { title: "TOEFL iBT Score", detail: "110+ minimum cutoff required for English proficiency verification." },
-    { title: "IELTS Academic Band", detail: "7.5+ minimum band required for admission, with no band less than 7.0." },
-    { title: "Undergraduate Degree", detail: "First-class honors degree expected (minimum equivalent of 3.8+ GPA)." }
+    { title: "English Language", detail: "IELTS, TOEFL or another accepted test; the required level depends on the course. Check the course page." },
+    { title: "Undergraduate Degree", detail: "Usually at least a high upper second-class (2:1) UK degree, or the international equivalent; the exact requirement varies by course." }
   ],
   rankings: {
     "QS Rankings": [
-      { category: "Best World Ranking Schools - 2023", rank: "2" },
-      { category: "Best World Ranking Schools - 2022", rank: "3" }
-    ],
-    "US News": [
-      { category: "Best World Ranking Schools - 2023", rank: "8" },
-      { category: "Best World Ranking Schools - 2022", rank: "2" }
-    ],
-    "Webometrics - World": [
-      { category: "Best World Ranking Schools - 2023", rank: "12" }
+      { category: "QS World University Rankings 2027", rank: "6" }
     ],
     "Times Higher Education": [
-      { category: "Best World Ranking Schools - 2023", rank: "3" },
-      { category: "Best World Ranking Schools - 2022", rank: "5" }
+      { category: "THE World University Rankings 2026", rank: "3=" }
     ]
   },
   coursesFees: [
-    { name: "Master of Finance", duration: "12 Months", tuition: 58.14 }
+    { name: "MPhil in Advanced Computer Science (2027-28, overseas fee)", duration: "Full-time", tuition: 65 }
   ],
   placements: {
-    description: "The University of Cambridge offers exceptional career support through the Careers Service, providing lifetime support to students and alumni. They organize specialized career fairs, workshops, networking events with global recruiters, and collateral-free funding options to help students secure internships and graduate positions globally.",
+    description: "The University of Cambridge offers exceptional career support through the Careers Service, providing lifetime support to students and alumni. They organize specialized career fairs, workshops, networking events with global recruiters to help students secure internships and graduate positions globally.",
     services: [
       "Internships and Placement Support",
       "Visa and Work Authorisation Guidance",

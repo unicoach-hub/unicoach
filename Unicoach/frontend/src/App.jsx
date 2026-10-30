@@ -223,6 +223,7 @@ const EligibilityCalculatorPage = lazy(() => import('./pages/EligibilityCalculat
 const UnsubscribePage = lazy(() => import('./pages/UnsubscribePage'));
 const EducationLoanPage = lazy(() => import('./pages/EducationLoanPage'));
 const VisaAssistancePage = lazy(() => import('./pages/VisaAssistancePage'));
+const CareerCounsellingPage = lazy(() => import('./pages/CareerCounsellingPage'));
 const SearchProgramsPage = lazy(() => import('./pages/SearchProgramsPage'));
 const IndianScholarshipsPage = lazy(() => import('./pages/IndianScholarshipsPage'));
 const ProgramDetailPage = lazy(() => import('./pages/ProgramDetailPage'));
@@ -870,6 +871,7 @@ const App = () => {
             <Route path="/unsubscribe" element={<UnsubscribePage />} />
             <Route path="/education-loan" element={<EducationLoanPage />} />
             <Route path="/visa-assistance" element={<VisaAssistancePage />} />
+            <Route path="/career-counselling" element={<CareerCounsellingPage />} />
             <Route path="/scholarship-calculator" element={<EligibilityCalculatorPage />} />
 
             {/* Events */}

@@ -15,15 +15,15 @@ import { HookBand, StatStrip, BarCompare } from '../../../components/ui/Infograp
 // Germany University Database (for Finder)
 // ─────────────────────────────────────────────
 const masterUniversities = [
-  { id: 'ger-1', name: "Technical University of Munich (TUM)", city: "Munich", rank: "22 QS", tuition: 0, type: "PUBLIC", website: "https://www.tum.de", eligibility: "GPA 3.5+, IELTS 6.5+, APS required", logo: "https://logo.clearbit.com/tum.de", courses: ["Computer Science", "Informatics", "Data Engineering", "Mechanical Engineering", "Electrical Engineering", "Robotics", "Automotive Engineering"] },
-  { id: 'ger-2', name: "LMU Munich", city: "Munich", rank: "58 QS", tuition: 0, type: "PUBLIC", website: "https://www.lmu.de", eligibility: "GPA 3.3+, IELTS 6.5+, APS required", logo: "https://logo.clearbit.com/lmu.de", courses: ["Computer Science", "Data Science", "Business Administration", "Economics", "Medicine", "Physics", "Psychology"] },
-  { id: 'ger-3', name: "Heidelberg University", city: "Heidelberg", rank: "80 QS", tuition: 3000, type: "PUBLIC", website: "https://www.uni-heidelberg.de", eligibility: "GPA 3.3+, IELTS 6.5+ or German B2, APS required", logo: "https://logo.clearbit.com/uni-heidelberg.de", courses: ["Medicine", "Computer Science", "Scientific Computing", "Translational Medical Research", "Law", "Biosciences"] },
-  { id: 'ger-4', name: "RWTH Aachen University", city: "Aachen", rank: "105 QS", tuition: 0, type: "PUBLIC", website: "https://www.rwth-aachen.de", eligibility: "GPA 3.2+, IELTS 6.5+, APS required", logo: "https://logo.clearbit.com/rwth-aachen.de", courses: ["Mechanical Engineering", "Automotive Engineering", "Computer Science", "Software Systems Engineering", "Electrical Engineering", "Production Engineering"] },
-  { id: 'ger-5', name: "Technical University of Berlin (TU Berlin)", city: "Berlin", rank: "145 QS", tuition: 0, type: "PUBLIC", website: "https://www.tu.berlin", eligibility: "GPA 3.0+, IELTS 6.5+, APS required", logo: "https://logo.clearbit.com/tu.berlin", courses: ["Computer Science", "Information Systems Management", "Industrial Engineering", "Architecture", "Data Engineering"] },
-  { id: 'ger-6', name: "University of Hamburg", city: "Hamburg", rank: "193 QS", tuition: 0, type: "PUBLIC", website: "https://www.uni-hamburg.de", eligibility: "GPA 3.0+, IELTS 6.5+, APS required", logo: "https://logo.clearbit.com/uni-hamburg.de", courses: ["Computer Science", "Intelligent Adaptive Systems", "Business Administration", "Economics", "Physics"] },
-  { id: 'ger-7', name: "University of Freiburg", city: "Freiburg", rank: "201 QS", tuition: 3000, type: "PUBLIC", website: "https://www.uni-freiburg.de", eligibility: "GPA 3.2+, IELTS 6.5+, APS required", logo: "https://logo.clearbit.com/uni-freiburg.de", courses: ["Computer Science", "Embedded Systems", "Renewable Energy Engineering", "Medicine", "Biological Sciences"] },
-  { id: 'ger-8', name: "University of Bonn", city: "Bonn", rank: "207 QS", tuition: 0, type: "PUBLIC", website: "https://www.uni-bonn.de", eligibility: "GPA 3.0+, IELTS 6.5+, APS required", logo: "https://logo.clearbit.com/uni-bonn.de", courses: ["Computer Science", "Economics", "Mathematics", "Immunobiology", "Agricultural Sciences"] },
-  { id: 'ger-9', name: "Karlsruhe Institute of Technology (KIT)", city: "Karlsruhe", rank: "135 QS", tuition: 3000, type: "PUBLIC", website: "https://www.kit.edu", eligibility: "GPA 3.2+, IELTS 6.5+, APS required", logo: "https://logo.clearbit.com/kit.edu", courses: ["Computer Science", "Informatics", "Mechanical Engineering", "Electrical Engineering", "Energy Technologies"] },
+  { id: 'ger-1', name: "Technical University of Munich (TUM)", city: "Munich", rank: "25 QS", tuition: 4000, type: "PUBLIC", website: "https://www.tum.de", eligibility: "GPA 3.5+, IELTS 6.5+, APS required", logo: "/logos/verified-Technical University of Munich.png", courses: ["Computer Science", "Informatics", "Data Engineering", "Mechanical Engineering", "Electrical Engineering", "Robotics", "Automotive Engineering"] },
+  { id: 'ger-2', name: "LMU Munich", city: "Munich", rank: "61 QS", tuition: 0, type: "PUBLIC", website: "https://www.lmu.de", eligibility: "GPA 3.3+, IELTS 6.5+, APS required", logo: "/logos/verified-Ludwig Maximilian University of Munich.png", courses: ["Computer Science", "Data Science", "Business Administration", "Economics", "Medicine", "Physics", "Psychology"] },
+  { id: 'ger-3', name: "Heidelberg University", city: "Heidelberg", rank: "86 QS", tuition: 3000, type: "PUBLIC", website: "https://www.uni-heidelberg.de", eligibility: "GPA 3.3+, IELTS 6.5+ or German B2, APS required", logo: "/logos/verified-Heidelberg University.png", courses: ["Medicine", "Computer Science", "Scientific Computing", "Translational Medical Research", "Law", "Biosciences"] },
+  { id: 'ger-4', name: "RWTH Aachen University", city: "Aachen", rank: "104 QS", tuition: 0, type: "PUBLIC", website: "https://www.rwth-aachen.de", eligibility: "GPA 3.2+, IELTS 6.5+, APS required", logo: "/logos/verified-RWTH Aachen University.png", courses: ["Mechanical Engineering", "Automotive Engineering", "Computer Science", "Software Systems Engineering", "Electrical Engineering", "Production Engineering"] },
+  { id: 'ger-5', name: "Technical University of Berlin (TU Berlin)", city: "Berlin", rank: "158 QS", tuition: 0, type: "PUBLIC", website: "https://www.tu.berlin", eligibility: "GPA 3.0+, IELTS 6.5+, APS required", logo: "/logos/verified-Technical University of Berlin.png", courses: ["Computer Science", "Information Systems Management", "Industrial Engineering", "Architecture", "Data Engineering"] },
+  { id: 'ger-6', name: "University of Hamburg", city: "Hamburg", rank: "209 QS", tuition: 0, type: "PUBLIC", website: "https://www.uni-hamburg.de", eligibility: "GPA 3.0+, IELTS 6.5+, APS required", logo: "/logos/verified-University of Hamburg.png", courses: ["Computer Science", "Intelligent Adaptive Systems", "Business Administration", "Economics", "Physics"] },
+  { id: 'ger-7', name: "University of Freiburg", city: "Freiburg", rank: "245 QS", tuition: 3000, type: "PUBLIC", website: "https://www.uni-freiburg.de", eligibility: "GPA 3.2+, IELTS 6.5+, APS required", logo: "/logos/verified-University of Freiburg.png", courses: ["Computer Science", "Embedded Systems", "Renewable Energy Engineering", "Medicine", "Biological Sciences"] },
+  { id: 'ger-8', name: "University of Bonn", city: "Bonn", rank: "209 QS", tuition: 0, type: "PUBLIC", website: "https://www.uni-bonn.de", eligibility: "GPA 3.0+, IELTS 6.5+, APS required", logo: "https://logo.clearbit.com/uni-bonn.de", courses: ["Computer Science", "Economics", "Mathematics", "Immunobiology", "Agricultural Sciences"] },
+  { id: 'ger-9', name: "Karlsruhe Institute of Technology (KIT)", city: "Karlsruhe", rank: "110 QS", tuition: 3000, type: "PUBLIC", website: "https://www.kit.edu", eligibility: "GPA 3.2+, IELTS 6.5+, APS required", logo: "/logos/verified-Karlsruhe Institute of Technology.png", courses: ["Computer Science", "Informatics", "Mechanical Engineering", "Electrical Engineering", "Energy Technologies"] },
   { id: 'ger-10', name: "Hochschule Munich (FH)", city: "Munich", rank: "Applied Sciences", tuition: 0, type: "PUBLIC", website: "https://www.hm.edu", eligibility: "GPA 2.8+, IELTS 6.0+, APS required", logo: "https://logo.clearbit.com/hm.edu", courses: ["Applied Computer Science", "Business Administration", "Automotive Informatics", "Engineering Management"] },
   { id: 'ger-11', name: "HAW Hamburg (FH)", city: "Hamburg", rank: "Applied Sciences", tuition: 0, type: "PUBLIC", website: "https://www.haw-hamburg.de", eligibility: "GPA 2.8+, IELTS 6.0+, APS required", logo: "https://logo.clearbit.com/haw-hamburg.de", courses: ["Information Engineering", "Renewable Energy Systems", "Health Sciences", "Automotive Systems"] }
 ];
@@ -190,7 +190,7 @@ const GermanyOverview = () => {
                 className="grid grid-cols-1 md:grid-cols-3 gap-6"
               >
                 {[
-                  { tier: "Public Universities", desc: "Almost all public universities charge €0 tuition fees. A nominal semester contribution (€150–€350) covers admin and public transit.", cost: 0 },
+                  { tier: "Public Universities", desc: "Almost all public universities charge €0 tuition fees. A nominal semester contribution (~€100–€400) covers admin and often public transit. Exception: TUM charges non-EU students tuition (€2,000–€6,000/semester).", cost: 0 },
                   { tier: "State of Baden-Württemberg", desc: "Public universities in this state (e.g. Freiburg, KIT, Heidelberg) charge tuition fees of €1,500/semester for non-EU students.", cost: 3000 },
                   { tier: "Private Universities", desc: "Private institutions set their own rates, typically varying widely depending on reputation and program type.", cost: 12000 }
                 ].map((tier, i) => (
@@ -316,7 +316,7 @@ const GermanyOverview = () => {
 
           <div className="flex border-b border-slate-200 mb-8 overflow-x-auto gap-2">
             {[
-              { id: 'qs', label: 'QS Global Rankings 2026' },
+              { id: 'qs', label: 'QS Global Rankings 2027' },
               { id: 'specialization', label: 'Best Fields of Study' },
               { id: 'pathways', label: 'Universität vs Fachhochschule' }
             ].map(tab => (
@@ -347,12 +347,12 @@ const GermanyOverview = () => {
                     </thead>
                     <tbody className="divide-y divide-slate-100 text-slate-700 font-semibold">
                       {[
-                        { rank: "22", name: "Technical University of Munich (TUM)", loc: "Munich" },
-                        { rank: "58", name: "LMU Munich", loc: "Munich" },
-                        { rank: "80", name: "Heidelberg University", loc: "Heidelberg" },
-                        { rank: "105", name: "RWTH Aachen University", loc: "Aachen" },
-                        { rank: "135", name: "Karlsruhe Institute of Technology (KIT)", loc: "Karlsruhe" },
-                        { rank: "145", name: "Technical University of Berlin", loc: "Berlin" }
+                        { rank: "25", name: "Technical University of Munich (TUM)", loc: "Munich" },
+                        { rank: "61", name: "LMU Munich", loc: "Munich" },
+                        { rank: "86", name: "Heidelberg University", loc: "Heidelberg" },
+                        { rank: "98", name: "Free University of Berlin", loc: "Berlin" },
+                        { rank: "104", name: "RWTH Aachen University", loc: "Aachen" },
+                        { rank: "110", name: "Karlsruhe Institute of Technology (KIT)", loc: "Karlsruhe" }
                       ].map((row, i) => (
                         <tr key={i} className="hover:bg-slate-50/50 transition-colors">
                           <td className="py-3.5 text-indigo-650 font-black">{row.rank}</td>

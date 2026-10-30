@@ -24,21 +24,20 @@ const SECTIONS = [
 ];
 
 const topMbaUnisList = [
-  { rank: 1, name: "University of Auckland", qs: "#65", feeNZD: 46188, tagline: "TRIPLE CROWN: AACSB + EQUIS + AMBA", desc: "Globally elite business school. Living Curriculum features pairing directly with Kiwi firms.", logo: "https://logo.clearbit.com/auckland.ac.nz", website: "https://www.auckland.ac.nz", city: "Auckland" },
-  { rank: 2, name: "University of Otago", qs: "#197", feeNZD: 72612, tagline: "INTENSIVE TWO-PHASE PROGRAM", desc: "Strong research focus + global perspective. Otago requires GMAT 550+ score.", logo: "https://logo.clearbit.com/otago.ac.nz", website: "https://www.otago.ac.nz", city: "Dunedin" },
-  { rank: 3, name: "Massey University", qs: "#230", feeNZD: 51500, tagline: "1-YEAR FAST-TRACK OPTION", desc: "Flexible & budget-friendly. Excellent choice for quick entry into the workforce.", logo: "https://logo.clearbit.com/massey.ac.nz", website: "https://www.massey.ac.nz", city: "Palmerston North" },
-  { rank: 4, name: "Victoria University of Wellington", qs: "#240", feeNZD: 66700, tagline: "CAPITAL CITY ADVANTAGE", desc: "Unmatched networking linkages to government ministries and corporate HQs.", logo: "https://logo.clearbit.com/wgtn.ac.nz", website: "https://www.wgtn.ac.nz", city: "Wellington" },
-  { rank: 5, name: "University of Canterbury", qs: "#261", feeNZD: 61350, tagline: "ONE-ON-ONE INDUSTRY COACHING", desc: "Known for strong corporate engagement and active mentoring with business leaders.", logo: "https://logo.clearbit.com/canterbury.ac.nz", website: "https://www.canterbury.ac.nz", city: "Christchurch" },
-  { rank: 6, name: "University of Waikato", qs: "#281", feeNZD: 64945, tagline: "WAIKATO MANAGEMENT SCHOOL NETWORK", desc: "Strong industry ties and practical case-studies through deep corporate linkages.", logo: "https://logo.clearbit.com/waikato.ac.nz", website: "https://www.waikato.ac.nz", city: "Hamilton" },
-  { rank: 7, name: "Lincoln University", qs: "#407", feeNZD: 42500, tagline: "SUSTAINABILITY & LAND-BASED", desc: "Best for agri-business management, rural commerce, and environmental strategy.", logo: "https://logo.clearbit.com/lincoln.ac.nz", website: "https://www.lincoln.ac.nz", city: "Lincoln" },
-  { rank: 8, name: "Auckland University of Technology (AUT)", qs: "#410", feeNZD: 58719, tagline: "CURRICULUM WITH INDUSTRY EXPERTS", desc: "Modern industry partnerships designed for immediate real-world executive application.", logo: "https://logo.clearbit.com/aut.ac.nz", website: "https://www.aut.ac.nz", city: "Auckland" }
+  { rank: 1, name: "University of Auckland", qs: "#68", feeNZD: null, tagline: "TRIPLE CROWN: AACSB + EQUIS + AMBA", desc: "Triple-crown accredited Business School in central Auckland. MBA fee not verified — check the official site.", logo: "/logos/verified-University of Auckland.png", website: "https://www.auckland.ac.nz", city: "Auckland" },
+  { rank: 2, name: "University of Otago", qs: "#198", feeNZD: null, tagline: "OTAGO BUSINESS SCHOOL MBA", desc: "MBA from Otago Business School in Dunedin. MBA papers cost NZ$4,538 each (2026); total programme fee not verified.", logo: "/logos/verified-University of Otago.png", website: "https://www.otago.ac.nz", city: "Dunedin" },
+  { rank: 3, name: "Massey University", qs: "#215", feeNZD: 65160, tagline: "MBA (180 CREDITS)", desc: "Massey MBA: NZ$65,160 for 180 credits (2027 estimate).", logo: "/logos/verified-Massey University.png", website: "https://www.massey.ac.nz", city: "Palmerston North" },
+  { rank: 4, name: "Victoria University of Wellington", qs: "#241", feeNZD: 71400, tagline: "EXECUTIVE MBA - CAPITAL CITY", desc: "No standard MBA; the Executive MBA costs NZ$71,400 for the full programme. Close to government ministries and corporate HQs.", logo: "/logos/verified-Victoria University of Wellington.png", website: "https://www.wgtn.ac.nz", city: "Wellington" },
+  { rank: 5, name: "University of Canterbury", qs: "#257", feeNZD: 65700, tagline: "EXECUTIVE MBA", desc: "Executive MBA only: NZ$65,700 (2027; NZ$62,850 in 2026, 180 points).", logo: "/logos/verified-University of Canterbury.png", website: "https://www.canterbury.ac.nz", city: "Christchurch" },
+  { rank: 6, name: "University of Waikato", qs: "#293", feeNZD: 65700, tagline: "TRIPLE CROWN: AACSB + EQUIS + AMBA", desc: "Waikato Management School is triple-crown accredited. MBA fee NZ$65,700 (2026 estimate).", logo: "/logos/verified-University of Waikato.png", website: "https://www.waikato.ac.nz", city: "Hamilton" },
+  { rank: 7, name: "Auckland University of Technology (AUT)", qs: "#431", feeNZD: 64082, tagline: "MBA (180 POINTS)", desc: "AUT MBA: NZ$64,082 for 180 points in 2026, including the student services levy.", logo: "/logos/verified-Auckland University of Technology.png", website: "https://www.aut.ac.nz", city: "Auckland" }
 ];
 
 const NewZealandMBACourse = () => {
   const [activeSection, setActiveSection] = useState('overview');
   const [currency, setCurrency] = useState('INR'); // 'NZD' | 'INR'
   const [faqOpen, setFaqOpen] = useState({});
-  const exchangeRate = 53.70; // Reference 1 NZD = 53.70 INR
+  const exchangeRate = 56.0; // Reference 1 NZD = 56 INR (Aug 2026)
 
   const formatCost = (valInNZD) => {
     if (currency === 'NZD') {
@@ -177,7 +176,7 @@ const NewZealandMBACourse = () => {
                   {[
                     { label: "25-Hour Work", val: "Earn ~₹6K-8K weekly" },
                     { label: "3-Year Stay-Back", val: "Unrestricted open visa" },
-                    { label: "Global Quality", val: "All 8 in top 3% globally" },
+                    { label: "Global Quality", val: "All 8 in QS 2027 top 500" },
                     { label: "Green List PR", val: "Fast-track management roles" },
                     { label: "High ROI", val: "12-18 months break-even" },
                     { label: "Living Curriculum", val: "Real Kiwi firm projects" }
@@ -254,7 +253,7 @@ const NewZealandMBACourse = () => {
             {/* 4. Top Universities */}
             <section id="universities" className="scroll-mt-24">
               <div className="text-left mb-6">
-                <h2 className="text-2xl font-black text-slate-900 mb-1">🏛️ Top Universities for MBA (2026 Rankings & Fees)</h2>
+                <h2 className="text-2xl font-black text-slate-900 mb-1">🏛️ Top Universities for MBA (QS 2027 Rankings & Fees)</h2>
                 <p className="text-slate-400 text-xs font-bold uppercase tracking-wider">Tuition costs with active currency conversion options</p>
               </div>
 
@@ -280,8 +279,8 @@ const NewZealandMBACourse = () => {
                 className="mb-8"
                 kicker="Programme fee"
                 title="MBA fees at NZ universities"
-                items={topMbaUnisList.map((uni) => ({ label: uni.name, value: uni.feeNZD, display: formatCost(uni.feeNZD) }))}
-                highlight="Lincoln University"
+                items={topMbaUnisList.filter((uni) => uni.feeNZD != null).map((uni) => ({ label: uni.name, value: uni.feeNZD, display: formatCost(uni.feeNZD) }))}
+                highlight="Auckland University of Technology (AUT)"
               />
 
               <div className="space-y-6">
@@ -293,7 +292,7 @@ const NewZealandMBACourse = () => {
                           src={uni.logo} 
                           alt="" 
                           className="w-full h-full object-contain"
-                          onError={(e) => e.target.src = 'https://logo.clearbit.com/auckland.ac.nz'}
+                          onError={(e) => { e.target.onerror = null; e.target.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(uni.name)}&background=4F46E5&color=ffffff&bold=true&size=128`; }}
                         />
                       </div>
                       <div>
@@ -311,7 +310,7 @@ const NewZealandMBACourse = () => {
                     <div className="grid grid-cols-2 md:grid-cols-3 gap-6 text-xs border-t md:border-t-0 border-slate-100 pt-4 md:pt-0 shrink-0">
                       <div>
                         <span className="text-slate-400 font-bold block">Tuition Fee</span>
-                        <strong className="text-slate-800 font-extrabold mt-0.5 block">{formatCost(uni.feeNZD)}</strong>
+                        <strong className="text-slate-800 font-extrabold mt-0.5 block">{uni.feeNZD != null ? formatCost(uni.feeNZD) : 'Not verified'}</strong>
                       </div>
                       <div className="col-span-2">
                         <span className="text-slate-405 font-bold block">Action</span>
@@ -344,7 +343,7 @@ const NewZealandMBACourse = () => {
                   <div className="bg-slate-50 p-5 rounded-2xl border border-slate-100">
                     <h4 className="font-extrabold text-slate-800 uppercase tracking-wider mb-2">Work Experience & GMAT</h4>
                     <p className="text-slate-555 leading-relaxed">
-                      Typically **3-5 years** relevant work experience. GMAT is optional for most universities, except the University of Otago (**550+ score**).
+                      Typically **3-5 years** relevant work experience. GMAT/GRE rules differ by university — check each MBA's admission page for current requirements.
                     </p>
                   </div>
                 </div>
@@ -410,23 +409,23 @@ const NewZealandMBACourse = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-xs font-semibold">
                   <div className="bg-slate-50 p-5 rounded-2xl border border-slate-100">
                     <h4 className="font-extrabold text-slate-805 uppercase tracking-wider mb-2">🌟 NZ Excellence Awards (NZEA)</h4>
-                    <p className="text-indigo-650 font-black mb-1">Value: Up to NZ$10,000</p>
-                    <p className="text-slate-500">Exclusive partial tuition waivers for high-achieving Indian nationals.</p>
+                    <p className="text-indigo-650 font-black mb-1">Value: NZ$7,500 – NZ$15,000</p>
+                    <p className="text-slate-500">Run by Education New Zealand with participating universities for students from India.</p>
                   </div>
                   <div className="bg-slate-50 p-5 rounded-2xl border border-slate-100">
                     <h4 className="font-extrabold text-slate-805 uppercase tracking-wider mb-2">🏛️ Manaaki NZ Scholarships</h4>
                     <p className="text-indigo-655 font-black mb-1">Value: Full Funding</p>
-                    <p className="text-slate-500">Covers 100% tuition, living stipends, and travel expenses.</p>
+                    <p className="text-slate-500">Government funded for citizens of eligible countries — check whether India is eligible in the current round.</p>
                   </div>
                   <div className="bg-slate-50 p-5 rounded-2xl border border-slate-100">
                     <h4 className="font-extrabold text-slate-805 uppercase tracking-wider mb-2"><CapIcon /> UoA India High Achievers</h4>
-                    <p className="text-indigo-655 font-black mb-1">Value: Up to NZ$20,000</p>
-                    <p className="text-slate-500">Offered by Auckland University for high-performing Indian students.</p>
+                    <p className="text-indigo-655 font-black mb-1">Value: 25% of one year's tuition</p>
+                    <p className="text-slate-500">Offered by the University of Auckland to new international Master's students from India; check whether your MBA qualifies.</p>
                   </div>
                   <div className="bg-slate-50 p-5 rounded-2xl border border-slate-100">
                     <h4 className="font-extrabold text-slate-805 uppercase tracking-wider mb-2">💼 Otago Global Scholarships</h4>
-                    <p className="text-indigo-655 font-black mb-1">Value: $10,000 – $15,000</p>
-                    <p className="text-slate-500">Based on strong leadership and management career potential.</p>
+                    <p className="text-indigo-655 font-black mb-1">Value: NZ$15,000</p>
+                    <p className="text-slate-500">For new undergraduate students with a nominated passport (India included) — not for MBA students.</p>
                   </div>
                 </div>
               </div>
@@ -496,7 +495,7 @@ const NewZealandMBACourse = () => {
               <div className="space-y-4">
                 {[
                   { q: "What is the 25-hour work rule?", a: "New Zealand term-time student work rights allow students to work up to 25 hours per week (up from 20 hours), earning approximately NZ$500-600 weekly." },
-                  { q: "Do I need GMAT or GRE for admission?", a: "Some universities (like the University of Otago) require GMAT scores (550+), while others accept students based on academic credentials and relevant work experience (usually 3+ years)." },
+                  { q: "Do I need GMAT or GRE for admission?", a: "Requirements differ by university: some may ask for a GMAT/GRE score, others admit on academic record and work experience. Check each MBA's current admission page." },
                   { q: "What is the 'Living Curriculum'?", a: "New Zealand business schools emphasize hands-on learning through Live Consulting Projects, pairing students directly with local companies to solve real business challenges." },
                   { q: "Are management jobs on the Green List?", a: "Yes, various project management, construction management, and ICT management roles are listed on the Green List, offering a direct fast-track pathway to permanent residency (PR)." }
                 ].map((faq, idx) => {

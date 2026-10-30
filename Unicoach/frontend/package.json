@@ -21,6 +21,7 @@
     "@react-oauth/google": "^0.13.5",
     "@sentry/react": "^10.73.0",
     "@tailwindcss/vite": "^4.3.1",
+    "@vercel/analytics": "^2.0.1",
     "antd": "^6.5.0",
     "framer-motion": "^12.40.0",
     "gsap": "^3.15.0",

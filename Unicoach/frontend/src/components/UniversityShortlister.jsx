@@ -3,13 +3,14 @@ import { createPortal } from 'react-dom';
 import { useSearchParams } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
-  Sparkles, Compass, Search, Target, ShieldCheck, Award, 
-  GraduationCap, Globe, DollarSign, CheckCircle2, BookOpen, 
-  ExternalLink, SlidersHorizontal, RefreshCw, BookmarkCheck, ArrowRight, ArrowLeft, Calendar, Briefcase, X,
+  Sparkles, Compass, Search, Target, ShieldCheck,
+  CheckCircle2, BookOpen, 
+  ExternalLink, SlidersHorizontal, RefreshCw, BookmarkCheck, ArrowRight, ArrowLeft, X,
   FileSpreadsheet, Download, Loader2
 } from 'lucide-react';
 import UniversityLogo from './UniversityLogo';
 import PremiumDropdown from './PremiumDropdown';
+import { FinderCard, FinderField, FinderButton, FinderChip } from './ui/FinderForm';
 import OptionIcon from './ui/OptionIcon';
 import NumberStepperInput from './ui/NumberStepperInput';
 import { matchesUniversitySearch } from '../utils/universitySearchMatcher';
@@ -851,19 +852,13 @@ const UniversityShortlister = ({ user: propUser, verifiedLead }) => {
       )}
 
       {/* Step Switcher Navigation */}
-      <div className="flex items-center gap-2 bg-slate-200/80 border border-slate-300/80 p-1.5 rounded-2xl shadow-inner backdrop-blur-xs">
-        <button
-          onClick={() => setStep(1)}
-          className={`flex-1 py-3 px-4 rounded-xl text-xs md:text-sm font-bold transition-all flex items-center justify-center gap-2 cursor-pointer ${
-            step === 1 
-              ? 'bg-[#DE5C2B] text-white shadow-md shadow-orange-500/20' 
-              : 'text-slate-600 hover:text-slate-900 hover:bg-white/60'
-          }`}
-        >
-          <SlidersHorizontal size={16} /> 1. Enter Your Profile Details
-        </button>
+      <div className="flex flex-wrap items-center justify-center gap-2">
+        <FinderChip on={step === 1} onClick={() => setStep(1)}>
+          <SlidersHorizontal size={14} /> 1. Your profile
+        </FinderChip>
 
-        <button
+        <FinderChip
+          on={step === 2}
           onClick={() => {
             // Matches only make sense for a known profile: step 1 has to be submitted first
             if (profileStatus !== 'saved') {
@@ -877,24 +872,18 @@ const UniversityShortlister = ({ user: propUser, verifiedLead }) => {
             else fetchShortlist(1, false, activeSearch, activeCategoryTab, true);
           }}
           aria-disabled={profileStatus !== 'saved'}
-          className={`flex-1 py-3 px-4 rounded-xl text-xs md:text-sm font-bold transition-all flex items-center justify-center gap-2 cursor-pointer ${
-            step === 2
-              ? 'bg-[#DE5C2B] text-white shadow-md shadow-orange-500/20'
-              : profileStatus === 'saved'
-              ? 'text-slate-600 hover:text-slate-900 hover:bg-white/60'
-              : 'text-slate-400 cursor-not-allowed'
-          }`}
+          className={step !== 2 && profileStatus !== 'saved' ? 'opacity-50 cursor-not-allowed' : ''}
         >
-          <Compass size={16} /> 2. View Shortlisted Universities
-        </button>
+          <Compass size={14} /> 2. Shortlisted universities
+        </FinderChip>
       </div>
 
       {/* Looking up a signed-in student's saved profile */}
       {profileStatus === 'checking' && (
-        <div className="bg-white border border-slate-200/90 rounded-[32px] p-10 flex flex-col items-center justify-center gap-3 text-center min-h-[260px]">
+        <FinderCard className="flex flex-col items-center justify-center gap-3 text-center min-h-[260px]">
           <RefreshCw size={22} className="animate-spin text-[#DE5C2B]" />
-          <p className="text-sm font-semibold text-slate-600">Loading your profile…</p>
-        </div>
+          <p className="text-sm font-semibold text-[#5B544A]">Loading your profile…</p>
+        </FinderCard>
       )}
 
       {/* STEP 1: STUDENT PROFILE WIZARD FORM */}
@@ -902,30 +891,19 @@ const UniversityShortlister = ({ user: propUser, verifiedLead }) => {
         <motion.div
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-white border border-slate-200/90 p-6 md:p-10 rounded-[32px] shadow-[0_20px_50px_-12px_rgba(15,23,42,0.08)] space-y-8"
         >
-          {/* Form Header with Visual Contrast */}
-          <div className="bg-gradient-to-r from-blue-50/80 via-slate-50/60 to-transparent p-4 sm:p-5 rounded-2xl border border-orange-100/70 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-            <div>
-              <h3 className="text-lg md:text-xl font-black text-slate-800 flex items-center gap-2">
-                <GraduationCap className="text-[#DE5C2B]" size={22} />
-                Student Academic & Target Profile Inputs
-              </h3>
-              <p className="text-xs text-slate-500 font-medium mt-1">
-                Please provide your score details so we can accurately match against university eligibility criteria.
-              </p>
-            </div>
-            <span className="self-start sm:self-center px-3 py-1 rounded-full text-xs font-bold bg-orange-100/80 text-[#DE5C2B] border border-orange-200/60 whitespace-nowrap">
-              Step 1 of 2
-            </span>
+        <FinderCard className="space-y-5">
+          <div>
+            <p className="text-[12.5px] font-semibold text-[#86351A]">Step 1 of 2</p>
+            <h3 className="mt-1 font-outfit text-[20px] sm:text-[22px] font-bold text-[#16130F] tracking-[-0.02em]">Your academic profile</h3>
+            <p className="text-[13.5px] text-[#5B544A] mt-0.5">Add your scores so we can match you against university eligibility criteria.</p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 items-start">
             {/* Highest Education */}
             <div className="relative">
               <PremiumDropdown
-                label="Current Education Level"
-                labelIcon={<GraduationCap size={15} className="text-indigo-500" />}
+                label="Education level"
                 value={formData.educationLevel}
                 onChange={(val) => handleInputChange('educationLevel', val)}
                 accent="indigo"
@@ -939,10 +917,7 @@ const UniversityShortlister = ({ user: propUser, verifiedLead }) => {
             </div>
 
             {/* Academic Percentage / GPA */}
-            <div className="space-y-2">
-              <label className="text-xs font-bold text-slate-600 flex items-center gap-1.5">
-                <Award size={15} className="text-indigo-500" /> Academic Score (% or GPA)
-              </label>
+            <FinderField label="Academic score (% or GPA)">
               <NumberStepperInput
                 value={formData.gpaPercent}
                 onChange={(v) => handleInputChange('gpaPercent', v)}
@@ -953,13 +928,12 @@ const UniversityShortlister = ({ user: propUser, verifiedLead }) => {
                 placeholder="e.g. 75"
                 ariaLabel="Academic score percentage"
               />
-            </div>
+            </FinderField>
 
             {/* Stream / Major */}
             <div className="relative">
               <PremiumDropdown
-                label="Major / Field of Study"
-                labelIcon={<BookOpen size={15} className="text-indigo-500" />}
+                label="Field of study"
                 value={formData.streamMajor}
                 onChange={(val) => handleInputChange('streamMajor', val)}
                 accent="indigo"
@@ -975,8 +949,7 @@ const UniversityShortlister = ({ user: propUser, verifiedLead }) => {
             {/* Target Country */}
             <div className="relative">
               <PremiumDropdown
-                label="Target Destination"
-                labelIcon={<Globe size={15} className="text-indigo-500" />}
+                label="Destination"
                 value={formData.targetCountry}
                 onChange={(val) => handleInputChange('targetCountry', val)}
                 accent="indigo"
@@ -993,10 +966,7 @@ const UniversityShortlister = ({ user: propUser, verifiedLead }) => {
               const rate = meta.rateFromUSD || 1;
               const toLocal = (usd) => Math.round(((Number(usd) || 0) * rate) / 1000) * 1000;
               return (
-                <div className="space-y-2">
-                  <label className="text-xs font-bold text-slate-600 flex items-center gap-1.5">
-                    <DollarSign size={15} className="text-indigo-500" /> Max yearly tuition ({meta.symbol} {meta.currency})
-                  </label>
+                <FinderField label={`Max yearly tuition (${meta.symbol} ${meta.currency})`}>
                   <NumberStepperInput
                     value={toLocal(formData.maxBudgetUSD)}
                     onChange={(v) => handleInputChange('maxBudgetUSD', Math.round((Number(v) || 0) / rate))}
@@ -1006,7 +976,7 @@ const UniversityShortlister = ({ user: propUser, verifiedLead }) => {
                     suffix={meta.symbol}
                     ariaLabel={`Maximum yearly tuition in ${meta.currency}`}
                   />
-                </div>
+                </FinderField>
               );
             })()}
 
@@ -1014,7 +984,6 @@ const UniversityShortlister = ({ user: propUser, verifiedLead }) => {
             <div className="relative">
               <PremiumDropdown
                 label="IELTS / TOEFL Score"
-                labelIcon={<BookOpen size={15} className="text-indigo-500" />}
                 value={formData.ieltsScore}
                 onChange={(val) => handleInputChange('ieltsScore', val)}
                 accent="indigo"
@@ -1030,10 +999,7 @@ const UniversityShortlister = ({ user: propUser, verifiedLead }) => {
             </div>
 
             {/* GRE Score */}
-            <div className="space-y-2">
-              <label className="text-xs font-bold text-slate-600 flex items-center gap-1.5">
-                <Award size={15} className="text-indigo-500" /> GRE Score (0 if waived)
-              </label>
+            <FinderField label="GRE score" hint="0 if waived">
               <NumberStepperInput
                 value={formData.greScore}
                 onChange={(v) => handleInputChange('greScore', v)}
@@ -1043,13 +1009,12 @@ const UniversityShortlister = ({ user: propUser, verifiedLead }) => {
                 placeholder="0 (or e.g. 310)"
                 ariaLabel="GRE score"
               />
-            </div>
+            </FinderField>
 
             {/* Work Experience */}
             <div className="relative">
               <PremiumDropdown
-                label="Work Experience (Years)"
-                labelIcon={<Briefcase size={15} className="text-indigo-500" />}
+                label="Work experience (years)"
                 value={formData.workExpYears}
                 onChange={(val) => handleInputChange('workExpYears', val)}
                 accent="indigo"
@@ -1065,8 +1030,7 @@ const UniversityShortlister = ({ user: propUser, verifiedLead }) => {
             {/* Target Intake */}
             <div className="relative">
               <PremiumDropdown
-                label="Preferred Intake"
-                labelIcon={<Calendar size={15} className="text-indigo-500" />}
+                label="Intake"
                 value={formData.intake}
                 onChange={(val) => handleInputChange('intake', val)}
                 accent="indigo"
@@ -1079,8 +1043,8 @@ const UniversityShortlister = ({ user: propUser, verifiedLead }) => {
             </div>
           </div>
 
-          <div className="pt-4 border-t border-slate-100 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-            <div className="text-xs font-semibold text-slate-500">
+          <div className="pt-5 border-t border-[#ECE6DA] flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div className="text-xs font-semibold text-[#5B544A]">
               {!currentUser && !token ? (
                 <span className="inline-flex items-center gap-1.5 text-[#DE5C2B] font-bold bg-orange-50 px-3.5 py-1.5 rounded-xl border border-orange-200">
                   <Sparkles size={14} className="text-[#DE5C2B]" /> 100% free · Sign in with Google or email to unlock your matches
@@ -1092,22 +1056,24 @@ const UniversityShortlister = ({ user: propUser, verifiedLead }) => {
               )}
             </div>
 
-            <button
+            <FinderButton
+              type="button"
               onClick={handleShortlistSubmit}
               disabled={loading}
-              className="w-full sm:w-auto px-8 py-4 bg-gradient-to-r from-[#DE5C2B] to-[#C04A1D] hover:from-[#C04A1D] hover:to-[#A73D14] text-white rounded-2xl text-sm font-black transition-all shadow-lg shadow-orange-500/20 flex items-center justify-center gap-3 cursor-pointer"
+              className="w-full sm:w-auto"
             >
               {loading ? (
                 <>
-                  <RefreshCw size={18} className="animate-spin" /> Evaluating Universities...
+                  <RefreshCw size={17} className="animate-spin" /> Evaluating Universities...
                 </>
               ) : (
                 <>
-                  <Sparkles size={18} /> Shortlist Universities Now <ArrowRight size={18} />
+                  Shortlist Universities Now <ArrowRight size={17} />
                 </>
               )}
-            </button>
+            </FinderButton>
           </div>
+        </FinderCard>
         </motion.div>
       )}
 
@@ -1260,30 +1226,26 @@ const UniversityShortlister = ({ user: propUser, verifiedLead }) => {
           />
 
           {/* Quick Course & Program Filter Chips */}
-          <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none text-xs">
-            <span className="text-[11px] font-black text-slate-400 whitespace-nowrap flex items-center gap-1 pl-1">
-              <Sparkles size={12} className="text-amber-500" /> Popular Programs:
+          <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none">
+            <span className="text-[13px] font-semibold text-[#16130F] whitespace-nowrap pl-1">
+              Popular programs
             </span>
             {POPULAR_SEARCH_CHIPS.map((chip) => {
               const isCurrent = activeSearch.toLowerCase() === chip.query.toLowerCase();
               return (
-                <button
+                <FinderChip
                   key={chip.label}
-                  type="button"
+                  on={isCurrent}
+                  className="whitespace-nowrap shrink-0"
                   onClick={() => {
                     setSearchTerm(chip.query);
                     setActiveSearch(chip.query);
                     fetchShortlist(1, false, chip.query, activeCategoryTab, false);
                   }}
-                  className={`px-3 py-1.5 rounded-full text-xs font-bold whitespace-nowrap transition-all flex items-center gap-1 cursor-pointer border ${
-                    isCurrent
-                      ? 'bg-[#DE5C2B] text-white border-[#DE5C2B] shadow-xs'
-                      : 'bg-white hover:bg-orange-50 text-slate-700 hover:text-[#C04A1D] border-slate-200'
-                  }`}
                 >
                   <OptionIcon icon={chip.icon} variant="bare" size="sm" />
                   <span>{chip.label}</span>
-                </button>
+                </FinderChip>
               );
             })}
           </div>

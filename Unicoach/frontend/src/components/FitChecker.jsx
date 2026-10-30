@@ -25,28 +25,28 @@ const FitChecker = () => {
 
   return (
     <section className="px-4 sm:px-6 py-10 sm:py-14">
-      <div className="max-w-[1320px] mx-auto rounded-[32px] sm:rounded-[40px] bg-[#FFC93C] px-6 sm:px-12 lg:px-16 py-12 sm:py-16 grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
-        <div>
+      <div className="max-w-[1320px] mx-auto rounded-[32px] sm:rounded-[40px] bg-[#FFC93C] px-6 sm:px-12 lg:px-16 py-10 sm:py-16 grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
+        <div className="min-w-0">
           <span className="inline-block -rotate-3 rounded-full bg-[#C04A1D] text-white text-[14px] font-semibold px-4 py-1.5 shadow-lg">For students</span>
-          <h2 className="mt-6 text-[44px] sm:text-[60px] lg:text-[72px] font-semibold text-[#16130F]">
+          <h2 className="mt-6 text-[36px] sm:text-[60px] lg:text-[72px] leading-[1.05] font-semibold text-[#16130F]">
             Check where you fit before you apply.
           </h2>
-          <p className="mt-5 text-[17px] text-[#16130F]/75 max-w-[460px]">
+          <p className="mt-5 text-[15.5px] sm:text-[17px] text-[#16130F]/75 max-w-[460px]">
             Move the sliders and see which countries match your budget and English score. No sign-up.
           </p>
           <ul className="mt-7 space-y-3">
             {['Yearly cost for every country', 'Usual IELTS ask for a master\'s', 'Exact shortlist on a free call'].map((t) => (
-              <li key={t} className="flex items-center gap-3 text-[16px] font-semibold text-[#16130F]">
-                <span className="w-6 h-6 rounded-full bg-[#16130F] text-white grid place-items-center"><Check className="w-3.5 h-3.5" strokeWidth={3} /></span>
+              <li key={t} className="flex items-center gap-3 text-[15px] sm:text-[16px] font-semibold text-[#16130F]">
+                <span className="w-6 h-6 rounded-full bg-[#16130F] text-white grid place-items-center shrink-0"><Check className="w-3.5 h-3.5" strokeWidth={3} /></span>
                 {t}
               </li>
             ))}
           </ul>
         </div>
 
-        <div className="rounded-[28px] bg-white p-6 sm:p-9 shadow-[0_30px_60px_-30px_rgba(22,19,15,0.35)]">
+        <div className="min-w-0 rounded-[24px] sm:rounded-[28px] bg-white p-5 sm:p-9 shadow-[0_30px_60px_-30px_rgba(22,19,15,0.35)]">
           <label className="block text-[14px] font-semibold text-[#16130F]/70">Budget per year</label>
-          <div className="font-heading text-[48px] sm:text-[60px] font-semibold leading-none tracking-[-0.05em] text-[#16130F] mt-1">₹{budget} lakh</div>
+          <div className="font-heading text-[42px] sm:text-[60px] font-semibold leading-none tracking-[-0.05em] text-[#16130F] mt-1">₹{budget} lakh</div>
           <input type="range" min={8} max={60} step={1} value={budget} onChange={(e) => setBudget(+e.target.value)}
             className="w-full mt-5 accent-[#C04A1D]" aria-label="Budget per year in lakh rupees" />
 
@@ -57,17 +57,17 @@ const FitChecker = () => {
             <span className="font-heading text-[28px] font-semibold text-[#16130F] w-14 text-right">{ielts.toFixed(1)}</span>
           </div>
 
-          <div className="relative mt-7 rounded-[22px] bg-[#BFE3FF] p-6 overflow-hidden">
+          <div className="relative mt-7 rounded-[22px] bg-[#BFE3FF] p-5 sm:p-6 overflow-hidden">
             <div className="text-[12px] font-bold tracking-[0.12em] uppercase text-[#16130F]/70">Likely fits</div>
-            <div className="font-heading text-[26px] sm:text-[30px] font-semibold text-[#16130F] mt-1 pr-28 leading-tight">
+            <div className="font-heading text-[24px] sm:text-[30px] font-semibold text-[#16130F] mt-1 pr-20 sm:pr-28 leading-tight">
               {fits.length ? fits.map((c) => c.name).join(', ') : 'Not yet, but there are ways in'}
             </div>
-            <p className="mt-2 text-[14px] text-[#16130F]/75 pr-28">
+            <p className="mt-2 text-[14px] text-[#16130F]/75 sm:pr-28">
               {stretch.length
                 ? `Within reach with a scholarship or a better score: ${stretch.map((c) => c.name).join(', ')}.`
                 : fits.length ? 'Your counsellor will match exact universities.' : 'Scholarships, loans or a higher score can open more countries.'}
             </p>
-            <div className={`absolute right-4 top-1/2 -translate-y-1/2 rotate-[-14deg] w-24 h-24 rounded-full border-[3px] grid place-items-center text-center font-heading font-bold leading-tight text-[13px] ${fits.length ? 'border-[#E5484D] text-[#E5484D]' : 'border-[#64748B] text-[#64748B]'}`}>
+            <div className={`absolute right-3 top-3 sm:right-4 sm:top-1/2 sm:-translate-y-1/2 rotate-[-14deg] w-[72px] h-[72px] sm:w-24 sm:h-24 rounded-full border-[3px] grid place-items-center text-center font-heading font-bold leading-tight text-[10.5px] sm:text-[13px] ${fits.length ? 'border-[#E5484D] text-[#E5484D]' : 'border-[#64748B] text-[#64748B]'}`}>
               {fits.length ? <>FITS<br />YOUR<br />BUDGET</> : <>NEEDS<br />A PLAN</>}
             </div>
           </div>

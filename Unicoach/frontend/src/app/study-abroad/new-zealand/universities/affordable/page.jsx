@@ -22,104 +22,104 @@ const SECTIONS = [
 ];
 
 const feeComparisonData = [
-  { rank: 1, name: "University of Auckland", qs: "#65", ugFee: 40496, pgRange: "$35K-$50K", logo: "https://logo.clearbit.com/auckland.ac.nz" },
-  { rank: 2, name: "University of Otago", qs: "#214", ugFee: 35621, pgRange: "$37K-$46K", logo: "https://logo.clearbit.com/otago.ac.nz" },
-  { rank: 3, name: "Massey University", qs: "#230", ugFee: 34220, pgRange: "$38.8K-$59.6K", logo: "https://logo.clearbit.com/massey.ac.nz" },
-  { rank: 4, name: "Victoria Univ. Wellington", qs: "#240", ugFee: 33360, pgRange: "$35K-$47K", logo: "https://logo.clearbit.com/wgtn.ac.nz" },
-  { rank: 5, name: "University of Canterbury", qs: "#261", ugFee: 32800, pgRange: "$32K-$48K", logo: "https://logo.clearbit.com/canterbury.ac.nz" },
-  { rank: 6, name: "University of Waikato", qs: "#281", ugFee: 32400, pgRange: "$38.8K-$48.3K", logo: "https://logo.clearbit.com/waikato.ac.nz" },
-  { rank: 7, name: "Lincoln University", qs: "#371", ugFee: 32500, pgRange: "$32K-$48K", logo: "https://logo.clearbit.com/lincoln.ac.nz" },
-  { rank: 8, name: "AUT (Auckland)", qs: "#410", ugFee: 35092, pgRange: "$35K-$47K", logo: "https://logo.clearbit.com/aut.ac.nz" }
+  { rank: 1, name: "University of Auckland", qs: "#68", ugFee: 42236, pgRange: "$45.9K-$58.3K (2027)", logo: "/logos/verified-University of Auckland.png" },
+  { rank: 2, name: "University of Otago", qs: "#198", ugFee: 35621, pgRange: "$32.5K-$51.9K (2026)", logo: "/logos/verified-University of Otago.png" },
+  { rank: 3, name: "Massey University", qs: "#215", ugFee: 35250, pgRange: "$37K-$52.7K (2027)", logo: "/logos/verified-Massey University.png" },
+  { rank: 4, name: "Victoria Univ. Wellington", qs: "#241", ugFee: 35696, pgRange: "$40.1K-$52.4K (2027)", logo: "/logos/verified-Victoria University of Wellington.png" },
+  { rank: 5, name: "University of Canterbury", qs: "#257", ugFee: 35610, pgRange: "$54K-$71.4K whole Master's (2027)", logo: "/logos/verified-University of Canterbury.png" },
+  { rank: 6, name: "University of Waikato", qs: "#293", ugFee: 32400, pgRange: "$39.6K+ (2026)", logo: "/logos/verified-University of Waikato.png" },
+  { rank: 7, name: "Lincoln University", qs: "#419", ugFee: 37000, pgRange: "$59K-$66K whole Master's (2027)", logo: "/logos/verified-Lincoln University.png" },
+  { rank: 8, name: "AUT (Auckland)", qs: "#431", ugFee: 36522, pgRange: "$39K-$52.3K (2026)", logo: "/logos/verified-Auckland University of Technology.png" }
 ];
 
 const detailedBreakdown = [
   {
     name: "University of Waikato (Hamilton)",
     label: "🏆 CHEAPEST UG START",
-    qs: "#281",
-    desc: "Located in Hamilton, a city with lower living costs. Waikato offers the highest value entry point for Indian undergraduates.",
-    cheapestUG: "$32,441 / year (₹16.89 Lakhs) — Arts & Humanities",
-    highestUG: "$48,345 / year (₹25.18 Lakhs) — Engineering",
-    cheapestPG: "$38,838 / year (₹20.23 Lakhs) — Arts",
-    highestPG: "$59,760 / year (₹31.12 Lakhs) — MBA",
-    logo: "https://logo.clearbit.com/waikato.ac.nz"
+    qs: "#293",
+    desc: "Located in Hamilton, a city with lower living costs than Auckland. Its Bachelor of Arts has the lowest starting fee in this list (2026 figures).",
+    cheapestUG: "$32,400 / year (₹18.1 Lakhs) — Bachelor of Arts (2026)",
+    highestUG: "$48,345 / year (₹27.1 Lakhs) — Engineering (2026)",
+    cheapestPG: "$39,580 / year (₹22.2 Lakhs) — Master of Arts, 120 points (2026)",
+    highestPG: "$65,700 (₹36.8 Lakhs) — MBA (2026)",
+    logo: "/logos/verified-University of Waikato.png"
   },
   {
-    name: "Victoria University of Wellington",
-    label: "🏢 BEST CAPITAL ACCESS",
-    qs: "#240",
-    desc: "Wellington provides proximity to government, technology networks, and creative media hubs (Wētā Workshop).",
-    cheapestUG: "$33,360 / year (₹17.37 Lakhs) — BA",
-    highestUG: "$47,000 / year (₹24.48 Lakhs) — Engineering",
-    cheapestPG: "$35,000 / year (₹18.22 Lakhs) — General Master's",
-    highestPG: "$47,000 / year (₹24.48 Lakhs) — MIT",
-    logo: "https://logo.clearbit.com/wgtn.ac.nz"
+    name: "University of Otago",
+    label: "🩺 CHEAPEST PG START",
+    qs: "#198",
+    desc: "Dunedin is a student city with lower living costs than Auckland. Otago is home to New Zealand's national centre for dentistry.",
+    cheapestUG: "$35,621 / year (₹19.9 Lakhs) — Arts & Humanities (2026)",
+    highestUG: "$52,432 / year (₹29.4 Lakhs) — Health professional programmes (2026; Medicine/Dentistry higher)",
+    cheapestPG: "$32,499 / year (₹18.2 Lakhs) — Humanities (2026)",
+    highestPG: "$51,931 / year (₹29.1 Lakhs) — Health Sciences (2026)",
+    logo: "/logos/verified-University of Otago.png"
   },
   {
     name: "Massey University",
     label: "🚜 BALANCED COST & QUALITY",
-    qs: "#230",
-    desc: "Operates campuses in Palmerston North, Auckland, and Wellington. Excellent agri-food research and veterinary science.",
-    cheapestUG: "$34,220 / year (₹17.82 Lakhs) — Arts",
-    highestUG: "$84,220 / year (₹43.86 Lakhs) — Veterinary Science",
-    cheapestPG: "$38,838 / year (₹20.23 Lakhs) — Arts",
-    highestPG: "$58,278 / year (₹30.35 Lakhs) — Agriculture",
-    logo: "https://logo.clearbit.com/massey.ac.nz"
+    qs: "#215",
+    desc: "Campuses in Palmerston North, Auckland and Wellington. Known for agri-food research, aviation and veterinary science.",
+    cheapestUG: "$35,250 / year (₹19.7 Lakhs) — Arts / Science (2027)",
+    highestUG: "$86,750 / year (₹48.6 Lakhs) — Veterinary Science (2027)",
+    cheapestPG: "$37,000 / year (₹20.7 Lakhs) — Resource & Environmental Planning (2027)",
+    highestPG: "$84,070 / year (₹47.1 Lakhs) — Veterinary Medicine (2027)",
+    logo: "/logos/verified-Massey University.png"
+  },
+  {
+    name: "Victoria University of Wellington",
+    label: "🏢 BEST CAPITAL ACCESS",
+    qs: "#241",
+    desc: "Wellington provides proximity to government, technology networks, and creative media hubs.",
+    cheapestUG: "$35,696 / year (₹20.0 Lakhs) — Teaching (2027)",
+    highestUG: "$49,237 / year (₹27.6 Lakhs) — Engineering (2027)",
+    cheapestPG: "$40,124 / year (₹22.5 Lakhs) — Health (2027)",
+    highestPG: "$52,396 / year (₹29.3 Lakhs) — Engineering (2027)",
+    logo: "/logos/verified-Victoria University of Wellington.png"
   },
   {
     name: "University of Canterbury",
-    label: "⚙️ CHEAPEST PG START",
-    qs: "#261",
-    desc: "Christchurch base offers low to moderate living costs. Renowned engineering hub connected to the Quake Centre.",
-    cheapestUG: "$32,800 / year (₹17.08 Lakhs) — BA",
-    highestUG: "$48,000 / year (₹25.00 Lakhs) — Engineering",
-    cheapestPG: "$32,000 / year (₹16.66 Lakhs) — General PG",
-    highestPG: "$45,000 / year (₹23.43 Lakhs) — Science",
-    logo: "https://logo.clearbit.com/canterbury.ac.nz"
-  },
-  {
-    name: "University of Otago",
-    label: "🩺 HEALTH SCIENCES & DENTISTRY",
-    qs: "#214",
-    desc: "Dunedin is one of New Zealand's most affordable student-centric cities, hosting NZ's only Dental School.",
-    cheapestUG: "$35,621 / year (₹18.55 Lakhs) — BA",
-    highestUG: "$45,045 / year (₹23.46 Lakhs) — Computer Science",
-    cheapestPG: "$45,990 / year (₹23.95 Lakhs) — Postgraduate Diploma",
-    highestPG: "$53,196 / year (₹27.70 Lakhs) — MBA",
-    logo: "https://logo.clearbit.com/otago.ac.nz"
+    label: "⚙️ ENGINEERING HUB",
+    qs: "#257",
+    desc: "Christchurch base offers moderate living costs. Known for civil and earthquake engineering.",
+    cheapestUG: "$35,610 / year (₹19.9 Lakhs) — Teaching and Learning (2027)",
+    highestUG: "$54,180 / year (₹30.3 Lakhs) — Engineering, years 2–4 (2027)",
+    cheapestPG: "$54,000 whole programme (₹30.2 Lakhs) — 180-point Master's, e.g. International Relations (2027)",
+    highestPG: "$71,400 whole programme (₹40.0 Lakhs) — e.g. Master of Public Health (2027)",
+    logo: "/logos/verified-University of Canterbury.png"
   },
   {
     name: "Auckland University of Technology (AUT)",
-    label: "💻 CHEAPEST IN AUCKLAND",
-    qs: "#410",
-    desc: "The most affordable pathway to live and study in New Zealand's primary economic city. Modern, career-focused learning.",
-    cheapestUG: "$35,092 / year (₹18.28 Lakhs) — Arts",
-    highestUG: "$47,000 / year (₹24.48 Lakhs) — Design",
-    cheapestPG: "$35,000 / year (₹18.22 Lakhs) — General PG",
-    highestPG: "$47,000 / year (₹24.48 Lakhs) — Business",
-    logo: "https://logo.clearbit.com/aut.ac.nz"
+    label: "💻 LOWER-COST OPTION IN AUCKLAND",
+    qs: "#431",
+    desc: "A lower-fee way to study in Auckland than the University of Auckland. Modern, career-focused learning.",
+    cheapestUG: "$36,522 / year (₹20.5 Lakhs) — Bachelor of Arts (2026, incl. levy)",
+    highestUG: "$48,922 / year (₹27.4 Lakhs) — Engineering (2026, incl. levy)",
+    cheapestPG: "$39,022 / year (₹21.9 Lakhs) — Master of Education (2026, incl. levy)",
+    highestPG: "$64,082 (₹35.9 Lakhs) — MBA, 180 points (2026, incl. levy)",
+    logo: "/logos/verified-Auckland University of Technology.png"
   },
   {
     name: "Lincoln University",
     label: "🍷 SPECIALIST LAND-BASED",
-    qs: "#371",
-    desc: "Quiet Christchurch campus-based environment leading sustainable agribusiness, viticulture, and resource management.",
-    cheapestUG: "$32,500 / year (₹16.92 Lakhs) — General",
-    highestUG: "$48,000 / year (₹25.00 Lakhs) — Environmental",
-    cheapestPG: "$32,000 / year (₹16.66 Lakhs) — General PG",
-    highestPG: "$45,000 / year (₹23.43 Lakhs) — Science",
-    logo: "https://logo.clearbit.com/lincoln.ac.nz"
+    qs: "#419",
+    desc: "Quiet campus near Christchurch, focused on agribusiness, viticulture and resource management.",
+    cheapestUG: "$37,000 / year (₹20.7 Lakhs) — Commerce / Agribusiness (2027)",
+    highestUG: "$39,000 / year (₹21.8 Lakhs) — Science / Agriculture (2027)",
+    cheapestPG: "$59,000 whole programme (₹33.0 Lakhs) — 180-credit Master of Business (2027)",
+    highestPG: "$66,000 whole programme (₹37.0 Lakhs) — Master of Applied Computing (2027)",
+    logo: "/logos/verified-Lincoln University.png"
   },
   {
     name: "University of Auckland",
     label: "👑 FLAGSHIP UNIVERSITY",
-    qs: "#65",
-    desc: "New Zealand's only Top-100 ranked university. Offers excellent merit-based scholarships and Triple Crown Business School.",
-    cheapestUG: "$40,496 / year (₹21.09 Lakhs) — Education",
-    highestUG: "$86,561 / year (₹45.07 Lakhs) — Medicine",
-    cheapestPG: "$42,000 / year (₹21.87 Lakhs) — Arts",
-    highestPG: "$58,009 / year (₹30.22 Lakhs) — Engineering",
-    logo: "https://logo.clearbit.com/auckland.ac.nz"
+    qs: "#68",
+    desc: "New Zealand's only top-100 university (QS 2027) with a triple-crown accredited Business School.",
+    cheapestUG: "$42,236 / year (₹23.7 Lakhs) — Arts (2027)",
+    highestUG: "$86,561 / year (₹48.5 Lakhs) — Medicine (2027)",
+    cheapestPG: "$45,857 / year (₹25.7 Lakhs) — Arts / Education (2027)",
+    highestPG: "$58,258 / year (₹32.6 Lakhs) — Engineering / Science (2027)",
+    logo: "/logos/verified-University of Auckland.png"
   }
 ];
 
@@ -127,7 +127,7 @@ const NewZealandAffordable = () => {
   const [activeSection, setActiveSection] = useState('overview');
   const [currency, setCurrency] = useState('INR'); // 'NZD' | 'INR'
   const [faqOpen, setFaqOpen] = useState({});
-  const exchangeRate = 52.08; // 1 NZD = 52.08 INR as per guide data
+  const exchangeRate = 56.0; // 1 NZD = 56 INR (Aug 2026)
 
   const formatCost = (valInNZD) => {
     if (currency === 'NZD') {
@@ -206,7 +206,7 @@ const NewZealandAffordable = () => {
               Affordable & Cheapest Universities in New Zealand 2026: Complete Guide
             </h1>
             <p className="text-indigo-200/90 text-sm md:text-base leading-relaxed mb-6 font-medium">
-              All 8 public research universities rank in the top 3% globally. Compare cheap tuition structures, living costs, visa fees, and part-time earnings.
+              All 8 public universities are in the QS World University Rankings 2027 top 500. Compare cheap tuition structures, living costs, visa fees, and part-time earnings.
             </p>
             <div className="flex flex-wrap items-center gap-4 text-xs font-semibold text-slate-400">
               <span className="flex items-center gap-1.5 bg-slate-955/60 px-3 py-1.5 rounded-lg border border-slate-800">
@@ -249,7 +249,7 @@ const NewZealandAffordable = () => {
           {/* Right Column: Content Blocks */}
           <div className="lg:col-span-9 space-y-16">
 
-            <HookBand value="$32,400" label="Lowest starting UG fee per year, at the University of Waikato, while all 8 public universities sit in the top 3% globally" hi="सस्ता" />
+            <HookBand value="$32,400" label="Lowest starting UG fee per year (University of Waikato, 2026), and all 8 universities are in the QS 2027 top 500" hi="सस्ता" />
             
             {/* 1. Quality & Affordability Overview */}
             <section id="overview" className="scroll-mt-24">
@@ -259,14 +259,14 @@ const NewZealandAffordable = () => {
                   💡 Quality Education Doesn't Have to Break the Bank
                 </h2>
                 <p className="text-slate-655 text-sm font-semibold leading-relaxed mb-6">
-                  While US or UK tuition often exceeds <strong>NZD 45,000 (₹23.44 Lakhs)</strong> per year, New Zealand's public university packages start between <strong>NZD 32,000 – NZD 40,000 (₹16.67 Lakhs – ₹20.83 Lakhs)</strong>. And you don't sacrifice rankings—all 8 public universities are inside the top 3% globally.
+                  While US or UK tuition often exceeds <strong>NZD 45,000 (₹25.2 Lakhs)</strong> per year, New Zealand's universities start at about <strong>NZD 32,400 – NZD 42,200 (₹18.1 Lakhs – ₹23.6 Lakhs)</strong> a year for a Bachelor's. And you don't sacrifice rankings—all 8 are in the QS World University Rankings 2027 top 500.
                 </p>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {[
-                    "🏆 Waikato lowest starting UG fee ($32,400)",
-                    "🏆 Canterbury lowest starting PG fee ($32,000)",
-                    "🎓 Subsidised PhD tuition ($6,500 – $9,000/year)",
+                    "🏆 Waikato lowest starting UG fee ($32,400, 2026)",
+                    "🏆 Otago lowest starting PG fee ($32,499, humanities, 2026)",
+                    "🎓 International PhD students pay domestic-level fees",
                     "💵 Currency Toggle options below for easy reference"
                   ].map((item, idx) => (
                     <div key={idx} className="flex items-center gap-3 bg-white p-4 rounded-xl border border-slate-100">
@@ -281,13 +281,13 @@ const NewZealandAffordable = () => {
             {/* 2. Fee Comparison Table */}
             <section id="comparison" className="scroll-mt-24">
               <div className="text-left mb-6">
-                <h2 className="text-2xl font-black text-slate-900 mb-1">🏛️ All Public Universities: Fee Comparison (2026)</h2>
+                <h2 className="text-2xl font-black text-slate-900 mb-1">🏛️ All Public Universities: Fee Comparison (2026–2027 fees)</h2>
                 <p className="text-slate-400 text-xs font-bold uppercase tracking-wider">QS positions and annual tuition fee conversions</p>
               </div>
 
               {/* Currency Selector */}
               <div className="bg-white border border-slate-200/60 rounded-[24px] p-5 shadow-xs mb-8 flex justify-between items-center">
-                <span className="text-[10px] text-slate-400 font-extrabold uppercase">Exchange rate: 1 NZD = ₹52.08</span>
+                <span className="text-[10px] text-slate-400 font-extrabold uppercase">Exchange rate: 1 NZD = ₹56</span>
                 <div className="flex gap-2">
                   <button 
                     onClick={() => setCurrency('NZD')}
@@ -393,12 +393,12 @@ const NewZealandAffordable = () => {
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8 text-xs font-semibold">
                   {[
-                    { title: "UG Arts & Humanities", fee: "$32,000 - $35,000", inr: "₹16.66L - ₹18.22L" },
-                    { title: "UG Engineering", fee: "$45,000 - $60,000+", inr: "₹23.43L - ₹31.24L+" },
-                    { title: "UG Health Sciences", fee: "$38,000 - $55,000", inr: "₹19.79L - ₹28.64L" },
-                    { title: "PG Taught (Master's)", fee: "$20,000 - $45,000", inr: "₹10.41L - ₹23.43L" },
-                    { title: "PhD (Doctoral) *Best Value", fee: "$6,500 - $9,000", inr: "₹3.38L - ₹4.68L" },
-                    { title: "MBA Programs", fee: "$45,000 - $60,000+", inr: "₹23.43L - ₹31.24L+" }
+                    { title: "UG Arts & Humanities", fee: "$32,400 - $42,200", inr: "₹18.1L - ₹23.6L" },
+                    { title: "UG Engineering", fee: "$48,000 - $61,000", inr: "₹26.9L - ₹34.2L" },
+                    { title: "UG Health Sciences", fee: "$42,000 - $72,000 (Medicine higher)", inr: "₹23.5L - ₹40.3L" },
+                    { title: "PG Taught (Master's)", fee: "$32,500 - $58,300 / year", inr: "₹18.2L - ₹32.6L" },
+                    { title: "PhD (Doctoral) *Best Value", fee: "Domestic-level fees (e.g. ~$9,600 at AUT, 2026)", inr: "≈ ₹5.4L" },
+                    { title: "MBA Programs", fee: "$64,000 - $71,400 (whole programme)", inr: "₹35.9L - ₹40.0L" }
                   ].map((p, idx) => (
                     <div key={idx} className="bg-slate-50 p-4 rounded-xl border border-slate-100 flex flex-col justify-between">
                       <span className="text-slate-400 font-extrabold uppercase tracking-wider block mb-1">{p.title}</span>
@@ -444,7 +444,7 @@ const NewZealandAffordable = () => {
                       <tr>
                         <td className="py-4 text-slate-900 font-extrabold">Living Fund (Immigration NZ Minimum)</td>
                         <td className="py-4 text-slate-600">$20,000</td>
-                        <td className="py-4 text-right text-indigo-650">₹10.41 Lakh</td>
+                        <td className="py-4 text-right text-indigo-650">₹11.2 Lakh</td>
                       </tr>
                       <tr>
                         <td className="py-4 text-slate-900 font-extrabold">Student Services Fee (SSF)</td>
@@ -466,7 +466,7 @@ const NewZealandAffordable = () => {
                 </div>
 
                 <div className="bg-rose-50/40 border border-rose-100 rounded-2xl p-6 text-xs text-rose-900 font-semibold leading-relaxed">
-                  <strong>⚠️ Visa Regulation Reminder:</strong> You must show access to <strong>NZD $20,000 (₹10.41 Lakhs)</strong> for each year of study to verify maintenance requirements.
+                  <strong>⚠️ Visa Regulation Reminder:</strong> You must show access to <strong>NZD $20,000 (₹11.2 Lakhs)</strong> for each year of study to verify maintenance requirements.
                 </div>
               </div>
             </section>
@@ -512,32 +512,33 @@ const NewZealandAffordable = () => {
                   kicker="Scholarship value (NZD)"
                   title="Biggest individual awards"
                   items={[
-                    { label: 'India High Achievers (Auckland)', value: 20000, display: '$20,000' },
-                    { label: "International Master's (Otago)", value: 18000, display: '$18,000' },
-                    { label: 'NZ Excellence Awards (NZEA)', value: 10000, display: '$10,000' },
+                    { label: 'VC International Excellence for India (Waikato)', value: 15000, display: 'Up to $15,000' },
+                    { label: 'UC International First Year (Canterbury)', value: 15000, display: '$15,000' },
+                    { label: 'NZ Excellence Awards (NZEA)', value: 15000, display: '$7,500 – $15,000' },
+                    { label: 'VUW Postgraduate International (Victoria)', value: 10000, display: '$10,000' },
                   ]}
                 />
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-xs font-semibold">
                   <div className="bg-slate-50 p-5 rounded-2xl border border-slate-100">
                     <h4 className="font-extrabold text-slate-800 uppercase tracking-wider mb-2">India High Achievers Scholarship</h4>
-                    <p className="text-indigo-650 font-black mb-1">Value: $20,000 (₹10.41 Lakhs)</p>
-                    <p className="text-slate-500">Offered by the University of Auckland for merit students.</p>
+                    <p className="text-indigo-650 font-black mb-1">Value: 25% of one year's tuition</p>
+                    <p className="text-slate-500">Offered by the University of Auckland to new international Master's students from India.</p>
                   </div>
                   <div className="bg-slate-50 p-5 rounded-2xl border border-slate-100">
                     <h4 className="font-extrabold text-slate-800 uppercase tracking-wider mb-2">New Zealand Excellence Awards (NZEA)</h4>
-                    <p className="text-indigo-650 font-black mb-1">Value: $10,000 (₹5.20 Lakhs)</p>
-                    <p className="text-slate-500">Jointly funded by NZ government and all public universities.</p>
+                    <p className="text-indigo-650 font-black mb-1">Value: $7,500 – $15,000 (₹4.2 – ₹8.4 Lakhs)</p>
+                    <p className="text-slate-500">Run by Education New Zealand with participating NZ universities.</p>
                   </div>
                   <div className="bg-slate-50 p-5 rounded-2xl border border-slate-100">
-                    <h4 className="font-extrabold text-slate-800 uppercase tracking-wider mb-2">International Master's Scholarship</h4>
-                    <p className="text-indigo-650 font-black mb-1">Value: $18,000 (₹9.37 Lakhs)</p>
-                    <p className="text-slate-500">Offered by the University of Otago for thesis research.</p>
+                    <h4 className="font-extrabold text-slate-800 uppercase tracking-wider mb-2">VC's International Postgraduate Scholarship</h4>
+                    <p className="text-indigo-650 font-black mb-1">Value: $10,000 (₹5.6 Lakhs)</p>
+                    <p className="text-slate-500">Offered by the University of Otago for coursework Master's students (B+ average); confirm the 2027 round.</p>
                   </div>
                   <div className="bg-slate-50 p-5 rounded-2xl border border-slate-100">
-                    <h4 className="font-extrabold text-slate-800 uppercase tracking-wider mb-2">Massey University Scholarships</h4>
-                    <p className="text-indigo-650 font-black mb-1">Value: $8 Million Pool (₹41.66 Crores)</p>
-                    <p className="text-slate-500">Huge pool of partial waivers for agricultural & business courses.</p>
+                    <h4 className="font-extrabold text-slate-800 uppercase tracking-wider mb-2">Massey International Study Grants</h4>
+                    <p className="text-indigo-650 font-black mb-1">Value: $10,000 PG / $15,000 UG (₹5.6 – ₹8.4 Lakhs), 2027</p>
+                    <p className="text-slate-500">Massey's Postgraduate and Undergraduate International Study Grants for new international students.</p>
                   </div>
                 </div>
               </div>
@@ -613,9 +614,9 @@ const NewZealandAffordable = () => {
 
               <div className="space-y-4">
                 {[
-                  { q: "What is the mandatory minimum amount of funds for a New Zealand student visa in 2026?", a: "Indian applicants must show evidence of access to NZD $20,000 (₹10.41 Lakhs) for each year of study. This can be verified via education loan approval letters, bank statements with a minimum 6-month history, or formal scholarship documents." },
-                  { q: "Which NZ institution offers the absolute lowest tuition rates?", a: "Southern Institute of Technology (SIT) offers vocational diplomas starting from NZD $14,000 (₹7.29 Lakhs) per year. Among traditional universities, Waikato offers competitive UG starting rates." },
-                  { q: "Are PhD programs subsidized for international students in New Zealand?", a: "Yes, NZ heavily subsidizes PhD tuition to local domestic levels. International PhD candidates pay just NZD $6,500 – $9,000 per year, which is up to 80% cheaper than undergraduate tuition." },
+                  { q: "What is the mandatory minimum amount of funds for a New Zealand student visa in 2026?", a: "Indian applicants must show evidence of access to NZD $20,000 (₹11.2 Lakhs) for each year of study. This can be verified via education loan approval letters, bank statements with a minimum 6-month history, or formal scholarship documents." },
+                  { q: "Which NZ institution offers the absolute lowest tuition rates?", a: "Among universities, the University of Waikato has the lowest starting Bachelor's fee in our comparison (NZD $32,400 for a BA in 2026). Polytechnic and institute-of-technology diplomas can cost less — check each institute's current fee page." },
+                  { q: "Are PhD programs subsidized for international students in New Zealand?", a: "Yes, NZ heavily subsidizes PhD tuition to local domestic levels. International PhD candidates studying in New Zealand pay domestic-level fees (for example about NZD $9,600 for 120 points at AUT in 2026, including the student services levy), far less than undergraduate tuition." },
                   { q: "What is the cheapest place to live in New Zealand?", a: "Invercargill (NZD $1,450/month) and Dunedin (NZD $1,550/month) are the most affordable student hubs, followed closely by Hamilton (NZD $1,600) and Christchurch (NZD $1,613)." }
                 ].map((faq, idx) => {
                   const isOpen = !!faqOpen[idx];

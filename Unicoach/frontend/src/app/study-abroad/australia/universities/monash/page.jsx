@@ -12,14 +12,14 @@ const monashData = {
   location: "Melbourne, Victoria, Australia",
   city: "Melbourne",
   established: 1958,
-  totalStudents: 65000,
-  intlStudents: 19076,
+  totalStudents: null,
+  intlStudents: null,
   type: "PUBLIC",
   studentFacultyRatio: "22:1",
-  acceptanceRate: "40%",
-  accreditation: "AACSB, EQUIS, AMBA",
+  acceptanceRate: null,
+  accreditation: null,
   avgCostOfLiving: "INR 17.00 L",
-  logo: "https://logo.clearbit.com/monash.edu",
+  logo: "/logos/Monash University.webp",
   heroImage: "https://images.unsplash.com/photo-1514395462725-fb4566210144?w=1200",
   topCourses: [
     { name: "Accounting", count: 108 },
@@ -29,50 +29,29 @@ const monashData = {
     { name: "Artificial Intelligence / Machine Learning", count: 13 }
   ],
   featuredCourse: {
-    name: "Master of Accounting",
-    duration: "12 Months",
-    tuition: 29.01
+    name: "Master of Business Analytics",
+    duration: "See course page",
+    tuition: 42
   },
   intakeDeadlines: [
-    { name: "FEB'2025", status: "Closed" },
-    { name: "JUN'2025", status: "Intake Open" },
-    { name: "JUL'2025", status: "Intake Open" },
-    { name: "AUG'2025", status: "Intake Open" },
-    { name: "NOV'2025", status: "Closed" }
+    { name: "FEB'2026", status: "Intake Open" },
+    { name: "JUL'2026", status: "Intake Open" }
   ],
   requirements: [
-    { title: "IELTS Academic Band", detail: "6.5 minimum overall band, with no individual component below 6.0 for most programmes." },
-    { title: "TOEFL iBT Score", detail: "90+ minimum overall score for most postgraduate programmes." },
+    { title: "IELTS Academic Band", detail: "Most postgraduate courses ask for IELTS 6.5 overall with no band below 6.0; some ask for more." },
     { title: "Application Fee", detail: "INR 5,500 for both UG and PG international students (fee waivable through UniCoach)." },
-    { title: "Undergraduate Degree", detail: "Australian bachelor's equivalent degree with a minimum credit (65%) average." }
+    { title: "Other English Tests", detail: "TOEFL iBT, PTE Academic and other tests are accepted; check the minimum score for your course." },
+    { title: "Undergraduate Degree", detail: "A bachelor's degree recognised as equivalent to an Australian bachelor's; the required grade varies by course." }
   ],
   rankings: {
-    "QS Rankings": [
-      { category: "Best World Ranking Schools - 2025", rank: "37" },
-      { category: "Best National Schools - 2025", rank: "4" },
-      { category: "Best World Ranking Schools - 2024", rank: "37 - 1500" },
-      { category: "Best World Ranking Schools - 2023", rank: "57" },
-      { category: "Best World Ranking Schools - 2022", rank: "55" },
-      { category: "Best World Ranking Schools - 2020", rank: "58" }
-    ],
-    "Times Higher Education": [
-      { category: "Best National Schools - 2024", rank: "2 - 1500" },
-      { category: "Best World Ranking Schools - 2023", rank: "44" },
-      { category: "Best University Ranking Schools - 2020", rank: "75" }
-    ],
-    "US News": [
-      { category: "Best World Ranking Schools - 2023", rank: "37" }
+    "QS World University Rankings": [
+      { category: "World University Rankings - 2027", rank: "31" }
     ]
   },
   coursesFees: [
-    { name: "Master of Accounting", duration: "12 Months", tuition: 29.01 },
-    { name: "Master of Professional Accounting", duration: "24 Months", tuition: 29.01 },
-    { name: "Master of Business Law / Master of Professional Accounting", duration: "30 Months", tuition: 29.01 },
-    { name: "BA in Global Asia and Bachelor of Business in Accounting", duration: "48 Months", tuition: 29.12 },
-    { name: "Bachelor of Commerce in Accounting and Bachelor of Laws", duration: "48 Months", tuition: 30.86 },
-    { name: "Bachelor of Accounting", duration: "36 Months", tuition: 29.12 }
+    { name: "Master of Business Analytics", duration: "See course page", tuition: 42 }
   ],
-  description: "Monash University, named after the distinguished Sir John Monash, is Australia's largest university with 8 campuses across 3 continents. It holds QS World Ranking #37 (2025) and boasts partnerships with over 115 universities globally.",
+  description: "Monash University, established in 1958 and named after Sir John Monash, is a public research university based in Melbourne (main campus Clayton), with campuses in Malaysia and Indonesia. It is ranked 31st in the QS World University Rankings 2027 and runs the IITB-Monash Research Academy in Mumbai.",
   longDescription: "Monash University, established in 1958 in Melbourne, has grown to become Australia's largest university and one of the world's leading research institutions. With 65,000 students including 19,076 international students, Monash is a truly global university.\n\nCampuses in Australia:\n- Clayton (main campus)\n- Caulfield\n- Peninsula\n- Parkville\n- Gippsland (includes Berwick campus)\n- City (Melbourne CBD)\n\nGlobal Campuses:\n- Malaysia (Sunway campus)\n- Indonesia\n\nMonash holds AACSB, EQUIS, and AMBA triple accreditation for its Business School — placing it in the world's top 1% of business schools. The university has established the IITB-Monash Research Academy in Mumbai, fostering deep research connections with India.\n\nWith partnerships with over 115 universities worldwide and a comprehensive study abroad programme, Monash offers unparalleled global opportunities for students.",
   studentLife: [
     "Study Support",
@@ -84,13 +63,7 @@ const monashData = {
     "Accommodation",
     "Safety and Security"
   ],
-  alumni: [
-    { name: "Annette Carey", profession: "CEO, Linfox Armaguard" },
-    { name: "Brendon Gale", profession: "CEO of Richmond Football Club" },
-    { name: "H.E. Saleumxay Kommasith", profession: "Minister of Foreign Affairs, Lao PDR" },
-    { name: "Justice Anne Ferguson", profession: "Chief Justice of the Supreme Court of Victoria" },
-    { name: "Dr Susan Carland", profession: "TV host, academic, writer and social commentator" }
-  ],
+  alumni: null,
   costOfLiving: {
     description: "Melbourne is Australia's cultural capital and one of the world's most liveable cities. International students should budget for housing (the largest expense), food, transportation, and personal expenses. Various accommodation options are available ranging from on-campus residences to private rentals.",
     inr: "17.00 L",
@@ -116,27 +89,32 @@ const monashData = {
       "Alumni Network"
     ],
     recruiters: [
-      "Abbott Australia", "7-Eleven Australia", "ABB Australia", "AbbVie Australia",
-      "Accenture Australia", "AECOM", "ACT Government", "Adidas Australia",
-      "Adobe Australia", "ACH Group"
+      "Abbott Australia",
+      "7-Eleven Australia",
+      "ABB Australia",
+      "AbbVie Australia",
+      "Accenture Australia",
+      "AECOM",
+      "ACT Government",
+      "Adidas Australia",
+      "Adobe Australia",
+      "ACH Group"
     ]
   },
   faqs: [
-    { question: "What is Monash University's QS ranking?", answer: "Monash University is ranked #37 globally and #4 nationally in Australia in the QS World University Rankings 2025." },
-    { question: "What are Monash University fees for UG students?", answer: "Undergraduate tuition fees for international students typically range from INR 29.12 L per year, depending on the course." },
-    { question: "Where is the Monash University campus located?", answer: "Monash has campuses in Clayton, Caulfield, Peninsula, Parkville, and Gippsland in Australia, plus international campuses in Malaysia and Indonesia." },
-    { question: "Which are the top Monash University courses?", answer: "Top courses include Accounting, Pharmacy, Computer Science, Engineering, Business Administration, Law, Medicine, and Master of Professional Accounting." },
-    { question: "What is the Monash University MBA fees?", answer: "The MBA at Monash Business School costs approximately INR 29–31 L per year for international students." },
-    { question: "What are Monash University accommodation services?", answer: "Monash offers a variety of accommodation options including on-campus residential colleges, off-campus housing, and homestay options for international students." },
-    { question: "What are Monash University scholarships for international students?", answer: "Monash offers numerous scholarships including the Monash International Merit Scholarship, worth up to 50% of tuition fees for top international students." },
-    { question: "What are Monash University fees for international students?", answer: "Postgraduate fees typically range from INR 17–35 L per year depending on the programme. INR 17 Lakh is the average first-year tuition for international Masters students." },
-    { question: "What are the top postgraduate courses at Monash?", answer: "Top postgraduate courses include Master of Professional Accounting, MBA, Master of Engineering, and Master of Data Science." },
-    { question: "What are the Monash University admissions criteria?", answer: "International students require an equivalent bachelor's degree with credit average (65%+), IELTS 6.5+ or equivalent, and relevant academic prerequisites for specialised programmes." }
+    { question: "What is Monash University's QS ranking?", answer: "Monash University is ranked 31st in the QS World University Rankings 2027, fifth among Australian universities." },
+    { question: "Where are Monash University's campuses?", answer: "In Australia, Monash has campuses at Clayton, Caulfield, Peninsula and Parkville in Melbourne. It also has campuses in Malaysia and Indonesia." },
+    { question: "How much is the Master of Business Analytics at Monash?", answer: "The international fee is A$62,140 per year for 2027 (about ₹42 lakh at ₹67 per Australian dollar), with a February intake at Clayton." },
+    { question: "What are Monash University fees for international students?", answer: "Fees vary by course; check the course page on monash.edu for the current international fee." },
+    { question: "What are Monash University scholarships for international students?", answer: "Monash offers scholarships for international students, such as the Monash International Merit Scholarship. Check amounts and eligibility on monash.edu." },
+    { question: "What are Monash University accommodation services?", answer: "Monash offers on-campus residences and help finding off-campus housing." },
+    { question: "What are the Monash University admissions criteria?", answer: "International students need a recognised bachelor's degree, an accepted English test score (most postgraduate courses ask for IELTS 6.5 with no band below 6.0), and any course-specific prerequisites." }
   ],
   blogs: [
     { title: "Finding Part-Time Jobs in Australia", readTime: "10 mins read", date: "Mar 15, 2025" }
   ],
-  notification: "Monash University has partnerships with over 115 universities around the world. This extensive network opens doors for international students."
+  notification: "Monash University has partnerships with over 115 universities around the world. This extensive network opens doors for international students.",
+  rank: "#31 in QS World University Rankings 2027"
 };
 
 const MonashPage = () => {

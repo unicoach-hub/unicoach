@@ -872,7 +872,7 @@ const EventsPage = () => {
                             Connect with India's finest counsellors and join the biggest study abroad community to plan your admissions.
                         </p>
                         <button
-                            onClick={() => navigate('/')}
+                            onClick={() => navigate('/book-consultation')}
                             className="inline-flex items-center gap-2 px-7 py-4 rounded-full text-white font-bold text-sm bg-[#DE5C2B] hover:bg-[#C04A1D] shadow-md shadow-orange-500/20 hover:-translate-y-0.5 transition-all cursor-pointer mt-4"
                         >
                             <span>Book Free Counselling</span>

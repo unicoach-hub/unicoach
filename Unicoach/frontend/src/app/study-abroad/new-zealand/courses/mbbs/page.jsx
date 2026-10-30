@@ -35,14 +35,14 @@ const medicalPathways = [
 const admissionPrereqs = [
   { title: "NEET Qualification", desc: "Mandatory for Indian citizens to practice back in India after graduation." },
   { title: "UCAT ANZ Test", desc: "Measures cognitive abilities, situational judgment, and communication skills." },
-  { title: "High Academic Grades", desc: "90%+ in high school CBSE/ICSE (Physics, Chemistry, Biology) to enter the Pre-Med year." },
-  { title: "English Proficiency", desc: "IELTS score of 7.5 overall with no band below 7.0 (or equivalent TOEFL score)." }
+  { title: "High Academic Grades", desc: "Very strong Class 12 results in Physics, Chemistry and Biology (CBSE/ICSE/State Board); places for international students are limited." },
+  { title: "English Proficiency", desc: "Higher English scores than standard programmes — check the exact IELTS/TOEFL minimum on the medical programme page." }
 ];
 
 const NewZealandMBBSCourse = () => {
   const [activeStep, setActiveStep] = useState(1);
   const [currency, setCurrency] = useState('INR'); // 'NZD' | 'INR'
-  const exchangeRate = 53.70; // Reference 1 NZD = 53.70 INR
+  const exchangeRate = 56.0; // Reference 1 NZD = 56 INR (Aug 2026)
 
   const formatCost = (valInNZD) => {
     if (currency === 'NZD') {
@@ -224,16 +224,16 @@ const NewZealandMBBSCourse = () => {
                 kicker="Tuition per year"
                 title="MBChB fees at NZ's two medical schools"
                 items={[
-                  { label: 'Otago', value: 84000, display: formatCost(84000) },
-                  { label: 'Auckland', value: 79000, display: formatCost(79000) },
-                  { label: 'Year 1 Pre-Med', value: 38000, display: `up to ${formatCost(38000)}` },
+                  { label: 'Otago (2026)', value: 110549, display: `${formatCost(99211)} – ${formatCost(110549)}` },
+                  { label: 'Auckland (2027)', value: 86561, display: formatCost(86561) },
+                  { label: 'Year 1 Pre-Med', value: 49582, display: `${formatCost(39787)} – ${formatCost(49582)}` },
                 ]}
               />
             </div>
             
             <div className="border-t border-slate-100 pt-6 mt-6">
               <span className="text-[10px] text-slate-400 font-bold block leading-relaxed">
-                * Note: Year 1 Pre-Med tuition fees are lower (approx. {formatCost(33000)} - {formatCost(38000)}), but clinical professional years (Years 2-6) incur the full specialist rates shown above.
+                * Note: Year 1 Pre-Med tuition is lower (about {formatCost(39787)} – {formatCost(42249)} at Otago in 2026, {formatCost(49582)} for Science at Auckland in 2027), but the professional years (Years 2-6) are charged at the medical rates shown above.
               </span>
             </div>
           </div>

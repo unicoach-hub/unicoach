@@ -42,83 +42,93 @@ const countryShortlistOptions = [
 const topTenMaUnis = [
   {
     rank: "#1",
-    name: "University of Bologna",
-    qsRank: "QS #160",
-    feesEUR: 6800,
-    focus: "Cultural Heritage, History, Law",
-    highlights: ["Oldest university in the Western world (1088)", "World-class archive libraries and preservation labs", "Highly organized Erasmus exchange linkages"]
+    name: "Sapienza University of Rome",
+    qsRank: "QS #111",
+    feesEUR: 300,
+    feeNote: "Fixed fee for students from India whose family income is only abroad (Band A).",
+    focus: "Art History, Classics, Humanities",
+    highlights: ["Founded in 1303", "Strong in Classics and Ancient History", "Located in Rome, close to major museums and archives"]
   },
   {
     rank: "#2",
-    name: "Sapienza University of Rome",
-    qsRank: "QS #171",
-    feesEUR: 5800,
-    focus: "Art History, Classics, Humanities",
-    highlights: ["Europe's largest university by student base", "Direct partnerships with Rome's state museums", "Unrivalled research collections in classic studies"]
+    name: "University of Bologna",
+    qsRank: "QS #123",
+    feesEUR: 1357,
+    feeNote: "Flat €1,200 + €157 option for non-OECD nationals with income only abroad (2026/27); otherwise €157–€2,550+ by ISEE.",
+    focus: "Cultural Heritage, History, Law",
+    highlights: ["Oldest university in the Western world (1088)", "Wide range of English-taught Master's", "Erasmus exchange links across Europe"]
   },
   {
     rank: "#3",
-    name: "University of Milan",
-    qsRank: "QS #302",
-    feesEUR: 5300,
-    focus: "Economics, Political Science, Sociology",
-    highlights: ["'La Statale' - member of LERU research guild", "Located in Italy's financial and commercial capital", "Strong placement linkages in social research"]
+    name: "University of Padua",
+    qsRank: "QS #204",
+    feesEUR: 3000,
+    feeNote: "Maximum; the official range is €0 to about €3,000 per year depending on ISEE.",
+    focus: "Psychology, Sciences, Humanities",
+    highlights: ["Established in 1222; Galileo taught here", "Human rights and psychology programmes", "First 2027/28 window for foreign-qualification applicants closes 15 Nov 2026"]
   },
   {
     rank: "#4",
-    name: "Scuola Normale Superiore di Pisa",
-    qsRank: "QS #204",
-    feesEUR: 7800,
-    focus: "Humanities, Sciences, Research",
-    highlights: ["Highly selective elite university status", "Historical connection with Galileo Galilei", "Intense, fully funded research fellowships"]
+    name: "University of Milan",
+    qsRank: "QS #270",
+    feesEUR: 4307,
+    feeNote: "Maximum for students with income only abroad (2026/27); the fee is €346–€4,307 depending on country group and programme area.",
+    focus: "Economics, Political Science, Sociology",
+    highlights: ["'La Statale' - member of LERU", "Located in Italy's financial and commercial capital", "Large public research university"]
   },
   {
     rank: "#5",
-    name: "University of Padua",
-    qsRank: "QS #243",
-    feesEUR: 6300,
-    focus: "Psychology, Sciences, Humanities",
-    highlights: ["Established in 1222; Galileo taught here", "Leading human rights and social psychology programs", "Excellent global academic reputation"]
+    name: "University of Pisa",
+    qsRank: "QS #341",
+    feesEUR: 3056,
+    feeNote: "Maximum (€2,900 + €156). With income abroad, €2,900 is multiplied by a country coefficient.",
+    focus: "Humanities, Sciences, Research",
+    highlights: ["Founded in 1343", "Historic connection with Galileo Galilei", "Same city as the Scuola Normale and Sant'Anna schools"]
   },
   {
     rank: "#6",
-    name: "Bocconi University",
-    qsRank: "#7 Business",
-    feesEUR: 13500,
-    focus: "Economics, Finance, Management",
-    highlights: ["Top-tier global business and economics programs", "Strong consulting and financial employer ties", "State-of-the-art urban campus in Milan"]
+    name: "University of Turin",
+    qsRank: "QS #405",
+    feesEUR: 456,
+    feeNote: "€300 + €156 for students from countries with GDP (PPP) up to €26,000 (2025/26 rules).",
+    focus: "Humanities, Law, Political Science",
+    highlights: ["Large public university in Turin", "Library archives and media study courses", "Affordable regional student living setup"]
   },
   {
     rank: "#7",
-    name: "Polimoda (Fashion School)",
-    qsRank: "N/A",
-    feesEUR: 11600,
-    focus: "Fashion Design, Marketing, Management",
-    highlights: ["Florence-based premier fashion institute", "Direct internship programs with Gucci, Prada, Ferragamo", "Industry-led courses taught by active directors"]
+    name: "University of Florence",
+    qsRank: "QS #409",
+    feesEUR: null,
+    feeNote: "Fee not verified — check unifi.it for the current year.",
+    focus: "Art History, Architecture, Design",
+    highlights: ["Located in the historic Renaissance capital", "Art history, architecture and heritage programmes", "Public university with regional DSU grants"]
   },
   {
     rank: "#8",
-    name: "University of Florence",
-    qsRank: "QS #440",
-    feesEUR: 4800,
-    focus: "Art History, Architecture, Design",
-    highlights: ["Located in the historic Renaissance capital", "Direct museum linkages with the Uffizi Gallery", "Excellent heritage conservation studies"]
+    name: "Ca' Foscari University of Venice",
+    qsRank: "QS #600",
+    feesEUR: null,
+    feeNote: "Fee not verified — check unive.it for the current year.",
+    focus: "Languages, Humanities, Economics",
+    highlights: ["Public university in Venice", "Languages, cultural heritage and economics programmes", "English-taught Master's options"]
   },
   {
     rank: "#9",
-    name: "LUISS Guido Carli",
-    qsRank: "QS #601-650",
-    feesEUR: 12500,
-    focus: "International Relations, Political Science",
-    highlights: ["Boutique private campus in Rome", "Strong linkages with European diplomatic circles", "Elite corporate advisory boards for networking"]
+    name: "Bocconi University",
+    qsRank: "Not in QS overall ranking",
+    feesEUR: 18550,
+    feeNote: "MSc first-year fee, 2026/27.",
+    focus: "Economics, Finance, Management",
+    highlights: ["Private university specialising in business and economics", "Strong consulting and finance recruiting", "Urban campus in Milan"]
   },
   {
     rank: "#10",
-    name: "University of Turin",
-    qsRank: "QS #521-530",
-    feesEUR: 4800,
-    focus: "Humanities, Law, Political Science",
-    highlights: ["Industrial heritage background in Turin", "Rich library archives and media study courses", "Affordable regional student living setup"]
+    name: "LUISS Guido Carli",
+    qsRank: "Not in QS overall ranking",
+    feesEUR: 16000,
+    feeNote: "Master's first-year fee for 2027/28 (Management and Finance programmes €18,000).",
+    focus: "International Relations, Political Science",
+    highlights: ["Private university in Rome", "International relations and political science programmes", "Strong business and policy network"]
   }
 ];
 
@@ -164,7 +174,7 @@ const ItalyMACourse = () => {
   const [selectedCountry, setSelectedCountry] = useState('Italy');
   const { openEligibilityModal } = useLead();
 
-  const exchangeRate = 103.0; // Target rate: €1 = ₹103.0
+  const exchangeRate = 110.0; // Target rate: €1 = ₹110 (Aug 2026)
 
   useEffect(() => {
     const handleScroll = () => {
@@ -519,8 +529,9 @@ const ItalyMACourse = () => {
                       <div>
                         <strong className="text-slate-900 block mb-1">💰 Tuition Fee Estimate:</strong>
                         <span className="text-sm font-black text-slate-800">
-                          {formatCost(uni.feesEUR)} / year
+                          {uni.feesEUR ? `${formatCost(uni.feesEUR)} / year` : 'See official fee page'}
                         </span>
+                        {uni.feeNote && <span className="text-[11px] text-slate-500 font-semibold block mt-1">{uni.feeNote}</span>}
                       </div>
                     </div>
 
@@ -557,7 +568,7 @@ const ItalyMACourse = () => {
                         <tr key={idx} className="hover:bg-slate-50/50 transition-colors">
                           <td className="p-4 text-slate-900 font-bold">{row.name}</td>
                           <td className="p-4 font-bold text-indigo-700">{row.qsRank}</td>
-                          <td className="p-4 font-black text-emerald-650">{formatCost(row.feesEUR)}</td>
+                          <td className="p-4 font-black text-emerald-650">{row.feesEUR ? formatCost(row.feesEUR) : 'Not verified'}</td>
                           <td className="p-4 text-slate-655">{row.focus}</td>
                         </tr>
                       ))}
@@ -717,7 +728,7 @@ const ItalyMACourse = () => {
                 <div className="bg-white border border-slate-100 rounded-2xl p-5 hover:shadow-md transition-shadow">
                   <span className="text-[10px] text-indigo-600 font-black uppercase tracking-wider block mb-1">Public Universities</span>
                   <h4 className="font-extrabold text-slate-905 text-sm mb-3">Subsidized state-run institutions</h4>
-                  <p className="text-sm font-black text-slate-800">{formatRange(1000, 4500)} / year</p>
+                  <p className="text-sm font-black text-slate-800">{formatRange(150, 4300)} / year</p>
                 </div>
                 <div className="bg-white border border-slate-100 rounded-2xl p-5 hover:shadow-md transition-shadow">
                   <span className="text-[10px] text-rose-600 font-black uppercase tracking-wider block mb-1">Private Academies</span>
@@ -815,7 +826,7 @@ const ItalyMACourse = () => {
                 <div className="space-y-4 text-xs font-semibold text-slate-550 leading-relaxed">
                   <p>✓ <strong>DSU Regional Grants:</strong> Covers 100% of public tuition fees, provides free canteen card tokens, and drops up to €7,200 annual stipend directly to eligible candidates based on ISEE Parificato economic check.</p>
                   <p>✓ <strong>MAECI Ministry Grants:</strong> Government-supported monthly stipend of €900 + health insurance for elite candidates.</p>
-                  <p>✓ <strong>Academy Merit Waivers:</strong> Design schools like Polimoda, IED, and NABA offer 20% to 50% tuition waiver awards based on portfolio evaluations.</p>
+                  <p>✓ <strong>Academy Merit Waivers:</strong> Some private design schools offer merit-based tuition reductions; amounts and rules differ by school, so check each school's current call.</p>
                 </div>
               </div>
             </section>

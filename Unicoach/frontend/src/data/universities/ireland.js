@@ -1,4 +1,5 @@
-// API Verified Ireland Universities Dataset (Deduplicated & Clean)
+// Static fallback list. Ranks: QS World University Rankings 2027 (only where QS lists the institution).
+// Fees only where checked against the university's own fee page; otherwise pages link to the university.
 export const UNIVERSITIES_IRELAND = [
   {
     "name": "Trinity College Dublin",
@@ -10,14 +11,9 @@ export const UNIVERSITIES_IRELAND = [
     "domain": "tcd.ie",
     "catalogUrl": "https://www.tcd.ie/courses",
     "website": "https://www.tcd.ie/courses",
-    "rank": "Rank 81 QS Rankings",
-    "rankingNum": 81,
-    "tuition": "€22,000/yr (~₹20 Lakh INR)",
-    "tuitionFeeUSD": 24000,
-    "minGpaPercent": 70,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 90,
-    "acceptanceRate": 33,
+    "rank": "75",
+    "rankingNum": 75,
+    "tuition": "₹31 Lakh/yr (official fee)",
     "type": "PUBLIC",
     "applicationFee": 55,
     "intakes": [
@@ -30,7 +26,6 @@ export const UNIVERSITIES_IRELAND = [
       "PhD"
     ],
     "description": "Ireland's #1 ranked university (QS Global Top 100), famed for Computer Science, Immunology, Law, Literature, and Data Science.",
-    "eligibility": "Tier 1/2 Indian UG 65-70%+, IELTS 6.5 (no band < 6.0)",
     "courses": [
       "MSc Computer Science (Data Science)",
       "MSc Computer Science (Intelligent Systems & AI)",
@@ -42,7 +37,9 @@ export const UNIVERSITIES_IRELAND = [
       "MSc Biomedical Engineering",
       "MSc Finance",
       "MPhil Creative Writing"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027",
+    "tuitionVerified": true
   },
   {
     "name": "University College Dublin",
@@ -54,14 +51,8 @@ export const UNIVERSITIES_IRELAND = [
     "domain": "ucd.ie",
     "catalogUrl": "https://www.ucd.ie/global/study-at-ucd",
     "website": "https://www.ucd.ie/global/study-at-ucd",
-    "rank": "Rank 171 QS Rankings",
-    "rankingNum": 171,
-    "tuition": "€23,000/yr (~₹21 Lakh INR)",
-    "tuitionFeeUSD": 25000,
-    "minGpaPercent": 65,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 90,
-    "acceptanceRate": 38,
+    "rank": "=100",
+    "rankingNum": 100,
     "type": "PUBLIC",
     "applicationFee": 60,
     "intakes": [
@@ -74,7 +65,6 @@ export const UNIVERSITIES_IRELAND = [
       "PhD"
     ],
     "description": "Largest university in Ireland; Triple-Crown accredited Michael Smurfit Graduate Business School, leading in Data Analytics, Engineering, and Law.",
-    "eligibility": "First Class Honors (60-65%+), IELTS 6.5 (no band < 6.0)",
     "courses": [
       "MSc Computer Science (Negotiated Learning)",
       "MSc Computer Science (Conversion)",
@@ -86,7 +76,8 @@ export const UNIVERSITIES_IRELAND = [
       "MEng Biomedical Engineering",
       "Master of Public Policy",
       "MSc Artificial Intelligence for Medicine"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027"
   },
   {
     "name": "University College Cork",
@@ -98,14 +89,8 @@ export const UNIVERSITIES_IRELAND = [
     "domain": "ucc.ie",
     "catalogUrl": "https://www.ucc.ie/en/study/courses",
     "website": "https://www.ucc.ie/en/study/courses",
-    "rank": "Rank 292 QS Rankings",
-    "rankingNum": 292,
-    "tuition": "€19,000/yr (~₹17 Lakh INR)",
-    "tuitionFeeUSD": 21000,
-    "minGpaPercent": 62,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "acceptanceRate": 46,
+    "rank": "220",
+    "rankingNum": 220,
     "type": "PUBLIC",
     "applicationFee": 50,
     "intakes": [
@@ -118,7 +103,6 @@ export const UNIVERSITIES_IRELAND = [
       "PhD"
     ],
     "description": "European tech hub integration next to Apple European HQ in Cork; world leader in Food Science, Pharma, Biotechnology, and Sustainable Energy.",
-    "eligibility": "Bachelor's 60-65%+, IELTS 6.5 (no band < 6.0). Automatic 10-20% merit scholarship.",
     "courses": [
       "MSc Computing Science",
       "MSc Data Science and Analytics",
@@ -128,7 +112,8 @@ export const UNIVERSITIES_IRELAND = [
       "MSc Food Microbiology",
       "MSc Information Systems for Business Performance",
       "MSc Sustainable Energy"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027"
   },
   {
     "name": "University of Galway",
@@ -140,14 +125,7 @@ export const UNIVERSITIES_IRELAND = [
     "domain": "universityofgalway.ie",
     "catalogUrl": "https://www.universityofgalway.ie/courses",
     "website": "https://www.universityofgalway.ie/courses",
-    "rank": "Rank 289 QS Rankings",
-    "rankingNum": 289,
-    "tuition": "€19,500/yr (~₹17.5 Lakh INR)",
-    "tuitionFeeUSD": 21500,
-    "minGpaPercent": 62,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 88,
-    "acceptanceRate": 48,
+    "tuition": "₹32 Lakh/yr (official fee)",
     "type": "PUBLIC",
     "applicationFee": 35,
     "intakes": [
@@ -160,7 +138,6 @@ export const UNIVERSITIES_IRELAND = [
       "PhD"
     ],
     "description": "Premier European destination for Medical Technology (MedTech), Data Science, Biomedical Engineering, and Marine Sciences (formerly NUI Galway).",
-    "eligibility": "Bachelor's 60%+ or CGPA 6.2/10, IELTS 6.5 (Writing 6.5 / Tech 6.0)",
     "courses": [
       "MSc Computer Science (Artificial Intelligence)",
       "MSc Computer Science (Data Analytics)",
@@ -170,7 +147,8 @@ export const UNIVERSITIES_IRELAND = [
       "MSc Cloud Computing Software Software Development",
       "MSc Marine & Freshwater Resources",
       "MSc FinTech"
-    ]
+    ],
+    "tuitionVerified": true
   },
   {
     "name": "Dublin City University",
@@ -182,14 +160,8 @@ export const UNIVERSITIES_IRELAND = [
     "domain": "dcu.ie",
     "catalogUrl": "https://www.dcu.ie/courses",
     "website": "https://www.dcu.ie/courses",
-    "rank": "Rank 436 QS Rankings",
-    "rankingNum": 436,
-    "tuition": "€18,000/yr (~₹16 Lakh INR)",
-    "tuitionFeeUSD": 19500,
-    "minGpaPercent": 58,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 86,
-    "acceptanceRate": 54,
+    "rank": "408",
+    "rankingNum": 408,
     "type": "PUBLIC",
     "applicationFee": 50,
     "intakes": [
@@ -203,7 +175,6 @@ export const UNIVERSITIES_IRELAND = [
       "PhD"
     ],
     "description": "Renowned for industrial employability, INTRA paid internship modules, FinTech, Computing, and Communications.",
-    "eligibility": "Bachelor's 55-60%+, IELTS 6.5 (no band < 6.0)",
     "courses": [
       "MSc in Computing (Major in AI & Blockchain)",
       "MSc in Data Analytics",
@@ -212,7 +183,8 @@ export const UNIVERSITIES_IRELAND = [
       "MSc in Digital Marketing",
       "MSc in Management (Business)",
       "MA in Social Media Communications"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027"
   },
   {
     "name": "University of Limerick",
@@ -224,14 +196,9 @@ export const UNIVERSITIES_IRELAND = [
     "domain": "ul.ie",
     "catalogUrl": "https://www.ul.ie/courses",
     "website": "https://www.ul.ie/courses",
-    "rank": "Rank 426 QS Rankings",
-    "rankingNum": 426,
-    "tuition": "€17,500/yr (~₹15.7 Lakh INR)",
-    "tuitionFeeUSD": 19000,
-    "minGpaPercent": 58,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 85,
-    "acceptanceRate": 55,
+    "rank": "=388",
+    "rankingNum": 388,
+    "tuition": "₹24 Lakh/yr (official fee)",
     "type": "PUBLIC",
     "applicationFee": 50,
     "intakes": [
@@ -245,7 +212,6 @@ export const UNIVERSITIES_IRELAND = [
       "PhD"
     ],
     "description": "High graduate employment rate (#1 in Ireland for student satisfaction); industry-integrated programs in Aviation, Software Engineering, and Supply Chain.",
-    "eligibility": "Bachelor's 55-60%+, IELTS 6.5 (no band < 6.0). Automatic €1.5k-€4k Indian merit award.",
     "courses": [
       "MSc Software Engineering",
       "MSc Artificial Intelligence & Machine Learning",
@@ -254,7 +220,9 @@ export const UNIVERSITIES_IRELAND = [
       "MSc Business Analytics",
       "MSc Health Informatics",
       "MSc Mechatronics"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027",
+    "tuitionVerified": true
   },
   {
     "name": "Maynooth University",
@@ -266,14 +234,8 @@ export const UNIVERSITIES_IRELAND = [
     "domain": "maynoothuniversity.ie",
     "catalogUrl": "https://www.maynoothuniversity.ie/study-maynooth",
     "website": "https://www.maynoothuniversity.ie/study-maynooth",
-    "rank": "Rank 801 QS Rankings",
-    "rankingNum": 801,
-    "tuition": "€16,500/yr (~₹14.8 Lakh INR)",
-    "tuitionFeeUSD": 18000,
-    "minGpaPercent": 58,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 85,
-    "acceptanceRate": 60,
+    "rank": "721-730",
+    "rankingNum": 721,
     "type": "PUBLIC",
     "applicationFee": 50,
     "intakes": [
@@ -286,7 +248,6 @@ export const UNIVERSITIES_IRELAND = [
       "PhD"
     ],
     "description": "Fastest growing research university in Ireland, located 25 km west of Dublin with lower living costs; standout programs in Data Science, Software, and Robotics.",
-    "eligibility": "Bachelor's 55-60%+, IELTS 6.5 (reading/writing 6.0). International Master's scholarship ~€2k.",
     "courses": [
       "MSc in Computer Science (Software Engineering)",
       "MSc in Data Science and Analytics",
@@ -294,7 +255,8 @@ export const UNIVERSITIES_IRELAND = [
       "MSc in Strategy and Innovation",
       "MSc in Finance",
       "MSc in Electronic Engineering"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027"
   },
   {
     "name": "Technological University Dublin",
@@ -306,14 +268,8 @@ export const UNIVERSITIES_IRELAND = [
     "domain": "tudublin.ie",
     "catalogUrl": "https://www.tudublin.ie/study/postgraduate/courses/",
     "website": "https://www.tudublin.ie/study/postgraduate/courses/",
-    "rank": "Rank 801 QS Rankings",
-    "rankingNum": 801,
-    "tuition": "€14,500/yr (~₹13 Lakh INR)",
-    "tuitionFeeUSD": 15800,
-    "minGpaPercent": 58,
-    "minIeltsScore": 6.5,
-    "minToeflScore": 85,
-    "acceptanceRate": 62,
+    "rank": "791-800",
+    "rankingNum": 791,
     "type": "Technological University",
     "applicationFee": 50,
     "intakes": [
@@ -327,7 +283,6 @@ export const UNIVERSITIES_IRELAND = [
       "PhD"
     ],
     "description": "Ireland's first and largest Technological University, offering industry-ready degrees in Advanced Software Development, Cybersecurity, BIM, and Data Science.",
-    "eligibility": "Bachelor's 55-60%+, IELTS 6.5 (no band < 6.0). Centenary merit scholarship €1k-€3k.",
     "courses": [
       "MSc in Advanced Software Development",
       "MSc in Data Science",
@@ -335,7 +290,8 @@ export const UNIVERSITIES_IRELAND = [
       "MSc in Building Information Modelling (BIM) & Management",
       "MSc in Digital Health Transformation",
       "MSc in Supply Chain Management"
-    ]
+    ],
+    "rankingSource": "QS World University Rankings 2027"
   },
   {
     "name": "Munster Technological University",
@@ -347,14 +303,6 @@ export const UNIVERSITIES_IRELAND = [
     "domain": "mtu.ie",
     "catalogUrl": "https://www.mtu.ie/courses/",
     "website": "https://www.mtu.ie/courses/",
-    "rank": "Rank 850 QS Rankings",
-    "rankingNum": 850,
-    "tuition": "€13,500/yr (~₹12.1 Lakh INR)",
-    "tuitionFeeUSD": 14800,
-    "minGpaPercent": 56,
-    "minIeltsScore": 6,
-    "minToeflScore": 80,
-    "acceptanceRate": 65,
     "type": "Technological University",
     "applicationFee": 0,
     "intakes": [
@@ -368,7 +316,6 @@ export const UNIVERSITIES_IRELAND = [
       "PhD"
     ],
     "description": "Located in the Munster pharma and tech corridor (near Apple, Dell, Pfizer, Janssen); leading programs in AI, Cybersecurity, Bio-Pharma, and Mechanical Engg.",
-    "eligibility": "Bachelor's 55-60%+, IELTS 6.0-6.5. Merit scholarship up to €2,500.",
     "courses": [
       "MSc in Artificial Intelligence",
       "MSc in Cybersecurity",
@@ -388,14 +335,6 @@ export const UNIVERSITIES_IRELAND = [
     "domain": "atu.ie",
     "catalogUrl": "https://www.atu.ie/courses",
     "website": "https://www.atu.ie/courses",
-    "rank": "Rank 900 QS Rankings",
-    "rankingNum": 900,
-    "tuition": "€13,000/yr (~₹11.7 Lakh INR)",
-    "tuitionFeeUSD": 14200,
-    "minGpaPercent": 55,
-    "minIeltsScore": 6,
-    "minToeflScore": 80,
-    "acceptanceRate": 70,
     "type": "Technological University",
     "applicationFee": 0,
     "intakes": [
@@ -409,7 +348,6 @@ export const UNIVERSITIES_IRELAND = [
       "PhD"
     ],
     "description": "Multi-campus university in the West and North-West of Ireland with 40-50% lower living and housing costs; excellence in MedTech, Cloud Computing, and Environmental Science.",
-    "eligibility": "Bachelor's 55%+, IELTS 6.0-6.5. Merit grant up to €2,000.",
     "courses": [
       "MSc in Computing (Cloud Technologies)",
       "MSc in Medical Technology Operations",
@@ -429,14 +367,6 @@ export const UNIVERSITIES_IRELAND = [
     "domain": "setu.ie",
     "catalogUrl": "https://www.setu.ie/courses",
     "website": "https://www.setu.ie/courses",
-    "rank": "Rank 900 QS Rankings",
-    "rankingNum": 900,
-    "tuition": "€12,500/yr (~₹11.2 Lakh INR)",
-    "tuitionFeeUSD": 13600,
-    "minGpaPercent": 55,
-    "minIeltsScore": 6,
-    "minToeflScore": 80,
-    "acceptanceRate": 70,
     "type": "Technological University",
     "applicationFee": 50,
     "intakes": [
@@ -450,7 +380,6 @@ export const UNIVERSITIES_IRELAND = [
       "PhD"
     ],
     "description": "Located in the Waterford crystal & pharma manufacturing hub (Carlow campus is 1 hour from Dublin); top programs in Information Systems, Pharma, and Financial Services.",
-    "eligibility": "Bachelor's 55%+, IELTS 6.0-6.5. Regional merit discount €1k-€2k.",
     "courses": [
       "MSc in Information Systems Processes",
       "MSc in Computing (Enterprise Software Systems)",
@@ -470,14 +399,6 @@ export const UNIVERSITIES_IRELAND = [
     "domain": "tus.ie",
     "catalogUrl": "https://tus.ie/courses/",
     "website": "https://tus.ie/courses/",
-    "rank": "Rank 900 QS Rankings",
-    "rankingNum": 900,
-    "tuition": "€13,000/yr (~₹11.7 Lakh INR)",
-    "tuitionFeeUSD": 14200,
-    "minGpaPercent": 55,
-    "minIeltsScore": 6,
-    "minToeflScore": 80,
-    "acceptanceRate": 70,
     "type": "Technological University",
     "applicationFee": 0,
     "intakes": [
@@ -491,7 +412,6 @@ export const UNIVERSITIES_IRELAND = [
       "PhD"
     ],
     "description": "Direct software incubation links with Ericsson at Athlone campus; renowned for Software Design, Data Analytics, Polymer Engineering, and Supply Chain.",
-    "eligibility": "Bachelor's 55%+, IELTS 6.0-6.5. Dean's International Scholarship €1k-€2k.",
     "courses": [
       "MSc in Software Design with Cloud Native Computing",
       "MSc in Software Design with Cybersecurity",
@@ -511,14 +431,6 @@ export const UNIVERSITIES_IRELAND = [
     "domain": "dkit.ie",
     "catalogUrl": "https://www.dkit.ie/courses",
     "website": "https://www.dkit.ie/courses",
-    "rank": "Rank 950 Global Rankings",
-    "rankingNum": 950,
-    "tuition": "€11,000/yr (~₹10 Lakh INR)",
-    "tuitionFeeUSD": 12000,
-    "minGpaPercent": 55,
-    "minIeltsScore": 6,
-    "minToeflScore": 80,
-    "acceptanceRate": 75,
     "type": "PUBLIC",
     "applicationFee": 0,
     "intakes": [
@@ -531,7 +443,6 @@ export const UNIVERSITIES_IRELAND = [
       "Bachelor's"
     ],
     "description": "Strategically located between Dublin and Belfast; popular for affordable, practical degrees in computing, data analytics, renewable energy, and music tech.",
-    "eligibility": "Bachelor's 55%+, IELTS 6.0-6.5",
     "courses": [
       "MSc in Computing",
       "MSc in Data Analytics",
@@ -541,5 +452,3 @@ export const UNIVERSITIES_IRELAND = [
     ]
   }
 ];
-
-export default UNIVERSITIES_IRELAND;

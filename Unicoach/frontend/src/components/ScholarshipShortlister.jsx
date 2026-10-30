@@ -11,6 +11,7 @@ import {
 } from 'lucide-react';
 import UniversityLogo from './UniversityLogo';
 import PremiumDropdown from './PremiumDropdown';
+import { FinderCard, FinderField, FinderButton, FinderChip, FINDER_FIELD, FIELD_RADIUS } from './ui/FinderForm';
 import ScholarshipAiExplainerModal from './ScholarshipAiExplainerModal';
 import { cleanPortalUrl, getScholarshipPortalFallback } from '../utils/urlHelpers';
 import { useAuth } from '../context/AuthContext';
@@ -686,19 +687,13 @@ const ScholarshipShortlister = () => {
       </AnimatePresence>
 
       {/* Step Switcher Navigation */}
-      <div className="flex items-center gap-2 bg-slate-100 border border-slate-200 p-1.5 rounded-2xl">
-        <button
-          onClick={() => setStep(1)}
-          className={`flex-1 py-3 px-4 rounded-xl text-[13px] md:text-[15px] font-semibold transition-all flex items-center justify-center gap-2 cursor-pointer ${
-            step === 1 
-              ? 'bg-gradient-to-br from-[#FFF4E6] via-[#FDE2C4] to-[#F8C996] text-[#4A2410] ring-1 ring-[#F3C79B] shadow-[0_8px_20px_-10px_rgba(214,128,60,0.45)] [&>svg]:text-[#C2541F]' 
-              : 'text-slate-600 hover:text-slate-900 hover:bg-white/60'
-          }`}
-        >
-          <SlidersHorizontal size={16} /> 1. Enter Your Profile & Financial Details
-        </button>
+      <div className="flex flex-wrap items-center justify-center gap-2">
+        <FinderChip on={step === 1} onClick={() => setStep(1)}>
+          <SlidersHorizontal size={14} /> 1. Your profile & finances
+        </FinderChip>
 
-        <button
+        <FinderChip
+          on={step === 2}
           onClick={() => {
             if (!user && !token) {
               if (openLoginModal) {
@@ -717,14 +712,9 @@ const ScholarshipShortlister = () => {
             if (results) setStep(2);
             else evaluateShortlist();
           }}
-          className={`flex-1 py-3 px-4 rounded-xl text-[13px] md:text-[15px] font-semibold transition-all flex items-center justify-center gap-2 cursor-pointer ${
-            step === 2 
-              ? 'bg-gradient-to-br from-[#FFF4E6] via-[#FDE2C4] to-[#F8C996] text-[#4A2410] ring-1 ring-[#F3C79B] shadow-[0_8px_20px_-10px_rgba(214,128,60,0.45)] [&>svg]:text-[#C2541F]' 
-              : 'text-slate-600 hover:text-slate-900 hover:bg-white/60'
-          }`}
         >
-          <Compass size={16} /> 2. View Shortlisted Scholarships
-        </button>
+          <Compass size={14} /> 2. Shortlisted scholarships
+        </FinderChip>
       </div>
 
       {/* ======================================================== */}
@@ -734,24 +724,21 @@ const ScholarshipShortlister = () => {
         <motion.div
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-white p-6 md:p-10 rounded-[32px] shadow-[0_24px_60px_-30px_rgba(15,23,42,0.18)] space-y-8"
         >
-          {/* Header */}
-          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-2">
-            <div>
-              <p className="text-[12px] font-bold text-[#DE5C2B] uppercase tracking-[0.12em]">Step 1 of 2</p>
-              <h3 className="mt-1.5 font-outfit text-[22px] md:text-[26px] font-bold text-[#111] tracking-[-0.02em]">Tell us about your profile</h3>
-              <p className="text-[14px] text-slate-500 mt-1">We match it against scholarship rules. No documents needed.</p>
-            </div>
+        <FinderCard className="space-y-5">
+          <div>
+            <p className="text-[12.5px] font-semibold text-[#86351A]">Step 1 of 2</p>
+            <h3 className="mt-1 font-outfit text-[20px] sm:text-[22px] font-bold text-[#16130F] tracking-[-0.02em]">Tell us about your profile</h3>
+            <p className="text-[13.5px] text-[#5B544A] mt-0.5">We match it against scholarship rules. No documents needed.</p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 items-start">
             
             {/* Target Degree Level */}
             <div className="relative">
               <PremiumDropdown
                 accent="orange"
-                label="Target Degree Level"
+                label="Degree level"
                 value={formData.targetDegree}
                 onChange={(val) => handleInputChange('targetDegree', val)}
                 options={[
@@ -763,10 +750,7 @@ const ScholarshipShortlister = () => {
             </div>
 
             {/* Academic Percentage / GPA */}
-            <div className="space-y-2">
-              <label className="text-xs font-bold text-slate-600 flex items-center gap-1.5">
-                Academic score (% or converted GPA)
-              </label>
+            <FinderField label="Academic score (%)" hint="Percentage or converted GPA">
               <div className="relative">
                 <input 
                   type="number"
@@ -774,18 +758,19 @@ const ScholarshipShortlister = () => {
                   max="100"
                   value={formData.gpaPercent}
                   onChange={(e) => handleInputChange('gpaPercent', e.target.value)}
-                  className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-bold text-slate-800 focus:outline-none focus:border-[#DE5C2B] focus:bg-white transition-all duration-200 hover:border-slate-300 hover:bg-white hover:shadow-sm"
+                  className={`${FINDER_FIELD} pr-8`}
+                  style={FIELD_RADIUS}
                   placeholder="e.g. 78"
                 />
-                <span className="absolute right-3.5 top-3 text-xs font-black text-slate-400">%</span>
+                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-[13px] font-semibold text-[#9A9184]">%</span>
               </div>
-            </div>
+            </FinderField>
 
             {/* Field of Study / Major */}
             <div className="relative">
               <PremiumDropdown
                 accent="orange"
-                label="Major / Field of Study"
+                label="Field of study"
                 value={formData.streamMajor}
                 onChange={(val) => handleInputChange('streamMajor', val)}
                                 searchable={true}
@@ -801,7 +786,7 @@ const ScholarshipShortlister = () => {
             <div className="relative">
               <PremiumDropdown
                 accent="orange"
-                label="Target Destination"
+                label="Destination"
                 value={formData.targetCountry}
                 onChange={(val) => handleInputChange('targetCountry', val)}
                                 searchable={true}
@@ -815,7 +800,7 @@ const ScholarshipShortlister = () => {
             <div className="relative">
               <PremiumDropdown
                 accent="orange"
-                label="Preferred Funding Type"
+                label="Funding type"
                 value={formData.fundingType}
                 onChange={(val) => handleInputChange('fundingType', val)}
                 options={[
@@ -849,7 +834,7 @@ const ScholarshipShortlister = () => {
             <div className="relative">
               <PremiumDropdown
                 accent="orange"
-                label="Annual Family Income (For Need-Based Aid)"
+                label="Family income (yearly, for need-based aid)"
                 value={formData.familyIncome}
                 onChange={(val) => handleInputChange('familyIncome', val)}
                 options={[
@@ -862,20 +847,18 @@ const ScholarshipShortlister = () => {
             </div>
 
             {/* GRE Score */}
-            <div className="space-y-2">
-              <label className="text-xs font-bold text-slate-600 flex items-center gap-1.5">
-                GRE score (0 if not taken)
-              </label>
+            <FinderField label="GRE score" hint="0 if not taken">
               <input 
                 type="number"
                 min="0"
                 max="340"
                 value={formData.greScore}
                 onChange={(e) => handleInputChange('greScore', e.target.value)}
-                className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-bold text-slate-800 focus:outline-none focus:border-[#DE5C2B] focus:bg-white transition-all duration-200 hover:border-slate-300 hover:bg-white hover:shadow-sm"
+                className={FINDER_FIELD}
+                style={FIELD_RADIUS}
                 placeholder="0 (or e.g. 320)"
               />
-            </div>
+            </FinderField>
 
             {/* Target Intake */}
             <div className="relative">
@@ -893,18 +876,19 @@ const ScholarshipShortlister = () => {
             </div>
           </div>
 
-          <div className="pt-6 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div className="pt-5 border-t border-[#ECE6DA] flex flex-col sm:flex-row items-center justify-between gap-4">
             <div>
               <Muhavra hi="बूँद-बूँद से घड़ा भरता है।" />
-              <p className="text-[13px] text-slate-500">
+              <p className="text-[13px] text-[#5B544A]">
                 We check 150+ merit, need-based and government scholarships.
               </p>
             </div>
 
-            <button
+            <FinderButton
+              type="button"
               onClick={handleShortlistSubmit}
               disabled={loading}
-              className="group w-full sm:w-auto h-12 px-7 rounded-full bg-[#111] hover:bg-[#DE5C2B] disabled:opacity-80 text-white text-[15px] font-bold transition-colors flex items-center justify-center gap-2 cursor-pointer"
+              className="group w-full sm:w-auto"
             >
               {loading ? (
                 <>
@@ -915,8 +899,9 @@ const ScholarshipShortlister = () => {
                   Find my scholarships <ArrowRight size={17} className="transition-transform group-hover:translate-x-1" />
                 </>
               )}
-            </button>
+            </FinderButton>
           </div>
+        </FinderCard>
         </motion.div>
       )}
 
@@ -1011,16 +996,17 @@ const ScholarshipShortlister = () => {
           </div>
 
           {/* Search & Filter Bar */}
-          <div className="bg-white border border-slate-200/80 rounded-2xl p-3 md:p-4 shadow-sm space-y-2">
+          <FinderCard className="space-y-2">
             <div className="flex flex-col md:flex-row items-center gap-3">
               <form onSubmit={handleSearchSubmit} className="relative flex-1 w-full">
-                <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
+                <Search size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#5B544A]" />
                 <input 
                   type="text"
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   placeholder="Search scholarships by grant title, university, or country (e.g. Fulbright, Commonwealth, Harvard)..."
-                  className="w-full pl-11 pr-10 py-3 bg-slate-50 border border-slate-200 rounded-xl text-xs md:text-sm font-semibold text-slate-800 focus:outline-none focus:border-emerald-500 focus:bg-white transition placeholder:text-slate-400"
+                  className={`${FINDER_FIELD} pl-10 pr-10`}
+                  style={FIELD_RADIUS}
                 />
                 {searchTerm && (
                   <button 
@@ -1032,12 +1018,9 @@ const ScholarshipShortlister = () => {
                   </button>
                 )}
               </form>
-              <button
-                onClick={handleSearchSubmit}
-                className="w-full md:w-auto px-6 py-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs md:text-sm font-black transition flex items-center justify-center gap-2 cursor-pointer shadow-sm"
-              >
-                <Search size={15} /> Search Grants
-              </button>
+              <FinderButton type="button" onClick={handleSearchSubmit} className="w-full md:w-auto shrink-0">
+                <Search size={16} /> Search grants
+              </FinderButton>
             </div>
             {activeSearch && (
               <div className="flex items-center justify-between text-xs font-bold text-slate-500 pt-1 px-1">
@@ -1047,7 +1030,7 @@ const ScholarshipShortlister = () => {
                 </button>
               </div>
             )}
-          </div>
+          </FinderCard>
 
           {/* EXCEL EXPORT & SHORTLIST DOWNLOAD ACTION BANNER */}
           <div className="bg-gradient-to-r from-emerald-50 via-teal-50/50 to-indigo-50/40 border border-emerald-200/80 rounded-2xl p-4 flex flex-col md:flex-row md:items-center justify-between gap-4 shadow-xs">

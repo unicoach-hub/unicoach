@@ -251,20 +251,20 @@ const DashboardScene = ({ accent, running, reduced }) => {
   return (
     <div className="w-full bg-white rounded-2xl p-4 sm:p-5 shadow-lg border border-orange-100 text-left space-y-3">
       <div className="flex items-center justify-between border-b border-slate-100 pb-2.5">
-        <div className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded-lg bg-orange-100/80 flex items-center justify-center" style={{ color: accent }}>
+        <div className="flex items-center gap-2 min-w-0">
+          <div className="w-8 h-8 shrink-0 rounded-lg bg-orange-100/80 flex items-center justify-center" style={{ color: accent }}>
             <LayoutDashboard className="w-4 h-4" />
           </div>
-          <div>
-            <span className="text-xs font-black text-slate-900 block leading-tight">Your mentor dashboard</span>
-            <span className="text-[10px] text-slate-400 font-medium">Bookings, questions & earnings</span>
+          <div className="min-w-0">
+            <span className="text-xs font-black text-slate-900 block leading-tight truncate">Your mentor dashboard</span>
+            <span className="text-[10px] text-slate-400 font-medium block truncate">Bookings, questions & earnings</span>
           </div>
         </div>
         <motion.span
           key={step}
           initial={{ scale: 0.8 }}
           animate={{ scale: 1 }}
-          className="inline-flex items-center gap-1.5 text-[10.5px] font-bold text-slate-700 bg-slate-50 px-2.5 py-0.5 rounded-full border border-slate-200"
+          className="shrink-0 whitespace-nowrap inline-flex items-center gap-1.5 text-[10.5px] font-bold text-slate-700 bg-slate-50 px-2.5 py-0.5 rounded-full border border-slate-200"
         >
           <Bell className="w-3 h-3" style={{ color: accent }} /> {visible.length} new
         </motion.span>
@@ -276,9 +276,9 @@ const DashboardScene = ({ accent, running, reduced }) => {
           { label: 'This month', value: 18400 + visible.length * 999, prefix: '₹' },
           { label: 'Rating', text: '4.9 ★' },
         ].map((k) => (
-          <div key={k.label} className="bg-[#FAF9F6] p-2 rounded-xl border border-slate-100 text-center">
-            <span className="text-[9px] uppercase font-bold text-slate-400 block">{k.label}</span>
-            <span className="font-outfit text-sm font-black text-slate-900">
+          <div key={k.label} className="min-w-0 bg-[#FAF9F6] px-1 py-2 sm:p-2 rounded-xl border border-slate-100 text-center">
+            <span className="text-[8.5px] sm:text-[9px] uppercase font-bold text-slate-400 block whitespace-nowrap">{k.label}</span>
+            <span className="font-outfit text-[13px] sm:text-sm font-black text-slate-900 whitespace-nowrap">
               {k.text || <CountUp value={k.value} prefix={k.prefix} duration={0.6} reduced={reduced} />}
             </span>
           </div>

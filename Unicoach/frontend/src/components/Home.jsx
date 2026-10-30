@@ -10,7 +10,8 @@ const loaders = {
   ShortlistShowcase: () => import('./ShortlistShowcase'),
   StudentStory: () => import('./StudentStory'),
   PassportJourney: () => import('./PassportJourney'),
-  Destinations: () => import('./Destinations'),
+  // Postage-stamp version; the older card carousel is still in ./Destinations
+  Destinations: () => import('./DestinationStamps'),
   UpcomingEvents: () => import('./UpcomingEvents'),
   Testimonials: () => import('./Testimonials'),
   FinalCTA: () => import('./FinalCTA'),

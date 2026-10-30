@@ -18,7 +18,7 @@ import { HookBand, StatStrip, BarCompare } from '../../../components/ui/Infograp
 // ─────────────────────────────────────────────
 const masterUniversities = [
   // Toronto / Scarborough
-  { id: 'can-1', name: "University of Toronto", city: "Toronto", rank: "25 QS", tuition: 61000, type: "PUBLIC", website: "https://www.utoronto.ca", eligibility: "GPA 3.5+, IELTS 7.0+, TOEFL 100+", logo: "https://logo.clearbit.com/utoronto.ca", courses: ["Computer Science", "Data Science", "Software Engineering", "Business Administration", "Engineering Science", "Artificial Intelligence"] },
+  { id: 'can-1', name: "University of Toronto", city: "Toronto", rank: "32 QS", tuition: 76090, type: "PUBLIC", website: "https://www.utoronto.ca", eligibility: "Bachelor's degree + IELTS/TOEFL; grade requirement varies by course", logo: "https://logo.clearbit.com/utoronto.ca", courses: ["Computer Science", "Data Science", "Software Engineering", "Business Administration", "Engineering Science", "Artificial Intelligence"] },
   { id: 'can-2', name: "Centennial College", city: "Scarborough", rank: "76 National", tuition: 17000, type: "PUBLIC", website: "https://www.centennialcollege.ca", eligibility: "GPA 2.5+, IELTS 6.0+, TOEFL 80+", logo: "https://logo.clearbit.com/centennialcollege.ca", courses: ["Computer Systems", "Information Technology", "Business Administration", "Hospitality", "Software Engineering"] },
   { id: 'can-3', name: "Humber College", city: "Toronto", rank: "80 National", tuition: 16000, type: "PUBLIC", website: "https://www.humber.ca", eligibility: "GPA 2.5+, IELTS 6.0+, TOEFL 80+", logo: "https://logo.clearbit.com/humber.ca", courses: ["Information Technology Solutions", "Global Business", "Computer Science", "Web Development", "Marketing"] },
   { id: 'can-4', name: "Lambton College", city: "Toronto", rank: "85 National", tuition: 15000, type: "PUBLIC", website: "https://www.lambtoncollege.ca", eligibility: "GPA 2.5+, IELTS 6.0+, TOEFL 80+", logo: "https://logo.clearbit.com/lambtoncollege.ca", courses: ["Cloud Computing", "Cyber Security", "Computer Software", "Business Management"] },
@@ -27,17 +27,17 @@ const masterUniversities = [
   { id: 'can-5', name: "Conestoga College", city: "Kitchener", rank: "77 National", tuition: 15000, type: "PUBLIC", website: "https://www.conestogac.on.ca", eligibility: "GPA 2.5+, IELTS 6.0+, TOEFL 80+", logo: "https://logo.clearbit.com/conestogac.on.ca", courses: ["Applied Computer Science", "Web Development", "Engineering Science", "Business Analytics"] },
 
   // Halifax
-  { id: 'can-6', name: "Dalhousie University", city: "Halifax", rank: "275 QS", tuition: 24000, type: "PUBLIC", website: "https://www.dal.ca", eligibility: "GPA 3.0+, IELTS 6.5+, TOEFL 90+", logo: "https://logo.clearbit.com/dal.ca", courses: ["Computer Science", "Data Science", "Management", "Engineering Science"] },
+  { id: 'can-6', name: "Dalhousie University", city: "Halifax", rank: "298 QS", tuition: 35988, type: "PUBLIC", website: "https://www.dal.ca", eligibility: "Bachelor's degree + IELTS/TOEFL; grade requirement varies by course", logo: "https://logo.clearbit.com/dal.ca", courses: ["Computer Science", "Data Science", "Management", "Engineering Science"] },
 
   // Montreal
-  { id: 'can-7', name: "McGill University", city: "Montreal", rank: "29 QS", tuition: 45000, type: "PUBLIC", website: "https://www.mcgill.ca", eligibility: "GPA 3.5+, IELTS 7.0+, TOEFL 100+", logo: "https://logo.clearbit.com/mcgill.ca", courses: ["Computer Science", "Medicine", "Business Administration", "Data Science", "Economics"] },
-  { id: 'can-8', name: "Concordia University", city: "Montreal", rank: "387 QS", tuition: 28000, type: "PUBLIC", website: "https://www.concordia.ca", eligibility: "GPA 3.0+, IELTS 6.5+, TOEFL 90+", logo: "https://logo.clearbit.com/concordia.ca", courses: ["Computer Science", "Software Engineering", "Information Systems", "Business Administration"] },
+  { id: 'can-7', name: "McGill University", city: "Montreal", rank: "30 QS", tuition: 32833, type: "PUBLIC", website: "https://www.mcgill.ca", eligibility: "Bachelor's degree + IELTS/TOEFL; grade requirement varies by course", logo: "https://logo.clearbit.com/mcgill.ca", courses: ["Computer Science", "Medicine", "Business Administration", "Data Science", "Economics"] },
+  { id: 'can-8', name: "Concordia University", city: "Montreal", rank: "497 QS", tuition: 17900, type: "PUBLIC", website: "https://www.concordia.ca", eligibility: "Bachelor's degree + IELTS/TOEFL; grade requirement varies by course", logo: "https://logo.clearbit.com/concordia.ca", courses: ["Computer Science", "Software Engineering", "Information Systems", "Business Administration"] },
 
   // Edmonton
-  { id: 'can-9', name: "University of Alberta", city: "Edmonton", rank: "96 QS", tuition: 29000, type: "PUBLIC", website: "https://www.ualberta.ca", eligibility: "GPA 3.2+, IELTS 6.5+, TOEFL 90+", logo: "https://logo.clearbit.com/ualberta.ca", courses: ["Computing Science", "Computer Science", "Artificial Intelligence", "Engineering Science", "Business Administration"] },
+  { id: 'can-9', name: "University of Alberta", city: "Edmonton", rank: "97 QS", tuition: 19833, type: "PUBLIC", website: "https://www.ualberta.ca", eligibility: "Bachelor's degree + IELTS/TOEFL; grade requirement varies by course", logo: "https://logo.clearbit.com/ualberta.ca", courses: ["Computing Science", "Computer Science", "Artificial Intelligence", "Engineering Science", "Business Administration"] },
 
   // London Canada
-  { id: 'can-10', name: "Western University", city: "London, Canada", rank: "114 QS", tuition: 36000, type: "PUBLIC", website: "https://www.uwo.ca", eligibility: "GPA 3.2+, IELTS 7.0+, TOEFL 95+", logo: "https://logo.clearbit.com/uwo.ca", courses: ["Computer Science", "Management", "Data Analytics", "Engineering Science"] }
+  { id: 'can-10', name: "Western University", city: "London, Canada", rank: "142 QS", tuition: 47152, type: "PUBLIC", website: "https://www.uwo.ca", eligibility: "Bachelor's degree + IELTS/TOEFL; grade requirement varies by course", logo: "https://logo.clearbit.com/uwo.ca", courses: ["Computer Science", "Management", "Data Analytics", "Engineering Science"] }
 ];
 
 const CanadaOverview = () => {
@@ -48,7 +48,7 @@ const CanadaOverview = () => {
   const [selectedCity, setSelectedCity] = useState('All');
   const [selectedFeeLimit, setSelectedFeeLimit] = useState('All'); // 'All' | '20000' | '40000'
 
-  const exchangeRate = 61.20; // 1 CAD ≈ 61.20 INR
+  const exchangeRate = 68; // 1 CAD ≈ ₹68 (Aug 2026)
 
   // Currency Converter helper
   const formatCost = (valInCAD) => {
@@ -319,7 +319,7 @@ const CanadaOverview = () => {
 
           <div className="flex border-b border-slate-200 mb-8 overflow-x-auto gap-2">
             {[
-              { id: 'qs', label: 'QS Top 2026 Rankings' },
+              { id: 'qs', label: 'QS Top 2027 Rankings' },
               { id: 'specialization', label: 'Best by Specialization' },
               { id: 'co-op', label: 'Top Co-op/Internship Programs' }
             ].map(tab => (
@@ -350,12 +350,12 @@ const CanadaOverview = () => {
                     </thead>
                     <tbody className="divide-y divide-slate-100 text-slate-700 font-semibold">
                       {[
-                        { rank: "25", name: "University of Toronto", loc: "Toronto, ON" },
-                        { rank: "29", name: "McGill University", loc: "Montreal, QC" },
-                        { rank: "38", name: "University of British Columbia", loc: "Vancouver, BC" },
-                        { rank: "96", name: "University of Alberta", loc: "Edmonton, AB" },
-                        { rank: "114", name: "Western University", loc: "London, ON" },
-                        { rank: "115", name: "University of Montreal", loc: "Montreal, QC" }
+                        { rank: "30", name: "McGill University", loc: "Montreal, QC" },
+                        { rank: "32", name: "University of Toronto", loc: "Toronto, ON" },
+                        { rank: "45", name: "University of British Columbia", loc: "Vancouver, BC" },
+                        { rank: "97", name: "University of Alberta", loc: "Edmonton, AB" },
+                        { rank: "142", name: "Western University", loc: "London, ON" },
+                        { rank: "162", name: "University of Montreal", loc: "Montreal, QC" }
                       ].map((row, i) => (
                         <tr key={i} className="hover:bg-slate-50/50 transition-colors">
                           <td className="py-3.5 text-indigo-650 font-black">{row.rank}</td>

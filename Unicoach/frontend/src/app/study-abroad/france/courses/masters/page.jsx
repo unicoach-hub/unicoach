@@ -26,16 +26,16 @@ const SECTIONS = [
 ];
 
 const topMSUnis = [
-  { rank: 1, name: "Université PSL", qsRank: "#28", tuitionEUR: 3941, focus: "Multidisciplinary, Research", tagline: "France's #1 University" },
-  { rank: 2, name: "École Polytechnique", qsRank: "#41", tuitionEUR: 15000, focus: "Engineering, Data Science, AI", tagline: "France's MIT Equivalent" },
+  { rank: 1, name: "Université PSL", qsRank: "#34", tuitionEUR: 3950, focus: "Multidisciplinary, Research", tagline: "France's #1 University" },
+  { rank: 2, name: "École Polytechnique", qsRank: "#43 (IP Paris)", tuitionEUR: 15000, focus: "Engineering, Data Science, AI", tagline: "France's MIT Equivalent" },
   { rank: 3, name: "HEC Paris Business School", qsRank: "#1 Masters", tuitionEUR: 31750, focus: "Finance, Management, Business Analytics", tagline: "Top Business School in Europe" },
   { rank: 4, name: "INSEAD", qsRank: "#2 MBA", tuitionEUR: 25000, focus: "MBA, Management, Strategy", tagline: "Elite Executive Training" },
-  { rank: 5, name: "Université Paris-Saclay", qsRank: "#71", tuitionEUR: 3941, focus: "Engineering, Technology, Life Sciences", tagline: "Global Scientific Powerhouse" },
-  { rank: 6, name: "Sorbonne University", qsRank: "#62", tuitionEUR: 3941, focus: "Sciences, Humanities, Medicine", tagline: "Centuries of Academic Prestige" },
+  { rank: 5, name: "Université Paris-Saclay", qsRank: "#76", tuitionEUR: 3950, focus: "Engineering, Technology, Life Sciences", tagline: "Global Scientific Powerhouse" },
+  { rank: 6, name: "Sorbonne University", qsRank: "#72", tuitionEUR: 3950, focus: "Sciences, Humanities, Medicine", tagline: "Centuries of Academic Prestige" },
   { rank: 7, name: "ESSEC Business School", qsRank: "Top 30", tuitionEUR: 26000, focus: "Business, Finance, Marketing", tagline: "Triple-Accredited Business Leader" },
-  { rank: 8, name: "Sciences Po", qsRank: "#367", tuitionEUR: 17750, focus: "Political Science, International Relations", tagline: "Premier School for Public Policy" },
-  { rank: 9, name: "CentraleSupélec", qsRank: "Top 150", tuitionEUR: 13500, focus: "Engineering, Energy, AI", tagline: "Top Selective Engineering College" },
-  { rank: 10, name: "Université Paris Cité", qsRank: "#300", tuitionEUR: 11000, focus: "Health Sciences, Life Sciences, Medicine", tagline: "Leading Medical Research Center" }
+  { rank: 8, name: "Sciences Po", qsRank: "#354", tuitionEUR: 20640, focus: "Political Science, International Relations", tagline: "Premier School for Public Policy" },
+  { rank: 9, name: "CentraleSupélec", qsRank: "Part of Paris-Saclay (#76)", tuitionEUR: 13500, focus: "Engineering, Energy, AI", tagline: "Top Selective Engineering College" },
+  { rank: 10, name: "Université Paris Cité", qsRank: "#300", tuitionEUR: 3950, focus: "Health Sciences, Life Sciences, Medicine", tagline: "Leading Medical Research Center" }
 ];
 
 const specialisations = [
@@ -571,11 +571,11 @@ const FranceMastersCourse = () => {
                     <div>
                       <h4 className="font-extrabold text-slate-800 text-xs uppercase tracking-wider mb-2">Public Universities (State-Funded)</h4>
                       <p className="text-slate-550 text-xs font-semibold leading-relaxed">
-                        Heavily subsidized by the French taxpayer. Non-EU students pay minor administration fees.
+                        Heavily subsidized by the French taxpayer. Non-EU students pay the state-set differentiated rate.
                       </p>
                     </div>
                     <div className="mt-4">
-                      <strong className="text-slate-900 text-xl font-black block">{formatCost(3770)} / year</strong>
+                      <strong className="text-slate-900 text-xl font-black block">{formatCost(3950)} / year</strong>
                       <span className="text-[10px] text-slate-400 font-bold block mt-0.5">Subsidized Master's tuition rate</span>
                     </div>
                   </div>
@@ -609,7 +609,7 @@ const FranceMastersCourse = () => {
                       <tbody className="divide-y divide-slate-100 text-slate-700">
                         <tr>
                           <td className="py-2.5">Tuition Fees (Public University)</td>
-                          <td className="py-2.5 text-right font-black text-indigo-650">{formatCost(3770)}</td>
+                          <td className="py-2.5 text-right font-black text-indigo-650">{formatCost(3950)}</td>
                         </tr>
                         <tr>
                           <td className="py-2.5">Tuition Fees (Private / Grandes Écoles)</td>

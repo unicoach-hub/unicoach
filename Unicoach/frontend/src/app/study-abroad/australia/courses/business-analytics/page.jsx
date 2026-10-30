@@ -6,25 +6,25 @@ import StudyAbroadCTA from '../../../../../components/StudyAbroadCTA';
 import { getUniversityLogo } from '../../../../../components/logoResolver';
 import { matchesUniversitySearch, getMatchedCoursesForUniversity } from '../../../../../utils/universitySearchMatcher';
 import { HookBand, BarCompare } from '../../../../../components/ui/Infographics';
+import { FinderCard, FinderField, FinderChip, FINDER_FIELD, FIELD_RADIUS } from '../../../../../components/ui/FinderForm';
 
 const universityDatabase = [
-  { id: 1,  name: "University of New South Wales",      city: "Sydney",       state: "New South Wales", location: "Sydney, New South Wales, Australia",        rank: "Rank 19 QS Rankings",  rankValue: 19,   tuition: 25, type: "PUBLIC", logo: "https://logo.clearbit.com/unsw.edu.au",          website: "https://www.unsw.edu.au",          courses: ["Business Analytics","Data Science","Computer Science","Business Administration","Software Engineering","Accounting","Artificial Intelligence / Machine Learning","Economics"], degrees: ["Postgraduate","Ph.D.","Undergraduate"], intakes: ["FEB","JUL","SEP"], description: "A world top-20 university offering a highly regarded Masters in Business Analytics with deep industry ties in Sydney.", eligibility: "GPA 3.5+, IELTS 6.5+", deadline: "Mar 01, 2026" },
-  { id: 2,  name: "Monash University",                  city: "Melbourne",    state: "Victoria",        location: "Melbourne, Victoria, Australia",             rank: "Rank 42 QS Rankings",  rankValue: 42,   tuition: 17, type: "PUBLIC", logo: "https://logo.clearbit.com/monash.edu",           website: "https://www.monash.edu",           courses: ["Business Analytics","Data Science","Computer Science","Business Administration","Accounting","Artificial Intelligence / Machine Learning","Economics","Software Engineering"], degrees: ["Postgraduate","Ph.D.","Undergraduate"], intakes: ["FEB","JUL","NOV"], description: "A leading global research university in Melbourne offering a top-tier Masters in Business Analytics programme.", eligibility: "GPA 3.3+, IELTS 6.5+", deadline: "Mar 15, 2026" },
-  { id: 3,  name: "University of Queensland",           city: "Brisbane",     state: "Queensland",      location: "Brisbane, Queensland, Australia",            rank: "Rank 43 QS Rankings",  rankValue: 43,   tuition: 20, type: "PUBLIC", logo: "https://logo.clearbit.com/uq.edu.au",            website: "https://www.uq.edu.au",            courses: ["Business Analytics","Data Science","Computer Science","Business Administration","Accounting","Economics","Environmental science / management","Software Engineering"], degrees: ["Postgraduate","Ph.D.","Undergraduate"], intakes: ["FEB","JUL","SEP"], description: "A world top-50 research university in Brisbane with a strong Masters in Business Analytics programme.", eligibility: "GPA 3.5+, IELTS 6.5+", deadline: "Apr 01, 2026" },
-  { id: 4,  name: "Macquarie University",               city: "Sydney",       state: "New South Wales", location: "Sydney, New South Wales, Australia",        rank: "Rank 130 QS Rankings", rankValue: 130,  tuition: 26, type: "PUBLIC", logo: "https://logo.clearbit.com/mq.edu.au",            website: "https://www.mq.edu.au",            courses: ["Business Analytics","Data Science","Business Administration","Computer Science","Accounting","Finance","Economics","Software Engineering"], degrees: ["Postgraduate","Ph.D.","Undergraduate"], intakes: ["FEB","JUL","SEP"], description: "A research-intensive Sydney university renowned for Business Analytics with strong links to tech and finance sectors.", eligibility: "GPA 3.2+, IELTS 6.5+", deadline: "Apr 15, 2026" },
-  { id: 5,  name: "RMIT University",                    city: "Melbourne",    state: "Victoria",        location: "Melbourne, Victoria, Australia",             rank: "Rank 140 QS Rankings", rankValue: 140,  tuition: 12, type: "PUBLIC", logo: "https://logo.clearbit.com/rmit.edu.au",          website: "https://www.rmit.edu.au",          courses: ["Business Analytics","Data Science","Computer Science","Business Administration","Accounting","Software Engineering","Artificial Intelligence / Machine Learning","Cyber Security"], degrees: ["Postgraduate","Ph.D.","Undergraduate"], intakes: ["FEB","JUL","NOV"], description: "A globally connected technology university in Melbourne offering an industry-focused Masters in Business Analytics.", eligibility: "GPA 3.0+, IELTS 6.5+", deadline: "Apr 15, 2026" },
-  { id: 6,  name: "Queensland University of Technology", city: "Brisbane",    state: "Queensland",      location: "Brisbane, Queensland, Australia",            rank: "Rank 189 QS Rankings", rankValue: 189,  tuition: 20, type: "PUBLIC", logo: "https://logo.clearbit.com/qut.edu.au",           website: "https://www.qut.edu.au",           courses: ["Business Analytics","Data Science","Computer Science","Business Administration","Software Engineering","Accounting","Architecture","Information technology"], degrees: ["Postgraduate","Ph.D.","Undergraduate"], intakes: ["FEB","JUL","SEP"], description: "A leading Brisbane university of technology with an applied Masters in Business Analytics aligned to industry needs.", eligibility: "GPA 3.0+, IELTS 6.5+", deadline: "May 01, 2026" },
-  { id: 7,  name: "Deakin University",                  city: "Melbourne",    state: "Victoria",        location: "Melbourne, Victoria, Australia",             rank: "Rank 266 QS Rankings", rankValue: 266,  tuition: 18, type: "PUBLIC", logo: "https://logo.clearbit.com/deakin.edu.au",        website: "https://www.deakin.edu.au",        courses: ["Business Analytics","Data Science","Business Administration","Computer Science","Accounting","Nursing and midwifery","Software Engineering","Artificial Intelligence / Machine Learning"], degrees: ["Postgraduate","Ph.D.","Undergraduate"], intakes: ["FEB","MAR","JUL","NOV"], description: "An innovative Melbourne university offering a flexible and highly-ranked Masters in Business Analytics.", eligibility: "GPA 3.0+, IELTS 6.0+", deadline: "May 01, 2026" },
-  { id: 8,  name: "Swinburne University of Technology", city: "Melbourne",    state: "Victoria",        location: "Melbourne, Victoria, Australia",             rank: "Rank 285 QS Rankings", rankValue: 285,  tuition: 19, type: "PUBLIC", logo: "https://logo.clearbit.com/swinburne.edu.au",    website: "https://www.swinburne.edu.au",    courses: ["Business Analytics","Data Science","Computer Science","Business Administration","Software Engineering","Artificial Intelligence / Machine Learning","Accounting","Cyber Security"], degrees: ["Postgraduate","Ph.D.","Undergraduate"], intakes: ["FEB","JUL","NOV"], description: "A technology-focused Melbourne university offering a Masters in Business Analytics with strong data and AI integration.", eligibility: "GPA 3.0+, IELTS 6.5+", deadline: "May 01, 2026" },
-  { id: 9,  name: "La Trobe University",                city: "Melbourne",    state: "Victoria",        location: "Melbourne, Victoria, Australia",             rank: "Rank 316 QS Rankings", rankValue: 316,  tuition: 12, type: "PUBLIC", logo: "https://logo.clearbit.com/latrobe.edu.au",      website: "https://www.latrobe.edu.au",      courses: ["Business Analytics","Data Science","Business Administration","Computer Science","Accounting","Nursing and midwifery","Environmental science / management","Software Engineering"], degrees: ["Postgraduate","Ph.D.","Undergraduate"], intakes: ["FEB","JUL","SEP","NOV"], description: "A research-intensive Melbourne university offering an affordable Masters in Business Analytics programme.", eligibility: "GPA 2.8+, IELTS 6.0+", deadline: "May 15, 2026" },
-  { id: 10, name: "University of South Australia",      city: "Adelaide",     state: "South Australia", location: "Adelaide, South Australia, Australia",      rank: "Rank 326 QS Rankings", rankValue: 326,  tuition: 19, type: "PUBLIC", logo: "https://logo.clearbit.com/unisa.edu.au",        website: "https://www.unisa.edu.au",        courses: ["Business Analytics","Data Science","Business Administration","Computer Science","Accounting","Engineering Science","Software Engineering","Marketing"], degrees: ["Postgraduate","Ph.D.","Undergraduate"], intakes: ["FEB","JUL","SEP"], description: "South Australia's largest university offering a strong Masters in Business Analytics with industry partnerships.", eligibility: "GPA 3.0+, IELTS 6.0+", deadline: "May 15, 2026" },
-  { id: 11, name: "James Cook University",              city: "Townsville",   state: "Queensland",      location: "Townsville, Queensland, Australia",          rank: "Rank 461 QS Rankings", rankValue: 461,  tuition: 20, type: "PUBLIC", logo: "https://logo.clearbit.com/jcu.edu.au",           website: "https://www.jcu.edu.au",           courses: ["Business Analytics","Data Science","Business Administration","Computer Science","Marine science","Accounting","Tourism","Environmental science / management"], degrees: ["Postgraduate","Ph.D.","Undergraduate"], intakes: ["FEB","JUL","SEP"], description: "A tropical Queensland university offering a Masters in Business Analytics with a focus on sustainability and the Asia-Pacific.", eligibility: "GPA 2.8+, IELTS 6.0+", deadline: "Jun 01, 2026" },
-  { id: 12, name: "University of the Sunshine Coast",  city: "Sippy Downs",  state: "Queensland",      location: "Sippy Downs, Queensland, Australia",         rank: "Rank --",              rankValue: 9999, tuition: 16, type: "PUBLIC", logo: "https://logo.clearbit.com/usc.edu.au",           website: "https://www.usc.edu.au",           courses: ["Business Analytics","Data Science","Business Administration","Computer Science","Accounting","Nursing and midwifery","Environmental science / management","Teaching / Education studies"], degrees: ["Postgraduate","Ph.D.","Undergraduate"], intakes: ["FEB","JUL","SEP","NOV"], description: "A fast-growing Queensland university offering a student-centred Masters in Business Analytics in a beautiful coastal setting.", eligibility: "GPA 2.5+, IELTS 6.0+", deadline: "Jun 15, 2026" }
+  { id: 2,  name: "Monash University",                  city: "Melbourne",    state: "Victoria",        location: "Melbourne, Victoria, Australia",             rank: "Rank 31 QS Rankings",  rankValue: 31,   tuition: 42, type: "PUBLIC", logo: "https://logo.clearbit.com/monash.edu",           website: "https://www.monash.edu",           courses: ["Business Analytics","Data Science","Computer Science","Business Administration","Accounting","Artificial Intelligence / Machine Learning","Economics","Software Engineering"], degrees: ["Postgraduate","Ph.D.","Undergraduate"], intakes: ["FEB"], description: "A leading research university in Melbourne offering a Master of Business Analytics at its Clayton campus.", eligibility: "Bachelor's degree, IELTS 6.5+", deadline: "Varies by course" },
+  { id: 3,  name: "University of Queensland",           city: "Brisbane",     state: "Queensland",      location: "Brisbane, Queensland, Australia",            rank: "Rank 40 QS Rankings",  rankValue: 40,   tuition: 41, type: "PUBLIC", logo: "https://logo.clearbit.com/uq.edu.au",            website: "https://www.uq.edu.au",            courses: ["Business Analytics","Data Science","Computer Science","Business Administration","Accounting","Economics","Environmental science / management","Software Engineering"], degrees: ["Postgraduate","Ph.D.","Undergraduate"], intakes: ["FEB","JUL"], description: "UQ's Master of Business Analytics is now online-only; on campus in Brisbane, international students can take the Master of Business (Information Systems field).", eligibility: "Bachelor's degree, IELTS 6.5+", deadline: "Varies by course" },
+  { id: 4,  name: "Macquarie University",               city: "Sydney",       state: "New South Wales", location: "Sydney, New South Wales, Australia",        rank: "Rank 126 QS Rankings", rankValue: 126,  tuition: 33, type: "PUBLIC", logo: "https://logo.clearbit.com/mq.edu.au",            website: "https://www.mq.edu.au",            courses: ["Business Analytics","Data Science","Business Administration","Computer Science","Accounting","Finance","Economics","Software Engineering"], degrees: ["Postgraduate","Ph.D.","Undergraduate"], intakes: ["FEB","JUL"], description: "A research-intensive Sydney university offering a Master of Business Analytics at its Macquarie Park campus.", eligibility: "Bachelor's degree, IELTS 6.5+", deadline: "Varies by course" },
+  { id: 5,  name: "RMIT University",                    city: "Melbourne",    state: "Victoria",        location: "Melbourne, Victoria, Australia",             rank: "Rank 119 QS Rankings", rankValue: 119,  tuition: 34, type: "PUBLIC", logo: "https://logo.clearbit.com/rmit.edu.au",          website: "https://www.rmit.edu.au",          courses: ["Business Analytics","Data Science","Computer Science","Business Administration","Accounting","Software Engineering","Artificial Intelligence / Machine Learning","Cyber Security"], degrees: ["Postgraduate","Ph.D.","Undergraduate"], intakes: ["FEB","JUL"], description: "A technology and design university in Melbourne's CBD offering the Master of Business Analytics and AI Strategy.", eligibility: "Bachelor's degree, IELTS 6.5+", deadline: "Varies by course" },
+  { id: 6,  name: "Queensland University of Technology", city: "Brisbane",    state: "Queensland",      location: "Brisbane, Queensland, Australia",            rank: "Rank 240 QS Rankings", rankValue: 240,  tuition: 30, type: "PUBLIC", logo: "https://logo.clearbit.com/qut.edu.au",           website: "https://www.qut.edu.au",           courses: ["Business Analytics","Data Science","Computer Science","Business Administration","Software Engineering","Accounting","Architecture","Information technology"], degrees: ["Postgraduate","Ph.D.","Undergraduate"], intakes: ["FEB","JUL"], description: "QUT has no Master of Business Analytics; its closest option for international students is the Master of Data Science in Brisbane.", eligibility: "Bachelor's degree, IELTS 6.5+", deadline: "Varies by course" },
+  { id: 7,  name: "Deakin University",                  city: "Melbourne",    state: "Victoria",        location: "Melbourne, Victoria, Australia",             rank: "Rank 227 QS Rankings", rankValue: 227,  tuition: 30, type: "PUBLIC", logo: "https://logo.clearbit.com/deakin.edu.au",        website: "https://www.deakin.edu.au",        courses: ["Business Analytics","Data Science","Business Administration","Computer Science","Accounting","Nursing and midwifery","Software Engineering","Artificial Intelligence / Machine Learning"], degrees: ["Postgraduate","Ph.D.","Undergraduate"], intakes: ["MAR","JUL","NOV"], description: "Deakin offers a Master of Business Analytics at its Melbourne Burwood campus, with three intakes a year.", eligibility: "Bachelor's degree, IELTS 6.5+", deadline: "Varies by course" },
+  { id: 8,  name: "Swinburne University of Technology", city: "Melbourne",    state: "Victoria",        location: "Melbourne, Victoria, Australia",             rank: "Rank 291 QS Rankings", rankValue: 291,  tuition: 31, type: "PUBLIC", logo: "https://logo.clearbit.com/swinburne.edu.au",    website: "https://www.swinburne.edu.au",    courses: ["Business Analytics","Data Science","Computer Science","Business Administration","Software Engineering","Artificial Intelligence / Machine Learning","Accounting","Cyber Security"], degrees: ["Postgraduate","Ph.D.","Undergraduate"], intakes: ["FEB","JUL","NOV"], description: "Swinburne has no Master of Business Analytics; its closest option is the Master of Data Science at the Hawthorn campus in Melbourne.", eligibility: "Bachelor's degree, IELTS 6.5+", deadline: "Varies by course" },
+  { id: 9,  name: "La Trobe University",                city: "Melbourne",    state: "Victoria",        location: "Melbourne, Victoria, Australia",             rank: "Rank 241 QS Rankings", rankValue: 241,  tuition: 31, type: "PUBLIC", logo: "https://logo.clearbit.com/latrobe.edu.au",      website: "https://www.latrobe.edu.au",      courses: ["Business Analytics","Data Science","Business Administration","Computer Science","Accounting","Nursing and midwifery","Environmental science / management","Software Engineering"], degrees: ["Postgraduate","Ph.D.","Undergraduate"], intakes: ["MAR","JUL","NOV"], description: "A research-intensive Melbourne university offering a Master of Business Analytics at its Bundoora campus.", eligibility: "Bachelor's degree, IELTS 6.5+", deadline: "Varies by course" },
+  { id: 10, name: "Adelaide University",      city: "Adelaide",     state: "South Australia", location: "Adelaide, South Australia, Australia",      rank: "Rank 79 QS Rankings", rankValue: 79,  tuition: 37, type: "PUBLIC", logo: "https://logo.clearbit.com/unisa.edu.au",        website: "https://www.adelaide.edu.au",        courses: ["Business Analytics","Data Science","Business Administration","Computer Science","Accounting","Engineering Science","Software Engineering","Marketing"], degrees: ["Postgraduate","Ph.D.","Undergraduate"], intakes: ["FEB","JUL"], description: "Formed in 2026 from the University of Adelaide and UniSA, offering a Master of Business Analytics at its Adelaide City campus.", eligibility: "Bachelor's degree, IELTS 6.5+", deadline: "Varies by course" },
+  { id: 11, name: "James Cook University",              city: "Brisbane",   state: "Queensland",      location: "Brisbane & Cairns, Queensland, Australia",          rank: "Rank 438 QS Rankings", rankValue: 438,  tuition: 27, type: "PUBLIC", logo: "https://logo.clearbit.com/jcu.edu.au",           website: "https://www.jcu.edu.au",           courses: ["Business Analytics","Data Science","Business Administration","Computer Science","Marine science","Accounting","Tourism","Environmental science / management"], degrees: ["Postgraduate","Ph.D.","Undergraduate"], intakes: ["FEB","SEP"], description: "JCU has no Master of Business Analytics; its closest option is the Master of Data Science (Professional), taught in Cairns and Brisbane.", eligibility: "Bachelor's degree + IELTS/PTE", deadline: "Varies by course" },
+  { id: 12, name: "University of the Sunshine Coast",  city: "Sippy Downs",  state: "Queensland",      location: "Sippy Downs, Queensland, Australia",         rank: "Rank 851-900 QS Rankings",              rankValue: 851, tuition: 23, type: "PUBLIC", logo: "https://logo.clearbit.com/usc.edu.au",           website: "https://www.unisc.edu.au",           courses: ["Business Analytics","Data Science","Business Administration","Computer Science","Accounting","Nursing and midwifery","Environmental science / management","Teaching / Education studies"], degrees: ["Postgraduate","Ph.D.","Undergraduate"], intakes: ["MAR","JUL"], description: "UniSC offers a 1.5-year Master of Business Intelligence and Analytics on the Sunshine Coast.", eligibility: "Bachelor's degree + IELTS/PTE", deadline: "Varies by course" }
 ];
 
 const degreeCategories = ["Postgraduate","Ph.D.","PG Diploma /Certificate","Undergraduate","UG Diploma /Certificate /Associate Degree"];
 const courseCategories = ["Business Analytics","Industrial Engineering","Broadcast Media","Engineering Design","Industrial Design","Physiotherapy","Astronomy","Speech Pathology","Interior Design","Theatre","Social Work","Dental Studies","Animal and Veterinary Studies","Justice studies","Materials and Mineral Engineering","Manufacturing Engineering","General Engineering And Technology","Electronics","Cyber Security","Automotive engineering","Robotics","Physical Sciences","Biochemistry","Information Systems","Philosophy and Religious Studies","History","Media & Communication","Commerce","Public Health","Game Development","Civil Engineering","Mechanical Engineering","Electrical Engineering","Biomedical Engineering","Aerospace Engineering","Mining Engineering","Geomatic Engineering","Engineering Science","Petroleum Engineering","Legal Studies","Law","Music","Archaeology","Dance","Banking and Finance","Teaching / Education studies","Risk Management","Language and Literature","Social and Cultural Courses","Film and TV production","Journalism","Creative Writing","Advertising","Audio Visual Studies","Sociology","Political Science","Occupational Health & Safety","Nursing and midwifery","Chemical Engineering","Mathematics","Statistics","Linguistic","English language","Photography","Animation","International Relations","Behavioural Science","Geography","Psychology","Sport / Exercise Science","Physics","Data Science","Food / Agricultural Science","Accounting","Earth Sciences / Geoscience","Geology","Environmental science / management","Marine science","Human Geography","Arts / Fine Art","Graphic and Design Studies","Creative Arts","Fashion Design","Product Design","Biological Sciences","Genetics","Zoology","Forensics","Biotechnology","Architecture","Construction Management","Landscape design and architecture","Planning","Building Technology","Surveying","International / Global Business","Sales And Marketing","Human resource Management","Business Administration","Project Management","Innovation / Entrepreneurship","Organisation Management","Chemistry","Food And Hospitality","Data Analytics","Pharmacology / Pharmacy","Business Management","Leadership Development","Tourism","Anthropology","Medicine and Medical Studies","Economics","Computer Science","Artificial Intelligence / Machine Learning","Health Sciences / Administration","Information technology","Computer Graphics","Computer Engineering","Environmental Engineering","Software Engineering","Web Development","Management","Interdisciplinary Studies"];
-const cityCategories = ["Adelaide","Brisbane","Melbourne","Sippy Downs","Sydney","Townsville"];
+const cityCategories = ["Adelaide","Brisbane","Melbourne","Sippy Downs","Sydney"];
 const intakeCategories = ["FEB","MAR","JUL","SEP","NOV"];
 // Five lowest first-year fees from the list above, for the fee chart under the results
 const lowestFeeUnis = [...new Map(universityDatabase.filter((u) => typeof u.tuition === 'number' && u.tuition > 0).map((u) => [u.name, u])).values()]
@@ -115,10 +115,10 @@ const AustraliaBusinessAnalyticsPage = () => {
 
         <div className="grid grid-cols-1 lg:grid-cols-[290px_1fr] gap-8 items-start">
           {/* Sidebar */}
-          <aside className="sticky top-28 bg-white/70 backdrop-blur-xl border border-white/80 rounded-[28px] p-6 shadow-sm z-30">
-            <div className="flex items-center justify-between pb-4 border-b border-slate-100 mb-5">
-              <span className="flex items-center gap-2 text-sm font-black text-slate-800 uppercase tracking-wider"><Filter size={15} className="text-teal-600" /> Filters</span>
-              <button onClick={handleClearAll} className="text-xs font-bold text-teal-600 hover:text-teal-800 cursor-pointer">Clear All</button>
+          <aside className="sticky top-28 bg-white border border-[#E6E0D4] p-5 shadow-[0_24px_60px_-36px_rgba(22,19,15,0.35)] z-30" style={{ borderRadius: 18 }}>
+            <div className="flex items-center justify-between pb-4 border-b border-[#ECE6DA] mb-5">
+              <span className="flex items-center gap-2 text-[14px] font-semibold text-[#16130F]"><Filter size={15} className="text-[#DE5C2B]" /> Filters</span>
+              <button onClick={handleClearAll} className="text-[12.5px] font-semibold text-[#DE5C2B] hover:text-[#86351A] cursor-pointer">Clear All</button>
             </div>
             <div className="space-y-5 max-h-[calc(100vh-280px)] overflow-y-auto pr-1">
               {[
@@ -129,16 +129,16 @@ const AustraliaBusinessAnalyticsPage = () => {
               ].map(({ key, label, items, list, setList }) => (
                 <React.Fragment key={key}>
                   <div>
-                    <button onClick={() => toggleAccordion(key)} className="w-full flex items-center justify-between font-bold text-xs text-slate-700 uppercase tracking-wider mb-3">
+                    <button onClick={() => toggleAccordion(key)} className="w-full flex items-center justify-between text-[12.5px] font-semibold text-[#16130F] mb-3">
                       <span>{label}</span>
-                      <ChevronDown size={14} className={`transition-transform text-slate-400 ${openAccordions[key] ? 'rotate-180 text-teal-600' : ''}`} />
+                      <ChevronDown size={14} className={`transition-transform text-[#9A9184] ${openAccordions[key] ? 'rotate-180 text-[#DE5C2B]' : ''}`} />
                     </button>
                     <AnimatePresence initial={false}>
                       {openAccordions[key] && (
                         <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }} className="overflow-hidden space-y-2.5 pl-0.5">
                           {items.map(item => (
-                            <label key={item.id} className="flex items-center gap-3 text-xs font-bold text-slate-600 hover:text-teal-600 cursor-pointer">
-                              <input type="checkbox" checked={list.includes(item.id)} onChange={() => handleFilterToggle(item.id, list, setList)} className="w-4 h-4 rounded border-slate-300 text-teal-600 cursor-pointer" />
+                            <label key={item.id} className="flex items-center gap-3 text-[13px] text-[#16130F] hover:text-[#DE5C2B] cursor-pointer">
+                              <input type="checkbox" checked={list.includes(item.id)} onChange={() => handleFilterToggle(item.id, list, setList)} className="w-4 h-4 rounded border-[#E6E0D4] accent-[#DE5C2B] cursor-pointer" />
                               {item.label}
                             </label>
                           ))}
@@ -146,21 +146,21 @@ const AustraliaBusinessAnalyticsPage = () => {
                       )}
                     </AnimatePresence>
                   </div>
-                  <div className="h-px bg-slate-100" />
+                  <div className="h-px bg-[#ECE6DA]" />
                 </React.Fragment>
               ))}
               {/* Courses special */}
               <div>
-                <button onClick={() => toggleAccordion('courses')} className="w-full flex items-center justify-between font-bold text-xs text-slate-700 uppercase tracking-wider mb-3">
+                <button onClick={() => toggleAccordion('courses')} className="w-full flex items-center justify-between text-[12.5px] font-semibold text-[#16130F] mb-3">
                   <span>Courses</span>
-                  <ChevronDown size={14} className={`transition-transform text-slate-400 ${openAccordions.courses ? 'rotate-180 text-teal-600' : ''}`} />
+                  <ChevronDown size={14} className={`transition-transform text-[#9A9184] ${openAccordions.courses ? 'rotate-180 text-[#DE5C2B]' : ''}`} />
                 </button>
                 <AnimatePresence initial={false}>
                   {openAccordions.courses && (
                     <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }} className="overflow-hidden space-y-2.5 pl-0.5 max-h-[220px] overflow-y-auto">
                       {courseCategories.map(c => (
-                        <label key={c} className="flex items-center gap-3 text-xs font-bold text-slate-600 hover:text-teal-600 cursor-pointer">
-                          <input type="checkbox" checked={selectedCourses.includes(c)} onChange={() => handleFilterToggle(c, selectedCourses, setSelectedCourses)} className="w-4 h-4 rounded border-slate-300 text-teal-600 cursor-pointer" />
+                        <label key={c} className="flex items-center gap-3 text-[13px] text-[#16130F] hover:text-[#DE5C2B] cursor-pointer">
+                          <input type="checkbox" checked={selectedCourses.includes(c)} onChange={() => handleFilterToggle(c, selectedCourses, setSelectedCourses)} className="w-4 h-4 rounded border-[#E6E0D4] accent-[#DE5C2B] cursor-pointer" />
                           {c}
                         </label>
                       ))}
@@ -173,31 +173,45 @@ const AustraliaBusinessAnalyticsPage = () => {
 
           {/* Main */}
           <main className="flex-1 flex flex-col gap-6">
-            <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4 bg-white/50 border border-white/60 p-5 rounded-[24px] backdrop-blur-md shadow-sm">
-              <div className="flex-1 relative">
-                <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={17} />
-                <input type="text" value={searchTerm} onChange={e => { setSearchTerm(e.target.value); setCurrentPage(1); }} placeholder="Search by course (e.g. CS, MBA, Data Science), university, city..." className="w-full bg-slate-50 border border-slate-100 rounded-xl pl-12 pr-4 py-2.5 text-xs font-semibold outline-none focus:border-teal-400 transition-colors" />
-              </div>
-              <div className="flex items-center gap-4">
-                <p className="text-xs font-bold text-slate-500"><span className="text-slate-800 font-black">{sorted.length}</span> Universities Found</p>
-                <select value={sortBy} onChange={e => setSortBy(e.target.value)} className="bg-slate-50 border border-slate-100 rounded-xl px-3 py-2 text-xs font-bold outline-none cursor-pointer focus:border-teal-400">
-                  <option value="rank">QS Rankings</option>
-                  <option value="fees">Tuition: Low to High</option>
-                  <option value="name">Alphabetical</option>
-                </select>
-              </div>
-            </div>
-
-            {activeChips.length > 0 && (
-              <div className="flex flex-wrap gap-2 items-center bg-teal-50/30 border border-teal-100/50 p-3.5 rounded-2xl">
-                <span className="text-[10px] text-teal-500 font-black uppercase tracking-wider mr-1.5">Active:</span>
-                {activeChips.map((chip, idx) => (
-                  <div key={idx} className="flex items-center gap-1.5 px-3 py-1 bg-white border border-teal-100 rounded-full text-xs font-bold text-teal-700 shadow-sm">
-                    <span>{chip.label}</span>
-                    <button onClick={() => handleRemoveChip(chip)} className="text-slate-400 hover:text-teal-600 cursor-pointer"><X size={12} className="stroke-[2.5]" /></button>
+            {/* Search and Sort */}
+            <FinderCard>
+              <div className="grid grid-cols-1 sm:grid-cols-[1fr_220px] xl:grid-cols-[1fr_220px_auto] gap-3 items-end">
+                <FinderField label="Search">
+                  <div className="relative">
+                    <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#5B544A] pointer-events-none" />
+                    <input
+                      type="text"
+                      value={searchTerm}
+                      onChange={(e) => { setSearchTerm(e.target.value); setCurrentPage(1); }}
+                      placeholder="Search by course (e.g. CS, MBA, Data Science), university, city..."
+                      className={`${FINDER_FIELD} pl-10`}
+                      style={FIELD_RADIUS}
+                    />
                   </div>
+                </FinderField>
+                <FinderField label="Sort by">
+                  <select value={sortBy} onChange={(e) => setSortBy(e.target.value)} className={`${FINDER_FIELD} cursor-pointer`} style={FIELD_RADIUS}>
+                    <option value="rank">QS Rankings</option>
+                    <option value="fees">Tuition: Low to High</option>
+                    <option value="name">Alphabetical</option>
+                  </select>
+                </FinderField>
+                <p className="text-[13.5px] text-[#5B544A] whitespace-nowrap sm:col-span-2 xl:col-span-1 xl:h-11 xl:flex xl:items-center">
+                  <span className="font-bold text-[#16130F]">{sorted.length}</span>&nbsp;universities
+                </p>
+              </div>
+            </FinderCard>
+
+            {/* Active Chips */}
+            {activeChips.length > 0 && (
+              <div className="flex flex-wrap gap-2 items-center bg-white/70 border border-[#E6E0D4] p-3.5" style={{ borderRadius: 18 }}>
+                <span className="text-[13.5px] font-semibold text-[#16130F] mr-1">Active filters</span>
+                {activeChips.map((chip, idx) => (
+                  <FinderChip key={idx} on onClick={() => handleRemoveChip(chip)} aria-label={`Remove ${chip.label}`}>
+                    {chip.label} <X size={13} className="stroke-[2.5]" />
+                  </FinderChip>
                 ))}
-                <button onClick={handleClearAll} className="text-[11px] font-black text-teal-600 hover:underline ml-2 cursor-pointer">Clear All</button>
+                <button onClick={handleClearAll} className="text-[13px] font-semibold text-[#DE5C2B] hover:text-[#86351A] ml-1 cursor-pointer">Clear All</button>
               </div>
             )}
 
