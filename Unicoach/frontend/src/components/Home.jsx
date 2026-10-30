@@ -6,7 +6,6 @@ import LazySection from './LazySection';
 const loaders = {
   MentorMarquee: () => import('./MentorMarquee'),
   Services: () => import('./Services'),
-  JourneyBento: () => import('./JourneyBento'),
   ShortlistShowcase: () => import('./ShortlistShowcase'),
   StudentStory: () => import('./StudentStory'),
   PassportJourney: () => import('./PassportJourney'),
@@ -19,7 +18,6 @@ const loaders = {
 };
 const MentorMarquee = lazy(loaders.MentorMarquee);
 const Services = lazy(loaders.Services);
-const JourneyBento = lazy(loaders.JourneyBento);
 const ShortlistShowcase = lazy(loaders.ShortlistShowcase);
 const StudentStory = lazy(loaders.StudentStory);
 const PassportJourney = lazy(loaders.PassportJourney);
@@ -108,12 +106,6 @@ const Home = () => {
         </Suspense>
       </LazySection>
 
-      {/* 06. How UniCoach works: 4 steps, each opening its tool */}
-      <LazySection minHeight="560px" rootMargin="900px">
-        <Suspense fallback={<SectionPlaceholder minHeight="560px" />}>
-          <JourneyBento />
-        </Suspense>
-      </LazySection>
 
       {/* 07. Loved by Students Worldwide */}
       <LazySection minHeight="500px" rootMargin="900px">
