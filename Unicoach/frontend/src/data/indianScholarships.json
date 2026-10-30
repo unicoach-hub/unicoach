@@ -1,0 +1,1988 @@
+{
+ "checkedOn": "2026-10-30",
+ "scholarships": [
+  {
+   "id": "pm-usp-csss",
+   "name": "PM-USP Central Sector Scheme of Scholarship for College & University Students (CSSS)",
+   "provider": "Ministry of Education, Department of Higher Education",
+   "providerType": "central",
+   "state": null,
+   "levels": [
+    "ug",
+    "pg"
+   ],
+   "categories": [
+    "merit",
+    "income"
+   ],
+   "forWhom": "Students above the 80th percentile in their Class 12 board, in regular degree courses (not diploma/distance), family income up to ₹4.5 lakh.",
+   "incomeLimit": "Family income up to ₹4.5 lakh/yr",
+   "amount": "₹12,000/yr (UG years 1–3), ₹20,000/yr (PG and years 4–5 of professional/integrated courses)",
+   "amountVerified": true,
+   "deadline": "AY 2026-27: only renewals open on NSP, closing 31 Oct 2026; check NSP for fresh applications",
+   "applyVia": "National Scholarship Portal (scholarships.gov.in)",
+   "officialUrl": "https://scholarships.gov.in/public/schemeGuidelines/CSSS_GUIDLINES_07022024_updated.pdf",
+   "notes": "82,000 fresh scholarships/yr, 50% for girls. Renewal needs 50% marks and 75% attendance. Can't be combined with other merit/state scholarships or fee waivers. B.Tech/B.E. get ₹12,000 for years 1–3 and ₹20,000 in year 4."
+  },
+  {
+   "id": "pm-usp-sss-jk-ladakh",
+   "name": "PM-USP Special Scholarship Scheme for J&K and Ladakh (SSS J&K and Ladakh)",
+   "provider": "Ministry of Education (implemented by AICTE)",
+   "providerType": "central",
+   "state": null,
+   "levels": [
+    "ug"
+   ],
+   "categories": [
+    "income",
+    "merit"
+   ],
+   "forWhom": "Domicile of J&K or Ladakh who passed Class 12 there (JKBOSE/CBSE) and takes UG admission outside the UTs through AICTE's online counselling (medical seats via NEET counselling); income up to ₹8 lakh.",
+   "incomeLimit": "Family income up to ₹8 lakh/yr",
+   "amount": "Academic fee up to ₹30,000/yr (general degree), ₹1.25 lakh/yr (professional/engineering), ₹3 lakh/yr (medical) + ₹1 lakh/yr maintenance",
+   "amountVerified": true,
+   "deadline": "Fresh: via AICTE counselling portal; renewals on NSP (AY 2026-27 renewals close 31 Oct 2026)",
+   "applyVia": "AICTE PM-USP (SSS J&K & Ladakh) portal for fresh admission; NSP for renewals",
+   "officialUrl": "https://scholarships.gov.in/public/schemeGuidelines/AICTE/PM_USPY(SSSJKL)SchemeSpecifications.pdf",
+   "notes": "5,000 fresh scholarships/yr. Only for admission in listed institutions outside J&K/Ladakh (NAAC 3.0+, NIRF top 100, etc.). Not for diploma, PG, management quota or open university."
+  },
+  {
+   "id": "aicte-pragati",
+   "name": "AICTE Pragati Scholarship for Girl Students (Degree & Diploma)",
+   "provider": "AICTE, Ministry of Education",
+   "providerType": "central",
+   "state": null,
+   "levels": [
+    "ug",
+    "diploma"
+   ],
+   "categories": [
+    "girls",
+    "merit",
+    "income"
+   ],
+   "forWhom": "Girls in 1st year (or 2nd year via lateral entry) of an AICTE-approved technical degree or diploma; max 2 girls per family.",
+   "incomeLimit": "Family income up to ₹8 lakh/yr",
+   "amount": "₹50,000/yr for each year of study",
+   "amountVerified": true,
+   "deadline": "NSP AY 2026-27: applications 1 Jun–31 Oct 2026 (per NSP listing); check portal for next cycle",
+   "applyVia": "National Scholarship Portal (scholarships.gov.in)",
+   "officialUrl": "https://scholarships.gov.in/public/schemeGuidelines/AICTE/AICTE_2010_G.pdf",
+   "notes": "Merit-based on 12th marks (degree) or 10th marks (diploma), state-wise. All eligible applicant girls from NE states and some UTs (incl. J&K, Ladakh) get it. Gap after qualifying exam max 2 years. Cannot hold another scholarship."
+  },
+  {
+   "id": "aicte-saksham",
+   "name": "AICTE Saksham Scholarship for Specially-Abled Students (Degree & Diploma)",
+   "provider": "AICTE, Ministry of Education",
+   "providerType": "central",
+   "state": null,
+   "levels": [
+    "ug",
+    "diploma"
+   ],
+   "categories": [
+    "disability",
+    "income"
+   ],
+   "forWhom": "Students with 40%+ disability in 1st year (or lateral-entry 2nd year) of an AICTE-approved technical degree or diploma.",
+   "incomeLimit": "Family income up to ₹8 lakh/yr",
+   "amount": "₹50,000/yr for each year of study",
+   "amountVerified": true,
+   "deadline": "NSP AY 2026-27: applications 1 Jun–31 Oct 2026 (per NSP listing); check portal for next cycle",
+   "applyVia": "National Scholarship Portal (scholarships.gov.in)",
+   "officialUrl": "https://scholarships.gov.in/public/schemeGuidelines/AICTE/AICTE_2012_G.pdf",
+   "notes": "All eligible applicants get it (no fixed cap). Disabled students must first give UDID consent on the UDID portal before applying on NSP."
+  },
+  {
+   "id": "aicte-swanath",
+   "name": "AICTE Swanath Scholarship Scheme",
+   "provider": "AICTE, Ministry of Education",
+   "providerType": "central",
+   "state": null,
+   "levels": [
+    "ug",
+    "diploma"
+   ],
+   "categories": [
+    "income",
+    "defence"
+   ],
+   "forWhom": "Orphans, students who lost a parent to Covid-19, wards of armed/paramilitary forces martyrs, or students whose parent has a critical life-threatening illness or died/was 80%+ disabled in an accident; in an AICTE-approved degree or diploma course.",
+   "incomeLimit": "Family income up to ₹8 lakh/yr",
+   "amount": "₹50,000/yr for each remaining year of study",
+   "amountVerified": true,
+   "deadline": "NSP AY 2026-27: applications 1 Jun–31 Oct 2026 (per NSP listing); check portal for next cycle",
+   "applyVia": "National Scholarship Portal (scholarships.gov.in)",
+   "officialUrl": "https://scholarships.gov.in/public/schemeGuidelines/AICTE/AICTE_3039_G.pdf",
+   "notes": "Up to 2,000/yr (1,000 degree, 1,000 diploma). Open to students in any year of a regular AICTE-approved degree/diploma; must not hold any other central/state/AICTE scholarship."
+  },
+  {
+   "id": "nmmss",
+   "name": "National Means-cum-Merit Scholarship (NMMSS)",
+   "provider": "Ministry of Education, Department of School Education & Literacy",
+   "providerType": "central",
+   "state": null,
+   "levels": [
+    "school"
+   ],
+   "categories": [
+    "merit",
+    "income"
+   ],
+   "forWhom": "Class 8 students of government, aided or local-body schools who clear the state NMMSS exam (needs 55% in Class 7); paid in Classes 9–12.",
+   "incomeLimit": "Parental income up to ₹3.5 lakh/yr",
+   "amount": "₹12,000/yr (₹1,000/month), Class 9 to 12",
+   "amountVerified": true,
+   "deadline": "NSP AY 2026-27: applications 1 Jun–31 Oct 2026 (per NSP listing); check portal for next cycle",
+   "applyVia": "National Scholarship Portal (scholarships.gov.in)",
+   "officialUrl": "https://scholarships.gov.in/public/schemeGuidelines/NMMSSGuidelines.pdf",
+   "notes": "1 lakh new scholarships/yr, state quotas. Selection via state-run MAT + SAT exam in Class 8. Not for Kendriya Vidyalaya, Navodaya, govt residential or private school students. Continuing in Class 11 needs 60% in Class 10."
+  },
+  {
+   "id": "ugc-national-scholarship-pg",
+   "name": "National Scholarship for Post Graduate Studies (UGC)",
+   "provider": "University Grants Commission (UGC)",
+   "providerType": "central",
+   "state": null,
+   "levels": [
+    "pg"
+   ],
+   "categories": [
+    "merit",
+    "girls"
+   ],
+   "forWhom": "First-year regular PG students (first PG degree only) under 30 at admission, in NAAC-accredited/central-funded institutions; all-India merit.",
+   "incomeLimit": null,
+   "amount": "₹15,000/month for 10 months (₹1.5 lakh/yr) for 2 years",
+   "amountVerified": true,
+   "deadline": "NSP AY 2026-27: 16 Sep–31 Oct 2026 (per NSP listing)",
+   "applyVia": "National Scholarship Portal (scholarships.gov.in)",
+   "officialUrl": "https://www.ugc.gov.in/Scholarships/stu_Scholarship6",
+   "notes": "10,000 slots/yr. 30% reserved for women, filled first by single/twin girl child applicants regardless of UG marks. Replaces the old PG Indira Gandhi single girl child and rank-holder scholarships."
+  },
+  {
+   "id": "ugc-ishan-uday",
+   "name": "Ishan Uday Special Scholarship Scheme for North Eastern Region",
+   "provider": "University Grants Commission (UGC)",
+   "providerType": "central",
+   "state": null,
+   "levels": [
+    "ug"
+   ],
+   "categories": [
+    "northeast",
+    "income",
+    "merit"
+   ],
+   "forWhom": "NE domicile students who passed Class 12 from a school in the NE region, now in 1st year of a regular UG degree anywhere in India.",
+   "incomeLimit": "Parental income below ₹4.5 lakh/yr",
+   "amount": "₹8,000/month for 10 months (₹80,000/yr) for the UG course",
+   "amountVerified": true,
+   "deadline": "Check the UGC Ishan Uday page for the 2026-27 application portal",
+   "applyVia": "National Scholarship Portal (scholarships.gov.in)",
+   "officialUrl": "https://www.ugc.gov.in/Scholarships/stu_Scholarship5",
+   "notes": "10,000 slots/yr, state-wise merit on Class 12 marks. Management-quota and distance students not eligible. Institution must be NAAC-accredited (from AY 2025-26) or centrally funded/INI."
+  },
+  {
+   "id": "pm-yasasvi-top-class-school",
+   "name": "PM YASASVI Top Class Education in Schools for OBC, EBC & DNT",
+   "provider": "Ministry of Social Justice & Empowerment (Backward Classes)",
+   "providerType": "central",
+   "state": null,
+   "levels": [
+    "school"
+   ],
+   "categories": [
+    "obc",
+    "income",
+    "merit"
+   ],
+   "forWhom": "OBC/EBC/DNT students in Classes 9–12 at notified 'Top Class Schools' (100% board results), selected on previous-class marks.",
+   "incomeLimit": "Household income below ₹2.5 lakh/yr",
+   "amount": "Up to ₹75,000/yr (Class 9–10) and ₹1.25 lakh/yr (Class 11–12) for school fees and hostel",
+   "amountVerified": true,
+   "deadline": "NSP AY 2026-27 fresh applications: 22 Oct–30 Nov 2026 (per NSP listing)",
+   "applyVia": "National Scholarship Portal (scholarships.gov.in)",
+   "officialUrl": "https://scholarships.gov.in/public/schemeGuidelines/3061_G.pdf",
+   "notes": "At least 30% of slots for girls; state-wise merit. NSP notice (Oct 2026): students from Rajasthan, Kerala and Karnataka must wait to apply."
+  },
+  {
+   "id": "pm-yasasvi-top-class-college",
+   "name": "PM YASASVI Top Class Education in College for OBC, EBC & DNT",
+   "provider": "Ministry of Social Justice & Empowerment (Backward Classes)",
+   "providerType": "central",
+   "state": null,
+   "levels": [
+    "ug",
+    "pg"
+   ],
+   "categories": [
+    "obc",
+    "income",
+    "merit"
+   ],
+   "forWhom": "OBC/EBC/DNT students admitted to notified top institutions (IITs, IIMs, AIIMS, NITs, NLUs, NIFT, etc.) after Class 12.",
+   "incomeLimit": "Family income up to ₹2.5 lakh/yr",
+   "amount": "Full tuition (private institutes capped at ₹2 lakh/yr) + ₹3,000/month living + ₹5,000/yr books + one-time ₹45,000 computer",
+   "amountVerified": true,
+   "deadline": "NSP AY 2026-27: applications 1 Jun–31 Oct 2026 (per NSP listing); check portal for next cycle",
+   "applyVia": "National Scholarship Portal (scholarships.gov.in)",
+   "officialUrl": "https://scholarships.gov.in/public/schemeGuidelines/ApprovedmodifieddraftofTopClassCollege.pdf",
+   "notes": "Fixed slots per institution, filled by inter-se merit; 30% for girls. Max 2 siblings per family. Others in these institutes fall back to post-matric scholarship."
+  },
+  {
+   "id": "pm-yasasvi-pre-matric-obc",
+   "name": "PM YASASVI Pre-Matric Scholarship for OBC, EBC & DNT Students",
+   "provider": "Ministry of Social Justice & Empowerment (implemented by States/UTs)",
+   "providerType": "central",
+   "state": null,
+   "levels": [
+    "school"
+   ],
+   "categories": [
+    "obc",
+    "income"
+   ],
+   "forWhom": "OBC, EBC or DNT students in Class 9 or 10 in a government school.",
+   "incomeLimit": "Parental income up to ₹2.5 lakh/yr",
+   "amount": "₹4,000/yr",
+   "amountVerified": true,
+   "deadline": "Set by each State/UT on NSP or state portal; check your state",
+   "applyVia": "National Scholarship Portal or your State scholarship portal",
+   "officialUrl": "https://socialjustice.gov.in/schemes/101",
+   "notes": "Centrally sponsored; the state of domicile runs the application. Cannot hold another scholarship for Class 9–10."
+  },
+  {
+   "id": "pm-yasasvi-post-matric-obc",
+   "name": "PM YASASVI Post-Matric Scholarship for OBC, EBC & DNT Students",
+   "provider": "Ministry of Social Justice & Empowerment (implemented by States/UTs)",
+   "providerType": "central",
+   "state": null,
+   "levels": [
+    "school",
+    "diploma",
+    "ug",
+    "pg",
+    "phd"
+   ],
+   "categories": [
+    "obc",
+    "income"
+   ],
+   "forWhom": "OBC, EBC or DNT students in any recognised post-Class 10 course (Class 11 up to PhD).",
+   "incomeLimit": "Parental income up to ₹2.5 lakh/yr",
+   "amount": "₹5,000/yr (non-degree post-Class 10) up to ₹20,000/yr (professional degree/PG courses), incl. tuition component; general BA/BSc/MA ₹8,000/yr",
+   "amountVerified": true,
+   "deadline": "Set by each State/UT on NSP or state portal; check your state",
+   "applyVia": "National Scholarship Portal or your State scholarship portal",
+   "officialUrl": "https://socialjustice.gov.in/schemes/101",
+   "notes": "Central guideline rates by course group: Group 1 ₹20,000, Group 2 ₹13,000, Group 3 ₹8,000, Group 4 ₹5,000 per year. Correspondence/online courses not eligible for academic allowance. States may add their own top-ups."
+  },
+  {
+   "id": "pre-matric-sc",
+   "name": "Pre-Matric Scholarship for Scheduled Caste Students (Class 9–10)",
+   "provider": "Ministry of Social Justice & Empowerment (implemented by States/UTs)",
+   "providerType": "central",
+   "state": null,
+   "levels": [
+    "school"
+   ],
+   "categories": [
+    "sc",
+    "income"
+   ],
+   "forWhom": "SC students studying full-time in Class 9 or 10.",
+   "incomeLimit": "Parental income up to ₹2.5 lakh/yr",
+   "amount": "₹3,500/yr (day scholars), ₹7,000/yr (hostellers); +10% for students with disabilities",
+   "amountVerified": true,
+   "deadline": "Set by each State/UT; check NSP/state portal",
+   "applyVia": "National Scholarship Portal (initial registration) then State portal",
+   "officialUrl": "https://socialjustice.gov.in/schemes/23",
+   "notes": "Centrally sponsored; awarded by the state of domicile."
+  },
+  {
+   "id": "pre-matric-unclean-hazardous-occupations",
+   "name": "Pre-Matric Scholarship for Children of Parents in Unclean & Hazardous Occupations",
+   "provider": "Ministry of Social Justice & Empowerment (implemented by States/UTs)",
+   "providerType": "central",
+   "state": null,
+   "levels": [
+    "school"
+   ],
+   "categories": [
+    "income",
+    "general"
+   ],
+   "forWhom": "Class 1–10 children of manual scavengers, tanners/flayers, waste pickers or workers in hazardous cleaning, of any caste or religion.",
+   "incomeLimit": null,
+   "amount": "₹3,500/yr (day scholars), ₹8,000/yr (hostellers, Class 3–10)",
+   "amountVerified": true,
+   "deadline": "Set by each State/UT; check NSP/state portal",
+   "applyVia": "National Scholarship Portal (initial registration) then State portal",
+   "officialUrl": "https://socialjustice.gov.in/schemes/23",
+   "notes": "No income ceiling. Needs a certificate of parent's occupation from the District Social Welfare Officer or local body."
+  },
+  {
+   "id": "post-matric-sc",
+   "name": "Post-Matric Scholarship for Scheduled Caste Students (PMS-SC)",
+   "provider": "Ministry of Social Justice & Empowerment (implemented by States/UTs)",
+   "providerType": "central",
+   "state": null,
+   "levels": [
+    "school",
+    "diploma",
+    "ug",
+    "pg",
+    "phd"
+   ],
+   "categories": [
+    "sc",
+    "income"
+   ],
+   "forWhom": "SC students in any recognised post-Class 10 course (Class 11 up to PhD) in India, selected by their state of domicile.",
+   "incomeLimit": "Parental income up to ₹2.5 lakh/yr",
+   "amount": null,
+   "amountVerified": false,
+   "deadline": "Set by each State/UT; check NSP/state portal",
+   "applyVia": "National Scholarship Portal or your State scholarship portal",
+   "officialUrl": "https://socialjustice.gov.in/schemes/25",
+   "notes": "Covers compulsory non-refundable fees plus an academic allowance that varies by course group and hosteller/day-scholar status. Income limit is ₹2.5 lakh in current guidelines; a raise to ₹4.5 lakh was reported as proposed in 2026, so check your state portal."
+  },
+  {
+   "id": "top-class-education-sc",
+   "name": "Central Sector Scholarship of Top Class Education for SC Students",
+   "provider": "Ministry of Social Justice & Empowerment",
+   "providerType": "central",
+   "state": null,
+   "levels": [
+    "ug",
+    "pg"
+   ],
+   "categories": [
+    "sc",
+    "income",
+    "merit"
+   ],
+   "forWhom": "SC students admitted to notified top institutions (IITs, IIMs, AIIMS, NITs, NLUs, etc.) for courses after Class 12.",
+   "incomeLimit": "Family income up to ₹8 lakh/yr",
+   "amount": "Full tuition & non-refundable fees (private institutes capped at ₹2 lakh/yr) + ₹86,000 academic allowance in year 1, ₹41,000/yr after",
+   "amountVerified": true,
+   "deadline": "NSP AY 2026-27: applications 1 Jun–31 Oct 2026 (per NSP listing); check portal for next cycle",
+   "applyVia": "National Scholarship Portal (scholarships.gov.in)",
+   "officialUrl": "https://socialjustice.gov.in/schemes/27",
+   "notes": "Fixed slots per institution, filled by merit; 30% for girls. SC students not selected can still claim Post-Matric Scholarship."
+  },
+  {
+   "id": "pre-matric-st",
+   "name": "Pre-Matric Scholarship for Scheduled Tribe Students (Class 9–10)",
+   "provider": "Ministry of Tribal Affairs (implemented by States/UTs)",
+   "providerType": "central",
+   "state": null,
+   "levels": [
+    "school"
+   ],
+   "categories": [
+    "st",
+    "income"
+   ],
+   "forWhom": "ST students in Class 9 or 10 in a government or government-recognised school.",
+   "incomeLimit": "Family income up to ₹2.5 lakh/yr",
+   "amount": "₹225/month (day scholars) or ₹525/month (hostellers) for 10 months + ₹750/₹1,000 yearly books grant",
+   "amountVerified": true,
+   "deadline": "Set by each State/UT; check NSP/state portal",
+   "applyVia": "National Scholarship Portal or your State scholarship portal",
+   "officialUrl": "https://tribal.nic.in/Scholarship.aspx",
+   "notes": "Extra disability allowance of ₹600/month (day scholars) or ₹800/month (hostellers). Cannot hold another scholarship."
+  },
+  {
+   "id": "post-matric-st",
+   "name": "Post-Matric Scholarship for Scheduled Tribe Students",
+   "provider": "Ministry of Tribal Affairs (implemented by States/UTs)",
+   "providerType": "central",
+   "state": null,
+   "levels": [
+    "school",
+    "diploma",
+    "ug",
+    "pg",
+    "phd"
+   ],
+   "categories": [
+    "st",
+    "income"
+   ],
+   "forWhom": "ST students in any recognised course after Class 10 (Class 11 up to PhD).",
+   "incomeLimit": "Parental income up to ₹2.5 lakh/yr",
+   "amount": "Compulsory fees (up to the state-fixed limit) + maintenance of ₹230 to ₹1,200/month depending on course",
+   "amountVerified": true,
+   "deadline": "Set by each State/UT; check NSP/state portal",
+   "applyVia": "National Scholarship Portal or your State scholarship portal",
+   "officialUrl": "https://tribal.nic.in/Scholarship.aspx",
+   "notes": "Centrally sponsored; the state of domicile selects and pays."
+  },
+  {
+   "id": "national-scholarship-st-top-class",
+   "name": "National Scholarship for Higher Education of ST Students (Top Class)",
+   "provider": "Ministry of Tribal Affairs",
+   "providerType": "central",
+   "state": null,
+   "levels": [
+    "ug",
+    "pg"
+   ],
+   "categories": [
+    "st",
+    "income",
+    "merit"
+   ],
+   "forWhom": "ST students admitted to UG/PG courses at premier institutes notified by the Ministry of Tribal Affairs.",
+   "incomeLimit": "Family income up to ₹6 lakh/yr",
+   "amount": "Full tuition (private institutes capped at ₹2.5 lakh/yr) + ₹3,000/month stipend + ₹5,000/yr books + one-time ₹45,000 computer",
+   "amountVerified": true,
+   "deadline": "NSP AY 2026-27: applications 1 Jun–31 Oct 2026 (per NSP listing); check portal for next cycle",
+   "applyVia": "National Scholarship Portal (scholarships.gov.in)",
+   "officialUrl": "https://tribal.nic.in/Scholarship.aspx",
+   "notes": "No institute/state cap on slots. Management-quota seats in private institutes not eligible. Formerly 'Top Class Education for ST Students'."
+  },
+  {
+   "id": "national-fellowship-st",
+   "name": "National Fellowship for Higher Education of ST Students (NFST)",
+   "provider": "Ministry of Tribal Affairs",
+   "providerType": "central",
+   "state": null,
+   "levels": [
+    "phd"
+   ],
+   "categories": [
+    "st",
+    "research"
+   ],
+   "forWhom": "ST students who have qualified UGC-NET / Joint CSIR-UGC NET (required from 2025-26) and are admitted to a PhD at a recognised Indian university or institution; no income limit, max age 36.",
+   "incomeLimit": null,
+   "amount": "₹37,000/month (JRF, first 2 years), ₹42,000/month (SRF) – revised rates w.e.f. 1 Jan 2023",
+   "amountVerified": true,
+   "deadline": "2025-26 call ran 1 Aug–30 Sep 2025 on fellowship.tribal.gov.in; check for the 2026-27 call",
+   "applyVia": "National Tribal Fellowship portal (fellowship.tribal.gov.in)",
+   "officialUrl": "https://tribal.nic.in/Scholarship.aspx",
+   "notes": "750 slots (2025-26). Selection criteria changed from 2025-26 to use NET-JRF/CSIR results; see ministry notice."
+  },
+  {
+   "id": "national-fellowship-sc",
+   "name": "National Fellowship for Scheduled Caste Students (NFSC)",
+   "provider": "Ministry of Social Justice & Empowerment (implemented by NSFDC)",
+   "providerType": "central",
+   "state": null,
+   "levels": [
+    "phd"
+   ],
+   "categories": [
+    "sc",
+    "research"
+   ],
+   "forWhom": "SC students who qualify UGC-NET or joint CSIR-UGC NET (NFSC category) and join MPhil/PhD at a UGC-recognised institution.",
+   "incomeLimit": null,
+   "amount": "At par with UGC JRF/SRF rates (UGC: ₹37,000/month JRF, ₹42,000/month SRF)",
+   "amountVerified": true,
+   "deadline": "Selection through NTA's UGC-NET / CSIR-UGC NET; no separate application window",
+   "applyVia": "Choose NFSC while applying for UGC-NET / CSIR-UGC NET (NTA)",
+   "officialUrl": "https://socialjustice.gov.in/schemes/29",
+   "notes": "2,000 new fellowships/yr (1,500 humanities/social sciences, 500 science), over and above normal reservation. Scheme guideline text still quotes older ₹31,000/₹35,000 rates, but ties the rate to UGC."
+  },
+  {
+   "id": "national-fellowship-obc",
+   "name": "National Fellowship for OBC Students (NF-OBC)",
+   "provider": "Ministry of Social Justice & Empowerment (UGC/NTA)",
+   "providerType": "central",
+   "state": null,
+   "levels": [
+    "phd"
+   ],
+   "categories": [
+    "obc",
+    "research"
+   ],
+   "forWhom": "OBC students who qualify UGC-NET or CSIR-UGC NET for the NF-OBC category and enrol in a regular MPhil/PhD.",
+   "incomeLimit": null,
+   "amount": "At par with UGC JRF/SRF rates (UGC: ₹37,000/month JRF, ₹42,000/month SRF)",
+   "amountVerified": true,
+   "deadline": "Selection through NTA's UGC-NET / CSIR-UGC NET; no separate application window",
+   "applyVia": "Via UGC-NET / CSIR-UGC NET (NTA)",
+   "officialUrl": "https://socialjustice.gov.in/schemes/7",
+   "notes": "1,000 slots/yr (750 UGC-NET, 250 CSIR-NET), over and above normal reservation. Ministry page still shows older ₹25,000/₹28,000 rates; the guideline ties rates to UGC fellowships. The ministry page still shows older rates; the scheme pays at current UGC JRF/SRF rates."
+  },
+  {
+   "id": "national-fellowship-pwd",
+   "name": "National Fellowship for Persons with Benchmark Disabilities (NFPwD)",
+   "provider": "Department of Empowerment of Persons with Disabilities, MoSJE",
+   "providerType": "central",
+   "state": null,
+   "levels": [
+    "phd"
+   ],
+   "categories": [
+    "disability",
+    "research"
+   ],
+   "forWhom": "Students with 40%+ benchmark disability who qualify UGC-NET JRF or CSIR-UGC NET JRF and pursue MPhil/PhD in India.",
+   "incomeLimit": null,
+   "amount": "₹37,000/month (JRF, 2 years), ₹42,000/month (SRF) + contingency + ₹2,000/month escort/reader allowance",
+   "amountVerified": true,
+   "deadline": "Selection through NTA's UGC-NET / CSIR-UGC NET",
+   "applyVia": "Via UGC-NET / CSIR-UGC NET (NTA)",
+   "officialUrl": "https://scholarships.gov.in/public/schemeGuidelines/DEPDGuidelines_1.pdf",
+   "notes": "200 fellowships/yr (150 UGC-NET, 50 CSIR-NET). No income ceiling. Awarded once in a lifetime; cannot combine with other stipends."
+  },
+  {
+   "id": "pre-matric-disability",
+   "name": "Pre-Matric Scholarship for Students with Disabilities",
+   "provider": "Department of Empowerment of Persons with Disabilities, MoSJE",
+   "providerType": "central",
+   "state": null,
+   "levels": [
+    "school"
+   ],
+   "categories": [
+    "disability",
+    "income"
+   ],
+   "forWhom": "Students with 40%+ benchmark disability in Class 9 or 10.",
+   "incomeLimit": "Parental income up to ₹2.5 lakh/yr",
+   "amount": "₹800/month (hostellers) or ₹500/month (day scholars) + ₹2,000–₹4,000/yr disability allowance + ₹1,000/yr books",
+   "amountVerified": true,
+   "deadline": "NSP AY 2026-27: 25 Jul–31 Oct 2026 (per NSP listing)",
+   "applyVia": "National Scholarship Portal (scholarships.gov.in)",
+   "officialUrl": "https://scholarships.gov.in/public/schemeGuidelines/DEPDGuidelines_1.pdf",
+   "notes": "25,000 slots incl. renewals, 50% for girls. Disability allowance is ₹4,000 for visual/intellectual disability, ₹2,000 for others. Give UDID consent on the UDID portal before applying."
+  },
+  {
+   "id": "post-matric-disability",
+   "name": "Post-Matric Scholarship for Students with Disabilities",
+   "provider": "Department of Empowerment of Persons with Disabilities, MoSJE",
+   "providerType": "central",
+   "state": null,
+   "levels": [
+    "school",
+    "diploma",
+    "ug",
+    "pg"
+   ],
+   "categories": [
+    "disability",
+    "income"
+   ],
+   "forWhom": "Students with 40%+ benchmark disability in Class 11–12, diploma, UG or PG (up to Master's) at recognised institutions.",
+   "incomeLimit": "Parental income up to ₹2.5 lakh/yr",
+   "amount": "Tuition up to ₹1.4 lakh/yr + ₹1,200/month (hostellers) or ₹650/month (day scholars) + disability and ₹1,500/yr book allowance",
+   "amountVerified": true,
+   "deadline": "NSP AY 2026-27: 25 Jul–31 Oct 2026 (per NSP listing)",
+   "applyVia": "National Scholarship Portal (scholarships.gov.in)",
+   "officialUrl": "https://scholarships.gov.in/public/schemeGuidelines/DEPDGuidelines_1.pdf",
+   "notes": "17,000 slots incl. renewals, 50% for girls. Also up to ₹10,000/yr misc. fees. Not for a second course at the same level. UDID consent needed before applying."
+  },
+  {
+   "id": "top-class-disability",
+   "name": "Top Class Education Scholarship for Students with Disabilities",
+   "provider": "Department of Empowerment of Persons with Disabilities, MoSJE",
+   "providerType": "central",
+   "state": null,
+   "levels": [
+    "ug",
+    "pg"
+   ],
+   "categories": [
+    "disability",
+    "income",
+    "merit"
+   ],
+   "forWhom": "Students with 40%+ benchmark disability in UG/PG degree or diploma courses at institutes notified by DEPwD.",
+   "incomeLimit": "Parental income up to ₹8 lakh/yr",
+   "amount": "Tuition up to ₹1.9 lakh/yr + ₹3,000/month (hostellers) or ₹1,500/month (day scholars) + one-time ₹45,000 laptop and ₹30,000 assistive devices",
+   "amountVerified": true,
+   "deadline": "NSP AY 2026-27: applications 1 Jun–31 Oct 2026 (per NSP listing); check portal for next cycle",
+   "applyVia": "National Scholarship Portal (scholarships.gov.in)",
+   "officialUrl": "https://scholarships.gov.in/public/schemeGuidelines/DEPDGuidelines_1.pdf",
+   "notes": "300 slots incl. renewals, 50% for girls. UDID consent needed before applying."
+  },
+  {
+   "id": "ugc-net-jrf",
+   "name": "UGC Junior Research Fellowship (NET-JRF) in Sciences, Humanities & Social Sciences",
+   "provider": "University Grants Commission (UGC) / NTA",
+   "providerType": "central",
+   "state": null,
+   "levels": [
+    "phd"
+   ],
+   "categories": [
+    "research",
+    "merit"
+   ],
+   "forWhom": "Candidates who qualify NET-JRF or the joint CSIR-UGC NET and register for MPhil/PhD within the allowed period.",
+   "incomeLimit": null,
+   "amount": "₹37,000/month (JRF, 2 years), ₹42,000/month (SRF) + ₹10,000–₹25,000/yr contingency",
+   "amountVerified": true,
+   "deadline": "Through UGC-NET / CSIR-UGC NET exam cycles (NTA); no separate application",
+   "applyVia": "UGC-NET / CSIR-UGC NET exam (ugcnet.nta.nic.in / csirnet.nta.nic.in)",
+   "officialUrl": "https://www.ugc.gov.in/Fellowship/stu_Fellowship1",
+   "notes": "Tenure up to 5 years or thesis submission. CSIR-JRF holders in sciences are paid by CSIR at the same rates."
+  },
+  {
+   "id": "ugc-savitribai-phule-single-girl-fellowship",
+   "name": "Savitribai Jyotirao Phule Fellowship for Single Girl Child (UGC)",
+   "provider": "University Grants Commission (UGC)",
+   "providerType": "central",
+   "state": null,
+   "levels": [
+    "phd"
+   ],
+   "categories": [
+    "girls",
+    "research"
+   ],
+   "forWhom": "A single girl child of her parents pursuing a PhD in any subject at a recognised university, college or institute.",
+   "incomeLimit": null,
+   "amount": "₹37,000/month (JRF, 2 years), ₹42,000/month (SRF) + contingency",
+   "amountVerified": true,
+   "deadline": null,
+   "applyVia": "UGC fellowship portal (frg.ugc.ac.in)",
+   "officialUrl": "https://www.ugc.gov.in/Fellowship/stu_Fellowship3",
+   "notes": "Slots decided each year from eligible applications. Tenure up to 5 years or thesis submission."
+  },
+  {
+   "id": "inspire-she",
+   "name": "INSPIRE Scholarship for Higher Education (INSPIRE-SHE)",
+   "provider": "Department of Science & Technology (DST)",
+   "providerType": "central",
+   "state": null,
+   "levels": [
+    "ug",
+    "pg"
+   ],
+   "categories": [
+    "merit",
+    "research"
+   ],
+   "forWhom": "Top 1% Class 12 scorers of their board (or JEE/NEET top-10,000 rank holders) studying natural/basic sciences in B.Sc/BS/Int. M.Sc/MS.",
+   "incomeLimit": null,
+   "amount": "₹80,000/yr (₹60,000 scholarship + ₹20,000 summer research mentorship grant)",
+   "amountVerified": true,
+   "deadline": "No call for the 2025 or 2026 batch yet; 2024 was the last batch selected. DST says the scheme is being redesigned. Check online-inspire.gov.in",
+   "applyVia": "INSPIRE portal (online-inspire.gov.in)",
+   "officialUrl": "https://online-inspire.gov.in/",
+   "notes": "12,000 scholarships/yr. Engineering, medicine and other professional courses not covered. Now runs under DST's Vigyan Dhara scheme; latest batch shown on the portal is SHE-2024, so check for a new call."
+  },
+  {
+   "id": "pmrf",
+   "name": "Prime Minister's Research Fellowship (PMRF)",
+   "provider": "Ministry of Education",
+   "providerType": "central",
+   "state": null,
+   "levels": [
+    "phd"
+   ],
+   "categories": [
+    "research",
+    "merit"
+   ],
+   "forWhom": "PhD scholars in science and engineering at IITs, IISERs, IISc and selected central universities/NITs (direct or lateral entry).",
+   "incomeLimit": null,
+   "amount": "₹70,000/month (years 1–2), ₹75,000 (year 3), ₹80,000 (years 4–5) + ₹2 lakh/yr research grant",
+   "amountVerified": true,
+   "deadline": "Not open: pmrf.in says all sanctioned seats are filled and further approval is awaited",
+   "applyVia": "PMRF portal (pmrf.in) through the host institute",
+   "officialUrl": "https://pmrf.in/",
+   "notes": "Admissions currently paused per pmrf.in. Show as 'watch for reopening' rather than open."
+  },
+  {
+   "id": "nec-merit-scholarship",
+   "name": "NEC Merit Scholarship (Financial Support to NER Students for Higher Professional Courses)",
+   "provider": "North Eastern Council, Ministry of DoNER",
+   "providerType": "central",
+   "state": null,
+   "levels": [
+    "diploma",
+    "ug",
+    "pg",
+    "phd"
+   ],
+   "categories": [
+    "northeast",
+    "merit",
+    "income"
+   ],
+   "forWhom": "Students from the NE states with 60%+ in the qualifying exam, in professional diploma, degree, PG or MPhil/PhD courses anywhere in India.",
+   "incomeLimit": "Parental income up to ₹8 lakh/yr",
+   "amount": "₹20,000/yr (diploma), ₹22,000/yr (degree), ₹25,000/yr (PG), ₹30,000/yr (MPhil/PhD)",
+   "amountVerified": true,
+   "deadline": "AY 2026-27 NSP listing shows renewals only (to 31 Oct 2026); fresh calls are advertised by NEC/state departments",
+   "applyVia": "National Scholarship Portal (scholarships.gov.in)",
+   "officialUrl": "https://scholarships.gov.in/public/schemeGuidelines/NEC_1234_G.pdf",
+   "notes": "Apply only in the first year of the course; later years are renewals. No caste/gender quota; state-wise slots. Not for sponsored/in-service candidates."
+  },
+  {
+   "id": "pm-scholarship-capf-assam-rifles",
+   "name": "Prime Minister's Scholarship Scheme for CAPF & Assam Rifles (and State Police martyrs' wards)",
+   "provider": "Ministry of Home Affairs",
+   "providerType": "central",
+   "state": null,
+   "levels": [
+    "ug",
+    "pg"
+   ],
+   "categories": [
+    "defence",
+    "merit"
+   ],
+   "forWhom": "Wards/widows of serving, retired, disabled or deceased CAPF & Assam Rifles personnel, or of State/UT police martyred in terror/Naxal attacks, joining the first year of a first professional degree course (e.g. B.E./B.Tech, MBBS, BDS, BBA, BCA, B.Pharma) with 60%+ in the entry qualification.",
+   "incomeLimit": null,
+   "amount": "₹3,000/month (girls), ₹2,500/month (boys), paid annually",
+   "amountVerified": true,
+   "deadline": "NSP AY 2026-27: applications 1 Jun–31 Oct 2026 (per NSP listing); check portal for next cycle",
+   "applyVia": "National Scholarship Portal (scholarships.gov.in)",
+   "officialUrl": "https://scholarships.gov.in/public/FAQ/FAQonPMSSS.pdf",
+   "notes": "First professional degree only (BE/B.Tech, MBBS, BDS, BBA, BCA, B.Pharm, B.Sc Nursing, etc.; MBA/MCA allowed). Fresh quota: 2,000 for CAPF/AR, 500 for state police. Max 2 children per family. Renewal needs 50% each year."
+  },
+  {
+   "id": "pm-scholarship-rpf-railways",
+   "name": "Prime Minister's Scholarship Scheme for RPF/RPSF (Ministry of Railways)",
+   "provider": "Ministry of Railways (Railway Board)",
+   "providerType": "central",
+   "state": null,
+   "levels": [
+    "ug",
+    "pg"
+   ],
+   "categories": [
+    "defence",
+    "merit"
+   ],
+   "forWhom": "Wards/widows of serving, retired or deceased RPF/RPSF personnel in their first year of a professional degree, with 60%+ in the entry qualification.",
+   "incomeLimit": null,
+   "amount": "₹3,000/month (girls), ₹2,500/month (boys)",
+   "amountVerified": true,
+   "deadline": "NSP AY 2026-27: applications 1 Jun–31 Oct 2026 (per NSP listing); check portal for next cycle",
+   "applyVia": "National Scholarship Portal (scholarships.gov.in)",
+   "officialUrl": "https://scholarships.gov.in/public/schemeGuidelines/MORB_GL.pdf",
+   "notes": "About 150 scholarships/yr. Professional degrees only (BE, B.Tech, MBBS, BDS, B.Ed, BBA, BCA, B.Pharm; MBA/MCA allowed). Max 2 wards per family."
+  },
+  {
+   "id": "icar-national-talent-scholarship",
+   "name": "ICAR National Talent Scholarship (NTS-UG & NTS-PG)",
+   "provider": "Indian Council of Agricultural Research (DARE)",
+   "providerType": "central",
+   "state": null,
+   "levels": [
+    "ug",
+    "pg"
+   ],
+   "categories": [
+    "merit"
+   ],
+   "forWhom": "Students admitted under ICAR All India Quota seats (CUET-ICAR UG for bachelor's, ICAR AIEEA-PG for master's) to an agricultural university outside their home state; must keep OGPA 7.0/10 (6.5 for SC/ST).",
+   "incomeLimit": null,
+   "amount": "₹3,000/month (UG), ₹5,000/month (PG)",
+   "amountVerified": true,
+   "deadline": "NSP AY 2026-27: applications 1 Jun–31 Oct 2026 (per NSP listing); check portal for next cycle",
+   "applyVia": "National Scholarship Portal (scholarships.gov.in)",
+   "officialUrl": "https://scholarships.gov.in/public/FAQ/FAQsforICAR_NTS-UG_3103.pdf",
+   "notes": "Rates are from the 2016 ICAR guidelines linked on NSP. Confirm the current rate with your university. PG rates: scholarships.gov.in/public/FAQ/FAQsforICAR_NTS-PG_3104.pdf"
+  },
+  {
+   "id": "labour-welfare-beedi-cine-mine-workers",
+   "name": "Financial Assistance for Education of Wards of Beedi/Cine/IOMC/LSDM Workers (Pre- & Post-Matric)",
+   "provider": "Ministry of Labour & Employment",
+   "providerType": "central",
+   "state": null,
+   "levels": [
+    "school",
+    "diploma",
+    "ug",
+    "pg"
+   ],
+   "categories": [
+    "income",
+    "general"
+   ],
+   "forWhom": "Children of beedi, cine, iron/manganese/chrome ore mine (IOMC), limestone/dolomite mine (LSDM) and mica workers (including contract and home-based workers), from Class 1 to degree/professional courses, who passed the previous exam.",
+   "incomeLimit": "Family income up to ₹21,000/month (₹2.52 lakh/yr)",
+   "amount": "₹1,000–₹3,000/yr (Class 1–12), ₹6,000/yr (ITI, polytechnic, degree), ₹25,000/yr (professional courses e.g. B.Tech, MBBS, MBA)",
+   "amountVerified": true,
+   "deadline": "NSP AY 2026-27: applications 1 Jun–31 Oct 2026 (per NSP listing); check portal for next cycle",
+   "applyVia": "National Scholarship Portal (scholarships.gov.in)",
+   "officialUrl": "https://scholarships.gov.in/public/schemeGuidelines/Labour_Ministry_Guidelines_of_scholarhsips%20schemes.pdf",
+   "notes": "Needs the parent's worker identity card. Rates read from the Hindi guideline on NSP: Class 1–4 ₹1,000; 5–8 ₹1,500; 9–10 ₹2,000; 11–12 ₹3,000. Income criteria not confirmed."
+  },
+  {
+   "providerType": "state",
+   "incomeLimit": null,
+   "amount": null,
+   "amountVerified": false,
+   "deadline": null,
+   "notes": "Single window for ~40 state schemes incl. Rajarshi Chhatrapati Shahu Maharaj Shikshan Shulkh Shishyavrutti (EBC), Dr. Panjabrao Deshmukh Vasatigruh Nirvah Bhatta, GoI Post-Matric for SC/ST, VJNT/OBC/SBC post-matric and fee schemes, State Minority Scholarship, Eklavya and Open Merit scholarships. Amounts and income limits differ per scheme; the portal home page did not state them or a 2026-27 deadline.",
+   "id": "maharashtra-mahadbt-scholarships",
+   "name": "MahaDBT Scholarship Portal (Maharashtra state scholarships)",
+   "provider": "Government of Maharashtra (multiple departments via MahaDBT)",
+   "state": "Maharashtra",
+   "levels": [
+    "school",
+    "diploma",
+    "ug",
+    "pg",
+    "phd"
+   ],
+   "categories": [
+    "sc",
+    "st",
+    "obc",
+    "minority",
+    "ews",
+    "general",
+    "merit",
+    "income",
+    "disability"
+   ],
+   "forWhom": "Maharashtra domicile students in post-matric courses; each scheme on the portal has its own category, marks and income rules.",
+   "applyVia": "MahaDBT portal",
+   "officialUrl": "https://mahadbt.maharashtra.gov.in/"
+  },
+  {
+   "providerType": "state",
+   "incomeLimit": null,
+   "amount": null,
+   "amountVerified": false,
+   "deadline": null,
+   "notes": "2026-27 pre-matric and post-matric timetables were issued on 20-07-2026 (dates shown on the portal's timetable section). OTR is mandatory from 2025-26. Income limits and amounts are set in category-wise rules (niyamavali) linked on the portal; not restated here.",
+   "id": "uttar-pradesh-scholarship-fee-reimbursement",
+   "name": "UP Scholarship and Fee Reimbursement (Pre-Matric and Post-Matric)",
+   "provider": "Government of Uttar Pradesh (Social Welfare, Backward Class Welfare, Minority Welfare, ST departments)",
+   "state": "Uttar Pradesh",
+   "levels": [
+    "school",
+    "diploma",
+    "ug",
+    "pg"
+   ],
+   "categories": [
+    "sc",
+    "st",
+    "obc",
+    "minority",
+    "general",
+    "income"
+   ],
+   "forWhom": "UP domicile students in Class 9-10 (pre-matric) or Class 11 onwards (post-matric) from SC, ST, OBC, minority and general categories, within income limits.",
+   "applyVia": "scholarship.up.gov.in (One Time Registration mandatory)",
+   "officialUrl": "https://scholarship.up.gov.in/"
+  },
+  {
+   "providerType": "state",
+   "incomeLimit": null,
+   "amount": null,
+   "amountVerified": false,
+   "deadline": "2026-27 window closed (15 Jul–30 Sep 2026)",
+   "notes": "Portal also links the SC-ST PMS portal. Income certificate must be dated on/after 01-04-2026. Amounts and income ceiling are not stated on the portal page.",
+   "id": "bihar-post-matric-scholarship-bc-ebc",
+   "name": "Bihar Post Matric Scholarship (BC/EBC and SC/ST)",
+   "provider": "Education Department, Government of Bihar",
+   "state": "Bihar",
+   "levels": [
+    "school",
+    "diploma",
+    "ug",
+    "pg"
+   ],
+   "categories": [
+    "obc",
+    "sc",
+    "st",
+    "income"
+   ],
+   "forWhom": "Bihar domicile BC/EBC (and, via the linked portal, SC/ST) students in post-matric courses with a caste and income certificate.",
+   "applyVia": "Bihar PMS portal (pmsonline.bihar.gov.in)",
+   "officialUrl": "https://pmsonline.bihar.gov.in/pms/pms_online/Default.aspx"
+  },
+  {
+   "providerType": "state",
+   "incomeLimit": null,
+   "amount": null,
+   "amountVerified": false,
+   "deadline": null,
+   "notes": "Portal shows 'Year 2026 Registration Open' for Balak/Balika Protsahan (10th pass), Balika Protsahan (+2) and Mukhyamantri Medhavritti (SC/ST +2 girls), and a Kanya (Snatak) Protsahan graduate list. Amounts are not stated on the portal page.",
+   "id": "bihar-mukhyamantri-kanya-utthan-protsahan",
+   "name": "Mukhyamantri Kanya Utthan / Balak-Balika Protsahan Yojana (MedhaSoft)",
+   "provider": "Education Department, Government of Bihar",
+   "state": "Bihar",
+   "levels": [
+    "school",
+    "ug"
+   ],
+   "categories": [
+    "girls",
+    "merit",
+    "sc",
+    "st"
+   ],
+   "forWhom": "Bihar students who passed Class 10 or 12 (incentive), girl graduates, and SC/ST girls with first/second division in +2; Bihar board/university.",
+   "applyVia": "MedhaSoft portal",
+   "officialUrl": "https://medhasoft.bihar.gov.in/"
+  },
+  {
+   "providerType": "state",
+   "incomeLimit": null,
+   "amount": null,
+   "amountVerified": false,
+   "deadline": "2026-27 applications extended to 30 Nov 2026",
+   "notes": "Official notice: deadline for Pre-Matric, Post-Matric, Merit-cum-Means and SVMCM (minority track) for AY 2026-27 extended to 30 November 2026. Rate of scholarship document not reachable, so amounts left blank. Helpline 1800-120-2130.",
+   "id": "west-bengal-aikyashree-nsp-wb",
+   "name": "Aikyashree Scholarships for Minorities (NSP-WB)",
+   "provider": "West Bengal Minorities' Development & Finance Corporation, Minority Affairs and Madrasah Education Dept",
+   "state": "West Bengal",
+   "levels": [
+    "school",
+    "diploma",
+    "ug",
+    "pg",
+    "phd"
+   ],
+   "categories": [
+    "minority",
+    "income",
+    "merit"
+   ],
+   "forWhom": "West Bengal domicile students from notified minority communities: pre-matric, post-matric and merit-cum-means (professional/technical) scholarships.",
+   "applyVia": "NSP-WB portal (nspwb.wbmdfc.org)",
+   "officialUrl": "https://nspwb.wbmdfc.org/"
+  },
+  {
+   "providerType": "state",
+   "incomeLimit": null,
+   "amount": null,
+   "amountVerified": false,
+   "deadline": null,
+   "notes": "Portal states online applications for 2026-27 are open for Post-Matric SC/ST/OBC and Pre-Matric SC, ST, OBC and Component-II. Amounts and income limits not stated on the home page.",
+   "id": "west-bengal-oasis-sc-st-obc",
+   "name": "OASIS Scholarships for SC, ST and OBC (West Bengal)",
+   "provider": "Backward Classes Welfare Department, Government of West Bengal",
+   "state": "West Bengal",
+   "levels": [
+    "school",
+    "diploma",
+    "ug",
+    "pg",
+    "phd"
+   ],
+   "categories": [
+    "sc",
+    "st",
+    "obc",
+    "income"
+   ],
+   "forWhom": "West Bengal SC, ST and OBC students: pre-matric (incl. Component II for hazardous occupations) and post-matric scholarships.",
+   "applyVia": "OASIS portal (oasis.wb.gov.in)",
+   "officialUrl": "https://oasis.wb.gov.in/"
+  },
+  {
+   "providerType": "state",
+   "incomeLimit": "Varies: e.g. SC/ST pre-matric Class 9-10 below Rs 2.5 lakh; SC post-matric fee reimbursement Rs 2.5-10 lakh",
+   "amount": null,
+   "amountVerified": false,
+   "deadline": "2026-27 last dates vary by department: 31 Oct 2026 (BCW, Technical Education), 30 Nov 2026 (Minority, Disability), 31 Dec 2026 (Tribal, Labour), 31 Jan 2027 (Social Welfare)",
+   "notes": "Notice board says applications open for 2026-27. Dates are listed per department and do not specify pre- vs post-matric; check the scheme row before applying. Amounts are not shown on the portal home page. Helpline 1902.",
+   "id": "karnataka-ssp-scholarships",
+   "name": "Karnataka State Scholarship Portal (SSP) - Pre and Post Matric",
+   "provider": "Government of Karnataka (Social Welfare, Tribal Welfare, Backward Classes, Minority Welfare and other departments)",
+   "state": "Karnataka",
+   "levels": [
+    "school",
+    "diploma",
+    "ug",
+    "pg",
+    "phd"
+   ],
+   "categories": [
+    "sc",
+    "st",
+    "obc",
+    "minority",
+    "disability",
+    "income",
+    "general"
+   ],
+   "forWhom": "Karnataka students in Class 1-10 (pre-matric) and Class 11 onwards (post-matric) across SC/ST/OBC/minority/disability and other department schemes.",
+   "applyVia": "SSP portal",
+   "officialUrl": "https://ssp.karnataka.gov.in/"
+  },
+  {
+   "providerType": "state",
+   "incomeLimit": "No income limit stated",
+   "amount": "Rs 1,000 per month (DBT) until completion of first UG degree/diploma/ITI",
+   "amountVerified": true,
+   "deadline": null,
+   "notes": "Can be held alongside other scholarships. Tamil Nadu changed government in May 2026; official pages still list the scheme (DoTE shows 2025-26 beneficiaries) but no 2026-27 government order was found confirming continuation.",
+   "id": "tamil-nadu-pudhumai-penn",
+   "name": "Pudhumai Penn (Moovalur Ramamirtham Ammaiyar Higher Education Assurance Scheme)",
+   "provider": "Department of Social Welfare and Women Empowerment, Government of Tamil Nadu",
+   "state": "Tamil Nadu",
+   "levels": [
+    "ug",
+    "diploma"
+   ],
+   "categories": [
+    "girls"
+   ],
+   "forWhom": "Girls who studied Class 6-12 in Tamil Nadu government schools (also govt-aided Tamil medium per DoTE/TILS pages) and join their first higher-education course.",
+   "applyVia": "Penkalvi / UMIS portal via the college",
+   "officialUrl": "https://www.tnsocialwelfare.tn.gov.in/en/specilisationswoman-welfare/pudhumai-penn"
+  },
+  {
+   "providerType": "state",
+   "incomeLimit": "No income limit stated",
+   "amount": "Rs 1,000 per month (DBT) until completion of first UG degree/diploma/ITI",
+   "amountVerified": true,
+   "deadline": null,
+   "notes": "Launched 09.08.2024. Same caveat as Pudhumai Penn: new state government since May 2026, continuation not separately confirmed by a 2026-27 order.",
+   "id": "tamil-nadu-tamil-pudhalvan",
+   "name": "Tamil Pudhalvan Scheme",
+   "provider": "Department of Social Welfare and Women Empowerment, Government of Tamil Nadu",
+   "state": "Tamil Nadu",
+   "levels": [
+    "ug",
+    "diploma"
+   ],
+   "categories": [
+    "general"
+   ],
+   "forWhom": "Boys who studied Class 6-12 in Tamil Nadu government schools or govt-aided Tamil-medium schools and join their first higher-education course.",
+   "applyVia": "UMIS portal via the college",
+   "officialUrl": "https://www.tnsocialwelfare.tn.gov.in/en/specilisationswoman-welfare/tamil-pudhalvan"
+  },
+  {
+   "providerType": "state",
+   "incomeLimit": null,
+   "amount": null,
+   "amountVerified": false,
+   "deadline": null,
+   "notes": "Schemes listed: State Merit Scholarship, Suvarna Jubilee Merit Scholarship, Hindi and Sanskrit scholarships, Jilla Merit Award, Chief Minister's Scholarship Award, Research Award, CM Researcher Scholarship, Bhinnaseshi Souhrida (disability) Scholarship; also handles Post-Matric for students with disability 2026-27. Most scheme windows were marked closed on 30 Oct 2026. Amounts not stated on the portal home page.",
+   "id": "kerala-dce-scholarships",
+   "name": "Kerala DCE Scholarships (State Merit, Suvarna Jubilee, Hindi, Sanskrit, CM Researcher and others)",
+   "provider": "Directorate of Collegiate Education, Government of Kerala",
+   "state": "Kerala",
+   "levels": [
+    "ug",
+    "pg",
+    "phd"
+   ],
+   "categories": [
+    "merit",
+    "income",
+    "disability",
+    "general"
+   ],
+   "forWhom": "Students of Kerala colleges/universities under the Collegiate Education department; each scheme has its own marks and income criteria.",
+   "applyVia": "DCE Scholarship portal",
+   "officialUrl": "https://www.dcescholarship.kerala.gov.in/he_ma/he_maindx.php"
+  },
+  {
+   "providerType": "state",
+   "incomeLimit": null,
+   "amount": null,
+   "amountVerified": false,
+   "deadline": null,
+   "notes": "Portal carries 2026 notices for OEC/OBC(H) post-matric, PM-YASASVI OBC/EBC pre-matric data entry, special assistance for OBC/SEBC girls in medical courses who lost a parent, and overseas scholarship. Amounts not stated on the home page.",
+   "id": "kerala-egrantz",
+   "name": "e-Grantz (Kerala SC/ST/OBC/OEC educational assistance)",
+   "provider": "SC/ST Development and Backward Classes Development Departments, Government of Kerala",
+   "state": "Kerala",
+   "levels": [
+    "school",
+    "diploma",
+    "ug",
+    "pg",
+    "phd"
+   ],
+   "categories": [
+    "sc",
+    "st",
+    "obc",
+    "income"
+   ],
+   "forWhom": "Kerala SC, ST, OBC and OEC students in pre-matric and post-matric courses, incl. those at national institutions outside Kerala (OEC/OBC-H).",
+   "applyVia": "e-Grantz portal",
+   "officialUrl": "https://egrantz.kerala.gov.in/"
+  },
+  {
+   "providerType": "state",
+   "incomeLimit": null,
+   "amount": null,
+   "amountVerified": false,
+   "deadline": null,
+   "notes": "Covers post-matric scholarship and fee reimbursement, pre-matric, overseas scholarships and skill-upgradation support. The portal's eligibility/fee/timeline pages did not load and the home page notices are from 2024-25/2025, so no current deadline or amount is given.",
+   "id": "telangana-epass",
+   "name": "Telangana ePASS Post-Matric and Pre-Matric Scholarships",
+   "provider": "Social Welfare Department (with Tribal, BC and Minority Welfare), Government of Telangana",
+   "state": "Telangana",
+   "levels": [
+    "school",
+    "diploma",
+    "ug",
+    "pg",
+    "phd"
+   ],
+   "categories": [
+    "sc",
+    "st",
+    "obc",
+    "minority",
+    "disability",
+    "income"
+   ],
+   "forWhom": "Telangana SC, ST, BC, EBC, minority and disabled students in pre-matric and post-matric courses at eligible colleges, within income limits.",
+   "applyVia": "Telangana ePASS portal",
+   "officialUrl": "https://telanganaepass.cgg.gov.in/"
+  },
+  {
+   "providerType": "state",
+   "incomeLimit": null,
+   "amount": null,
+   "amountVerified": false,
+   "deadline": null,
+   "notes": "The former 'Jagananna Vidya Deevena' and 'Vasathi Deevena' names were dropped after the 2024 change of government; the current official scheme names, amounts and dates could not be confirmed on an official page (JnanaBhumi is a JavaScript app). Use the portal for current scheme names.",
+   "id": "andhra-pradesh-jnanabhumi-post-matric",
+   "name": "Andhra Pradesh Post-Matric Scholarships (fee reimbursement and maintenance) via JnanaBhumi",
+   "provider": "Social Welfare / BC / Tribal / Minority Welfare Departments, Government of Andhra Pradesh",
+   "state": "Andhra Pradesh",
+   "levels": [
+    "diploma",
+    "ug",
+    "pg"
+   ],
+   "categories": [
+    "sc",
+    "st",
+    "obc",
+    "minority",
+    "ews",
+    "income"
+   ],
+   "forWhom": "Andhra Pradesh students in post-matric courses at eligible colleges, within the state's category-wise income limits.",
+   "applyVia": "JnanaBhumi portal",
+   "officialUrl": "https://jnanabhumi.ap.gov.in/"
+  },
+  {
+   "providerType": "state",
+   "incomeLimit": null,
+   "amount": null,
+   "amountVerified": false,
+   "deadline": "31 Dec 2026 (2026-27, extended from 31 Oct 2026)",
+   "notes": "Order dated 27.10.2026 extends 2026-27 student online application and institution registration to 31 December 2026. Amounts and income limits are in department guidelines, not restated here.",
+   "id": "rajasthan-sje-post-matric-scholarship",
+   "name": "Rajasthan Post-Matric Scholarship (SC/ST/OBC/MBC/EBC/SBC/DNT)",
+   "provider": "Social Justice and Empowerment Department, Government of Rajasthan",
+   "state": "Rajasthan",
+   "levels": [
+    "school",
+    "diploma",
+    "ug",
+    "pg",
+    "phd"
+   ],
+   "categories": [
+    "sc",
+    "st",
+    "obc",
+    "ews",
+    "income"
+   ],
+   "forWhom": "Rajasthan domicile students of eligible categories studying in government or recognised private institutions, within income limits.",
+   "applyVia": "SJMS Scholarship portal (Jan Aadhaar / SSO)",
+   "officialUrl": "https://sje.rajasthan.gov.in/"
+  },
+  {
+   "providerType": "state",
+   "incomeLimit": "Below Rs 8 lakh per year",
+   "amount": "Admission fee and actual tuition fee as fixed by AFRC/MPPURC/Govt; private engineering (JEE Main rank within 1.5 lakh): Rs 1.5 lakh or actual fee, whichever is lower",
+   "amountVerified": true,
+   "deadline": null,
+   "notes": "Covers JEE Main-based engineering, NEET (AIR within 1.5 lakh) MBBS, CLAT/NLU and DU, central govt university UG programmes, and UG/diploma at MP govt and aided institutions. Portal shows registration for AY 2025-26; check the latest consolidated order (2026) for current-year windows.",
+   "id": "madhya-pradesh-medhavi-vidyarthi-yojana",
+   "name": "Mukhyamantri Medhavi Vidyarthi Yojana (MMVY)",
+   "provider": "Department of Technical Education, Skill Development and Employment, Government of Madhya Pradesh",
+   "state": "Madhya Pradesh",
+   "levels": [
+    "ug",
+    "diploma"
+   ],
+   "categories": [
+    "merit",
+    "income",
+    "general"
+   ],
+   "forWhom": "MP domicile students with 70%+ in MP Board Class 12 (or 85%+ CBSE/ICSE) and family income under Rs 8 lakh, admitted to eligible courses.",
+   "applyVia": "MMVY portal (medhavikalyan.mp.gov.in)",
+   "officialUrl": "https://medhavikalyan.mp.gov.in/MMVY.aspx"
+  },
+  {
+   "providerType": "state",
+   "incomeLimit": null,
+   "amount": null,
+   "amountVerified": false,
+   "deadline": null,
+   "notes": "Profile registration portal for SC/ST department schemes; OBC post-matric is handled by the Backward Classes department. Helplines: Tribal 1800-2333-951, SC 1800-2331-626. Amounts and dates not stated on the page.",
+   "id": "madhya-pradesh-mptaasc",
+   "name": "MPTAASC Scholarships for SC and ST students (Madhya Pradesh)",
+   "provider": "Tribal Affairs and Scheduled Caste Welfare Department, Government of Madhya Pradesh",
+   "state": "Madhya Pradesh",
+   "levels": [
+    "school",
+    "diploma",
+    "ug",
+    "pg"
+   ],
+   "categories": [
+    "sc",
+    "st",
+    "income"
+   ],
+   "forWhom": "Madhya Pradesh SC and ST students applying for department scholarships and hostel schemes through beneficiary profile registration.",
+   "applyVia": "MPTAASC portal",
+   "officialUrl": "https://www.tribal.mp.gov.in/mptaas"
+  },
+  {
+   "providerType": "state",
+   "incomeLimit": null,
+   "amount": null,
+   "amountVerified": false,
+   "deadline": "2026-27 applications closed 30 Oct 2026",
+   "notes": "Benefits (tuition fee assistance, hostel, books/instruments) and the percentile/income thresholds are set in the GRs linked on the portal; the GR PDFs could not be machine-read, so they are left blank here. Helpline 079-26566000.",
+   "id": "gujarat-mysy",
+   "name": "Mukhyamantri Yuva Swavalamban Yojana (MYSY)",
+   "provider": "Education Department, Government of Gujarat",
+   "state": "Gujarat",
+   "levels": [
+    "diploma",
+    "ug"
+   ],
+   "categories": [
+    "merit",
+    "income",
+    "general"
+   ],
+   "forWhom": "Gujarat students admitted to diploma, degree and professional courses who meet the percentile and family-income norms in the MYSY Government Resolutions.",
+   "applyVia": "MYSY portal (mysy.gujarat.gov.in)",
+   "officialUrl": "https://mysy.gujarat.gov.in/"
+  },
+  {
+   "providerType": "state",
+   "incomeLimit": null,
+   "amount": null,
+   "amountVerified": false,
+   "deadline": null,
+   "notes": "Portal home lists 'Scholarship Services'; the services sub-page showed 'under construction' when checked, so scheme list, amounts and dates could not be confirmed. Separate Chief Minister Scholarship Scheme (CMSS) runs on scholarships.gujarat.gov.in.",
+   "id": "gujarat-digital-gujarat-scholarships",
+   "name": "Digital Gujarat Scholarship Services (SC/ST/OBC/minority and other department scholarships)",
+   "provider": "Government of Gujarat (Social Justice, Tribal Development and other departments)",
+   "state": "Gujarat",
+   "levels": [
+    "school",
+    "diploma",
+    "ug",
+    "pg"
+   ],
+   "categories": [
+    "sc",
+    "st",
+    "obc",
+    "minority",
+    "income"
+   ],
+   "forWhom": "Gujarat students applying for state department scholarships listed under the Scholarship Services section of Digital Gujarat.",
+   "applyVia": "Digital Gujarat portal",
+   "officialUrl": "https://www.digitalgujarat.gov.in/"
+  },
+  {
+   "providerType": "state",
+   "incomeLimit": null,
+   "amount": null,
+   "amountVerified": false,
+   "deadline": null,
+   "notes": "Portal states GoI March-2021 guidelines apply and links the centrally sponsored Post-Matric Scheme for SC and PM YASASVI (OBC/EBC/DNT). News reports say the 2026-27 SC post-matric application moved to NSP; not confirmed on the state portal. Freeship card issued on the portal.",
+   "id": "punjab-dr-ambedkar-post-matric-scholarship",
+   "name": "Punjab Post-Matric Scholarship for SC and OBC students (Dr. Ambedkar Scholarship Portal)",
+   "provider": "Department of Social Justice, Empowerment and Minorities, Government of Punjab",
+   "state": "Punjab",
+   "levels": [
+    "school",
+    "diploma",
+    "ug",
+    "pg"
+   ],
+   "categories": [
+    "sc",
+    "obc",
+    "income"
+   ],
+   "forWhom": "Punjab domicile SC and OBC students in post-matric courses, including those studying in other states.",
+   "applyVia": "Punjab scholarship portal / National Scholarship Portal",
+   "officialUrl": "https://scholarships.punjab.gov.in/sp/"
+  },
+  {
+   "providerType": "state",
+   "incomeLimit": "Varies; Lower Income Group Scheme: up to Rs 12,000 per annum",
+   "amount": null,
+   "amountVerified": false,
+   "deadline": "31 Dec 2026 (2026-27, Higher Education state schemes)",
+   "notes": "Open till 31/12/2026: Consolidated Stipend for SC, Stipend for grandchildren of freedom fighters, Free Books for SC, State Merit Scholarship to UG Girls, Haryana State Meritorious Incentives (incl. CBSE), State Merit Scholarship UG/PG, Lower Income Group Scheme. Technical Education and Science & Technology schemes (incl. Kalpana Chawla for girls in engineering) were closed. PPP mandatory.",
+   "id": "haryana-har-chhatravratti",
+   "name": "Har-Chhatravratti: Haryana Higher Education state scholarships",
+   "provider": "Department of Higher Education, Government of Haryana",
+   "state": "Haryana",
+   "levels": [
+    "ug",
+    "pg"
+   ],
+   "categories": [
+    "sc",
+    "merit",
+    "girls",
+    "income",
+    "general"
+   ],
+   "forWhom": "Haryana domicile students in higher education with Parivar Pehchan Patra (PPP); eligibility varies by scheme and institution type.",
+   "applyVia": "Har-Chhatravratti portal",
+   "officialUrl": "https://harchhatravratti.highereduhry.ac.in/"
+  },
+  {
+   "providerType": "state",
+   "incomeLimit": "No income limit",
+   "amount": "Rs 5,000 (1st), Rs 3,000 (2nd), Rs 2,000 (3rd) per annum",
+   "amountVerified": true,
+   "deadline": "31 Dec 2026 (2026-27)",
+   "notes": "Streams: Arts, Commerce, Science (Medical/Non-Medical), Education. Government colleges only; correspondence/open university students not eligible.",
+   "id": "haryana-state-meritorious-incentive",
+   "name": "Haryana State Meritorious Incentive Scheme",
+   "provider": "Department of Higher Education, Government of Haryana",
+   "state": "Haryana",
+   "levels": [
+    "ug",
+    "pg"
+   ],
+   "categories": [
+    "merit",
+    "sc",
+    "girls",
+    "general"
+   ],
+   "forWhom": "Haryana govt-college students placing 1st-3rd in their college's annual university exam per stream; separate lists for general boys, general girls and SC.",
+   "applyVia": "Har-Chhatravratti portal",
+   "officialUrl": "https://harchhatravratti.highereduhry.ac.in/"
+  },
+  {
+   "providerType": "state",
+   "incomeLimit": null,
+   "amount": null,
+   "amountVerified": false,
+   "deadline": "Centrally sponsored scholarships via NSP for 2026-27: 15 Feb 2027",
+   "notes": "Department notice: CSS scholarship applications on NSP for 2026-27 from 21.08.2026, last date 15.02.2027. State scheme guidelines (2025-26) are linked on the site; amounts not restated. No 2026-27 date found for Delhi's own state schemes.",
+   "id": "delhi-scst-obc-minority-scholarships",
+   "name": "Delhi scholarships for SC/ST/OBC/Minority students",
+   "provider": "Department for the Welfare of SC/ST/OBC/Minorities, Government of NCT of Delhi",
+   "state": "Delhi",
+   "levels": [
+    "school",
+    "diploma",
+    "ug",
+    "pg"
+   ],
+   "categories": [
+    "sc",
+    "st",
+    "obc",
+    "minority",
+    "income"
+   ],
+   "forWhom": "Delhi students from SC, ST, OBC and minority communities in schools and colleges; state and centrally sponsored schemes.",
+   "applyVia": "NSP (centrally sponsored); e-District Delhi for state schemes",
+   "officialUrl": "https://scstwelfare.delhi.gov.in/"
+  },
+  {
+   "providerType": "state",
+   "incomeLimit": null,
+   "amount": null,
+   "amountVerified": false,
+   "deadline": null,
+   "notes": "Portal is a JavaScript app; scheme list, amounts and 2026-27 dates could not be read from the official page. Use it as the entry point and check scheme-wise details there.",
+   "id": "odisha-state-scholarship-portal",
+   "name": "Odisha State Scholarship Portal",
+   "provider": "Government of Odisha (ST & SC Development, Higher Education and other departments)",
+   "state": "Odisha",
+   "levels": [
+    "school",
+    "diploma",
+    "ug",
+    "pg",
+    "phd"
+   ],
+   "categories": [
+    "sc",
+    "st",
+    "obc",
+    "minority",
+    "merit",
+    "income",
+    "general"
+   ],
+   "forWhom": "Odisha students applying for state pre-matric, post-matric and merit scholarships administered by multiple departments.",
+   "applyVia": "State Scholarship Portal (scholarship.odisha.gov.in)",
+   "officialUrl": "https://scholarship.odisha.gov.in/"
+  },
+  {
+   "providerType": "state",
+   "incomeLimit": null,
+   "amount": null,
+   "amountVerified": false,
+   "deadline": null,
+   "notes": "Flash news: Pre-Matric and Post-Matric registrations for 2026-27 are open. Rules are in Post/Pre Matric Scholarship Niyamavali (Sankalp 2022-23) linked on the portal; amounts not restated.",
+   "id": "jharkhand-e-kalyan",
+   "name": "Jharkhand e-Kalyan Pre-Matric and Post-Matric Scholarships",
+   "provider": "Department of ST, SC, Minority and Backward Class Welfare, Government of Jharkhand",
+   "state": "Jharkhand",
+   "levels": [
+    "school",
+    "diploma",
+    "ug",
+    "pg"
+   ],
+   "categories": [
+    "sc",
+    "st",
+    "obc",
+    "minority",
+    "income"
+   ],
+   "forWhom": "Jharkhand SC, ST, BC and minority students in pre-matric (schools) and post-matric courses, within and outside the state.",
+   "applyVia": "e-Kalyan portal",
+   "officialUrl": "https://ekalyan.cgg.gov.in/"
+  },
+  {
+   "providerType": "state",
+   "incomeLimit": "No income limit",
+   "amount": null,
+   "amountVerified": false,
+   "deadline": "2026-27 window closed (HS via DARPAN to 10 Sep 2026; UG/PG via SAMARTH to 5 Sep 2026)",
+   "notes": "Daughters of ministers/MPs/MLAs excluded. From 2027-28 students can take either the fee waiver or Nijut Moina, not both. Monthly amounts not confirmed on an official page reachable here.",
+   "id": "assam-nijut-moina",
+   "name": "Mukhya Mantrir Nijut Moina Aasoni (Nijut Moina)",
+   "provider": "Government of Assam (Higher Education Department; AHSEC for HS)",
+   "state": "Assam",
+   "levels": [
+    "school",
+    "ug",
+    "pg"
+   ],
+   "categories": [
+    "girls"
+   ],
+   "forWhom": "Unmarried girl students domiciled in Assam in Class 11-12, UG and PG (married girls allowed in PG/B.Ed), irrespective of family income.",
+   "applyVia": "DARPAN portal (HS) / Assam SAMARTH portal (UG, PG)",
+   "officialUrl": "https://darpan.ahseconline.in/"
+  },
+  {
+   "providerType": "state",
+   "incomeLimit": "Below Rs 4 lakh per year",
+   "amount": null,
+   "amountVerified": false,
+   "deadline": "2026-27 window closed (online via SAMARTH till 5 Sep 2026)",
+   "notes": "Eligibility taken from Gauhati University's notification citing Director of Higher Education letter dated 19/08/2026. Married UG students and those who took the Banikanta Kakati merit award (scooter) are excluded. Amount not confirmed on an official page.",
+   "id": "assam-nijut-babu",
+   "name": "Mukhya Mantrir Nijut Babu Aasoni (Nijut Babu)",
+   "provider": "Directorate of Higher Education, Government of Assam",
+   "state": "Assam",
+   "levels": [
+    "ug",
+    "pg"
+   ],
+   "categories": [
+    "income",
+    "general"
+   ],
+   "forWhom": "Assam domicile male students in UG/PG 1st-2nd year at govt/provincialised institutions, admitted under fee waiver, family income below Rs 4 lakh.",
+   "applyVia": "Assam SAMARTH portal via the institution",
+   "officialUrl": "https://assamshesp.samarth.edu.in/index.php/site/login"
+  },
+  {
+   "providerType": "state",
+   "incomeLimit": null,
+   "amount": null,
+   "amountVerified": false,
+   "deadline": null,
+   "notes": "Portal lists the scheme as active for session July 2026 - June 2027. A separate DHE Samarth portal runs the CM scholarship for admission to top-50 NIRF institutions, armed-forces selection award and UPSC/UKPCS mains coaching aid. Amounts and selection cut-offs not stated on the portal pages.",
+   "id": "uttarakhand-cm-higher-education-scholarship",
+   "name": "Chief Minister Higher Education Encouragement Scholarship (Uttarakhand)",
+   "provider": "Directorate of Higher Education, Government of Uttarakhand",
+   "state": "Uttarakhand",
+   "levels": [
+    "ug",
+    "pg"
+   ],
+   "categories": [
+    "merit"
+   ],
+   "forWhom": "Top-performing students at Uttarakhand higher education institutions, applied for through their college nodal officer.",
+   "applyVia": "Samarth scholarship portal (cmheiss.samarth.ac.in)",
+   "officialUrl": "https://cmheiss.samarth.ac.in/"
+  },
+  {
+   "id": "reliance-foundation-ug-scholarship",
+   "name": "Reliance Foundation Undergraduate Scholarships",
+   "provider": "Reliance Foundation",
+   "providerType": "private",
+   "state": null,
+   "levels": [
+    "ug"
+   ],
+   "categories": [
+    "merit",
+    "income",
+    "general"
+   ],
+   "forWhom": "First-year full-time UG students (any stream) with 60%+ in Class 12 and household income under Rs 15 lakh; aptitude test is mandatory.",
+   "incomeLimit": "Below Rs 15 lakh per year",
+   "amount": "Up to Rs 2,00,000 over the degree",
+   "amountVerified": true,
+   "deadline": "2026-27 applications closed",
+   "applyVia": "Reliance Foundation scholarship portal",
+   "officialUrl": "https://www.scholarships.reliancefoundation.org/",
+   "notes": "5,000 awards a year. Next cycle expected around Aug 2027 for students entering first year then."
+  },
+  {
+   "id": "reliance-foundation-pg-scholarship",
+   "name": "Reliance Foundation Postgraduate Scholarships",
+   "provider": "Reliance Foundation",
+   "providerType": "private",
+   "state": null,
+   "levels": [
+    "pg"
+   ],
+   "categories": [
+    "merit",
+    "general"
+   ],
+   "forWhom": "First-year PG students in CS, AI, maths & computing, electrical, chemical, mechanical, energy, materials or life sciences with GATE 550-1000 or UG CGPA 7.5+.",
+   "incomeLimit": null,
+   "amount": "Up to Rs 6,00,000 over the degree",
+   "amountVerified": true,
+   "deadline": "2026-27 applications closed",
+   "applyVia": "Reliance Foundation scholarship portal",
+   "officialUrl": "https://www.scholarships.reliancefoundation.org/",
+   "notes": "100 awards a year; merit-based, no income cap stated."
+  },
+  {
+   "id": "hdfc-parivartan-ecss",
+   "name": "HDFC Bank Parivartan ECSS Programme",
+   "provider": "HDFC Bank (Parivartan CSR)",
+   "providerType": "private",
+   "state": null,
+   "levels": [
+    "school",
+    "diploma",
+    "ug",
+    "pg"
+   ],
+   "categories": [
+    "income",
+    "merit",
+    "general"
+   ],
+   "forWhom": "Class 1-12, diploma/ITI/polytechnic, UG and PG students with 55%+ marks and family income up to Rs 2.5 lakh; priority to families hit by a crisis.",
+   "incomeLimit": "Up to Rs 2.5 lakh per year",
+   "amount": "Class 1-6 Rs 15,000; Class 7-12/diploma/ITI Rs 18,000; UG Rs 30,000 (general) / Rs 50,000 (professional); PG Rs 35,000 / Rs 75,000",
+   "amountVerified": true,
+   "deadline": "31 Oct 2026",
+   "applyVia": "Buddy4Study",
+   "officialUrl": "https://www.parivartanecss.com/",
+   "notes": "ECSS = Educational Crisis Scholarship Support; crisis (death/job loss/illness in family in last 3 years) gets preference but is not mandatory."
+  },
+  {
+   "id": "tata-capital-pankh",
+   "name": "Tata Capital Pankh Scholarship Program",
+   "provider": "Tata Capital",
+   "providerType": "private",
+   "state": null,
+   "levels": [
+    "school",
+    "ug",
+    "diploma"
+   ],
+   "categories": [
+    "merit",
+    "income",
+    "girls",
+    "disability",
+    "sc",
+    "st",
+    "general"
+   ],
+   "forWhom": "Class 11-12, UG (BA/BSc/BCom etc.), diploma and ITI students with 60%+ marks and parental income up to Rs 4 lakh; girls, PwD, SC/ST preferred.",
+   "incomeLimit": "Up to Rs 4 lakh per year",
+   "amount": "Class 11-12 up to Rs 10,000-15,000; UG/diploma/ITI up to Rs 12,000-18,000 (by marks; capped at 80-100% of fees)",
+   "amountVerified": false,
+   "deadline": "15 Nov 2026",
+   "applyVia": "Buddy4Study",
+   "officialUrl": "https://www.tatacapital.com/sustainability/education.html",
+   "notes": "Tata Capital's page says apply via its online portal; amounts and deadline come from the Buddy4Study programme page (Tata's implementation partner). Income cap rose from Rs 2.5 lakh to Rs 4 lakh this cycle."
+  },
+  {
+   "id": "kotak-kanya-scholarship",
+   "name": "Kotak Kanya Scholarship",
+   "provider": "Kotak Education Foundation (Kotak Mahindra Group)",
+   "providerType": "private",
+   "state": null,
+   "levels": [
+    "ug"
+   ],
+   "categories": [
+    "girls",
+    "merit",
+    "income"
+   ],
+   "forWhom": "Girls with 75%+ in Class 12 entering first year of a professional degree (engineering, MBBS, 5-yr LLB, BS-MS, design, architecture) at a reputed institute.",
+   "incomeLimit": "Below Rs 6 lakh per year",
+   "amount": "Rs 1.5 lakh per year till graduation",
+   "amountVerified": true,
+   "deadline": "15 Nov 2026 (extended)",
+   "applyVia": "Buddy4Study",
+   "officialUrl": "https://www.kotakeducationfoundation.org/kotak-kanya-scholarship",
+   "notes": "Selection includes two interview rounds; renewal at KEF's discretion."
+  },
+  {
+   "id": "lic-golden-jubilee-general",
+   "name": "LIC Golden Jubilee Scholarship (General)",
+   "provider": "LIC Golden Jubilee Foundation (Life Insurance Corporation of India, PSU)",
+   "providerType": "private",
+   "state": null,
+   "levels": [
+    "ug",
+    "diploma"
+   ],
+   "categories": [
+    "merit",
+    "income",
+    "ews"
+   ],
+   "forWhom": "Students who passed Class 12/diploma with 60%+ (2023-24 to 2025-26) and joined first year of a degree, diploma, ITI or vocational course in 2026-27.",
+   "incomeLimit": "Up to Rs 4,50,000 per year",
+   "amount": "Rs 50,000/yr (MBBS, BAMS, BHMS, BDS); Rs 40,000/yr (BE, BTech, BArch); Rs 20,000/yr (other degrees, diploma, ITI)",
+   "amountVerified": true,
+   "deadline": "30 Sep 2026 (closed)",
+   "applyVia": "LIC website (online form)",
+   "officialUrl": "https://licindia.in/documents/d/guest/golden-jubilee-scholarship-scheme-2026",
+   "notes": "PSU, not private CSR. 80 awards per LIC division (40 male, 40 female); not for PG except integrated courses. Scheme 2026 PDF has no application dates; LIC's landing page still shows 2022 text."
+  },
+  {
+   "id": "lic-golden-jubilee-special",
+   "name": "LIC Golden Jubilee Special Scholarship (after Class 10)",
+   "provider": "LIC Golden Jubilee Foundation (Life Insurance Corporation of India, PSU)",
+   "providerType": "private",
+   "state": null,
+   "levels": [
+    "school",
+    "diploma"
+   ],
+   "categories": [
+    "merit",
+    "income",
+    "ews"
+   ],
+   "forWhom": "Students who passed Class 10 with 60%+ (2023-24 to 2025-26) and joined Class 11, a diploma, vocational course or ITI in 2026-27.",
+   "incomeLimit": "Up to Rs 4,50,000 per year",
+   "amount": "Rs 15,000 per year",
+   "amountVerified": true,
+   "deadline": "30 Sep 2026 (closed)",
+   "applyVia": "LIC website (online form)",
+   "officialUrl": "https://licindia.in/documents/d/guest/golden-jubilee-scholarship-scheme-2026",
+   "notes": "PSU. 40 per LIC division (20 boys, 20 girls). Earlier versions were girls-only; the 2026 scheme covers boys and girls."
+  },
+  {
+   "id": "azim-premji-scholarship",
+   "name": "Azim Premji Scholarship",
+   "provider": "Azim Premji Foundation",
+   "providerType": "private",
+   "state": null,
+   "levels": [
+    "ug",
+    "diploma"
+   ],
+   "categories": [
+    "girls",
+    "income"
+   ],
+   "forWhom": "Girls who passed Class 10 and 12 as regular students from government schools in eligible states, now in first year of a degree or diploma.",
+   "incomeLimit": null,
+   "amount": "Rs 30,000 per year for the full course",
+   "amountVerified": true,
+   "deadline": "Round 2: 10-31 Jan 2027 (Round 1 for 2026 cohort closed)",
+   "applyVia": "Azim Premji Foundation website",
+   "officialUrl": "https://azimpremjifoundation.org/what-we-do/education/azim-premji-scholarship/",
+   "notes": "Not merit-ranked; no income figure stated (government-school schooling is the filter). States per 2025 brochure: Arunachal, Assam, Bihar, Chhattisgarh, Jharkhand, Karnataka, MP, Manipur, Meghalaya, Mizoram, Nagaland, Odisha, Puducherry, Rajasthan, Sikkim, Telangana, Tripura, UP, Uttarakhand; AP and Delhi added for 2026. Site blocks automated fetches; Round 2 dates from its indexed applications page."
+  },
+  {
+   "id": "sitaram-jindal-scholarship",
+   "name": "Sitaram Jindal Foundation Scholarship",
+   "provider": "Sitaram Jindal Foundation",
+   "providerType": "private",
+   "state": null,
+   "levels": [
+    "school",
+    "diploma",
+    "ug",
+    "pg"
+   ],
+   "categories": [
+    "income",
+    "general"
+   ],
+   "forWhom": "Class 11-12, ITI, diploma, UG and PG (general, medical, engineering) students up to age 30 at government/aided or low-fee private institutions.",
+   "incomeLimit": "Rs 4 lakh (salaried families) / Rs 2.5 lakh (others) per year",
+   "amount": null,
+   "amountVerified": false,
+   "deadline": "No fixed deadline (rolling, academic year Jun-May)",
+   "applyVia": "Sitaram Jindal Foundation portal",
+   "officialUrl": "https://app.sitaramjindalfoundation.org/Student/TermsAndConditions",
+   "notes": "Amount set by course/hosteller status per foundation norms; not published as a figure. Final-year students and those getting other scholarships are not eligible; apply once per course."
+  },
+  {
+   "id": "infosys-foundation-stem-stars",
+   "name": "Infosys Foundation STEM Stars Scholarship",
+   "provider": "Infosys Foundation",
+   "providerType": "private",
+   "state": null,
+   "levels": [
+    "ug"
+   ],
+   "categories": [
+    "girls",
+    "income",
+    "merit"
+   ],
+   "forWhom": "Girls from economically weak backgrounds starting a STEM undergraduate degree (engineering, science, medicine) at an NIRF-ranked institute such as an IIT, NIT, BITS or a leading medical college.",
+   "incomeLimit": null,
+   "amount": "Up to Rs 1 lakh per year (max 4 years)",
+   "amountVerified": false,
+   "deadline": "No 2026-27 cycle announced yet",
+   "applyVia": "Buddy4Study",
+   "officialUrl": "https://www.infosys.com/newsroom/press-releases/2023/launch-stem-scholarship-program.html",
+   "notes": "Latest cycle 2025-26 closed 30 Oct 2025; 2026-27 not yet announced as of 30 Oct 2026. Income limit is from the Buddy4Study listing."
+  },
+  {
+   "id": "santoor-womens-scholarship",
+   "name": "Santoor Women's Scholarship",
+   "provider": "Wipro Consumer Care & Wipro Cares",
+   "providerType": "private",
+   "state": null,
+   "levels": [
+    "ug"
+   ],
+   "categories": [
+    "girls",
+    "income"
+   ],
+   "forWhom": "Girls from Andhra Pradesh or Maharashtra who passed Class 10 from a government school and Class 12 from a government school/junior college in 2025-26, and enrolled in a UG programme starting 2026-27.",
+   "incomeLimit": null,
+   "amount": "Rs 30,000 per year till course completion",
+   "amountVerified": true,
+   "deadline": "15 Oct 2026 (closed)",
+   "applyVia": "Buddy4Study",
+   "officialUrl": "https://www.santoorscholarships.com/",
+   "notes": "1,000 girls a year. Official site says Rs 30,000 per annum till completion; Buddy4Study listing calls it one-time - official wording used."
+  },
+  {
+   "id": "mahindra-all-india-talent-scholarship",
+   "name": "Mahindra All India Talent Scholarship (MAITS)",
+   "provider": "K. C. Mahindra Education Trust",
+   "providerType": "private",
+   "state": null,
+   "levels": [
+    "diploma"
+   ],
+   "categories": [
+    "merit",
+    "income",
+    "girls",
+    "disability"
+   ],
+   "forWhom": "Students with 60%+ in Class 10/12 admitted to first year (or lateral second year) of a diploma at a government or recognised polytechnic.",
+   "incomeLimit": null,
+   "amount": "Rs 10,000 per year for up to 3 years",
+   "amountVerified": true,
+   "deadline": "10 Oct 2026 for most states (Gujarat 30 Sep, Delhi/UP 4 Oct) - closed",
+   "applyVia": "KCMET scholarship portal",
+   "officialUrl": "https://www.kcmet.org/what-we-do-scholarship-grants.aspx",
+   "notes": "550 awards a year. Income criterion is 'low yearly income' with no figure. Preference to girls, PwD and children of armed forces/CAPF personnel."
+  },
+  {
+   "id": "sdef-india-scholarship",
+   "name": "Swami Dayanand India Scholarship",
+   "provider": "Swami Dayanand Education Foundation",
+   "providerType": "private",
+   "state": null,
+   "levels": [
+    "ug"
+   ],
+   "categories": [
+    "merit",
+    "income",
+    "general"
+   ],
+   "forWhom": "First-year BTech, MBBS, BDS, nursing, pharmacy, BArch or BVSc students with 80%+ in Class 12, no gap year, and family income up to Rs 12 lakh.",
+   "incomeLimit": "Up to Rs 12 lakh per year",
+   "amount": "Rs 50,000 per year, up to Rs 2 lakh over 4 years",
+   "amountVerified": true,
+   "deadline": "31 Oct 2026",
+   "applyVia": "SDEF scholarship portal",
+   "officialUrl": "https://www.swamidayanand.org/overview-and-eligibility-india",
+   "notes": "Entrance cut-offs apply (e.g. JEE Main AIR within 50,000). 100-150 awards; funds paid to the college, not the student."
+  },
+  {
+   "id": "sdef-shiksha-shakti",
+   "name": "SDEF Shiksha Shakti Scholarship",
+   "provider": "Swami Dayanand Education Foundation",
+   "providerType": "private",
+   "state": null,
+   "levels": [
+    "ug"
+   ],
+   "categories": [
+    "girls",
+    "merit",
+    "income"
+   ],
+   "forWhom": "Girls in first year of a non-technical UG degree (BA, BCom, BSc, BBA, BCA, BJMC, integrated law) with 80%+ in Class 12, family income up to Rs 12 lakh.",
+   "incomeLimit": "Up to Rs 12 lakh per year",
+   "amount": "Up to Rs 20,000 per year (up to Rs 1 lakh total)",
+   "amountVerified": true,
+   "deadline": "Not yet announced (application portal not open on official page)",
+   "applyVia": "SDEF scholarship portal",
+   "officialUrl": "https://www.swamidayanand.org/overview-and-eligibility-shiksha-shakti",
+   "notes": "150-200 awards; no gap year after Class 12. Preference to first-generation and government-school students."
+  },
+  {
+   "id": "sbi-platinum-jubilee-asha",
+   "name": "SBI Platinum Jubilee Asha Scholarship",
+   "provider": "SBI Foundation (State Bank of India, PSU)",
+   "providerType": "private",
+   "state": null,
+   "levels": [
+    "school",
+    "ug",
+    "pg"
+   ],
+   "categories": [
+    "merit",
+    "income",
+    "sc",
+    "st",
+    "girls"
+   ],
+   "forWhom": "Class 9-12, UG/PG at NIRF top-300 or NAAC A institutes, IIT, IIM and MBBS students with 75%+ (SC/ST relaxed); income up to Rs 3 lakh (school) or Rs 6 lakh.",
+   "incomeLimit": "Rs 3 lakh (Class 9-12); Rs 6 lakh (college tracks)",
+   "amount": "Rs 15,000 to Rs 15,00,000 by track (Class 9-12 Rs 15,000; UG Rs 75,000; PG Rs 1.5 lakh; MBBS Rs 2 lakh; IIT Rs 2 lakh; IIM Rs 5 lakh; overseas Rs 15 lakh)",
+   "amountVerified": true,
+   "deadline": "19 Sep 2026 (closed)",
+   "applyVia": "SBI Asha portal",
+   "officialUrl": "https://www.sbiashascholarship.co.in/",
+   "notes": "2026 cycle has closed (official site metadata says 31 Jul 2026, Buddy4Study says 19 Sep 2026). PG and MBBS amounts conflict between sources (PG Rs 1.5 vs 2.5 lakh; MBBS Rs 2 vs 4.5 lakh). Overseas track (SC/ST, up to Rs 15 lakh) is for study abroad. 50% seats for girls."
+  },
+  {
+   "id": "bharti-airtel-scholarship",
+   "name": "Bharti Airtel Scholarship",
+   "provider": "Bharti Airtel Foundation",
+   "providerType": "private",
+   "state": null,
+   "levels": [
+    "ug"
+   ],
+   "categories": [
+    "merit",
+    "income",
+    "girls",
+    "disability"
+   ],
+   "forWhom": "First-year BTech/integrated tech students at top-50 NIRF engineering institutes with family income up to Rs 8.5 lakh; girls preferred.",
+   "incomeLimit": "Up to Rs 8.5 lakh per year (2025-26 terms)",
+   "amount": "100% of annual fees incl. hostel and mess, plus a laptop",
+   "amountVerified": false,
+   "deadline": null,
+   "applyVia": "Bharti Airtel Foundation",
+   "officialUrl": "https://bhartifoundation.org/bharti-airtel-scholarship/",
+   "notes": "Official site refused connections from our checker; terms are from its indexed 2025-26 page. Aggregators say the 2026-27 window closed 31 Jul 2026 - not confirmed officially."
+  },
+  {
+   "id": "ffe-scholarship",
+   "name": "Foundation For Excellence (FFE) Scholarship",
+   "provider": "Foundation For Excellence",
+   "providerType": "private",
+   "state": null,
+   "levels": [
+    "ug"
+   ],
+   "categories": [
+    "merit",
+    "income",
+    "general"
+   ],
+   "forWhom": "First-year BE/BTech, integrated MTech, MBBS or 5-year LLB students admitted on strong entrance ranks, with family income under Rs 4 lakh.",
+   "incomeLimit": "Below Rs 4 lakh per year (gross)",
+   "amount": null,
+   "amountVerified": false,
+   "deadline": null,
+   "applyVia": "FFE website",
+   "officialUrl": "https://ffe.org/scholarships/",
+   "notes": "2026-27 season opened 1 Aug 2026. Rank cut-offs by exam (e.g. NEET AIR within 50,000, CLAT within 7,000). Award amount not on the general page; corporate-funded FFE tracks list their own amounts and dates."
+  },
+  {
+   "id": "dr-reddys-sashakt-scholarship",
+   "name": "Sashakt Scholarship",
+   "provider": "Dr. Reddy's Foundation",
+   "providerType": "private",
+   "state": null,
+   "levels": [
+    "ug"
+   ],
+   "categories": [
+    "girls",
+    "merit"
+   ],
+   "forWhom": "Girls who finished Class 12 and got admission to BSc, BTech or MBBS at one of the foundation's listed colleges.",
+   "incomeLimit": null,
+   "amount": "Rs 80,000 per year for 3 years (Rs 2,40,000)",
+   "amountVerified": true,
+   "deadline": "31 Oct 2026 (with admission offer)",
+   "applyVia": "sashaktscholarship.org",
+   "officialUrl": "https://sashaktscholarship.org/",
+   "notes": "Includes mentoring by women scientists. Only listed institutions qualify; income limit not stated on the home page."
+  },
+  {
+   "id": "vidyadhan-scholarship",
+   "name": "Vidyadhan Scholarship",
+   "provider": "Sarojini Damodaran Foundation",
+   "providerType": "private",
+   "state": null,
+   "levels": [
+    "school",
+    "ug"
+   ],
+   "categories": [
+    "merit",
+    "income",
+    "disability"
+   ],
+   "forWhom": "Class 10 pass-outs from economically challenged families in participating states, selected through a test and interview for a 2-year Class 11-12 scholarship, then graduation support if they keep doing well. Marks and income cut-offs vary by state programme.",
+   "incomeLimit": "Varies by programme (e.g. below Rs 3 lakh for the Mathura Women in STEM programme)",
+   "amount": "Graduation: Rs 10,000-75,000 per year (by state and course)",
+   "amountVerified": true,
+   "deadline": "All 2026 state Class 11 programmes closed; next intake after 2027 Class 10 results. Open now: Mathura (UP) Women in STEM programme, last date 31 Oct 2026",
+   "applyVia": "vidyadhan.org / SDF Vidya app",
+   "officialUrl": "https://www.vidyadhan.org/apply",
+   "notes": "Selection via screening test and interview. The +2 amount varies by state and is not stated on the main page. Some state-specific programmes (e.g. Mathura women in STEM) close 31 Oct 2026."
+  }
+ ]
+}

@@ -224,6 +224,7 @@ const UnsubscribePage = lazy(() => import('./pages/UnsubscribePage'));
 const EducationLoanPage = lazy(() => import('./pages/EducationLoanPage'));
 const VisaAssistancePage = lazy(() => import('./pages/VisaAssistancePage'));
 const SearchProgramsPage = lazy(() => import('./pages/SearchProgramsPage'));
+const IndianScholarshipsPage = lazy(() => import('./pages/IndianScholarshipsPage'));
 const ProgramDetailPage = lazy(() => import('./pages/ProgramDetailPage'));
 const CourseDetailsPage = lazy(() => import('./pages/CourseDetailsPage'));
 const AiToolsHubPage = lazy(() => import('./pages/AiToolsHubPage'));
@@ -933,6 +934,7 @@ const App = () => {
             <Route path="/course-details" element={<CourseDetailsPage />} />
             <Route path="/courses/:courseId" element={<CourseDetailsPage />} />
             <Route path="/scholarships" element={<Navigate to="/search-programs?highlight=scholarship" replace />} />
+            <Route path="/scholarships/india" element={<IndianScholarshipsPage />} />
             <Route path="/ai-tools" element={<AiToolsHubPage />} />
             <Route path="/ai-tools/sop-generator" element={<AiSopGeneratorPage />} />
             <Route path="/ai-tools/study-roadmap" element={<AiStudyRoadmapPage />} />

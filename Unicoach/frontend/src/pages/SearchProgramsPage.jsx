@@ -139,7 +139,8 @@ const PageBack = ({ onClick }) => (
     <ArrowLeft size={16} strokeWidth={2.2} /> Back
   </button>
 );
-const INDIA_ID = '99';
+const INDIA_ID = '99';          // student-country id (nationality)
+const INDIA_COUNTRY_ID = '45';  // destination-country id
 // Student's state (asked like the rest of the profile; not used as a search filter yet)
 const INDIA_STATES = ['Andhra Pradesh', 'Assam', 'Bihar', 'Chandigarh', 'Chhattisgarh', 'Delhi', 'Goa', 'Gujarat', 'Haryana', 'Himachal Pradesh', 'Jammu and Kashmir', 'Jharkhand', 'Karnataka', 'Kerala', 'Madhya Pradesh', 'Maharashtra', 'Odisha', 'Puducherry', 'Punjab', 'Rajasthan', 'Tamil Nadu', 'Telangana', 'Uttar Pradesh', 'Uttarakhand', 'West Bengal', 'Other'];
 
@@ -529,6 +530,11 @@ export default function SearchProgramsPage({ highlight } = {}) {
               <p className="inline-flex items-center gap-2 text-[13px] font-semibold text-[#977435]"><Award size={15} /> Scholarships</p>
               <h1 className="mt-3 font-outfit text-[30px] sm:text-[44px] font-black tracking-[-0.035em] leading-[1.05] text-[#16130F]">Find scholarships you qualify for</h1>
               <p className="mt-3 text-[15px] sm:text-[17px] text-[#5B544A]">30,000+ programs offer an award. Tell us about you and we&apos;ll show the ones whose entry requirements you meet.</p>
+            {/* this finder covers universities abroad; Indian colleges have their own scholarship list */}
+            <div className="mt-5 inline-flex p-1 bg-white border border-[#E6E0D4]" style={{ borderRadius: 999 }}>
+              <span className="px-4 py-1.5 text-[13px] font-semibold text-white bg-[#16130F]" style={{ borderRadius: 999 }}>Study abroad</span>
+              <button type="button" onClick={() => navigate('/scholarships/india')} className="px-4 py-1.5 text-[13px] font-semibold text-[#5B544A]" style={{ borderRadius: 999 }}>Study in India</button>
+            </div>
             </div>
             <TutorialVideo {...TOUR.scholarships} className="hidden lg:block" />
           </div>
@@ -889,6 +895,15 @@ export default function SearchProgramsPage({ highlight } = {}) {
               </div>
             </div>
           </section>
+        )}
+
+        {/* India as destination: the catalogue only has foreign-university campuses here, so point to Indian scholarships */}
+        {String(country) === INDIA_COUNTRY_ID && (
+          <div className="mb-4 flex flex-wrap items-center gap-3 bg-[#FBF7EE] border border-[#EAD8AE] px-4 py-3 text-[13.5px] text-[#4D3C21]" style={{ borderRadius: 12 }}>
+            <Award size={16} className="text-[#977435] shrink-0" />
+            <span className="flex-1 min-w-[200px]">Studying in India? These results only list foreign universities&apos; India campuses. See central, state and private scholarships for Indian colleges.</span>
+            <button type="button" onClick={() => navigate('/scholarships/india')} className="font-semibold text-[#DE5C2B] hover:underline whitespace-nowrap">Indian scholarships →</button>
+          </div>
         )}
 
         {/* Quick filter pills — CourseFinder shows "Quick Filters:" + 2 inline pills + "View More" */}
