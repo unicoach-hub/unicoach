@@ -1,34 +1,33 @@
-import React from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import CapIcon from '../../../components/ui/CapIcon';
 import {
   BookOpen,
-  Calendar,
-  DollarSign,
-  GraduationCap,
-  Clock,
-  MapPin,
-  FileText,
-  Compass,
   ArrowRight,
-  Award,
   ChevronRight,
-  UserCheck,
   AlertTriangle,
-  Volume2,
-  FileEdit,
-  Mic,
-  ArrowUpRight,
-  ShieldCheck,
   CheckCircle2,
-  HelpCircle,
-  FileDown
+  Target,
+  RefreshCw,
+  Headphones,
+  MessageCircle,
+  CalendarDays,
 } from 'lucide-react';
 import { StatStrip, BarCompare, Donut, VersusCard, HookBand } from '../../../components/ui/Infographics';
 import { JourneyPills } from '../../../components/ui/BrandElements';
+import { DesiHero, DesiHeading, InkCard, Sticker } from '../../../components/desi/DesiKit';
+import { DESI_TONES } from '../../../components/desi/desiTokens';
+import { BookOkCta } from '../../../components/desi/BookOkCta';
+
+// Desi Pop building blocks shared by every IELTS detail route
+const TABLE_WRAP = 'overflow-x-auto bg-white border-[3px] border-[#16130F] shadow-[4px_4px_0_#16130F] rounded-xl my-6';
+const THEAD = 'bg-[#F2B705] text-[#16130F] uppercase text-[11px] tracking-wider font-black border-b-[3px] border-[#16130F]';
+const TBODY = 'divide-y-2 divide-[#16130F1A] text-[#3D362E]';
+const INK_BOX = 'bg-white border-[3px] border-[#16130F] shadow-[4px_4px_0_#16130F] rounded-xl';
+const BOX_TITLE = 'font-urbanist font-black text-[#16130F] text-[15px]';
+const BOX_TEXT = 'text-[13.5px] text-[#5B544A] leading-relaxed';
+const CHART = 'shadow-[6px_6px_0_#16130F] rounded-[18px]';
 
 const IELTSDetailPage = ({ pageKey }) => {
-  const location = useLocation();
 
   const sidebarLinks = [
     { name: 'IELTS Overview', path: '/exams/ielts/overview', key: 'overview' },
@@ -65,15 +64,15 @@ const IELTSDetailPage = ({ pageKey }) => {
             ]}
           />
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 my-6">
-            <div className="border border-slate-100 p-5 rounded-2xl bg-slate-50/50">
-              <h4 className="font-extrabold text-slate-800 text-sm mb-1">Global Acceptance</h4>
-              <p className="text-xs text-slate-500 leading-relaxed">
+            <div className={`${INK_BOX} p-5 border-t-[8px] border-t-[#14837E]`}>
+              <h4 className={`${BOX_TITLE} mb-1`}>Global Acceptance</h4>
+              <p className={BOX_TEXT}>
                 Accepted by 12,000+ organizations in over 150 countries, including top colleges in USA, UK, Canada, Australia, and New Zealand.
               </p>
             </div>
-            <div className="border border-slate-100 p-5 rounded-2xl bg-slate-50/50">
-              <h4 className="font-extrabold text-slate-800 text-sm mb-1">Test Formats</h4>
-              <p className="text-xs text-slate-500 leading-relaxed">
+            <div className={`${INK_BOX} p-5 border-t-[8px] border-t-[#B8285B]`}>
+              <h4 className={`${BOX_TITLE} mb-1`}>Test Formats</h4>
+              <p className={BOX_TEXT}>
                 Available in both Paper-based and Computer-delivered modes at registered test centres worldwide.
               </p>
             </div>
@@ -92,35 +91,35 @@ const IELTSDetailPage = ({ pageKey }) => {
           <p>
             IELTS offers different modules tailored to different profiles. Selecting the correct type of test is crucial for a successful application:
           </p>
-          <div className="overflow-x-auto border border-slate-100 rounded-xl my-6">
-            <table className="w-full text-left text-xs font-semibold">
-              <thead className="bg-slate-50 text-slate-500 uppercase border-b border-slate-100">
+          <div className={TABLE_WRAP}>
+            <table className="w-full min-w-[400px] text-left text-[13px] font-medium">
+              <thead className={THEAD}>
                 <tr>
                   <th className="py-3 px-4">Test Type</th>
                   <th className="py-3 px-4">Primary Purpose</th>
                   <th className="py-3 px-4">Format Details</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-100 text-slate-650">
+              <tbody className={TBODY}>
                 <tr>
-                  <td className="py-3.5 px-4 font-bold text-slate-800">IELTS Academic</td>
+                  <td className="py-3.5 px-4 font-bold text-[#16130F]">IELTS Academic</td>
                   <td className="py-3.5 px-4">Undergraduate, Postgraduate, and Professional Registration.</td>
                   <td className="py-3.5 px-4">Complex academic charts in Writing & college-level passages in Reading.</td>
                 </tr>
                 <tr>
-                  <td className="py-3.5 px-4 font-bold text-slate-800">IELTS General Training</td>
+                  <td className="py-3.5 px-4 font-bold text-[#16130F]">IELTS General Training</td>
                   <td className="py-3.5 px-4">Immigration, Work visas, or below degree level training.</td>
                   <td className="py-3.5 px-4">Everyday English, workplace texts, letter writing tasks.</td>
                 </tr>
                 <tr>
-                  <td className="py-3.5 px-4 font-bold text-slate-800">IELTS UKVI</td>
+                  <td className="py-3.5 px-4 font-bold text-[#16130F]">IELTS UKVI</td>
                   <td className="py-3.5 px-4">UK visas, student route, or migration requirements.</td>
                   <td className="py-3.5 px-4">Taken at secure, UKVI-approved centers with identical test content.</td>
                 </tr>
               </tbody>
             </table>
           </div>
-          <div>
+          <div className={CHART}>
             <VersusCard
               kicker="Pick the right one"
               title="Academic vs General Training"
@@ -150,20 +149,20 @@ const IELTSDetailPage = ({ pageKey }) => {
             ]}
           />
           <div className="space-y-4 my-6">
-            <div className="flex gap-4 p-5 bg-amber-50 border border-amber-100 rounded-2xl">
-              <AlertTriangle className="text-amber-600 flex-shrink-0 w-6 h-6" />
+            <div className="flex gap-4 p-5 bg-[#FCE3DA] border-[3px] border-[#16130F] shadow-[4px_4px_0_#D0362E] rounded-xl">
+              <span className="w-10 h-10 rounded-full bg-[#D0362E] text-white border-2 border-[#16130F] grid place-items-center shrink-0"><AlertTriangle className="w-5 h-5" /></span>
               <div>
-                <h4 className="font-extrabold text-slate-805 text-sm mb-1">Strict Passport Policy ("No Passport, No Exam")</h4>
-                <p className="text-xs text-slate-650 leading-relaxed font-semibold">
+                <h4 className={`${BOX_TITLE} mb-1`}>Strict Passport Policy ("No Passport, No Exam")</h4>
+                <p className="text-[13.5px] text-[#3D362E] leading-relaxed font-semibold">
                   You MUST bring your physical, original, and valid passport to the exam centre. Copies, Aadhaar cards, PAN cards, or digital IDs are strictly not accepted.
                 </p>
               </div>
             </div>
             
-            <div className="bg-slate-50 border border-slate-100 rounded-2xl p-5 space-y-3 text-xs text-slate-500 font-semibold">
-              <p>🎯 <strong className="text-slate-800">Age Limit:</strong> Candidates must be at least 16 years old. If you are under 18, a guardian's consent form is required during slot booking.</p>
-              <p><CapIcon /> <strong className="text-slate-800">Academic Qualification:</strong> There are no minimum academic requirements to sit for IELTS. Anyone seeking global education can apply.</p>
-              <p>🔄 <strong className="text-slate-800">Attempt Limit:</strong> You can attempt the test as many times as you like. There is no restriction on retakes.</p>
+            <div className={`${INK_BOX} p-5 space-y-3 text-[13.5px] text-[#5B544A] leading-relaxed`}>
+              <p className="flex gap-2.5"><Target size={17} className="text-[#D0362E] shrink-0 mt-0.5" /><span><strong className="text-[#16130F]">Age Limit:</strong> Candidates must be at least 16 years old. If you are under 18, a guardian's consent form is required during slot booking.</span></p>
+              <p className="flex gap-2.5"><span className="shrink-0 text-[#14837E]"><CapIcon /></span><span><strong className="text-[#16130F]">Academic Qualification:</strong> There are no minimum academic requirements to sit for IELTS. Anyone seeking global education can apply.</span></p>
+              <p className="flex gap-2.5"><RefreshCw size={17} className="text-[#B8285B] shrink-0 mt-0.5" /><span><strong className="text-[#16130F]">Attempt Limit:</strong> You can attempt the test as many times as you like. There is no restriction on retakes.</span></p>
             </div>
           </div>
         </div>
@@ -178,21 +177,21 @@ const IELTSDetailPage = ({ pageKey }) => {
             The fees for registerting for the IELTS exam in India vary depending on the format you select. The base registration fee applies to both pen-and-paper and computer-delivered tests:
           </p>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 my-6">
-            <div className="bg-slate-50 p-4 rounded-xl border border-slate-100 text-center">
-              <p className="text-[10px] text-slate-400 font-black uppercase tracking-wider mb-1">Academic / GT</p>
-              <p className="text-lg font-black text-slate-850">INR 19,000</p>
+            <div className="p-4 rounded-xl border-[3px] border-[#16130F] shadow-[4px_4px_0_#16130F] text-center" style={{ background: '#FFF1B8', transform: 'rotate(-1deg)' }}>
+              <p className="text-[10.5px] text-[#5B544A] font-black uppercase tracking-wider mb-1">Academic / GT</p>
+              <p className="font-urbanist text-[19px] sm:text-[21px] font-black text-[#16130F]">INR 19,000</p>
             </div>
-            <div className="bg-slate-50 p-4 rounded-xl border border-slate-100 text-center">
-              <p className="text-[10px] text-slate-400 font-black uppercase tracking-wider mb-1">IELTS UKVI</p>
-              <p className="text-lg font-black text-slate-850">INR 18,250</p>
+            <div className="p-4 rounded-xl border-[3px] border-[#16130F] shadow-[4px_4px_0_#16130F] text-center" style={{ background: '#DDF3EF', transform: 'rotate(0.8deg)' }}>
+              <p className="text-[10.5px] text-[#5B544A] font-black uppercase tracking-wider mb-1">IELTS UKVI</p>
+              <p className="font-urbanist text-[19px] sm:text-[21px] font-black text-[#16130F]">INR 18,250</p>
             </div>
-            <div className="bg-slate-50 p-4 rounded-xl border border-slate-100 text-center">
-              <p className="text-[10px] text-slate-400 font-black uppercase tracking-wider mb-1">Life Skills</p>
-              <p className="text-lg font-black text-slate-850">INR 17,000</p>
+            <div className="p-4 rounded-xl border-[3px] border-[#16130F] shadow-[4px_4px_0_#16130F] text-center" style={{ background: '#FBD9E6', transform: 'rotate(-0.6deg)' }}>
+              <p className="text-[10.5px] text-[#5B544A] font-black uppercase tracking-wider mb-1">Life Skills</p>
+              <p className="font-urbanist text-[19px] sm:text-[21px] font-black text-[#16130F]">INR 17,000</p>
             </div>
-            <div className="bg-slate-50 p-4 rounded-xl border border-slate-100 text-center">
-              <p className="text-[10px] text-slate-400 font-black uppercase tracking-wider mb-1">One Skill Retake</p>
-              <p className="text-lg font-black text-slate-850">INR 12,000</p>
+            <div className="p-4 rounded-xl border-[3px] border-[#16130F] shadow-[4px_4px_0_#16130F] text-center" style={{ background: '#FCE3DA', transform: 'rotate(1deg)' }}>
+              <p className="text-[10.5px] text-[#5B544A] font-black uppercase tracking-wider mb-1">One Skill Retake</p>
+              <p className="font-urbanist text-[19px] sm:text-[21px] font-black text-[#16130F]">INR 12,000</p>
             </div>
           </div>
           <p>
@@ -209,12 +208,12 @@ const IELTSDetailPage = ({ pageKey }) => {
           <p>
             Vite slots for computer-delivered tests are available nearly every day, while paper-based dates are limited to 4 times a month.
           </p>
-          <div className="bg-indigo-50/40 border border-indigo-150 p-5 rounded-2xl space-y-3 font-semibold text-sm">
-            <h4 className="font-extrabold text-slate-850">Quick Guide: How to choose your date</h4>
-            <p className="text-xs text-slate-500 leading-relaxed">
+          <div className="bg-[#DDF3EF] border-[3px] border-[#16130F] shadow-[4px_4px_0_#14837E] rounded-xl p-5 space-y-3">
+            <h4 className={`${BOX_TITLE} flex items-center gap-2`}><CalendarDays size={18} className="text-[#14837E]" />Quick Guide: How to choose your date</h4>
+            <p className="text-[13.5px] text-[#3D362E] leading-relaxed">
               We recommend choosing a date that is at least 3-6 months before your target university application deadline. This leaves enough room for scheduling retakes if required or preparing visa materials early.
             </p>
-            <p className="text-xs text-slate-500 leading-relaxed">
+            <p className="text-[13.5px] text-[#3D362E] leading-relaxed">
               High-demand months in India are January to March (Fall deadlines) and June to August. Booking 1 month in advance is highly recommended.
             </p>
           </div>
@@ -239,21 +238,21 @@ const IELTSDetailPage = ({ pageKey }) => {
               { label: 'Payment', sub: 'INR 19,000' },
             ]}
           />
-          <div className="space-y-3.5 text-xs text-slate-500 font-semibold my-6">
-            <div className="p-4 bg-slate-50 rounded-xl border border-slate-100">
-              <span className="font-black text-indigo-600 block mb-1">Step 1: Select Format</span>
+          <div className="space-y-3.5 text-[13.5px] text-[#5B544A] leading-relaxed my-6">
+            <div className={`${INK_BOX} p-4`}>
+              <span className="font-urbanist font-black text-[15px] text-[#D0362E] block mb-1">Step 1: Select Format</span>
               Choose between Computer-delivered or Paper-based test, and select either IELTS Academic or General Training.
             </div>
-            <div className="p-4 bg-slate-50 rounded-xl border border-slate-100">
-              <span className="font-black text-indigo-600 block mb-1">Step 2: Choose Centre & Date</span>
+            <div className={`${INK_BOX} p-4`}>
+              <span className="font-urbanist font-black text-[15px] text-[#D0362E] block mb-1">Step 2: Choose Centre & Date</span>
               Search from 82 test cities in India and pick your preferred time slot and test venue.
             </div>
-            <div className="p-4 bg-slate-50 rounded-xl border border-slate-100">
-              <span className="font-black text-indigo-600 block mb-1">Step 3: Fill Details & Upload Passport</span>
+            <div className={`${INK_BOX} p-4`}>
+              <span className="font-urbanist font-black text-[15px] text-[#D0362E] block mb-1">Step 3: Fill Details & Upload Passport</span>
               Fill in your personal information and upload a clear, scanned copy of your valid passport pages.
             </div>
-            <div className="p-4 bg-slate-50 rounded-xl border border-slate-100">
-              <span className="font-black text-indigo-600 block mb-1">Step 4: Complete Payment</span>
+            <div className={`${INK_BOX} p-4`}>
+              <span className="font-urbanist font-black text-[15px] text-[#D0362E] block mb-1">Step 4: Complete Payment</span>
               Pay the registration fee of INR 19,000 online using Credit/Debit cards or Net Banking. Keep the email confirmation safe.
             </div>
           </div>
@@ -268,7 +267,7 @@ const IELTSDetailPage = ({ pageKey }) => {
           <p>
             Booking your slot early is critical to secure your preferred date and venue. Note the following recommendations:
           </p>
-          <ul className="list-disc list-inside space-y-2 text-xs text-slate-500 pl-2 font-semibold">
+          <ul className={`${INK_BOX} list-disc list-outside space-y-2.5 text-[13.5px] text-[#5B544A] leading-relaxed p-5 pl-9 marker:text-[#D0362E] [&_strong]:text-[#16130F]`}>
             <li><strong>Select speaking dates early:</strong> Speaking slots can be booked up to 7 days before or after the main exam. Select your speaking slot early to align with your preparation schedule.</li>
             <li><strong>Rescheduling slots:</strong> Rescheduling is allowed by paying a processing fee. Requests must be made via the IDP portal.</li>
             <li><strong>Peak Season slots:</strong> Slots during January-March get filled fast. Try booking at least 3-4 weeks in advance.</li>
@@ -284,11 +283,11 @@ const IELTSDetailPage = ({ pageKey }) => {
           <p>
             IDP operates in 82 test centres across 75 Indian cities. If you require coaching, choosing a structure that provides regular diagnostic test assessments is key.
           </p>
-          <div className="bg-indigo-50/50 p-5 rounded-2xl border border-indigo-100 flex gap-4 my-6">
-            <CheckCircle2 className="text-indigo-600 flex-shrink-0 mt-0.5" />
+          <div className="bg-[#DDF3EF] p-5 border-[3px] border-[#16130F] shadow-[4px_4px_0_#14837E] rounded-xl flex gap-4 my-6">
+            <CheckCircle2 className="text-[#14837E] flex-shrink-0 mt-0.5" />
             <div>
-              <h4 className="font-extrabold text-slate-800 text-sm">UniCoach Online Coaching Advantages</h4>
-              <p className="text-xs text-slate-500 leading-relaxed mt-1 font-semibold">
+              <h4 className={BOX_TITLE}>UniCoach Online Coaching Advantages</h4>
+              <p className="text-[13.5px] text-[#3D362E] leading-relaxed mt-1">
                 Our classes offer certified trainers, small batch size options for personalized attention, daily practice drills, and live mock test assessments with estimated band updates.
               </p>
             </div>
@@ -304,7 +303,7 @@ const IELTSDetailPage = ({ pageKey }) => {
           <p>
             Once you complete the exam, results will be generated based on the delivery format:
           </p>
-          <div>
+          <div className={CHART}>
             <BarCompare
               kicker="Result wait"
               title="Days until your IELTS result"
@@ -315,13 +314,13 @@ const IELTSDetailPage = ({ pageKey }) => {
             />
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 my-6">
-            <div className="border border-slate-100 p-4 rounded-xl bg-slate-50/50">
-              <span className="text-xs font-black text-slate-400 block mb-1">Computer-Based IELTS</span>
-              <p className="font-black text-slate-850">3 to 5 Days</p>
+            <div className="p-4 rounded-xl border-[3px] border-[#16130F] shadow-[4px_4px_0_#16130F] bg-[#FFF1B8]">
+              <span className="text-[11px] uppercase tracking-wider font-black text-[#5B544A] block mb-1">Computer-Based IELTS</span>
+              <p className="font-urbanist text-[22px] font-black text-[#16130F]">3 to 5 Days</p>
             </div>
-            <div className="border border-slate-100 p-4 rounded-xl bg-slate-50/50">
-              <span className="text-xs font-black text-slate-400 block mb-1">Paper-Based IELTS</span>
-              <p className="font-black text-slate-850">11 to 13 Days</p>
+            <div className="p-4 rounded-xl border-[3px] border-[#16130F] shadow-[4px_4px_0_#16130F] bg-[#FBD9E6]">
+              <span className="text-[11px] uppercase tracking-wider font-black text-[#5B544A] block mb-1">Paper-Based IELTS</span>
+              <p className="font-urbanist text-[22px] font-black text-[#16130F]">11 to 13 Days</p>
             </div>
           </div>
           <p>
@@ -346,11 +345,11 @@ const IELTSDetailPage = ({ pageKey }) => {
               { value: '1×', label: 'Audio played only once' },
             ]}
           />
-          <div className="bg-slate-50 p-5 rounded-2xl border border-slate-100 space-y-3 text-xs text-slate-550 font-semibold my-6">
-            <p>🎧 <strong>Section 1:</strong> A conversation between two speakers set in an everyday social context (10 questions).</p>
-            <p>🎧 <strong>Section 2:</strong> A monologue set in an everyday social context, e.g., a speech about local facilities (10 questions).</p>
-            <p>🎧 <strong>Section 3:</strong> A conversation between up to four people set in an educational or training context (10 questions).</p>
-            <p>🎧 <strong>Section 4:</strong> A monologue on an academic subject, e.g., a university lecture (10 questions).</p>
+          <div className={`${INK_BOX} p-5 space-y-3 text-[13.5px] text-[#5B544A] leading-relaxed my-6 [&_strong]:text-[#16130F]`}>
+            <p className="flex gap-2.5"><Headphones size={16} className="text-[#14837E] shrink-0 mt-0.5" /><span><strong>Section 1:</strong> A conversation between two speakers set in an everyday social context (10 questions).</span></p>
+            <p className="flex gap-2.5"><Headphones size={16} className="text-[#14837E] shrink-0 mt-0.5" /><span><strong>Section 2:</strong> A monologue set in an everyday social context, e.g., a speech about local facilities (10 questions).</span></p>
+            <p className="flex gap-2.5"><Headphones size={16} className="text-[#14837E] shrink-0 mt-0.5" /><span><strong>Section 3:</strong> A conversation between up to four people set in an educational or training context (10 questions).</span></p>
+            <p className="flex gap-2.5"><Headphones size={16} className="text-[#14837E] shrink-0 mt-0.5" /><span><strong>Section 4:</strong> A monologue on an academic subject, e.g., a university lecture (10 questions).</span></p>
           </div>
           <p>
             <strong>Crucial Rule:</strong> The audio clips are played ONLY ONCE. Note down your answers on the question booklet simultaneously to avoid forgetting details.
@@ -374,15 +373,15 @@ const IELTSDetailPage = ({ pageKey }) => {
             ]}
           />
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 my-6">
-            <div className="border border-slate-150 p-5 rounded-xl">
-              <h4 className="font-extrabold text-slate-800 text-sm mb-2">Academic Reading</h4>
-              <p className="text-xs text-slate-500 leading-relaxed font-semibold">
+            <div className={`${INK_BOX} p-5 border-t-[8px] border-t-[#F2B705]`}>
+              <h4 className={`${BOX_TITLE} mb-2`}>Academic Reading</h4>
+              <p className={BOX_TEXT}>
                 Passages are from journals, books, magazines, and newspapers. Focuses on descriptive, factual, analytical, and logical texts.
               </p>
             </div>
-            <div className="border border-slate-150 p-5 rounded-xl">
-              <h4 className="font-extrabold text-slate-800 text-sm mb-2">General Training Reading</h4>
-              <p className="text-xs text-slate-500 leading-relaxed font-semibold">
+            <div className={`${INK_BOX} p-5 border-t-[8px] border-t-[#14837E]`}>
+              <h4 className={`${BOX_TITLE} mb-2`}>General Training Reading</h4>
+              <p className={BOX_TEXT}>
                 Passages use everyday English, extracts from employee manuals, advertisements, guidelines, and notices.
               </p>
             </div>
@@ -401,7 +400,7 @@ const IELTSDetailPage = ({ pageKey }) => {
           <p>
             The Writing module takes 60 minutes and is divided into two tasks:
           </p>
-          <div>
+          <div className={CHART}>
             <Donut
               kicker="Time split"
               title="How the 60 minutes divide"
@@ -414,15 +413,15 @@ const IELTSDetailPage = ({ pageKey }) => {
             />
           </div>
           <div className="space-y-4 my-6">
-            <div className="p-5 border border-slate-100 rounded-xl bg-slate-50/50">
-              <h4 className="font-extrabold text-slate-800 text-sm mb-1">Task 1 (Academic vs General)</h4>
-              <p className="text-xs text-slate-500 leading-relaxed font-semibold">
+            <div className={`${INK_BOX} p-5 border-l-[8px] border-l-[#D0362E]`}>
+              <h4 className={`${BOX_TITLE} mb-1`}>Task 1 (Academic vs General)</h4>
+              <p className={BOX_TEXT}>
                 Academic requires summarizing visual data (graphs, charts, processes) in 150+ words (20 mins). General Training requires writing a formal, semi-formal, or personal letter.
               </p>
             </div>
-            <div className="p-5 border border-slate-100 rounded-xl bg-slate-50/50">
-              <h4 className="font-extrabold text-slate-800 text-sm mb-1">Task 2 (Essay Writing)</h4>
-              <p className="text-xs text-slate-500 leading-relaxed font-semibold">
+            <div className={`${INK_BOX} p-5 border-l-[8px] border-l-[#B8285B]`}>
+              <h4 className={`${BOX_TITLE} mb-1`}>Task 2 (Essay Writing)</h4>
+              <p className={BOX_TEXT}>
                 Requires writing an argumentative essay on a given problem, solution, or opinion in 250+ words (40 mins).
               </p>
             </div>
@@ -441,7 +440,7 @@ const IELTSDetailPage = ({ pageKey }) => {
           <p>
             The Speaking test is a face-to-face conversational interview with a certified evaluator. It takes 11–14 minutes:
           </p>
-          <div>
+          <div className={CHART}>
             <Donut
               kicker="3 parts"
               title="Speaking test, part by part"
@@ -454,10 +453,10 @@ const IELTSDetailPage = ({ pageKey }) => {
               ]}
             />
           </div>
-          <div className="bg-slate-50 p-5 rounded-2xl border border-slate-100 space-y-3 text-xs text-slate-550 font-semibold my-6">
-            <p>🗣️ <strong>Part 1: Introduction (4 - 5 Mins)</strong> - Simple introductory questions related to your home, hobbies, family, work, or studies.</p>
-            <p>🗣️ <strong>Part 2: Long Turn Cue Card (3 - 4 Mins)</strong> - The examiner gives you a topic card. You have 1 minute to plan, then speak on it for 1–2 minutes.</p>
-            <p>🗣️ <strong>Part 3: Discussion (4 - 5 Mins)</strong> - Deep discussion related to the topic of Part 2, requiring abstract reasoning and expressing opinions.</p>
+          <div className={`${INK_BOX} p-5 space-y-3 text-[13.5px] text-[#5B544A] leading-relaxed my-6 [&_strong]:text-[#16130F]`}>
+            <p className="flex gap-2.5"><MessageCircle size={16} className="text-[#B8285B] shrink-0 mt-0.5" /><span><strong>Part 1: Introduction (4 - 5 Mins)</strong> - Simple introductory questions related to your home, hobbies, family, work, or studies.</span></p>
+            <p className="flex gap-2.5"><MessageCircle size={16} className="text-[#B8285B] shrink-0 mt-0.5" /><span><strong>Part 2: Long Turn Cue Card (3 - 4 Mins)</strong> - The examiner gives you a topic card. You have 1 minute to plan, then speak on it for 1–2 minutes.</span></p>
+            <p className="flex gap-2.5"><MessageCircle size={16} className="text-[#B8285B] shrink-0 mt-0.5" /><span><strong>Part 3: Discussion (4 - 5 Mins)</strong> - Deep discussion related to the topic of Part 2, requiring abstract reasoning and expressing opinions.</span></p>
           </div>
           <p>
             Grading criteria include Fluency & Coherence, Lexical Resource, Grammatical Range & Accuracy, and Pronunciation.
@@ -468,106 +467,103 @@ const IELTSDetailPage = ({ pageKey }) => {
   };
 
   const activeContent = contentMap[pageKey] || contentMap.overview;
+  const activeName = sidebarLinks.find(l => l.key === pageKey)?.name || 'Detail';
 
   return (
-    <div className="min-h-screen bg-slate-50 pt-28 pb-20">
-      <div className="max-w-[1320px] mx-auto px-6 md:px-10">
-        
-        {/* Breadcrumbs */}
-        <div className="flex items-center gap-2 text-xs font-bold text-slate-400 uppercase tracking-widest mb-6">
-          <Link to="/" className="hover:text-indigo-650 transition-colors">Home</Link>
-          <ChevronRight size={12} />
-          <Link to="/exams/ielts/overview" className="hover:text-indigo-650 transition-colors">Exams</Link>
-          <ChevronRight size={12} />
-          <span className="text-slate-650">IELTS</span>
-          <ChevronRight size={12} />
-          <span className="text-slate-600">{sidebarLinks.find(l => l.key === pageKey)?.name || 'Detail'}</span>
-        </div>
+    <div className="min-h-screen bg-[#FFF6E5] pb-20 font-['Onest',sans-serif] text-[#16130F] overflow-x-clip">
 
-        {/* Title Header Card */}
-        <div className="uc-clean relative rounded-[2.5rem] p-8 md:p-12 overflow-hidden mb-12 shadow-xl border">
-          <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-indigo-500/10 rounded-full blur-3xl pointer-events-none" />
-          <div className="relative z-10 max-w-3xl">
-            <span className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-indigo-500/20 border border-indigo-500/30 text-indigo-300 text-[10px] font-extrabold uppercase tracking-widest mb-4">
-              IELTS Reference Guide
-            </span>
-            <h1 className="text-2xl md:text-4xl font-black leading-tight tracking-tight mb-4">
-              {activeContent.title}
-            </h1>
-            <p className="text-indigo-200/90 text-sm leading-relaxed font-semibold">
-              {activeContent.subtitle}
-            </p>
-          </div>
-        </div>
+      {/* Hero: mustard poster band */}
+      <DesiHero
+        tone="mustard"
+        sign={{ hi: 'आइल्ट्स', en: 'IELTS DESK' }}
+        crumbs={[{ label: 'Home', to: '/' }, { label: 'Exams', to: '/exams/ielts/overview' }, { label: 'IELTS' }, { label: activeName }]}
+        title={activeContent.title}
+        subtitle={activeContent.subtitle}
+        stickers={(
+          <Sticker tilt={-2}><BookOpen size={14} />IELTS Reference Guide</Sticker>
+        )}
+      />
 
-        {/* Layout Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-[210px_minmax(0,1fr)_230px] xl:grid-cols-[280px_minmax(0,1fr)_300px] gap-8 items-start">
-          
-          {/* Left Sidebar Links */}
-          <aside className="sticky top-28 bg-white border border-slate-100 p-5 rounded-2xl shadow-sm max-h-[calc(100vh-140px)] overflow-y-auto">
-            <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-4">IELTS Guide Index</p>
-            <nav className="space-y-1">
+      <div className="max-w-[1320px] mx-auto px-4 sm:px-6 md:px-10">
+
+        {/* Guide index as ink pills (phones and tablets) */}
+        <div className="lg:hidden -mt-6 mb-8 relative z-10">
+          <InkCard className="p-3">
+            <p className="font-['Rozha_One',serif] text-[14px] text-[#D0362E] leading-none px-1 mb-2">विषय सूची</p>
+            <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-hide">
               {sidebarLinks.map((linkItem) => {
                 const isActive = pageKey === linkItem.key;
                 return (
                   <Link
                     key={linkItem.key}
                     to={linkItem.path}
-                    className={`w-full text-left py-2.5 px-3 rounded-xl text-xs font-bold transition-all leading-normal flex items-center justify-between
-                      ${isActive
-                        ? 'bg-indigo-50 text-indigo-600'
-                        : 'text-slate-500 hover:bg-slate-50 hover:text-slate-800'}`}
+                    className={`px-3.5 py-2 rounded-full border-2 text-xs font-bold whitespace-nowrap flex-shrink-0 ${isActive ? 'bg-[#16130F] border-[#16130F] text-white shadow-[2px_2px_0_#F2B705]' : 'border-[#16130F] bg-[#FFF6E5] text-[#3D362E]'}`}
                   >
-                    <span>{linkItem.name}</span>
-                    <ChevronRight size={12} className={isActive ? 'text-indigo-500' : 'text-slate-300'} />
+                    {linkItem.name}
                   </Link>
                 );
               })}
-            </nav>
+            </div>
+          </InkCard>
+        </div>
+
+        {/* Layout Grid */}
+        <div className="grid grid-cols-1 lg:grid-cols-[210px_minmax(0,1fr)_230px] xl:grid-cols-[260px_minmax(0,1fr)_290px] gap-8 items-start lg:pt-12">
+
+          {/* Left Sidebar Links */}
+          <aside className="hidden lg:block sticky top-28 max-h-[calc(100vh-140px)] overflow-y-auto pr-2 pb-2">
+            <InkCard className="p-4">
+              <p className="font-['Rozha_One',serif] text-[15px] text-[#D0362E] leading-none">विषय सूची</p>
+              <h3 className="mt-1 mb-3 font-urbanist font-black text-[16px]">IELTS Guide Index</h3>
+              <nav className="flex flex-col gap-1.5">
+                {sidebarLinks.map((linkItem, li) => {
+                  const isActive = pageKey === linkItem.key;
+                  const tone = DESI_TONES[li % 4];
+                  return (
+                    <Link
+                      key={linkItem.key}
+                      to={linkItem.path}
+                      style={isActive ? { background: tone.c, color: tone.fg } : undefined}
+                      className={`group w-full text-left py-2 px-2.5 rounded-lg border-2 text-[13px] font-bold transition-colors leading-snug flex items-center justify-between gap-2
+                        ${isActive
+                          ? 'border-[#16130F] shadow-[3px_3px_0_#16130F]'
+                          : 'border-transparent text-[#3D362E] hover:border-[#16130F] hover:bg-[#FFF6E5]'}`}
+                    >
+                      <span>{linkItem.name}</span>
+                      <ChevronRight size={13} className="shrink-0 transition-transform group-hover:translate-x-0.5" />
+                    </Link>
+                  );
+                })}
+              </nav>
+            </InkCard>
           </aside>
 
           {/* Center Content Section */}
-          <main className="bg-white border border-slate-100 p-8 md:p-10 rounded-2xl shadow-sm">
-            <h2 className="text-xl font-black text-slate-900 mb-6 pb-4 border-b border-slate-100">
+          <InkCard as="main" className="p-5 sm:p-8 md:p-10 min-w-0">
+            <DesiHeading hi="पूरी जानकारी" className="mb-6 pb-5 border-b-[3px] border-dashed border-[#16130F33]">
               Detailed Guide Content
-            </h2>
-            <div className="prose max-w-none">
+            </DesiHeading>
+            <div className="max-w-none text-[15px] leading-relaxed text-[#3D362E] [&_strong]:text-[#16130F]">
               {activeContent.content}
             </div>
-
-            {/* Additional Quick Actions Box */}
-            <div className="bg-slate-50/70 p-6 rounded-2xl border border-slate-100 mt-10 grid grid-cols-1 sm:grid-cols-2 gap-4 items-center">
-              <div>
-                <h4 className="font-bold text-slate-900 text-sm mb-1">Want to prepare for IELTS?</h4>
-                <p className="text-xs text-slate-500 leading-normal font-normal">Join upcoming live workshops and university webinars led by certified international mentors.</p>
-              </div>
-              <div className="flex items-center justify-start sm:justify-end">
-                <Link
-                  to="/events"
-                  className="px-5 py-3 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold inline-flex items-center gap-1.5 shadow-sm shadow-indigo-600/10 cursor-pointer transition-all"
-                >
-                  <span>Explore Live Events</span>
-                  <ArrowRight size={13} />
-                </Link>
-              </div>
-            </div>
-          </main>
+          </InkCard>
 
           {/* Right Sidebar Widgets */}
-          <aside className="sticky top-28 space-y-6">
-            
+          <aside className="lg:sticky lg:top-28 space-y-6">
+
             {/* Widget: Live Events */}
-            <div className="uc-clean p-6 rounded-2xl shadow-md border relative overflow-hidden">
-              <span className="text-[9px] font-bold text-orange-200 uppercase tracking-widest block mb-2">Live Workshops</span>
-              <h3 className="text-lg font-bold leading-snug mb-2">
+            <div className="bg-[#14837E] text-white p-6 border-[3px] border-[#16130F] shadow-[5px_5px_0_#16130F] rotate-[-0.6deg]" style={{ borderRadius: 14 }}>
+              <span className="font-['Rozha_One',serif] text-[15px] text-[#F2B705] leading-none block mb-1">लाइव वर्कशॉप</span>
+              <span className="text-[10.5px] font-black text-white/80 uppercase tracking-widest block mb-2">Live Workshops</span>
+              <h3 className="font-urbanist text-[20px] font-black leading-snug mb-2">
                 Study Abroad Events & Fairs
               </h3>
-              <p className="text-xs text-blue-100/85 leading-relaxed mb-5 font-normal">
+              <p className="text-[13px] text-white/90 leading-relaxed mb-5">
                 Join live Q&A sessions with overseas admission delegates, visa officers, and top trainers.
               </p>
               <Link
                 to="/events"
-                className="w-full text-center py-3 bg-white text-[#111111] rounded-xl text-xs font-bold hover:bg-orange-50 transition-all flex items-center justify-center gap-1.5 shadow-sm block cursor-pointer"
+                className="w-full text-center py-3 bg-[#F2B705] text-[#16130F] border-2 border-[#16130F] rounded-full text-[13px] font-bold shadow-[3px_3px_0_#16130F] hover:-translate-y-0.5 transition-transform flex items-center justify-center gap-1.5 cursor-pointer"
               >
                 <span>View Upcoming Events</span>
                 <ArrowRight size={14} />
@@ -575,25 +571,35 @@ const IELTSDetailPage = ({ pageKey }) => {
             </div>
 
             {/* Widget: Latest Blogs & Guides */}
-            <div className="bg-white border border-slate-100 p-6 rounded-2xl shadow-sm text-center">
-              <div className="w-12 h-12 rounded-full bg-orange-50 text-indigo-600 flex items-center justify-center mx-auto mb-4">
+            <InkCard className="p-6 text-center" shadow="#B8285B">
+              <div className="w-12 h-12 rounded-full bg-[#FBD9E6] text-[#B8285B] border-2 border-[#16130F] flex items-center justify-center mx-auto mb-4">
                 <BookOpen size={20} />
               </div>
-              <h4 className="font-bold text-slate-900 text-sm mb-2">Exam Prep Blogs & Guides</h4>
-              <p className="text-xs text-slate-500 leading-relaxed mb-5 font-normal">
+              <h4 className="font-urbanist font-black text-[#16130F] text-[16px] mb-2">Exam Prep Blogs & Guides</h4>
+              <p className="text-[13px] text-[#5B544A] leading-relaxed mb-5">
                 Read Band 8+ essay samples, speaking cue cards, and test-day strategy articles.
               </p>
               <Link
                 to="/blogs"
-                className="w-full text-center py-3 border border-slate-200 text-slate-700 hover:text-indigo-600 rounded-xl text-xs font-bold hover:bg-slate-50 hover:border-slate-300 transition-all block cursor-pointer"
+                className="w-full text-center py-3 border-2 border-[#16130F] bg-white text-[#16130F] rounded-full text-[13px] font-bold hover:bg-[#FCE38A] transition-colors block cursor-pointer"
               >
                 Browse Prep Blogs
               </Link>
-            </div>
+            </InkCard>
 
           </aside>
 
         </div>
+
+        {/* Closing CTA */}
+        <BookOkCta
+          className="mt-14"
+          to="/events"
+          hi="तैयारी साथ में"
+          title="Book OK Please."
+          text="IELTS ki taiyari karni hai? Live workshops mein certified mentors se seedha poocho."
+          cta="Live events dekho"
+        />
       </div>
     </div>
   );

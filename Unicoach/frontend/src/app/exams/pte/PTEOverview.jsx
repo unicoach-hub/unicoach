@@ -1,31 +1,22 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useState, useEffect, useRef } from 'react';
+import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
-  BookOpen,
-  Calendar,
-  DollarSign,
   GraduationCap,
   HelpCircle,
   Clock,
   MapPin,
-  FileText,
   Compass,
   ArrowRight,
-  TrendingUp,
   Award,
   ChevronRight,
-  UserCheck,
   AlertTriangle,
-  FileEdit,
   CheckCircle2,
-  Bookmark,
-  Building,
-  Globe,
-  ExternalLink,
   Sparkles
 } from 'lucide-react';
 import { StatStrip, BarCompare, Donut } from '../../../components/ui/Infographics';
+import { DesiHero, DesiHeading, InkCard, Sticker } from '../../../components/desi/DesiKit';
+import { BookOkCta } from '../../../components/desi/BookOkCta';
 
 const UniLogo = ({ logo, name, domain }) => {
   const [error, setError] = useState(false);
@@ -56,7 +47,7 @@ const UniLogo = ({ logo, name, domain }) => {
           loading="lazy"
         />
       ) : (
-        <div className="w-full h-full bg-indigo-600 flex items-center justify-center text-white rounded">
+        <div className="w-full h-full bg-[#16130F] flex items-center justify-center text-white rounded">
           <GraduationCap size={16} />
         </div>
       )}
@@ -65,7 +56,6 @@ const UniLogo = ({ logo, name, domain }) => {
 };
 
 const PTEOverview = () => {
-  const navigate = useNavigate();
   const [activeSection, setActiveSection] = useState('section-1');
   const [faqOpen, setFaqOpen] = useState({});
   const [activeCountry, setActiveCountry] = useState('USA');
@@ -161,61 +151,34 @@ const PTEOverview = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 pt-28 pb-20 select-none font-sans">
-      <div className="max-w-[1320px] mx-auto px-6 md:px-10">
-        
-        {/* Breadcrumb */}
-        <div className="flex items-center gap-2 text-xs font-bold text-slate-400 uppercase tracking-widest mb-6">
-          <Link to="/" className="hover:text-indigo-650 transition-colors">Home</Link>
-          <ChevronRight size={12} />
-          <span>Exams</span>
-          <ChevronRight size={12} />
-          <span className="text-slate-600 font-bold">PTE</span>
-        </div>
+    <div className="min-h-screen bg-[#FFF6E5] pb-20 font-['Onest',sans-serif] text-[#16130F]">
 
-        {/* Hero Header Card */}
-        <div className="uc-clean relative rounded-[2.5rem] p-8 md:p-14 overflow-hidden mb-12 shadow-xl border">
-          {/* Backdrop photo for rich aesthetics */}
-          <div className="absolute inset-0 z-0 opacity-15 mix-blend-overlay pointer-events-none">
-            <img 
-              src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=1200&auto=format&fit=crop&q=80" 
-              alt="PTE Student Collaboration" 
-              className="w-full h-full object-cover"
-            />
-          </div>
-          <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-indigo-500/10 rounded-full blur-3xl pointer-events-none z-0" />
-          <div className="relative z-10 max-w-3xl">
-            <span className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-indigo-500/20 border border-indigo-500/30 text-indigo-300 text-xs font-extrabold uppercase tracking-widest mb-6">
-              <Compass size={14} />
-              Pearson Test of English
-            </span>
-            <h1 className="text-3xl md:text-5xl font-black leading-tight tracking-tight mb-6">
-              PTE Exam 2026: Full Form, Fees, Dates, Eligibility & Exam Pattern
-            </h1>
-            <p className="text-indigo-200/90 text-sm md:text-base leading-relaxed mb-6 font-medium">
-              The PTE Academic is the leading computer-based choice for students who value speed and fairness. With results typically out in 48 hours, it’s the fastest way to secure university spots in 2026.
-            </p>
-            <div className="flex flex-wrap items-center gap-4 text-xs font-semibold text-slate-400">
-              <span className="flex items-center gap-1.5 bg-slate-950/60 px-3 py-1.5 rounded-lg border border-slate-800">
-                <Clock size={13} className="text-indigo-400" />
-                Updated: January 2026
-              </span>
-              <span className="flex items-center gap-1.5 bg-slate-955/60 px-3 py-1.5 rounded-lg border border-slate-800">
-                <Award size={13} className="text-indigo-400" />
-                PTE Hybrid Scoring active
-              </span>
-            </div>
-          </div>
-        </div>
+      {/* Hero: poster band */}
+      <DesiHero
+        tone="teal"
+        sign={{ hi: 'पीटीई', en: 'PTE DESK' }}
+        crumbs={[{ label: 'Home', to: '/' }, { label: 'Exams' }, { label: 'PTE' }]}
+        title="PTE Exam 2026: Full Form, Fees, Dates, Eligibility & Exam Pattern"
+        subtitle="The PTE Academic is the leading computer-based choice for students who value speed and fairness. With results typically out in 48 hours, it’s the fastest way to secure university spots in 2026."
+        stickers={(
+          <>
+            <Sticker bg="#FFF6E5" tilt={-2}><Compass size={14} />Pearson Test of English</Sticker>
+            <Sticker tilt={1.5}><Clock size={14} />Updated: January 2026</Sticker>
+            <Sticker bg="#FCE38A" tilt={-1}><Award size={14} />PTE Hybrid Scoring active</Sticker>
+          </>
+        )}
+      />
 
+      <div className="max-w-[1320px] mx-auto px-4 sm:px-6 md:px-10 pt-10">
         {/* Alert updates banner */}
-        <div className="flex items-center gap-4 bg-orange-50 border border-orange-200/80 p-5 rounded-3xl mb-12">
-          <div className="w-10 h-10 rounded-2xl bg-orange-100 flex items-center justify-center text-[#DE5C2B] flex-shrink-0">
-            <AlertTriangle className="w-5 h-5 animate-bounce" />
+        <div className="flex items-start sm:items-center gap-4 bg-[#FFF1B8] border-[3px] border-[#16130F] p-4 sm:p-5 rounded-2xl mb-12 shadow-[5px_5px_0_#16130F] -rotate-[0.3deg]">
+          <div className="w-10 h-10 rounded-xl bg-[#D0362E] border-2 border-[#16130F] flex items-center justify-center text-white flex-shrink-0">
+            <AlertTriangle className="w-5 h-5" />
           </div>
           <div>
-            <h4 className="font-extrabold text-slate-850 text-sm">Latest PTE Updates</h4>
-            <div className="text-xs text-slate-655 font-semibold mt-0.5 space-y-1">
+            <p className="font-['Rozha_One',serif] text-[14px] leading-none text-[#D0362E]">ताज़ा ख़बर</p>
+            <h4 className="mt-1 font-urbanist font-black text-[#16130F] text-[16px]">Latest PTE Updates</h4>
+            <div className="text-xs text-[#3D362E] font-semibold mt-0.5 space-y-1">
               <p>• <strong>Hybrid Scoring model:</strong> Any PTE exam scheduled on or after August 7, 2025 utilizes double-marking for open-ended tasks like the Essay to ensure human checks verify AI scoring.</p>
               <p>• <strong>Standard Registration Fee:</strong> The PTE Academic fee in India is ₹18,900 including 18% GST (from 16 March 2026). Pearson shows the exact price when you book.</p>
             </div>
@@ -226,34 +189,32 @@ const PTEOverview = () => {
         <div className="grid grid-cols-1 lg:grid-cols-[210px_minmax(0,1fr)_230px] xl:grid-cols-[280px_minmax(0,1fr)_300px] gap-8 items-start">
           
           {/* Left Sticky Sidebar Index */}
-          <aside className="hidden lg:block sticky top-28 bg-white border border-slate-100 p-6 rounded-2xl shadow-sm max-h-[calc(100vh-140px)] overflow-y-auto">
-            <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-4">On This Page</p>
-            <nav className="space-y-1">
+          <aside className="hidden lg:block sticky top-28 max-h-[calc(100vh-140px)] overflow-y-auto pr-1.5 pb-2">
+            <InkCard className="p-4">
+            <p className="font-['Rozha_One',serif] text-[15px] text-[#D0362E] leading-none">इस पेज पर</p>
+            <p className="mt-1 mb-3 font-urbanist font-black text-[15px] text-[#16130F]">On This Page</p>
+            <nav className="flex flex-col gap-1.5">
               {menuItems.map((item) => (
                 <button
                   key={item.id}
                   onClick={() => scrollToSection(item.id)}
-                  className={`w-full text-left py-2 px-3 rounded-xl text-xs font-bold transition-all leading-normal cursor-pointer
-                    ${activeSection === item.id
-                      ? 'bg-indigo-50 text-indigo-650 shadow-sm'
-                      : 'text-slate-500 hover:bg-slate-50 hover:text-slate-800'}`}
+                  style={activeSection === item.id ? { background: '#14837E', color: '#FFFFFF' } : undefined}
+                  className={`no-shine w-full text-left py-2 px-3 rounded-lg border-2 text-[12.5px] font-bold leading-normal cursor-pointer transition-colors ${activeSection === item.id ? 'border-[#16130F] shadow-[3px_3px_0_#16130F]' : 'border-transparent text-[#3D362E] hover:border-[#16130F] hover:bg-[#FFF6E5]'}`}
                 >
                   {item.label}
                 </button>
               ))}
             </nav>
+            </InkCard>
           </aside>
 
           {/* Center Main Guide Column */}
-          <main className="space-y-14 bg-white border border-slate-100 p-8 md:p-10 rounded-2xl shadow-sm">
+          <main className="min-w-0 space-y-14 bg-white border-[3px] border-[#16130F] p-5 sm:p-8 md:p-10 rounded-[14px] shadow-[5px_5px_0_#16130F]">
             
             {/* Section 1 */}
             <section id="section-1" ref={sectionRefs['section-1']} className="scroll-mt-28">
-              <h2 className="text-2xl font-black text-slate-900 flex items-center gap-2 mb-4">
-                <span className="w-1.5 h-6 bg-indigo-500 rounded-full" />
-                1. What is the PTE Exam?
-              </h2>
-              <div className="text-slate-655 text-sm leading-relaxed space-y-4 font-semibold">
+              <DesiHeading hi="शुरुआत" className="mb-5">1. What is the PTE Exam?</DesiHeading>
+              <div className="text-[#3D362E] text-sm leading-relaxed space-y-4 font-semibold">
                 <p>
                   Conducted by Pearson Language Tests, the <strong>PTE Academic</strong> (Pearson Test of English) evaluates four core skills: <strong>Speaking, Writing, Reading, and Writing</strong> in a computer-based setting. The exam uses advanced AI scoring to ensure unbiased and objective evaluations.
                 </p>
@@ -272,12 +233,12 @@ const PTEOverview = () => {
                     { title: "Unlimited Reporting", desc: "Send your scorecards to as many universities as you like for free." },
                     { title: "Integrated Grading", desc: "Many tasks evaluate multiple communication skills simultaneously (e.g. Read Aloud)." }
                   ].map((item, idx) => (
-                    <div key={idx} className="border border-slate-100 p-4.5 rounded-xl bg-slate-50/50 hover:bg-slate-50 transition-colors">
-                      <h4 className="font-black text-slate-800 text-xs mb-1 flex items-center gap-1.5">
-                        <CheckCircle2 size={13} className="text-indigo-500" />
+                    <div key={idx} className="border-2 border-[#16130F] p-4.5 rounded-xl bg-[#FFF6E5] hover:bg-[#FFF6E5] transition-colors">
+                      <h4 className="font-black text-[#16130F] text-xs mb-1 flex items-center gap-1.5">
+                        <CheckCircle2 size={13} className="text-[#14837E]" />
                         {item.title}
                       </h4>
-                      <p className="text-[11px] text-slate-500 font-semibold leading-relaxed">{item.desc}</p>
+                      <p className="text-[12.5px] text-[#5B544A] font-semibold leading-relaxed">{item.desc}</p>
                     </div>
                   ))}
                 </div>
@@ -286,15 +247,12 @@ const PTEOverview = () => {
 
             {/* Section 2 */}
             <section id="section-2" ref={sectionRefs['section-2']} className="scroll-mt-28">
-              <h2 className="text-2xl font-black text-slate-900 flex items-center gap-2 mb-4">
-                <span className="w-1.5 h-6 bg-indigo-500 rounded-full" />
-                2. PTE Accepted Countries
-              </h2>
-              <div className="text-slate-655 text-sm leading-relaxed space-y-4 font-semibold">
+              <DesiHeading hi="कहाँ चलेगा" className="mb-5">2. PTE Accepted Countries</DesiHeading>
+              <div className="text-[#3D362E] text-sm leading-relaxed space-y-4 font-semibold">
                 <p>
                   PTE Academic is recognised by thousands of universities worldwide. Key destinations that accept PTE Academic for study admissions and student visas include:
                 </p>
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 my-2 text-xs font-bold text-slate-700">
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 my-2 text-xs font-bold text-[#16130F]">
                   {[
                     { name: "USA", code: "us" },
                     { name: "UK", code: "gb" },
@@ -307,15 +265,15 @@ const PTEOverview = () => {
                   ].map((c, idx) => (
                     <div
                       key={idx}
-                      className="flex items-center gap-2.5 bg-slate-50/80 hover:bg-white border border-slate-200/80 hover:border-indigo-200 hover:shadow-xs p-3 rounded-xl transition-all"
+                      className="flex items-center gap-2.5 bg-[#FFF6E5] hover:bg-white border-2 border-[#16130F] hover:border-[#16130F] hover:-translate-y-0.5 p-3 rounded-xl transition-all"
                     >
                       <img
                         src={`https://flagcdn.com/w40/${c.code}.png`}
                         alt={c.name}
-                        className="w-5 h-3.5 object-cover rounded-xs shadow-xs flex-shrink-0"
+                        className="w-5 h-3.5 object-cover rounded-xs flex-shrink-0"
                         loading="lazy"
                       />
-                      <span className="text-slate-800 font-semibold">{c.name}</span>
+                      <span className="text-[#16130F] font-semibold">{c.name}</span>
                     </div>
                   ))}
                 </div>
@@ -324,15 +282,12 @@ const PTEOverview = () => {
 
             {/* Section 3 */}
             <section id="section-3" ref={sectionRefs['section-3']} className="scroll-mt-28">
-              <h2 className="text-2xl font-black text-slate-900 flex items-center gap-2 mb-4">
-                <span className="w-1.5 h-6 bg-indigo-500 rounded-full" />
-                3. PTE Exam Eligibility Criteria
-              </h2>
-              <div className="text-slate-655 text-sm leading-relaxed space-y-4 font-semibold">
+              <DesiHeading hi="कौन दे सकता है" className="mb-5">3. PTE Exam Eligibility Criteria</DesiHeading>
+              <div className="text-[#3D362E] text-sm leading-relaxed space-y-4 font-semibold">
                 <p>
                   Pearson has designed PTE Academic to be widely accessible to global candidates:
                 </p>
-                <div className="bg-slate-50 border border-slate-150 p-4.5 rounded-2xl text-xs text-slate-500 space-y-2">
+                <div className="bg-[#FFF6E5] border-2 border-[#16130F] p-4.5 rounded-2xl text-xs text-[#5B544A] space-y-2 shadow-[4px_4px_0_#16130F]">
                   <p>• <strong>Age:</strong> Minimum age limit is 16 years. Candidates aged 16-17 must provide a signed parental consent form.</p>
                   <p>• <strong>Education:</strong> No specific academic credentials or degrees are mandatory to book a slot.</p>
                   <p>• <strong>Passport Identification:</strong> For Indian applicants, a valid original physical passport is the only accepted identity verification document on test day.</p>
@@ -342,11 +297,8 @@ const PTEOverview = () => {
 
             {/* Section 4 */}
             <section id="section-4" ref={sectionRefs['section-4']} className="scroll-mt-28">
-              <h2 className="text-2xl font-black text-slate-900 flex items-center gap-2 mb-4">
-                <span className="w-1.5 h-6 bg-indigo-500 rounded-full" />
-                4. What is the Format of the PTE Exam?
-              </h2>
-              <div className="text-slate-655 text-sm leading-relaxed space-y-4 font-semibold">
+              <DesiHeading hi="पेपर का ढाँचा" className="mb-5">4. What is the Format of the PTE Exam?</DesiHeading>
+              <div className="text-[#3D362E] text-sm leading-relaxed space-y-4 font-semibold">
                 <p>
                   The test takes approximately 2 hours and 15 minutes to complete. The structural sections are outlined below:
                 </p>
@@ -363,28 +315,28 @@ const PTEOverview = () => {
                     centerLabel="sections"
                   />
                 </div>
-                <div className="overflow-x-auto border border-slate-200/60 rounded-2xl my-3">
-                  <table className="w-full text-left border-collapse text-xs">
+                <div className="overflow-x-auto bg-white border-[3px] border-[#16130F] rounded-2xl shadow-[4px_4px_0_#16130F] my-3">
+                  <table className="w-full min-w-[480px] text-left border-collapse text-xs">
                     <thead>
-                      <tr className="bg-slate-50 text-slate-400 font-bold uppercase border-b border-slate-150">
-                        <th className="p-3">PTE Section</th>
-                        <th className="p-3">Format & Scope</th>
-                        <th className="p-3">Duration</th>
+                      <tr className="bg-[#F2B705] text-[#16130F] border-b-[3px] border-[#16130F] font-bold uppercase">
+                        <th className="p-3 font-black">PTE Section</th>
+                        <th className="p-3 font-black">Format & Scope</th>
+                        <th className="p-3 font-black">Duration</th>
                       </tr>
                     </thead>
                     <tbody>
-                      <tr className="border-b border-slate-100">
-                        <td className="p-3 font-bold text-slate-805">Speaking & Writing</td>
+                      <tr className="border-b border-[#16130F]/15">
+                        <td className="p-3 font-bold text-[#16130F]">Speaking & Writing</td>
                         <td className="p-3">Read aloud, repeat sentence, describe image, summarizing, essay, new situations task.</td>
                         <td className="p-3">54 - 67 minutes</td>
                       </tr>
-                      <tr className="border-b border-slate-100">
-                        <td className="p-3 font-bold text-slate-805">Reading</td>
+                      <tr className="border-b border-[#16130F]/15">
+                        <td className="p-3 font-bold text-[#16130F]">Reading</td>
                         <td className="p-3">Fill in the blanks (reading & writing dropdowns), re-order paragraphs, multiple choice.</td>
                         <td className="p-3">29 - 30 minutes</td>
                       </tr>
                       <tr>
-                        <td className="p-3 font-bold text-slate-805">Listening</td>
+                        <td className="p-3 font-bold text-[#16130F]">Listening</td>
                         <td className="p-3">Summarize spoken text, gap fills, dictation, highlight incorrect words, multiple choice.</td>
                         <td className="p-3">30 - 43 minutes</td>
                       </tr>
@@ -396,11 +348,8 @@ const PTEOverview = () => {
 
             {/* Section 5 */}
             <section id="section-5" ref={sectionRefs['section-5']} className="scroll-mt-28">
-              <h2 className="text-2xl font-black text-slate-900 flex items-center gap-2 mb-4">
-                <span className="w-1.5 h-6 bg-indigo-500 rounded-full" />
-                5. PTE Exam Fees in India 2026
-              </h2>
-              <div className="text-slate-655 text-sm leading-relaxed space-y-4 font-semibold">
+              <DesiHeading hi="फ़ीस" className="mb-5">5. PTE Exam Fees in India 2026</DesiHeading>
+              <div className="text-[#3D362E] text-sm leading-relaxed space-y-4 font-semibold">
                 <p>
                   PTE fees are standardized. Last-minute bookings or rescheduling buffer rules incur additional fees.
                 </p>
@@ -415,24 +364,24 @@ const PTEOverview = () => {
                     ]}
                   />
                 </div>
-                <div className="overflow-x-auto border border-slate-200/60 rounded-2xl my-3">
-                  <table className="w-full text-left border-collapse text-xs">
+                <div className="overflow-x-auto bg-white border-[3px] border-[#16130F] rounded-2xl shadow-[4px_4px_0_#16130F] my-3">
+                  <table className="w-full min-w-[480px] text-left border-collapse text-xs">
                     <thead>
-                      <tr className="bg-slate-50 text-slate-400 font-bold uppercase border-b border-slate-150">
-                        <th className="p-3">Service Category</th>
-                        <th className="p-3">Fee Amount (INR)</th>
+                      <tr className="bg-[#F2B705] text-[#16130F] border-b-[3px] border-[#16130F] font-bold uppercase">
+                        <th className="p-3 font-black">Service Category</th>
+                        <th className="p-3 font-black">Fee Amount (INR)</th>
                       </tr>
                     </thead>
                     <tbody>
-                      <tr className="border-b border-slate-100">
-                        <td className="p-3 font-bold text-slate-805">Standard PTE Exam Fee (with GST)</td>
+                      <tr className="border-b border-[#16130F]/15">
+                        <td className="p-3 font-bold text-[#16130F]">Standard PTE Exam Fee (with GST)</td>
                         <td className="p-3">₹18,900</td>
                       </tr>
-                      <tr className="border-b border-slate-100">
+                      <tr className="border-b border-[#16130F]/15">
                         <td className="p-3">Base Fee (excluding GST)</td>
                         <td className="p-3">₹16,017 (approx.)</td>
                       </tr>
-                      <tr className="border-b border-slate-100">
+                      <tr className="border-b border-[#16130F]/15">
                         <td className="p-3">Late Booking Surcharge (within 48 hours)</td>
                         <td className="p-3">₹695 (approx.)</td>
                       </tr>
@@ -448,43 +397,40 @@ const PTEOverview = () => {
 
             {/* Section 6 */}
             <section id="section-6" ref={sectionRefs['section-6']} className="scroll-mt-28">
-              <h2 className="text-2xl font-black text-slate-900 flex items-center gap-2 mb-4">
-                <span className="w-1.5 h-6 bg-indigo-500 rounded-full" />
-                6. PTE Exam Score Calculation
-              </h2>
-              <div className="text-slate-655 text-sm leading-relaxed space-y-4 font-semibold">
+              <DesiHeading hi="स्कोर" className="mb-5">6. PTE Exam Score Calculation</DesiHeading>
+              <div className="text-[#3D362E] text-sm leading-relaxed space-y-4 font-semibold">
                 <p>
                   Scores are measured on the Global Scale of English (GSE), ranging from **10 to 90 points**. Let's review the standardized score conversion equivalents:
                 </p>
-                <div className="overflow-x-auto border border-slate-200/60 rounded-2xl my-3 shadow-sm">
-                  <table className="w-full text-left border-collapse text-xs md:text-sm">
-                    <thead className="bg-slate-50 text-slate-500 font-bold uppercase border-b border-slate-150">
+                <div className="overflow-x-auto bg-white border-[3px] border-[#16130F] rounded-2xl shadow-[4px_4px_0_#16130F] my-3">
+                  <table className="w-full min-w-[480px] text-left border-collapse text-xs md:text-sm">
+                    <thead className="bg-[#F2B705] text-[#16130F] border-b-[3px] border-[#16130F] font-bold uppercase">
                       <tr>
-                        <th className="py-3 px-4 text-xs font-black text-slate-500">PTE Score Band</th>
-                        <th className="py-3 px-4 text-xs font-black text-slate-500">IELTS Equivalent Band</th>
-                        <th className="py-3 px-4 text-xs font-black text-slate-500">Skill Level Descriptor</th>
+                        <th className="py-3 px-4 text-xs font-black">PTE Score Band</th>
+                        <th className="py-3 px-4 text-xs font-black">IELTS Equivalent Band</th>
+                        <th className="py-3 px-4 text-xs font-black">Skill Level Descriptor</th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-slate-100 text-slate-650 font-semibold text-xs">
+                    <tbody className="divide-y divide-[#16130F]/15 text-[#3D362E] font-semibold text-xs">
                       <tr>
                         <td className="py-3.5 px-4 font-bold">85 – 90</td>
                         <td className="py-3.5 px-4">9.0</td>
-                        <td className="py-3.5 px-4 text-emerald-650">Expert User</td>
+                        <td className="py-3.5 px-4 text-[#14837E]">Expert User</td>
                       </tr>
                       <tr>
                         <td className="py-3.5 px-4 font-bold">79 – 84</td>
                         <td className="py-3.5 px-4">8.0</td>
-                        <td className="py-3.5 px-4 text-emerald-650">Very Good User</td>
+                        <td className="py-3.5 px-4 text-[#14837E]">Very Good User</td>
                       </tr>
                       <tr>
                         <td className="py-3.5 px-4 font-bold">65 – 78</td>
                         <td className="py-3.5 px-4">7.0</td>
-                        <td className="py-3.5 px-4 text-indigo-650">Good User</td>
+                        <td className="py-3.5 px-4 text-[#14837E]">Good User</td>
                       </tr>
                       <tr>
                         <td className="py-3.5 px-4 font-bold">50 – 64</td>
                         <td className="py-3.5 px-4">6.0</td>
-                        <td className="py-3.5 px-4 text-slate-500">Competent User</td>
+                        <td className="py-3.5 px-4 text-[#5B544A]">Competent User</td>
                       </tr>
                     </tbody>
                   </table>
@@ -494,15 +440,12 @@ const PTEOverview = () => {
 
             {/* Section 7 */}
             <section id="section-7" ref={sectionRefs['section-7']} className="scroll-mt-28">
-              <h2 className="text-2xl font-black text-slate-900 flex items-center gap-2 mb-4">
-                <span className="w-1.5 h-6 bg-indigo-500 rounded-full" />
-                7. PTE Registration in India
-              </h2>
-              <div className="text-slate-655 text-sm leading-relaxed space-y-4 font-semibold">
+              <DesiHeading hi="रजिस्ट्रेशन" className="mb-5">7. PTE Registration in India</DesiHeading>
+              <div className="text-[#3D362E] text-sm leading-relaxed space-y-4 font-semibold">
                 <p>
                   To register, visit the official Pearson PTE portal. Make sure your profile details match your physical passport.
                 </p>
-                <div className="p-4 bg-amber-50 border border-amber-100 text-amber-900 rounded-xl text-xs space-y-1.5">
+                <div className="p-4 bg-[#FFF1B8] border-2 border-[#16130F] text-[#16130F] rounded-xl text-xs space-y-1.5">
                   <p>• <strong>Surname Dot Rule:</strong> If your Indian passport has a blank surname field, you must type a full stop (.) in the surname field during registration to avoid mismatch errors.</p>
                   <p>• <strong>No duplicates:</strong> If you forget login credentials, do not open a second profile. Duplicate accounts trigger security blocks and cancel bookings.</p>
                 </div>
@@ -511,11 +454,8 @@ const PTEOverview = () => {
 
             {/* Section 8 */}
             <section id="section-8" ref={sectionRefs['section-8']} className="scroll-mt-28">
-              <h2 className="text-2xl font-black text-slate-900 flex items-center gap-2 mb-4">
-                <span className="w-1.5 h-6 bg-indigo-500 rounded-full" />
-                8. PTE Exam Dates and Centers
-              </h2>
-              <div className="text-slate-655 text-sm leading-relaxed space-y-4 font-semibold">
+              <DesiHeading hi="सेंटर" className="mb-5">8. PTE Exam Dates and Centers</DesiHeading>
+              <div className="text-[#3D362E] text-sm leading-relaxed space-y-4 font-semibold">
                 <p>
                   With slots open almost every day of the week, booking a center slot is highly convenient. Booking at least 2-3 weeks early is recommended. Noise-canceling headsets are provided at centers.
                 </p>
@@ -524,11 +464,8 @@ const PTEOverview = () => {
 
             {/* Section 9 */}
             <section id="section-9" ref={sectionRefs['section-9']} className="scroll-mt-28">
-              <h2 className="text-2xl font-black text-slate-900 flex items-center gap-2 mb-4">
-                <span className="w-1.5 h-6 bg-indigo-500 rounded-full" />
-                9. How to Prepare for the PTE Exam?
-              </h2>
-              <div className="text-slate-655 text-sm leading-relaxed space-y-4 font-semibold">
+              <DesiHeading hi="तैयारी" className="mb-5">9. How to Prepare for the PTE Exam?</DesiHeading>
+              <div className="text-[#3D362E] text-sm leading-relaxed space-y-4 font-semibold">
                 <p>
                   Familiarize yourself with the automated testing environment. Focus on natural fluency instead of strict templates. Practice with AI-driven mock platforms like UniCoach AI.
                 </p>
@@ -537,24 +474,21 @@ const PTEOverview = () => {
 
             {/* Section 10 */}
             <section id="section-10" ref={sectionRefs['section-10']} className="scroll-mt-28">
-              <h2 className="text-2xl font-black text-slate-900 flex items-center gap-2 mb-4">
-                <span className="w-1.5 h-6 bg-indigo-500 rounded-full" />
-                10. Recommended Books for PTE Prep
-              </h2>
-              <div className="text-slate-655 text-sm leading-relaxed space-y-4 font-semibold">
+              <DesiHeading hi="किताबें" className="mb-5">10. Recommended Books for PTE Prep</DesiHeading>
+              <div className="text-[#3D362E] text-sm leading-relaxed space-y-4 font-semibold">
                 <div className="space-y-3">
                   {[
                     { num: "1", name: "The Official Guide to PTE Academic (Pearson)", desc: "Contains official diagnostic question templates and answers direct from the makers." },
                     { num: "2", name: "PTE Academic Expert (Clare Walsh & Lindsay Warwick)", desc: "Deep analytical breakdown of academic vocabulary and reading logic." },
                     { num: "3", name: "PTE Academic Practice Tests Plus (Pearson)", desc: "Contains real past exam papers for timed mock drills." }
                   ].map((book) => (
-                    <div key={book.num} className="flex gap-4 p-4 border border-slate-100 rounded-2xl bg-slate-50/50">
-                      <div className="w-8 h-8 rounded-full bg-slate-900 text-white flex items-center justify-center text-xs font-black flex-shrink-0">
+                    <div key={book.num} className="flex gap-4 p-4 border-2 border-[#16130F] rounded-2xl bg-[#FFF6E5] shadow-[4px_4px_0_#16130F]">
+                      <div className="w-8 h-8 rounded-full bg-[#16130F] text-white flex items-center justify-center text-xs font-black flex-shrink-0">
                         {book.num}
                       </div>
                       <div>
-                        <h4 className="text-xs font-bold text-slate-805 uppercase">{book.name}</h4>
-                        <p className="text-slate-500 text-[11px] mt-1 font-semibold leading-relaxed">{book.desc}</p>
+                        <h4 className="text-xs font-bold text-[#16130F] uppercase">{book.name}</h4>
+                        <p className="text-[#5B544A] text-[12.5px] mt-1 font-semibold leading-relaxed">{book.desc}</p>
                       </div>
                     </div>
                   ))}
@@ -564,11 +498,8 @@ const PTEOverview = () => {
 
             {/* Section 11 */}
             <section id="section-11" ref={sectionRefs['section-11']} className="scroll-mt-28">
-              <h2 className="text-2xl font-black text-slate-900 flex items-center gap-2 mb-4">
-                <span className="w-1.5 h-6 bg-indigo-500 rounded-full" />
-                11. Practice Tests & Mock Assessments
-              </h2>
-              <div className="text-slate-655 text-sm leading-relaxed space-y-4 font-semibold">
+              <DesiHeading hi="मॉक टेस्ट" className="mb-5">11. Practice Tests & Mock Assessments</DesiHeading>
+              <div className="text-[#3D362E] text-sm leading-relaxed space-y-4 font-semibold">
                 <p>
                   Taking weekly mock tests is essential to build stamina. Refine pronunciation and note down details during lecture playbacks to ensure high AI grading marks.
                 </p>
@@ -577,26 +508,21 @@ const PTEOverview = () => {
 
             {/* Section 12 */}
             <section id="section-12" ref={sectionRefs['section-12']} className="scroll-mt-28">
-              <h2 className="text-2xl font-black text-slate-900 flex items-center gap-2 mb-4">
-                <span className="w-1.5 h-6 bg-indigo-500 rounded-full" />
-                12. Top Global Universities Accepting PTE
-              </h2>
-              <div className="text-slate-655 text-sm leading-relaxed space-y-4 font-semibold mb-6">
+              <DesiHeading hi="कहाँ जाओगे" className="mb-5">12. Top Global Universities Accepting PTE</DesiHeading>
+              <div className="text-[#3D362E] text-sm leading-relaxed space-y-4 font-semibold mb-6">
                 <p>
                   Review undergraduate and postgraduate cutoff targets across study destinations.
                 </p>
               </div>
 
               {/* Country Tabs */}
-              <div className="flex flex-wrap gap-2 border-b border-slate-200 pb-3 mb-6">
+              <div className="flex flex-wrap gap-2 pb-4 mb-6 border-b-2 border-dashed border-[#16130F]/25">
                 {countries.map((country) => (
                   <button
                     key={country}
                     onClick={() => setActiveCountry(country)}
-                    className={`px-5 py-2 rounded-xl text-xs font-black transition-all cursor-pointer
-                      ${activeCountry === country
-                        ? 'bg-slate-900 text-white shadow-md'
-                        : 'text-slate-500 hover:bg-slate-150'}`}
+                    aria-pressed={activeCountry === country}
+                    className={`no-shine px-4 py-2 rounded-full border-2 border-[#16130F] text-xs font-black transition-colors cursor-pointer ${activeCountry === country ? 'bg-[#16130F] text-white shadow-[2px_2px_0_#F2B705]' : 'bg-white text-[#16130F] hover:bg-[#FCE38A]'}`}
                   >
                     {country}
                   </button>
@@ -613,9 +539,9 @@ const PTEOverview = () => {
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: -15 }}
                       transition={{ duration: 0.25 }}
-                      className="bg-white border border-slate-200/80 rounded-2xl overflow-hidden shadow-sm flex flex-col justify-between group hover:shadow-md transition-shadow"
+                      className="bg-white border-[3px] border-[#16130F] rounded-[14px] overflow-hidden flex flex-col justify-between group shadow-[4px_4px_0_#16130F] transition-transform hover:-translate-y-1"
                     >
-                      <div className="h-32 w-full relative overflow-hidden bg-slate-100">
+                      <div className="h-32 w-full relative overflow-hidden bg-[#FFF6E5] border-b-[3px] border-[#16130F]">
                         <img 
                           src={uni.image} 
                           alt={uni.name} 
@@ -626,7 +552,7 @@ const PTEOverview = () => {
                           }}
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
-                        <span className="absolute top-3 right-3 px-2.5 py-0.5 bg-white/20 backdrop-blur-md border border-white/30 text-white font-extrabold text-[10px] rounded-full uppercase tracking-wider">
+                        <span className="absolute top-3 right-3 px-2.5 py-0.5 bg-[#F2B705] border-2 border-[#16130F] text-[#16130F] font-black text-[10px] rounded-md uppercase tracking-wider rotate-2">
                           {uni.rank}
                         </span>
                       </div>
@@ -634,42 +560,42 @@ const PTEOverview = () => {
                       <div className="p-5 flex-1 flex flex-col justify-between">
                         <div>
                           <div className="flex items-center gap-3 mb-3">
-                            <div className="w-10 h-10 rounded-xl bg-white border border-slate-200/80 flex items-center justify-center p-1 overflow-hidden shadow-xs flex-shrink-0">
+                            <div className="w-10 h-10 rounded-lg bg-white border-2 border-[#16130F] flex items-center justify-center p-1 overflow-hidden flex-shrink-0">
                               <UniLogo logo={uni.logo} name={uni.name} domain={uni.domain} />
                             </div>
                             <div>
-                              <h4 className="font-bold text-slate-900 text-sm leading-tight group-hover:text-indigo-600 transition-colors">
+                              <h4 className="font-urbanist font-black text-[#16130F] text-[15px] leading-tight">
                                 {uni.name}
                               </h4>
-                              <p className="text-[10px] text-slate-400 font-semibold flex items-center gap-1 mt-0.5">
+                              <p className="text-[10px] text-[#8A7F70] font-semibold flex items-center gap-1 mt-0.5">
                                 <MapPin size={10} />
                                 {uni.location}
                               </p>
                             </div>
                           </div>
 
-                          <div className="bg-slate-50/70 p-2.5 rounded-xl border border-slate-100 grid grid-cols-2 gap-2 text-center text-xs mt-4">
+                          <div className="bg-[#FFF6E5] p-2.5 rounded-lg border-2 border-[#16130F] grid grid-cols-2 gap-2 text-center text-xs mt-4">
                             <div>
-                              <span className="text-[9px] text-slate-400 font-bold block uppercase tracking-wider">Est. Tuition</span>
-                              <span className="font-bold text-indigo-700 block mt-0.5">{uni.tuition}</span>
+                              <span className="text-[9px] text-[#8A7F70] font-bold block uppercase tracking-wider">Est. Tuition</span>
+                              <span className="font-bold text-[#14837E] block mt-0.5">{uni.tuition}</span>
                             </div>
                             <div>
-                              <span className="text-[9px] text-slate-400 font-bold block uppercase tracking-wider">Standard Exam</span>
-                              <span className="font-bold text-slate-700 block mt-0.5">PTE Required</span>
+                              <span className="text-[9px] text-[#8A7F70] font-bold block uppercase tracking-wider">Standard Exam</span>
+                              <span className="font-bold text-[#16130F] block mt-0.5">PTE Required</span>
                             </div>
                           </div>
                         </div>
 
-                        <div className="flex gap-2 mt-5 border-t border-slate-100 pt-4">
+                        <div className="flex gap-2 mt-5 border-t border-[#16130F]/15 pt-4">
                           <Link
                             to={uni.path}
-                            className="flex-1 py-2 text-center border border-slate-200 hover:bg-slate-50 text-slate-700 font-bold text-xs rounded-xl transition-colors"
+                            className="no-shine flex-1 py-2 text-center border-2 border-[#16130F] bg-white hover:bg-[#FCE38A] text-[#16130F] font-bold text-xs rounded-full transition-colors"
                           >
                             Know More
                           </Link>
                           <Link
                             to={`/contact?university=${encodeURIComponent(uni.name)}`}
-                            className="flex-1 py-2 text-center bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs rounded-xl transition-all shadow-sm"
+                            className="no-shine flex-1 py-2 text-center bg-[#16130F] border-2 border-[#16130F] text-white font-bold text-xs rounded-full shadow-[2px_2px_0_#F2B705] transition-transform hover:-translate-y-0.5"
                           >
                             Check Eligibility
                           </Link>
@@ -684,20 +610,21 @@ const PTEOverview = () => {
           </main>
 
           {/* Right Sidebar Widgets */}
-          <aside className="sticky top-28 space-y-6">
+          <aside className="lg:sticky lg:top-28 space-y-6">
             
             {/* Widget: Live session */}
-            <div className="uc-clean p-6 rounded-2xl shadow-md border relative overflow-hidden">
-              <span className="text-[9px] font-bold text-orange-200 uppercase tracking-widest block mb-2">Live Workshops</span>
-              <h3 className="text-lg font-bold leading-snug mb-2">
+            <div className="p-6 border-[3px] border-[#16130F] rounded-2xl shadow-[5px_5px_0_#16130F] text-white rotate-[0.6deg]" style={{ background: '#D0362E' }}>
+              <span className="font-['Rozha_One',serif] text-[15px] leading-none text-[#FCE38A] block">मेला</span>
+              <span className="text-[10px] font-black uppercase tracking-widest block mt-1 mb-2 opacity-90">Live Workshops</span>
+              <h3 className="font-urbanist text-[20px] font-black leading-snug mb-2">
                 Study Abroad Events & Fairs
               </h3>
-              <p className="text-xs text-blue-100/85 leading-relaxed mb-5 font-normal">
+              <p className="text-[13px] leading-relaxed mb-5 font-medium opacity-90">
                 Join live webinars with global university delegates, admissions officers, and certified trainers.
               </p>
               <Link
                 to="/events"
-                className="w-full text-center py-3 bg-white text-[#111111] rounded-xl text-xs font-bold hover:bg-orange-50 transition-all flex items-center justify-center gap-1.5 shadow-sm block cursor-pointer"
+                className="no-shine w-full text-center py-3 bg-white text-[#16130F] rounded-full border-2 border-[#16130F] text-[13px] font-black shadow-[3px_3px_0_#16130F] transition-transform hover:-translate-y-0.5 flex items-center justify-center gap-1.5"
               >
                 <span>Explore Live Events</span>
                 <ArrowRight size={14} />
@@ -705,33 +632,32 @@ const PTEOverview = () => {
             </div>
 
             {/* Widget: AI University Matcher */}
-            <div className="bg-white border border-slate-100 p-6 rounded-2xl shadow-sm text-center">
-              <div className="w-12 h-12 rounded-full bg-orange-50 text-indigo-600 flex items-center justify-center mx-auto mb-4">
+            <InkCard className="p-6 text-center">
+              <div className="w-12 h-12 rounded-xl border-2 border-[#16130F] flex items-center justify-center mx-auto mb-4 -rotate-3" style={{ background: '#14837E', color: '#FFFFFF' }}>
                 <Sparkles size={20} />
               </div>
-              <h4 className="font-bold text-slate-900 text-sm mb-2">AI University Matcher</h4>
-              <p className="text-xs text-slate-500 leading-relaxed mb-5 font-normal">
+              <h4 className="font-urbanist font-black text-[#16130F] text-[16px] mb-2">AI University Matcher</h4>
+              <p className="text-[13px] text-[#5B544A] leading-relaxed mb-5 font-medium">
                 Match your target PTE score with top global universities and admission cutoffs.
               </p>
               <Link
                 to="/ai-tools"
-                className="w-full text-center py-3 border border-slate-200 text-slate-700 hover:text-indigo-600 rounded-xl text-xs font-bold hover:bg-slate-50 hover:border-slate-300 transition-all block cursor-pointer"
+                className="no-shine w-full text-center py-3 border-2 border-[#16130F] bg-[#FFF6E5] text-[#16130F] rounded-full text-[13px] font-black hover:bg-[#FCE38A] transition-colors block"
               >
                 Try AI Shortlister
               </Link>
-            </div>
+            </InkCard>
 
           </aside>
 
         </div>
 
         {/* FAQs Accordion */}
-        <div className="mt-16 bg-white border border-slate-100 rounded-3xl p-8 shadow-sm max-w-4xl mx-auto">
-          <h3 className="text-xl font-black text-slate-900 mb-6 flex items-center gap-2">
-            <HelpCircle className="text-indigo-600" size={22} />
-            Frequently Asked Questions (FAQs)
-          </h3>
-          <div className="space-y-4">
+        <section className="mt-16 max-w-4xl mx-auto">
+          <DesiHeading hi="अक्सर पूछे सवाल" className="mb-6">
+            <span className="inline-flex items-center gap-2"><HelpCircle size={24} className="text-[#D0362E]" />Frequently Asked Questions (FAQs)</span>
+          </DesiHeading>
+          <div className="space-y-3">
             {[
               { q: "What is the PTE Academic exam for?", a: "PTE Academic is a computer-based English language test designed for study abroad and immigration purposes." },
               { q: "Is the PTE exam easier than IELTS?", a: "It depends on preference. PTE is fully computer-delivered and scored by AI. Candidates who prefer speaking to a microphone and fast results find it easier." },
@@ -742,16 +668,19 @@ const PTEOverview = () => {
             ].map((faq, idx) => {
               const isOpen = !!faqOpen[idx];
               return (
-                <div key={idx} className="border border-slate-100 rounded-2xl overflow-hidden bg-slate-50/50">
+                <div key={idx} className="bg-white border-[3px] border-[#16130F] rounded-xl overflow-hidden shadow-[3px_3px_0_#16130F]">
                   <button
                     onClick={() => toggleFaq(idx)}
-                    className="w-full flex items-center justify-between p-5 text-left font-bold text-slate-755 hover:text-indigo-650 transition-colors"
+                    aria-expanded={isOpen}
+                    className="no-shine w-full flex items-center justify-between gap-3 p-4 sm:p-5 text-left font-bold text-[14.5px] text-[#16130F] cursor-pointer"
                   >
                     <span>{faq.q}</span>
-                    <ChevronRight 
-                      size={15} 
-                      className={`text-slate-400 transition-transform duration-250 ${isOpen ? 'rotate-90 text-indigo-500' : ''}`} 
-                    />
+                    <span
+                      className="w-7 h-7 shrink-0 rounded-full border-2 border-[#16130F] grid place-items-center transition-colors"
+                      style={{ background: isOpen ? '#14837E' : '#FFF6E5', color: isOpen ? '#FFFFFF' : '#16130F' }}
+                    >
+                      <ChevronRight size={15} className={`transition-transform duration-200 ${isOpen ? 'rotate-90' : ''}`} />
+                    </span>
                   </button>
                   <AnimatePresence initial={false}>
                     {isOpen && (
@@ -761,7 +690,7 @@ const PTEOverview = () => {
                         exit={{ height: 0, opacity: 0 }}
                         transition={{ duration: 0.2 }}
                       >
-                        <div className="px-5 pb-5 pt-1 text-slate-500 text-xs md:text-sm border-t border-slate-100 leading-relaxed font-semibold">
+                        <div className="px-4 sm:px-5 pb-5 pt-3 text-[#3D362E] text-[14px] border-t-2 border-dashed border-[#16130F]/25 leading-relaxed font-medium">
                           {faq.a}
                         </div>
                       </motion.div>
@@ -771,6 +700,14 @@ const PTEOverview = () => {
               );
             })}
           </div>
+        </section>
+
+        {/* Closing CTA */}
+        <div className="mt-16">
+          <BookOkCta
+            to="/book-consultation"
+            text="PTE ka score plan, college shortlist aur visa: ek free call mein sab clear. 1:1, ek ghante ki baat."
+          />
         </div>
 
       </div>

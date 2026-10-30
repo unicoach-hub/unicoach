@@ -1,18 +1,30 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Compass,
-  ChevronRight,
-  CheckCircle2,
-  HelpCircle,
   Sparkles,
   Info,
-  ChevronDown,
-  ChevronUp
+  ChevronDown
 } from 'lucide-react';
-import StudyAbroadCTA from '../../../components/StudyAbroadCTA';
 import { BarCompare, HookBand } from '../../../components/ui/Infographics';
+import { DesiHero, DesiHeading, InkCard, Sticker } from '../../../components/desi/DesiKit';
+import { DESI_TONES } from '../../../components/desi/desiTokens';
+import { BookOkCta } from '../../../components/desi/BookOkCta';
+
+// UG / PG score bands with a coloured range chip
+const ScoreList = ({ label, items, chip }) => (
+  <div>
+    <span className="text-[11px] text-[#5B544A] font-extrabold uppercase tracking-wider block mb-2">{label}</span>
+    <div className="space-y-2">
+      {items.map((score) => (
+        <div key={score.range + score.courses} className="flex justify-between items-start gap-3 text-[13px]">
+          <span className="text-[#3D362E] min-w-0">{score.courses}</span>
+          <span className="px-2 py-0.5 rounded-md border-2 border-[#16130F] font-urbanist font-black text-[12.5px] whitespace-nowrap shrink-0" style={{ background: chip.c, color: chip.fg }}>{score.range}</span>
+        </div>
+      ))}
+    </div>
+  </div>
+);
 
 const DuolingoAcceptedCountry = ({ country }) => {
   const [openFaq, setOpenFaq] = useState({});
@@ -283,62 +295,65 @@ const DuolingoAcceptedCountry = ({ country }) => {
     display: uni.score.match(/^[\d–+-]+/)?.[0] || uni.score,
   }));
 
-  return (
-    <div className="min-h-screen bg-slate-50 pt-28 pb-20 select-none font-sans">
-      <div className="max-w-[1320px] mx-auto px-6 md:px-10">
-        
-        {/* Breadcrumb */}
-        <div className="flex items-center gap-2 text-xs font-bold text-slate-400 uppercase tracking-widest mb-6">
-          <Link to="/" className="hover:text-indigo-655 transition-colors">Home</Link>
-          <ChevronRight size={12} className="text-slate-405" />
-          <Link to="/exams/duolingo" className="hover:text-indigo-655 transition-colors">Duolingo</Link>
-          <ChevronRight size={12} className="text-slate-405" />
-          <span className="text-slate-600 font-black">{activeData.title}</span>
-        </div>
+  const countryName = country === 'usa' ? 'USA' : country === 'uk' ? 'UK' : country.charAt(0).toUpperCase() + country.slice(1);
 
-        {/* Hero Banner */}
-        <div className="uc-clean relative rounded-[2.5rem] p-8 md:p-14 overflow-hidden mb-12 shadow-xl border">
-          <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-indigo-500/10 rounded-full blur-3xl pointer-events-none" />
-          <div className="relative z-10 max-w-3xl">
-            <span className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-indigo-500/20 border border-indigo-500/30 text-indigo-300 text-xs font-extrabold uppercase tracking-widest mb-6">
-              <Compass size={14} />
-              Country-Specific Duolingo Guide 2026
-            </span>
-            <h1 className="text-3xl md:text-5xl font-black leading-tight tracking-tight mb-6">
-              {activeData.title}
-            </h1>
-            <p className="text-indigo-200/90 text-sm md:text-base leading-relaxed mb-6 font-medium">
-              {activeData.subtitle}
-            </p>
-          </div>
-        </div>
+  const visaRows = [
+    { k: 'Visa Type:', v: activeData.visa.type },
+    { k: 'Embassy Fee:', v: activeData.visa.fee },
+    { k: 'Processing Time:', v: activeData.visa.time },
+    { k: 'Financial Proof:', v: activeData.visa.proof },
+    { k: 'Health Insurance:', v: activeData.visa.insurance }
+  ];
+
+  return (
+    <main className="min-h-screen bg-[#FFF6E5] pb-20 select-none font-['Onest',sans-serif] text-[#16130F]">
+      {/* ── HERO: teal poster band ── */}
+      <DesiHero
+        tone="teal"
+        sign={{ hi: 'डुओलिंगो', en: 'DUOLINGO DESK' }}
+        crumbs={[{ label: 'Home', to: '/' }, { label: 'Duolingo', to: '/exams/duolingo' }, { label: activeData.title }]}
+        title={activeData.title}
+        subtitle={activeData.subtitle}
+        stickers={(
+          <>
+            <Sticker bg="#F2B705" tilt={-2}><Compass size={14} />Country-Specific Duolingo Guide 2026</Sticker>
+            <Sticker tilt={1.5}>{countryName}</Sticker>
+          </>
+        )}
+      />
+
+      <div className="max-w-[1240px] mx-auto px-4 md:px-8 pt-10 sm:pt-12 space-y-12">
 
         {/* Visual hook */}
-        <HookBand className="mb-8" value={activeData.hook.value} label={activeData.hook.label} hi={activeData.hook.hi} />
+        <HookBand value={activeData.hook.value} label={activeData.hook.label} hi={activeData.hook.hi} />
 
         {/* Highlights Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-          {activeData.highlights.map((h, idx) => (
-            <div key={idx} className="bg-white border border-slate-200/60 p-5 rounded-2xl shadow-xs">
-              <span className="text-[10px] text-slate-400 font-extrabold uppercase tracking-wider block mb-1">{h.label}</span>
-              <span className="text-xs font-black text-slate-800 leading-snug">{h.value}</span>
-            </div>
-          ))}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
+          {activeData.highlights.map((h, idx) => {
+            const tone = DESI_TONES[idx % 4];
+            return (
+              <div key={h.label} className="bg-white border-[3px] border-[#16130F] p-4 sm:p-5 shadow-[4px_4px_0_#16130F]" style={{ borderRadius: 12, borderTop: `8px solid ${tone.c}` }}>
+                <span className="text-[10.5px] text-[#5B544A] font-extrabold uppercase tracking-wider block mb-1.5">{h.label}</span>
+                <span className="font-urbanist text-[15px] font-black text-[#16130F] leading-snug">{h.value}</span>
+              </div>
+            );
+          })}
         </div>
 
         {/* Overview Box */}
-        <div className="bg-white border border-slate-200/60 rounded-[2rem] p-8 md:p-10 mb-12 shadow-xs space-y-4">
-          <h2 className="text-xl font-black text-slate-900 flex items-center gap-2">
-            <Sparkles className="text-indigo-650" size={18} />
-            <span>Overview & Growing Acceptance</span>
-          </h2>
-          <p className="text-xs md:text-sm text-slate-655 font-semibold leading-relaxed">
+        <InkCard className="p-5 sm:p-8 md:p-10 space-y-4" shadow="#14837E">
+          <div className="flex items-start gap-3">
+            <span className="w-10 h-10 rounded-full border-2 border-[#16130F] bg-[#14837E] text-white grid place-items-center shrink-0 shadow-[2px_2px_0_#16130F]">
+              <Sparkles size={18} />
+            </span>
+            <DesiHeading hi="बढ़ती मान्यता">Overview & Growing Acceptance</DesiHeading>
+          </div>
+          <p className="text-[14.5px] text-[#5B544A] leading-relaxed">
             {activeData.description}
           </p>
-        </div>
+        </InkCard>
 
         <BarCompare
-          className="mb-12"
           kicker="Score check"
           title="Minimum Duolingo score at top universities"
           items={scoreBars}
@@ -346,125 +361,119 @@ const DuolingoAcceptedCountry = ({ country }) => {
         />
 
         {/* Tables and Requirements Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 mb-12">
-          
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+
           {/* Universities Table */}
-          <div className="lg:col-span-8 bg-white border border-slate-200/60 rounded-[2rem] p-8 shadow-xs">
-            <h3 className="text-base font-black text-slate-900 mb-6">Top Duolingo Accepted Universities</h3>
-            <div className="overflow-x-auto">
-              <table className="w-full text-left border-collapse">
-                <thead className="bg-slate-50 border-b border-slate-150 text-slate-500 font-bold uppercase">
+          <section className="lg:col-span-8 min-w-0">
+            <DesiHeading hi="कौन सी यूनिवर्सिटी">Top Duolingo Accepted Universities</DesiHeading>
+            <div className="mt-5 overflow-x-auto bg-white border-[3px] border-[#16130F] shadow-[5px_5px_0_#16130F]" style={{ borderRadius: 12 }}>
+              <table className="w-full min-w-[520px] text-left border-collapse">
+                <thead className="bg-[#14837E] text-white">
                   <tr>
-                    <th className="py-3 px-4 text-xs font-black text-slate-500">University</th>
-                    <th className="py-3 px-4 text-xs font-black text-slate-500">QS Ranking 2026</th>
-                    <th className="py-3 px-4 text-xs font-black text-slate-500">Minimum DET Score</th>
+                    <th className="py-3 px-4 text-[11.5px] font-extrabold uppercase tracking-wider border-b-[3px] border-[#16130F]">University</th>
+                    <th className="py-3 px-4 text-[11.5px] font-extrabold uppercase tracking-wider border-b-[3px] border-[#16130F] text-center">QS Ranking 2026</th>
+                    <th className="py-3 px-4 text-[11.5px] font-extrabold uppercase tracking-wider border-b-[3px] border-[#16130F] text-center">Minimum DET Score</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-slate-100 font-semibold text-slate-700 text-xs">
+                <tbody className="text-[13px] text-[#3D362E]">
                   {activeData.universities.map((uni, idx) => (
-                    <tr key={idx} className="hover:bg-slate-50/50">
-                      <td className="py-3 px-4 font-black">{uni.name}</td>
-                      <td className="py-3 px-4 text-slate-500 font-bold text-center">{uni.rank}</td>
-                      <td className="py-3 px-4 text-indigo-700 font-black text-center">{uni.score}</td>
+                    <tr key={uni.name} className={`border-t-2 border-[#16130F1A] first:border-t-0 ${idx % 2 ? 'bg-[#FFF6E5]' : ''}`}>
+                      <td className="py-3 px-4 font-extrabold text-[#16130F]">{uni.name}</td>
+                      <td className="py-3 px-4 text-[#5B544A] font-bold text-center">{uni.rank}</td>
+                      <td className="py-3 px-4 text-[#14837E] font-black text-center">{uni.score}</td>
                     </tr>
                   ))}
                 </tbody>
               </table>
             </div>
-          </div>
+          </section>
 
           {/* Program requirements & Visa Info */}
-          <div className="lg:col-span-4 space-y-6">
-            
+          <div className="lg:col-span-4 space-y-6 min-w-0">
+
             {/* Program Requirements */}
-            <div className="bg-white border border-slate-200/60 rounded-3xl p-6 shadow-xs space-y-4">
-              <h4 className="font-black text-slate-900 text-xs uppercase tracking-wider">Score Range by Course Level</h4>
-              
-              <div className="space-y-4">
-                <div>
-                  <span className="text-[10px] text-slate-400 font-extrabold uppercase tracking-wider block mb-1">Undergraduate (UG)</span>
-                  <div className="space-y-2">
-                    {activeData.programScores.ug.map((score, sIdx) => (
-                      <div key={sIdx} className="flex justify-between items-center text-[11px] font-semibold">
-                        <span className="text-slate-600">{score.courses}</span>
-                        <span className="bg-indigo-50 text-indigo-750 px-2 py-0.5 rounded-md font-black">{score.range}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                <div className="w-full h-[1px] bg-slate-100" />
-
-                <div>
-                  <span className="text-[10px] text-slate-400 font-extrabold uppercase tracking-wider block mb-1">Postgraduate (PG)</span>
-                  <div className="space-y-2">
-                    {activeData.programScores.pg.map((score, sIdx) => (
-                      <div key={sIdx} className="flex justify-between items-center text-[11px] font-semibold">
-                        <span className="text-slate-600">{score.courses}</span>
-                        <span className="bg-indigo-50 text-indigo-750 px-2 py-0.5 rounded-md font-black">{score.range}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
+            <InkCard className="p-5 sm:p-6 space-y-4">
+              <div>
+                <p className="font-['Rozha_One',serif] text-[14px] text-[#D0362E] leading-none">कोर्स के हिसाब से</p>
+                <h4 className="mt-1 font-urbanist font-black text-[16px] text-[#16130F]">Score Range by Course Level</h4>
               </div>
-            </div>
+              <ScoreList label="Undergraduate (UG)" items={activeData.programScores.ug} chip={DESI_TONES[1]} />
+              <div className="border-t-2 border-dashed border-[#16130F33]" />
+              <ScoreList label="Postgraduate (PG)" items={activeData.programScores.pg} chip={DESI_TONES[2]} />
+            </InkCard>
 
             {/* Visa Card */}
-            <div className="bg-white border border-slate-200/60 rounded-3xl p-6 shadow-xs space-y-4">
-              <h4 className="font-black text-slate-900 text-xs uppercase tracking-wider">Visa Requirements</h4>
-              <div className="space-y-2.5 text-[11px] font-semibold text-slate-655">
-                <div className="flex justify-between"><span className="text-slate-400 font-bold">Visa Type:</span><span className="font-black text-slate-800">{activeData.visa.type}</span></div>
-                <div className="flex justify-between"><span className="text-slate-400 font-bold">Embassy Fee:</span><span className="font-black text-slate-800">{activeData.visa.fee}</span></div>
-                <div className="flex justify-between"><span className="text-slate-400 font-bold">Processing Time:</span><span className="font-black text-slate-800">{activeData.visa.time}</span></div>
-                <div className="flex justify-between"><span className="text-slate-400 font-bold">Financial Proof:</span><span className="font-black text-slate-800">{activeData.visa.proof}</span></div>
-                <div className="flex justify-between"><span className="text-slate-400 font-bold">Health Insurance:</span><span className="font-black text-slate-800">{activeData.visa.insurance}</span></div>
-                <div className="p-3 bg-amber-50/50 border border-amber-100 rounded-xl text-[10px] leading-relaxed text-amber-800 font-bold mt-2">
-                  {activeData.visa.note}
+            <InkCard className="p-5 sm:p-6 space-y-4" shadow="#B8285B">
+              <div>
+                <p className="font-['Rozha_One',serif] text-[14px] text-[#D0362E] leading-none">वीज़ा</p>
+                <h4 className="mt-1 font-urbanist font-black text-[16px] text-[#16130F]">Visa Requirements</h4>
+              </div>
+              <div className="space-y-2.5 text-[13px]">
+                {visaRows.map((r) => (
+                  <div key={r.k} className="flex justify-between gap-3 pb-2 border-b border-dashed border-[#16130F26] last:border-b-0">
+                    <span className="text-[#5B544A] font-bold shrink-0">{r.k}</span>
+                    <span className="font-extrabold text-[#16130F] text-right min-w-0">{r.v}</span>
+                  </div>
+                ))}
+                <div className="p-3 bg-[#FFF1B8] border-2 border-[#16130F] rounded-xl text-[12.5px] leading-relaxed text-[#3D362E] font-semibold mt-2 flex items-start gap-2">
+                  <Info size={15} className="text-[#D0362E] shrink-0 mt-0.5" />
+                  <span>{activeData.visa.note}</span>
                 </div>
               </div>
-            </div>
+            </InkCard>
 
           </div>
 
         </div>
 
         {/* FAQs */}
-        <div className="max-w-3xl mx-auto mb-20">
-          <h2 className="text-2xl font-black text-slate-900 text-center mb-8">Frequently Asked Questions</h2>
-          <div className="space-y-4">
-            {activeData.faqs.map((faq, idx) => (
-              <div key={idx} className="bg-white border border-slate-200/60 rounded-2xl overflow-hidden shadow-xs">
-                <button
-                  onClick={() => toggleFaq(idx)}
-                  className="w-full p-5 text-left font-black text-xs text-slate-800 flex justify-between items-center cursor-pointer hover:bg-slate-50/50 transition-colors"
-                >
-                  <span>{faq.q}</span>
-                  {openFaq[idx] ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
-                </button>
-                <AnimatePresence>
-                  {openFaq[idx] && (
-                    <motion.div
-                      initial={{ height: 0 }}
-                      animate={{ height: "auto" }}
-                      exit={{ height: 0 }}
-                      className="overflow-hidden"
-                    >
-                      <p className="p-5 text-xs text-slate-500 font-semibold border-t border-slate-100 leading-relaxed bg-slate-50/30">
-                        {faq.a}
-                      </p>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </div>
-            ))}
+        <section className="max-w-3xl mx-auto">
+          <DesiHeading hi="अक्सर पूछे सवाल" className="text-center">Frequently Asked Questions</DesiHeading>
+          <div className="mt-6 space-y-3">
+            {activeData.faqs.map((faq, idx) => {
+              const isOpen = !!openFaq[idx];
+              return (
+                <div key={faq.q} className="bg-white border-[3px] border-[#16130F] overflow-hidden" style={{ borderRadius: 12, boxShadow: isOpen ? '4px 4px 0 #14837E' : '4px 4px 0 #16130F' }}>
+                  <button
+                    onClick={() => toggleFaq(idx)}
+                    aria-expanded={isOpen}
+                    className="no-shine w-full flex items-center justify-between gap-3 p-4 text-left font-bold text-[14.5px] cursor-pointer"
+                  >
+                    <span>{faq.q}</span>
+                    <span className={`w-7 h-7 rounded-full border-2 border-[#16130F] grid place-items-center shrink-0 transition-transform ${isOpen ? 'rotate-180 bg-[#F2B705]' : 'bg-white'}`}>
+                      <ChevronDown size={15} />
+                    </span>
+                  </button>
+                  <AnimatePresence>
+                    {isOpen && (
+                      <motion.div
+                        initial={{ height: 0 }}
+                        animate={{ height: "auto" }}
+                        exit={{ height: 0 }}
+                        className="overflow-hidden"
+                      >
+                        <p className="px-4 pb-4 pt-3 text-[#5B544A] text-[14px] border-t-2 border-dashed border-[#16130F33] leading-relaxed">
+                          {faq.a}
+                        </p>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              );
+            })}
           </div>
-        </div>
+        </section>
 
-        {/* Study Abroad CTA */}
-        <StudyAbroadCTA country={country === 'usa' ? 'USA' : country === 'uk' ? 'UK' : country.charAt(0).toUpperCase() + country.slice(1)} />
+        {/* Closing CTA */}
+        <BookOkCta
+          to="/book-consultation"
+          hi="डुओलिंगो से दाख़िला"
+          title="Book OK Please."
+          text={`${countryName} ke liye DET chalega ya visa ke liye doosra test? Free 1:1 call mein mentor se poocho.`}
+        />
 
       </div>
-    </div>
+    </main>
   );
 };
 

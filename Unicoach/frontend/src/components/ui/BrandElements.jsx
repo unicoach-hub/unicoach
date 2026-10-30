@@ -45,14 +45,14 @@ export const TapeHeadline = ({ lines, as: Tag = 'h2', size = 'md', className = '
 /* 2. Red pen on a document: one row gets circled with a handwritten note */
 export const RedPenDoc = ({ title, rows, note, className = '' }) => (
   <figure
-    className={`relative bg-white border border-slate-200 rounded-md shadow-[0_10px_30px_-12px_rgba(22,19,15,0.25)] px-5 pt-4 pb-7 rotate-[1.5deg] ${className}`}
+    className={`relative bg-white border border-[#E6DCC8] rounded-md shadow-[0_10px_30px_-12px_rgba(22,19,15,0.25)] px-5 pt-4 pb-7 rotate-[1.5deg] ${className}`}
   >
-    {title && <figcaption className="text-[11px] font-bold tracking-[0.12em] uppercase text-slate-500 mb-2">{title}</figcaption>}
+    {title && <figcaption className="text-[11px] font-bold tracking-[0.12em] uppercase text-[#6B6458] mb-2">{title}</figcaption>}
     <dl className="text-[13.5px]">
       {rows.map((row) => (
-        <div key={row.label} className="flex justify-between gap-4 py-2 border-b border-slate-100 last:border-0">
-          <dt className="text-slate-500">{row.label}</dt>
-          <dd className="relative font-semibold text-slate-900 text-right">
+        <div key={row.label} className="flex justify-between gap-4 py-2 border-b border-[#F1EBE2] last:border-0">
+          <dt className="text-[#6B6458]">{row.label}</dt>
+          <dd className="relative font-semibold text-[#16130F] text-right">
             {row.value}
             {row.flag && (
               <svg aria-hidden="true" viewBox="0 0 120 40" preserveAspectRatio="none" className="absolute -inset-x-3 -inset-y-2 w-[calc(100%+24px)] h-[calc(100%+16px)] overflow-visible pointer-events-none">
@@ -103,7 +103,7 @@ export const SourceStat = ({ value, label, source, href, className = '' }) => (
       )}
     </span>
     <span className="font-urbanist text-[40px] sm:text-[48px] font-black leading-none text-[#16130F]" style={{ letterSpacing: '-0.04em' }}>{value}</span>
-    {label && <span className="text-[13px] text-slate-600">{label}</span>}
+    {label && <span className="text-[13px] text-[#5B544A]">{label}</span>}
   </div>
 );
 
@@ -151,7 +151,7 @@ export const StepCounter = ({ items, className = '' }) => (
     {items.map((item, i) => (
       <li key={i} className="flex flex-col items-center gap-1.5 w-[64px] sm:w-[76px]">
         <CounterBox highlight={item.highlight}>{item.n ?? i + 1}</CounterBox>
-        <span className="text-[11.5px] leading-tight text-center text-slate-700 font-medium">{item.label}</span>
+        <span className="text-[11.5px] leading-tight text-center text-[#3D362E] font-medium">{item.label}</span>
       </li>
     ))}
   </ol>
@@ -195,7 +195,7 @@ export const JourneyPills = ({ steps, active = steps.length - 1, className = '' 
           >
             {step.label}
           </span>
-          {step.sub && <span className="text-[11.5px] leading-tight text-center text-slate-500 px-1">{step.sub}</span>}
+          {step.sub && <span className="text-[11.5px] leading-tight text-center text-[#6B6458] px-1">{step.sub}</span>}
         </li>
       );
     })}

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   BookOpen,
@@ -7,18 +7,54 @@ import {
   DollarSign,
   Compass,
   Award,
-  ChevronRight,
   FileEdit,
   CheckCircle2,
-  HelpCircle,
   ListTodo,
   Sparkles,
   Info,
   ChevronDown,
-  ChevronUp
+  ArrowRight,
+  AlertTriangle
 } from 'lucide-react';
 import { HookBand, StatStrip, BarCompare, TimelineStrip, Donut } from '../../../components/ui/Infographics';
 import { JourneyPills } from '../../../components/ui/BrandElements';
+import { DesiHero, DesiHeading, InkCard, Sticker } from '../../../components/desi/DesiKit';
+import { DESI_TONES } from '../../../components/desi/desiTokens';
+import { BookOkCta } from '../../../components/desi/BookOkCta';
+
+// Desi Pop building blocks for the SAT detail template
+const TONES = [DESI_TONES[3], DESI_TONES[1], DESI_TONES[2], DESI_TONES[0]];
+const tableWrap = "overflow-x-auto bg-white border-[3px] border-[#16130F] rounded-[12px] shadow-[4px_4px_0_#16130F]";
+const tableCls = "w-full min-w-[480px] text-left border-collapse text-[13.5px]";
+const theadCls = "bg-[#F2B705] text-[#16130F] border-b-[3px] border-[#16130F]";
+const thCls = "py-3 px-4 text-[12px] font-black uppercase tracking-wider whitespace-nowrap";
+const tbodyCls = "divide-y-2 divide-[#EFE4CF] font-medium text-[#3D362E]";
+const miniCard = "bg-white border-2 border-[#16130F] rounded-xl p-4 shadow-[3px_3px_0_#16130F]";
+const bodyText = "text-[#5B544A] leading-relaxed";
+
+// Callout box: ink border, soft poster fill, round icon chip
+const Note = ({ icon: Icon = Info, tone = 'mustard', title, children }) => {
+  const t = { mustard: ['#FFF1B8', '#F2B705', '#16130F'], rani: ['#FBD9E6', '#B8285B', '#FFFFFF'], teal: ['#DDF3EF', '#14837E', '#FFFFFF'] }[tone];
+  return (
+    <div className="flex items-start gap-3 border-2 border-[#16130F] rounded-xl p-4 shadow-[3px_3px_0_#16130F]" style={{ background: t[0] }}>
+      <span className="w-8 h-8 rounded-full border-2 border-[#16130F] grid place-items-center shrink-0" style={{ background: t[1], color: t[2] }}>
+        <Icon size={15} />
+      </span>
+      <div className="min-w-0 text-[13.5px] text-[#3D362E] font-medium leading-relaxed">
+        {title && <h4 className="font-urbanist font-black text-[#16130F] text-[15px] mb-1">{title}</h4>}
+        {children}
+      </div>
+    </div>
+  );
+};
+
+// Sub-heading inside the content card
+const SubHead = ({ hi, children }) => (
+  <div>
+    {hi && <p className="font-['Rozha_One',serif] text-[14px] text-[#D0362E] leading-none">{hi}</p>}
+    <h3 className="mt-1 font-urbanist text-[20px] font-black text-[#16130F] tracking-tight">{children}</h3>
+  </div>
+);
 
 const SATDetailPage = ({ pageKey }) => {
   const navigate = useNavigate();
@@ -46,20 +82,16 @@ const SATDetailPage = ({ pageKey }) => {
       title: "SAT Exam Overview: Scoring & Adaptive Pattern",
       subtitle: "The SAT is a standardized test widely used for college admissions, primarily in the US and Canada.",
       content: (
-        <div className="space-y-6 text-xs md:text-sm">
-          <div className="bg-indigo-50/50 border border-indigo-100 p-5 rounded-2xl flex items-start gap-3">
-            <Info className="text-indigo-650 w-5 h-5 flex-shrink-0 mt-0.5" />
-            <div>
-              <h4 className="font-extrabold text-indigo-900 text-xs uppercase tracking-wider mb-1">Adaptive digital test format</h4>
-              <p className="text-slate-655 text-xs font-semibold leading-relaxed">
-                The test adjusts the difficulty of the second module in both Reading & Writing and Math based on your score performance in the first module. Doing well in the first module is key to unlocking the higher scoring potential.
-              </p>
-            </div>
-          </div>
+        <div className="space-y-6 text-[14px]">
+          <Note tone="rani" title="Adaptive digital test format">
+            <p>
+              The test adjusts the difficulty of the second module in both Reading & Writing and Math based on your score performance in the first module. Doing well in the first module is key to unlocking the higher scoring potential.
+            </p>
+          </Note>
 
           <div className="space-y-3">
-            <h3 className="text-lg font-black text-slate-900">What is the Digital SAT?</h3>
-            <p className="text-slate-655 font-semibold leading-relaxed">
+            <SubHead hi="सैट क्या है">What is the Digital SAT?</SubHead>
+            <p className={bodyText}>
               Designed and administered by the College Board, the Digital SAT evaluates secondary school students' readiness for college-level coursework. It evaluates critical reading, writing, and mathematics skills.
             </p>
           </div>
@@ -80,12 +112,12 @@ const SATDetailPage = ({ pageKey }) => {
               { title: "Direct Scoring Delivery", desc: "Score reports are returned to candidates in a matter of days on the College Board portal." },
               { title: "Valid for Admissions", desc: "Your scores are valid for up to 5 years after the examination date." }
             ].map((item, idx) => (
-              <div key={idx} className="border border-slate-100 p-4.5 rounded-2xl bg-slate-50/30 hover:bg-slate-50 transition-colors">
-                <h4 className="font-black text-slate-800 text-xs mb-1 flex items-center gap-1.5">
-                  <CheckCircle2 size={13} className="text-indigo-500" />
+              <div key={idx} className={miniCard}>
+                <h4 className="font-urbanist font-black text-[#16130F] text-[15px] mb-1 flex items-center gap-1.5">
+                  <CheckCircle2 size={15} className="text-[#14837E]" />
                   {item.title}
                 </h4>
-                <p className="text-[11px] text-slate-500 font-semibold leading-relaxed">{item.desc}</p>
+                <p className="text-[13px] text-[#5B544A] leading-relaxed">{item.desc}</p>
               </div>
             ))}
           </div>
@@ -96,7 +128,7 @@ const SATDetailPage = ({ pageKey }) => {
       title: "SAT Syllabus & Exam Pattern",
       subtitle: "Full overview of question types, timing constraints, and section contents on the Digital SAT.",
       content: (
-        <div className="space-y-6 text-xs md:text-sm">
+        <div className="space-y-6 text-[14px]">
           <div>
             <Donut
               kicker="Time split"
@@ -109,38 +141,38 @@ const SATDetailPage = ({ pageKey }) => {
               centerLabel="questions"
             />
           </div>
-          <div className="overflow-x-auto border border-slate-200/60 rounded-2xl shadow-xs">
-            <table className="w-full text-left border-collapse">
-              <thead className="bg-slate-50 border-b border-slate-150 text-slate-400 font-bold uppercase">
+          <div className={tableWrap}>
+            <table className={tableCls}>
+              <thead className={theadCls}>
                 <tr>
-                  <th className="py-3.5 px-4 text-xs font-black text-slate-500">Section</th>
-                  <th className="py-3.5 px-4 text-xs font-black text-slate-500">Timing Limit</th>
-                  <th className="py-3.5 px-4 text-xs font-black text-slate-500">Structure / Questions</th>
+                  <th className={thCls}>Section</th>
+                  <th className={thCls}>Timing Limit</th>
+                  <th className={thCls}>Structure / Questions</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-100 font-semibold text-slate-700 text-xs">
+              <tbody className={tbodyCls}>
                 <tr>
-                  <td className="py-3.5 px-4 font-black">Reading & Writing</td>
+                  <td className="py-3.5 px-4 font-bold text-[#16130F]">Reading & Writing</td>
                   <td className="py-3.5 px-4">64 Minutes (2 Modules)</td>
                   <td className="py-3.5 px-4">54 Questions</td>
                 </tr>
                 <tr>
-                  <td className="py-3.5 px-4 font-black">Mathematics</td>
+                  <td className="py-3.5 px-4 font-bold text-[#16130F]">Mathematics</td>
                   <td className="py-3.5 px-4">70 Minutes (2 Modules)</td>
                   <td className="py-3.5 px-4">44 Questions</td>
                 </tr>
-                <tr className="bg-indigo-50/20 font-black">
-                  <td className="py-3.5 px-4 text-indigo-700">Total Exam</td>
-                  <td className="py-3.5 px-4 text-indigo-700">2 Hours 14 Minutes</td>
-                  <td className="py-3.5 px-4 text-indigo-700">98 Questions</td>
+                <tr className="bg-[#FBD9E6] font-black text-[#16130F] border-t-[3px] border-[#16130F]">
+                  <td className="py-3.5 px-4">Total Exam</td>
+                  <td className="py-3.5 px-4">2 Hours 14 Minutes</td>
+                  <td className="py-3.5 px-4">98 Questions</td>
                 </tr>
               </tbody>
             </table>
           </div>
 
           <div className="space-y-4">
-            <h3 className="text-base font-black text-slate-900">Math Topics Breakdown</h3>
-            <p className="text-slate-655 font-semibold">The math section measures mathematical fluency across four standard domains:</p>
+            <SubHead hi="गणित">Math Topics Breakdown</SubHead>
+            <p className={bodyText}>The math section measures mathematical fluency across four standard domains:</p>
             <div>
               <BarCompare
                 kicker="Math weightage"
@@ -154,21 +186,21 @@ const SATDetailPage = ({ pageKey }) => {
               />
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div className="border border-slate-100 p-4 rounded-xl bg-slate-50/30">
-                <span className="font-black text-xs text-slate-800">Algebra (35%)</span>
-                <p className="text-[11px] text-slate-500 font-semibold mt-1">Linear equations, systems of linear equations, inequalities.</p>
+              <div className={miniCard}>
+                <span className="font-urbanist font-black text-[15px] text-[#16130F]">Algebra (35%)</span>
+                <p className="text-[13px] text-[#5B544A] mt-1 leading-relaxed">Linear equations, systems of linear equations, inequalities.</p>
               </div>
-              <div className="border border-slate-100 p-4 rounded-xl bg-slate-50/30">
-                <span className="font-black text-xs text-slate-800">Advanced Math (35%)</span>
-                <p className="text-[11px] text-slate-500 font-semibold mt-1">Quadratic functions, polynomial factors, radical and exponential equations.</p>
+              <div className={miniCard}>
+                <span className="font-urbanist font-black text-[15px] text-[#16130F]">Advanced Math (35%)</span>
+                <p className="text-[13px] text-[#5B544A] mt-1 leading-relaxed">Quadratic functions, polynomial factors, radical and exponential equations.</p>
               </div>
-              <div className="border border-slate-100 p-4 rounded-xl bg-slate-50/30">
-                <span className="font-black text-xs text-slate-800">Problem Solving & Data Analysis (15%)</span>
-                <p className="text-[11px] text-slate-500 font-semibold mt-1">Ratios, percentages, probability, unit conversions, statistics.</p>
+              <div className={miniCard}>
+                <span className="font-urbanist font-black text-[15px] text-[#16130F]">Problem Solving & Data Analysis (15%)</span>
+                <p className="text-[13px] text-[#5B544A] mt-1 leading-relaxed">Ratios, percentages, probability, unit conversions, statistics.</p>
               </div>
-              <div className="border border-slate-100 p-4 rounded-xl bg-slate-50/30">
-                <span className="font-black text-xs text-slate-800">Geometry & Trigonometry (15%)</span>
-                <p className="text-[11px] text-slate-500 font-semibold mt-1">Area, volume, trigonometry, circle coordinates, triangles.</p>
+              <div className={miniCard}>
+                <span className="font-urbanist font-black text-[15px] text-[#16130F]">Geometry & Trigonometry (15%)</span>
+                <p className="text-[13px] text-[#5B544A] mt-1 leading-relaxed">Area, volume, trigonometry, circle coordinates, triangles.</p>
               </div>
             </div>
           </div>
@@ -179,7 +211,7 @@ const SATDetailPage = ({ pageKey }) => {
       title: "SAT Registration Fees & Administrative Charges",
       subtitle: "International pricing schedule set by the College Board.",
       content: (
-        <div className="space-y-6 text-xs md:text-sm">
+        <div className="space-y-6 text-[14px]">
           <HookBand value="$68 + $43" label="Base registration fee plus the international fee for test takers outside the US" />
           <div>
             <BarCompare
@@ -195,45 +227,45 @@ const SATDetailPage = ({ pageKey }) => {
               ]}
             />
           </div>
-          <div className="overflow-x-auto border border-slate-200/60 rounded-2xl shadow-xs">
-            <table className="w-full text-left border-collapse">
-              <thead className="bg-slate-50 border-b border-slate-150 text-slate-400 font-bold uppercase">
+          <div className={tableWrap}>
+            <table className={tableCls}>
+              <thead className={theadCls}>
                 <tr>
-                  <th className="py-3.5 px-4 text-xs font-black text-slate-500">Service Category</th>
-                  <th className="py-3.5 px-4 text-xs font-black text-slate-500">Cost (USD)</th>
+                  <th className={thCls}>Service Category</th>
+                  <th className={thCls}>Cost (USD)</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-100 font-semibold text-slate-700 text-xs">
+              <tbody className={tbodyCls}>
                 <tr>
-                  <td className="py-3.5 px-4 font-black">Base International Registration Fee</td>
-                  <td className="py-3.5 px-4 font-bold text-slate-900">$68</td>
+                  <td className="py-3.5 px-4 font-bold text-[#16130F]">Base International Registration Fee</td>
+                  <td className="py-3.5 px-4 font-black text-[#16130F] whitespace-nowrap">$68</td>
                 </tr>
                 <tr>
-                  <td className="py-3.5 px-4 font-black">International Fee (all test takers outside the US)</td>
-                  <td className="py-3.5 px-4 font-bold text-slate-900">$43</td>
+                  <td className="py-3.5 px-4 font-bold text-[#16130F]">International Fee (all test takers outside the US)</td>
+                  <td className="py-3.5 px-4 font-black text-[#16130F] whitespace-nowrap">$43</td>
                 </tr>
                 <tr>
-                  <td className="py-3.5 px-4 font-black">Late Registration Fee</td>
-                  <td className="py-3.5 px-4 font-bold text-slate-900">$38</td>
+                  <td className="py-3.5 px-4 font-bold text-[#16130F]">Late Registration Fee</td>
+                  <td className="py-3.5 px-4 font-black text-[#16130F] whitespace-nowrap">$38</td>
                 </tr>
                 <tr>
-                  <td className="py-3.5 px-4 font-black">Test Center Change Fee</td>
-                  <td className="py-3.5 px-4 font-bold text-slate-900">$34</td>
+                  <td className="py-3.5 px-4 font-bold text-[#16130F]">Test Center Change Fee</td>
+                  <td className="py-3.5 px-4 font-black text-[#16130F] whitespace-nowrap">$34</td>
                 </tr>
                 <tr>
-                  <td className="py-3.5 px-4 font-black">Cancellation Fee (Prior to Deadline)</td>
-                  <td className="py-3.5 px-4 font-bold text-slate-900">$34</td>
+                  <td className="py-3.5 px-4 font-bold text-[#16130F]">Cancellation Fee (Prior to Deadline)</td>
+                  <td className="py-3.5 px-4 font-black text-[#16130F] whitespace-nowrap">$34</td>
                 </tr>
                 <tr>
-                  <td className="py-3.5 px-4 font-black">Late Cancellation Fee (After Deadline)</td>
-                  <td className="py-3.5 px-4 font-bold text-slate-900">$39</td>
+                  <td className="py-3.5 px-4 font-bold text-[#16130F]">Late Cancellation Fee (After Deadline)</td>
+                  <td className="py-3.5 px-4 font-black text-[#16130F] whitespace-nowrap">$39</td>
                 </tr>
               </tbody>
             </table>
           </div>
-          <div className="p-4 bg-amber-50/50 border border-amber-100 text-[11px] font-bold text-amber-800 rounded-xl">
+          <Note icon={AlertTriangle}>
             * Refunds: Cancelling your registration after the regular refund deadline will only return standard remaining regional fees or secondary taxes, and administrative charges apply.
-          </div>
+          </Note>
         </div>
       )
     },
@@ -241,8 +273,8 @@ const SATDetailPage = ({ pageKey }) => {
       title: "SAT Exam Dates: International Schedule",
       subtitle: "2026-27 SAT dates and deadlines (College Board). They apply to students in India too.",
       content: (
-        <div className="space-y-6 text-xs md:text-sm">
-          <p className="text-slate-655 font-semibold leading-relaxed">
+        <div className="space-y-6 text-[14px]">
+          <p className={bodyText}>
             All SAT dates in India fall on Saturdays. Register by the regular deadline; late registration costs $38 extra and closes a few days later. Dates are from the College Board's 2026-27 schedule.
           </p>
 
@@ -260,47 +292,47 @@ const SATDetailPage = ({ pageKey }) => {
             />
           </div>
 
-          <div className="overflow-x-auto border border-slate-200/60 rounded-2xl shadow-xs">
-            <table className="w-full text-left border-collapse">
-              <thead className="bg-slate-50 border-b border-slate-150 text-slate-400 font-bold uppercase">
+          <div className={tableWrap}>
+            <table className={tableCls}>
+              <thead className={theadCls}>
                 <tr>
-                  <th className="py-3.5 px-4 text-xs font-black text-slate-500">Test Date</th>
-                  <th className="py-3.5 px-4 text-xs font-black text-slate-500">Registration Deadline</th>
-                  <th className="py-3.5 px-4 text-xs font-black text-slate-500">Late Registration Deadline</th>
+                  <th className={thCls}>Test Date</th>
+                  <th className={thCls}>Registration Deadline</th>
+                  <th className={thCls}>Late Registration Deadline</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-100 font-semibold text-slate-700 text-xs">
+              <tbody className={tbodyCls}>
                 <tr>
-                  <td className="py-3.5 px-4 font-black">Nov 7, 2026</td>
+                  <td className="py-3.5 px-4 font-bold text-[#16130F]">Nov 7, 2026</td>
                   <td className="py-3.5 px-4">Oct 23, 2026</td>
                   <td className="py-3.5 px-4">Oct 27, 2026</td>
                 </tr>
                 <tr>
-                  <td className="py-3.5 px-4 font-black">Dec 5, 2026</td>
+                  <td className="py-3.5 px-4 font-bold text-[#16130F]">Dec 5, 2026</td>
                   <td className="py-3.5 px-4">Nov 20, 2026</td>
                   <td className="py-3.5 px-4">Nov 24, 2026</td>
                 </tr>
                 <tr>
-                  <td className="py-3.5 px-4 font-black">Mar 6, 2027</td>
+                  <td className="py-3.5 px-4 font-bold text-[#16130F]">Mar 6, 2027</td>
                   <td className="py-3.5 px-4">Feb 19, 2027</td>
                   <td className="py-3.5 px-4">Feb 23, 2027</td>
                 </tr>
                 <tr>
-                  <td className="py-3.5 px-4 font-black">May 1, 2027</td>
+                  <td className="py-3.5 px-4 font-bold text-[#16130F]">May 1, 2027</td>
                   <td className="py-3.5 px-4">Apr 16, 2027</td>
                   <td className="py-3.5 px-4">Apr 20, 2027</td>
                 </tr>
                 <tr>
-                  <td className="py-3.5 px-4 font-black">Jun 5, 2027</td>
+                  <td className="py-3.5 px-4 font-bold text-[#16130F]">Jun 5, 2027</td>
                   <td className="py-3.5 px-4">May 21, 2027</td>
                   <td className="py-3.5 px-4">May 25, 2027</td>
                 </tr>
               </tbody>
             </table>
           </div>
-          <div className="p-4 bg-indigo-50/50 border border-indigo-100 text-[11px] font-bold text-indigo-800 rounded-xl">
-            **Center Selection Strategy:** Many popular test venues in metro cities (Delhi, Mumbai, Bangalore) fill up 1-2 months in advance. Book early to secure your location.
-          </div>
+          <Note tone="teal">
+            <strong>Center Selection Strategy:</strong> Many popular test venues in metro cities (Delhi, Mumbai, Bangalore) fill up 1-2 months in advance. Book early to secure your location.
+          </Note>
         </div>
       )
     },
@@ -308,7 +340,7 @@ const SATDetailPage = ({ pageKey }) => {
       title: "How to Register for the Digital SAT",
       subtitle: "Step-by-step registration roadmap.",
       content: (
-        <div className="space-y-6 text-xs md:text-sm font-semibold text-slate-700">
+        <div className="space-y-6 text-[14px] text-[#3D362E]">
           <JourneyPills
             steps={[
               { label: 'Account', sub: 'Name as on passport' },
@@ -318,35 +350,35 @@ const SATDetailPage = ({ pageKey }) => {
             ]}
           />
           <div className="space-y-4">
-            <div className="flex gap-3">
-              <span className="w-6 h-6 rounded-full bg-indigo-50 border border-indigo-150 flex items-center justify-center font-black text-xs text-indigo-700 shrink-0">1</span>
+            <div className={`${miniCard} flex gap-3`}>
+              <span className="w-8 h-8 rounded-full border-2 border-[#16130F] bg-[#F2B705] shadow-[2px_2px_0_#16130F] grid place-items-center font-urbanist font-black text-[14px] text-[#16130F] shrink-0">1</span>
               <div>
-                <h4 className="font-black text-slate-800">Create a College Board Account</h4>
-                <p className="text-slate-500 mt-1 leading-relaxed">Visit the official College Board website and register for a free account. Ensure your name matches your passport exactly.</p>
+                <h4 className="font-urbanist font-black text-[16px] text-[#16130F]">Create a College Board Account</h4>
+                <p className="text-[#5B544A] mt-1 leading-relaxed">Visit the official College Board website and register for a free account. Ensure your name matches your passport exactly.</p>
               </div>
             </div>
 
-            <div className="flex gap-3">
-              <span className="w-6 h-6 rounded-full bg-indigo-50 border border-indigo-150 flex items-center justify-center font-black text-xs text-indigo-700 shrink-0">2</span>
+            <div className={`${miniCard} flex gap-3`}>
+              <span className="w-8 h-8 rounded-full border-2 border-[#16130F] bg-[#F2B705] shadow-[2px_2px_0_#16130F] grid place-items-center font-urbanist font-black text-[14px] text-[#16130F] shrink-0">2</span>
               <div>
-                <h4 className="font-black text-slate-800">Enter Personal and Profile Info</h4>
-                <p className="text-slate-500 mt-1 leading-relaxed">Fill out demographic details, school credentials, and extracurricular summaries.</p>
+                <h4 className="font-urbanist font-black text-[16px] text-[#16130F]">Enter Personal and Profile Info</h4>
+                <p className="text-[#5B544A] mt-1 leading-relaxed">Fill out demographic details, school credentials, and extracurricular summaries.</p>
               </div>
             </div>
 
-            <div className="flex gap-3">
-              <span className="w-6 h-6 rounded-full bg-indigo-50 border border-indigo-150 flex items-center justify-center font-black text-xs text-indigo-700 shrink-0">3</span>
+            <div className={`${miniCard} flex gap-3`}>
+              <span className="w-8 h-8 rounded-full border-2 border-[#16130F] bg-[#F2B705] shadow-[2px_2px_0_#16130F] grid place-items-center font-urbanist font-black text-[14px] text-[#16130F] shrink-0">3</span>
               <div>
-                <h4 className="font-black text-slate-800">Select Date & Test Center</h4>
-                <p className="text-slate-500 mt-1 leading-relaxed">Select a test date and search for local centers with open seating availability.</p>
+                <h4 className="font-urbanist font-black text-[16px] text-[#16130F]">Select Date & Test Center</h4>
+                <p className="text-[#5B544A] mt-1 leading-relaxed">Select a test date and search for local centers with open seating availability.</p>
               </div>
             </div>
 
-            <div className="flex gap-3">
-              <span className="w-6 h-6 rounded-full bg-indigo-50 border border-indigo-150 flex items-center justify-center font-black text-xs text-indigo-700 shrink-0">4</span>
+            <div className={`${miniCard} flex gap-3`}>
+              <span className="w-8 h-8 rounded-full border-2 border-[#16130F] bg-[#F2B705] shadow-[2px_2px_0_#16130F] grid place-items-center font-urbanist font-black text-[14px] text-[#16130F] shrink-0">4</span>
               <div>
-                <h4 className="font-black text-slate-800">Pay Fee & Upload Photo</h4>
-                <p className="text-slate-500 mt-1 leading-relaxed">Upload a headshot meeting College Board criteria and complete payment via credit card or PayPal.</p>
+                <h4 className="font-urbanist font-black text-[16px] text-[#16130F]">Pay Fee & Upload Photo</h4>
+                <p className="text-[#5B544A] mt-1 leading-relaxed">Upload a headshot meeting College Board criteria and complete payment via credit card or PayPal.</p>
               </div>
             </div>
           </div>
@@ -357,8 +389,8 @@ const SATDetailPage = ({ pageKey }) => {
       title: "SAT Scoring & Score Scales",
       subtitle: "How the adaptive Digital SAT is marked and reported.",
       content: (
-        <div className="space-y-6 text-xs md:text-sm">
-          <p className="text-slate-655 font-semibold leading-relaxed">
+        <div className="space-y-6 text-[14px]">
+          <p className={bodyText}>
             The Digital SAT is scored on a total scale of **400 to 1600**, combining two section scores of 200–800.
           </p>
 
@@ -372,13 +404,13 @@ const SATDetailPage = ({ pageKey }) => {
           />
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div className="border border-slate-100 p-5 rounded-2xl bg-slate-50/30">
-              <span className="font-black text-xs text-slate-800 block mb-1">Score Verification</span>
-              <p className="text-slate-500 text-[11px] leading-relaxed">There is no negative marking. Correct responses gain points, and unanswered questions yield 0 points.</p>
+            <div className={miniCard}>
+              <span className="font-urbanist font-black text-[15px] text-[#16130F] block mb-1">Score Verification</span>
+              <p className="text-[#5B544A] text-[13px] leading-relaxed">There is no negative marking. Correct responses gain points, and unanswered questions yield 0 points.</p>
             </div>
-            <div className="border border-slate-100 p-5 rounded-2xl bg-slate-50/30">
-              <span className="font-black text-xs text-slate-800 block mb-1">Score Reporting</span>
-              <p className="text-slate-500 text-[11px] leading-relaxed">College Board sends scores to up to 4 selected universities for free if designated during registration.</p>
+            <div className={miniCard}>
+              <span className="font-urbanist font-black text-[15px] text-[#16130F] block mb-1">Score Reporting</span>
+              <p className="text-[#5B544A] text-[13px] leading-relaxed">College Board sends scores to up to 4 selected universities for free if designated during registration.</p>
             </div>
           </div>
         </div>
@@ -388,28 +420,24 @@ const SATDetailPage = ({ pageKey }) => {
       title: "SAT Preparation: Preparation Strategies & Mock Practice",
       subtitle: "Actionable prep workflow to secure a high score.",
       content: (
-        <div className="space-y-6 text-xs md:text-sm font-semibold text-slate-700">
+        <div className="space-y-6 text-[14px] text-[#3D362E]">
           <HookBand value="6" label="Full-length adaptive practice tests in the official Bluebook app" hi="अभ्यास" />
-          <div className="p-5 bg-indigo-50/40 border border-indigo-100 rounded-3xl space-y-3">
-            <h4 className="font-black text-indigo-900 text-xs uppercase tracking-wider flex items-center gap-1.5">
-              <Sparkles size={14} className="text-indigo-650" />
-              <span>Official Bluebook Prep Steps</span>
-            </h4>
-            <p className="text-slate-655 text-xs leading-relaxed">
-              Download the official College Board **Bluebook application** onto your test device. Take full-length adaptive practice tests 1–6 under simulated exam conditions to align with digitaladaptive modules.
+          <Note icon={Sparkles} tone="rani" title="Official Bluebook Prep Steps">
+            <p>
+              Download the official College Board <strong>Bluebook application</strong> onto your test device. Take full-length adaptive practice tests 1–6 under simulated exam conditions to align with digital adaptive modules.
             </p>
-          </div>
+          </Note>
 
           <div className="space-y-4">
-            <h3 className="text-base font-black text-slate-900">Recommended Resources</h3>
+            <SubHead hi="किताबें और टेस्ट">Recommended Resources</SubHead>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div className="border border-slate-100 p-4.5 rounded-2xl bg-slate-50/30">
-                <h4 className="font-black text-slate-800 text-xs mb-1">Khan Academy SAT Prep</h4>
-                <p className="text-[11px] text-slate-550 leading-relaxed">Official study partner featuring diagnostics, specific skill exercises, and diagnostic modules.</p>
+              <div className={miniCard}>
+                <h4 className="font-urbanist font-black text-[#16130F] text-[15px] mb-1">Khan Academy SAT Prep</h4>
+                <p className="text-[13px] text-[#5B544A] leading-relaxed">Official study partner featuring diagnostics, specific skill exercises, and diagnostic modules.</p>
               </div>
-              <div className="border border-slate-100 p-4.5 rounded-2xl bg-slate-50/30">
-                <h4 className="font-black text-slate-800 text-xs mb-1">SAT Practice Tests</h4>
-                <p className="text-[11px] text-slate-550 leading-relaxed">Review our SAT prep books list for highly structured diagnostic material.</p>
+              <div className={miniCard}>
+                <h4 className="font-urbanist font-black text-[#16130F] text-[15px] mb-1">SAT Practice Tests</h4>
+                <p className="text-[13px] text-[#5B544A] leading-relaxed">Review our SAT prep books list for highly structured diagnostic material.</p>
               </div>
             </div>
           </div>
@@ -426,97 +454,140 @@ const SATDetailPage = ({ pageKey }) => {
     { q: "How long are SAT scores valid?", a: "SAT scores are valid for 5 years from the date of the exam." }
   ];
 
-  return (
-    <div className="min-h-screen bg-slate-50 pt-28 pb-20 select-none font-sans">
-      <div className="max-w-[1320px] mx-auto px-6 md:px-10">
-        
-        {/* Breadcrumb */}
-        <div className="flex items-center gap-2 text-xs font-bold text-slate-400 uppercase tracking-widest mb-6">
-          <Link to="/" className="hover:text-indigo-650 transition-colors">Home</Link>
-          <ChevronRight size={12} />
-          <Link to="/exams/sat" className="hover:text-indigo-655 transition-colors">SAT</Link>
-          <ChevronRight size={12} />
-          <span className="text-slate-600 font-bold">{sidebarLinks.find(l => l.key === pageKey)?.name || "Details"}</span>
-        </div>
+  const activeLinkName = sidebarLinks.find(l => l.key === pageKey)?.name || "Details";
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-          
-          {/* Sidebar */}
-          <div className="lg:col-span-4 space-y-2">
-            <div className="bg-white border border-slate-200/60 rounded-3xl p-5 shadow-xs">
-              <span className="text-[10px] text-slate-400 font-extrabold uppercase tracking-wider block mb-4 px-3">SAT Directory</span>
-              <div className="space-y-1">
+  return (
+    <div className="min-h-screen bg-[#FFF6E5] pb-20 select-none font-['Onest',sans-serif] text-[#16130F]">
+      {/* Hero: rani poster band */}
+      <DesiHero
+        tone="rani"
+        sign={{ hi: 'सैट', en: 'SAT DESK' }}
+        crumbs={[{ label: 'Home', to: '/' }, { label: 'SAT', to: '/exams/sat' }, { label: activeLinkName }]}
+        title={activeContent.title}
+        subtitle={activeContent.subtitle}
+        stickers={(
+          <>
+            <Sticker bg="#F2B705" tilt={-2}><Compass size={14} />SAT Directory</Sticker>
+            <Sticker tilt={1.5}>{activeLinkName}</Sticker>
+          </>
+        )}
+      />
+
+      {/* Directory pills (phones and tablets) */}
+      <div className="lg:hidden max-w-[1240px] mx-auto px-4 -mt-6 mb-8 relative z-10">
+        <InkCard className="p-3">
+          <p className="font-['Rozha_One',serif] text-[14px] text-[#D0362E] leading-none px-1 mb-2">सैट डायरेक्टरी</p>
+          <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-hide">
+            {sidebarLinks.map((link, idx) => {
+              const IconComp = link.icon;
+              const isActive = pageKey === link.key;
+              const tone = TONES[idx % TONES.length];
+              return (
+                <button
+                  key={idx}
+                  onClick={() => navigate(link.path)}
+                  style={isActive ? { background: tone.c, color: tone.fg } : undefined}
+                  className={`no-shine flex items-center gap-1.5 px-3.5 py-2 rounded-full border-2 text-xs font-bold whitespace-nowrap flex-shrink-0 cursor-pointer ${isActive ? 'border-[#16130F] shadow-[2px_2px_0_#16130F]' : 'border-[#E6DCC8] bg-[#FFF6E5] text-[#5B544A]'}`}
+                >
+                  <IconComp size={13} />
+                  <span>{link.name}</span>
+                </button>
+              );
+            })}
+          </div>
+        </InkCard>
+      </div>
+
+      <div className="max-w-[1240px] mx-auto px-4 md:px-8 lg:pt-12">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+
+          {/* Sidebar (desktop) */}
+          <aside className="hidden lg:block lg:col-span-4 xl:col-span-3 sticky top-28">
+            <InkCard className="p-4">
+              <p className="font-['Rozha_One',serif] text-[15px] text-[#D0362E] leading-none">सैट डायरेक्टरी</p>
+              <h3 className="mt-1 mb-3 font-urbanist font-black text-[17px]">SAT Directory</h3>
+              <nav className="flex flex-col gap-2">
                 {sidebarLinks.map((link, idx) => {
                   const IconComp = link.icon;
                   const isActive = pageKey === link.key;
+                  const tone = TONES[idx % TONES.length];
                   return (
                     <button
                       key={idx}
                       onClick={() => navigate(link.path)}
-                      className={`w-full py-3 px-4 rounded-xl font-black text-xs flex items-center gap-3 transition-all cursor-pointer ${
-                        isActive 
-                          ? 'bg-indigo-50 text-indigo-700 shadow-xs' 
-                          : 'text-slate-655 hover:bg-slate-50'
+                      style={isActive ? { background: tone.c, color: tone.fg } : undefined}
+                      className={`no-shine group w-full flex items-center justify-between gap-2 px-3 py-2.5 rounded-lg border-2 text-[14px] font-bold text-left cursor-pointer transition-colors ${
+                        isActive
+                          ? 'border-[#16130F] shadow-[3px_3px_0_#16130F]'
+                          : 'border-transparent text-[#3D362E] hover:border-[#16130F] hover:bg-[#FFF6E5]'
                       }`}
                     >
-                      <IconComp size={16} />
-                      <span>{link.name}</span>
+                      <span className="flex items-center gap-2.5">
+                        <IconComp size={16} />
+                        <span>{link.name}</span>
+                      </span>
+                      <ArrowRight size={14} className="shrink-0 transition-transform group-hover:translate-x-0.5" />
                     </button>
                   );
                 })}
-              </div>
-            </div>
-          </div>
+              </nav>
+            </InkCard>
+          </aside>
 
           {/* Main Content Area */}
-          <div className="lg:col-span-8 space-y-8">
-            <div className="bg-white border border-slate-200/60 rounded-[2.5rem] p-8 md:p-12 shadow-xs">
-              <h1 className="text-2xl md:text-3xl font-black text-slate-900 tracking-tight">{activeContent.title}</h1>
-              <p className="text-slate-500 text-xs md:text-sm font-semibold mt-2 mb-8 leading-relaxed">{activeContent.subtitle}</p>
-              
-              <div className="border-t border-slate-100 pt-8">
+          <div className="lg:col-span-8 xl:col-span-9 space-y-10 min-w-0">
+            <InkCard className="p-5 sm:p-8 md:p-10" shadow="#B8285B">
+              <DesiHeading hi="पूरी जानकारी" className="mb-6">{activeLinkName}</DesiHeading>
+              <div className="border-t-2 border-dashed border-[#16130F33] pt-6">
                 {activeContent.content}
               </div>
-            </div>
+            </InkCard>
 
             {/* FAQs Accordion on details pages */}
-            <div className="bg-white border border-slate-200/60 rounded-[2.5rem] p-8 md:p-12 shadow-xs">
-              <h3 className="text-lg font-black text-slate-900 mb-6 flex items-center gap-2">
-                <HelpCircle className="text-indigo-600" size={18} />
-                <span>Frequently Asked Questions</span>
-              </h3>
-              <div className="space-y-4">
-                {faqs.map((faq, idx) => (
-                  <div key={idx} className="border border-slate-100 rounded-xl overflow-hidden">
-                    <button
-                      onClick={() => toggleFaq(idx)}
-                      className="w-full p-4.5 text-left font-black text-xs text-slate-800 flex justify-between items-center cursor-pointer hover:bg-slate-50/50 transition-colors"
-                    >
-                      <span>{faq.q}</span>
-                      {openFaq[idx] ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
-                    </button>
-                    <AnimatePresence>
-                      {openFaq[idx] && (
-                        <motion.div
-                          initial={{ height: 0 }}
-                          animate={{ height: "auto" }}
-                          exit={{ height: 0 }}
-                          className="overflow-hidden"
-                        >
-                          <p className="p-4.5 text-xs text-slate-500 font-semibold border-t border-slate-100 leading-relaxed bg-slate-50/20">
-                            {faq.a}
-                          </p>
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
-                  </div>
-                ))}
+            <section>
+              <DesiHeading hi="अक्सर पूछे सवाल" className="mb-5">Frequently Asked Questions</DesiHeading>
+              <div className="space-y-3">
+                {faqs.map((faq, idx) => {
+                  const isOpen = !!openFaq[idx];
+                  return (
+                    <div key={idx} className="bg-white border-[3px] border-[#16130F] overflow-hidden" style={{ borderRadius: 12, boxShadow: isOpen ? '4px 4px 0 #B8285B' : '4px 4px 0 #16130F' }}>
+                      <button
+                        onClick={() => toggleFaq(idx)}
+                        aria-expanded={isOpen}
+                        className="no-shine w-full p-4 text-left font-bold text-[14.5px] text-[#16130F] flex justify-between items-center gap-3 cursor-pointer"
+                      >
+                        <span>{faq.q}</span>
+                        <span className={`w-7 h-7 rounded-full border-2 border-[#16130F] grid place-items-center shrink-0 transition-transform ${isOpen ? 'rotate-180 bg-[#F2B705]' : 'bg-white'}`}>
+                          <ChevronDown size={15} />
+                        </span>
+                      </button>
+                      <AnimatePresence>
+                        {isOpen && (
+                          <motion.div
+                            initial={{ height: 0 }}
+                            animate={{ height: "auto" }}
+                            exit={{ height: 0 }}
+                            className="overflow-hidden"
+                          >
+                            <p className="px-4 pb-4 pt-3 text-[14px] text-[#5B544A] border-t-2 border-dashed border-[#16130F33] leading-relaxed">
+                              {faq.a}
+                            </p>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </div>
+                  );
+                })}
               </div>
-            </div>
+            </section>
+
+            <BookOkCta
+              hi="सैट प्लान बनाओ"
+              text="SAT ki date, score target ya college list pe confusion? Free 1:1 call mein mentor se seedha poocho."
+            />
           </div>
 
         </div>
-
       </div>
     </div>
   );

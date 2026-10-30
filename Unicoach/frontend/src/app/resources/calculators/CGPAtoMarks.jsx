@@ -1,7 +1,76 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FinderPage, FinderHero, FinderCard, FinderField, FinderButton, FinderChip, FINDER_FIELD, FIELD_RADIUS } from '../../../components/ui/FinderForm';
 import { Sparkles, ArrowRightLeft, HelpCircle, AlertCircle, Award } from 'lucide-react';
+import { DesiHero, DesiHeading, InkCard, Sticker } from '../../../components/desi/DesiKit';
+import { DESI, INK } from '../../../components/desi/desiTokens';
+import { BookOkCta } from '../../../components/desi/BookOkCta';
+
+/* ── Desi Pop calculator kit: ink-bordered card, cream inputs, sindoor pill, railway-board result ── */
+const TONE = DESI.mustard;
+
+const LABEL = 'text-[11px] font-extrabold uppercase tracking-wider text-[#5B544A]';
+const INPUT = 'w-full h-12 px-3.5 bg-[#FFF6E5] border-[3px] border-[#16130F] rounded-[10px] font-urbanist text-[18px] font-extrabold text-[#16130F] placeholder:text-[#8A7F70] placeholder:font-semibold outline-none focus:bg-white focus:shadow-[3px_3px_0_#16130F] transition-shadow';
+const BUTTON = 'w-full sm:w-auto h-12 px-7 inline-flex items-center justify-center gap-2 rounded-full bg-[#D0362E] text-white text-[15px] font-extrabold border-[3px] border-[#16130F] shadow-[4px_4px_0_#16130F] hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-[6px_6px_0_#16130F] active:translate-x-0.5 active:translate-y-0.5 active:shadow-[1px_1px_0_#16130F] transition-all';
+const ERROR_BOX = 'mt-6 flex items-start gap-2.5 p-4 rounded-xl bg-[#FCE3DA] text-[#9E2620] text-[13px] font-bold border-[3px] border-[#16130F] shadow-[3px_3px_0_#D0362E]';
+
+const CalcCard = ({ hi, en, children }) => (
+    <div className="bg-white text-[#16130F] border-[3px] border-[#16130F] rounded-[18px] shadow-[8px_8px_0_#16130F] overflow-hidden">
+        <div className="flex items-center justify-between gap-3 px-4 sm:px-6 py-3 bg-[#16130F]">
+            <span className="font-['Rozha_One',serif] text-[18px] leading-none text-[#F2B705]">{hi}</span>
+            <span className="font-['Anton',sans-serif] tracking-[0.14em] text-[12px] leading-none text-white">{en}</span>
+        </div>
+        <div className="p-4 sm:p-6">{children}</div>
+    </div>
+);
+
+const InkPill = ({ on, tone = { bg: INK, fg: '#FFFFFF' }, children, ...props }) => (
+    <button
+        type="button"
+        aria-pressed={on}
+        {...props}
+        className={`inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full border-2 border-[#16130F] text-[13px] font-bold transition-all ${on ? 'shadow-[2px_2px_0_#16130F]' : 'bg-[#FFF6E5] text-[#3D362E] hover:bg-white'}`}
+        style={on ? { background: tone.bg, color: tone.fg } : undefined}
+    >
+        {children}
+    </button>
+);
+
+const Field = ({ label, hint, children }) => (
+    <label className="flex flex-col gap-1.5 min-w-0">
+        <span className={LABEL}>{label}</span>
+        {children}
+        {hint && <span className="text-[11.5px] font-semibold text-[#5B544A] leading-tight">{hint}</span>}
+    </label>
+);
+
+// The result, painted like a railway departure board with a stamped ticket stub below
+const ResultBoard = ({ watermark, heading, label, value, unit, stamp, meta, children }) => (
+    <div className="border-[3px] border-[#16130F] rounded-[14px] overflow-hidden shadow-[5px_5px_0_#D0362E]">
+        <div className="relative overflow-hidden bg-[#16130F] text-white px-5 py-5 sm:px-6">
+            <span aria-hidden="true" className="absolute right-[-8px] bottom-[-20px] font-['Anton',sans-serif] text-[96px] leading-none text-white/[0.06] select-none pointer-events-none">{watermark}</span>
+            <h4 className="relative font-['Anton',sans-serif] tracking-[0.16em] text-[12px] uppercase text-[#F2B705]">{heading}</h4>
+            <div className="relative mt-3 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+                <div className="min-w-0">
+                    {label && <span className="block text-[11px] font-extrabold uppercase tracking-wider text-white/60 mb-1">{label}</span>}
+                    <div className="flex items-baseline gap-2 flex-wrap">
+                        <span className="font-['Anton',sans-serif] text-[56px] sm:text-[72px] leading-[0.95] tracking-wide text-[#F2B705] break-all">{value}</span>
+                        {unit && <span className="text-[14px] font-bold text-white/70">{unit}</span>}
+                    </div>
+                </div>
+                <div className="flex flex-col items-start sm:items-end gap-2.5 min-w-0">
+                    <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md border-[3px] border-[#D0362E] bg-[#FFF6E5] text-[#D0362E] text-[13px] font-black -rotate-3 shadow-[2px_2px_0_#D0362E]">{stamp}</span>
+                    {meta && <p className="text-[12px] font-bold text-white/70 break-words sm:text-right">{meta}</p>}
+                </div>
+            </div>
+        </div>
+        <div className="relative bg-[#FFF6E5] border-t-[3px] border-dashed border-[#16130F] px-5 py-4 sm:px-6 text-[13px] text-[#3D362E] font-medium leading-relaxed">
+            <span aria-hidden="true" className="absolute -top-[12px] -left-[12px] w-5 h-5 rounded-full bg-white border-[3px] border-[#16130F]" />
+            <span aria-hidden="true" className="absolute -top-[12px] -right-[12px] w-5 h-5 rounded-full bg-white border-[3px] border-[#16130F]" />
+            {children}
+        </div>
+    </div>
+);
+
 
 const CGPAtoMarks = () => {
     const [activeTab, setActiveTab] = useState('cgpa-to-marks'); // 'cgpa-to-marks' or 'marks-to-cgpa'
@@ -79,48 +148,46 @@ const CGPAtoMarks = () => {
     };
 
     return (
-        <FinderPage>
-            <FinderHero
-                eyebrow="CGPA to Marks"
+        <main className="min-h-screen bg-[#FFF6E5] pb-16 font-['Onest',sans-serif] text-[#16130F]">
+            {/* ── HERO: mustard poster band, the calculator is the hero piece ── */}
+            <DesiHero
+                tone="mustard"
+                sign={{ hi: 'नंबर का हिसाब', en: 'MARKS CALCULATOR' }}
+                crumbs={[{ label: 'Home', to: '/' }, { label: 'Resources' }, { label: 'CGPA to Marks' }]}
                 title="CGPA to marks calculator"
                 subtitle="Convert your CGPA to obtained marks, or marks back to CGPA, using your exam total."
-                steps={[
-                    { label: 'CGPA', sub: 'Your score' },
-                    { label: '× 9.5 or 10', sub: 'Percentage' },
-                    { label: '× Max marks', sub: '÷ 100' },
-                    { label: 'Marks', sub: 'Obtained' },
-                ]}
-                active={0}
-            />
-
-            <div className="mt-8 grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
-                
-                {/* Main converter card */}
-                <div className="lg:col-span-2">
-                    <FinderCard>
-                        
+                stickers={(
+                    <>
+                        <Sticker tilt={-2}><b>1</b> CGPA <span className="font-medium opacity-70">Your score</span></Sticker>
+                        <Sticker bg="#FBD9E6" tilt={1.5}><b>2</b> × 9.5 or 10 <span className="font-medium opacity-70">Percentage</span></Sticker>
+                        <Sticker bg="#DDF3EF" tilt={-1}><b>3</b> × Max marks <span className="font-medium opacity-70">÷ 100</span></Sticker>
+                        <Sticker bg="#FCE3DA" tilt={1}><b>4</b> Marks <span className="font-medium opacity-70">Obtained</span></Sticker>
+                    </>
+                )}
+                aside={(
+                    <CalcCard hi="जोड़ घटाव" en="CGPA TO MARKS">
                         {/* Direction */}
                         <div className="flex flex-wrap gap-2">
-                            <FinderChip on={activeTab === 'cgpa-to-marks'} onClick={() => { setActiveTab('cgpa-to-marks'); setResult(null); setError(''); }}>
+                            <InkPill on={activeTab === 'cgpa-to-marks'} onClick={() => { setActiveTab('cgpa-to-marks'); setResult(null); setError(''); }}>
                                 <Sparkles size={14} /> CGPA to Marks
-                            </FinderChip>
-                            <FinderChip on={activeTab === 'marks-to-cgpa'} onClick={() => { setActiveTab('marks-to-cgpa'); setResult(null); setError(''); }}>
+                            </InkPill>
+                            <InkPill on={activeTab === 'marks-to-cgpa'} onClick={() => { setActiveTab('marks-to-cgpa'); setResult(null); setError(''); }}>
                                 <ArrowRightLeft size={14} /> Marks to CGPA
-                            </FinderChip>
+                            </InkPill>
                         </div>
 
-                        <div className="mt-5 pt-5 border-t border-[#ECE6DA]">
-                            <form onSubmit={handleConvert} className="space-y-4">
-                                <div className="flex flex-col gap-1.5">
-                                    <span className="text-[12.5px] font-semibold text-[#16130F]">Conversion factor</span>
+                        <div className="mt-5 pt-5 border-t-2 border-dashed border-[#16130F]/30">
+                            <form onSubmit={handleConvert} className="space-y-5">
+                                <div className="flex flex-col gap-2">
+                                    <span className={LABEL}>Conversion factor</span>
                                     <div className="flex flex-wrap gap-2">
-                                        <FinderChip on={multiplier === 9.5} onClick={() => setMultiplier(9.5)}>CBSE factor (9.5)</FinderChip>
-                                        <FinderChip on={multiplier === 10.0} onClick={() => setMultiplier(10.0)}>General factor (10.0)</FinderChip>
+                                        <InkPill tone={TONE} on={multiplier === 9.5} onClick={() => setMultiplier(9.5)}>CBSE factor (9.5)</InkPill>
+                                        <InkPill tone={TONE} on={multiplier === 10.0} onClick={() => setMultiplier(10.0)}>General factor (10.0)</InkPill>
                                     </div>
                                 </div>
 
-                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 items-start">
-                                    <FinderField label="Maximum marks *">
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 items-start">
+                                    <Field label="Maximum marks *">
                                         <input
                                             id="maxMarksInput"
                                             type="number"
@@ -128,13 +195,12 @@ const CGPAtoMarks = () => {
                                             value={maxMarksInput}
                                             onChange={(e) => setMaxMarksInput(e.target.value)}
                                             placeholder="e.g. 500 or 1000"
-                                            className={FINDER_FIELD}
-                                            style={FIELD_RADIUS}
+                                            className={INPUT}
                                             required
                                         />
-                                    </FinderField>
+                                    </Field>
                                     {activeTab === 'cgpa-to-marks' ? (
-                                        <FinderField label="CGPA (10-point scale) *" hint="Max 10.0">
+                                        <Field label="CGPA (10-point scale) *" hint="Max 10.0">
                                             <input
                                                 id="cgpaInput"
                                                 type="number"
@@ -144,13 +210,12 @@ const CGPAtoMarks = () => {
                                                 value={cgpaInput}
                                                 onChange={(e) => setCgpaInput(e.target.value)}
                                                 placeholder="e.g. 8.4"
-                                                className={FINDER_FIELD}
-                                                style={FIELD_RADIUS}
+                                                className={INPUT}
                                                 required
                                             />
-                                        </FinderField>
+                                        </Field>
                                     ) : (
-                                        <FinderField label="Obtained marks *">
+                                        <Field label="Obtained marks *">
                                             <input
                                                 id="obtainedMarksInput"
                                                 type="number"
@@ -159,27 +224,26 @@ const CGPAtoMarks = () => {
                                                 value={obtainedMarksInput}
                                                 onChange={(e) => setObtainedMarksInput(e.target.value)}
                                                 placeholder="e.g. 425"
-                                                className={FINDER_FIELD}
-                                                style={FIELD_RADIUS}
+                                                className={INPUT}
                                                 required
                                             />
-                                        </FinderField>
+                                        </Field>
                                     )}
                                 </div>
 
-                                <FinderButton type="submit" className="w-full sm:w-auto">
+                                <button type="submit" className={BUTTON}>
                                     Calculate marks
-                                </FinderButton>
+                                </button>
                             </form>
 
                             {/* Results display */}
                             <AnimatePresence mode="wait">
                                 {error && (
-                                    <motion.div 
+                                    <motion.div
                                         initial={{ opacity: 0, y: 10 }}
                                         animate={{ opacity: 1, y: 0 }}
                                         exit={{ opacity: 0, y: -10 }}
-                                        className="mt-6 flex items-start gap-2.5 p-4 rounded-xl bg-rose-50 text-rose-600 text-xs font-bold border border-rose-100"
+                                        className={ERROR_BOX}
                                     >
                                         <AlertCircle size={16} className="flex-shrink-0 mt-0.5" />
                                         <span>{error}</span>
@@ -190,78 +254,58 @@ const CGPAtoMarks = () => {
                                     <motion.div
                                         initial={{ opacity: 0, y: 15 }}
                                         animate={{ opacity: 1, y: 0 }}
-                                        className="mt-8 bg-orange-50/40 border border-orange-100 rounded-2xl p-6 relative overflow-hidden"
+                                        className="mt-7"
                                     >
-                                        <div className="absolute right-[-20px] bottom-[-20px] text-[#DE5C2B]/5 font-black text-8xl pointer-events-none select-none">
-                                            MARKS
-                                        </div>
-                                        <h4 className="text-xs font-extrabold text-slate-400 uppercase tracking-widest mb-3">
-                                            Conversion Result
-                                        </h4>
-                                        
-                                        <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
-                                            <div className="space-y-1">
-                                                <span className="text-xs font-bold text-slate-400 block uppercase">
-                                                    {activeTab === 'cgpa-to-marks' ? 'Obtained Marks' : 'CGPA Score'}
-                                                </span>
-                                                <div className="flex items-baseline gap-1">
-                                                    <span className="text-4xl md:text-5xl font-black text-[#DE5C2B]">
-                                                        {activeTab === 'cgpa-to-marks' ? result.obtainedMarks : result.cgpa}
-                                                    </span>
-                                                    <span className="text-slate-400 font-bold text-sm">
-                                                        / {activeTab === 'cgpa-to-marks' ? result.maxMarks : '10.0'}
-                                                    </span>
-                                                </div>
-                                            </div>
-                                            <div className="space-y-1 text-left md:text-right">
-                                                <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-white border border-orange-100 rounded-full text-xs font-bold text-[#DE5C2B]">
-                                                    <Award size={13} />
-                                                    <span>{result.percentage}% Marks</span>
-                                                </div>
-                                                <p className="text-xs text-slate-400 font-bold tracking-tight pl-1 block">
-                                                    Formula: {result.formula}
-                                                </p>
-                                            </div>
-                                        </div>
-                                        
-                                        <div className="w-full h-[1px] bg-orange-100/50 my-4" />
-                                        <p className="text-xs text-slate-500 font-semibold leading-relaxed">
+                                        <ResultBoard
+                                            watermark="MARKS"
+                                            heading="Conversion Result"
+                                            label={activeTab === 'cgpa-to-marks' ? 'Obtained Marks' : 'CGPA Score'}
+                                            value={activeTab === 'cgpa-to-marks' ? result.obtainedMarks : result.cgpa}
+                                            unit={`/ ${activeTab === 'cgpa-to-marks' ? result.maxMarks : '10.0'}`}
+                                            stamp={<><Award size={14} /><span>{result.percentage}% Marks</span></>}
+                                            meta={`Formula: ${result.formula}`}
+                                        >
                                             <strong>Multiplier note:</strong> {result.note} This provides a standard conversion for Indian boards, but you should verify with specific university requirements.
-                                        </p>
+                                        </ResultBoard>
                                     </motion.div>
                                 )}
                             </AnimatePresence>
-
                         </div>
-                    </FinderCard>
-                </div>
+                    </CalcCard>
+                )}
+            />
 
-                {/* Explanatory Sidebar */}
-                <div className="lg:col-span-1 space-y-6">
-                    <div className="bg-white border border-[#E6E0D4] p-5 sm:p-6 space-y-4" style={{ borderRadius: 18 }}>
-                        <h3 className="text-[1.05rem] font-bold text-slate-800 tracking-tight flex items-center gap-1.5">
-                            <HelpCircle size={18} className="text-[#DE5C2B]" />
-                            <span>How It Works</span>
-                        </h3>
-                        <p className="text-slate-650 text-xs leading-relaxed font-semibold">
-                            The conversion maps CGPA to a percentage value first (using standard 9.5 or 10 multipliers) and then scales it to your total maximum marks.
-                        </p>
-                        <div className="w-full h-[1px] bg-slate-100 my-2" />
-                        <div className="space-y-3 text-xs">
-                            <div>
-                                <h4 className="font-bold text-slate-800 mb-1">1. CGPA to Marks</h4>
-                                <p className="text-slate-500">Obtained = (CGPA × Multiplier / 100) × Max Marks</p>
-                            </div>
-                            <div>
-                                <h4 className="font-bold text-slate-800 mb-1">2. Marks to CGPA</h4>
-                                <p className="text-slate-500">CGPA = (Obtained / Max Marks × 100) ÷ Multiplier</p>
-                            </div>
-                        </div>
+            <div className="max-w-[1240px] mx-auto px-4 md:px-8 pt-12 space-y-8">
+                {/* Explainer */}
+                <InkCard className="p-6 md:p-8 space-y-5" shadow="#F2B705">
+                    <div className="flex items-start gap-3">
+                        <span className="w-10 h-10 rounded-full border-2 border-[#16130F] bg-[#F2B705] text-[#16130F] grid place-items-center shrink-0 shadow-[2px_2px_0_#16130F]">
+                            <HelpCircle size={18} />
+                        </span>
+                        <DesiHeading hi="कैसे होता है?">How It Works</DesiHeading>
                     </div>
-                </div>
+                    <p className="text-[#5B544A] text-[14.5px] leading-relaxed max-w-3xl">
+                        The conversion maps CGPA to a percentage value first (using standard 9.5 or 10 multipliers) and then scales it to your total maximum marks.
+                    </p>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        {[
+                            { title: '1. CGPA to Marks', formula: 'Obtained = (CGPA × Multiplier / 100) × Max Marks', bg: '#F2B705', fg: '#16130F' },
+                            { title: '2. Marks to CGPA', formula: 'CGPA = (Obtained / Max Marks × 100) ÷ Multiplier', bg: '#14837E', fg: '#FFFFFF' },
+                        ].map((s) => (
+                            <div key={s.title} className="border-[3px] border-[#16130F] rounded-xl overflow-hidden shadow-[3px_3px_0_#16130F]">
+                                <h4 className="px-4 py-2.5 border-b-[3px] border-[#16130F] font-urbanist font-black text-[15px]" style={{ background: s.bg, color: s.fg }}>{s.title}</h4>
+                                <p className="px-4 py-3 bg-[#FFF6E5] text-[14px] font-semibold text-[#3D362E] break-words">{s.formula}</p>
+                            </div>
+                        ))}
+                    </div>
+                </InkCard>
 
+                <BookOkCta
+                    hi="नंबर के बाद?"
+                    text="Marks nikal liye? Ab is score pe kahan apply karein, free call pe mentor se poochho. 1:1, ek ghante ki baat."
+                />
             </div>
-        </FinderPage>
+        </main>
     );
 };
 

@@ -7,6 +7,9 @@ import { useAuth } from '../../../../context/AuthContext';
 import { useLead } from '../../../../context/LeadContext';
 import { API_BASE_URL } from '../../../../config';
 import BackButton from '../../../../components/ui/BackButton';
+import { StationSign, Sticker } from '../../../../components/desi/DesiKit';
+import { DESI_TONES } from '../../../../components/desi/desiTokens';
+import { BookOkCta } from '../../../../components/desi/BookOkCta';
 import {
   PARAGRAPHS, LISTENING_SENTENCES, PHOTOS, makeWordRound, parseParagraph, wordAccuracy, estimateScore, sample,
 } from './practiceData';
@@ -62,9 +65,9 @@ const useCountdown = (seconds, running) => {
 
 const formatTime = (s) => `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`;
 
-const primaryBtn = 'inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full bg-[#111111] hover:bg-[#DE5C2B] text-white text-[14px] font-bold transition-colors cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed';
-const accentBtn = primaryBtn.replace('bg-[#111111] hover:bg-[#DE5C2B]', 'bg-[#DE5C2B] hover:bg-[#C04A1D]');
-const secondaryBtn = 'inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-full bg-white border border-slate-200 hover:border-[#DE5C2B] hover:text-[#DE5C2B] text-slate-700 text-[13px] font-bold transition-colors cursor-pointer';
+const primaryBtn = 'no-shine inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full border-2 border-[#16130F] bg-[#14837E] hover:bg-[#0F6B67] text-white text-[14px] font-bold shadow-[3px_3px_0_#16130F] transition-colors cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed';
+const accentBtn = primaryBtn.replace('bg-[#14837E] hover:bg-[#0F6B67]', 'bg-[#D0362E] hover:bg-[#B52A23]');
+const secondaryBtn = 'no-shine inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-full bg-white border-2 border-[#16130F] hover:bg-[#FFF1B8] text-[#16130F] text-[13px] font-bold shadow-[2px_2px_0_#16130F] transition-colors cursor-pointer';
 
 const TaskHeader = ({ taskIndex, xp, secondsLeft, subtitle }) => {
   const task = TASKS[taskIndex];
@@ -73,31 +76,31 @@ const TaskHeader = ({ taskIndex, xp, secondsLeft, subtitle }) => {
     <div className="mb-6">
       <div className="flex items-center gap-1.5 mb-4" aria-hidden="true">
         {TASKS.map((t, i) => (
-          <span key={t.key} className={`h-2 flex-1 rounded-full ${i < taskIndex ? 'bg-emerald-500' : i === taskIndex ? 'bg-[#DE5C2B]' : 'bg-slate-200'}`} />
+          <span key={t.key} className={`h-3 flex-1 rounded-full border-2 border-[#16130F] ${i < taskIndex ? 'bg-[#14837E]' : i === taskIndex ? 'bg-[#F2B705]' : 'bg-white'}`} />
         ))}
       </div>
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div className="flex items-center gap-3">
-          <span className="w-10 h-10 rounded-2xl bg-orange-50 border border-orange-100 text-[#DE5C2B] flex items-center justify-center">
+          <span className="w-11 h-11 rounded-full bg-[#14837E] border-2 border-[#16130F] text-white flex items-center justify-center shadow-[2px_2px_0_#16130F] shrink-0">
             <Icon className="w-5 h-5" />
           </span>
           <div>
-            <p className="text-[11px] font-black uppercase tracking-wider text-slate-400">Task {taskIndex + 1} of {TASKS.length}</p>
-            <h2 className="font-outfit text-xl sm:text-2xl font-black text-slate-900 leading-tight">{task.label}</h2>
+            <p className="text-[11px] font-black uppercase tracking-wider text-[#5B544A]">Task {taskIndex + 1} of {TASKS.length}</p>
+            <h2 className="font-urbanist text-xl sm:text-2xl font-black text-[#16130F] leading-tight tracking-[-0.02em]">{task.label}</h2>
           </div>
         </div>
         <div className="flex items-center gap-2">
           {typeof secondsLeft === 'number' && (
-            <span className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border text-[13px] font-bold ${secondsLeft <= 10 ? 'bg-rose-50 border-rose-200 text-rose-700' : 'bg-white border-slate-200 text-slate-700'}`}>
+            <span className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border-2 border-[#16130F] text-[13px] font-bold ${secondsLeft <= 10 ? 'bg-[#D0362E] text-white' : 'bg-white text-[#16130F]'}`}>
               <Clock className="w-3.5 h-3.5" /> {formatTime(secondsLeft)}
             </span>
           )}
-          <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-amber-50 border border-amber-200 text-amber-800 text-[13px] font-black">
-            <Zap className="w-3.5 h-3.5 fill-amber-400 text-amber-500" /> {xp} XP
+          <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#F2B705] border-2 border-[#16130F] text-[#16130F] text-[13px] font-black">
+            <Zap className="w-3.5 h-3.5 fill-[#16130F] text-[#16130F]" /> {xp} XP
           </span>
         </div>
       </div>
-      {subtitle && <p className="mt-3 text-[14px] text-slate-600">{subtitle}</p>}
+      {subtitle && <p className="mt-3 text-[14px] text-[#5B544A]">{subtitle}</p>}
     </div>
   );
 };
@@ -133,12 +136,12 @@ const WordRound = ({ round, roundNumber, xp, onDone }) => {
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2.5">
         {round.map(({ word, real }) => {
           const isOn = selected.has(word);
-          let style = isOn ? 'bg-orange-50 border-[#DE5C2B] text-[#86351A]' : 'bg-white border-slate-200 text-slate-800 hover:border-slate-300';
+          let style = isOn ? 'bg-[#F2B705] border-[#16130F] text-[#16130F] shadow-[3px_3px_0_#16130F] -translate-y-0.5' : 'bg-white border-[#16130F] text-[#16130F] hover:bg-[#FFF1B8]';
           if (revealed) {
-            if (isOn && real) style = 'bg-emerald-50 border-emerald-400 text-emerald-800';
-            else if (isOn && !real) style = 'bg-rose-50 border-rose-300 text-rose-700 line-through';
-            else if (!isOn && real) style = 'bg-white border-dashed border-emerald-400 text-emerald-700';
-            else style = 'bg-slate-50 border-slate-200 text-slate-400';
+            if (isOn && real) style = 'bg-[#DDF3EF] border-[#14837E] text-[#0F5F5B]';
+            else if (isOn && !real) style = 'bg-[#FCE3DA] border-[#D0362E] text-[#A62A23] line-through';
+            else if (!isOn && real) style = 'bg-white border-dashed border-[#14837E] text-[#14837E]';
+            else style = 'bg-[#FFF6E5] border-[#16130F33] text-[#8A7F70]';
           }
           return (
             <button
@@ -147,7 +150,7 @@ const WordRound = ({ round, roundNumber, xp, onDone }) => {
               aria-pressed={isOn}
               disabled={revealed}
               onClick={() => toggle(word)}
-              className={`px-3 py-3 rounded-2xl border-2 text-[15px] font-bold transition-colors ${revealed ? 'cursor-default' : 'cursor-pointer'} ${style}`}
+              className={`no-shine px-3 py-3 rounded-xl border-2 text-[15px] font-bold transition-all ${revealed ? 'cursor-default' : 'cursor-pointer'} ${style}`}
             >
               {word}
             </button>
@@ -157,10 +160,10 @@ const WordRound = ({ round, roundNumber, xp, onDone }) => {
 
       {revealed ? (
         <div className="mt-6 flex flex-wrap items-center justify-between gap-3">
-          <p className="text-[14px] text-slate-700">
-            <strong className="text-emerald-700">{correct} of {realTotal}</strong> real words found
-            {wrong > 0 && <>, <strong className="text-rose-600">{wrong} made-up</strong> picked</>}.
-            <span className="block text-[12px] text-slate-500 mt-0.5">Dashed green = real words you missed.</span>
+          <p className="text-[14px] text-[#3D362E]">
+            <strong className="text-[#14837E]">{correct} of {realTotal}</strong> real words found
+            {wrong > 0 && <>, <strong className="text-[#D0362E]">{wrong} made-up</strong> picked</>}.
+            <span className="block text-[12px] text-[#5B544A] mt-0.5">Dashed green = real words you missed.</span>
           </p>
           <button type="button" className={primaryBtn} onClick={() => onDone({ score: Math.max(0, correct - wrong), total: realTotal, xp: correct * 10 })}>
             {roundNumber < WORD_ROUNDS ? 'Next round' : 'Continue'} <ArrowRight className="w-4 h-4" />
@@ -220,7 +223,7 @@ const BlanksTask = ({ xp, onDone }) => {
         secondsLeft={revealed ? undefined : left}
         subtitle="Type the missing letters to complete the words in the paragraph."
       />
-      <div className="rounded-2xl bg-[#FAF9F6] border border-slate-200 p-5 sm:p-6 text-[16px] sm:text-[17px] leading-[2.4] text-slate-800">
+      <div className="rounded-xl bg-[#FFF6E5] border-2 border-[#16130F] p-5 sm:p-6 text-[16px] sm:text-[17px] leading-[2.4] text-[#16130F]">
         {parts.map((part) => {
           if (part.type === 'text') return <span key={part.key}>{part.value}</span>;
           const right = isRight(part);
@@ -238,11 +241,11 @@ const BlanksTask = ({ xp, onDone }) => {
                 spellCheck={false}
                 style={{ width: `${part.missing.length + 1.6}ch` }}
                 className={`mx-0.5 px-1 py-0.5 rounded-md border-b-2 text-[16px] font-semibold outline-none bg-white ${
-                  !revealed ? 'border-slate-300 focus:border-[#DE5C2B]' : right ? 'border-emerald-500 text-emerald-700 bg-emerald-50' : 'border-rose-400 text-rose-700 bg-rose-50'
+                  !revealed ? 'border-[#16130F66] focus:border-[#14837E]' : right ? 'border-[#14837E] text-[#0F5F5B] bg-[#DDF3EF]' : 'border-[#D0362E] text-[#A62A23] bg-[#FCE3DA]'
                 }`}
               />
               {revealed && !right && (
-                <span className="ml-1 text-[12px] font-bold text-emerald-700">{part.word}</span>
+                <span className="ml-1 text-[12px] font-bold text-[#14837E]">{part.word}</span>
               )}
             </span>
           );
@@ -251,7 +254,7 @@ const BlanksTask = ({ xp, onDone }) => {
 
       {revealed ? (
         <div className="mt-6 flex flex-wrap items-center justify-between gap-3">
-          <p className="text-[14px] text-slate-700"><strong className="text-emerald-700">{correct} of {blanks.length}</strong> words completed correctly.</p>
+          <p className="text-[14px] text-[#3D362E]"><strong className="text-[#14837E]">{correct} of {blanks.length}</strong> words completed correctly.</p>
           <button type="button" className={primaryBtn} onClick={() => onDone({ accuracy: correct / blanks.length, xp: correct * 10 })}>
             Continue <ArrowRight className="w-4 h-4" />
           </button>
@@ -305,7 +308,7 @@ const ListenItem = ({ sentence, number, xp, onNext }) => {
         <button type="button" onClick={play} disabled={plays >= MAX_PLAYS || checked} className={accentBtn}>
           <Volume2 className="w-4 h-4" /> {plays === 0 ? 'Play audio' : 'Play again'}
         </button>
-        <span className="text-[13px] font-semibold text-slate-500">{MAX_PLAYS - plays} {MAX_PLAYS - plays === 1 ? 'play' : 'plays'} left</span>
+        <span className="text-[13px] font-semibold text-[#5B544A]">{MAX_PLAYS - plays} {MAX_PLAYS - plays === 1 ? 'play' : 'plays'} left</span>
       </div>
       <input
         type="text"
@@ -315,12 +318,12 @@ const ListenItem = ({ sentence, number, xp, onNext }) => {
         placeholder="Type the sentence here…"
         aria-label="Type the sentence you heard"
         autoComplete="off"
-        className="mt-4 w-full px-4 py-3.5 rounded-2xl border-2 border-slate-200 focus:border-[#DE5C2B] outline-none text-[16px] font-semibold text-slate-800 bg-white"
+        className="mt-4 w-full px-4 py-3.5 rounded-xl border-2 border-[#16130F] focus:shadow-[3px_3px_0_#14837E] outline-none text-[16px] font-semibold text-[#16130F] bg-white placeholder:text-[#8A7F70] transition-shadow"
       />
       {checked && (
-        <div className={`mt-4 rounded-2xl border p-4 ${accuracy >= 0.8 ? 'bg-emerald-50 border-emerald-200' : 'bg-amber-50 border-amber-200'}`}>
-          <p className="text-[13px] font-bold text-slate-800">{Math.round(accuracy * 100)}% of the words correct</p>
-          <p className="text-[14px] text-slate-700 mt-1">Correct sentence: <strong>{sentence}</strong></p>
+        <div className={`mt-4 rounded-xl border-2 border-[#16130F] p-4 ${accuracy >= 0.8 ? 'bg-[#DDF3EF]' : 'bg-[#FFF1B8]'}`}>
+          <p className="text-[13px] font-bold text-[#16130F]">{Math.round(accuracy * 100)}% of the words correct</p>
+          <p className="text-[14px] text-[#3D362E] mt-1">Correct sentence: <strong>{sentence}</strong></p>
         </div>
       )}
       <div className="mt-6 flex justify-end">
@@ -348,7 +351,7 @@ const ListenTask = ({ xp, onDone }) => {
     return (
       <>
         <TaskHeader taskIndex={2} xp={xp} />
-        <p className="rounded-2xl bg-amber-50 border border-amber-200 p-4 text-[14px] text-amber-900">
+        <p className="rounded-xl bg-[#FFF1B8] border-2 border-[#16130F] p-4 text-[14px] text-[#16130F]">
           Your browser can&apos;t play the practice audio. Try Chrome or Edge, or skip this task.
         </p>
         <div className="mt-6 flex justify-end">
@@ -439,7 +442,7 @@ const PhotoTask = ({ xp, onDone }) => {
         subtitle="Write one or more sentences describing the photo. You have 1 minute; then get AI feedback on your answer."
       />
       <div className="grid md:grid-cols-2 gap-5">
-        <img src={photo.src} alt="Describe this photo" className="w-full h-64 md:h-full max-h-[320px] object-cover rounded-2xl border border-slate-200" />
+        <img src={photo.src} alt="Describe this photo" className="w-full h-64 md:h-full max-h-[320px] object-cover rounded-xl border-[3px] border-[#16130F] shadow-[4px_4px_0_#16130F]" />
         <div className="flex flex-col">
           <textarea
             value={text}
@@ -449,48 +452,48 @@ const PhotoTask = ({ xp, onDone }) => {
             maxLength={1500}
             placeholder="In this photo, I can see…"
             aria-label="Your description of the photo"
-            className="flex-1 w-full px-4 py-3 rounded-2xl border-2 border-slate-200 focus:border-[#DE5C2B] outline-none text-[15px] text-slate-800 bg-white resize-none"
+            className="flex-1 w-full px-4 py-3 rounded-xl border-2 border-[#16130F] focus:shadow-[3px_3px_0_#14837E] outline-none text-[15px] text-[#16130F] bg-white placeholder:text-[#8A7F70] resize-none transition-shadow"
           />
-          <div className="mt-2 flex items-center justify-between text-[12px] font-semibold text-slate-500">
+          <div className="mt-2 flex items-center justify-between text-[12px] font-semibold text-[#5B544A]">
             <span>{words} {words === 1 ? 'word' : 'words'}</span>
-            {timeUp && <span className="text-rose-600">Time&apos;s up</span>}
+            {timeUp && <span className="text-[#D0362E]">Time&apos;s up</span>}
           </div>
         </div>
       </div>
 
       {error && (
-        <p role="alert" className="mt-4 rounded-xl bg-rose-50 border border-rose-200 px-4 py-3 text-[13px] font-semibold text-rose-700">{error}</p>
+        <p role="alert" className="mt-4 rounded-xl bg-[#FCE3DA] border-2 border-[#D0362E] px-4 py-3 text-[13px] font-semibold text-[#A62A23]">{error}</p>
       )}
 
       {status === 'done' && evaluation && (
-        <div className="mt-5 rounded-2xl bg-[#FAF9F6] border border-slate-200 p-5 space-y-3">
+        <div className="mt-5 rounded-xl bg-[#FFF6E5] border-[3px] border-[#16130F] shadow-[4px_4px_0_#14837E] p-5 space-y-3">
           <div className="flex flex-wrap items-center gap-3">
             {evaluation.estimatedScore && (
-              <span className="font-outfit text-3xl font-black text-slate-900">{evaluation.estimatedScore}<span className="text-base text-slate-400 font-bold"> / 160</span></span>
+              <span className="font-urbanist text-3xl font-black text-[#16130F]">{evaluation.estimatedScore}<span className="text-base text-[#8A7F70] font-bold"> / 160</span></span>
             )}
-            {evaluation.level && <span className="px-3 py-1 rounded-full bg-orange-50 border border-orange-200 text-[12px] font-bold text-[#C04A1D]">{evaluation.level}</span>}
-            <span className="text-[11px] font-semibold text-slate-400">AI practice estimate for this task</span>
+            {evaluation.level && <span className="px-3 py-1 rounded-full bg-[#F2B705] border-2 border-[#16130F] text-[12px] font-bold text-[#16130F]">{evaluation.level}</span>}
+            <span className="text-[11px] font-semibold text-[#8A7F70]">AI practice estimate for this task</span>
           </div>
           {evaluation.strengths.length > 0 && (
             <div>
-              <p className="text-[12px] font-black uppercase tracking-wider text-emerald-700">What went well</p>
+              <p className="text-[12px] font-black uppercase tracking-wider text-[#14837E]">What went well</p>
               <ul className="mt-1 space-y-1">
-                {evaluation.strengths.map((s) => <li key={s} className="flex gap-2 text-[14px] text-slate-700"><Check className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />{s}</li>)}
+                {evaluation.strengths.map((s) => <li key={s} className="flex gap-2 text-[14px] text-[#3D362E]"><Check className="w-4 h-4 text-[#14837E] shrink-0 mt-0.5" />{s}</li>)}
               </ul>
             </div>
           )}
           {evaluation.improvements.length > 0 && (
             <div>
-              <p className="text-[12px] font-black uppercase tracking-wider text-[#C04A1D]">To improve</p>
+              <p className="text-[12px] font-black uppercase tracking-wider text-[#D0362E]">To improve</p>
               <ul className="mt-1 space-y-1">
-                {evaluation.improvements.map((s) => <li key={s} className="flex gap-2 text-[14px] text-slate-700"><ArrowRight className="w-4 h-4 text-[#DE5C2B] shrink-0 mt-0.5" />{s}</li>)}
+                {evaluation.improvements.map((s) => <li key={s} className="flex gap-2 text-[14px] text-[#3D362E]"><ArrowRight className="w-4 h-4 text-[#D0362E] shrink-0 mt-0.5" />{s}</li>)}
               </ul>
             </div>
           )}
           {evaluation.improvedVersion && (
-            <div className="rounded-xl bg-white border border-slate-200 p-3">
-              <p className="text-[12px] font-black uppercase tracking-wider text-slate-500">A stronger answer</p>
-              <p className="mt-1 text-[14px] text-slate-700 italic">{evaluation.improvedVersion}</p>
+            <div className="rounded-xl bg-white border-2 border-[#16130F] p-3">
+              <p className="text-[12px] font-black uppercase tracking-wider text-[#5B544A]">A stronger answer</p>
+              <p className="mt-1 text-[14px] text-[#3D362E] italic">{evaluation.improvedVersion}</p>
             </div>
           )}
         </div>
@@ -519,12 +522,12 @@ const PhotoTask = ({ xp, onDone }) => {
 // ── Results ────────────────────────────────────────────────────────────────
 const ResultRow = ({ label, value, note }) => (
   <div>
-    <div className="flex items-center justify-between text-[13px] font-semibold text-slate-700">
+    <div className="flex items-center justify-between text-[13px] font-semibold text-[#3D362E]">
       <span>{label}</span>
       <span>{value === null ? note : `${Math.round(value * 100)}%`}</span>
     </div>
-    <div className="mt-1.5 h-2.5 rounded-full bg-slate-100 overflow-hidden">
-      <div className="h-full rounded-full bg-[#DE5C2B]" style={{ width: `${value === null ? 0 : Math.round(value * 100)}%` }} />
+    <div className="mt-1.5 h-3.5 rounded-full bg-white border-2 border-[#16130F] overflow-hidden">
+      <div className="h-full bg-[#14837E]" style={{ width: `${value === null ? 0 : Math.round(value * 100)}%` }} />
     </div>
   </div>
 );
@@ -538,22 +541,23 @@ const Results = ({ outcome, onRestart }) => {
   return (
     <div>
       <div className="text-center">
-        <span className="inline-flex w-14 h-14 rounded-2xl bg-amber-50 border border-amber-200 text-amber-500 items-center justify-center">
+        <span className="inline-flex w-16 h-16 rounded-full bg-[#F2B705] border-[3px] border-[#16130F] text-[#16130F] items-center justify-center shadow-[3px_3px_0_#16130F] -rotate-6">
           <Trophy className="w-7 h-7" />
         </span>
-        <h2 className="mt-3 font-outfit text-2xl sm:text-3xl font-black text-slate-900">Practice complete!</h2>
-        <p className="mt-1 text-[14px] text-slate-600">Your practice estimate on the Duolingo English Test scale</p>
-        <p className="mt-3 font-outfit text-5xl font-black text-[#DE5C2B]">{low}–{high}</p>
-        <p className="mt-1 text-[12px] text-slate-400">out of 160 · an estimate from this short practice, not an official score</p>
+        <p className="mt-4 font-['Rozha_One',serif] text-[16px] text-[#D0362E] leading-none">शाबाश</p>
+        <h2 className="mt-1 font-urbanist text-2xl sm:text-3xl font-black text-[#16130F] tracking-[-0.02em]">Practice complete!</h2>
+        <p className="mt-1 text-[14px] text-[#5B544A]">Your practice estimate on the Duolingo English Test scale</p>
+        <p className="mt-3 inline-block px-5 py-2 bg-[#14837E] text-white border-[3px] border-[#16130F] shadow-[4px_4px_0_#16130F] rounded-xl font-urbanist text-5xl font-black tracking-[-0.03em]">{low}–{high}</p>
+        <p className="mt-2 text-[12px] text-[#8A7F70]">out of 160 · an estimate from this short practice, not an official score</p>
         <div className="mt-4 flex flex-wrap items-center justify-center gap-2">
-          <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-amber-50 border border-amber-200 text-amber-800 text-[13px] font-black">
-            <Zap className="w-3.5 h-3.5 fill-amber-400 text-amber-500" /> +{xp} XP
+          <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#F2B705] border-2 border-[#16130F] text-[#16130F] text-[13px] font-black">
+            <Zap className="w-3.5 h-3.5 fill-[#16130F] text-[#16130F]" /> +{xp} XP
           </span>
-          <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-orange-50 border border-orange-200 text-[#C04A1D] text-[13px] font-black">
-            <Flame className="w-3.5 h-3.5 fill-orange-400 text-orange-500" /> {progress.streak}-day streak
+          <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#D0362E] border-2 border-[#16130F] text-white text-[13px] font-black">
+            <Flame className="w-3.5 h-3.5 fill-[#F2B705] text-[#F2B705]" /> {progress.streak}-day streak
           </span>
           {progress.best > 0 && (
-            <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white border border-slate-200 text-slate-700 text-[13px] font-bold">
+            <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white border-2 border-[#16130F] text-[#16130F] text-[13px] font-bold">
               Best so far: {progress.best}
             </span>
           )}
@@ -571,10 +575,10 @@ const Results = ({ outcome, onRestart }) => {
         />
       </div>
 
-      <div className="mt-7 rounded-2xl bg-[#FFF7F3] border border-orange-100 p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="mt-7 rounded-xl bg-[#FFF1B8] border-[3px] border-[#16130F] shadow-[4px_4px_0_#16130F] p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <p className="font-bold text-slate-900">Want a plan to reach your target score?</p>
-          <p className="text-[13px] text-slate-600 mt-0.5">Talk to a UniCoach counsellor for free about the test your universities accept.</p>
+          <p className="font-urbanist font-black text-[16px] text-[#16130F]">Want a plan to reach your target score?</p>
+          <p className="text-[13px] text-[#5B544A] mt-0.5">Talk to a UniCoach counsellor for free about the test your universities accept.</p>
         </div>
         <button type="button" className={primaryBtn} onClick={() => openEligibilityModal?.('Duolingo Practice Test')}>
           Book free counselling <ArrowRight className="w-4 h-4" />
@@ -587,7 +591,7 @@ const Results = ({ outcome, onRestart }) => {
         </button>
         <Link to="/exams/duolingo/syllabus" className={secondaryBtn}>About the real test</Link>
       </div>
-      <p className="mt-4 text-center text-[12px] text-slate-500">Come back tomorrow to keep your streak going.</p>
+      <p className="mt-4 text-center text-[12px] text-[#5B544A]">Come back tomorrow to keep your streak going.</p>
     </div>
   );
 };
@@ -599,28 +603,29 @@ const Intro = ({ onStart }) => {
   return (
     <div>
       <div className="flex flex-wrap items-center gap-2">
-        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-700 text-[12px] font-bold">Free · No sign-up to start</span>
+        <Sticker bg="#DDF3EF" tilt={-1.5}>Free · No sign-up to start</Sticker>
         {streak > 0 && (
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-orange-50 border border-orange-200 text-[#C04A1D] text-[12px] font-black">
-            <Flame className="w-3.5 h-3.5 fill-orange-400 text-orange-500" /> {streak}-day streak
-          </span>
+          <Sticker bg="#D0362E" fg="#FFFFFF" tilt={1.5}>
+            <Flame className="w-3.5 h-3.5 fill-[#F2B705] text-[#F2B705]" /> {streak}-day streak
+          </Sticker>
         )}
       </div>
-      <h1 className="mt-4 font-outfit text-3xl sm:text-4xl font-black text-slate-900 tracking-tight">
-        Free Duolingo English Test <span className="text-[#DE5C2B]">practice</span>
+      <p className="mt-5 font-['Rozha_One',serif] text-[16px] text-[#D0362E] leading-none">मुफ़्त अभ्यास</p>
+      <h1 className="mt-1.5 font-urbanist text-3xl sm:text-4xl font-black text-[#16130F] tracking-[-0.03em] leading-[1.05]">
+        Free Duolingo English Test <span className="px-1.5 bg-[#F2B705] border-2 border-[#16130F] rounded-md inline-block -rotate-1">practice</span>
       </h1>
-      <p className="mt-3 text-[15px] sm:text-[16px] text-slate-600 max-w-2xl leading-relaxed">
+      <p className="mt-3 text-[15px] sm:text-[16px] text-[#5B544A] max-w-2xl leading-relaxed">
         Four short tasks in the same style as the real DET, about 8 minutes in all. Earn XP, keep a daily streak, and see a practice estimate of your score at the end.
       </p>
       <div className="mt-6 grid sm:grid-cols-2 gap-3">
         {TASKS.map((task, i) => {
           const Icon = task.icon;
           return (
-            <div key={task.key} className="flex items-center gap-3 rounded-2xl border border-slate-200 bg-white p-4">
-              <span className="w-10 h-10 rounded-xl bg-orange-50 border border-orange-100 text-[#DE5C2B] flex items-center justify-center shrink-0"><Icon className="w-5 h-5" /></span>
-              <div>
-                <p className="text-[14px] font-bold text-slate-900">{i + 1}. {task.label}</p>
-                <p className="text-[12px] text-slate-500">{task.minutes}{task.key === 'photo' ? ' · AI feedback after free sign-in' : ''}</p>
+            <div key={task.key} className="flex items-center gap-3 rounded-xl border-[3px] border-[#16130F] bg-white p-4 shadow-[4px_4px_0_#16130F]">
+              <span className="w-10 h-10 rounded-full border-2 border-[#16130F] flex items-center justify-center shrink-0" style={{ background: DESI_TONES[i % 4].c, color: DESI_TONES[i % 4].fg }}><Icon className="w-5 h-5" /></span>
+              <div className="min-w-0">
+                <p className="text-[14px] font-bold text-[#16130F]">{i + 1}. {task.label}</p>
+                <p className="text-[12px] text-[#5B544A]">{task.minutes}{task.key === 'photo' ? ' · AI feedback after free sign-in' : ''}</p>
               </div>
             </div>
           );
@@ -630,7 +635,7 @@ const Intro = ({ onStart }) => {
         <button type="button" className={primaryBtn} onClick={onStart}>
           Start practice <ArrowRight className="w-4 h-4" />
         </button>
-        {progress.best > 0 && <span className="text-[13px] font-semibold text-slate-500">Your best so far: {progress.best}</span>}
+        {progress.best > 0 && <span className="text-[13px] font-semibold text-[#5B544A]">Your best so far: {progress.best}</span>}
       </div>
     </div>
   );
@@ -679,12 +684,16 @@ const DuolingoPracticeTestPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#FAF9F6] pt-[88px] sm:pt-[100px] pb-16">
-      <div className="max-w-3xl mx-auto px-4 sm:px-6">
-        <div className="mb-4">
+    <main className="min-h-screen bg-[#FFF6E5] pb-16 font-['Onest',sans-serif] text-[#16130F]">
+      {/* ── Teal poster band with the station sign; the practice card overlaps it ── */}
+      <section className="bg-[#14837E] px-4 sm:px-6 pt-[88px] sm:pt-[100px] pb-24 sm:pb-28">
+        <div className="max-w-3xl mx-auto flex flex-wrap items-center justify-between gap-4">
           <BackButton fallback="/exams/duolingo" />
+          <StationSign hi="डुओलिंगो" en="DUOLINGO DESK" className="rotate-[-1.5deg]" />
         </div>
-        <div className="bg-white border border-slate-200 rounded-[28px] p-5 sm:p-8 shadow-[0_18px_40px_-24px_rgba(15,23,42,0.25)]">
+      </section>
+      <div className="max-w-3xl mx-auto px-4 sm:px-6 -mt-16 sm:-mt-20 relative z-10">
+        <div className="bg-white border-[3px] border-[#16130F] rounded-[18px] p-5 sm:p-8 shadow-[6px_6px_0_#16130F]">
           {stage === 'intro' && <Intro onStart={() => setStage('select')} />}
           {stage === 'select' && <ReadSelectTask key={`select-${attempt}`} xp={xp} onDone={(r) => record('select', r, 'blanks')} />}
           {stage === 'blanks' && <BlanksTask key={`blanks-${attempt}`} xp={xp} onDone={(r) => record('blanks', r, 'listen')} />}
@@ -692,11 +701,20 @@ const DuolingoPracticeTestPage = () => {
           {stage === 'photo' && <PhotoTask key={`photo-${attempt}`} xp={xp} onDone={(r) => record('photo', r, 'results')} />}
           {stage === 'results' && outcome && <Results outcome={outcome} onRestart={restart} />}
         </div>
-        <p className="mt-4 text-center text-[11px] text-slate-400">
+        <p className="mt-4 text-center text-[11px] text-[#8A7F70]">
           UniCoach practice material. Not affiliated with or endorsed by Duolingo. &ldquo;Duolingo English Test&rdquo; is a trademark of Duolingo, Inc.
         </p>
       </div>
-    </div>
+
+      {/* Closing CTA */}
+      <div className="max-w-[1240px] mx-auto px-4 md:px-8 mt-14">
+        <BookOkCta
+          hi="टारगेट स्कोर का प्लान"
+          title="Book OK Please."
+          text="Practice ho gayi, ab target score ka plan? Free 1:1 call mein mentor se poocho."
+        />
+      </div>
+    </main>
   );
 };
 

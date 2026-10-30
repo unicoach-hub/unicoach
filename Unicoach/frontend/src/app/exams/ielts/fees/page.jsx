@@ -2,27 +2,69 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import {
   BookOpen,
-  Calendar,
-  DollarSign,
-  GraduationCap,
-  Clock,
-  MapPin,
-  FileText,
-  Compass,
   ArrowRight,
   ChevronRight,
-  UserCheck,
-  AlertTriangle,
-  Volume2,
-  FileEdit,
-  Mic,
-  ArrowUpRight,
-  CheckCircle2,
-  HelpCircle
+  ChevronDown,
+  Lightbulb,
+  IndianRupee,
+  RefreshCw,
+  Ban,
 } from 'lucide-react';
 import { API_BASE_URL } from '../../../../config';
 import { SourceStat } from '../../../../components/ui/BrandElements';
 import { BarCompare } from '../../../../components/ui/Infographics';
+import { DesiHero, DesiHeading, InkCard, Sticker } from '../../../../components/desi/DesiKit';
+import { DESI_TONES } from '../../../../components/desi/desiTokens';
+import { BookOkCta } from '../../../../components/desi/BookOkCta';
+
+// Section heading with a short Hindi kicker (h3 level)
+const SubHead = ({ hi, children, className = '' }) => (
+  <div className={className}>
+    <p className="font-['Rozha_One',serif] text-[15px] leading-none text-[#D0362E]">{hi}</p>
+    <h3 className="mt-1 font-urbanist font-black text-[21px] sm:text-[24px] leading-[1.1] tracking-[-0.02em] text-[#16130F]">{children}</h3>
+  </div>
+);
+
+// Ink-bordered table shell: wide tables scroll inside their own box
+const InkTable = ({ children }) => (
+  <div className="overflow-x-auto bg-white border-[3px] border-[#16130F] rounded-xl shadow-[5px_5px_0_#16130F] my-6">
+    <table className="w-full min-w-[420px] text-left text-[13.5px]">{children}</table>
+  </div>
+);
+
+// FAQ accordion with ink borders
+const FaqItem = ({ q, a }) => (
+  <details className="group bg-white border-[3px] border-[#16130F] rounded-xl overflow-hidden shadow-[4px_4px_0_#16130F] open:shadow-[4px_4px_0_#D0362E]">
+    <summary className="flex items-center justify-between gap-3 p-4 cursor-pointer list-none select-none font-bold text-[14.5px] text-[#16130F] [&::-webkit-details-marker]:hidden">
+      <span>{q}</span>
+      <span className="w-7 h-7 rounded-full border-2 border-[#16130F] bg-white grid place-items-center shrink-0 transition-transform group-open:rotate-180 group-open:bg-[#F2B705]">
+        <ChevronDown size={15} />
+      </span>
+    </summary>
+    <div className="px-4 pb-4 pt-3 border-t-2 border-dashed border-[#16130F33] text-[#5B544A] text-[14px] leading-relaxed">
+      {a}
+    </div>
+  </details>
+);
+
+// Grid of related links inside one ink box
+const LinkGrid = ({ hi, title, links, getLink }) => (
+  <div>
+    <SubHead hi={hi}>{title}</SubHead>
+    <div className="mt-5 grid grid-cols-1 md:grid-cols-3 bg-white border-[3px] border-[#16130F] rounded-xl overflow-hidden shadow-[4px_4px_0_#16130F]">
+      {links.map((link) => (
+        <Link
+          key={link}
+          to={getLink(link)}
+          className="group p-4 flex items-center justify-between gap-3 border-b-2 md:border-r-2 border-[#16130F]/10 hover:bg-[#FFF1B8] transition-colors cursor-pointer"
+        >
+          <span className="text-[13px] font-bold text-[#3D362E] group-hover:text-[#16130F]">{link}</span>
+          <ArrowRight size={13} className="shrink-0 text-[#D0362E] group-hover:translate-x-1 transition-transform" />
+        </Link>
+      ))}
+    </div>
+  </div>
+);
 
 const IELTSFeesPage = () => {
   const [dbBlogs, setDbBlogs] = React.useState([]);
@@ -167,114 +209,126 @@ const IELTSFeesPage = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-slate-50 pt-28 pb-20">
-      <div className="max-w-[1400px] mx-auto px-6 md:px-10">
-        
-        {/* Breadcrumb */}
-        <div className="flex items-center gap-2 text-xs font-bold text-slate-400 uppercase tracking-widest mb-6">
-          <Link to="/" className="hover:text-indigo-600 transition-colors">Home</Link>
-          <ChevronRight size={12} />
-          <span className="hover:text-indigo-600 transition-colors">Exams</span>
-          <ChevronRight size={12} />
-          <span className="text-slate-650">IELTS</span>
-          <ChevronRight size={12} />
-          <span className="text-slate-600">IELTS Exam Fees</span>
-        </div>
+    <div className="min-h-screen bg-[#FFF6E5] pb-16 font-['Onest',sans-serif] text-[#16130F]">
+      {/* ── HERO ── */}
+      <DesiHero
+        tone="peach"
+        sign={{ hi: 'फ़ीस', en: 'IELTS FEES' }}
+        crumbs={[{ label: 'Home', to: '/' }, { label: 'Exams' }, { label: 'IELTS' }, { label: 'IELTS Exam Fees' }]}
+        title="IELTS Exam Fees 2026 in India (Updated April 1)"
+        subtitle="Updated registration base fees, rechecking costs, cancellation policies, and rescheduling charges."
+        stickers={(
+          <>
+            <Sticker tilt={-2}><BookOpen size={14} />IELTS Reference Guide</Sticker>
+            <Sticker bg="#F2B705" tilt={1.5}><IndianRupee size={14} />Registration</Sticker>
+            <Sticker bg="#DDF3EF" tilt={-1}><RefreshCw size={14} />Rechecking</Sticker>
+            <Sticker bg="#FBD9E6" tilt={1}><Ban size={14} />Cancellation</Sticker>
+          </>
+        )}
+      />
 
-        {/* Title Header Card */}
-        <div className="uc-clean relative rounded-[2.5rem] p-8 md:p-14 overflow-hidden mb-12 shadow-xl border">
-          <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-indigo-500/10 rounded-full blur-3xl pointer-events-none" />
-          <div className="relative z-10 max-w-3xl">
-            <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-indigo-500/20 border border-indigo-500/30 text-indigo-300 text-xs font-extrabold uppercase tracking-widest mb-6">
-              IELTS Reference Guide
-            </span>
-            <h1 className="text-2xl md:text-5xl font-black leading-tight tracking-tight mb-6">
-              IELTS Exam Fees 2026 in India (Updated April 1)
-            </h1>
-            <p className="text-indigo-200/90 text-sm md:text-base leading-relaxed font-semibold">
-              Updated registration base fees, rechecking costs, cancellation policies, and rescheduling charges.
-            </p>
+      {/* ── GUIDE PICKER (phones and tablets) ── */}
+      <div className="lg:hidden max-w-[1400px] mx-auto px-4 -mt-6 mb-8 relative z-10">
+        <InkCard className="p-3">
+          <p className="font-['Rozha_One',serif] text-[14px] text-[#D0362E] leading-none px-1 mb-2">आइल्ट्स गाइड</p>
+          <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-hide">
+            {sidebarLinks.map((linkItem) => {
+              const isActive = linkItem.key === 'fees';
+              return (
+                <Link
+                  key={linkItem.key}
+                  to={linkItem.path}
+                  className={`px-3.5 py-2 rounded-full border-2 text-xs font-bold whitespace-nowrap flex-shrink-0 ${isActive ? 'border-[#16130F] bg-[#D0362E] text-white shadow-[2px_2px_0_#16130F]' : 'border-[#E6DCC8] bg-[#FFF6E5] text-[#5B544A]'}`}
+                >
+                  {linkItem.name}
+                </Link>
+              );
+            })}
           </div>
-        </div>
+        </InkCard>
+      </div>
+
+      <div className="max-w-[1400px] mx-auto px-4 md:px-8 lg:pt-12">
 
         {/* Layout Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-[210px_minmax(0,1fr)_230px] xl:grid-cols-[250px_minmax(0,1fr)_290px] gap-6 items-start">
-          
+        <div className="grid grid-cols-1 lg:grid-cols-[210px_minmax(0,1fr)_230px] xl:grid-cols-[250px_minmax(0,1fr)_290px] gap-6 lg:gap-7 items-start">
+
           {/* Left Sidebar Links */}
-          <aside className="sticky top-28 bg-white border border-slate-100 p-6 rounded-2xl shadow-sm max-h-[calc(100vh-140px)] overflow-y-auto">
-            <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-4">IELTS Guide Index</p>
-            <nav className="space-y-1">
-              {sidebarLinks.map((linkItem) => {
-                const isActive = linkItem.key === 'fees';
-                return (
-                  <Link
-                    key={linkItem.key}
-                    to={linkItem.path}
-                    className={`w-full text-left py-2 px-3 rounded-xl text-xs font-bold transition-all leading-normal flex items-center justify-between
-                      ${isActive
-                        ? 'bg-indigo-50 text-indigo-650'
-                        : 'text-slate-500 hover:bg-slate-50 hover:text-slate-805'}`}
-                  >
-                    <span>{linkItem.name}</span>
-                    <ChevronRight size={12} className={isActive ? 'text-indigo-500' : 'text-slate-300'} />
-                  </Link>
-                );
-              })}
-            </nav>
+          <aside className="hidden lg:block sticky top-28 max-h-[calc(100vh-140px)] overflow-y-auto pr-2 pb-2">
+            <InkCard className="p-4">
+              <p className="font-['Rozha_One',serif] text-[15px] text-[#D0362E] leading-none">आइल्ट्स गाइड</p>
+              <h3 className="mt-1 mb-3 font-urbanist font-black text-[16px]">IELTS Guide Index</h3>
+              <nav className="flex flex-col gap-1.5">
+                {sidebarLinks.map((linkItem) => {
+                  const isActive = linkItem.key === 'fees';
+                  return (
+                    <Link
+                      key={linkItem.key}
+                      to={linkItem.path}
+                      className={`group w-full text-left py-2 px-3 rounded-lg border-2 text-[13px] font-bold leading-normal flex items-center justify-between gap-2 transition-colors
+                        ${isActive
+                          ? 'border-[#16130F] bg-[#D0362E] text-white shadow-[3px_3px_0_#16130F]'
+                          : 'border-transparent text-[#3D362E] hover:border-[#16130F] hover:bg-[#FFF6E5]'}`}
+                    >
+                      <span>{linkItem.name}</span>
+                      <ChevronRight size={13} className="shrink-0 transition-transform group-hover:translate-x-0.5" />
+                    </Link>
+                  );
+                })}
+              </nav>
+            </InkCard>
           </aside>
 
           {/* Center Content Section */}
-          <main className="bg-white border border-slate-100 p-8 md:p-12 rounded-3xl shadow-sm">
-            <h2 className="text-xl font-black text-slate-900 mb-6 pb-4 border-b border-slate-100">
+          <main className="min-w-0 bg-white border-[3px] border-[#16130F] p-5 sm:p-8 md:p-10 rounded-[18px] shadow-[6px_6px_0_#16130F]">
+            <DesiHeading hi="पूरी जानकारी" className="mb-6 pb-5 border-b-2 border-dashed border-[#16130F33]">
               Detailed Guide Content
-            </h2>
-            <div className="prose max-w-none space-y-8 text-slate-700 text-[15px] leading-relaxed font-normal">
+            </DesiHeading>
+            <div className="max-w-none space-y-8 text-[#3D362E] text-[15px] leading-relaxed">
               <p>
-                For many IELTS aspirants, understanding the financial aspect of taking the test is crucial. Knowing the costs involved helps you plan your budget effectively and avoid unexpected expenses. The IELTS Exam fee for both the Academic and General Training exams has been updated to <strong>INR 19,000 in 2026</strong>.
+                For many IELTS aspirants, understanding the financial aspect of taking the test is crucial. Knowing the costs involved helps you plan your budget effectively and avoid unexpected expenses. The IELTS Exam fee for both the Academic and General Training exams has been updated to <strong className="text-[#16130F]">INR 19,000 in 2026</strong>.
               </p>
               <p>
                 IELTS exam fees can vary based on your location and the specific test format you choose, whether it’s the Academic or General Training test. Additionally, there may be extra charges for services such as rescheduling or cancellation.
               </p>
 
-              <h3 className="text-lg font-black text-slate-900 mt-8 mb-4">1. IELTS Exam Fees in India 2026</h3>
+              <SubHead hi="फ़ीस का हिसाब" className="pt-4">1. IELTS Exam Fees in India 2026</SubHead>
               <p>
                 In India, IDP Education takes charge of the IELTS exam. Even though the cost of taking the IELTS exam is broadly similar worldwide, the prices can vary a bit from one country to another. Below is the breakdown of the fee structure for various IELTS exam types:
               </p>
 
               <SourceStat className="not-prose my-6" value="₹19,000" label="IELTS Academic / General Training fee in India, 2026" source="IDP Education" />
 
-              <div className="overflow-x-auto border border-slate-100 rounded-xl my-6 shadow-sm">
-                <table className="w-full text-left text-xs font-semibold">
-                  <thead className="bg-slate-50 text-slate-500 border-b border-slate-100">
+              <InkTable>
+                  <thead className="bg-[#F2B705] text-[#16130F] border-b-[3px] border-[#16130F]">
                     <tr>
-                      <th className="py-3.5 px-4 font-extrabold">Type of Exam</th>
-                      <th className="py-3.5 px-4 font-extrabold">IELTS Exam Fee in India 2026</th>
+                      <th className="py-3 px-4 font-extrabold uppercase text-[11.5px] tracking-wider">Type of Exam</th>
+                      <th className="py-3 px-4 font-extrabold uppercase text-[11.5px] tracking-wider">IELTS Exam Fee in India 2026</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-slate-100 text-slate-655">
-                    <tr className="hover:bg-slate-50/50">
-                      <td className="py-3.5 px-4 font-bold text-slate-800">Computer-based IELTS exam (Academic / GT)</td>
-                      <td className="py-3.5 px-4 text-indigo-650 font-extrabold">INR 19,000</td>
+                  <tbody className="divide-y-2 divide-[#16130F]/10 text-[#3D362E]">
+                    <tr className="hover:bg-[#FFF6E5]">
+                      <td className="py-3 px-4 font-bold text-[#16130F]">Computer-based IELTS exam (Academic / GT)</td>
+                      <td className="py-3 px-4 text-[#D0362E] font-black whitespace-nowrap">INR 19,000</td>
                     </tr>
-                    <tr className="hover:bg-slate-50/50">
-                      <td className="py-3.5 px-4 font-bold text-slate-800">Paper-based IELTS exam (Academic / GT)</td>
-                      <td className="py-3.5 px-4 text-indigo-650 font-extrabold">INR 19,000</td>
+                    <tr className="hover:bg-[#FFF6E5]">
+                      <td className="py-3 px-4 font-bold text-[#16130F]">Paper-based IELTS exam (Academic / GT)</td>
+                      <td className="py-3 px-4 text-[#D0362E] font-black whitespace-nowrap">INR 19,000</td>
                     </tr>
-                    <tr className="hover:bg-slate-50/50">
-                      <td className="py-3.5 px-4 font-bold text-slate-800">IELTS for UKVI Academic / General Training</td>
-                      <td className="py-3.5 px-4 text-indigo-650 font-extrabold">INR 19,250</td>
+                    <tr className="hover:bg-[#FFF6E5]">
+                      <td className="py-3 px-4 font-bold text-[#16130F]">IELTS for UKVI Academic / General Training</td>
+                      <td className="py-3 px-4 text-[#D0362E] font-black whitespace-nowrap">INR 19,250</td>
                     </tr>
-                    <tr className="hover:bg-slate-50/50">
-                      <td className="py-3.5 px-4 font-bold text-slate-800">IELTS Life Skills (A1 & B1)</td>
-                      <td className="py-3.5 px-4 text-indigo-650 font-extrabold">INR 18,000</td>
+                    <tr className="hover:bg-[#FFF6E5]">
+                      <td className="py-3 px-4 font-bold text-[#16130F]">IELTS Life Skills (A1 &amp; B1)</td>
+                      <td className="py-3 px-4 text-[#D0362E] font-black whitespace-nowrap">INR 18,000</td>
                     </tr>
-                    <tr className="hover:bg-slate-50/50">
-                      <td className="py-3.5 px-4 font-bold text-slate-800">One Skill Retake (OSR)</td>
-                      <td className="py-3.5 px-4 text-indigo-650 font-extrabold">INR 12,650</td>
+                    <tr className="hover:bg-[#FFF6E5]">
+                      <td className="py-3 px-4 font-bold text-[#16130F]">One Skill Retake (OSR)</td>
+                      <td className="py-3 px-4 text-[#D0362E] font-black whitespace-nowrap">INR 12,650</td>
                     </tr>
                   </tbody>
-                </table>
-              </div>
+              </InkTable>
 
               <div>
                 <BarCompare
@@ -290,162 +344,165 @@ const IELTSFeesPage = () => {
                 />
               </div>
 
-              <h3 className="text-lg font-black text-slate-900 mt-8 mb-4">2. IELTS Exam Fees 2026: City-Wise List in India</h3>
+              <SubHead hi="शहर के हिसाब से" className="pt-4">2. IELTS Exam Fees 2026: City-Wise List in India</SubHead>
               <p>
-                Across the major cities of India, there are numerous IDP IELTS centres available to accommodate test-takers. It’s important to note that the <strong>IELTS exam fee remains consistent across all cities</strong> throughout the country.
+                Across the major cities of India, there are numerous IDP IELTS centres available to accommodate test-takers. It’s important to note that the <strong className="text-[#16130F]">IELTS exam fee remains consistent across all cities</strong> throughout the country.
               </p>
 
-              <div className="grid grid-cols-2 sm:grid-cols-5 gap-3.5 my-6">
+              <div className="grid grid-cols-2 sm:grid-cols-5 gap-3 my-6">
                 {['Hyderabad', 'Delhi', 'Bangalore', 'Chennai', 'Mumbai', 'Punjab', 'Pune', 'Kerala', 'Kolkata', 'Ahmedabad'].map((city, idx) => (
-                  <div key={idx} className="bg-slate-50/80 p-3.5 rounded-xl border border-slate-100/70 text-center">
-                    <p className="text-[10px] text-slate-400 font-extrabold uppercase tracking-wider mb-1">{city}</p>
-                    <p className="text-sm font-black text-slate-800">INR 19,000</p>
+                  <div
+                    key={idx}
+                    className="p-3 rounded-lg border-2 border-[#16130F] text-center shadow-[2px_2px_0_#16130F]"
+                    style={{ background: DESI_TONES[idx % 4].soft, transform: `rotate(${idx % 2 ? 1 : -1}deg)` }}
+                  >
+                    <p className="text-[10.5px] text-[#5B544A] font-extrabold uppercase tracking-wider mb-1">{city}</p>
+                    <p className="text-[14px] font-black text-[#16130F]">INR 19,000</p>
                   </div>
                 ))}
               </div>
 
-              <h3 className="text-lg font-black text-slate-900 mt-8 mb-4">3. Payment Modes & Rechecking (EOR) Fees</h3>
+              <SubHead hi="दोबारा जाँच" className="pt-4">3. Payment Modes &amp; Rechecking (EOR) Fees</SubHead>
               <p>
                 Candidates who wish to review their IELTS results for potential score improvement can request a recheck. To initiate this, you must pay the administrative rechecking fee and submit the 'Enquiry on Results (EOR)' form online via the IELTS IDP India website.
               </p>
 
-              <div className="overflow-x-auto border border-slate-100 rounded-xl my-6 shadow-sm">
-                <table className="w-full text-left text-xs font-semibold">
-                  <thead className="bg-slate-50 text-slate-500 border-b border-slate-100">
+              <InkTable>
+                  <thead className="bg-[#F2B705] text-[#16130F] border-b-[3px] border-[#16130F]">
                     <tr>
-                      <th className="py-3.5 px-4 font-extrabold">Type of Exam</th>
-                      <th className="py-3.5 px-4 font-extrabold">EOR Rechecking Fees</th>
+                      <th className="py-3 px-4 font-extrabold uppercase text-[11.5px] tracking-wider">Type of Exam</th>
+                      <th className="py-3 px-4 font-extrabold uppercase text-[11.5px] tracking-wider">EOR Rechecking Fees</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-slate-100 text-slate-655">
-                    <tr className="hover:bg-slate-50/50">
-                      <td className="py-3.5 px-4 font-bold text-slate-800">Computer-delivered IELTS</td>
-                      <td className="py-3.5 px-4 text-slate-700">INR 14,250</td>
+                  <tbody className="divide-y-2 divide-[#16130F]/10 text-[#3D362E]">
+                    <tr className="hover:bg-[#FFF6E5]">
+                      <td className="py-3 px-4 font-bold text-[#16130F]">Computer-delivered IELTS</td>
+                      <td className="py-3 px-4 font-semibold text-[#3D362E] whitespace-nowrap">INR 14,250</td>
                     </tr>
-                    <tr className="hover:bg-slate-50/50">
-                      <td className="py-3.5 px-4 font-bold text-slate-800">Paper-delivered IELTS</td>
-                      <td className="py-3.5 px-4 text-slate-700">INR 14,250</td>
+                    <tr className="hover:bg-[#FFF6E5]">
+                      <td className="py-3 px-4 font-bold text-[#16130F]">Paper-delivered IELTS</td>
+                      <td className="py-3 px-4 font-semibold text-[#3D362E] whitespace-nowrap">INR 14,250</td>
                     </tr>
-                    <tr className="hover:bg-slate-50/50">
-                      <td className="py-3.5 px-4 font-bold text-slate-800">UKVI IELTS</td>
-                      <td className="py-3.5 px-4 text-slate-700">INR 14,400</td>
+                    <tr className="hover:bg-[#FFF6E5]">
+                      <td className="py-3 px-4 font-bold text-[#16130F]">UKVI IELTS</td>
+                      <td className="py-3 px-4 font-semibold text-[#3D362E] whitespace-nowrap">INR 14,400</td>
                     </tr>
-                    <tr className="hover:bg-slate-50/50">
-                      <td className="py-3.5 px-4 font-bold text-slate-800">IELTS Life Skills</td>
-                      <td className="py-3.5 px-4 text-slate-700">INR 13,500</td>
+                    <tr className="hover:bg-[#FFF6E5]">
+                      <td className="py-3 px-4 font-bold text-[#16130F]">IELTS Life Skills</td>
+                      <td className="py-3 px-4 font-semibold text-[#3D362E] whitespace-nowrap">INR 13,500</td>
                     </tr>
-                    <tr className="hover:bg-slate-50/50">
-                      <td className="py-3.5 px-4 font-bold text-slate-800">One Skill Retake</td>
-                      <td className="py-3.5 px-4 text-slate-700">INR 9,450</td>
+                    <tr className="hover:bg-[#FFF6E5]">
+                      <td className="py-3 px-4 font-bold text-[#16130F]">One Skill Retake</td>
+                      <td className="py-3 px-4 font-semibold text-[#3D362E] whitespace-nowrap">INR 9,450</td>
                     </tr>
                   </tbody>
-                </table>
-              </div>
+              </InkTable>
 
-              <div className="bg-indigo-50/50 border border-indigo-100 rounded-2xl p-5 space-y-2">
-                <h4 className="font-extrabold text-indigo-950 text-sm flex items-center gap-1.5">
-                  <span>💡 Important Note on EOR Refunds</span>
+              <div className="bg-[#FFF1B8] border-[3px] border-[#16130F] rounded-xl p-5 space-y-2 shadow-[4px_4px_0_#14837E]" style={{ transform: 'rotate(-0.4deg)' }}>
+                <h4 className="font-urbanist font-black text-[16px] text-[#16130F] flex items-center gap-2">
+                  <span className="w-7 h-7 rounded-full border-2 border-[#16130F] bg-[#F2B705] grid place-items-center shrink-0">
+                    <Lightbulb size={14} />
+                  </span>
+                  <span>Important Note on EOR Refunds</span>
                 </h4>
-                <p className="text-xs text-indigo-900/90 leading-relaxed font-medium">
-                  A <strong>full refund</strong> of the EOR fee will be issued to the candidate if the test taker's score is revised to a higher band score.
+                <p className="text-[13.5px] text-[#3D362E] leading-relaxed">
+                  A <strong className="text-[#16130F]">full refund</strong> of the EOR fee will be issued to the candidate if the test taker's score is revised to a higher band score.
                 </p>
               </div>
 
-              <h3 className="text-lg font-black text-slate-900 mt-8 mb-4">4. IELTS Cancellation Fees 2026</h3>
+              <SubHead hi="रद्द करना" className="pt-4">4. IELTS Cancellation Fees 2026</SubHead>
               <p>
                 You can cancel your IELTS test registration for both test types (Academic or General Training) before the scheduled test date by logging into the IDP IELTS website.
               </p>
 
-              <div className="space-y-4 my-6">
-                <div className="p-5 border border-slate-100 rounded-2xl bg-slate-50/50 space-y-2.5">
-                  <h4 className="font-extrabold text-slate-850 text-sm">Cancelling IELTS on Paper / IELTS on Computer</h4>
-                  <ul className="list-disc list-inside space-y-2 text-xs text-slate-550 font-semibold pl-2">
-                    <li>Candidates can apply for cancellation only if the test date is at least 9 days or more from the date of application.</li>
-                    <li>If the cancellation application is received less than 9 days before the test date, <strong>25% of the test fee will be charged</strong> as administrative charges, and the balance (75%) will be refunded within 7–10 working days.</li>
+              <div className="space-y-5 my-6">
+                <div className="bg-white border-[3px] border-[#16130F] rounded-xl p-5 space-y-3 shadow-[4px_4px_0_#16130F]" style={{ borderTopWidth: 8, borderTopColor: '#F2B705' }}>
+                  <h4 className="font-urbanist font-black text-[16px] text-[#16130F]">Cancelling IELTS on Paper / IELTS on Computer</h4>
+                  <ul className="space-y-2 text-[13.5px] text-[#3D362E] leading-relaxed">
+                    <li className="flex gap-2.5"><span className="mt-[7px] w-2 h-2 rounded-full border-2 border-[#16130F] shrink-0" style={{ background: '#F2B705' }} /><span>Candidates can apply for cancellation only if the test date is at least 9 days or more from the date of application.</span></li>
+                    <li className="flex gap-2.5"><span className="mt-[7px] w-2 h-2 rounded-full border-2 border-[#16130F] shrink-0" style={{ background: '#F2B705' }} /><span>If the cancellation application is received less than 9 days before the test date, <strong>25% of the test fee will be charged</strong> as administrative charges, and the balance (75%) will be refunded within 7–10 working days.</span></li>
                   </ul>
                 </div>
 
-                <div className="p-5 border border-slate-100 rounded-2xl bg-slate-50/50 space-y-2.5">
-                  <h4 className="font-extrabold text-slate-855 text-sm">Cancelling IELTS for UKVI / IELTS Life Skills</h4>
-                  <ul className="list-disc list-inside space-y-2 text-xs text-slate-550 font-semibold pl-2">
-                    <li><strong>More than 14 days before the test:</strong> 75% refund of total test fee.</li>
-                    <li><strong>Within 14 days but more than 2 days before the test:</strong> 50% refund.</li>
-                    <li><strong>Within 2 days of the test date:</strong> 25% refund.</li>
-                    <li><strong>On test day or after:</strong> No refund.</li>
+                <div className="bg-white border-[3px] border-[#16130F] rounded-xl p-5 space-y-3 shadow-[4px_4px_0_#16130F]" style={{ borderTopWidth: 8, borderTopColor: '#14837E' }}>
+                  <h4 className="font-urbanist font-black text-[16px] text-[#16130F]">Cancelling IELTS for UKVI / IELTS Life Skills</h4>
+                  <ul className="space-y-2 text-[13.5px] text-[#3D362E] leading-relaxed">
+                    <li className="flex gap-2.5"><span className="mt-[7px] w-2 h-2 rounded-full border-2 border-[#16130F] shrink-0" style={{ background: '#14837E' }} /><span><strong>More than 14 days before the test:</strong> 75% refund of total test fee.</span></li>
+                    <li className="flex gap-2.5"><span className="mt-[7px] w-2 h-2 rounded-full border-2 border-[#16130F] shrink-0" style={{ background: '#14837E' }} /><span><strong>Within 14 days but more than 2 days before the test:</strong> 50% refund.</span></li>
+                    <li className="flex gap-2.5"><span className="mt-[7px] w-2 h-2 rounded-full border-2 border-[#16130F] shrink-0" style={{ background: '#14837E' }} /><span><strong>Within 2 days of the test date:</strong> 25% refund.</span></li>
+                    <li className="flex gap-2.5"><span className="mt-[7px] w-2 h-2 rounded-full border-2 border-[#16130F] shrink-0" style={{ background: '#14837E' }} /><span><strong>On test day or after:</strong> No refund.</span></li>
                   </ul>
                 </div>
 
-                <div className="p-5 border border-slate-100 rounded-2xl bg-slate-50/50 space-y-2.5">
-                  <h4 className="font-extrabold text-slate-855 text-sm">Cancelling IELTS One Skill Retake</h4>
-                  <ul className="list-disc list-inside space-y-2 text-xs text-slate-550 font-semibold pl-2">
-                    <li><strong>At least 4 days before the test:</strong> 25% deducted as processing charge; remainder refunded.</li>
-                    <li><strong>Less than 4 days before the test:</strong> No refund.</li>
+                <div className="bg-white border-[3px] border-[#16130F] rounded-xl p-5 space-y-3 shadow-[4px_4px_0_#16130F]" style={{ borderTopWidth: 8, borderTopColor: '#B8285B' }}>
+                  <h4 className="font-urbanist font-black text-[16px] text-[#16130F]">Cancelling IELTS One Skill Retake</h4>
+                  <ul className="space-y-2 text-[13.5px] text-[#3D362E] leading-relaxed">
+                    <li className="flex gap-2.5"><span className="mt-[7px] w-2 h-2 rounded-full border-2 border-[#16130F] shrink-0" style={{ background: '#B8285B' }} /><span><strong>At least 4 days before the test:</strong> 25% deducted as processing charge; remainder refunded.</span></li>
+                    <li className="flex gap-2.5"><span className="mt-[7px] w-2 h-2 rounded-full border-2 border-[#16130F] shrink-0" style={{ background: '#B8285B' }} /><span><strong>Less than 4 days before the test:</strong> No refund.</span></li>
                   </ul>
                 </div>
               </div>
 
-              <h3 className="text-lg font-black text-slate-900 mt-8 mb-4">5. IELTS Rescheduling & Transfer Fees 2026</h3>
+              <SubHead hi="तारीख़ बदलो" className="pt-4">5. IELTS Rescheduling &amp; Transfer Fees 2026</SubHead>
               <p>
                 If you wish to reschedule your test date, you can do it by both online and offline methods. Your new test date must fall within 3 months of the original test date.
               </p>
 
-              <div className="overflow-x-auto border border-slate-100 rounded-xl my-6 shadow-sm">
-                <table className="w-full text-left text-xs font-semibold">
-                  <thead className="bg-slate-50 text-slate-500 border-b border-slate-100">
+              <InkTable>
+                  <thead className="bg-[#F2B705] text-[#16130F] border-b-[3px] border-[#16130F]">
                     <tr>
-                      <th className="py-3.5 px-4 font-extrabold">IELTS Test Type</th>
-                      <th className="py-3.5 px-4 font-extrabold">Transfer Fee 2026</th>
+                      <th className="py-3 px-4 font-extrabold uppercase text-[11.5px] tracking-wider">IELTS Test Type</th>
+                      <th className="py-3 px-4 font-extrabold uppercase text-[11.5px] tracking-wider">Transfer Fee 2026</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-slate-100 text-slate-655">
-                    <tr className="hover:bg-slate-50/50">
-                      <td className="py-3.5 px-4 font-bold text-slate-800">IELTS on Computer (Acad/GT)</td>
-                      <td className="py-3.5 px-4 text-indigo-650 font-extrabold">INR 4,750</td>
+                  <tbody className="divide-y-2 divide-[#16130F]/10 text-[#3D362E]">
+                    <tr className="hover:bg-[#FFF6E5]">
+                      <td className="py-3 px-4 font-bold text-[#16130F]">IELTS on Computer (Acad/GT)</td>
+                      <td className="py-3 px-4 text-[#D0362E] font-black whitespace-nowrap">INR 4,750</td>
                     </tr>
-                    <tr className="hover:bg-slate-50/50">
-                      <td className="py-3.5 px-4 font-bold text-slate-800">IELTS on Paper (Acad/GT)</td>
-                      <td className="py-3.5 px-4 text-indigo-650 font-extrabold">INR 4,750</td>
+                    <tr className="hover:bg-[#FFF6E5]">
+                      <td className="py-3 px-4 font-bold text-[#16130F]">IELTS on Paper (Acad/GT)</td>
+                      <td className="py-3 px-4 text-[#D0362E] font-black whitespace-nowrap">INR 4,750</td>
                     </tr>
-                    <tr className="hover:bg-slate-50/50">
-                      <td className="py-3.5 px-4 font-bold text-slate-800">IELTS on Computer for UKVI</td>
-                      <td className="py-3.5 px-4 text-indigo-650 font-extrabold">INR 4,850</td>
+                    <tr className="hover:bg-[#FFF6E5]">
+                      <td className="py-3 px-4 font-bold text-[#16130F]">IELTS on Computer for UKVI</td>
+                      <td className="py-3 px-4 text-[#D0362E] font-black whitespace-nowrap">INR 4,850</td>
                     </tr>
-                    <tr className="hover:bg-slate-50/50">
-                      <td className="py-3.5 px-4 font-bold text-slate-800">IELTS on Paper for UKVI</td>
-                      <td className="py-3.5 px-4 text-indigo-650 font-extrabold">INR 4,850</td>
+                    <tr className="hover:bg-[#FFF6E5]">
+                      <td className="py-3 px-4 font-bold text-[#16130F]">IELTS on Paper for UKVI</td>
+                      <td className="py-3 px-4 text-[#D0362E] font-black whitespace-nowrap">INR 4,850</td>
                     </tr>
-                    <tr className="hover:bg-slate-50/50">
-                      <td className="py-3.5 px-4 font-bold text-slate-800">IELTS Life Skills (A1 and B1)</td>
-                      <td className="py-3.5 px-4 text-indigo-650 font-extrabold">INR 4,500</td>
+                    <tr className="hover:bg-[#FFF6E5]">
+                      <td className="py-3 px-4 font-bold text-[#16130F]">IELTS Life Skills (A1 and B1)</td>
+                      <td className="py-3 px-4 text-[#D0362E] font-black whitespace-nowrap">INR 4,500</td>
                     </tr>
-                    <tr className="hover:bg-slate-50/50">
-                      <td className="py-3.5 px-4 font-bold text-slate-800">One Skill Retake (OSR)</td>
-                      <td className="py-3.5 px-4 text-indigo-650 font-extrabold">INR 3,200</td>
+                    <tr className="hover:bg-[#FFF6E5]">
+                      <td className="py-3 px-4 font-bold text-[#16130F]">One Skill Retake (OSR)</td>
+                      <td className="py-3 px-4 text-[#D0362E] font-black whitespace-nowrap">INR 3,200</td>
                     </tr>
                   </tbody>
-                </table>
-              </div>
+              </InkTable>
 
-              <h3 className="text-lg font-black text-slate-900 mt-8 mb-4">6. IELTS Exam Fees for ATRF 2026</h3>
+              <SubHead hi="स्कोर भेजो" className="pt-4">6. IELTS Exam Fees for ATRF 2026</SubHead>
               <p>
-                ATRF stands for <strong>Additional Test Report Form</strong>. ATRF is a way to officially convey your IELTS Scores to universities. You can send ATRF in three ways: courier, airmail or electronically.
+                ATRF stands for <strong className="text-[#16130F]">Additional Test Report Form</strong>. ATRF is a way to officially convey your IELTS Scores to universities. You can send ATRF in three ways: courier, airmail or electronically.
               </p>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6">
-                <div className="p-5 border border-slate-100 rounded-2xl bg-slate-50/50 text-center space-y-1">
-                  <h4 className="font-extrabold text-slate-800 text-sm">First 5 ATRF</h4>
-                  <p className="text-indigo-650 text-lg font-black">No Cost</p>
-                  <p className="text-[10px] text-slate-400 font-semibold">Processed electronically at no additional charge.</p>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 my-6">
+                <div className="p-5 border-[3px] border-[#16130F] rounded-xl bg-[#14837E] text-white text-center space-y-1 shadow-[4px_4px_0_#16130F]" style={{ transform: 'rotate(-0.8deg)' }}>
+                  <h4 className="font-urbanist font-black text-[16px]">First 5 ATRF</h4>
+                  <p className="text-[#F2B705] text-[24px] font-urbanist font-black">No Cost</p>
+                  <p className="text-[12px] text-white/85 font-semibold">Processed electronically at no additional charge.</p>
                 </div>
-                <div className="p-5 border border-slate-100 rounded-2xl bg-slate-50/50 text-center space-y-1">
-                  <h4 className="font-extrabold text-slate-800 text-sm">After First 5</h4>
-                  <p className="text-indigo-650 text-lg font-black">INR 350 <span className="text-xs font-semibold text-slate-500">per university</span></p>
-                  <p className="text-[10px] text-slate-400 font-semibold">Note: You can send your scores to a maximum of 5 universities in a day.</p>
+                <div className="p-5 border-[3px] border-[#16130F] rounded-xl bg-[#F2B705] text-[#16130F] text-center space-y-1 shadow-[4px_4px_0_#16130F]" style={{ transform: 'rotate(0.8deg)' }}>
+                  <h4 className="font-urbanist font-black text-[16px]">After First 5</h4>
+                  <p className="text-[24px] font-urbanist font-black">INR 350 <span className="text-[13px] font-semibold text-[#3D362E]">per university</span></p>
+                  <p className="text-[12px] text-[#3D362E] font-semibold">Note: You can send your scores to a maximum of 5 universities in a day.</p>
                 </div>
               </div>
 
-              <h3 className="text-lg font-black text-slate-900 mt-12 mb-6">Frequently Asked Questions (FAQs) - IELTS Fees</h3>
-              <div className="space-y-4">
+              <SubHead hi="अक्सर पूछे सवाल" className="pt-6">Frequently Asked Questions (FAQs) - IELTS Fees</SubHead>
+              <div className="space-y-3">
                 {[
                   {
                     q: "Has the IELTS fees increased in 2026?",
@@ -488,31 +545,22 @@ const IELTSFeesPage = () => {
                     a: "Refunds are processed only if you cancel at least 9 days before the exam (for standard tests) or have a valid medical emergency with an official doctor certificate submitted within 5 days of the test date, minus administrative deductions."
                   }
                 ].map((faq, index) => (
-                  <details key={index} className="group border border-slate-200 rounded-2xl bg-white hover:border-indigo-150 transition-all duration-200 p-5">
-                    <summary className="font-extrabold text-slate-800 cursor-pointer flex justify-between items-center list-none select-none text-sm">
-                      <span>{faq.q}</span>
-                      <span className="transition-transform duration-200 group-open:rotate-180 text-slate-400">
-                        ▼
-                      </span>
-                    </summary>
-                    <div className="mt-3.5 text-slate-600 text-xs leading-relaxed font-semibold">
-                      {faq.a}
-                    </div>
-                  </details>
+                  <FaqItem key={index} q={faq.q} a={faq.a} />
                 ))}
               </div>
             </div>
 
             {/* Additional Quick Actions Box */}
-            <div className="bg-slate-50/50 p-6 rounded-2xl border border-slate-100 mt-10 grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 gap-4 items-center bg-[#FFF1B8] border-[3px] border-[#16130F] rounded-xl p-5 sm:p-6 shadow-[4px_4px_0_#16130F]">
               <div>
-                <h4 className="font-bold text-slate-900 text-sm mb-1">Want to prepare for IELTS?</h4>
-                <p className="text-xs text-slate-500 leading-normal font-normal">Join our free live masterclasses and workshops to learn speaking & writing band templates from experts.</p>
+                <p className="font-['Rozha_One',serif] text-[14px] text-[#D0362E] leading-none">लाइव क्लास</p>
+                <h4 className="mt-1 font-urbanist font-black text-[17px] text-[#16130F]">Want to prepare for IELTS?</h4>
+                <p className="mt-1 text-[13px] text-[#5B544A] leading-normal">Join our free live masterclasses and workshops to learn speaking & writing band templates from experts.</p>
               </div>
               <div className="flex items-center justify-start sm:justify-end">
                 <Link
                   to="/events"
-                  className="px-5 py-3 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold inline-flex items-center gap-1.5 shadow-sm shadow-indigo-600/10 cursor-pointer transition-all"
+                  className="no-shine px-5 py-3 rounded-full border-2 border-[#16130F] bg-[#D0362E] hover:bg-[#B52A23] text-white text-[13px] font-bold inline-flex items-center gap-1.5 shadow-[3px_3px_0_#16130F] cursor-pointer transition-transform hover:-translate-y-0.5"
                 >
                   <span>Explore Live Events</span>
                   <ArrowRight size={13} />
@@ -521,137 +569,65 @@ const IELTSFeesPage = () => {
             </div>
 
             {/* Next Up Section */}
-            <div className="border-t border-slate-100 pt-8 mt-12">
-              <h3 className="text-lg font-black text-slate-900 mb-5">Next Up</h3>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <Link to={getBlogLink("IELTS Practice Test")} className="flex flex-col justify-between p-5 bg-white border border-slate-100 border-l-4 border-l-emerald-500 rounded-xl hover:shadow-md transition-all group">
-                  <h4 className="font-extrabold text-slate-800 text-sm mb-4 group-hover:text-indigo-655 transition-colors">IELTS Practice Test</h4>
-                  <span className="text-xs font-bold text-indigo-600 flex items-center gap-1">
-                    Read Now <ArrowRight size={12} className="transform group-hover:translate-x-0.5 transition-transform" />
-                  </span>
-                </Link>
-                <Link to={getBlogLink("IELTS Modules")} className="flex flex-col justify-between p-5 bg-white border border-slate-100 border-l-4 border-l-sky-500 rounded-xl hover:shadow-md transition-all group">
-                  <h4 className="font-extrabold text-slate-800 text-sm mb-4 group-hover:text-indigo-655 transition-colors">IELTS Modules</h4>
-                  <span className="text-xs font-bold text-indigo-600 flex items-center gap-1">
-                    Read Now <ArrowRight size={12} className="transform group-hover:translate-x-0.5 transition-transform" />
-                  </span>
-                </Link>
-                <Link to={getBlogLink("IELTS Dates")} className="flex flex-col justify-between p-5 bg-white border border-slate-100 border-l-4 border-l-amber-500 rounded-xl hover:shadow-md transition-all group">
-                  <h4 className="font-extrabold text-slate-800 text-sm mb-4 group-hover:text-indigo-655 transition-colors">IELTS Dates</h4>
-                  <span className="text-xs font-bold text-indigo-600 flex items-center gap-1">
-                    Read Now <ArrowRight size={12} className="transform group-hover:translate-x-0.5 transition-transform" />
-                  </span>
-                </Link>
+            <div className="border-t-2 border-dashed border-[#16130F33] pt-8 mt-12">
+              <SubHead hi="आगे पढ़ो">Next Up</SubHead>
+              <div className="mt-5 grid grid-cols-1 md:grid-cols-3 gap-4">
+                {["IELTS Practice Test", "IELTS Modules", "IELTS Dates"].map((title, i) => (
+                  <Link
+                    key={title}
+                    to={getBlogLink(title)}
+                    className="group flex flex-col justify-between p-5 bg-white border-[3px] border-[#16130F] rounded-xl shadow-[4px_4px_0_#16130F] hover:-translate-y-0.5 transition-transform"
+                    style={{ borderLeftWidth: 10, borderLeftColor: DESI_TONES[i % DESI_TONES.length].c }}
+                  >
+                    <h4 className="font-urbanist font-black text-[16px] text-[#16130F] mb-4">{title}</h4>
+                    <span className="text-[13px] font-bold text-[#D0362E] flex items-center gap-1">
+                      Read Now <ArrowRight size={12} className="transform group-hover:translate-x-0.5 transition-transform" />
+                    </span>
+                  </Link>
+                ))}
               </div>
             </div>
 
             {/* IELTS Link Grids */}
-            <div className="border-t border-slate-100 pt-8 mt-8 space-y-12">
-              {/* Important Info Grid */}
-              <div>
-                <h3 className="text-lg font-black text-slate-900 mb-5">IELTS Important Information</h3>
-                <div className="grid grid-cols-1 md:grid-cols-3 border-t border-l border-slate-100 rounded-xl overflow-hidden shadow-sm">
-                  {importantInfoLinks.map((link) => (
-                    <Link 
-                      key={link}
-                      to={getBlogLink(link)}
-                      className="p-4 bg-white border-b border-r border-slate-100 flex items-center justify-between hover:bg-indigo-50/20 transition-all group cursor-pointer"
-                    >
-                      <span className="text-xs font-bold text-slate-600 group-hover:text-indigo-655 transition-colors">{link}</span>
-                      <ArrowRight size={13} className="text-indigo-500 opacity-60 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
-                    </Link>
-                  ))}
-                </div>
-              </div>
-
-              {/* Accepting Countries Grid */}
-              <div>
-                <h3 className="text-lg font-black text-slate-900 mb-5">IELTS Accepting Countries</h3>
-                <div className="grid grid-cols-1 md:grid-cols-3 border-t border-l border-slate-100 rounded-xl overflow-hidden shadow-sm">
-                  {acceptingCountriesLinks.map((link) => (
-                    <Link 
-                      key={link}
-                      to={getBlogLink(link)}
-                      className="p-4 bg-white border-b border-r border-slate-100 flex items-center justify-between hover:bg-indigo-50/20 transition-all group cursor-pointer"
-                    >
-                      <span className="text-xs font-bold text-slate-600 group-hover:text-indigo-655 transition-colors">{link}</span>
-                      <ArrowRight size={13} className="text-indigo-500 opacity-60 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
-                    </Link>
-                  ))}
-                </div>
-              </div>
-
-              {/* Accepting Universities Grid */}
-              <div>
-                <h3 className="text-lg font-black text-slate-900 mb-5">IELTS Accepting Universities</h3>
-                <div className="grid grid-cols-1 md:grid-cols-3 border-t border-l border-slate-100 rounded-xl overflow-hidden shadow-sm">
-                  {acceptingUniversitiesLinks.map((link) => (
-                    <Link 
-                      key={link}
-                      to={getBlogLink(link)}
-                      className="p-4 bg-white border-b border-r border-slate-100 flex items-center justify-between hover:bg-indigo-50/20 transition-all group cursor-pointer"
-                    >
-                      <span className="text-xs font-bold text-slate-600 group-hover:text-indigo-655 transition-colors">{link}</span>
-                      <ArrowRight size={13} className="text-indigo-500 opacity-60 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
-                    </Link>
-                  ))}
-                </div>
-              </div>
-
-              {/* Test Centres Grid */}
-              <div>
-                <h3 className="text-lg font-black text-slate-900 mb-5">IELTS Test Centre and Dates in India</h3>
-                <div className="grid grid-cols-1 md:grid-cols-3 border-t border-l border-slate-100 rounded-xl overflow-hidden shadow-sm">
-                  {testCentresLinks.map((link) => (
-                    <Link 
-                      key={link}
-                      to={getBlogLink(link)}
-                      className="p-4 bg-white border-b border-r border-slate-100 flex items-center justify-between hover:bg-indigo-50/20 transition-all group cursor-pointer"
-                    >
-                      <span className="text-xs font-bold text-slate-600 group-hover:text-indigo-655 transition-colors">{link}</span>
-                      <ArrowRight size={13} className="text-indigo-500 opacity-60 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
-                    </Link>
-                  ))}
-                </div>
-              </div>
+            <div className="border-t-2 border-dashed border-[#16130F33] pt-8 mt-10 space-y-12">
+              <LinkGrid hi="ज़रूरी जानकारी" title="IELTS Important Information" links={importantInfoLinks} getLink={getBlogLink} />
+              <LinkGrid hi="कौन से देश" title="IELTS Accepting Countries" links={acceptingCountriesLinks} getLink={getBlogLink} />
+              <LinkGrid hi="यूनिवर्सिटी" title="IELTS Accepting Universities" links={acceptingUniversitiesLinks} getLink={getBlogLink} />
+              <LinkGrid hi="टेस्ट सेंटर" title="IELTS Test Centre and Dates in India" links={testCentresLinks} getLink={getBlogLink} />
             </div>
 
           </main>
 
           {/* Right Sidebar Widgets */}
-          <aside className="sticky top-28 space-y-6">
-            
-            {/* Widget: Global Scholarships */}
-            <div className="uc-clean p-6 rounded-2xl shadow-md border relative overflow-hidden">
-              <span className="text-[9px] font-bold text-orange-200 uppercase tracking-widest block mb-2">Financial Aid</span>
-              <h3 className="text-lg font-bold leading-snug mb-2">
+          <aside className="lg:sticky lg:top-28 space-y-6 min-w-0">
+            <div className="p-6 rounded-[14px] border-[3px] border-[#16130F] shadow-[5px_5px_0_#16130F] text-white" style={{ background: '#B8285B', transform: 'rotate(-0.6deg)' }}>
+              <span className="text-[10.5px] font-extrabold uppercase tracking-widest block mb-2" style={{ color: '#FFE08A' }}>Financial Aid</span>
+              <h3 className="font-urbanist font-black text-[20px] leading-snug mb-2">
                 10,000+ Global Scholarships
               </h3>
-              <p className="text-xs text-blue-100/85 leading-relaxed mb-5 font-normal">
+              <p className="text-[13px] text-white/90 leading-relaxed mb-5">
                 Discover merit and need-based fee waivers to offset your exam and overseas study costs.
               </p>
               <Link
                 to="/search-programs?highlight=scholarship"
-                className="w-full text-center py-3 bg-white text-[#111111] rounded-xl text-xs font-bold hover:bg-orange-50 transition-all flex items-center justify-center gap-1.5 shadow-sm block cursor-pointer"
+                className="no-shine w-full text-center py-3 bg-white text-[#16130F] rounded-full border-2 border-[#16130F] text-[13px] font-bold hover:bg-[#FFF1B8] transition-colors flex items-center justify-center gap-1.5 shadow-[3px_3px_0_#16130F] cursor-pointer"
               >
                 <span>Explore Scholarships</span>
                 <ArrowRight size={14} />
               </Link>
             </div>
 
-            {/* Widget: Live Events & Fairs */}
-            <div className="uc-clean p-6 rounded-2xl shadow-lg border relative overflow-hidden group">
-              <div className="absolute -right-6 -bottom-6 w-28 h-28 bg-blue-400/10 rounded-full blur-xl pointer-events-none" />
-              <span className="text-[9px] font-black text-orange-200 uppercase tracking-widest block mb-2">Live Workshops</span>
-              <h3 className="text-lg font-black leading-snug mb-3">
-                Study Abroad Events & Fairs
+            <div className="p-6 rounded-[14px] border-[3px] border-[#16130F] shadow-[5px_5px_0_#16130F] text-white" style={{ background: '#14837E', transform: 'rotate(0.6deg)' }}>
+              <span className="text-[10.5px] font-extrabold uppercase tracking-widest block mb-2" style={{ color: '#FFE08A' }}>Live Workshops</span>
+              <h3 className="font-urbanist font-black text-[20px] leading-snug mb-2">
+                Study Abroad Events &amp; Fairs
               </h3>
-              <p className="text-xs text-blue-100/80 leading-relaxed mb-5 font-semibold">
-                Join live webinars, meet university delegates & attend expert coaching masterclasses.
+              <p className="text-[13px] text-white/90 leading-relaxed mb-5">
+                Join live webinars, meet university delegates &amp; attend expert coaching masterclasses.
               </p>
               <Link
                 to="/events"
-                className="w-full text-center py-3 bg-white text-[#111111] rounded-xl text-xs font-black hover:bg-orange-50 hover:shadow-md transition-all flex items-center justify-center gap-1.5 shadow-sm block cursor-pointer"
+                className="no-shine w-full text-center py-3 bg-white text-[#16130F] rounded-full border-2 border-[#16130F] text-[13px] font-bold hover:bg-[#FFF1B8] transition-colors flex items-center justify-center gap-1.5 shadow-[3px_3px_0_#16130F] cursor-pointer"
               >
                 <span>Explore Upcoming Events</span>
                 <ArrowRight size={14} />
@@ -661,6 +637,13 @@ const IELTSFeesPage = () => {
           </aside>
 
         </div>
+
+        {/* Closing CTA */}
+        <BookOkCta
+          className="mt-14"
+          hi="पैसा सही जगह"
+          text="Fees bharne se pehle plan clear karo. Free 1:1 call mein mentor se baat karo."
+        />
       </div>
     </div>
   );

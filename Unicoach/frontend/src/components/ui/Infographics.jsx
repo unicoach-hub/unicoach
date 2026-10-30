@@ -5,7 +5,9 @@
  */
 
 const INK = '#16130F';
-const PALETTE = ['#DE5C2B', '#F2B705', '#14B8A6', '#2B3FA0', '#E4007C', '#1E9E4A'];
+const PALETTE = ['#DE5C2B', '#F2B705', '#14837E', '#B8285B', '#E4007C', '#D0362E'];
+// Poster tiles for StatStrip: background + text colour
+const STAT_TILES = [['#F2B705', INK], ['#14837E', '#FFFFFF'], ['#B8285B', '#FFFFFF'], ['#FFF6E5', INK]];
 
 const Frame = ({ title, kicker, source, children, className = '' }) => (
   <figure className={`not-prose m-0 rounded-2xl border-2 border-[#16130F] bg-white p-5 sm:p-6 shadow-[5px_5px_0_#16130F] ${className}`}>
@@ -16,7 +18,7 @@ const Frame = ({ title, kicker, source, children, className = '' }) => (
       </figcaption>
     )}
     {children}
-    {source && <p className="mt-4 mb-0 text-[11.5px] text-slate-500">Source: {source}</p>}
+    {source && <p className="mt-4 mb-0 text-[11.5px] text-[#5B544A]">Source: {source}</p>}
   </figure>
 );
 
@@ -30,7 +32,7 @@ export const BarCompare = ({ title, kicker, items, source, highlight, className 
           const on = highlight ? item.label === highlight : i === 0;
           return (
             <li key={item.label} className="grid grid-cols-1 sm:grid-cols-[minmax(84px,30%)_1fr] items-center gap-1 sm:gap-3">
-              <span className="text-[13.5px] font-semibold text-slate-800 leading-tight">{item.label}</span>
+              <span className="text-[13.5px] font-semibold text-[#16130F] leading-tight">{item.label}</span>
               <span className="flex items-center gap-2 min-w-0">
                 {/* bar track takes the space left after the value, so long values never push it out */}
                 <span className="flex-1 min-w-0">
@@ -63,26 +65,27 @@ export const TimelineStrip = ({ title, kicker, steps, source, className = '' }) 
             {i + 1}
           </span>
           <span className="mt-2 text-[12px] font-bold tracking-wide uppercase text-[#C04A1D]">{s.when}</span>
-          <span className="mt-0.5 text-[13.5px] font-semibold leading-snug text-slate-900">{s.what}</span>
-          {s.note && <span className="mt-0.5 text-[12px] leading-snug text-slate-500">{s.note}</span>}
+          <span className="mt-0.5 text-[13.5px] font-semibold leading-snug text-[#16130F]">{s.what}</span>
+          {s.note && <span className="mt-0.5 text-[12px] leading-snug text-[#5B544A]">{s.note}</span>}
         </li>
       ))}
     </ol>
   </Frame>
 );
 
-/* Row of dark stat cards. stats: [{ value, label }] */
+/* Row of poster-colour stat tiles. stats: [{ value, label }] */
 export const StatStrip = ({ stats, source, className = '' }) => (
   <div className={`not-prose ${className}`}>
     <div className={`grid gap-2.5 sm:gap-3 ${stats.length >= 4 ? 'grid-cols-2 lg:grid-cols-4' : 'grid-cols-1 sm:grid-cols-3'}`}>
-      {stats.map((s) => (
-        <div key={s.label} className="rounded-2xl border border-[#2C3249] bg-[#1D2133] px-4 py-3.5 text-white">
+      {stats.map((s, i) => (
+        <div key={s.label} className="rounded-2xl border-[3px] border-[#16130F] shadow-[4px_4px_0_#16130F] px-4 py-3.5"
+          style={{ background: STAT_TILES[i % STAT_TILES.length][0], color: STAT_TILES[i % STAT_TILES.length][1] }}>
           <div className="font-urbanist text-[24px] sm:text-[30px] font-black leading-none" style={{ letterSpacing: '-0.03em' }}>{s.value}</div>
-          <div className="mt-1.5 text-[12.5px] leading-snug text-[#B7BCCD]">{s.label}</div>
+          <div className="mt-1.5 text-[12.5px] font-semibold leading-snug opacity-85">{s.label}</div>
         </div>
       ))}
     </div>
-    {source && <p className="mt-2 mb-0 text-[11.5px] text-slate-500">Source: {source}</p>}
+    {source && <p className="mt-2 mb-0 text-[11.5px] text-[#5B544A]">Source: {source}</p>}
   </div>
 );
 
@@ -110,14 +113,14 @@ export const Donut = ({ title, kicker, segments, centerValue, centerLabel, sourc
           {centerValue && (
             <g className="rotate-90" style={{ transformOrigin: '70px 70px' }}>
               <text x="70" y="70" textAnchor="middle" fontFamily="Urbanist, sans-serif" fontWeight="900" fontSize="22" fill={INK}>{centerValue}</text>
-              {centerLabel && <text x="70" y="88" textAnchor="middle" fontFamily="Onest, sans-serif" fontSize="10" fill="#64748B">{centerLabel}</text>}
+              {centerLabel && <text x="70" y="88" textAnchor="middle" fontFamily="Onest, sans-serif" fontSize="10" fill="#5B544A">{centerLabel}</text>}
             </g>
           )}
         </svg>
         <ul className="m-0 p-0 list-none flex flex-col gap-2 w-full">
           {segments.map((s, i) => (
             <li key={s.label} className="flex items-center justify-between gap-3 text-[13.5px]">
-              <span className="flex items-center gap-2 font-semibold text-slate-800">
+              <span className="flex items-center gap-2 font-semibold text-[#16130F]">
                 <span className="w-3.5 h-3.5 rounded-sm border-2 border-[#16130F] shrink-0" style={{ background: PALETTE[i % PALETTE.length] }} />
                 {s.label}
               </span>
@@ -142,8 +145,8 @@ export const VersusCard = ({ title, kicker, left, right, className = '' }) => (
           </div>
           <ul className="mt-2.5 mb-0 pl-0 list-none flex flex-col gap-1.5">
             {side.points.map((p) => (
-              <li key={p} className="flex gap-2 text-[13.5px] leading-snug text-slate-800">
-                <span aria-hidden="true" className="mt-[7px] w-1.5 h-1.5 rounded-full shrink-0" style={{ background: i === 0 ? '#DE5C2B' : '#14B8A6' }} />
+              <li key={p} className="flex gap-2 text-[13.5px] leading-snug text-[#16130F]">
+                <span aria-hidden="true" className="mt-[7px] w-1.5 h-1.5 rounded-full shrink-0" style={{ background: i === 0 ? '#DE5C2B' : '#14837E' }} />
                 {p}
               </li>
             ))}

@@ -1,28 +1,33 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
-  BookOpen,
-  Calendar,
-  DollarSign,
-  GraduationCap,
-  Clock,
-  MapPin,
   FileText,
-  Compass,
   ArrowRight,
-  ChevronRight,
-  UserCheck,
-  AlertTriangle,
-  Volume2,
-  FileEdit,
-  Mic,
-  ArrowUpRight,
-  CheckCircle2,
-  HelpCircle
+  ChevronDown,
+  MapPin,
+  Phone,
+  Clock,
+  Search,
+  GraduationCap,
+  ShieldCheck
 } from 'lucide-react';
 import { API_BASE_URL } from '../../../../config';
 import { HookBand } from '../../../../components/ui/Infographics';
 import { StepCounter } from '../../../../components/ui/BrandElements';
+import { DesiHero, DesiHeading, InkCard, Sticker } from '../../../../components/desi/DesiKit';
+import { DESI_TONES } from '../../../../components/desi/desiTokens';
+import { BookOkCta } from '../../../../components/desi/BookOkCta';
+
+// Hindi kicker + h3 for sections inside the guide column
+const SubHead = ({ hi, children }) => (
+  <div className="mt-10 mb-4">
+    <p className="font-['Rozha_One',serif] text-[15px] leading-none text-[#D0362E]">{hi}</p>
+    <h3 className="mt-1.5 font-urbanist font-black text-[21px] sm:text-[24px] leading-tight tracking-[-0.02em] text-[#16130F]">{children}</h3>
+  </div>
+);
+
+// Ink pill link used in the IELTS link grids
+const GRID_LINK = 'group flex items-center justify-between gap-3 px-4 py-3 bg-white border-2 border-[#16130F] rounded-lg shadow-[2px_2px_0_#16130F] hover:bg-[#FBD9E6] hover:-translate-y-0.5 hover:shadow-[3px_3px_0_#16130F] transition-all';
 
 const IELTSCoachingCentresPage = () => {
   const [dbBlogs, setDbBlogs] = React.useState([]);
@@ -248,69 +253,120 @@ const IELTSCoachingCentresPage = () => {
     return matchesSearch && matchesRegion;
   });
 
-  return (
-    <div className="min-h-screen bg-slate-50 pt-28 pb-20 font-sans">
-      <div className="max-w-[1400px] mx-auto px-6 md:px-10">
-        
-        {/* Breadcrumb */}
-        <div className="flex items-center gap-2 text-xs font-bold text-slate-400 uppercase tracking-widest mb-6">
-          <Link to="/" className="hover:text-indigo-600 transition-colors">Home</Link>
-          <ChevronRight size={12} />
-          <span className="hover:text-indigo-600 transition-colors">Exams</span>
-          <ChevronRight size={12} />
-          <span className="text-slate-655">IELTS</span>
-          <ChevronRight size={12} />
-          <span className="text-slate-600">IELTS Test Centres</span>
-        </div>
 
-        {/* Title Header Card */}
-        <div className="uc-clean relative rounded-[2.5rem] p-8 md:p-14 overflow-hidden mb-12 shadow-xl border">
-          <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-indigo-500/10 rounded-full blur-3xl pointer-events-none" />
-          <div className="relative z-10 max-w-3xl">
-            <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-indigo-500/20 border border-indigo-500/30 text-indigo-300 text-xs font-extrabold uppercase tracking-widest mb-6">
-              IELTS Reference Guide
-            </span>
-            <h1 className="text-2xl md:text-5xl font-black leading-tight tracking-tight mb-6">
-              IELTS Test Centres in India
-            </h1>
-            <p className="text-indigo-200/90 text-sm md:text-base leading-relaxed font-semibold">
-              Find physical IDP test centres, contact numbers, directions, and regulations.
-            </p>
-          </div>
+  const renderLinkGrid = (hi, title, links) => (
+    <div>
+      <SubHead hi={hi}>{title}</SubHead>
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-2.5">
+        {links.map((link) => (
+          <Link key={link} to={getBlogLink(link)} className={GRID_LINK}>
+            <span className="text-[13px] font-bold text-[#3D362E] group-hover:text-[#16130F]">{link}</span>
+            <ArrowRight size={14} className="shrink-0 text-[#B8285B] group-hover:translate-x-0.5 transition-transform" />
+          </Link>
+        ))}
+      </div>
+    </div>
+  );
+
+  const REGION_TONE = { North: '#F2B705', West: '#14837E', South: '#D0362E' };
+
+  // Station departure board of the IDP centre cities listed below
+  const cityBoard = (
+    <div className="bg-[#16130F] text-[#FFF6D6] border-[3px] border-[#16130F] shadow-[6px_6px_0_#F2B705] -rotate-1 max-w-[460px] lg:ml-auto overflow-hidden" style={{ borderRadius: 14 }}>
+      <div className="flex items-center justify-between gap-3 px-5 py-3 bg-[#F2B705] text-[#16130F] border-b-[3px] border-[#16130F]">
+        <div>
+          <p className="font-['Rozha_One',serif] text-[18px] leading-none">आईडीपी केंद्र</p>
+          <p className="mt-1 font-['Anton',sans-serif] tracking-[0.12em] text-[12px] leading-none">IDP CENTRE BOARD</p>
         </div>
+        <MapPin size={24} strokeWidth={2.4} />
+      </div>
+      <ul className="list-none m-0 p-0 divide-y divide-[#FFF6D6]/15">
+        {testCentresData.map((centre) => (
+          <li key={centre.city} className="flex items-center justify-between gap-3 px-5 py-2">
+            <span className="font-['Anton',sans-serif] tracking-[0.1em] text-[15px] uppercase">{centre.city}</span>
+            <span className="text-[10.5px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded border-2 border-[#16130F]" style={{ background: REGION_TONE[centre.region], color: centre.region === 'North' ? '#16130F' : '#FFFFFF' }}>
+              {centre.region}
+            </span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+
+  return (
+    <div className="min-h-screen bg-[#FFF6E5] pb-20 font-['Onest',sans-serif] text-[#16130F] overflow-x-hidden">
+
+      {/* Hero: rani poster band with the centre city board */}
+      <DesiHero
+        tone="rani"
+        sign={{ hi: 'परीक्षा केंद्र', en: 'TEST CENTRES' }}
+        crumbs={[{ label: 'Home', to: '/' }, { label: 'Exams' }, { label: 'IELTS' }, { label: 'IELTS Test Centres' }]}
+        title="IELTS Test Centres in India"
+        subtitle="Find physical IDP test centres, contact numbers, directions, and regulations."
+        stickers={(
+          <>
+            <Sticker tilt={-2}><FileText size={14} />IELTS Reference Guide</Sticker>
+            <Sticker bg="#FCE38A" tilt={1.5}>North</Sticker>
+            <Sticker bg="#DDF3EF" tilt={-1}>West</Sticker>
+            <Sticker bg="#FCE3DA" tilt={1}>South</Sticker>
+          </>
+        )}
+        aside={cityBoard}
+      />
+
+      {/* IELTS guide picker (phones and tablets) */}
+      <div className="lg:hidden max-w-[1400px] mx-auto px-4 -mt-6 mb-8 relative z-10">
+        <InkCard className="p-3">
+          <p className="font-['Rozha_One',serif] text-[14px] text-[#D0362E] leading-none px-1 mb-2">आइल्ट्स गाइड</p>
+          <nav className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-hide">
+            {sidebarLinks.map((linkItem) => {
+              const isActive = linkItem.key === 'coaching-centres';
+              return (
+                <Link
+                  key={linkItem.key}
+                  to={linkItem.path}
+                  className={`px-3.5 py-2 rounded-full border-2 text-xs font-bold whitespace-nowrap flex-shrink-0 ${isActive ? 'bg-[#B8285B] text-white border-[#16130F] shadow-[2px_2px_0_#16130F]' : 'border-[#E6DCC8] bg-[#FFF6E5] text-[#5B544A]'}`}
+                >
+                  {linkItem.name}
+                </Link>
+              );
+            })}
+          </nav>
+        </InkCard>
+      </div>
+
+      <div className="max-w-[1400px] mx-auto px-4 md:px-8 lg:pt-12">
 
         {/* Layout Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-[210px_minmax(0,1fr)_230px] xl:grid-cols-[250px_minmax(0,1fr)_290px] gap-6 items-start">
-          
+        <div className="grid grid-cols-1 lg:grid-cols-[210px_minmax(0,1fr)_230px] xl:grid-cols-[250px_minmax(0,1fr)_290px] gap-6 lg:gap-7 items-start">
+
           {/* Left Sidebar Links */}
-          <aside className="sticky top-28 bg-white border border-slate-100 p-6 rounded-2xl shadow-sm max-h-[calc(100vh-140px)] overflow-y-auto">
-            <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-4">IELTS Guide Index</p>
-            <nav className="space-y-1">
-              {sidebarLinks.map((linkItem) => {
-                const isActive = linkItem.key === 'coaching-centres';
-                return (
-                  <Link
-                    key={linkItem.key}
-                    to={linkItem.path}
-                    className={`w-full text-left py-2 px-3 rounded-xl text-xs font-bold transition-all leading-normal flex items-center justify-between
-                      ${isActive
-                        ? 'bg-indigo-50 text-indigo-655'
-                        : 'text-slate-500 hover:bg-slate-50 hover:text-slate-805'}`}
-                  >
-                    <span>{linkItem.name}</span>
-                    <ChevronRight size={12} className={isActive ? 'text-indigo-500' : 'text-slate-300'} />
-                  </Link>
-                );
-              })}
-            </nav>
+          <aside className="hidden lg:block sticky top-28">
+            <InkCard className="p-4 max-h-[calc(100vh-140px)] overflow-y-auto">
+              <p className="font-['Rozha_One',serif] text-[15px] text-[#D0362E] leading-none">आइल्ट्स गाइड</p>
+              <h3 className="mt-1 mb-3 font-urbanist font-black text-[16px]">IELTS Guide Index</h3>
+              <nav className="flex flex-col gap-1.5">
+                {sidebarLinks.map((linkItem) => {
+                  const isActive = linkItem.key === 'coaching-centres';
+                  return (
+                    <Link
+                      key={linkItem.key}
+                      to={linkItem.path}
+                      className={`group flex items-center justify-between px-3 py-2 rounded-lg border-2 text-[13px] font-bold transition-all leading-snug ${isActive ? 'bg-[#B8285B] text-white border-[#16130F] shadow-[3px_3px_0_#16130F]' : 'border-transparent text-[#3D362E] hover:border-[#16130F] hover:bg-[#FFF6E5]'}`}
+                    >
+                      <span>{linkItem.name}</span>
+                      <ArrowRight size={13} className="shrink-0 transition-transform group-hover:translate-x-0.5" />
+                    </Link>
+                  );
+                })}
+              </nav>
+            </InkCard>
           </aside>
 
           {/* Center Content Section */}
-          <main className="bg-white border border-slate-100 p-8 md:p-12 rounded-3xl shadow-sm">
-            <h2 className="text-xl font-black text-slate-900 mb-6 pb-4 border-b border-slate-100">
-              Detailed Guide Content
-            </h2>
-            <div className="prose max-w-none space-y-8 text-slate-700 text-[15px] leading-relaxed font-normal">
+          <main className="min-w-0 bg-white border-[3px] border-[#16130F] shadow-[5px_5px_0_#16130F] p-5 sm:p-8 md:p-10" style={{ borderRadius: 14 }}>
+            <DesiHeading hi="पूरी जानकारी" className="pb-5 mb-6 border-b-[3px] border-dashed border-[#16130F]/25">Detailed Guide Content</DesiHeading>
+            <div className="space-y-5 text-[#3D362E] text-[15px] leading-relaxed">
               <p>
                 The IELTS Test Centres offer both Paper-based and Computer-based IELTS Tests. The IELTS IDP India has 50+ IELTS test centres in 75 cities. You can book your IELTS test online through its official IELTS IDP India Website. For offline applications, you have to visit your nearest IDP branch.
               </p>
@@ -318,28 +374,31 @@ const IELTSCoachingCentresPage = () => {
               <HookBand value="75" label="cities in India with 50+ IDP IELTS test centres between them" hi="पास में" />
 
               {/* Interactive Search & Region Selector */}
-              <div className="bg-indigo-50/40 border border-indigo-100 rounded-2xl p-6 space-y-4">
-                <h4 className="font-extrabold text-slate-900 text-sm flex items-center gap-1.5">
-                  <MapPin size={18} className="text-indigo-655" />
+              <div className="bg-[#FBD9E6] border-[3px] border-[#16130F] shadow-[4px_4px_0_#16130F] p-5 sm:p-6 space-y-4" style={{ borderRadius: 14 }}>
+                <h4 className="font-urbanist font-black text-[#16130F] text-[17px] flex items-center gap-2">
+                  <span className="w-8 h-8 rounded-full border-2 border-[#16130F] bg-[#B8285B] text-white grid place-items-center shrink-0"><MapPin size={15} /></span>
                   <span>IDP IELTS Centre Directory</span>
                 </h4>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <input
-                    type="text"
-                    placeholder="Search by city or address..."
-                    value={centreSearchQuery}
-                    onChange={(e) => setCentreSearchQuery(e.target.value)}
-                    className="w-full bg-white border border-slate-200 rounded-xl px-4 py-2.5 text-xs font-bold text-slate-700 focus:outline-none focus:border-indigo-500"
-                  />
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <div className="relative">
+                    <Search size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#8A7F70] pointer-events-none" />
+                    <input
+                      type="text"
+                      placeholder="Search by city or address..."
+                      value={centreSearchQuery}
+                      onChange={(e) => setCentreSearchQuery(e.target.value)}
+                      className="w-full bg-white border-2 border-[#16130F] rounded-full pl-10 pr-4 py-2.5 text-[13px] font-semibold text-[#16130F] placeholder:text-[#8A7F70] outline-none focus:shadow-[3px_3px_0_#B8285B] transition-shadow"
+                    />
+                  </div>
                   <div className="flex gap-2">
                     {['All', 'North', 'West', 'South'].map((region) => (
                       <button
                         key={region}
                         onClick={() => setSelectedRegion(region)}
-                        className={`flex-1 py-2.5 rounded-xl text-xs font-bold transition-all ${
+                        className={`flex-1 py-2.5 rounded-full border-2 border-[#16130F] text-[12.5px] font-bold transition-all ${
                           selectedRegion === region
-                            ? 'bg-indigo-600 text-white shadow-sm'
-                            : 'bg-white border border-slate-200 text-slate-600 hover:bg-slate-50'
+                            ? 'bg-[#16130F] text-[#F2B705] shadow-[2px_2px_0_#B8285B]'
+                            : 'bg-white text-[#3D362E] hover:bg-[#FFF1B8]'
                         }`}
                       >
                         {region}
@@ -350,31 +409,33 @@ const IELTSCoachingCentresPage = () => {
               </div>
 
               {/* Filtered Centres List */}
-              <div className="space-y-4">
+              <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
                 {filteredCentres.length > 0 ? (
                   filteredCentres.map((centre, idx) => (
-                    <div key={idx} className="p-5 border border-slate-100 rounded-2xl bg-white shadow-xs space-y-2.5 hover:shadow-md transition-shadow">
-                      <div className="flex items-center justify-between border-b border-slate-50 pb-2">
-                        <span className="font-black text-slate-905 text-sm">{centre.city} Centre</span>
-                        <span className="text-[9px] uppercase font-black tracking-widest bg-slate-100 text-slate-500 px-2 py-0.5 rounded-md">
+                    <div key={idx} className="bg-white border-[3px] border-[#16130F] overflow-hidden" style={{ borderRadius: 12, boxShadow: `4px 4px 0 ${REGION_TONE[centre.region]}` }}>
+                      <div className="flex items-center justify-between gap-3 px-5 py-3 border-b-[3px] border-[#16130F] bg-[#FFF6E5]">
+                        <span className="font-urbanist font-black text-[#16130F] text-[16px]">{centre.city} Centre</span>
+                        <span className="text-[10.5px] uppercase font-extrabold tracking-wider px-2 py-0.5 rounded border-2 border-[#16130F] whitespace-nowrap" style={{ background: REGION_TONE[centre.region], color: centre.region === 'North' ? '#16130F' : '#FFFFFF' }}>
                           {centre.region} Region
                         </span>
                       </div>
-                      <p className="text-xs text-slate-550 leading-relaxed font-semibold">
-                        <strong>Address: </strong>{centre.address}
-                      </p>
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-1 text-xs text-slate-500 font-semibold">
-                        <p>📞 <strong>Phone: </strong>{centre.contact}</p>
-                        <p>🕒 <strong>Hours: </strong>{centre.hours}</p>
+                      <div className="px-5 py-4 space-y-2.5">
+                        <p className="text-[13px] text-[#3D362E] leading-relaxed">
+                          <strong className="text-[#16130F]">Address: </strong>{centre.address}
+                        </p>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-[13px] text-[#5B544A]">
+                          <p className="flex items-start gap-1.5"><Phone size={14} className="mt-0.5 shrink-0 text-[#B8285B]" /><span><strong className="text-[#16130F]">Phone: </strong>{centre.contact}</span></p>
+                          <p className="flex items-start gap-1.5"><Clock size={14} className="mt-0.5 shrink-0 text-[#B8285B]" /><span><strong className="text-[#16130F]">Hours: </strong>{centre.hours}</span></p>
+                        </div>
                       </div>
                     </div>
                   ))
                 ) : (
-                  <p className="text-xs text-slate-400 italic text-center py-4">No test centres match your search criteria.</p>
+                  <p className="xl:col-span-2 text-[13px] text-[#5B544A] font-semibold text-center py-5 border-[3px] border-dashed border-[#16130F]/40 rounded-xl bg-[#FFF6E5]">No test centres match your search criteria.</p>
                 )}
               </div>
 
-              <h3 className="text-lg font-black text-slate-900 mt-8 mb-4">Test Centre Regulations & Policies</h3>
+              <SubHead hi="केंद्र के नियम">Test Centre Regulations & Policies</SubHead>
               <p>
                 Every candidate is expected to strictly follow IDP test regulations at physical exam venues:
               </p>
@@ -388,19 +449,29 @@ const IELTSCoachingCentresPage = () => {
                   { label: 'Draft sheets stay' },
                 ]}
               />
-              
-              <div className="bg-slate-50 border border-slate-100 rounded-2xl p-6 space-y-4 my-6">
-                <h4 className="font-extrabold text-slate-850 text-sm">Exam Hall Code of Conduct</h4>
-                <ul className="list-disc list-inside space-y-2.5 text-xs text-slate-550 pl-2 font-semibold">
-                  <li><strong>Mandatory Identification:</strong> You must present your original, valid passport. Fail to bring this, and you will not be allowed inside the test hall.</li>
-                  <li><strong>Banned Items:</strong> Personal electronic devices (phones, smartwatches, calculators, electronic dictionaries) are strictly prohibited. You must leave these in the secure lockers outside.</li>
-                  <li><strong>Security Check:</strong> Candidates go through biometric validation (fingerprint checks & digital photos) on-site before obtaining exam seat assignments.</li>
-                  <li><strong>Rough Work Sheet:</strong> You are provided draft sheets and writing materials by the test centre. Nothing can be taken out of the exam room at the end of the test.</li>
+
+              <div className="bg-[#FFF1B8] border-[3px] border-[#16130F] shadow-[4px_4px_0_#16130F] p-5 sm:p-6 space-y-3 my-6" style={{ borderRadius: 14 }}>
+                <h4 className="font-urbanist font-black text-[#16130F] text-[17px] flex items-center gap-2">
+                  <ShieldCheck size={18} className="text-[#B8285B]" />
+                  Exam Hall Code of Conduct
+                </h4>
+                <ul className="space-y-2.5 text-[13.5px] text-[#3D362E] list-none p-0 m-0">
+                  {[
+                    <><strong className="text-[#16130F]">Mandatory Identification:</strong> You must present your original, valid passport. Fail to bring this, and you will not be allowed inside the test hall.</>,
+                    <><strong className="text-[#16130F]">Banned Items:</strong> Personal electronic devices (phones, smartwatches, calculators, electronic dictionaries) are strictly prohibited. You must leave these in the secure lockers outside.</>,
+                    <><strong className="text-[#16130F]">Security Check:</strong> Candidates go through biometric validation (fingerprint checks & digital photos) on-site before obtaining exam seat assignments.</>,
+                    <><strong className="text-[#16130F]">Rough Work Sheet:</strong> You are provided draft sheets and writing materials by the test centre. Nothing can be taken out of the exam room at the end of the test.</>,
+                  ].map((li, i) => (
+                    <li key={i} className="flex gap-2.5">
+                      <span aria-hidden="true" className="mt-[7px] w-2.5 h-2.5 shrink-0 rounded-full border-2 border-[#16130F] bg-[#B8285B]" />
+                      <span>{li}</span>
+                    </li>
+                  ))}
                 </ul>
               </div>
 
-              <h3 className="text-lg font-black text-slate-900 mt-12 mb-6">Frequently Asked Questions (FAQs) - IELTS Centres</h3>
-              <div className="space-y-4">
+              <SubHead hi="सवाल-जवाब">Frequently Asked Questions (FAQs) - IELTS Centres</SubHead>
+              <div className="space-y-3">
                 {[
                   {
                     q: "How many IELTS exam centres are in India?",
@@ -423,14 +494,14 @@ const IELTSCoachingCentresPage = () => {
                     a: "No, writing and reading/listening modules in the paper exam must be completed using HB pencils provided by the center. Pens are strictly prohibited."
                   }
                 ].map((faq, index) => (
-                  <details key={index} className="group border border-slate-200 rounded-2xl bg-white hover:border-indigo-150 transition-all duration-200 p-5">
-                    <summary className="font-extrabold text-slate-805 cursor-pointer flex justify-between items-center list-none select-none text-sm">
+                  <details key={index} className="group border-[3px] border-[#16130F] bg-white open:bg-[#FFF6E5] open:shadow-[4px_4px_0_#B8285B] shadow-[3px_3px_0_#16130F] transition-shadow" style={{ borderRadius: 12 }}>
+                    <summary className="font-urbanist font-extrabold text-[#16130F] cursor-pointer flex justify-between items-center gap-3 list-none select-none text-[15px] px-5 py-4 [&::-webkit-details-marker]:hidden">
                       <span>{faq.q}</span>
-                      <span className="transition-transform duration-200 group-open:rotate-180 text-slate-400">
-                        ▼
+                      <span className="w-7 h-7 shrink-0 rounded-full border-2 border-[#16130F] bg-[#F2B705] grid place-items-center transition-transform duration-200 group-open:rotate-180">
+                        <ChevronDown size={15} />
                       </span>
                     </summary>
-                    <div className="mt-3.5 text-slate-655 text-xs leading-relaxed font-semibold">
+                    <div className="px-5 pb-5 -mt-1 text-[#5B544A] text-[14px] leading-relaxed">
                       {faq.a}
                     </div>
                   </details>
@@ -439,136 +510,69 @@ const IELTSCoachingCentresPage = () => {
             </div>
 
             {/* Additional Quick Actions Box */}
-            <div className="bg-slate-50/50 p-6 rounded-2xl border border-slate-100 mt-10 grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="mt-10 p-5 sm:p-6 bg-[#DDF3EF] border-[3px] border-[#16130F] shadow-[4px_4px_0_#16130F] grid grid-cols-1 sm:grid-cols-[minmax(0,1fr)_auto] gap-4 items-center" style={{ borderRadius: 14 }}>
               <div>
-                <h4 className="font-extrabold text-slate-855 text-sm mb-1">Want to prepare for IELTS?</h4>
-                <p className="text-xs text-slate-500 leading-normal font-normal">Join upcoming live workshops and university webinars led by certified international mentors.</p>
+                <p className="font-['Rozha_One',serif] text-[14px] text-[#14837E] leading-none">लाइव सेशन</p>
+                <h4 className="mt-1 font-urbanist font-black text-[#16130F] text-[18px]">Want to prepare for IELTS?</h4>
+                <p className="mt-1 text-[13px] text-[#5B544A] leading-normal">Join upcoming live workshops and university webinars led by certified international mentors.</p>
               </div>
-              <div className="flex items-center justify-start sm:justify-end">
-                <Link
-                  to="/events"
-                  className="px-5 py-3 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold inline-flex items-center gap-1.5 shadow-sm shadow-indigo-600/10 cursor-pointer transition-all"
-                >
-                  <span>Explore Live Events</span>
-                  <ArrowRight size={13} />
-                </Link>
-              </div>
+              <Link
+                to="/events"
+                className="justify-self-start sm:justify-self-end px-5 py-3 bg-[#14837E] hover:bg-[#0F6B67] text-white rounded-full text-[13px] font-bold inline-flex items-center gap-1.5 border-2 border-[#16130F] shadow-[3px_3px_0_#16130F] transition-colors whitespace-nowrap"
+              >
+                <span>Explore Live Events</span>
+                <ArrowRight size={14} />
+              </Link>
             </div>
 
             {/* Next Up Section */}
-            <div className="border-t border-slate-100 pt-8 mt-12">
-              <h3 className="text-lg font-black text-slate-900 mb-5">Next Up</h3>
+            <div className="pt-2 mt-4">
+              <SubHead hi="आगे पढ़ो">Next Up</SubHead>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <Link to={getBlogLink("IELTS Slot Booking")} className="flex flex-col justify-between p-5 bg-white border border-slate-100 border-l-4 border-l-emerald-500 rounded-xl hover:shadow-md transition-all group">
-                  <h4 className="font-extrabold text-slate-800 text-sm mb-4 group-hover:text-indigo-655 transition-colors">IELTS Slot Booking</h4>
-                  <span className="text-xs font-bold text-indigo-600 flex items-center gap-1">
-                    Read Now <ArrowRight size={12} className="transform group-hover:translate-x-0.5 transition-transform" />
-                  </span>
-                </Link>
-                <Link to={getBlogLink("IELTS Exam Fee")} className="flex flex-col justify-between p-5 bg-white border border-slate-100 border-l-4 border-l-sky-500 rounded-xl hover:shadow-md transition-all group">
-                  <h4 className="font-extrabold text-slate-800 text-sm mb-4 group-hover:text-indigo-655 transition-colors">IELTS Exam Fee</h4>
-                  <span className="text-xs font-bold text-indigo-600 flex items-center gap-1">
-                    Read Now <ArrowRight size={12} className="transform group-hover:translate-x-0.5 transition-transform" />
-                  </span>
-                </Link>
-                <Link to={getBlogLink("IELTS Exam Date")} className="flex flex-col justify-between p-5 bg-white border border-slate-100 border-l-4 border-l-amber-500 rounded-xl hover:shadow-md transition-all group">
-                  <h4 className="font-extrabold text-slate-800 text-sm mb-4 group-hover:text-indigo-655 transition-colors">IELTS Exam Date</h4>
-                  <span className="text-xs font-bold text-indigo-600 flex items-center gap-1">
-                    Read Now <ArrowRight size={12} className="transform group-hover:translate-x-0.5 transition-transform" />
-                  </span>
-                </Link>
+                {['IELTS Slot Booking', 'IELTS Exam Fee', 'IELTS Exam Date'].map((title, i) => {
+                  const tone = DESI_TONES[(i + 2) % 4];
+                  return (
+                    <Link key={title} to={getBlogLink(title)} className="group flex flex-col justify-between bg-white border-[3px] border-[#16130F] shadow-[4px_4px_0_#16130F] hover:-translate-y-0.5 hover:shadow-[6px_6px_0_#16130F] transition-all overflow-hidden" style={{ borderRadius: 12 }}>
+                      <span className="h-3 border-b-[3px] border-[#16130F]" style={{ background: tone.c }} />
+                      <span className="p-5 flex flex-col gap-4">
+                        <span className="font-urbanist font-black text-[#16130F] text-[16px]">{title}</span>
+                        <span className="text-[13px] font-bold text-[#D0362E] flex items-center gap-1">
+                          Read Now <ArrowRight size={13} className="group-hover:translate-x-0.5 transition-transform" />
+                        </span>
+                      </span>
+                    </Link>
+                  );
+                })}
               </div>
             </div>
 
             {/* IELTS Link Grids */}
-            <div className="border-t border-slate-100 pt-8 mt-8 space-y-12">
-              {/* Important Info Grid */}
-              <div>
-                <h3 className="text-lg font-black text-slate-900 mb-5">IELTS Important Information</h3>
-                <div className="grid grid-cols-1 md:grid-cols-3 border-t border-l border-slate-100 rounded-xl overflow-hidden shadow-sm">
-                  {importantInfoLinks.map((link) => (
-                    <Link 
-                      key={link}
-                      to={getBlogLink(link)}
-                      className="p-4 bg-white border-b border-r border-slate-100 flex items-center justify-between hover:bg-indigo-50/20 transition-all group cursor-pointer"
-                    >
-                      <span className="text-xs font-bold text-slate-600 group-hover:text-indigo-655 transition-colors">{link}</span>
-                      <ArrowRight size={13} className="text-indigo-500 opacity-60 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
-                    </Link>
-                  ))}
-                </div>
-              </div>
-
-              {/* Accepting Countries Grid */}
-              <div>
-                <h3 className="text-lg font-black text-slate-900 mb-5">IELTS Accepting Countries</h3>
-                <div className="grid grid-cols-1 md:grid-cols-3 border-t border-l border-slate-100 rounded-xl overflow-hidden shadow-sm">
-                  {acceptingCountriesLinks.map((link) => (
-                    <Link 
-                      key={link}
-                      to={getBlogLink(link)}
-                      className="p-4 bg-white border-b border-r border-slate-100 flex items-center justify-between hover:bg-indigo-50/20 transition-all group cursor-pointer"
-                    >
-                      <span className="text-xs font-bold text-slate-600 group-hover:text-indigo-655 transition-colors">{link}</span>
-                      <ArrowRight size={13} className="text-indigo-500 opacity-60 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
-                    </Link>
-                  ))}
-                </div>
-              </div>
-
-              {/* Accepting Universities Grid */}
-              <div>
-                <h3 className="text-lg font-black text-slate-900 mb-5">IELTS Accepting Universities</h3>
-                <div className="grid grid-cols-1 md:grid-cols-3 border-t border-l border-slate-100 rounded-xl overflow-hidden shadow-sm">
-                  {acceptingUniversitiesLinks.map((link) => (
-                    <Link 
-                      key={link}
-                      to={getBlogLink(link)}
-                      className="p-4 bg-white border-b border-r border-slate-100 flex items-center justify-between hover:bg-indigo-50/20 transition-all group cursor-pointer"
-                    >
-                      <span className="text-xs font-bold text-slate-600 group-hover:text-indigo-655 transition-colors">{link}</span>
-                      <ArrowRight size={13} className="text-indigo-500 opacity-60 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
-                    </Link>
-                  ))}
-                </div>
-              </div>
-
-              {/* Test Centres Grid */}
-              <div>
-                <h3 className="text-lg font-black text-slate-900 mb-5">IELTS Test Centre and Dates in India</h3>
-                <div className="grid grid-cols-1 md:grid-cols-3 border-t border-l border-slate-100 rounded-xl overflow-hidden shadow-sm">
-                  {testCentresLinks.map((link) => (
-                    <Link 
-                      key={link}
-                      to={getBlogLink(link)}
-                      className="p-4 bg-white border-b border-r border-slate-100 flex items-center justify-between hover:bg-indigo-50/20 transition-all group cursor-pointer"
-                    >
-                      <span className="text-xs font-bold text-slate-600 group-hover:text-indigo-655 transition-colors">{link}</span>
-                      <ArrowRight size={13} className="text-indigo-500 opacity-60 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
-                    </Link>
-                  ))}
-                </div>
-              </div>
+            <div className="mt-6 space-y-2">
+              {renderLinkGrid('ज़रूरी जानकारी', 'IELTS Important Information', importantInfoLinks)}
+              {renderLinkGrid('कहाँ चलता है', 'IELTS Accepting Countries', acceptingCountriesLinks)}
+              {renderLinkGrid('यूनिवर्सिटी', 'IELTS Accepting Universities', acceptingUniversitiesLinks)}
+              {renderLinkGrid('शहर और तारीख', 'IELTS Test Centre and Dates in India', testCentresLinks)}
             </div>
 
           </main>
 
           {/* Right Sidebar Widgets */}
-          <aside className="sticky top-28 space-y-6">
-            
-            {/* Widget: Live session */}
+          <aside className="lg:sticky lg:top-28 space-y-6">
+
             {/* Widget: Live Events */}
-            <div className="uc-clean p-6 rounded-2xl shadow-md border relative overflow-hidden">
-              <span className="text-[9px] font-bold text-orange-200 uppercase tracking-widest block mb-2">Admissions Fairs</span>
-              <h3 className="text-lg font-bold leading-snug mb-2">
+            <div className="p-6 bg-[#B8285B] text-white border-[3px] border-[#16130F] shadow-[5px_5px_0_#16130F] relative overflow-hidden" style={{ borderRadius: 14 }}>
+              <span className="inline-flex items-center gap-1.5 px-2.5 py-1 mb-3 rounded-full bg-[#F2B705] text-[#16130F] border-2 border-[#16130F] text-[10.5px] font-extrabold uppercase tracking-wider">
+                Admissions Fairs
+              </span>
+              <h3 className="font-urbanist font-black text-[20px] leading-snug mb-2">
                 Global University Fairs
               </h3>
-              <p className="text-xs text-blue-100/85 leading-relaxed mb-5 font-normal">
+              <p className="text-[13px] text-white/85 leading-relaxed mb-5">
                 Interact directly with official delegates from top UK, USA, Canada, and Australian universities.
               </p>
               <Link
                 to="/events"
-                className="w-full text-center py-3 bg-white text-[#111111] rounded-xl text-xs font-bold hover:bg-orange-50 transition-all flex items-center justify-center gap-1.5 shadow-sm block cursor-pointer"
+                className="w-full text-center py-3 bg-white text-[#16130F] rounded-full text-[13px] font-bold border-2 border-[#16130F] shadow-[3px_3px_0_#16130F] hover:bg-[#FFF1B8] transition-colors flex items-center justify-center gap-1.5"
               >
                 <span>Explore Live Events</span>
                 <ArrowRight size={14} />
@@ -576,25 +580,33 @@ const IELTSCoachingCentresPage = () => {
             </div>
 
             {/* Widget: AI University Matcher */}
-            <div className="bg-white border border-slate-200/80 p-6 rounded-2xl shadow-sm text-center">
-              <div className="w-12 h-12 rounded-2xl bg-orange-50 text-[#111111] flex items-center justify-center mx-auto mb-4 border border-orange-100/60">
-                <GraduationCap size={22} className="text-[#111111]" />
+            <InkCard className="p-6 text-center" shadow="#14837E">
+              <div className="w-12 h-12 rounded-full bg-[#14837E] border-2 border-[#16130F] shadow-[2px_2px_0_#16130F] flex items-center justify-center mx-auto mb-4">
+                <GraduationCap size={22} className="text-white" />
               </div>
-              <h4 className="font-extrabold text-slate-800 text-xs mb-2">AI University Matcher</h4>
-              <p className="text-[11px] text-slate-500 leading-relaxed mb-5 font-semibold">
+              <h4 className="font-urbanist font-black text-[#16130F] text-[16px] mb-2">AI University Matcher</h4>
+              <p className="text-[13px] text-[#5B544A] leading-relaxed mb-5">
                 Match universities according to your target test score, desired intake & profile.
               </p>
               <Link
                 to="/ai-tools"
-                className="w-full text-center py-3 border border-slate-200 text-slate-700 rounded-xl text-xs font-black hover:bg-slate-50 hover:border-slate-300 transition-all block cursor-pointer"
+                className="w-full text-center py-3 bg-[#FFF6E5] border-2 border-[#16130F] text-[#16130F] rounded-full text-[13px] font-bold hover:bg-[#FFF1B8] transition-colors block"
               >
                 Find Best Match
               </Link>
-            </div>
+            </InkCard>
 
           </aside>
 
         </div>
+
+        {/* Closing CTA */}
+        <BookOkCta
+          className="mt-14"
+          hi="बुक ओके प्लीज़"
+          text="Centre to mil gaya. Ab taiyari ka plan banate hain. Free call, 1:1, ek ghante ki baat."
+          cta="Free call book karo"
+        />
       </div>
     </div>
   );

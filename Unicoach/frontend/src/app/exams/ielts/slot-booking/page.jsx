@@ -1,28 +1,68 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
-  BookOpen,
   Calendar,
-  DollarSign,
-  GraduationCap,
-  Clock,
-  MapPin,
   FileText,
-  Compass,
   ArrowRight,
-  ChevronRight,
-  UserCheck,
-  AlertTriangle,
-  Volume2,
-  FileEdit,
-  Mic,
-  ArrowUpRight,
-  CheckCircle2,
-  HelpCircle
+  ChevronDown,
+  Monitor,
+  Building2,
+  Phone,
+  Sparkles,
+  Ticket,
+  AlertTriangle
 } from 'lucide-react';
 import { API_BASE_URL } from '../../../../config';
 import { HookBand } from '../../../../components/ui/Infographics';
 import { JourneyPills } from '../../../../components/ui/BrandElements';
+import { DesiHero, DesiHeading, InkCard, Sticker } from '../../../../components/desi/DesiKit';
+import { DESI_TONES } from '../../../../components/desi/desiTokens';
+import { BookOkCta } from '../../../../components/desi/BookOkCta';
+
+// Hindi kicker + h3 for sections inside the guide column
+const SubHead = ({ hi, children }) => (
+  <div className="mt-10 mb-4">
+    <p className="font-['Rozha_One',serif] text-[15px] leading-none text-[#D0362E]">{hi}</p>
+    <h3 className="mt-1.5 font-urbanist font-black text-[21px] sm:text-[24px] leading-tight tracking-[-0.02em] text-[#16130F]">{children}</h3>
+  </div>
+);
+
+// Ink pill link used in the IELTS link grids
+const GRID_LINK = 'group flex items-center justify-between gap-3 px-4 py-3 bg-white border-2 border-[#16130F] rounded-lg shadow-[2px_2px_0_#16130F] hover:bg-[#DDF3EF] hover:-translate-y-0.5 hover:shadow-[3px_3px_0_#16130F] transition-all';
+
+// Railway-ticket reservation slip for the hero (facts taken from the guide below)
+const ReservationSlip = () => (
+  <div className="relative bg-[#FFF6D6] text-[#16130F] border-[3px] border-[#16130F] shadow-[6px_6px_0_#16130F] rotate-[1.5deg] max-w-[460px] lg:ml-auto" style={{ borderRadius: 14 }}>
+    {/* ticket punch holes */}
+    <span aria-hidden="true" className="absolute -left-[12px] top-1/2 -translate-y-1/2 w-5 h-5 rounded-full bg-[#14837E] border-[3px] border-[#16130F]" />
+    <span aria-hidden="true" className="absolute -right-[12px] top-1/2 -translate-y-1/2 w-5 h-5 rounded-full bg-[#14837E] border-[3px] border-[#16130F]" />
+    <div className="flex items-center justify-between gap-3 px-5 py-3 border-b-[3px] border-dashed border-[#16130F] bg-[#F2B705]" style={{ borderTopLeftRadius: 11, borderTopRightRadius: 11 }}>
+      <div>
+        <p className="font-['Rozha_One',serif] text-[18px] leading-none">आरक्षण पर्ची</p>
+        <p className="mt-1 font-['Anton',sans-serif] tracking-[0.12em] text-[12px] leading-none">RESERVATION SLIP</p>
+      </div>
+      <Ticket size={26} strokeWidth={2.4} />
+    </div>
+    <dl className="grid grid-cols-2 gap-px bg-[#16130F]/15 text-[13px]">
+      {[
+        { k: 'Modes', v: 'Online · In-Person · Telephone', wide: true },
+        { k: 'Reschedule notice', v: '35 days' },
+        { k: 'Transfer fee', v: 'INR 4,750' },
+        { k: 'Helpline', v: '1800 102 4544' },
+        { k: 'Test day ID', v: 'Original passport' },
+      ].map((row) => (
+        <div key={row.k} className={`bg-[#FFF6D6] px-5 py-3 ${row.wide ? 'col-span-2' : ''}`}>
+          <dt className="text-[10.5px] font-extrabold uppercase tracking-wider text-[#5B544A]">{row.k}</dt>
+          <dd className="mt-0.5 font-urbanist font-black text-[15px] leading-tight">{row.v}</dd>
+        </div>
+      ))}
+    </dl>
+    <div className="px-5 py-2.5 border-t-[3px] border-dashed border-[#16130F] flex items-center justify-between text-[11px] font-bold text-[#5B544A]">
+      <span className="font-['Anton',sans-serif] tracking-[0.18em] text-[#16130F]">IDP · IELTS INDIA</span>
+      <span className="font-['Rozha_One',serif] text-[14px] text-[#D0362E]">शुभ यात्रा</span>
+    </div>
+  </div>
+);
 
 const IELTSSlotBookingPage = () => {
   const [dbBlogs, setDbBlogs] = React.useState([]);
@@ -177,69 +217,95 @@ const IELTSSlotBookingPage = () => {
     setChecklist(prev => ({ ...prev, [key]: !prev[key] }));
   };
 
-  return (
-    <div className="min-h-screen bg-slate-50 pt-28 pb-20 font-sans">
-      <div className="max-w-[1400px] mx-auto px-6 md:px-10">
-        
-        {/* Breadcrumb */}
-        <div className="flex items-center gap-2 text-xs font-bold text-slate-400 uppercase tracking-widest mb-6">
-          <Link to="/" className="hover:text-indigo-600 transition-colors">Home</Link>
-          <ChevronRight size={12} />
-          <span className="hover:text-indigo-600 transition-colors">Exams</span>
-          <ChevronRight size={12} />
-          <span className="text-slate-655">IELTS</span>
-          <ChevronRight size={12} />
-          <span className="text-slate-600">IELTS Slot Booking</span>
-        </div>
 
-        {/* Title Header Card */}
-        <div className="uc-clean relative rounded-[2.5rem] p-8 md:p-14 overflow-hidden mb-12 shadow-xl border">
-          <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-indigo-500/10 rounded-full blur-3xl pointer-events-none" />
-          <div className="relative z-10 max-w-3xl">
-            <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-indigo-500/20 border border-indigo-500/30 text-indigo-300 text-xs font-extrabold uppercase tracking-widest mb-6">
-              IELTS Reference Guide
-            </span>
-            <h1 className="text-2xl md:text-5xl font-black leading-tight tracking-tight mb-6">
-              IELTS Slot Booking Guide
-            </h1>
-            <p className="text-indigo-200/90 text-sm md:text-base leading-relaxed font-semibold">
-              Step-by-step guidelines for reserving test slots online, documents checklists, and policy details.
-            </p>
-          </div>
-        </div>
+  const renderLinkGrid = (hi, title, links) => (
+    <div>
+      <SubHead hi={hi}>{title}</SubHead>
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-2.5">
+        {links.map((link) => (
+          <Link key={link} to={getBlogLink(link)} className={GRID_LINK}>
+            <span className="text-[13px] font-bold text-[#3D362E] group-hover:text-[#16130F]">{link}</span>
+            <ArrowRight size={14} className="shrink-0 text-[#14837E] group-hover:translate-x-0.5 transition-transform" />
+          </Link>
+        ))}
+      </div>
+    </div>
+  );
+
+  return (
+    <div className="min-h-screen bg-[#FFF6E5] pb-20 font-['Onest',sans-serif] text-[#16130F] overflow-x-hidden">
+
+      {/* Hero: teal poster band with the reservation slip */}
+      <DesiHero
+        tone="teal"
+        sign={{ hi: 'आरक्षण', en: 'SLOT BOOKING' }}
+        crumbs={[{ label: 'Home', to: '/' }, { label: 'Exams' }, { label: 'IELTS' }, { label: 'IELTS Slot Booking' }]}
+        title="IELTS Slot Booking Guide"
+        subtitle="Step-by-step guidelines for reserving test slots online, documents checklists, and policy details."
+        stickers={(
+          <>
+            <Sticker tilt={-2}><FileText size={14} />IELTS Reference Guide</Sticker>
+            <Sticker bg="#FCE38A" tilt={1.5}><Monitor size={14} />Online</Sticker>
+            <Sticker tilt={-1}><Building2 size={14} />In-Person</Sticker>
+            <Sticker bg="#FBD9E6" tilt={1}><Phone size={14} />Telephone</Sticker>
+          </>
+        )}
+        aside={<ReservationSlip />}
+      />
+
+      {/* IELTS guide picker (phones and tablets) */}
+      <div className="lg:hidden max-w-[1400px] mx-auto px-4 -mt-6 mb-8 relative z-10">
+        <InkCard className="p-3">
+          <p className="font-['Rozha_One',serif] text-[14px] text-[#D0362E] leading-none px-1 mb-2">आइल्ट्स गाइड</p>
+          <nav className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-hide">
+            {sidebarLinks.map((linkItem) => {
+              const isActive = linkItem.key === 'slot-booking';
+              return (
+                <Link
+                  key={linkItem.key}
+                  to={linkItem.path}
+                  className={`px-3.5 py-2 rounded-full border-2 text-xs font-bold whitespace-nowrap flex-shrink-0 ${isActive ? 'bg-[#14837E] text-white border-[#16130F] shadow-[2px_2px_0_#16130F]' : 'border-[#E6DCC8] bg-[#FFF6E5] text-[#5B544A]'}`}
+                >
+                  {linkItem.name}
+                </Link>
+              );
+            })}
+          </nav>
+        </InkCard>
+      </div>
+
+      <div className="max-w-[1400px] mx-auto px-4 md:px-8 lg:pt-12">
 
         {/* Layout Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-[210px_minmax(0,1fr)_230px] xl:grid-cols-[250px_minmax(0,1fr)_290px] gap-6 items-start">
-          
+        <div className="grid grid-cols-1 lg:grid-cols-[210px_minmax(0,1fr)_230px] xl:grid-cols-[250px_minmax(0,1fr)_290px] gap-6 lg:gap-7 items-start">
+
           {/* Left Sidebar Links */}
-          <aside className="sticky top-28 bg-white border border-slate-100 p-6 rounded-2xl shadow-sm max-h-[calc(100vh-140px)] overflow-y-auto">
-            <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-4">IELTS Guide Index</p>
-            <nav className="space-y-1">
-              {sidebarLinks.map((linkItem) => {
-                const isActive = linkItem.key === 'slot-booking';
-                return (
-                  <Link
-                    key={linkItem.key}
-                    to={linkItem.path}
-                    className={`w-full text-left py-2 px-3 rounded-xl text-xs font-bold transition-all leading-normal flex items-center justify-between
-                      ${isActive
-                        ? 'bg-indigo-50 text-indigo-655'
-                        : 'text-slate-500 hover:bg-slate-50 hover:text-slate-805'}`}
-                  >
-                    <span>{linkItem.name}</span>
-                    <ChevronRight size={12} className={isActive ? 'text-indigo-500' : 'text-slate-300'} />
-                  </Link>
-                );
-              })}
-            </nav>
+          <aside className="hidden lg:block sticky top-28">
+            <InkCard className="p-4 max-h-[calc(100vh-140px)] overflow-y-auto">
+              <p className="font-['Rozha_One',serif] text-[15px] text-[#D0362E] leading-none">आइल्ट्स गाइड</p>
+              <h3 className="mt-1 mb-3 font-urbanist font-black text-[16px]">IELTS Guide Index</h3>
+              <nav className="flex flex-col gap-1.5">
+                {sidebarLinks.map((linkItem) => {
+                  const isActive = linkItem.key === 'slot-booking';
+                  return (
+                    <Link
+                      key={linkItem.key}
+                      to={linkItem.path}
+                      className={`group flex items-center justify-between px-3 py-2 rounded-lg border-2 text-[13px] font-bold transition-all leading-snug ${isActive ? 'bg-[#14837E] text-white border-[#16130F] shadow-[3px_3px_0_#16130F]' : 'border-transparent text-[#3D362E] hover:border-[#16130F] hover:bg-[#FFF6E5]'}`}
+                    >
+                      <span>{linkItem.name}</span>
+                      <ArrowRight size={13} className="shrink-0 transition-transform group-hover:translate-x-0.5" />
+                    </Link>
+                  );
+                })}
+              </nav>
+            </InkCard>
           </aside>
 
           {/* Center Content Section */}
-          <main className="bg-white border border-slate-100 p-8 md:p-12 rounded-3xl shadow-sm">
-            <h2 className="text-xl font-black text-slate-900 mb-6 pb-4 border-b border-slate-100">
-              Detailed Guide Content
-            </h2>
-            <div className="prose max-w-none space-y-8 text-slate-700 text-[15px] leading-relaxed font-normal">
+          <main className="min-w-0 bg-white border-[3px] border-[#16130F] shadow-[5px_5px_0_#16130F] p-5 sm:p-8 md:p-10" style={{ borderRadius: 14 }}>
+            <DesiHeading hi="पूरी जानकारी" className="pb-5 mb-6 border-b-[3px] border-dashed border-[#16130F]/25">Detailed Guide Content</DesiHeading>
+            <div className="space-y-5 text-[#3D362E] text-[15px] leading-relaxed">
               <p>
                 Have you decided to take the IELTS exam, or are you still planning to? Then, you should know how to book your test slot to sit for the exam. IELTS is one of the most popular English language proficiency tests, trusted by over 12,000 organisations globally in countries such as the US, UK, Australia, Canada, Ireland, and Germany.
               </p>
@@ -247,7 +313,7 @@ const IELTSSlotBookingPage = () => {
                 Whether you prefer the traditional offline method or the comfort of your home with the online option, IELTS offers this flexibility. You can easily book your IELTS slot through the official IDP IELTS India website.
               </p>
 
-              <h3 className="text-lg font-black text-slate-900 mt-8 mb-4">1. IELTS Slot Booking: Registration Modes</h3>
+              <SubHead hi="बुकिंग के तरीके">1. IELTS Slot Booking: Registration Modes</SubHead>
               <p>
                 To sit for the IELTS test, candidates have to reserve their spots through one of three primary registration modes:
               </p>
@@ -263,35 +329,50 @@ const IELTSSlotBookingPage = () => {
                 ]}
               />
 
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-5 my-6">
-                <div className="p-5 border border-slate-100 rounded-2xl bg-slate-50/50 space-y-2.5">
-                  <h4 className="font-extrabold text-slate-800 text-sm">💻 Online Mode</h4>
-                  <p className="text-xs text-slate-500 leading-relaxed font-semibold">
-                    Visit the official <a href="https://www.ieltsidpindia.com" target="_blank" rel="noopener noreferrer" className="text-indigo-650 hover:underline">ieltsidpindia.com</a> portal. Choose your exam format, dates, location, fill in details, upload scanned passport, and pay via Net Banking, Debit/Credit Card, or Paytm.
-                  </p>
-                </div>
-                <div className="p-5 border border-slate-100 rounded-2xl bg-slate-50/50 space-y-2.5">
-                  <h4 className="font-extrabold text-slate-800 text-sm">🏢 In-Person (Offline)</h4>
-                  <p className="text-xs text-slate-500 leading-relaxed font-semibold">
-                    Visit your nearest IDP IELTS branch office. Fill out the physical application, provide physical passport copies (front + back pages), and pay via bank deposit slip at HDFC/ICICI branches or Demand Draft.
-                  </p>
-                </div>
-                <div className="p-5 border border-slate-100 rounded-2xl bg-slate-50/50 space-y-2.5">
-                  <h4 className="font-extrabold text-slate-800 text-sm">📞 Telephone Support</h4>
-                  <p className="text-xs text-slate-500 leading-relaxed font-semibold">
-                    Contact the IDP customer care line at <strong>1800 102 4544</strong> or email <strong>ielts.india@idp.com</strong> for assistance through registration procedures and branch locations.
-                  </p>
-                </div>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 my-6">
+                {[
+                  {
+                    icon: Monitor,
+                    title: 'Online Mode',
+                    body: (
+                      <>Visit the official <a href="https://www.ieltsidpindia.com" target="_blank" rel="noopener noreferrer" className="font-bold text-[#14837E] underline decoration-2 underline-offset-2 hover:text-[#16130F]">ieltsidpindia.com</a> portal. Choose your exam format, dates, location, fill in details, upload scanned passport, and pay via Net Banking, Debit/Credit Card, or Paytm.</>
+                    ),
+                  },
+                  {
+                    icon: Building2,
+                    title: 'In-Person (Offline)',
+                    body: 'Visit your nearest IDP IELTS branch office. Fill out the physical application, provide physical passport copies (front + back pages), and pay via bank deposit slip at HDFC/ICICI branches or Demand Draft.',
+                  },
+                  {
+                    icon: Phone,
+                    title: 'Telephone Support',
+                    body: (
+                      <>Contact the IDP customer care line at <strong className="text-[#16130F]">1800 102 4544</strong> or email <strong className="text-[#16130F] break-all">ielts.india@idp.com</strong> for assistance through registration procedures and branch locations.</>
+                    ),
+                  },
+                ].map((mode, i) => {
+                  const tone = DESI_TONES[(i + 1) % 4];
+                  const Icon = mode.icon;
+                  return (
+                    <div key={mode.title} className="p-5 border-[3px] border-[#16130F] bg-white space-y-2.5" style={{ borderRadius: 12, boxShadow: `4px 4px 0 ${tone.c}` }}>
+                      <span className="w-10 h-10 rounded-full border-2 border-[#16130F] grid place-items-center shadow-[2px_2px_0_#16130F]" style={{ background: tone.c, color: tone.fg }}>
+                        <Icon size={18} />
+                      </span>
+                      <h4 className="font-urbanist font-black text-[#16130F] text-[16px]">{mode.title}</h4>
+                      <p className="text-[13px] text-[#5B544A] leading-relaxed">{mode.body}</p>
+                    </div>
+                  );
+                })}
               </div>
 
               {/* Document Checklist Widget */}
-              <div className="bg-indigo-50/40 border border-indigo-100 rounded-2xl p-6 my-6">
-                <h4 className="font-extrabold text-slate-900 text-sm mb-2 flex items-center gap-1.5">
-                  <FileText size={18} className="text-indigo-650" />
+              <div className="bg-[#DDF3EF] border-[3px] border-[#16130F] shadow-[4px_4px_0_#16130F] p-5 sm:p-6 my-6" style={{ borderRadius: 14 }}>
+                <h4 className="font-urbanist font-black text-[#16130F] text-[17px] mb-1.5 flex items-center gap-2">
+                  <span className="w-8 h-8 rounded-full border-2 border-[#16130F] bg-[#14837E] text-white grid place-items-center shrink-0"><FileText size={15} /></span>
                   <span>Interactive Registration Documents Checklist</span>
                 </h4>
-                <p className="text-xs text-slate-500 mb-4 font-semibold">Check off these items as you gather them before starting your online slot booking:</p>
-                <div className="space-y-3">
+                <p className="text-[13px] text-[#5B544A] mb-4 font-medium">Check off these items as you gather them before starting your online slot booking:</p>
+                <div className="space-y-2.5">
                   {[
                     { key: 'passportFront', label: 'Valid Passport Front Page (clear color scan containing photo & details)' },
                     { key: 'passportBack', label: 'Valid Passport Back Page (clear color scan containing address details)' },
@@ -299,14 +380,14 @@ const IELTSSlotBookingPage = () => {
                     { key: 'disabilityCert', label: 'Disability Certificate / Medical Accommodation Request (if applicable)' },
                     { key: 'paymentReady', label: 'Payment Method Ready (Net Banking, Card, Paytm, or demand draft details)' }
                   ].map((item) => (
-                    <label key={item.key} className="flex items-start gap-3 cursor-pointer group text-xs text-slate-700 font-semibold select-none">
+                    <label key={item.key} className={`flex items-start gap-3 cursor-pointer text-[13px] font-semibold select-none px-3.5 py-3 border-2 border-[#16130F] rounded-lg transition-colors ${checklist[item.key] ? 'bg-[#FFF6E5]' : 'bg-white hover:bg-[#FFF1B8]'}`}>
                       <input
                         type="checkbox"
                         checked={checklist[item.key]}
                         onChange={() => toggleCheck(item.key)}
-                        className="mt-0.5 w-4 h-4 rounded text-indigo-600 focus:ring-indigo-500 cursor-pointer"
+                        className="mt-0.5 w-4 h-4 shrink-0 accent-[#14837E] cursor-pointer"
                       />
-                      <span className={checklist[item.key] ? 'line-through text-slate-400 font-medium' : 'group-hover:text-indigo-650 transition-colors'}>
+                      <span className={checklist[item.key] ? 'line-through text-[#8A7F70] font-medium' : 'text-[#3D362E]'}>
                         {item.label}
                       </span>
                     </label>
@@ -314,25 +395,35 @@ const IELTSSlotBookingPage = () => {
                 </div>
               </div>
 
-              <h3 className="text-lg font-black text-slate-900 mt-8 mb-4">2. IELTS Slot Rescheduling & Cancellation Rules</h3>
+              <SubHead hi="तारीख बदलनी है?">2. IELTS Slot Rescheduling & Cancellation Rules</SubHead>
               <p>
                 Plans can change, and IDP allows rescheduling or cancellation of slots under specific guidelines:
               </p>
 
               <HookBand value="35 days" label="minimum notice to reschedule (INR 4,750 fee). Any later counts as a cancellation." hi="ध्यान दें" />
 
-              <div className="bg-slate-50 border border-slate-100 rounded-2xl p-6 space-y-4 my-6">
-                <h4 className="font-extrabold text-slate-850 text-sm">Rescheduling Policies</h4>
-                <ul className="list-disc list-inside space-y-2.5 text-xs text-slate-550 pl-2 font-semibold">
-                  <li><strong>Time Window:</strong> Rescheduling requests must be made <strong>at least 5 weeks (35 days) before</strong> your scheduled test date.</li>
-                  <li><strong>Rescheduling Fee:</strong> A transfer processing fee of <strong>INR 4,750</strong> (INR 4,850 for UKVI) will be charged.</li>
-                  <li><strong>Late Rescheduling:</strong> Requesting a change under 35 days before the test date is treated as a cancellation, and you forfeit the complete registration fee.</li>
-                  <li><strong>Extraordinary Circumstances:</strong> Late rescheduling or refund is only permitted in verified cases of serious illness, bereavement, or national emergencies, with complete documentary evidence submitted to IDP within 5 days of the test date.</li>
+              <div className="bg-[#FFF1B8] border-[3px] border-[#16130F] shadow-[4px_4px_0_#16130F] p-5 sm:p-6 space-y-3 my-6" style={{ borderRadius: 14 }}>
+                <h4 className="font-urbanist font-black text-[#16130F] text-[17px] flex items-center gap-2">
+                  <AlertTriangle size={18} className="text-[#D0362E]" />
+                  Rescheduling Policies
+                </h4>
+                <ul className="space-y-2.5 text-[13.5px] text-[#3D362E] list-none p-0 m-0">
+                  {[
+                    <><strong className="text-[#16130F]">Time Window:</strong> Rescheduling requests must be made <strong className="text-[#16130F]">at least 5 weeks (35 days) before</strong> your scheduled test date.</>,
+                    <><strong className="text-[#16130F]">Rescheduling Fee:</strong> A transfer processing fee of <strong className="text-[#16130F]">INR 4,750</strong> (INR 4,850 for UKVI) will be charged.</>,
+                    <><strong className="text-[#16130F]">Late Rescheduling:</strong> Requesting a change under 35 days before the test date is treated as a cancellation, and you forfeit the complete registration fee.</>,
+                    <><strong className="text-[#16130F]">Extraordinary Circumstances:</strong> Late rescheduling or refund is only permitted in verified cases of serious illness, bereavement, or national emergencies, with complete documentary evidence submitted to IDP within 5 days of the test date.</>,
+                  ].map((li, i) => (
+                    <li key={i} className="flex gap-2.5">
+                      <span aria-hidden="true" className="mt-[7px] w-2.5 h-2.5 shrink-0 rounded-full border-2 border-[#16130F] bg-[#D0362E]" />
+                      <span>{li}</span>
+                    </li>
+                  ))}
                 </ul>
               </div>
 
-              <h3 className="text-lg font-black text-slate-900 mt-12 mb-6">Frequently Asked Questions (FAQs) - Slot Booking</h3>
-              <div className="space-y-4">
+              <SubHead hi="सवाल-जवाब">Frequently Asked Questions (FAQs) - Slot Booking</SubHead>
+              <div className="space-y-3">
                 {[
                   {
                     q: "How to book IELTS slots?",
@@ -359,14 +450,14 @@ const IELTSSlotBookingPage = () => {
                     a: "If you miss your slot, you will be marked absent, and the entire test fee is forfeited. Refunds or free rescheduling are only granted for extreme medical emergencies with official doctor certification submitted within 5 days."
                   }
                 ].map((faq, index) => (
-                  <details key={index} className="group border border-slate-200 rounded-2xl bg-white hover:border-indigo-150 transition-all duration-200 p-5">
-                    <summary className="font-extrabold text-slate-800 cursor-pointer flex justify-between items-center list-none select-none text-sm">
+                  <details key={index} className="group border-[3px] border-[#16130F] bg-white open:bg-[#FFF6E5] open:shadow-[4px_4px_0_#14837E] shadow-[3px_3px_0_#16130F] transition-shadow" style={{ borderRadius: 12 }}>
+                    <summary className="font-urbanist font-extrabold text-[#16130F] cursor-pointer flex justify-between items-center gap-3 list-none select-none text-[15px] px-5 py-4 [&::-webkit-details-marker]:hidden">
                       <span>{faq.q}</span>
-                      <span className="transition-transform duration-200 group-open:rotate-180 text-slate-400">
-                        ▼
+                      <span className="w-7 h-7 shrink-0 rounded-full border-2 border-[#16130F] bg-[#F2B705] grid place-items-center transition-transform duration-200 group-open:rotate-180">
+                        <ChevronDown size={15} />
                       </span>
                     </summary>
-                    <div className="mt-3.5 text-slate-655 text-xs leading-relaxed font-semibold">
+                    <div className="px-5 pb-5 -mt-1 text-[#5B544A] text-[14px] leading-relaxed">
                       {faq.a}
                     </div>
                   </details>
@@ -375,136 +466,69 @@ const IELTSSlotBookingPage = () => {
             </div>
 
             {/* Additional Quick Actions Box */}
-            <div className="bg-slate-50/50 p-6 rounded-2xl border border-slate-100 mt-10 grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="mt-10 p-5 sm:p-6 bg-[#FBD9E6] border-[3px] border-[#16130F] shadow-[4px_4px_0_#16130F] grid grid-cols-1 sm:grid-cols-[minmax(0,1fr)_auto] gap-4 items-center" style={{ borderRadius: 14 }}>
               <div>
-                <h4 className="font-bold text-slate-900 text-sm mb-1">Want to prepare for IELTS?</h4>
-                <p className="text-xs text-slate-500 leading-normal font-normal">Join upcoming live workshops and university webinars led by certified international mentors.</p>
+                <p className="font-['Rozha_One',serif] text-[14px] text-[#B8285B] leading-none">लाइव सेशन</p>
+                <h4 className="mt-1 font-urbanist font-black text-[#16130F] text-[18px]">Want to prepare for IELTS?</h4>
+                <p className="mt-1 text-[13px] text-[#5B544A] leading-normal">Join upcoming live workshops and university webinars led by certified international mentors.</p>
               </div>
-              <div className="flex items-center justify-start sm:justify-end">
-                <Link
-                  to="/events"
-                  className="px-5 py-3 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold inline-flex items-center gap-1.5 shadow-sm shadow-indigo-600/10 cursor-pointer transition-all"
-                >
-                  <span>Explore Live Events</span>
-                  <ArrowRight size={13} />
-                </Link>
-              </div>
+              <Link
+                to="/events"
+                className="justify-self-start sm:justify-self-end px-5 py-3 bg-[#B8285B] hover:bg-[#9E1F4C] text-white rounded-full text-[13px] font-bold inline-flex items-center gap-1.5 border-2 border-[#16130F] shadow-[3px_3px_0_#16130F] transition-colors whitespace-nowrap"
+              >
+                <span>Explore Live Events</span>
+                <ArrowRight size={14} />
+              </Link>
             </div>
 
             {/* Next Up Section */}
-            <div className="border-t border-slate-100 pt-8 mt-12">
-              <h3 className="text-lg font-black text-slate-900 mb-5">Next Up</h3>
+            <div className="pt-2 mt-4">
+              <SubHead hi="आगे पढ़ो">Next Up</SubHead>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <Link to={getBlogLink("IELTS Test Centres")} className="flex flex-col justify-between p-5 bg-white border border-slate-100 border-l-4 border-l-emerald-500 rounded-xl hover:shadow-md transition-all group">
-                  <h4 className="font-extrabold text-slate-800 text-sm mb-4 group-hover:text-indigo-655 transition-colors">IELTS Test Centres</h4>
-                  <span className="text-xs font-bold text-indigo-600 flex items-center gap-1">
-                    Read Now <ArrowRight size={12} className="transform group-hover:translate-x-0.5 transition-transform" />
-                  </span>
-                </Link>
-                <Link to={getBlogLink("IELTS Exam Fee")} className="flex flex-col justify-between p-5 bg-white border border-slate-100 border-l-4 border-l-sky-500 rounded-xl hover:shadow-md transition-all group">
-                  <h4 className="font-extrabold text-slate-800 text-sm mb-4 group-hover:text-indigo-655 transition-colors">IELTS Exam Fee</h4>
-                  <span className="text-xs font-bold text-indigo-600 flex items-center gap-1">
-                    Read Now <ArrowRight size={12} className="transform group-hover:translate-x-0.5 transition-transform" />
-                  </span>
-                </Link>
-                <Link to={getBlogLink("IELTS Exam Date")} className="flex flex-col justify-between p-5 bg-white border border-slate-100 border-l-4 border-l-amber-500 rounded-xl hover:shadow-md transition-all group">
-                  <h4 className="font-extrabold text-slate-800 text-sm mb-4 group-hover:text-indigo-655 transition-colors">IELTS Exam Date</h4>
-                  <span className="text-xs font-bold text-indigo-600 flex items-center gap-1">
-                    Read Now <ArrowRight size={12} className="transform group-hover:translate-x-0.5 transition-transform" />
-                  </span>
-                </Link>
+                {['IELTS Test Centres', 'IELTS Exam Fee', 'IELTS Exam Date'].map((title, i) => {
+                  const tone = DESI_TONES[i % 4];
+                  return (
+                    <Link key={title} to={getBlogLink(title)} className="group flex flex-col justify-between bg-white border-[3px] border-[#16130F] shadow-[4px_4px_0_#16130F] hover:-translate-y-0.5 hover:shadow-[6px_6px_0_#16130F] transition-all overflow-hidden" style={{ borderRadius: 12 }}>
+                      <span className="h-3 border-b-[3px] border-[#16130F]" style={{ background: tone.c }} />
+                      <span className="p-5 flex flex-col gap-4">
+                        <span className="font-urbanist font-black text-[#16130F] text-[16px]">{title}</span>
+                        <span className="text-[13px] font-bold text-[#D0362E] flex items-center gap-1">
+                          Read Now <ArrowRight size={13} className="group-hover:translate-x-0.5 transition-transform" />
+                        </span>
+                      </span>
+                    </Link>
+                  );
+                })}
               </div>
             </div>
 
             {/* IELTS Link Grids */}
-            <div className="border-t border-slate-100 pt-8 mt-8 space-y-12">
-              {/* Important Info Grid */}
-              <div>
-                <h3 className="text-lg font-black text-slate-900 mb-5">IELTS Important Information</h3>
-                <div className="grid grid-cols-1 md:grid-cols-3 border-t border-l border-slate-100 rounded-xl overflow-hidden shadow-sm">
-                  {importantInfoLinks.map((link) => (
-                    <Link 
-                      key={link}
-                      to={getBlogLink(link)}
-                      className="p-4 bg-white border-b border-r border-slate-100 flex items-center justify-between hover:bg-indigo-50/20 transition-all group cursor-pointer"
-                    >
-                      <span className="text-xs font-bold text-slate-600 group-hover:text-indigo-655 transition-colors">{link}</span>
-                      <ArrowRight size={13} className="text-indigo-500 opacity-60 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
-                    </Link>
-                  ))}
-                </div>
-              </div>
-
-              {/* Accepting Countries Grid */}
-              <div>
-                <h3 className="text-lg font-black text-slate-900 mb-5">IELTS Accepting Countries</h3>
-                <div className="grid grid-cols-1 md:grid-cols-3 border-t border-l border-slate-100 rounded-xl overflow-hidden shadow-sm">
-                  {acceptingCountriesLinks.map((link) => (
-                    <Link 
-                      key={link}
-                      to={getBlogLink(link)}
-                      className="p-4 bg-white border-b border-r border-slate-100 flex items-center justify-between hover:bg-indigo-50/20 transition-all group cursor-pointer"
-                    >
-                      <span className="text-xs font-bold text-slate-600 group-hover:text-indigo-655 transition-colors">{link}</span>
-                      <ArrowRight size={13} className="text-indigo-500 opacity-60 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
-                    </Link>
-                  ))}
-                </div>
-              </div>
-
-              {/* Accepting Universities Grid */}
-              <div>
-                <h3 className="text-lg font-black text-slate-900 mb-5">IELTS Accepting Universities</h3>
-                <div className="grid grid-cols-1 md:grid-cols-3 border-t border-l border-slate-100 rounded-xl overflow-hidden shadow-sm">
-                  {acceptingUniversitiesLinks.map((link) => (
-                    <Link 
-                      key={link}
-                      to={getBlogLink(link)}
-                      className="p-4 bg-white border-b border-r border-slate-100 flex items-center justify-between hover:bg-indigo-50/20 transition-all group cursor-pointer"
-                    >
-                      <span className="text-xs font-bold text-slate-600 group-hover:text-indigo-655 transition-colors">{link}</span>
-                      <ArrowRight size={13} className="text-indigo-500 opacity-60 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
-                    </Link>
-                  ))}
-                </div>
-              </div>
-
-              {/* Test Centres Grid */}
-              <div>
-                <h3 className="text-lg font-black text-slate-900 mb-5">IELTS Test Centre and Dates in India</h3>
-                <div className="grid grid-cols-1 md:grid-cols-3 border-t border-l border-slate-100 rounded-xl overflow-hidden shadow-sm">
-                  {testCentresLinks.map((link) => (
-                    <Link 
-                      key={link}
-                      to={getBlogLink(link)}
-                      className="p-4 bg-white border-b border-r border-slate-100 flex items-center justify-between hover:bg-indigo-50/20 transition-all group cursor-pointer"
-                    >
-                      <span className="text-xs font-bold text-slate-600 group-hover:text-indigo-655 transition-colors">{link}</span>
-                      <ArrowRight size={13} className="text-indigo-500 opacity-60 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
-                    </Link>
-                  ))}
-                </div>
-              </div>
+            <div className="mt-6 space-y-2">
+              {renderLinkGrid('ज़रूरी जानकारी', 'IELTS Important Information', importantInfoLinks)}
+              {renderLinkGrid('कहाँ चलता है', 'IELTS Accepting Countries', acceptingCountriesLinks)}
+              {renderLinkGrid('यूनिवर्सिटी', 'IELTS Accepting Universities', acceptingUniversitiesLinks)}
+              {renderLinkGrid('शहर और तारीख', 'IELTS Test Centre and Dates in India', testCentresLinks)}
             </div>
 
           </main>
 
           {/* Right Sidebar Widgets */}
-          <aside className="sticky top-28 space-y-6">
-            
-            {/* Widget: Live session */}
+          <aside className="lg:sticky lg:top-28 space-y-6">
+
             {/* Widget: AI Shortlister */}
-            <div className="uc-clean p-6 rounded-2xl shadow-md border relative overflow-hidden">
-              <span className="text-[9px] font-bold text-orange-200 uppercase tracking-widest block mb-2">AI Shortlister</span>
-              <h3 className="text-lg font-bold leading-snug mb-2">
+            <div className="p-6 bg-[#14837E] text-white border-[3px] border-[#16130F] shadow-[5px_5px_0_#16130F] relative overflow-hidden" style={{ borderRadius: 14 }}>
+              <span className="inline-flex items-center gap-1.5 px-2.5 py-1 mb-3 rounded-full bg-[#F2B705] text-[#16130F] border-2 border-[#16130F] text-[10.5px] font-extrabold uppercase tracking-wider">
+                <Sparkles size={12} />AI Shortlister
+              </span>
+              <h3 className="font-urbanist font-black text-[20px] leading-snug mb-2">
                 Match Unis by Band Score
               </h3>
-              <p className="text-xs text-blue-100/85 leading-relaxed mb-5 font-normal">
+              <p className="text-[13px] text-white/85 leading-relaxed mb-5">
                 Check which top global universities accept your target IELTS band score instantly.
               </p>
               <Link
                 to="/ai-tools"
-                className="w-full text-center py-3 bg-white text-[#111111] rounded-xl text-xs font-bold hover:bg-orange-50 transition-all flex items-center justify-center gap-1.5 shadow-sm block cursor-pointer"
+                className="w-full text-center py-3 bg-white text-[#16130F] rounded-full text-[13px] font-bold border-2 border-[#16130F] shadow-[3px_3px_0_#16130F] hover:bg-[#FFF1B8] transition-colors flex items-center justify-center gap-1.5"
               >
                 <span>Try AI Shortlister</span>
                 <ArrowRight size={14} />
@@ -512,25 +536,33 @@ const IELTSSlotBookingPage = () => {
             </div>
 
             {/* Widget: Live Events & Fairs */}
-            <div className="bg-white border border-slate-200/80 p-6 rounded-2xl shadow-sm text-center">
-              <div className="w-12 h-12 rounded-2xl bg-orange-50 text-[#111111] flex items-center justify-center mx-auto mb-4 border border-orange-100/60">
-                <Calendar size={22} className="text-[#111111]" />
+            <InkCard className="p-6 text-center" shadow="#F2B705">
+              <div className="w-12 h-12 rounded-full bg-[#F2B705] border-2 border-[#16130F] shadow-[2px_2px_0_#16130F] flex items-center justify-center mx-auto mb-4">
+                <Calendar size={22} className="text-[#16130F]" />
               </div>
-              <h4 className="font-extrabold text-slate-800 text-xs mb-2">Live Education Fairs</h4>
-              <p className="text-[11px] text-slate-500 leading-relaxed mb-5 font-semibold">
+              <h4 className="font-urbanist font-black text-[#16130F] text-[16px] mb-2">Live Education Fairs</h4>
+              <p className="text-[13px] text-[#5B544A] leading-relaxed mb-5">
                 Meet representatives from top global universities & join free masterclasses.
               </p>
               <Link
                 to="/events"
-                className="w-full text-center py-3 border border-slate-200 text-slate-700 rounded-xl text-xs font-black hover:bg-slate-50 hover:border-slate-300 transition-all block cursor-pointer"
+                className="w-full text-center py-3 bg-[#FFF6E5] border-2 border-[#16130F] text-[#16130F] rounded-full text-[13px] font-bold hover:bg-[#FFF1B8] transition-colors block"
               >
                 View Upcoming Events
               </Link>
-            </div>
+            </InkCard>
 
           </aside>
 
         </div>
+
+        {/* Closing CTA */}
+        <BookOkCta
+          className="mt-14"
+          hi="बुक ओके प्लीज़"
+          text="Slot pakka ho gaya? Ab band score ka plan bhi bana lo. Free call, 1:1, mentor ke saath."
+          cta="Free call book karo"
+        />
       </div>
     </div>
   );

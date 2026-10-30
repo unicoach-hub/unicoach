@@ -1,31 +1,22 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useState, useEffect, useRef } from 'react';
+import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
-  BookOpen,
-  Calendar,
-  DollarSign,
   GraduationCap,
   HelpCircle,
   Clock,
   MapPin,
-  FileText,
   Compass,
   ArrowRight,
-  TrendingUp,
   Award,
   ChevronRight,
-  UserCheck,
   AlertTriangle,
-  FileEdit,
-  CheckCircle2,
-  Bookmark,
-  Building,
-  Globe,
-  ExternalLink,
-  Sparkles
+  Sparkles,
+  Lightbulb
 } from 'lucide-react';
 import { StatStrip, BarCompare } from '../../../components/ui/Infographics';
+import { DesiHero, DesiHeading, InkCard, Sticker } from '../../../components/desi/DesiKit';
+import { BookOkCta } from '../../../components/desi/BookOkCta';
 
 const UniLogo = ({ logo, name, domain }) => {
   const [error, setError] = useState(false);
@@ -56,7 +47,7 @@ const UniLogo = ({ logo, name, domain }) => {
           loading="lazy"
         />
       ) : (
-        <div className="w-full h-full bg-indigo-600 flex items-center justify-center text-white rounded">
+        <div className="w-full h-full bg-[#16130F] flex items-center justify-center text-white rounded">
           <GraduationCap size={16} />
         </div>
       )}
@@ -65,7 +56,6 @@ const UniLogo = ({ logo, name, domain }) => {
 };
 
 const GREOverview = () => {
-  const navigate = useNavigate();
   const [activeSection, setActiveSection] = useState('section-1');
   const [faqOpen, setFaqOpen] = useState({});
   const [activeCountry, setActiveCountry] = useState('USA');
@@ -161,61 +151,34 @@ const GREOverview = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 pt-28 pb-20 select-none font-sans">
-      <div className="max-w-[1320px] mx-auto px-6 md:px-10">
-        
-        {/* Breadcrumb */}
-        <div className="flex items-center gap-2 text-xs font-bold text-slate-400 uppercase tracking-widest mb-6">
-          <Link to="/" className="hover:text-indigo-650 transition-colors">Home</Link>
-          <ChevronRight size={12} />
-          <span>Exams</span>
-          <ChevronRight size={12} />
-          <span className="text-slate-600 font-bold">GRE</span>
-        </div>
+    <div className="min-h-screen bg-[#FFF6E5] pb-20 font-['Onest',sans-serif] text-[#16130F]">
 
-        {/* Hero Header Card */}
-        <div className="uc-clean relative rounded-[2.5rem] p-8 md:p-14 overflow-hidden mb-12 shadow-xl border">
-          {/* Backdrop photo for rich aesthetics */}
-          <div className="absolute inset-0 z-0 opacity-15 mix-blend-overlay pointer-events-none">
-            <img 
-              src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=1200&auto=format&fit=crop&q=80" 
-              alt="GRE Study Group" 
-              className="w-full h-full object-cover"
-            />
-          </div>
-          <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-indigo-500/10 rounded-full blur-3xl pointer-events-none z-0" />
-          <div className="relative z-10 max-w-3xl">
-            <span className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-indigo-500/20 border border-indigo-500/30 text-indigo-300 text-xs font-extrabold uppercase tracking-widest mb-6">
-              <Compass size={14} />
-              Comprehensive GRE Guide
-            </span>
-            <h1 className="text-3xl md:text-5xl font-black leading-tight tracking-tight mb-6">
-              GRE Exam for Indian Students in 2025: A Complete Guide
-            </h1>
-            <p className="text-indigo-200/90 text-sm md:text-base leading-relaxed mb-6 font-medium">
-              Achieve admission to premium MS and MBA programs globally. Get standard details on GRE General & Subject tests, registrations, syllabus updates, pricing schedules, and score validations.
-            </p>
-            <div className="flex flex-wrap items-center gap-4 text-xs font-semibold text-slate-400">
-              <span className="flex items-center gap-1.5 bg-slate-950/60 px-3 py-1.5 rounded-lg border border-slate-800">
-                <Clock size={13} className="text-indigo-400" />
-                Updated: May 2025
-              </span>
-              <span className="flex items-center gap-1.5 bg-slate-955/60 px-3 py-1.5 rounded-lg border border-slate-800">
-                <Award size={13} className="text-indigo-400" />
-                ETS Shorter Edition updates active
-              </span>
-            </div>
-          </div>
-        </div>
+      {/* Hero: poster band */}
+      <DesiHero
+        tone="mustard"
+        sign={{ hi: 'जीआरई', en: 'GRE DESK' }}
+        crumbs={[{ label: 'Home', to: '/' }, { label: 'Exams' }, { label: 'GRE' }]}
+        title="GRE Exam for Indian Students in 2025: A Complete Guide"
+        subtitle="Achieve admission to premium MS and MBA programs globally. Get standard details on GRE General & Subject tests, registrations, syllabus updates, pricing schedules, and score validations."
+        stickers={(
+          <>
+            <Sticker bg="#FFF6E5" tilt={-2}><Compass size={14} />Comprehensive GRE Guide</Sticker>
+            <Sticker tilt={1.5}><Clock size={14} />Updated: May 2025</Sticker>
+            <Sticker bg="#FCE38A" tilt={-1}><Award size={14} />ETS Shorter Edition updates active</Sticker>
+          </>
+        )}
+      />
 
+      <div className="max-w-[1320px] mx-auto px-4 sm:px-6 md:px-10 pt-10">
         {/* Alert updates banner */}
-        <div className="flex items-center gap-4 bg-orange-50 border border-orange-200/80 p-5 rounded-3xl mb-12">
-          <div className="w-10 h-10 rounded-2xl bg-orange-100 flex items-center justify-center text-[#DE5C2B] flex-shrink-0">
-            <AlertTriangle className="w-5 h-5 animate-bounce" />
+        <div className="flex items-start sm:items-center gap-4 bg-[#FFF1B8] border-[3px] border-[#16130F] p-4 sm:p-5 rounded-2xl mb-12 shadow-[5px_5px_0_#16130F] -rotate-[0.3deg]">
+          <div className="w-10 h-10 rounded-xl bg-[#D0362E] border-2 border-[#16130F] flex items-center justify-center text-white flex-shrink-0">
+            <AlertTriangle className="w-5 h-5" />
           </div>
           <div>
-            <h4 className="font-extrabold text-slate-850 text-sm">Latest ETS GRE Updates</h4>
-            <div className="text-xs text-slate-655 font-semibold mt-0.5 space-y-1">
+            <p className="font-['Rozha_One',serif] text-[14px] leading-none text-[#D0362E]">ताज़ा ख़बर</p>
+            <h4 className="mt-1 font-urbanist font-black text-[#16130F] text-[16px]">Latest ETS GRE Updates</h4>
+            <div className="text-xs text-[#3D362E] font-semibold mt-0.5 space-y-1">
               <p>• ETS has announced several new updates in GRE, including a shorter duration, removal of tasks, and reduced number of questions.</p>
               <p>• The GRE Subject Test is no longer applicable in India. Registration for shorter GRE is now open!</p>
             </div>
@@ -226,34 +189,32 @@ const GREOverview = () => {
         <div className="grid grid-cols-1 lg:grid-cols-[210px_minmax(0,1fr)_230px] xl:grid-cols-[280px_minmax(0,1fr)_300px] gap-8 items-start">
           
           {/* Left Sticky Sidebar Index */}
-          <aside className="hidden lg:block sticky top-28 bg-white border border-slate-100 p-6 rounded-2xl shadow-sm max-h-[calc(100vh-140px)] overflow-y-auto">
-            <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-4">On This Page</p>
-            <nav className="space-y-1">
+          <aside className="hidden lg:block sticky top-28 max-h-[calc(100vh-140px)] overflow-y-auto pr-1.5 pb-2">
+            <InkCard className="p-4">
+            <p className="font-['Rozha_One',serif] text-[15px] text-[#D0362E] leading-none">इस पेज पर</p>
+            <p className="mt-1 mb-3 font-urbanist font-black text-[15px] text-[#16130F]">On This Page</p>
+            <nav className="flex flex-col gap-1.5">
               {menuItems.map((item) => (
                 <button
                   key={item.id}
                   onClick={() => scrollToSection(item.id)}
-                  className={`w-full text-left py-2 px-3 rounded-xl text-xs font-bold transition-all leading-normal cursor-pointer
-                    ${activeSection === item.id
-                      ? 'bg-indigo-50 text-indigo-600 shadow-sm'
-                      : 'text-slate-500 hover:bg-slate-50 hover:text-slate-800'}`}
+                  style={activeSection === item.id ? { background: '#F2B705', color: '#16130F' } : undefined}
+                  className={`no-shine w-full text-left py-2 px-3 rounded-lg border-2 text-[12.5px] font-bold leading-normal cursor-pointer transition-colors ${activeSection === item.id ? 'border-[#16130F] shadow-[3px_3px_0_#16130F]' : 'border-transparent text-[#3D362E] hover:border-[#16130F] hover:bg-[#FFF6E5]'}`}
                 >
                   {item.label}
                 </button>
               ))}
             </nav>
+            </InkCard>
           </aside>
 
           {/* Center Main Guide Column */}
-          <main className="space-y-14 bg-white border border-slate-100 p-8 md:p-10 rounded-2xl shadow-sm">
+          <main className="min-w-0 space-y-14 bg-white border-[3px] border-[#16130F] p-5 sm:p-8 md:p-10 rounded-[14px] shadow-[5px_5px_0_#16130F]">
             
             {/* Section 1 */}
             <section id="section-1" ref={sectionRefs['section-1']} className="scroll-mt-28">
-              <h2 className="text-2xl font-black text-slate-900 flex items-center gap-2 mb-4">
-                <span className="w-1.5 h-6 bg-indigo-500 rounded-full" />
-                1. What is GRE?
-              </h2>
-              <div className="text-slate-655 text-sm leading-relaxed space-y-4 font-semibold">
+              <DesiHeading hi="शुरुआत" className="mb-5">1. What is GRE?</DesiHeading>
+              <div className="text-[#3D362E] text-sm leading-relaxed space-y-4 font-semibold">
                 <p>
                   GRE, or <strong>Graduate Record Exam</strong>, is one of the most common exams required for post-graduate studies abroad. It is conducted by the <strong>Educational Testing Services (ETS)</strong>, which also owns the popular TOEFL exam.
                 </p>
@@ -268,7 +229,7 @@ const GREOverview = () => {
                     { value: '5 years', label: 'Score validity' }
                   ]}
                 />
-                <div className="bg-indigo-50/10 border border-slate-100 p-4.5 rounded-2xl text-xs text-slate-500 space-y-2 mt-4">
+                <div className="bg-[#FFF1B8] border-2 border-[#16130F] p-4.5 rounded-2xl text-xs text-[#5B544A] space-y-2 mt-4 shadow-[4px_4px_0_#16130F]">
                   <p>• <strong>Wide Acceptability:</strong> Accepted by over 1,300 business schools in over 72 countries, including the USA, Canada, UK, and more!</p>
                   <p>• <strong>Graduate Preparedness:</strong> Indicates your readiness for university education, making it highly preferred for business and law courses.</p>
                   <p>• <strong>Profile Booster:</strong> Strongly enhances your candidate portfolio whether applying to universities or seeking jobs abroad.</p>
@@ -278,34 +239,31 @@ const GREOverview = () => {
 
             {/* Section 2 */}
             <section id="section-2" ref={sectionRefs['section-2']} className="scroll-mt-28">
-              <h2 className="text-2xl font-black text-slate-900 flex items-center gap-2 mb-4">
-                <span className="w-1.5 h-6 bg-indigo-500 rounded-full" />
-                2. GRE Dates: When is the GRE Exam Conducted?
-              </h2>
-              <div className="text-slate-655 text-sm leading-relaxed space-y-4 font-semibold">
+              <DesiHeading hi="तारीख़ें" className="mb-5">2. GRE Dates: When is the GRE Exam Conducted?</DesiHeading>
+              <div className="text-[#3D362E] text-sm leading-relaxed space-y-4 font-semibold">
                 <p>
                   The GRE General Test is available throughout the year. Booking dates vary depending on your test centre. We advise booking the test 2-3 months early to ensure you get your desired slot.
                 </p>
                 <p><strong>Sample Availability (Bangalore & Hyderabad):</strong></p>
-                <div className="overflow-x-auto border border-slate-200/60 rounded-2xl my-3">
-                  <table className="w-full text-left border-collapse text-xs">
+                <div className="overflow-x-auto bg-white border-[3px] border-[#16130F] rounded-2xl shadow-[4px_4px_0_#16130F] my-3">
+                  <table className="w-full min-w-[480px] text-left border-collapse text-xs">
                     <thead>
-                      <tr className="bg-slate-50 text-slate-400 font-bold uppercase border-b border-slate-150">
-                        <th className="p-3">Location</th>
-                        <th className="p-3">Months</th>
-                        <th className="p-3">Available Dates (2024-2025)</th>
+                      <tr className="bg-[#14837E] text-[#FFFFFF] border-b-[3px] border-[#16130F] font-bold uppercase">
+                        <th className="p-3 font-black">Location</th>
+                        <th className="p-3 font-black">Months</th>
+                        <th className="p-3 font-black">Available Dates (2024-2025)</th>
                       </tr>
                     </thead>
                     <tbody>
-                      <tr className="border-b border-slate-105">
-                        <td className="p-3 font-bold text-slate-805">Hyderabad</td>
-                        <td className="p-3 font-bold text-slate-500">Oct - Dec</td>
-                        <td className="p-3 text-[11px] text-slate-500">October (5-19, 21-30), November (1-30), December (1-31)</td>
+                      <tr className="border-b border-[#16130F]/15">
+                        <td className="p-3 font-bold text-[#16130F]">Hyderabad</td>
+                        <td className="p-3 font-bold text-[#5B544A]">Oct - Dec</td>
+                        <td className="p-3 text-[12.5px] text-[#5B544A]">October (5-19, 21-30), November (1-30), December (1-31)</td>
                       </tr>
                       <tr>
-                        <td className="p-3 font-bold text-slate-805">Bangalore</td>
-                        <td className="p-3 font-bold text-slate-500">Oct - Apr</td>
-                        <td className="p-3 text-[11px] text-slate-500">October (5-11, 13-18, 22-26, 28, 29, 31), Nov-Dec (Various), Jan-April 2025 (Multiple Slots)</td>
+                        <td className="p-3 font-bold text-[#16130F]">Bangalore</td>
+                        <td className="p-3 font-bold text-[#5B544A]">Oct - Apr</td>
+                        <td className="p-3 text-[12.5px] text-[#5B544A]">October (5-11, 13-18, 22-26, 28, 29, 31), Nov-Dec (Various), Jan-April 2025 (Multiple Slots)</td>
                       </tr>
                     </tbody>
                   </table>
@@ -315,11 +273,8 @@ const GREOverview = () => {
 
             {/* Section 3 */}
             <section id="section-3" ref={sectionRefs['section-3']} className="scroll-mt-28">
-              <h2 className="text-2xl font-black text-slate-900 flex items-center gap-2 mb-4">
-                <span className="w-1.5 h-6 bg-indigo-500 rounded-full" />
-                3. GRE Fees: How much does the GRE Cost?
-              </h2>
-              <div className="text-slate-655 text-sm leading-relaxed space-y-4 font-semibold">
+              <DesiHeading hi="फ़ीस" className="mb-5">3. GRE Fees: How much does the GRE Cost?</DesiHeading>
+              <div className="text-[#3D362E] text-sm leading-relaxed space-y-4 font-semibold">
                 <p>
                   From 1 August 2026, the GRE General Test fee in India is <strong>US$249</strong> (ETS). You pay in dollars or the rupee equivalent on the day, plus any applicable tax. Additional service fees apply depending on post-registration requests:
                 </p>
@@ -334,24 +289,24 @@ const GREOverview = () => {
                     ]}
                   />
                 </div>
-                <div className="overflow-x-auto border border-slate-200/60 rounded-2xl my-3">
-                  <table className="w-full text-left border-collapse text-xs">
+                <div className="overflow-x-auto bg-white border-[3px] border-[#16130F] rounded-2xl shadow-[4px_4px_0_#16130F] my-3">
+                  <table className="w-full min-w-[480px] text-left border-collapse text-xs">
                     <thead>
-                      <tr className="bg-slate-50 text-slate-400 font-bold uppercase border-b border-slate-150">
-                        <th className="p-3">GRE Service Request</th>
-                        <th className="p-3">Fees in India (INR)</th>
+                      <tr className="bg-[#14837E] text-[#FFFFFF] border-b-[3px] border-[#16130F] font-bold uppercase">
+                        <th className="p-3 font-black">GRE Service Request</th>
+                        <th className="p-3 font-black">Fees in India (INR)</th>
                       </tr>
                     </thead>
                     <tbody>
-                      <tr className="border-b border-slate-100">
-                        <td className="p-3 font-bold text-slate-805">GRE General Test Fee</td>
+                      <tr className="border-b border-[#16130F]/15">
+                        <td className="p-3 font-bold text-[#16130F]">GRE General Test Fee</td>
                         <td className="p-3">US$249</td>
                       </tr>
-                      <tr className="border-b border-slate-100">
+                      <tr className="border-b border-[#16130F]/15">
                         <td className="p-3">Rescheduling / Test Center Change</td>
                         <td className="p-3">₹5,000</td>
                       </tr>
-                      <tr className="border-b border-slate-100">
+                      <tr className="border-b border-[#16130F]/15">
                         <td className="p-3">Additional Score Report</td>
                         <td className="p-3">₹2,900</td>
                       </tr>
@@ -367,15 +322,12 @@ const GREOverview = () => {
 
             {/* Section 4 */}
             <section id="section-4" ref={sectionRefs['section-4']} className="scroll-mt-28">
-              <h2 className="text-2xl font-black text-slate-900 flex items-center gap-2 mb-4">
-                <span className="w-1.5 h-6 bg-indigo-500 rounded-full" />
-                4. GRE Result: How do You Check Your GRE Results?
-              </h2>
-              <div className="text-slate-655 text-sm leading-relaxed space-y-4 font-semibold">
+              <DesiHeading hi="रिज़ल्ट" className="mb-5">4. GRE Result: How do You Check Your GRE Results?</DesiHeading>
+              <div className="text-[#3D362E] text-sm leading-relaxed space-y-4 font-semibold">
                 <p>
                   Official GRE General Test results are released within <strong>10-15 days</strong> of your test date.
                 </p>
-                <div className="p-4 bg-slate-50 border border-slate-100 rounded-2xl text-xs text-slate-500 space-y-2">
+                <div className="p-4 bg-[#FFF6E5] border-2 border-[#16130F] rounded-2xl text-xs text-[#5B544A] space-y-2 shadow-[4px_4px_0_#16130F]">
                   <p>• <strong>Notification:</strong> ETS sends an email notification as soon as scores are ready on your online account dashboard.</p>
                   <p>• <strong>Reporting:</strong> Scores are sent to your chosen 4 universities within the same 10-15 days window.</p>
                   <p>• <strong>Validity:</strong> GRE results remain valid for exactly <strong>5 years</strong> from the test date.</p>
@@ -385,11 +337,8 @@ const GREOverview = () => {
 
             {/* Section 5 */}
             <section id="section-5" ref={sectionRefs['section-5']} className="scroll-mt-28">
-              <h2 className="text-2xl font-black text-slate-900 flex items-center gap-2 mb-4">
-                <span className="w-1.5 h-6 bg-indigo-500 rounded-full" />
-                5. What is a GRE Score?
-              </h2>
-              <div className="text-slate-655 text-sm leading-relaxed space-y-4 font-semibold">
+              <DesiHeading hi="स्कोर" className="mb-5">5. What is a GRE Score?</DesiHeading>
+              <div className="text-[#3D362E] text-sm leading-relaxed space-y-4 font-semibold">
                 <p>
                   The GRE General test score range spans from <strong>130 to 170</strong> for Verbal & Quantitative sections. AW is scored separately.
                 </p>
@@ -401,53 +350,50 @@ const GREOverview = () => {
                     { value: '300+', label: 'A good combined score' }
                   ]}
                 />
-                <div className="overflow-x-auto border border-slate-200/60 rounded-2xl my-3">
-                  <table className="w-full text-left border-collapse text-xs">
+                <div className="overflow-x-auto bg-white border-[3px] border-[#16130F] rounded-2xl shadow-[4px_4px_0_#16130F] my-3">
+                  <table className="w-full min-w-[480px] text-left border-collapse text-xs">
                     <thead>
-                      <tr className="bg-slate-50 text-slate-400 font-bold uppercase border-b border-slate-150">
-                        <th className="p-3">Section</th>
-                        <th className="p-3">Score Range</th>
-                        <th className="p-3">Score Increments</th>
+                      <tr className="bg-[#14837E] text-[#FFFFFF] border-b-[3px] border-[#16130F] font-bold uppercase">
+                        <th className="p-3 font-black">Section</th>
+                        <th className="p-3 font-black">Score Range</th>
+                        <th className="p-3 font-black">Score Increments</th>
                       </tr>
                     </thead>
                     <tbody>
-                      <tr className="border-b border-slate-100">
-                        <td className="p-3 font-bold text-slate-805">Verbal Reasoning</td>
+                      <tr className="border-b border-[#16130F]/15">
+                        <td className="p-3 font-bold text-[#16130F]">Verbal Reasoning</td>
                         <td className="p-3">130 – 170</td>
                         <td className="p-3">1-point increments (+1 per correct answer)</td>
                       </tr>
-                      <tr className="border-b border-slate-100">
-                        <td className="p-3 font-bold text-slate-805">Quantitative Reasoning</td>
+                      <tr className="border-b border-[#16130F]/15">
+                        <td className="p-3 font-bold text-[#16130F]">Quantitative Reasoning</td>
                         <td className="p-3">130 – 170</td>
                         <td className="p-3">1-point increments (+1 per correct answer)</td>
                       </tr>
                       <tr>
-                        <td className="p-3 font-bold text-slate-805">Analytical Writing</td>
+                        <td className="p-3 font-bold text-[#16130F]">Analytical Writing</td>
                         <td className="p-3">0 – 6</td>
                         <td className="p-3">0.5-point increments</td>
                       </tr>
                     </tbody>
                   </table>
                 </div>
-                <div className="bg-indigo-50/50 p-4 border border-indigo-150 rounded-2xl text-xs text-indigo-950 font-bold">
-                  💡 A combined score above 300 is considered a good GRE score and opens doors to top-tier universities worldwide.
+                <div className="bg-[#FFF1B8] p-4 border-2 border-[#16130F] rounded-2xl text-xs text-[#16130F] font-bold shadow-[4px_4px_0_#16130F]">
+                  <Lightbulb size={14} className="inline-block -mt-0.5 mr-1 text-[#D0362E]" />A combined score above 300 is considered a good GRE score and opens doors to top-tier universities worldwide.
                 </div>
               </div>
             </section>
 
             {/* Section 6 */}
             <section id="section-6" ref={sectionRefs['section-6']} className="scroll-mt-28">
-              <h2 className="text-2xl font-black text-slate-900 flex items-center gap-2 mb-4">
-                <span className="w-1.5 h-6 bg-indigo-500 rounded-full" />
-                6. GRE Test Centre: Where Can You Take the GRE?
-              </h2>
-              <div className="text-slate-655 text-sm leading-relaxed space-y-4 font-semibold">
+              <DesiHeading hi="सेंटर" className="mb-5">6. GRE Test Centre: Where Can You Take the GRE?</DesiHeading>
+              <div className="text-[#3D362E] text-sm leading-relaxed space-y-4 font-semibold">
                 <p>
                   GRE has over 1,000 test centres spread across 160 countries. In India, exams are conducted at centers in major cities:
                 </p>
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-xs font-bold text-slate-600">
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-xs font-bold text-[#3D362E]">
                   {["Ahmedabad", "Bangalore", "New Delhi", "Chennai", "Hyderabad", "Mumbai", "Pune", "Kolkata"].map((city) => (
-                    <div key={city} className="border border-slate-100 p-3.5 rounded-xl bg-slate-50/50 text-center">
+                    <div key={city} className="border-2 border-[#16130F] p-3.5 rounded-xl bg-[#FFF6E5] text-center">
                       {city}
                     </div>
                   ))}
@@ -460,25 +406,22 @@ const GREOverview = () => {
 
             {/* Section 7 */}
             <section id="section-7" ref={sectionRefs['section-7']} className="scroll-mt-28">
-              <h2 className="text-2xl font-black text-slate-900 flex items-center gap-2 mb-4">
-                <span className="w-1.5 h-6 bg-indigo-500 rounded-full" />
-                7. GRE Registration: How do I register for the GRE?
-              </h2>
-              <div className="text-slate-655 text-sm leading-relaxed space-y-4 font-semibold">
+              <DesiHeading hi="रजिस्ट्रेशन" className="mb-5">7. GRE Registration: How do I register for the GRE?</DesiHeading>
+              <div className="text-[#3D362E] text-sm leading-relaxed space-y-4 font-semibold">
                 <p>
                   Registering is simple and fully online via the ETS website:
                 </p>
-                <div className="space-y-3.5 text-xs text-slate-500 my-4">
-                  <div className="p-4 bg-slate-50 rounded-2xl border border-slate-100">
-                    <span className="font-extrabold text-slate-800 block mb-1">Step 1: Profile Setup</span>
+                <div className="space-y-3.5 text-xs text-[#5B544A] my-4">
+                  <div className="p-4 bg-[#FFF6E5] rounded-2xl border-2 border-[#16130F] shadow-[4px_4px_0_#16130F]">
+                    <span className="font-extrabold text-[#16130F] block mb-1">Step 1: Profile Setup</span>
                     Create an ETS account, ensuring names and details exactly match your physical passport.
                   </div>
-                  <div className="p-4 bg-slate-50 rounded-2xl border border-slate-100">
-                    <span className="font-extrabold text-slate-800 block mb-1">Step 2: Slot Booking</span>
+                  <div className="p-4 bg-[#FFF6E5] rounded-2xl border-2 border-[#16130F] shadow-[4px_4px_0_#16130F]">
+                    <span className="font-extrabold text-[#16130F] block mb-1">Step 2: Slot Booking</span>
                     Search by location/timezone, pick an available test center and date.
                   </div>
-                  <div className="p-4 bg-slate-50 rounded-2xl border border-slate-100">
-                    <span className="font-extrabold text-slate-800 block mb-1">Step 3: Payment</span>
+                  <div className="p-4 bg-[#FFF6E5] rounded-2xl border-2 border-[#16130F] shadow-[4px_4px_0_#16130F]">
+                    <span className="font-extrabold text-[#16130F] block mb-1">Step 3: Payment</span>
                     Submit the US$249 fee using credit/debit card, e-check, UPI, or PayPal.
                   </div>
                 </div>
@@ -487,15 +430,12 @@ const GREOverview = () => {
 
             {/* Section 8 */}
             <section id="section-8" ref={sectionRefs['section-8']} className="scroll-mt-28">
-              <h2 className="text-2xl font-black text-slate-900 flex items-center gap-2 mb-4">
-                <span className="w-1.5 h-6 bg-indigo-500 rounded-full" />
-                8. GRE Eligibility: Documents Required for GRE
-              </h2>
-              <div className="text-slate-655 text-sm leading-relaxed space-y-4 font-semibold">
+              <DesiHeading hi="कौन दे सकता है" className="mb-5">8. GRE Eligibility: Documents Required for GRE</DesiHeading>
+              <div className="text-[#3D362E] text-sm leading-relaxed space-y-4 font-semibold">
                 <p>
                   ETS has set no strict age limits or academic qualifiers for taking the GRE.
                 </p>
-                <div className="bg-slate-50 border border-slate-150 p-4.5 rounded-2xl text-xs text-slate-500 space-y-2">
+                <div className="bg-[#FFF6E5] border-2 border-[#16130F] p-4.5 rounded-2xl text-xs text-[#5B544A] space-y-2 shadow-[4px_4px_0_#16130F]">
                   <p>• <strong>Primary ID:</strong> A valid physical passport is mandatory for all Indian test takers. Photocopies are strictly rejected.</p>
                   <p>• <strong>Name Check:</strong> Your registration name must match your passport exactly to prevent center disqualifications.</p>
                   <p>• <strong>Aadhaar Status:</strong> Aadhar cards were temporarily accepted due to proctor setups, but passport remains the standard.</p>
@@ -505,15 +445,12 @@ const GREOverview = () => {
 
             {/* Section 9 */}
             <section id="section-9" ref={sectionRefs['section-9']} className="scroll-mt-28">
-              <h2 className="text-2xl font-black text-slate-900 flex items-center gap-2 mb-4">
-                <span className="w-1.5 h-6 bg-indigo-500 rounded-full" />
-                9. GRE Syllabus & Pattern: What Does the Test Contain?
-              </h2>
-              <div className="text-slate-655 text-sm leading-relaxed space-y-4 font-semibold">
+              <DesiHeading hi="पेपर का ढाँचा" className="mb-5">9. GRE Syllabus & Pattern: What Does the Test Contain?</DesiHeading>
+              <div className="text-[#3D362E] text-sm leading-relaxed space-y-4 font-semibold">
                 <p>
                   The shorter GRE features a reduced question count and eliminates the separate essay task, lasting under 2 hours.
                 </p>
-                <div className="p-4 bg-indigo-50/10 border border-slate-100 rounded-2xl text-xs text-slate-500 space-y-2">
+                <div className="p-4 bg-[#FFF1B8] border-2 border-[#16130F] rounded-2xl text-xs text-[#5B544A] space-y-2 shadow-[4px_4px_0_#16130F]">
                   <p>• <strong>Verbal Reasoning:</strong> Evaluates ability to parse passages, select vocabulary, and comprehend complex structures.</p>
                   <p>• <strong>Quantitative Reasoning:</strong> Covers high school arithmetic, algebra, data analysis, and basic geometry concepts.</p>
                   <p>• <strong>Analytical Writing:</strong> Tests argument structures and issue breakdowns via one task (Analyse an Issue).</p>
@@ -523,11 +460,8 @@ const GREOverview = () => {
 
             {/* Section 10 */}
             <section id="section-10" ref={sectionRefs['section-10']} className="scroll-mt-28">
-              <h2 className="text-2xl font-black text-slate-900 flex items-center gap-2 mb-4">
-                <span className="w-1.5 h-6 bg-indigo-500 rounded-full" />
-                10. GRE Books: What are the Best Resources for the GRE?
-              </h2>
-              <div className="text-slate-655 text-sm leading-relaxed space-y-4 font-semibold">
+              <DesiHeading hi="किताबें" className="mb-5">10. GRE Books: What are the Best Resources for the GRE?</DesiHeading>
+              <div className="text-[#3D362E] text-sm leading-relaxed space-y-4 font-semibold">
                 <p>
                   Top reference guides recommended by coaches for exam preparation:
                 </p>
@@ -538,13 +472,13 @@ const GREOverview = () => {
                     { num: "3", name: "Princeton Review GRE Premium Prep", desc: "Comprehensive review set providing detailed analytical writeups." },
                     { num: "4", name: "Barron's GRE Test Prep", desc: "Solid vocab lists and quant worksheets for comprehensive coverage." }
                   ].map((book) => (
-                    <div key={book.num} className="flex gap-4 p-4 border border-slate-100 rounded-2xl bg-slate-50/50">
-                      <div className="w-8 h-8 rounded-full bg-slate-900 text-white flex items-center justify-center text-xs font-black flex-shrink-0">
+                    <div key={book.num} className="flex gap-4 p-4 border-2 border-[#16130F] rounded-2xl bg-[#FFF6E5] shadow-[4px_4px_0_#16130F]">
+                      <div className="w-8 h-8 rounded-full bg-[#16130F] text-white flex items-center justify-center text-xs font-black flex-shrink-0">
                         {book.num}
                       </div>
                       <div>
-                        <h4 className="text-xs font-bold text-slate-805 uppercase">{book.name}</h4>
-                        <p className="text-slate-500 text-[11px] mt-1 font-semibold leading-relaxed">{book.desc}</p>
+                        <h4 className="text-xs font-bold text-[#16130F] uppercase">{book.name}</h4>
+                        <p className="text-[#5B544A] text-[12.5px] mt-1 font-semibold leading-relaxed">{book.desc}</p>
                       </div>
                     </div>
                   ))}
@@ -554,11 +488,8 @@ const GREOverview = () => {
 
             {/* Section 11 */}
             <section id="section-11" ref={sectionRefs['section-11']} className="scroll-mt-28">
-              <h2 className="text-2xl font-black text-slate-900 flex items-center gap-2 mb-4">
-                <span className="w-1.5 h-6 bg-indigo-500 rounded-full" />
-                11. GRE Practice Tests: Boost your Preparation!
-              </h2>
-              <div className="text-slate-655 text-sm leading-relaxed space-y-4 font-semibold">
+              <DesiHeading hi="मॉक टेस्ट" className="mb-5">11. GRE Practice Tests: Boost your Preparation!</DesiHeading>
+              <div className="text-[#3D362E] text-sm leading-relaxed space-y-4 font-semibold">
                 <p>
                   Official diagnostic mocks from ETS are the most reliable tool to predict actual exam scores and get used to timing limits.
                 </p>
@@ -570,26 +501,21 @@ const GREOverview = () => {
 
             {/* Section 12 */}
             <section id="section-12" ref={sectionRefs['section-12']} className="scroll-mt-28">
-              <h2 className="text-2xl font-black text-slate-900 flex items-center gap-2 mb-4">
-                <span className="w-1.5 h-6 bg-indigo-500 rounded-full" />
-                12. Top Global Universities Accepting GRE Scores
-              </h2>
-              <div className="text-slate-655 text-sm leading-relaxed space-y-4 font-semibold mb-6">
+              <DesiHeading hi="कहाँ जाओगे" className="mb-5">12. Top Global Universities Accepting GRE Scores</DesiHeading>
+              <div className="text-[#3D362E] text-sm leading-relaxed space-y-4 font-semibold mb-6">
                 <p>
                   Explore universities accepting GRE scores across USA, UK, Canada, Australia, and Ireland.
                 </p>
               </div>
 
               {/* Country Tabs */}
-              <div className="flex flex-wrap gap-2 border-b border-slate-200 pb-3 mb-6">
+              <div className="flex flex-wrap gap-2 pb-4 mb-6 border-b-2 border-dashed border-[#16130F]/25">
                 {countries.map((country) => (
                   <button
                     key={country}
                     onClick={() => setActiveCountry(country)}
-                    className={`px-5 py-2 rounded-xl text-xs font-black transition-all cursor-pointer
-                      ${activeCountry === country
-                        ? 'bg-slate-900 text-white shadow-md'
-                        : 'text-slate-500 hover:bg-slate-150'}`}
+                    aria-pressed={activeCountry === country}
+                    className={`no-shine px-4 py-2 rounded-full border-2 border-[#16130F] text-xs font-black transition-colors cursor-pointer ${activeCountry === country ? 'bg-[#16130F] text-white shadow-[2px_2px_0_#F2B705]' : 'bg-white text-[#16130F] hover:bg-[#FCE38A]'}`}
                   >
                     {country}
                   </button>
@@ -606,10 +532,10 @@ const GREOverview = () => {
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: -15 }}
                       transition={{ duration: 0.25 }}
-                      className="bg-white border border-slate-200/80 rounded-2xl overflow-hidden shadow-sm flex flex-col justify-between group hover:shadow-md transition-shadow"
+                      className="bg-white border-[3px] border-[#16130F] rounded-[14px] overflow-hidden flex flex-col justify-between group shadow-[4px_4px_0_#16130F] transition-transform hover:-translate-y-1"
                     >
                       {/* Image header */}
-                      <div className="h-32 w-full relative overflow-hidden bg-slate-100">
+                      <div className="h-32 w-full relative overflow-hidden bg-[#FFF6E5] border-b-[3px] border-[#16130F]">
                         <img 
                           src={uni.image} 
                           alt={uni.name} 
@@ -620,7 +546,7 @@ const GREOverview = () => {
                           }}
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
-                        <span className="absolute top-3 right-3 px-2.5 py-0.5 bg-white/20 backdrop-blur-md border border-white/30 text-white font-extrabold text-[10px] rounded-full uppercase tracking-wider">
+                        <span className="absolute top-3 right-3 px-2.5 py-0.5 bg-[#F2B705] border-2 border-[#16130F] text-[#16130F] font-black text-[10px] rounded-md uppercase tracking-wider rotate-2">
                           {uni.rank}
                         </span>
                       </div>
@@ -629,43 +555,43 @@ const GREOverview = () => {
                       <div className="p-5 flex-1 flex flex-col justify-between">
                         <div>
                           <div className="flex items-center gap-3 mb-3">
-                            <div className="w-10 h-10 rounded-xl bg-white border border-slate-200/80 flex items-center justify-center p-1 overflow-hidden shadow-xs flex-shrink-0">
+                            <div className="w-10 h-10 rounded-lg bg-white border-2 border-[#16130F] flex items-center justify-center p-1 overflow-hidden flex-shrink-0">
                               <UniLogo logo={uni.logo} name={uni.name} domain={uni.domain} />
                             </div>
                             <div>
-                              <h4 className="font-bold text-slate-900 text-sm leading-tight group-hover:text-indigo-600 transition-colors">
+                              <h4 className="font-urbanist font-black text-[#16130F] text-[15px] leading-tight">
                                 {uni.name}
                               </h4>
-                              <p className="text-[10px] text-slate-400 font-semibold flex items-center gap-1 mt-0.5">
+                              <p className="text-[10px] text-[#8A7F70] font-semibold flex items-center gap-1 mt-0.5">
                                 <MapPin size={10} />
                                 {uni.location}
                               </p>
                             </div>
                           </div>
 
-                          <div className="bg-slate-50/70 p-2.5 rounded-xl border border-slate-100 grid grid-cols-2 gap-2 text-center text-xs mt-4">
+                          <div className="bg-[#FFF6E5] p-2.5 rounded-lg border-2 border-[#16130F] grid grid-cols-2 gap-2 text-center text-xs mt-4">
                             <div>
-                              <span className="text-[9px] text-slate-400 font-bold block uppercase tracking-wider">Est. Tuition</span>
-                              <span className="font-bold text-indigo-700 block mt-0.5">{uni.tuition}</span>
+                              <span className="text-[9px] text-[#8A7F70] font-bold block uppercase tracking-wider">Est. Tuition</span>
+                              <span className="font-bold text-[#14837E] block mt-0.5">{uni.tuition}</span>
                             </div>
                             <div>
-                              <span className="text-[9px] text-slate-400 font-bold block uppercase tracking-wider">Standard Exam</span>
-                              <span className="font-bold text-slate-700 block mt-0.5">GRE Required</span>
+                              <span className="text-[9px] text-[#8A7F70] font-bold block uppercase tracking-wider">Standard Exam</span>
+                              <span className="font-bold text-[#16130F] block mt-0.5">GRE Required</span>
                             </div>
                           </div>
                         </div>
 
                         {/* Action buttons */}
-                        <div className="flex gap-2 mt-5 border-t border-slate-100 pt-4">
+                        <div className="flex gap-2 mt-5 border-t border-[#16130F]/15 pt-4">
                           <Link
                             to={uni.path}
-                            className="flex-1 py-2 text-center border border-slate-200 hover:bg-slate-50 text-slate-700 font-bold text-xs rounded-xl transition-colors"
+                            className="no-shine flex-1 py-2 text-center border-2 border-[#16130F] bg-white hover:bg-[#FCE38A] text-[#16130F] font-bold text-xs rounded-full transition-colors"
                           >
                             Know More
                           </Link>
                           <Link
                             to={`/contact?university=${encodeURIComponent(uni.name)}`}
-                            className="flex-1 py-2 text-center bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs rounded-xl transition-all shadow-sm"
+                            className="no-shine flex-1 py-2 text-center bg-[#16130F] border-2 border-[#16130F] text-white font-bold text-xs rounded-full shadow-[2px_2px_0_#F2B705] transition-transform hover:-translate-y-0.5"
                           >
                             Check Eligibility
                           </Link>
@@ -680,20 +606,21 @@ const GREOverview = () => {
           </main>
 
           {/* Right Floating Sidebar Widgets */}
-          <aside className="sticky top-28 space-y-6">
+          <aside className="lg:sticky lg:top-28 space-y-6">
             
             {/* Widget A: Live Workshops */}
-            <div className="uc-clean p-6 rounded-2xl shadow-md border relative overflow-hidden">
-              <span className="text-[9px] font-bold text-orange-200 uppercase tracking-widest block mb-2">Live Workshops</span>
-              <h3 className="text-lg font-bold leading-snug mb-2">
+            <div className="p-6 border-[3px] border-[#16130F] rounded-2xl shadow-[5px_5px_0_#16130F] text-white rotate-[0.6deg]" style={{ background: '#14837E' }}>
+              <span className="font-['Rozha_One',serif] text-[15px] leading-none text-[#FCE38A] block">मेला</span>
+              <span className="text-[10px] font-black uppercase tracking-widest block mt-1 mb-2 opacity-90">Live Workshops</span>
+              <h3 className="font-urbanist text-[20px] font-black leading-snug mb-2">
                 Study Abroad Events & Fairs
               </h3>
-              <p className="text-xs text-blue-100/85 leading-relaxed mb-5 font-normal">
+              <p className="text-[13px] leading-relaxed mb-5 font-medium opacity-90">
                 Join live webinars with global university delegates, admissions officers, and certified trainers.
               </p>
               <Link
                 to="/events"
-                className="w-full text-center py-3 bg-white text-[#111111] rounded-xl text-xs font-bold hover:bg-orange-50 transition-all flex items-center justify-center gap-1.5 shadow-sm block cursor-pointer"
+                className="no-shine w-full text-center py-3 bg-white text-[#16130F] rounded-full border-2 border-[#16130F] text-[13px] font-black shadow-[3px_3px_0_#16130F] transition-transform hover:-translate-y-0.5 flex items-center justify-center gap-1.5"
               >
                 <span>Explore Live Events</span>
                 <ArrowRight size={14} />
@@ -701,33 +628,32 @@ const GREOverview = () => {
             </div>
 
             {/* Widget B: AI University Matcher */}
-            <div className="bg-white border border-slate-100 p-6 rounded-2xl shadow-sm text-center">
-              <div className="w-12 h-12 rounded-full bg-orange-50 text-indigo-600 flex items-center justify-center mx-auto mb-4">
+            <InkCard className="p-6 text-center">
+              <div className="w-12 h-12 rounded-xl border-2 border-[#16130F] flex items-center justify-center mx-auto mb-4 -rotate-3" style={{ background: '#F2B705', color: '#16130F' }}>
                 <Sparkles size={20} />
               </div>
-              <h4 className="font-bold text-slate-900 text-sm mb-2">AI University Matcher</h4>
-              <p className="text-xs text-slate-500 leading-relaxed mb-5 font-normal">
+              <h4 className="font-urbanist font-black text-[#16130F] text-[16px] mb-2">AI University Matcher</h4>
+              <p className="text-[13px] text-[#5B544A] leading-relaxed mb-5 font-medium">
                 Unsure if you qualify for GRE waivers at target schools? Get instant AI suggestions.
               </p>
               <Link
                 to="/ai-tools"
-                className="w-full text-center py-3 border border-slate-200 text-slate-700 hover:text-indigo-600 rounded-xl text-xs font-bold hover:bg-slate-50 hover:border-slate-300 transition-all block cursor-pointer"
+                className="no-shine w-full text-center py-3 border-2 border-[#16130F] bg-[#FFF6E5] text-[#16130F] rounded-full text-[13px] font-black hover:bg-[#FCE38A] transition-colors block"
               >
                 Try AI Shortlister
               </Link>
-            </div>
+            </InkCard>
 
           </aside>
 
         </div>
 
         {/* FAQs Accordion */}
-        <div className="mt-16 bg-white border border-slate-100 rounded-3xl p-8 shadow-sm max-w-4xl mx-auto">
-          <h3 className="text-xl font-black text-slate-900 mb-6 flex items-center gap-2">
-            <HelpCircle className="text-indigo-600" size={22} />
-            Frequently Asked Questions (FAQs)
-          </h3>
-          <div className="space-y-4">
+        <section className="mt-16 max-w-4xl mx-auto">
+          <DesiHeading hi="अक्सर पूछे सवाल" className="mb-6">
+            <span className="inline-flex items-center gap-2"><HelpCircle size={24} className="text-[#D0362E]" />Frequently Asked Questions (FAQs)</span>
+          </DesiHeading>
+          <div className="space-y-3">
             {[
               { q: "How long is the GRE?", a: "The shorter GRE General Test takes exactly 1 hour and 58 minutes to complete." },
               { q: "Is the GRE compulsory for MS in the USA?", a: "Many universities have made it optional or offer waivers, but a high score significantly boosts admissions and merit scholarships." },
@@ -738,16 +664,19 @@ const GREOverview = () => {
             ].map((faq, idx) => {
               const isOpen = !!faqOpen[idx];
               return (
-                <div key={idx} className="border border-slate-100 rounded-2xl overflow-hidden bg-slate-50/50">
+                <div key={idx} className="bg-white border-[3px] border-[#16130F] rounded-xl overflow-hidden shadow-[3px_3px_0_#16130F]">
                   <button
                     onClick={() => toggleFaq(idx)}
-                    className="w-full flex items-center justify-between p-5 text-left font-bold text-slate-750 hover:text-indigo-600 transition-colors"
+                    aria-expanded={isOpen}
+                    className="no-shine w-full flex items-center justify-between gap-3 p-4 sm:p-5 text-left font-bold text-[14.5px] text-[#16130F] cursor-pointer"
                   >
                     <span>{faq.q}</span>
-                    <ChevronRight 
-                      size={15} 
-                      className={`text-slate-400 transition-transform duration-250 ${isOpen ? 'rotate-90 text-indigo-500' : ''}`} 
-                    />
+                    <span
+                      className="w-7 h-7 shrink-0 rounded-full border-2 border-[#16130F] grid place-items-center transition-colors"
+                      style={{ background: isOpen ? '#F2B705' : '#FFF6E5', color: isOpen ? '#16130F' : '#16130F' }}
+                    >
+                      <ChevronRight size={15} className={`transition-transform duration-200 ${isOpen ? 'rotate-90' : ''}`} />
+                    </span>
                   </button>
                   <AnimatePresence initial={false}>
                     {isOpen && (
@@ -757,7 +686,7 @@ const GREOverview = () => {
                         exit={{ height: 0, opacity: 0 }}
                         transition={{ duration: 0.2 }}
                       >
-                        <div className="px-5 pb-5 pt-1 text-slate-500 text-xs md:text-sm border-t border-slate-100 leading-relaxed font-semibold">
+                        <div className="px-4 sm:px-5 pb-5 pt-3 text-[#3D362E] text-[14px] border-t-2 border-dashed border-[#16130F]/25 leading-relaxed font-medium">
                           {faq.a}
                         </div>
                       </motion.div>
@@ -767,6 +696,14 @@ const GREOverview = () => {
               );
             })}
           </div>
+        </section>
+
+        {/* Closing CTA */}
+        <div className="mt-16">
+          <BookOkCta
+            to="/book-consultation"
+            text="GRE ka target score, shortlist aur funding: ek free call mein sab clear. 1:1, ek ghante ki baat."
+          />
         </div>
 
       </div>

@@ -2,26 +2,62 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
   BookOpen,
-  Calendar,
-  DollarSign,
-  GraduationCap,
-  Clock,
-  MapPin,
-  FileText,
-  Compass,
   ArrowRight,
   ChevronRight,
-  UserCheck,
-  AlertTriangle,
-  Volume2,
+  ChevronDown,
+  Headphones,
   FileEdit,
-  Mic,
-  ArrowUpRight,
-  CheckCircle2,
-  HelpCircle
+  MessageSquare,
+  MessagesSquare,
+  Volume2,
 } from 'lucide-react';
 import { API_BASE_URL } from '../../../../config';
 import { HookBand, Donut } from '../../../../components/ui/Infographics';
+import { DesiHero, DesiHeading, InkCard, Sticker } from '../../../../components/desi/DesiKit';
+import { DESI_TONES } from '../../../../components/desi/desiTokens';
+import { BookOkCta } from '../../../../components/desi/BookOkCta';
+
+// Section heading with a short Hindi kicker (h3 level)
+const SubHead = ({ hi, children, className = '' }) => (
+  <div className={className}>
+    <p className="font-['Rozha_One',serif] text-[15px] leading-none text-[#D0362E]">{hi}</p>
+    <h3 className="mt-1 font-urbanist font-black text-[21px] sm:text-[24px] leading-[1.1] tracking-[-0.02em] text-[#16130F]">{children}</h3>
+  </div>
+);
+
+// FAQ accordion with ink borders
+const FaqItem = ({ q, a }) => (
+  <details className="group bg-white border-[3px] border-[#16130F] rounded-xl overflow-hidden shadow-[4px_4px_0_#16130F] open:shadow-[4px_4px_0_#D0362E]">
+    <summary className="flex items-center justify-between gap-3 p-4 cursor-pointer list-none select-none font-bold text-[14.5px] text-[#16130F] [&::-webkit-details-marker]:hidden">
+      <span>{q}</span>
+      <span className="w-7 h-7 rounded-full border-2 border-[#16130F] bg-white grid place-items-center shrink-0 transition-transform group-open:rotate-180 group-open:bg-[#F2B705]">
+        <ChevronDown size={15} />
+      </span>
+    </summary>
+    <div className="px-4 pb-4 pt-3 border-t-2 border-dashed border-[#16130F33] text-[#5B544A] text-[14px] leading-relaxed">
+      {a}
+    </div>
+  </details>
+);
+
+// Grid of related links inside one ink box
+const LinkGrid = ({ hi, title, links, getLink }) => (
+  <div>
+    <SubHead hi={hi}>{title}</SubHead>
+    <div className="mt-5 grid grid-cols-1 md:grid-cols-3 bg-white border-[3px] border-[#16130F] rounded-xl overflow-hidden shadow-[4px_4px_0_#16130F]">
+      {links.map((link) => (
+        <Link
+          key={link}
+          to={getLink(link)}
+          className="group p-4 flex items-center justify-between gap-3 border-b-2 md:border-r-2 border-[#16130F]/10 hover:bg-[#FFF1B8] transition-colors cursor-pointer"
+        >
+          <span className="text-[13px] font-bold text-[#3D362E] group-hover:text-[#16130F]">{link}</span>
+          <ArrowRight size={13} className="shrink-0 text-[#D0362E] group-hover:translate-x-1 transition-transform" />
+        </Link>
+      ))}
+    </div>
+  </div>
+);
 
 const IELTSSyllabusPage = () => {
   const [dbBlogs, setDbBlogs] = React.useState([]);
@@ -169,74 +205,89 @@ const IELTSSyllabusPage = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-slate-50 pt-28 pb-20 font-sans">
-      <div className="max-w-[1400px] mx-auto px-6 md:px-10">
-        
-        {/* Breadcrumb */}
-        <div className="flex items-center gap-2 text-xs font-bold text-slate-400 uppercase tracking-widest mb-6">
-          <Link to="/" className="hover:text-indigo-650 transition-colors">Home</Link>
-          <ChevronRight size={12} />
-          <span className="hover:text-indigo-655 transition-colors">Exams</span>
-          <ChevronRight size={12} />
-          <span className="text-slate-655">IELTS</span>
-          <ChevronRight size={12} />
-          <span className="text-slate-600">IELTS Syllabus & Pattern</span>
-        </div>
+    <div className="min-h-screen bg-[#FFF6E5] pb-16 font-['Onest',sans-serif] text-[#16130F]">
+      {/* ── HERO ── */}
+      <DesiHero
+        tone="mustard"
+        sign={{ hi: 'पाठ्यक्रम', en: 'IELTS SYLLABUS' }}
+        crumbs={[{ label: 'Home', to: '/' }, { label: 'Exams' }, { label: 'IELTS' }, { label: 'IELTS Syllabus & Pattern' }]}
+        title="IELTS Exam Syllabus & Pattern 2024-2025"
+        subtitle="Comprehensive overview of the Listening, Reading, Writing, and Speaking modules for Academic, General Training, and Life Skills."
+        stickers={(
+          <>
+            <Sticker tilt={-2}><BookOpen size={14} />IELTS Reference Guide</Sticker>
+            <Sticker bg="#DDF3EF" tilt={1.5}><Headphones size={14} />Listening</Sticker>
+            <Sticker tilt={-1}><BookOpen size={14} />Reading</Sticker>
+            <Sticker bg="#FBD9E6" tilt={1}><FileEdit size={14} />Writing</Sticker>
+            <Sticker bg="#FCE3DA" tilt={-1.5}><MessageSquare size={14} />Speaking</Sticker>
+          </>
+        )}
+      />
 
-        {/* Title Header Card */}
-        <div className="uc-clean relative rounded-[2.5rem] p-8 md:p-14 overflow-hidden mb-12 shadow-xl border">
-          <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-indigo-500/10 rounded-full blur-3xl pointer-events-none" />
-          <div className="relative z-10 max-w-3xl">
-            <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-indigo-500/20 border border-indigo-500/30 text-indigo-300 text-xs font-extrabold uppercase tracking-widest mb-6">
-              IELTS Reference Guide
-            </span>
-            <h1 className="text-2xl md:text-5xl font-black leading-tight tracking-tight mb-6">
-              IELTS Exam Syllabus & Pattern 2024-2025
-            </h1>
-            <p className="text-indigo-200/90 text-sm md:text-base leading-relaxed font-semibold">
-              Comprehensive overview of the Listening, Reading, Writing, and Speaking modules for Academic, General Training, and Life Skills.
-            </p>
+      {/* ── GUIDE PICKER (phones and tablets) ── */}
+      <div className="lg:hidden max-w-[1400px] mx-auto px-4 -mt-6 mb-8 relative z-10">
+        <InkCard className="p-3">
+          <p className="font-['Rozha_One',serif] text-[14px] text-[#D0362E] leading-none px-1 mb-2">आइल्ट्स गाइड</p>
+          <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-hide">
+            {sidebarLinks.map((linkItem) => {
+              const isActive = linkItem.key === 'syllabus';
+              return (
+                <Link
+                  key={linkItem.key}
+                  to={linkItem.path}
+                  className={`px-3.5 py-2 rounded-full border-2 text-xs font-bold whitespace-nowrap flex-shrink-0 ${isActive ? 'border-[#16130F] bg-[#F2B705] text-[#16130F] shadow-[2px_2px_0_#16130F]' : 'border-[#E6DCC8] bg-[#FFF6E5] text-[#5B544A]'}`}
+                >
+                  {linkItem.name}
+                </Link>
+              );
+            })}
           </div>
-        </div>
+        </InkCard>
+      </div>
+
+      <div className="max-w-[1400px] mx-auto px-4 md:px-8 lg:pt-12">
 
         {/* Layout Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-[210px_minmax(0,1fr)_230px] xl:grid-cols-[250px_minmax(0,1fr)_290px] gap-6 items-start">
-          
+        <div className="grid grid-cols-1 lg:grid-cols-[210px_minmax(0,1fr)_230px] xl:grid-cols-[250px_minmax(0,1fr)_290px] gap-6 lg:gap-7 items-start">
+
           {/* Left Sidebar Links */}
-          <aside className="sticky top-28 bg-white border border-slate-100 p-6 rounded-2xl shadow-sm max-h-[calc(100vh-140px)] overflow-y-auto">
-            <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-4">IELTS Guide Index</p>
-            <nav className="space-y-1">
-              {sidebarLinks.map((linkItem) => {
-                const isActive = linkItem.key === 'syllabus';
-                return (
-                  <Link
-                    key={linkItem.key}
-                    to={linkItem.path}
-                    className={`w-full text-left py-2 px-3 rounded-xl text-xs font-bold transition-all leading-normal flex items-center justify-between
-                      ${isActive
-                        ? 'bg-indigo-50 text-indigo-650'
-                        : 'text-slate-500 hover:bg-slate-50 hover:text-slate-805'}`}
-                  >
-                    <span>{linkItem.name}</span>
-                    <ChevronRight size={12} className={isActive ? 'text-indigo-500' : 'text-slate-300'} />
-                  </Link>
-                );
-              })}
-            </nav>
+          <aside className="hidden lg:block sticky top-28 max-h-[calc(100vh-140px)] overflow-y-auto pr-2 pb-2">
+            <InkCard className="p-4">
+              <p className="font-['Rozha_One',serif] text-[15px] text-[#D0362E] leading-none">आइल्ट्स गाइड</p>
+              <h3 className="mt-1 mb-3 font-urbanist font-black text-[16px]">IELTS Guide Index</h3>
+              <nav className="flex flex-col gap-1.5">
+                {sidebarLinks.map((linkItem) => {
+                  const isActive = linkItem.key === 'syllabus';
+                  return (
+                    <Link
+                      key={linkItem.key}
+                      to={linkItem.path}
+                      className={`group w-full text-left py-2 px-3 rounded-lg border-2 text-[13px] font-bold leading-normal flex items-center justify-between gap-2 transition-colors
+                        ${isActive
+                          ? 'border-[#16130F] bg-[#F2B705] text-[#16130F] shadow-[3px_3px_0_#16130F]'
+                          : 'border-transparent text-[#3D362E] hover:border-[#16130F] hover:bg-[#FFF6E5]'}`}
+                    >
+                      <span>{linkItem.name}</span>
+                      <ChevronRight size={13} className="shrink-0 transition-transform group-hover:translate-x-0.5" />
+                    </Link>
+                  );
+                })}
+              </nav>
+            </InkCard>
           </aside>
 
           {/* Center Content Section */}
-          <main className="bg-white border border-slate-100 p-8 md:p-12 rounded-3xl shadow-sm">
-            <h2 className="text-xl font-black text-slate-900 mb-6 pb-4 border-b border-slate-100">
+          <main className="min-w-0 bg-white border-[3px] border-[#16130F] p-5 sm:p-8 md:p-10 rounded-[18px] shadow-[6px_6px_0_#16130F]">
+            <DesiHeading hi="पूरी जानकारी" className="mb-6 pb-5 border-b-2 border-dashed border-[#16130F33]">
               Detailed Guide Content
-            </h2>
-            <div className="prose max-w-none space-y-8 text-slate-700 text-[15px] leading-relaxed font-normal">
+            </DesiHeading>
+            <div className="max-w-none space-y-8 text-[#3D362E] text-[15px] leading-relaxed">
               <p>
                 The IELTS exam consists of four sections: Listening, Reading, Writing, and Speaking. Understanding the IELTS exam pattern is crucial to achieving a high band score. There are two main types of tests designed based on your purpose of taking IELTS:
               </p>
-              <ul className="list-disc list-inside space-y-2 text-xs font-semibold pl-2">
-                <li><strong>IELTS Academic:</strong> Ideal for those pursuing higher education in countries like Australia, Canada, the UK, and the USA.</li>
-                <li><strong>IELTS General Training:</strong> Best suited for those seeking work opportunities or migration pathways abroad.</li>
+              <ul className="space-y-2.5 text-[14px]">
+                <li className="flex gap-2.5"><span className="mt-2 w-2.5 h-2.5 rounded-full border-2 border-[#16130F] bg-[#F2B705] shrink-0" /><span><strong className="text-[#16130F]">IELTS Academic:</strong> Ideal for those pursuing higher education in countries like Australia, Canada, the UK, and the USA.</span></li>
+                <li className="flex gap-2.5"><span className="mt-2 w-2.5 h-2.5 rounded-full border-2 border-[#16130F] bg-[#14837E] shrink-0" /><span><strong className="text-[#16130F]">IELTS General Training:</strong> Best suited for those seeking work opportunities or migration pathways abroad.</span></li>
               </ul>
               <p>
                 While the Listening and Speaking sections are identical in both types of tests, the Writing and Reading sections differ. Knowing the syllabus ensures you can allocate study time efficiently and avoid surprises on test day.
@@ -260,13 +311,15 @@ const IELTSSyllabusPage = () => {
               </div>
 
               {/* Dynamic Course Type Switcher */}
-              <div className="bg-indigo-50/45 border border-indigo-100 rounded-2xl p-6">
-                <h4 className="font-extrabold text-slate-805 text-sm mb-4 flex items-center gap-1.5">
-                  <BookOpen size={18} className="text-indigo-650" />
+              <div className="bg-[#FFF1B8] border-[3px] border-[#16130F] rounded-[16px] p-4 sm:p-6 shadow-[5px_5px_0_#16130F]">
+                <h4 className="font-urbanist font-black text-[17px] text-[#16130F] mb-4 flex items-center gap-2">
+                  <span className="w-8 h-8 rounded-full border-2 border-[#16130F] bg-[#14837E] text-white grid place-items-center shrink-0">
+                    <BookOpen size={16} />
+                  </span>
                   <span>Choose Test Pattern Format</span>
                 </h4>
-                
-                <div className="flex border-b border-slate-200/60 pb-3 mb-5 gap-3.5">
+
+                <div className="flex flex-wrap gap-2 pb-4 mb-4 border-b-2 border-dashed border-[#16130F33]">
                   {['academic', 'general', 'lifeskills'].map((tab) => (
                     <button
                       key={tab}
@@ -274,10 +327,10 @@ const IELTSSyllabusPage = () => {
                         setActiveTab(tab);
                         if (tab !== 'lifeskills') setActiveModule('listening');
                       }}
-                      className={`pb-2.5 text-xs font-black transition-all capitalize border-b-2 cursor-pointer ${
-                        activeTab === tab 
-                          ? 'border-indigo-600 text-indigo-650' 
-                          : 'border-transparent text-slate-500 hover:text-slate-800'
+                      className={`no-shine px-4 py-2 rounded-full border-2 border-[#16130F] text-[13px] font-extrabold transition-transform capitalize cursor-pointer ${
+                        activeTab === tab
+                          ? 'bg-[#16130F] text-[#F2B705] shadow-[2px_2px_0_#D0362E]'
+                          : 'bg-white text-[#16130F] hover:-translate-y-0.5'
                       }`}
                     >
                       {tab === 'lifeskills' ? 'Life Skills (UKVI)' : `IELTS ${tab}`}
@@ -292,10 +345,10 @@ const IELTSSyllabusPage = () => {
                       <button
                         key={mod}
                         onClick={() => setActiveModule(mod)}
-                        className={`px-3.5 py-2 rounded-xl text-xs font-bold transition-all capitalize cursor-pointer ${
-                          activeModule === mod 
-                            ? 'bg-indigo-600 text-white shadow-sm' 
-                            : 'bg-white border border-slate-200 text-slate-655 hover:bg-slate-50'
+                        className={`no-shine px-3.5 py-1.5 rounded-full border-2 text-xs font-bold transition-colors capitalize cursor-pointer ${
+                          activeModule === mod
+                            ? 'border-[#16130F] bg-[#D0362E] text-white shadow-[2px_2px_0_#16130F]'
+                            : 'border-[#16130F]/25 bg-white text-[#3D362E] hover:border-[#16130F]'
                         }`}
                       >
                         {mod}
@@ -305,29 +358,29 @@ const IELTSSyllabusPage = () => {
                 )}
 
                 {/* Dynamic Content Display */}
-                <div className="bg-white border border-slate-100 rounded-xl p-5 shadow-xs">
+                <div className="bg-white border-[3px] border-[#16130F] rounded-xl p-4 sm:p-5">
                   {activeTab === 'academic' && (
                     <div className="space-y-4">
-                      <span className="text-[10px] text-indigo-655 font-black uppercase tracking-wider block">Academic Module Breakdowns</span>
-                      
+                      <span className="text-[10.5px] text-[#B8285B] font-black uppercase tracking-wider block">Academic Module Breakdowns</span>
+
                       {activeModule === 'listening' && (
-                        <div className="space-y-4 text-xs font-semibold text-slate-655">
-                          <h4 className="text-slate-900 font-extrabold text-sm border-b pb-2">Academic Listening Section (4 Parts)</h4>
+                        <div className="space-y-4 text-[13.5px] text-[#3D362E] leading-relaxed">
+                          <h4 className="font-urbanist font-black text-[16px] text-[#16130F] border-b-2 border-dashed border-[#16130F33] pb-2">Academic Listening Section (4 Parts)</h4>
                           <p><strong>Duration:</strong> 30 Minutes (+10 Minutes transfer time for paper format).</p>
                           <p><strong>Structure:</strong> 4 recordings with 10 questions each, total 40 questions.</p>
-                          <div className="space-y-2.5 bg-slate-50/50 p-4 border border-slate-100 rounded-xl">
-                            <p>🎧 <strong>Recording 1:</strong> A general conversation between two native speakers (e.g. travel booking).</p>
-                            <p>🎧 <strong>Recording 2:</strong> A monologue in an everyday social context (e.g. speech about local facilities).</p>
-                            <p>🎧 <strong>Recording 3:</strong> A conversation between up to four people in an educational training context (e.g. tutor discussion).</p>
-                            <p>🎧 <strong>Recording 4:</strong> A monologue on an academic subject (e.g. university lecture).</p>
+                          <div className="space-y-2.5 bg-[#FFF6E5] border-2 border-[#16130F] rounded-lg p-4">
+                            <p className="flex gap-2.5"><Headphones size={15} className="shrink-0 mt-0.5" style={{ color: '#14837E' }} /><span><strong>Recording 1:</strong> A general conversation between two native speakers (e.g. travel booking).</span></p>
+                            <p className="flex gap-2.5"><Headphones size={15} className="shrink-0 mt-0.5" style={{ color: '#14837E' }} /><span><strong>Recording 2:</strong> A monologue in an everyday social context (e.g. speech about local facilities).</span></p>
+                            <p className="flex gap-2.5"><Headphones size={15} className="shrink-0 mt-0.5" style={{ color: '#14837E' }} /><span><strong>Recording 3:</strong> A conversation between up to four people in an educational training context (e.g. tutor discussion).</span></p>
+                            <p className="flex gap-2.5"><Headphones size={15} className="shrink-0 mt-0.5" style={{ color: '#14837E' }} /><span><strong>Recording 4:</strong> A monologue on an academic subject (e.g. university lecture).</span></p>
                           </div>
                           <p><strong>Question Types:</strong> MCQs, matching, diagram labeling, note/form completion, sentence completion.</p>
                         </div>
                       )}
 
                       {activeModule === 'reading' && (
-                        <div className="space-y-4 text-xs font-semibold text-slate-655">
-                          <h4 className="text-slate-900 font-extrabold text-sm border-b pb-2">Academic Reading Section</h4>
+                        <div className="space-y-4 text-[13.5px] text-[#3D362E] leading-relaxed">
+                          <h4 className="font-urbanist font-black text-[16px] text-[#16130F] border-b-2 border-dashed border-[#16130F33] pb-2">Academic Reading Section</h4>
                           <p><strong>Duration:</strong> 60 Minutes (No transfer time).</p>
                           <p><strong>Structure:</strong> 3 long passages of descriptive, factual, discursive, or analytical styles with 40 questions total.</p>
                           <p><strong>Reading Skills:</strong> Skimming, scanning, reading for detail, and identifying writer's opinions.</p>
@@ -336,25 +389,25 @@ const IELTSSyllabusPage = () => {
                       )}
 
                       {activeModule === 'writing' && (
-                        <div className="space-y-4 text-xs font-semibold text-slate-655">
-                          <h4 className="text-slate-900 font-extrabold text-sm border-b pb-2">Academic Writing Section (2 Tasks)</h4>
+                        <div className="space-y-4 text-[13.5px] text-[#3D362E] leading-relaxed">
+                          <h4 className="font-urbanist font-black text-[16px] text-[#16130F] border-b-2 border-dashed border-[#16130F33] pb-2">Academic Writing Section (2 Tasks)</h4>
                           <p><strong>Duration:</strong> 60 Minutes total.</p>
-                          <div className="space-y-3.5 bg-slate-50/50 p-4 border border-slate-100 rounded-xl">
-                            <p>📝 <strong>Writing Task 1 (20 Mins):</strong> Explain visual information (bar chart, line graph, table, or process diagram) in your own words. <em>Minimum 150 words.</em></p>
-                            <p>📝 <strong>Writing Task 2 (40 Mins):</strong> Write an essay responding to a point of view, argument, or problem. Must be written in a formal tone. <em>Minimum 250 words.</em></p>
+                          <div className="space-y-3.5 bg-[#FFF6E5] border-2 border-[#16130F] rounded-lg p-4">
+                            <p className="flex gap-2.5"><FileEdit size={15} className="shrink-0 mt-0.5" style={{ color: '#B8285B' }} /><span><strong>Writing Task 1 (20 Mins):</strong> Explain visual information (bar chart, line graph, table, or process diagram) in your own words. <em>Minimum 150 words.</em></span></p>
+                            <p className="flex gap-2.5"><FileEdit size={15} className="shrink-0 mt-0.5" style={{ color: '#B8285B' }} /><span><strong>Writing Task 2 (40 Mins):</strong> Write an essay responding to a point of view, argument, or problem. Must be written in a formal tone. <em>Minimum 250 words.</em></span></p>
                           </div>
                         </div>
                       )}
 
                       {activeModule === 'speaking' && (
-                        <div className="space-y-4 text-xs font-semibold text-slate-655">
-                          <h4 className="text-slate-900 font-extrabold text-sm border-b pb-2">Academic Speaking Section (3 Parts)</h4>
+                        <div className="space-y-4 text-[13.5px] text-[#3D362E] leading-relaxed">
+                          <h4 className="font-urbanist font-black text-[16px] text-[#16130F] border-b-2 border-dashed border-[#16130F33] pb-2">Academic Speaking Section (3 Parts)</h4>
                           <p><strong>Duration:</strong> 11 to 14 Minutes.</p>
                           <p><strong>Structure:</strong> Face-to-face conversational interview with an evaluator.</p>
-                          <div className="space-y-3 bg-slate-50/50 p-4 border border-slate-100 rounded-xl">
-                            <p>🗣️ <strong>Part 1: Introduction (4-5 Mins):</strong> Personal questions on familiar topics (family, study, interests).</p>
-                            <p>🗣️ <strong>Part 2: Long Turn Cue Card (3-4 Mins):</strong> Examiner gives a topic card. You get 1 minute to plan and then speak for 1-2 minutes.</p>
-                            <p>🗣️ <strong>Part 3: Discussion (4-5 Mins):</strong> Abstract discussion linking to the topic discussed in Part 2.</p>
+                          <div className="space-y-3 bg-[#FFF6E5] border-2 border-[#16130F] rounded-lg p-4">
+                            <p className="flex gap-2.5"><MessageSquare size={15} className="shrink-0 mt-0.5" style={{ color: '#D0362E' }} /><span><strong>Part 1: Introduction (4-5 Mins):</strong> Personal questions on familiar topics (family, study, interests).</span></p>
+                            <p className="flex gap-2.5"><MessageSquare size={15} className="shrink-0 mt-0.5" style={{ color: '#D0362E' }} /><span><strong>Part 2: Long Turn Cue Card (3-4 Mins):</strong> Examiner gives a topic card. You get 1 minute to plan and then speak for 1-2 minutes.</span></p>
+                            <p className="flex gap-2.5"><MessageSquare size={15} className="shrink-0 mt-0.5" style={{ color: '#D0362E' }} /><span><strong>Part 3: Discussion (4-5 Mins):</strong> Abstract discussion linking to the topic discussed in Part 2.</span></p>
                           </div>
                         </div>
                       )}
@@ -363,57 +416,59 @@ const IELTSSyllabusPage = () => {
 
                   {activeTab === 'general' && (
                     <div className="space-y-4">
-                      <span className="text-[10px] text-indigo-655 font-black uppercase tracking-wider block">General Training Module Breakdowns</span>
-                      
+                      <span className="text-[10.5px] text-[#B8285B] font-black uppercase tracking-wider block">General Training Module Breakdowns</span>
+
                       {activeModule === 'listening' && (
-                        <p className="text-xs font-semibold text-slate-550">
-                          🔊 The Listening section is <strong>identical to the Academic Listening</strong>. It contains 4 recordings, 40 questions, and takes 30 minutes.
+                        <p className="flex gap-2.5 text-[13.5px] text-[#3D362E] leading-relaxed">
+                          <Volume2 size={15} className="shrink-0 mt-0.5 text-[#14837E]" />
+                          <span>The Listening section is <strong>identical to the Academic Listening</strong>. It contains 4 recordings, 40 questions, and takes 30 minutes.</span>
                         </p>
                       )}
 
                       {activeModule === 'reading' && (
-                        <div className="space-y-4 text-xs font-semibold text-slate-655">
-                          <h4 className="text-slate-900 font-extrabold text-sm border-b pb-2">General Training Reading Section</h4>
+                        <div className="space-y-4 text-[13.5px] text-[#3D362E] leading-relaxed">
+                          <h4 className="font-urbanist font-black text-[16px] text-[#16130F] border-b-2 border-dashed border-[#16130F33] pb-2">General Training Reading Section</h4>
                           <p><strong>Duration:</strong> 60 Minutes.</p>
                           <p><strong>Structure:</strong> 3 sections focusing on occupational and social survival texts.</p>
-                          <div className="space-y-2.5 bg-slate-50/50 p-4 border border-slate-100 rounded-xl">
-                            <p>📖 <strong>Task 1 (Social Survival):</strong> Excerpts from advertisements, notices, or timetables.</p>
-                            <p>📖 <strong>Task 2 (Workplace Survival):</strong> Excerpts from staff training booklets, contracts, or job descriptions.</p>
-                            <p>📖 <strong>Task 3 (General Reading):</strong> A longer, descriptive passage with a more complex structure.</p>
+                          <div className="space-y-2.5 bg-[#FFF6E5] border-2 border-[#16130F] rounded-lg p-4">
+                            <p className="flex gap-2.5"><BookOpen size={15} className="shrink-0 mt-0.5" style={{ color: '#14837E' }} /><span><strong>Task 1 (Social Survival):</strong> Excerpts from advertisements, notices, or timetables.</span></p>
+                            <p className="flex gap-2.5"><BookOpen size={15} className="shrink-0 mt-0.5" style={{ color: '#14837E' }} /><span><strong>Task 2 (Workplace Survival):</strong> Excerpts from staff training booklets, contracts, or job descriptions.</span></p>
+                            <p className="flex gap-2.5"><BookOpen size={15} className="shrink-0 mt-0.5" style={{ color: '#14837E' }} /><span><strong>Task 3 (General Reading):</strong> A longer, descriptive passage with a more complex structure.</span></p>
                           </div>
                         </div>
                       )}
 
                       {activeModule === 'writing' && (
-                        <div className="space-y-4 text-xs font-semibold text-slate-655">
-                          <h4 className="text-slate-900 font-extrabold text-sm border-b pb-2">General Training Writing Section (2 Tasks)</h4>
+                        <div className="space-y-4 text-[13.5px] text-[#3D362E] leading-relaxed">
+                          <h4 className="font-urbanist font-black text-[16px] text-[#16130F] border-b-2 border-dashed border-[#16130F33] pb-2">General Training Writing Section (2 Tasks)</h4>
                           <p><strong>Duration:</strong> 60 Minutes.</p>
-                          <div className="space-y-3.5 bg-slate-50/50 p-4 border border-slate-100 rounded-xl">
-                            <p>📝 <strong>Task 1 (20 Mins):</strong> Write a letter (formal, semi-formal, or informal) explaining a situation or requesting details. <em>Minimum 150 words.</em></p>
-                            <p>📝 <strong>Task 2 (40 Mins):</strong> Write an essay in response to a point of view or argument. Can be slightly more personal in tone. <em>Minimum 250 words.</em></p>
+                          <div className="space-y-3.5 bg-[#FFF6E5] border-2 border-[#16130F] rounded-lg p-4">
+                            <p className="flex gap-2.5"><FileEdit size={15} className="shrink-0 mt-0.5" style={{ color: '#B8285B' }} /><span><strong>Task 1 (20 Mins):</strong> Write a letter (formal, semi-formal, or informal) explaining a situation or requesting details. <em>Minimum 150 words.</em></span></p>
+                            <p className="flex gap-2.5"><FileEdit size={15} className="shrink-0 mt-0.5" style={{ color: '#B8285B' }} /><span><strong>Task 2 (40 Mins):</strong> Write an essay in response to a point of view or argument. Can be slightly more personal in tone. <em>Minimum 250 words.</em></span></p>
                           </div>
                         </div>
                       )}
 
                       {activeModule === 'speaking' && (
-                        <p className="text-xs font-semibold text-slate-550">
-                          🗣️ The Speaking section is <strong>identical to the Academic Speaking</strong>. It is a face-to-face conversational interview taking 11-14 minutes.
+                        <p className="flex gap-2.5 text-[13.5px] text-[#3D362E] leading-relaxed">
+                          <MessageSquare size={15} className="shrink-0 mt-0.5 text-[#D0362E]" />
+                          <span>The Speaking section is <strong>identical to the Academic Speaking</strong>. It is a face-to-face conversational interview taking 11-14 minutes.</span>
                         </p>
                       )}
                     </div>
                   )}
 
                   {activeTab === 'lifeskills' && (
-                    <div className="space-y-4 text-xs font-semibold text-slate-655">
-                      <span className="text-[10px] text-indigo-655 font-black uppercase tracking-wider block">Life Skills Test Format</span>
-                      <h4 className="text-slate-900 font-extrabold text-sm border-b pb-2">IELTS Life Skills A1, A2, & B1 Tests</h4>
+                    <div className="space-y-4 text-[13.5px] text-[#3D362E] leading-relaxed">
+                      <span className="text-[10.5px] text-[#B8285B] font-black uppercase tracking-wider block">Life Skills Test Format</span>
+                      <h4 className="font-urbanist font-black text-[16px] text-[#16130F] border-b-2 border-dashed border-[#16130F33] pb-2">IELTS Life Skills A1, A2, & B1 Tests</h4>
                       <p>
                         Assesses everyday speaking and listening skills only. Conducted with another candidate and an examiner.
                       </p>
-                      <div className="space-y-2.5 bg-slate-50/50 p-4 border border-slate-100 rounded-xl">
-                        <p>💬 <strong>Level A1:</strong> Speaking and Listening task (16 to 18 Minutes) for UK spouse/family routes.</p>
-                        <p>💬 <strong>Level A2 (UK only):</strong> Speaking and Listening task (20 Minutes).</p>
-                        <p>💬 <strong>Level B1:</strong> Speaking, Listening, and cooperative activity task (22 Minutes) for UK citizenship/indefinite leave to remain.</p>
+                      <div className="space-y-2.5 bg-[#FFF6E5] border-2 border-[#16130F] rounded-lg p-4">
+                        <p className="flex gap-2.5"><MessagesSquare size={15} className="shrink-0 mt-0.5" style={{ color: '#14837E' }} /><span><strong>Level A1:</strong> Speaking and Listening task (16 to 18 Minutes) for UK spouse/family routes.</span></p>
+                        <p className="flex gap-2.5"><MessagesSquare size={15} className="shrink-0 mt-0.5" style={{ color: '#14837E' }} /><span><strong>Level A2 (UK only):</strong> Speaking and Listening task (20 Minutes).</span></p>
+                        <p className="flex gap-2.5"><MessagesSquare size={15} className="shrink-0 mt-0.5" style={{ color: '#14837E' }} /><span><strong>Level B1:</strong> Speaking, Listening, and cooperative activity task (22 Minutes) for UK citizenship/indefinite leave to remain.</span></p>
                       </div>
                       <p>All test takers listen to a CD recording, answer questions, and discuss related topics. B1 includes planning a simple event together.</p>
                     </div>
@@ -421,13 +476,13 @@ const IELTSSyllabusPage = () => {
                 </div>
               </div>
 
-              <h3 className="text-lg font-black text-slate-900 mt-8 mb-4">Syllabus Overview</h3>
+              <SubHead hi="एक नज़र में" className="pt-4">Syllabus Overview</SubHead>
               <p>
                 A solid understanding of the IELTS syllabus is key to effective preparation. Whether you are aiming for higher studies with Academic or immigration with General Training, preparing for each module with diagnostic mocks, visual graph drafting formats, and structured listening drills is highly recommended.
               </p>
 
-              <h3 className="text-lg font-black text-slate-900 mt-12 mb-6">Frequently Asked Questions (FAQs) - IELTS Syllabus & Pattern</h3>
-              <div className="space-y-4">
+              <SubHead hi="अक्सर पूछे सवाल" className="pt-6">Frequently Asked Questions (FAQs) - IELTS Syllabus & Pattern</SubHead>
+              <div className="space-y-3">
                 {[
                   {
                     q: "How is the IELTS exam structure?",
@@ -478,31 +533,22 @@ const IELTSSyllabusPage = () => {
                     a: "IELTS Writing modules are evaluated by certified, experienced IELTS examiners trained and closely monitored by IDP and Cambridge English to ensure objective grading."
                   }
                 ].map((faq, index) => (
-                  <details key={index} className="group border border-slate-200 rounded-2xl bg-white hover:border-indigo-150 transition-all duration-200 p-5">
-                    <summary className="font-extrabold text-slate-805 cursor-pointer flex justify-between items-center list-none select-none text-sm">
-                      <span>{faq.q}</span>
-                      <span className="transition-transform duration-200 group-open:rotate-180 text-slate-400">
-                        ▼
-                      </span>
-                    </summary>
-                    <div className="mt-3.5 text-slate-655 text-xs leading-relaxed font-semibold">
-                      {faq.a}
-                    </div>
-                  </details>
+                  <FaqItem key={index} q={faq.q} a={faq.a} />
                 ))}
               </div>
             </div>
 
             {/* Additional Quick Actions Box */}
-            <div className="bg-slate-50/50 p-6 rounded-2xl border border-slate-100 mt-10 grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 gap-4 items-center bg-[#FFF1B8] border-[3px] border-[#16130F] rounded-xl p-5 sm:p-6 shadow-[4px_4px_0_#16130F]">
               <div>
-                <h4 className="font-bold text-slate-900 text-sm mb-1">Want to prepare for IELTS?</h4>
-                <p className="text-xs text-slate-500 leading-normal font-normal">Join upcoming live workshops and university webinars led by certified international mentors.</p>
+                <p className="font-['Rozha_One',serif] text-[14px] text-[#D0362E] leading-none">लाइव क्लास</p>
+                <h4 className="mt-1 font-urbanist font-black text-[17px] text-[#16130F]">Want to prepare for IELTS?</h4>
+                <p className="mt-1 text-[13px] text-[#5B544A] leading-normal">Join upcoming live workshops and university webinars led by certified international mentors.</p>
               </div>
               <div className="flex items-center justify-start sm:justify-end">
                 <Link
                   to="/events"
-                  className="px-5 py-3 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold inline-flex items-center gap-1.5 shadow-sm shadow-indigo-600/10 cursor-pointer transition-all"
+                  className="no-shine px-5 py-3 rounded-full border-2 border-[#16130F] bg-[#D0362E] hover:bg-[#B52A23] text-white text-[13px] font-bold inline-flex items-center gap-1.5 shadow-[3px_3px_0_#16130F] cursor-pointer transition-transform hover:-translate-y-0.5"
                 >
                   <span>Explore Live Events</span>
                   <ArrowRight size={13} />
@@ -511,137 +557,65 @@ const IELTSSyllabusPage = () => {
             </div>
 
             {/* Next Up Section */}
-            <div className="border-t border-slate-100 pt-8 mt-12">
-              <h3 className="text-lg font-black text-slate-900 mb-5">Next Up</h3>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <Link to={getBlogLink("IELTS Dates")} className="flex flex-col justify-between p-5 bg-white border border-slate-100 border-l-4 border-l-emerald-500 rounded-xl hover:shadow-md transition-all group">
-                  <h4 className="font-extrabold text-slate-800 text-sm mb-4 group-hover:text-indigo-655 transition-colors">IELTS Dates</h4>
-                  <span className="text-xs font-bold text-indigo-600 flex items-center gap-1">
-                    Read Now <ArrowRight size={12} className="transform group-hover:translate-x-0.5 transition-transform" />
-                  </span>
-                </Link>
-                <Link to={getBlogLink("IELTS Band Score")} className="flex flex-col justify-between p-5 bg-white border border-slate-100 border-l-4 border-l-sky-500 rounded-xl hover:shadow-md transition-all group">
-                  <h4 className="font-extrabold text-slate-800 text-sm mb-4 group-hover:text-indigo-655 transition-colors">IELTS Band Score</h4>
-                  <span className="text-xs font-bold text-indigo-600 flex items-center gap-1">
-                    Read Now <ArrowRight size={12} className="transform group-hover:translate-x-0.5 transition-transform" />
-                  </span>
-                </Link>
-                <Link to={getBlogLink("IELTS Results")} className="flex flex-col justify-between p-5 bg-white border border-slate-100 border-l-4 border-l-amber-500 rounded-xl hover:shadow-md transition-all group">
-                  <h4 className="font-extrabold text-slate-800 text-sm mb-4 group-hover:text-indigo-655 transition-colors">IELTS Results</h4>
-                  <span className="text-xs font-bold text-indigo-600 flex items-center gap-1">
-                    Read Now <ArrowRight size={12} className="transform group-hover:translate-x-0.5 transition-transform" />
-                  </span>
-                </Link>
+            <div className="border-t-2 border-dashed border-[#16130F33] pt-8 mt-12">
+              <SubHead hi="आगे पढ़ो">Next Up</SubHead>
+              <div className="mt-5 grid grid-cols-1 md:grid-cols-3 gap-4">
+                {["IELTS Dates", "IELTS Band Score", "IELTS Results"].map((title, i) => (
+                  <Link
+                    key={title}
+                    to={getBlogLink(title)}
+                    className="group flex flex-col justify-between p-5 bg-white border-[3px] border-[#16130F] rounded-xl shadow-[4px_4px_0_#16130F] hover:-translate-y-0.5 transition-transform"
+                    style={{ borderLeftWidth: 10, borderLeftColor: DESI_TONES[i % DESI_TONES.length].c }}
+                  >
+                    <h4 className="font-urbanist font-black text-[16px] text-[#16130F] mb-4">{title}</h4>
+                    <span className="text-[13px] font-bold text-[#D0362E] flex items-center gap-1">
+                      Read Now <ArrowRight size={12} className="transform group-hover:translate-x-0.5 transition-transform" />
+                    </span>
+                  </Link>
+                ))}
               </div>
             </div>
 
             {/* IELTS Link Grids */}
-            <div className="border-t border-slate-100 pt-8 mt-8 space-y-12">
-              {/* Important Info Grid */}
-              <div>
-                <h3 className="text-lg font-black text-slate-900 mb-5">IELTS Important Information</h3>
-                <div className="grid grid-cols-1 md:grid-cols-3 border-t border-l border-slate-100 rounded-xl overflow-hidden shadow-sm">
-                  {importantInfoLinks.map((link) => (
-                    <Link 
-                      key={link}
-                      to={getBlogLink(link)}
-                      className="p-4 bg-white border-b border-r border-slate-100 flex items-center justify-between hover:bg-indigo-50/20 transition-all group cursor-pointer"
-                    >
-                      <span className="text-xs font-bold text-slate-600 group-hover:text-indigo-655 transition-colors">{link}</span>
-                      <ArrowRight size={13} className="text-indigo-500 opacity-60 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
-                    </Link>
-                  ))}
-                </div>
-              </div>
-
-              {/* Accepting Countries Grid */}
-              <div>
-                <h3 className="text-lg font-black text-slate-900 mb-5">IELTS Accepting Countries</h3>
-                <div className="grid grid-cols-1 md:grid-cols-3 border-t border-l border-slate-100 rounded-xl overflow-hidden shadow-sm">
-                  {acceptingCountriesLinks.map((link) => (
-                    <Link 
-                      key={link}
-                      to={getBlogLink(link)}
-                      className="p-4 bg-white border-b border-r border-slate-100 flex items-center justify-between hover:bg-indigo-50/20 transition-all group cursor-pointer"
-                    >
-                      <span className="text-xs font-bold text-slate-600 group-hover:text-indigo-655 transition-colors">{link}</span>
-                      <ArrowRight size={13} className="text-indigo-500 opacity-60 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
-                    </Link>
-                  ))}
-                </div>
-              </div>
-
-              {/* Accepting Universities Grid */}
-              <div>
-                <h3 className="text-lg font-black text-slate-900 mb-5">IELTS Accepting Universities</h3>
-                <div className="grid grid-cols-1 md:grid-cols-3 border-t border-l border-slate-100 rounded-xl overflow-hidden shadow-sm">
-                  {acceptingUniversitiesLinks.map((link) => (
-                    <Link 
-                      key={link}
-                      to={getBlogLink(link)}
-                      className="p-4 bg-white border-b border-r border-slate-100 flex items-center justify-between hover:bg-indigo-50/20 transition-all group cursor-pointer"
-                    >
-                      <span className="text-xs font-bold text-slate-600 group-hover:text-indigo-655 transition-colors">{link}</span>
-                      <ArrowRight size={13} className="text-indigo-500 opacity-60 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
-                    </Link>
-                  ))}
-                </div>
-              </div>
-
-              {/* Test Centres Grid */}
-              <div>
-                <h3 className="text-lg font-black text-slate-900 mb-5">IELTS Test Centre and Dates in India</h3>
-                <div className="grid grid-cols-1 md:grid-cols-3 border-t border-l border-slate-100 rounded-xl overflow-hidden shadow-sm">
-                  {testCentresLinks.map((link) => (
-                    <Link 
-                      key={link}
-                      to={getBlogLink(link)}
-                      className="p-4 bg-white border-b border-r border-slate-100 flex items-center justify-between hover:bg-indigo-50/20 transition-all group cursor-pointer"
-                    >
-                      <span className="text-xs font-bold text-slate-600 group-hover:text-indigo-655 transition-colors">{link}</span>
-                      <ArrowRight size={13} className="text-indigo-500 opacity-60 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
-                    </Link>
-                  ))}
-                </div>
-              </div>
+            <div className="border-t-2 border-dashed border-[#16130F33] pt-8 mt-10 space-y-12">
+              <LinkGrid hi="ज़रूरी जानकारी" title="IELTS Important Information" links={importantInfoLinks} getLink={getBlogLink} />
+              <LinkGrid hi="कौन से देश" title="IELTS Accepting Countries" links={acceptingCountriesLinks} getLink={getBlogLink} />
+              <LinkGrid hi="यूनिवर्सिटी" title="IELTS Accepting Universities" links={acceptingUniversitiesLinks} getLink={getBlogLink} />
+              <LinkGrid hi="टेस्ट सेंटर" title="IELTS Test Centre and Dates in India" links={testCentresLinks} getLink={getBlogLink} />
             </div>
 
           </main>
 
           {/* Right Sidebar Widgets */}
-          <aside className="sticky top-28 space-y-6">
-            
-            {/* Widget: Exam Prep Blogs */}
-            <div className="uc-clean p-6 rounded-2xl shadow-md border relative overflow-hidden">
-              <span className="text-[9px] font-bold text-orange-200 uppercase tracking-widest block mb-2">Preparation Guides</span>
-              <h3 className="text-lg font-bold leading-snug mb-2">
+          <aside className="lg:sticky lg:top-28 space-y-6 min-w-0">
+            <div className="p-6 rounded-[14px] border-[3px] border-[#16130F] shadow-[5px_5px_0_#16130F] text-white" style={{ background: '#B8285B', transform: 'rotate(-0.6deg)' }}>
+              <span className="text-[10.5px] font-extrabold uppercase tracking-widest block mb-2" style={{ color: '#FFE08A' }}>Preparation Guides</span>
+              <h3 className="font-urbanist font-black text-[20px] leading-snug mb-2">
                 Band 8+ IELTS Articles & Tips
               </h3>
-              <p className="text-xs text-blue-100/85 leading-relaxed mb-5 font-normal">
+              <p className="text-[13px] text-white/90 leading-relaxed mb-5">
                 Explore proven speaking cue cards, reading skimming tricks, and task-2 templates.
               </p>
               <Link
                 to="/blogs"
-                className="w-full text-center py-3 bg-white text-[#111111] rounded-xl text-xs font-bold hover:bg-orange-50 transition-all flex items-center justify-center gap-1.5 shadow-sm block cursor-pointer"
+                className="no-shine w-full text-center py-3 bg-white text-[#16130F] rounded-full border-2 border-[#16130F] text-[13px] font-bold hover:bg-[#FFF1B8] transition-colors flex items-center justify-center gap-1.5 shadow-[3px_3px_0_#16130F] cursor-pointer"
               >
                 <span>Browse Prep Blogs</span>
                 <ArrowRight size={14} />
               </Link>
             </div>
 
-            {/* Widget: Live Events & Fairs */}
-            <div className="uc-clean p-6 rounded-2xl shadow-lg border relative overflow-hidden group">
-              <div className="absolute -right-6 -bottom-6 w-28 h-28 bg-blue-400/10 rounded-full blur-xl pointer-events-none" />
-              <span className="text-[9px] font-black text-orange-200 uppercase tracking-widest block mb-2">Live Workshops</span>
-              <h3 className="text-lg font-black leading-snug mb-3">
+            <div className="p-6 rounded-[14px] border-[3px] border-[#16130F] shadow-[5px_5px_0_#16130F] text-white" style={{ background: '#14837E', transform: 'rotate(0.6deg)' }}>
+              <span className="text-[10.5px] font-extrabold uppercase tracking-widest block mb-2" style={{ color: '#FFE08A' }}>Live Workshops</span>
+              <h3 className="font-urbanist font-black text-[20px] leading-snug mb-2">
                 Study Abroad Events & Fairs
               </h3>
-              <p className="text-xs text-blue-100/80 leading-relaxed mb-5 font-semibold">
+              <p className="text-[13px] text-white/90 leading-relaxed mb-5">
                 Join live webinars, meet university delegates & attend expert coaching masterclasses.
               </p>
               <Link
                 to="/events"
-                className="w-full text-center py-3 bg-white text-[#111111] rounded-xl text-xs font-black hover:bg-orange-50 hover:shadow-md transition-all flex items-center justify-center gap-1.5 shadow-sm block cursor-pointer"
+                className="no-shine w-full text-center py-3 bg-white text-[#16130F] rounded-full border-2 border-[#16130F] text-[13px] font-bold hover:bg-[#FFF1B8] transition-colors flex items-center justify-center gap-1.5 shadow-[3px_3px_0_#16130F] cursor-pointer"
               >
                 <span>Explore Upcoming Events</span>
                 <ArrowRight size={14} />
@@ -651,6 +625,13 @@ const IELTSSyllabusPage = () => {
           </aside>
 
         </div>
+
+        {/* Closing CTA */}
+        <BookOkCta
+          className="mt-14"
+          hi="तैयारी का प्लान"
+          text="Syllabus samajh aa gaya? Ab apna IELTS plan free 1:1 call mein mentor ke saath banao."
+        />
       </div>
     </div>
   );

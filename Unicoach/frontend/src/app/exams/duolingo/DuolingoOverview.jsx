@@ -7,19 +7,18 @@ import {
   DollarSign,
   Clock,
   Compass,
+  ArrowLeft,
   ArrowRight,
   Award,
   ChevronRight,
   FileEdit,
-  CheckCircle2,
   Globe,
-  Sparkles,
-  ChevronDown,
-  ChevronUp,
-  Info
+  ChevronDown
 } from 'lucide-react';
-import StudyAbroadCTA from '../../../components/StudyAbroadCTA';
 import { HookBand, Donut } from '../../../components/ui/Infographics';
+import { DesiHero, DesiHeading, InkCard, Sticker } from '../../../components/desi/DesiKit';
+import { DESI_TONES } from '../../../components/desi/desiTokens';
+import { BookOkCta } from '../../../components/desi/BookOkCta';
 
 const DuolingoOverview = () => {
   const navigate = useNavigate();
@@ -84,119 +83,116 @@ const DuolingoOverview = () => {
     { q: "What is a good DET score for top universities?", a: "A score of 120+ is equivalent to IELTS 6.5 and is sufficient for most universities. Elite departments or Ivy League colleges expect 130+." }
   ];
 
-  return (
-    <div className="min-h-screen bg-slate-50 pt-28 pb-20 select-none font-sans">
-      <div className="max-w-[1320px] mx-auto px-6 md:px-10">
-        
-        {/* Breadcrumb */}
-        <div className="flex items-center gap-2 text-xs font-bold text-slate-400 uppercase tracking-widest mb-6">
-          <Link to="/" className="hover:text-indigo-655 transition-colors">Home</Link>
-          <ChevronRight size={12} className="text-slate-400" />
-          <span>Exams</span>
-          <ChevronRight size={12} className="text-slate-400" />
-          <span className="text-slate-600 font-black">Duolingo</span>
-        </div>
+  const weeks = [
+    { title: "Week 1: Format & Diagnostic Practice", desc: "Take the official practice test on englishtest.duolingo.com to find your baseline. Familiarize yourself with the 19 question types." },
+    { title: "Week 2: Target Weak Subscores", desc: "Focus on writing and speaking modules (Production score is typically the lowest). Practise typing to reach 40+ WPM on your laptop keyboard." },
+    { title: "Week 3: Full Length Mocks", desc: "Attempt 2 to 3 full practice mock sittings under real testing conditions (silent room, strict timing, closed background apps)." },
+    { title: "Week 4: Pacing & Technical Dry-run", desc: "Run a complete system check (webcam calibration, secondary phone camera propping, and background tool checks). Sit the exam." }
+  ];
 
-        {/* Hero Header Card */}
-        <div className="uc-clean relative rounded-[2.5rem] p-8 md:p-14 overflow-hidden mb-12 shadow-xl border">
-          {/* Backdrop photo for rich aesthetics */}
-          <div className="absolute inset-0 z-0 opacity-15 mix-blend-overlay pointer-events-none">
-            <img 
-              src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=1200&auto=format&fit=crop&q=80" 
-              alt="Duolingo Home Study" 
-              className="w-full h-full object-cover"
-            />
-          </div>
-          <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-indigo-500/10 rounded-full blur-3xl pointer-events-none z-0" />
-          <div className="relative z-10 max-w-3xl">
-            <span className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-indigo-500/20 border border-indigo-500/30 text-indigo-300 text-xs font-extrabold uppercase tracking-widest mb-6">
-              <Compass size={14} />
-              Duolingo English Test (DET) 2026
-            </span>
-            <h1 className="text-3xl md:text-5xl font-black leading-tight tracking-tight mb-6">
-              Duolingo English Test (DET) 2026: Fees, Dates, Test Format & Results
-            </h1>
-            <p className="text-indigo-200/90 text-sm md:text-base leading-relaxed mb-6 font-medium">
-              Save up to Rs. 15,000 on registration and scoring. Complete guide on DET fee in rupees, July 2025 interactive upgrades, and 4-week preparation guidelines.
-            </p>
-            <div className="flex flex-wrap items-center gap-4 text-xs font-semibold text-slate-400">
-              <span className="flex items-center gap-1.5 bg-slate-950/60 px-3 py-1.5 rounded-lg border border-slate-800">
-                <Clock size={13} className="text-indigo-400" />
-                Updated: June 19, 2026
-              </span>
-              <span className="flex items-center gap-1.5 bg-slate-950/60 px-3 py-1.5 rounded-lg border border-slate-800">
-                <Globe size={13} className="text-indigo-400" />
-                6,000+ Accepted Institutions
-              </span>
-            </div>
-            <Link
-              to="/exams/duolingo/practice-test"
-              className="mt-7 inline-flex items-center gap-2 px-6 py-3 rounded-full bg-white text-slate-900 hover:bg-orange-50 text-sm font-bold transition-colors"
-            >
-              Take the free practice test
-              <ChevronRight size={16} aria-hidden="true" />
-            </Link>
-          </div>
-        </div>
+  return (
+    <main className="min-h-screen bg-[#FFF6E5] pb-20 select-none font-['Onest',sans-serif] text-[#16130F]">
+      {/* ── HERO: teal poster band ── */}
+      <DesiHero
+        tone="teal"
+        sign={{ hi: 'डुओलिंगो', en: 'DUOLINGO DESK' }}
+        crumbs={[{ label: 'Home', to: '/' }, { label: 'Exams' }, { label: 'Duolingo' }]}
+        title="Duolingo English Test (DET) 2026: Fees, Dates, Test Format & Results"
+        subtitle="Save up to Rs. 15,000 on registration and scoring. Complete guide on DET fee in rupees, July 2025 interactive upgrades, and 4-week preparation guidelines."
+        stickers={(
+          <>
+            <Sticker bg="#F2B705" tilt={-2}><Compass size={14} />Duolingo English Test (DET) 2026</Sticker>
+            <Sticker tilt={1.5}><Clock size={14} />Updated: June 19, 2026</Sticker>
+            <Sticker bg="#FBD9E6" tilt={-1}><Globe size={14} />6,000+ Accepted Institutions</Sticker>
+          </>
+        )}
+      >
+        <Link
+          to="/exams/duolingo/practice-test"
+          className="no-shine mt-7 inline-flex items-center gap-2 px-6 py-3 rounded-full border-2 border-[#16130F] bg-[#F2B705] hover:bg-[#FFC92E] text-[#16130F] text-[14px] font-bold shadow-[3px_3px_0_#16130F] transition-transform hover:-translate-y-0.5"
+        >
+          Take the free practice test
+          <ChevronRight size={16} aria-hidden="true" />
+        </Link>
+      </DesiHero>
+
+      <div className="max-w-[1240px] mx-auto px-4 md:px-8 pt-10 sm:pt-12 space-y-14">
 
         {/* Visual hook */}
-        <HookBand className="mb-8" value="48 hrs" label="to certified results, shared with unlimited universities for free" hi="फटाफट" />
+        <HookBand value="48 hrs" label="to certified results, shared with unlimited universities for free" hi="फटाफट" />
 
         {/* Quick Stats Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-12">
-          {keyFacts.map((fact, idx) => (
-            <div key={idx} className="bg-white border border-slate-200/60 p-5 rounded-2xl text-center shadow-xs">
-              <span className="text-[10px] text-slate-400 font-extrabold uppercase tracking-wider block mb-1">{fact.title}</span>
-              <span className="text-sm font-black text-slate-800">{fact.value}</span>
-            </div>
-          ))}
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4">
+          {keyFacts.map((fact, idx) => {
+            const tone = DESI_TONES[idx % 4];
+            return (
+              <div key={fact.title} className="bg-white border-[3px] border-[#16130F] p-4 text-center shadow-[4px_4px_0_#16130F]" style={{ borderRadius: 12, borderTop: `8px solid ${tone.c}` }}>
+                <span className="text-[10.5px] text-[#5B544A] font-extrabold uppercase tracking-wider block mb-1">{fact.title}</span>
+                <span className="font-urbanist text-[15px] font-black text-[#16130F]">{fact.value}</span>
+              </div>
+            );
+          })}
         </div>
 
         {/* Interactive Guide Slider */}
-        <div className="bg-white border border-slate-200/60 rounded-[2.5rem] p-8 md:p-12 mb-16 shadow-xs">
-          <div className="flex flex-wrap items-center justify-between gap-4 mb-8">
+        <InkCard className="p-5 sm:p-8 md:p-10" shadow="#14837E">
+          <div className="flex flex-wrap items-end justify-between gap-4 mb-7">
             <div>
-              <h2 className="text-xl md:text-2xl font-black text-slate-900">Duolingo Exam Key Highlights</h2>
-              <p className="text-slate-500 text-xs font-semibold mt-1">Scroll through the slider to explore essential requirements and updates.</p>
+              <DesiHeading hi="ज़रूरी बातें">Duolingo Exam Key Highlights</DesiHeading>
+              <p className="text-[#5B544A] text-[13.5px] mt-2">Scroll through the slider to explore essential requirements and updates.</p>
             </div>
             <div className="flex gap-2">
-              <button 
+              <button
                 onClick={() => setActiveSlider(prev => Math.max(0, prev - 1))}
-                className="w-10 h-10 rounded-xl bg-slate-50 hover:bg-slate-100 flex items-center justify-center border border-slate-250/60 text-slate-700 transition-all cursor-pointer font-bold disabled:opacity-50"
+                aria-label="Previous"
+                className="no-shine w-11 h-11 rounded-full bg-white hover:bg-[#F2B705] flex items-center justify-center border-[3px] border-[#16130F] shadow-[3px_3px_0_#16130F] text-[#16130F] transition-colors cursor-pointer disabled:opacity-40 disabled:hover:bg-white"
                 disabled={activeSlider === 0}
               >
-                ←
+                <ArrowLeft size={18} />
               </button>
-              <button 
+              <button
                 onClick={() => setActiveSlider(prev => Math.min(sliders.length - 1, prev + 1))}
-                className="w-10 h-10 rounded-xl bg-slate-50 hover:bg-slate-100 flex items-center justify-center border border-slate-250/60 text-slate-700 transition-all cursor-pointer font-bold disabled:opacity-50"
+                aria-label="Next"
+                className="no-shine w-11 h-11 rounded-full bg-white hover:bg-[#F2B705] flex items-center justify-center border-[3px] border-[#16130F] shadow-[3px_3px_0_#16130F] text-[#16130F] transition-colors cursor-pointer disabled:opacity-40 disabled:hover:bg-white"
                 disabled={activeSlider === sliders.length - 1}
               >
-                →
+                <ArrowRight size={18} />
               </button>
             </div>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            <div className="lg:col-span-2 space-y-4">
-              <h3 className="text-lg font-black text-slate-800">{sliders[activeSlider].title}</h3>
-              <p className="text-slate-655 text-xs md:text-sm leading-relaxed font-semibold">{sliders[activeSlider].desc}</p>
+          <div className="flex gap-1.5 mb-6">
+            {sliders.map((sl, i) => (
+              <button
+                key={sl.title}
+                onClick={() => setActiveSlider(i)}
+                aria-label={sl.title}
+                className={`no-shine h-3 rounded-full border-2 border-[#16130F] transition-all cursor-pointer ${i === activeSlider ? 'w-9 bg-[#14837E]' : 'w-3 bg-white'}`}
+              />
+            ))}
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
+            <div className="lg:col-span-2 space-y-3">
+              <h3 className="font-urbanist text-[20px] sm:text-[22px] font-black text-[#16130F] leading-tight">{sliders[activeSlider].title}</h3>
+              <p className="text-[#5B544A] text-[14.5px] leading-relaxed">{sliders[activeSlider].desc}</p>
             </div>
-            <div className="p-5 rounded-2xl bg-indigo-50/50 border border-indigo-100 flex flex-col justify-between">
+            <div className="p-5 bg-[#FFF1B8] border-[3px] border-[#16130F] shadow-[4px_4px_0_#16130F] flex flex-col justify-between rotate-[0.8deg]" style={{ borderRadius: 12 }}>
               <div>
-                <span className="text-[10px] text-indigo-700 font-black uppercase tracking-wider block mb-2">Mentor Strategy</span>
-                <p className="text-slate-600 text-xs font-semibold leading-relaxed">{sliders[activeSlider].insight}</p>
+                <span className="font-['Rozha_One',serif] text-[14px] text-[#D0362E] leading-none block">मेंटर की सलाह</span>
+                <span className="text-[11px] text-[#16130F] font-extrabold uppercase tracking-wider block mt-1 mb-2">Mentor Strategy</span>
+                <p className="text-[#3D362E] text-[13.5px] font-medium leading-relaxed">{sliders[activeSlider].insight}</p>
               </div>
-              <div className="text-[11px] text-slate-400 font-bold mt-4">
+              <div className="text-[11.5px] text-[#5B544A] font-bold mt-4">
                 Section {activeSlider + 1} of {sliders.length}
               </div>
             </div>
           </div>
-        </div>
+        </InkCard>
 
         {/* Test format split */}
         <Donut
-          className="mb-16"
+          className="mb-10"
           kicker="Test format"
           title="Inside the ~60-minute DET"
           centerValue="60"
@@ -209,87 +205,73 @@ const DuolingoOverview = () => {
         />
 
         {/* Links to Info Hub */}
-        <div className="mb-16">
-          <h2 className="text-2xl font-black text-slate-900 mb-6 tracking-tight flex items-center gap-2">
-            <Sparkles className="text-indigo-600" size={20} />
-            <span>Duolingo Detailed Resources</span>
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <section>
+          <DesiHeading hi="पूरी जानकारी">Duolingo Detailed Resources</DesiHeading>
+          <div className="mt-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
             {exploreLinks.map((link, idx) => {
               const IconComp = link.icon;
+              const tone = DESI_TONES[idx % 4];
               return (
-                <div 
-                  key={idx} 
+                <div
+                  key={link.path}
                   onClick={() => navigate(link.path)}
-                  className="bg-white border border-slate-200/60 p-6 rounded-3xl hover:shadow-md transition-all group cursor-pointer flex flex-col justify-between"
+                  className="bg-white border-[3px] border-[#16130F] p-5 sm:p-6 shadow-[5px_5px_0_#16130F] hover:-translate-y-1 hover:shadow-[7px_7px_0_#16130F] transition-all group cursor-pointer flex flex-col justify-between"
+                  style={{ borderRadius: 14 }}
                 >
                   <div>
-                    <div className="w-10 h-10 rounded-2xl bg-indigo-50 border border-indigo-100 flex items-center justify-center text-indigo-650 group-hover:scale-105 transition-transform">
-                      <IconComp size={18} />
+                    <div className="w-11 h-11 rounded-full border-2 border-[#16130F] flex items-center justify-center" style={{ background: tone.c, color: tone.fg }}>
+                      <IconComp size={19} />
                     </div>
-                    <h3 className="text-base font-black text-slate-800 mt-4 group-hover:text-indigo-650 transition-colors">{link.name}</h3>
-                    <p className="text-xs text-slate-500 font-semibold leading-relaxed mt-2">{link.desc}</p>
+                    <h3 className="font-urbanist text-[17px] font-black text-[#16130F] mt-4">{link.name}</h3>
+                    <p className="text-[13.5px] text-[#5B544A] leading-relaxed mt-2">{link.desc}</p>
                   </div>
-                  <div className="flex items-center gap-1 text-xs font-black text-indigo-650 mt-6 group-hover:gap-2 transition-all">
+                  <div className="flex items-center gap-1 text-[13px] font-extrabold text-[#D0362E] mt-6 group-hover:gap-2 transition-all">
                     <span>Read Details</span>
-                    <ArrowRight size={12} />
+                    <ArrowRight size={13} />
                   </div>
                 </div>
               );
             })}
           </div>
-        </div>
+        </section>
 
         {/* 4-Week Prep Timeline */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-16">
-          <div className="lg:col-span-2 bg-white border border-slate-200/60 rounded-[2rem] p-8 shadow-xs">
-            <h3 className="text-lg font-black text-slate-900 mb-6 flex items-center gap-2">
-              <Calendar className="text-indigo-650" size={18} />
-              <span>4-Week Action Study Plan</span>
-            </h3>
-            <div className="space-y-4 text-xs font-semibold text-slate-700">
-              <div className="flex gap-3">
-                <span className="w-5 h-5 rounded-full bg-indigo-50 flex items-center justify-center shrink-0 font-black text-indigo-750">1</span>
-                <div>
-                  <h4 className="font-bold text-slate-800">Week 1: Format & Diagnostic Practice</h4>
-                  <p className="text-slate-500 mt-0.5 leading-relaxed">Take the official practice test on englishtest.duolingo.com to find your baseline. Familiarize yourself with the 19 question types.</p>
-                </div>
-              </div>
-              <div className="flex gap-3">
-                <span className="w-5 h-5 rounded-full bg-indigo-50 flex items-center justify-center shrink-0 font-black text-indigo-750">2</span>
-                <div>
-                  <h4 className="font-bold text-slate-800">Week 2: Target Weak Subscores</h4>
-                  <p className="text-slate-500 mt-0.5 leading-relaxed">Focus on writing and speaking modules (Production score is typically the lowest). Practise typing to reach 40+ WPM on your laptop keyboard.</p>
-                </div>
-              </div>
-              <div className="flex gap-3">
-                <span className="w-5 h-5 rounded-full bg-indigo-50 flex items-center justify-center shrink-0 font-black text-indigo-750">3</span>
-                <div>
-                  <h4 className="font-bold text-slate-800">Week 3: Full Length Mocks</h4>
-                  <p className="text-slate-500 mt-0.5 leading-relaxed">Attempt 2 to 3 full practice mock sittings under real testing conditions (silent room, strict timing, closed background apps).</p>
-                </div>
-              </div>
-              <div className="flex gap-3">
-                <span className="w-5 h-5 rounded-full bg-indigo-50 flex items-center justify-center shrink-0 font-black text-indigo-750">4</span>
-                <div>
-                  <h4 className="font-bold text-slate-800">Week 4: Pacing & Technical Dry-run</h4>
-                  <p className="text-slate-500 mt-0.5 leading-relaxed">Run a complete system check (webcam calibration, secondary phone camera propping, and background tool checks). Sit the exam.</p>
-                </div>
-              </div>
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8 items-stretch">
+          <InkCard className="lg:col-span-2 p-5 sm:p-8">
+            <div className="flex items-start gap-3 mb-6">
+              <span className="w-10 h-10 rounded-full border-2 border-[#16130F] bg-[#14837E] text-white grid place-items-center shrink-0 shadow-[2px_2px_0_#16130F]">
+                <Calendar size={18} />
+              </span>
+              <DesiHeading hi="चार हफ़्ते का प्लान">4-Week Action Study Plan</DesiHeading>
             </div>
-          </div>
+            <div className="space-y-4">
+              {weeks.map((w, i) => {
+                const tone = DESI_TONES[i % 4];
+                return (
+                  <div key={w.title} className="flex gap-3">
+                    <span className="w-8 h-8 rounded-full border-2 border-[#16130F] flex items-center justify-center shrink-0 font-urbanist font-black text-[14px]" style={{ background: tone.c, color: tone.fg }}>{i + 1}</span>
+                    <div className="min-w-0">
+                      <h4 className="font-urbanist font-black text-[15px] text-[#16130F]">{w.title}</h4>
+                      <p className="text-[13.5px] text-[#5B544A] mt-0.5 leading-relaxed">{w.desc}</p>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </InkCard>
 
-          <div className="uc-clean rounded-[2rem] p-8 flex flex-col justify-between">
+          <div className="bg-[#B8285B] text-white border-[3px] border-[#16130F] shadow-[5px_5px_0_#16130F] p-6 sm:p-8 flex flex-col justify-between -rotate-[0.8deg]" style={{ borderRadius: 14 }}>
             <div>
-              <h3 className="text-xl font-black mb-3">Duolingo Masterclass</h3>
-              <p className="text-white/80 text-xs font-semibold leading-relaxed">
+              <p className="font-['Rozha_One',serif] text-[16px] text-[#F2B705] leading-none">मास्टरक्लास</p>
+              <h3 className="mt-1.5 font-urbanist text-[24px] font-black mb-3 leading-tight">Duolingo Masterclass</h3>
+              <p className="text-white/90 text-[14px] leading-relaxed">
                 Connect with our test prep coaches. We provide downloadable mock tests, specialized grammar/vocabulary drill files, and feedback loops on timed speaking prompts.
               </p>
             </div>
             <div className="mt-8">
-              <Link 
+              <Link
                 to="/exams/duolingo/preparation"
-                className="inline-flex items-center gap-2 bg-white text-indigo-950 font-black text-xs px-6 py-3.5 rounded-2xl hover:bg-slate-50 transition-colors shadow-lg"
+                className="no-shine inline-flex items-center gap-2 bg-[#F2B705] hover:bg-[#FFC92E] text-[#16130F] font-bold text-[14px] px-5 py-3 rounded-full border-2 border-[#16130F] shadow-[3px_3px_0_#16130F] transition-colors"
               >
                 <span>Join Free Masterclass</span>
                 <ArrowRight size={14} />
@@ -299,42 +281,53 @@ const DuolingoOverview = () => {
         </div>
 
         {/* FAQs */}
-        <div className="max-w-3xl mx-auto mb-20">
-          <h2 className="text-2xl font-black text-slate-900 text-center mb-8">Frequently Asked Questions</h2>
-          <div className="space-y-4">
-            {faqs.map((faq, idx) => (
-              <div key={idx} className="bg-white border border-slate-200/60 rounded-2xl overflow-hidden shadow-xs">
-                <button
-                  onClick={() => toggleFaq(idx)}
-                  className="w-full p-5 text-left font-black text-xs text-slate-800 flex justify-between items-center cursor-pointer hover:bg-slate-50/50 transition-colors"
-                >
-                  <span>{faq.q}</span>
-                  {faqOpen[idx] ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
-                </button>
-                <AnimatePresence>
-                  {faqOpen[idx] && (
-                    <motion.div
-                      initial={{ height: 0 }}
-                      animate={{ height: "auto" }}
-                      exit={{ height: 0 }}
-                      className="overflow-hidden"
-                    >
-                      <p className="p-5 text-xs text-slate-500 font-semibold border-t border-slate-100 leading-relaxed bg-slate-50/30">
-                        {faq.a}
-                      </p>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </div>
-            ))}
+        <section className="max-w-3xl mx-auto">
+          <DesiHeading hi="अक्सर पूछे सवाल" className="text-center">Frequently Asked Questions</DesiHeading>
+          <div className="mt-6 space-y-3">
+            {faqs.map((faq, idx) => {
+              const isOpen = !!faqOpen[idx];
+              return (
+                <div key={faq.q} className="bg-white border-[3px] border-[#16130F] overflow-hidden" style={{ borderRadius: 12, boxShadow: isOpen ? '4px 4px 0 #14837E' : '4px 4px 0 #16130F' }}>
+                  <button
+                    onClick={() => toggleFaq(idx)}
+                    aria-expanded={isOpen}
+                    className="no-shine w-full flex items-center justify-between gap-3 p-4 text-left font-bold text-[14.5px] cursor-pointer"
+                  >
+                    <span>{faq.q}</span>
+                    <span className={`w-7 h-7 rounded-full border-2 border-[#16130F] grid place-items-center shrink-0 transition-transform ${isOpen ? 'rotate-180 bg-[#F2B705]' : 'bg-white'}`}>
+                      <ChevronDown size={15} />
+                    </span>
+                  </button>
+                  <AnimatePresence>
+                    {isOpen && (
+                      <motion.div
+                        initial={{ height: 0 }}
+                        animate={{ height: "auto" }}
+                        exit={{ height: 0 }}
+                        className="overflow-hidden"
+                      >
+                        <p className="px-4 pb-4 pt-3 text-[#5B544A] text-[14px] border-t-2 border-dashed border-[#16130F33] leading-relaxed">
+                          {faq.a}
+                        </p>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              );
+            })}
           </div>
-        </div>
+        </section>
 
-        {/* Study Abroad CTA */}
-        <StudyAbroadCTA country="Duolingo" />
+        {/* Closing CTA */}
+        <BookOkCta
+          to="/book-consultation"
+          hi="डुओलिंगो या आइल्ट्स?"
+          title="Book OK Please."
+          text="DET chalega ya IELTS chahiye? Free 1:1 call mein mentor se poocho."
+        />
 
       </div>
-    </div>
+    </main>
   );
 };
 

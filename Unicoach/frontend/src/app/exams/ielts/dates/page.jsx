@@ -3,25 +3,60 @@ import { Link } from 'react-router-dom';
 import {
   BookOpen,
   Calendar,
-  DollarSign,
-  GraduationCap,
-  Clock,
   MapPin,
-  FileText,
-  Compass,
+  Monitor,
+  PenLine,
   ArrowRight,
   ChevronRight,
-  UserCheck,
-  AlertTriangle,
-  Volume2,
-  FileEdit,
-  Mic,
-  ArrowUpRight,
-  CheckCircle2,
-  HelpCircle
+  ChevronDown,
 } from 'lucide-react';
 import { API_BASE_URL } from '../../../../config';
 import { HookBand, TimelineStrip } from '../../../../components/ui/Infographics';
+import { DesiHero, DesiHeading, InkCard, Sticker } from '../../../../components/desi/DesiKit';
+import { DESI_TONES } from '../../../../components/desi/desiTokens';
+import { BookOkCta } from '../../../../components/desi/BookOkCta';
+
+// Section heading with a short Hindi kicker (h3 level)
+const SubHead = ({ hi, children, className = '' }) => (
+  <div className={className}>
+    <p className="font-['Rozha_One',serif] text-[15px] leading-none text-[#D0362E]">{hi}</p>
+    <h3 className="mt-1 font-urbanist font-black text-[21px] sm:text-[24px] leading-[1.1] tracking-[-0.02em] text-[#16130F]">{children}</h3>
+  </div>
+);
+
+// FAQ accordion with ink borders
+const FaqItem = ({ q, a }) => (
+  <details className="group bg-white border-[3px] border-[#16130F] rounded-xl overflow-hidden shadow-[4px_4px_0_#16130F] open:shadow-[4px_4px_0_#D0362E]">
+    <summary className="flex items-center justify-between gap-3 p-4 cursor-pointer list-none select-none font-bold text-[14.5px] text-[#16130F] [&::-webkit-details-marker]:hidden">
+      <span>{q}</span>
+      <span className="w-7 h-7 rounded-full border-2 border-[#16130F] bg-white grid place-items-center shrink-0 transition-transform group-open:rotate-180 group-open:bg-[#F2B705]">
+        <ChevronDown size={15} />
+      </span>
+    </summary>
+    <div className="px-4 pb-4 pt-3 border-t-2 border-dashed border-[#16130F33] text-[#5B544A] text-[14px] leading-relaxed">
+      {a}
+    </div>
+  </details>
+);
+
+// Grid of related links inside one ink box
+const LinkGrid = ({ hi, title, links, getLink }) => (
+  <div>
+    <SubHead hi={hi}>{title}</SubHead>
+    <div className="mt-5 grid grid-cols-1 md:grid-cols-3 bg-white border-[3px] border-[#16130F] rounded-xl overflow-hidden shadow-[4px_4px_0_#16130F]">
+      {links.map((link) => (
+        <Link
+          key={link}
+          to={getLink(link)}
+          className="group p-4 flex items-center justify-between gap-3 border-b-2 md:border-r-2 border-[#16130F]/10 hover:bg-[#FFF1B8] transition-colors cursor-pointer"
+        >
+          <span className="text-[13px] font-bold text-[#3D362E] group-hover:text-[#16130F]">{link}</span>
+          <ArrowRight size={13} className="shrink-0 text-[#D0362E] group-hover:translate-x-1 transition-transform" />
+        </Link>
+      ))}
+    </div>
+  </div>
+);
 
 const IELTSDatesPage = () => {
   const [dbBlogs, setDbBlogs] = React.useState([]);
@@ -233,68 +268,82 @@ const IELTSDatesPage = () => {
   const currentData = cityDatesData[datesCity];
 
   return (
-    <div className="min-h-screen bg-slate-50 pt-28 pb-20 font-sans">
-      <div className="max-w-[1400px] mx-auto px-6 md:px-10">
-        
-        {/* Breadcrumb */}
-        <div className="flex items-center gap-2 text-xs font-bold text-slate-400 uppercase tracking-widest mb-6">
-          <Link to="/" className="hover:text-indigo-600 transition-colors">Home</Link>
-          <ChevronRight size={12} />
-          <span className="hover:text-indigo-600 transition-colors">Exams</span>
-          <ChevronRight size={12} />
-          <span className="text-slate-655">IELTS</span>
-          <ChevronRight size={12} />
-          <span className="text-slate-600">IELTS Exam Dates</span>
-        </div>
+    <div className="min-h-screen bg-[#FFF6E5] pb-16 font-['Onest',sans-serif] text-[#16130F]">
+      {/* ── HERO ── */}
+      <DesiHero
+        tone="teal"
+        sign={{ hi: 'तारीख़ें', en: 'IELTS DATES' }}
+        crumbs={[{ label: 'Home', to: '/' }, { label: 'Exams' }, { label: 'IELTS' }, { label: 'IELTS Exam Dates' }]}
+        title="IELTS Exam Dates in 2025: September to December"
+        subtitle="Find Academic & General Training dates, slots, and schedules for top Indian test locations."
+        stickers={(
+          <>
+            <Sticker tilt={-2}><BookOpen size={14} />IELTS Reference Guide</Sticker>
+            <Sticker bg="#F2B705" tilt={1.5}><Monitor size={14} />Computer-Based</Sticker>
+            <Sticker bg="#FBD9E6" tilt={-1}><PenLine size={14} />Paper-Based</Sticker>
+            <Sticker bg="#FFD9C2" tilt={1}><Calendar size={14} />Sept–Dec</Sticker>
+          </>
+        )}
+      />
 
-        {/* Title Header Card */}
-        <div className="uc-clean relative rounded-[2.5rem] p-8 md:p-14 overflow-hidden mb-12 shadow-xl border">
-          <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-indigo-500/10 rounded-full blur-3xl pointer-events-none" />
-          <div className="relative z-10 max-w-3xl">
-            <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-indigo-500/20 border border-indigo-500/30 text-indigo-300 text-xs font-extrabold uppercase tracking-widest mb-6">
-              IELTS Reference Guide
-            </span>
-            <h1 className="text-2xl md:text-5xl font-black leading-tight tracking-tight mb-6">
-              IELTS Exam Dates in 2025: September to December
-            </h1>
-            <p className="text-indigo-200/90 text-sm md:text-base leading-relaxed font-semibold">
-              Find Academic & General Training dates, slots, and schedules for top Indian test locations.
-            </p>
+      {/* ── GUIDE PICKER (phones and tablets) ── */}
+      <div className="lg:hidden max-w-[1400px] mx-auto px-4 -mt-6 mb-8 relative z-10">
+        <InkCard className="p-3">
+          <p className="font-['Rozha_One',serif] text-[14px] text-[#D0362E] leading-none px-1 mb-2">आइल्ट्स गाइड</p>
+          <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-hide">
+            {sidebarLinks.map((linkItem) => {
+              const isActive = linkItem.key === 'dates';
+              return (
+                <Link
+                  key={linkItem.key}
+                  to={linkItem.path}
+                  className={`px-3.5 py-2 rounded-full border-2 text-xs font-bold whitespace-nowrap flex-shrink-0 ${isActive ? 'border-[#16130F] bg-[#14837E] text-white shadow-[2px_2px_0_#16130F]' : 'border-[#E6DCC8] bg-[#FFF6E5] text-[#5B544A]'}`}
+                >
+                  {linkItem.name}
+                </Link>
+              );
+            })}
           </div>
-        </div>
+        </InkCard>
+      </div>
+
+      <div className="max-w-[1400px] mx-auto px-4 md:px-8 lg:pt-12">
 
         {/* Layout Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-[210px_minmax(0,1fr)_230px] xl:grid-cols-[250px_minmax(0,1fr)_290px] gap-6 items-start">
-          
+        <div className="grid grid-cols-1 lg:grid-cols-[210px_minmax(0,1fr)_230px] xl:grid-cols-[250px_minmax(0,1fr)_290px] gap-6 lg:gap-7 items-start">
+
           {/* Left Sidebar Links */}
-          <aside className="sticky top-28 bg-white border border-slate-100 p-6 rounded-2xl shadow-sm max-h-[calc(100vh-140px)] overflow-y-auto">
-            <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-4">IELTS Guide Index</p>
-            <nav className="space-y-1">
-              {sidebarLinks.map((linkItem) => {
-                const isActive = linkItem.key === 'dates';
-                return (
-                  <Link
-                    key={linkItem.key}
-                    to={linkItem.path}
-                    className={`w-full text-left py-2 px-3 rounded-xl text-xs font-bold transition-all leading-normal flex items-center justify-between
-                      ${isActive
-                        ? 'bg-indigo-50 text-indigo-655'
-                        : 'text-slate-500 hover:bg-slate-50 hover:text-slate-805'}`}
-                  >
-                    <span>{linkItem.name}</span>
-                    <ChevronRight size={12} className={isActive ? 'text-indigo-500' : 'text-slate-300'} />
-                  </Link>
-                );
-              })}
-            </nav>
+          <aside className="hidden lg:block sticky top-28 max-h-[calc(100vh-140px)] overflow-y-auto pr-2 pb-2">
+            <InkCard className="p-4">
+              <p className="font-['Rozha_One',serif] text-[15px] text-[#D0362E] leading-none">आइल्ट्स गाइड</p>
+              <h3 className="mt-1 mb-3 font-urbanist font-black text-[16px]">IELTS Guide Index</h3>
+              <nav className="flex flex-col gap-1.5">
+                {sidebarLinks.map((linkItem) => {
+                  const isActive = linkItem.key === 'dates';
+                  return (
+                    <Link
+                      key={linkItem.key}
+                      to={linkItem.path}
+                      className={`group w-full text-left py-2 px-3 rounded-lg border-2 text-[13px] font-bold leading-normal flex items-center justify-between gap-2 transition-colors
+                        ${isActive
+                          ? 'border-[#16130F] bg-[#14837E] text-white shadow-[3px_3px_0_#16130F]'
+                          : 'border-transparent text-[#3D362E] hover:border-[#16130F] hover:bg-[#FFF6E5]'}`}
+                    >
+                      <span>{linkItem.name}</span>
+                      <ChevronRight size={13} className="shrink-0 transition-transform group-hover:translate-x-0.5" />
+                    </Link>
+                  );
+                })}
+              </nav>
+            </InkCard>
           </aside>
 
           {/* Center Content Section */}
-          <main className="bg-white border border-slate-100 p-8 md:p-12 rounded-3xl shadow-sm">
-            <h2 className="text-xl font-black text-slate-900 mb-6 pb-4 border-b border-slate-100">
+          <main className="min-w-0 bg-white border-[3px] border-[#16130F] p-5 sm:p-8 md:p-10 rounded-[18px] shadow-[6px_6px_0_#16130F]">
+            <DesiHeading hi="पूरी जानकारी" className="mb-6 pb-5 border-b-2 border-dashed border-[#16130F33]">
               Detailed Guide Content
-            </h2>
-            <div className="prose max-w-none space-y-8 text-slate-700 text-[15px] leading-relaxed font-normal">
+            </DesiHeading>
+            <div className="max-w-none space-y-8 text-[#3D362E] text-[15px] leading-relaxed">
               <p>
                 Ready to take the next step in your IELTS journey? In India, for the paper-delivered IELTS in September 2025, test dates are September 6, 13, 18, and 27, 2025. Some of these dates, like the 13th and 27th, offer both Academic and General Training, while others are Academic only. Computer-delivered IELTS tests are available much more frequently—almost daily at select locations.
               </p>
@@ -302,16 +351,18 @@ const IELTSDatesPage = () => {
               <HookBand value="Jan–Mar" label="and June to August are high-demand months in India. Book about 1 month in advance." hi="जल्दी करो" />
 
               {/* Test Finder Dropdown */}
-              <div className="bg-indigo-50/40 border border-indigo-100 rounded-2xl p-6">
-                <h4 className="font-extrabold text-slate-805 text-sm mb-3 flex items-center gap-1.5">
-                  <Calendar size={18} className="text-indigo-650" />
+              <div className="bg-[#DDF3EF] border-[3px] border-[#16130F] rounded-[16px] p-4 sm:p-6 shadow-[5px_5px_0_#16130F]">
+                <h4 className="font-urbanist font-black text-[17px] text-[#16130F] mb-4 flex items-center gap-2">
+                  <span className="w-8 h-8 rounded-full border-2 border-[#16130F] bg-[#14837E] text-white grid place-items-center shrink-0">
+                    <Calendar size={16} />
+                  </span>
                   <span>IELTS Test Centre Finder</span>
                 </h4>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-slate-500 text-xs font-bold mb-1.5">Select State</label>
-                    <select 
-                      value={selectedState} 
+                    <label className="block text-[11px] font-extrabold uppercase tracking-wider text-[#5B544A] mb-1.5">Select State</label>
+                    <select
+                      value={selectedState}
                       onChange={(e) => {
                         const st = e.target.value;
                         setSelectedState(st);
@@ -321,7 +372,7 @@ const IELTSDatesPage = () => {
                         else if (st === 'Tamil Nadu') setDatesCity('Chennai');
                         else if (st === 'Maharashtra') setDatesCity('Mumbai');
                       }}
-                      className="w-full bg-white border border-slate-200 rounded-xl px-4 py-2.5 text-xs font-bold text-slate-700 focus:outline-none focus:border-indigo-500 cursor-pointer"
+                      className="w-full bg-white border-2 border-[#16130F] rounded-lg px-4 py-2.5 text-[13px] font-bold text-[#16130F] outline-none focus:shadow-[3px_3px_0_#14837E] cursor-pointer"
                     >
                       <option value="">-- Choose State --</option>
                       <option value="Karnataka">Karnataka</option>
@@ -333,7 +384,7 @@ const IELTSDatesPage = () => {
                   </div>
 
                   <div>
-                    <label className="block text-slate-500 text-xs font-bold mb-1.5">Select City</label>
+                    <label className="block text-[11px] font-extrabold uppercase tracking-wider text-[#5B544A] mb-1.5">Select City</label>
                     <div className="flex flex-wrap gap-2">
                       {['Bangalore', 'Hyderabad', 'Ludhiana', 'Chennai', 'Mumbai'].map((ct) => (
                         <button
@@ -342,10 +393,10 @@ const IELTSDatesPage = () => {
                             setDatesCity(ct);
                             setSelectedState(cityDatesData[ct].state);
                           }}
-                          className={`px-3.5 py-2 rounded-xl text-xs font-bold transition-all ${
+                          className={`no-shine px-3.5 py-1.5 rounded-full border-2 text-xs font-bold transition-colors cursor-pointer ${
                             datesCity === ct
-                              ? 'bg-indigo-600 text-white shadow-sm'
-                              : 'bg-white border border-slate-200 text-slate-600 hover:bg-slate-50'
+                              ? 'border-[#16130F] bg-[#D0362E] text-white shadow-[2px_2px_0_#16130F]'
+                              : 'border-[#16130F]/25 bg-white text-[#3D362E] hover:border-[#16130F]'
                           }`}
                         >
                           {ct}
@@ -357,13 +408,13 @@ const IELTSDatesPage = () => {
               </div>
 
               {/* City Specific Date Section */}
-              <div className="border border-slate-100 rounded-2xl p-6 bg-slate-50/50 space-y-6">
-                <div className="flex items-center justify-between border-b border-slate-150 pb-3">
-                  <h3 className="font-extrabold text-slate-900 text-base flex items-center gap-2">
-                    <MapPin size={18} className="text-indigo-650" />
+              <div className="border-[3px] border-[#16130F] rounded-[16px] p-4 sm:p-6 bg-[#FFF6E5] space-y-6">
+                <div className="flex flex-wrap items-center justify-between gap-3 border-b-2 border-dashed border-[#16130F33] pb-3">
+                  <h3 className="font-urbanist font-black text-[18px] text-[#16130F] flex items-center gap-2">
+                    <MapPin size={18} className="shrink-0 text-[#D0362E]" />
                     <span>IELTS Dates in {datesCity} ({currentData.state})</span>
                   </h3>
-                  <span className="text-[10px] uppercase font-black tracking-wider bg-indigo-50 text-indigo-655 px-2.5 py-1 rounded-md">
+                  <span className="text-[10.5px] uppercase font-black tracking-wider bg-[#F2B705] text-[#16130F] border-2 border-[#16130F] px-2.5 py-1 rounded-md shadow-[2px_2px_0_#16130F]">
                     Selected City
                   </span>
                 </div>
@@ -371,40 +422,40 @@ const IELTSDatesPage = () => {
                 {/* Acad and GT Grid */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {/* Academic Box */}
-                  <div className="bg-white border border-slate-100 rounded-xl p-5 space-y-4 shadow-sm">
-                    <h4 className="font-extrabold text-slate-850 text-sm border-b border-slate-50 pb-2">Academic Module</h4>
-                    <div className="space-y-3.5 text-xs">
+                  <div className="bg-white border-[3px] border-[#16130F] rounded-xl p-5 space-y-4 shadow-[4px_4px_0_#16130F]" style={{ borderTopWidth: 8, borderTopColor: '#F2B705' }}>
+                    <h4 className="font-urbanist font-black text-[16px] text-[#16130F] border-b-2 border-dashed border-[#16130F33] pb-2">Academic Module</h4>
+                    <div className="space-y-3.5 text-[13px]">
                       <div>
-                        <span className="font-bold text-slate-400 block mb-1">Computer-Based:</span>
-                        <p className="font-semibold text-slate-750">{currentData.acadComp}</p>
+                        <span className="text-[10.5px] font-extrabold uppercase tracking-wider text-[#5B544A] block mb-1">Computer-Based:</span>
+                        <p className="font-semibold text-[#3D362E]">{currentData.acadComp}</p>
                       </div>
                       <div>
-                        <span className="font-bold text-slate-400 block mb-1.5">Paper-Based Test Dates:</span>
-                        <div className="grid grid-cols-2 gap-2 text-[11px] font-semibold text-slate-655">
-                          <p><strong>Sept:</strong> {currentData.acadPaper.Sept}</p>
-                          <p><strong>Oct:</strong> {currentData.acadPaper.Oct}</p>
-                          <p><strong>Nov:</strong> {currentData.acadPaper.Nov}</p>
-                          <p><strong>Dec:</strong> {currentData.acadPaper.Dec}</p>
+                        <span className="text-[10.5px] font-extrabold uppercase tracking-wider text-[#5B544A] block mb-1.5">Paper-Based Test Dates:</span>
+                        <div className="grid grid-cols-2 gap-2 text-[12px] font-semibold text-[#3D362E]">
+                          <p className="bg-[#FFF6E5] border-2 border-[#16130F]/15 rounded-md px-2 py-1"><strong className="text-[#16130F]">Sept:</strong> {currentData.acadPaper.Sept}</p>
+                          <p className="bg-[#FFF6E5] border-2 border-[#16130F]/15 rounded-md px-2 py-1"><strong className="text-[#16130F]">Oct:</strong> {currentData.acadPaper.Oct}</p>
+                          <p className="bg-[#FFF6E5] border-2 border-[#16130F]/15 rounded-md px-2 py-1"><strong className="text-[#16130F]">Nov:</strong> {currentData.acadPaper.Nov}</p>
+                          <p className="bg-[#FFF6E5] border-2 border-[#16130F]/15 rounded-md px-2 py-1"><strong className="text-[#16130F]">Dec:</strong> {currentData.acadPaper.Dec}</p>
                         </div>
                       </div>
                     </div>
                   </div>
 
                   {/* General Training Box */}
-                  <div className="bg-white border border-slate-100 rounded-xl p-5 space-y-4 shadow-sm">
-                    <h4 className="font-extrabold text-slate-850 text-sm border-b border-slate-50 pb-2">General Training Module</h4>
-                    <div className="space-y-3.5 text-xs">
+                  <div className="bg-white border-[3px] border-[#16130F] rounded-xl p-5 space-y-4 shadow-[4px_4px_0_#16130F]" style={{ borderTopWidth: 8, borderTopColor: '#14837E' }}>
+                    <h4 className="font-urbanist font-black text-[16px] text-[#16130F] border-b-2 border-dashed border-[#16130F33] pb-2">General Training Module</h4>
+                    <div className="space-y-3.5 text-[13px]">
                       <div>
-                        <span className="font-bold text-slate-400 block mb-1">Computer-Based:</span>
-                        <p className="font-semibold text-slate-750">{currentData.gtComp}</p>
+                        <span className="text-[10.5px] font-extrabold uppercase tracking-wider text-[#5B544A] block mb-1">Computer-Based:</span>
+                        <p className="font-semibold text-[#3D362E]">{currentData.gtComp}</p>
                       </div>
                       <div>
-                        <span className="font-bold text-slate-400 block mb-1.5">Paper-Based Test Dates:</span>
-                        <div className="grid grid-cols-2 gap-2 text-[11px] font-semibold text-slate-655">
-                          <p><strong>Sept:</strong> {currentData.gtPaper.Sept}</p>
-                          <p><strong>Oct:</strong> {currentData.gtPaper.Oct}</p>
-                          <p><strong>Nov:</strong> {currentData.gtPaper.Nov}</p>
-                          <p><strong>Dec:</strong> {currentData.gtPaper.Dec}</p>
+                        <span className="text-[10.5px] font-extrabold uppercase tracking-wider text-[#5B544A] block mb-1.5">Paper-Based Test Dates:</span>
+                        <div className="grid grid-cols-2 gap-2 text-[12px] font-semibold text-[#3D362E]">
+                          <p className="bg-[#FFF6E5] border-2 border-[#16130F]/15 rounded-md px-2 py-1"><strong className="text-[#16130F]">Sept:</strong> {currentData.gtPaper.Sept}</p>
+                          <p className="bg-[#FFF6E5] border-2 border-[#16130F]/15 rounded-md px-2 py-1"><strong className="text-[#16130F]">Oct:</strong> {currentData.gtPaper.Oct}</p>
+                          <p className="bg-[#FFF6E5] border-2 border-[#16130F]/15 rounded-md px-2 py-1"><strong className="text-[#16130F]">Nov:</strong> {currentData.gtPaper.Nov}</p>
+                          <p className="bg-[#FFF6E5] border-2 border-[#16130F]/15 rounded-md px-2 py-1"><strong className="text-[#16130F]">Dec:</strong> {currentData.gtPaper.Dec}</p>
                         </div>
                       </div>
                     </div>
@@ -413,54 +464,54 @@ const IELTSDatesPage = () => {
 
                 {/* UKVI and Life Skills Row */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
-                  <div className="bg-white border border-slate-100 rounded-xl p-5 space-y-3.5 text-xs shadow-sm">
-                    <h4 className="font-extrabold text-slate-850 text-sm border-b border-slate-50 pb-2">IELTS for UKVI (Academic & GT)</h4>
+                  <div className="bg-white border-[3px] border-[#16130F] rounded-xl p-5 space-y-4 shadow-[4px_4px_0_#16130F] text-[13px]" style={{ borderTopWidth: 8, borderTopColor: '#B8285B' }}>
+                    <h4 className="font-urbanist font-black text-[16px] text-[#16130F] border-b-2 border-dashed border-[#16130F33] pb-2">IELTS for UKVI (Academic &amp; GT)</h4>
                     <div>
-                      <span className="font-bold text-slate-400 block mb-1">Computer-Based UKVI:</span>
-                      <p className="font-semibold text-slate-750 mb-3">{currentData.ukviAcadComp}</p>
+                      <span className="text-[10.5px] font-extrabold uppercase tracking-wider text-[#5B544A] block mb-1">Computer-Based UKVI:</span>
+                      <p className="font-semibold text-[#3D362E]">{currentData.ukviAcadComp}</p>
                     </div>
                     {currentData.ukviAcadPaper ? (
                       <div>
-                        <span className="font-bold text-slate-400 block mb-1">Paper-Based UKVI Academic:</span>
-                        <div className="grid grid-cols-2 gap-1 text-[11px] font-semibold text-slate-655">
-                          <p><strong>Sept:</strong> {currentData.ukviAcadPaper.Sept}</p>
-                          <p><strong>Oct:</strong> {currentData.ukviAcadPaper.Oct}</p>
-                          <p><strong>Nov:</strong> {currentData.ukviAcadPaper.Nov}</p>
-                          <p><strong>Dec:</strong> {currentData.ukviAcadPaper.Dec}</p>
+                        <span className="text-[10.5px] font-extrabold uppercase tracking-wider text-[#5B544A] block mb-1">Paper-Based UKVI Academic:</span>
+                        <div className="grid grid-cols-2 gap-1.5 text-[12px] font-semibold text-[#3D362E]">
+                          <p className="bg-[#FFF6E5] border-2 border-[#16130F]/15 rounded-md px-2 py-1"><strong className="text-[#16130F]">Sept:</strong> {currentData.ukviAcadPaper.Sept}</p>
+                          <p className="bg-[#FFF6E5] border-2 border-[#16130F]/15 rounded-md px-2 py-1"><strong className="text-[#16130F]">Oct:</strong> {currentData.ukviAcadPaper.Oct}</p>
+                          <p className="bg-[#FFF6E5] border-2 border-[#16130F]/15 rounded-md px-2 py-1"><strong className="text-[#16130F]">Nov:</strong> {currentData.ukviAcadPaper.Nov}</p>
+                          <p className="bg-[#FFF6E5] border-2 border-[#16130F]/15 rounded-md px-2 py-1"><strong className="text-[#16130F]">Dec:</strong> {currentData.ukviAcadPaper.Dec}</p>
                         </div>
                       </div>
                     ) : (
-                      <p className="text-[11px] text-slate-400 italic">No paper-based UKVI Academic sessions scheduled.</p>
+                      <p className="text-[12px] text-[#5B544A] italic">No paper-based UKVI Academic sessions scheduled.</p>
                     )}
                     {currentData.ukviGtPaper && (
-                      <div className="pt-2">
-                        <span className="font-bold text-slate-400 block mb-1">Paper-Based UKVI GT:</span>
-                        <div className="grid grid-cols-2 gap-1 text-[11px] font-semibold text-slate-655">
-                          <p><strong>Sept:</strong> {currentData.ukviGtPaper.Sept}</p>
-                          <p><strong>Oct:</strong> {currentData.ukviGtPaper.Oct}</p>
-                          <p><strong>Nov:</strong> {currentData.ukviGtPaper.Nov}</p>
-                          <p><strong>Dec:</strong> {currentData.ukviGtPaper.Dec}</p>
+                      <div className="pt-1">
+                        <span className="text-[10.5px] font-extrabold uppercase tracking-wider text-[#5B544A] block mb-1">Paper-Based UKVI GT:</span>
+                        <div className="grid grid-cols-2 gap-1.5 text-[12px] font-semibold text-[#3D362E]">
+                          <p className="bg-[#FFF6E5] border-2 border-[#16130F]/15 rounded-md px-2 py-1"><strong className="text-[#16130F]">Sept:</strong> {currentData.ukviGtPaper.Sept}</p>
+                          <p className="bg-[#FFF6E5] border-2 border-[#16130F]/15 rounded-md px-2 py-1"><strong className="text-[#16130F]">Oct:</strong> {currentData.ukviGtPaper.Oct}</p>
+                          <p className="bg-[#FFF6E5] border-2 border-[#16130F]/15 rounded-md px-2 py-1"><strong className="text-[#16130F]">Nov:</strong> {currentData.ukviGtPaper.Nov}</p>
+                          <p className="bg-[#FFF6E5] border-2 border-[#16130F]/15 rounded-md px-2 py-1"><strong className="text-[#16130F]">Dec:</strong> {currentData.ukviGtPaper.Dec}</p>
                         </div>
                       </div>
                     )}
                   </div>
 
-                  <div className="bg-white border border-slate-100 rounded-xl p-5 space-y-3 text-xs shadow-sm">
-                    <h4 className="font-extrabold text-slate-855 text-sm border-b border-slate-50 pb-2">IELTS Life Skills</h4>
+                  <div className="bg-white border-[3px] border-[#16130F] rounded-xl p-5 space-y-4 shadow-[4px_4px_0_#16130F] text-[13px]" style={{ borderTopWidth: 8, borderTopColor: '#D0362E' }}>
+                    <h4 className="font-urbanist font-black text-[16px] text-[#16130F] border-b-2 border-dashed border-[#16130F33] pb-2">IELTS Life Skills</h4>
                     <div>
-                      <span className="font-bold text-slate-400 block mb-1">Test Dates (A1 & B1):</span>
-                      <p className="font-semibold text-slate-750 leading-relaxed">{currentData.lifeSkills}</p>
+                      <span className="text-[10.5px] font-extrabold uppercase tracking-wider text-[#5B544A] block mb-1">Test Dates (A1 &amp; B1):</span>
+                      <p className="font-semibold text-[#3D362E] leading-relaxed">{currentData.lifeSkills}</p>
                     </div>
-                    <p className="text-[10px] text-slate-400 leading-normal pt-2 font-semibold">
+                    <p className="text-[11.5px] text-[#5B544A] leading-normal pt-1 font-semibold">
                       * The Life Skills test assesses speaking and listening skills at level A1 or B1 for UK family visa routes.
                     </p>
                   </div>
                 </div>
               </div>
 
-              <h3 className="text-lg font-black text-slate-900 mt-8 mb-4">How to Select the Right Dates?</h3>
+              <SubHead hi="सही तारीख़" className="pt-4">How to Select the Right Dates?</SubHead>
               <p>
-                We recommend registering for your IELTS test <strong>at least 3 to 6 months before your target university application deadline</strong>. This leaves enough room for scheduling slot retakes if necessary or preparing visa materials early. High-demand months in India are January to March (Fall deadlines) and June to August. Booking 1 month in advance is highly recommended.
+                We recommend registering for your IELTS test <strong className="text-[#16130F]">at least 3 to 6 months before your target university application deadline</strong>. This leaves enough room for scheduling slot retakes if necessary or preparing visa materials early. High-demand months in India are January to March (Fall deadlines) and June to August. Booking 1 month in advance is highly recommended.
               </p>
 
               <div>
@@ -475,8 +526,8 @@ const IELTSDatesPage = () => {
                 />
               </div>
 
-              <h3 className="text-lg font-black text-slate-900 mt-12 mb-6">Frequently Asked Questions (FAQs) - IELTS Dates</h3>
-              <div className="space-y-4">
+              <SubHead hi="अक्सर पूछे सवाल" className="pt-6">Frequently Asked Questions (FAQs) - IELTS Dates</SubHead>
+              <div className="space-y-3">
                 {[
                   {
                     q: "What if I have to cancel the exam before five days due to an emergency?",
@@ -527,31 +578,22 @@ const IELTSDatesPage = () => {
                     a: "IELTS Life Skills tests are held 1–2 times per month in major approved cities (like Chennai, Bangalore, Hyderabad, and Mumbai) where specialized administrative security conditions are met."
                   }
                 ].map((faq, index) => (
-                  <details key={index} className="group border border-slate-200 rounded-2xl bg-white hover:border-indigo-150 transition-all duration-200 p-5">
-                    <summary className="font-extrabold text-slate-800 cursor-pointer flex justify-between items-center list-none select-none text-sm">
-                      <span>{faq.q}</span>
-                      <span className="transition-transform duration-200 group-open:rotate-180 text-slate-400">
-                        ▼
-                      </span>
-                    </summary>
-                    <div className="mt-3.5 text-slate-655 text-xs leading-relaxed font-semibold">
-                      {faq.a}
-                    </div>
-                  </details>
+                  <FaqItem key={index} q={faq.q} a={faq.a} />
                 ))}
               </div>
             </div>
 
             {/* Additional Quick Actions Box */}
-            <div className="bg-slate-50/50 p-6 rounded-2xl border border-slate-100 mt-10 grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 gap-4 items-center bg-[#FFF1B8] border-[3px] border-[#16130F] rounded-xl p-5 sm:p-6 shadow-[4px_4px_0_#16130F]">
               <div>
-                <h4 className="font-bold text-slate-900 text-sm mb-1">Want to prepare for IELTS?</h4>
-                <p className="text-xs text-slate-500 leading-normal font-normal">Join upcoming live workshops and university webinars led by certified international mentors.</p>
+                <p className="font-['Rozha_One',serif] text-[14px] text-[#D0362E] leading-none">लाइव क्लास</p>
+                <h4 className="mt-1 font-urbanist font-black text-[17px] text-[#16130F]">Want to prepare for IELTS?</h4>
+                <p className="mt-1 text-[13px] text-[#5B544A] leading-normal">Join upcoming live workshops and university webinars led by certified international mentors.</p>
               </div>
               <div className="flex items-center justify-start sm:justify-end">
                 <Link
                   to="/events"
-                  className="px-5 py-3 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold inline-flex items-center gap-1.5 shadow-sm shadow-indigo-600/10 cursor-pointer transition-all"
+                  className="no-shine px-5 py-3 rounded-full border-2 border-[#16130F] bg-[#D0362E] hover:bg-[#B52A23] text-white text-[13px] font-bold inline-flex items-center gap-1.5 shadow-[3px_3px_0_#16130F] cursor-pointer transition-transform hover:-translate-y-0.5"
                 >
                   <span>Explore Live Events</span>
                   <ArrowRight size={13} />
@@ -560,118 +602,48 @@ const IELTSDatesPage = () => {
             </div>
 
             {/* Next Up Section */}
-            <div className="border-t border-slate-100 pt-8 mt-12">
-              <h3 className="text-lg font-black text-slate-900 mb-5">Next Up</h3>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <Link to={getBlogLink("IELTS Test Centres")} className="flex flex-col justify-between p-5 bg-white border border-slate-100 border-l-4 border-l-emerald-500 rounded-xl hover:shadow-md transition-all group">
-                  <h4 className="font-extrabold text-slate-800 text-sm mb-4 group-hover:text-indigo-655 transition-colors">IELTS Test Centres</h4>
-                  <span className="text-xs font-bold text-indigo-600 flex items-center gap-1">
-                    Read Now <ArrowRight size={12} className="transform group-hover:translate-x-0.5 transition-transform" />
-                  </span>
-                </Link>
-                <Link to={getBlogLink("IELTS Registration")} className="flex flex-col justify-between p-5 bg-white border border-slate-100 border-l-4 border-l-sky-500 rounded-xl hover:shadow-md transition-all group">
-                  <h4 className="font-extrabold text-slate-800 text-sm mb-4 group-hover:text-indigo-655 transition-colors">IELTS Registration</h4>
-                  <span className="text-xs font-bold text-indigo-600 flex items-center gap-1">
-                    Read Now <ArrowRight size={12} className="transform group-hover:translate-x-0.5 transition-transform" />
-                  </span>
-                </Link>
-                <Link to={getBlogLink("IELTS Slot Booking")} className="flex flex-col justify-between p-5 bg-white border border-slate-100 border-l-4 border-l-amber-500 rounded-xl hover:shadow-md transition-all group">
-                  <h4 className="font-extrabold text-slate-800 text-sm mb-4 group-hover:text-indigo-655 transition-colors">IELTS Slot Booking</h4>
-                  <span className="text-xs font-bold text-indigo-600 flex items-center gap-1">
-                    Read Now <ArrowRight size={12} className="transform group-hover:translate-x-0.5 transition-transform" />
-                  </span>
-                </Link>
+            <div className="border-t-2 border-dashed border-[#16130F33] pt-8 mt-12">
+              <SubHead hi="आगे पढ़ो">Next Up</SubHead>
+              <div className="mt-5 grid grid-cols-1 md:grid-cols-3 gap-4">
+                {["IELTS Test Centres", "IELTS Registration", "IELTS Slot Booking"].map((title, i) => (
+                  <Link
+                    key={title}
+                    to={getBlogLink(title)}
+                    className="group flex flex-col justify-between p-5 bg-white border-[3px] border-[#16130F] rounded-xl shadow-[4px_4px_0_#16130F] hover:-translate-y-0.5 transition-transform"
+                    style={{ borderLeftWidth: 10, borderLeftColor: DESI_TONES[i % DESI_TONES.length].c }}
+                  >
+                    <h4 className="font-urbanist font-black text-[16px] text-[#16130F] mb-4">{title}</h4>
+                    <span className="text-[13px] font-bold text-[#D0362E] flex items-center gap-1">
+                      Read Now <ArrowRight size={12} className="transform group-hover:translate-x-0.5 transition-transform" />
+                    </span>
+                  </Link>
+                ))}
               </div>
             </div>
 
             {/* IELTS Link Grids */}
-            <div className="border-t border-slate-100 pt-8 mt-8 space-y-12">
-              {/* Important Info Grid */}
-              <div>
-                <h3 className="text-lg font-black text-slate-900 mb-5">IELTS Important Information</h3>
-                <div className="grid grid-cols-1 md:grid-cols-3 border-t border-l border-slate-100 rounded-xl overflow-hidden shadow-sm">
-                  {importantInfoLinks.map((link) => (
-                    <Link 
-                      key={link}
-                      to={getBlogLink(link)}
-                      className="p-4 bg-white border-b border-r border-slate-100 flex items-center justify-between hover:bg-indigo-50/20 transition-all group cursor-pointer"
-                    >
-                      <span className="text-xs font-bold text-slate-600 group-hover:text-indigo-655 transition-colors">{link}</span>
-                      <ArrowRight size={13} className="text-indigo-500 opacity-60 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
-                    </Link>
-                  ))}
-                </div>
-              </div>
-
-              {/* Accepting Countries Grid */}
-              <div>
-                <h3 className="text-lg font-black text-slate-900 mb-5">IELTS Accepting Countries</h3>
-                <div className="grid grid-cols-1 md:grid-cols-3 border-t border-l border-slate-100 rounded-xl overflow-hidden shadow-sm">
-                  {acceptingCountriesLinks.map((link) => (
-                    <Link 
-                      key={link}
-                      to={getBlogLink(link)}
-                      className="p-4 bg-white border-b border-r border-slate-100 flex items-center justify-between hover:bg-indigo-50/20 transition-all group cursor-pointer"
-                    >
-                      <span className="text-xs font-bold text-slate-600 group-hover:text-indigo-655 transition-colors">{link}</span>
-                      <ArrowRight size={13} className="text-indigo-500 opacity-60 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
-                    </Link>
-                  ))}
-                </div>
-              </div>
-
-              {/* Accepting Universities Grid */}
-              <div>
-                <h3 className="text-lg font-black text-slate-900 mb-5">IELTS Accepting Universities</h3>
-                <div className="grid grid-cols-1 md:grid-cols-3 border-t border-l border-slate-100 rounded-xl overflow-hidden shadow-sm">
-                  {acceptingUniversitiesLinks.map((link) => (
-                    <Link 
-                      key={link}
-                      to={getBlogLink(link)}
-                      className="p-4 bg-white border-b border-r border-slate-100 flex items-center justify-between hover:bg-indigo-50/20 transition-all group cursor-pointer"
-                    >
-                      <span className="text-xs font-bold text-slate-600 group-hover:text-indigo-655 transition-colors">{link}</span>
-                      <ArrowRight size={13} className="text-indigo-500 opacity-60 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
-                    </Link>
-                  ))}
-                </div>
-              </div>
-
-              {/* Test Centres Grid */}
-              <div>
-                <h3 className="text-lg font-black text-slate-900 mb-5">IELTS Test Centre and Dates in India</h3>
-                <div className="grid grid-cols-1 md:grid-cols-3 border-t border-l border-slate-100 rounded-xl overflow-hidden shadow-sm">
-                  {testCentresLinks.map((link) => (
-                    <Link 
-                      key={link}
-                      to={getBlogLink(link)}
-                      className="p-4 bg-white border-b border-r border-slate-100 flex items-center justify-between hover:bg-indigo-50/20 transition-all group cursor-pointer"
-                    >
-                      <span className="text-xs font-bold text-slate-600 group-hover:text-indigo-655 transition-colors">{link}</span>
-                      <ArrowRight size={13} className="text-indigo-500 opacity-60 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
-                    </Link>
-                  ))}
-                </div>
-              </div>
+            <div className="border-t-2 border-dashed border-[#16130F33] pt-8 mt-10 space-y-12">
+              <LinkGrid hi="ज़रूरी जानकारी" title="IELTS Important Information" links={importantInfoLinks} getLink={getBlogLink} />
+              <LinkGrid hi="कौन से देश" title="IELTS Accepting Countries" links={acceptingCountriesLinks} getLink={getBlogLink} />
+              <LinkGrid hi="यूनिवर्सिटी" title="IELTS Accepting Universities" links={acceptingUniversitiesLinks} getLink={getBlogLink} />
+              <LinkGrid hi="टेस्ट सेंटर" title="IELTS Test Centre and Dates in India" links={testCentresLinks} getLink={getBlogLink} />
             </div>
 
           </main>
 
           {/* Right Sidebar Widgets */}
-          <aside className="sticky top-28 space-y-6">
-            
-            {/* Widget: Live Events & Fairs */}
-            <div className="uc-clean p-6 rounded-2xl shadow-md border relative overflow-hidden">
-              <span className="text-[9px] font-bold text-orange-200 uppercase tracking-widest block mb-2">Live Fairs</span>
-              <h3 className="text-lg font-bold leading-snug mb-2">
-                University Fairs & Webinars
+          <aside className="lg:sticky lg:top-28 space-y-6 min-w-0">
+            <div className="p-6 rounded-[14px] border-[3px] border-[#16130F] shadow-[5px_5px_0_#16130F] text-white" style={{ background: '#B8285B', transform: 'rotate(-0.6deg)' }}>
+              <span className="text-[10.5px] font-extrabold uppercase tracking-widest block mb-2" style={{ color: '#FFE08A' }}>Live Fairs</span>
+              <h3 className="font-urbanist font-black text-[20px] leading-snug mb-2">
+                University Fairs &amp; Webinars
               </h3>
-              <p className="text-xs text-blue-100/85 leading-relaxed mb-5 font-normal">
+              <p className="text-[13px] text-white/90 leading-relaxed mb-5">
                 Meet university delegates directly, understand intake deadlines, and get on-spot advice.
               </p>
               <Link
                 to="/events"
-                className="w-full text-center py-3 bg-white text-[#111111] rounded-xl text-xs font-bold hover:bg-orange-50 transition-all flex items-center justify-center gap-1.5 shadow-sm block cursor-pointer"
+                className="no-shine w-full text-center py-3 bg-white text-[#16130F] rounded-full border-2 border-[#16130F] text-[13px] font-bold hover:bg-[#FFF1B8] transition-colors flex items-center justify-center gap-1.5 shadow-[3px_3px_0_#16130F] cursor-pointer"
               >
                 <span>Explore Live Fairs</span>
                 <ArrowRight size={14} />
@@ -679,25 +651,32 @@ const IELTSDatesPage = () => {
             </div>
 
             {/* Widget: Trending Blogs & Guides */}
-            <div className="bg-white border border-slate-200/80 p-6 rounded-2xl shadow-sm text-center">
-              <div className="w-12 h-12 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center mx-auto mb-4 border border-amber-100/80">
-                <BookOpen size={22} className="text-amber-600" />
+            <InkCard className="p-6 text-center" shadow="#F2B705">
+              <div className="w-12 h-12 rounded-full bg-[#F2B705] border-2 border-[#16130F] flex items-center justify-center mx-auto mb-4 shadow-[2px_2px_0_#16130F]">
+                <BookOpen size={22} className="text-[#16130F]" />
               </div>
-              <h4 className="font-extrabold text-slate-800 text-xs mb-2">Study Abroad Blogs & Guides</h4>
-              <p className="text-[11px] text-slate-500 leading-relaxed mb-5 font-semibold">
-                Read insider tips, country comparisons, exam strategies & visa application roadmaps.
+              <h4 className="font-urbanist font-black text-[16px] text-[#16130F] mb-2">Study Abroad Blogs &amp; Guides</h4>
+              <p className="text-[13px] text-[#5B544A] leading-relaxed mb-5">
+                Read insider tips, country comparisons, exam strategies &amp; visa application roadmaps.
               </p>
               <Link
                 to="/blogs"
-                className="w-full text-center py-3 border border-slate-200 text-slate-700 rounded-xl text-xs font-black hover:bg-slate-50 hover:border-slate-300 transition-all block cursor-pointer"
+                className="no-shine w-full text-center py-3 rounded-full border-2 border-[#16130F] bg-white text-[#16130F] text-[13px] font-bold hover:bg-[#FFF1B8] shadow-[3px_3px_0_#16130F] transition-colors block cursor-pointer"
               >
                 Explore All Blogs
               </Link>
-            </div>
+            </InkCard>
 
           </aside>
 
         </div>
+
+        {/* Closing CTA */}
+        <BookOkCta
+          className="mt-14"
+          hi="सही तारीख़ चुनो"
+          text="Kaunsi date lein, deadline se pehle? Free 1:1 call mein mentor ke saath plan banao."
+        />
       </div>
     </div>
   );

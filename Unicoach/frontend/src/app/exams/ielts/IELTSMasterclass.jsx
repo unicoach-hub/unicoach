@@ -1,23 +1,38 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Sparkles,
   Calendar,
-  Clock,
-  UserCheck,
   Award,
   BookOpen,
-  Check,
   ChevronDown,
   ArrowRight,
   TrendingUp,
   MapPin,
   ChevronRight,
   CheckCircle2,
-  Lock,
-  ChevronLeft
+  ChevronLeft,
+  Target,
+  Briefcase
 } from 'lucide-react';
 import { API_BASE_URL } from '../../../config';
+import { DesiHero, DesiHeading, InkCard, Sticker } from '../../../components/desi/DesiKit';
+import { DESI_TONES } from '../../../components/desi/desiTokens';
+import { BookOkCta } from '../../../components/desi/BookOkCta';
+
+const inputCls = "w-full px-4 py-3 rounded-lg bg-[#FFF6E5] border-2 border-[#16130F] text-[#16130F] text-[14px] font-semibold placeholder:text-[#8A7F70] outline-none focus:bg-white focus:shadow-[3px_3px_0_#F2B705] transition-shadow";
+
+// Small centred section header with a Hindi kicker
+const SectionHead = ({ hi, kicker, children }) => (
+  <div className="text-center mb-10 sm:mb-12">
+    <DesiHeading hi={hi}>{children}</DesiHeading>
+    {kicker && (
+      <span className="inline-block mt-3 px-3 py-1 rounded-full border-2 border-[#16130F] bg-white text-[11px] font-extrabold uppercase tracking-wider text-[#16130F] shadow-[2px_2px_0_#16130F]">
+        {kicker}
+      </span>
+    )}
+  </div>
+);
 
 const IELTSMasterclass = () => {
   // Multi-step form state
@@ -134,395 +149,354 @@ const IELTSMasterclass = () => {
     { q: "Can I prepare for IELTS in 1 month?", a: "Yes. One month of preparation is typical and effective if you dedicate 2 hours daily to mock tests, vocabulary review, and active speaking exercises." }
   ];
 
-  return (
-    <div className="min-h-screen bg-slate-50 pt-28 pb-20">
-      
-      {/* Dynamic Hero Section */}
-      <section className="max-w-[1320px] mx-auto px-6 md:px-10 mb-20">
-        <div className="uc-clean grid grid-cols-1 lg:grid-cols-[1.2fr_1fr] gap-12 items-center rounded-[2.5rem] p-8 md:p-14 overflow-hidden shadow-2xl relative border">
-          
-          {/* Ambient Glows */}
-          <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-indigo-500/10 rounded-full blur-3xl pointer-events-none" />
-          <div className="absolute bottom-0 left-0 w-[300px] h-[300px] bg-purple-500/10 rounded-full blur-3xl pointer-events-none" />
+  const heroStats = [
+    { label: 'Course Rating', value: '4.8 / 5', sub: '5,000+ Reviews' },
+    { label: 'Duration', value: '4 Weeks', sub: 'Flexible Schedule' },
+    { label: 'Success Rate', value: '125k+', sub: 'Scored 7+ Bands' },
+    { label: 'Live Hours', value: '40+ Hrs', sub: 'Learn at your pace' },
+  ];
 
-          {/* Left Hero Content */}
-          <div className="relative z-10 space-y-6">
-            <span className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-indigo-500/25 border border-indigo-500/35 text-indigo-300 text-xs font-black uppercase tracking-wider">
-              <Sparkles size={13} className="text-amber-300 fill-amber-300" />
-              Band Jump Guarantee
-            </span>
-            <h1 className="text-3xl md:text-5xl font-black leading-tight tracking-tight">
-              4-Week Online IELTS Course <br />
-              <span className="bg-gradient-to-r from-indigo-400 via-indigo-300 to-purple-400 bg-clip-text text-transparent">
-                With India's Top Experts
-              </span>
-            </h1>
-            <p className="text-slate-350 text-sm md:text-base leading-relaxed max-w-lg font-medium">
-              Join daily live classes, get personalized feedback from certified IELTS trainers, and practice with over 100+ simulated IELTS mock tests.
-            </p>
+  const whyCards = [
+    { icon: Award, title: '5000+ 5-Star Reviews', text: 'The highest-rated, most trusted online IELTS classes in the region. Verified scorecard results from genuine aspirants.' },
+    { icon: TrendingUp, title: 'Band-Jump Guaranteed', text: 'Over 80% of our enrolled candidates improved their score to a 7.0+ overall band within 4 weeks of structured exercises.' },
+    { icon: Calendar, title: 'Flexible Batch Schedules', text: 'Weekend courses designed specifically for working professionals, with recordings and module logs open 24/7.' },
+  ];
 
-            {/* Micro Stats Grid */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-4 border-t border-slate-800">
-              <div className="bg-slate-900/60 p-3.5 rounded-xl border border-slate-800 text-center">
-                <p className="text-xs text-slate-400 font-bold">Course Rating</p>
-                <p className="text-lg font-black text-white mt-1">4.8 / 5</p>
-                <p className="text-[10px] text-slate-500 font-bold mt-0.5">5,000+ Reviews</p>
-              </div>
-              <div className="bg-slate-900/60 p-3.5 rounded-xl border border-slate-800 text-center">
-                <p className="text-xs text-slate-400 font-bold">Duration</p>
-                <p className="text-lg font-black text-white mt-1">4 Weeks</p>
-                <p className="text-[10px] text-slate-500 font-bold mt-0.5">Flexible Schedule</p>
-              </div>
-              <div className="bg-slate-900/60 p-3.5 rounded-xl border border-slate-800 text-center">
-                <p className="text-xs text-slate-400 font-bold">Success Rate</p>
-                <p className="text-lg font-black text-white mt-1">125k+</p>
-                <p className="text-[10px] text-slate-500 font-bold mt-0.5">Scored 7+ Bands</p>
-              </div>
-              <div className="bg-slate-900/60 p-3.5 rounded-xl border border-slate-800 text-center">
-                <p className="text-xs text-slate-400 font-bold">Live Hours</p>
-                <p className="text-lg font-black text-white mt-1">40+ Hrs</p>
-                <p className="text-[10px] text-slate-500 font-bold mt-0.5">Learn at your pace</p>
-              </div>
+  const startSteps = [
+    { title: 'Attend Free Live Class', text: 'Get 30 mins introduction class with live trainer.' },
+    { title: 'Take Band Predictor', text: 'Assess your current score level immediately.' },
+    { title: 'Get Feedback', text: 'Identify key weak areas & customize study plans.' },
+  ];
+
+  // Lead booking form card (hero aside)
+  const bookingCard = (
+    <InkCard className="relative p-6 md:p-8 flex flex-col justify-center min-h-[420px] text-[#16130F]">
+      <span aria-hidden="true" className="absolute -top-4 right-5 rotate-3 px-3 py-1 rounded-md bg-[#B8285B] text-white border-2 border-[#16130F] shadow-[2px_2px_0_#16130F] font-['Rozha_One',serif] text-[14px] leading-none">
+        सीट बुक करो
+      </span>
+      <AnimatePresence mode="wait">
+        {formSubmitted ? (
+          <motion.div
+            key="success"
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.95 }}
+            className="text-center py-6 space-y-4"
+          >
+            <div className="w-16 h-16 rounded-full bg-[#14837E] text-white border-[3px] border-[#16130F] shadow-[3px_3px_0_#16130F] flex items-center justify-center mx-auto">
+              <CheckCircle2 size={30} />
             </div>
-          </div>
+            <div>
+              <h3 className="font-urbanist text-[22px] font-black text-[#16130F]">Seat Reserved Successfully!</h3>
+              <p className="text-[13px] text-[#5B544A] mt-2 font-medium">
+                Thank you, <strong className="text-[#B8285B]">{formData.name}</strong>. An email with live masterclass link and details has been sent to <span className="text-[#16130F] font-semibold break-all">{formData.email}</span>.
+              </p>
+            </div>
+            <div className="bg-[#FFF1B8] p-4 rounded-lg text-left border-2 border-[#16130F] text-[13px] font-medium space-y-2 text-[#3D362E]">
+              <p className="flex items-center gap-2"><Target size={14} className="shrink-0 text-[#D0362E]" /><span><strong className="text-[#16130F]">Reason:</strong> {formData.reason}</span></p>
+              <p className="flex items-center gap-2"><Briefcase size={14} className="shrink-0 text-[#D0362E]" /><span><strong className="text-[#16130F]">Profession:</strong> {formData.profession}</span></p>
+              <p className="flex items-center gap-2"><Calendar size={14} className="shrink-0 text-[#D0362E]" /><span><strong className="text-[#16130F]">Timeline:</strong> {formData.timeline}</span></p>
+            </div>
+            <button
+              onClick={() => { setFormSubmitted(false); setFormStep(1); setFormData({ reason: '', profession: '', timeline: '', name: '', email: '', phone: '' }); }}
+              className="text-[13px] text-[#B8285B] font-extrabold underline decoration-2 underline-offset-2 hover:text-[#16130F] block mx-auto cursor-pointer"
+            >
+              Reset and Register Again
+            </button>
+          </motion.div>
+        ) : (
+          <motion.div
+            key={`step-${formStep}`}
+            initial={{ opacity: 0, x: 10 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -10 }}
+            transition={{ duration: 0.2 }}
+            className="space-y-6"
+          >
+            {/* Step Indicators */}
+            <div className="flex items-center justify-between gap-3 text-[11.5px] font-extrabold">
+              <span className="uppercase tracking-wider text-[#D0362E]">Start Your Journey</span>
+              <span className="px-2.5 py-1 rounded-full border-2 border-[#16130F] bg-[#F2B705] text-[#16130F] whitespace-nowrap">Step {formStep} of 4</span>
+            </div>
+            <div className="flex gap-1.5" aria-hidden="true">
+              {[1, 2, 3, 4].map((n) => (
+                <span key={n} className={`h-2 flex-1 rounded-full border-2 border-[#16130F] ${n <= formStep ? 'bg-[#14837E]' : 'bg-[#FFF6E5]'}`} />
+              ))}
+            </div>
 
-          {/* Right Lead Booking Form Card */}
-          <div className="relative z-10 bg-white text-slate-800 p-6 md:p-8 rounded-[2rem] shadow-xl border border-slate-100 flex flex-col justify-center min-h-[420px]">
-            <AnimatePresence mode="wait">
-              {formSubmitted ? (
-                <motion.div
-                  key="success"
-                  initial={{ opacity: 0, scale: 0.95 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.95 }}
-                  className="text-center py-6 space-y-4"
-                >
-                  <div className="w-16 h-16 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center mx-auto shadow-sm">
-                    <CheckCircle2 size={32} />
-                  </div>
-                  <div>
-                    <h3 className="text-xl font-black text-slate-900">Seat Reserved Successfully!</h3>
-                    <p className="text-xs text-slate-500 mt-2 font-semibold">
-                      Thank you, <strong className="text-indigo-600">{formData.name}</strong>. An email with live masterclass link and details has been sent to <span className="text-slate-700">{formData.email}</span>.
-                    </p>
-                  </div>
-                  <div className="bg-slate-50 p-4 rounded-xl text-left border border-slate-100 text-xs font-semibold space-y-2 text-slate-600">
-                    <p>🎯 <strong className="text-slate-800">Reason:</strong> {formData.reason}</p>
-                    <p>💼 <strong className="text-slate-800">Profession:</strong> {formData.profession}</p>
-                    <p>📅 <strong className="text-slate-800">Timeline:</strong> {formData.timeline}</p>
-                  </div>
-                  <button 
-                    onClick={() => { setFormSubmitted(false); setFormStep(1); setFormData({ reason: '', profession: '', timeline: '', name: '', email: '', phone: '' }); }}
-                    className="text-xs text-indigo-600 font-extrabold hover:underline block mx-auto cursor-pointer"
+            <h3 className="font-urbanist text-[20px] md:text-[22px] font-black text-[#16130F] leading-snug">
+              {steps[formStep - 1].title}
+            </h3>
+
+            {/* Render Selection Options or Inputs */}
+            {steps[formStep - 1].options ? (
+              <div className="flex flex-col gap-2.5">
+                {steps[formStep - 1].options.map((opt) => (
+                  <button
+                    key={opt}
+                    onClick={() => handleOptionSelect(steps[formStep - 1].field, opt)}
+                    className="group w-full text-left py-3.5 px-4 rounded-lg border-2 border-[#16130F] bg-white hover:bg-[#FFF1B8] hover:shadow-[3px_3px_0_#16130F] hover:-translate-y-0.5 text-[#16130F] text-[14px] font-bold transition-all cursor-pointer flex items-center justify-between"
                   >
-                    Reset and Register Again
+                    <span>{opt}</span>
+                    <ChevronRight size={15} className="text-[#16130F] group-hover:translate-x-0.5 transition-transform" />
                   </button>
-                </motion.div>
-              ) : (
-                <motion.div
-                  key={`step-${formStep}`}
-                  initial={{ opacity: 0, x: 10 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: -10 }}
-                  transition={{ duration: 0.2 }}
-                  className="space-y-6"
-                >
-                  {/* Step Indicators */}
-                  <div className="flex items-center justify-between text-xs font-extrabold text-slate-400">
-                    <span className="uppercase tracking-widest text-indigo-600">Start Your Journey</span>
-                    <span>Step {formStep} of 4</span>
+                ))}
+              </div>
+            ) : (
+              <form onSubmit={handleNextInputStep} className="space-y-4">
+                {steps[formStep - 1].inputs.map((inp) => (
+                  <div key={inp.name} className="space-y-1.5">
+                    <label className="text-[11px] font-extrabold uppercase tracking-wider text-[#5B544A]">{inp.label}</label>
+                    <input
+                      type={inp.type}
+                      name={inp.name}
+                      placeholder={inp.placeholder}
+                      value={formData[inp.name]}
+                      onChange={handleInputChange}
+                      required
+                      className={inputCls}
+                    />
                   </div>
+                ))}
+                <button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="w-full py-3.5 rounded-full bg-[#D0362E] hover:bg-[#B52A23] disabled:opacity-60 text-white text-[14px] font-bold border-2 border-[#16130F] shadow-[3px_3px_0_#16130F] active:translate-x-0.5 active:translate-y-0.5 active:shadow-[1px_1px_0_#16130F] cursor-pointer transition-all flex items-center justify-center gap-1.5"
+                >
+                  <span>{isSubmitting ? 'Reserving Spot...' : 'Reserve My Spot'}</span>
+                  <ArrowRight size={15} />
+                </button>
+              </form>
+            )}
 
-                  <h3 className="text-lg md:text-xl font-black text-slate-900 leading-snug">
-                    {steps[formStep - 1].title}
-                  </h3>
+            {/* Navigation back */}
+            {formStep > 1 && (
+              <button
+                onClick={() => setFormStep(formStep - 1)}
+                className="inline-flex items-center gap-1 text-[12px] font-extrabold text-[#5B544A] hover:text-[#16130F] cursor-pointer"
+              >
+                <ChevronLeft size={14} />
+                <span>Back</span>
+              </button>
+            )}
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </InkCard>
+  );
 
-                  {/* Render Selection Options or Inputs */}
-                  {steps[formStep - 1].options ? (
-                    <div className="flex flex-col gap-2.5">
-                      {steps[formStep - 1].options.map((opt) => (
-                        <button
-                          key={opt}
-                          onClick={() => handleOptionSelect(steps[formStep - 1].field, opt)}
-                          className="w-full text-left py-3.5 px-4 rounded-xl border border-slate-200 hover:border-indigo-500 hover:bg-indigo-50/20 text-slate-700 text-xs font-black transition-all cursor-pointer flex items-center justify-between"
-                        >
-                          <span>{opt}</span>
-                          <ChevronRight size={14} className="text-slate-400" />
-                        </button>
-                      ))}
-                    </div>
-                  ) : (
-                    <form onSubmit={handleNextInputStep} className="space-y-4">
-                      {steps[formStep - 1].inputs.map((inp) => (
-                        <div key={inp.name} className="space-y-1.5">
-                          <label className="text-xs font-bold text-slate-500">{inp.label}</label>
-                          <input
-                            type={inp.type}
-                            name={inp.name}
-                            placeholder={inp.placeholder}
-                            value={formData[inp.name]}
-                            onChange={handleInputChange}
-                            required
-                            className="w-full px-4 py-3 rounded-xl border border-slate-200 text-slate-800 text-xs focus:outline-none focus:border-indigo-500 font-semibold"
-                          />
-                        </div>
-                      ))}
-                      <button
-                        type="submit"
-                        disabled={isSubmitting}
-                        className="w-full py-3.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 disabled:opacity-60 text-white text-xs font-black shadow-lg shadow-indigo-600/10 cursor-pointer active:scale-98 transition-all flex items-center justify-center gap-1"
-                      >
-                        <span>{isSubmitting ? 'Reserving Spot...' : 'Reserve My Spot'}</span>
-                        <ArrowRight size={14} />
-                      </button>
-                    </form>
-                  )}
+  return (
+    <div className="min-h-screen bg-[#FFF6E5] pb-20 font-['Onest',sans-serif] text-[#16130F] overflow-x-hidden">
 
-                  {/* Navigation back */}
-                  {formStep > 1 && (
-                    <button
-                      onClick={() => setFormStep(formStep - 1)}
-                      className="inline-flex items-center gap-1 text-[11px] font-black text-slate-400 hover:text-slate-700 cursor-pointer"
-                    >
-                      <ChevronLeft size={13} />
-                      <span>Back</span>
-                    </button>
-                  )}
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </div>
-
+      {/* Hero: mustard poster band with the booking form */}
+      <DesiHero
+        tone="mustard"
+        sign={{ hi: 'मास्टरक्लास', en: 'IELTS MASTERCLASS' }}
+        title={(
+          <>
+            4-Week Online IELTS Course <br />
+            <span className="text-[#B8285B]">With India's Top Experts</span>
+          </>
+        )}
+        subtitle="Join daily live classes, get personalized feedback from certified IELTS trainers, and practice with over 100+ simulated IELTS mock tests."
+        stickers={(
+          <Sticker bg="#16130F" fg="#F2B705" tilt={-2}><Sparkles size={14} />Band Jump Guarantee</Sticker>
+        )}
+        aside={bookingCard}
+      >
+        {/* Micro Stats Grid */}
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-8">
+          {heroStats.map((s, i) => (
+            <div key={s.label} className="bg-white p-3.5 border-[3px] border-[#16130F] shadow-[3px_3px_0_#16130F] text-center" style={{ borderRadius: 12, transform: `rotate(${i % 2 ? 1 : -1}deg)` }}>
+              <p className="text-[11px] text-[#5B544A] font-bold">{s.label}</p>
+              <p className="font-urbanist text-[19px] font-black text-[#16130F] mt-1 leading-none">{s.value}</p>
+              <p className="text-[10.5px] text-[#5B544A] font-semibold mt-1">{s.sub}</p>
+            </div>
+          ))}
         </div>
-      </section>
+      </DesiHero>
 
       {/* Why Choose Section */}
-      <section className="max-w-[1320px] mx-auto px-6 md:px-10 mb-24">
-        <p className="text-center text-[11px] font-black text-indigo-600 uppercase tracking-widest mb-3">Premium IELTS Training</p>
-        <h2 className="text-center text-2xl md:text-4xl font-black text-slate-900 mb-12">
-          Why Choose UniCoach for IELTS Prep?
-        </h2>
+      <section className="max-w-[1320px] mx-auto px-4 md:px-10 pt-16 sm:pt-20 mb-20 sm:mb-24">
+        <SectionHead hi="हमें क्यों चुनें" kicker="Premium IELTS Training">Why Choose UniCoach for IELTS Prep?</SectionHead>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <div className="bg-white border border-slate-100 p-8 rounded-2xl shadow-sm text-center space-y-4">
-            <div className="w-12 h-12 rounded-2xl bg-indigo-50 text-indigo-600 flex items-center justify-center mx-auto">
-              <Award className="w-6 h-6" />
-            </div>
-            <h4 className="font-extrabold text-slate-850 text-lg">5000+ 5-Star Reviews</h4>
-            <p className="text-xs text-slate-500 leading-relaxed font-semibold">
-              The highest-rated, most trusted online IELTS classes in the region. Verified scorecard results from genuine aspirants.
-            </p>
-          </div>
-          <div className="bg-white border border-slate-100 p-8 rounded-2xl shadow-sm text-center space-y-4">
-            <div className="w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center mx-auto">
-              <TrendingUp className="w-6 h-6" />
-            </div>
-            <h4 className="font-extrabold text-slate-850 text-lg">Band-Jump Guaranteed</h4>
-            <p className="text-xs text-slate-500 leading-relaxed font-semibold">
-              Over 80% of our enrolled candidates improved their score to a 7.0+ overall band within 4 weeks of structured exercises.
-            </p>
-          </div>
-          <div className="bg-white border border-slate-100 p-8 rounded-2xl shadow-sm text-center space-y-4">
-            <div className="w-12 h-12 rounded-2xl bg-purple-50 text-purple-600 flex items-center justify-center mx-auto">
-              <Calendar className="w-6 h-6" />
-            </div>
-            <h4 className="font-extrabold text-slate-850 text-lg">Flexible Batch Schedules</h4>
-            <p className="text-xs text-slate-500 leading-relaxed font-semibold">
-              Weekend courses designed specifically for working professionals, with recordings and module logs open 24/7.
-            </p>
-          </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
+          {whyCards.map((card, i) => {
+            const tone = DESI_TONES[i === 0 ? 0 : i === 1 ? 2 : 3];
+            const Icon = card.icon;
+            return (
+              <InkCard key={card.title} className="p-7 md:p-8 text-center space-y-4" shadow={tone.c}>
+                <div className="w-14 h-14 rounded-full border-[3px] border-[#16130F] shadow-[2px_2px_0_#16130F] flex items-center justify-center mx-auto" style={{ background: tone.c, color: tone.fg }}>
+                  <Icon className="w-6 h-6" />
+                </div>
+                <h4 className="font-urbanist font-black text-[#16130F] text-[20px]">{card.title}</h4>
+                <p className="text-[14px] text-[#5B544A] leading-relaxed">{card.text}</p>
+              </InkCard>
+            );
+          })}
         </div>
       </section>
 
       {/* Instructors Section */}
-      <section className="max-w-[1320px] mx-auto px-6 md:px-10 mb-24">
-        <p className="text-center text-[11px] font-black text-indigo-600 uppercase tracking-widest mb-3">Meet the Trainers</p>
-        <h2 className="text-center text-2xl md:text-4xl font-black text-slate-900 mb-4">
-          India's Top Certified IELTS Instructors
-        </h2>
-        <p className="text-center text-xs text-slate-500 leading-relaxed max-w-lg mx-auto mb-12 font-semibold">
+      <section className="max-w-[1320px] mx-auto px-4 md:px-10 mb-20 sm:mb-24">
+        <SectionHead hi="गुरुजन" kicker="Meet the Trainers">India's Top Certified IELTS Instructors</SectionHead>
+        <p className="-mt-6 text-center text-[14px] text-[#5B544A] leading-relaxed max-w-lg mx-auto mb-10">
           Get trained by certified experts who have successfully guided thousands of students to score Band 7.5+ in the general & academic modules.
         </p>
 
         {/* Instructors Grid */}
         <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-12">
-          {instructors.map((ins, i) => (
-            <div key={i} className="bg-white border border-slate-100 p-5 rounded-2xl text-center space-y-3 shadow-sm hover:border-indigo-200 transition-all">
-              <div className="w-16 h-16 rounded-full bg-slate-950 text-white font-black flex items-center justify-center text-lg mx-auto border-4 border-slate-50 shadow-md">
-                {ins.image}
-              </div>
-              <div>
-                <h4 className="font-extrabold text-slate-805 text-sm">{ins.name}</h4>
-                <p className="text-[10px] text-slate-400 font-bold uppercase mt-0.5">IELTS Coach</p>
-              </div>
-              <div className="bg-slate-50 p-2 rounded-xl text-[11px] font-semibold text-slate-500 space-y-1">
-                <p><strong className="text-slate-700">{ins.experience} Yrs</strong> Experience</p>
-                <p><strong className="text-slate-700">{ins.students}</strong> Trained</p>
-              </div>
-            </div>
-          ))}
+          {instructors.map((ins, i) => {
+            const tone = DESI_TONES[i % 4];
+            return (
+              <InkCard key={i} className="p-4 sm:p-5 text-center space-y-3 hover:-translate-y-1 transition-transform">
+                <div className="w-16 h-16 rounded-full font-urbanist font-black flex items-center justify-center text-lg mx-auto border-[3px] border-[#16130F] shadow-[2px_2px_0_#16130F]" style={{ background: tone.c, color: tone.fg }}>
+                  {ins.image}
+                </div>
+                <div>
+                  <h4 className="font-urbanist font-black text-[#16130F] text-[15px] leading-tight">{ins.name}</h4>
+                  <p className="text-[10.5px] text-[#5B544A] font-extrabold uppercase tracking-wider mt-1">IELTS Coach</p>
+                </div>
+                <div className="p-2 rounded-lg text-[12px] text-[#5B544A] space-y-1 border-2 border-dashed border-[#16130F]/30" style={{ background: tone.soft }}>
+                  <p><strong className="text-[#16130F]">{ins.experience} Yrs</strong> Experience</p>
+                  <p><strong className="text-[#16130F]">{ins.students}</strong> Trained</p>
+                </div>
+              </InkCard>
+            );
+          })}
         </div>
 
         {/* Steps to start */}
-        <div className="uc-clean p-8 md:p-10 rounded-[2rem] border shadow-xl max-w-[900px] mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
-            <div className="flex gap-4 items-start">
-              <div className="w-8 h-8 rounded-full bg-indigo-500/20 text-indigo-400 font-black flex items-center justify-center text-xs flex-shrink-0 mt-0.5">1</div>
-              <div>
-                <h4 className="font-extrabold text-sm mb-1">Attend Free Live Class</h4>
-                <p className="text-xs text-slate-400 font-semibold">Get 30 mins introduction class with live trainer.</p>
+        <div className="bg-[#14837E] text-white p-6 sm:p-8 md:p-10 border-[3px] border-[#16130F] shadow-[6px_6px_0_#16130F] max-w-[900px] mx-auto" style={{ borderRadius: 18 }}>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-start">
+            {startSteps.map((st, i) => (
+              <div key={st.title} className="flex gap-4 items-start">
+                <div className="w-10 h-10 rounded-full bg-[#F2B705] text-[#16130F] border-[3px] border-[#16130F] font-urbanist font-black flex items-center justify-center text-[15px] flex-shrink-0 shadow-[2px_2px_0_#16130F]">{i + 1}</div>
+                <div>
+                  <h4 className="font-urbanist font-black text-[16px] mb-1">{st.title}</h4>
+                  <p className="text-[13px] text-white/85">{st.text}</p>
+                </div>
               </div>
-            </div>
-            <div className="flex gap-4 items-start">
-              <div className="w-8 h-8 rounded-full bg-indigo-500/20 text-indigo-400 font-black flex items-center justify-center text-xs flex-shrink-0 mt-0.5">2</div>
-              <div>
-                <h4 className="font-extrabold text-sm mb-1">Take Band Predictor</h4>
-                <p className="text-xs text-slate-400 font-semibold">Assess your current score level immediately.</p>
-              </div>
-            </div>
-            <div className="flex gap-4 items-start">
-              <div className="w-8 h-8 rounded-full bg-indigo-500/20 text-indigo-400 font-black flex items-center justify-center text-xs flex-shrink-0 mt-0.5">3</div>
-              <div>
-                <h4 className="font-extrabold text-sm mb-1">Get Feedback</h4>
-                <p className="text-xs text-slate-400 font-semibold">Identify key weak areas & customize study plans.</p>
-              </div>
-            </div>
+            ))}
           </div>
         </div>
       </section>
 
       {/* Testimonials Card Grid */}
-      <section className="max-w-[1320px] mx-auto px-6 md:px-10 mb-24">
-        <p className="text-center text-[11px] font-black text-indigo-600 uppercase tracking-widest mb-3">Success Scorecards</p>
-        <h2 className="text-center text-2xl md:text-4xl font-black text-slate-900 mb-12">
-          We've Helped 5,000+ Score 8.0+ Bands
-        </h2>
+      <section className="max-w-[1320px] mx-auto px-4 md:px-10 mb-20 sm:mb-24">
+        <SectionHead hi="स्कोरकार्ड" kicker="Success Scorecards">We've Helped 5,000+ Score 8.0+ Bands</SectionHead>
 
         {/* Responsive scorecards grid */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          {scorecards.map((sc, i) => (
-            <div key={i} className="bg-white border border-slate-100 p-5 rounded-2xl shadow-sm flex items-center justify-between hover:scale-[1.02] transition-transform">
-              <div>
-                <h4 className="font-extrabold text-slate-800 text-sm leading-snug">{sc.name}</h4>
-                <span className="text-[10px] text-slate-400 font-bold uppercase tracking-wider flex items-center gap-1 mt-1">
-                  <MapPin size={10} className="text-indigo-500" />
-                  {sc.location}
-                </span>
-              </div>
-              <div className="w-12 h-12 rounded-xl bg-indigo-50 text-indigo-600 flex flex-col items-center justify-center shadow-inner">
-                <span className="text-[9px] font-black uppercase text-indigo-400 leading-none">Band</span>
-                <span className="text-base font-black leading-none mt-1">{sc.score}</span>
-              </div>
-            </div>
-          ))}
+        <div className="grid grid-cols-1 min-[420px]:grid-cols-2 md:grid-cols-4 gap-4">
+          {scorecards.map((sc, i) => {
+            const tone = DESI_TONES[i % 4];
+            return (
+              <InkCard key={i} className="p-4 sm:p-5 flex items-center justify-between gap-3 hover:-translate-y-0.5 transition-transform" style={{ transform: `rotate(${i % 2 ? 0.8 : -0.8}deg)` }}>
+                <div className="min-w-0">
+                  <h4 className="font-urbanist font-black text-[#16130F] text-[15px] leading-snug">{sc.name}</h4>
+                  <span className="text-[10.5px] text-[#5B544A] font-bold uppercase tracking-wider flex items-center gap-1 mt-1">
+                    <MapPin size={11} className="text-[#D0362E]" />
+                    {sc.location}
+                  </span>
+                </div>
+                <div className="w-14 h-14 shrink-0 rounded-lg border-[3px] border-[#16130F] flex flex-col items-center justify-center" style={{ background: tone.c, color: tone.fg }}>
+                  <span className="text-[9px] font-black uppercase leading-none opacity-90">Band</span>
+                  <span className="font-urbanist text-[18px] font-black leading-none mt-1">{sc.score}</span>
+                </div>
+              </InkCard>
+            );
+          })}
         </div>
       </section>
 
       {/* Practice & Resources Section */}
-      <section className="max-w-[1320px] mx-auto px-6 md:px-10 mb-24">
+      <section className="max-w-[1320px] mx-auto px-4 md:px-10 mb-20 sm:mb-24">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          
+
           {/* Card 1: Mock Tests */}
-          <div className="uc-clean p-8 md:p-10 rounded-[2rem] border shadow-xl space-y-6 relative overflow-hidden">
-            <div className="absolute top-0 right-0 w-36 h-36 bg-white/5 rounded-full blur-2xl pointer-events-none" />
-            
-            <div className="w-12 h-12 rounded-2xl bg-indigo-500/20 text-indigo-400 flex items-center justify-center border border-indigo-500/30">
+          <div className="bg-[#B8285B] text-white p-7 md:p-10 border-[3px] border-[#16130F] shadow-[6px_6px_0_#16130F] space-y-6 relative overflow-hidden" style={{ borderRadius: 18 }}>
+            <div className="w-12 h-12 rounded-full bg-[#F2B705] text-[#16130F] border-[3px] border-[#16130F] shadow-[2px_2px_0_#16130F] flex items-center justify-center">
               <Award className="w-6 h-6" />
             </div>
-            
+
             <div>
-              <h3 className="text-xl md:text-2xl font-black mb-2">Simulated IELTS Mock Tests</h3>
-              <p className="text-xs text-slate-350 leading-relaxed font-semibold">
+              <p className="font-['Rozha_One',serif] text-[15px] leading-none text-[#F2B705]">मॉक टेस्ट</p>
+              <h3 className="mt-1.5 font-urbanist text-[22px] md:text-[26px] font-black mb-2">Simulated IELTS Mock Tests</h3>
+              <p className="text-[14px] text-white/85 leading-relaxed">
                 Test yourself under real exam constraints. Get instant AI score grading and professional review.
               </p>
             </div>
 
-            <ul className="space-y-2.5 text-xs font-semibold text-slate-300">
-              <li className="flex items-center gap-2">
-                <CheckCircle2 size={15} className="text-indigo-400 flex-shrink-0" />
-                <span>100+ Full-Length Mock Exams</span>
-              </li>
-              <li className="flex items-center gap-2">
-                <CheckCircle2 size={15} className="text-indigo-400 flex-shrink-0" />
-                <span>Instant Diagnostic Band Predictor</span>
-              </li>
-              <li className="flex items-center gap-2">
-                <CheckCircle2 size={15} className="text-indigo-400 flex-shrink-0" />
-                <span>Sectional evaluations with metrics</span>
-              </li>
+            <ul className="space-y-2.5 text-[14px] font-semibold text-white list-none p-0 m-0">
+              {['100+ Full-Length Mock Exams', 'Instant Diagnostic Band Predictor', 'Sectional evaluations with metrics'].map((li) => (
+                <li key={li} className="flex items-center gap-2">
+                  <CheckCircle2 size={16} className="text-[#F2B705] flex-shrink-0" />
+                  <span>{li}</span>
+                </li>
+              ))}
             </ul>
 
-            <button className="px-6 py-3.5 bg-white text-indigo-900 hover:bg-slate-100 rounded-xl text-xs font-black flex items-center gap-1 shadow-lg cursor-pointer active:scale-98 transition-all">
+            <button className="px-6 py-3.5 bg-white text-[#16130F] hover:bg-[#FFF1B8] rounded-full text-[14px] font-bold flex items-center gap-1.5 border-2 border-[#16130F] shadow-[3px_3px_0_#16130F] cursor-pointer transition-colors">
               <span>Access Mock Tests</span>
-              <ArrowRight size={14} />
+              <ArrowRight size={15} />
             </button>
           </div>
 
           {/* Card 2: Resources */}
-          <div className="bg-white border border-slate-150 p-8 md:p-10 rounded-[2rem] shadow-sm space-y-6 relative overflow-hidden">
-            <div className="absolute top-0 right-0 w-36 h-36 bg-indigo-50 rounded-full blur-2xl pointer-events-none" />
-            
-            <div className="w-12 h-12 rounded-2xl bg-indigo-50 text-indigo-600 flex items-center justify-center border border-indigo-100">
+          <InkCard className="p-7 md:p-10 space-y-6 relative overflow-hidden" shadow="#F2B705">
+            <div className="w-12 h-12 rounded-full bg-[#14837E] text-white border-[3px] border-[#16130F] shadow-[2px_2px_0_#16130F] flex items-center justify-center">
               <BookOpen className="w-6 h-6" />
             </div>
-            
+
             <div>
-              <h3 className="text-xl md:text-2xl font-black text-slate-900 mb-2">Free Study Materials & PDFs</h3>
-              <p className="text-xs text-slate-500 leading-relaxed font-semibold">
+              <p className="font-['Rozha_One',serif] text-[15px] leading-none text-[#D0362E]">मुफ़्त सामग्री</p>
+              <h3 className="mt-1.5 font-urbanist text-[22px] md:text-[26px] font-black text-[#16130F] mb-2">Free Study Materials & PDFs</h3>
+              <p className="text-[14px] text-[#5B544A] leading-relaxed">
                 Download structured writing templates, cue card sample answers, and detailed listening answer logs.
               </p>
             </div>
 
-            <ul className="space-y-2.5 text-xs font-semibold text-slate-650">
-              <li className="flex items-center gap-2">
-                <CheckCircle2 size={15} className="text-indigo-600 flex-shrink-0" />
-                <span>Official PDF Guides & Intake Books</span>
-              </li>
-              <li className="flex items-center gap-2">
-                <CheckCircle2 size={15} className="text-indigo-600 flex-shrink-0" />
-                <span>20+ Hours of Recorded Concept Classes</span>
-              </li>
-              <li className="flex items-center gap-2">
-                <CheckCircle2 size={15} className="text-indigo-600 flex-shrink-0" />
-                <span>Speaking prompts and answer key lists</span>
-              </li>
+            <ul className="space-y-2.5 text-[14px] font-semibold text-[#3D362E] list-none p-0 m-0">
+              {['Official PDF Guides & Intake Books', '20+ Hours of Recorded Concept Classes', 'Speaking prompts and answer key lists'].map((li) => (
+                <li key={li} className="flex items-center gap-2">
+                  <CheckCircle2 size={16} className="text-[#14837E] flex-shrink-0" />
+                  <span>{li}</span>
+                </li>
+              ))}
             </ul>
 
-            <button className="px-6 py-3.5 bg-slate-900 hover:bg-slate-800 text-white rounded-xl text-xs font-black flex items-center gap-1 shadow-lg cursor-pointer active:scale-98 transition-all">
+            <button className="px-6 py-3.5 bg-[#16130F] hover:bg-[#2A2520] text-[#F2B705] rounded-full text-[14px] font-bold flex items-center gap-1.5 border-2 border-[#16130F] shadow-[3px_3px_0_#F2B705] cursor-pointer transition-colors">
               <span>Download Resources</span>
-              <ArrowRight size={14} />
+              <ArrowRight size={15} />
             </button>
-          </div>
+          </InkCard>
 
         </div>
       </section>
 
       {/* Frequently Asked Questions */}
-      <section className="max-w-[850px] mx-auto px-6 md:px-10">
-        <p className="text-center text-[11px] font-black text-indigo-600 uppercase tracking-widest mb-3">Got Questions?</p>
-        <h2 className="text-center text-2xl md:text-3xl font-black text-slate-900 mb-12">
-          Frequently Asked Questions
-        </h2>
+      <section className="max-w-[850px] mx-auto px-4 md:px-10 mb-16">
+        <SectionHead hi="सवाल-जवाब" kicker="Got Questions?">Frequently Asked Questions</SectionHead>
 
         <div className="space-y-3.5">
           {faqs.map((faq, idx) => {
             const isOpen = openFaqIdx === idx;
             return (
-              <div 
-                key={idx} 
-                className="bg-white border border-slate-100 rounded-2xl shadow-sm overflow-hidden transition-all duration-300"
+              <div
+                key={idx}
+                className={`border-[3px] border-[#16130F] overflow-hidden transition-all duration-300 ${isOpen ? 'bg-[#FFF1B8] shadow-[4px_4px_0_#B8285B]' : 'bg-white shadow-[3px_3px_0_#16130F]'}`}
+                style={{ borderRadius: 12 }}
               >
                 <button
                   onClick={() => setOpenFaqIdx(isOpen ? null : idx)}
-                  className="w-full text-left py-5 px-6 font-bold text-slate-800 flex items-center justify-between text-sm md:text-base cursor-pointer"
+                  className="w-full text-left py-4 sm:py-5 px-5 sm:px-6 font-urbanist font-extrabold text-[#16130F] flex items-center justify-between gap-3 text-[15px] md:text-[16px] cursor-pointer"
                 >
                   <span>{faq.q}</span>
-                  <ChevronDown 
-                    size={18} 
-                    className={`text-slate-400 transition-transform duration-300 ${isOpen ? 'rotate-180 text-indigo-650' : ''}`} 
-                  />
+                  <span className={`w-7 h-7 shrink-0 rounded-full border-2 border-[#16130F] grid place-items-center transition-transform duration-300 ${isOpen ? 'rotate-180 bg-[#B8285B] text-white' : 'bg-[#F2B705]'}`}>
+                    <ChevronDown size={15} />
+                  </span>
                 </button>
-                
+
                 <AnimatePresence initial={false}>
                   {isOpen && (
                     <motion.div
@@ -532,7 +506,7 @@ const IELTSMasterclass = () => {
                       transition={{ duration: 0.25 }}
                       className="overflow-hidden"
                     >
-                      <div className="px-6 pb-5 text-xs md:text-sm text-slate-500 leading-relaxed font-semibold border-t border-slate-50 pt-3">
+                      <div className="px-5 sm:px-6 pb-5 text-[14px] text-[#3D362E] leading-relaxed border-t-2 border-dashed border-[#16130F]/30 pt-3">
                         {faq.a}
                       </div>
                     </motion.div>
@@ -543,6 +517,15 @@ const IELTSMasterclass = () => {
           })}
         </div>
       </section>
+
+      {/* Closing CTA */}
+      <div className="max-w-[1320px] mx-auto px-4 md:px-10">
+        <BookOkCta
+          hi="बुक ओके प्लीज़"
+          text="Band score ka target set karna hai? Ek free call pe plan bana lete hain. 1:1, ek ghante ki baat."
+          cta="Free call book karo"
+        />
+      </div>
 
     </div>
   );

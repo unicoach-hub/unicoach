@@ -1,31 +1,29 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useState, useEffect, useRef } from 'react';
+import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
-  BookOpen,
-  Calendar,
-  DollarSign,
   GraduationCap,
-  HelpCircle,
   Clock,
   MapPin,
-  FileText,
   Compass,
   ArrowRight,
-  TrendingUp,
   Award,
-  ChevronRight,
-  UserCheck,
   AlertTriangle,
-  FileEdit,
-  CheckCircle2,
-  Bookmark,
-  Building,
-  Globe,
-  ExternalLink,
-  Sparkles
+  Sparkles,
+  Lightbulb,
+  ChevronDown
 } from 'lucide-react';
 import { HookBand, BarCompare, Donut } from '../../../components/ui/Infographics';
+import { DesiHero, DesiHeading, InkCard, Sticker } from '../../../components/desi/DesiKit';
+import { DESI_TONES } from '../../../components/desi/desiTokens';
+import { BookOkCta } from '../../../components/desi/BookOkCta';
+
+// Desi Pop building blocks
+const TONES = [DESI_TONES[0], DESI_TONES[1], DESI_TONES[2], DESI_TONES[3]];
+const tableWrap = "overflow-x-auto bg-white border-[3px] border-[#16130F] rounded-[12px] shadow-[4px_4px_0_#16130F] my-3";
+const tableCls = "w-full min-w-[480px] text-left border-collapse text-[13.5px] text-[#3D362E]";
+const theadRow = "bg-[#14837E] text-white border-b-[3px] border-[#16130F]";
+const thCls = "p-3 text-[12px] font-black uppercase tracking-wider whitespace-nowrap";
 
 const UniLogo = ({ logo, name, domain }) => {
   const [error, setError] = useState(false);
@@ -56,7 +54,7 @@ const UniLogo = ({ logo, name, domain }) => {
           loading="lazy"
         />
       ) : (
-        <div className="w-full h-full bg-indigo-600 flex items-center justify-center text-white rounded">
+        <div className="w-full h-full bg-[#14837E] flex items-center justify-center text-white rounded">
           <GraduationCap size={16} />
         </div>
       )}
@@ -65,7 +63,6 @@ const UniLogo = ({ logo, name, domain }) => {
 };
 
 const TOEFLOverview = () => {
-  const navigate = useNavigate();
   const [activeSection, setActiveSection] = useState('section-1');
   const [faqOpen, setFaqOpen] = useState({});
   const [activeCountry, setActiveCountry] = useState('USA');
@@ -161,99 +158,74 @@ const TOEFLOverview = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 pt-28 pb-20 select-none font-sans">
-      <div className="max-w-[1320px] mx-auto px-6 md:px-10">
-        
-        {/* Breadcrumb */}
-        <div className="flex items-center gap-2 text-xs font-bold text-slate-400 uppercase tracking-widest mb-6">
-          <Link to="/" className="hover:text-indigo-650 transition-colors">Home</Link>
-          <ChevronRight size={12} />
-          <span>Exams</span>
-          <ChevronRight size={12} />
-          <span className="text-slate-600 font-bold">TOEFL</span>
-        </div>
-
-        {/* Hero Header Card */}
-        <div className="uc-clean relative rounded-[2.5rem] p-8 md:p-14 overflow-hidden mb-12 shadow-xl border">
-          {/* Backdrop photo for rich aesthetics */}
-          <div className="absolute inset-0 z-0 opacity-15 mix-blend-overlay pointer-events-none">
-            <img 
-              src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=1200&auto=format&fit=crop&q=80" 
-              alt="TOEFL Academic Computer study" 
-              className="w-full h-full object-cover"
-            />
-          </div>
-          <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-indigo-500/10 rounded-full blur-3xl pointer-events-none z-0" />
-          <div className="relative z-10 max-w-3xl">
-            <span className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-indigo-500/20 border border-indigo-500/30 text-indigo-300 text-xs font-extrabold uppercase tracking-widest mb-6">
-              <Compass size={14} />
-              Comprehensive TOEFL Guide
-            </span>
-            <h1 className="text-3xl md:text-5xl font-black leading-tight tracking-tight mb-6">
-              TOEFL Exam 2025: Dates, Fees, Result, Syllabus & Pattern
-            </h1>
-            <p className="text-indigo-200/90 text-sm md:text-base leading-relaxed mb-6 font-medium">
-              Maximize your admissions chances in the US, UK, and Canada. Study complete guidelines on TOEFL registration, short format updates, slot booking, and B-school acceptance.
-            </p>
-            <div className="flex flex-wrap items-center gap-4 text-xs font-semibold text-slate-400">
-              <span className="flex items-center gap-1.5 bg-slate-950/60 px-3 py-1.5 rounded-lg border border-slate-800">
-                <Clock size={13} className="text-indigo-400" />
-                Updated: April 2025
+    <div className="min-h-screen bg-[#FFF6E5] pb-20 select-none font-['Onest',sans-serif] text-[#16130F]">
+      {/* Hero: peach poster band, latest updates pinned on the right */}
+      <DesiHero
+        tone="peach"
+        sign={{ hi: 'टोफ़ल', en: 'TOEFL DESK' }}
+        crumbs={[{ label: 'Home', to: '/' }, { label: 'Exams' }, { label: 'TOEFL' }]}
+        title="TOEFL Exam 2025: Dates, Fees, Result, Syllabus & Pattern"
+        subtitle="Maximize your admissions chances in the US, UK, and Canada. Study complete guidelines on TOEFL registration, short format updates, slot booking, and B-school acceptance."
+        stickers={(
+          <>
+            <Sticker bg="#14837E" fg="#FFFFFF" tilt={-2}><Compass size={14} />Comprehensive TOEFL Guide</Sticker>
+            <Sticker tilt={1.5}><Clock size={14} />Updated: April 2025</Sticker>
+            <Sticker bg="#F2B705" tilt={-1}><Award size={14} />Shortened TOEFL iBT duration active</Sticker>
+          </>
+        )}
+        aside={(
+          <InkCard className="p-5 sm:p-6 text-[#16130F]" shadow="#D0362E" style={{ transform: 'rotate(-0.6deg)' }}>
+            <div className="flex items-center gap-3 mb-3">
+              <span className="w-10 h-10 rounded-full border-2 border-[#16130F] bg-[#D0362E] text-white grid place-items-center shrink-0 shadow-[2px_2px_0_#16130F]">
+                <AlertTriangle className="w-5 h-5" />
               </span>
-              <span className="flex items-center gap-1.5 bg-slate-955/60 px-3 py-1.5 rounded-lg border border-slate-800">
-                <Award size={13} className="text-indigo-400" />
-                Shortened TOEFL iBT duration active
-              </span>
+              <div>
+                <p className="font-['Rozha_One',serif] text-[15px] text-[#D0362E] leading-none">ताज़ा ख़बर</p>
+                <h4 className="mt-1 font-urbanist font-black text-[18px]">Latest TOEFL Updates</h4>
+              </div>
             </div>
-          </div>
-        </div>
-
-        {/* Alert updates banner */}
-        <div className="flex items-center gap-4 bg-orange-50 border border-orange-200/80 p-5 rounded-3xl mb-12">
-          <div className="w-10 h-10 rounded-2xl bg-orange-100 flex items-center justify-center text-[#DE5C2B] flex-shrink-0">
-            <AlertTriangle className="w-5 h-5 animate-bounce" />
-          </div>
-          <div>
-            <h4 className="font-extrabold text-slate-850 text-sm">Latest TOEFL Updates</h4>
-            <div className="text-xs text-slate-655 font-semibold mt-0.5 space-y-1">
+            <div className="text-[14px] text-[#3D362E] font-medium leading-relaxed space-y-2">
               <p>• Since 21 January 2026 the TOEFL iBT has a new format: new task types, adaptive Reading and Listening, about 90 minutes of test time, and a 1–6 score scale (the old 0–120 score is shown alongside until 2028).</p>
               <p>• ETS India lists the TOEFL iBT fee as ₹15,729 (checked October 2026).</p>
             </div>
-          </div>
-        </div>
+          </InkCard>
+        )}
+      />
+
+      <div className="max-w-[1320px] mx-auto px-4 sm:px-6 md:px-10 pt-12">
 
         {/* Layout Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-[210px_minmax(0,1fr)_230px] xl:grid-cols-[280px_minmax(0,1fr)_300px] gap-8 items-start">
-          
+        <div className="grid grid-cols-1 lg:grid-cols-[210px_minmax(0,1fr)_230px] xl:grid-cols-[260px_minmax(0,1fr)_280px] gap-8 items-start">
+
           {/* Left Sticky Sidebar Index */}
-          <aside className="hidden lg:block sticky top-28 bg-white border border-slate-100 p-6 rounded-2xl shadow-sm max-h-[calc(100vh-140px)] overflow-y-auto">
-            <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-4">On This Page</p>
-            <nav className="space-y-1">
-              {menuItems.map((item) => (
-                <button
-                  key={item.id}
-                  onClick={() => scrollToSection(item.id)}
-                  className={`w-full text-left py-2 px-3 rounded-xl text-xs font-bold transition-all leading-normal cursor-pointer
-                    ${activeSection === item.id
-                      ? 'bg-indigo-50 text-indigo-600 shadow-sm'
-                      : 'text-slate-500 hover:bg-slate-50 hover:text-slate-800'}`}
-                >
-                  {item.label}
-                </button>
-              ))}
-            </nav>
+          <aside className="hidden lg:block sticky top-28 max-h-[calc(100vh-140px)] overflow-y-auto">
+            <InkCard className="p-4">
+              <p className="font-['Rozha_One',serif] text-[15px] text-[#D0362E] leading-none">इस पेज पर</p>
+              <h3 className="mt-1 mb-3 font-urbanist font-black text-[17px]">On This Page</h3>
+              <nav className="flex flex-col gap-1.5">
+                {menuItems.map((item) => (
+                  <button
+                    key={item.id}
+                    onClick={() => scrollToSection(item.id)}
+                    className={`no-shine w-full text-left py-2 px-3 rounded-lg border-2 text-[13px] font-bold transition-colors leading-snug cursor-pointer
+                      ${activeSection === item.id
+                        ? 'bg-[#F2B705] text-[#16130F] border-[#16130F] shadow-[2px_2px_0_#16130F]'
+                        : 'border-transparent text-[#5B544A] hover:border-[#16130F] hover:bg-[#FFF6E5] hover:text-[#16130F]'}`}
+                  >
+                    {item.label}
+                  </button>
+                ))}
+              </nav>
+            </InkCard>
           </aside>
 
           {/* Center Main Guide Column */}
-          <main className="space-y-14 bg-white border border-slate-100 p-8 md:p-10 rounded-2xl shadow-sm">
+          <main className="min-w-0 space-y-14 bg-white border-[3px] border-[#16130F] p-5 sm:p-8 md:p-10 rounded-[14px] shadow-[5px_5px_0_#FFD9C2,8px_8px_0_#16130F]">
             
             {/* Section 1 */}
             <section id="section-1" ref={sectionRefs['section-1']} className="scroll-mt-28">
-              <h2 className="text-2xl font-black text-slate-900 flex items-center gap-2 mb-4">
-                <span className="w-1.5 h-6 bg-indigo-500 rounded-full" />
-                1. What is the TOEFL Exam?
-              </h2>
-              <div className="text-slate-655 text-sm leading-relaxed space-y-4 font-semibold">
+              <DesiHeading hi="टोफ़ल क्या है" className="mb-4">1. What is the TOEFL Exam?</DesiHeading>
+              <div className="text-[#3D362E] text-[15px] leading-relaxed space-y-4">
                 <p>
                   The TOEFL, or <strong>Test of English as a Foreign Language</strong>, is a widely recognized English proficiency test for non-native English speakers. It evaluates English proficiency in four key areas: <strong>Reading, Listening, Speaking, and Writing</strong>.
                 </p>
@@ -261,7 +233,7 @@ const TOEFLOverview = () => {
                   There are two main types of TOEFL exams: <strong>TOEFL iBT</strong> (internet-based) and <strong>TOEFL Essentials</strong>. TOEFL is accepted by over 12,500 institutions across the world, including the USA, UK, and Canada.
                 </p>
                 <HookBand value="12,500+" label="institutions worldwide accept TOEFL, including the USA, UK and Canada" hi="दुनिया भर" />
-                <div className="bg-indigo-50/10 border border-slate-100 p-4.5 rounded-2xl text-xs text-slate-500 space-y-2 mt-4">
+                <div className="bg-[#FFF0E6] border-2 border-[#16130F] p-4 rounded-xl shadow-[3px_3px_0_#16130F] text-[14px] text-[#3D362E] space-y-2 mt-4">
                   <p>• <strong>Academic focus:</strong> TOEFL iBT tests your English in an academic setting.</p>
                   <p>• <strong>General usage:</strong> TOEFL Essentials tests your everyday English.</p>
                   <p>• <strong>Wide acceptance:</strong> TOEFL iBT is accepted by over 200 countries for undergraduate and postgraduate admissions.</p>
@@ -271,11 +243,8 @@ const TOEFLOverview = () => {
 
             {/* Section 2 */}
             <section id="section-2" ref={sectionRefs['section-2']} className="scroll-mt-28">
-              <h2 className="text-2xl font-black text-slate-900 flex items-center gap-2 mb-4">
-                <span className="w-1.5 h-6 bg-indigo-500 rounded-full" />
-                2. TOEFL Dates: When is the TOEFL Exam Conducted?
-              </h2>
-              <div className="text-slate-655 text-sm leading-relaxed space-y-4 font-semibold">
+              <DesiHeading hi="तारीखें" className="mb-4">2. TOEFL Dates: When is the TOEFL Exam Conducted?</DesiHeading>
+              <div className="text-[#3D362E] text-[15px] leading-relaxed space-y-4">
                 <p>
                   ETS conducts TOEFL throughout the year. You must register at least 4 months early to get your desired date and slot. The last date to register online is 7 days before the exam date.
                 </p>
@@ -287,32 +256,29 @@ const TOEFLOverview = () => {
 
             {/* Section 3 */}
             <section id="section-3" ref={sectionRefs['section-3']} className="scroll-mt-28">
-              <h2 className="text-2xl font-black text-slate-900 flex items-center gap-2 mb-4">
-                <span className="w-1.5 h-6 bg-indigo-500 rounded-full" />
-                3. TOEFL Exam Fees: How much does the TOEFL Cost?
-              </h2>
-              <div className="text-slate-655 text-sm leading-relaxed space-y-4 font-semibold">
+              <DesiHeading hi="फ़ीस" className="mb-4">3. TOEFL Exam Fees: How much does the TOEFL Cost?</DesiHeading>
+              <div className="text-[#3D362E] text-[15px] leading-relaxed space-y-4">
                 <p>
                   ETS India lists the TOEFL iBT fee as <strong>₹15,729</strong>. Late registration (within 7 to 4 days of the test date) costs about ₹3,305 extra. Check the ETS India site when you book, as fees can change.
                 </p>
-                <div className="overflow-x-auto border border-slate-200/60 rounded-2xl my-3">
-                  <table className="w-full text-left border-collapse text-xs">
+                <div className={tableWrap}>
+                  <table className={tableCls}>
                     <thead>
-                      <tr className="bg-slate-50 text-slate-400 font-bold uppercase border-b border-slate-150">
-                        <th className="p-3">TOEFL Service Request</th>
-                        <th className="p-3">Fees in India (INR)</th>
+                      <tr className={theadRow}>
+                        <th className={thCls}>TOEFL Service Request</th>
+                        <th className={thCls}>Fees in India (INR)</th>
                       </tr>
                     </thead>
                     <tbody>
-                      <tr className="border-b border-slate-100">
-                        <td className="p-3 font-bold text-slate-805">TOEFL iBT Registration Fee</td>
+                      <tr className="border-b-2 border-[#EFE4CF]">
+                        <td className="p-3 font-bold text-[#16130F]">TOEFL iBT Registration Fee</td>
                         <td className="p-3">₹15,729</td>
                       </tr>
-                      <tr className="border-b border-slate-100">
+                      <tr className="border-b-2 border-[#EFE4CF]">
                         <td className="p-3">Late Registration Fee</td>
                         <td className="p-3">₹3,305</td>
                       </tr>
-                      <tr className="border-b border-slate-100">
+                      <tr className="border-b-2 border-[#EFE4CF]">
                         <td className="p-3">Rescheduling Fees</td>
                         <td className="p-3">₹5,000</td>
                       </tr>
@@ -341,15 +307,12 @@ const TOEFLOverview = () => {
 
             {/* Section 4 */}
             <section id="section-4" ref={sectionRefs['section-4']} className="scroll-mt-28">
-              <h2 className="text-2xl font-black text-slate-900 flex items-center gap-2 mb-4">
-                <span className="w-1.5 h-6 bg-indigo-500 rounded-full" />
-                4. TOEFL Results: How Do You Check Your TOEFL Results?
-              </h2>
-              <div className="text-slate-655 text-sm leading-relaxed space-y-4 font-semibold">
+              <DesiHeading hi="रिज़ल्ट" className="mb-4">4. TOEFL Results: How Do You Check Your TOEFL Results?</DesiHeading>
+              <div className="text-[#3D362E] text-[15px] leading-relaxed space-y-4">
                 <p>
                   TOEFL iBT results are released online within <strong>4-8 days</strong> of the exam. You can view them by logging into your ETS account.
                 </p>
-                <div className="p-4 bg-slate-50 border border-slate-100 rounded-2xl text-xs text-slate-500 space-y-2">
+                <div className="p-4 bg-[#FFF1B8] border-2 border-[#16130F] rounded-xl shadow-[3px_3px_0_#16130F] text-[14px] text-[#3D362E] space-y-2">
                   <p>• <strong>Ranges:</strong> A good score falls within the range of 80 to 100.</p>
                   <p>• <strong>Top Rank:</strong> Top-ranking universities require scores between 100 and 115.</p>
                 </div>
@@ -358,30 +321,25 @@ const TOEFLOverview = () => {
 
             {/* Section 5 */}
             <section id="section-5" ref={sectionRefs['section-5']} className="scroll-mt-28">
-              <h2 className="text-2xl font-black text-slate-900 flex items-center gap-2 mb-4">
-                <span className="w-1.5 h-6 bg-indigo-500 rounded-full" />
-                5. What are TOEFL Scores?
-              </h2>
-              <div className="text-slate-655 text-sm leading-relaxed space-y-4 font-semibold">
+              <DesiHeading hi="स्कोर" className="mb-4">5. What are TOEFL Scores?</DesiHeading>
+              <div className="text-[#3D362E] text-[15px] leading-relaxed space-y-4">
                 <p>
                   Since 21 January 2026, each of the four sections (Reading, Listening, Writing, Speaking) is scored from <strong>1 to 6</strong> in half bands.
                 </p>
                 <p>
                   Your overall score is the average of the four, rounded to the nearest half band, and lines up with a CEFR level (5 = C1, 4 = B2). Until 2028 your report also shows the old <strong>0–120</strong> score. There is no negative marking, and scores are valid for <strong>2 years</strong>.
                 </p>
-                <div className="bg-indigo-50/50 p-4 border border-indigo-150 rounded-2xl text-xs text-indigo-950 font-bold">
-                  💡 <strong>TOEFL MyBest™ scores:</strong> If attempted multiple times, you can combine your highest section scores from all tests taken to show your best overall performance (super scores).
+                <div className="flex items-start gap-3 bg-[#DDF3EF] p-4 border-2 border-[#16130F] rounded-xl shadow-[3px_3px_0_#16130F] text-[14px] text-[#16130F] font-medium">
+                  <span className="w-8 h-8 rounded-full border-2 border-[#16130F] bg-[#14837E] text-white grid place-items-center shrink-0"><Lightbulb size={15} /></span>
+                  <p className="min-w-0"><strong>TOEFL MyBest™ scores:</strong> If attempted multiple times, you can combine your highest section scores from all tests taken to show your best overall performance (super scores).</p>
                 </div>
               </div>
             </section>
 
             {/* Section 6 */}
             <section id="section-6" ref={sectionRefs['section-6']} className="scroll-mt-28">
-              <h2 className="text-2xl font-black text-slate-900 flex items-center gap-2 mb-4">
-                <span className="w-1.5 h-6 bg-indigo-500 rounded-full" />
-                6. TOEFL Test Centre: Where Can You Take the TOEFL?
-              </h2>
-              <div className="text-slate-655 text-sm leading-relaxed space-y-4 font-semibold">
+              <DesiHeading hi="टेस्ट सेंटर" className="mb-4">6. TOEFL Test Centre: Where Can You Take the TOEFL?</DesiHeading>
+              <div className="text-[#3D362E] text-[15px] leading-relaxed space-y-4">
                 <p>
                   TOEFL iBT can be taken at physical centers across 39 cities in India, including Bangalore, Delhi, Chennai, and Ahmedabad. TOEFL Essentials can be attempted at home.
                 </p>
@@ -390,30 +348,28 @@ const TOEFLOverview = () => {
 
             {/* Section 7 */}
             <section id="section-7" ref={sectionRefs['section-7']} className="scroll-mt-28">
-              <h2 className="text-2xl font-black text-slate-900 flex items-center gap-2 mb-4">
-                <span className="w-1.5 h-6 bg-indigo-500 rounded-full" />
-                7. TOEFL Registration: How do I register for the TOEFL?
-              </h2>
-              <div className="text-slate-655 text-sm leading-relaxed space-y-4 font-semibold">
+              <DesiHeading hi="रजिस्ट्रेशन" className="mb-4">7. TOEFL Registration: How do I register for the TOEFL?</DesiHeading>
+              <div className="text-[#3D362E] text-[15px] leading-relaxed space-y-4">
                 <p>
                   Registrations are online on the official ETS TOEFL website:
                 </p>
-                <div className="space-y-3.5 text-xs text-slate-500 my-4">
-                  <p>1. Create an ETS account online.</p>
-                  <p>2. Select your preferred test date and center location.</p>
-                  <p>3. Fill in the profile details matching your physical passport.</p>
-                  <p>4. Complete the payment of ₹15,729.</p>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-[14px] text-[#3D362E] my-4">
+                  {[
+                    '1. Create an ETS account online.',
+                    '2. Select your preferred test date and center location.',
+                    '3. Fill in the profile details matching your physical passport.',
+                    '4. Complete the payment of ₹15,729.'
+                  ].map((step, idx) => (
+                    <p key={step} className="bg-white border-2 border-[#16130F] rounded-xl p-3 font-semibold shadow-[3px_3px_0_#16130F]" style={{ borderLeft: `8px solid ${TONES[idx % TONES.length].c}` }}>{step}</p>
+                  ))}
                 </div>
               </div>
             </section>
 
             {/* Section 8 */}
             <section id="section-8" ref={sectionRefs['section-8']} className="scroll-mt-28">
-              <h2 className="text-2xl font-black text-slate-900 flex items-center gap-2 mb-4">
-                <span className="w-1.5 h-6 bg-indigo-500 rounded-full" />
-                8. TOEFL Eligibility: Documents Required for TOEFL
-              </h2>
-              <div className="text-slate-655 text-sm leading-relaxed space-y-4 font-semibold">
+              <DesiHeading hi="योग्यता" className="mb-4">8. TOEFL Eligibility: Documents Required for TOEFL</DesiHeading>
+              <div className="text-[#3D362E] text-[15px] leading-relaxed space-y-4">
                 <p>
                   ETS has set no specific eligibility restrictions. Anyone is welcome to write the test. Typically, test takers are over 16 years of age and possess a valid physical passport.
                 </p>
@@ -422,11 +378,8 @@ const TOEFLOverview = () => {
 
             {/* Section 9 */}
             <section id="section-9" ref={sectionRefs['section-9']} className="scroll-mt-28">
-              <h2 className="text-2xl font-black text-slate-900 flex items-center gap-2 mb-4">
-                <span className="w-1.5 h-6 bg-indigo-500 rounded-full" />
-                9. TOEFL Syllabus: What Does the Test Contain?
-              </h2>
-              <div className="text-slate-655 text-sm leading-relaxed space-y-4 font-semibold">
+              <DesiHeading hi="सिलेबस" className="mb-4">9. TOEFL Syllabus: What Does the Test Contain?</DesiHeading>
+              <div className="text-[#3D362E] text-[15px] leading-relaxed space-y-4">
                 <p>
                   TOEFL covers Reading, Listening, Writing and Speaking, in that order. Test time is about 90 minutes; ETS asks you to allow about two hours in total.
                 </p>
@@ -444,33 +397,33 @@ const TOEFLOverview = () => {
                     ]}
                   />
                 </div>
-                <div className="overflow-x-auto border border-slate-200/60 rounded-2xl my-3">
-                  <table className="w-full text-left border-collapse text-xs">
+                <div className={tableWrap}>
+                  <table className={tableCls}>
                     <thead>
-                      <tr className="bg-slate-50 text-slate-400 font-bold uppercase border-b border-slate-150">
-                        <th className="p-3">TOEFL Section</th>
-                        <th className="p-3">Format Breakdown</th>
-                        <th className="p-3">Duration</th>
+                      <tr className={theadRow}>
+                        <th className={thCls}>TOEFL Section</th>
+                        <th className={thCls}>Format Breakdown</th>
+                        <th className={thCls}>Duration</th>
                       </tr>
                     </thead>
                     <tbody>
-                      <tr className="border-b border-slate-100">
-                        <td className="p-3 font-bold text-slate-805">Reading</td>
+                      <tr className="border-b-2 border-[#EFE4CF]">
+                        <td className="p-3 font-bold text-[#16130F]">Reading</td>
                         <td className="p-3">Complete the Words, Read in Daily Life, Read an Academic Passage (adaptive)</td>
                         <td className="p-3">~30 minutes</td>
                       </tr>
-                      <tr className="border-b border-slate-100">
-                        <td className="p-3 font-bold text-slate-805">Listening</td>
+                      <tr className="border-b-2 border-[#EFE4CF]">
+                        <td className="p-3 font-bold text-[#16130F]">Listening</td>
                         <td className="p-3">Short responses, conversations, announcements, academic talks (adaptive)</td>
                         <td className="p-3">~29 minutes</td>
                       </tr>
-                      <tr className="border-b border-slate-100">
-                        <td className="p-3 font-bold text-slate-805">Speaking</td>
+                      <tr className="border-b-2 border-[#EFE4CF]">
+                        <td className="p-3 font-bold text-[#16130F]">Speaking</td>
                         <td className="p-3">Listen and Repeat, Take an Interview</td>
                         <td className="p-3">~8 minutes</td>
                       </tr>
                       <tr>
-                        <td className="p-3 font-bold text-slate-805">Writing</td>
+                        <td className="p-3 font-bold text-[#16130F]">Writing</td>
                         <td className="p-3">Build a Sentence, Write an Email, Write for an Academic Discussion</td>
                         <td className="p-3">~23 minutes</td>
                       </tr>
@@ -482,11 +435,8 @@ const TOEFLOverview = () => {
 
             {/* Section 10 */}
             <section id="section-10" ref={sectionRefs['section-10']} className="scroll-mt-28">
-              <h2 className="text-2xl font-black text-slate-900 flex items-center gap-2 mb-4">
-                <span className="w-1.5 h-6 bg-indigo-500 rounded-full" />
-                10. TOEFL Books: What are the Best Resources for the TOEFL?
-              </h2>
-              <div className="text-slate-655 text-sm leading-relaxed space-y-4 font-semibold">
+              <DesiHeading hi="किताबें" className="mb-4">10. TOEFL Books: What are the Best Resources for the TOEFL?</DesiHeading>
+              <div className="text-[#3D362E] text-[15px] leading-relaxed space-y-4">
                 <p>
                   Top reference manuals recommended for self-study and practice:
                 </p>
@@ -496,13 +446,13 @@ const TOEFLOverview = () => {
                     { num: "2", name: "The TOEFL iBT Test Prep Planner", desc: "Structured timeline tracker matching vocabulary and skills goals." },
                     { num: "3", name: "Official TOEFL iBT Tests, Volumes 1 & 2", desc: "Set of past real exam papers for mock simulations." }
                   ].map((book) => (
-                    <div key={book.num} className="flex gap-4 p-4 border border-slate-100 rounded-2xl bg-slate-50/50">
-                      <div className="w-8 h-8 rounded-full bg-slate-900 text-white flex items-center justify-center text-xs font-black flex-shrink-0">
+                    <div key={book.num} className="flex gap-4 p-4 border-2 border-[#16130F] rounded-xl bg-white shadow-[3px_3px_0_#16130F]">
+                      <div className="w-9 h-9 rounded-full border-2 border-[#16130F] bg-[#F2B705] text-[#16130F] flex items-center justify-center font-urbanist text-[15px] font-black flex-shrink-0">
                         {book.num}
                       </div>
                       <div>
-                        <h4 className="text-xs font-bold text-slate-805 uppercase">{book.name}</h4>
-                        <p className="text-slate-500 text-[11px] mt-1 font-semibold leading-relaxed">{book.desc}</p>
+                        <h4 className="font-urbanist text-[15px] font-black text-[#16130F]">{book.name}</h4>
+                        <p className="text-[#5B544A] text-[13.5px] mt-1 leading-relaxed">{book.desc}</p>
                       </div>
                     </div>
                   ))}
@@ -512,11 +462,8 @@ const TOEFLOverview = () => {
 
             {/* Section 11 */}
             <section id="section-11" ref={sectionRefs['section-11']} className="scroll-mt-28">
-              <h2 className="text-2xl font-black text-slate-900 flex items-center gap-2 mb-4">
-                <span className="w-1.5 h-6 bg-indigo-500 rounded-full" />
-                11. TOEFL Practice Tests: Boost your Preparation!
-              </h2>
-              <div className="text-slate-655 text-sm leading-relaxed space-y-4 font-semibold">
+              <DesiHeading hi="प्रैक्टिस" className="mb-4">11. TOEFL Practice Tests: Boost your Preparation!</DesiHeading>
+              <div className="text-[#3D362E] text-[15px] leading-relaxed space-y-4">
                 <p>
                   Regular mock tests are critical to get used to the shortened 2-hour format, manage sections timing, and isolate weaknesses.
                 </p>
@@ -525,26 +472,23 @@ const TOEFLOverview = () => {
 
             {/* Section 12 */}
             <section id="section-12" ref={sectionRefs['section-12']} className="scroll-mt-28">
-              <h2 className="text-2xl font-black text-slate-900 flex items-center gap-2 mb-4">
-                <span className="w-1.5 h-6 bg-indigo-500 rounded-full" />
-                12. Top Global Universities Accepting TOEFL
-              </h2>
-              <div className="text-slate-655 text-sm leading-relaxed space-y-4 font-semibold mb-6">
+              <DesiHeading hi="यूनिवर्सिटी" className="mb-4">12. Top Global Universities Accepting TOEFL</DesiHeading>
+              <div className="text-[#3D362E] text-[15px] leading-relaxed space-y-4 mb-6">
                 <p>
                   Check B-school program score requirements in major study destinations.
                 </p>
               </div>
 
               {/* Country Tabs */}
-              <div className="flex flex-wrap gap-2 border-b border-slate-200 pb-3 mb-6">
+              <div className="flex flex-wrap gap-2 mb-6">
                 {countries.map((country) => (
                   <button
                     key={country}
                     onClick={() => setActiveCountry(country)}
-                    className={`px-5 py-2 rounded-xl text-xs font-black transition-all cursor-pointer
+                    className={`no-shine px-4 py-2 rounded-full border-2 border-[#16130F] text-[13px] font-black transition-all cursor-pointer
                       ${activeCountry === country
-                        ? 'bg-slate-900 text-white shadow-md'
-                        : 'text-slate-500 hover:bg-slate-150'}`}
+                        ? 'bg-[#D0362E] text-white shadow-[3px_3px_0_#16130F] -translate-y-0.5'
+                        : 'bg-white text-[#16130F] hover:bg-[#FFF1B8]'}`}
                   >
                     {country}
                   </button>
@@ -561,21 +505,20 @@ const TOEFLOverview = () => {
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: -15 }}
                       transition={{ duration: 0.25 }}
-                      className="bg-white border border-slate-200/80 rounded-2xl overflow-hidden shadow-sm flex flex-col justify-between group hover:shadow-md transition-shadow"
+                      className="bg-white border-[3px] border-[#16130F] rounded-[14px] overflow-hidden shadow-[5px_5px_0_#16130F] flex flex-col justify-between group"
                     >
                       {/* Image header */}
-                      <div className="h-32 w-full relative overflow-hidden bg-slate-100">
+                      <div className="h-32 w-full relative overflow-hidden bg-[#FFD9C2] border-b-[3px] border-[#16130F]">
                         <img 
                           src={uni.image} 
                           alt={uni.name} 
-                          className="w-full h-full object-cover brightness-[0.8] group-hover:scale-103 transition-transform duration-500" 
+                          className="w-full h-full object-cover group-hover:scale-103 transition-transform duration-500" 
                           onError={(e) => {
                             e.target.onerror = null;
                             e.target.src = '/assets/usa/harvard/banner.jpg';
                           }}
                         />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
-                        <span className="absolute top-3 right-3 px-2.5 py-0.5 bg-white/20 backdrop-blur-md border border-white/30 text-white font-extrabold text-[10px] rounded-full uppercase tracking-wider">
+                        <span className="absolute top-3 right-3 px-2.5 py-1 bg-[#F2B705] border-2 border-[#16130F] shadow-[2px_2px_0_#16130F] text-[#16130F] font-black text-[11px] rounded-md uppercase tracking-wider -rotate-2">
                           {uni.rank}
                         </span>
                       </div>
@@ -584,43 +527,43 @@ const TOEFLOverview = () => {
                       <div className="p-5 flex-1 flex flex-col justify-between">
                         <div>
                           <div className="flex items-center gap-3 mb-3">
-                            <div className="w-10 h-10 rounded-xl bg-white border border-slate-200/80 flex items-center justify-center p-1 overflow-hidden shadow-xs flex-shrink-0">
+                            <div className="w-11 h-11 rounded-xl bg-white border-2 border-[#16130F] flex items-center justify-center p-1 overflow-hidden flex-shrink-0">
                               <UniLogo logo={uni.logo} name={uni.name} domain={uni.domain} />
                             </div>
-                            <div>
-                              <h4 className="font-bold text-slate-900 text-sm leading-tight group-hover:text-indigo-600 transition-colors">
+                            <div className="min-w-0">
+                              <h4 className="font-urbanist font-black text-[#16130F] text-[16px] leading-tight">
                                 {uni.name}
                               </h4>
-                              <p className="text-[10px] text-slate-400 font-semibold flex items-center gap-1 mt-0.5">
+                              <p className="text-[12px] text-[#5B544A] font-semibold flex items-center gap-1 mt-0.5">
                                 <MapPin size={10} />
                                 {uni.location}
                               </p>
                             </div>
                           </div>
 
-                          <div className="bg-slate-50/70 p-2.5 rounded-xl border border-slate-100 grid grid-cols-2 gap-2 text-center text-xs mt-4">
+                          <div className="bg-[#FFF6E5] p-2.5 rounded-xl border-2 border-[#16130F] grid grid-cols-2 gap-2 text-center text-[13px] mt-4">
                             <div>
-                              <span className="text-[9px] text-slate-400 font-bold block uppercase tracking-wider">Est. Tuition</span>
-                              <span className="font-bold text-indigo-700 block mt-0.5">{uni.tuition}</span>
+                              <span className="text-[10px] text-[#5B544A] font-extrabold block uppercase tracking-wider">Est. Tuition</span>
+                              <span className="font-black text-[#B8285B] block mt-0.5">{uni.tuition}</span>
                             </div>
                             <div>
-                              <span className="text-[9px] text-slate-400 font-bold block uppercase tracking-wider">Standard Exam</span>
-                              <span className="font-bold text-slate-700 block mt-0.5">TOEFL Required</span>
+                              <span className="text-[10px] text-[#5B544A] font-extrabold block uppercase tracking-wider">Standard Exam</span>
+                              <span className="font-black text-[#16130F] block mt-0.5">TOEFL Required</span>
                             </div>
                           </div>
                         </div>
 
                         {/* Action buttons */}
-                        <div className="flex gap-2 mt-5 border-t border-slate-100 pt-4">
+                        <div className="flex gap-2 mt-5 border-t-2 border-dashed border-[#16130F33] pt-4">
                           <Link
                             to={uni.path}
-                            className="flex-1 py-2 text-center border border-slate-200 hover:bg-slate-50 text-slate-700 font-bold text-xs rounded-xl transition-colors"
+                            className="flex-1 py-2.5 text-center border-2 border-[#16130F] bg-white hover:bg-[#FFF1B8] text-[#16130F] font-bold text-[13px] rounded-full transition-colors"
                           >
                             Know More
                           </Link>
                           <Link
                             to={`/contact?university=${encodeURIComponent(uni.name)}`}
-                            className="flex-1 py-2 text-center bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs rounded-xl transition-all shadow-sm"
+                            className="flex-1 py-2.5 text-center border-2 border-[#16130F] bg-[#D0362E] hover:bg-[#B52A23] text-white font-bold text-[13px] rounded-full transition-colors shadow-[2px_2px_0_#16130F]"
                           >
                             Check Eligibility
                           </Link>
@@ -635,20 +578,21 @@ const TOEFLOverview = () => {
           </main>
 
           {/* Right Sidebar Widgets */}
-          <aside className="sticky top-28 space-y-6">
-            
+          <aside className="lg:sticky lg:top-28 space-y-6">
+
             {/* Widget: Live workshops */}
-            <div className="uc-clean p-6 rounded-2xl shadow-md border relative overflow-hidden">
-              <span className="text-[9px] font-bold text-orange-200 uppercase tracking-widest block mb-2">Live Workshops</span>
-              <h3 className="text-lg font-bold leading-snug mb-2">
+            <div className="bg-[#14837E] text-white p-6 rounded-[14px] border-[3px] border-[#16130F] shadow-[5px_5px_0_#16130F]">
+              <span className="font-['Rozha_One',serif] text-[15px] text-[#F2B705] leading-none block">लाइव वर्कशॉप</span>
+              <span className="text-[11px] font-extrabold text-white/80 uppercase tracking-widest block mt-1.5 mb-2">Live Workshops</span>
+              <h3 className="font-urbanist text-[20px] font-black leading-snug mb-2">
                 Study Abroad Events & Fairs
               </h3>
-              <p className="text-xs text-blue-100/85 leading-relaxed mb-5 font-normal">
+              <p className="text-[14px] text-white/90 leading-relaxed mb-5">
                 Join live webinars with global university delegates, admissions officers, and certified trainers.
               </p>
               <Link
                 to="/events"
-                className="w-full text-center py-3 bg-white text-[#111111] rounded-xl text-xs font-bold hover:bg-orange-50 transition-all flex items-center justify-center gap-1.5 shadow-sm block cursor-pointer"
+                className="w-full text-center py-3 bg-[#F2B705] text-[#16130F] border-2 border-[#16130F] rounded-full text-[13px] font-black shadow-[3px_3px_0_#16130F] hover:-translate-y-0.5 transition-transform flex items-center justify-center gap-1.5 cursor-pointer"
               >
                 <span>Explore Live Events</span>
                 <ArrowRight size={14} />
@@ -656,34 +600,30 @@ const TOEFLOverview = () => {
             </div>
 
             {/* Widget: AI University Matcher */}
-            <div className="bg-white border border-slate-100 p-6 rounded-2xl shadow-sm text-center">
-              <div className="w-12 h-12 rounded-full bg-orange-50 text-indigo-600 flex items-center justify-center mx-auto mb-4">
+            <InkCard className="p-6 text-center" shadow="#B8285B">
+              <div className="w-12 h-12 rounded-full border-2 border-[#16130F] bg-[#FBD9E6] text-[#B8285B] flex items-center justify-center mx-auto mb-4 shadow-[2px_2px_0_#16130F]">
                 <Sparkles size={20} />
               </div>
-              <h4 className="font-bold text-slate-900 text-sm mb-2">AI University Matcher</h4>
-              <p className="text-xs text-slate-500 leading-relaxed mb-5 font-normal">
+              <h4 className="font-urbanist font-black text-[#16130F] text-[17px] mb-2">AI University Matcher</h4>
+              <p className="text-[14px] text-[#5B544A] leading-relaxed mb-5">
                 Match your target TOEFL score with top global universities and admission cutoffs.
               </p>
               <Link
                 to="/ai-tools"
-                className="w-full text-center py-3 border border-slate-200 text-slate-700 hover:text-indigo-600 rounded-xl text-xs font-bold hover:bg-slate-50 hover:border-slate-300 transition-all block cursor-pointer"
+                className="w-full text-center py-3 border-2 border-[#16130F] bg-white text-[#16130F] rounded-full text-[13px] font-black hover:bg-[#FFF1B8] transition-colors block cursor-pointer"
               >
                 Try AI Shortlister
               </Link>
-            </div>
+            </InkCard>
 
           </aside>
-
 
         </div>
 
         {/* FAQs Accordion */}
-        <div className="mt-16 bg-white border border-slate-100 rounded-3xl p-8 shadow-sm max-w-4xl mx-auto">
-          <h3 className="text-xl font-black text-slate-900 mb-6 flex items-center gap-2">
-            <HelpCircle className="text-indigo-600" size={22} />
-            Frequently Asked Questions (FAQs)
-          </h3>
-          <div className="space-y-4">
+        <section className="mt-16 max-w-4xl mx-auto">
+          <DesiHeading hi="अक्सर पूछे सवाल" className="mb-6">Frequently Asked Questions (FAQs)</DesiHeading>
+          <div className="space-y-3">
             {[
               { q: "What is the TOEFL score range, and how is it calculated?", a: "Since January 2026 each section is scored 1–6 in half bands, and the overall score is their average. The old 0–120 score is shown alongside until 2028." },
               { q: "Can I take the TOEFL exam multiple times?", a: "Yes, you can take the TOEFL as many times as you like. You can take it once in any 3-day period." },
@@ -694,16 +634,16 @@ const TOEFLOverview = () => {
             ].map((faq, idx) => {
               const isOpen = !!faqOpen[idx];
               return (
-                <div key={idx} className="border border-slate-100 rounded-2xl overflow-hidden bg-slate-50/50">
+                <div key={idx} className="bg-white border-[3px] border-[#16130F] overflow-hidden" style={{ borderRadius: 12, boxShadow: isOpen ? '4px 4px 0 #D0362E' : '4px 4px 0 #16130F' }}>
                   <button
                     onClick={() => toggleFaq(idx)}
-                    className="w-full flex items-center justify-between p-5 text-left font-bold text-slate-750 hover:text-indigo-600 transition-colors"
+                    aria-expanded={isOpen}
+                    className="no-shine w-full flex items-center justify-between gap-3 p-4 text-left font-bold text-[14.5px] text-[#16130F] cursor-pointer"
                   >
                     <span>{faq.q}</span>
-                    <ChevronRight 
-                      size={15} 
-                      className={`text-slate-400 transition-transform duration-250 ${isOpen ? 'rotate-90 text-indigo-500' : ''}`} 
-                    />
+                    <span className={`w-7 h-7 rounded-full border-2 border-[#16130F] grid place-items-center shrink-0 transition-transform ${isOpen ? 'rotate-180 bg-[#F2B705]' : 'bg-white'}`}>
+                      <ChevronDown size={15} />
+                    </span>
                   </button>
                   <AnimatePresence initial={false}>
                     {isOpen && (
@@ -713,7 +653,7 @@ const TOEFLOverview = () => {
                         exit={{ height: 0, opacity: 0 }}
                         transition={{ duration: 0.2 }}
                       >
-                        <div className="px-5 pb-5 pt-1 text-slate-500 text-xs md:text-sm border-t border-slate-100 leading-relaxed font-semibold">
+                        <div className="px-4 pb-4 pt-3 text-[#5B544A] text-[14px] border-t-2 border-dashed border-[#16130F33] leading-relaxed">
                           {faq.a}
                         </div>
                       </motion.div>
@@ -723,6 +663,13 @@ const TOEFLOverview = () => {
               );
             })}
           </div>
+        </section>
+
+        <div className="mt-14">
+          <BookOkCta
+            hi="टोफ़ल प्लान बनाओ"
+            text="TOEFL ka target score aur university list confuse kar rahi hai? Free 1:1 call mein mentor se plan banwao."
+          />
         </div>
 
       </div>
