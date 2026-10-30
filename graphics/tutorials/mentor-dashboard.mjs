@@ -9,6 +9,10 @@ await record({
   name: 'mentor-dashboard',
   outDir: OUT,
   ffmpeg: process.env.FFMPEG,
+  // the mentor studio needs a wider window, or the right side of each section is cut off
+  width: 1440,
+  height: 810,
+  scale: 4 / 3,
   voice: loadVoice('mentor-dashboard'),
   setup: {
     script: (u) => {
@@ -40,7 +44,7 @@ await record({
     await t.waitVoice(300);
     if (!t.voiced) await t.wait(2700);
     await t.hideCard(700);
-    await t.moveTo([640, 360], 10);
+    await t.moveTo([720, 405], 10);
     const nav = (k) => p.locator(`[data-tour="mnav-${k}"]`).first();
     const go = async (k) => { await t.click(nav(k)); await t.wait(1100); await p.evaluate(() => window.scrollTo({ top: 0 })); };
 
