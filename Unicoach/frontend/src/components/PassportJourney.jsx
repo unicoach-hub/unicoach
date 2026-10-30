@@ -439,9 +439,9 @@ const PassportJourney = () => {
                     Your passport. Open it.
                   </h2>
                   <p className="mt-4 text-[17px] sm:text-[19px] leading-relaxed max-w-md" style={{ color: MUTED }}>Three visas, three countries. Scroll and we stamp them one by one.</p>
-                  <button type="button" onClick={() => goTo(0)} className="no-shine mt-7 inline-flex items-center gap-3 h-14 pl-6 pr-2 rounded-full border-2 bg-transparent text-[16px] font-semibold transition-colors hover:bg-[#16130F] hover:text-white group cursor-pointer" style={{ borderColor: INK, color: INK }}>
+                  <button type="button" onClick={() => goTo(0)} className="no-shine mt-7 inline-flex items-center gap-3 h-14 pl-6 pr-2 rounded-full border-2 bg-transparent text-[16px] font-semibold transition-colors border-[#16130F] text-[#16130F] hover:bg-[#16130F] hover:text-white group cursor-pointer">
                     Open the passport
-                    <span className="w-10 h-10 rounded-full grid place-items-center text-white" style={{ background: INK }}>
+                    <span className="w-10 h-10 rounded-full grid place-items-center text-white bg-[#16130F] transition-colors group-hover:bg-[#DE5C2B]">
                       <ArrowRight size={16} className="transition-transform group-hover:translate-x-0.5" />
                     </span>
                   </button>
@@ -465,9 +465,9 @@ const PassportJourney = () => {
                   <p className="mt-1 text-[13.5px] leading-snug flex gap-1.5" style={{ color: MUTED }}><Check size={15} className="shrink-0 mt-0.5 text-[#1E8A5A]" strokeWidth={3} />{REFUSALS[step.key].fix}</p>
                 </div>
                 <p className="mt-3 text-[13px] font-semibold" style={{ color: step.color }}>Refused before? Your file can still be fixed.</p>
-                <Link to={step.to} className="no-shine mt-5 inline-flex items-center gap-3 h-14 pl-6 pr-2 rounded-full border-2 bg-transparent text-[16px] font-semibold transition-colors hover:bg-[#16130F] hover:text-white group" style={{ borderColor: INK, color: INK }}>
+                <Link to={step.to} className="no-shine mt-5 inline-flex items-center gap-3 h-14 pl-6 pr-2 rounded-full border-2 bg-transparent text-[16px] font-semibold transition-colors border-[#16130F] text-[#16130F] hover:bg-[#16130F] hover:text-white group">
                   {step.cta}
-                  <span className="w-10 h-10 rounded-full grid place-items-center text-white" style={{ background: INK }}>
+                  <span className="w-10 h-10 rounded-full grid place-items-center text-white bg-[#16130F] transition-colors group-hover:bg-[#DE5C2B]">
                     <ArrowRight size={16} className="transition-transform group-hover:translate-x-0.5" />
                   </span>
                 </Link>
@@ -476,7 +476,7 @@ const PassportJourney = () => {
             </AnimatePresence>
             {/* Progress: tap a bar or the arrows to turn the passport */}
             <div className="mt-10 flex items-center gap-3">
-              <button type="button" onClick={() => goTo(idx - 1)} disabled={closed || idx === 0} aria-label="Previous visa" className="no-shine w-10 h-10 rounded-full border-2 grid place-items-center transition-colors disabled:opacity-30 enabled:hover:bg-[#16130F] enabled:hover:text-white cursor-pointer disabled:cursor-default" style={{ borderColor: INK, color: INK }}>
+              <button type="button" onClick={() => goTo(idx - 1)} disabled={closed || idx === 0} aria-label="Previous visa" className="no-shine w-10 h-10 rounded-full border-2 grid place-items-center border-[#16130F] text-[#16130F] transition-colors disabled:opacity-30 enabled:hover:bg-[#16130F] enabled:hover:text-white cursor-pointer disabled:cursor-default">
                 <ArrowLeft size={16} />
               </button>
               {STEPS.map((s, i) => (
@@ -486,7 +486,7 @@ const PassportJourney = () => {
                   </span>
                 </button>
               ))}
-              <button type="button" onClick={() => goTo(closed ? 0 : idx + 1)} disabled={!closed && idx === STEPS.length - 1} aria-label="Next visa" className="no-shine w-10 h-10 rounded-full border-2 grid place-items-center transition-colors disabled:opacity-30 enabled:hover:bg-[#16130F] enabled:hover:text-white cursor-pointer disabled:cursor-default" style={{ borderColor: INK, color: INK }}>
+              <button type="button" onClick={() => goTo(closed ? 0 : idx + 1)} disabled={!closed && idx === STEPS.length - 1} aria-label="Next visa" className="no-shine w-10 h-10 rounded-full border-2 grid place-items-center border-[#16130F] text-[#16130F] transition-colors disabled:opacity-30 enabled:hover:bg-[#16130F] enabled:hover:text-white cursor-pointer disabled:cursor-default">
                 <ArrowRight size={16} />
               </button>
             </div>
