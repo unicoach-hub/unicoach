@@ -25,7 +25,7 @@ export default function TutorialVideo({ src, poster, title, duration, className 
           muted
           controls={playing}
           onEnded={() => setPlaying(false)}
-          className="w-full h-full object-cover"
+          className="w-full h-full object-contain bg-[#F6F3EC]"
           aria-label={title}
         />
         {!playing && (
