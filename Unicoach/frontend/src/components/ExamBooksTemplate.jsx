@@ -95,7 +95,7 @@ const ExamBooksTemplate = ({ currentExamKey, data }) => {
       {/* ── EXAM PICKER (phones and tablets) ── */}
       <div className="lg:hidden max-w-[1240px] mx-auto px-4 -mt-6 mb-8 relative z-10">
         <InkCard className="p-3">
-          <p className="font-['Rozha_One',serif] text-[14px] text-[#D0362E] leading-none px-1 mb-2">दूसरी किताबें</p>
+          <p className="font-urbanist font-extrabold text-[14px] text-[#D0362E] leading-none px-1 mb-2">Aur books</p>
           <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-hide">
             {examsList.map((exam, ei) => {
               const isCurrent = exam.key === currentExamKey;
@@ -123,7 +123,7 @@ const ExamBooksTemplate = ({ currentExamKey, data }) => {
           {/* ── DESKTOP STICKY SIDEBAR ── */}
           <aside className="hidden lg:block lg:col-span-1 sticky top-28 space-y-5">
             <InkCard className="p-4">
-              <p className="font-['Rozha_One',serif] text-[15px] text-[#D0362E] leading-none">दूसरी किताबें</p>
+              <p className="font-urbanist font-extrabold text-[15px] text-[#D0362E] leading-none">Aur books</p>
               <h3 className="mt-1 mb-3 font-urbanist font-black text-[17px]">Prep books by exam</h3>
               <nav className="flex flex-col gap-2">
                 {examsList.map((exam, ei) => {
@@ -158,14 +158,14 @@ const ExamBooksTemplate = ({ currentExamKey, data }) => {
 
             {/* Why the right books matter */}
             <InkCard className="p-6 md:p-7 relative" shadow="#F2B705">
-              <DesiHeading hi="सही किताब, आधी तैयारी">Why the right prep books matter</DesiHeading>
+              <DesiHeading hi="Sahi book, aadhi taiyari">Why the right prep books matter</DesiHeading>
               <p className="mt-3 text-[#5B544A] text-[14.5px] leading-relaxed">{data.description}</p>
             </InkCard>
 
             {/* Recommended books with a category filter */}
             <section>
               <div className="flex flex-col gap-4 mb-6">
-                <DesiHeading hi="मेंटर की पसंद">Recommended books, reviewed</DesiHeading>
+                <DesiHeading hi="Mentor ki pasand">Recommended books, reviewed</DesiHeading>
                 {categories.length > 2 && (
                   <div className="flex flex-wrap items-center gap-2">
                     {categories.map((cat) => (
@@ -241,7 +241,7 @@ const ExamBooksTemplate = ({ currentExamKey, data }) => {
 
             {/* Preparation strategy: teal poster band */}
             <section className="bg-[#14837E] border-[3px] border-[#16130F] p-6 md:p-8 shadow-[6px_6px_0_#16130F]" style={{ borderRadius: 18 }}>
-              <DesiHeading hi="तैयारी का तरीका" light>Mentor-approved prep plan</DesiHeading>
+              <DesiHeading hi="Taiyari ka tareeka" light>Mentor-approved prep plan</DesiHeading>
               <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
                 {data.prepTips.map((tip, idx) => (
                   <div key={tip} className="flex gap-3 bg-white p-4 border-[3px] border-[#16130F] shadow-[4px_4px_0_#0B4F4C]"
@@ -258,7 +258,7 @@ const ExamBooksTemplate = ({ currentExamKey, data }) => {
 
             {/* FAQs */}
             <section>
-              <DesiHeading hi="अक्सर पूछे सवाल">Frequently asked questions</DesiHeading>
+              <DesiHeading hi="Sabke sawaal">Frequently asked questions</DesiHeading>
               <div className="mt-5 space-y-3">
                 {data.faqs.map((faq, idx) => {
                   const isOpen = !!faqOpen[idx];
@@ -287,7 +287,7 @@ const ExamBooksTemplate = ({ currentExamKey, data }) => {
 
             {/* Closing CTA */}
             <BookOkCta
-              hi="किताब के साथ मेंटर भी"
+              hi="Book ke saath mentor bhi"
               title="Book OK Please."
               text={`Kaunsi ${examName} book pehle? Free 1:1 call mein mentor se poocho.`}
             />

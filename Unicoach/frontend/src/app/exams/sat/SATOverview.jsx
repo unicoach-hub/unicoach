@@ -83,7 +83,7 @@ const SATOverview = () => {
         )}
         aside={(
           <InkCard className="p-5 sm:p-6 text-[#16130F]" shadow="#F2B705" style={{ transform: 'rotate(0.6deg)' }}>
-            <p className="font-['Rozha_One',serif] text-[15px] text-[#D0362E] leading-none">मुख्य बातें</p>
+            <p className="font-urbanist font-extrabold text-[15px] text-[#D0362E] leading-none">Main baatein</p>
             <h2 className="mt-1 mb-4 font-urbanist font-black text-[20px]">SAT at a glance</h2>
             <div className="grid grid-cols-2 gap-3">
               {keyFacts.map((fact, idx) => {
@@ -115,7 +115,7 @@ const SATOverview = () => {
           </div>
         </div>
 
-        <HookBand value="400–1600" label="Total Digital SAT score range, in 2 hours 14 minutes" hi="स्कोर" />
+        <HookBand value="400–1600" label="Total Digital SAT score range, in 2 hours 14 minutes" hi="Score" />
 
         <div>
           <VersusCard
@@ -128,7 +128,7 @@ const SATOverview = () => {
 
         {/* Explorer Hub links */}
         <section>
-          <DesiHeading hi="सैट की पूरी जानकारी" className="mb-6">SAT Information Center</DesiHeading>
+          <DesiHeading hi="SAT ki poori jaankari" className="mb-6">SAT Information Center</DesiHeading>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {exploreLinks.map((link, idx) => {
               const IconComp = link.icon;
@@ -159,7 +159,7 @@ const SATOverview = () => {
         {/* Digital SAT key features section */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           <InkCard className="p-6 md:p-8" shadow="#14837E">
-            <DesiHeading hi="क्या बदला" className="mb-5">Digital SAT Structural Enhancements</DesiHeading>
+            <DesiHeading hi="Kya badla" className="mb-5">Digital SAT Structural Enhancements</DesiHeading>
             <div className="space-y-4">
               {digitalChanges.map((change, idx) => (
                 <div key={idx} className="flex gap-3">
@@ -172,7 +172,7 @@ const SATOverview = () => {
 
           <div className="bg-[#14837E] text-white border-[3px] border-[#16130F] rounded-[14px] shadow-[5px_5px_0_#16130F] p-6 md:p-8 flex flex-col justify-between">
             <div>
-              <p className="font-['Rozha_One',serif] text-[16px] text-[#F2B705] leading-none">तैयारी शुरू करो</p>
+              <p className="font-urbanist font-extrabold text-[16px] text-[#F2B705] leading-none">Taiyari shuru karo</p>
               <h3 className="mt-1.5 font-urbanist text-[26px] font-black leading-tight mb-3">Ready to Start Preparing?</h3>
               <p className="text-white/90 text-[14px] font-medium leading-relaxed">
                 Connect with our expert SAT test prep mentors. We provide curated mock testing pipelines, diagnostic evaluations, and structured feedback sessions using official College Board patterns.
@@ -192,7 +192,7 @@ const SATOverview = () => {
 
         {/* FAQs */}
         <section className="max-w-3xl mx-auto">
-          <DesiHeading hi="अक्सर पूछे सवाल" className="mb-6 text-center">Frequently Asked Questions</DesiHeading>
+          <DesiHeading hi="Sabke sawaal" className="mb-6 text-center">Frequently Asked Questions</DesiHeading>
           <div className="space-y-3">
             {faqs.map((faq, idx) => {
               const isOpen = !!faqOpen[idx];
@@ -229,7 +229,7 @@ const SATOverview = () => {
         </section>
 
         <BookOkCta
-          hi="सैट प्लान बनाओ"
+          hi="SAT plan banao"
           text="SAT target set karna hai? Free 1:1 call mein mentor ke saath score aur college list plan karo."
         />
 

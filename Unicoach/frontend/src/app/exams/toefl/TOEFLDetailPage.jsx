@@ -56,7 +56,7 @@ const Note = ({ icon: Icon = Info, tone = 'mustard', title, children }) => {
 // Sub-heading inside the content card
 const SubHead = ({ hi, children }) => (
   <div>
-    {hi && <p className="font-['Rozha_One',serif] text-[14px] text-[#D0362E] leading-none">{hi}</p>}
+    {hi && <p className="font-urbanist font-extrabold text-[14px] text-[#D0362E] leading-none">{hi}</p>}
     <h3 className="mt-1 font-urbanist text-[21px] font-black text-[#16130F] tracking-tight">{children}</h3>
   </div>
 );
@@ -112,7 +112,7 @@ const TOEFLDetailPage = ({ pageKey }) => {
           />
 
           <div className="space-y-4">
-            <SubHead hi="टोफ़ल क्या है">1. What is the TOEFL Exam?</SubHead>
+            <SubHead hi="TOEFL kya hai">1. What is the TOEFL Exam?</SubHead>
             <p className={bodyText}>
               The TOEFL is designed to evaluate the English language proficiency of non-native speakers who wish to study, work, or migrate to English-speaking environments.
             </p>
@@ -135,7 +135,7 @@ const TOEFLDetailPage = ({ pageKey }) => {
           </div>
 
           <div className="space-y-4 pt-5 border-t-2 border-dashed border-[#16130F33]">
-            <SubHead hi="क्यों दें">Why Take the TOEFL Exam?</SubHead>
+            <SubHead hi="Kyun dein">Why Take the TOEFL Exam?</SubHead>
             <div className="space-y-3">
               {[
                 { title: "100% US University Acceptance", desc: "TOEFL is universally accepted and preferred by major academic programs across the United States." },
@@ -156,7 +156,7 @@ const TOEFLDetailPage = ({ pageKey }) => {
           </div>
 
           <div className="space-y-4 pt-5 border-t-2 border-dashed border-[#16130F33]">
-            <SubHead hi="कौन सा टेस्ट">2. TOEFL iBT vs TOEFL Essentials</SubHead>
+            <SubHead hi="Kaunsa test">2. TOEFL iBT vs TOEFL Essentials</SubHead>
             <p className={bodyText}>
               ETS offers two main versions of the test. Explore the variations below to select the right match:
             </p>
@@ -238,7 +238,7 @@ const TOEFLDetailPage = ({ pageKey }) => {
           </div>
 
           <div className="space-y-5 pt-4">
-            <SubHead hi="सेक्शन दर सेक्शन">Syllabus Section-wise Breakdown</SubHead>
+            <SubHead hi="Section by section">Syllabus Section-wise Breakdown</SubHead>
 
             {/* Reading */}
             <div className="p-5 border-2 border-[#16130F] rounded-xl bg-[#FFF0E6] shadow-[3px_3px_0_#16130F] space-y-3">
@@ -304,7 +304,7 @@ const TOEFLDetailPage = ({ pageKey }) => {
             In India, all registration payments must be cleared before your appointment. Check below for services list:
           </p>
 
-          <HookBand value="₹15,729" label="TOEFL iBT registration fee in India, as listed by ETS India" hi="फीस" />
+          <HookBand value="₹15,729" label="TOEFL iBT registration fee in India, as listed by ETS India" hi="Fees" />
 
           <div className="space-y-2">
             <h4 className={smallHead}>1. Base Registration & Additional Fees</h4>
@@ -422,7 +422,7 @@ const TOEFLDetailPage = ({ pageKey }) => {
           />
 
           <div className="space-y-4">
-            <SubHead hi="शहर">TOEFL Test Centre Cities in India</SubHead>
+            <SubHead hi="Shehar">TOEFL Test Centre Cities in India</SubHead>
             <p className={bodyText}>
               ETS maintains physical test centers across 39 cities in India, giving you plenty of locations to choose from:
             </p>
@@ -600,7 +600,7 @@ const TOEFLDetailPage = ({ pageKey }) => {
             TOEFL preparation requires familiarizing yourself with the computer-delivered environment. Discover section strategies below:
           </p>
 
-          <HookBand value="60–80" label="hours of study most test takers put in, over 4–6 weeks" hi="तैयारी" />
+          <HookBand value="60–80" label="hours of study most test takers put in, over 4–6 weeks" hi="Taiyari" />
 
           <StepCounter
             items={[
@@ -746,7 +746,7 @@ const TOEFLDetailPage = ({ pageKey }) => {
       {/* Section pills (phones and tablets) */}
       <div className="lg:hidden max-w-[1320px] mx-auto px-4 -mt-6 mb-8 relative z-10">
         <InkCard className="p-3">
-          <p className="font-['Rozha_One',serif] text-[14px] text-[#D0362E] leading-none px-1 mb-2">टोफ़ल गाइड</p>
+          <p className="font-urbanist font-extrabold text-[14px] text-[#D0362E] leading-none px-1 mb-2">TOEFL guide</p>
           <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-hide">
             {sidebarLinks.map((link, idx) => {
               const IconComponent = link.icon;
@@ -776,7 +776,7 @@ const TOEFLDetailPage = ({ pageKey }) => {
           {/* Left Sticky Sidebar Menu */}
           <aside className="hidden lg:block sticky top-28">
             <InkCard className="p-4">
-              <p className="font-['Rozha_One',serif] text-[15px] text-[#D0362E] leading-none">टोफ़ल गाइड</p>
+              <p className="font-urbanist font-extrabold text-[15px] text-[#D0362E] leading-none">TOEFL guide</p>
               <h3 className="mt-1 mb-3 font-urbanist font-black text-[17px]">On This Section</h3>
               <nav className="flex flex-col gap-1.5">
                 {sidebarLinks.map((link, idx) => {
@@ -810,7 +810,7 @@ const TOEFLDetailPage = ({ pageKey }) => {
 
             {/* Next Up section */}
             <section>
-              <DesiHeading hi="आगे पढ़ो" className="mb-5">Next Up</DesiHeading>
+              <DesiHeading hi="Aage padho" className="mb-5">Next Up</DesiHeading>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {nextUpLinks.map((linkItem, idx) => {
                   const IconComponent = linkItem.icon;
@@ -841,7 +841,7 @@ const TOEFLDetailPage = ({ pageKey }) => {
 
             {/* Tab Specific Accordion FAQs */}
             <section>
-              <DesiHeading hi="अक्सर पूछे सवाल" className="mb-5">Section-wise FAQs</DesiHeading>
+              <DesiHeading hi="Sabke sawaal" className="mb-5">Section-wise FAQs</DesiHeading>
               <div className="space-y-3">
                 {currentFaqs.map((faq, idx) => {
                   const isOpen = !!openFaq[idx];
@@ -880,7 +880,7 @@ const TOEFLDetailPage = ({ pageKey }) => {
             {/* Closing CTA (replaces the old "Preparing for TOEFL?" box, same link) */}
             <BookOkCta
               to="/book-consultation"
-              hi="टोफ़ल की तैयारी"
+              hi="TOEFL ki taiyari"
               text="TOEFL ki tayari kahan se shuru karein? Free 1:1 call mein mentor se mock aur study plan pe baat karo."
               cta="Free session book karo"
             />
@@ -891,7 +891,7 @@ const TOEFLDetailPage = ({ pageKey }) => {
 
             {/* Widget: Live Events & Fairs */}
             <div className="bg-[#14837E] text-white p-6 rounded-[14px] border-[3px] border-[#16130F] shadow-[5px_5px_0_#16130F]">
-              <span className="font-['Rozha_One',serif] text-[15px] text-[#F2B705] leading-none block">लाइव वर्कशॉप</span>
+              <span className="font-urbanist font-extrabold text-[15px] text-[#F2B705] leading-none block">Live workshop</span>
               <span className="text-[11px] font-extrabold text-white/80 uppercase tracking-widest block mt-1.5 mb-2">Live Workshops</span>
               <h3 className="font-urbanist text-[20px] font-black leading-snug mb-3">
                 Study Abroad Events & Fairs

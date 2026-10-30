@@ -23,7 +23,7 @@ import { RailwayBoard } from '../../components/desi/DesiPop';
 import { DesiHero, DesiHeading, InkCard, Sticker } from '../../components/desi/DesiKit';
 import { BookOkCta } from '../../components/desi/BookOkCta';
 
-const HI = "font-['Rozha_One',serif] leading-none";
+const HI = "font-urbanist font-extrabold leading-none";
 
 // Report cover drawn from the report's own headline number, instead of a stock photo
 const StatCover = ({ stat, label, tone, soft }) => (
@@ -305,7 +305,7 @@ const NewsroomPage = () => {
                             <div className="lg:w-1/2 p-5 sm:p-8 md:p-10 flex flex-col justify-between text-left">
                                 <div className="space-y-4">
                                     <div className="flex items-end justify-between gap-3 pb-3 border-b-[5px] border-double border-[#16130F]">
-                                        <span className={`${HI} text-[22px] sm:text-[26px] text-[#16130F]`}>आज की सुर्ख़ी</span>
+                                        <span className={`${HI} text-[22px] sm:text-[26px] text-[#16130F]`}>Aaj ki headline</span>
                                         <span className="text-[#5B544A] text-[11px] font-extrabold uppercase tracking-wider text-right">
                                             {formatDate(currentHero.createdAt) || currentHero.date || 'Latest'}
                                         </span>
@@ -396,7 +396,7 @@ const NewsroomPage = () => {
                             {/* Reports List (8 Columns) */}
                             <div className="lg:col-span-8 space-y-6 min-w-0">
                                 <div className="flex flex-wrap items-end justify-between gap-3">
-                                    <DesiHeading hi="रिसर्च की कतरन">UniCoach Research Reports</DesiHeading>
+                                    <DesiHeading hi="Research clippings">UniCoach Research Reports</DesiHeading>
                                     <button
                                         onClick={() => setActiveTab('reports')}
                                         className="text-xs font-extrabold text-[#16130F] bg-white border-2 border-[#16130F] rounded-lg px-3 py-1.5 shadow-[2px_2px_0_#16130F] hover:bg-[#FFF1B8] flex items-center gap-1 cursor-pointer"
@@ -446,7 +446,7 @@ const NewsroomPage = () => {
                             {/* Free download for students: a real 2-page PDF in public/downloads, as a ticket */}
                             <div className="lg:col-span-4 space-y-6 min-w-0">
                                 <div>
-                                    <p className={`${HI} text-[16px] text-[#D0362E]`}>मुफ़्त टिकट</p>
+                                    <p className={`${HI} text-[16px] text-[#D0362E]`}>Free ticket</p>
                                     <h3 className="mt-1.5 font-urbanist font-black text-[26px] sm:text-[30px] leading-[1.05] tracking-[-0.03em] text-[#16130F] flex items-center gap-2">
                                         <Download size={22} className="text-[#D0362E]" />
                                         Free Download
@@ -459,7 +459,7 @@ const NewsroomPage = () => {
                                         <span className="inline-block text-[10px] font-black uppercase tracking-wider text-[#16130F] bg-white px-2.5 py-1 rounded-md border-2 border-[#16130F]">
                                             Free PDF · 2 pages
                                         </span>
-                                        <span className={`${HI} text-[18px] text-[#16130F]`}>प्रवेश पत्र</span>
+                                        <span className={`${HI} text-[18px] text-[#16130F]`}>Free PDF</span>
                                         {/* Perforation notches */}
                                         <span aria-hidden="true" className="absolute z-10 -left-[15px] -bottom-[11px] w-[24px] h-[24px] rounded-full bg-[#FFF6E5] border-[3px] border-[#16130F]" />
                                         <span aria-hidden="true" className="absolute z-10 -right-[15px] -bottom-[11px] w-[24px] h-[24px] rounded-full bg-[#FFF6E5] border-[3px] border-[#16130F]" />
@@ -512,7 +512,7 @@ const NewsroomPage = () => {
                         <section className="bg-[#B8285B] border-[3px] border-[#16130F] rounded-[18px] p-6 sm:p-8 md:p-12 shadow-[6px_6px_0_#16130F] relative overflow-hidden">
                             <div className="text-center max-w-xl mx-auto mb-10">
                                 <Sticker bg="#FFF6E5" tilt={-1.5} className="mb-4">Company Trajectory</Sticker>
-                                <DesiHeading hi="अब तक का सफ़र" light>Our Milestones &amp; Growth</DesiHeading>
+                                <DesiHeading hi="Ab tak ka safar" light>Our Milestones &amp; Growth</DesiHeading>
                             </div>
 
                             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 select-none relative z-10 text-left">
@@ -536,7 +536,7 @@ const NewsroomPage = () => {
                         <div className="flex flex-wrap items-end justify-between gap-3 pb-4 border-b-[5px] border-double border-[#16130F]">
                             <div className="min-w-0">
                                 <span className="flex items-center gap-2">
-                                    <span className={`${HI} text-[16px] text-[#D0362E]`}>संग्रह</span>
+                                    <span className={`${HI} text-[16px] text-[#D0362E]`}>Archive</span>
                                     <span className="text-[10px] font-black text-[#16130F] uppercase tracking-widest">Category Archive</span>
                                 </span>
                                 <h2 className="mt-1.5 font-urbanist font-black text-[26px] sm:text-[34px] leading-[1.05] tracking-[-0.03em] text-[#16130F]">
@@ -599,7 +599,7 @@ const NewsroomPage = () => {
                                 <div className="w-16 h-16 rounded-lg bg-[#F2B705] text-[#16130F] flex items-center justify-center mx-auto border-[3px] border-[#16130F] shadow-[3px_3px_0_#16130F] -rotate-3">
                                     <Newspaper size={28} />
                                 </div>
-                                <p className={`${HI} text-[16px] text-[#D0362E]`}>अभी कोई ख़बर नहीं</p>
+                                <p className={`${HI} text-[16px] text-[#D0362E]`}>Abhi koi khabar nahi</p>
                                 <h3 className="font-urbanist text-xl font-black text-[#16130F]">No Articles Yet in {activeTabMeta.name}</h3>
                                 <p className="text-[13px] text-[#5B544A] font-medium leading-relaxed">
                                     We haven't published an article under this category yet. Check back soon or browse other updates.
@@ -617,7 +617,7 @@ const NewsroomPage = () => {
 
                 {/* ── Closing CTA: truck-art Book OK Please ── */}
                 <BookOkCta
-                    hi="ख़बर पढ़ ली? अब बात करो"
+                    hi="Khabar padh li? Ab baat karo"
                     text="Khabar padh li, ab apna plan banao. Free call pe senior se 1:1 baat, koi card nahi chahiye."
                 />
             </div>

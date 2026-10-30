@@ -22,7 +22,7 @@ import { BookOkCta } from '../../../../components/desi/BookOkCta';
 // Hindi kicker + h3 for sections inside the guide column
 const SubHead = ({ hi, children }) => (
   <div className="mt-10 mb-4">
-    <p className="font-['Rozha_One',serif] text-[15px] leading-none text-[#D0362E]">{hi}</p>
+    <p className="font-urbanist font-extrabold text-[15px] leading-none text-[#D0362E]">{hi}</p>
     <h3 className="mt-1.5 font-urbanist font-black text-[21px] sm:text-[24px] leading-tight tracking-[-0.02em] text-[#16130F]">{children}</h3>
   </div>
 );
@@ -38,7 +38,7 @@ const ReservationSlip = () => (
     <span aria-hidden="true" className="absolute -right-[12px] top-1/2 -translate-y-1/2 w-5 h-5 rounded-full bg-[#14837E] border-[3px] border-[#16130F]" />
     <div className="flex items-center justify-between gap-3 px-5 py-3 border-b-[3px] border-dashed border-[#16130F] bg-[#F2B705]" style={{ borderTopLeftRadius: 11, borderTopRightRadius: 11 }}>
       <div>
-        <p className="font-['Rozha_One',serif] text-[18px] leading-none">आरक्षण पर्ची</p>
+        <p className="font-urbanist font-extrabold text-[18px] leading-none">Booking slip</p>
         <p className="mt-1 font-['Anton',sans-serif] tracking-[0.12em] text-[12px] leading-none">RESERVATION SLIP</p>
       </div>
       <Ticket size={26} strokeWidth={2.4} />
@@ -59,7 +59,7 @@ const ReservationSlip = () => (
     </dl>
     <div className="px-5 py-2.5 border-t-[3px] border-dashed border-[#16130F] flex items-center justify-between text-[11px] font-bold text-[#5B544A]">
       <span className="font-['Anton',sans-serif] tracking-[0.18em] text-[#16130F]">IDP · IELTS INDIA</span>
-      <span className="font-['Rozha_One',serif] text-[14px] text-[#D0362E]">शुभ यात्रा</span>
+      <span className="font-urbanist font-extrabold text-[14px] text-[#D0362E]">Happy journey</span>
     </div>
   </div>
 );
@@ -256,7 +256,7 @@ const IELTSSlotBookingPage = () => {
       {/* IELTS guide picker (phones and tablets) */}
       <div className="lg:hidden max-w-[1400px] mx-auto px-4 -mt-6 mb-8 relative z-10">
         <InkCard className="p-3">
-          <p className="font-['Rozha_One',serif] text-[14px] text-[#D0362E] leading-none px-1 mb-2">आइल्ट्स गाइड</p>
+          <p className="font-urbanist font-extrabold text-[14px] text-[#D0362E] leading-none px-1 mb-2">IELTS guide</p>
           <nav className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-hide">
             {sidebarLinks.map((linkItem) => {
               const isActive = linkItem.key === 'slot-booking';
@@ -282,7 +282,7 @@ const IELTSSlotBookingPage = () => {
           {/* Left Sidebar Links */}
           <aside className="hidden lg:block sticky top-28">
             <InkCard className="p-4 max-h-[calc(100vh-140px)] overflow-y-auto">
-              <p className="font-['Rozha_One',serif] text-[15px] text-[#D0362E] leading-none">आइल्ट्स गाइड</p>
+              <p className="font-urbanist font-extrabold text-[15px] text-[#D0362E] leading-none">IELTS guide</p>
               <h3 className="mt-1 mb-3 font-urbanist font-black text-[16px]">IELTS Guide Index</h3>
               <nav className="flex flex-col gap-1.5">
                 {sidebarLinks.map((linkItem) => {
@@ -304,7 +304,7 @@ const IELTSSlotBookingPage = () => {
 
           {/* Center Content Section */}
           <main className="min-w-0 bg-white border-[3px] border-[#16130F] shadow-[5px_5px_0_#16130F] p-5 sm:p-8 md:p-10" style={{ borderRadius: 14 }}>
-            <DesiHeading hi="पूरी जानकारी" className="pb-5 mb-6 border-b-[3px] border-dashed border-[#16130F]/25">Detailed Guide Content</DesiHeading>
+            <DesiHeading hi="Poori jaankari" className="pb-5 mb-6 border-b-[3px] border-dashed border-[#16130F]/25">Detailed Guide Content</DesiHeading>
             <div className="space-y-5 text-[#3D362E] text-[15px] leading-relaxed">
               <p>
                 Have you decided to take the IELTS exam, or are you still planning to? Then, you should know how to book your test slot to sit for the exam. IELTS is one of the most popular English language proficiency tests, trusted by over 12,000 organisations globally in countries such as the US, UK, Australia, Canada, Ireland, and Germany.
@@ -313,7 +313,7 @@ const IELTSSlotBookingPage = () => {
                 Whether you prefer the traditional offline method or the comfort of your home with the online option, IELTS offers this flexibility. You can easily book your IELTS slot through the official IDP IELTS India website.
               </p>
 
-              <SubHead hi="बुकिंग के तरीके">1. IELTS Slot Booking: Registration Modes</SubHead>
+              <SubHead hi="Booking ke tareeke">1. IELTS Slot Booking: Registration Modes</SubHead>
               <p>
                 To sit for the IELTS test, candidates have to reserve their spots through one of three primary registration modes:
               </p>
@@ -395,12 +395,12 @@ const IELTSSlotBookingPage = () => {
                 </div>
               </div>
 
-              <SubHead hi="तारीख बदलनी है?">2. IELTS Slot Rescheduling & Cancellation Rules</SubHead>
+              <SubHead hi="Date badalni hai?">2. IELTS Slot Rescheduling & Cancellation Rules</SubHead>
               <p>
                 Plans can change, and IDP allows rescheduling or cancellation of slots under specific guidelines:
               </p>
 
-              <HookBand value="35 days" label="minimum notice to reschedule (INR 4,750 fee). Any later counts as a cancellation." hi="ध्यान दें" />
+              <HookBand value="35 days" label="minimum notice to reschedule (INR 4,750 fee). Any later counts as a cancellation." hi="Dhyaan do" />
 
               <div className="bg-[#FFF1B8] border-[3px] border-[#16130F] shadow-[4px_4px_0_#16130F] p-5 sm:p-6 space-y-3 my-6" style={{ borderRadius: 14 }}>
                 <h4 className="font-urbanist font-black text-[#16130F] text-[17px] flex items-center gap-2">
@@ -422,7 +422,7 @@ const IELTSSlotBookingPage = () => {
                 </ul>
               </div>
 
-              <SubHead hi="सवाल-जवाब">Frequently Asked Questions (FAQs) - Slot Booking</SubHead>
+              <SubHead hi="Sawaal-Jawaab">Frequently Asked Questions (FAQs) - Slot Booking</SubHead>
               <div className="space-y-3">
                 {[
                   {
@@ -468,7 +468,7 @@ const IELTSSlotBookingPage = () => {
             {/* Additional Quick Actions Box */}
             <div className="mt-10 p-5 sm:p-6 bg-[#FBD9E6] border-[3px] border-[#16130F] shadow-[4px_4px_0_#16130F] grid grid-cols-1 sm:grid-cols-[minmax(0,1fr)_auto] gap-4 items-center" style={{ borderRadius: 14 }}>
               <div>
-                <p className="font-['Rozha_One',serif] text-[14px] text-[#B8285B] leading-none">लाइव सेशन</p>
+                <p className="font-urbanist font-extrabold text-[14px] text-[#B8285B] leading-none">Live session</p>
                 <h4 className="mt-1 font-urbanist font-black text-[#16130F] text-[18px]">Want to prepare for IELTS?</h4>
                 <p className="mt-1 text-[13px] text-[#5B544A] leading-normal">Join upcoming live workshops and university webinars led by certified international mentors.</p>
               </div>
@@ -483,7 +483,7 @@ const IELTSSlotBookingPage = () => {
 
             {/* Next Up Section */}
             <div className="pt-2 mt-4">
-              <SubHead hi="आगे पढ़ो">Next Up</SubHead>
+              <SubHead hi="Aage padho">Next Up</SubHead>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 {['IELTS Test Centres', 'IELTS Exam Fee', 'IELTS Exam Date'].map((title, i) => {
                   const tone = DESI_TONES[i % 4];
@@ -504,10 +504,10 @@ const IELTSSlotBookingPage = () => {
 
             {/* IELTS Link Grids */}
             <div className="mt-6 space-y-2">
-              {renderLinkGrid('ज़रूरी जानकारी', 'IELTS Important Information', importantInfoLinks)}
-              {renderLinkGrid('कहाँ चलता है', 'IELTS Accepting Countries', acceptingCountriesLinks)}
-              {renderLinkGrid('यूनिवर्सिटी', 'IELTS Accepting Universities', acceptingUniversitiesLinks)}
-              {renderLinkGrid('शहर और तारीख', 'IELTS Test Centre and Dates in India', testCentresLinks)}
+              {renderLinkGrid('Zaroori info', 'IELTS Important Information', importantInfoLinks)}
+              {renderLinkGrid('Kahan chalta hai', 'IELTS Accepting Countries', acceptingCountriesLinks)}
+              {renderLinkGrid('University', 'IELTS Accepting Universities', acceptingUniversitiesLinks)}
+              {renderLinkGrid('Shehar aur date', 'IELTS Test Centre and Dates in India', testCentresLinks)}
             </div>
 
           </main>
@@ -559,7 +559,7 @@ const IELTSSlotBookingPage = () => {
         {/* Closing CTA */}
         <BookOkCta
           className="mt-14"
-          hi="बुक ओके प्लीज़"
+          hi="Book OK Please"
           text="Slot pakka ho gaya? Ab band score ka plan bhi bana lo. Free call, 1:1, mentor ke saath."
           cta="Free call book karo"
         />

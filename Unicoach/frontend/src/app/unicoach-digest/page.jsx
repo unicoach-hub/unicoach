@@ -21,9 +21,9 @@ import { BookOkCta } from '../../components/desi/BookOkCta';
 
 // Poster colour per digest category (strip, label, image backdrop)
 const CATEGORY_TONES = {
-    reviews: { c: '#B8285B', soft: '#FBD9E6', fg: '#FFFFFF', hi: 'कहानी' },
-    insights: { c: '#14837E', soft: '#DDF3EF', fg: '#FFFFFF', hi: 'सलाह' },
-    news: { c: '#D0362E', soft: '#FCE3DA', fg: '#FFFFFF', hi: 'ख़बर' },
+    reviews: { c: '#B8285B', soft: '#FBD9E6', fg: '#FFFFFF', hi: 'Kahani' },
+    insights: { c: '#14837E', soft: '#DDF3EF', fg: '#FFFFFF', hi: 'Salah' },
+    news: { c: '#D0362E', soft: '#FCE3DA', fg: '#FFFFFF', hi: 'Khabar' },
 };
 
 // Name plates under the student story videos
@@ -176,7 +176,7 @@ const UniCoachDigestPage = () => {
                 <div className="relative max-w-[980px] mx-auto">
                     <div className="bg-[#FFFDF6] border-[3px] border-[#16130F] rounded-[14px] shadow-[7px_7px_0_#16130F] px-4 sm:px-10 py-7 sm:py-9 text-center sm:-rotate-[0.6deg]">
                         <div className="flex flex-wrap items-center justify-center gap-3 mb-5">
-                            <StationSign hi="अख़बार" en="UNICOACH DIGEST" />
+                            <StationSign hi="Akhbaar" en="UNICOACH DIGEST" />
                             <Sticker bg="#16130F" fg="#FFFFFF" tilt={2}>
                                 <Newspaper size={13} className="text-[#F2B705]" />
                                 UniCoach Digital Press
@@ -244,7 +244,7 @@ const UniCoachDigestPage = () => {
                             <InkCard className="lg:col-span-8 p-5 sm:p-6 text-left min-w-0">
                                 <div className="mb-5">
                                     <Sticker bg="#FBD9E6" tilt={-2}>Student Reviews</Sticker>
-                                    <DesiHeading hi="असली कहानियाँ" className="mt-4">Real student stories</DesiHeading>
+                                    <DesiHeading hi="Asli kahaniyan" className="mt-4">Real student stories</DesiHeading>
                                     <p className="text-[#5B544A] text-[13px] md:text-sm font-medium mt-2">Hear it straight from UniCoach students who made the move abroad.</p>
                                 </div>
                                 <div className="grid grid-cols-3 sm:grid-cols-6 gap-2.5 sm:gap-3">
@@ -274,7 +274,7 @@ const UniCoachDigestPage = () => {
                             <div className="lg:col-span-4 flex flex-col gap-7 min-w-0">
                                 <div className="bg-[#14837E] text-white border-[3px] border-[#16130F] rounded-[14px] shadow-[5px_5px_0_#16130F] p-6 flex-grow flex flex-col justify-between min-h-[220px] lg:rotate-[0.8deg]">
                                     <div className="space-y-3 text-left">
-                                        <span className="inline-block font-['Rozha_One',serif] text-[15px] leading-none text-[#F2B705]">गाइड</span>
+                                        <span className="inline-block font-urbanist font-extrabold text-[15px] leading-none text-[#F2B705]">Guide</span>
                                         <span className="ml-2 inline-block text-[10px] font-extrabold uppercase tracking-widest bg-white/15 border border-white/40 px-2.5 py-1 rounded-md">
                                             Guides
                                         </span>
@@ -297,7 +297,7 @@ const UniCoachDigestPage = () => {
                                 {moreInsights.length > 0 && (
                                     <InkCard className="p-5 space-y-4 text-left">
                                         <div className="border-b-[3px] border-double border-[#16130F] pb-2">
-                                            <p className="font-['Rozha_One',serif] text-[14px] leading-none text-[#D0362E]">और ख़बरें</p>
+                                            <p className="font-urbanist font-extrabold text-[14px] leading-none text-[#D0362E]">Aur khabrein</p>
                                             <h4 className="mt-1 text-xs font-black text-[#16130F] uppercase tracking-widest">More Insights</h4>
                                         </div>
                                         <div className="divide-y-2 divide-dashed divide-[#16130F]/20">
@@ -321,7 +321,7 @@ const UniCoachDigestPage = () => {
                     {/* Spotlight: front-page clippings */}
                     {spotlightItems.length > 0 && (
                         <section className="max-w-[1240px] mx-auto px-4 sm:px-6 md:px-10 mb-14">
-                            <DesiHeading hi="मुख्य ख़बर" className="mb-6">Spotlight</DesiHeading>
+                            <DesiHeading hi="Main khabar" className="mb-6">Spotlight</DesiHeading>
                             <div className={spotlightItems.length <= 2 ? `grid grid-cols-1 ${spotlightItems.length === 2 ? 'lg:grid-cols-2' : ''} gap-7` : 'flex overflow-x-auto gap-6 pt-1 pb-4 pl-1 pr-3 scrollbar-hide snap-x'}>
                                 {spotlightItems.map((item) => {
                                     const tone = toneOf(item.category);
@@ -391,7 +391,7 @@ const UniCoachDigestPage = () => {
             {/* Core Listing Grid (under "All", nothing to show once every item is in the spotlight row) */}
             {(filteredItems.length > 0 || activeCategory !== 'all') && (
             <section className="max-w-[1240px] mx-auto px-4 sm:px-6 md:px-10 mb-14">
-                <DesiHeading hi="ताज़ा अंक" className="mb-7">Latest from the Digest</DesiHeading>
+                <DesiHeading hi="Latest issue" className="mb-7">Latest from the Digest</DesiHeading>
                 {filteredItems.length > 0 ? (
                     <motion.div
                         layout
@@ -414,7 +414,7 @@ const UniCoachDigestPage = () => {
                                     {/* clipping header: category strip */}
                                     <div className="flex items-center justify-between gap-2 px-4 py-2 border-b-[3px] border-[#16130F]" style={{ background: tone.c, color: tone.fg }}>
                                         <span className="text-[10.5px] font-black uppercase tracking-wider truncate">{item.categoryLabel}</span>
-                                        <span className="font-['Rozha_One',serif] text-[13px] leading-none whitespace-nowrap">{tone.hi}</span>
+                                        <span className="font-urbanist font-extrabold text-[13px] leading-none whitespace-nowrap">{tone.hi}</span>
                                     </div>
 
                                     <div className="relative overflow-hidden aspect-[16/10] border-b-[3px] border-[#16130F]" style={{ background: tone.soft }}>
@@ -476,7 +476,7 @@ const UniCoachDigestPage = () => {
                         <span className="w-14 h-14 mx-auto mb-4 grid place-items-center rounded-full bg-[#F2B705] border-[3px] border-[#16130F] shadow-[3px_3px_0_#16130F] -rotate-6">
                             <Newspaper size={24} className="text-[#16130F]" />
                         </span>
-                        <p className="font-['Rozha_One',serif] text-[15px] leading-none text-[#D0362E]">अभी कुछ नहीं</p>
+                        <p className="font-urbanist font-extrabold text-[15px] leading-none text-[#D0362E]">Abhi kuch nahi</p>
                         <p className="mt-2 text-[#5B544A] font-semibold">No digital press content found in this category.</p>
                     </InkCard>
                 )}
@@ -489,7 +489,7 @@ const UniCoachDigestPage = () => {
             {/* ── Closing CTA ── */}
             <div className="max-w-[1240px] mx-auto px-4 sm:px-6 md:px-10 mt-6">
                 <BookOkCta
-                    hi="ख़बर पढ़ी? अब प्लान बनाओ"
+                    hi="Khabar padhi? Ab plan banao"
                     text="News se pata chala kya badal raha hai. Ab apne plan pe 1:1 baat karo, free, ek ghante ki."
                 />
             </div>

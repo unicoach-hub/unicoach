@@ -51,7 +51,7 @@ const Note = ({ icon: Icon = Info, tone = 'mustard', title, children }) => {
 // Sub-heading inside the content card
 const SubHead = ({ hi, children }) => (
   <div>
-    {hi && <p className="font-['Rozha_One',serif] text-[14px] text-[#D0362E] leading-none">{hi}</p>}
+    {hi && <p className="font-urbanist font-extrabold text-[14px] text-[#D0362E] leading-none">{hi}</p>}
     <h3 className="mt-1 font-urbanist text-[20px] font-black text-[#16130F] tracking-tight">{children}</h3>
   </div>
 );
@@ -90,7 +90,7 @@ const SATDetailPage = ({ pageKey }) => {
           </Note>
 
           <div className="space-y-3">
-            <SubHead hi="सैट क्या है">What is the Digital SAT?</SubHead>
+            <SubHead hi="SAT kya hai">What is the Digital SAT?</SubHead>
             <p className={bodyText}>
               Designed and administered by the College Board, the Digital SAT evaluates secondary school students' readiness for college-level coursework. It evaluates critical reading, writing, and mathematics skills.
             </p>
@@ -171,7 +171,7 @@ const SATDetailPage = ({ pageKey }) => {
           </div>
 
           <div className="space-y-4">
-            <SubHead hi="गणित">Math Topics Breakdown</SubHead>
+            <SubHead hi="Maths">Math Topics Breakdown</SubHead>
             <p className={bodyText}>The math section measures mathematical fluency across four standard domains:</p>
             <div>
               <BarCompare
@@ -421,7 +421,7 @@ const SATDetailPage = ({ pageKey }) => {
       subtitle: "Actionable prep workflow to secure a high score.",
       content: (
         <div className="space-y-6 text-[14px] text-[#3D362E]">
-          <HookBand value="6" label="Full-length adaptive practice tests in the official Bluebook app" hi="अभ्यास" />
+          <HookBand value="6" label="Full-length adaptive practice tests in the official Bluebook app" hi="Practice" />
           <Note icon={Sparkles} tone="rani" title="Official Bluebook Prep Steps">
             <p>
               Download the official College Board <strong>Bluebook application</strong> onto your test device. Take full-length adaptive practice tests 1–6 under simulated exam conditions to align with digital adaptive modules.
@@ -429,7 +429,7 @@ const SATDetailPage = ({ pageKey }) => {
           </Note>
 
           <div className="space-y-4">
-            <SubHead hi="किताबें और टेस्ट">Recommended Resources</SubHead>
+            <SubHead hi="Books aur tests">Recommended Resources</SubHead>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className={miniCard}>
                 <h4 className="font-urbanist font-black text-[#16130F] text-[15px] mb-1">Khan Academy SAT Prep</h4>
@@ -476,7 +476,7 @@ const SATDetailPage = ({ pageKey }) => {
       {/* Directory pills (phones and tablets) */}
       <div className="lg:hidden max-w-[1240px] mx-auto px-4 -mt-6 mb-8 relative z-10">
         <InkCard className="p-3">
-          <p className="font-['Rozha_One',serif] text-[14px] text-[#D0362E] leading-none px-1 mb-2">सैट डायरेक्टरी</p>
+          <p className="font-urbanist font-extrabold text-[14px] text-[#D0362E] leading-none px-1 mb-2">SAT directory</p>
           <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-hide">
             {sidebarLinks.map((link, idx) => {
               const IconComp = link.icon;
@@ -504,7 +504,7 @@ const SATDetailPage = ({ pageKey }) => {
           {/* Sidebar (desktop) */}
           <aside className="hidden lg:block lg:col-span-4 xl:col-span-3 sticky top-28">
             <InkCard className="p-4">
-              <p className="font-['Rozha_One',serif] text-[15px] text-[#D0362E] leading-none">सैट डायरेक्टरी</p>
+              <p className="font-urbanist font-extrabold text-[15px] text-[#D0362E] leading-none">SAT directory</p>
               <h3 className="mt-1 mb-3 font-urbanist font-black text-[17px]">SAT Directory</h3>
               <nav className="flex flex-col gap-2">
                 {sidebarLinks.map((link, idx) => {
@@ -537,7 +537,7 @@ const SATDetailPage = ({ pageKey }) => {
           {/* Main Content Area */}
           <div className="lg:col-span-8 xl:col-span-9 space-y-10 min-w-0">
             <InkCard className="p-5 sm:p-8 md:p-10" shadow="#B8285B">
-              <DesiHeading hi="पूरी जानकारी" className="mb-6">{activeLinkName}</DesiHeading>
+              <DesiHeading hi="Poori jaankari" className="mb-6">{activeLinkName}</DesiHeading>
               <div className="border-t-2 border-dashed border-[#16130F33] pt-6">
                 {activeContent.content}
               </div>
@@ -545,7 +545,7 @@ const SATDetailPage = ({ pageKey }) => {
 
             {/* FAQs Accordion on details pages */}
             <section>
-              <DesiHeading hi="अक्सर पूछे सवाल" className="mb-5">Frequently Asked Questions</DesiHeading>
+              <DesiHeading hi="Sabke sawaal" className="mb-5">Frequently Asked Questions</DesiHeading>
               <div className="space-y-3">
                 {faqs.map((faq, idx) => {
                   const isOpen = !!openFaq[idx];
@@ -582,7 +582,7 @@ const SATDetailPage = ({ pageKey }) => {
             </section>
 
             <BookOkCta
-              hi="सैट प्लान बनाओ"
+              hi="SAT plan banao"
               text="SAT ki date, score target ya college list pe confusion? Free 1:1 call mein mentor se seedha poocho."
             />
           </div>

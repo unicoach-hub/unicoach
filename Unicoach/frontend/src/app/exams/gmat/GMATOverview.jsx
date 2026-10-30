@@ -176,7 +176,7 @@ const GMATOverview = () => {
             <AlertTriangle className="w-5 h-5" />
           </div>
           <div>
-            <p className="font-['Rozha_One',serif] text-[14px] leading-none text-[#D0362E]">ताज़ा ख़बर</p>
+            <p className="font-urbanist font-extrabold text-[14px] leading-none text-[#D0362E]">Taaza khabar</p>
             <h4 className="mt-1 font-urbanist font-black text-[#16130F] text-[16px]">Latest GMAT Focus Update</h4>
             <p className="text-xs text-[#3D362E] font-semibold mt-0.5">
               The classic 3-hour GMAT format is now fully discontinued. The new 2 hour and 15 minute Focus Edition exam featuring Data Insights is the standard exam.
@@ -190,7 +190,7 @@ const GMATOverview = () => {
           {/* Left Sticky Sidebar Index */}
           <aside className="hidden lg:block sticky top-28 max-h-[calc(100vh-140px)] overflow-y-auto pr-1.5 pb-2">
             <InkCard className="p-4">
-            <p className="font-['Rozha_One',serif] text-[15px] text-[#D0362E] leading-none">इस पेज पर</p>
+            <p className="font-urbanist font-extrabold text-[15px] text-[#D0362E] leading-none">Is page pe</p>
             <p className="mt-1 mb-3 font-urbanist font-black text-[15px] text-[#16130F]">On This Page</p>
             <nav className="flex flex-col gap-1.5">
               {menuItems.map((item) => (
@@ -212,7 +212,7 @@ const GMATOverview = () => {
             
             {/* Section 1 */}
             <section id="section-1" ref={sectionRefs['section-1']} className="scroll-mt-28">
-              <DesiHeading hi="शुरुआत" className="mb-5">1. GMAT Exam Overview</DesiHeading>
+              <DesiHeading hi="Shuruaat" className="mb-5">1. GMAT Exam Overview</DesiHeading>
               <div className="text-[#3D362E] text-sm leading-relaxed space-y-4 font-semibold">
                 <p>
                   GMAT, or <strong>Graduate Management Admission Test</strong>, is a globally recognized computer-adaptive exam. Owned and operated by the <strong>Graduate Management Admission Council (GMAC)</strong>, it is the primary benchmark for entrance into top-tier business schools and MBA programmes globally.
@@ -238,7 +238,7 @@ const GMATOverview = () => {
 
             {/* Section 2 */}
             <section id="section-2" ref={sectionRefs['section-2']} className="scroll-mt-28">
-              <DesiHeading hi="पेपर का ढाँचा" className="mb-5">2. Syllabus & Exam Pattern</DesiHeading>
+              <DesiHeading hi="Paper ka pattern" className="mb-5">2. Syllabus & Exam Pattern</DesiHeading>
               <div className="text-[#3D362E] text-sm leading-relaxed space-y-4 font-semibold">
                 <p>
                   The GMAT Focus Edition consists of 3 distinct sections. Candidates can choose their own section order at the start of the test.
@@ -299,7 +299,7 @@ const GMATOverview = () => {
 
             {/* Section 3 */}
             <section id="section-3" ref={sectionRefs['section-3']} className="scroll-mt-28">
-              <DesiHeading hi="किताबें" className="mb-5">3. Registration & Booking Process</DesiHeading>
+              <DesiHeading hi="Books" className="mb-5">3. Registration & Booking Process</DesiHeading>
               <div className="text-[#3D362E] text-sm leading-relaxed space-y-4 font-semibold">
                 <p>
                   You can register for the GMAT exam up to 6 months before your target test date. We advise booking at least 3 months in advance to lock in your preferred date and slot, especially for physical test centres.
@@ -327,7 +327,7 @@ const GMATOverview = () => {
 
             {/* Section 4 */}
             <section id="section-4" ref={sectionRefs['section-4']} className="scroll-mt-28">
-              <DesiHeading hi="फ़ीस" className="mb-5">4. Fees & Payment Modes</DesiHeading>
+              <DesiHeading hi="Fees" className="mb-5">4. Fees & Payment Modes</DesiHeading>
               <div className="text-[#3D362E] text-sm leading-relaxed space-y-4 font-semibold">
                 <p>
                   GMAT fees are set in US dollars (mba.com): US$275 at a test centre and US$300 online. In India, taxes are added at checkout, and the rupee amount depends on the exchange rate on the day you pay.
@@ -367,7 +367,7 @@ const GMATOverview = () => {
 
             {/* Section 5 */}
             <section id="section-5" ref={sectionRefs['section-5']} className="scroll-mt-28">
-              <DesiHeading hi="बदलाव और रिफ़ंड" className="mb-5">5. Rescheduling & Cancellation Fees</DesiHeading>
+              <DesiHeading hi="Changes aur refund" className="mb-5">5. Rescheduling & Cancellation Fees</DesiHeading>
               <div className="text-[#3D362E] text-sm leading-relaxed space-y-4 font-semibold">
                 <p>
                   If you need to change your GMAT exam details, you can reschedule or cancel, but fees apply based on your advance notice window.
@@ -424,7 +424,7 @@ const GMATOverview = () => {
 
             {/* Section 6 */}
             <section id="section-6" ref={sectionRefs['section-6']} className="scroll-mt-28">
-              <DesiHeading hi="स्कोर" className="mb-5">6. Score Scale & Scoring System</DesiHeading>
+              <DesiHeading hi="Score" className="mb-5">6. Score Scale & Scoring System</DesiHeading>
               <div className="text-[#3D362E] text-sm leading-relaxed space-y-4 font-semibold">
                 <p>
                   GMAT Focus scoring scale has changed to separate old classic scores from new focus scores.
@@ -473,7 +473,7 @@ const GMATOverview = () => {
 
             {/* Section 7 */}
             <section id="section-7" ref={sectionRefs['section-7']} className="scroll-mt-28">
-              <DesiHeading hi="किताबें" className="mb-5">7. Preparation & Recommended Books</DesiHeading>
+              <DesiHeading hi="Books" className="mb-5">7. Preparation & Recommended Books</DesiHeading>
               <div className="text-[#3D362E] text-sm leading-relaxed space-y-4 font-semibold">
                 <p>
                   To crack the new GMAT Focus Edition, using targeted materials for Data Insights and advanced Quantitative reasoning is necessary. Here are the top recommended GMAT books for 2026:
@@ -503,7 +503,7 @@ const GMATOverview = () => {
 
             {/* Section 8 */}
             <section id="section-8" ref={sectionRefs['section-8']} className="scroll-mt-28">
-              <DesiHeading hi="कहाँ जाओगे" className="mb-5">8. Top Global Universities Accepting GMAT</DesiHeading>
+              <DesiHeading hi="Kahan jaoge" className="mb-5">8. Top Global Universities Accepting GMAT</DesiHeading>
               <div className="text-[#3D362E] text-sm leading-relaxed space-y-4 font-semibold mb-6">
                 <p>
                   Explore top universities and business schools accepting GMAT scores in the USA, UK, Canada, Australia, and Ireland. Check details, QS rankings, average tuition fees, and verify eligibility.
@@ -612,7 +612,7 @@ const GMATOverview = () => {
             
             {/* Widget A: Live Workshops */}
             <div className="p-6 border-[3px] border-[#16130F] rounded-2xl shadow-[5px_5px_0_#16130F] text-white rotate-[0.6deg]" style={{ background: '#14837E' }}>
-              <span className="font-['Rozha_One',serif] text-[15px] leading-none text-[#FCE38A] block">मेला</span>
+              <span className="font-urbanist font-extrabold text-[15px] leading-none text-[#FCE38A] block">Live events</span>
               <span className="text-[10px] font-black uppercase tracking-widest block mt-1 mb-2 opacity-90">Live Workshops</span>
               <h3 className="font-urbanist text-[20px] font-black leading-snug mb-2">
                 Study Abroad Events & Fairs
@@ -652,7 +652,7 @@ const GMATOverview = () => {
 
         {/* FAQs Accordion */}
         <section className="mt-16 max-w-4xl mx-auto">
-          <DesiHeading hi="अक्सर पूछे सवाल" className="mb-6">
+          <DesiHeading hi="Sabke sawaal" className="mb-6">
             <span className="inline-flex items-center gap-2"><HelpCircle size={24} className="text-[#D0362E]" />Frequently Asked Questions (FAQs)</span>
           </DesiHeading>
           <div className="space-y-3">

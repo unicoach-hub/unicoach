@@ -20,7 +20,7 @@ import { BookOkCta } from '../../../../components/desi/BookOkCta';
 // Section heading with a short Hindi kicker (h3 level)
 const SubHead = ({ hi, children, className = '' }) => (
   <div className={className}>
-    <p className="font-['Rozha_One',serif] text-[15px] leading-none text-[#D0362E]">{hi}</p>
+    <p className="font-urbanist font-extrabold text-[15px] leading-none text-[#D0362E]">{hi}</p>
     <h3 className="mt-1 font-urbanist font-black text-[21px] sm:text-[24px] leading-[1.1] tracking-[-0.02em] text-[#16130F]">{children}</h3>
   </div>
 );
@@ -230,7 +230,7 @@ const IELTSFeesPage = () => {
       {/* ── GUIDE PICKER (phones and tablets) ── */}
       <div className="lg:hidden max-w-[1400px] mx-auto px-4 -mt-6 mb-8 relative z-10">
         <InkCard className="p-3">
-          <p className="font-['Rozha_One',serif] text-[14px] text-[#D0362E] leading-none px-1 mb-2">आइल्ट्स गाइड</p>
+          <p className="font-urbanist font-extrabold text-[14px] text-[#D0362E] leading-none px-1 mb-2">IELTS guide</p>
           <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-hide">
             {sidebarLinks.map((linkItem) => {
               const isActive = linkItem.key === 'fees';
@@ -256,7 +256,7 @@ const IELTSFeesPage = () => {
           {/* Left Sidebar Links */}
           <aside className="hidden lg:block sticky top-28 max-h-[calc(100vh-140px)] overflow-y-auto pr-2 pb-2">
             <InkCard className="p-4">
-              <p className="font-['Rozha_One',serif] text-[15px] text-[#D0362E] leading-none">आइल्ट्स गाइड</p>
+              <p className="font-urbanist font-extrabold text-[15px] text-[#D0362E] leading-none">IELTS guide</p>
               <h3 className="mt-1 mb-3 font-urbanist font-black text-[16px]">IELTS Guide Index</h3>
               <nav className="flex flex-col gap-1.5">
                 {sidebarLinks.map((linkItem) => {
@@ -281,7 +281,7 @@ const IELTSFeesPage = () => {
 
           {/* Center Content Section */}
           <main className="min-w-0 bg-white border-[3px] border-[#16130F] p-5 sm:p-8 md:p-10 rounded-[18px] shadow-[6px_6px_0_#16130F]">
-            <DesiHeading hi="पूरी जानकारी" className="mb-6 pb-5 border-b-2 border-dashed border-[#16130F33]">
+            <DesiHeading hi="Poori jaankari" className="mb-6 pb-5 border-b-2 border-dashed border-[#16130F33]">
               Detailed Guide Content
             </DesiHeading>
             <div className="max-w-none space-y-8 text-[#3D362E] text-[15px] leading-relaxed">
@@ -292,7 +292,7 @@ const IELTSFeesPage = () => {
                 IELTS exam fees can vary based on your location and the specific test format you choose, whether it’s the Academic or General Training test. Additionally, there may be extra charges for services such as rescheduling or cancellation.
               </p>
 
-              <SubHead hi="फ़ीस का हिसाब" className="pt-4">1. IELTS Exam Fees in India 2026</SubHead>
+              <SubHead hi="Fees ka hisaab" className="pt-4">1. IELTS Exam Fees in India 2026</SubHead>
               <p>
                 In India, IDP Education takes charge of the IELTS exam. Even though the cost of taking the IELTS exam is broadly similar worldwide, the prices can vary a bit from one country to another. Below is the breakdown of the fee structure for various IELTS exam types:
               </p>
@@ -344,7 +344,7 @@ const IELTSFeesPage = () => {
                 />
               </div>
 
-              <SubHead hi="शहर के हिसाब से" className="pt-4">2. IELTS Exam Fees 2026: City-Wise List in India</SubHead>
+              <SubHead hi="Shehar ke hisaab se" className="pt-4">2. IELTS Exam Fees 2026: City-Wise List in India</SubHead>
               <p>
                 Across the major cities of India, there are numerous IDP IELTS centres available to accommodate test-takers. It’s important to note that the <strong className="text-[#16130F]">IELTS exam fee remains consistent across all cities</strong> throughout the country.
               </p>
@@ -362,7 +362,7 @@ const IELTSFeesPage = () => {
                 ))}
               </div>
 
-              <SubHead hi="दोबारा जाँच" className="pt-4">3. Payment Modes &amp; Rechecking (EOR) Fees</SubHead>
+              <SubHead hi="Re-check" className="pt-4">3. Payment Modes &amp; Rechecking (EOR) Fees</SubHead>
               <p>
                 Candidates who wish to review their IELTS results for potential score improvement can request a recheck. To initiate this, you must pay the administrative rechecking fee and submit the 'Enquiry on Results (EOR)' form online via the IELTS IDP India website.
               </p>
@@ -410,7 +410,7 @@ const IELTSFeesPage = () => {
                 </p>
               </div>
 
-              <SubHead hi="रद्द करना" className="pt-4">4. IELTS Cancellation Fees 2026</SubHead>
+              <SubHead hi="Cancel karna" className="pt-4">4. IELTS Cancellation Fees 2026</SubHead>
               <p>
                 You can cancel your IELTS test registration for both test types (Academic or General Training) before the scheduled test date by logging into the IDP IELTS website.
               </p>
@@ -443,7 +443,7 @@ const IELTSFeesPage = () => {
                 </div>
               </div>
 
-              <SubHead hi="तारीख़ बदलो" className="pt-4">5. IELTS Rescheduling &amp; Transfer Fees 2026</SubHead>
+              <SubHead hi="Date badlo" className="pt-4">5. IELTS Rescheduling &amp; Transfer Fees 2026</SubHead>
               <p>
                 If you wish to reschedule your test date, you can do it by both online and offline methods. Your new test date must fall within 3 months of the original test date.
               </p>
@@ -483,7 +483,7 @@ const IELTSFeesPage = () => {
                   </tbody>
               </InkTable>
 
-              <SubHead hi="स्कोर भेजो" className="pt-4">6. IELTS Exam Fees for ATRF 2026</SubHead>
+              <SubHead hi="Score bhejo" className="pt-4">6. IELTS Exam Fees for ATRF 2026</SubHead>
               <p>
                 ATRF stands for <strong className="text-[#16130F]">Additional Test Report Form</strong>. ATRF is a way to officially convey your IELTS Scores to universities. You can send ATRF in three ways: courier, airmail or electronically.
               </p>
@@ -501,7 +501,7 @@ const IELTSFeesPage = () => {
                 </div>
               </div>
 
-              <SubHead hi="अक्सर पूछे सवाल" className="pt-6">Frequently Asked Questions (FAQs) - IELTS Fees</SubHead>
+              <SubHead hi="Sabke sawaal" className="pt-6">Frequently Asked Questions (FAQs) - IELTS Fees</SubHead>
               <div className="space-y-3">
                 {[
                   {
@@ -553,7 +553,7 @@ const IELTSFeesPage = () => {
             {/* Additional Quick Actions Box */}
             <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 gap-4 items-center bg-[#FFF1B8] border-[3px] border-[#16130F] rounded-xl p-5 sm:p-6 shadow-[4px_4px_0_#16130F]">
               <div>
-                <p className="font-['Rozha_One',serif] text-[14px] text-[#D0362E] leading-none">लाइव क्लास</p>
+                <p className="font-urbanist font-extrabold text-[14px] text-[#D0362E] leading-none">Live class</p>
                 <h4 className="mt-1 font-urbanist font-black text-[17px] text-[#16130F]">Want to prepare for IELTS?</h4>
                 <p className="mt-1 text-[13px] text-[#5B544A] leading-normal">Join our free live masterclasses and workshops to learn speaking & writing band templates from experts.</p>
               </div>
@@ -570,7 +570,7 @@ const IELTSFeesPage = () => {
 
             {/* Next Up Section */}
             <div className="border-t-2 border-dashed border-[#16130F33] pt-8 mt-12">
-              <SubHead hi="आगे पढ़ो">Next Up</SubHead>
+              <SubHead hi="Aage padho">Next Up</SubHead>
               <div className="mt-5 grid grid-cols-1 md:grid-cols-3 gap-4">
                 {["IELTS Practice Test", "IELTS Modules", "IELTS Dates"].map((title, i) => (
                   <Link
@@ -590,10 +590,10 @@ const IELTSFeesPage = () => {
 
             {/* IELTS Link Grids */}
             <div className="border-t-2 border-dashed border-[#16130F33] pt-8 mt-10 space-y-12">
-              <LinkGrid hi="ज़रूरी जानकारी" title="IELTS Important Information" links={importantInfoLinks} getLink={getBlogLink} />
-              <LinkGrid hi="कौन से देश" title="IELTS Accepting Countries" links={acceptingCountriesLinks} getLink={getBlogLink} />
-              <LinkGrid hi="यूनिवर्सिटी" title="IELTS Accepting Universities" links={acceptingUniversitiesLinks} getLink={getBlogLink} />
-              <LinkGrid hi="टेस्ट सेंटर" title="IELTS Test Centre and Dates in India" links={testCentresLinks} getLink={getBlogLink} />
+              <LinkGrid hi="Zaroori info" title="IELTS Important Information" links={importantInfoLinks} getLink={getBlogLink} />
+              <LinkGrid hi="Kaunse desh" title="IELTS Accepting Countries" links={acceptingCountriesLinks} getLink={getBlogLink} />
+              <LinkGrid hi="University" title="IELTS Accepting Universities" links={acceptingUniversitiesLinks} getLink={getBlogLink} />
+              <LinkGrid hi="Test centre" title="IELTS Test Centre and Dates in India" links={testCentresLinks} getLink={getBlogLink} />
             </div>
 
           </main>
@@ -641,7 +641,7 @@ const IELTSFeesPage = () => {
         {/* Closing CTA */}
         <BookOkCta
           className="mt-14"
-          hi="पैसा सही जगह"
+          hi="Paisa sahi jagah"
           text="Fees bharne se pehle plan clear karo. Free 1:1 call mein mentor se baat karo."
         />
       </div>

@@ -544,7 +544,7 @@ const Results = ({ outcome, onRestart }) => {
         <span className="inline-flex w-16 h-16 rounded-full bg-[#F2B705] border-[3px] border-[#16130F] text-[#16130F] items-center justify-center shadow-[3px_3px_0_#16130F] -rotate-6">
           <Trophy className="w-7 h-7" />
         </span>
-        <p className="mt-4 font-['Rozha_One',serif] text-[16px] text-[#D0362E] leading-none">शाबाश</p>
+        <p className="mt-4 font-urbanist font-extrabold text-[16px] text-[#D0362E] leading-none">Shabaash!</p>
         <h2 className="mt-1 font-urbanist text-2xl sm:text-3xl font-black text-[#16130F] tracking-[-0.02em]">Practice complete!</h2>
         <p className="mt-1 text-[14px] text-[#5B544A]">Your practice estimate on the Duolingo English Test scale</p>
         <p className="mt-3 inline-block px-5 py-2 bg-[#14837E] text-white border-[3px] border-[#16130F] shadow-[4px_4px_0_#16130F] rounded-xl font-urbanist text-5xl font-black tracking-[-0.03em]">{low}–{high}</p>
@@ -610,7 +610,7 @@ const Intro = ({ onStart }) => {
           </Sticker>
         )}
       </div>
-      <p className="mt-5 font-['Rozha_One',serif] text-[16px] text-[#D0362E] leading-none">मुफ़्त अभ्यास</p>
+      <p className="mt-5 font-urbanist font-extrabold text-[16px] text-[#D0362E] leading-none">Free practice</p>
       <h1 className="mt-1.5 font-urbanist text-3xl sm:text-4xl font-black text-[#16130F] tracking-[-0.03em] leading-[1.05]">
         Free Duolingo English Test <span className="px-1.5 bg-[#F2B705] border-2 border-[#16130F] rounded-md inline-block -rotate-1">practice</span>
       </h1>
@@ -709,7 +709,7 @@ const DuolingoPracticeTestPage = () => {
       {/* Closing CTA */}
       <div className="max-w-[1240px] mx-auto px-4 md:px-8 mt-14">
         <BookOkCta
-          hi="टारगेट स्कोर का प्लान"
+          hi="Target score ka plan"
           title="Book OK Please."
           text="Practice ho gayi, ab target score ka plan? Free 1:1 call mein mentor se poocho."
         />

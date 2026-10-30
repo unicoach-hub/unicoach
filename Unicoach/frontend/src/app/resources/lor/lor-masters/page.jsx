@@ -32,7 +32,7 @@ const LetterPaper = ({ label, children }) => (
         <div className="flex items-center justify-between gap-3 px-5 sm:px-7 py-3 border-b-2 border-dashed border-[#16130F33]">
             <span className="text-[11px] font-extrabold uppercase tracking-[0.14em] text-[#8A7F70] min-w-0">{label}</span>
             <span className="shrink-0 inline-flex flex-col items-center px-2.5 py-1 border-[3px] border-double border-[#D0362E] text-[#D0362E] rotate-[-6deg] leading-none" style={{ borderRadius: 6 }}>
-                <span className="font-['Rozha_One',serif] text-[13px]">नमूना</span>
+                <span className="font-urbanist font-extrabold text-[13px]">Sample</span>
                 <span className="font-['Anton',sans-serif] text-[10.5px] tracking-[0.14em] mt-0.5">SAMPLE</span>
             </span>
         </div>
@@ -191,7 +191,7 @@ const LORMastersPage = () => {
                     {/* Left Navigation Menu (desktop) */}
                     <aside className="hidden lg:block lg:col-span-1 sticky top-28">
                         <InkCard className="p-4">
-                            <p className="font-['Rozha_One',serif] text-[15px] text-[#D0362E] leading-none">सिफ़ारिश पत्र</p>
+                            <p className="font-urbanist font-extrabold text-[15px] text-[#D0362E] leading-none">Recommendation letters</p>
                             <h3 className="mt-1 mb-3 font-urbanist font-black text-[17px]">LOR Directory</h3>
                             <nav className="flex flex-col gap-2">
                                 {lorList.map((lor) => {
@@ -219,7 +219,7 @@ const LORMastersPage = () => {
 
                         {/* Importance Section */}
                         <InkCard className="p-6 md:p-8 space-y-4" shadow="#14837E">
-                            <DesiHeading hi="सिफ़ारिश क्यों ज़रूरी">Why is an LOR Critical for Master's Programs?</DesiHeading>
+                            <DesiHeading hi="LOR kyun zaroori">Why is an LOR Critical for Master's Programs?</DesiHeading>
                             <p className="text-[#5B544A] leading-relaxed text-[15px]">
                                 Graduate schools evaluate candidates holistically. While GRE scores and GPAs show academic aptitude, they do not depict classroom behavior, research curiosity, or project execution under stress. Recommenders offer an external, credible validation of your potential to complete complex postgraduate study.
                             </p>
@@ -267,7 +267,7 @@ const LORMastersPage = () => {
                         {/* Interactive Widget - Postgrad LOR outline builder */}
                         <InkCard as="section" className="p-6 md:p-8 space-y-6" shadow="#D0362E">
                             <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
-                                <DesiHeading hi="अपना ढाँचा बनाओ">
+                                <DesiHeading hi="Apna structure banao">
                                     <span className="inline-flex items-center gap-2">
                                         <PenTool className="text-[#D0362E] shrink-0" size={24} />
                                         Postgrad LOR Outline Generator
@@ -419,7 +419,7 @@ const LORMastersPage = () => {
 
                         {/* Dual Transcripts: rani poster band with the letters on paper */}
                         <section className="bg-[#B8285B] border-[3px] border-[#16130F] p-5 sm:p-6 md:p-8 shadow-[6px_6px_0_#16130F] space-y-8" style={{ borderRadius: 18 }}>
-                            <DesiHeading hi="नमूना पत्र" light>Real Masters LOR Transcripts</DesiHeading>
+                            <DesiHeading hi="Sample letter" light>Real Masters LOR Transcripts</DesiHeading>
 
                             {/* Academic Template */}
                             <div className="space-y-3">
@@ -474,7 +474,7 @@ rajesh.k@infosys.com`}
 
                         {/* Submission workflow: mustard poster band with ticket cards */}
                         <section className="bg-[#F2B705] border-[3px] border-[#16130F] p-5 sm:p-6 md:p-8 shadow-[6px_6px_0_#16130F] space-y-4" style={{ borderRadius: 18 }}>
-                            <DesiHeading hi="पत्र कैसे पहुँचे">Submission Process for Postgraduate Applications</DesiHeading>
+                            <DesiHeading hi="Letter kaise pahunche">Submission Process for Postgraduate Applications</DesiHeading>
                             <p className="text-[#3D362E] text-[14.5px] font-medium">
                                 Recommendation letter delivery varies depending on the university. Familiarize yourself with the 3 common pathways:
                             </p>
@@ -526,7 +526,7 @@ rajesh.k@infosys.com`}
 
                         {/* FAQs Section */}
                         <section>
-                            <DesiHeading hi="अक्सर पूछे सवाल">Frequently Asked Questions</DesiHeading>
+                            <DesiHeading hi="Sabke sawaal">Frequently Asked Questions</DesiHeading>
                             <div className="mt-5 space-y-3">
                                 {faqs.map((faq, idx) => {
                                     const isOpen = !!faqOpen[idx];
@@ -555,7 +555,7 @@ rajesh.k@infosys.com`}
 
                         {/* Closing CTA */}
                         <BookOkCta
-                            hi="सिफ़ारिश की जाँच"
+                            hi="LOR check"
                             text="Masters ke LOR ka draft ready? Free 1:1 call mein mentor se check karwao."
                         />
 

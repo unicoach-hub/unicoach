@@ -75,7 +75,7 @@ const StatementOfPurposePage = () => {
                 )}
                 aside={(
                     <InkCard className="p-5 sm:p-6 max-w-[460px] lg:ml-auto" style={{ transform: 'rotate(1.2deg)' }}>
-                        <p className="font-['Rozha_One',serif] text-[15px] text-[#D0362E] leading-none">पैराग्राफ़ प्लान</p>
+                        <p className="font-urbanist font-extrabold text-[15px] text-[#D0362E] leading-none">Paragraph plan</p>
                         <ol className="mt-4 space-y-2.5 list-none p-0 m-0">
                             {PARA_PLAN.map((step, i) => {
                                 const tone = DESI_TONES[i % DESI_TONES.length];
@@ -97,7 +97,7 @@ const StatementOfPurposePage = () => {
             {/* ── SOP PICKER (phones and tablets) ── */}
             <div className="lg:hidden max-w-[1240px] mx-auto px-4 -mt-6 mb-8 relative z-10">
                 <InkCard className="p-3">
-                    <p className="font-['Rozha_One',serif] text-[14px] text-[#D0362E] leading-none px-1 mb-2">एसओपी गाइड</p>
+                    <p className="font-urbanist font-extrabold text-[14px] text-[#D0362E] leading-none px-1 mb-2">SOP guides</p>
                     <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-hide">
                         {sopList.map((sop, si) => {
                             const isCurrent = sop.key === currentKey;
@@ -125,7 +125,7 @@ const StatementOfPurposePage = () => {
                     {/* ── DESKTOP STICKY SIDEBAR ── */}
                     <aside className="hidden lg:block lg:col-span-1 sticky top-28">
                         <InkCard className="p-4">
-                            <p className="font-['Rozha_One',serif] text-[15px] text-[#D0362E] leading-none">एसओपी गाइड</p>
+                            <p className="font-urbanist font-extrabold text-[15px] text-[#D0362E] leading-none">SOP guides</p>
                             <h3 className="mt-1 mb-3 font-urbanist font-black text-[17px]">SOP Categories</h3>
                             <nav className="flex flex-col gap-2">
                                 {sopList.map((sop, si) => {
@@ -155,7 +155,7 @@ const StatementOfPurposePage = () => {
 
                         {/* Intro Summary */}
                         <InkCard className="p-6 md:p-8" shadow="#F2B705">
-                            <DesiHeading hi="एसओपी क्या है">What is a Statement of Purpose (SOP)?</DesiHeading>
+                            <DesiHeading hi="SOP kya hai">What is a Statement of Purpose (SOP)?</DesiHeading>
                             <p className="mt-3 text-[#5B544A] leading-relaxed text-[15px]">
                                 For every Indian student dreaming of walking the halls of a global university, the Statement of Purpose (SOP) is the most crucial document you will write. It's more than just an essay; it's your voice in a stack of applications, your chance to tell the admissions committee who you are beyond your marksheets and test scores. As you prepare for the 2025-2026 intake, your SOP will be the bridge between your aspirations in India and your acceptance letter from universities in the USA, UK, Canada, or Australia.
                             </p>
@@ -163,7 +163,7 @@ const StatementOfPurposePage = () => {
 
                         {/* SOP vs Personal Statement Table */}
                         <section>
-                            <DesiHeading hi="कौन सा डॉक्यूमेंट">SOP vs. Personal Statement vs. Letter of Motivation</DesiHeading>
+                            <DesiHeading hi="Kaunsa document">SOP vs. Personal Statement vs. Letter of Motivation</DesiHeading>
                             <InkCard className="mt-5 overflow-hidden">
                                 <div className="overflow-x-auto">
                                     <table className="w-full min-w-[520px] text-left border-collapse text-[13px] md:text-[14px]">
@@ -202,7 +202,7 @@ const StatementOfPurposePage = () => {
                                 <span className="w-10 h-10 rounded-full border-2 border-[#16130F] bg-[#F2B705] grid place-items-center shrink-0 shadow-[2px_2px_0_#16130F]">
                                     <PenTool size={18} />
                                 </span>
-                                <DesiHeading hi="खाका बनाओ">Interactive SOP Outline Generator</DesiHeading>
+                                <DesiHeading hi="Outline banao">Interactive SOP Outline Generator</DesiHeading>
                             </div>
                             <p className="text-[#5B544A] text-[14px] font-medium">
                                 Fill in your details below to generate a tailored structural outline draft for your Statement of Purpose.
@@ -275,7 +275,7 @@ const StatementOfPurposePage = () => {
 
                             {generatedOutline && (
                                 <div className="space-y-4 pt-5 border-t-2 border-dashed border-[#16130F33]">
-                                    <p className="font-['Rozha_One',serif] text-[15px] text-[#D0362E] leading-none">आपका खाका</p>
+                                    <p className="font-urbanist font-extrabold text-[15px] text-[#D0362E] leading-none">Tumhara outline</p>
                                     <h4 className="-mt-2 font-urbanist font-black text-[18px]">Generated Outline Draft</h4>
                                     <div className="space-y-3">
                                         {generatedOutline.map((item, idx) => {
@@ -300,7 +300,7 @@ const StatementOfPurposePage = () => {
 
                         {/* Formatting Breakdown: teal poster band */}
                         <section className="bg-[#14837E] border-[3px] border-[#16130F] p-6 md:p-8 shadow-[6px_6px_0_#16130F]" style={{ borderRadius: 18 }}>
-                            <DesiHeading hi="पैराग्राफ़ का नक्शा" light>The 2025 SOP Paragraph Breakdown</DesiHeading>
+                            <DesiHeading hi="Paragraph ka naksha" light>The 2025 SOP Paragraph Breakdown</DesiHeading>
                             <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
                                 {[
                                     { title: 'Paragraph 1: The Hook', text: 'Introduce your passion through a specific real-world incident or project instead of generic clichés.' },
@@ -327,7 +327,7 @@ const StatementOfPurposePage = () => {
 
                         {/* FAQs Section */}
                         <section>
-                            <DesiHeading hi="अक्सर पूछे सवाल">Frequently Asked Questions</DesiHeading>
+                            <DesiHeading hi="Sabke sawaal">Frequently Asked Questions</DesiHeading>
                             <div className="mt-5 space-y-3">
                                 {[
                                     {
@@ -370,7 +370,7 @@ const StatementOfPurposePage = () => {
 
                         {/* Closing CTA */}
                         <BookOkCta
-                            hi="एसओपी चेक करवाओ"
+                            hi="SOP check karwao"
                             text="SOP likh liya? Free 1:1 call mein mentor se check karwao."
                             cta="Book Free Counselling"
                         />

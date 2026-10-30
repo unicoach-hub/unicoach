@@ -39,7 +39,7 @@ const DuolingoAcceptedCountry = ({ country }) => {
   const countryData = {
     australia: {
       title: "Duolingo Accepted Universities in Australia 2026",
-      hook: { value: "100 – 120", label: "Duolingo score range most Australian universities ask for (UG & PG). The student visa still needs IELTS, PTE or TOEFL.", hi: "ध्यान दें" },
+      hook: { value: "100 – 120", label: "Duolingo score range most Australian universities ask for (UG & PG). The student visa still needs IELTS, PTE or TOEFL.", hi: "Dhyaan do" },
       subtitle: "Australian universities that accept Duolingo for admission, UG & PG score requirements, and why your student visa still needs IELTS, PTE or TOEFL.",
       highlights: [
         { label: "Top Accepted Universities", value: "Uni of Melbourne, UNSW, Uni of Sydney, Monash Uni" },
@@ -88,7 +88,7 @@ const DuolingoAcceptedCountry = ({ country }) => {
     },
     canada: {
       title: "Duolingo Accepted Universities in Canada 2026",
-      hook: { value: "400+", label: "universities and colleges in Canada accept the Duolingo English Test", hi: "कनाडा" },
+      hook: { value: "400+", label: "universities and colleges in Canada accept the Duolingo English Test", hi: "Canada" },
       subtitle: "List of top Canadian universities accepting Duolingo scores, SDS updates, and PR planning.",
       highlights: [
         { label: "Top Accepted Universities", value: "Uni of Toronto, UBC, McGill, Waterloo" },
@@ -136,7 +136,7 @@ const DuolingoAcceptedCountry = ({ country }) => {
     },
     uk: {
       title: "Duolingo Accepted Universities in UK 2026",
-      hook: { value: "50+", label: "UK universities accept Duolingo for 2026-27 admissions. The UK student visa still needs a SELT.", hi: "ध्यान दें" },
+      hook: { value: "50+", label: "UK universities accept Duolingo for 2026-27 admissions. The UK student visa still needs a SELT.", hi: "Dhyaan do" },
       subtitle: "Admissions score lists, two-test strategy costs, and UKVI student visa SELT compliance.",
       highlights: [
         { label: "Top Accepting Universities", value: "Greenwich, Hertfordshire, Coventry, West London" },
@@ -188,7 +188,7 @@ const DuolingoAcceptedCountry = ({ country }) => {
     },
     ireland: {
       title: "Duolingo Accepted Universities in Ireland (2026)",
-      hook: { value: "130", label: "recommended overall DET target for Ireland (120 academic baseline)", hi: "लक्ष्य" },
+      hook: { value: "130", label: "recommended overall DET target for Ireland (120 academic baseline)", hi: "Target" },
       subtitle: "Verified minimum scores, mandatory sub-score thresholds, accepted intakes, and student visa info.",
       highlights: [
         { label: "Top Accepted Universities", value: "Trinity College Dublin, UCD, UCC, DCU, UL" },
@@ -237,7 +237,7 @@ const DuolingoAcceptedCountry = ({ country }) => {
     },
     germany: {
       title: "Duolingo Accepted Universities in Germany in 2026",
-      hook: { value: "105", label: "average accepted Duolingo score out of 160 at German universities", hi: "जर्मनी" },
+      hook: { value: "105", label: "average accepted Duolingo score out of 160 at German universities", hi: "Germany" },
       subtitle: "German private and public university admissions, course score bands, and student visa updates.",
       highlights: [
         { label: "Top Accepted Universities", value: "TUM, Heidelberg, Freie Berlin, Humboldt Berlin" },
@@ -346,7 +346,7 @@ const DuolingoAcceptedCountry = ({ country }) => {
             <span className="w-10 h-10 rounded-full border-2 border-[#16130F] bg-[#14837E] text-white grid place-items-center shrink-0 shadow-[2px_2px_0_#16130F]">
               <Sparkles size={18} />
             </span>
-            <DesiHeading hi="बढ़ती मान्यता">Overview & Growing Acceptance</DesiHeading>
+            <DesiHeading hi="Badhti acceptance">Overview & Growing Acceptance</DesiHeading>
           </div>
           <p className="text-[14.5px] text-[#5B544A] leading-relaxed">
             {activeData.description}
@@ -365,7 +365,7 @@ const DuolingoAcceptedCountry = ({ country }) => {
 
           {/* Universities Table */}
           <section className="lg:col-span-8 min-w-0">
-            <DesiHeading hi="कौन सी यूनिवर्सिटी">Top Duolingo Accepted Universities</DesiHeading>
+            <DesiHeading hi="Kaunsi university">Top Duolingo Accepted Universities</DesiHeading>
             <div className="mt-5 overflow-x-auto bg-white border-[3px] border-[#16130F] shadow-[5px_5px_0_#16130F]" style={{ borderRadius: 12 }}>
               <table className="w-full min-w-[520px] text-left border-collapse">
                 <thead className="bg-[#14837E] text-white">
@@ -394,7 +394,7 @@ const DuolingoAcceptedCountry = ({ country }) => {
             {/* Program Requirements */}
             <InkCard className="p-5 sm:p-6 space-y-4">
               <div>
-                <p className="font-['Rozha_One',serif] text-[14px] text-[#D0362E] leading-none">कोर्स के हिसाब से</p>
+                <p className="font-urbanist font-extrabold text-[14px] text-[#D0362E] leading-none">Course ke hisaab se</p>
                 <h4 className="mt-1 font-urbanist font-black text-[16px] text-[#16130F]">Score Range by Course Level</h4>
               </div>
               <ScoreList label="Undergraduate (UG)" items={activeData.programScores.ug} chip={DESI_TONES[1]} />
@@ -405,7 +405,7 @@ const DuolingoAcceptedCountry = ({ country }) => {
             {/* Visa Card */}
             <InkCard className="p-5 sm:p-6 space-y-4" shadow="#B8285B">
               <div>
-                <p className="font-['Rozha_One',serif] text-[14px] text-[#D0362E] leading-none">वीज़ा</p>
+                <p className="font-urbanist font-extrabold text-[14px] text-[#D0362E] leading-none">Visa</p>
                 <h4 className="mt-1 font-urbanist font-black text-[16px] text-[#16130F]">Visa Requirements</h4>
               </div>
               <div className="space-y-2.5 text-[13px]">
@@ -428,7 +428,7 @@ const DuolingoAcceptedCountry = ({ country }) => {
 
         {/* FAQs */}
         <section className="max-w-3xl mx-auto">
-          <DesiHeading hi="अक्सर पूछे सवाल" className="text-center">Frequently Asked Questions</DesiHeading>
+          <DesiHeading hi="Sabke sawaal" className="text-center">Frequently Asked Questions</DesiHeading>
           <div className="mt-6 space-y-3">
             {activeData.faqs.map((faq, idx) => {
               const isOpen = !!openFaq[idx];
@@ -467,7 +467,7 @@ const DuolingoAcceptedCountry = ({ country }) => {
         {/* Closing CTA */}
         <BookOkCta
           to="/book-consultation"
-          hi="डुओलिंगो से दाख़िला"
+          hi="Duolingo se admission"
           title="Book OK Please."
           text={`${countryName} ke liye DET chalega ya visa ke liye doosra test? Free 1:1 call mein mentor se poocho.`}
         />

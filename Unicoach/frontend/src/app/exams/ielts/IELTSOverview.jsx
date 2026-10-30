@@ -28,15 +28,15 @@ const BOX_TITLE = 'font-urbanist font-black text-[#16130F] text-[15px]';
 const BOX_TEXT = 'text-[13.5px] text-[#5B544A] leading-relaxed';
 const LINK = 'text-[#D0362E] font-bold underline decoration-2 underline-offset-2 hover:text-[#B8285B]';
 const SECTION_HI = {
-  'section-1': 'आइल्ट्स क्या है',
-  'section-2': 'बैंड स्कोर',
-  'section-3': 'कौन सा टेस्ट',
-  'section-4': 'जाँच कैसे होगी',
-  'section-5': 'कितना ख़र्चा',
-  'section-6': 'कब दें',
-  'section-7': 'सेंटर और रिज़ल्ट',
-  'section-8': 'तैयारी का तरीका',
-  'section-9': 'और जानकारी',
+  'section-1': 'IELTS kya hai',
+  'section-2': 'Band score',
+  'section-3': 'Kaunsa test',
+  'section-4': 'Check kaise hoga',
+  'section-5': 'Kitna kharcha',
+  'section-6': 'Kab dein',
+  'section-7': 'Centre aur result',
+  'section-8': 'Taiyari ka tareeka',
+  'section-9': 'Aur jaankari',
 };
 const IELTSOverview = () => {
   const [activeSection, setActiveSection] = useState('section-1');
@@ -241,7 +241,7 @@ const IELTSOverview = () => {
           {/* Left Sticky Sidebar Index */}
           <aside className="hidden lg:block sticky top-28 max-h-[calc(100vh-140px)] overflow-y-auto pr-2 pb-2">
             <InkCard className="p-4">
-              <p className="font-['Rozha_One',serif] text-[15px] text-[#D0362E] leading-none">इस पेज पर</p>
+              <p className="font-urbanist font-extrabold text-[15px] text-[#D0362E] leading-none">Is page pe</p>
               <h3 className="mt-1 mb-3 font-urbanist font-black text-[16px]">On This Page</h3>
               <nav className="flex flex-col gap-1.5">
                 {menuItems.map((item, mi) => {
@@ -689,7 +689,7 @@ const IELTSOverview = () => {
 
             {/* Next Up Section */}
             <div className="border-t-[3px] border-dashed border-[#16130F33] pt-8 mt-12">
-              <DesiHeading hi="आगे पढ़ो" className="mb-5">Next Up</DesiHeading>
+              <DesiHeading hi="Aage padho" className="mb-5">Next Up</DesiHeading>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 {['IELTS Practice Test', 'IELTS Modules', 'IELTS Fees'].map((t, ti) => (
                   <Link key={t} to={getBlogLink(t)} className="flex flex-col justify-between p-5 bg-white border-[3px] border-[#16130F] shadow-[4px_4px_0_#16130F] rounded-xl hover:-translate-y-0.5 transition-transform group" style={{ borderTop: `8px solid ${DESI_TONES[[2, 0, 1][ti]].c}` }}>
@@ -705,9 +705,9 @@ const IELTSOverview = () => {
             {/* IELTS Link Grids */}
             <div className="border-t-[3px] border-dashed border-[#16130F33] pt-8 mt-8 space-y-12">
               {[
-                { hi: 'ज़रूरी जानकारी', title: 'IELTS Important Information', links: importantInfoLinks },
-                { hi: 'यूनिवर्सिटी', title: 'IELTS Accepting Universities', links: acceptingUniversitiesLinks },
-                { hi: 'शहर और तारीख़', title: 'IELTS Test Centre and Dates in India', links: testCentresLinks },
+                { hi: 'Zaroori info', title: 'IELTS Important Information', links: importantInfoLinks },
+                { hi: 'University', title: 'IELTS Accepting Universities', links: acceptingUniversitiesLinks },
+                { hi: 'Shehar aur date', title: 'IELTS Test Centre and Dates in India', links: testCentresLinks },
               ].map((grid) => (
                 <div key={grid.title}>
                   <DesiHeading hi={grid.hi} className="mb-5">{grid.title}</DesiHeading>
@@ -734,7 +734,7 @@ const IELTSOverview = () => {
 
             {/* Widget A: Events CTA */}
             <div className="bg-[#14837E] text-white p-6 border-[3px] border-[#16130F] shadow-[5px_5px_0_#16130F] rotate-[-0.6deg]" style={{ borderRadius: 14 }}>
-              <span className="font-['Rozha_One',serif] text-[15px] text-[#F2B705] leading-none block mb-1">लाइव वर्कशॉप</span>
+              <span className="font-urbanist font-extrabold text-[15px] text-[#F2B705] leading-none block mb-1">Live workshop</span>
               <span className="text-[10.5px] font-black text-white/80 uppercase tracking-widest block mb-2">Live Workshops</span>
               <h3 className="font-urbanist text-[20px] font-black leading-snug mb-2">
                 Study Abroad Events & Fairs
@@ -775,7 +775,7 @@ const IELTSOverview = () => {
         {/* Closing CTA */}
         <BookOkCta
           className="mt-14"
-          hi="बैंड का प्लान"
+          hi="Band ka plan"
           title="Book OK Please."
           text="Kitna band chahiye, kab dena hai, waiver milega ya nahi? Free 1:1 call mein mentor se poocho."
         />

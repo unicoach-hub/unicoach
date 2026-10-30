@@ -173,7 +173,7 @@ const LORBlogPage = () => {
                     {/* Left Sticky Sidebar (desktop) */}
                     <aside className="hidden lg:block lg:col-span-1 sticky top-28">
                         <InkCard className="p-4">
-                            <p className="font-['Rozha_One',serif] text-[15px] text-[#D0362E] leading-none">सिफ़ारिश पत्र</p>
+                            <p className="font-urbanist font-extrabold text-[15px] text-[#D0362E] leading-none">Recommendation letters</p>
                             <h3 className="mt-1 mb-3 font-urbanist font-black text-[17px]">LOR Directory</h3>
                             <nav className="flex flex-col gap-2">
                                 {lorList.map((lor) => {
@@ -201,7 +201,7 @@ const LORBlogPage = () => {
 
                         {/* What is LOR */}
                         <InkCard className="p-6 md:p-8 space-y-4" shadow="#F2B705">
-                            <DesiHeading hi="सिफ़ारिश क्या है?">What is a Letter of Recommendation (LOR)?</DesiHeading>
+                            <DesiHeading hi="LOR kya hai?">What is a Letter of Recommendation (LOR)?</DesiHeading>
                             <p className="text-[#5B544A] leading-relaxed text-[15px]">
                                 A Letter of Recommendation (LOR) is a crucial document that provides a personal endorsement of an individual’s skills, qualifications, and character. Typically written by professors, mentors, or supervisors, an LOR offers an objective assessment of a candidate’s academic or professional abilities. This document is essential in various application processes, including those for Master’s and PhD programs, as it highlights the candidate’s strengths, achievements, and potential for success.
                             </p>
@@ -238,7 +238,7 @@ const LORBlogPage = () => {
 
                         {/* Format & Structure Table */}
                         <InkCard className="p-6 md:p-8 space-y-5">
-                            <DesiHeading hi="पत्र का ढाँचा">Structure and Paragraph-wise LOR Format</DesiHeading>
+                            <DesiHeading hi="Letter ka structure">Structure and Paragraph-wise LOR Format</DesiHeading>
                             <JourneyPills
                                 steps={[
                                     { label: 'Intro', sub: 'Relationship' },
@@ -281,7 +281,7 @@ const LORBlogPage = () => {
                         {/* Interactive Widget */}
                         <InkCard as="section" className="p-6 md:p-8 space-y-6" shadow="#D0362E">
                             <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
-                                <DesiHeading hi="अपना ड्राफ़्ट बनाओ">
+                                <DesiHeading hi="Apna draft banao">
                                     <span className="inline-flex items-center gap-2">
                                         <PenTool className="text-[#D0362E] shrink-0" size={24} />
                                         Interactive LOR Draft Builder
@@ -434,13 +434,13 @@ const LORBlogPage = () => {
 
                         {/* Calgary to Toronto Sample Transcript: rani poster band with the letter on paper */}
                         <section className="bg-[#B8285B] border-[3px] border-[#16130F] p-5 sm:p-6 md:p-8 shadow-[6px_6px_0_#16130F]" style={{ borderRadius: 18 }}>
-                            <DesiHeading hi="नमूना पत्र" light>Sample LOR: University Professor Recommending to Master's Program</DesiHeading>
+                            <DesiHeading hi="Sample letter" light>Sample LOR: University Professor Recommending to Master's Program</DesiHeading>
 
                             <div className="mt-6 bg-white border-[3px] border-[#16130F] shadow-[5px_5px_0_#6E1436] sm:-rotate-[0.4deg]" style={{ borderRadius: 6 }}>
                                 <div className="flex items-center justify-between gap-3 px-5 sm:px-7 py-3 border-b-2 border-dashed border-[#16130F33]">
                                     <span className="text-[11px] font-extrabold uppercase tracking-[0.14em] text-[#8A7F70]">Letter of Recommendation</span>
                                     <span className="shrink-0 inline-flex flex-col items-center px-2.5 py-1 border-[3px] border-double border-[#D0362E] text-[#D0362E] rotate-[-6deg] leading-none" style={{ borderRadius: 6 }}>
-                                        <span className="font-['Rozha_One',serif] text-[13px]">नमूना</span>
+                                        <span className="font-urbanist font-extrabold text-[13px]">Sample</span>
                                         <span className="font-['Anton',sans-serif] text-[10.5px] tracking-[0.14em] mt-0.5">SAMPLE</span>
                                     </span>
                                 </div>
@@ -467,7 +467,7 @@ Karen Sebastian`}
 
                         {/* Tone & Length Tips: teal poster band */}
                         <section className="bg-[#14837E] border-[3px] border-[#16130F] p-5 sm:p-6 md:p-8 shadow-[6px_6px_0_#16130F]" style={{ borderRadius: 18 }}>
-                            <DesiHeading hi="लहजा और लंबाई" light>Professional Tone Guidelines</DesiHeading>
+                            <DesiHeading hi="Tone aur length" light>Professional Tone Guidelines</DesiHeading>
                             <ul className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4 list-none p-0 m-0">
                                 {[
                                     { b: 'Objective Endorsement:', t: 'Maintain a formal, objective, and respectful tone throughout. Avoid hyperbole; instead, justify praise with real data or events.' },
@@ -489,7 +489,7 @@ Karen Sebastian`}
 
                         {/* FAQs Section */}
                         <section>
-                            <DesiHeading hi="अक्सर पूछे सवाल">Frequently Asked Questions</DesiHeading>
+                            <DesiHeading hi="Sabke sawaal">Frequently Asked Questions</DesiHeading>
                             <div className="mt-5 space-y-3">
                                 {faqs.map((faq, idx) => {
                                     const isOpen = !!faqOpen[idx];
@@ -518,7 +518,7 @@ Karen Sebastian`}
 
                         {/* Expert Consultation CTA */}
                         <BookOkCta
-                            hi="सिफ़ारिश की जाँच"
+                            hi="LOR check"
                             text="LOR ka draft ready? Free 1:1 call mein mentor se check karwao."
                             cta="Connect with Experts"
                         />

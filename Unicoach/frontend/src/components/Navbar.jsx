@@ -510,17 +510,17 @@ const EXAM_TONES = {
     IELTS: ['#F2B705', '#16130F'], Duolingo: ['#14837E', '#FFFFFF'], SAT: ['#B8285B', '#FFFFFF'], PTE: ['#14837E', '#FFFFFF'],
     TOEFL: ['#FFD9C2', '#16130F'], GRE: ['#F2B705', '#16130F'], GMAT: ['#B8285B', '#FFFFFF'],
 };
-const EXAM_SECTION_HI = { 'EXAM DETAILS': 'परीक्षा की जानकारी', PRACTICE: 'अभ्यास' };
+const EXAM_SECTION_HI = { 'EXAM DETAILS': 'Exam ki jaankari', PRACTICE: 'Practice' };
 const RESOURCE_META = {
-    BOOKS: { hi: 'किताबें', tone: ['#F2B705', '#16130F'] },
-    LOR: { hi: 'सिफ़ारिश पत्र', tone: ['#14837E', '#FFFFFF'] },
-    SOP: { hi: 'एसओपी', tone: ['#B8285B', '#FFFFFF'] },
-    CALCULATORS: { hi: 'हिसाब किताब', tone: ['#D0362E', '#FFFFFF'] },
-    OTHER: { hi: 'और भी', tone: ['#FFD9C2', '#16130F'] },
+    BOOKS: { hi: 'Books', tone: ['#F2B705', '#16130F'] },
+    LOR: { hi: 'Recommendation letters', tone: ['#14837E', '#FFFFFF'] },
+    SOP: { hi: 'SOP', tone: ['#B8285B', '#FFFFFF'] },
+    CALCULATORS: { hi: 'Hisaab kitaab', tone: ['#D0362E', '#FFFFFF'] },
+    OTHER: { hi: 'Aur bhi', tone: ['#FFD9C2', '#16130F'] },
 };
 // Poster colours that rotate through countries and tool icons: [background, text]
 const MENU_TONES = [['#D0362E', '#FFFFFF'], ['#14837E', '#FFFFFF'], ['#B8285B', '#FFFFFF'], ['#F2B705', '#16130F'], ['#DE5C2B', '#FFFFFF']];
-const TOOL_SECTION_HI = { 'Shortlist & plan': 'चुनो और प्लान करो', 'Write & practise': 'लिखो और अभ्यास करो' };
+const TOOL_SECTION_HI = { 'Shortlist & plan': 'Chuno aur plan karo', 'Write & practise': 'Likho aur practice karo' };
 const MENU_PANEL = 'bg-[#FFF6E5] rounded-[20px] border-[3px] border-[#16130F] shadow-[6px_6px_0_#16130F]';
 
 const aiToolsNavData = [
@@ -920,7 +920,7 @@ const Navbar = () => {
                                             >
                                                 {/* Left sidebar: off-white styled background list */}
                                                 <div className="w-[210px] flex-shrink-0 bg-white border-r-[3px] border-[#16130F] p-3.5 flex flex-col gap-1">
-                                                    <p className="px-2 pb-1 font-['Rozha_One',serif] text-[15px] leading-none text-[#D0362E]">देश चुनो</p>
+                                                    <p className="px-2 pb-1 font-urbanist font-extrabold text-[15px] leading-none text-[#D0362E]">Desh chuno</p>
                                                     {Object.keys(allCountriesData).map((country, ci) => {
                                                         const isActiveCountry = activeCountry === country;
                                                         const [bg, fg] = MENU_TONES[ci % MENU_TONES.length];
@@ -1102,7 +1102,7 @@ const Navbar = () => {
                                             >
                                                 {/* Left: exam list, each exam in its own poster colour */}
                                                 <div className="w-[200px] flex-shrink-0 bg-white border-r-[3px] border-[#16130F] p-3.5 flex flex-col gap-1.5">
-                                                    <p className="px-2 pb-1 font-['Rozha_One',serif] text-[15px] leading-none text-[#D0362E]">परीक्षा चुनो</p>
+                                                    <p className="px-2 pb-1 font-urbanist font-extrabold text-[15px] leading-none text-[#D0362E]">Exam chuno</p>
                                                     {Object.keys(examDataExtended).map((exam) => {
                                                         const isActiveExam = activeExam === exam;
                                                         const [bg, fg] = EXAM_TONES[exam] || EXAM_TONES.IELTS;
@@ -1158,7 +1158,7 @@ const Navbar = () => {
                                                             const isDetails = section.title === 'EXAM DETAILS';
                                                             return (
                                                                 <div key={sIdx} className={`min-w-0 ${isDetails ? '' : 'bg-white border-2 border-[#16130F] rounded-xl p-4 shadow-[3px_3px_0_#16130F] self-start'}`}>
-                                                                    <p className="font-['Rozha_One',serif] text-[14px] leading-none text-[#D0362E]">{EXAM_SECTION_HI[section.title] || ''}</p>
+                                                                    <p className="font-urbanist font-extrabold text-[14px] leading-none text-[#D0362E]">{EXAM_SECTION_HI[section.title] || ''}</p>
                                                                     <p className="mt-1 mb-3 text-[11.5px] font-black uppercase tracking-[0.12em] text-[#16130F]">{section.title}</p>
                                                                     <div className={isDetails ? 'grid grid-cols-2 gap-x-4 gap-y-1' : 'flex flex-col gap-1'}>
                                                                         {section.items.map((item, itemIdx) => (
@@ -1226,7 +1226,7 @@ const Navbar = () => {
                                             >
                                                 {/* Left: resource categories, each in its own poster colour */}
                                                 <div className="w-[200px] flex-shrink-0 bg-white border-r-[3px] border-[#16130F] p-3.5 flex flex-col gap-1.5">
-                                                    <p className="px-2 pb-1 font-['Rozha_One',serif] text-[15px] leading-none text-[#D0362E]">काम की चीज़ें</p>
+                                                    <p className="px-2 pb-1 font-urbanist font-extrabold text-[15px] leading-none text-[#D0362E]">Kaam ki cheezein</p>
                                                     {Object.keys(resourceDataExtended).map((tabKey) => {
                                                         const isActiveTab = activeResourceTab === tabKey;
                                                         const [bg, fg] = (RESOURCE_META[tabKey] || RESOURCE_META.OTHER).tone;
@@ -1252,7 +1252,7 @@ const Navbar = () => {
                                                 <div className="flex-1 p-6 flex flex-col justify-start min-w-0">
                                                     <div className="mb-4 flex items-end justify-between gap-3">
                                                         <div className="min-w-0">
-                                                            <p className="font-['Rozha_One',serif] text-[15px] leading-none text-[#D0362E]">{meta.hi}</p>
+                                                            <p className="font-urbanist font-extrabold text-[15px] leading-none text-[#D0362E]">{meta.hi}</p>
                                                             <h3 className="mt-1 font-urbanist text-[19px] font-black text-[#16130F] tracking-[-0.02em] leading-tight">{tab.title}</h3>
                                                         </div>
                                                         <Link
@@ -1306,7 +1306,7 @@ const Navbar = () => {
                                                     {aiToolsNavData.map((category, cIdx) => (
                                                         <div key={cIdx} className="min-w-0">
                                                             <div className="px-3 pb-2.5 mb-2 border-b-2 border-[#16130F]">
-                                                                <p className="font-['Rozha_One',serif] text-[14px] leading-none text-[#D0362E]">{TOOL_SECTION_HI[category.title] || ''}</p>
+                                                                <p className="font-urbanist font-extrabold text-[14px] leading-none text-[#D0362E]">{TOOL_SECTION_HI[category.title] || ''}</p>
                                                                 <p className="mt-1 text-[11.5px] font-black text-[#16130F] uppercase tracking-[0.12em]">{category.title}</p>
                                                             </div>
                                                             <div className="space-y-1">

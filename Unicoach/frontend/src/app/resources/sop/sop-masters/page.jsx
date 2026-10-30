@@ -73,7 +73,7 @@ const SOPMastersPage = () => {
             {/* ── SOP PICKER (phones and tablets) ── */}
             <div className="lg:hidden max-w-[1240px] mx-auto px-4 -mt-6 mb-8 relative z-10">
                 <InkCard className="p-3">
-                    <p className="font-['Rozha_One',serif] text-[14px] text-[#D0362E] leading-none px-1 mb-2">एसओपी गाइड</p>
+                    <p className="font-urbanist font-extrabold text-[14px] text-[#D0362E] leading-none px-1 mb-2">SOP guides</p>
                     <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-hide">
                         {sopList.map((sop, si) => {
                             const isCurrent = sop.key === currentKey;
@@ -101,7 +101,7 @@ const SOPMastersPage = () => {
                     {/* ── DESKTOP STICKY SIDEBAR ── */}
                     <aside className="hidden lg:block lg:col-span-1 sticky top-28">
                         <InkCard className="p-4">
-                            <p className="font-['Rozha_One',serif] text-[15px] text-[#D0362E] leading-none">एसओपी गाइड</p>
+                            <p className="font-urbanist font-extrabold text-[15px] text-[#D0362E] leading-none">SOP guides</p>
                             <h3 className="mt-1 mb-3 font-urbanist font-black text-[17px]">SOP Categories</h3>
                             <nav className="flex flex-col gap-2">
                                 {sopList.map((sop, si) => {
@@ -131,7 +131,7 @@ const SOPMastersPage = () => {
 
                         {/* Summary */}
                         <InkCard className="p-6 md:p-8" shadow="#14837E">
-                            <DesiHeading hi="मास्टर्स का एसओपी">Writing an SOP for Masters (MS)</DesiHeading>
+                            <DesiHeading hi="Masters ka SOP">Writing an SOP for Masters (MS)</DesiHeading>
                             <p className="mt-3 text-[#5B544A] leading-relaxed text-[15px]">
                                 Dreaming of a master's degree from a top university in the USA, UK, or Canada? Your academic scores and project list are ready, but there's one crucial document that can make or break your application: the Statement of Purpose (SOP). For thousands of Indian students every year, the SOP is the single most important part of their application package. It’s your chance to speak directly to the admissions committee and tell them who you are beyond the marksheets.
                             </p>
@@ -143,7 +143,7 @@ const SOPMastersPage = () => {
                                 <span className="w-10 h-10 rounded-full border-2 border-[#16130F] bg-[#F2B705] grid place-items-center shrink-0 shadow-[2px_2px_0_#16130F]">
                                     <PenTool size={18} />
                                 </span>
-                                <DesiHeading hi="खाका बनाओ">Masters SOP Outline Builder</DesiHeading>
+                                <DesiHeading hi="Outline banao">Masters SOP Outline Builder</DesiHeading>
                             </div>
 
                             <form onSubmit={handleGenerate} className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -224,7 +224,7 @@ const SOPMastersPage = () => {
 
                             {generatedOutline && (
                                 <div className="space-y-4 pt-5 border-t-2 border-dashed border-[#16130F33]">
-                                    <p className="font-['Rozha_One',serif] text-[15px] text-[#D0362E] leading-none">आपका खाका</p>
+                                    <p className="font-urbanist font-extrabold text-[15px] text-[#D0362E] leading-none">Tumhara outline</p>
                                     <h4 className="-mt-2 font-urbanist font-black text-[18px]">Outline Result</h4>
                                     <div className="space-y-3">
                                         {generatedOutline.map((item, idx) => {
@@ -249,7 +249,7 @@ const SOPMastersPage = () => {
 
                         {/* Real Samples Excerpts: rani poster band */}
                         <section className="bg-[#B8285B] border-[3px] border-[#16130F] p-6 md:p-8 shadow-[6px_6px_0_#16130F]" style={{ borderRadius: 18 }}>
-                            <DesiHeading hi="असली नमूने" light>Successful Masters SOP Samples</DesiHeading>
+                            <DesiHeading hi="Asli samples" light>Successful Masters SOP Samples</DesiHeading>
 
                             <div className="mt-6 space-y-5">
                                 {/* Sample 1: Electronics Glasgow */}
@@ -280,7 +280,7 @@ const SOPMastersPage = () => {
 
                         {/* FAQs */}
                         <section>
-                            <DesiHeading hi="अक्सर पूछे सवाल">Frequently Asked Questions</DesiHeading>
+                            <DesiHeading hi="Sabke sawaal">Frequently Asked Questions</DesiHeading>
                             <div className="mt-5 space-y-3">
                                 {[
                                     {
@@ -319,7 +319,7 @@ const SOPMastersPage = () => {
 
                         {/* Closing CTA */}
                         <BookOkCta
-                            hi="एसओपी चेक करवाओ"
+                            hi="SOP check karwao"
                             text="Masters SOP likh liya? Free 1:1 call mein mentor se check karwao."
                         />
 

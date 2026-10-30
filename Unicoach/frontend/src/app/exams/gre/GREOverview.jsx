@@ -176,7 +176,7 @@ const GREOverview = () => {
             <AlertTriangle className="w-5 h-5" />
           </div>
           <div>
-            <p className="font-['Rozha_One',serif] text-[14px] leading-none text-[#D0362E]">ताज़ा ख़बर</p>
+            <p className="font-urbanist font-extrabold text-[14px] leading-none text-[#D0362E]">Taaza khabar</p>
             <h4 className="mt-1 font-urbanist font-black text-[#16130F] text-[16px]">Latest ETS GRE Updates</h4>
             <div className="text-xs text-[#3D362E] font-semibold mt-0.5 space-y-1">
               <p>• ETS has announced several new updates in GRE, including a shorter duration, removal of tasks, and reduced number of questions.</p>
@@ -191,7 +191,7 @@ const GREOverview = () => {
           {/* Left Sticky Sidebar Index */}
           <aside className="hidden lg:block sticky top-28 max-h-[calc(100vh-140px)] overflow-y-auto pr-1.5 pb-2">
             <InkCard className="p-4">
-            <p className="font-['Rozha_One',serif] text-[15px] text-[#D0362E] leading-none">इस पेज पर</p>
+            <p className="font-urbanist font-extrabold text-[15px] text-[#D0362E] leading-none">Is page pe</p>
             <p className="mt-1 mb-3 font-urbanist font-black text-[15px] text-[#16130F]">On This Page</p>
             <nav className="flex flex-col gap-1.5">
               {menuItems.map((item) => (
@@ -213,7 +213,7 @@ const GREOverview = () => {
             
             {/* Section 1 */}
             <section id="section-1" ref={sectionRefs['section-1']} className="scroll-mt-28">
-              <DesiHeading hi="शुरुआत" className="mb-5">1. What is GRE?</DesiHeading>
+              <DesiHeading hi="Shuruaat" className="mb-5">1. What is GRE?</DesiHeading>
               <div className="text-[#3D362E] text-sm leading-relaxed space-y-4 font-semibold">
                 <p>
                   GRE, or <strong>Graduate Record Exam</strong>, is one of the most common exams required for post-graduate studies abroad. It is conducted by the <strong>Educational Testing Services (ETS)</strong>, which also owns the popular TOEFL exam.
@@ -239,7 +239,7 @@ const GREOverview = () => {
 
             {/* Section 2 */}
             <section id="section-2" ref={sectionRefs['section-2']} className="scroll-mt-28">
-              <DesiHeading hi="तारीख़ें" className="mb-5">2. GRE Dates: When is the GRE Exam Conducted?</DesiHeading>
+              <DesiHeading hi="Dates" className="mb-5">2. GRE Dates: When is the GRE Exam Conducted?</DesiHeading>
               <div className="text-[#3D362E] text-sm leading-relaxed space-y-4 font-semibold">
                 <p>
                   The GRE General Test is available throughout the year. Booking dates vary depending on your test centre. We advise booking the test 2-3 months early to ensure you get your desired slot.
@@ -273,7 +273,7 @@ const GREOverview = () => {
 
             {/* Section 3 */}
             <section id="section-3" ref={sectionRefs['section-3']} className="scroll-mt-28">
-              <DesiHeading hi="फ़ीस" className="mb-5">3. GRE Fees: How much does the GRE Cost?</DesiHeading>
+              <DesiHeading hi="Fees" className="mb-5">3. GRE Fees: How much does the GRE Cost?</DesiHeading>
               <div className="text-[#3D362E] text-sm leading-relaxed space-y-4 font-semibold">
                 <p>
                   From 1 August 2026, the GRE General Test fee in India is <strong>US$249</strong> (ETS). You pay in dollars or the rupee equivalent on the day, plus any applicable tax. Additional service fees apply depending on post-registration requests:
@@ -322,7 +322,7 @@ const GREOverview = () => {
 
             {/* Section 4 */}
             <section id="section-4" ref={sectionRefs['section-4']} className="scroll-mt-28">
-              <DesiHeading hi="रिज़ल्ट" className="mb-5">4. GRE Result: How do You Check Your GRE Results?</DesiHeading>
+              <DesiHeading hi="Result" className="mb-5">4. GRE Result: How do You Check Your GRE Results?</DesiHeading>
               <div className="text-[#3D362E] text-sm leading-relaxed space-y-4 font-semibold">
                 <p>
                   Official GRE General Test results are released within <strong>10-15 days</strong> of your test date.
@@ -337,7 +337,7 @@ const GREOverview = () => {
 
             {/* Section 5 */}
             <section id="section-5" ref={sectionRefs['section-5']} className="scroll-mt-28">
-              <DesiHeading hi="स्कोर" className="mb-5">5. What is a GRE Score?</DesiHeading>
+              <DesiHeading hi="Score" className="mb-5">5. What is a GRE Score?</DesiHeading>
               <div className="text-[#3D362E] text-sm leading-relaxed space-y-4 font-semibold">
                 <p>
                   The GRE General test score range spans from <strong>130 to 170</strong> for Verbal & Quantitative sections. AW is scored separately.
@@ -386,7 +386,7 @@ const GREOverview = () => {
 
             {/* Section 6 */}
             <section id="section-6" ref={sectionRefs['section-6']} className="scroll-mt-28">
-              <DesiHeading hi="सेंटर" className="mb-5">6. GRE Test Centre: Where Can You Take the GRE?</DesiHeading>
+              <DesiHeading hi="Centre" className="mb-5">6. GRE Test Centre: Where Can You Take the GRE?</DesiHeading>
               <div className="text-[#3D362E] text-sm leading-relaxed space-y-4 font-semibold">
                 <p>
                   GRE has over 1,000 test centres spread across 160 countries. In India, exams are conducted at centers in major cities:
@@ -406,7 +406,7 @@ const GREOverview = () => {
 
             {/* Section 7 */}
             <section id="section-7" ref={sectionRefs['section-7']} className="scroll-mt-28">
-              <DesiHeading hi="रजिस्ट्रेशन" className="mb-5">7. GRE Registration: How do I register for the GRE?</DesiHeading>
+              <DesiHeading hi="Registration" className="mb-5">7. GRE Registration: How do I register for the GRE?</DesiHeading>
               <div className="text-[#3D362E] text-sm leading-relaxed space-y-4 font-semibold">
                 <p>
                   Registering is simple and fully online via the ETS website:
@@ -430,7 +430,7 @@ const GREOverview = () => {
 
             {/* Section 8 */}
             <section id="section-8" ref={sectionRefs['section-8']} className="scroll-mt-28">
-              <DesiHeading hi="कौन दे सकता है" className="mb-5">8. GRE Eligibility: Documents Required for GRE</DesiHeading>
+              <DesiHeading hi="Kaun de sakta hai" className="mb-5">8. GRE Eligibility: Documents Required for GRE</DesiHeading>
               <div className="text-[#3D362E] text-sm leading-relaxed space-y-4 font-semibold">
                 <p>
                   ETS has set no strict age limits or academic qualifiers for taking the GRE.
@@ -445,7 +445,7 @@ const GREOverview = () => {
 
             {/* Section 9 */}
             <section id="section-9" ref={sectionRefs['section-9']} className="scroll-mt-28">
-              <DesiHeading hi="पेपर का ढाँचा" className="mb-5">9. GRE Syllabus & Pattern: What Does the Test Contain?</DesiHeading>
+              <DesiHeading hi="Paper ka pattern" className="mb-5">9. GRE Syllabus & Pattern: What Does the Test Contain?</DesiHeading>
               <div className="text-[#3D362E] text-sm leading-relaxed space-y-4 font-semibold">
                 <p>
                   The shorter GRE features a reduced question count and eliminates the separate essay task, lasting under 2 hours.
@@ -460,7 +460,7 @@ const GREOverview = () => {
 
             {/* Section 10 */}
             <section id="section-10" ref={sectionRefs['section-10']} className="scroll-mt-28">
-              <DesiHeading hi="किताबें" className="mb-5">10. GRE Books: What are the Best Resources for the GRE?</DesiHeading>
+              <DesiHeading hi="Books" className="mb-5">10. GRE Books: What are the Best Resources for the GRE?</DesiHeading>
               <div className="text-[#3D362E] text-sm leading-relaxed space-y-4 font-semibold">
                 <p>
                   Top reference guides recommended by coaches for exam preparation:
@@ -488,7 +488,7 @@ const GREOverview = () => {
 
             {/* Section 11 */}
             <section id="section-11" ref={sectionRefs['section-11']} className="scroll-mt-28">
-              <DesiHeading hi="मॉक टेस्ट" className="mb-5">11. GRE Practice Tests: Boost your Preparation!</DesiHeading>
+              <DesiHeading hi="Mock test" className="mb-5">11. GRE Practice Tests: Boost your Preparation!</DesiHeading>
               <div className="text-[#3D362E] text-sm leading-relaxed space-y-4 font-semibold">
                 <p>
                   Official diagnostic mocks from ETS are the most reliable tool to predict actual exam scores and get used to timing limits.
@@ -501,7 +501,7 @@ const GREOverview = () => {
 
             {/* Section 12 */}
             <section id="section-12" ref={sectionRefs['section-12']} className="scroll-mt-28">
-              <DesiHeading hi="कहाँ जाओगे" className="mb-5">12. Top Global Universities Accepting GRE Scores</DesiHeading>
+              <DesiHeading hi="Kahan jaoge" className="mb-5">12. Top Global Universities Accepting GRE Scores</DesiHeading>
               <div className="text-[#3D362E] text-sm leading-relaxed space-y-4 font-semibold mb-6">
                 <p>
                   Explore universities accepting GRE scores across USA, UK, Canada, Australia, and Ireland.
@@ -610,7 +610,7 @@ const GREOverview = () => {
             
             {/* Widget A: Live Workshops */}
             <div className="p-6 border-[3px] border-[#16130F] rounded-2xl shadow-[5px_5px_0_#16130F] text-white rotate-[0.6deg]" style={{ background: '#14837E' }}>
-              <span className="font-['Rozha_One',serif] text-[15px] leading-none text-[#FCE38A] block">मेला</span>
+              <span className="font-urbanist font-extrabold text-[15px] leading-none text-[#FCE38A] block">Live events</span>
               <span className="text-[10px] font-black uppercase tracking-widest block mt-1 mb-2 opacity-90">Live Workshops</span>
               <h3 className="font-urbanist text-[20px] font-black leading-snug mb-2">
                 Study Abroad Events & Fairs
@@ -650,7 +650,7 @@ const GREOverview = () => {
 
         {/* FAQs Accordion */}
         <section className="mt-16 max-w-4xl mx-auto">
-          <DesiHeading hi="अक्सर पूछे सवाल" className="mb-6">
+          <DesiHeading hi="Sabke sawaal" className="mb-6">
             <span className="inline-flex items-center gap-2"><HelpCircle size={24} className="text-[#D0362E]" />Frequently Asked Questions (FAQs)</span>
           </DesiHeading>
           <div className="space-y-3">

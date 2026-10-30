@@ -82,7 +82,7 @@ const SOPMbaPage = () => {
             {/* ── SOP PICKER (phones and tablets) ── */}
             <div className="lg:hidden max-w-[1240px] mx-auto px-4 -mt-6 mb-8 relative z-10">
                 <InkCard className="p-3">
-                    <p className="font-['Rozha_One',serif] text-[14px] text-[#D0362E] leading-none px-1 mb-2">एसओपी गाइड</p>
+                    <p className="font-urbanist font-extrabold text-[14px] text-[#D0362E] leading-none px-1 mb-2">SOP guides</p>
                     <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-hide">
                         {sopList.map((sop, si) => {
                             const isCurrent = sop.key === currentKey;
@@ -110,7 +110,7 @@ const SOPMbaPage = () => {
                     {/* ── DESKTOP STICKY SIDEBAR ── */}
                     <aside className="hidden lg:block lg:col-span-1 sticky top-28">
                         <InkCard className="p-4">
-                            <p className="font-['Rozha_One',serif] text-[15px] text-[#D0362E] leading-none">एसओपी गाइड</p>
+                            <p className="font-urbanist font-extrabold text-[15px] text-[#D0362E] leading-none">SOP guides</p>
                             <h3 className="mt-1 mb-3 font-urbanist font-black text-[17px]">SOP Categories</h3>
                             <nav className="flex flex-col gap-2">
                                 {sopList.map((sop, si) => {
@@ -140,7 +140,7 @@ const SOPMbaPage = () => {
 
                         {/* Summary */}
                         <InkCard className="p-6 md:p-8" shadow="#B8285B">
-                            <DesiHeading hi="बी-स्कूल का एसओपी">Crafting a Premium MBA Statement of Purpose</DesiHeading>
+                            <DesiHeading hi="B-School ka SOP">Crafting a Premium MBA Statement of Purpose</DesiHeading>
                             <p className="mt-3 text-[#5B544A] leading-relaxed text-[15px]">
                                 Applying for an MBA abroad is a defining moment in your career. While your GMAT/GRE scores, academic transcripts, and work experience are crucial, the Statement of Purpose (SOP) is your only chance to speak directly to the admissions committee. It’s where the numbers on your resume transform into a compelling narrative of ambition, leadership, and potential. For Indian students aiming for top global B-schools in 2025, the competition is fiercer than ever.
                             </p>
@@ -152,7 +152,7 @@ const SOPMbaPage = () => {
                                 <span className="w-10 h-10 rounded-full border-2 border-[#16130F] bg-[#B8285B] text-white grid place-items-center shrink-0 shadow-[2px_2px_0_#16130F]">
                                     <PenTool size={18} />
                                 </span>
-                                <DesiHeading hi="खाका बनाओ">MBA SOP Outline Generator</DesiHeading>
+                                <DesiHeading hi="Outline banao">MBA SOP Outline Generator</DesiHeading>
                             </div>
 
                             <form onSubmit={handleGenerate} className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -233,7 +233,7 @@ const SOPMbaPage = () => {
 
                             {generatedOutline && (
                                 <div className="space-y-4 pt-5 border-t-2 border-dashed border-[#16130F33]">
-                                    <p className="font-['Rozha_One',serif] text-[15px] text-[#D0362E] leading-none">आपका खाका</p>
+                                    <p className="font-urbanist font-extrabold text-[15px] text-[#D0362E] leading-none">Tumhara outline</p>
                                     <h4 className="-mt-2 font-urbanist font-black text-[18px]">Outline Results</h4>
                                     <div className="space-y-3">
                                         {generatedOutline.map((item, idx) => {
@@ -258,7 +258,7 @@ const SOPMbaPage = () => {
 
                         {/* Country Specific Highlights: teal poster band */}
                         <section className="bg-[#14837E] border-[3px] border-[#16130F] p-6 md:p-8 shadow-[6px_6px_0_#16130F]" style={{ borderRadius: 18 }}>
-                            <DesiHeading hi="असली नमूने" light>Successful MBA SOP Excerpts</DesiHeading>
+                            <DesiHeading hi="Asli samples" light>Successful MBA SOP Excerpts</DesiHeading>
 
                             <div className="mt-6 space-y-5">
                                 {/* USA (Ross) */}
@@ -287,7 +287,7 @@ const SOPMbaPage = () => {
 
                         {/* FAQs */}
                         <section>
-                            <DesiHeading hi="अक्सर पूछे सवाल">Frequently Asked Questions</DesiHeading>
+                            <DesiHeading hi="Sabke sawaal">Frequently Asked Questions</DesiHeading>
                             <div className="mt-5 space-y-3">
                                 {[
                                     {
@@ -326,7 +326,7 @@ const SOPMbaPage = () => {
 
                         {/* Closing CTA */}
                         <BookOkCta
-                            hi="एसओपी चेक करवाओ"
+                            hi="SOP check karwao"
                             text="MBA essay likh liya? Free 1:1 call mein mentor se check karwao."
                         />
 

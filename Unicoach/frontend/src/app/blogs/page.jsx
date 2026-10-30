@@ -181,7 +181,7 @@ const BlogsPage = () => {
                         {/* Featured Text */}
                         <div className="lg:w-1/2 min-w-0 flex flex-col justify-between py-1 text-left">
                             <div className="space-y-4">
-                                <p className="font-['Rozha_One',serif] text-[16px] leading-none text-[#D0362E]">आज की ख़ास</p>
+                                <p className="font-urbanist font-extrabold text-[16px] leading-none text-[#D0362E]">Aaj ki khaas</p>
                                 <div className="flex flex-wrap items-center gap-2.5 text-xs font-bold text-[#5B544A]">
                                     <span className="bg-[#F2B705] text-[#16130F] border-2 border-[#16130F] px-3 py-1 rounded-full text-xs font-black">
                                         {featuredBlog.category}
@@ -245,7 +245,7 @@ const BlogsPage = () => {
             {/* ── BLOG DIRECTORY ── */}
             <div className="max-w-[1240px] mx-auto px-4 sm:px-6 relative z-20">
 
-                <DesiHeading hi="सारे लेख" className="mb-6">Browse by topic</DesiHeading>
+                <DesiHeading hi="Saare articles" className="mb-6">Browse by topic</DesiHeading>
 
                 {/* Filter Tabs & Search Bar */}
                 <div className="bg-white p-4 sm:p-5 border-[3px] border-[#16130F] rounded-[14px] shadow-[5px_5px_0_#16130F] mb-10 flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-4">
@@ -376,7 +376,7 @@ const BlogsPage = () => {
                         <span className="w-14 h-14 mx-auto mb-4 grid place-items-center rounded-full bg-[#F2B705] border-[3px] border-[#16130F] shadow-[3px_3px_0_#16130F] -rotate-6">
                             <FileText size={24} className="text-[#16130F]" />
                         </span>
-                        <p className="font-['Rozha_One',serif] text-[15px] leading-none text-[#D0362E]">कुछ नहीं मिला</p>
+                        <p className="font-urbanist font-extrabold text-[15px] leading-none text-[#D0362E]">Kuch nahi mila</p>
                         <h3 className="mt-1.5 font-urbanist text-xl font-black text-[#16130F] mb-1">No Articles in This Category</h3>
                         <p className="text-[13px] text-[#5B544A] font-medium mb-5">Try selecting another topic or refine your search keywords.</p>
                         <button
@@ -391,7 +391,7 @@ const BlogsPage = () => {
                 {/* ── Closing CTA ── */}
                 <div className="mt-16 sm:mt-20">
                     <BookOkCta
-                        hi="पढ़ लिया? अब पूछ लो"
+                        hi="Padh liya? Ab pooch lo"
                         text="Blog se idea mil gaya, ab apne case pe baat karo. Free call, 1:1, ek ghante ki."
                     />
                 </div>

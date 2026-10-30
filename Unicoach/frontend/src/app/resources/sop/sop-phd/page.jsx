@@ -76,7 +76,7 @@ const SOPPhdPage = () => {
             {/* ── SOP PICKER (phones and tablets) ── */}
             <div className="lg:hidden max-w-[1240px] mx-auto px-4 -mt-6 mb-8 relative z-10">
                 <InkCard className="p-3">
-                    <p className="font-['Rozha_One',serif] text-[14px] text-[#D0362E] leading-none px-1 mb-2">एसओपी गाइड</p>
+                    <p className="font-urbanist font-extrabold text-[14px] text-[#D0362E] leading-none px-1 mb-2">SOP guides</p>
                     <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-hide">
                         {sopList.map((sop, si) => {
                             const isCurrent = sop.key === currentKey;
@@ -104,7 +104,7 @@ const SOPPhdPage = () => {
                     {/* ── DESKTOP STICKY SIDEBAR ── */}
                     <aside className="hidden lg:block lg:col-span-1 sticky top-28">
                         <InkCard className="p-4">
-                            <p className="font-['Rozha_One',serif] text-[15px] text-[#D0362E] leading-none">एसओपी गाइड</p>
+                            <p className="font-urbanist font-extrabold text-[15px] text-[#D0362E] leading-none">SOP guides</p>
                             <h3 className="mt-1 mb-3 font-urbanist font-black text-[17px]">SOP Categories</h3>
                             <nav className="flex flex-col gap-2">
                                 {sopList.map((sop, si) => {
@@ -134,7 +134,7 @@ const SOPPhdPage = () => {
 
                         {/* Summary */}
                         <InkCard className="p-6 md:p-8" shadow="#D0362E">
-                            <DesiHeading hi="पीएचडी का एसओपी">Writing a PhD Statement of Purpose</DesiHeading>
+                            <DesiHeading hi="PhD ka SOP">Writing a PhD Statement of Purpose</DesiHeading>
                             <p className="mt-3 text-[#5B544A] leading-relaxed text-[15px]">
                                 A PhD Statement of Purpose is significantly different from a Master's or MBA SOP. Instead of focusing heavily on career pivot stories, a doctoral SOP must demonstrate deep research potential, familiarity with modern academic literature, and clear alignment with specific faculty members at the target university. It is a technical research statement rather than a general essay.
                             </p>
@@ -146,7 +146,7 @@ const SOPPhdPage = () => {
                                 <span className="w-10 h-10 rounded-full border-2 border-[#16130F] bg-[#F2B705] grid place-items-center shrink-0 shadow-[2px_2px_0_#16130F]">
                                     <PenTool size={18} />
                                 </span>
-                                <DesiHeading hi="खाका बनाओ">PhD Research Outline Builder</DesiHeading>
+                                <DesiHeading hi="Outline banao">PhD Research Outline Builder</DesiHeading>
                             </div>
 
                             <form onSubmit={handleGenerate} className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -227,7 +227,7 @@ const SOPPhdPage = () => {
 
                             {generatedOutline && (
                                 <div className="space-y-4 pt-5 border-t-2 border-dashed border-[#16130F33]">
-                                    <p className="font-['Rozha_One',serif] text-[15px] text-[#D0362E] leading-none">आपका खाका</p>
+                                    <p className="font-urbanist font-extrabold text-[15px] text-[#D0362E] leading-none">Tumhara outline</p>
                                     <h4 className="-mt-2 font-urbanist font-black text-[18px]">Outline Results</h4>
                                     <div className="space-y-3">
                                         {generatedOutline.map((item, idx) => {
@@ -252,7 +252,7 @@ const SOPPhdPage = () => {
 
                         {/* Critical Steps for PhD SOP: teal poster band */}
                         <section className="bg-[#14837E] border-[3px] border-[#16130F] p-6 md:p-8 shadow-[6px_6px_0_#16130F]" style={{ borderRadius: 18 }}>
-                            <DesiHeading hi="ज़रूरी बातें" light>Key Writing Checklist for PhD SOPs</DesiHeading>
+                            <DesiHeading hi="Zaroori baatein" light>Key Writing Checklist for PhD SOPs</DesiHeading>
                             <ul className="mt-6 space-y-3 list-none p-0 m-0">
                                 {[
                                     'Establish research gaps in the literature immediately in Paragraph 1 or 2.',
@@ -272,7 +272,7 @@ const SOPPhdPage = () => {
 
                         {/* FAQs */}
                         <section>
-                            <DesiHeading hi="अक्सर पूछे सवाल">Frequently Asked Questions</DesiHeading>
+                            <DesiHeading hi="Sabke sawaal">Frequently Asked Questions</DesiHeading>
                             <div className="mt-5 space-y-3">
                                 {[
                                     {
@@ -311,7 +311,7 @@ const SOPPhdPage = () => {
 
                         {/* Closing CTA */}
                         <BookOkCta
-                            hi="एसओपी चेक करवाओ"
+                            hi="SOP check karwao"
                             text="PhD SOP likh liya? Free 1:1 call mein mentor se check karwao."
                         />
 

@@ -119,7 +119,7 @@ const DuolingoOverview = () => {
       <div className="max-w-[1240px] mx-auto px-4 md:px-8 pt-10 sm:pt-12 space-y-14">
 
         {/* Visual hook */}
-        <HookBand value="48 hrs" label="to certified results, shared with unlimited universities for free" hi="फटाफट" />
+        <HookBand value="48 hrs" label="to certified results, shared with unlimited universities for free" hi="Fatafat" />
 
         {/* Quick Stats Grid */}
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4">
@@ -138,7 +138,7 @@ const DuolingoOverview = () => {
         <InkCard className="p-5 sm:p-8 md:p-10" shadow="#14837E">
           <div className="flex flex-wrap items-end justify-between gap-4 mb-7">
             <div>
-              <DesiHeading hi="ज़रूरी बातें">Duolingo Exam Key Highlights</DesiHeading>
+              <DesiHeading hi="Zaroori baatein">Duolingo Exam Key Highlights</DesiHeading>
               <p className="text-[#5B544A] text-[13.5px] mt-2">Scroll through the slider to explore essential requirements and updates.</p>
             </div>
             <div className="flex gap-2">
@@ -179,7 +179,7 @@ const DuolingoOverview = () => {
             </div>
             <div className="p-5 bg-[#FFF1B8] border-[3px] border-[#16130F] shadow-[4px_4px_0_#16130F] flex flex-col justify-between rotate-[0.8deg]" style={{ borderRadius: 12 }}>
               <div>
-                <span className="font-['Rozha_One',serif] text-[14px] text-[#D0362E] leading-none block">मेंटर की सलाह</span>
+                <span className="font-urbanist font-extrabold text-[14px] text-[#D0362E] leading-none block">Mentor ki salah</span>
                 <span className="text-[11px] text-[#16130F] font-extrabold uppercase tracking-wider block mt-1 mb-2">Mentor Strategy</span>
                 <p className="text-[#3D362E] text-[13.5px] font-medium leading-relaxed">{sliders[activeSlider].insight}</p>
               </div>
@@ -206,7 +206,7 @@ const DuolingoOverview = () => {
 
         {/* Links to Info Hub */}
         <section>
-          <DesiHeading hi="पूरी जानकारी">Duolingo Detailed Resources</DesiHeading>
+          <DesiHeading hi="Poori jaankari">Duolingo Detailed Resources</DesiHeading>
           <div className="mt-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
             {exploreLinks.map((link, idx) => {
               const IconComp = link.icon;
@@ -242,7 +242,7 @@ const DuolingoOverview = () => {
               <span className="w-10 h-10 rounded-full border-2 border-[#16130F] bg-[#14837E] text-white grid place-items-center shrink-0 shadow-[2px_2px_0_#16130F]">
                 <Calendar size={18} />
               </span>
-              <DesiHeading hi="चार हफ़्ते का प्लान">4-Week Action Study Plan</DesiHeading>
+              <DesiHeading hi="4 hafte ka plan">4-Week Action Study Plan</DesiHeading>
             </div>
             <div className="space-y-4">
               {weeks.map((w, i) => {
@@ -262,7 +262,7 @@ const DuolingoOverview = () => {
 
           <div className="bg-[#B8285B] text-white border-[3px] border-[#16130F] shadow-[5px_5px_0_#16130F] p-6 sm:p-8 flex flex-col justify-between -rotate-[0.8deg]" style={{ borderRadius: 14 }}>
             <div>
-              <p className="font-['Rozha_One',serif] text-[16px] text-[#F2B705] leading-none">मास्टरक्लास</p>
+              <p className="font-urbanist font-extrabold text-[16px] text-[#F2B705] leading-none">Masterclass</p>
               <h3 className="mt-1.5 font-urbanist text-[24px] font-black mb-3 leading-tight">Duolingo Masterclass</h3>
               <p className="text-white/90 text-[14px] leading-relaxed">
                 Connect with our test prep coaches. We provide downloadable mock tests, specialized grammar/vocabulary drill files, and feedback loops on timed speaking prompts.
@@ -282,7 +282,7 @@ const DuolingoOverview = () => {
 
         {/* FAQs */}
         <section className="max-w-3xl mx-auto">
-          <DesiHeading hi="अक्सर पूछे सवाल" className="text-center">Frequently Asked Questions</DesiHeading>
+          <DesiHeading hi="Sabke sawaal" className="text-center">Frequently Asked Questions</DesiHeading>
           <div className="mt-6 space-y-3">
             {faqs.map((faq, idx) => {
               const isOpen = !!faqOpen[idx];
@@ -321,7 +321,7 @@ const DuolingoOverview = () => {
         {/* Closing CTA */}
         <BookOkCta
           to="/book-consultation"
-          hi="डुओलिंगो या आइल्ट्स?"
+          hi="Duolingo ya IELTS?"
           title="Book OK Please."
           text="DET chalega ya IELTS chahiye? Free 1:1 call mein mentor se poocho."
         />

@@ -171,8 +171,8 @@ const IELTSMasterclass = () => {
   // Lead booking form card (hero aside)
   const bookingCard = (
     <InkCard className="relative p-6 md:p-8 flex flex-col justify-center min-h-[420px] text-[#16130F]">
-      <span aria-hidden="true" className="absolute -top-4 right-5 rotate-3 px-3 py-1 rounded-md bg-[#B8285B] text-white border-2 border-[#16130F] shadow-[2px_2px_0_#16130F] font-['Rozha_One',serif] text-[14px] leading-none">
-        सीट बुक करो
+      <span aria-hidden="true" className="absolute -top-4 right-5 rotate-3 px-3 py-1 rounded-md bg-[#B8285B] text-white border-2 border-[#16130F] shadow-[2px_2px_0_#16130F] font-urbanist font-extrabold text-[14px] leading-none">
+        Seat book karo
       </span>
       <AnimatePresence mode="wait">
         {formSubmitted ? (
@@ -318,7 +318,7 @@ const IELTSMasterclass = () => {
 
       {/* Why Choose Section */}
       <section className="max-w-[1320px] mx-auto px-4 md:px-10 pt-16 sm:pt-20 mb-20 sm:mb-24">
-        <SectionHead hi="हमें क्यों चुनें" kicker="Premium IELTS Training">Why Choose UniCoach for IELTS Prep?</SectionHead>
+        <SectionHead hi="Hum kyun?" kicker="Premium IELTS Training">Why Choose UniCoach for IELTS Prep?</SectionHead>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
           {whyCards.map((card, i) => {
@@ -339,7 +339,7 @@ const IELTSMasterclass = () => {
 
       {/* Instructors Section */}
       <section className="max-w-[1320px] mx-auto px-4 md:px-10 mb-20 sm:mb-24">
-        <SectionHead hi="गुरुजन" kicker="Meet the Trainers">India's Top Certified IELTS Instructors</SectionHead>
+        <SectionHead hi="Mentors" kicker="Meet the Trainers">India's Top Certified IELTS Instructors</SectionHead>
         <p className="-mt-6 text-center text-[14px] text-[#5B544A] leading-relaxed max-w-lg mx-auto mb-10">
           Get trained by certified experts who have successfully guided thousands of students to score Band 7.5+ in the general & academic modules.
         </p>
@@ -384,7 +384,7 @@ const IELTSMasterclass = () => {
 
       {/* Testimonials Card Grid */}
       <section className="max-w-[1320px] mx-auto px-4 md:px-10 mb-20 sm:mb-24">
-        <SectionHead hi="स्कोरकार्ड" kicker="Success Scorecards">We've Helped 5,000+ Score 8.0+ Bands</SectionHead>
+        <SectionHead hi="Scorecard" kicker="Success Scorecards">We've Helped 5,000+ Score 8.0+ Bands</SectionHead>
 
         {/* Responsive scorecards grid */}
         <div className="grid grid-cols-1 min-[420px]:grid-cols-2 md:grid-cols-4 gap-4">
@@ -420,7 +420,7 @@ const IELTSMasterclass = () => {
             </div>
 
             <div>
-              <p className="font-['Rozha_One',serif] text-[15px] leading-none text-[#F2B705]">मॉक टेस्ट</p>
+              <p className="font-urbanist font-extrabold text-[15px] leading-none text-[#F2B705]">Mock test</p>
               <h3 className="mt-1.5 font-urbanist text-[22px] md:text-[26px] font-black mb-2">Simulated IELTS Mock Tests</h3>
               <p className="text-[14px] text-white/85 leading-relaxed">
                 Test yourself under real exam constraints. Get instant AI score grading and professional review.
@@ -449,7 +449,7 @@ const IELTSMasterclass = () => {
             </div>
 
             <div>
-              <p className="font-['Rozha_One',serif] text-[15px] leading-none text-[#D0362E]">मुफ़्त सामग्री</p>
+              <p className="font-urbanist font-extrabold text-[15px] leading-none text-[#D0362E]">Free material</p>
               <h3 className="mt-1.5 font-urbanist text-[22px] md:text-[26px] font-black text-[#16130F] mb-2">Free Study Materials & PDFs</h3>
               <p className="text-[14px] text-[#5B544A] leading-relaxed">
                 Download structured writing templates, cue card sample answers, and detailed listening answer logs.
@@ -476,7 +476,7 @@ const IELTSMasterclass = () => {
 
       {/* Frequently Asked Questions */}
       <section className="max-w-[850px] mx-auto px-4 md:px-10 mb-16">
-        <SectionHead hi="सवाल-जवाब" kicker="Got Questions?">Frequently Asked Questions</SectionHead>
+        <SectionHead hi="Sawaal-Jawaab" kicker="Got Questions?">Frequently Asked Questions</SectionHead>
 
         <div className="space-y-3.5">
           {faqs.map((faq, idx) => {
@@ -521,7 +521,7 @@ const IELTSMasterclass = () => {
       {/* Closing CTA */}
       <div className="max-w-[1320px] mx-auto px-4 md:px-10">
         <BookOkCta
-          hi="बुक ओके प्लीज़"
+          hi="Book OK Please"
           text="Band score ka target set karna hai? Ek free call pe plan bana lete hain. 1:1, ek ghante ki baat."
           cta="Free call book karo"
         />

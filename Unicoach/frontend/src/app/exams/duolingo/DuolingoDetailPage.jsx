@@ -48,7 +48,7 @@ const DTable = ({ head, children, center = [] }) => (
 // Small heading inside the content card
 const SubHead = ({ hi, children }) => (
   <div>
-    {hi && <p className="font-['Rozha_One',serif] text-[14px] leading-none text-[#D0362E]">{hi}</p>}
+    {hi && <p className="font-urbanist font-extrabold text-[14px] leading-none text-[#D0362E]">{hi}</p>}
     <h3 className="mt-1 font-urbanist font-black text-[19px] sm:text-[21px] leading-tight tracking-[-0.02em] text-[#16130F]">{children}</h3>
   </div>
 );
@@ -133,7 +133,7 @@ const DuolingoDetailPage = ({ pageKey }) => {
           />
 
           <div className="space-y-3">
-            <SubHead hi="डुओलिंगो ही क्यों">Why are Indian students choosing Duolingo?</SubHead>
+            <SubHead hi="Duolingo hi kyun">Why are Indian students choosing Duolingo?</SubHead>
             <p className="text-[14px] text-[#5B544A] leading-relaxed">
               India makes up the largest test-taking population globally. Launched by Duolingo in 2016, the exam is highly convenient: it takes approximately 60 minutes and is completed entirely online from home, saving you test center travel and waiting time.
             </p>
@@ -197,7 +197,7 @@ const DuolingoDetailPage = ({ pageKey }) => {
           {/* Core Adaptive Questions */}
           <Divider />
           <div className="space-y-4">
-            <SubHead hi="सवालों के प्रकार">Types of Questions in the Adaptive Test</SubHead>
+            <SubHead hi="Sawaalon ke types">Types of Questions in the Adaptive Test</SubHead>
             <DTable head={['Question Type', 'What It Tests', 'Frequency (Approx.)']} center={[2]}>
               {[
                 { type: "Read and Select", test: "Ability to recognize real English words from fake ones", freq: "15-18 times" },
@@ -223,7 +223,7 @@ const DuolingoDetailPage = ({ pageKey }) => {
           {/* Interactive Reading */}
           <Divider />
           <div className="space-y-4">
-            <SubHead hi="पढ़ना">Interactive Reading Section</SubHead>
+            <SubHead hi="Reading">Interactive Reading Section</SubHead>
             <p className="text-[14px] text-[#5B544A]">Evaluates reading comprehension and academic literacy through short passages:</p>
             <DTable head={['Question Type', 'What It Tests', 'Frequency (Approx.)']} center={[2]}>
               {[
@@ -245,7 +245,7 @@ const DuolingoDetailPage = ({ pageKey }) => {
           {/* Interactive Listening */}
           <Divider />
           <div className="space-y-4">
-            <SubHead hi="सुनना">Interactive Listening Section</SubHead>
+            <SubHead hi="Listening">Interactive Listening Section</SubHead>
             <p className="text-[14px] text-[#5B544A]">Measures conversational English in academic and real-life scenarios:</p>
             <DTable head={['Question Type', 'What It Tests', 'Frequency (Approx.)']} center={[2]}>
               <tr>
@@ -264,7 +264,7 @@ const DuolingoDetailPage = ({ pageKey }) => {
           {/* Writing and Speaking Sample */}
           <Divider />
           <div className="space-y-4">
-            <SubHead hi="लिखना और बोलना">Writing & Speaking Sample</SubHead>
+            <SubHead hi="Writing aur speaking">Writing & Speaking Sample</SubHead>
             <p className="text-[14px] text-[#5B544A]">Evaluates your productive output and self-expression capability:</p>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <MiniCard idx={0} icon={Mic} title="Speaking Sample (Video)">
@@ -287,7 +287,7 @@ const DuolingoDetailPage = ({ pageKey }) => {
             The DET base test fee is <strong className="font-extrabold text-[#16130F]">$70 (~Rs. 6,192)</strong> based on reference exchange rate of 1 USD = Rs. 88.46. Sharing score reports is completely free and unlimited. Below is the updated pricing schedule:
           </p>
 
-          <HookBand value="$70" label="base DET fee (~Rs. 6,192), with unlimited free score sending" hi="सस्ता" />
+          <HookBand value="$70" label="base DET fee (~Rs. 6,192), with unlimited free score sending" hi="Sasta" />
 
           <DTable head={['Fee Option', 'Cost (USD)', 'Cost (INR Approx.)']}>
             <tr>
@@ -331,7 +331,7 @@ const DuolingoDetailPage = ({ pageKey }) => {
 
           <Divider />
           <div className="space-y-4">
-            <SubHead hi="पेमेंट कैसे करें">Payment Methods & Guidelines</SubHead>
+            <SubHead hi="Payment kaise karein">Payment Methods & Guidelines</SubHead>
             <p className="text-[14px] text-[#5B544A]">Payments are processed in USD via secure gateways on Duolingo's website.</p>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <MiniCard idx={2} title="Accepted Methods:">
@@ -345,7 +345,7 @@ const DuolingoDetailPage = ({ pageKey }) => {
 
           <Divider />
           <div className="space-y-4">
-            <SubHead hi="तारीख़ बदलनी है?">Rescheduling & Cancellations</SubHead>
+            <SubHead hi="Date badalni hai?">Rescheduling & Cancellations</SubHead>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <MiniCard idx={1} title="No Rescheduling fees">
                 You can take the test at any time within 21 days of purchase. No scheduling or booking of slots is required.
@@ -412,7 +412,7 @@ const DuolingoDetailPage = ({ pageKey }) => {
           </Callout>
 
           <div className="space-y-4">
-            <SubHead hi="कितना स्कोर चाहिए">Score Benchmarks</SubHead>
+            <SubHead hi="Kitna score chahiye">Score Benchmarks</SubHead>
             <div>
               <BarCompare
                 kicker="Target scores"
@@ -462,7 +462,7 @@ const DuolingoDetailPage = ({ pageKey }) => {
           </Callout>
 
           <div className="space-y-4">
-            <SubHead hi="हर सेक्शन की तैयारी">Section-Wise Prep Strategies</SubHead>
+            <SubHead hi="Har section ki taiyari">Section-Wise Prep Strategies</SubHead>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <MiniCard idx={0} icon={Mic} title="Speaking Section">
                 Record yourself answering random prompts, replay to catch pauses or pronunciation slips. Mimic dialogue flows from podcasts to enhance coherence. Focus on a clear, structured pace.
@@ -481,7 +481,7 @@ const DuolingoDetailPage = ({ pageKey }) => {
 
           <Divider />
           <div className="space-y-4">
-            <SubHead hi="रोज़ का रूटीन">Suggested Daily Study Routine</SubHead>
+            <SubHead hi="Daily routine">Suggested Daily Study Routine</SubHead>
             <p className="text-[14px] text-[#5B544A]">Dedicate 45 to 60 minutes daily using this weekly structure:</p>
             <div>
               <TimelineStrip
@@ -498,7 +498,7 @@ const DuolingoDetailPage = ({ pageKey }) => {
 
           <Divider />
           <div className="space-y-4">
-            <SubHead hi="काम की चीज़ें">Recommended Preparation Resources</SubHead>
+            <SubHead hi="Kaam ki cheezein">Recommended Preparation Resources</SubHead>
             <ul className="space-y-2.5 text-[14px] text-[#3D362E]">
               {[
                 { k: 'Official DET website:', v: ' Unlimited free practice tests.' },
@@ -586,7 +586,7 @@ const DuolingoDetailPage = ({ pageKey }) => {
       {/* ── DIRECTORY PICKER (phones and tablets) ── */}
       <div className="lg:hidden max-w-[1240px] mx-auto px-4 -mt-6 mb-8 relative z-10">
         <InkCard className="p-3">
-          <p className="font-['Rozha_One',serif] text-[14px] text-[#D0362E] leading-none px-1 mb-2">डुओलिंगो गाइड</p>
+          <p className="font-urbanist font-extrabold text-[14px] text-[#D0362E] leading-none px-1 mb-2">Duolingo guide</p>
           <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-hide">
             {sidebarLinks.map((link) => {
               const IconComp = link.icon;
@@ -612,7 +612,7 @@ const DuolingoDetailPage = ({ pageKey }) => {
           {/* Sidebar (desktop) */}
           <aside className="hidden lg:block lg:col-span-4 sticky top-28">
             <InkCard className="p-4">
-              <p className="font-['Rozha_One',serif] text-[15px] text-[#D0362E] leading-none">डुओलिंगो गाइड</p>
+              <p className="font-urbanist font-extrabold text-[15px] text-[#D0362E] leading-none">Duolingo guide</p>
               <h3 className="mt-1 mb-3 font-urbanist font-black text-[17px]">Duolingo Directory</h3>
               <nav className="flex flex-col gap-2">
                 {sidebarLinks.map((link, idx) => {
@@ -642,7 +642,7 @@ const DuolingoDetailPage = ({ pageKey }) => {
           {/* Main Content Area */}
           <div className="lg:col-span-8 space-y-10 min-w-0">
             <InkCard className="p-5 sm:p-8 md:p-10" shadow="#14837E">
-              <DesiHeading hi="पूरी जानकारी">{currentName}</DesiHeading>
+              <DesiHeading hi="Poori jaankari">{currentName}</DesiHeading>
               <div className="mt-6 pt-6 border-t-2 border-dashed border-[#16130F33]">
                 {activeContent.content}
               </div>
@@ -650,7 +650,7 @@ const DuolingoDetailPage = ({ pageKey }) => {
 
             {/* FAQs Accordion */}
             <section>
-              <DesiHeading hi="अक्सर पूछे सवाल">Frequently Asked Questions</DesiHeading>
+              <DesiHeading hi="Sabke sawaal">Frequently Asked Questions</DesiHeading>
               <div className="mt-5 space-y-3">
                 {faqs.map((faq, idx) => {
                   const isOpen = !!openFaq[idx];
@@ -688,7 +688,7 @@ const DuolingoDetailPage = ({ pageKey }) => {
 
             {/* Closing CTA */}
             <BookOkCta
-              hi="डुओलिंगो का प्लान"
+              hi="Duolingo ka plan"
               title="Book OK Please."
               text="DET score kitna chahiye, kab dena hai? Free 1:1 call mein mentor se poocho."
             />

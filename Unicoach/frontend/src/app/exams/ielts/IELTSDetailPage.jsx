@@ -228,7 +228,7 @@ const IELTSDetailPage = ({ pageKey }) => {
           <p>
             Registering for IELTS is a simple online process conducted through the IDP registration website. Follow these steps:
           </p>
-          <HookBand value="82" label="test cities in India to choose your IELTS centre from" hi="बुक करो" />
+          <HookBand value="82" label="test cities in India to choose your IELTS centre from" hi="Book karo" />
           <JourneyPills
             className="not-prose"
             steps={[
@@ -489,7 +489,7 @@ const IELTSDetailPage = ({ pageKey }) => {
         {/* Guide index as ink pills (phones and tablets) */}
         <div className="lg:hidden -mt-6 mb-8 relative z-10">
           <InkCard className="p-3">
-            <p className="font-['Rozha_One',serif] text-[14px] text-[#D0362E] leading-none px-1 mb-2">विषय सूची</p>
+            <p className="font-urbanist font-extrabold text-[14px] text-[#D0362E] leading-none px-1 mb-2">Is guide mein</p>
             <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-hide">
               {sidebarLinks.map((linkItem) => {
                 const isActive = pageKey === linkItem.key;
@@ -513,7 +513,7 @@ const IELTSDetailPage = ({ pageKey }) => {
           {/* Left Sidebar Links */}
           <aside className="hidden lg:block sticky top-28 max-h-[calc(100vh-140px)] overflow-y-auto pr-2 pb-2">
             <InkCard className="p-4">
-              <p className="font-['Rozha_One',serif] text-[15px] text-[#D0362E] leading-none">विषय सूची</p>
+              <p className="font-urbanist font-extrabold text-[15px] text-[#D0362E] leading-none">Is guide mein</p>
               <h3 className="mt-1 mb-3 font-urbanist font-black text-[16px]">IELTS Guide Index</h3>
               <nav className="flex flex-col gap-1.5">
                 {sidebarLinks.map((linkItem, li) => {
@@ -540,7 +540,7 @@ const IELTSDetailPage = ({ pageKey }) => {
 
           {/* Center Content Section */}
           <InkCard as="main" className="p-5 sm:p-8 md:p-10 min-w-0">
-            <DesiHeading hi="पूरी जानकारी" className="mb-6 pb-5 border-b-[3px] border-dashed border-[#16130F33]">
+            <DesiHeading hi="Poori jaankari" className="mb-6 pb-5 border-b-[3px] border-dashed border-[#16130F33]">
               Detailed Guide Content
             </DesiHeading>
             <div className="max-w-none text-[15px] leading-relaxed text-[#3D362E] [&_strong]:text-[#16130F]">
@@ -553,7 +553,7 @@ const IELTSDetailPage = ({ pageKey }) => {
 
             {/* Widget: Live Events */}
             <div className="bg-[#14837E] text-white p-6 border-[3px] border-[#16130F] shadow-[5px_5px_0_#16130F] rotate-[-0.6deg]" style={{ borderRadius: 14 }}>
-              <span className="font-['Rozha_One',serif] text-[15px] text-[#F2B705] leading-none block mb-1">लाइव वर्कशॉप</span>
+              <span className="font-urbanist font-extrabold text-[15px] text-[#F2B705] leading-none block mb-1">Live workshop</span>
               <span className="text-[10.5px] font-black text-white/80 uppercase tracking-widest block mb-2">Live Workshops</span>
               <h3 className="font-urbanist text-[20px] font-black leading-snug mb-2">
                 Study Abroad Events & Fairs
@@ -595,7 +595,7 @@ const IELTSDetailPage = ({ pageKey }) => {
         <BookOkCta
           className="mt-14"
           to="/events"
-          hi="तैयारी साथ में"
+          hi="Taiyari saath mein"
           title="Book OK Please."
           text="IELTS ki taiyari karni hai? Live workshops mein certified mentors se seedha poocho."
           cta="Live events dekho"

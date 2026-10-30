@@ -57,7 +57,7 @@ export const DesiHero = ({ tone = 'mustard', sign, crumbs = [], title, subtitle,
 // Section heading with a Hindi kicker
 export const DesiHeading = ({ hi, children, light = false, className = '' }) => (
   <div className={className}>
-    {hi && <p className={`font-['Rozha_One',serif] text-[16px] leading-none ${light ? 'text-[#F2B705]' : 'text-[#D0362E]'}`}>{hi}</p>}
+    {hi && <p className={`font-urbanist font-extrabold text-[15px] leading-none ${light ? 'text-[#F2B705]' : 'text-[#D0362E]'}`}>{hi}</p>}
     <h2 className={`mt-1.5 font-urbanist font-black text-[26px] sm:text-[34px] leading-[1.05] tracking-[-0.03em] ${light ? 'text-white' : 'text-[#16130F]'}`}>{children}</h2>
   </div>
 );

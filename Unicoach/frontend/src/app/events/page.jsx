@@ -87,7 +87,7 @@ const POSTER_BTN = 'border-[3px] border-[#16130F] shadow-[4px_4px_0_#16130F] hov
 // The departures board (EventsHeroBoard) carries the site-wide .uc-soft wash; on this page it is a cream station board with an ink frame
 const BOARD_SKIN = '[&_.uc-soft.uc-soft.uc-soft.uc-soft]:![background:#FFF6D6] [&_.uc-soft.uc-soft.uc-soft.uc-soft]:![border:3px_solid_#16130F] [&_.uc-soft.uc-soft.uc-soft.uc-soft]:![box-shadow:5px_5px_0_#16130F] [&_.uc-soft.uc-soft.uc-soft.uc-soft]:![border-radius:14px]';
 // Small Hindi kicker label (Rozha One)
-const HI = "font-['Rozha_One',serif] leading-none";
+const HI = "font-urbanist font-extrabold leading-none";
 
 const registeredLabel = (item) => (item?.registrationCount > 0 ? `${item.registrationCount} Registered` : '');
 
@@ -355,7 +355,7 @@ const EventsPage = () => {
                         </div>
                     ) : (
                         <div className="bg-white border-[3px] border-[#16130F] rounded-[18px] shadow-[6px_6px_0_#16130F] p-8 text-center">
-                            <p className={`${HI} text-[18px] text-[#D0362E]`}>अगली गाड़ी जल्द</p>
+                            <p className={`${HI} text-[18px] text-[#D0362E]`}>Agli gaadi jaldi</p>
                             <h3 className="mt-2 font-urbanist text-[20px] font-black text-[#16130F] leading-snug">No upcoming events right now</h3>
                             <p className="mt-1.5 text-sm text-[#5B544A]">Check back soon for the next live session.</p>
                         </div>
@@ -396,7 +396,7 @@ const EventsPage = () => {
                 {/* Visual Header */}
                 <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-8 pb-6 border-b-[3px] border-dashed border-[#16130F]">
                     <div className="min-w-0">
-                        <DesiHeading hi="टिकट खिड़की">Explore Live &amp; Scheduled Events</DesiHeading>
+                        <DesiHeading hi="Ticket window">Explore Live &amp; Scheduled Events</DesiHeading>
                         <p className="text-[#5B544A] text-xs mt-2 font-bold uppercase tracking-wider">
                             Choose between direct interactive webinars or dynamic virtual university fairs
                         </p>
@@ -423,7 +423,7 @@ const EventsPage = () => {
                 {activeTab !== 'timeline' && (
                     <div className="mb-10 text-left">
                         <span className="flex items-center gap-2 mb-3">
-                            <span className={`${HI} text-[15px] text-[#D0362E]`}>दिन चुनो</span>
+                            <span className={`${HI} text-[15px] text-[#D0362E]`}>Din chuno</span>
                             <span className="text-[10px] font-black uppercase text-[#16130F] tracking-widest">Filter by Calendar Timeline</span>
                         </span>
                         <div className="flex overflow-x-auto gap-2.5 pt-1 pb-3 pl-0.5 scrollbar-hide">
@@ -529,7 +529,7 @@ const EventsPage = () => {
                         </div>
                     ) : (
                         <div className="bg-white border-[3px] border-[#16130F] rounded-[14px] shadow-[5px_5px_0_#16130F] p-10 sm:p-12 text-center mt-8">
-                            <p className={`${HI} text-[18px] text-[#D0362E] mb-2`}>खाली प्लेटफ़ॉर्म</p>
+                            <p className={`${HI} text-[18px] text-[#D0362E] mb-2`}>Platform khaali hai</p>
                             <span className="block font-urbanist text-xl font-black text-[#16130F]">
                                 {eventsList.length === 0 ? 'No upcoming events right now — check back soon' : 'No timeline events found'}
                             </span>
@@ -575,7 +575,7 @@ const EventsPage = () => {
                                                 ) : (
                                                     <span className="text-[11px] font-black uppercase leading-tight [writing-mode:vertical-rl] rotate-180">{item.date}</span>
                                                 )}
-                                                <span className={`${HI} mt-2 text-[14px]`}>टिकट</span>
+                                                <span className={`${HI} mt-2 text-[14px]`}>Ticket</span>
                                             </div>
                                             {/* Perforation notches */}
                                             <span aria-hidden="true" className="absolute z-10 left-[61px] sm:left-[71px] -top-[13px] w-[22px] h-[22px] rounded-full bg-[#FFF6E5] border-[3px] border-[#16130F]" />
@@ -669,7 +669,7 @@ const EventsPage = () => {
                         </motion.div>
                     ) : (
                         <div className="bg-white border-[3px] border-[#16130F] rounded-[14px] shadow-[5px_5px_0_#16130F] p-10 sm:p-12 text-center text-[#5B544A]">
-                            <p className={`${HI} text-[18px] text-[#D0362E] mb-2`}>खाली प्लेटफ़ॉर्म</p>
+                            <p className={`${HI} text-[18px] text-[#D0362E] mb-2`}>Platform khaali hai</p>
                             {eventsList.length === 0 ? (
                                 <>
                                     <span className="block font-urbanist text-xl font-black text-[#16130F] mb-2">No upcoming events right now — check back soon</span>
@@ -694,7 +694,7 @@ const EventsPage = () => {
                 <div className="bg-[#14837E] border-[3px] border-[#16130F] rounded-[18px] shadow-[6px_6px_0_#16130F] py-12 md:py-16 px-5 sm:px-8 md:px-12">
                     <div className="text-center max-w-2xl mx-auto mb-10">
                         <Sticker bg="#F2B705" tilt={-2} className="mb-4">Key Benefits</Sticker>
-                        <DesiHeading hi="क्यों आना चाहिए?" light>Why Attend UniCoach Events?</DesiHeading>
+                        <DesiHeading hi="Kyun aana chahiye?" light>Why Attend UniCoach Events?</DesiHeading>
                         <p className="text-white/90 mt-2 text-sm font-medium">
                             Get direct counselling pathways, checklist maps, and expert interactions
                         </p>
@@ -740,7 +740,7 @@ const EventsPage = () => {
             <section className="max-w-[1240px] mx-auto px-4 sm:px-6 md:px-8 mb-20 z-10 relative">
                 <div className="text-center max-w-xl mx-auto mb-10">
                     <Sticker bg="#FBD9E6" tilt={1.5} className="mb-4">Global Experts Portfolio</Sticker>
-                    <DesiHeading hi="मंच पर कौन?">Meet Our Global Mentors &amp; Speakers</DesiHeading>
+                    <DesiHeading hi="Stage pe kaun?">Meet Our Global Mentors &amp; Speakers</DesiHeading>
                     <p className="text-[#5B544A] text-xs mt-2 font-bold uppercase tracking-wider">
                         Learn from students and advisors with verified international acceptances
                     </p>
@@ -831,7 +831,7 @@ const EventsPage = () => {
             {/* ── FAQs Section ── */}
             <section className="max-w-[840px] mx-auto px-4 sm:px-6 mb-20">
                 <div className="text-center mb-8">
-                    <DesiHeading hi="पूछताछ खिड़की">Frequently Asked Questions</DesiHeading>
+                    <DesiHeading hi="Enquiry window">Frequently Asked Questions</DesiHeading>
                 </div>
 
                 <div className="space-y-4 text-left">
@@ -884,7 +884,7 @@ const EventsPage = () => {
             <section className="max-w-[1240px] mx-auto px-4 sm:px-6 md:px-8">
                 <BookOkCta
                     to="/book-consultation"
-                    hi="शो के बाद भी सवाल?"
+                    hi="Show ke baad bhi sawaal?"
                     text="Session ke baad bhi sawaal baaki hain? Free call pe senior se seedha poochho. 1:1, ek ghante ki baat."
                     cta="Book Free Counselling"
                 />

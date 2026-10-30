@@ -19,14 +19,14 @@ const MENTOR_COUNTRIES = [
 
 // Truck-art number plates: what the call is
 const PLATES = [
-  { top: 'फ़ीस', value: '₹0', bg: '#FCE38A', fg: INK, ring: '#E5007E' },
-  { top: 'टाइम', value: '60 min', bg: '#E5007E', fg: '#FFFFFF', ring: '#F2B705' },
-  { top: 'बात', value: '1:1', bg: '#13A89E', fg: '#FFFFFF', ring: '#FCE38A' },
+  { top: 'Fees', value: '₹0', bg: '#FCE38A', fg: INK, ring: '#E5007E' },
+  { top: 'Time', value: '60 min', bg: '#E5007E', fg: '#FFFFFF', ring: '#F2B705' },
+  { top: 'Baat', value: '1:1', bg: '#13A89E', fg: '#FFFFFF', ring: '#FCE38A' },
 ];
 
 export const BookOkCta = ({
   to = '/book-consultation',
-  hi = 'बुक ओके प्लीज़',
+  hi = 'Ek call, sab clear',
   title = 'Book OK Please.',
   text = 'Free call. Koi card nahi chahiye. 1:1, ek ghante ki baat.',
   cta = 'Free call book karo',
@@ -37,7 +37,7 @@ export const BookOkCta = ({
     <div className="@container bg-[#FFF6E5]">
     <div className="grid @2xl:grid-cols-[minmax(0,1fr)_auto] @5xl:grid-cols-[minmax(0,1fr)_auto_auto] items-center gap-6 @5xl:gap-10 px-6 py-8 @2xl:px-10 text-center @2xl:text-left">
       <div className="min-w-0">
-        <p className="font-['Rozha_One',serif] text-[18px] text-[#D0362E] leading-none">{hi}</p>
+        <p className="font-urbanist font-extrabold text-[18px] text-[#D0362E] leading-none">{hi}</p>
         <p className="mt-1 font-urbanist font-black text-[36px] sm:text-[44px] tracking-[-0.03em] leading-none text-[#16130F]">{title}</p>
         <p className="mt-2 text-[14px] text-[#5B544A]">{text}</p>
       </div>
@@ -64,7 +64,7 @@ export const BookOkCta = ({
             <span key={p.value}
               className="flex flex-col items-center px-3 py-1.5 border-[3px] border-[#16130F] leading-none"
               style={{ background: p.bg, color: p.fg, borderRadius: 10, boxShadow: `0 0 0 3px ${p.ring}`, transform: `rotate(${(i - 1) * 3}deg)` }}>
-              <span className="font-['Rozha_One',serif] text-[11px] opacity-90">{p.top}</span>
+              <span className="font-urbanist font-extrabold text-[11px] opacity-90">{p.top}</span>
               <span className="mt-0.5 font-urbanist font-black text-[16px] whitespace-nowrap">{p.value}</span>
             </span>
           ))}

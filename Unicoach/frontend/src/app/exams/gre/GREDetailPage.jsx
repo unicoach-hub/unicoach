@@ -118,7 +118,7 @@ const GREDetailPage = ({ pageKey }) => {
             The shorter GRE General Test contains 46 fewer questions compared to the traditional version, making the test faster and less tiring.
           </p>
 
-          <HookBand value="46" label="Fewer questions than the traditional GRE: 55 questions plus 1 essay now" hi="छोटा" />
+          <HookBand value="46" label="Fewer questions than the traditional GRE: 55 questions plus 1 essay now" hi="Short" />
 
           <div className="space-y-4">
             <h4 className="font-black text-[#16130F] text-xs uppercase tracking-wide">GRE Shorter Edition Format</h4>
@@ -492,7 +492,7 @@ const GREDetailPage = ({ pageKey }) => {
             Dedicated preparation of 2 to 3 months is optimal for most MS and MBA candidates. Focus on:
           </p>
 
-          <HookBand value="2–3 months" label="Dedicated preparation that is optimal for most MS and MBA candidates" hi="तैयारी" />
+          <HookBand value="2–3 months" label="Dedicated preparation that is optimal for most MS and MBA candidates" hi="Taiyari" />
 
           <div>
             <VersusCard
@@ -614,7 +614,7 @@ const GREDetailPage = ({ pageKey }) => {
         {/* Section picker on phones and tablets */}
         <div className="lg:hidden -mt-6 mb-8 relative z-10">
           <InkCard className="p-3">
-            <p className="font-['Rozha_One',serif] text-[14px] text-[#D0362E] leading-none px-1 mb-2">इस हिस्से में</p>
+            <p className="font-urbanist font-extrabold text-[14px] text-[#D0362E] leading-none px-1 mb-2">Is section mein</p>
             <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-hide">
               {sidebarLinks.map((link) => {
                 const IconComponent = link.icon;
@@ -641,7 +641,7 @@ const GREDetailPage = ({ pageKey }) => {
           {/* Left sticky sidebar menu */}
           <aside className="hidden lg:block sticky top-28 max-h-[calc(100vh-140px)] overflow-y-auto pr-1.5 pb-2">
             <InkCard className="p-4">
-              <p className="font-['Rozha_One',serif] text-[15px] text-[#D0362E] leading-none">इस हिस्से में</p>
+              <p className="font-urbanist font-extrabold text-[15px] text-[#D0362E] leading-none">Is section mein</p>
               <p className="mt-1 mb-3 font-urbanist font-black text-[15px] text-[#16130F]">GRE Guide Index</p>
               <nav className="flex flex-col gap-1.5">
                 {sidebarLinks.map((link) => {
@@ -670,7 +670,7 @@ const GREDetailPage = ({ pageKey }) => {
           <main className="min-w-0 space-y-10">
             <InkCard className="p-5 sm:p-8 md:p-10">
               <div className="mb-6 pb-5 border-b-2 border-dashed border-[#16130F]/25">
-                <DesiHeading hi="पूरी जानकारी">
+                <DesiHeading hi="Poori jaankari">
                   <span className="inline-flex items-center gap-2"><BookMarked size={22} style={{ color: '#D0362E' }} />Detailed Guide Content</span>
                 </DesiHeading>
               </div>
@@ -698,7 +698,7 @@ const GREDetailPage = ({ pageKey }) => {
 
             {/* Next Up */}
             <section>
-              <DesiHeading hi="आगे पढ़ो" className="mb-5">
+              <DesiHeading hi="Aage padho" className="mb-5">
                 <span className="inline-flex items-center gap-2"><Sparkles size={22} className="text-[#D0362E]" />Next Up</span>
               </DesiHeading>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -731,7 +731,7 @@ const GREDetailPage = ({ pageKey }) => {
 
             {/* Section-wise FAQs */}
             <section>
-              <DesiHeading hi="सवाल-जवाब" className="mb-5">
+              <DesiHeading hi="Sawaal-Jawaab" className="mb-5">
                 <span className="inline-flex items-center gap-2"><HelpCircle size={22} className="text-[#D0362E]" />Section-wise FAQs</span>
               </DesiHeading>
               <div className="space-y-3">
@@ -778,7 +778,7 @@ const GREDetailPage = ({ pageKey }) => {
 
             {/* Widget: Live Events & Fairs */}
             <div className="p-6 border-[3px] border-[#16130F] rounded-2xl shadow-[5px_5px_0_#16130F] text-white rotate-[0.6deg]" style={{ background: '#14837E' }}>
-              <span className="font-['Rozha_One',serif] text-[15px] leading-none text-[#FCE38A] block">मेला</span>
+              <span className="font-urbanist font-extrabold text-[15px] leading-none text-[#FCE38A] block">Live events</span>
               <span className="text-[10px] font-black uppercase tracking-widest block mt-1 mb-2 opacity-90">Live Workshops</span>
               <h3 className="font-urbanist text-[20px] font-black leading-snug mb-3">
                 Study Abroad Events & Fairs

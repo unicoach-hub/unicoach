@@ -17,7 +17,7 @@ const ERROR_BOX = 'mt-6 flex items-start gap-2.5 p-4 rounded-xl bg-[#FCE3DA] tex
 const CalcCard = ({ hi, en, children }) => (
     <div className="bg-white text-[#16130F] border-[3px] border-[#16130F] rounded-[18px] shadow-[8px_8px_0_#16130F] overflow-hidden">
         <div className="flex items-center justify-between gap-3 px-4 sm:px-6 py-3 bg-[#16130F]">
-            <span className="font-['Rozha_One',serif] text-[18px] leading-none text-[#F2B705]">{hi}</span>
+            <span className="font-urbanist font-extrabold text-[18px] leading-none text-[#F2B705]">{hi}</span>
             <span className="font-['Anton',sans-serif] tracking-[0.14em] text-[12px] leading-none text-white">{en}</span>
         </div>
         <div className="p-4 sm:p-6">{children}</div>
@@ -80,7 +80,7 @@ const HookStrip = ({ value, label, hi }) => (
         </div>
         <div className="flex-1 flex flex-wrap items-center gap-x-4 gap-y-2 px-5 py-4">
             <p className="flex-1 min-w-[200px] text-[14.5px] font-semibold leading-snug text-[#3D362E]">{label}</p>
-            {hi && <span className="font-['Rozha_One',serif] text-[26px] leading-none text-[#D0362E]">{hi}</span>}
+            {hi && <span className="font-urbanist font-extrabold text-[26px] leading-none text-[#D0362E]">{hi}</span>}
         </div>
     </InkCard>
 );
@@ -199,7 +199,7 @@ const CGPAtoGPACalculator = () => {
                     </>
                 )}
                 aside={(
-                    <CalcCard hi="अंक बदलो" en="CGPA TO GPA">
+                    <CalcCard hi="Score badlo" en="CGPA TO GPA">
                         {/* Direction */}
                         <div className="flex flex-wrap gap-2">
                             <InkPill on={activeTab === 'cgpa-to-gpa'} onClick={() => { setActiveTab('cgpa-to-gpa'); setResult(null); setError(''); }}>
@@ -305,7 +305,7 @@ const CGPAtoGPACalculator = () => {
                 <HookStrip
                     value="4.0"
                     label="The top of the US GPA scale. Germany's Bavarian formula runs the other way: 1.0 is a perfect score, 4.0 the minimum pass."
-                    hi="पैमाना"
+                    hi="Scale"
                 />
 
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
@@ -315,7 +315,7 @@ const CGPAtoGPACalculator = () => {
                             <span className="w-10 h-10 rounded-full border-2 border-[#16130F] text-white grid place-items-center shrink-0 shadow-[2px_2px_0_#16130F]" style={{ background: TONE.bg }}>
                                 <HelpCircle size={18} />
                             </span>
-                            <DesiHeading hi="पैमाने समझो">Understanding Scales</DesiHeading>
+                            <DesiHeading hi="Scale samjho">Understanding Scales</DesiHeading>
                         </div>
                         <p className="text-[#5B544A] text-[14.5px] leading-relaxed">
                             Foreign universities evaluate academic merits on custom grading systems. While US colleges require a 4.0 scale GPA, German universities use the Bavarian formula where 1.0 is a perfect score and 4.0 is minimum passing.
@@ -352,7 +352,7 @@ const CGPAtoGPACalculator = () => {
                 </div>
 
                 <BookOkCta
-                    hi="GPA के बाद?"
+                    hi="GPA ke baad?"
                     text="GPA nikal liya? Ab is score pe kaunsi university fit hai, free call pe mentor se poochho. 1:1, ek ghante ki baat."
                 />
             </div>

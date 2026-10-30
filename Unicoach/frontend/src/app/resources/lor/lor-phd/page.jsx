@@ -156,7 +156,7 @@ const LORPhdPage = () => {
                     {/* Left Sticky Navigation (desktop) */}
                     <aside className="hidden lg:block lg:col-span-1 sticky top-28">
                         <InkCard className="p-4">
-                            <p className="font-['Rozha_One',serif] text-[15px] text-[#D0362E] leading-none">सिफ़ारिश पत्र</p>
+                            <p className="font-urbanist font-extrabold text-[15px] text-[#D0362E] leading-none">Recommendation letters</p>
                             <h3 className="mt-1 mb-3 font-urbanist font-black text-[17px]">LOR Directory</h3>
                             <nav className="flex flex-col gap-2">
                                 {lorList.map((lor) => {
@@ -184,7 +184,7 @@ const LORPhdPage = () => {
 
                         {/* Overview Section */}
                         <InkCard className="p-6 md:p-8 space-y-4" shadow="#B8285B">
-                            <DesiHeading hi="पीएचडी का फ़र्क़">Writing a PhD LOR: Key Differences</DesiHeading>
+                            <DesiHeading hi="PhD mein kya alag">Writing a PhD LOR: Key Differences</DesiHeading>
                             <p className="text-[#5B544A] leading-relaxed text-[15px]">
                                 A doctoral degree is a test of research endurance and autonomy. Admissions committees for PhD programs want to see evidence that the candidate can formulate original scientific questions, design experimental configurations, publish research in respected journals, and troubleshoot model failures independently.
                             </p>
@@ -226,7 +226,7 @@ const LORPhdPage = () => {
 
                         {/* PhD LOR Builder Widget */}
                         <InkCard as="section" className="p-6 md:p-8 space-y-6" shadow="#D0362E">
-                            <DesiHeading hi="अपना ढाँचा बनाओ">
+                            <DesiHeading hi="Apna structure banao">
                                 <span className="inline-flex items-center gap-2">
                                     <PenTool className="text-[#D0362E] shrink-0" size={24} />
                                     PhD Research LOR Builder
@@ -350,12 +350,12 @@ const LORPhdPage = () => {
 
                         {/* PhD Sample Transcript: teal poster band with the letter on paper */}
                         <section className="bg-[#14837E] border-[3px] border-[#16130F] p-5 sm:p-6 md:p-8 shadow-[6px_6px_0_#16130F]" style={{ borderRadius: 18 }}>
-                            <DesiHeading hi="नमूना पत्र" light>Sample PhD Recommendation Letter</DesiHeading>
+                            <DesiHeading hi="Sample letter" light>Sample PhD Recommendation Letter</DesiHeading>
                             <div className="mt-6 bg-white border-[3px] border-[#16130F] shadow-[5px_5px_0_#0B4F4C] sm:-rotate-[0.4deg]" style={{ borderRadius: 6 }}>
                                 <div className="flex items-center justify-between gap-3 px-5 sm:px-7 py-3 border-b-2 border-dashed border-[#16130F33]">
                                     <span className="text-[11px] font-extrabold uppercase tracking-[0.14em] text-[#8A7F70] min-w-0">Doctoral LOR</span>
                                     <span className="shrink-0 inline-flex flex-col items-center px-2.5 py-1 border-[3px] border-double border-[#D0362E] text-[#D0362E] rotate-[-6deg] leading-none" style={{ borderRadius: 6 }}>
-                                        <span className="font-['Rozha_One',serif] text-[13px]">नमूना</span>
+                                        <span className="font-urbanist font-extrabold text-[13px]">Sample</span>
                                         <span className="font-['Anton',sans-serif] text-[10.5px] tracking-[0.14em] mt-0.5">SAMPLE</span>
                                     </span>
                                 </div>
@@ -385,7 +385,7 @@ a.pendelton@iisc.ac.in
 
                         {/* FAQs Section */}
                         <section>
-                            <DesiHeading hi="अक्सर पूछे सवाल">PhD Recommendation FAQs</DesiHeading>
+                            <DesiHeading hi="Sabke sawaal">PhD Recommendation FAQs</DesiHeading>
                             <div className="mt-5 space-y-3">
                                 {faqs.map((faq, idx) => {
                                     const isOpen = !!faqOpen[idx];
@@ -414,7 +414,7 @@ a.pendelton@iisc.ac.in
 
                         {/* Closing CTA */}
                         <BookOkCta
-                            hi="सिफ़ारिश की जाँच"
+                            hi="LOR check"
                             text="PhD LOR ka draft ready? Free 1:1 call mein mentor se check karwao."
                         />
 

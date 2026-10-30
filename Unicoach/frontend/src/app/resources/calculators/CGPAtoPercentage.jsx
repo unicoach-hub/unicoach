@@ -17,7 +17,7 @@ const ERROR_BOX = 'mt-6 flex items-start gap-2.5 p-4 rounded-xl bg-[#FCE3DA] tex
 const CalcCard = ({ hi, en, children }) => (
     <div className="bg-white text-[#16130F] border-[3px] border-[#16130F] rounded-[18px] shadow-[8px_8px_0_#16130F] overflow-hidden">
         <div className="flex items-center justify-between gap-3 px-4 sm:px-6 py-3 bg-[#16130F]">
-            <span className="font-['Rozha_One',serif] text-[18px] leading-none text-[#F2B705]">{hi}</span>
+            <span className="font-urbanist font-extrabold text-[18px] leading-none text-[#F2B705]">{hi}</span>
             <span className="font-['Anton',sans-serif] tracking-[0.14em] text-[12px] leading-none text-white">{en}</span>
         </div>
         <div className="p-4 sm:p-6">{children}</div>
@@ -80,7 +80,7 @@ const HookStrip = ({ value, label, hi }) => (
         </div>
         <div className="flex-1 flex flex-wrap items-center gap-x-4 gap-y-2 px-5 py-4">
             <p className="flex-1 min-w-[200px] text-[14.5px] font-semibold leading-snug text-[#3D362E]">{label}</p>
-            {hi && <span className="font-['Rozha_One',serif] text-[26px] leading-none text-[#D0362E]">{hi}</span>}
+            {hi && <span className="font-urbanist font-extrabold text-[26px] leading-none text-[#D0362E]">{hi}</span>}
         </div>
     </InkCard>
 );
@@ -178,7 +178,7 @@ const CGPAtoPercentage = () => {
                     </>
                 )}
                 aside={(
-                    <CalcCard hi="गुणा भाग" en="CGPA TO PERCENT">
+                    <CalcCard hi="Formula time" en="CGPA TO PERCENT">
                         {/* Direction */}
                         <div className="flex flex-wrap gap-2">
                             <InkPill on={activeTab === 'cgpa-to-percentage'} onClick={() => { setActiveTab('cgpa-to-percentage'); setResult(null); setError(''); }}>
@@ -281,7 +281,7 @@ const CGPAtoPercentage = () => {
                 <HookStrip
                     value="× 9.5"
                     label="The CBSE multiplier for CGPA to percentage. A standard 10-point university scale uses × 10."
-                    hi="गुणा"
+                    hi="Formula"
                 />
 
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
@@ -291,7 +291,7 @@ const CGPAtoPercentage = () => {
                             <span className="w-10 h-10 rounded-full border-2 border-[#16130F] text-white grid place-items-center shrink-0 shadow-[2px_2px_0_#16130F]" style={{ background: TONE.bg }}>
                                 <HelpCircle size={18} />
                             </span>
-                            <DesiHeading hi="9.5 ही क्यों?">Why a 9.5 Multiplier?</DesiHeading>
+                            <DesiHeading hi="9.5 hi kyun?">Why a 9.5 Multiplier?</DesiHeading>
                         </div>
                         <p className="text-[#5B544A] text-[14.5px] leading-relaxed">
                             The Central Board of Secondary Education (CBSE) analyzed the last five years of student scores and concluded that the average percentage scored by top performance groups sits around 95 marks. Thus, a linear 9.5 multiplier was established for converting CGPA to percentages:
@@ -317,7 +317,7 @@ const CGPAtoPercentage = () => {
                 </div>
 
                 <BookOkCta
-                    hi="प्रतिशत के बाद?"
+                    hi="Percentage ke baad?"
                     text="Percentage nikal liya? Ab is score pe kahan apply karein, free call pe mentor se poochho. 1:1, ek ghante ki baat."
                 />
             </div>

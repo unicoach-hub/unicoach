@@ -67,7 +67,7 @@ const PTEDetailPage = ({ pageKey }) => {
 
           <div className="space-y-4">
             <div>
-              <p className="font-['Rozha_One',serif] text-[14px] leading-none text-[#D0362E]">शुरुआत</p>
+              <p className="font-urbanist font-extrabold text-[14px] leading-none text-[#D0362E]">Shuruaat</p>
               <h3 className="mt-1 font-urbanist text-[20px] sm:text-[22px] font-black tracking-[-0.02em] text-[#16130F] flex items-center gap-2">
                 <span className="w-3 h-3 border-2 border-[#16130F] rotate-45 inline-block shrink-0" style={{ background: '#14837E' }} />
                 1. What is the PTE Academic Exam?
@@ -104,7 +104,7 @@ const PTEDetailPage = ({ pageKey }) => {
 
           <div className="space-y-4 pt-4 border-t border-[#16130F]/15">
             <div>
-              <p className="font-['Rozha_One',serif] text-[14px] leading-none text-[#D0362E]">तुलना</p>
+              <p className="font-urbanist font-extrabold text-[14px] leading-none text-[#D0362E]">Compare karo</p>
               <h3 className="mt-1 font-urbanist text-[20px] sm:text-[22px] font-black tracking-[-0.02em] text-[#16130F] flex items-center gap-2">
                 <span className="w-3 h-3 border-2 border-[#16130F] rotate-45 inline-block shrink-0" style={{ background: '#14837E' }} />
                 PTE vs PTE Core: Which Option is Best?
@@ -183,7 +183,7 @@ const PTEDetailPage = ({ pageKey }) => {
 
           <div className="space-y-5 pt-4">
             <div>
-              <p className="font-['Rozha_One',serif] text-[14px] leading-none text-[#D0362E]">पेपर का ढाँचा</p>
+              <p className="font-urbanist font-extrabold text-[14px] leading-none text-[#D0362E]">Paper ka pattern</p>
               <h3 className="mt-1 font-urbanist text-[20px] sm:text-[22px] font-black tracking-[-0.02em] text-[#16130F] flex items-center gap-2">
                 <span className="w-3 h-3 border-2 border-[#16130F] rotate-45 inline-block shrink-0" style={{ background: '#14837E' }} />
                 Syllabus Section Details
@@ -250,7 +250,7 @@ const PTEDetailPage = ({ pageKey }) => {
             In India, the PTE Academic fee is standardized across centers, though extra charges apply for last-minute schedules.
           </p>
 
-          <HookBand value="₹18,900" label="Standard PTE Academic fee in India, including 18% GST" hi="फ़ीस" />
+          <HookBand value="₹18,900" label="Standard PTE Academic fee in India, including 18% GST" hi="Fees" />
 
           <div className="space-y-2">
             <h4 className="font-urbanist text-sm font-black text-[#16130F]">1. PTE Exam Fee Breakdown</h4>
@@ -378,7 +378,7 @@ const PTEDetailPage = ({ pageKey }) => {
 
           <div className="space-y-4">
             <div>
-              <p className="font-['Rozha_One',serif] text-[14px] leading-none text-[#D0362E]">तारीख़ें</p>
+              <p className="font-urbanist font-extrabold text-[14px] leading-none text-[#D0362E]">Dates</p>
               <h3 className="mt-1 font-urbanist text-[20px] sm:text-[22px] font-black tracking-[-0.02em] text-[#16130F] flex items-center gap-2">
                 <span className="w-3 h-3 border-2 border-[#16130F] rotate-45 inline-block shrink-0" style={{ background: '#14837E' }} />
                 How to Select a Test Date?
@@ -456,7 +456,7 @@ const PTEDetailPage = ({ pageKey }) => {
             Finding a testing center close to you is essential to minimize travel stress on exam day. Key details to check:
           </p>
 
-          <HookBand value="62+" label="Physical PTE test locations across major cities in India" hi="सेंटर" />
+          <HookBand value="62+" label="Physical PTE test locations across major cities in India" hi="Centre" />
 
           <div className="space-y-4">
             <h4 className="font-urbanist text-sm font-black text-[#16130F]">Physical Test Centers List</h4>
@@ -581,7 +581,7 @@ const PTEDetailPage = ({ pageKey }) => {
             Booking slots for PTE Academic requires attention to administrative limits:
           </p>
 
-          <HookBand value="2–3 weeks" label="Book at least this far ahead, especially for weekend time slots" hi="जल्दी" />
+          <HookBand value="2–3 weeks" label="Book at least this far ahead, especially for weekend time slots" hi="Jaldi" />
 
           <div className="space-y-4">
             <h4 className="font-urbanist text-sm font-black text-[#16130F]">Important Slot Booking Advice</h4>
@@ -713,7 +713,7 @@ const PTEDetailPage = ({ pageKey }) => {
         {/* Section picker on phones and tablets */}
         <div className="lg:hidden -mt-6 mb-8 relative z-10">
           <InkCard className="p-3">
-            <p className="font-['Rozha_One',serif] text-[14px] text-[#D0362E] leading-none px-1 mb-2">इस हिस्से में</p>
+            <p className="font-urbanist font-extrabold text-[14px] text-[#D0362E] leading-none px-1 mb-2">Is section mein</p>
             <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-hide">
               {sidebarLinks.map((link) => {
                 const IconComponent = link.icon;
@@ -740,7 +740,7 @@ const PTEDetailPage = ({ pageKey }) => {
           {/* Left sticky sidebar menu */}
           <aside className="hidden lg:block sticky top-28 max-h-[calc(100vh-140px)] overflow-y-auto pr-1.5 pb-2">
             <InkCard className="p-4">
-              <p className="font-['Rozha_One',serif] text-[15px] text-[#D0362E] leading-none">इस हिस्से में</p>
+              <p className="font-urbanist font-extrabold text-[15px] text-[#D0362E] leading-none">Is section mein</p>
               <p className="mt-1 mb-3 font-urbanist font-black text-[15px] text-[#16130F]">On This Section</p>
               <nav className="flex flex-col gap-1.5">
                 {sidebarLinks.map((link) => {
@@ -789,7 +789,7 @@ const PTEDetailPage = ({ pageKey }) => {
 
             {/* Next Up */}
             <section>
-              <DesiHeading hi="आगे पढ़ो" className="mb-5">
+              <DesiHeading hi="Aage padho" className="mb-5">
                 <span className="inline-flex items-center gap-2"><Sparkles size={22} className="text-[#D0362E]" />Next Up</span>
               </DesiHeading>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -822,7 +822,7 @@ const PTEDetailPage = ({ pageKey }) => {
 
             {/* Section-wise FAQs */}
             <section>
-              <DesiHeading hi="सवाल-जवाब" className="mb-5">
+              <DesiHeading hi="Sawaal-Jawaab" className="mb-5">
                 <span className="inline-flex items-center gap-2"><HelpCircle size={22} className="text-[#D0362E]" />Section-wise FAQs</span>
               </DesiHeading>
               <div className="space-y-3">
@@ -869,7 +869,7 @@ const PTEDetailPage = ({ pageKey }) => {
 
             {/* Widget: Live Events & Fairs */}
             <div className="p-6 border-[3px] border-[#16130F] rounded-2xl shadow-[5px_5px_0_#16130F] text-white rotate-[0.6deg]" style={{ background: '#D0362E' }}>
-              <span className="font-['Rozha_One',serif] text-[15px] leading-none text-[#FCE38A] block">मेला</span>
+              <span className="font-urbanist font-extrabold text-[15px] leading-none text-[#FCE38A] block">Live events</span>
               <span className="text-[10px] font-black uppercase tracking-widest block mt-1 mb-2 opacity-90">Live Workshops</span>
               <h3 className="font-urbanist text-[20px] font-black leading-snug mb-3">
                 Study Abroad Events & Fairs

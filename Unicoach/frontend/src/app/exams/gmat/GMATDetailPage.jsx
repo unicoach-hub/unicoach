@@ -149,7 +149,7 @@ const GMATDetailPage = ({ pageKey }) => {
             The new GMAT structure deals strictly with business readiness. The analytical writing (AWA) has been completely removed.
           </p>
 
-          <HookBand value="205–805" label="Total GMAT score range. Every Focus score ends in 5" hi="स्कोर" />
+          <HookBand value="205–805" label="Total GMAT score range. Every Focus score ends in 5" hi="Score" />
 
           <div>
             <Donut
@@ -452,7 +452,7 @@ const GMATDetailPage = ({ pageKey }) => {
             You can register for the GMAT starting 6 months before your target test date and up to 24 hours prior to a slot. Early booking is highly recommended.
           </p>
 
-          <HookBand value="6 months" label="Earliest you can register before your test date. The latest is 24 hours before" hi="जल्दी" />
+          <HookBand value="6 months" label="Earliest you can register before your test date. The latest is 24 hours before" hi="Jaldi" />
 
           <div className="space-y-3">
             <h4 className="font-urbanist text-sm font-black text-[#16130F]">10-Step GMAT Registration Process</h4>
@@ -605,7 +605,7 @@ const GMATDetailPage = ({ pageKey }) => {
             The GMAT tests analytics rather than memory. With dedicated study of 3 to 4 months, a high percentile is highly attainable. Explore the section-wise strategy cards:
           </p>
 
-          <HookBand value="3–4 months" label="Dedicated study that makes a high GMAT percentile attainable" hi="तैयारी" />
+          <HookBand value="3–4 months" label="Dedicated study that makes a high GMAT percentile attainable" hi="Taiyari" />
 
           <div className="space-y-5">
             {/* Verbal */}
@@ -781,7 +781,7 @@ const GMATDetailPage = ({ pageKey }) => {
         {/* Section picker on phones and tablets */}
         <div className="lg:hidden -mt-6 mb-8 relative z-10">
           <InkCard className="p-3">
-            <p className="font-['Rozha_One',serif] text-[14px] text-[#D0362E] leading-none px-1 mb-2">इस हिस्से में</p>
+            <p className="font-urbanist font-extrabold text-[14px] text-[#D0362E] leading-none px-1 mb-2">Is section mein</p>
             <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-hide">
               {sidebarLinks.map((link) => {
                 const IconComponent = link.icon;
@@ -808,7 +808,7 @@ const GMATDetailPage = ({ pageKey }) => {
           {/* Left sticky sidebar menu */}
           <aside className="hidden lg:block sticky top-28 max-h-[calc(100vh-140px)] overflow-y-auto pr-1.5 pb-2">
             <InkCard className="p-4">
-              <p className="font-['Rozha_One',serif] text-[15px] text-[#D0362E] leading-none">इस हिस्से में</p>
+              <p className="font-urbanist font-extrabold text-[15px] text-[#D0362E] leading-none">Is section mein</p>
               <p className="mt-1 mb-3 font-urbanist font-black text-[15px] text-[#16130F]">GMAT Guide Index</p>
               <nav className="flex flex-col gap-1.5">
                 {sidebarLinks.map((link) => {
@@ -837,7 +837,7 @@ const GMATDetailPage = ({ pageKey }) => {
           <main className="min-w-0 space-y-10">
             <InkCard className="p-5 sm:p-8 md:p-10">
               <div className="mb-6 pb-5 border-b-2 border-dashed border-[#16130F]/25">
-                <DesiHeading hi="पूरी जानकारी">
+                <DesiHeading hi="Poori jaankari">
                   <span className="inline-flex items-center gap-2"><BookMarked size={22} style={{ color: '#B8285B' }} />Detailed Guide Content</span>
                 </DesiHeading>
               </div>
@@ -865,7 +865,7 @@ const GMATDetailPage = ({ pageKey }) => {
 
             {/* Next Up */}
             <section>
-              <DesiHeading hi="आगे पढ़ो" className="mb-5">
+              <DesiHeading hi="Aage padho" className="mb-5">
                 <span className="inline-flex items-center gap-2"><Sparkles size={22} className="text-[#D0362E]" />Next Up</span>
               </DesiHeading>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -898,7 +898,7 @@ const GMATDetailPage = ({ pageKey }) => {
 
             {/* Section-wise FAQs */}
             <section>
-              <DesiHeading hi="सवाल-जवाब" className="mb-5">
+              <DesiHeading hi="Sawaal-Jawaab" className="mb-5">
                 <span className="inline-flex items-center gap-2"><HelpCircle size={22} className="text-[#D0362E]" />Section-wise FAQs</span>
               </DesiHeading>
               <div className="space-y-3">
@@ -945,7 +945,7 @@ const GMATDetailPage = ({ pageKey }) => {
 
             {/* Widget: Live Events & Fairs */}
             <div className="p-6 border-[3px] border-[#16130F] rounded-2xl shadow-[5px_5px_0_#16130F] text-white rotate-[0.6deg]" style={{ background: '#14837E' }}>
-              <span className="font-['Rozha_One',serif] text-[15px] leading-none text-[#FCE38A] block">मेला</span>
+              <span className="font-urbanist font-extrabold text-[15px] leading-none text-[#FCE38A] block">Live events</span>
               <span className="text-[10px] font-black uppercase tracking-widest block mt-1 mb-2 opacity-90">Live Workshops</span>
               <h3 className="font-urbanist text-[20px] font-black leading-snug mb-3">
                 Study Abroad Events & Fairs

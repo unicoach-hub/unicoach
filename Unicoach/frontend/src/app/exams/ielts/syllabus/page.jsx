@@ -20,7 +20,7 @@ import { BookOkCta } from '../../../../components/desi/BookOkCta';
 // Section heading with a short Hindi kicker (h3 level)
 const SubHead = ({ hi, children, className = '' }) => (
   <div className={className}>
-    <p className="font-['Rozha_One',serif] text-[15px] leading-none text-[#D0362E]">{hi}</p>
+    <p className="font-urbanist font-extrabold text-[15px] leading-none text-[#D0362E]">{hi}</p>
     <h3 className="mt-1 font-urbanist font-black text-[21px] sm:text-[24px] leading-[1.1] tracking-[-0.02em] text-[#16130F]">{children}</h3>
   </div>
 );
@@ -227,7 +227,7 @@ const IELTSSyllabusPage = () => {
       {/* ── GUIDE PICKER (phones and tablets) ── */}
       <div className="lg:hidden max-w-[1400px] mx-auto px-4 -mt-6 mb-8 relative z-10">
         <InkCard className="p-3">
-          <p className="font-['Rozha_One',serif] text-[14px] text-[#D0362E] leading-none px-1 mb-2">आइल्ट्स गाइड</p>
+          <p className="font-urbanist font-extrabold text-[14px] text-[#D0362E] leading-none px-1 mb-2">IELTS guide</p>
           <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-hide">
             {sidebarLinks.map((linkItem) => {
               const isActive = linkItem.key === 'syllabus';
@@ -253,7 +253,7 @@ const IELTSSyllabusPage = () => {
           {/* Left Sidebar Links */}
           <aside className="hidden lg:block sticky top-28 max-h-[calc(100vh-140px)] overflow-y-auto pr-2 pb-2">
             <InkCard className="p-4">
-              <p className="font-['Rozha_One',serif] text-[15px] text-[#D0362E] leading-none">आइल्ट्स गाइड</p>
+              <p className="font-urbanist font-extrabold text-[15px] text-[#D0362E] leading-none">IELTS guide</p>
               <h3 className="mt-1 mb-3 font-urbanist font-black text-[16px]">IELTS Guide Index</h3>
               <nav className="flex flex-col gap-1.5">
                 {sidebarLinks.map((linkItem) => {
@@ -278,7 +278,7 @@ const IELTSSyllabusPage = () => {
 
           {/* Center Content Section */}
           <main className="min-w-0 bg-white border-[3px] border-[#16130F] p-5 sm:p-8 md:p-10 rounded-[18px] shadow-[6px_6px_0_#16130F]">
-            <DesiHeading hi="पूरी जानकारी" className="mb-6 pb-5 border-b-2 border-dashed border-[#16130F33]">
+            <DesiHeading hi="Poori jaankari" className="mb-6 pb-5 border-b-2 border-dashed border-[#16130F33]">
               Detailed Guide Content
             </DesiHeading>
             <div className="max-w-none space-y-8 text-[#3D362E] text-[15px] leading-relaxed">
@@ -293,7 +293,7 @@ const IELTSSyllabusPage = () => {
                 While the Listening and Speaking sections are identical in both types of tests, the Writing and Reading sections differ. Knowing the syllabus ensures you can allocate study time efficiently and avoid surprises on test day.
               </p>
 
-              <HookBand value="2h 44m" label="total IELTS test time across Listening, Reading, Writing and Speaking" hi="पैटर्न" />
+              <HookBand value="2h 44m" label="total IELTS test time across Listening, Reading, Writing and Speaking" hi="Pattern" />
 
               <div>
                 <Donut
@@ -476,12 +476,12 @@ const IELTSSyllabusPage = () => {
                 </div>
               </div>
 
-              <SubHead hi="एक नज़र में" className="pt-4">Syllabus Overview</SubHead>
+              <SubHead hi="Ek nazar mein" className="pt-4">Syllabus Overview</SubHead>
               <p>
                 A solid understanding of the IELTS syllabus is key to effective preparation. Whether you are aiming for higher studies with Academic or immigration with General Training, preparing for each module with diagnostic mocks, visual graph drafting formats, and structured listening drills is highly recommended.
               </p>
 
-              <SubHead hi="अक्सर पूछे सवाल" className="pt-6">Frequently Asked Questions (FAQs) - IELTS Syllabus & Pattern</SubHead>
+              <SubHead hi="Sabke sawaal" className="pt-6">Frequently Asked Questions (FAQs) - IELTS Syllabus & Pattern</SubHead>
               <div className="space-y-3">
                 {[
                   {
@@ -541,7 +541,7 @@ const IELTSSyllabusPage = () => {
             {/* Additional Quick Actions Box */}
             <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 gap-4 items-center bg-[#FFF1B8] border-[3px] border-[#16130F] rounded-xl p-5 sm:p-6 shadow-[4px_4px_0_#16130F]">
               <div>
-                <p className="font-['Rozha_One',serif] text-[14px] text-[#D0362E] leading-none">लाइव क्लास</p>
+                <p className="font-urbanist font-extrabold text-[14px] text-[#D0362E] leading-none">Live class</p>
                 <h4 className="mt-1 font-urbanist font-black text-[17px] text-[#16130F]">Want to prepare for IELTS?</h4>
                 <p className="mt-1 text-[13px] text-[#5B544A] leading-normal">Join upcoming live workshops and university webinars led by certified international mentors.</p>
               </div>
@@ -558,7 +558,7 @@ const IELTSSyllabusPage = () => {
 
             {/* Next Up Section */}
             <div className="border-t-2 border-dashed border-[#16130F33] pt-8 mt-12">
-              <SubHead hi="आगे पढ़ो">Next Up</SubHead>
+              <SubHead hi="Aage padho">Next Up</SubHead>
               <div className="mt-5 grid grid-cols-1 md:grid-cols-3 gap-4">
                 {["IELTS Dates", "IELTS Band Score", "IELTS Results"].map((title, i) => (
                   <Link
@@ -578,10 +578,10 @@ const IELTSSyllabusPage = () => {
 
             {/* IELTS Link Grids */}
             <div className="border-t-2 border-dashed border-[#16130F33] pt-8 mt-10 space-y-12">
-              <LinkGrid hi="ज़रूरी जानकारी" title="IELTS Important Information" links={importantInfoLinks} getLink={getBlogLink} />
-              <LinkGrid hi="कौन से देश" title="IELTS Accepting Countries" links={acceptingCountriesLinks} getLink={getBlogLink} />
-              <LinkGrid hi="यूनिवर्सिटी" title="IELTS Accepting Universities" links={acceptingUniversitiesLinks} getLink={getBlogLink} />
-              <LinkGrid hi="टेस्ट सेंटर" title="IELTS Test Centre and Dates in India" links={testCentresLinks} getLink={getBlogLink} />
+              <LinkGrid hi="Zaroori info" title="IELTS Important Information" links={importantInfoLinks} getLink={getBlogLink} />
+              <LinkGrid hi="Kaunse desh" title="IELTS Accepting Countries" links={acceptingCountriesLinks} getLink={getBlogLink} />
+              <LinkGrid hi="University" title="IELTS Accepting Universities" links={acceptingUniversitiesLinks} getLink={getBlogLink} />
+              <LinkGrid hi="Test centre" title="IELTS Test Centre and Dates in India" links={testCentresLinks} getLink={getBlogLink} />
             </div>
 
           </main>
@@ -629,7 +629,7 @@ const IELTSSyllabusPage = () => {
         {/* Closing CTA */}
         <BookOkCta
           className="mt-14"
-          hi="तैयारी का प्लान"
+          hi="Taiyari ka plan"
           text="Syllabus samajh aa gaya? Ab apna IELTS plan free 1:1 call mein mentor ke saath banao."
         />
       </div>

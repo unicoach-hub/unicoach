@@ -21,7 +21,7 @@ import { BookOkCta } from '../../../../components/desi/BookOkCta';
 // Hindi kicker + h3 for sections inside the guide column
 const SubHead = ({ hi, children }) => (
   <div className="mt-10 mb-4">
-    <p className="font-['Rozha_One',serif] text-[15px] leading-none text-[#D0362E]">{hi}</p>
+    <p className="font-urbanist font-extrabold text-[15px] leading-none text-[#D0362E]">{hi}</p>
     <h3 className="mt-1.5 font-urbanist font-black text-[21px] sm:text-[24px] leading-tight tracking-[-0.02em] text-[#16130F]">{children}</h3>
   </div>
 );
@@ -275,7 +275,7 @@ const IELTSCoachingCentresPage = () => {
     <div className="bg-[#16130F] text-[#FFF6D6] border-[3px] border-[#16130F] shadow-[6px_6px_0_#F2B705] -rotate-1 max-w-[460px] lg:ml-auto overflow-hidden" style={{ borderRadius: 14 }}>
       <div className="flex items-center justify-between gap-3 px-5 py-3 bg-[#F2B705] text-[#16130F] border-b-[3px] border-[#16130F]">
         <div>
-          <p className="font-['Rozha_One',serif] text-[18px] leading-none">आईडीपी केंद्र</p>
+          <p className="font-urbanist font-extrabold text-[18px] leading-none">IDP centres</p>
           <p className="mt-1 font-['Anton',sans-serif] tracking-[0.12em] text-[12px] leading-none">IDP CENTRE BOARD</p>
         </div>
         <MapPin size={24} strokeWidth={2.4} />
@@ -317,7 +317,7 @@ const IELTSCoachingCentresPage = () => {
       {/* IELTS guide picker (phones and tablets) */}
       <div className="lg:hidden max-w-[1400px] mx-auto px-4 -mt-6 mb-8 relative z-10">
         <InkCard className="p-3">
-          <p className="font-['Rozha_One',serif] text-[14px] text-[#D0362E] leading-none px-1 mb-2">आइल्ट्स गाइड</p>
+          <p className="font-urbanist font-extrabold text-[14px] text-[#D0362E] leading-none px-1 mb-2">IELTS guide</p>
           <nav className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-hide">
             {sidebarLinks.map((linkItem) => {
               const isActive = linkItem.key === 'coaching-centres';
@@ -343,7 +343,7 @@ const IELTSCoachingCentresPage = () => {
           {/* Left Sidebar Links */}
           <aside className="hidden lg:block sticky top-28">
             <InkCard className="p-4 max-h-[calc(100vh-140px)] overflow-y-auto">
-              <p className="font-['Rozha_One',serif] text-[15px] text-[#D0362E] leading-none">आइल्ट्स गाइड</p>
+              <p className="font-urbanist font-extrabold text-[15px] text-[#D0362E] leading-none">IELTS guide</p>
               <h3 className="mt-1 mb-3 font-urbanist font-black text-[16px]">IELTS Guide Index</h3>
               <nav className="flex flex-col gap-1.5">
                 {sidebarLinks.map((linkItem) => {
@@ -365,13 +365,13 @@ const IELTSCoachingCentresPage = () => {
 
           {/* Center Content Section */}
           <main className="min-w-0 bg-white border-[3px] border-[#16130F] shadow-[5px_5px_0_#16130F] p-5 sm:p-8 md:p-10" style={{ borderRadius: 14 }}>
-            <DesiHeading hi="पूरी जानकारी" className="pb-5 mb-6 border-b-[3px] border-dashed border-[#16130F]/25">Detailed Guide Content</DesiHeading>
+            <DesiHeading hi="Poori jaankari" className="pb-5 mb-6 border-b-[3px] border-dashed border-[#16130F]/25">Detailed Guide Content</DesiHeading>
             <div className="space-y-5 text-[#3D362E] text-[15px] leading-relaxed">
               <p>
                 The IELTS Test Centres offer both Paper-based and Computer-based IELTS Tests. The IELTS IDP India has 50+ IELTS test centres in 75 cities. You can book your IELTS test online through its official IELTS IDP India Website. For offline applications, you have to visit your nearest IDP branch.
               </p>
 
-              <HookBand value="75" label="cities in India with 50+ IDP IELTS test centres between them" hi="पास में" />
+              <HookBand value="75" label="cities in India with 50+ IDP IELTS test centres between them" hi="Paas mein" />
 
               {/* Interactive Search & Region Selector */}
               <div className="bg-[#FBD9E6] border-[3px] border-[#16130F] shadow-[4px_4px_0_#16130F] p-5 sm:p-6 space-y-4" style={{ borderRadius: 14 }}>
@@ -435,7 +435,7 @@ const IELTSCoachingCentresPage = () => {
                 )}
               </div>
 
-              <SubHead hi="केंद्र के नियम">Test Centre Regulations & Policies</SubHead>
+              <SubHead hi="Centre ke rules">Test Centre Regulations & Policies</SubHead>
               <p>
                 Every candidate is expected to strictly follow IDP test regulations at physical exam venues:
               </p>
@@ -470,7 +470,7 @@ const IELTSCoachingCentresPage = () => {
                 </ul>
               </div>
 
-              <SubHead hi="सवाल-जवाब">Frequently Asked Questions (FAQs) - IELTS Centres</SubHead>
+              <SubHead hi="Sawaal-Jawaab">Frequently Asked Questions (FAQs) - IELTS Centres</SubHead>
               <div className="space-y-3">
                 {[
                   {
@@ -512,7 +512,7 @@ const IELTSCoachingCentresPage = () => {
             {/* Additional Quick Actions Box */}
             <div className="mt-10 p-5 sm:p-6 bg-[#DDF3EF] border-[3px] border-[#16130F] shadow-[4px_4px_0_#16130F] grid grid-cols-1 sm:grid-cols-[minmax(0,1fr)_auto] gap-4 items-center" style={{ borderRadius: 14 }}>
               <div>
-                <p className="font-['Rozha_One',serif] text-[14px] text-[#14837E] leading-none">लाइव सेशन</p>
+                <p className="font-urbanist font-extrabold text-[14px] text-[#14837E] leading-none">Live session</p>
                 <h4 className="mt-1 font-urbanist font-black text-[#16130F] text-[18px]">Want to prepare for IELTS?</h4>
                 <p className="mt-1 text-[13px] text-[#5B544A] leading-normal">Join upcoming live workshops and university webinars led by certified international mentors.</p>
               </div>
@@ -527,7 +527,7 @@ const IELTSCoachingCentresPage = () => {
 
             {/* Next Up Section */}
             <div className="pt-2 mt-4">
-              <SubHead hi="आगे पढ़ो">Next Up</SubHead>
+              <SubHead hi="Aage padho">Next Up</SubHead>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 {['IELTS Slot Booking', 'IELTS Exam Fee', 'IELTS Exam Date'].map((title, i) => {
                   const tone = DESI_TONES[(i + 2) % 4];
@@ -548,10 +548,10 @@ const IELTSCoachingCentresPage = () => {
 
             {/* IELTS Link Grids */}
             <div className="mt-6 space-y-2">
-              {renderLinkGrid('ज़रूरी जानकारी', 'IELTS Important Information', importantInfoLinks)}
-              {renderLinkGrid('कहाँ चलता है', 'IELTS Accepting Countries', acceptingCountriesLinks)}
-              {renderLinkGrid('यूनिवर्सिटी', 'IELTS Accepting Universities', acceptingUniversitiesLinks)}
-              {renderLinkGrid('शहर और तारीख', 'IELTS Test Centre and Dates in India', testCentresLinks)}
+              {renderLinkGrid('Zaroori info', 'IELTS Important Information', importantInfoLinks)}
+              {renderLinkGrid('Kahan chalta hai', 'IELTS Accepting Countries', acceptingCountriesLinks)}
+              {renderLinkGrid('University', 'IELTS Accepting Universities', acceptingUniversitiesLinks)}
+              {renderLinkGrid('Shehar aur date', 'IELTS Test Centre and Dates in India', testCentresLinks)}
             </div>
 
           </main>
@@ -603,7 +603,7 @@ const IELTSCoachingCentresPage = () => {
         {/* Closing CTA */}
         <BookOkCta
           className="mt-14"
-          hi="बुक ओके प्लीज़"
+          hi="Book OK Please"
           text="Centre to mil gaya. Ab taiyari ka plan banate hain. Free call, 1:1, ek ghante ki baat."
           cta="Free call book karo"
         />

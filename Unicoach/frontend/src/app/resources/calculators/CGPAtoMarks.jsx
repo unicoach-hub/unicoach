@@ -16,7 +16,7 @@ const ERROR_BOX = 'mt-6 flex items-start gap-2.5 p-4 rounded-xl bg-[#FCE3DA] tex
 const CalcCard = ({ hi, en, children }) => (
     <div className="bg-white text-[#16130F] border-[3px] border-[#16130F] rounded-[18px] shadow-[8px_8px_0_#16130F] overflow-hidden">
         <div className="flex items-center justify-between gap-3 px-4 sm:px-6 py-3 bg-[#16130F]">
-            <span className="font-['Rozha_One',serif] text-[18px] leading-none text-[#F2B705]">{hi}</span>
+            <span className="font-urbanist font-extrabold text-[18px] leading-none text-[#F2B705]">{hi}</span>
             <span className="font-['Anton',sans-serif] tracking-[0.14em] text-[12px] leading-none text-white">{en}</span>
         </div>
         <div className="p-4 sm:p-6">{children}</div>
@@ -165,7 +165,7 @@ const CGPAtoMarks = () => {
                     </>
                 )}
                 aside={(
-                    <CalcCard hi="जोड़ घटाव" en="CGPA TO MARKS">
+                    <CalcCard hi="Quick maths" en="CGPA TO MARKS">
                         {/* Direction */}
                         <div className="flex flex-wrap gap-2">
                             <InkPill on={activeTab === 'cgpa-to-marks'} onClick={() => { setActiveTab('cgpa-to-marks'); setResult(null); setError(''); }}>
@@ -282,7 +282,7 @@ const CGPAtoMarks = () => {
                         <span className="w-10 h-10 rounded-full border-2 border-[#16130F] bg-[#F2B705] text-[#16130F] grid place-items-center shrink-0 shadow-[2px_2px_0_#16130F]">
                             <HelpCircle size={18} />
                         </span>
-                        <DesiHeading hi="कैसे होता है?">How It Works</DesiHeading>
+                        <DesiHeading hi="Kaise hota hai?">How It Works</DesiHeading>
                     </div>
                     <p className="text-[#5B544A] text-[14.5px] leading-relaxed max-w-3xl">
                         The conversion maps CGPA to a percentage value first (using standard 9.5 or 10 multipliers) and then scales it to your total maximum marks.
@@ -301,7 +301,7 @@ const CGPAtoMarks = () => {
                 </InkCard>
 
                 <BookOkCta
-                    hi="नंबर के बाद?"
+                    hi="Marks ke baad?"
                     text="Marks nikal liye? Ab is score pe kahan apply karein, free call pe mentor se poochho. 1:1, ek ghante ki baat."
                 />
             </div>

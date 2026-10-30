@@ -180,7 +180,7 @@ const TOEFLOverview = () => {
                 <AlertTriangle className="w-5 h-5" />
               </span>
               <div>
-                <p className="font-['Rozha_One',serif] text-[15px] text-[#D0362E] leading-none">ताज़ा ख़बर</p>
+                <p className="font-urbanist font-extrabold text-[15px] text-[#D0362E] leading-none">Taaza khabar</p>
                 <h4 className="mt-1 font-urbanist font-black text-[18px]">Latest TOEFL Updates</h4>
               </div>
             </div>
@@ -200,7 +200,7 @@ const TOEFLOverview = () => {
           {/* Left Sticky Sidebar Index */}
           <aside className="hidden lg:block sticky top-28 max-h-[calc(100vh-140px)] overflow-y-auto">
             <InkCard className="p-4">
-              <p className="font-['Rozha_One',serif] text-[15px] text-[#D0362E] leading-none">इस पेज पर</p>
+              <p className="font-urbanist font-extrabold text-[15px] text-[#D0362E] leading-none">Is page pe</p>
               <h3 className="mt-1 mb-3 font-urbanist font-black text-[17px]">On This Page</h3>
               <nav className="flex flex-col gap-1.5">
                 {menuItems.map((item) => (
@@ -224,7 +224,7 @@ const TOEFLOverview = () => {
             
             {/* Section 1 */}
             <section id="section-1" ref={sectionRefs['section-1']} className="scroll-mt-28">
-              <DesiHeading hi="टोफ़ल क्या है" className="mb-4">1. What is the TOEFL Exam?</DesiHeading>
+              <DesiHeading hi="TOEFL kya hai" className="mb-4">1. What is the TOEFL Exam?</DesiHeading>
               <div className="text-[#3D362E] text-[15px] leading-relaxed space-y-4">
                 <p>
                   The TOEFL, or <strong>Test of English as a Foreign Language</strong>, is a widely recognized English proficiency test for non-native English speakers. It evaluates English proficiency in four key areas: <strong>Reading, Listening, Speaking, and Writing</strong>.
@@ -232,7 +232,7 @@ const TOEFLOverview = () => {
                 <p>
                   There are two main types of TOEFL exams: <strong>TOEFL iBT</strong> (internet-based) and <strong>TOEFL Essentials</strong>. TOEFL is accepted by over 12,500 institutions across the world, including the USA, UK, and Canada.
                 </p>
-                <HookBand value="12,500+" label="institutions worldwide accept TOEFL, including the USA, UK and Canada" hi="दुनिया भर" />
+                <HookBand value="12,500+" label="institutions worldwide accept TOEFL, including the USA, UK and Canada" hi="Duniya bhar" />
                 <div className="bg-[#FFF0E6] border-2 border-[#16130F] p-4 rounded-xl shadow-[3px_3px_0_#16130F] text-[14px] text-[#3D362E] space-y-2 mt-4">
                   <p>• <strong>Academic focus:</strong> TOEFL iBT tests your English in an academic setting.</p>
                   <p>• <strong>General usage:</strong> TOEFL Essentials tests your everyday English.</p>
@@ -243,7 +243,7 @@ const TOEFLOverview = () => {
 
             {/* Section 2 */}
             <section id="section-2" ref={sectionRefs['section-2']} className="scroll-mt-28">
-              <DesiHeading hi="तारीखें" className="mb-4">2. TOEFL Dates: When is the TOEFL Exam Conducted?</DesiHeading>
+              <DesiHeading hi="Dates" className="mb-4">2. TOEFL Dates: When is the TOEFL Exam Conducted?</DesiHeading>
               <div className="text-[#3D362E] text-[15px] leading-relaxed space-y-4">
                 <p>
                   ETS conducts TOEFL throughout the year. You must register at least 4 months early to get your desired date and slot. The last date to register online is 7 days before the exam date.
@@ -256,7 +256,7 @@ const TOEFLOverview = () => {
 
             {/* Section 3 */}
             <section id="section-3" ref={sectionRefs['section-3']} className="scroll-mt-28">
-              <DesiHeading hi="फ़ीस" className="mb-4">3. TOEFL Exam Fees: How much does the TOEFL Cost?</DesiHeading>
+              <DesiHeading hi="Fees" className="mb-4">3. TOEFL Exam Fees: How much does the TOEFL Cost?</DesiHeading>
               <div className="text-[#3D362E] text-[15px] leading-relaxed space-y-4">
                 <p>
                   ETS India lists the TOEFL iBT fee as <strong>₹15,729</strong>. Late registration (within 7 to 4 days of the test date) costs about ₹3,305 extra. Check the ETS India site when you book, as fees can change.
@@ -307,7 +307,7 @@ const TOEFLOverview = () => {
 
             {/* Section 4 */}
             <section id="section-4" ref={sectionRefs['section-4']} className="scroll-mt-28">
-              <DesiHeading hi="रिज़ल्ट" className="mb-4">4. TOEFL Results: How Do You Check Your TOEFL Results?</DesiHeading>
+              <DesiHeading hi="Result" className="mb-4">4. TOEFL Results: How Do You Check Your TOEFL Results?</DesiHeading>
               <div className="text-[#3D362E] text-[15px] leading-relaxed space-y-4">
                 <p>
                   TOEFL iBT results are released online within <strong>4-8 days</strong> of the exam. You can view them by logging into your ETS account.
@@ -321,7 +321,7 @@ const TOEFLOverview = () => {
 
             {/* Section 5 */}
             <section id="section-5" ref={sectionRefs['section-5']} className="scroll-mt-28">
-              <DesiHeading hi="स्कोर" className="mb-4">5. What are TOEFL Scores?</DesiHeading>
+              <DesiHeading hi="Score" className="mb-4">5. What are TOEFL Scores?</DesiHeading>
               <div className="text-[#3D362E] text-[15px] leading-relaxed space-y-4">
                 <p>
                   Since 21 January 2026, each of the four sections (Reading, Listening, Writing, Speaking) is scored from <strong>1 to 6</strong> in half bands.
@@ -338,7 +338,7 @@ const TOEFLOverview = () => {
 
             {/* Section 6 */}
             <section id="section-6" ref={sectionRefs['section-6']} className="scroll-mt-28">
-              <DesiHeading hi="टेस्ट सेंटर" className="mb-4">6. TOEFL Test Centre: Where Can You Take the TOEFL?</DesiHeading>
+              <DesiHeading hi="Test centre" className="mb-4">6. TOEFL Test Centre: Where Can You Take the TOEFL?</DesiHeading>
               <div className="text-[#3D362E] text-[15px] leading-relaxed space-y-4">
                 <p>
                   TOEFL iBT can be taken at physical centers across 39 cities in India, including Bangalore, Delhi, Chennai, and Ahmedabad. TOEFL Essentials can be attempted at home.
@@ -348,7 +348,7 @@ const TOEFLOverview = () => {
 
             {/* Section 7 */}
             <section id="section-7" ref={sectionRefs['section-7']} className="scroll-mt-28">
-              <DesiHeading hi="रजिस्ट्रेशन" className="mb-4">7. TOEFL Registration: How do I register for the TOEFL?</DesiHeading>
+              <DesiHeading hi="Registration" className="mb-4">7. TOEFL Registration: How do I register for the TOEFL?</DesiHeading>
               <div className="text-[#3D362E] text-[15px] leading-relaxed space-y-4">
                 <p>
                   Registrations are online on the official ETS TOEFL website:
@@ -368,7 +368,7 @@ const TOEFLOverview = () => {
 
             {/* Section 8 */}
             <section id="section-8" ref={sectionRefs['section-8']} className="scroll-mt-28">
-              <DesiHeading hi="योग्यता" className="mb-4">8. TOEFL Eligibility: Documents Required for TOEFL</DesiHeading>
+              <DesiHeading hi="Eligibility" className="mb-4">8. TOEFL Eligibility: Documents Required for TOEFL</DesiHeading>
               <div className="text-[#3D362E] text-[15px] leading-relaxed space-y-4">
                 <p>
                   ETS has set no specific eligibility restrictions. Anyone is welcome to write the test. Typically, test takers are over 16 years of age and possess a valid physical passport.
@@ -378,7 +378,7 @@ const TOEFLOverview = () => {
 
             {/* Section 9 */}
             <section id="section-9" ref={sectionRefs['section-9']} className="scroll-mt-28">
-              <DesiHeading hi="सिलेबस" className="mb-4">9. TOEFL Syllabus: What Does the Test Contain?</DesiHeading>
+              <DesiHeading hi="Syllabus" className="mb-4">9. TOEFL Syllabus: What Does the Test Contain?</DesiHeading>
               <div className="text-[#3D362E] text-[15px] leading-relaxed space-y-4">
                 <p>
                   TOEFL covers Reading, Listening, Writing and Speaking, in that order. Test time is about 90 minutes; ETS asks you to allow about two hours in total.
@@ -435,7 +435,7 @@ const TOEFLOverview = () => {
 
             {/* Section 10 */}
             <section id="section-10" ref={sectionRefs['section-10']} className="scroll-mt-28">
-              <DesiHeading hi="किताबें" className="mb-4">10. TOEFL Books: What are the Best Resources for the TOEFL?</DesiHeading>
+              <DesiHeading hi="Books" className="mb-4">10. TOEFL Books: What are the Best Resources for the TOEFL?</DesiHeading>
               <div className="text-[#3D362E] text-[15px] leading-relaxed space-y-4">
                 <p>
                   Top reference manuals recommended for self-study and practice:
@@ -462,7 +462,7 @@ const TOEFLOverview = () => {
 
             {/* Section 11 */}
             <section id="section-11" ref={sectionRefs['section-11']} className="scroll-mt-28">
-              <DesiHeading hi="प्रैक्टिस" className="mb-4">11. TOEFL Practice Tests: Boost your Preparation!</DesiHeading>
+              <DesiHeading hi="Practice" className="mb-4">11. TOEFL Practice Tests: Boost your Preparation!</DesiHeading>
               <div className="text-[#3D362E] text-[15px] leading-relaxed space-y-4">
                 <p>
                   Regular mock tests are critical to get used to the shortened 2-hour format, manage sections timing, and isolate weaknesses.
@@ -472,7 +472,7 @@ const TOEFLOverview = () => {
 
             {/* Section 12 */}
             <section id="section-12" ref={sectionRefs['section-12']} className="scroll-mt-28">
-              <DesiHeading hi="यूनिवर्सिटी" className="mb-4">12. Top Global Universities Accepting TOEFL</DesiHeading>
+              <DesiHeading hi="University" className="mb-4">12. Top Global Universities Accepting TOEFL</DesiHeading>
               <div className="text-[#3D362E] text-[15px] leading-relaxed space-y-4 mb-6">
                 <p>
                   Check B-school program score requirements in major study destinations.
@@ -582,7 +582,7 @@ const TOEFLOverview = () => {
 
             {/* Widget: Live workshops */}
             <div className="bg-[#14837E] text-white p-6 rounded-[14px] border-[3px] border-[#16130F] shadow-[5px_5px_0_#16130F]">
-              <span className="font-['Rozha_One',serif] text-[15px] text-[#F2B705] leading-none block">लाइव वर्कशॉप</span>
+              <span className="font-urbanist font-extrabold text-[15px] text-[#F2B705] leading-none block">Live workshop</span>
               <span className="text-[11px] font-extrabold text-white/80 uppercase tracking-widest block mt-1.5 mb-2">Live Workshops</span>
               <h3 className="font-urbanist text-[20px] font-black leading-snug mb-2">
                 Study Abroad Events & Fairs
@@ -622,7 +622,7 @@ const TOEFLOverview = () => {
 
         {/* FAQs Accordion */}
         <section className="mt-16 max-w-4xl mx-auto">
-          <DesiHeading hi="अक्सर पूछे सवाल" className="mb-6">Frequently Asked Questions (FAQs)</DesiHeading>
+          <DesiHeading hi="Sabke sawaal" className="mb-6">Frequently Asked Questions (FAQs)</DesiHeading>
           <div className="space-y-3">
             {[
               { q: "What is the TOEFL score range, and how is it calculated?", a: "Since January 2026 each section is scored 1–6 in half bands, and the overall score is their average. The old 0–120 score is shown alongside until 2028." },
@@ -667,7 +667,7 @@ const TOEFLOverview = () => {
 
         <div className="mt-14">
           <BookOkCta
-            hi="टोफ़ल प्लान बनाओ"
+            hi="TOEFL plan banao"
             text="TOEFL ka target score aur university list confuse kar rahi hai? Free 1:1 call mein mentor se plan banwao."
           />
         </div>

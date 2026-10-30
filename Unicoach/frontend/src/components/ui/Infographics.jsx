@@ -164,6 +164,6 @@ export const HookBand = ({ value, label, hi, className = '' }) => (
     <span aria-hidden="true" className="absolute inset-0 bg-[radial-gradient(circle,rgba(22,19,15,.18)_1.3px,transparent_1.7px)] [background-size:9px_9px]" />
     <span className="relative font-urbanist text-[40px] sm:text-[52px] font-black leading-none" style={{ letterSpacing: '-0.04em' }}>{value}</span>
     <span className="relative text-[14px] sm:text-[15px] font-semibold leading-snug max-w-md pb-1">{label}</span>
-    {hi && <span className="relative ml-auto font-['Rozha_One',serif] text-[24px] sm:text-[28px] leading-none text-[#F2B705] [text-shadow:2px_2px_0_#16130F]">{hi}</span>}
+    {hi && <span className="relative ml-auto font-urbanist font-extrabold text-[24px] sm:text-[28px] leading-none text-[#F2B705] [text-shadow:2px_2px_0_#16130F]">{hi}</span>}
   </div>
 );
