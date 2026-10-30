@@ -1,324 +1,191 @@
 import { useNavigate } from 'react-router-dom';
 import { useEffect, useRef, useState } from 'react';
-import { AnimatePresence, motion, useInView, useMotionValue, useSpring, useTransform } from 'framer-motion';
-import { ChevronRight, Check, Plane } from 'lucide-react';
+import { AnimatePresence, motion, useInView } from 'framer-motion';
+import { ArrowRight, Check, X } from 'lucide-react';
 import { useLead } from '../context/LeadContext';
 import { RedPenCircle } from './ui/BrandElements';
 
-// "Your study abroad journey in 4 steps" as a bento grid: four gradient cards with 3D illustrations
-// (3dicons.co, CC0) and real campus photos. Step 1 opens the free counselling form; the others open their tool.
-const ICON = (name) => `/images/3d/${name}.webp`;
-
-const STEPS = {
-  counselling: {
+// "Your study abroad journey in 4 steps": a timeline rail plus one big panel. Each panel shows a small
+// preview of what the student actually gets at that step (a shortlist, an edited SOP, a funding plan,
+// a checked visa file). It plays through the steps on its own until the visitor picks one.
+const STEPS = [
+  {
+    key: 'counselling',
     step: '01',
+    when: 'Start here',
     title: 'Personalized Counselling',
-    text: 'One-on-one guidance to build a profile that shows your academics, achievements and goals, and a shortlist of universities that fit you.',
+    short: 'Counselling',
+    text: 'One-on-one call about your marks, budget and goals. You leave with a shortlist of universities that fit you, sorted into dream, target and safe.',
+    gets: ['1:1 video call, free', 'Dream / target / safe shortlist', 'Course and country advice'],
     cta: 'Book Free Counselling',
+    tint: '#FFE7DA',
+    dwell: 8000,
   },
-  sop: {
+  {
+    key: 'sop',
     step: '02',
+    when: 'Applications',
     title: 'SOP & Documents',
+    short: 'SOP & Docs',
     text: 'Your SOP, LORs and resume written and polished by experts who have been through admissions themselves, line by line.',
+    gets: ['SOP written with you', 'LORs and resume polished', 'Line-by-line expert edits'],
     cta: 'Get your SOP done by an expert',
     to: '/unicoach',
+    tint: '#F3ECFB',
+    dwell: 13500,
   },
-  loans: {
+  {
+    key: 'loans',
     step: '03',
+    when: 'After your admit',
     title: 'Loans & Funding',
-    text: 'Compare education loans with or without collateral and find scholarships you qualify for, from first call to sanction letter.',
+    short: 'Funding',
+    text: 'We work out how your total cost gets covered: savings, scholarships and the loan, then compare lenders so you pay the least interest.',
+    gets: ['Scholarships you qualify for', 'Public, private and NBFC lenders', 'With or without collateral'],
     cta: 'Check Loan Options',
     to: '/education-loan',
+    tint: '#FDF0E1',
+    dwell: 9000,
   },
-  visa: {
+  {
+    key: 'visa',
     step: '04',
+    when: 'Before you fly',
     title: 'Visa & Mocks',
-    text: 'Practise real visa interview questions with our AI officer and counsellors, get documents checked, and sort housing before you fly.',
+    short: 'Visa',
+    text: 'Every visa document checked before you file, mock interviews till your answers sound natural, and help fixing a file that was refused before.',
+    gets: ['Document check before filing', 'AI and counsellor mock interviews', 'Refused before? We fix the file'],
     cta: 'Practice a Visa Mock',
     to: '/ai-tools/visa-prep',
+    tint: '#FCE9EC',
+    dwell: 10000,
   },
-};
+];
 
 const rise = (delay = 0) => ({
-  initial: { opacity: 0, y: 40, scale: 0.96, filter: 'blur(8px)' },
-  whileInView: { opacity: 1, y: 0, scale: 1, filter: 'blur(0px)' },
+  initial: { opacity: 0, y: 40, filter: 'blur(8px)' },
+  whileInView: { opacity: 1, y: 0, filter: 'blur(0px)' },
   viewport: { once: true, margin: '-80px' },
   transition: { duration: 0.8, delay, ease: [0.16, 1, 0.3, 1] },
 });
 
-// A 3D piece or chip that pops in after its card has arrived
-const Pop = ({ children, delay = 0, from = 'scale', className = '', style }) => {
-  const start = from === 'up' ? { opacity: 0, y: 24 } : { opacity: 0, scale: 0.3, rotate: -18 };
-  const end = from === 'up' ? { opacity: 1, y: 0 } : { opacity: 1, scale: 1, rotate: 0 };
-  return (
-    <motion.div
-      className={className}
-      style={style}
-      initial={start}
-      whileInView={end}
-      viewport={{ once: true, margin: '-60px' }}
-      transition={{ type: 'spring', stiffness: 220, damping: 16, delay }}
-    >
-      {children}
-    </motion.div>
-  );
-};
-
-// Gentle up-and-down float for the 3D pieces
-const Float = ({ children, delay = 0, distance = 8, className = '', style, enter = 0.35 }) => (
+// Small floating card used inside the previews
+const Chip = ({ children, className = '', delay = 0.4 }) => (
   <motion.div
-    className={className}
-    style={style}
-    animate={{ y: [0, -distance, 0] }}
-    transition={{ duration: 4.5, repeat: Infinity, ease: 'easeInOut', delay }}
-  >
-    <Pop delay={enter + delay * 0.25}>{children}</Pop>
-  </motion.div>
-);
-
-const CardText = ({ s, onAction, dark = false }) => (
-  <div className="relative z-10 max-w-[380px]">
-    <span className={`inline-flex items-center gap-1.5 mb-2.5 px-2.5 py-1 rounded-full text-[10.5px] font-bold tracking-wide ${dark ? 'bg-white/20 text-white' : 'bg-white/70 text-[#2A1A12]'}`}>
-      STEP {s.step} OF 04
-    </span>
-    <h3 className={`font-outfit text-[22px] sm:text-[26px] font-bold tracking-[-0.03em] leading-[1.1] ${dark ? 'text-white' : 'text-[#2A1A12]'}`}>
-      {s.title}
-    </h3>
-    <p className={`mt-2 text-[13.5px] sm:text-[14.5px] leading-relaxed ${dark ? 'text-white/85' : 'text-[#5A4636]'}`}>{s.text}</p>
-    <button
-      type="button"
-      onClick={() => onAction(s)}
-      className={`group mt-4 inline-flex items-center gap-1.5 text-[14px] sm:text-[15px] font-bold cursor-pointer ${dark ? 'text-white' : 'text-[#2A1A12]'}`}
-    >
-      {s.cta}
-      <ChevronRight size={18} className="transition-transform group-hover:translate-x-1" />
-    </button>
-  </div>
-);
-
-const Chip = ({ children, className = '', delay = 0.75 }) => (
-  <motion.div
-    className={`bg-white/95 backdrop-blur rounded-2xl shadow-[0_18px_40px_-12px_rgba(42,26,18,0.35)] border border-white ${className}`}
-    initial={{ opacity: 0, y: 22, scale: 0.92 }}
-    whileInView={{ opacity: 1, y: 0, scale: 1 }}
-    viewport={{ once: true, margin: '-60px' }}
-    transition={{ type: 'spring', stiffness: 200, damping: 18, delay }}
+    className={`bg-white rounded-2xl shadow-[0_18px_40px_-16px_rgba(42,26,18,0.3)] border border-[#EFE7DC] ${className}`}
+    initial={{ opacity: 0, y: 18, scale: 0.96 }}
+    animate={{ opacity: 1, y: 0, scale: 1 }}
+    transition={{ type: 'spring', stiffness: 200, damping: 20, delay }}
   >
     {children}
   </motion.div>
 );
 
-// Card that leans towards the cursor (3D tilt + a soft light following the mouse)
-const TiltCard = ({ children, className = '', style, delay = 0 }) => {
-  const mx = useMotionValue(0.5);
-  const my = useMotionValue(0.5);
-  const rx = useSpring(useTransform(my, [0, 1], [5, -5]), { stiffness: 160, damping: 18 });
-  const ry = useSpring(useTransform(mx, [0, 1], [-6, 6]), { stiffness: 160, damping: 18 });
-  const glow = useTransform([mx, my], ([x, y]) => `radial-gradient(420px circle at ${x * 100}% ${y * 100}%, rgba(255,255,255,0.35), transparent 60%)`);
-  return (
-    <motion.div
-      {...rise(delay)}
-      className={className}
-      style={{ ...style, rotateX: rx, rotateY: ry, transformPerspective: 1100 }}
-      onMouseMove={(e) => {
-        const r = e.currentTarget.getBoundingClientRect();
-        mx.set((e.clientX - r.left) / r.width);
-        my.set((e.clientY - r.top) / r.height);
-      }}
-      onMouseLeave={() => { mx.set(0.5); my.set(0.5); }}
-    >
-      <motion.div aria-hidden="true" className="pointer-events-none absolute inset-0 z-[1]" style={{ background: glow }} />
-      {children}
-    </motion.div>
-  );
-};
-
-// Counts 0,1,2… every `ms` while the card is on screen (and not hovered), so each card plays a short loop
-const useLoop = (ms) => {
-  const ref = useRef(null);
-  const inView = useInView(ref, { margin: '-40px' });
-  const [tick, setTick] = useState(0);
-  const [paused, setPaused] = useState(false);
-  const [touched, setTouched] = useState(false); // visitor took over: stop auto-play for a while
-  useEffect(() => {
-    if (!inView || paused || touched) return undefined;
-    const t = setInterval(() => setTick((n) => n + 1), ms);
-    return () => clearInterval(t);
-  }, [inView, paused, touched, ms]);
-  useEffect(() => {
-    if (!touched) return undefined;
-    const t = setTimeout(() => setTouched(false), 8000);
-    return () => clearTimeout(t);
-  }, [touched, tick]);
-  const go = (n) => { setTouched(true); setTick(n); };
-  return { ref, tick, go, hover: { onMouseEnter: () => setPaused(true), onMouseLeave: () => setPaused(false) } };
-};
-
-// ── 1. Shortlist: campuses swipe through the middle; each one lands with its country stamp and the dart hits ──
+// ── 1. Counselling: a profile goes in, a sorted shortlist comes out ──
+const PROFILE = ['B.Tech CSE', '7.8 CGPA', 'IELTS 7.0', 'Budget ₹30L/yr'];
 const SHORTLIST = [
-  { img: 'monash', name: 'Monash University', fit: 'Australia', color: '#B48C42' },
-  { img: 'toronto', name: 'University of Toronto', fit: 'Canada', color: '#C0392B' },
-  { img: 'trinity', name: 'Trinity College Dublin', fit: 'Ireland', color: '#558563' },
-  { img: 'deakin', name: 'Deakin University', fit: 'Australia', color: '#B48C42' },
-  { img: 'northeastern', name: 'Northeastern University', fit: 'USA', color: '#485A79' },
-  { img: 'coventry', name: 'Coventry University', fit: 'UK', color: '#2F5BFF' },
+  { tier: 'Dream', img: 'toronto', name: 'University of Toronto', country: 'Canada', fee: '₹38L', match: 64, color: '#DE5C2B' },
+  { tier: 'Target', img: 'trinity', name: 'Trinity College Dublin', country: 'Ireland', fee: '₹26L', match: 82, color: '#B48C42' },
+  { tier: 'Safe', img: 'coventry', name: 'Coventry University', country: 'UK', fee: '₹20L', match: 93, color: '#558563' },
 ];
-const ShortlistArt = () => {
-  const { ref, tick, go, hover } = useLoop(2400);
-  const n = SHORTLIST.length;
-  const at = (i) => SHORTLIST[((i % n) + n) % n];
-  const cur = at(tick);
-  const left = at(tick - 1);
-  const right = at(tick + 1);
-  return (
-    <div ref={ref} {...hover} className="relative h-[200px] sm:h-[235px] w-full max-w-[370px] mx-auto">
-      {[{ u: left, rot: -10, x: '4%', to: tick - 1 }, { u: right, rot: 10, x: '58%', to: tick + 1 }].map(({ u, rot, x, to }) => (
-        <motion.button
-          type="button"
-          key={x}
-          onClick={() => go(to)}
-          aria-label={`Show ${u.name}`}
-          whileHover={{ scale: 1.06 }}
-          className="absolute top-8 w-[38%] aspect-[3/4] rounded-[22px] overflow-hidden border-[5px] border-white shadow-[0_20px_40px_-14px_rgba(0,0,0,0.35)] cursor-pointer"
-          style={{ left: x }}
-          initial={{ opacity: 0, rotate: 0, x: rot < 0 ? '55%' : '-55%' }}
-          whileInView={{ opacity: 1, rotate: rot, x: 0 }}
-          viewport={{ once: true, margin: '-60px' }}
-          transition={{ type: 'spring', stiffness: 120, damping: 15, delay: 0.45 }}
-        >
-          <AnimatePresence mode="popLayout" initial={false}>
-            <motion.img key={u.img} src={`/images/universities/${u.img}.jpg`} alt="" loading="lazy" className="w-full h-full object-cover"
-              initial={{ opacity: 0, scale: 1.15 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.5 }} />
-          </AnimatePresence>
-        </motion.button>
-      ))}
-      <Float className="absolute left-1/2 top-0 -translate-x-1/2 w-[46%] z-10" distance={6}>
-        <motion.div
-          drag="x"
-          dragConstraints={{ left: 0, right: 0 }}
-          dragElastic={0.6}
-          onDragEnd={(_, info) => { if (Math.abs(info.offset.x) > 50) go(info.offset.x < 0 ? tick + 1 : tick - 1); }}
-          whileTap={{ cursor: 'grabbing', scale: 0.97 }}
-          className="relative aspect-[3/4] rounded-[24px] overflow-hidden border-[6px] border-white shadow-[0_28px_50px_-14px_rgba(0,0,0,0.45)] bg-white cursor-grab touch-pan-y"
-        >
-          <AnimatePresence mode="popLayout" initial={false}>
-            <motion.img
-              key={cur.img}
-              src={`/images/universities/${cur.img}.jpg`}
-              alt={cur.name}
-              loading="lazy"
-              className="absolute inset-0 w-full h-full object-cover"
-              initial={{ x: '110%', rotate: 12, opacity: 0 }}
-              animate={{ x: 0, rotate: 0, opacity: 1 }}
-              exit={{ x: '-110%', rotate: -12, opacity: 0 }}
-              transition={{ type: 'spring', stiffness: 170, damping: 20 }}
-            />
-          </AnimatePresence>
-          {/* fit stamp lands on each new campus */}
-          <motion.span
-            key={`fit-${tick}`}
-            initial={{ scale: 2.4, opacity: 0, rotate: -24 }}
-            animate={{ scale: 1, opacity: 1, rotate: -12 }}
-            transition={{ type: 'spring', stiffness: 380, damping: 14, delay: 0.35 }}
-            className="absolute top-3 right-2 px-2 py-0.5 rounded-md border-2 bg-white/90 text-[11px] font-black uppercase tracking-wider"
-            style={{ color: cur.color, borderColor: cur.color }}
-          >
-            {cur.fit}
+const ShortlistPreview = () => (
+  <div className="w-full max-w-[460px] mx-auto">
+    <Chip delay={0.1} className="p-3.5 sm:p-4">
+      <p className="text-[10.5px] font-bold tracking-[0.12em] uppercase text-[#8A7A6A]">Your profile</p>
+      <div className="mt-2 flex flex-wrap gap-1.5">
+        {PROFILE.map((p, i) => (
+          <motion.span key={p} initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.25 + i * 0.12 }}
+            className="px-2.5 py-1 rounded-full bg-[#F6F3EC] border border-[#E6E0D4] text-[12px] font-semibold text-[#2A1A12]">
+            {p}
           </motion.span>
-          <span className="absolute bottom-2 left-1/2 -translate-x-1/2 px-2 py-0.5 rounded-full bg-black/45 text-white text-[9.5px] font-semibold whitespace-nowrap pointer-events-none">← swipe →</span>
-        </motion.div>
-        <span className="absolute -top-3 left-1/2 -translate-x-1/2 whitespace-nowrap px-3.5 py-1.5 rounded-full bg-[#2A1A12] text-white text-[12px] font-semibold shadow-lg">
-          1,500+ Universities
-        </span>
-        <Chip className="absolute -bottom-5 left-1/2 -translate-x-1/2 w-max px-3.5 py-2.5 flex items-center gap-2.5">
-          <img src={ICON('medal')} alt="" className="w-9 h-9 shrink-0" />
-          <span className="min-w-0">
-            <AnimatePresence mode="wait" initial={false}>
-              <motion.span key={cur.name} className="block text-[13px] font-bold text-[#2A1A12] whitespace-nowrap"
-                initial={{ y: 8, opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: -8, opacity: 0 }} transition={{ duration: 0.25 }}>
-                {cur.name}
-              </motion.span>
-            </AnimatePresence>
-            <span className="block text-[11px] text-slate-500">
-              <span className="font-bold" style={{ color: cur.color }}>{cur.fit}</span> · fits your profile
-            </span>
-          </span>
-        </Chip>
-      </Float>
-      {/* the dart re-hits the target on every match */}
-      <motion.div
-        key={`dart-${tick}`}
-        className="absolute -right-2 bottom-4 w-[22%] z-20"
-        initial={{ x: 40, y: -40, rotate: 20, opacity: 0.4 }}
-        animate={{ x: 0, y: 0, rotate: 0, opacity: 1 }}
-        transition={{ type: 'spring', stiffness: 500, damping: 12, delay: 0.5 }}
-      >
-        <img src={ICON('target')} alt="" loading="lazy" className="w-full drop-shadow-xl" />
-      </motion.div>
-    </div>
-  );
-};
-
-// ── 3. Finance: coins drop in, eligibility climbs, then the loan gets sanctioned ──
-const FUNDING = [
-  { pct: 67, label: 'Scholarship eligibility', done: '₹4.5L scholarship found' },
-  { pct: 88, label: 'Loan eligibility', done: '₹25L loan sanctioned' },
-  { pct: 94, label: 'Collateral-free loan', done: 'Approved in 7 days' },
-];
-// Counts 0 → pct (remounted each round via key, so it always starts from zero)
-const FundingMeter = ({ f }) => {
-  const [shown, setShown] = useState(0);
-  useEffect(() => {
-    const t = setInterval(() => setShown((v) => Math.min(f.pct, v + 1)), 14);
-    return () => clearInterval(t);
-  }, [f.pct]);
-  const done = shown >= f.pct;
-  return (
-    <>
-      <p className="text-[13.5px] font-semibold text-[#2A1A12]">{f.label}</p>
-      <div className="mt-3 flex items-center gap-3">
-        <div className="flex-1 h-2 rounded-full bg-slate-100 overflow-hidden">
-          <div className="h-full rounded-full transition-[width] duration-100" style={{ width: `${shown}%`, background: done ? '#558563' : '#5B5BF7' }} />
-        </div>
-        <span className="text-[17px] font-bold text-[#2A1A12] tabular-nums">{shown}%</span>
+        ))}
       </div>
-      <motion.p initial={false} animate={{ opacity: done ? 1 : 0, y: done ? 0 : 6, scale: done ? 1 : 0.9 }}
-        className="mt-2 inline-flex items-center gap-1 rounded-full bg-emerald-50 text-emerald-700 text-[11px] font-bold px-2 py-0.5">
-        <Check size={12} strokeWidth={3} /> {f.done}
-      </motion.p>
-    </>
-  );
+    </Chip>
+    <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.8 }}
+      className="my-2.5 text-center text-[11.5px] font-semibold text-[#8A7A6A]">
+      ↓ matched against 1,500+ universities
+    </motion.p>
+    <Chip delay={1} className="p-2 sm:p-2.5">
+      {SHORTLIST.map((u, i) => (
+        <motion.div key={u.name} initial={{ opacity: 0, x: 24 }} animate={{ opacity: 1, x: 0 }} transition={{ type: 'spring', stiffness: 200, damping: 22, delay: 1.2 + i * 0.25 }}
+          className={`flex items-center gap-3 px-2 py-2 ${i ? 'border-t border-[#F1EBE2]' : ''}`}>
+          <img src={`/images/universities/${u.img}.jpg`} alt="" loading="lazy" className="w-11 h-11 rounded-xl object-cover shrink-0" />
+          <div className="min-w-0 flex-1">
+            <span className="text-[10px] font-black uppercase tracking-[0.12em]" style={{ color: u.color }}>{u.tier}</span>
+            <p className="text-[13.5px] font-bold text-[#2A1A12] truncate leading-tight">{u.name}</p>
+            <p className="text-[11.5px] text-[#8A7A6A]">{u.country} · {u.fee}/yr tuition</p>
+          </div>
+          <div className="w-[64px] shrink-0 text-right">
+            <p className="text-[15px] font-black tabular-nums text-[#2A1A12]">{u.match}%</p>
+            <div className="mt-1 h-1.5 rounded-full bg-[#F1EBE2] overflow-hidden">
+              <motion.div className="h-full rounded-full" style={{ background: u.color }} initial={{ width: 0 }} animate={{ width: `${u.match}%` }} transition={{ duration: 0.8, delay: 1.5 + i * 0.25 }} />
+            </div>
+            <p className="mt-0.5 text-[9.5px] text-[#8A7A6A]">profile fit</p>
+          </div>
+        </motion.div>
+      ))}
+    </Chip>
+    <p className="mt-2 text-center text-[10.5px] text-[#A3968A]">Example shortlist. Fees are approximate.</p>
+  </div>
+);
+
+// ── 3. Funding: where a ₹45L degree's money comes from, then the cheapest lender for the loan ──
+const COST = [
+  { label: 'Your savings', amt: 10, color: '#2A1A12' },
+  { label: 'Scholarship', amt: 6, color: '#558563' },
+  { label: 'Education loan', amt: 29, color: '#DE5C2B' },
+];
+const TOTAL = COST.reduce((s, c) => s + c.amt, 0);
+const LOAN = COST[2].amt;
+const LENDERS = [
+  { name: 'Public bank', rate: 9.5 },
+  { name: 'Private bank', rate: 10.75 },
+  { name: 'NBFC', rate: 12.5 },
+];
+// monthly EMI in ₹ thousands for a 10-year loan
+const emi = (lakh, rate) => {
+  const r = rate / 1200;
+  const n = 120;
+  return (lakh * 100 * r * (1 + r) ** n) / ((1 + r) ** n - 1);
 };
-const FinanceArt = () => {
-  const { ref, tick, go, hover } = useLoop(3200);
-  const idx = tick % FUNDING.length;
-  const f = FUNDING[idx];
-  return (
-    <div ref={ref} {...hover} className="relative h-[150px] w-full">
-      <Float className="absolute left-0 top-2 w-[42%]" distance={7}>
-        <motion.img key={`rupee-${tick}`} src={ICON('rupee')} alt="" loading="lazy" className="w-full drop-shadow-2xl"
-          initial={{ rotateY: 0 }} animate={{ rotateY: 360, rotate: -6 }} transition={{ duration: 0.9, ease: 'easeOut' }} />
-      </Float>
-      {/* a coin drops into the stack each round */}
-      <motion.div key={`coin-${tick}`} className="absolute left-[22%] w-[26%]"
-        initial={{ top: '-30%', opacity: 0, rotate: -40 }} animate={{ top: '52%', opacity: 1, rotate: 12 }}
-        transition={{ type: 'spring', stiffness: 260, damping: 11 }}>
-        <img src={ICON('3d-coin')} alt="" loading="lazy" className="w-full drop-shadow-xl" />
-      </motion.div>
-      <Chip className="absolute right-0 top-0 w-[66%] p-3.5">
-        <div className="flex gap-1 mb-2.5 p-0.5 rounded-full bg-slate-100">
-          {['Scholarship', 'Loan', '0 collateral'].map((t, i) => (
-            <button key={t} type="button" onClick={() => go(tick + ((i - idx + FUNDING.length) % FUNDING.length || FUNDING.length))}
-              className={`flex-1 rounded-full px-1 py-1 text-[9.5px] font-bold whitespace-nowrap cursor-pointer transition-colors ${i === idx ? 'bg-[#2A1A12] text-white' : 'text-slate-500 hover:text-slate-800'}`}>
-              {t}
-            </button>
-          ))}
-        </div>
-        <FundingMeter key={tick} f={f} />
-      </Chip>
-    </div>
-  );
-};
+const FundingPreview = () => (
+  <div className="w-full max-w-[460px] mx-auto">
+    <Chip delay={0.1} className="p-4">
+      <div className="flex items-baseline justify-between gap-2">
+        <p className="text-[13px] font-bold text-[#2A1A12]">MS in Ireland, 2 years</p>
+        <p className="text-[12px] text-[#8A7A6A]">Total <b className="text-[#2A1A12] text-[15px]">₹{TOTAL}L</b></p>
+      </div>
+      <div className="mt-3 flex h-4 rounded-full overflow-hidden bg-[#F1EBE2]">
+        {COST.map((c, i) => (
+          <motion.div key={c.label} style={{ background: c.color }} initial={{ width: 0 }} animate={{ width: `${(c.amt / TOTAL) * 100}%` }}
+            transition={{ duration: 0.7, delay: 0.4 + i * 0.45, ease: 'easeOut' }} className={i ? 'border-l-2 border-white' : ''} />
+        ))}
+      </div>
+      <div className="mt-2.5 grid grid-cols-3 gap-2">
+        {COST.map((c, i) => (
+          <motion.div key={c.label} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6 + i * 0.45 }}>
+            <p className="flex items-center gap-1.5 text-[10.5px] text-[#8A7A6A] whitespace-nowrap"><span className="w-2 h-2 rounded-full shrink-0" style={{ background: c.color }} />{c.label}</p>
+            <p className="text-[15px] font-black text-[#2A1A12]">₹{c.amt}L</p>
+          </motion.div>
+        ))}
+      </div>
+    </Chip>
+    <Chip delay={1.8} className="mt-3 p-2 sm:p-2.5">
+      <p className="px-2 pt-1 pb-1.5 text-[10.5px] font-bold tracking-[0.12em] uppercase text-[#8A7A6A]">₹{LOAN}L loan · 10 years · EMI</p>
+      {LENDERS.map((l, i) => (
+        <motion.div key={l.name} initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 2 + i * 0.2 }}
+          className={`flex items-center justify-between gap-3 px-2 py-2 ${i ? 'border-t border-[#F1EBE2]' : ''}`}>
+          <span className="text-[13px] font-semibold text-[#2A1A12]">{l.name}</span>
+          <span className="text-[12px] text-[#8A7A6A] tabular-nums">{l.rate}%</span>
+          <span className="w-[110px] text-right text-[14px] font-black tabular-nums text-[#2A1A12]">
+            {i === 0 ? <RedPenCircle note="cheapest">₹{emi(LOAN, l.rate).toFixed(1)}k/mo</RedPenCircle> : `₹${emi(LOAN, l.rate).toFixed(1)}k/mo`}
+          </span>
+        </motion.div>
+      ))}
+    </Chip>
+    <p className="mt-2 text-center text-[10.5px] text-[#A3968A]">Example figures and rates. Your offer depends on the lender.</p>
+  </div>
+);
 
 // ── 2. SOP & documents: an expert writes the SOP live, edits a word, leaves a comment, score climbs ──
 const SOP_LINES = [
@@ -436,103 +303,117 @@ const SopArt = () => {
   );
 };
 
-// ── 4. Visa: a 10-second mock interview. Pick the stronger answer: right → plane flies + APPROVED, wrong → a tip ──
+// ── 4. Visa: the file is checked, then a quick mock question. Pick the stronger answer. ──
+const VISA_DOCS = ['Admission letter (I-20 / CoE)', 'Funds proof and loan sanction', 'SOP / GS answers'];
 const VISA_QS = [
   { q: 'Why this university?', good: 'Its embedded systems lab matches my final-year project', bad: 'My cousin studies there' },
   { q: 'Who is funding you?', good: 'My father, with a sanctioned ₹25L education loan', bad: 'I will work part-time and manage' },
   { q: 'Plans after your course?', good: 'Work in Ireland on Stamp 1G, then grow my career', bad: "I haven't decided yet" },
 ];
-const VisaArt = () => {
-  const { ref, tick, go, hover } = useLoop(6500);
-  const qi = tick % VISA_QS.length;
+const VisaPreview = () => {
+  const [qi, setQi] = useState(0);
+  const [answer, setAnswer] = useState(null); // null | 'good' | 'bad'
   const v = VISA_QS[qi];
-  const [pick, setPick] = useState(null); // null | 'good' | 'bad' (reset when the question changes)
-  const [pickedFor, setPickedFor] = useState(-1);
-  const answer = pickedFor === tick ? pick : null;
   const approved = answer === 'good';
-  const flip = tick % 2 === 0; // swap button order so the right answer isn't always first
-  const choose = (k) => { setPick(k); setPickedFor(tick); if (k === 'good') setTimeout(() => go(tick + 1), 3600); };
+  const flip = qi % 2 === 0; // swap the order so the right answer isn't always first
+  useEffect(() => {
+    if (!approved) return undefined;
+    const t = setTimeout(() => { setAnswer(null); setQi((n) => (n + 1) % VISA_QS.length); }, 2600);
+    return () => clearTimeout(t);
+  }, [approved]);
   return (
-    <div ref={ref} {...hover} className="relative h-[215px] sm:h-[240px] w-full max-w-[420px] mx-auto">
-      <svg viewBox="0 0 420 215" className="absolute inset-x-0 top-0 w-full h-[215px] pointer-events-none" aria-hidden="true">
-        <path d="M70 90 C 150 -20, 290 -20, 360 60" fill="none" stroke="#DE5C2B" strokeWidth="2.5" strokeDasharray="6 8" opacity="0.5" />
-      </svg>
-      {approved && (
-        <motion.div
-          className="absolute z-20 text-[#DE5C2B]"
-          style={{ offsetPath: "path('M70 90 C 150 -20, 290 -20, 360 60')", offsetRotate: 'auto' }}
-          initial={{ offsetDistance: '0%', opacity: 0 }}
-          animate={{ offsetDistance: '100%', opacity: [0, 1, 1, 0] }}
-          transition={{ duration: 1.4, ease: 'easeInOut' }}
-        >
-          <Plane size={22} fill="currentColor" className="rotate-45" />
-        </motion.div>
-      )}
-      <Float className="absolute left-[4%] top-3 w-[26%]" distance={7}>
-        <img src={ICON('travel')} alt="" loading="lazy" className="w-full drop-shadow-2xl -rotate-3" />
-      </Float>
-      <Float className="absolute left-[40%] -top-2 w-[19%]" delay={0.5}>
-        <motion.img src={ICON('shield')} alt="" loading="lazy" className="w-full drop-shadow-xl" animate={{ scale: approved ? [1, 1.25, 1] : 1 }} transition={{ duration: 0.6, delay: 1.3 }} />
-      </Float>
-      <Float className="absolute right-[4%] top-6 w-[16%]" delay={1.1} distance={9}>
-        <motion.img src={ICON('map-pin')} alt="" loading="lazy" className="w-full drop-shadow-xl" animate={{ y: approved ? [0, -16, 0] : 0 }} transition={{ duration: 0.5, delay: 1.4 }} />
-      </Float>
-      <AnimatePresence>
-        {approved && (
-          <motion.div
-            key={`stamp-${tick}`}
-            className="absolute left-1/2 top-[18%] -translate-x-1/2 z-30 px-3 py-1 rounded-lg border-[3px] border-emerald-600 text-emerald-600 font-black text-[18px] tracking-[0.12em] bg-white/80 pointer-events-none"
-            initial={{ scale: 3, opacity: 0, rotate: -30 }}
-            animate={{ scale: 1, opacity: 1, rotate: -12 }}
-            exit={{ opacity: 0 }}
-            transition={{ type: 'spring', stiffness: 400, damping: 14, delay: 1.3 }}
-          >
-            APPROVED
-          </motion.div>
-        )}
-      </AnimatePresence>
-      {/* the officer's question, answered by the visitor */}
-      <motion.div
-        key={`q-${tick}`}
-        className="absolute inset-x-[2%] bottom-0 z-20"
-        initial={{ opacity: 0, y: 16 }}
-        animate={answer === 'bad' ? { opacity: 1, y: 0, x: [0, -8, 8, -5, 5, 0] } : { opacity: 1, y: 0 }}
-        transition={{ duration: answer === 'bad' ? 0.45 : 0.35 }}
-      >
-        <div className="bg-white/95 backdrop-blur rounded-2xl shadow-[0_18px_40px_-12px_rgba(42,26,18,0.35)] border border-white p-3">
-          <div className="flex items-center justify-between gap-2">
-            <p className="text-[12.5px] font-bold text-[#2A1A12]">🛂 Officer: “{v.q}”</p>
-            <span className="text-[9.5px] font-semibold text-slate-400 whitespace-nowrap">Q{qi + 1}/3</span>
-          </div>
+    <div className="relative w-full max-w-[460px] mx-auto">
+      <Chip delay={0.1} className="p-3.5 sm:p-4">
+        <div className="flex items-center justify-between gap-2">
+          <p className="text-[13px] font-bold text-[#2A1A12]">Visa file check</p>
+          <span className="flex items-center gap-1.5 text-[10px] font-black tracking-[0.1em]">
+            <span className="px-1.5 py-0.5 rounded border-2 border-[#C0392B] text-[#C0392B] -rotate-3">REFUSED</span>
+            <ArrowRight size={12} className="text-[#8A7A6A]" />
+            <span className="px-1.5 py-0.5 rounded bg-[#558563] text-white">FIXED</span>
+          </span>
+        </div>
+        <div className="mt-2.5 grid gap-1.5">
+          {VISA_DOCS.map((d, i) => (
+            <motion.p key={d} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.35 + i * 0.3 }}
+              className="flex items-center gap-2 text-[12.5px] text-[#2A1A12]">
+              <motion.span initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ type: 'spring', stiffness: 400, damping: 15, delay: 0.55 + i * 0.3 }}
+                className="w-5 h-5 rounded-md bg-[#558563] text-white grid place-items-center shrink-0">
+                <Check size={12} strokeWidth={3} />
+              </motion.span>
+              {d}
+            </motion.p>
+          ))}
+        </div>
+      </Chip>
+      <Chip delay={1.4} className="mt-3 p-3.5 sm:p-4">
+        <div className="flex items-center justify-between gap-2">
+          <p className="text-[13px] font-bold text-[#2A1A12]">Officer: “{v.q}”</p>
+          <span className="text-[10px] font-semibold text-[#A3968A] whitespace-nowrap">Mock Q{qi + 1}/3</span>
+        </div>
+        <AnimatePresence mode="wait" initial={false}>
           {approved ? (
-            <p className="mt-2 flex items-center gap-2 text-[12.5px] font-semibold text-emerald-700">
-              <span className="w-6 h-6 rounded-lg bg-emerald-500 text-white grid place-items-center"><Check size={14} strokeWidth={3} /></span>
-              Strong answer. Your student visa is approved!
-            </p>
+            <motion.p key="ok" initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}
+              className="mt-2.5 flex items-center gap-2 text-[13px] font-semibold text-[#3F6B4C]">
+              <span className="w-6 h-6 rounded-lg bg-[#558563] text-white grid place-items-center"><Check size={14} strokeWidth={3} /></span>
+              Strong answer. That is what an officer wants to hear.
+            </motion.p>
           ) : (
-            <div className="mt-2 grid gap-1.5">
+            <motion.div key={`q-${qi}`} initial={{ opacity: 0, y: 6 }} animate={answer === 'bad' ? { opacity: 1, y: 0, x: [0, -8, 8, -5, 5, 0] } : { opacity: 1, y: 0 }} exit={{ opacity: 0 }}
+              className="mt-2.5 grid gap-1.5">
+              <p className="text-[10.5px] font-semibold text-[#8A7A6A]">Pick the stronger answer</p>
               {(flip ? ['good', 'bad'] : ['bad', 'good']).map((k) => (
                 <button
                   key={k}
                   type="button"
-                  onClick={() => choose(k)}
-                  className={`text-left rounded-xl border px-2.5 py-1.5 text-[11.5px] leading-snug cursor-pointer transition-colors ${answer === k && k === 'bad' ? 'border-rose-300 bg-rose-50 text-rose-700' : 'border-slate-200 hover:border-[#DE5C2B] hover:bg-orange-50 text-slate-700'}`}
+                  onClick={() => setAnswer(k)}
+                  className={`no-shine text-left rounded-xl border px-3 py-2 text-[12.5px] leading-snug cursor-pointer transition-colors ${answer === 'bad' && k === 'bad' ? 'border-rose-300 bg-rose-50 text-rose-700' : 'border-[#E6E0D4] hover:border-[#DE5C2B] hover:bg-[#FFF4EE] text-[#2A1A12]'}`}
                 >
+                  {answer === 'bad' && k === 'bad' && <X size={12} strokeWidth={3} className="inline mr-1 -mt-0.5" />}
                   {v[k]}
                 </button>
               ))}
-              {answer === 'bad' && <p className="text-[10.5px] font-semibold text-rose-600">Too vague for an officer. Try the other answer 👆</p>}
-            </div>
+              {answer === 'bad' && <p className="text-[11px] font-semibold text-rose-600">Too vague for an officer. Try the other one.</p>}
+            </motion.div>
           )}
-        </div>
-      </motion.div>
+        </AnimatePresence>
+      </Chip>
+      <AnimatePresence>
+        {approved && (
+          <motion.span
+            key={`stamp-${qi}`}
+            className="absolute right-3 top-[38%] z-30 px-3 py-1 rounded-lg border-[3px] border-[#558563] text-[#558563] font-black text-[18px] tracking-[0.12em] bg-white/90 pointer-events-none"
+            initial={{ scale: 3, opacity: 0, rotate: -30 }}
+            animate={{ scale: 1, opacity: 1, rotate: -12 }}
+            exit={{ opacity: 0 }}
+            transition={{ type: 'spring', stiffness: 400, damping: 14 }}
+          >
+            APPROVED
+          </motion.span>
+        )}
+      </AnimatePresence>
     </div>
   );
 };
 
+const PREVIEW = { counselling: ShortlistPreview, sop: SopArt, loans: FundingPreview, visa: VisaPreview };
+
 export const JourneyBento = () => {
   const navigate = useNavigate();
   const { openEligibilityModal } = useLead();
+  const ref = useRef(null);
+  const inView = useInView(ref, { margin: '-120px' });
+  const [active, setActive] = useState(0);
+  const [hovered, setHovered] = useState(false);
+  const [picked, setPicked] = useState(false); // the visitor chose a step: stop playing through on our own
+  // plays through on its own only on wide screens; on a phone the panel changing height while you read would jump the page
+  const [wide] = useState(() => typeof window !== 'undefined' && window.matchMedia('(min-width: 1024px)').matches);
+  const running = wide && inView && !hovered && !picked;
+
+  useEffect(() => {
+    if (!running) return undefined;
+    const t = setTimeout(() => setActive((n) => (n + 1) % STEPS.length), STEPS[active].dwell);
+    return () => clearTimeout(t);
+  }, [running, active]);
 
   const handleAction = (step) => {
     if (step.to) {
@@ -542,9 +423,12 @@ export const JourneyBento = () => {
     openEligibilityModal?.(`Homepage Steps - ${step.title}`);
   };
 
+  const s = STEPS[active];
+  const Preview = PREVIEW[s.key];
+
   return (
     <section id="how-it-works" className="pt-3 sm:pt-5 pb-8 sm:pb-12 bg-[#FAF9F6] relative z-10 w-full max-w-full">
-      <div className="max-w-[1240px] mx-auto px-4 sm:px-6 lg:px-10 w-full min-w-0">
+      <div ref={ref} className="max-w-[1240px] mx-auto px-4 sm:px-6 lg:px-10 w-full min-w-0">
 
         {/* Header */}
         <motion.div {...rise()} className="max-w-3xl mb-6 sm:mb-8">
@@ -556,53 +440,94 @@ export const JourneyBento = () => {
             Your study abroad journey in <span className="text-[#DE5C2B]">4 steps</span>
           </h2>
           <p className="text-[13.5px] sm:text-[16px] text-slate-600 mt-2.5 leading-relaxed">
-            From choosing a university to your visa interview, here is how we help at every step.
+            From choosing a university to your visa interview, here is what you get at every step.
           </p>
         </motion.div>
 
-        {/* Bento grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-3.5 sm:gap-4">
-          {/* 01 Counselling: wide, warm orange */}
-          <TiltCard
-            delay={0.05}
-            className="lg:col-span-8 relative overflow-hidden rounded-[24px] sm:rounded-[30px] p-5 sm:p-7 grid md:grid-cols-[1fr_1.05fr] gap-6 items-center"
-            style={{ background: 'radial-gradient(120% 120% at 0% 0%, #FFD8C2 0%, #FFB48A 45%, #FF9A62 100%)' }}
-          >
-            <CardText s={STEPS.counselling} onAction={handleAction} />
-            <ShortlistArt />
-          </TiltCard>
+        <motion.div {...rise(0.1)} onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)}>
+          {/* Timeline rail */}
+          <div className="relative grid grid-cols-4 gap-1 sm:gap-3" role="tablist" aria-label="UniCoach steps">
+            <div aria-hidden="true" className="absolute left-[12.5%] right-[12.5%] top-[17px] sm:top-[21px] border-t-2 border-dashed border-[#E3D8CA]" />
+            <motion.div aria-hidden="true" className="absolute left-[12.5%] top-[16px] sm:top-[20px] h-[4px] rounded-full bg-[#DE5C2B]"
+              animate={{ width: `${(active / (STEPS.length - 1)) * 75}%` }} transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }} />
+            {STEPS.map((st, i) => {
+              const on = i === active;
+              const done = i < active;
+              return (
+                <button
+                  key={st.key}
+                  type="button"
+                  role="tab"
+                  aria-selected={on}
+                  onClick={() => { setActive(i); setPicked(true); }}
+                  className="no-shine group relative z-10 flex flex-col items-center text-center cursor-pointer"
+                >
+                  <span className={`relative w-9 h-9 sm:w-11 sm:h-11 rounded-full grid place-items-center text-[13px] sm:text-[15px] font-black border-2 transition-colors ${on ? 'bg-[#DE5C2B] border-[#2A1A12] text-white shadow-[3px_3px_0_#2A1A12]' : done ? 'bg-[#2A1A12] border-[#2A1A12] text-white' : 'bg-white border-[#E3D8CA] text-[#8A7A6A] group-hover:border-[#DE5C2B]'}`}>
+                    {done ? <Check size={16} strokeWidth={3} /> : st.step}
+                  </span>
+                  <span className={`mt-2 text-[11.5px] sm:text-[15px] font-bold leading-tight ${on ? 'text-[#2A1A12]' : 'text-[#6B5E52]'}`}>
+                    <span className="sm:hidden">{st.short}</span>
+                    <span className="hidden sm:inline">{st.title}</span>
+                  </span>
+                  <span className="hidden sm:block mt-0.5 text-[12px] text-[#A3968A]">{st.when}</span>
+                  {/* how long until the next step plays */}
+                  <span className="mt-2 h-[3px] w-12 sm:w-20 rounded-full bg-[#EFE7DC] overflow-hidden">
+                    {on && (
+                      <span key={`${active}-${running}`} className="block h-full bg-[#DE5C2B] origin-left"
+                        style={{ animation: running ? `jb-fill ${st.dwell}ms linear forwards` : 'none', transform: running ? undefined : 'scaleX(1)' }} />
+                    )}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
 
-          {/* 02 SOP: periwinkle */}
-          <TiltCard
-            delay={0.12}
-            className="lg:col-span-4 relative overflow-hidden rounded-[24px] sm:rounded-[30px] p-5 sm:p-6 flex flex-col gap-4"
-            style={{ background: 'radial-gradient(120% 110% at 100% 0%, #DCE2FF 0%, #B8C2FF 55%, #A3AEFA 100%)' }}
-          >
-            <SopArt />
-            <CardText s={STEPS.sop} onAction={handleAction} />
-          </TiltCard>
-
-          {/* 03 Loans: violet */}
-          <TiltCard
-            delay={0.08}
-            className="lg:col-span-4 relative overflow-hidden rounded-[24px] sm:rounded-[30px] p-5 sm:p-6 flex flex-col gap-4"
-            style={{ background: 'radial-gradient(120% 110% at 0% 0%, #F5C9B8 0%, #C9A5E8 50%, #8F7BE8 100%)' }}
-          >
-            <FinanceArt />
-            <CardText s={STEPS.loans} onAction={handleAction} />
-          </TiltCard>
-
-          {/* 04 Visa: soft cream, wide */}
-          <TiltCard
-            delay={0.15}
-            className="lg:col-span-8 relative overflow-hidden rounded-[24px] sm:rounded-[30px] p-5 sm:p-7 grid md:grid-cols-[1fr_1.1fr] gap-6 items-center"
-            style={{ background: 'radial-gradient(120% 130% at 100% 100%, #FFE3D6 0%, #FDF1EA 55%, #FBF6F2 100%)' }}
-          >
-            <CardText s={STEPS.visa} onAction={handleAction} />
-            <VisaArt />
-          </TiltCard>
-        </div>
+          {/* Stage */}
+          <div className="mt-5 sm:mt-7 rounded-[24px] sm:rounded-[32px] border border-[#EFE7DC] bg-white overflow-hidden transition-colors duration-500"
+            style={{ background: `radial-gradient(120% 120% at 100% 0%, ${s.tint} 0%, #FFFFFF 62%)` }}>
+            <AnimatePresence mode="wait" initial={false}>
+              <motion.div
+                key={s.key}
+                role="tabpanel"
+                initial={{ opacity: 0, y: 14 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+                className="grid lg:grid-cols-[1fr_1.1fr] gap-7 lg:gap-10 items-center p-5 sm:p-8 lg:p-11 lg:min-h-[460px]"
+              >
+                <div className="min-w-0">
+                  <p className="text-[11px] sm:text-[12px] font-bold tracking-[0.14em] uppercase text-[#DE5C2B]">Step {s.step} · {s.when}</p>
+                  <h3 className="mt-2 font-outfit text-[26px] sm:text-[34px] font-bold tracking-[-0.035em] leading-[1.05] text-[#2A1A12]">{s.title}</h3>
+                  <p className="mt-3 text-[14px] sm:text-[16px] leading-relaxed text-[#5A4636] max-w-[460px]">{s.text}</p>
+                  <p className="mt-5 text-[11px] font-bold tracking-[0.14em] uppercase text-[#8A7A6A]">What you get</p>
+                  <ul className="mt-2 grid gap-2">
+                    {s.gets.map((g) => (
+                      <li key={g} className="flex items-center gap-2.5 text-[14px] sm:text-[15px] font-semibold text-[#2A1A12]">
+                        <span className="w-5 h-5 rounded-full bg-[#FFE7DA] text-[#DE5C2B] grid place-items-center shrink-0"><Check size={12} strokeWidth={3} /></span>
+                        {g}
+                      </li>
+                    ))}
+                  </ul>
+                  <button
+                    type="button"
+                    onClick={() => handleAction(s)}
+                    className="no-shine group mt-6 inline-flex items-center gap-3 pl-5 pr-1.5 py-1.5 rounded-full bg-[#2A1A12] text-white text-[14px] sm:text-[15px] font-bold cursor-pointer"
+                  >
+                    {s.cta}
+                    <span className="w-9 h-9 rounded-full bg-[#DE5C2B] grid place-items-center transition-transform group-hover:translate-x-0.5">
+                      <ArrowRight size={17} />
+                    </span>
+                  </button>
+                </div>
+                <div className="min-w-0 rounded-[20px] sm:rounded-[24px] p-4 sm:p-6" style={{ background: s.tint }}>
+                  <Preview />
+                </div>
+              </motion.div>
+            </AnimatePresence>
+          </div>
+        </motion.div>
       </div>
+      <style>{'@keyframes jb-fill { from { transform: scaleX(0); } to { transform: scaleX(1); } }'}</style>
     </section>
   );
 };
