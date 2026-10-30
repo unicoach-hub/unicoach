@@ -518,6 +518,9 @@ const RESOURCE_META = {
     CALCULATORS: { hi: 'हिसाब किताब', tone: ['#D0362E', '#FFFFFF'] },
     OTHER: { hi: 'और भी', tone: ['#FFD9C2', '#16130F'] },
 };
+// Poster colours that rotate through countries and tool icons: [background, text]
+const MENU_TONES = [['#D0362E', '#FFFFFF'], ['#14837E', '#FFFFFF'], ['#B8285B', '#FFFFFF'], ['#F2B705', '#16130F'], ['#DE5C2B', '#FFFFFF']];
+const TOOL_SECTION_HI = { 'Shortlist & plan': 'चुनो और प्लान करो', 'Write & practise': 'लिखो और अभ्यास करो' };
 const MENU_PANEL = 'bg-[#FFF6E5] rounded-[20px] border-[3px] border-[#16130F] shadow-[6px_6px_0_#16130F]';
 
 const aiToolsNavData = [
@@ -664,20 +667,20 @@ const aiToolsNavData = [
 ];
 
 // Quiet menu row: one icon, a title and one line of help text
-const NavToolRow = ({ tool, onSelect }) => {
+const NavToolRow = ({ tool, onSelect, tone = MENU_TONES[0] }) => {
     const Icon = tool.icon;
     return (
         <Link
             to={tool.path}
             onClick={onSelect}
-            className="group flex items-center gap-3.5 px-3 py-2.5 rounded-xl hover:bg-slate-50 transition-colors"
+            className="group flex items-center gap-3.5 px-3 py-2.5 rounded-xl border-2 border-transparent hover:bg-white hover:border-[#16130F] hover:shadow-[3px_3px_0_#16130F] transition-all"
         >
-            <span className="w-9 h-9 rounded-lg grid place-items-center flex-shrink-0 bg-slate-100/80 group-hover:bg-white group-hover:shadow-[0_1px_3px_rgba(15,23,42,0.08)] transition-all" style={{ color: tool.color }}>
-                {Icon && <Icon size={18} strokeWidth={1.8} />}
+            <span className="w-9 h-9 rounded-lg border-2 border-[#16130F] grid place-items-center flex-shrink-0" style={{ background: tone[0], color: tone[1] }}>
+                {Icon && <Icon size={18} strokeWidth={2} />}
             </span>
             <span className="min-w-0">
-                <span className="block text-[15px] font-semibold text-slate-900 tracking-[-0.01em] group-hover:text-[#DE5C2B] transition-colors">{tool.name}</span>
-                <span className="block text-[13px] text-slate-500 leading-snug mt-0.5 truncate">{tool.desc}</span>
+                <span className="block text-[15px] font-bold text-[#16130F] tracking-[-0.01em]">{tool.name}</span>
+                <span className="block text-[13px] text-[#5B544A] leading-snug mt-0.5 truncate">{tool.desc}</span>
             </span>
         </Link>
     );
@@ -911,28 +914,29 @@ const Navbar = () => {
                                                 animate={{ opacity: 1, y: 0, scale: 1 }}
                                                 exit={{ opacity: 0, y: 12, scale: 0.99 }}
                                                 transition={{ duration: 0.2, ease: [0.23, 1, 0.32, 1] }}
-                                                className="absolute top-[calc(100%-8px)] left-[-180px] w-[980px] bg-white rounded-[24px] shadow-[0_24px_60px_-12px_rgba(15,23,42,0.18)] border border-slate-100 overflow-hidden z-50 flex whitespace-normal text-left"
+                                                className={`absolute top-[calc(100%-8px)] left-[-180px] w-[980px] ${MENU_PANEL} overflow-hidden z-50 flex whitespace-normal text-left`}
                                                 onMouseEnter={() => open(link.name)}
                                                 onMouseLeave={close}
                                             >
                                                 {/* Left sidebar: off-white styled background list */}
-                                                <div className="w-[210px] flex-shrink-0 bg-slate-50 border-r border-slate-100 p-4 flex flex-col gap-1">
-                                                    {Object.keys(allCountriesData).map((country) => {
+                                                <div className="w-[210px] flex-shrink-0 bg-white border-r-[3px] border-[#16130F] p-3.5 flex flex-col gap-1">
+                                                    <p className="px-2 pb-1 font-['Rozha_One',serif] text-[15px] leading-none text-[#D0362E]">देश चुनो</p>
+                                                    {Object.keys(allCountriesData).map((country, ci) => {
                                                         const isActiveCountry = activeCountry === country;
+                                                        const [bg, fg] = MENU_TONES[ci % MENU_TONES.length];
                                                         return (
                                                             <button
                                                                 key={country}
                                                                 onMouseEnter={() => setActiveCountry(country)}
-                                                                className={`w-full flex items-center justify-between px-4 py-2.5 text-[15px] font-semibold rounded-xl transition-colors duration-150 cursor-pointer
-                                                                ${isActiveCountry
-                                                                        ? 'bg-white text-slate-900 shadow-[0_1px_3px_rgba(15,23,42,0.08)] ring-1 ring-slate-200/70'
-                                                                        : 'text-slate-600 hover:bg-white/70 hover:text-slate-900'}`}
+                                                                style={isActiveCountry ? { background: bg, color: fg } : undefined}
+                                                                className={`no-shine w-full flex items-center justify-between px-3.5 py-2 text-[15px] font-bold rounded-lg border-2 transition-colors duration-150 cursor-pointer
+                                                                ${isActiveCountry ? 'border-[#16130F] shadow-[3px_3px_0_#16130F]' : 'border-transparent text-[#3D362E] hover:border-[#16130F] hover:bg-[#FFF6E5]'}`}
                                                             >
-                                                                <span className="truncate">{country}</span>
-                                                                <ChevronRight
-                                                                    size={14}
-                                                                    className={isActiveCountry ? 'text-[#DE5C2B] flex-shrink-0' : 'text-slate-400 group-hover:text-[#DE5C2B] flex-shrink-0 transition-transform group-hover:translate-x-0.5'}
-                                                                />
+                                                                <span className="flex items-center gap-2.5 truncate">
+                                                                    <span className="w-2.5 h-2.5 rounded-full border-2 border-[#16130F] flex-shrink-0" style={{ background: bg }} />
+                                                                    {country}
+                                                                </span>
+                                                                <ChevronRight size={14} className="flex-shrink-0" />
                                                             </button>
                                                         );
                                                     })}
@@ -944,23 +948,23 @@ const Navbar = () => {
                                                         <Link
                                                             to={`/study-abroad/${selectedData.slug}`}
                                                             onClick={() => setActiveDropdown(null)}
-                                                            className="inline-flex items-center gap-1.5 text-[20px] font-bold text-slate-900 tracking-[-0.02em] hover:text-[#DE5C2B] transition-colors group"
+                                                            className="group inline-flex items-center gap-2 px-4 py-2 rounded-full border-2 border-[#16130F] bg-[#F2B705] text-[#16130F] font-urbanist text-[18px] font-black tracking-[-0.02em] shadow-[3px_3px_0_#16130F] transition-transform hover:-translate-y-0.5"
                                                         >
                                                             <span>Study in {selectedData.fullName}</span>
-                                                            <ChevronRight size={18} className="transform group-hover:translate-x-1 transition-transform text-[#DE5C2B] stroke-[2.5]" />
+                                                            <ChevronRight size={18} className="transform group-hover:translate-x-1 transition-transform stroke-[2.5]" />
                                                         </Link>
 
                                                         <Link
                                                             to="/study-abroad"
                                                             onClick={() => setActiveDropdown(null)}
-                                                            className="inline-flex items-center gap-1 text-[13.5px] font-semibold text-slate-600 hover:text-[#DE5C2B] transition-colors"
+                                                            className="inline-flex items-center gap-1 text-[13px] font-bold text-[#16130F] underline decoration-[#D0362E] decoration-2 underline-offset-4 hover:text-[#D0362E] transition-colors"
                                                         >
-                                                            <span>Explore All Destinations</span>
+                                                            <span>All destinations</span>
                                                             <ArrowRight size={13} />
                                                         </Link>
                                                     </div>
 
-                                                    <div className="w-full h-[1px] bg-slate-100 mb-5" />
+                                                    <div className="w-full border-t-2 border-dashed border-[#16130F33] mb-5" />
 
                                                     <div
                                                         className="grid gap-6 xl:gap-8"
@@ -971,7 +975,7 @@ const Navbar = () => {
                                                         {/* Cities / Col 1 */}
                                                         {selectedData.col1 && selectedData.col1.length > 0 && (
                                                             <div className="min-w-0">
-                                                                <p className="text-[12px] font-semibold text-slate-400 uppercase tracking-[0.08em] pb-3 mb-4 border-b border-slate-100 truncate">
+                                                                <p className="flex items-start gap-2 text-[11.5px] font-black text-[#16130F] uppercase tracking-[0.1em] leading-snug pb-2.5 mb-3 border-b-2 border-[#16130F]"><span className="mt-[3px] w-2 h-2 rounded-full bg-[#D0362E] flex-shrink-0" />
                                                                     {selectedData.col1Title}
                                                                 </p>
                                                                 <ul className="space-y-3">
@@ -979,7 +983,7 @@ const Navbar = () => {
                                                                         <li key={i} className="min-w-0">
                                                                             <Link
                                                                                 to={item.isUniversity ? `/study-abroad/${selectedData.slug}` : `/study-abroad/${selectedData.slug}/${item.slug}`}
-                                                                                className="block text-[15px] text-slate-700 font-normal hover:text-[#DE5C2B] transition-colors leading-snug whitespace-normal break-words"
+                                                                                className="block -mx-2 px-2 py-1 rounded-md text-[14.5px] text-[#3D362E] font-medium hover:bg-white hover:text-[#16130F] transition-colors leading-snug whitespace-normal break-words"
                                                                             >
                                                                                 {item.name}
                                                                             </Link>
@@ -991,7 +995,7 @@ const Navbar = () => {
                                                         {/* Courses / Col 2 */}
                                                         {selectedData.col2 && selectedData.col2.length > 0 && (
                                                             <div className="min-w-0">
-                                                                <p className="text-[12px] font-semibold text-slate-400 uppercase tracking-[0.08em] pb-3 mb-4 border-b border-slate-100 truncate">
+                                                                <p className="flex items-start gap-2 text-[11.5px] font-black text-[#16130F] uppercase tracking-[0.1em] leading-snug pb-2.5 mb-3 border-b-2 border-[#16130F]"><span className="mt-[3px] w-2 h-2 rounded-full bg-[#D0362E] flex-shrink-0" />
                                                                     {selectedData.col2Title}
                                                                 </p>
                                                                 <ul className="space-y-3">
@@ -1037,7 +1041,7 @@ const Navbar = () => {
                                                                                                                 ? `/study-abroad/${selectedData.slug}/universities/${item.slug}`
                                                                                                                 : `/study-abroad/${selectedData.slug}/${selectedData.col1[0].slug}`
                                                                                 }
-                                                                                className="block text-[15px] text-slate-700 font-normal hover:text-[#DE5C2B] transition-colors leading-snug whitespace-normal break-words"
+                                                                                className="block -mx-2 px-2 py-1 rounded-md text-[14.5px] text-[#3D362E] font-medium hover:bg-white hover:text-[#16130F] transition-colors leading-snug whitespace-normal break-words"
                                                                             >
                                                                                 {item.name}
                                                                             </Link>
@@ -1049,7 +1053,7 @@ const Navbar = () => {
                                                         {/* Universities / Col 3 */}
                                                         {selectedData.col3 && selectedData.col3.length > 0 && (
                                                             <div className="min-w-0">
-                                                                <p className="text-[12px] font-semibold text-slate-400 uppercase tracking-[0.08em] pb-3 mb-4 border-b border-slate-100 truncate">
+                                                                <p className="flex items-start gap-2 text-[11.5px] font-black text-[#16130F] uppercase tracking-[0.1em] leading-snug pb-2.5 mb-3 border-b-2 border-[#16130F]"><span className="mt-[3px] w-2 h-2 rounded-full bg-[#D0362E] flex-shrink-0" />
                                                                     {selectedData.col3Title}
                                                                 </p>
                                                                 <ul className="space-y-3">
@@ -1065,7 +1069,7 @@ const Navbar = () => {
                                                                                                 ? `/study-abroad/${selectedData.slug}/courses/${item.slug}`
                                                                                                 : `/study-abroad/${selectedData.slug}/${selectedData.col1[0].slug}`
                                                                                 }
-                                                                                className="block text-[15px] text-slate-700 font-normal hover:text-[#DE5C2B] transition-colors leading-snug whitespace-normal break-words"
+                                                                                className="block -mx-2 px-2 py-1 rounded-md text-[14.5px] text-[#3D362E] font-medium hover:bg-white hover:text-[#16130F] transition-colors leading-snug whitespace-normal break-words"
                                                                             >
                                                                                 {item.name}
                                                                             </Link>
@@ -1294,32 +1298,33 @@ const Navbar = () => {
                                                 animate={{ opacity: 1, y: 0, scale: 1 }}
                                                 exit={{ opacity: 0, y: 12, scale: 0.99 }}
                                                 transition={{ duration: 0.2, ease: [0.23, 1, 0.32, 1] }}
-                                                className="absolute top-[calc(100%-8px)] left-[-160px] w-[820px] bg-white rounded-[24px] shadow-[0_24px_60px_-12px_rgba(15,23,42,0.18)] border border-slate-100 overflow-hidden z-50 px-7 pt-6 pb-6 whitespace-normal text-left"
+                                                className={`absolute top-[calc(100%-8px)] left-[-160px] w-[820px] ${MENU_PANEL} overflow-hidden z-50 px-7 pt-6 pb-6 whitespace-normal text-left`}
                                                 onMouseEnter={() => open(link.name)}
                                                 onMouseLeave={close}
                                             >
                                                 <div className="grid grid-cols-2 gap-x-8">
                                                     {aiToolsNavData.map((category, cIdx) => (
                                                         <div key={cIdx} className="min-w-0">
-                                                            <p className="px-3 pb-3 mb-2 border-b border-slate-100 text-[12px] font-semibold text-slate-400 uppercase tracking-[0.08em]">
-                                                                {category.title}
-                                                            </p>
-                                                            <div className="space-y-0.5">
+                                                            <div className="px-3 pb-2.5 mb-2 border-b-2 border-[#16130F]">
+                                                                <p className="font-['Rozha_One',serif] text-[14px] leading-none text-[#D0362E]">{TOOL_SECTION_HI[category.title] || ''}</p>
+                                                                <p className="mt-1 text-[11.5px] font-black text-[#16130F] uppercase tracking-[0.12em]">{category.title}</p>
+                                                            </div>
+                                                            <div className="space-y-1">
                                                                 {category.items.map((tool, tIdx) => (
-                                                                    <NavToolRow key={tIdx} tool={tool} onSelect={() => setActiveDropdown(null)} />
+                                                                    <NavToolRow key={tIdx} tool={tool} tone={MENU_TONES[(tIdx + cIdx * 2) % MENU_TONES.length]} onSelect={() => setActiveDropdown(null)} />
                                                                 ))}
                                                             </div>
                                                         </div>
                                                     ))}
                                                 </div>
 
-                                                <div className="mt-5 -mx-7 -mb-6 px-10 py-4 bg-slate-50 border-t border-slate-100 flex items-center justify-between">
-                                                    <p className="text-[13.5px] text-slate-600">Not sure where to start? <span className="text-slate-900 font-semibold">Check your profile in 2 minutes.</span></p>
+                                                <div className="mt-5 -mx-7 -mb-6 px-10 py-4 bg-white border-t-[3px] border-[#16130F] flex items-center justify-between">
+                                                    <p className="text-[13.5px] text-[#5B544A]">Not sure where to start? <span className="text-[#16130F] font-bold">Check your profile in 2 minutes.</span></p>
                                                     <div className="flex items-center gap-5">
-                                                        <Link to="/ai-tools" onClick={() => setActiveDropdown(null)} className="text-[13.5px] font-semibold text-slate-700 hover:text-[#DE5C2B] inline-flex items-center gap-1.5 transition-colors">
+                                                        <Link to="/ai-tools" onClick={() => setActiveDropdown(null)} className="text-[13px] font-bold text-[#16130F] underline decoration-[#D0362E] decoration-2 underline-offset-4 hover:text-[#D0362E] inline-flex items-center gap-1.5 transition-colors">
                                                             All tools <ArrowRight size={14} />
                                                         </Link>
-                                                        <Link to="/eligibility-calculator" onClick={() => setActiveDropdown(null)} className="text-[13.5px] font-semibold text-white bg-slate-900 hover:bg-[#DE5C2B] inline-flex items-center gap-1.5 px-4 h-9 rounded-full transition-colors">
+                                                        <Link to="/eligibility-calculator" onClick={() => setActiveDropdown(null)} className="text-[13.5px] font-bold text-white bg-[#D0362E] border-2 border-[#16130F] shadow-[3px_3px_0_#16130F] inline-flex items-center gap-1.5 px-4 h-9 rounded-full transition-transform hover:-translate-y-0.5">
                                                             Check profile <ArrowRight size={14} />
                                                         </Link>
                                                     </div>
