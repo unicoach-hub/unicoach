@@ -22,7 +22,7 @@ const YouPhoto = ({ bg = '#EEF0F1', accent = '#2E4A86' }) => (
   </div>
 );
 
-const Specimen = ({ color = 'rgba(179,64,52,0.3)', top = '48%' }) => (
+const Specimen = ({ color = 'rgba(179,64,52,0.16)', top = '48%' }) => (
   <span className="absolute left-1/2 -translate-x-1/2 -translate-y-1/2 -rotate-[14deg] font-black pointer-events-none select-none"
     style={{ top, color, fontSize: '7.5cqw', letterSpacing: '0.3em', fontFamily: 'Urbanist, sans-serif' }}>SPECIMEN</span>
 );
@@ -117,7 +117,7 @@ export const AuVisa = () => (
       GRANTED 20JUN27.<br />HOLDER(S) PERMITTED TO REMAIN IN AUSTRALIA UNTIL 31 DEC 2029.
     </div>
     <div className="absolute left-[4%] bottom-[4%]" style={{ fontSize: '3.4cqw' }}>V500&lt;UC20270533C</div>
-    <Specimen color="rgba(160,70,30,0.28)" top="42%" />
+    <Specimen color="rgba(160,70,30,0.16)" top="42%" />
   </div>
 );
 
