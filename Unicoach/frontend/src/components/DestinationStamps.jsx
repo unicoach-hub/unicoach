@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
 
 /*
- * Homepage study destinations as tilted postage stamps on teal (the Desi Pop stamp look from /career-counselling).
+ * Homepage study destinations as straight postage stamps on teal (the Desi Pop stamp look from /career-counselling).
  * Same countries and facts as the older card carousel in Destinations.jsx.
  */
 
