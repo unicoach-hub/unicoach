@@ -100,7 +100,7 @@ import {
 import { TimezoneOptions } from '../components/TimezoneOptions';
 import ProductTour from '../../components/ProductTour';
 import useFirstVisitTour from '../../hooks/useFirstVisitTour';
-import TutorialVideoButton from '../../components/ui/TutorialVideoButton';
+import TutorialVideo from '../../components/ui/TutorialVideo';
 
 const InstagramIcon = ({ className = "w-4 h-4" }) => (
   <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -2512,13 +2512,6 @@ const UnicoachDashboardPage = () => {
           >
             <Sparkles className="w-3.5 h-3.5" /> Take a tour
           </button>
-          <TutorialVideoButton
-            src="/videos/tutorials/mentor-dashboard.mp4"
-            poster="/videos/tutorials/mentor-dashboard-poster.jpg"
-            title="How your mentor studio works (1 min)"
-            label="Watch 1-min video"
-            className="w-full h-9 rounded-xl border border-slate-200 bg-white text-slate-600 hover:border-[#DE5C2B] hover:text-[#DE5C2B] text-xs font-semibold flex items-center justify-center gap-1.5 cursor-pointer transition-colors"
-          />
 
           {/* Navigation items matching UniCoach screenshot */}
           <nav className="space-y-1">
@@ -2844,6 +2837,8 @@ const UnicoachDashboardPage = () => {
           {/* ════════ TAB 1: OVERVIEW / HOME (Matching UniCoach Screenshot) ════════ */}
           {activeTab === 'overview' && (
             <div className="space-y-6 animate-in fade-in duration-200">
+              {/* Setup checklist (while anything is left) with the 1-min tour video beside it */}
+              <div className={pendingCount > 0 ? 'grid grid-cols-1 xl:grid-cols-[minmax(0,1fr)_380px] gap-6 items-start' : ''}>
               {/* Setup checklist: new mentors start empty and go step by step until the page is ready */}
               {pendingCount > 0 && (
                 <div className="bg-white rounded-2xl border border-slate-200 p-5 sm:p-6">
@@ -2884,6 +2879,14 @@ const UnicoachDashboardPage = () => {
                   </ol>
                 </div>
               )}
+              <TutorialVideo
+                src="/videos/tutorials/mentor-dashboard.mp4"
+                poster="/videos/tutorials/mentor-dashboard-poster.jpg"
+                title="How your mentor studio works"
+                duration="1 min"
+                className="w-full max-w-[420px]"
+              />
+              </div>
 
               {/* Urgent Broadcast Notice Banner (if any unread urgent broadcast exists) */}
               {(() => {

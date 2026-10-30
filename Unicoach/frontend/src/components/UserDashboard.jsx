@@ -787,7 +787,7 @@ ${name || 'Candidate'}`;
           </div>
 
           {/* Row 2: today, tasks CTA and greeting on the left; the 1-min tour video on the right */}
-          <div className="mt-8 grid grid-cols-1 xl:grid-cols-[minmax(0,1fr)_400px] gap-8 items-center">
+          <div className="mt-8 grid grid-cols-1 xl:grid-cols-[auto_minmax(0,1fr)] gap-10 items-center">
           <div className="flex flex-col gap-6 min-w-0">
             <div className="flex flex-wrap items-center gap-4">
               <div className="w-[92px] h-[92px] rounded-full border border-slate-200 bg-[#F6F5F2] flex items-center justify-center text-4xl font-medium text-slate-900">
@@ -867,7 +867,7 @@ ${name || 'Candidate'}`;
             poster="/videos/tutorials/student-dashboard-poster.jpg"
             title="Your first steps on UniCoach"
             duration="1 min"
-            className="w-full max-w-[420px]"
+            className="w-full max-w-[420px] xl:max-w-[560px] xl:justify-self-end"
           />
           </div>
         </motion.div>
