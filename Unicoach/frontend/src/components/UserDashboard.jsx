@@ -40,7 +40,7 @@ const EligibilityCalculatorPage = lazy(() => import('../pages/EligibilityCalcula
 const TabLoading = () => <div className="py-16 flex justify-center"><span className="w-6 h-6 rounded-full border-2 border-[#DE5C2B] border-t-transparent animate-spin" /></div>;
 import { API_BASE_URL } from '../config';
 import JourneyTracker from './JourneyTracker';
-import TutorialVideoButton from './ui/TutorialVideoButton';
+import TutorialVideo from './ui/TutorialVideo';
 import { clearUserStorage } from '../utils/userStorage';
 
 const API_URL = API_BASE_URL;
@@ -786,8 +786,9 @@ ${name || 'Candidate'}`;
             </div>
           </div>
 
-          {/* Row 2: today, tasks CTA, greeting */}
-          <div className="mt-8 flex flex-wrap items-center justify-between gap-x-8 gap-y-5">
+          {/* Row 2: today, tasks CTA and greeting on the left; the 1-min tour video on the right */}
+          <div className="mt-8 grid grid-cols-1 xl:grid-cols-[minmax(0,1fr)_400px] gap-8 items-center">
+          <div className="flex flex-col gap-6 min-w-0">
             <div className="flex flex-wrap items-center gap-4">
               <div className="w-[92px] h-[92px] rounded-full border border-slate-200 bg-[#F6F5F2] flex items-center justify-center text-4xl font-medium text-slate-900">
                 {new Date().getDate()}
@@ -818,15 +819,9 @@ ${name || 'Candidate'}`;
               >
                 <Sparkles size={16} /> Take a tour
               </button>
-              <TutorialVideoButton
-                src="/videos/tutorials/student-dashboard.mp4"
-                poster="/videos/tutorials/student-dashboard-poster.jpg"
-                title="Your first steps on UniCoach (1 min)"
-                className="h-14 px-5 rounded-full border border-slate-200 bg-white text-slate-700 hover:border-[#DE5C2B] hover:text-[#DE5C2B] font-semibold text-sm whitespace-nowrap flex items-center gap-2 transition-colors cursor-pointer"
-              />
             </div>
 
-            <div className="relative">
+            <div className="relative w-fit">
             <button
               type="button"
               onClick={() => (chatUnread > 0 ? setChatPopupOpen((v) => !v) : setActiveTab('messages'))}
@@ -866,6 +861,14 @@ ${name || 'Candidate'}`;
               </div>
             )}
             </div>
+          </div>
+          <TutorialVideo
+            src="/videos/tutorials/student-dashboard.mp4"
+            poster="/videos/tutorials/student-dashboard-poster.jpg"
+            title="Your first steps on UniCoach"
+            duration="1 min"
+            className="w-full max-w-[420px]"
+          />
           </div>
         </motion.div>
 
