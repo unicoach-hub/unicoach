@@ -1,24 +1,32 @@
-import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { 
-    BookOpen, 
-    ChevronDown, 
-    Sparkles, 
-    Award, 
-    Check, 
-    FileText, 
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
+import {
+    BookOpen,
+    ChevronDown,
+    Sparkles,
+    FileText,
     ArrowRight,
-    HelpCircle,
-    User,
     PenTool,
-    Briefcase,
-    FileCheck
+    Briefcase
 } from 'lucide-react';
 import { PostageStamp } from '../../../../components/desi/DesiPop';
 import { JourneyPills } from '../../../../components/ui/BrandElements';
+import { DesiHero, DesiHeading, InkCard, Sticker } from '../../../../components/desi/DesiKit';
+import { BookOkCta } from '../../../../components/desi/BookOkCta';
+
+// Desi Pop form styling (ink borders, cream fields)
+const FIELD = 'w-full bg-[#FFF6E5] border-2 border-[#16130F] rounded-lg px-3.5 py-2.5 text-[13px] font-semibold text-[#16130F] placeholder:text-[#8A7F70] outline-none transition-shadow focus:bg-white focus:shadow-[3px_3px_0_#F2B705]';
+const LABEL = 'text-[11px] font-extrabold uppercase text-[#5B544A] tracking-wider';
+
+// Poster colours for numbered chips and card strips (no blue)
+const TONES = [
+    { c: '#D0362E', fg: '#FFFFFF' },
+    { c: '#F2B705', fg: '#16130F' },
+    { c: '#14837E', fg: '#FFFFFF' },
+    { c: '#B8285B', fg: '#FFFFFF' },
+];
 
 const LORBlogPage = () => {
-    const navigate = useNavigate();
     const [faqOpen, setFaqOpen] = useState({});
     const [draftInput, setDraftInput] = useState({
         recommenderName: '',
@@ -117,105 +125,120 @@ const LORBlogPage = () => {
     ];
 
     return (
-        <main className="min-h-screen bg-slate-50/50 pt-24 pb-16">
-            {/* Header Banner */}
-            <div className="uc-clean border-x-0 relative overflow-hidden py-12 md:py-16 px-6 md:px-12 mb-12">
-                <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#DE5C2B_1px,transparent_1px)] [background-size:16px_16px]"></div>
-                <div className="max-w-[1240px] mx-auto relative z-10">
-                    {/* Desi Pop: postage stamp with the length rule from the tone tips, wide screens only */}
-                    <div className="hidden xl:block absolute right-6 top-1/2 -translate-y-1/2 rotate-6 pointer-events-none">
-                        <PostageStamp value="1–2" title="Pages max" hi="सिफ़ारिश" note="LOR length" className="w-[150px]" />
+        <main className="min-h-screen bg-[#FFF6E5] pb-16 font-['Onest',sans-serif] text-[#16130F] overflow-x-clip">
+            {/* ── HERO: mustard poster band ── */}
+            <DesiHero
+                tone="mustard"
+                sign={{ hi: 'सिफ़ारिश पत्र', en: 'LOR DESK' }}
+                crumbs={[{ label: 'Home', to: '/' }, { label: 'Resources' }, { label: 'LOR' }, { label: 'General LOR Guide' }]}
+                title="Letter of Recommendation (LOR) Samples & Formats"
+                subtitle="Comprehensive guidelines, interactive draft builders, and sample templates to craft the perfect endorsement for 2025."
+                stickers={(
+                    <Sticker tilt={-2}><Sparkles size={14} className="text-[#D0362E]" />Recommendation Guides</Sticker>
+                )}
+                aside={(
+                    // postage stamp with the length rule from the tone tips, large screens only
+                    <div className="hidden lg:flex justify-center pointer-events-none">
+                        <PostageStamp value="1–2" title="Pages max" hi="सिफ़ारिश" note="LOR length" className="w-[170px] rotate-6" />
                     </div>
-                    <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-indigo-500/20 border border-indigo-400/30 rounded-full text-indigo-300 text-xs font-bold uppercase tracking-wider mb-4">
-                        <Sparkles size={12} className="text-indigo-400" />
-                        <span>Recommendation Guides</span>
+                )}
+            />
+
+            {/* ── LOR PICKER (phones and tablets) ── */}
+            <div className="lg:hidden max-w-[1240px] mx-auto px-4 -mt-6 mb-8 relative z-10">
+                <InkCard className="p-3">
+                    <p className="text-[11px] font-extrabold uppercase tracking-wider text-[#5B544A] leading-none px-1 mb-2">LOR Directory</p>
+                    <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-hide">
+                        {lorList.map((lor) => {
+                            const isCurrent = lor.key === 'lor-blog';
+                            return (
+                                <Link
+                                    key={lor.key}
+                                    to={lor.path}
+                                    className={`flex items-center gap-1.5 px-3.5 py-2 rounded-lg border-2 text-xs font-bold whitespace-nowrap flex-shrink-0 ${isCurrent ? 'border-[#16130F] bg-[#F2B705] text-[#16130F] shadow-[2px_2px_0_#16130F]' : 'border-[#E6DCC8] bg-[#FFF6E5] text-[#5B544A]'}`}
+                                >
+                                    <FileText size={13} />
+                                    <span>{lor.name}</span>
+                                </Link>
+                            );
+                        })}
                     </div>
-                    <h1 className="text-3xl md:text-5xl font-black tracking-tight leading-tight max-w-4xl">
-                        Letter of Recommendation (LOR) Samples & Formats
-                    </h1>
-                    <p className="text-slate-350 text-base md:text-lg mt-3 max-w-2xl font-medium">
-                        Comprehensive guidelines, interactive draft builders, and sample templates to craft the perfect endorsement for 2025.
-                    </p>
-                </div>
+                </InkCard>
             </div>
 
             {/* Main Content Layout */}
-            <div className="max-w-[1240px] mx-auto px-6 md:px-10">
-                <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-                    
-                    {/* Left Sticky Sidebar */}
-                    <div className="lg:col-span-1">
-                        <div className="sticky top-28 bg-white rounded-2xl p-5 border border-slate-200/60 shadow-sm space-y-4">
-                            <h3 className="text-xs font-extrabold text-slate-400 uppercase tracking-widest pl-2">
-                                LOR Directory
-                            </h3>
-                            <nav className="flex flex-col gap-1">
+            <div className="max-w-[1240px] mx-auto px-4 md:px-8 lg:pt-12">
+                <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 items-start">
+
+                    {/* Left Sticky Sidebar (desktop) */}
+                    <aside className="hidden lg:block lg:col-span-1 sticky top-28">
+                        <InkCard className="p-4">
+                            <p className="font-['Rozha_One',serif] text-[15px] text-[#D0362E] leading-none">सिफ़ारिश पत्र</p>
+                            <h3 className="mt-1 mb-3 font-urbanist font-black text-[17px]">LOR Directory</h3>
+                            <nav className="flex flex-col gap-2">
                                 {lorList.map((lor) => {
                                     const isCurrent = lor.key === 'lor-blog';
                                     return (
                                         <Link
                                             key={lor.key}
                                             to={lor.path}
-                                            className={`flex items-center justify-between px-4 py-3 rounded-xl text-[0.88rem] font-bold transition-all duration-200
-                                                ${isCurrent 
-                                                    ? 'bg-gradient-to-r from-orange-500 to-[#DE5C2B] text-white shadow-md shadow-indigo-600/15'
-                                                    : 'text-slate-600 hover:bg-slate-50 hover:text-indigo-600'}`}
+                                            className={`group flex items-center justify-between px-3 py-2.5 rounded-lg border-2 text-[14px] font-bold transition-transform ${isCurrent ? 'border-[#16130F] bg-[#F2B705] text-[#16130F] shadow-[3px_3px_0_#16130F]' : 'border-transparent text-[#3D362E] hover:border-[#16130F] hover:bg-[#FFF6E5]'}`}
                                         >
-                                            <div className="flex items-center gap-2">
-                                                <FileText size={16} className={isCurrent ? 'text-white' : 'text-slate-400'} />
-                                                <span>{lor.name}</span>
-                                            </div>
-                                            <ArrowRight size={14} className={`opacity-80 transition-transform ${isCurrent ? 'translate-x-0.5' : 'text-slate-300'}`} />
+                                            <span className="flex items-center gap-2.5">
+                                                <FileText size={16} />
+                                                {lor.name}
+                                            </span>
+                                            <ArrowRight size={14} className="transition-transform group-hover:translate-x-0.5" />
                                         </Link>
                                     );
                                 })}
                             </nav>
-                        </div>
-                    </div>
+                        </InkCard>
+                    </aside>
 
                     {/* Right Content */}
-                    <div className="lg:col-span-3 space-y-10">
-                        
+                    <div className="lg:col-span-3 space-y-10 min-w-0">
+
                         {/* What is LOR */}
-                        <div className="bg-white rounded-2xl p-6 md:p-8 border border-slate-200/60 shadow-sm space-y-4">
-                            <h2 className="text-xl md:text-2xl font-black text-slate-800 tracking-tight">
-                                What is a Letter of Recommendation (LOR)?
-                            </h2>
-                            <p className="text-slate-650 leading-relaxed text-[0.96rem] font-medium">
+                        <InkCard className="p-6 md:p-8 space-y-4" shadow="#F2B705">
+                            <DesiHeading hi="सिफ़ारिश क्या है?">What is a Letter of Recommendation (LOR)?</DesiHeading>
+                            <p className="text-[#5B544A] leading-relaxed text-[15px]">
                                 A Letter of Recommendation (LOR) is a crucial document that provides a personal endorsement of an individual’s skills, qualifications, and character. Typically written by professors, mentors, or supervisors, an LOR offers an objective assessment of a candidate’s academic or professional abilities. This document is essential in various application processes, including those for Master’s and PhD programs, as it highlights the candidate’s strengths, achievements, and potential for success.
                             </p>
-                            <p className="text-slate-650 leading-relaxed text-[0.96rem] font-medium">
+                            <p className="text-[#5B544A] leading-relaxed text-[15px]">
                                 A well-written LOR can significantly enhance an applicant’s profile, providing a compelling narrative that supports their application and sets them apart from other candidates in the admission committees' stacks.
                             </p>
-                        </div>
+                        </InkCard>
 
                         {/* Types of LOR */}
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div className="bg-white rounded-2xl p-6 border border-slate-200/60 shadow-sm space-y-3">
-                                <div className="p-2.5 bg-orange-50 text-[#DE5C2B] rounded-xl w-fit">
-                                    <BookOpen size={20} />
+                            <InkCard className="overflow-hidden md:-rotate-[0.6deg]">
+                                <div className="flex items-center gap-2.5 px-5 py-3 border-b-[3px] border-[#16130F] bg-[#D0362E] text-white">
+                                    <span className="w-9 h-9 rounded-full bg-white text-[#16130F] border-2 border-[#16130F] grid place-items-center shrink-0">
+                                        <BookOpen size={17} />
+                                    </span>
+                                    <h3 className="font-urbanist font-black text-[18px] leading-tight">Academic LOR</h3>
                                 </div>
-                                <h3 className="text-base font-bold text-slate-800">Academic LOR</h3>
-                                <p className="text-slate-600 text-xs font-semibold leading-relaxed">
+                                <p className="p-5 text-[#5B544A] text-[14px] leading-relaxed">
                                     Written by professors, teachers, or advisors who closely observed your academic performance. These letters emphasize intellectual capacity, research skills, GPA standing, and classroom engagement.
                                 </p>
-                            </div>
-                            <div className="bg-white rounded-2xl p-6 border border-slate-200/60 shadow-sm space-y-3">
-                                <div className="p-2.5 bg-indigo-50 text-indigo-600 rounded-xl w-fit">
-                                    <Briefcase size={20} />
+                            </InkCard>
+                            <InkCard className="overflow-hidden md:rotate-[0.6deg]">
+                                <div className="flex items-center gap-2.5 px-5 py-3 border-b-[3px] border-[#16130F] bg-[#14837E] text-white">
+                                    <span className="w-9 h-9 rounded-full bg-white text-[#16130F] border-2 border-[#16130F] grid place-items-center shrink-0">
+                                        <Briefcase size={17} />
+                                    </span>
+                                    <h3 className="font-urbanist font-black text-[18px] leading-tight">Character Reference LOR</h3>
                                 </div>
-                                <h3 className="text-base font-bold text-slate-800">Character Reference LOR</h3>
-                                <p className="text-slate-600 text-xs font-semibold leading-relaxed">
+                                <p className="p-5 text-[#5B544A] text-[14px] leading-relaxed">
                                     Focuses on personal values, leadership, soft skills, and integrity. Typically authored by mentors, coaches, or community leaders who can verify your behavior, ethics, and team contributions.
                                 </p>
-                            </div>
+                            </InkCard>
                         </div>
 
                         {/* Format & Structure Table */}
-                        <div className="bg-white rounded-2xl border border-slate-200/60 shadow-sm overflow-hidden p-6 space-y-4">
-                            <h3 className="text-lg font-bold text-slate-800 tracking-tight">
-                                Structure and Paragraph-wise LOR Format
-                            </h3>
+                        <InkCard className="p-6 md:p-8 space-y-5">
+                            <DesiHeading hi="पत्र का ढाँचा">Structure and Paragraph-wise LOR Format</DesiHeading>
                             <JourneyPills
                                 steps={[
                                     { label: 'Intro', sub: 'Relationship' },
@@ -225,45 +248,45 @@ const LORBlogPage = () => {
                                 ]}
                                 className="w-fit max-w-full"
                             />
-                            <div className="overflow-x-auto">
-                                <table className="w-full text-left border-collapse text-xs md:text-sm">
+                            <div className="overflow-x-auto border-[3px] border-[#16130F] rounded-xl">
+                                <table className="w-full text-left border-collapse text-[13px] md:text-[14px]">
                                     <thead>
-                                        <tr className="bg-slate-50 text-slate-400 font-bold uppercase border-b border-slate-100">
+                                        <tr className="bg-[#F2B705] text-[#16130F] font-extrabold uppercase text-[11.5px] tracking-wider border-b-[3px] border-[#16130F]">
                                             <th className="p-3">Section</th>
                                             <th className="p-3">Primary Focus & Details</th>
                                         </tr>
                                     </thead>
-                                    <tbody className="text-slate-600 font-medium">
-                                        <tr className="border-b border-slate-100">
-                                            <td className="p-3 font-bold text-slate-750">Introduction</td>
+                                    <tbody className="text-[#5B544A] bg-white">
+                                        <tr className="border-b-2 border-dashed border-[#16130F33]">
+                                            <td className="p-3 font-bold text-[#16130F] align-top">Introduction</td>
                                             <td className="p-3">State relationship duration, designation of the recommender, and specific program targeting.</td>
                                         </tr>
-                                        <tr className="border-b border-slate-100">
-                                            <td className="p-3 font-bold text-slate-750">Candidate Strengths</td>
+                                        <tr className="border-b-2 border-dashed border-[#16130F33]">
+                                            <td className="p-3 font-bold text-[#16130F] align-top">Candidate Strengths</td>
                                             <td className="p-3">Meticulousness, analytical capacity, initiative-taking, and technical mastery (e.g. coding).</td>
                                         </tr>
-                                        <tr className="border-b border-slate-100">
-                                            <td className="p-3 font-bold text-slate-750">Personal Anecdote</td>
+                                        <tr className="border-b-2 border-dashed border-[#16130F33]">
+                                            <td className="p-3 font-bold text-[#16130F] align-top">Personal Anecdote</td>
                                             <td className="p-3">Detail a small story where the candidate overcame a project roadblock or suggested a novel solution.</td>
                                         </tr>
                                         <tr>
-                                            <td className="p-3 font-bold text-slate-750">Closing & Sign Off</td>
+                                            <td className="p-3 font-bold text-[#16130F] align-top">Closing & Sign Off</td>
                                             <td className="p-3">Reaffirm support, clarify willingness to be contacted, and provide name, phone, and professional email ID.</td>
                                         </tr>
                                     </tbody>
                                 </table>
                             </div>
-                        </div>
+                        </InkCard>
 
                         {/* Interactive Widget */}
-                        <section className="bg-white border border-slate-200/60 rounded-3xl p-6 md:p-8 shadow-sm space-y-6">
-                            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                                <div className="flex items-center gap-2">
-                                    <PenTool className="text-[#DE5C2B]" size={22} />
-                                    <h3 className="text-xl font-bold text-slate-800 tracking-tight">
+                        <InkCard as="section" className="p-6 md:p-8 space-y-6" shadow="#D0362E">
+                            <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+                                <DesiHeading hi="अपना ड्राफ़्ट बनाओ">
+                                    <span className="inline-flex items-center gap-2">
+                                        <PenTool className="text-[#D0362E] shrink-0" size={24} />
                                         Interactive LOR Draft Builder
-                                    </h3>
-                                </div>
+                                    </span>
+                                </DesiHeading>
                                 <button
                                     type="button"
                                     onClick={() => setDraftInput({
@@ -277,148 +300,151 @@ const LORBlogPage = () => {
                                         targetProgram: "Master's in Computer Science",
                                         project: "final year project resolving network bottlenecks using edge servers"
                                     })}
-                                    className="inline-flex items-center gap-1.5 text-xs font-bold text-indigo-600 hover:text-indigo-700 bg-indigo-50 hover:bg-indigo-100 px-3.5 py-2 rounded-xl transition-all cursor-pointer w-fit border border-indigo-100"
+                                    className="no-shine shrink-0 inline-flex items-center gap-1.5 text-[12.5px] font-bold text-[#16130F] bg-white hover:bg-[#FCE38A] px-4 py-2 rounded-full border-2 border-[#16130F] shadow-[3px_3px_0_#16130F] transition-colors cursor-pointer w-fit"
                                 >
-                                    ✨ Auto-Fill Sample Data
+                                    <Sparkles size={14} className="text-[#D0362E]" /> Auto-Fill Sample Data
                                 </button>
                             </div>
-                            <p className="text-slate-500 text-xs font-normal">
+                            <p className="text-[#5B544A] text-[14px] leading-relaxed">
                                 Provide your recommender details and core accomplishments to assemble a highly professional recommendation structure.
                             </p>
 
                             <form onSubmit={handleGenerate} className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                <div className="space-y-1">
-                                    <label className="text-[10px] font-extrabold uppercase text-slate-400 tracking-wider">Recommender Name</label>
+                                <div className="space-y-1.5 min-w-0">
+                                    <label className={LABEL}>Recommender Name</label>
                                     <input 
                                         type="text" 
                                         value={draftInput.recommenderName}
                                         onChange={e => setDraftInput({...draftInput, recommenderName: e.target.value})}
                                         placeholder="e.g. Dr. Karen Sebastian"
-                                        className="w-full bg-slate-50 border border-slate-200/80 rounded-xl px-4 py-2.5 text-xs font-bold outline-none"
+                                        className={FIELD}
                                         required
                                     />
                                 </div>
-                                <div className="space-y-1">
-                                    <label className="text-[10px] font-extrabold uppercase text-slate-400 tracking-wider">Recommender Title</label>
+                                <div className="space-y-1.5 min-w-0">
+                                    <label className={LABEL}>Recommender Title</label>
                                     <input 
                                         type="text" 
                                         value={draftInput.recommenderTitle}
                                         onChange={e => setDraftInput({...draftInput, recommenderTitle: e.target.value})}
                                         placeholder="e.g. Professor of Computer Science"
-                                        className="w-full bg-slate-50 border border-slate-200/80 rounded-xl px-4 py-2.5 text-xs font-bold outline-none"
+                                        className={FIELD}
                                         required
                                     />
                                 </div>
-                                <div className="space-y-1">
-                                    <label className="text-[10px] font-extrabold uppercase text-slate-400 tracking-wider">Recommender Organization</label>
+                                <div className="space-y-1.5 min-w-0">
+                                    <label className={LABEL}>Recommender Organization</label>
                                     <input 
                                         type="text" 
                                         value={draftInput.recommenderOrg}
                                         onChange={e => setDraftInput({...draftInput, recommenderOrg: e.target.value})}
                                         placeholder="e.g. University of Calgary"
-                                        className="w-full bg-slate-50 border border-slate-200/80 rounded-xl px-4 py-2.5 text-xs font-bold outline-none"
+                                        className={FIELD}
                                         required
                                     />
                                 </div>
-                                <div className="space-y-1">
-                                    <label className="text-[10px] font-extrabold uppercase text-slate-400 tracking-wider">Student Name</label>
+                                <div className="space-y-1.5 min-w-0">
+                                    <label className={LABEL}>Student Name</label>
                                     <input 
                                         type="text" 
                                         value={draftInput.studentName}
                                         onChange={e => setDraftInput({...draftInput, studentName: e.target.value})}
                                         placeholder="e.g. Lydia Roy"
-                                        className="w-full bg-slate-50 border border-slate-200/80 rounded-xl px-4 py-2.5 text-xs font-bold outline-none"
+                                        className={FIELD}
                                         required
                                     />
                                 </div>
-                                <div className="space-y-1">
-                                    <label className="text-[10px] font-extrabold uppercase text-slate-400 tracking-wider">Relationship Duration</label>
+                                <div className="space-y-1.5 min-w-0">
+                                    <label className={LABEL}>Relationship Duration</label>
                                     <input 
                                         type="text" 
                                         value={draftInput.relationshipDuration}
                                         onChange={e => setDraftInput({...draftInput, relationshipDuration: e.target.value})}
                                         placeholder="e.g. 4 years"
-                                        className="w-full bg-slate-50 border border-slate-200/80 rounded-xl px-4 py-2.5 text-xs font-bold outline-none"
+                                        className={FIELD}
                                         required
                                     />
                                 </div>
-                                <div className="space-y-1">
-                                    <label className="text-[10px] font-extrabold uppercase text-slate-400 tracking-wider">Core Strength</label>
+                                <div className="space-y-1.5 min-w-0">
+                                    <label className={LABEL}>Core Strength</label>
                                     <input 
                                         type="text" 
                                         value={draftInput.strength}
                                         onChange={e => setDraftInput({...draftInput, strength: e.target.value})}
                                         placeholder="e.g. exceptional cloud programming abilities"
-                                        className="w-full bg-slate-50 border border-slate-200/80 rounded-xl px-4 py-2.5 text-xs font-bold outline-none"
+                                        className={FIELD}
                                         required
                                     />
                                 </div>
-                                <div className="space-y-1">
-                                    <label className="text-[10px] font-extrabold uppercase text-slate-400 tracking-wider">Target University</label>
+                                <div className="space-y-1.5 min-w-0">
+                                    <label className={LABEL}>Target University</label>
                                     <input 
                                         type="text" 
                                         value={draftInput.targetUni}
                                         onChange={e => setDraftInput({...draftInput, targetUni: e.target.value})}
                                         placeholder="e.g. University of Toronto"
-                                        className="w-full bg-slate-50 border border-slate-200/80 rounded-xl px-4 py-2.5 text-xs font-bold outline-none"
+                                        className={FIELD}
                                         required
                                     />
                                 </div>
-                                <div className="space-y-1">
-                                    <label className="text-[10px] font-extrabold uppercase text-slate-400 tracking-wider">Target Program</label>
+                                <div className="space-y-1.5 min-w-0">
+                                    <label className={LABEL}>Target Program</label>
                                     <input 
                                         type="text" 
                                         value={draftInput.targetProgram}
                                         onChange={e => setDraftInput({...draftInput, targetProgram: e.target.value})}
                                         placeholder="e.g. Master's in Computer Science"
-                                        className="w-full bg-slate-50 border border-slate-200/80 rounded-xl px-4 py-2.5 text-xs font-bold outline-none"
+                                        className={FIELD}
                                         required
                                     />
                                 </div>
-                                <div className="col-span-1 md:col-span-2 space-y-1">
-                                    <label className="text-[10px] font-extrabold uppercase text-slate-400 tracking-wider">Anecdotal Project / Core Achievement</label>
+                                <div className="col-span-1 md:col-span-2 space-y-1.5 min-w-0">
+                                    <label className={LABEL}>Anecdotal Project / Core Achievement</label>
                                     <input 
                                         type="text" 
                                         value={draftInput.project}
                                         onChange={e => setDraftInput({...draftInput, project: e.target.value})}
                                         placeholder="e.g. final year project resolving network bottlenecks using edge servers"
-                                        className="w-full bg-slate-50 border border-slate-200/80 rounded-xl px-4 py-2.5 text-xs font-bold outline-none"
+                                        className={FIELD}
                                         required
                                     />
                                 </div>
-                                <button 
+                                <button
                                     type="submit"
-                                    className="col-span-1 md:col-span-2 py-3.5 rounded-xl text-white font-bold text-xs bg-gradient-to-r from-orange-500 to-[#DE5C2B] hover:shadow-lg transition-all cursor-pointer text-center"
+                                    className="no-shine col-span-1 md:col-span-2 py-3.5 rounded-full border-2 border-[#16130F] bg-[#D0362E] hover:bg-[#B52A23] text-white font-bold text-[14px] shadow-[3px_3px_0_#16130F] transition-colors cursor-pointer text-center"
                                 >
                                     Generate Draft Framework
                                 </button>
                             </form>
 
                             {generatedDraft && (
-                                <div className="space-y-4 pt-4 border-t border-slate-100">
-                                    <h4 className="text-xs font-extrabold text-slate-400 uppercase tracking-widest">Generated Outline Draft</h4>
+                                <div className="space-y-4 pt-5 border-t-2 border-dashed border-[#16130F33]">
+                                    <h4 className="text-[11.5px] font-extrabold text-[#5B544A] uppercase tracking-widest">Generated Outline Draft</h4>
                                     <div className="space-y-3">
                                         {generatedDraft.map((item, idx) => (
-                                            <div key={idx} className="bg-slate-50 border border-slate-200/60 p-4 rounded-xl space-y-1">
-                                                <span className="block text-xs font-extrabold text-indigo-600">{item.title}</span>
-                                                <p className="text-xs text-slate-600 font-semibold leading-relaxed whitespace-pre-line">{item.text}</p>
+                                            <div key={idx} className="bg-[#FFF6E5] border-2 border-[#16130F] border-l-[8px] p-4 rounded-xl space-y-1.5" style={{ borderLeftColor: TONES[idx % TONES.length].c }}>
+                                                <span className="block text-[12.5px] font-extrabold text-[#16130F]">{item.title}</span>
+                                                <p className="text-[13.5px] text-[#5B544A] leading-relaxed whitespace-pre-line break-words">{item.text}</p>
                                             </div>
                                         ))}
                                     </div>
                                 </div>
                             )}
-                        </section>
+                        </InkCard>
 
-                        {/* Calgary to Toronto Sample Transcript */}
-                        <div className="bg-white border border-slate-200/60 rounded-3xl p-6 md:p-8 shadow-sm space-y-4">
-                            <div className="flex items-center gap-2">
-                                <Award className="text-yellow-600" size={24} />
-                                <h3 className="text-lg font-bold text-slate-800 tracking-tight">
-                                    Sample LOR: University Professor Recommending to Master's Program
-                                </h3>
-                            </div>
-                            
-                            <div className="bg-slate-50 border border-slate-200/60 rounded-2xl p-6 font-semibold text-xs md:text-sm text-slate-700 space-y-4 leading-relaxed font-mono whitespace-pre-wrap">
+                        {/* Calgary to Toronto Sample Transcript: rani poster band with the letter on paper */}
+                        <section className="bg-[#B8285B] border-[3px] border-[#16130F] p-5 sm:p-6 md:p-8 shadow-[6px_6px_0_#16130F]" style={{ borderRadius: 18 }}>
+                            <DesiHeading hi="नमूना पत्र" light>Sample LOR: University Professor Recommending to Master's Program</DesiHeading>
+
+                            <div className="mt-6 bg-white border-[3px] border-[#16130F] shadow-[5px_5px_0_#6E1436] sm:-rotate-[0.4deg]" style={{ borderRadius: 6 }}>
+                                <div className="flex items-center justify-between gap-3 px-5 sm:px-7 py-3 border-b-2 border-dashed border-[#16130F33]">
+                                    <span className="text-[11px] font-extrabold uppercase tracking-[0.14em] text-[#8A7F70]">Letter of Recommendation</span>
+                                    <span className="shrink-0 inline-flex flex-col items-center px-2.5 py-1 border-[3px] border-double border-[#D0362E] text-[#D0362E] rotate-[-6deg] leading-none" style={{ borderRadius: 6 }}>
+                                        <span className="font-['Rozha_One',serif] text-[13px]">नमूना</span>
+                                        <span className="font-['Anton',sans-serif] text-[10.5px] tracking-[0.14em] mt-0.5">SAMPLE</span>
+                                    </span>
+                                </div>
+                                <div className="px-5 sm:px-7 py-6 text-[13.5px] md:text-[14.5px] text-[#2A251F] leading-relaxed whitespace-pre-wrap break-words">
 {`Karen Sebastian
 Department of Computer Science, University of Calgary.
 karen.sebastian@ucalgary.ca
@@ -435,47 +461,52 @@ Apart from her interests, she is also a diligent worker and an excellent compute
 
 Sincerely, 
 Karen Sebastian`}
+                                </div>
                             </div>
-                        </div>
+                        </section>
 
-                        {/* Tone & Length Tips */}
-                        <div className="uc-clean rounded-3xl p-6 md:p-8 relative overflow-hidden shadow-md">
-                            <div className="flex items-center gap-2 mb-4">
-                                <FileCheck className="text-indigo-300" size={24} />
-                                <h3 className="text-lg font-bold tracking-tight">Professional Tone Guidelines</h3>
-                            </div>
-                            <ul className="space-y-3 text-xs font-bold text-slate-200 list-disc list-inside">
-                                <li><strong>Objective Endorsement:</strong> Maintain a formal, objective, and respectful tone throughout. Avoid hyperbole; instead, justify praise with real data or events.</li>
-                                <li><strong>Concise Delivery:</strong> Keep the letter within 1 to 2 pages maximum. A long, repetitive letter risks losing the committee's interest.</li>
-                                <li><strong>Academic Grammar:</strong> Eliminate personal bias or colloquial terms, opting for clear academic and professional phrasing.</li>
-                                <li><strong>Relevance:</strong> Direct strengths toward the target course requirements. If applying for CS, highlight computational logic and project breakthroughs.</li>
+                        {/* Tone & Length Tips: teal poster band */}
+                        <section className="bg-[#14837E] border-[3px] border-[#16130F] p-5 sm:p-6 md:p-8 shadow-[6px_6px_0_#16130F]" style={{ borderRadius: 18 }}>
+                            <DesiHeading hi="लहजा और लंबाई" light>Professional Tone Guidelines</DesiHeading>
+                            <ul className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4 list-none p-0 m-0">
+                                {[
+                                    { b: 'Objective Endorsement:', t: 'Maintain a formal, objective, and respectful tone throughout. Avoid hyperbole; instead, justify praise with real data or events.' },
+                                    { b: 'Concise Delivery:', t: "Keep the letter within 1 to 2 pages maximum. A long, repetitive letter risks losing the committee's interest." },
+                                    { b: 'Academic Grammar:', t: 'Eliminate personal bias or colloquial terms, opting for clear academic and professional phrasing.' },
+                                    { b: 'Relevance:', t: 'Direct strengths toward the target course requirements. If applying for CS, highlight computational logic and project breakthroughs.' },
+                                ].map((tip, idx) => (
+                                    <li key={tip.b} className="flex gap-3 bg-white p-4 border-[3px] border-[#16130F] shadow-[4px_4px_0_#0B4F4C]"
+                                        style={{ borderRadius: 12, transform: `rotate(${idx % 2 ? 0.6 : -0.6}deg)` }}>
+                                        <span className="w-8 h-8 rounded-full border-2 border-[#16130F] font-urbanist font-black text-[14px] grid place-items-center shrink-0"
+                                            style={{ background: TONES[idx % TONES.length].c, color: TONES[idx % TONES.length].fg }}>
+                                            {idx + 1}
+                                        </span>
+                                        <p className="text-[#3D362E] text-[13.5px] leading-relaxed m-0"><strong className="text-[#16130F]">{tip.b}</strong> {tip.t}</p>
+                                    </li>
+                                ))}
                             </ul>
-                        </div>
+                        </section>
 
                         {/* FAQs Section */}
-                        <section className="space-y-4">
-                            <h3 className="text-xl font-bold text-slate-800 tracking-tight flex items-center gap-1.5">
-                                <HelpCircle className="text-indigo-600" size={20} />
-                                Frequently Asked Questions
-                            </h3>
-                            <div className="space-y-3">
+                        <section>
+                            <DesiHeading hi="अक्सर पूछे सवाल">Frequently Asked Questions</DesiHeading>
+                            <div className="mt-5 space-y-3">
                                 {faqs.map((faq, idx) => {
                                     const isOpen = !!faqOpen[idx];
                                     return (
-                                        <div key={idx} className="bg-white rounded-2xl border border-slate-200/60 overflow-hidden shadow-sm transition-all duration-200">
+                                        <div key={faq.q} className="bg-white border-[3px] border-[#16130F] overflow-hidden" style={{ borderRadius: 12, boxShadow: isOpen ? '4px 4px 0 #D0362E' : '4px 4px 0 #16130F' }}>
                                             <button
                                                 onClick={() => toggleFaq(idx)}
-                                                className="w-full flex items-center justify-between p-5 text-left font-bold text-slate-750 hover:text-indigo-600 transition-colors"
+                                                aria-expanded={isOpen}
+                                                className="no-shine w-full flex items-center justify-between gap-3 p-4 text-left font-bold text-[14.5px] cursor-pointer"
                                             >
                                                 <span>{faq.q}</span>
-                                                <ChevronDown 
-                                                    size={16} 
-                                                    className={`text-slate-400 transition-transform duration-200 ${isOpen ? 'rotate-180 text-indigo-500' : ''}`} 
-                                                />
+                                                <span className={`w-7 h-7 rounded-full border-2 border-[#16130F] grid place-items-center shrink-0 transition-transform ${isOpen ? 'rotate-180 bg-[#F2B705]' : 'bg-white'}`}>
+                                                    <ChevronDown size={15} />
+                                                </span>
                                             </button>
-                                            
                                             {isOpen && (
-                                                <div className="px-5 pb-5 pt-1 text-slate-650 text-xs md:text-sm border-t border-slate-50 leading-relaxed font-semibold">
+                                                <div className="px-4 pb-4 pt-3 text-[#5B544A] text-[14px] border-t-2 border-dashed border-[#16130F33] leading-relaxed">
                                                     {faq.a}
                                                 </div>
                                             )}
@@ -486,22 +517,11 @@ Karen Sebastian`}
                         </section>
 
                         {/* Expert Consultation CTA */}
-                        <div className="bg-gradient-to-br from-indigo-50 to-blue-50 border border-blue-150 rounded-3xl p-6 md:p-8 flex flex-col md:flex-row items-center justify-between gap-6 shadow-sm">
-                            <div>
-                                <h3 className="text-lg md:text-xl font-bold text-slate-800 tracking-tight">
-                                    Confused about getting your LOR verified?
-                                </h3>
-                                <p className="text-slate-600 text-xs mt-1 max-w-xl font-semibold leading-relaxed">
-                                    UniCoach experts help you short-list recommenders, review templates, and coordinate submissions with international universities.
-                                </p>
-                            </div>
-                            <button
-                                onClick={() => navigate('/book-consultation')}
-                                className="px-6 py-3 rounded-full text-white font-bold text-xs bg-gradient-to-r from-orange-500 to-[#DE5C2B] hover:shadow-lg transition-all cursor-pointer flex-shrink-0"
-                            >
-                                Connect with Experts
-                            </button>
-                        </div>
+                        <BookOkCta
+                            hi="सिफ़ारिश की जाँच"
+                            text="LOR ka draft ready? Free 1:1 call mein mentor se check karwao."
+                            cta="Connect with Experts"
+                        />
 
                     </div>
 

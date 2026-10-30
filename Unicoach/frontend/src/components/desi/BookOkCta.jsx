@@ -33,7 +33,9 @@ export const BookOkCta = ({
   className = '',
 }) => (
   <TruckArtFrame className={className}>
-    <div className="grid lg:grid-cols-[minmax(0,1fr)_auto_auto] items-center gap-6 lg:gap-10 px-6 py-8 sm:px-10 bg-[#FFF6E5] text-center lg:text-left">
+    {/* sized by its own width (container query), so it also fits narrow content columns */}
+    <div className="@container bg-[#FFF6E5]">
+    <div className="grid @2xl:grid-cols-[minmax(0,1fr)_auto] @5xl:grid-cols-[minmax(0,1fr)_auto_auto] items-center gap-6 @5xl:gap-10 px-6 py-8 @2xl:px-10 text-center @2xl:text-left">
       <div className="min-w-0">
         <p className="font-['Rozha_One',serif] text-[18px] text-[#D0362E] leading-none">{hi}</p>
         <p className="mt-1 font-urbanist font-black text-[36px] sm:text-[44px] tracking-[-0.03em] leading-none text-[#16130F]">{title}</p>
@@ -41,7 +43,7 @@ export const BookOkCta = ({
       </div>
 
       {/* middle: who you talk to + what the call is */}
-      <div className="flex flex-col items-center gap-3.5 lg:px-8 lg:border-x-[3px] lg:border-dotted lg:border-[#13A89E]">
+      <div className="flex flex-col @2xl:flex-row @5xl:flex-col items-center @2xl:justify-between @5xl:justify-center gap-3.5 @2xl:order-last @2xl:col-span-2 @2xl:pt-5 @2xl:border-t-[3px] @2xl:border-dotted @2xl:border-[#13A89E] @5xl:order-none @5xl:col-span-1 @5xl:pt-0 @5xl:border-t-0 @5xl:px-8 @5xl:border-x-[3px]">
         <div className="flex items-center gap-3">
           <div className="flex -space-x-3">
             {MENTOR_COUNTRIES.map((c, i) => (
@@ -69,11 +71,12 @@ export const BookOkCta = ({
         </div>
       </div>
 
-      <div className="flex justify-center lg:justify-end">
+      <div className="flex justify-center @2xl:justify-end">
         <Link to={to} className="inline-flex items-center gap-2 px-5 py-3 rounded-full bg-[#D0362E] hover:bg-[#B52A23] text-white text-[14px] font-bold shadow-[3px_3px_0_#16130F] transition-colors whitespace-nowrap">
           {cta} <ArrowRight size={15} />
         </Link>
       </div>
+    </div>
     </div>
   </TruckArtFrame>
 );

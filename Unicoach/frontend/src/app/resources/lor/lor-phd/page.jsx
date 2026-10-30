@@ -1,15 +1,10 @@
-import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { 
-    BookOpen, 
-    ChevronDown, 
-    Sparkles, 
-    Award, 
-    Check, 
-    FileText, 
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
+import {
+    ChevronDown,
+    Sparkles,
+    FileText,
     ArrowRight,
-    HelpCircle,
-    User,
     PenTool,
     Atom,
     GitBranch,
@@ -17,9 +12,22 @@ import {
 } from 'lucide-react';
 import { PostageStamp } from '../../../../components/desi/DesiPop';
 import { VersusCard } from '../../../../components/ui/Infographics';
+import { DesiHero, DesiHeading, InkCard, Sticker } from '../../../../components/desi/DesiKit';
+import { BookOkCta } from '../../../../components/desi/BookOkCta';
+
+// Desi Pop form styling (ink borders, cream fields)
+const FIELD = 'w-full bg-[#FFF6E5] border-2 border-[#16130F] rounded-lg px-3.5 py-2.5 text-[13px] font-semibold text-[#16130F] placeholder:text-[#8A7F70] outline-none transition-shadow focus:bg-white focus:shadow-[3px_3px_0_#F2B705]';
+const LABEL = 'text-[11px] font-extrabold uppercase text-[#5B544A] tracking-wider';
+
+// Poster colours for numbered chips and card strips (no blue)
+const TONES = [
+    { c: '#D0362E', fg: '#FFFFFF' },
+    { c: '#F2B705', fg: '#16130F' },
+    { c: '#14837E', fg: '#FFFFFF' },
+    { c: '#B8285B', fg: '#FFFFFF' },
+];
 
 const LORPhdPage = () => {
-    const navigate = useNavigate();
     const [faqOpen, setFaqOpen] = useState({});
     const [draftInput, setDraftInput] = useState({
         studentName: '',
@@ -100,234 +108,258 @@ const LORPhdPage = () => {
     ];
 
     return (
-        <main className="min-h-screen bg-slate-50/50 pt-24 pb-16">
-            {/* Header Banner */}
-            <div className="uc-clean border-x-0 relative overflow-hidden py-12 md:py-16 px-6 md:px-12 mb-12">
-                <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#DE5C2B_1px,transparent_1px)] [background-size:16px_16px]"></div>
-                <div className="max-w-[1240px] mx-auto relative z-10">
-                    {/* Desi Pop: postage stamp, wide screens only */}
-                    <div className="hidden xl:block absolute right-6 top-1/2 -translate-y-1/2 rotate-6 pointer-events-none">
-                        <PostageStamp title="Research" hi="शोध" note="Doctoral LOR" className="w-[150px]" />
+        <main className="min-h-screen bg-[#FFF6E5] pb-16 font-['Onest',sans-serif] text-[#16130F] overflow-x-clip">
+            {/* ── HERO: rani poster band ── */}
+            <DesiHero
+                tone="rani"
+                sign={{ hi: 'शोध सिफ़ारिश', en: 'PHD LOR' }}
+                crumbs={[{ label: 'Home', to: '/' }, { label: 'Resources' }, { label: 'LOR' }, { label: 'LOR for PhD' }]}
+                title="Letter of Recommendation (LOR) for PhD"
+                subtitle="Highlighting independent research capabilities, thesis advisor alignments, publication records, and laboratory expertise."
+                stickers={(
+                    <Sticker bg="#F2B705" tilt={-2}><Sparkles size={14} />Doctoral Admissions</Sticker>
+                )}
+                aside={(
+                    // postage stamp, large screens only
+                    <div className="hidden lg:flex justify-center pointer-events-none">
+                        <PostageStamp title="Research" hi="शोध" note="Doctoral LOR" className="w-[170px] rotate-6" />
                     </div>
-                    <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-indigo-500/20 border border-indigo-400/30 rounded-full text-indigo-300 text-xs font-bold uppercase tracking-wider mb-4">
-                        <Sparkles size={12} className="text-indigo-400" />
-                        <span>Doctoral Admissions</span>
+                )}
+            />
+
+            {/* ── LOR PICKER (phones and tablets) ── */}
+            <div className="lg:hidden max-w-[1240px] mx-auto px-4 -mt-6 mb-8 relative z-10">
+                <InkCard className="p-3">
+                    <p className="text-[11px] font-extrabold uppercase tracking-wider text-[#5B544A] leading-none px-1 mb-2">LOR Directory</p>
+                    <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-hide">
+                        {lorList.map((lor) => {
+                            const isCurrent = lor.key === 'lor-phd';
+                            return (
+                                <Link
+                                    key={lor.key}
+                                    to={lor.path}
+                                    className={`flex items-center gap-1.5 px-3.5 py-2 rounded-lg border-2 text-xs font-bold whitespace-nowrap flex-shrink-0 ${isCurrent ? 'border-[#16130F] bg-[#B8285B] text-white shadow-[2px_2px_0_#16130F]' : 'border-[#E6DCC8] bg-[#FFF6E5] text-[#5B544A]'}`}
+                                >
+                                    <FileText size={13} />
+                                    <span>{lor.name}</span>
+                                </Link>
+                            );
+                        })}
                     </div>
-                    <h1 className="text-3xl md:text-5xl font-black tracking-tight leading-tight max-w-4xl">
-                        Letter of Recommendation (LOR) for PhD
-                    </h1>
-                    <p className="text-slate-350 text-base md:text-lg mt-3 max-w-2xl font-medium">
-                        Highlighting independent research capabilities, thesis advisor alignments, publication records, and laboratory expertise.
-                    </p>
-                </div>
+                </InkCard>
             </div>
 
             {/* Layout Grid */}
-            <div className="max-w-[1240px] mx-auto px-6 md:px-10">
-                <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-                    
-                    {/* Left Sticky Navigation */}
-                    <div className="lg:col-span-1">
-                        <div className="sticky top-28 bg-white rounded-2xl p-5 border border-slate-200/60 shadow-sm space-y-4">
-                            <h3 className="text-xs font-extrabold text-slate-400 uppercase tracking-widest pl-2">
-                                LOR Directory
-                            </h3>
-                            <nav className="flex flex-col gap-1">
+            <div className="max-w-[1240px] mx-auto px-4 md:px-8 lg:pt-12">
+                <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 items-start">
+
+                    {/* Left Sticky Navigation (desktop) */}
+                    <aside className="hidden lg:block lg:col-span-1 sticky top-28">
+                        <InkCard className="p-4">
+                            <p className="font-['Rozha_One',serif] text-[15px] text-[#D0362E] leading-none">सिफ़ारिश पत्र</p>
+                            <h3 className="mt-1 mb-3 font-urbanist font-black text-[17px]">LOR Directory</h3>
+                            <nav className="flex flex-col gap-2">
                                 {lorList.map((lor) => {
                                     const isCurrent = lor.key === 'lor-phd';
                                     return (
                                         <Link
                                             key={lor.key}
                                             to={lor.path}
-                                            className={`flex items-center justify-between px-4 py-3 rounded-xl text-[0.88rem] font-bold transition-all duration-200
-                                                ${isCurrent 
-                                                    ? 'bg-gradient-to-r from-orange-500 to-[#DE5C2B] text-white shadow-md shadow-indigo-600/15'
-                                                    : 'text-slate-600 hover:bg-slate-50 hover:text-indigo-600'}`}
+                                            className={`group flex items-center justify-between px-3 py-2.5 rounded-lg border-2 text-[14px] font-bold transition-transform ${isCurrent ? 'border-[#16130F] bg-[#B8285B] text-white shadow-[3px_3px_0_#16130F]' : 'border-transparent text-[#3D362E] hover:border-[#16130F] hover:bg-[#FFF6E5]'}`}
                                         >
-                                            <div className="flex items-center gap-2">
-                                                <FileText size={16} className={isCurrent ? 'text-white' : 'text-slate-400'} />
-                                                <span>{lor.name}</span>
-                                            </div>
-                                            <ArrowRight size={14} className={`opacity-80 transition-transform ${isCurrent ? 'translate-x-0.5' : 'text-slate-300'}`} />
+                                            <span className="flex items-center gap-2.5">
+                                                <FileText size={16} />
+                                                {lor.name}
+                                            </span>
+                                            <ArrowRight size={14} className="transition-transform group-hover:translate-x-0.5" />
                                         </Link>
                                     );
                                 })}
                             </nav>
-                        </div>
-                    </div>
+                        </InkCard>
+                    </aside>
 
                     {/* Right Content Column */}
-                    <div className="lg:col-span-3 space-y-10">
-                        
+                    <div className="lg:col-span-3 space-y-10 min-w-0">
+
                         {/* Overview Section */}
-                        <div className="bg-white rounded-2xl p-6 md:p-8 border border-slate-200/60 shadow-sm space-y-4">
-                            <h2 className="text-xl md:text-2xl font-black text-slate-800 tracking-tight">
-                                Writing a PhD LOR: Key Differences
-                            </h2>
-                            <p className="text-slate-650 leading-relaxed text-[0.96rem] font-medium">
+                        <InkCard className="p-6 md:p-8 space-y-4" shadow="#B8285B">
+                            <DesiHeading hi="पीएचडी का फ़र्क़">Writing a PhD LOR: Key Differences</DesiHeading>
+                            <p className="text-[#5B544A] leading-relaxed text-[15px]">
                                 A doctoral degree is a test of research endurance and autonomy. Admissions committees for PhD programs want to see evidence that the candidate can formulate original scientific questions, design experimental configurations, publish research in respected journals, and troubleshoot model failures independently.
                             </p>
                             
                             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-3">
-                                <div className="bg-slate-50 border border-slate-100 p-4 rounded-xl space-y-2">
-                                    <Atom className="text-indigo-600" size={20} />
-                                    <h4 className="text-xs font-bold text-slate-800 uppercase tracking-wider">Technical Mastery</h4>
-                                    <p className="text-slate-500 text-[11px] leading-relaxed font-semibold">Detailed descriptions of instrument setups, coding libraries, computational algorithms, and methodologies mastered.</p>
+                                <div className="bg-[#FFF6E5] border-[3px] border-[#16130F] p-4 rounded-xl space-y-2 shadow-[3px_3px_0_#16130F] md:-rotate-[0.8deg]">
+                                    <span className="w-9 h-9 rounded-full border-2 border-[#16130F] grid place-items-center" style={{ background: TONES[0].c, color: TONES[0].fg }}>
+                                        <Atom size={18} />
+                                    </span>
+                                    <h4 className="text-[12.5px] font-extrabold text-[#16130F] uppercase tracking-wider">Technical Mastery</h4>
+                                    <p className="text-[#5B544A] text-[13px] leading-relaxed">Detailed descriptions of instrument setups, coding libraries, computational algorithms, and methodologies mastered.</p>
                                 </div>
-                                <div className="bg-slate-50 border border-slate-100 p-4 rounded-xl space-y-2">
-                                    <GitBranch className="text-indigo-600" size={20} />
-                                    <h4 className="text-xs font-bold text-slate-800 uppercase tracking-wider">Publications & Patents</h4>
-                                    <p className="text-slate-500 text-[11px] leading-relaxed font-semibold">Excerpts mentioning co-authored research papers, presentation files, conference proceedings, or workshop drafts.</p>
+                                <div className="bg-[#FFF6E5] border-[3px] border-[#16130F] p-4 rounded-xl space-y-2 shadow-[3px_3px_0_#16130F] md:rotate-[0.6deg]">
+                                    <span className="w-9 h-9 rounded-full border-2 border-[#16130F] grid place-items-center" style={{ background: TONES[2].c, color: TONES[2].fg }}>
+                                        <GitBranch size={18} />
+                                    </span>
+                                    <h4 className="text-[12.5px] font-extrabold text-[#16130F] uppercase tracking-wider">Publications & Patents</h4>
+                                    <p className="text-[#5B544A] text-[13px] leading-relaxed">Excerpts mentioning co-authored research papers, presentation files, conference proceedings, or workshop drafts.</p>
                                 </div>
-                                <div className="bg-slate-50 border border-slate-100 p-4 rounded-xl space-y-2">
-                                    <Lightbulb className="text-indigo-600" size={20} />
-                                    <h4 className="text-xs font-bold text-slate-800 uppercase tracking-wider">Intellectual Autonomy</h4>
-                                    <p className="text-slate-500 text-[11px] leading-relaxed font-semibold">Accounts of the student overcoming failed trials, fixing experimental design flaws, and carrying out solo literature reviews.</p>
+                                <div className="bg-[#FFF6E5] border-[3px] border-[#16130F] p-4 rounded-xl space-y-2 shadow-[3px_3px_0_#16130F] md:-rotate-[0.4deg]">
+                                    <span className="w-9 h-9 rounded-full border-2 border-[#16130F] grid place-items-center" style={{ background: TONES[3].c, color: TONES[3].fg }}>
+                                        <Lightbulb size={18} />
+                                    </span>
+                                    <h4 className="text-[12.5px] font-extrabold text-[#16130F] uppercase tracking-wider">Intellectual Autonomy</h4>
+                                    <p className="text-[#5B544A] text-[13px] leading-relaxed">Accounts of the student overcoming failed trials, fixing experimental design flaws, and carrying out solo literature reviews.</p>
                                 </div>
                             </div>
-                        </div>
+                        </InkCard>
 
                         {/* Who should write it: from the h-index FAQ below */}
+                        <div className="shadow-[6px_6px_0_#16130F] rounded-[18px]">
                         <VersusCard
                             kicker="Choosing a recommender"
                             title="Famous name vs close supervisor"
                             left={{ title: 'Famous professor', tag: 'Generic', points: ['Recognized name in your field', 'Barely knows you, so the letter stays generic'] }}
                             right={{ title: 'Close supervisor', tag: 'Better', points: ['Worked closely with you', 'Highly detailed, personalized letter'] }}
                         />
+                        </div>
 
                         {/* PhD LOR Builder Widget */}
-                        <section className="bg-white border border-slate-200/60 rounded-3xl p-6 md:p-8 shadow-sm space-y-6">
-                            <div className="flex items-center gap-2">
-                                <PenTool className="text-[#DE5C2B]" size={22} />
-                                <h3 className="text-xl font-bold text-slate-800 tracking-tight">
+                        <InkCard as="section" className="p-6 md:p-8 space-y-6" shadow="#D0362E">
+                            <DesiHeading hi="अपना ढाँचा बनाओ">
+                                <span className="inline-flex items-center gap-2">
+                                    <PenTool className="text-[#D0362E] shrink-0" size={24} />
                                     PhD Research LOR Builder
-                                </h3>
-                            </div>
-                            <p className="text-slate-500 text-xs font-semibold">
+                                </span>
+                            </DesiHeading>
+                            <p className="text-[#5B544A] text-[14px] leading-relaxed">
                                 Input research parameters to construct a structured recommendation template designed for thesis advisors and PIs.
                             </p>
 
                             <form onSubmit={handleGenerate} className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                <div className="space-y-1">
-                                    <label className="text-[10px] font-extrabold uppercase text-slate-400 tracking-wider">Candidate Name</label>
+                                <div className="space-y-1.5 min-w-0">
+                                    <label className={LABEL}>Candidate Name</label>
                                     <input 
                                         type="text" 
                                         value={draftInput.studentName}
                                         onChange={e => setDraftInput({...draftInput, studentName: e.target.value})}
                                         placeholder="e.g. Priyanshu Gupta"
-                                        className="w-full bg-slate-50 border border-slate-200/80 rounded-xl px-4 py-2.5 text-xs font-bold outline-none"
+                                        className={FIELD}
                                         required
                                     />
                                 </div>
-                                <div className="space-y-1">
-                                    <label className="text-[10px] font-extrabold uppercase text-slate-400 tracking-wider">Research Field</label>
+                                <div className="space-y-1.5 min-w-0">
+                                    <label className={LABEL}>Research Field</label>
                                     <input 
                                         type="text" 
                                         value={draftInput.researchField}
                                         onChange={e => setDraftInput({...draftInput, researchField: e.target.value})}
                                         placeholder="e.g. Quantum Computing"
-                                        className="w-full bg-slate-50 border border-slate-200/80 rounded-xl px-4 py-2.5 text-xs font-bold outline-none"
+                                        className={FIELD}
                                         required
                                     />
                                 </div>
-                                <div className="space-y-1">
-                                    <label className="text-[10px] font-extrabold uppercase text-slate-400 tracking-wider">Recommender / PI Name</label>
+                                <div className="space-y-1.5 min-w-0">
+                                    <label className={LABEL}>Recommender / PI Name</label>
                                     <input 
                                         type="text" 
                                         value={draftInput.recommenderName}
                                         onChange={e => setDraftInput({...draftInput, recommenderName: e.target.value})}
                                         placeholder="e.g. Dr. Arthur Pendelton"
-                                        className="w-full bg-slate-50 border border-slate-200/80 rounded-xl px-4 py-2.5 text-xs font-bold outline-none"
+                                        className={FIELD}
                                         required
                                     />
                                 </div>
-                                <div className="space-y-1">
-                                    <label className="text-[10px] font-extrabold uppercase text-slate-400 tracking-wider">Recommender Title</label>
+                                <div className="space-y-1.5 min-w-0">
+                                    <label className={LABEL}>Recommender Title</label>
                                     <input 
                                         type="text" 
                                         value={draftInput.recommenderTitle}
                                         onChange={e => setDraftInput({...draftInput, recommenderTitle: e.target.value})}
                                         placeholder="e.g. Principal Investigator / Senior Professor"
-                                        className="w-full bg-slate-50 border border-slate-200/80 rounded-xl px-4 py-2.5 text-xs font-bold outline-none"
+                                        className={FIELD}
                                         required
                                     />
                                 </div>
-                                <div className="col-span-1 md:col-span-2 space-y-1">
-                                    <label className="text-[10px] font-extrabold uppercase text-slate-400 tracking-wider">Laboratory Name & Institution</label>
+                                <div className="col-span-1 md:col-span-2 space-y-1.5 min-w-0">
+                                    <label className={LABEL}>Laboratory Name & Institution</label>
                                     <input 
                                         type="text" 
                                         value={draftInput.recommenderLab}
                                         onChange={e => setDraftInput({...draftInput, recommenderLab: e.target.value})}
                                         placeholder="e.g. Quantum Systems Laboratory, IISc Bangalore"
-                                        className="w-full bg-slate-50 border border-slate-200/80 rounded-xl px-4 py-2.5 text-xs font-bold outline-none"
+                                        className={FIELD}
                                         required
                                     />
                                 </div>
-                                <div className="space-y-1">
-                                    <label className="text-[10px] font-extrabold uppercase text-slate-400 tracking-wider">Thesis / Dissertation Subject</label>
+                                <div className="space-y-1.5 min-w-0">
+                                    <label className={LABEL}>Thesis / Dissertation Subject</label>
                                     <input 
                                         type="text" 
                                         value={draftInput.thesisSubject}
                                         onChange={e => setDraftInput({...draftInput, thesisSubject: e.target.value})}
                                         placeholder="e.g. error correction protocols in silicon spin qubits"
-                                        className="w-full bg-slate-50 border border-slate-200/80 rounded-xl px-4 py-2.5 text-xs font-bold outline-none"
+                                        className={FIELD}
                                         required
                                     />
                                 </div>
-                                <div className="space-y-1">
-                                    <label className="text-[10px] font-extrabold uppercase text-slate-400 tracking-wider">Key Publication Reference</label>
+                                <div className="space-y-1.5 min-w-0">
+                                    <label className={LABEL}>Key Publication Reference</label>
                                     <input 
                                         type="text" 
                                         value={draftInput.keyPublication}
                                         onChange={e => setDraftInput({...draftInput, keyPublication: e.target.value})}
                                         placeholder="e.g. Nature Physics 2025"
-                                        className="w-full bg-slate-50 border border-slate-200/80 rounded-xl px-4 py-2.5 text-xs font-bold outline-none"
+                                        className={FIELD}
                                         required
                                     />
                                 </div>
-                                <div className="col-span-1 md:col-span-2 space-y-1">
-                                    <label className="text-[10px] font-extrabold uppercase text-slate-400 tracking-wider">Core Research Methodology / Instrument Mastery</label>
+                                <div className="col-span-1 md:col-span-2 space-y-1.5 min-w-0">
+                                    <label className={LABEL}>Core Research Methodology / Instrument Mastery</label>
                                     <input 
                                         type="text" 
                                         value={draftInput.masteryMethod}
                                         onChange={e => setDraftInput({...draftInput, masteryMethod: e.target.value})}
                                         placeholder="e.g. low-temperature cryogenics measurements and RF reflectometry"
-                                        className="w-full bg-slate-50 border border-slate-200/80 rounded-xl px-4 py-2.5 text-xs font-bold outline-none"
+                                        className={FIELD}
                                         required
                                     />
                                 </div>
-                                <button 
+                                <button
                                     type="submit"
-                                    className="col-span-1 md:col-span-2 py-3.5 rounded-xl text-white font-bold text-xs bg-gradient-to-r from-orange-500 to-[#DE5C2B] hover:shadow-lg transition-all cursor-pointer text-center"
+                                    className="no-shine col-span-1 md:col-span-2 py-3.5 rounded-full border-2 border-[#16130F] bg-[#D0362E] hover:bg-[#B52A23] text-white font-bold text-[14px] shadow-[3px_3px_0_#16130F] transition-colors cursor-pointer text-center"
                                 >
                                     Build PhD Outline Draft
                                 </button>
                             </form>
 
                             {generatedOutline && (
-                                <div className="space-y-4 pt-4 border-t border-slate-100">
-                                    <h4 className="text-xs font-extrabold text-slate-400 uppercase tracking-widest">PhD Outline Draft Framework</h4>
+                                <div className="space-y-4 pt-5 border-t-2 border-dashed border-[#16130F33]">
+                                    <h4 className="text-[11.5px] font-extrabold text-[#5B544A] uppercase tracking-widest">PhD Outline Draft Framework</h4>
                                     <div className="space-y-3">
                                         {generatedOutline.map((item, idx) => (
-                                            <div key={idx} className="bg-slate-50 border border-slate-200/60 p-4 rounded-xl space-y-1">
-                                                <span className="block text-xs font-extrabold text-indigo-600">{item.title}</span>
-                                                <p className="text-xs text-slate-600 font-semibold leading-relaxed">{item.text}</p>
+                                            <div key={idx} className="bg-[#FFF6E5] border-2 border-[#16130F] border-l-[8px] p-4 rounded-xl space-y-1.5" style={{ borderLeftColor: TONES[idx % TONES.length].c }}>
+                                                <span className="block text-[12.5px] font-extrabold text-[#16130F]">{item.title}</span>
+                                                <p className="text-[13.5px] text-[#5B544A] leading-relaxed break-words">{item.text}</p>
                                             </div>
                                         ))}
                                     </div>
                                 </div>
                             )}
-                        </section>
+                        </InkCard>
 
-                        {/* PhD Sample Transcript */}
-                        <div className="bg-white border border-slate-200/60 rounded-3xl p-6 md:p-8 shadow-sm space-y-4">
-                            <div className="flex items-center gap-2">
-                                <Award className="text-yellow-600" size={24} />
-                                <h3 className="text-lg font-bold text-slate-800 tracking-tight">
-                                    Sample PhD Recommendation Letter
-                                </h3>
-                            </div>
-                            <div className="bg-slate-50 border border-slate-200/60 rounded-2xl p-6 font-semibold text-xs md:text-sm text-slate-700 space-y-4 leading-relaxed font-mono whitespace-pre-wrap">
+                        {/* PhD Sample Transcript: teal poster band with the letter on paper */}
+                        <section className="bg-[#14837E] border-[3px] border-[#16130F] p-5 sm:p-6 md:p-8 shadow-[6px_6px_0_#16130F]" style={{ borderRadius: 18 }}>
+                            <DesiHeading hi="नमूना पत्र" light>Sample PhD Recommendation Letter</DesiHeading>
+                            <div className="mt-6 bg-white border-[3px] border-[#16130F] shadow-[5px_5px_0_#0B4F4C] sm:-rotate-[0.4deg]" style={{ borderRadius: 6 }}>
+                                <div className="flex items-center justify-between gap-3 px-5 sm:px-7 py-3 border-b-2 border-dashed border-[#16130F33]">
+                                    <span className="text-[11px] font-extrabold uppercase tracking-[0.14em] text-[#8A7F70] min-w-0">Doctoral LOR</span>
+                                    <span className="shrink-0 inline-flex flex-col items-center px-2.5 py-1 border-[3px] border-double border-[#D0362E] text-[#D0362E] rotate-[-6deg] leading-none" style={{ borderRadius: 6 }}>
+                                        <span className="font-['Rozha_One',serif] text-[13px]">नमूना</span>
+                                        <span className="font-['Anton',sans-serif] text-[10.5px] tracking-[0.14em] mt-0.5">SAMPLE</span>
+                                    </span>
+                                </div>
+                                <div className="px-5 sm:px-7 py-6 text-[13.5px] md:text-[14.5px] text-[#2A251F] leading-relaxed whitespace-pre-wrap break-words">
 {`Dear Doctoral Admissions Committee,
 
 I am writing this letter of recommendation to express my strongest endorsement of Priyanshu Gupta for admission into your PhD program. I serve as the Principal Investigator of the Quantum Systems Laboratory at IISc Bangalore, and have supervised Priyanshu for the past two and a half years during his tenure as a Research Assistant.
@@ -347,33 +379,30 @@ Principal Investigator, Quantum Systems Lab
 Indian Institute of Science (IISc), Bangalore
 a.pendelton@iisc.ac.in
 +91-80-XXXX-XXXX`}
+                                </div>
                             </div>
-                        </div>
+                        </section>
 
                         {/* FAQs Section */}
-                        <section className="space-y-4">
-                            <h3 className="text-xl font-bold text-slate-800 tracking-tight flex items-center gap-1.5">
-                                <HelpCircle className="text-indigo-600" size={20} />
-                                PhD Recommendation FAQs
-                            </h3>
-                            <div className="space-y-3">
+                        <section>
+                            <DesiHeading hi="अक्सर पूछे सवाल">PhD Recommendation FAQs</DesiHeading>
+                            <div className="mt-5 space-y-3">
                                 {faqs.map((faq, idx) => {
                                     const isOpen = !!faqOpen[idx];
                                     return (
-                                        <div key={idx} className="bg-white rounded-2xl border border-slate-200/60 overflow-hidden shadow-sm transition-all duration-200">
+                                        <div key={faq.q} className="bg-white border-[3px] border-[#16130F] overflow-hidden" style={{ borderRadius: 12, boxShadow: isOpen ? '4px 4px 0 #D0362E' : '4px 4px 0 #16130F' }}>
                                             <button
                                                 onClick={() => toggleFaq(idx)}
-                                                className="w-full flex items-center justify-between p-5 text-left font-bold text-slate-750 hover:text-indigo-600 transition-colors"
+                                                aria-expanded={isOpen}
+                                                className="no-shine w-full flex items-center justify-between gap-3 p-4 text-left font-bold text-[14.5px] cursor-pointer"
                                             >
                                                 <span>{faq.q}</span>
-                                                <ChevronDown 
-                                                    size={16} 
-                                                    className={`text-slate-400 transition-transform duration-200 ${isOpen ? 'rotate-180 text-indigo-500' : ''}`} 
-                                                />
+                                                <span className={`w-7 h-7 rounded-full border-2 border-[#16130F] grid place-items-center shrink-0 transition-transform ${isOpen ? 'rotate-180 bg-[#F2B705]' : 'bg-white'}`}>
+                                                    <ChevronDown size={15} />
+                                                </span>
                                             </button>
-                                            
                                             {isOpen && (
-                                                <div className="px-5 pb-5 pt-1 text-slate-650 text-xs md:text-sm border-t border-slate-50 leading-relaxed font-semibold">
+                                                <div className="px-4 pb-4 pt-3 text-[#5B544A] text-[14px] border-t-2 border-dashed border-[#16130F33] leading-relaxed">
                                                     {faq.a}
                                                 </div>
                                             )}
@@ -382,6 +411,12 @@ a.pendelton@iisc.ac.in
                                 })}
                             </div>
                         </section>
+
+                        {/* Closing CTA */}
+                        <BookOkCta
+                            hi="सिफ़ारिश की जाँच"
+                            text="PhD LOR ka draft ready? Free 1:1 call mein mentor se check karwao."
+                        />
 
                     </div>
 

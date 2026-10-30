@@ -1,17 +1,19 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { 
-    BookOpen, 
-    ChevronDown, 
-    Sparkles, 
-    Award, 
-    Check, 
-    FileText, 
+import {
+    ChevronDown,
+    Check,
+    FileText,
     ArrowRight,
-    HelpCircle,
     PenTool
 } from 'lucide-react';
 import { PuffyWord } from '../../../../components/desi/DesiPop';
+import { DesiHero, DesiHeading, InkCard, Sticker } from '../../../../components/desi/DesiKit';
+import { DESI_TONES } from '../../../../components/desi/desiTokens';
+import { BookOkCta } from '../../../../components/desi/BookOkCta';
+
+const inputCls = "w-full bg-[#FFF6E5] border-2 border-[#16130F] rounded-lg px-4 py-2.5 text-[14px] font-semibold text-[#16130F] placeholder:text-[#8A7F70] outline-none focus:bg-white focus:shadow-[3px_3px_0_#D0362E] transition-shadow";
+const labelCls = "text-[11px] font-extrabold uppercase text-[#5B544A] tracking-wider";
 
 const SOPPhdPage = () => {
     const [faqOpen, setFaqOpen] = useState({});
@@ -47,202 +49,231 @@ const SOPPhdPage = () => {
         { key: 'sop-mba', name: 'SOP for MBA', path: '/resources/sop/sop-mba' },
         { key: 'sop-phd', name: 'SOP for PhD', path: '/resources/sop/sop-phd' }
     ];
+    const currentKey = 'sop-phd';
 
     return (
-        <main className="min-h-screen bg-slate-50/50 pt-24 pb-16">
-            {/* Header Banner */}
-            <div className="uc-clean border-x-0 relative overflow-hidden py-12 md:py-16 px-6 md:px-12 mb-12">
-                <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#DE5C2B_1px,transparent_1px)] [background-size:16px_16px]"></div>
-                <div className="max-w-[1240px] mx-auto relative z-10">
-                    {/* Desi Pop: puffy Hindi word for research, wide screens only */}
-                    <div className="hidden xl:block absolute right-0 top-1/2 -translate-y-1/2 w-[190px] rotate-3 pointer-events-none">
-                        <PuffyWord>शोध</PuffyWord>
+        <main className="min-h-screen bg-[#FFF6E5] pb-16 font-['Onest',sans-serif] text-[#16130F]">
+            {/* ── HERO: peach poster band ── */}
+            <DesiHero
+                tone="peach"
+                sign={{ hi: 'शोध एसओपी', en: 'PHD SOP' }}
+                crumbs={[{ label: 'Home', to: '/' }, { label: 'Resources' }, { label: 'SOP Guides' }, { label: 'SOP for PhD' }]}
+                title="SOP for PhD Guide"
+                subtitle="Research proposals format, literature reviews mapping, and faculty alignment tips for doctoral candidates."
+                stickers={(
+                    <Sticker tilt={-2}><FileText size={14} />Admissions Guides</Sticker>
+                )}
+                aside={(
+                    /* Puffy Hindi word for research, wide screens only */
+                    <div className="hidden lg:flex justify-end pointer-events-none">
+                        <div className="w-[240px] rotate-3 border-[3px] border-[#16130F] rounded-[22px] shadow-[6px_6px_0_#16130F] overflow-hidden">
+                            <PuffyWord>शोध</PuffyWord>
+                        </div>
                     </div>
-                    <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-indigo-500/20 border border-indigo-400/30 rounded-full text-indigo-300 text-xs font-bold uppercase tracking-wider mb-4">
-                        <Sparkles size={12} className="text-indigo-400" />
-                        <span>Admissions Guides</span>
+                )}
+            />
+
+            {/* ── SOP PICKER (phones and tablets) ── */}
+            <div className="lg:hidden max-w-[1240px] mx-auto px-4 -mt-6 mb-8 relative z-10">
+                <InkCard className="p-3">
+                    <p className="font-['Rozha_One',serif] text-[14px] text-[#D0362E] leading-none px-1 mb-2">एसओपी गाइड</p>
+                    <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-hide">
+                        {sopList.map((sop, si) => {
+                            const isCurrent = sop.key === currentKey;
+                            const tone = DESI_TONES[si % DESI_TONES.length];
+                            return (
+                                <Link
+                                    key={sop.key}
+                                    to={sop.path}
+                                    style={isCurrent ? { background: tone.c, color: tone.fg } : undefined}
+                                    className={`flex items-center gap-1.5 px-3.5 py-2 rounded-lg border-2 text-xs font-bold whitespace-nowrap flex-shrink-0 ${isCurrent ? 'border-[#16130F] shadow-[2px_2px_0_#16130F]' : 'border-[#E6DCC8] bg-[#FFF6E5] text-[#5B544A]'}`}
+                                >
+                                    <FileText size={13} />
+                                    <span>{sop.name}</span>
+                                </Link>
+                            );
+                        })}
                     </div>
-                    <h1 className="text-3xl md:text-5xl font-black tracking-tight leading-tight max-w-4xl">
-                        SOP for PhD Guide
-                    </h1>
-                    <p className="text-slate-350 text-base md:text-lg mt-3 max-w-2xl font-medium">
-                        Research proposals format, literature reviews mapping, and faculty alignment tips for doctoral candidates.
-                    </p>
-                </div>
+                </InkCard>
             </div>
 
-            {/* Split View */}
-            <div className="max-w-[1240px] mx-auto px-6 md:px-10">
-                <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-                    
-                    {/* Left Sticky Navigation */}
-                    <div className="lg:col-span-1">
-                        <div className="sticky top-28 bg-white rounded-2xl p-5 border border-slate-200/60 shadow-sm space-y-4">
-                            <h3 className="text-xs font-extrabold text-slate-400 uppercase tracking-widest pl-2">
-                                SOP Categories
-                            </h3>
-                            <nav className="flex flex-col gap-1">
-                                {sopList.map((sop) => {
-                                    const isCurrent = sop.key === 'sop-phd';
+            {/* ── MAIN 2-COLUMN GRID ── */}
+            <div className="max-w-[1240px] mx-auto px-4 md:px-8 lg:pt-12">
+                <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 items-start">
+
+                    {/* ── DESKTOP STICKY SIDEBAR ── */}
+                    <aside className="hidden lg:block lg:col-span-1 sticky top-28">
+                        <InkCard className="p-4">
+                            <p className="font-['Rozha_One',serif] text-[15px] text-[#D0362E] leading-none">एसओपी गाइड</p>
+                            <h3 className="mt-1 mb-3 font-urbanist font-black text-[17px]">SOP Categories</h3>
+                            <nav className="flex flex-col gap-2">
+                                {sopList.map((sop, si) => {
+                                    const isCurrent = sop.key === currentKey;
+                                    const tone = DESI_TONES[si % DESI_TONES.length];
                                     return (
                                         <Link
                                             key={sop.key}
                                             to={sop.path}
-                                            className={`flex items-center justify-between px-4 py-3 rounded-xl text-[0.88rem] font-bold transition-all duration-200
-                                                ${isCurrent 
-                                                    ? 'bg-gradient-to-r from-orange-500 to-[#DE5C2B] text-white shadow-md shadow-indigo-600/15'
-                                                    : 'text-slate-600 hover:bg-slate-50 hover:text-indigo-600'}`}
+                                            style={isCurrent ? { background: tone.c, color: tone.fg } : undefined}
+                                            className={`group flex items-center justify-between px-3 py-2.5 rounded-lg border-2 text-[14px] font-bold transition-transform ${isCurrent ? 'border-[#16130F] shadow-[3px_3px_0_#16130F]' : 'border-transparent text-[#3D362E] hover:border-[#16130F] hover:bg-[#FFF6E5]'}`}
                                         >
-                                            <div className="flex items-center gap-2">
-                                                <FileText size={16} className={isCurrent ? 'text-white' : 'text-slate-400'} />
-                                                <span>{sop.name}</span>
-                                            </div>
-                                            <ArrowRight size={14} className={`opacity-80 transition-transform ${isCurrent ? 'translate-x-0.5' : 'text-slate-300'}`} />
+                                            <span className="flex items-center gap-2.5">
+                                                <span className="w-2.5 h-2.5 rounded-full border-2 border-[#16130F]" style={{ background: tone.c }} />
+                                                {sop.name}
+                                            </span>
+                                            <ArrowRight size={14} className="transition-transform group-hover:translate-x-0.5" />
                                         </Link>
                                     );
                                 })}
                             </nav>
-                        </div>
-                    </div>
+                        </InkCard>
+                    </aside>
 
-                    {/* Right Core Content */}
-                    <div className="lg:col-span-3 space-y-10">
-                        
+                    {/* ── CORE CONTENT COLUMN ── */}
+                    <div className="lg:col-span-3 space-y-10 min-w-0">
+
                         {/* Summary */}
-                        <div className="bg-white rounded-2xl p-6 md:p-8 border border-slate-200/60 shadow-sm space-y-4">
-                            <h2 className="text-xl md:text-2xl font-black text-slate-800 tracking-tight">
-                                Writing a PhD Statement of Purpose
-                            </h2>
-                            <p className="text-slate-650 leading-relaxed text-[0.96rem] font-medium">
+                        <InkCard className="p-6 md:p-8" shadow="#D0362E">
+                            <DesiHeading hi="पीएचडी का एसओपी">Writing a PhD Statement of Purpose</DesiHeading>
+                            <p className="mt-3 text-[#5B544A] leading-relaxed text-[15px]">
                                 A PhD Statement of Purpose is significantly different from a Master's or MBA SOP. Instead of focusing heavily on career pivot stories, a doctoral SOP must demonstrate deep research potential, familiarity with modern academic literature, and clear alignment with specific faculty members at the target university. It is a technical research statement rather than a general essay.
                             </p>
-                        </div>
+                        </InkCard>
 
                         {/* Interactive Outline Generator */}
-                        <section className="bg-white border border-slate-200/60 rounded-3xl p-6 md:p-8 shadow-sm space-y-6">
-                            <div className="flex items-center gap-2">
-                                <PenTool className="text-[#DE5C2B]" size={22} />
-                                <h3 className="text-xl font-bold text-slate-800 tracking-tight">
-                                    PhD Research Outline Builder
-                                </h3>
+                        <InkCard as="section" className="p-6 md:p-8 space-y-6" shadow="#14837E">
+                            <div className="flex items-start gap-3">
+                                <span className="w-10 h-10 rounded-full border-2 border-[#16130F] bg-[#F2B705] grid place-items-center shrink-0 shadow-[2px_2px_0_#16130F]">
+                                    <PenTool size={18} />
+                                </span>
+                                <DesiHeading hi="खाका बनाओ">PhD Research Outline Builder</DesiHeading>
                             </div>
 
                             <form onSubmit={handleGenerate} className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                <div className="space-y-1">
-                                    <label className="text-[10px] font-extrabold uppercase text-slate-400 tracking-wider">Your Name</label>
-                                    <input 
-                                        type="text" 
+                                <div className="space-y-1.5">
+                                    <label className={labelCls}>Your Name</label>
+                                    <input
+                                        type="text"
                                         value={draftInput.name}
                                         onChange={e => setDraftInput({...draftInput, name: e.target.value})}
                                         placeholder="e.g. Dr. Pooja Iyer"
-                                        className="w-full bg-slate-50 border border-slate-200/80 rounded-xl px-4 py-2.5 text-xs font-bold outline-none"
+                                        className={inputCls}
                                         required
                                     />
                                 </div>
-                                <div className="space-y-1">
-                                    <label className="text-[10px] font-extrabold uppercase text-slate-400 tracking-wider">Academic Field</label>
-                                    <input 
-                                        type="text" 
+                                <div className="space-y-1.5">
+                                    <label className={labelCls}>Academic Field</label>
+                                    <input
+                                        type="text"
                                         value={draftInput.academicField}
                                         onChange={e => setDraftInput({...draftInput, academicField: e.target.value})}
                                         placeholder="e.g. Materials Engineering"
-                                        className="w-full bg-slate-50 border border-slate-200/80 rounded-xl px-4 py-2.5 text-xs font-bold outline-none"
+                                        className={inputCls}
                                         required
                                     />
                                 </div>
-                                <div className="space-y-1">
-                                    <label className="text-[10px] font-extrabold uppercase text-slate-400 tracking-wider">Research Proposal Topic</label>
-                                    <input 
-                                        type="text" 
+                                <div className="space-y-1.5">
+                                    <label className={labelCls}>Research Proposal Topic</label>
+                                    <input
+                                        type="text"
                                         value={draftInput.researchTopic}
                                         onChange={e => setDraftInput({...draftInput, researchTopic: e.target.value})}
                                         placeholder="e.g. Perovskite solar cell degradation kinetics"
-                                        className="w-full bg-slate-50 border border-slate-200/80 rounded-xl px-4 py-2.5 text-xs font-bold outline-none"
+                                        className={inputCls}
                                         required
                                     />
                                 </div>
-                                <div className="space-y-1">
-                                    <label className="text-[10px] font-extrabold uppercase text-slate-400 tracking-wider">Prior Thesis / Publications</label>
-                                    <input 
-                                        type="text" 
+                                <div className="space-y-1.5">
+                                    <label className={labelCls}>Prior Thesis / Publications</label>
+                                    <input
+                                        type="text"
                                         value={draftInput.priorResearch}
                                         onChange={e => setDraftInput({...draftInput, priorResearch: e.target.value})}
                                         placeholder="e.g. Synthesis of lead-free halides in M.Tech"
-                                        className="w-full bg-slate-50 border border-slate-200/80 rounded-xl px-4 py-2.5 text-xs font-bold outline-none"
+                                        className={inputCls}
                                         required
                                     />
                                 </div>
-                                <div className="space-y-1">
-                                    <label className="text-[10px] font-extrabold uppercase text-slate-400 tracking-wider">Target Professor</label>
-                                    <input 
-                                        type="text" 
+                                <div className="space-y-1.5">
+                                    <label className={labelCls}>Target Professor</label>
+                                    <input
+                                        type="text"
                                         value={draftInput.targetProfessor}
                                         onChange={e => setDraftInput({...draftInput, targetProfessor: e.target.value})}
                                         placeholder="e.g. Dr. Emily Carter"
-                                        className="w-full bg-slate-50 border border-slate-200/80 rounded-xl px-4 py-2.5 text-xs font-bold outline-none"
+                                        className={inputCls}
                                         required
                                     />
                                 </div>
-                                <div className="space-y-1">
-                                    <label className="text-[10px] font-extrabold uppercase text-slate-400 tracking-wider">Target University</label>
-                                    <input 
-                                        type="text" 
+                                <div className="space-y-1.5">
+                                    <label className={labelCls}>Target University</label>
+                                    <input
+                                        type="text"
                                         value={draftInput.university}
                                         onChange={e => setDraftInput({...draftInput, university: e.target.value})}
                                         placeholder="e.g. Princeton University"
-                                        className="w-full bg-slate-50 border border-slate-200/80 rounded-xl px-4 py-2.5 text-xs font-bold outline-none"
+                                        className={inputCls}
                                         required
                                     />
                                 </div>
-                                <button 
+                                <button
                                     type="submit"
-                                    className="col-span-1 md:col-span-2 py-3.5 rounded-xl text-white font-bold text-xs bg-gradient-to-r from-orange-500 to-[#DE5C2B] hover:shadow-lg transition-all cursor-pointer text-center"
+                                    className="no-shine col-span-1 md:col-span-2 justify-self-start inline-flex items-center gap-2 px-6 py-3 rounded-full border-2 border-[#16130F] bg-[#D0362E] hover:bg-[#B52A23] text-white font-bold text-[14px] shadow-[3px_3px_0_#16130F] transition-transform hover:-translate-y-0.5 cursor-pointer"
                                 >
                                     Build PhD Outline
+                                    <ArrowRight size={15} />
                                 </button>
                             </form>
 
                             {generatedOutline && (
-                                <div className="space-y-4 pt-4 border-t border-slate-100">
-                                    <h4 className="text-xs font-extrabold text-slate-400 uppercase tracking-widest">Outline Results</h4>
+                                <div className="space-y-4 pt-5 border-t-2 border-dashed border-[#16130F33]">
+                                    <p className="font-['Rozha_One',serif] text-[15px] text-[#D0362E] leading-none">आपका खाका</p>
+                                    <h4 className="-mt-2 font-urbanist font-black text-[18px]">Outline Results</h4>
                                     <div className="space-y-3">
-                                        {generatedOutline.map((item, idx) => (
-                                            <div key={idx} className="bg-slate-50 border border-slate-200/60 p-4 rounded-xl space-y-1">
-                                                <span className="block text-xs font-extrabold text-[#DE5C2B]">{item.title}</span>
-                                                <p className="text-xs text-slate-650 font-semibold leading-relaxed">{item.text}</p>
-                                            </div>
-                                        ))}
+                                        {generatedOutline.map((item, idx) => {
+                                            const tone = DESI_TONES[idx % DESI_TONES.length];
+                                            return (
+                                                <div key={idx} className="bg-[#FFF6E5] border-2 border-[#16130F] p-4 rounded-xl flex gap-3">
+                                                    <span className="w-7 h-7 rounded-full border-2 border-[#16130F] font-urbanist font-black text-[13px] grid place-items-center shrink-0"
+                                                        style={{ background: tone.c, color: tone.fg }}>
+                                                        {idx + 1}
+                                                    </span>
+                                                    <div className="min-w-0 space-y-1">
+                                                        <span className="block text-[13.5px] font-extrabold">{item.title}</span>
+                                                        <p className="text-[13.5px] text-[#5B544A] leading-relaxed">{item.text}</p>
+                                                    </div>
+                                                </div>
+                                            );
+                                        })}
                                     </div>
                                 </div>
                             )}
+                        </InkCard>
+
+                        {/* Critical Steps for PhD SOP: teal poster band */}
+                        <section className="bg-[#14837E] border-[3px] border-[#16130F] p-6 md:p-8 shadow-[6px_6px_0_#16130F]" style={{ borderRadius: 18 }}>
+                            <DesiHeading hi="ज़रूरी बातें" light>Key Writing Checklist for PhD SOPs</DesiHeading>
+                            <ul className="mt-6 space-y-3 list-none p-0 m-0">
+                                {[
+                                    'Establish research gaps in the literature immediately in Paragraph 1 or 2.',
+                                    'Cite 1-2 research papers authored by your target supervisor at the university.',
+                                    'Demonstrate laboratory experience, instrument usage, or quantitative analysis coding.',
+                                ].map((item, idx) => (
+                                    <li key={item} className="flex gap-3 items-start bg-white p-4 border-[3px] border-[#16130F] shadow-[4px_4px_0_#0B4F4C]"
+                                        style={{ borderRadius: 12, transform: `rotate(${idx % 2 ? 0.5 : -0.5}deg)` }}>
+                                        <span className="w-7 h-7 rounded-full border-2 border-[#16130F] bg-[#F2B705] grid place-items-center shrink-0">
+                                            <Check size={15} strokeWidth={3} />
+                                        </span>
+                                        <span className="text-[#3D362E] text-[14px] font-semibold leading-relaxed">{item}</span>
+                                    </li>
+                                ))}
+                            </ul>
                         </section>
 
-                        {/* Critical Steps for PhD SOP */}
-                        <div className="uc-clean rounded-3xl p-6 md:p-8 relative overflow-hidden shadow-md space-y-4">
-                            <div className="flex items-center gap-2">
-                                <Award className="text-indigo-300" size={24} />
-                                <h3 className="text-xl font-bold tracking-tight">Key Writing Checklist for PhD SOPs</h3>
-                            </div>
-                            <ul className="space-y-3 text-xs text-slate-250 font-bold">
-                                <li className="flex gap-2">
-                                    <Check size={14} className="text-indigo-400 mt-0.5 flex-shrink-0" />
-                                    <span>Establish research gaps in the literature immediately in Paragraph 1 or 2.</span>
-                                </li>
-                                <li className="flex gap-2">
-                                    <Check size={14} className="text-indigo-400 mt-0.5 flex-shrink-0" />
-                                    <span>Cite 1-2 research papers authored by your target supervisor at the university.</span>
-                                </li>
-                                <li className="flex gap-2">
-                                    <Check size={14} className="text-indigo-400 mt-0.5 flex-shrink-0" />
-                                    <span>Demonstrate laboratory experience, instrument usage, or quantitative analysis coding.</span>
-                                </li>
-                            </ul>
-                        </div>
-
                         {/* FAQs */}
-                        <section className="space-y-4">
-                            <h3 className="text-xl font-bold text-slate-800 tracking-tight">Frequently Asked Questions</h3>
-                            <div className="space-y-3">
+                        <section>
+                            <DesiHeading hi="अक्सर पूछे सवाल">Frequently Asked Questions</DesiHeading>
+                            <div className="mt-5 space-y-3">
                                 {[
                                     {
                                         q: "Do I need to contact a professor before writing my PhD SOP?",
@@ -255,20 +286,20 @@ const SOPPhdPage = () => {
                                 ].map((faq, idx) => {
                                     const isOpen = !!faqOpen[idx];
                                     return (
-                                        <div key={idx} className="bg-white rounded-2xl border border-slate-200/60 overflow-hidden shadow-sm transition-all duration-200">
+                                        <div key={idx} className="bg-white border-[3px] border-[#16130F] overflow-hidden" style={{ borderRadius: 12, boxShadow: isOpen ? '4px 4px 0 #D0362E' : '4px 4px 0 #16130F' }}>
                                             <button
                                                 onClick={() => toggleFaq(idx)}
-                                                className="w-full flex items-center justify-between p-5 text-left font-bold text-slate-755 hover:text-[#DE5C2B] transition-colors"
+                                                aria-expanded={isOpen}
+                                                className="no-shine w-full flex items-center justify-between gap-3 p-4 text-left font-bold text-[14.5px] cursor-pointer"
                                             >
                                                 <span>{faq.q}</span>
-                                                <ChevronDown 
-                                                    size={16} 
-                                                    className={`text-slate-400 transition-transform duration-200 ${isOpen ? 'rotate-180 text-indigo-500' : ''}`} 
-                                                />
+                                                <span className={`w-7 h-7 rounded-full border-2 border-[#16130F] grid place-items-center shrink-0 transition-transform ${isOpen ? 'rotate-180 bg-[#F2B705]' : 'bg-white'}`}>
+                                                    <ChevronDown size={15} />
+                                                </span>
                                             </button>
-                                            
+
                                             {isOpen && (
-                                                <div className="px-5 pb-5 pt-1 text-slate-600 text-xs md:text-sm border-t border-slate-50 leading-relaxed font-semibold">
+                                                <div className="px-4 pb-4 pt-3 text-[#5B544A] text-[14px] border-t-2 border-dashed border-[#16130F33] leading-relaxed">
                                                     {faq.a}
                                                 </div>
                                             )}
@@ -277,6 +308,12 @@ const SOPPhdPage = () => {
                                 })}
                             </div>
                         </section>
+
+                        {/* Closing CTA */}
+                        <BookOkCta
+                            hi="एसओपी चेक करवाओ"
+                            text="PhD SOP likh liya? Free 1:1 call mein mentor se check karwao."
+                        />
 
                     </div>
 

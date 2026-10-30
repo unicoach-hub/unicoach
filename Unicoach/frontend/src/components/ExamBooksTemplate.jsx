@@ -1,21 +1,10 @@
-import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import {
-  BookOpen,
-  Sparkles,
-  Award,
-  Star,
-  CheckCircle2,
-  ChevronDown,
-  ArrowRight,
-  ExternalLink,
-  Check,
-  Target,
-  ShieldCheck,
-  TrendingUp,
-  Bookmark
-} from 'lucide-react';
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { BookOpen, Star, ChevronDown, ArrowRight, ExternalLink } from 'lucide-react';
 import { BarCompare, Donut } from './ui/Infographics';
+import { DesiHero, DesiHeading, InkCard, Sticker } from './desi/DesiKit';
+import { DESI_TONES } from './desi/desiTokens';
+import { BookOkCta } from './desi/BookOkCta';
 
 const examsList = [
   { key: 'ielts', name: 'IELTS Books', path: '/resources/books/ielts-books', tag: 'Academic & GT' },
@@ -26,16 +15,8 @@ const examsList = [
   { key: 'gmat', name: 'GMAT Books', path: '/resources/books/gmat-books', tag: 'Focus Edition' }
 ];
 
-// One colour per card, from the social palette (rose from the ads, royal blue, violet, teal, rani pink, marigold).
-// Set inline because index.css remaps several Tailwind colour classes on content pages.
-const TONES = [
-  { c: '#D9573F', soft: '#FCE9E4' },
-  { c: '#2F5BFF', soft: '#E7EDFF' },
-  { c: '#6D3FE0', soft: '#EEE8FD' },
-  { c: '#0F9F8F', soft: '#DDF5F1' },
-  { c: '#E4007C', soft: '#FDE4F1' },
-  { c: '#B87A00', soft: '#FFF3D1', btn: '#F2B705', btnText: '#16130F' },
-];
+// Hero colour per exam, so the six pages don't all look the same
+const HERO_TONE = { ielts: 'mustard', sat: 'teal', pte: 'rani', toefl: 'mustard', gre: 'teal', gmat: 'rani' };
 
 // Sidebar ad: the IELTS evaluator ad on the IELTS page, the counselling ad elsewhere
 const SIDE_AD = {
@@ -50,7 +31,6 @@ const getBookCategory = (book) => (
 );
 
 const ExamBooksTemplate = ({ currentExamKey, data }) => {
-  const navigate = useNavigate();
   const [faqOpen, setFaqOpen] = useState({});
   const [selectedCategory, setSelectedCategory] = useState('all');
 
@@ -61,7 +41,6 @@ const ExamBooksTemplate = ({ currentExamKey, data }) => {
     }));
   };
 
-  // Derive unique categories from books
   // Book prices as listed on each card ("Approx. ₹2,200"), for the price comparison bars
   const priceBars = data.booksList
     .map((b) => {
@@ -76,61 +55,28 @@ const ExamBooksTemplate = ({ currentExamKey, data }) => {
     ? data.booksList
     : data.booksList.filter(b => getBookCategory(b) === selectedCategory);
 
+  const ad = SIDE_AD[currentExamKey] || SIDE_AD.default;
+  const examName = data.examShortName || data.title;
+
   return (
-    <main className="min-h-screen bg-slate-50/60 pt-20 md:pt-24 pb-16">
-      
-      {/* ── BREADCRUMBS & TOP NAV ── */}
-      <div className="max-w-[1240px] mx-auto px-4 md:px-8 pt-4 pb-2">
-        <nav className="flex items-center gap-2 text-xs font-semibold text-slate-400 overflow-x-auto whitespace-nowrap">
-          <Link to="/" className="hover:text-indigo-600 transition-colors">Home</Link>
-          <span>/</span>
-          <span className="text-slate-500">Resources</span>
-          <span>/</span>
-          <span className="text-slate-500">Prep Books</span>
-          <span>/</span>
-          <span className="text-indigo-600 font-bold">{data.examShortName || data.title}</span>
-        </nav>
-      </div>
+    <main className="min-h-screen bg-[#FFF6E5] pb-16 font-['Onest',sans-serif] text-[#16130F]">
 
-      {/* ── HERO BANNER (UniCoach Brand Blue #111111) ── */}
-      <div className="max-w-[1240px] mx-auto px-4 md:px-8 mt-3 mb-8">
-        <div className="uc-clean rounded-3xl p-6 md:p-10 relative overflow-hidden shadow-xl border" style={{ background: 'repeating-radial-gradient(circle at 88% 50%, rgba(217,87,63,0.07) 0 2px, transparent 2px 26px), linear-gradient(120deg, #FCE3DA 0%, #FBEFEA 45%, #F1ECFB 100%)', borderColor: '#F3D3C8' }}>
-          <div className="absolute top-0 right-0 w-96 h-96 bg-blue-400/10 rounded-full blur-3xl pointer-events-none" />
-          <div className="absolute -bottom-10 -left-10 w-72 h-72 bg-indigo-300/10 rounded-full blur-2xl pointer-events-none" />
-
-          <div className="relative z-10 grid grid-cols-1 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,1fr)] gap-8 lg:gap-10 items-center">
-          <div className="min-w-0">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 bg-white/10 border border-white/20 rounded-full text-orange-200 text-xs font-bold uppercase tracking-wider mb-4 backdrop-blur-md">
-              <Sparkles size={13} className="text-orange-300" />
-              <span>Mentor-Curated Study Guides (2025–2026)</span>
-            </div>
-
-            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-[42px] font-bold tracking-tight leading-tight text-white mb-3">
-              {data.title}
-            </h1>
-
-            <p className="text-blue-100/90 text-sm md:text-base leading-relaxed mb-6 font-normal">
-              {data.subtitle}
-            </p>
-
-            <div className="flex flex-wrap items-center gap-3 text-xs sm:text-sm text-white">
-              <div className="flex items-center gap-2 bg-white/10 backdrop-blur-md px-3.5 py-1.5 rounded-xl border border-white/15">
-                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-                <span className="font-semibold text-white">{data.updatedDate}</span>
-              </div>
-              <div className="flex items-center gap-2 bg-white/10 backdrop-blur-md px-3.5 py-1.5 rounded-xl border border-white/15">
-                <ShieldCheck size={15} className="text-orange-300" />
-                <span className="font-semibold text-white">{data.booksList.length} Books Reviewed</span>
-              </div>
-              <div className="flex items-center gap-2 bg-white/10 backdrop-blur-md px-3.5 py-1.5 rounded-xl border border-white/15">
-                <Star size={14} className="text-amber-300 fill-amber-300" />
-                <span className="font-semibold text-white">Verified Test-Taker Ratings</span>
-              </div>
-            </div>
-          </div>
-
-          {/* Right: the page's own infographic, so it is seen first instead of far down the page */}
-          <div className="min-w-0">
+      {/* ── HERO: poster band with the page's own infographic ── */}
+      <DesiHero
+        tone={HERO_TONE[currentExamKey] || 'mustard'}
+        sign={{ hi: 'किताब घर', en: 'KITAB GHAR' }}
+        crumbs={[{ label: 'Home', to: '/' }, { label: 'Resources' }, { label: 'Prep Books' }, { label: examName }]}
+        title={data.title}
+        subtitle={data.subtitle}
+        stickers={(
+          <>
+            <Sticker tilt={-2}><span className="w-2 h-2 rounded-full bg-[#3F9A5C]" />{data.updatedDate}</Sticker>
+            <Sticker bg="#FCE38A" tilt={1.5}><BookOpen size={14} />{data.booksList.length} books reviewed</Sticker>
+            <Sticker tilt={-1}><Star size={14} style={{ color: '#E89400', fill: '#FFB400' }} />Test-taker ratings</Sticker>
+          </>
+        )}
+        aside={(
+          <div className="shadow-[6px_6px_0_#16130F] rounded-[18px]">
             {data.timeSplit ? (
               <Donut
                 kicker={data.timeSplit.kicker}
@@ -143,280 +89,193 @@ const ExamBooksTemplate = ({ currentExamKey, data }) => {
               <BarCompare kicker="Approx. prices" title="What these books cost" items={priceBars} highlight={cheapest} />
             )}
           </div>
-          </div>
-        </div>
-      </div>
+        )}
+      />
 
-      {/* ── MOBILE / TABLET EXAM SELECTOR BAR ── */}
-      <div className="lg:hidden max-w-[1240px] mx-auto px-4 mb-6">
-        <div className="bg-white rounded-2xl p-3 border border-slate-200 shadow-sm">
-          <div className="text-[11px] font-extrabold uppercase tracking-wider text-slate-400 mb-2 px-1">
-            Choose Exam Books
-          </div>
+      {/* ── EXAM PICKER (phones and tablets) ── */}
+      <div className="lg:hidden max-w-[1240px] mx-auto px-4 -mt-6 mb-8 relative z-10">
+        <InkCard className="p-3">
+          <p className="font-['Rozha_One',serif] text-[14px] text-[#D0362E] leading-none px-1 mb-2">दूसरी किताबें</p>
           <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-hide">
             {examsList.map((exam, ei) => {
               const isCurrent = exam.key === currentExamKey;
+              const tone = DESI_TONES[ei % DESI_TONES.length];
               return (
                 <Link
                   key={exam.key}
                   to={exam.path}
-                  style={isCurrent ? { background: TONES[ei % TONES.length].btn || TONES[ei % TONES.length].c, color: TONES[ei % TONES.length].btnText || '#fff' } : undefined}
-                  className={`flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-bold whitespace-nowrap transition-all flex-shrink-0 ${
-                    isCurrent
-                      ? 'bg-indigo-600 text-white shadow-md shadow-indigo-600/20'
-                      : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
-                  }`}
+                  style={isCurrent ? { background: tone.c, color: tone.fg } : undefined}
+                  className={`flex items-center gap-1.5 px-3.5 py-2 rounded-lg border-2 text-xs font-bold whitespace-nowrap flex-shrink-0 ${isCurrent ? 'border-[#16130F] shadow-[2px_2px_0_#16130F]' : 'border-[#E6DCC8] bg-[#FFF6E5] text-[#5B544A]'}`}
                 >
-                  <BookOpen size={13} className={isCurrent ? 'text-white' : 'text-slate-400'} />
+                  <BookOpen size={13} />
                   <span>{exam.name.replace(' Books', '')}</span>
                 </Link>
               );
             })}
           </div>
-        </div>
+        </InkCard>
       </div>
 
       {/* ── MAIN 2-COLUMN GRID ── */}
-      <div className="max-w-[1240px] mx-auto px-4 md:px-8">
+      <div className="max-w-[1240px] mx-auto px-4 md:px-8 lg:pt-12">
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 items-start">
 
           {/* ── DESKTOP STICKY SIDEBAR ── */}
-          <aside className="hidden lg:block lg:col-span-1 sticky top-28 space-y-4">
-            <div className="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm">
-              <div className="flex items-center gap-2 mb-4 pb-3 border-b border-slate-100">
-                <Bookmark size={16} className="text-indigo-600" />
-                <h3 className="text-xs font-black uppercase tracking-wider text-slate-600">
-                  Prep Exam Books
-                </h3>
-              </div>
-              <nav className="flex flex-col gap-1.5">
+          <aside className="hidden lg:block lg:col-span-1 sticky top-28 space-y-5">
+            <InkCard className="p-4">
+              <p className="font-['Rozha_One',serif] text-[15px] text-[#D0362E] leading-none">दूसरी किताबें</p>
+              <h3 className="mt-1 mb-3 font-urbanist font-black text-[17px]">Prep books by exam</h3>
+              <nav className="flex flex-col gap-2">
                 {examsList.map((exam, ei) => {
                   const isCurrent = exam.key === currentExamKey;
+                  const tone = DESI_TONES[ei % DESI_TONES.length];
                   return (
                     <Link
                       key={exam.key}
                       to={exam.path}
-                      style={isCurrent ? { background: TONES[ei % TONES.length].btn || TONES[ei % TONES.length].c, color: TONES[ei % TONES.length].btnText || '#fff' } : undefined}
-                      className={`flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-bold transition-all ${
-                        isCurrent
-                          ? 'bg-indigo-600 text-white shadow-md shadow-indigo-600/20 font-extrabold'
-                          : 'text-slate-600 hover:bg-slate-100 hover:text-indigo-600'
-                      }`}
+                      style={isCurrent ? { background: tone.c, color: tone.fg } : undefined}
+                      className={`group flex items-center justify-between px-3 py-2.5 rounded-lg border-2 text-[14px] font-bold transition-transform ${isCurrent ? 'border-[#16130F] shadow-[3px_3px_0_#16130F]' : 'border-transparent text-[#3D362E] hover:border-[#16130F] hover:bg-[#FFF6E5]'}`}
                     >
-                      <div className="flex items-center gap-2.5">
-                        <BookOpen size={15} className={isCurrent ? 'text-white' : 'text-slate-400'} />
-                        <span>{exam.name}</span>
-                      </div>
-                      <ArrowRight size={13} className={isCurrent ? 'text-white' : 'text-slate-300'} />
+                      <span className="flex items-center gap-2.5">
+                        <span className="w-2.5 h-2.5 rounded-full border-2 border-[#16130F]" style={{ background: tone.c }} />
+                        {exam.name}
+                      </span>
+                      <ArrowRight size={14} className="transition-transform group-hover:translate-x-0.5" />
                     </Link>
                   );
                 })}
               </nav>
-            </div>
+            </InkCard>
 
             {/* Our ad creative: the whole card is the link */}
-            {(() => {
-              const ad = SIDE_AD[currentExamKey] || SIDE_AD.default;
-              return (
-                <Link to={ad.to} className="block rounded-2xl overflow-hidden border-2 border-[#16130F] shadow-[5px_5px_0_#16130F] transition-transform hover:-translate-y-0.5">
-                  <img src={ad.src} alt={ad.alt} width="640" height="800" loading="lazy" className="block w-full h-auto" />
-                </Link>
-              );
-            })()}
+            <Link to={ad.to} className="block rounded-2xl overflow-hidden border-[3px] border-[#16130F] shadow-[5px_5px_0_#16130F] transition-transform hover:-translate-y-0.5">
+              <img src={ad.src} alt={ad.alt} width="640" height="800" loading="lazy" className="block w-full h-auto" />
+            </Link>
           </aside>
 
           {/* ── CORE CONTENT COLUMN ── */}
-          <div className="lg:col-span-3 space-y-8">
+          <div className="lg:col-span-3 space-y-10">
 
-            {/* Summary Overview Card */}
-            <div className="bg-white rounded-2xl p-6 md:p-7 border border-slate-200 shadow-sm">
-              <h2 className="text-lg md:text-xl font-extrabold text-slate-900 mb-2 flex items-center gap-2">
-                <Target size={18} className="text-indigo-600" />
-                Why Choosing the Right Prep Books Matters in 2026
-              </h2>
-              <p className="text-slate-600 text-sm leading-relaxed font-medium">
-                {data.description}
-              </p>
-            </div>
+            {/* Why the right books matter */}
+            <InkCard className="p-6 md:p-7 relative" shadow="#F2B705">
+              <DesiHeading hi="सही किताब, आधी तैयारी">Why the right prep books matter</DesiHeading>
+              <p className="mt-3 text-[#5B544A] text-[14.5px] leading-relaxed">{data.description}</p>
+            </InkCard>
 
-            {/* Recommended Books Section with Category Filter */}
-            <section className="space-y-5">
-              <div className="flex flex-col gap-3 pb-3 border-b border-slate-200">
-                <div className="flex items-center gap-2">
-                  <BookOpen className="text-indigo-600" size={20} />
-                  <h2 className="text-xl md:text-2xl font-black text-slate-900 tracking-tight">
-                    Recommended Books & Detailed Reviews
-                  </h2>
-                </div>
-                
-                {/* Category Pills */}
+            {/* Recommended books with a category filter */}
+            <section>
+              <div className="flex flex-col gap-4 mb-6">
+                <DesiHeading hi="मेंटर की पसंद">Recommended books, reviewed</DesiHeading>
                 {categories.length > 2 && (
-                  <div className="flex flex-wrap items-center gap-1.5">
+                  <div className="flex flex-wrap items-center gap-2">
                     {categories.map((cat) => (
                       <button
                         key={cat}
                         onClick={() => setSelectedCategory(cat)}
                         aria-pressed={selectedCategory === cat}
-                        className={`px-3 py-1 rounded-lg text-xs font-bold capitalize transition-all cursor-pointer whitespace-nowrap ${
-                          selectedCategory === cat
-                            ? 'bg-slate-900 text-white'
-                            : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
-                        }`}
+                        className={`no-shine px-3 py-1.5 rounded-lg border-2 text-xs font-bold capitalize cursor-pointer whitespace-nowrap transition-colors ${selectedCategory === cat ? 'bg-[#16130F] border-[#16130F] text-white' : 'bg-white border-[#16130F] text-[#16130F] hover:bg-[#FCE38A]'}`}
                       >
-                        <span className="relative z-10">{cat === 'all' ? 'All Books' : cat}</span>
+                        {cat === 'all' ? 'All books' : cat}
                       </button>
                     ))}
                   </div>
                 )}
               </div>
 
-              {/* Book Cards Grid */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {filteredBooks.map((book, idx) => {
-                  const tone = TONES[idx % TONES.length];
+                  const tone = DESI_TONES[idx % DESI_TONES.length];
                   const amazonSearchUrl = book.link && book.link.startsWith('http') && !book.link.includes('amazon.in/s?')
                     ? book.link
                     : `https://www.amazon.in/s?k=${encodeURIComponent(book.name)}`;
 
                   return (
-                    <div
-                      key={idx}
-                      className="bg-white rounded-2xl border border-slate-200/80 shadow-sm p-5 md:p-6 hover:shadow-lg hover:-translate-y-0.5 transition-all flex flex-col justify-between group"
-                      style={{ borderTop: `4px solid ${tone.c}`, '--tone': tone.c }}
-                    >
-                      <div>
-                        {/* Header Badge Row */}
-                        <div className="flex flex-wrap items-center justify-between gap-2 mb-3">
-                          <span className="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-extrabold" style={{ background: tone.soft, color: tone.c }}>
-                            {book.bestFor || 'Comprehensive Prep'}
-                          </span>
-                          <span className="text-xs font-extrabold text-slate-700 bg-slate-100 px-2.5 py-1 rounded-md">
-                            {book.price}
-                          </span>
-                        </div>
-
-                        {/* Title & Author/Publisher */}
-                        <h3 className="text-base md:text-lg font-black text-slate-900 group-hover:text-[var(--tone)] transition-colors leading-snug mb-1">
-                          {book.name}
-                        </h3>
-                        {book.publisher && (
-                          <div className="text-xs text-slate-400 font-semibold mb-2">
-                            By {book.publisher}
-                          </div>
-                        )}
-
-                        {/* Rating & Review */}
-                        <div className="flex items-center gap-1 mb-3">
+                    <InkCard key={book.name} className="flex flex-col overflow-hidden transition-transform hover:-translate-y-1">
+                      {/* coloured spine with the "best for" label and a price tag */}
+                      <div className="flex items-center justify-between gap-2 px-5 py-3 border-b-[3px] border-[#16130F]" style={{ background: tone.c, color: tone.fg }}>
+                        <span className="text-[12.5px] font-extrabold">{book.bestFor || 'Comprehensive prep'}</span>
+                        <span className="shrink-0 px-2 py-0.5 bg-white text-[#16130F] border-2 border-[#16130F] text-[12px] font-black rotate-2" style={{ borderRadius: 6 }}>
+                          {book.price}
+                        </span>
+                      </div>
+                      <div className="p-5 flex flex-col flex-1">
+                        <h3 className="font-urbanist text-[18px] font-black leading-snug">{book.name}</h3>
+                        {book.publisher && <p className="mt-0.5 text-[12.5px] text-[#8A7F70] font-semibold">By {book.publisher}</p>}
+                        <div className="mt-2 flex items-center gap-1">
                           {[1, 2, 3, 4, 5].map((s) => (
                             <Star key={s} size={14} strokeWidth={1.5} style={{ color: '#E89400', fill: '#FFB400' }} />
                           ))}
-                          <span className="text-xs font-bold text-slate-600 ml-1">
-                            {book.rating || '4.8'} / 5.0
-                          </span>
+                          <span className="text-[12.5px] font-bold text-[#5B544A] ml-1">{book.rating || '4.8'} / 5</span>
                         </div>
-
-                        {/* Description */}
-                        <p className="text-slate-600 text-xs sm:text-sm leading-relaxed mb-4 font-medium">
-                          {book.description}
-                        </p>
-                      </div>
-
-                      {/* Footer: Strength & Buy Button */}
-                      <div className="pt-3 border-t border-slate-100 mt-2">
-                        <div className="mb-3">
-                          <span className="text-[10px] uppercase tracking-wider font-extrabold text-slate-400 block mb-0.5">
-                            Target Band / Key Strength
-                          </span>
-                          <span className="text-xs font-bold text-slate-800">
-                            {book.sectionalStrength}
-                          </span>
+                        <p className="mt-3 text-[#5B544A] text-[13.5px] leading-relaxed flex-1">{book.description}</p>
+                        <div className="mt-4 pt-3 border-t-2 border-dashed border-[#16130F33]">
+                          <span className="text-[10.5px] uppercase tracking-wider font-extrabold text-[#8A7F70] block">Best for</span>
+                          <span className="text-[13px] font-bold">{book.sectionalStrength}</span>
                         </div>
-
                         <a
                           href={amazonSearchUrl}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="no-shine w-full inline-flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-xl text-xs font-bold shadow-sm transition-all hover:brightness-110"
-                          style={{ background: tone.btn || tone.c, color: tone.btnText || '#fff' }}
+                          className="no-shine mt-4 w-full inline-flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-full border-2 border-[#16130F] bg-[#16130F] text-white text-[13px] font-bold shadow-[3px_3px_0_#F2B705] transition-transform hover:-translate-y-0.5"
                         >
-                          <span>Check Price</span>
-                          <ExternalLink size={12} />
+                          Check price <ExternalLink size={13} />
                         </a>
                       </div>
-                    </div>
+                    </InkCard>
                   );
                 })}
               </div>
             </section>
 
             {/* Phones have no sidebar: the same ad sits under the books */}
-            {(() => {
-              const ad = SIDE_AD[currentExamKey] || SIDE_AD.default;
-              return (
-                <Link to={ad.to} className="lg:hidden block max-w-[360px] mx-auto rounded-2xl overflow-hidden border-2 border-[#16130F] shadow-[5px_5px_0_#16130F]">
-                  <img src={ad.src} alt={ad.alt} width="640" height="800" loading="lazy" className="block w-full h-auto" />
-                </Link>
-              );
-            })()}
+            <Link to={ad.to} className="lg:hidden block max-w-[360px] mx-auto rounded-2xl overflow-hidden border-[3px] border-[#16130F] shadow-[5px_5px_0_#16130F]">
+              <img src={ad.src} alt={ad.alt} width="640" height="800" loading="lazy" className="block w-full h-auto" />
+            </Link>
 
             {/* Price comparison of the books above (approximate prices from each card) */}
             {data.timeSplit && priceBars.length >= 3 && (
-              <BarCompare
-                kicker="Approx. prices"
-                title="What these books cost"
-                items={priceBars}
-                highlight={cheapest}
-              />
+              <div className="shadow-[6px_6px_0_#16130F] rounded-[18px]">
+                <BarCompare kicker="Approx. prices" title="What these books cost" items={priceBars} highlight={cheapest} />
+              </div>
             )}
 
-            {/* Preparation Tips Section */}
-            <section className="bg-white rounded-3xl p-6 md:p-8 border border-slate-200 shadow-sm">
-              <div className="flex items-center gap-2 mb-6">
-                <TrendingUp className="text-indigo-600" size={22} />
-                <h2 className="text-xl md:text-2xl font-black text-slate-900 tracking-tight">
-                  Mentor-Approved Preparation Strategy
-                </h2>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5">
+            {/* Preparation strategy: teal poster band */}
+            <section className="bg-[#14837E] border-[3px] border-[#16130F] p-6 md:p-8 shadow-[6px_6px_0_#16130F]" style={{ borderRadius: 18 }}>
+              <DesiHeading hi="तैयारी का तरीका" light>Mentor-approved prep plan</DesiHeading>
+              <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
                 {data.prepTips.map((tip, idx) => (
-                  <div key={idx} className="flex gap-3 bg-slate-50 border border-slate-200/70 p-4 rounded-xl">
-                    <span className="w-6 h-6 rounded-lg bg-indigo-100 text-indigo-700 font-extrabold text-xs flex items-center justify-center flex-shrink-0 mt-0.5">
+                  <div key={tip} className="flex gap-3 bg-white p-4 border-[3px] border-[#16130F] shadow-[4px_4px_0_#0B4F4C]"
+                    style={{ borderRadius: 12, transform: `rotate(${idx % 2 ? 0.6 : -0.6}deg)` }}>
+                    <span className="w-8 h-8 rounded-full border-2 border-[#16130F] font-urbanist font-black text-[14px] grid place-items-center shrink-0"
+                      style={{ background: DESI_TONES[idx % DESI_TONES.length].c, color: DESI_TONES[idx % DESI_TONES.length].fg }}>
                       {idx + 1}
                     </span>
-                    <p className="text-slate-700 text-xs sm:text-sm leading-relaxed font-medium">
-                      {tip}
-                    </p>
+                    <p className="text-[#3D362E] text-[13.5px] leading-relaxed">{tip}</p>
                   </div>
                 ))}
               </div>
             </section>
 
-            {/* FAQs Section */}
-            <section className="bg-white rounded-3xl p-6 md:p-8 border border-slate-200 shadow-sm space-y-4">
-              <h2 className="text-xl md:text-2xl font-black text-slate-900 tracking-tight mb-2">
-                Frequently Asked Questions
-              </h2>
-              <div className="space-y-3">
+            {/* FAQs */}
+            <section>
+              <DesiHeading hi="अक्सर पूछे सवाल">Frequently asked questions</DesiHeading>
+              <div className="mt-5 space-y-3">
                 {data.faqs.map((faq, idx) => {
                   const isOpen = !!faqOpen[idx];
                   return (
-                    <div key={idx} className="border border-slate-200/80 rounded-xl overflow-hidden transition-all">
+                    <div key={faq.q} className="bg-white border-[3px] border-[#16130F] overflow-hidden" style={{ borderRadius: 12, boxShadow: isOpen ? '4px 4px 0 #D0362E' : '4px 4px 0 #16130F' }}>
                       <button
                         onClick={() => toggleFaq(idx)}
-                        className="w-full flex items-center justify-between p-4 text-left font-bold text-sm text-slate-800 hover:text-indigo-600 transition-colors"
+                        aria-expanded={isOpen}
+                        className="no-shine w-full flex items-center justify-between gap-3 p-4 text-left font-bold text-[14.5px] cursor-pointer"
                       >
                         <span>{faq.q}</span>
-                        <ChevronDown
-                          size={16}
-                          className={`text-slate-400 transition-transform duration-200 flex-shrink-0 ${
-                            isOpen ? 'rotate-180 text-indigo-600' : ''
-                          }`}
-                        />
+                        <span className={`w-7 h-7 rounded-full border-2 border-[#16130F] grid place-items-center shrink-0 transition-transform ${isOpen ? 'rotate-180 bg-[#F2B705]' : 'bg-white'}`}>
+                          <ChevronDown size={15} />
+                        </span>
                       </button>
-
                       {isOpen && (
-                        <div className="px-4 pb-4 pt-1 text-slate-600 text-xs sm:text-sm border-t border-slate-100 leading-relaxed font-medium">
+                        <div className="px-4 pb-4 pt-3 text-[#5B544A] text-[14px] border-t-2 border-dashed border-[#16130F33] leading-relaxed">
                           {faq.a}
                         </div>
                       )}
@@ -426,38 +285,12 @@ const ExamBooksTemplate = ({ currentExamKey, data }) => {
               </div>
             </section>
 
-            {/* CTA Banner */}
-            <div className="uc-clean rounded-3xl p-6 md:p-8 flex flex-col md:flex-row items-center justify-between gap-6 shadow-xl border border-indigo-800">
-              <div>
-                <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-indigo-500/20 border border-indigo-400/30 rounded-full text-indigo-300 text-xs font-bold uppercase tracking-wider mb-3">
-                  <Sparkles size={12} className="text-indigo-400" />
-                  <span>Free Mentorship</span>
-                </div>
-                <h3 className="text-xl md:text-2xl font-black tracking-tight text-white mb-2">
-                  Accelerate Your Preparation with UniCoach
-                </h3>
-                <p className="text-slate-300 text-xs sm:text-sm leading-relaxed max-w-xl font-medium">
-                  Attend free live classes, access full-length mock tests, and get real-time band evaluation from certified global trainers.
-                </p>
-                <div className="flex flex-wrap gap-4 mt-4 text-xs font-bold text-slate-300">
-                  <div className="flex items-center gap-1.5">
-                    <Check size={14} className="text-emerald-400" />
-                    <span>125,000+ Enrolled Students</span>
-                  </div>
-                  <div className="flex items-center gap-1.5">
-                    <Star size={14} className="text-amber-400 fill-amber-400" />
-                    <span>2,411 5-Star Reviews</span>
-                  </div>
-                </div>
-              </div>
-              <button
-                onClick={() => navigate('/book-consultation')}
-                className="w-full md:w-auto px-6 py-3.5 rounded-full text-white font-bold text-sm bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 shadow-lg shadow-indigo-600/30 hover:-translate-y-0.5 transition-all flex-shrink-0 cursor-pointer text-center"
-              >
-                Book Free Counselling
-              </button>
-            </div>
-
+            {/* Closing CTA */}
+            <BookOkCta
+              hi="किताब के साथ मेंटर भी"
+              title="Book OK Please."
+              text={`Kaunsi ${examName} book pehle? Free 1:1 call mein mentor se poocho.`}
+            />
           </div>
         </div>
       </div>

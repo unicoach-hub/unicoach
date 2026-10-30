@@ -1,18 +1,18 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { 
-    BookOpen, 
-    ChevronDown, 
-    Sparkles, 
-    Award, 
-    Check, 
-    FileText, 
+import {
+    ChevronDown,
+    FileText,
     ArrowRight,
-    HelpCircle,
     PenTool
 } from 'lucide-react';
-import { StdSign } from '../../../../components/desi/DesiPop';
 import { VersusCard } from '../../../../components/ui/Infographics';
+import { DesiHero, DesiHeading, InkCard, Sticker } from '../../../../components/desi/DesiKit';
+import { DESI_TONES } from '../../../../components/desi/desiTokens';
+import { BookOkCta } from '../../../../components/desi/BookOkCta';
+
+const inputCls = "w-full bg-[#FFF6E5] border-2 border-[#16130F] rounded-lg px-4 py-2.5 text-[14px] font-semibold text-[#16130F] placeholder:text-[#8A7F70] outline-none focus:bg-white focus:shadow-[3px_3px_0_#B8285B] transition-shadow";
+const labelCls = "text-[11px] font-extrabold uppercase text-[#5B544A] tracking-wider";
 
 const SOPMbaPage = () => {
     const [faqOpen, setFaqOpen] = useState({});
@@ -25,7 +25,7 @@ const SOPMbaPage = () => {
 
     const handleGenerate = (e) => {
         e.preventDefault();
-        const { name, targetRole, targetIndustry, achievement, gap, university } = draftInput;
+        const { targetRole, targetIndustry, achievement, gap, university } = draftInput;
         setGeneratedOutline([
             {
                 title: "Section 1: The Hook & Career Catalyst",
@@ -48,215 +48,247 @@ const SOPMbaPage = () => {
         { key: 'sop-mba', name: 'SOP for MBA', path: '/resources/sop/sop-mba' },
         { key: 'sop-phd', name: 'SOP for PhD', path: '/resources/sop/sop-phd' }
     ];
+    const currentKey = 'sop-mba';
 
     return (
-        <main className="min-h-screen bg-slate-50/50 pt-24 pb-16">
-            {/* Header Banner */}
-            <div className="uc-clean border-x-0 relative overflow-hidden py-12 md:py-16 px-6 md:px-12 mb-12">
-                <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#DE5C2B_1px,transparent_1px)] [background-size:16px_16px]"></div>
-                <div className="max-w-[1240px] mx-auto relative z-10">
-                    {/* Desi Pop: STD booth style sign, wide screens only */}
-                    <div className="hidden xl:block absolute right-0 top-1/2 -translate-y-1/2 rotate-3 pointer-events-none">
-                        <StdSign words={['USA', 'CANADA', 'UK']} hi="एमबीए" className="w-[210px]" />
+        <main className="min-h-screen bg-[#FFF6E5] pb-16 font-['Onest',sans-serif] text-[#16130F]">
+            {/* ── HERO: rani poster band, with the two excerpts below side by side ── */}
+            <DesiHero
+                tone="rani"
+                sign={{ hi: 'एमबीए एसओपी', en: 'MBA SOP' }}
+                crumbs={[{ label: 'Home', to: '/' }, { label: 'Resources' }, { label: 'SOP Guides' }, { label: 'SOP for MBA' }]}
+                title="SOP for MBA Guide"
+                subtitle="Structure approved by global business schools, outline generators, and samples for USA, Canada, and UK."
+                stickers={(
+                    <>
+                        <Sticker tilt={-2}><FileText size={14} />Admissions Guides</Sticker>
+                        <Sticker bg="#FCE38A" tilt={1.5}>USA</Sticker>
+                        <Sticker tilt={-1}>Canada</Sticker>
+                        <Sticker bg="#DDF3EF" tilt={1}>UK</Sticker>
+                    </>
+                )}
+                aside={(
+                    <div className="text-[#16130F] shadow-[6px_6px_0_#16130F] rounded-[18px]">
+                        <VersusCard
+                            kicker="Two admits, two angles"
+                            title="Ross (USA) vs Rotman (Canada)"
+                            left={{ title: 'Ross, Michigan', tag: 'USA', points: ['Led a team at a Bangalore SaaS startup', '25% increase in user acquisition', 'Draws on the MAP program'] }}
+                            right={{ title: 'Rotman, Toronto', tag: 'Canada', points: ['Four years as a civil engineer in Delhi', 'Drawn to the Creative Destruction Lab', 'Plans to use the PGWP before returning to India'] }}
+                        />
                     </div>
-                    <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-indigo-500/20 border border-indigo-400/30 rounded-full text-indigo-300 text-xs font-bold uppercase tracking-wider mb-4">
-                        <Sparkles size={12} className="text-indigo-400" />
-                        <span>Admissions Guides</span>
+                )}
+            />
+
+            {/* ── SOP PICKER (phones and tablets) ── */}
+            <div className="lg:hidden max-w-[1240px] mx-auto px-4 -mt-6 mb-8 relative z-10">
+                <InkCard className="p-3">
+                    <p className="font-['Rozha_One',serif] text-[14px] text-[#D0362E] leading-none px-1 mb-2">एसओपी गाइड</p>
+                    <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-hide">
+                        {sopList.map((sop, si) => {
+                            const isCurrent = sop.key === currentKey;
+                            const tone = DESI_TONES[si % DESI_TONES.length];
+                            return (
+                                <Link
+                                    key={sop.key}
+                                    to={sop.path}
+                                    style={isCurrent ? { background: tone.c, color: tone.fg } : undefined}
+                                    className={`flex items-center gap-1.5 px-3.5 py-2 rounded-lg border-2 text-xs font-bold whitespace-nowrap flex-shrink-0 ${isCurrent ? 'border-[#16130F] shadow-[2px_2px_0_#16130F]' : 'border-[#E6DCC8] bg-[#FFF6E5] text-[#5B544A]'}`}
+                                >
+                                    <FileText size={13} />
+                                    <span>{sop.name}</span>
+                                </Link>
+                            );
+                        })}
                     </div>
-                    <h1 className="text-3xl md:text-5xl font-black tracking-tight leading-tight max-w-4xl">
-                        SOP for MBA Guide
-                    </h1>
-                    <p className="text-slate-350 text-base md:text-lg mt-3 max-w-2xl font-medium">
-                        Structure approved by global business schools, outline generators, and samples for USA, Canada, and UK.
-                    </p>
-                </div>
+                </InkCard>
             </div>
 
-            {/* Split View */}
-            <div className="max-w-[1240px] mx-auto px-6 md:px-10">
-                <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-                    
-                    {/* Left Sticky Navigation */}
-                    <div className="lg:col-span-1">
-                        <div className="sticky top-28 bg-white rounded-2xl p-5 border border-slate-200/60 shadow-sm space-y-4">
-                            <h3 className="text-xs font-extrabold text-slate-400 uppercase tracking-widest pl-2">
-                                SOP Categories
-                            </h3>
-                            <nav className="flex flex-col gap-1">
-                                {sopList.map((sop) => {
-                                    const isCurrent = sop.key === 'sop-mba';
+            {/* ── MAIN 2-COLUMN GRID ── */}
+            <div className="max-w-[1240px] mx-auto px-4 md:px-8 lg:pt-12">
+                <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 items-start">
+
+                    {/* ── DESKTOP STICKY SIDEBAR ── */}
+                    <aside className="hidden lg:block lg:col-span-1 sticky top-28">
+                        <InkCard className="p-4">
+                            <p className="font-['Rozha_One',serif] text-[15px] text-[#D0362E] leading-none">एसओपी गाइड</p>
+                            <h3 className="mt-1 mb-3 font-urbanist font-black text-[17px]">SOP Categories</h3>
+                            <nav className="flex flex-col gap-2">
+                                {sopList.map((sop, si) => {
+                                    const isCurrent = sop.key === currentKey;
+                                    const tone = DESI_TONES[si % DESI_TONES.length];
                                     return (
                                         <Link
                                             key={sop.key}
                                             to={sop.path}
-                                            className={`flex items-center justify-between px-4 py-3 rounded-xl text-[0.88rem] font-bold transition-all duration-200
-                                                ${isCurrent 
-                                                    ? 'bg-gradient-to-r from-orange-500 to-[#DE5C2B] text-white shadow-md shadow-indigo-600/15'
-                                                    : 'text-slate-600 hover:bg-slate-50 hover:text-indigo-600'}`}
+                                            style={isCurrent ? { background: tone.c, color: tone.fg } : undefined}
+                                            className={`group flex items-center justify-between px-3 py-2.5 rounded-lg border-2 text-[14px] font-bold transition-transform ${isCurrent ? 'border-[#16130F] shadow-[3px_3px_0_#16130F]' : 'border-transparent text-[#3D362E] hover:border-[#16130F] hover:bg-[#FFF6E5]'}`}
                                         >
-                                            <div className="flex items-center gap-2">
-                                                <FileText size={16} className={isCurrent ? 'text-white' : 'text-slate-400'} />
-                                                <span>{sop.name}</span>
-                                            </div>
-                                            <ArrowRight size={14} className={`opacity-80 transition-transform ${isCurrent ? 'translate-x-0.5' : 'text-slate-300'}`} />
+                                            <span className="flex items-center gap-2.5">
+                                                <span className="w-2.5 h-2.5 rounded-full border-2 border-[#16130F]" style={{ background: tone.c }} />
+                                                {sop.name}
+                                            </span>
+                                            <ArrowRight size={14} className="transition-transform group-hover:translate-x-0.5" />
                                         </Link>
                                     );
                                 })}
                             </nav>
-                        </div>
-                    </div>
+                        </InkCard>
+                    </aside>
 
-                    {/* Right Core Content */}
-                    <div className="lg:col-span-3 space-y-10">
-                        
+                    {/* ── CORE CONTENT COLUMN ── */}
+                    <div className="lg:col-span-3 space-y-10 min-w-0">
+
                         {/* Summary */}
-                        <div className="bg-white rounded-2xl p-6 md:p-8 border border-slate-200/60 shadow-sm space-y-4">
-                            <h2 className="text-xl md:text-2xl font-black text-slate-800 tracking-tight">
-                                Crafting a Premium MBA Statement of Purpose
-                            </h2>
-                            <p className="text-slate-650 leading-relaxed text-[0.96rem] font-medium">
+                        <InkCard className="p-6 md:p-8" shadow="#B8285B">
+                            <DesiHeading hi="बी-स्कूल का एसओपी">Crafting a Premium MBA Statement of Purpose</DesiHeading>
+                            <p className="mt-3 text-[#5B544A] leading-relaxed text-[15px]">
                                 Applying for an MBA abroad is a defining moment in your career. While your GMAT/GRE scores, academic transcripts, and work experience are crucial, the Statement of Purpose (SOP) is your only chance to speak directly to the admissions committee. It’s where the numbers on your resume transform into a compelling narrative of ambition, leadership, and potential. For Indian students aiming for top global B-schools in 2025, the competition is fiercer than ever.
                             </p>
-                        </div>
+                        </InkCard>
 
                         {/* Interactive Outline Generator */}
-                        <section className="bg-white border border-slate-200/60 rounded-3xl p-6 md:p-8 shadow-sm space-y-6">
-                            <div className="flex items-center gap-2">
-                                <PenTool className="text-[#DE5C2B]" size={22} />
-                                <h3 className="text-xl font-bold text-slate-800 tracking-tight">
-                                    MBA SOP Outline Generator
-                                </h3>
+                        <InkCard as="section" className="p-6 md:p-8 space-y-6" shadow="#F2B705">
+                            <div className="flex items-start gap-3">
+                                <span className="w-10 h-10 rounded-full border-2 border-[#16130F] bg-[#B8285B] text-white grid place-items-center shrink-0 shadow-[2px_2px_0_#16130F]">
+                                    <PenTool size={18} />
+                                </span>
+                                <DesiHeading hi="खाका बनाओ">MBA SOP Outline Generator</DesiHeading>
                             </div>
 
                             <form onSubmit={handleGenerate} className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                <div className="space-y-1">
-                                    <label className="text-[10px] font-extrabold uppercase text-slate-400 tracking-wider">Your Name</label>
-                                    <input 
-                                        type="text" 
+                                <div className="space-y-1.5">
+                                    <label className={labelCls}>Your Name</label>
+                                    <input
+                                        type="text"
                                         value={draftInput.name}
                                         onChange={e => setDraftInput({...draftInput, name: e.target.value})}
                                         placeholder="e.g. Vikram Malhotra"
-                                        className="w-full bg-slate-50 border border-slate-200/80 rounded-xl px-4 py-2.5 text-xs font-bold outline-none"
+                                        className={inputCls}
                                         required
                                     />
                                 </div>
-                                <div className="space-y-1">
-                                    <label className="text-[10px] font-extrabold uppercase text-slate-400 tracking-wider">Target Post-MBA Role</label>
-                                    <input 
-                                        type="text" 
+                                <div className="space-y-1.5">
+                                    <label className={labelCls}>Target Post-MBA Role</label>
+                                    <input
+                                        type="text"
                                         value={draftInput.targetRole}
                                         onChange={e => setDraftInput({...draftInput, targetRole: e.target.value})}
                                         placeholder="e.g. Senior Consultant / Product Lead"
-                                        className="w-full bg-slate-50 border border-slate-200/80 rounded-xl px-4 py-2.5 text-xs font-bold outline-none"
+                                        className={inputCls}
                                         required
                                     />
                                 </div>
-                                <div className="space-y-1">
-                                    <label className="text-[10px] font-extrabold uppercase text-slate-400 tracking-wider">Target Industry</label>
-                                    <input 
-                                        type="text" 
+                                <div className="space-y-1.5">
+                                    <label className={labelCls}>Target Industry</label>
+                                    <input
+                                        type="text"
                                         value={draftInput.targetIndustry}
                                         onChange={e => setDraftInput({...draftInput, targetIndustry: e.target.value})}
                                         placeholder="e.g. FinTech / Corporate Finance"
-                                        className="w-full bg-slate-50 border border-slate-200/80 rounded-xl px-4 py-2.5 text-xs font-bold outline-none"
+                                        className={inputCls}
                                         required
                                     />
                                 </div>
-                                <div className="space-y-1">
-                                    <label className="text-[10px] font-extrabold uppercase text-slate-400 tracking-wider">Key Professional Achievement</label>
-                                    <input 
-                                        type="text" 
+                                <div className="space-y-1.5">
+                                    <label className={labelCls}>Key Professional Achievement</label>
+                                    <input
+                                        type="text"
                                         value={draftInput.achievement}
                                         onChange={e => setDraftInput({...draftInput, achievement: e.target.value})}
                                         placeholder="e.g. Managed GTM strategy for SaaS product"
-                                        className="w-full bg-slate-50 border border-slate-200/80 rounded-xl px-4 py-2.5 text-xs font-bold outline-none"
+                                        className={inputCls}
                                         required
                                     />
                                 </div>
-                                <div className="space-y-1">
-                                    <label className="text-[10px] font-extrabold uppercase text-slate-400 tracking-wider">Business Skill Gap</label>
-                                    <input 
-                                        type="text" 
+                                <div className="space-y-1.5">
+                                    <label className={labelCls}>Business Skill Gap</label>
+                                    <input
+                                        type="text"
                                         value={draftInput.gap}
                                         onChange={e => setDraftInput({...draftInput, gap: e.target.value})}
                                         placeholder="e.g. Global financial scaling strategies"
-                                        className="w-full bg-slate-50 border border-slate-200/80 rounded-xl px-4 py-2.5 text-xs font-bold outline-none"
+                                        className={inputCls}
                                         required
                                     />
                                 </div>
-                                <div className="space-y-1">
-                                    <label className="text-[10px] font-extrabold uppercase text-slate-400 tracking-wider">Target B-School</label>
-                                    <input 
-                                        type="text" 
+                                <div className="space-y-1.5">
+                                    <label className={labelCls}>Target B-School</label>
+                                    <input
+                                        type="text"
                                         value={draftInput.university}
                                         onChange={e => setDraftInput({...draftInput, university: e.target.value})}
                                         placeholder="e.g. Ross School of Business (Michigan)"
-                                        className="w-full bg-slate-50 border border-slate-200/80 rounded-xl px-4 py-2.5 text-xs font-bold outline-none"
+                                        className={inputCls}
                                         required
                                     />
                                 </div>
-                                <button 
+                                <button
                                     type="submit"
-                                    className="col-span-1 md:col-span-2 py-3.5 rounded-xl text-white font-bold text-xs bg-gradient-to-r from-orange-500 to-[#DE5C2B] hover:shadow-lg transition-all cursor-pointer text-center"
+                                    className="no-shine col-span-1 md:col-span-2 justify-self-start inline-flex items-center gap-2 px-6 py-3 rounded-full border-2 border-[#16130F] bg-[#D0362E] hover:bg-[#B52A23] text-white font-bold text-[14px] shadow-[3px_3px_0_#16130F] transition-transform hover:-translate-y-0.5 cursor-pointer"
                                 >
                                     Build MBA Outline
+                                    <ArrowRight size={15} />
                                 </button>
                             </form>
 
                             {generatedOutline && (
-                                <div className="space-y-4 pt-4 border-t border-slate-100">
-                                    <h4 className="text-xs font-extrabold text-slate-400 uppercase tracking-widest">Outline Results</h4>
+                                <div className="space-y-4 pt-5 border-t-2 border-dashed border-[#16130F33]">
+                                    <p className="font-['Rozha_One',serif] text-[15px] text-[#D0362E] leading-none">आपका खाका</p>
+                                    <h4 className="-mt-2 font-urbanist font-black text-[18px]">Outline Results</h4>
                                     <div className="space-y-3">
-                                        {generatedOutline.map((item, idx) => (
-                                            <div key={idx} className="bg-slate-50 border border-slate-200/60 p-4 rounded-xl space-y-1">
-                                                <span className="block text-xs font-extrabold text-[#DE5C2B]">{item.title}</span>
-                                                <p className="text-xs text-slate-650 font-semibold leading-relaxed">{item.text}</p>
-                                            </div>
-                                        ))}
+                                        {generatedOutline.map((item, idx) => {
+                                            const tone = DESI_TONES[idx % DESI_TONES.length];
+                                            return (
+                                                <div key={idx} className="bg-[#FFF6E5] border-2 border-[#16130F] p-4 rounded-xl flex gap-3">
+                                                    <span className="w-7 h-7 rounded-full border-2 border-[#16130F] font-urbanist font-black text-[13px] grid place-items-center shrink-0"
+                                                        style={{ background: tone.c, color: tone.fg }}>
+                                                        {idx + 1}
+                                                    </span>
+                                                    <div className="min-w-0 space-y-1">
+                                                        <span className="block text-[13.5px] font-extrabold">{item.title}</span>
+                                                        <p className="text-[13.5px] text-[#5B544A] leading-relaxed">{item.text}</p>
+                                                    </div>
+                                                </div>
+                                            );
+                                        })}
                                     </div>
                                 </div>
                             )}
-                        </section>
+                        </InkCard>
 
-                        {/* Country Specific Highlights */}
-                        <section className="space-y-6">
-                            <h3 className="text-xl font-bold text-slate-800 tracking-tight">
-                                Successful MBA SOP Excerpts
-                            </h3>
+                        {/* Country Specific Highlights: teal poster band */}
+                        <section className="bg-[#14837E] border-[3px] border-[#16130F] p-6 md:p-8 shadow-[6px_6px_0_#16130F]" style={{ borderRadius: 18 }}>
+                            <DesiHeading hi="असली नमूने" light>Successful MBA SOP Excerpts</DesiHeading>
 
-                            {/* The two excerpts below, side by side */}
-                            <VersusCard
-                                kicker="Two admits, two angles"
-                                title="Ross (USA) vs Rotman (Canada)"
-                                left={{ title: 'Ross, Michigan', tag: 'USA', points: ['Led a team at a Bangalore SaaS startup', '25% increase in user acquisition', 'Draws on the MAP program'] }}
-                                right={{ title: 'Rotman, Toronto', tag: 'Canada', points: ['Four years as a civil engineer in Delhi', 'Drawn to the Creative Destruction Lab', 'Plans to use the PGWP before returning to India'] }}
-                            />
+                            <div className="mt-6 space-y-5">
+                                {/* USA (Ross) */}
+                                <div className="bg-white p-5 md:p-6 border-[3px] border-[#16130F] shadow-[4px_4px_0_#0B4F4C] space-y-3"
+                                    style={{ borderRadius: 12, transform: 'rotate(-0.5deg)' }}>
+                                    <span className="inline-flex items-center px-2.5 py-1 rounded-md border-2 border-[#16130F] text-[12px] font-extrabold bg-[#F2B705] text-[#16130F]">
+                                        USA Emphasis: Ross School of Business (Michigan)
+                                    </span>
+                                    <p className="text-[#3D362E] text-[14px] leading-relaxed border-l-[4px] border-[#F2B705] pl-4">
+                                        "Leading a cross-functional team at a Bangalore-based SaaS startup, I successfully orchestrated the go-to-market strategy for a new analytics product, resulting in a 25% increase in user acquisition. This experience, however, exposed my limitations in scaling a product globally. I lacked the structured financial acumen to build a sustainable model. An MBA from Ross, with its Multidisciplinary Action Projects (MAP) program, will provide the strategic framework essential to transition to a global product leader."
+                                    </p>
+                                </div>
 
-                            {/* USA (Ross) */}
-                            <div className="bg-white rounded-2xl border border-slate-200/60 p-6 shadow-sm space-y-3">
-                                <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold bg-orange-50 text-[#DE5C2B]">
-                                    USA Emphasis: Ross School of Business (Michigan)
-                                </span>
-                                <p className="text-slate-600 text-xs md:text-sm leading-relaxed font-semibold">
-                                    "Leading a cross-functional team at a Bangalore-based SaaS startup, I successfully orchestrated the go-to-market strategy for a new analytics product, resulting in a 25% increase in user acquisition. This experience, however, exposed my limitations in scaling a product globally. I lacked the structured financial acumen to build a sustainable model. An MBA from Ross, with its Multidisciplinary Action Projects (MAP) program, will provide the strategic framework essential to transition to a global product leader."
-                                </p>
-                            </div>
-
-                            {/* Canada (Rotman) */}
-                            <div className="bg-white rounded-2xl border border-slate-200/60 p-6 shadow-sm space-y-3">
-                                <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold bg-indigo-50 text-indigo-650">
-                                    Canada Emphasis: Rotman School of Management (Toronto)
-                                </span>
-                                <p className="text-slate-600 text-xs md:text-sm leading-relaxed font-semibold">
-                                    "My four years as a civil engineer on large-scale projects in Delhi highlighted the sector's inefficiencies. To drive meaningful change, I need to complement technical skills with robust management. I am drawn to Rotman for its Creative Destruction Lab. Post-MBA, I aim to work in a strategic role at SNC-Lavalin, utilizing Canada's Post-Graduation Work Permit (PGWP) to deploy my learnings before returning to India."
-                                </p>
+                                {/* Canada (Rotman) */}
+                                <div className="bg-white p-5 md:p-6 border-[3px] border-[#16130F] shadow-[4px_4px_0_#0B4F4C] space-y-3"
+                                    style={{ borderRadius: 12, transform: 'rotate(0.5deg)' }}>
+                                    <span className="inline-flex items-center px-2.5 py-1 rounded-md border-2 border-[#16130F] text-[12px] font-extrabold bg-[#B8285B] text-white">
+                                        Canada Emphasis: Rotman School of Management (Toronto)
+                                    </span>
+                                    <p className="text-[#3D362E] text-[14px] leading-relaxed border-l-[4px] border-[#B8285B] pl-4">
+                                        "My four years as a civil engineer on large-scale projects in Delhi highlighted the sector's inefficiencies. To drive meaningful change, I need to complement technical skills with robust management. I am drawn to Rotman for its Creative Destruction Lab. Post-MBA, I aim to work in a strategic role at SNC-Lavalin, utilizing Canada's Post-Graduation Work Permit (PGWP) to deploy my learnings before returning to India."
+                                    </p>
+                                </div>
                             </div>
                         </section>
 
                         {/* FAQs */}
-                        <section className="space-y-4">
-                            <h3 className="text-xl font-bold text-slate-800 tracking-tight">Frequently Asked Questions</h3>
-                            <div className="space-y-3">
+                        <section>
+                            <DesiHeading hi="अक्सर पूछे सवाल">Frequently Asked Questions</DesiHeading>
+                            <div className="mt-5 space-y-3">
                                 {[
                                     {
                                         q: "Can freshers apply for global MBA programs?",
@@ -269,20 +301,20 @@ const SOPMbaPage = () => {
                                 ].map((faq, idx) => {
                                     const isOpen = !!faqOpen[idx];
                                     return (
-                                        <div key={idx} className="bg-white rounded-2xl border border-slate-200/60 overflow-hidden shadow-sm transition-all duration-200">
+                                        <div key={idx} className="bg-white border-[3px] border-[#16130F] overflow-hidden" style={{ borderRadius: 12, boxShadow: isOpen ? '4px 4px 0 #D0362E' : '4px 4px 0 #16130F' }}>
                                             <button
                                                 onClick={() => toggleFaq(idx)}
-                                                className="w-full flex items-center justify-between p-5 text-left font-bold text-slate-755 hover:text-[#DE5C2B] transition-colors"
+                                                aria-expanded={isOpen}
+                                                className="no-shine w-full flex items-center justify-between gap-3 p-4 text-left font-bold text-[14.5px] cursor-pointer"
                                             >
                                                 <span>{faq.q}</span>
-                                                <ChevronDown 
-                                                    size={16} 
-                                                    className={`text-slate-400 transition-transform duration-200 ${isOpen ? 'rotate-180 text-indigo-500' : ''}`} 
-                                                />
+                                                <span className={`w-7 h-7 rounded-full border-2 border-[#16130F] grid place-items-center shrink-0 transition-transform ${isOpen ? 'rotate-180 bg-[#F2B705]' : 'bg-white'}`}>
+                                                    <ChevronDown size={15} />
+                                                </span>
                                             </button>
-                                            
+
                                             {isOpen && (
-                                                <div className="px-5 pb-5 pt-1 text-slate-600 text-xs md:text-sm border-t border-slate-50 leading-relaxed font-semibold">
+                                                <div className="px-4 pb-4 pt-3 text-[#5B544A] text-[14px] border-t-2 border-dashed border-[#16130F33] leading-relaxed">
                                                     {faq.a}
                                                 </div>
                                             )}
@@ -291,6 +323,12 @@ const SOPMbaPage = () => {
                                 })}
                             </div>
                         </section>
+
+                        {/* Closing CTA */}
+                        <BookOkCta
+                            hi="एसओपी चेक करवाओ"
+                            text="MBA essay likh liya? Free 1:1 call mein mentor se check karwao."
+                        />
 
                     </div>
 
