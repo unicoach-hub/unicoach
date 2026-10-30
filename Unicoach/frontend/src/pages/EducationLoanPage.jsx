@@ -15,14 +15,14 @@ const formatINR = (n) =>
 const formatLakh = (n) => (n >= 1e7 ? `₹${(n / 1e7).toFixed(2).replace(/\.00$/, '')} Cr` : `₹${Math.round(n / 1e5)} L`);
 
 const LOAN_FIELDS = [
-  { name: 'loanAmount', label: 'Loan amount needed', type: 'select', required: true, half: true,
+  { name: 'loanAmount', label: 'Loan amount', type: 'select', required: true, half: true,
     options: ['Up to ₹20 Lakh', '₹20–40 Lakh', '₹40–75 Lakh', '₹75 Lakh – ₹1.5 Cr', 'Above ₹1.5 Cr'] },
   { name: 'admitStatus', label: 'Admission status', type: 'select', required: true, half: true,
     options: ['Admit received', 'Applied, awaiting result', 'Not applied yet'] },
   { name: 'university', label: 'University & course', type: 'text', placeholder: 'e.g. University of Toronto, MS Computer Science' },
-  { name: 'collateral', label: 'Can you offer collateral (property / FD)?', type: 'select', half: true,
+  { name: 'collateral', label: 'Collateral (property / FD)', type: 'select', half: true,
     options: ['Yes', 'No', 'Not sure'] },
-  { name: 'coApplicantIncome', label: "Co-applicant's annual income", type: 'select', half: true,
+  { name: 'coApplicantIncome', label: 'Co-applicant income (yearly)', type: 'select', half: true,
     options: ['Below ₹5 Lakh', '₹5–10 Lakh', '₹10–20 Lakh', 'Above ₹20 Lakh', 'No co-applicant'] },
 ];
 
@@ -142,6 +142,52 @@ const EducationLoanPage = () => {
               </li>
             ))}
           </ul>
+
+          {/* Red-pen proof beside the tall form: one loan, three lenders, how much the rate really costs */}
+          <div className="mt-12 max-w-xl">
+            <h2 className="font-outfit text-[24px] sm:text-[30px] font-black text-[#111111] tracking-[-0.03em] leading-[1.08]">1% ka farak, lakhs ka nuksaan.</h2>
+            <p className="mt-3 text-[14.5px] text-slate-600 leading-relaxed">
+              Same loan, same 10 years. Bas lender alag. Hum tumhare profile pe lenders compare karke sabse sasta raasta dikhate hain.
+            </p>
+            <div className="mt-9 mr-2">
+              <figure className="relative bg-white border border-slate-200 rounded-md shadow-[0_18px_40px_-18px_rgba(22,19,15,0.35)] px-5 pt-5 pb-10 -rotate-[0.8deg] text-[13.5px] text-slate-800">
+                <figcaption className="text-[13px] font-bold text-slate-900 pb-2 border-b border-slate-200">₹40 lakh education loan · 10 years</figcaption>
+                <div className="mt-2 grid grid-cols-[1fr_64px_96px] gap-x-3 text-[12px] font-semibold text-slate-500 pb-1.5">
+                  <span>Lender</span><span className="text-right">Rate</span><span className="text-right">Total interest</span>
+                </div>
+                {[
+                  ['Public bank, with collateral', '9.5%', '₹22.1 L', true],
+                  ['Private bank', '10.75%', '₹25.4 L', false],
+                  ['NBFC, no collateral', '12.5%', '₹30.3 L', false],
+                ].map(([name, rate, interest, best]) => (
+                  <div key={name} className="grid grid-cols-[1fr_64px_96px] gap-x-3 items-center py-2 border-t border-slate-100">
+                    <span>{name}</span>
+                    <span className="text-right font-semibold">{rate}</span>
+                    <span className="text-right font-bold">
+                      {best ? (
+                        <span className="relative inline-block">
+                          {interest}
+                          <svg aria-hidden="true" viewBox="0 0 120 40" preserveAspectRatio="none" className="absolute -inset-x-2.5 -inset-y-1.5 w-[calc(100%+20px)] h-[calc(100%+12px)] overflow-visible pointer-events-none">
+                            <ellipse cx="60" cy="20" rx="58" ry="17" fill="none" stroke="#D0312D" strokeWidth="2.5" transform="rotate(-3 60 20)" vectorEffect="non-scaling-stroke" />
+                          </svg>
+                        </span>
+                      ) : interest}
+                    </span>
+                  </div>
+                ))}
+                <p className="mt-2 text-[11.5px] text-slate-500">Example rates for illustration. Your rate depends on the lender, your profile and collateral.</p>
+                <span className="absolute -top-4 right-4 rotate-[4deg] text-[22px] leading-none text-[#D0312D]" style={{ fontFamily: "'Caveat', cursive", fontWeight: 700 }}>
+                  ₹8 lakh bach gaye!
+                </span>
+                <span className="absolute -bottom-3 left-6 -rotate-2 text-[22px] leading-none text-[#D0312D]" style={{ fontFamily: "'Caveat', cursive", fontWeight: 700 }}>
+                  Collateral hai to rate kam
+                </span>
+              </figure>
+            </div>
+            <a href="#loan-form" className="mt-8 inline-flex items-center gap-2 px-5 py-3 rounded-full bg-[#DE5C2B] hover:bg-[#C04A1D] text-white text-[14px] font-bold transition-colors">
+              Compare lenders for me <ArrowRight size={15} />
+            </a>
+          </div>
         </motion.div>
 
         <div id="loan-form" className="lg:col-span-5 lg:sticky lg:top-[100px] scroll-mt-28">

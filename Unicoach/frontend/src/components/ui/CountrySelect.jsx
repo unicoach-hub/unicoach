@@ -319,21 +319,21 @@ export default function CountrySelect({
   return (
     <div ref={containerRef} className={`relative ${className}`}>
       {label && (
-        <label className="block text-xs font-bold text-slate-700 mb-1.5">
-          {label} {required && <span className="text-rose-500">*</span>}
+        <label className="block text-[12.5px] font-semibold text-[#16130F] mb-1.5">
+          {label}{required && ' *'}
         </label>
       )}
 
-      {/* ─── Trigger Button ─── */}
+      {/* ─── Trigger Button (Course Finder field look) ─── */}
       <button
         type="button"
         onClick={() => setOpen(!open)}
-        className={`w-full flex items-center justify-between gap-2 px-4 py-3 rounded-xl border text-sm transition-all cursor-pointer ${
+        className={`no-shine w-full h-11 flex items-center justify-between gap-2 px-3 rounded-[10px] border text-[14px] text-left whitespace-nowrap transition-colors cursor-pointer ${
           open
-            ? 'border-[#DE5C2B] ring-4 ring-[#DE5C2B]/10 bg-white'
+            ? 'border-[#DE5C2B] bg-white'
             : error
-            ? 'border-rose-300 bg-white'
-            : 'border-slate-200/90 bg-white hover:border-slate-300'
+            ? 'border-[#C97C6A] bg-[#FBF2EF]'
+            : 'border-[#E6E0D4] bg-[#F8F5EF] hover:border-[#C9BFAE]'
         }`}
       >
         <span className="flex items-center gap-2.5 min-w-0">
@@ -349,7 +349,7 @@ export default function CountrySelect({
               <span className="text-slate-900 font-medium truncate">{selectedCountry.name}</span>
             </>
           ) : (
-            <span className="text-slate-400">{placeholder}</span>
+            <span className="text-[#9A9184] truncate">{placeholder}</span>
           )}
         </span>
         <ChevronDown
