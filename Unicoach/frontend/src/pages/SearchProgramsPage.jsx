@@ -4,9 +4,16 @@ import { ArrowLeft, Search, SlidersHorizontal, UserCheck, X, Download, FileSprea
   Gauge, Coins, Languages, PiggyBank, Briefcase, TrendingUp, Banknote, Building2, Landmark, ClipboardCheck, MapPin, FileClock, Wallet, MicOff, GraduationCap, Award, ClipboardList, Users, Tag } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { JourneyPills } from '../components/ui/BrandElements';
+import TutorialVideo from '../components/ui/TutorialVideo';
 import { getSearchConfig, getHighlights, searchCourses, evaluateEligibility, exportSearch, getCourseDetail, getUniversitiesFacet, suggest } from '../utils/searchApi';
 // Excel/PDF export libraries are large; load them only when someone exports
 const ExcelColumnExportModal = lazy(() => import('../components/ExcelColumnExportModal'));
+
+// Short product tours shown next to the hero (desktop) or under the form (phones)
+const TOUR = {
+  finder: { src: '/videos/tutorials/course-finder.mp4', poster: '/videos/tutorials/course-finder-poster.jpg', title: 'How Course Finder works', duration: '50 sec' },
+  scholarships: { src: '/videos/tutorials/scholarships.mp4', poster: '/videos/tutorials/scholarships-poster.jpg', title: 'How to find your scholarships', duration: '45 sec' },
+};
 
 const PAGE_SIZE = 20;
 // UniCoach brand accent (was CourseFinder blue #226CF5). Single source of truth for the portal theme.
@@ -266,6 +273,7 @@ export default function SearchProgramsPage({ highlight } = {}) {
   const [profile, setProfile] = useState({ nationalityId: INDIA_ID, stateName: '', highestQualificationId: '', gradingSystem: 'OutOf100', score: '', englishExam: 'later', backlogs: '', workExperience: '' });
   const [eligResult, setEligResult] = useState(null);
   const [eligBucket, setEligBucket] = useState('eligible');
+  const [eligPage, setEligPage] = useState(1);
   const [eligLoading, setEligLoading] = useState(false);
 
   // open the eligibility modal when arriving from the sidebar (?check=eligibility)
@@ -342,8 +350,8 @@ export default function SearchProgramsPage({ highlight } = {}) {
       .then(setResult).catch(() => setResult({ data: [], total: 0, totalPages: 0, highlightCounts: {} })).finally(() => setLoading(false));
   };
   const runEligibility = (bucket = 'eligible', toPage = 1) => {
-    setEligLoading(true); setEligBucket(bucket);
-    evaluateEligibility(filters, profilePayload, { bucket, page: toPage, pageSize: PAGE_SIZE })
+    setEligLoading(true); setEligBucket(bucket); setEligPage(toPage);
+    evaluateEligibility(filters, profilePayload, { bucket, sort, page: toPage, pageSize: PAGE_SIZE })
       .then(setEligResult).catch(() => setEligResult({ counts: { eligible: 0, nonEligible: 0 }, data: [], total: 0 })).finally(() => setEligLoading(false));
   };
   useEffect(() => {
@@ -506,10 +514,13 @@ export default function SearchProgramsPage({ highlight } = {}) {
       <div className="min-h-screen pt-[76px] pb-20 font-['Onest',sans-serif]" style={{ background: '#F6F3EC' }}>
         <div className="max-w-5xl mx-auto px-4">
           <div className="pt-5"><PageBack onClick={leavePage} /></div>
-          <div className="text-center pt-4 sm:pt-6">
-            <p className="inline-flex items-center gap-2 text-[13px] font-semibold text-[#977435]"><Award size={15} /> Scholarships</p>
-            <h1 className="mt-3 font-outfit text-[30px] sm:text-[44px] font-black tracking-[-0.035em] leading-[1.05] text-[#16130F]">Find scholarships you qualify for</h1>
-            <p className="mt-3 text-[15px] sm:text-[17px] text-[#5B544A]">30,000+ programs offer an award. Tell us about you and we&apos;ll show only the ones you can get.</p>
+          <div className="pt-4 sm:pt-6 grid lg:grid-cols-[1.05fr_0.95fr] gap-8 lg:gap-12 items-center">
+            <div className="text-center lg:text-left min-w-0">
+              <p className="inline-flex items-center gap-2 text-[13px] font-semibold text-[#977435]"><Award size={15} /> Scholarships</p>
+              <h1 className="mt-3 font-outfit text-[30px] sm:text-[44px] font-black tracking-[-0.035em] leading-[1.05] text-[#16130F]">Find scholarships you qualify for</h1>
+              <p className="mt-3 text-[15px] sm:text-[17px] text-[#5B544A]">30,000+ programs offer an award. Tell us about you and we&apos;ll show the ones whose entry requirements you meet.</p>
+            </div>
+            <TutorialVideo {...TOUR.scholarships} className="hidden lg:block" />
           </div>
 
           <div className="mt-8 bg-white border border-[#EAD8AE] shadow-[0_24px_60px_-36px_rgba(77,60,33,0.4)] overflow-hidden" style={{ borderRadius: 18 }}>
@@ -592,13 +603,16 @@ export default function SearchProgramsPage({ highlight } = {}) {
             </div>
 
             <div className="p-5 sm:p-6 border-t border-[#EAD8AE] flex flex-col sm:flex-row items-center gap-3">
-              <p className="text-[12.5px] text-[#614A26] sm:mr-auto">{profileReady ? "We'll check every award against your profile." : 'Fill the * fields to see only awards you qualify for.'}</p>
+              <p className="text-[12.5px] text-[#614A26] sm:mr-auto">{profileReady ? "We'll check each program's entry requirements against your profile." : 'Fill the * fields to see only programs you meet the requirements for.'}</p>
               <button onClick={showAll} className="text-[13.5px] font-semibold text-[#977435] hover:underline">Skip, show all scholarships</button>
               <button onClick={findScholarships} className="h-11 px-6 inline-flex items-center justify-center gap-2 text-white text-[14px] font-semibold bg-[#16130F] hover:bg-[#DE5C2B] transition-colors" style={{ borderRadius: 10 }}>
                 <Award size={16} /> Find my scholarships
               </button>
             </div>
           </div>
+
+          {/* Phones: the tour sits under the form */}
+          <TutorialVideo {...TOUR.scholarships} className="mt-6 lg:hidden" />
         </div>
       </div>
     );
@@ -620,20 +634,23 @@ export default function SearchProgramsPage({ highlight } = {}) {
       <div className="min-h-screen pt-[76px] pb-20 font-['Onest',sans-serif]" style={{ background: '#F6F3EC' }}>
         <div className="max-w-6xl mx-auto px-4">
           <div className="pt-5"><PageBack onClick={leavePage} /></div>
-          <div className="text-center pt-4 sm:pt-6">
-            <p className="inline-flex items-center gap-2 text-[13px] font-semibold text-[#86351A]"><span className="w-6 h-[2px] bg-[#DE5C2B]" /> Course Finder</p>
-            <h1 className="mt-3 font-outfit text-[32px] sm:text-[46px] font-black tracking-[-0.035em] leading-[1.05] text-[#16130F]">Explore 98,000+ programs</h1>
-            <p className="mt-3 text-[15px] sm:text-[17px] text-[#5B544A]">Tell us a little about you, then search. Free to search and shortlist, sign in only to download.</p>
-            <JourneyPills
-              steps={[
-                { label: 'About you', sub: 'Nationality, state' },
-                { label: 'Search', sub: 'Free' },
-                { label: 'Shortlist', sub: 'Free' },
-                { label: 'Download', sub: 'Sign in only here' },
-              ]}
-              active={0}
-              className="mt-5 mx-auto w-fit max-w-full"
-            />
+          <div className="pt-4 sm:pt-6 grid lg:grid-cols-[1.05fr_0.95fr] gap-8 lg:gap-12 items-center">
+            <div className="text-center lg:text-left min-w-0">
+              <p className="inline-flex items-center gap-2 text-[13px] font-semibold text-[#86351A]"><span className="w-6 h-[2px] bg-[#DE5C2B]" /> Course Finder</p>
+              <h1 className="mt-3 font-outfit text-[32px] sm:text-[46px] font-black tracking-[-0.035em] leading-[1.05] text-[#16130F]">Explore 98,000+ programs</h1>
+              <p className="mt-3 text-[15px] sm:text-[17px] text-[#5B544A]">Tell us a little about you, then search. Free to search and shortlist, sign in only to download.</p>
+              <JourneyPills
+                steps={[
+                  { label: 'About you', sub: 'Nationality, state' },
+                  { label: 'Search', sub: 'Free' },
+                  { label: 'Shortlist', sub: 'Free' },
+                  { label: 'Download', sub: 'Sign in only here' },
+                ]}
+                active={0}
+                className="mt-5 mx-auto lg:mx-0 w-fit max-w-full"
+              />
+            </div>
+            <TutorialVideo {...TOUR.finder} className="hidden lg:block" />
           </div>
 
           {/* Search card */}
@@ -709,6 +726,9 @@ export default function SearchProgramsPage({ highlight } = {}) {
               </div>
             </div>
           )}
+
+          {/* Phones: the tour sits under the form so searching stays first */}
+          <TutorialVideo {...TOUR.finder} className="mt-6 lg:hidden" />
         </div>
       </div>
     );
@@ -823,7 +843,7 @@ export default function SearchProgramsPage({ highlight } = {}) {
           <Accordion title="Tuition Fees (as per Country's Currency)" open={openSec.tuition} onToggle={() => toggleSec('tuition')}>
             <div className="pt-3">
               <input type="range" min={0} max={100000} step={1000} value={tuitionMax} onChange={(e) => setTuitionMax(Number(e.target.value))} className="w-full accent-[#DE5C2B]" />
-              <div className="text-[12.5px] text-slate-600 mt-1">{tuitionMax === 0 ? 'Any' : tuitionMax >= 100000 ? 'Above 100,000' : `Up to ${tuitionMax.toLocaleString()}`}</div>
+              <div className="text-[12.5px] text-slate-600 mt-1">{tuitionMax === 0 ? 'Any' : `Up to ${tuitionMax.toLocaleString()}`}</div>
             </div>
           </Accordion>
         </aside>
@@ -841,7 +861,7 @@ export default function SearchProgramsPage({ highlight } = {}) {
             <div className="relative">
               <p className="text-[12px] font-bold uppercase tracking-[0.18em] text-[#977435]">Scholarships</p>
               <h2 className="mt-1 font-outfit text-[22px] sm:text-[28px] font-black tracking-[-0.02em] text-[#2A2011] leading-tight">
-                {eligActive ? <>{eligResult.counts.eligible?.toLocaleString()} scholarship programs you qualify for</>
+                {eligActive ? <>{eligResult.counts.eligible?.toLocaleString()} scholarship programs you&apos;re eligible to apply to</>
                   : result ? <>{result.total?.toLocaleString()} programs offer a scholarship</> : 'Programs that offer a scholarship'}
               </h2>
               <p className="mt-1.5 text-[13.5px] text-[#614A26] max-w-xl">Merit, early-bird and bursary awards. The average award is shown on each program, so you can compare before you apply.</p>
@@ -945,7 +965,11 @@ export default function SearchProgramsPage({ highlight } = {}) {
             {[['eligible', 'Eligible', eligResult.counts.eligible], ['non-eligible', 'Non-Eligible', eligResult.counts.nonEligible]].map(([b, label, n]) => (
               <button key={b} onClick={() => runEligibility(b, 1)} className="text-[14px] font-medium px-4 py-1.5 border" style={{ borderRadius: 4, background: eligBucket === b ? BLUE : '#fff', color: eligBucket === b ? '#fff' : '#334155', borderColor: eligBucket === b ? BLUE : '#e2e8f0' }}>{label} ({(n || 0).toLocaleString()})</button>
             ))}
-            <button onClick={() => setEligResult(null)} className="ml-auto text-[13px] text-slate-500 hover:text-[#DE5C2B]">Clear eligibility ✕</button>
+            <select value={sort} onChange={(e) => setSort(e.target.value)} className="ml-auto border border-slate-200 px-2 py-1.5 text-[13px] bg-white" style={{ borderRadius: 4 }}>
+              <option value="featured">Sort: Featured</option><option value="ranking">Sort: Ranking</option>
+              <option value="tuition-low">Tuition ↑</option><option value="tuition-high">Tuition ↓</option>
+            </select>
+            <button onClick={() => setEligResult(null)} className="text-[13px] text-slate-500 hover:text-[#DE5C2B]">Clear eligibility ✕</button>
           </div>
         )}
 
@@ -965,7 +989,7 @@ export default function SearchProgramsPage({ highlight } = {}) {
               <div key={g.uni.cfUniversityId} className="bg-white border border-slate-200" style={{ borderRadius: 4 }}>
                 <div className="px-4 py-3 border-b border-slate-100">
                   <div className="font-['Onest',sans-serif] text-[15px] font-semibold text-[#DE5C2B]">{g.uni.universityName}</div>
-                  <div className="text-[13px] text-slate-500">{FLAG[g.uni.cfCountryId] || ''} {g.uni.countryName} · {g.items.length} program{g.items.length > 1 ? 's' : ''}</div>
+                  <div className="text-[13px] text-slate-500">{FLAG[g.uni.cfCountryId] || ''} {g.uni.countryName} · {g.items.length} program{g.items.length > 1 ? 's' : ''} on this page</div>
                 </div>
                 <div className="p-3 space-y-2">{g.items.map((c) => <ProgramRow key={c.cfId} c={c} selected={selected[c.cfId]} onToggleSelect={toggleSelect} onView={openCourse} highlightMap={highlightMap} scholarshipFocus={schMode} />)}</div>
               </div>
@@ -975,14 +999,20 @@ export default function SearchProgramsPage({ highlight } = {}) {
           )}
         </div>
 
-        {/* Pagination */}
-        {!eligActive && result?.totalPages > 1 && (
-          <div className="flex items-center justify-center gap-2 mt-6">
-            <button disabled={page <= 1} onClick={() => runSearch(page - 1)} className="px-3 py-1.5 border border-slate-200 bg-white text-[13px] disabled:opacity-40" style={{ borderRadius: 4 }}>‹ Prev</button>
-            <span className="text-[13px] text-slate-500 px-2">Page {page} of {result.totalPages}</span>
-            <button disabled={page >= result.totalPages} onClick={() => runSearch(page + 1)} className="px-3 py-1.5 border border-slate-200 bg-white text-[13px] disabled:opacity-40" style={{ borderRadius: 4 }}>Next ›</button>
-          </div>
-        )}
+        {/* Pagination (search results, or the current eligibility tab); jumps back to the top of the list */}
+        {(() => {
+          const cur = eligActive ? eligPage : page;
+          const pages = eligActive ? eligResult.totalPages : result?.totalPages;
+          if (!(pages > 1)) return null;
+          const go = (p) => { if (eligActive) runEligibility(eligBucket, p); else runSearch(p); window.scrollTo({ top: 0, behavior: 'smooth' }); };
+          return (
+            <div className="flex items-center justify-center gap-2 mt-6">
+              <button disabled={cur <= 1} onClick={() => go(cur - 1)} className="px-3 py-1.5 border border-slate-200 bg-white text-[13px] disabled:opacity-40" style={{ borderRadius: 4 }}>‹ Prev</button>
+              <span className="text-[13px] text-slate-500 px-2">Page {cur} of {pages}</span>
+              <button disabled={cur >= pages} onClick={() => go(cur + 1)} className="px-3 py-1.5 border border-slate-200 bg-white text-[13px] disabled:opacity-40" style={{ borderRadius: 4 }}>Next ›</button>
+            </div>
+          );
+        })()}
         </main>
       </div>
 

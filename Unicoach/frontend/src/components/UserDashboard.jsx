@@ -40,6 +40,7 @@ const EligibilityCalculatorPage = lazy(() => import('../pages/EligibilityCalcula
 const TabLoading = () => <div className="py-16 flex justify-center"><span className="w-6 h-6 rounded-full border-2 border-[#DE5C2B] border-t-transparent animate-spin" /></div>;
 import { API_BASE_URL } from '../config';
 import JourneyTracker from './JourneyTracker';
+import TutorialVideoButton from './ui/TutorialVideoButton';
 import { clearUserStorage } from '../utils/userStorage';
 
 const API_URL = API_BASE_URL;
@@ -817,6 +818,12 @@ ${name || 'Candidate'}`;
               >
                 <Sparkles size={16} /> Take a tour
               </button>
+              <TutorialVideoButton
+                src="/videos/tutorials/student-dashboard.mp4"
+                poster="/videos/tutorials/student-dashboard-poster.jpg"
+                title="Your first steps on UniCoach (1 min)"
+                className="h-14 px-5 rounded-full border border-slate-200 bg-white text-slate-700 hover:border-[#DE5C2B] hover:text-[#DE5C2B] font-semibold text-sm whitespace-nowrap flex items-center gap-2 transition-colors cursor-pointer"
+              />
             </div>
 
             <div className="relative">
