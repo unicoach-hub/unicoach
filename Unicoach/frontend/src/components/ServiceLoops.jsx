@@ -26,20 +26,20 @@ const CountUp = ({ to, decimals = 0, prefix = '', suffix = '', play }) => {
 const Kicker = ({ children, bg = '#F2B705', fg = INK }) => (
   <span className="inline-block px-2 py-0.5 text-[10.5px] font-bold tracking-[0.12em] uppercase" style={{ background: bg, color: fg }}>{children}</span>
 );
-const Title = ({ children }) => <h4 className="mt-1.5 font-urbanist text-[18px] sm:text-[20px] font-extrabold leading-tight text-[#16130F]">{children}</h4>;
-const Source = ({ children }) => <p className="mt-3 text-[10.5px] text-[#5B544A]">{children}</p>;
+const Title = ({ children }) => <h4 className="mt-1.5 font-urbanist text-[16.5px] sm:text-[20px] font-extrabold leading-tight text-[#16130F]">{children}</h4>;
+const Source = ({ children }) => <p className="mt-2.5 sm:mt-3 text-[10px] sm:text-[10.5px] leading-snug text-[#5B544A]">{children}</p>;
 
 // Horizontal bars: rows [label, value, display]
 const Bars = ({ rows, color, play, unit = '' }) => {
   const max = Math.max(...rows.map((r) => r[1]));
   return (
-    <ul className="mt-3 space-y-2">
+    <ul className="mt-2.5 sm:mt-3 space-y-1.5 sm:space-y-2">
       {rows.map(([label, value, display], n) => (
         <li key={label} className="grid grid-cols-[88px_1fr] sm:grid-cols-[104px_1fr] items-center gap-2">
           <span className="text-[12.5px] font-semibold text-[#16130F] truncate">{label}</span>
           <span className="flex items-center gap-2 min-w-0">
             <span className="flex-1 min-w-0">
-              <motion.span className="block h-6 rounded-md border-2 border-[#16130F]" style={{ background: n === 0 ? color : '#F2E6CF' }}
+              <motion.span className="block h-5 sm:h-6 rounded-md border-2 border-[#16130F]" style={{ background: n === 0 ? color : '#F2E6CF' }}
                 initial={{ width: play ? '4%' : `${(value / max) * 100}%` }} animate={{ width: `${Math.max(6, (value / max) * 100)}%` }}
                 transition={{ delay: 0.15 + n * 0.12, duration: 0.7, ease: 'easeOut' }} />
             </span>
@@ -158,9 +158,9 @@ const Deck = ({ slides, accent, bg }) => {
   const Slide = slides[i];
   return (
     <div ref={ref} onMouseEnter={() => setPaused(true)} onMouseLeave={() => setPaused(false)}
-      className="relative rounded-2xl sm:rounded-3xl w-full min-w-0 p-3.5 sm:p-5 font-['Onest',sans-serif]" style={{ background: bg }}>
+      className="relative rounded-2xl sm:rounded-3xl w-full min-w-0 p-2.5 sm:p-5 font-['Onest',sans-serif]" style={{ background: bg }}>
       {/* story progress */}
-      <div className="flex gap-1.5 mb-3">
+      <div className="flex gap-1.5 mb-2.5 sm:mb-3">
         {slides.map((_, n) => (
           <button key={n} type="button" aria-label={`Show infographic ${n + 1}`} onClick={() => setI(n)} className="no-shine flex-1 h-[5px] rounded-full bg-white/70 overflow-hidden cursor-pointer">
             <motion.span key={`${n}-${i}`} className="block h-full rounded-full" style={{ background: accent }}
@@ -172,7 +172,7 @@ const Deck = ({ slides, accent, bg }) => {
       <div className="relative sm:min-h-[320px]">
         <AnimatePresence mode="wait" initial={false}>
           <motion.div key={i} initial={{ opacity: 0, x: 40, rotate: 1.5 }} animate={{ opacity: 1, x: 0, rotate: 0 }} exit={{ opacity: 0, x: -40, rotate: -1.5 }} transition={{ duration: 0.35, ease: 'easeOut' }}
-            className="rounded-2xl border-[2.5px] border-[#16130F] bg-white p-4 sm:p-5 shadow-[5px_5px_0_#16130F]">
+            className="rounded-2xl border-[2.5px] border-[#16130F] bg-white p-3.5 sm:p-5 shadow-[4px_4px_0_#16130F] sm:shadow-[5px_5px_0_#16130F]">
             <Slide play={!reduced} />
           </motion.div>
         </AnimatePresence>

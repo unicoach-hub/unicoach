@@ -329,9 +329,10 @@ export const UpcomingEvents = ({ onOpenModal }) => {
         )}
 
         {/* ════════ 3-CARD COMPACT BALANCED GRID (Overflow Safe) ════════ */}
-        {!noEvents && <div className={`grid grid-cols-1 ${gridLayout} gap-4 w-full min-w-0`}>
+        {/* Phones: one swipeable row (6 stacked cards made this the longest section); wider screens: the grid */}
+        {!noEvents && <div className={`flex overflow-x-auto snap-x snap-mandatory -mx-4 px-4 pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:mx-auto sm:px-0 sm:pb-0 sm:overflow-visible sm:grid sm:grid-cols-1 ${gridLayout} gap-3.5 sm:gap-4 w-full min-w-0`}>
           {loading && [0, 1, 2].map((k) => (
-            <div key={k} className="bg-white rounded-2xl overflow-hidden border border-slate-200/90 animate-pulse" aria-hidden="true">
+            <div key={k} className="w-[84%] shrink-0 sm:w-auto bg-white rounded-2xl overflow-hidden border border-slate-200/90 animate-pulse" aria-hidden="true">
               <div className="aspect-[16/9] w-full bg-slate-200" />
               <div className="p-4 space-y-3">
                 <div className="h-4 bg-slate-200 rounded w-11/12" />
@@ -372,7 +373,7 @@ export const UpcomingEvents = ({ onOpenModal }) => {
                 whileHover={{ y: -8, transition: { type: 'spring', stiffness: 300, damping: 20 } }}
                 // The rest of the card opens the event page; the CTA button keeps its own action
                 onClick={ev.detailPath ? () => navigate(ev.detailPath) : undefined}
-                className={`bg-white rounded-2xl overflow-hidden border border-slate-200/90 shadow-[0_3px_14px_-2px_rgba(15,23,42,0.06)] hover:shadow-[0_24px_48px_-16px_rgba(222,92,43,0.35)] hover:border-orange-300 transition-[box-shadow,border-color] duration-300 flex flex-col group w-full ${ev.detailPath ? 'cursor-pointer' : ''}`}
+                className={`bg-white rounded-2xl overflow-hidden border border-slate-200/90 shadow-[0_3px_14px_-2px_rgba(15,23,42,0.06)] hover:shadow-[0_24px_48px_-16px_rgba(222,92,43,0.35)] hover:border-orange-300 transition-[box-shadow,border-color] duration-300 flex flex-col group w-[84%] shrink-0 snap-start sm:w-full sm:shrink ${ev.detailPath ? 'cursor-pointer' : ''}`}
               >
                 {/* ──── TOP COMPACT 2:1 COVER IMAGE (Zero Cropping - Full Text & Expert Visible) ──── */}
                 <motion.div

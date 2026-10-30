@@ -276,40 +276,43 @@ const StudentStory = () => {
 
   return (
     <section ref={ref} className="w-full max-w-full overflow-hidden bg-white">
-      <div className="max-w-[1360px] mx-auto px-4 sm:px-8 lg:px-12 py-20 sm:py-28 grid lg:grid-cols-[0.9fr_1.1fr] gap-12 lg:gap-16 items-center">
-        <div>
+      <div className="max-w-[1360px] mx-auto px-4 sm:px-8 lg:px-12 py-12 sm:py-28 grid lg:grid-cols-[0.9fr_1.1fr] gap-5 sm:gap-12 lg:gap-16 items-center">
+        {/* Phones: heading, then the call, then the steps that drive it, then the button (the left column dissolves into the grid) */}
+        <div className="contents lg:block">
+          <div className="order-1">
           <span className="flex items-center gap-3 text-[14px] font-semibold text-[#86351A]"><span className="inline-block w-10 h-[2px] bg-[#DE5C2B]" />Student ki kahani</span>
           {/* city on its own line, so the heading never jumps as the city changes */}
-          <h2 className="mt-4 font-outfit text-[38px] sm:text-[54px] xl:text-[62px] font-bold text-[#111] leading-[1.02] tracking-[-0.035em]">
+          <h2 className="mt-3 sm:mt-4 font-outfit text-[30px] sm:text-[54px] xl:text-[62px] font-bold text-[#111] leading-[1.02] tracking-[-0.035em]">
             Ek call se<br /><RotatingCity />
           </h2>
-          <p className="mt-5 text-[16px] sm:text-[19px] leading-relaxed text-slate-600 max-w-[540px]">Aarav ne apne senior ke saath 1:1 video session liya. Har sawaal pe screen share, har step pe plan.</p>
+          <p className="mt-3 sm:mt-5 text-[15px] sm:text-[19px] leading-relaxed text-slate-600 max-w-[540px]">Aarav ne apne senior ke saath 1:1 video session liya. Har sawaal pe screen share, har step pe plan.</p>
+          </div>
 
-          <ol className="mt-9 grid grid-cols-3 gap-3 max-w-[580px]">
+          <ol className="order-3 flex overflow-x-auto -mx-4 px-4 gap-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:mx-0 sm:px-0 sm:overflow-visible sm:mt-9 sm:grid sm:grid-cols-3 sm:gap-3 max-w-[580px]">
             {STEPS.map((x, i) => {
               const done = i < step;
               const now = i === step;
               return (
-                <li key={x.key}>
-                  <button type="button" onClick={() => { setStep(i); setPhase(0); }} className={`no-shine w-full text-left rounded-2xl px-3.5 sm:px-4 py-3 sm:py-3.5 border transition-all duration-300 cursor-pointer ${now ? 'bg-white border-[#DE5C2B] shadow-[0_10px_24px_-14px_rgba(222,92,43,0.65)]' : done ? 'bg-white border-slate-200' : 'bg-[#FAF8F4] border-[#EEE8DE] hover:bg-white'}`}>
-                    <span className={`block text-[14px] sm:text-[16px] font-semibold leading-tight ${now || done ? 'text-[#111]' : 'text-slate-600'}`}>{done ? '✓ ' : ''}{x.label}</span>
-                    <span className="block text-[12px] sm:text-[13px] leading-tight mt-1" style={{ fontFamily: "'Yatra One', sans-serif", color: now || done ? '#B8451A' : '#57534E' }}>{x.hi}</span>
+                <li key={x.key} className="shrink-0">
+                  <button type="button" onClick={() => { setStep(i); setPhase(0); }} className={`no-shine w-full text-left whitespace-nowrap rounded-2xl px-3 sm:px-4 py-2 sm:py-3.5 border transition-all duration-300 cursor-pointer ${now ? 'bg-white border-[#DE5C2B] shadow-[0_10px_24px_-14px_rgba(222,92,43,0.65)]' : done ? 'bg-white border-slate-200' : 'bg-[#FAF8F4] border-[#EEE8DE] hover:bg-white'}`}>
+                    <span className={`block text-[13.5px] sm:text-[16px] font-semibold leading-tight ${now || done ? 'text-[#111]' : 'text-slate-600'}`}>{done ? '✓ ' : ''}{x.label}</span>
+                    <span className="hidden sm:block text-[12px] sm:text-[13px] leading-tight mt-1" style={{ fontFamily: "'Yatra One', sans-serif", color: now || done ? '#B8451A' : '#57534E' }}>{x.hi}</span>
                   </button>
                 </li>
               );
             })}
           </ol>
 
-          <div className="mt-9">
+          <div className="order-4 sm:mt-9">
             <Link to="/unicoach" className="inline-flex items-center gap-2 h-12 px-6 rounded-full bg-slate-900 hover:bg-[#DE5C2B] text-white text-[15px] font-semibold transition-colors">
               Book a 1:1 session <ArrowRight size={16} />
             </Link>
-            <p className="mt-4 text-[13px] text-slate-500">Calls happen inside UniCoach. No phone numbers shared. Story is illustrative.</p>
+            <p className="mt-3 sm:mt-4 text-[12px] sm:text-[13px] text-slate-500">Calls happen inside UniCoach. No phone numbers shared. Story is illustrative.</p>
           </div>
         </div>
 
         {/* Video call window */}
-        <div onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)} className="relative rounded-[26px] bg-white border border-[#ECE6DA] p-3 sm:p-5 shadow-[0_40px_90px_-40px_rgba(15,23,42,0.32)]">
+        <div onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)} className="order-2 lg:order-none relative rounded-[22px] sm:rounded-[26px] bg-white border border-[#ECE6DA] p-3 sm:p-5 shadow-[0_40px_90px_-40px_rgba(15,23,42,0.32)]">
           <div className="flex items-center justify-between text-slate-700 text-[12px] sm:text-[13px] px-1 pb-3 sm:pb-4">
             <span className="flex items-center gap-2"><span className="w-2 h-2 rounded-full bg-red-500 animate-pulse" /> UniCoach 1:1 session · {clock}</span>
             <span className="hidden sm:inline text-slate-400">Aarav × Prachi</span>
@@ -322,10 +325,10 @@ const StudentStory = () => {
                 {mentorTalking ? (
                   <Screen key={s.key} s={s} />
                 ) : (
-                  <motion.div key={`ask-${step}`} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="absolute inset-0 flex flex-col items-center justify-center gap-4 bg-gradient-to-br from-[#FDF8F4] via-[#FAF1EA] to-[#F5E6DC]">
-                    <motion.span animate={{ scale: [1, 1.06, 1] }} transition={{ duration: 1.2, repeat: Infinity }} className="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-gradient-to-br from-[#485A79] to-[#DE5C2B] grid place-items-center text-white text-[32px] font-bold ring-4 ring-[#C9705F]/60">A</motion.span>
+                  <motion.div key={`ask-${step}`} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="absolute inset-0 flex flex-col items-center justify-center gap-2 sm:gap-4 bg-gradient-to-br from-[#FDF8F4] via-[#FAF1EA] to-[#F5E6DC]">
+                    <motion.span animate={{ scale: [1, 1.06, 1] }} transition={{ duration: 1.2, repeat: Infinity }} className="w-14 h-14 sm:w-24 sm:h-24 shrink-0 rounded-full bg-gradient-to-br from-[#485A79] to-[#DE5C2B] grid place-items-center text-white text-[22px] sm:text-[32px] font-bold ring-4 ring-[#C9705F]/60">A</motion.span>
                     <span className="flex items-center gap-2 text-slate-700 text-[13px]"><Wave on /> Aarav is asking…</span>
-                    <span className="flex items-center gap-1.5 text-slate-500 text-[11.5px]"><MonitorUp size={13} /> Prachi will share her screen next</span>
+                    <span className="hidden sm:flex items-center gap-1.5 text-slate-500 text-[11.5px]"><MonitorUp size={13} /> Prachi will share her screen next</span>
                   </motion.div>
                 )}
               </AnimatePresence>

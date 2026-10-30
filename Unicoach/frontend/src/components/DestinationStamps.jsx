@@ -8,7 +8,7 @@ import { ArrowRight } from 'lucide-react';
 
 const STAMPS = [
   { id: 'usa', name: 'USA', hi: 'अमेरिका', tint: '#FBD9E6', universities: '4,500+', stay: '1–3 yrs' },
-  { id: 'uk', name: 'UK', hi: 'ब्रिटेन', tint: '#DCE6FB', universities: '150+', stay: 'Up to 2 yrs' },
+  { id: 'uk', name: 'UK', hi: 'ब्रिटेन', tint: '#DCE6FB', universities: '150+', stay: '18 months' }, // Graduate Route from Jan 2027
   { id: 'canada', name: 'Canada', hi: 'कनाडा', tint: '#FCDCD2', universities: '100+', stay: 'Up to 3 yrs' },
   { id: 'australia', name: 'Australia', hi: 'ऑस्ट्रेलिया', tint: '#FDE7C8', universities: '40+', stay: '2–4 yrs' },
   { id: 'germany', name: 'Germany', hi: 'जर्मनी', tint: '#FFF1B8', universities: '300+', stay: '18 months' },

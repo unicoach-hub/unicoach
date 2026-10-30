@@ -424,50 +424,50 @@ const PassportJourney = () => {
   return (
     <section ref={ref} aria-label="Your study-abroad passport" style={{ height: `${(STEPS.length + 1) * 60 + 40}vh`, background: PAPER }} className="relative w-full">
       <div className="sticky top-0 h-screen overflow-hidden flex items-center">
-        <div className="w-full max-w-[1320px] mx-auto px-4 sm:px-8 grid grid-cols-1 lg:grid-cols-[0.85fr_1.15fr] gap-8 lg:gap-14 items-center">
-          {/* Left: chapter copy that follows the passport */}
-          <div className="min-w-0">
-            <p className="flex items-center gap-3 text-[13px]" style={{ color: MUTED }}>
+        <div className="w-full max-w-[1320px] mx-auto px-4 sm:px-8 grid grid-cols-1 lg:grid-cols-[0.85fr_1.15fr] gap-3 sm:gap-8 lg:gap-14 items-center">
+          {/* Left: chapter copy that follows the passport. Phones: below the passport, trimmed so both fit one screen */}
+          <div className="min-w-0 order-2 lg:order-none">
+            <p className="hidden sm:flex items-center gap-3 text-[13px]" style={{ color: MUTED }}>
               <span className="inline-block w-10 h-[2px] bg-[#DE5C2B]" />
               {closed ? `Your study-abroad passport · ${STEPS.length} visas inside` : `Your study-abroad passport · Visa ${idx + 1} of ${STEPS.length}`}
             </p>
             <AnimatePresence mode="wait">
               {closed ? (
                 <motion.div key="closed" initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} transition={{ duration: 0.35 }}>
-                  <p className="mt-6 text-[14px] font-semibold text-[#DE5C2B]">Ready to fly</p>
-                  <h2 className="mt-2 font-outfit text-[30px] sm:text-[54px] lg:text-[64px] font-black leading-[0.98] tracking-[-0.045em]" style={{ color: INK }}>
+                  <p className="sm:mt-6 text-[13px] sm:text-[14px] font-semibold text-[#DE5C2B]">Ready to fly</p>
+                  <h2 className="mt-1 sm:mt-2 font-outfit text-[24px] sm:text-[54px] lg:text-[64px] font-black leading-[1.02] sm:leading-[0.98] tracking-[-0.04em] sm:tracking-[-0.045em]" style={{ color: INK }}>
                     Your passport. Open it.
                   </h2>
-                  <p className="mt-4 text-[17px] sm:text-[19px] leading-relaxed max-w-md" style={{ color: MUTED }}>Three visas, three countries. Scroll and we stamp them one by one.</p>
-                  <button type="button" onClick={() => goTo(0)} className="no-shine mt-7 inline-flex items-center gap-3 h-14 pl-6 pr-2 rounded-full border-2 bg-transparent text-[16px] font-semibold transition-colors border-[#16130F] text-[#16130F] hover:bg-[#16130F] hover:text-white group cursor-pointer">
+                  <p className="hidden sm:block mt-4 text-[17px] sm:text-[19px] leading-relaxed max-w-md" style={{ color: MUTED }}>Three visas, three countries. Scroll and we stamp them one by one.</p>
+                  <button type="button" onClick={() => goTo(0)} className="no-shine mt-3 sm:mt-7 inline-flex items-center gap-3 h-11 sm:h-14 pl-5 sm:pl-6 pr-1.5 sm:pr-2 rounded-full border-2 bg-transparent text-[14px] sm:text-[16px] font-semibold transition-colors border-[#16130F] text-[#16130F] hover:bg-[#16130F] hover:text-white group cursor-pointer">
                     Open the passport
-                    <span className="w-10 h-10 rounded-full grid place-items-center text-white bg-[#16130F] transition-colors group-hover:bg-[#DE5C2B]">
+                    <span className="w-8 h-8 sm:w-10 sm:h-10 rounded-full grid place-items-center text-white bg-[#16130F] transition-colors group-hover:bg-[#DE5C2B]">
                       <ArrowRight size={16} className="transition-transform group-hover:translate-x-0.5" />
                     </span>
                   </button>
                 </motion.div>
               ) : (
               <motion.div key={step.key} initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} transition={{ duration: 0.35 }}>
-                <p className="mt-6 text-[14px] font-semibold" style={{ color: step.color }}>{step.chapter}</p>
-                <h2 className="mt-2 font-outfit text-[30px] sm:text-[54px] lg:text-[64px] font-black leading-[0.98] tracking-[-0.045em]" style={{ color: INK }}>
+                <p className="sm:mt-6 text-[13px] sm:text-[14px] font-semibold" style={{ color: step.color }}>{step.chapter} <span className="sm:hidden font-medium" style={{ color: MUTED }}>· Visa {idx + 1} of {STEPS.length}</span></p>
+                <h2 className="mt-1 sm:mt-2 font-outfit text-[24px] sm:text-[54px] lg:text-[64px] font-black leading-[1.02] sm:leading-[0.98] tracking-[-0.04em] sm:tracking-[-0.045em]" style={{ color: INK }}>
                   {step.title}
                 </h2>
-                <p className="mt-4 text-[17px] sm:text-[19px] leading-relaxed max-w-md" style={{ color: MUTED }}>{step.text}</p>
+                <p className="hidden sm:block mt-4 text-[17px] sm:text-[19px] leading-relaxed max-w-md" style={{ color: MUTED }}>{step.text}</p>
                 {/* Visa expertise: the refusal reason we see most for this visa, struck through, and the fix */}
-                <div className="mt-6 max-w-md bg-white border-2 border-[#16130F] shadow-[4px_4px_0_#16130F] rounded-[14px] px-4 py-3.5 -rotate-[0.6deg]">
+                <div className="mt-2.5 sm:mt-6 max-w-md bg-white border-2 border-[#16130F] shadow-[3px_3px_0_#16130F] sm:shadow-[4px_4px_0_#16130F] rounded-[14px] px-3 py-2.5 sm:px-4 sm:py-3.5 -rotate-[0.6deg]">
                   <div className="flex items-center gap-2 text-[11px] font-bold tracking-[0.12em]">
                     <span className="px-2 py-0.5 rounded-[4px] border-2 border-[#D0312D] text-[#D0312D] -rotate-3">REFUSED</span>
                     <ArrowRight size={14} style={{ color: INK }} />
                     <span className="px-2 py-0.5 rounded-[4px] bg-[#1E8A5A] text-white">FIXED</span>
-                    <span className="ml-auto font-semibold tracking-normal text-[11.5px]" style={{ color: MUTED }}>Most common reason</span>
+                    <span className="ml-auto hidden min-[380px]:inline font-semibold tracking-normal text-[11.5px]" style={{ color: MUTED }}>Most common reason</span>
                   </div>
-                  <p className="mt-2 text-[15px] font-semibold line-through decoration-[#D0312D] decoration-2" style={{ color: INK }}>{REFUSALS[step.key].reason}</p>
-                  <p className="mt-1 text-[13.5px] leading-snug flex gap-1.5" style={{ color: MUTED }}><Check size={15} className="shrink-0 mt-0.5 text-[#1E8A5A]" strokeWidth={3} />{REFUSALS[step.key].fix}</p>
+                  <p className="mt-1.5 sm:mt-2 text-[13.5px] sm:text-[15px] font-semibold line-through decoration-[#D0312D] decoration-2" style={{ color: INK }}>{REFUSALS[step.key].reason}</p>
+                  <p className="mt-1 text-[12.5px] sm:text-[13.5px] leading-snug flex gap-1.5" style={{ color: MUTED }}><Check size={15} className="shrink-0 mt-0.5 text-[#1E8A5A]" strokeWidth={3} />{REFUSALS[step.key].fix}</p>
                 </div>
-                <p className="mt-3 text-[13px] font-semibold" style={{ color: step.color }}>Refused before? Your file can still be fixed.</p>
-                <Link to={step.to} className="no-shine mt-5 inline-flex items-center gap-3 h-14 pl-6 pr-2 rounded-full border-2 bg-transparent text-[16px] font-semibold transition-colors border-[#16130F] text-[#16130F] hover:bg-[#16130F] hover:text-white group">
+                <p className="hidden sm:block mt-3 text-[13px] font-semibold" style={{ color: step.color }}>Refused before? Your file can still be fixed.</p>
+                <Link to={step.to} className="no-shine mt-3 sm:mt-5 inline-flex items-center gap-3 h-11 sm:h-14 pl-5 sm:pl-6 pr-1.5 sm:pr-2 rounded-full border-2 bg-transparent text-[14px] sm:text-[16px] font-semibold transition-colors border-[#16130F] text-[#16130F] hover:bg-[#16130F] hover:text-white group">
                   {step.cta}
-                  <span className="w-10 h-10 rounded-full grid place-items-center text-white bg-[#16130F] transition-colors group-hover:bg-[#DE5C2B]">
+                  <span className="w-8 h-8 sm:w-10 sm:h-10 rounded-full grid place-items-center text-white bg-[#16130F] transition-colors group-hover:bg-[#DE5C2B]">
                     <ArrowRight size={16} className="transition-transform group-hover:translate-x-0.5" />
                   </span>
                 </Link>
@@ -475,26 +475,27 @@ const PassportJourney = () => {
               )}
             </AnimatePresence>
             {/* Progress: tap a bar or the arrows to turn the passport */}
-            <div className="mt-10 flex items-center gap-3">
-              <button type="button" onClick={() => goTo(idx - 1)} disabled={closed || idx === 0} aria-label="Previous visa" className="no-shine w-10 h-10 rounded-full border-2 grid place-items-center border-[#16130F] text-[#16130F] transition-colors disabled:opacity-30 enabled:hover:bg-[#16130F] enabled:hover:text-white cursor-pointer disabled:cursor-default">
+            <div className="mt-3 sm:mt-10 flex items-center gap-2 sm:gap-3">
+              <button type="button" onClick={() => goTo(idx - 1)} disabled={closed || idx === 0} aria-label="Previous visa" className="no-shine w-8 h-8 sm:w-10 sm:h-10 rounded-full border-2 grid place-items-center border-[#16130F] text-[#16130F] transition-colors disabled:opacity-30 enabled:hover:bg-[#16130F] enabled:hover:text-white cursor-pointer disabled:cursor-default">
                 <ArrowLeft size={16} />
               </button>
               {STEPS.map((s, i) => (
                 <button key={s.key} type="button" onClick={() => goTo(i)} aria-label={`Show ${s.chapter}`} className="no-shine py-3 cursor-pointer">
-                  <span className="block h-[3px] w-12 rounded-full overflow-hidden" style={{ background: 'rgba(22,19,15,0.12)' }}>
+                  <span className="block h-[3px] w-9 sm:w-12 rounded-full overflow-hidden" style={{ background: 'rgba(22,19,15,0.12)' }}>
                     <motion.span className="block h-full" style={{ background: INK }} animate={{ width: !closed && i <= idx ? '100%' : '0%' }} transition={{ duration: 0.4 }} />
                   </span>
                 </button>
               ))}
-              <button type="button" onClick={() => goTo(closed ? 0 : idx + 1)} disabled={!closed && idx === STEPS.length - 1} aria-label="Next visa" className="no-shine w-10 h-10 rounded-full border-2 grid place-items-center border-[#16130F] text-[#16130F] transition-colors disabled:opacity-30 enabled:hover:bg-[#16130F] enabled:hover:text-white cursor-pointer disabled:cursor-default">
+              <button type="button" onClick={() => goTo(closed ? 0 : idx + 1)} disabled={!closed && idx === STEPS.length - 1} aria-label="Next visa" className="no-shine w-8 h-8 sm:w-10 sm:h-10 rounded-full border-2 grid place-items-center border-[#16130F] text-[#16130F] transition-colors disabled:opacity-30 enabled:hover:bg-[#16130F] enabled:hover:text-white cursor-pointer disabled:cursor-default">
                 <ArrowRight size={16} />
               </button>
             </div>
           </div>
 
           {/* Right: the passport. Closed it stands upright; open, the spread runs top to bottom like a visa page. */}
-          <div style={{ perspective: 1600 }} onMouseMove={onTableMove} onMouseLeave={onTableLeave} className="py-4 min-w-0 flex flex-col items-center">
-            <motion.div className="relative w-full max-w-[min(500px,calc((100vh-170px)*0.71))]" style={{ rotateX: tiltX, rotateZ: tiltZ, transformStyle: 'preserve-3d', transformOrigin: '50% 60%' }}>
+          <div style={{ perspective: 1600 }} onMouseMove={onTableMove} onMouseLeave={onTableLeave} className="order-1 lg:order-none pt-14 sm:pt-0 sm:py-4 min-w-0 flex flex-col items-center">
+            {/* phones: about half the screen, so the copy below still fits */}
+            <motion.div className="relative w-full max-w-[min(300px,calc((100svh-400px)*0.71))] sm:max-w-[min(500px,calc((100vh-170px)*0.71))]" style={{ rotateX: tiltX, rotateZ: tiltZ, transformStyle: 'preserve-3d', transformOrigin: '50% 60%' }}>
               <motion.div className="relative" style={{ rotate: bookRot, y: bookY, transformOrigin: '50% 75%', transformStyle: 'preserve-3d', aspectRatio: `${PAGE_RATIO} / 2` }}>
                 {/* soft shadow on the table */}
                 <div aria-hidden="true" className="absolute left-[4%] right-[4%] top-[50%] -bottom-6 rounded-[50%] blur-2xl pointer-events-none" style={{ background: 'rgba(22,19,15,0.26)', transform: 'translateZ(-40px)' }} />
@@ -530,7 +531,7 @@ const PassportJourney = () => {
               </motion.div>
             </motion.div>
             <motion.p animate={closed ? { opacity: [0.45, 1, 0.45] } : { opacity: 1 }} transition={closed ? { duration: 1.8, repeat: Infinity } : { duration: 0.3 }}
-              className="mt-6 text-center text-[12px]" style={{ color: MUTED }}>{closed ? 'Scroll or tap the cover to open it' : 'Scroll, tap the page or use the arrows to turn it'}</motion.p>
+              className="hidden sm:block mt-6 text-center text-[12px]" style={{ color: MUTED }}>{closed ? 'Scroll or tap the cover to open it' : 'Scroll, tap the page or use the arrows to turn it'}</motion.p>
           </div>
         </div>
       </div>

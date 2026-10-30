@@ -185,12 +185,13 @@ export const Services = () => {
               <div
                 key={service.id}
                 style={{
-                  top: `${topOffset}px`,
+                  // only the desktop sticky stack uses this; on phones a `top` on a relative card shifts it into the next one
+                  '--stick-top': `${topOffset}px`,
                   zIndex: zIndexVal,
                   background: `radial-gradient(120% 120% at 100% 0%, ${service.accentColor}1F 0%, ${service.cardBg} 45%, #FFFFFF 100%)`,
                   borderColor: `${service.accentColor}26`,
                 }}
-                className="relative lg:sticky min-h-0 sm:min-h-[480px] flex flex-col justify-center rounded-[24px] sm:rounded-[36px] border p-5 sm:p-8 lg:p-10 xl:p-12 shadow-[0_16px_40px_rgba(15,23,42,0.06)] mb-6 sm:mb-10 lg:mb-14 last:mb-0 overflow-hidden w-full min-w-0"
+                className="relative lg:sticky lg:top-[var(--stick-top)] min-h-0 sm:min-h-[480px] flex flex-col justify-center rounded-[24px] sm:rounded-[36px] border p-4 sm:p-8 lg:p-10 xl:p-12 shadow-[0_16px_40px_rgba(15,23,42,0.06)] mb-4 sm:mb-10 lg:mb-14 last:mb-0 overflow-hidden w-full min-w-0"
               >
                 {/* Soft accent glow in the corner */}
                 <div
@@ -206,7 +207,7 @@ export const Services = () => {
                   }}
                 />
 
-                <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center w-full min-w-0">
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-8 lg:gap-12 items-center w-full min-w-0">
 
                   {/* ── LEFT COLUMN (Boxy Grotesque UniCoach Style) ── */}
                   <motion.div
@@ -218,7 +219,7 @@ export const Services = () => {
                   >
                     {/* Step Badge */}
                     <div
-                      className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-[11.5px] font-bold tracking-wide mb-4 bg-white/80 backdrop-blur shadow-[0_4px_14px_-6px_rgba(15,23,42,0.18)]"
+                      className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-[11.5px] font-bold tracking-wide mb-3 sm:mb-4 bg-white/80 backdrop-blur shadow-[0_4px_14px_-6px_rgba(15,23,42,0.18)]"
                       style={{ color: service.badgeText }}
                     >
                       <span className="font-mono font-black">{service.step}</span>
@@ -227,7 +228,7 @@ export const Services = () => {
                     </div>
 
                     {/* Headline (UniCoach Ultra-Black Display Style: UniCoach is mega-thick like upto 4X, rest is normal) */}
-                    <h3 className="font-normal text-[30px] sm:text-[38px] lg:text-[48px] leading-[1.08] tracking-[-0.035em] text-[#111111]">
+                    <h3 className="font-normal text-[27px] sm:text-[38px] lg:text-[48px] leading-[1.08] tracking-[-0.035em] text-[#111111]">
                       <span
                         className="text-black inline-block tracking-[-0.04em]"
                         style={{
@@ -251,12 +252,12 @@ export const Services = () => {
                     </p>
 
                     {/* Description Paragraph */}
-                    <p className="font-['Onest',sans-serif] text-[13px] sm:text-[14px] text-slate-600 mt-2.5 font-normal leading-relaxed max-w-xl">
+                    <p className="hidden sm:block font-['Onest',sans-serif] text-[13px] sm:text-[14px] text-slate-600 mt-2.5 font-normal leading-relaxed max-w-xl">
                       {service.subtitle}
                     </p>
 
                     {/* Boxy Bullet Cards (UniCoach-inspired modular rows) */}
-                    <ul className="mt-5 space-y-3 w-full max-w-xl">
+                    <ul className="mt-3.5 sm:mt-5 space-y-2 sm:space-y-3 w-full max-w-xl">
                       {service.bullets.map((bullet, bIdx) => (
                         <motion.li
                           key={bIdx}
@@ -264,7 +265,7 @@ export const Services = () => {
                           whileInView={{ opacity: 1, y: 0 }}
                           viewport={{ once: true }}
                           transition={{ duration: 0.45, delay: 0.25 + bIdx * 0.1 }}
-                          className="flex items-start gap-3 text-[13.5px] sm:text-[14.5px] text-slate-800 font-medium font-['Onest',sans-serif]"
+                          className="flex items-start gap-2.5 sm:gap-3 text-[13px] sm:text-[14.5px] text-slate-800 font-medium font-['Onest',sans-serif]"
                         >
                           <span
                             className="mt-0.5 w-5 h-5 rounded-full flex items-center justify-center shrink-0 text-white"
@@ -280,7 +281,7 @@ export const Services = () => {
                     {/* Boxy CTA Action Button */}
                     <button
                       onClick={() => handleAction(service)}
-                      className="mt-7 inline-flex items-center gap-2.5 h-12 px-6 rounded-full bg-[#111111] text-white text-[13.5px] sm:text-[14px] font-bold font-['Onest',sans-serif] tracking-tight shadow-sm hover:shadow-md transition-all duration-200 cursor-pointer group"
+                      className="mt-5 sm:mt-7 inline-flex items-center gap-2.5 h-11 sm:h-12 px-5 sm:px-6 rounded-full bg-[#111111] text-white text-[13.5px] sm:text-[14px] font-bold font-['Onest',sans-serif] tracking-tight shadow-sm hover:shadow-md transition-all duration-200 cursor-pointer group"
                       onMouseEnter={(e) => {
                         e.currentTarget.style.backgroundColor = service.accentColor;
                       }}
