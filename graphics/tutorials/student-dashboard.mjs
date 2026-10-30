@@ -1,7 +1,7 @@
 // Student dashboard "first steps" tutorial. Usage: FFMPEG=... node student-dashboard.mjs OUT_DIR
 // Logs in as a made-up demo student; every /api call is answered here in the browser
 // (nothing reaches the server), so profile saves and task ticks only change the demo state.
-import { record, introCard, outroCard } from './kit.mjs';
+import { record, introCard, outroCard, loadVoice } from './kit.mjs';
 
 const OUT = process.argv[2];
 const state = {
@@ -15,6 +15,7 @@ await record({
   name: 'student-dashboard',
   outDir: OUT,
   ffmpeg: process.env.FFMPEG,
+  voice: loadVoice('student-dashboard'),
   setup: {
     script: (u) => {
       localStorage.setItem('user_info', JSON.stringify(u));
@@ -39,15 +40,18 @@ await record({
     const logo = await t.logo();
     await t.card(introCard(logo, 'STUDENT DASHBOARD · FIRST STEPS', 'Your first steps on UniCoach', 'Do these once and your dashboard keeps you on track, from shortlist to visa.'));
     await t.start();
-    await t.wait(3200);
+    await t.wait(500);
+    await t.sayCard('intro');
+    await t.waitVoice(300);
+    if (!t.voiced) await t.wait(2700);
     await t.hideCard(700);
     await t.moveTo([640, 360], 10);
 
     // 1. profile
-    await t.caption(1, 'First, complete your profile: country, course and exam');
     const nav = (k) => p.locator(`[data-tour="${k}"]`).first();
     await t.click(nav('nav-profile'));
-    await t.wait(900);
+    await t.wait(700);
+    await t.say('1a', 1, 'First, complete your profile: country, course and exam');
     const country = p.locator('button:has-text("Select Dream Country")').first();
     await t.scrollTo(country, 'center', 900);
     await t.click(country);
@@ -70,7 +74,7 @@ await record({
     await t.type(p.locator('input[placeholder="e.g. Bachelor of Technology"]'), 'B.Tech', 90);
 
     // 1b. save
-    await t.caption(1, 'Add your intake, then save. That is step one done');
+    await t.say('1b', 1, 'Add your intake, then save. That is step one done');
     const intake = p.locator('input[placeholder="e.g. Fall 2027"]');
     await t.scrollTo(intake, 'center', 900);
     await t.type(intake, 'Fall 2027', 90);
@@ -80,9 +84,10 @@ await record({
     await t.wait(1600);
 
     // 2. overview: target + readiness
-    await t.caption(2, 'Your dashboard now shows your target and how ready you are');
+    await t.waitVoice(150);
     await t.click(nav('nav-overview'));
-    await t.wait(800);
+    await t.wait(600);
+    await t.say('2', 2, 'Your dashboard now shows your target and how ready you are');
     await t.scrollTo(p.locator('text=Ready to apply').first(), 'center', 900);
     await t.ring(p.locator('text=Target destination').first().locator('xpath=ancestor::div[contains(@class,"rounded")][1]'), 6);
     await t.wait(1600);
@@ -91,9 +96,10 @@ await record({
     await t.hideRing();
 
     // 3. roadmap tasks
-    await t.caption(3, 'Follow your roadmap and tick each task when it is done');
+    await t.waitVoice(150);
     await t.click(nav('nav-daily-tasks'));
-    await t.wait(1200);
+    await t.wait(900);
+    await t.say('3', 3, 'Follow your roadmap and tick each task when it is done');
     const box = p.locator('button[aria-label*="complete" i], button[title*="complete" i], input[type="checkbox"]').first();
     if (await box.count()) { await t.scrollTo(box, 'center', 800); await t.click(box); await t.wait(1200); }
     else { await t.wait(1800); }
@@ -102,7 +108,7 @@ await record({
     await p.evaluate(() => window.scrollTo({ top: 0, behavior: 'smooth' }));
     await t.wait(900);
     const show = async (n, text, keys) => {
-      await t.caption(n, text);
+      await t.say(String(n), n, text);
       for (const k of keys) {
         const el = nav(k);
         await el.evaluate((node) => node.scrollIntoView({ behavior: 'smooth', block: 'center' }));
@@ -118,8 +124,11 @@ await record({
     await show(6, 'Stuck? Message your counsellor or book a free 1:1 call', ['nav-messages', 'nav-talk-expert']);
 
     // outro
+    await t.waitVoice(300);
     await t.hideCaption();
     await t.card(outroCard(logo, 'Start with your profile', 'unicoach.com/dashboard', 'Sign up free. Your counsellor sees your progress and helps at every step.'));
-    await t.wait(3600);
+    await t.sayCard('outro');
+    await t.waitVoice(900);
+    if (!t.voiced) await t.wait(3600);
   },
 });
