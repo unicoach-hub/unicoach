@@ -12,8 +12,8 @@ const ExcelColumnExportModal = lazy(() => import('../components/ExcelColumnExpor
 
 // Short product tours shown next to the hero (desktop) or under the form (phones)
 const TOUR = {
-  finder: { src: '/videos/tutorials/course-finder.mp4', poster: '/videos/tutorials/course-finder-poster.jpg', title: 'How Course Finder works', duration: '50 sec' },
-  scholarships: { src: '/videos/tutorials/scholarships.mp4', poster: '/videos/tutorials/scholarships-poster.jpg', title: 'How to find your scholarships', duration: '45 sec' },
+  finder: { src: '/videos/tutorials/course-finder.mp4', poster: '/videos/tutorials/course-finder-poster.jpg', title: 'How Course Finder works', duration: '45 sec', sound: true },
+  scholarships: { src: '/videos/tutorials/scholarships.mp4', poster: '/videos/tutorials/scholarships-poster.jpg', title: 'How to find your scholarships', duration: '45 sec', sound: true },
 };
 
 const PAGE_SIZE = 20;

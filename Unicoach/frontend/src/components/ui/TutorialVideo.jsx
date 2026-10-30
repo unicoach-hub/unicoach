@@ -1,10 +1,11 @@
 import { useRef, useState } from 'react';
 import { Play } from 'lucide-react';
 
-// Short silent product tour (captions are burned into the video).
+// Short product tour (captions are burned into the video). `sound` for tours with a voice-over;
+// it starts on the visitor's click, so browsers allow the audio.
 // Shows the poster with a play button and loads nothing until it is played, so pages stay light.
 // Videos and posters live in public/videos/tutorials (made with graphics/tutorials/*.mjs).
-export default function TutorialVideo({ src, poster, title, duration, className = '' }) {
+export default function TutorialVideo({ src, poster, title, duration, sound = false, className = '' }) {
   const ref = useRef(null);
   const [playing, setPlaying] = useState(false);
 
@@ -22,7 +23,7 @@ export default function TutorialVideo({ src, poster, title, duration, className 
           poster={poster}
           preload="none"
           playsInline
-          muted
+          muted={!sound}
           controls={playing}
           onEnded={() => setPlaying(false)}
           className="w-full h-full object-contain bg-[#F6F3EC]"
@@ -39,7 +40,7 @@ export default function TutorialVideo({ src, poster, title, duration, className 
       </div>
       <figcaption className="flex items-center justify-between gap-3 px-4 py-3 text-[13px]">
         <span className="font-semibold text-[#16130F]">{title}</span>
-        <span className="text-[#6B6458] whitespace-nowrap">{duration} · no sound needed</span>
+        <span className="text-[#6B6458] whitespace-nowrap">{duration} · {sound ? 'with voice-over' : 'no sound needed'}</span>
       </figcaption>
     </figure>
   );

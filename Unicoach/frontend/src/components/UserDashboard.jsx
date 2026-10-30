@@ -867,6 +867,7 @@ ${name || 'Candidate'}`;
             poster="/videos/tutorials/student-dashboard-poster.jpg"
             title="Your first steps on UniCoach"
             duration="1 min"
+            sound
             className="w-full max-w-[420px] xl:max-w-[560px] xl:justify-self-end"
           />
           </div>
