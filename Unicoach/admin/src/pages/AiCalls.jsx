@@ -419,7 +419,7 @@ const NewCall = ({ onDone }) => {
           label="Instructions for this call (optional)"
           extra="Riya follows these on top of her usual script, e.g. “Remind them about Saturday's UK webinar at 6 PM” or “Only talk about the education loan”."
         >
-          <Input.TextArea rows={3} maxLength={1000} showCount />
+          <Input.TextArea rows={3} maxLength={1000} />
         </Form.Item>
         <Form.Item name="scheduledAt" label="When" extra="Leave empty to call now (only during calling hours).">
           <DatePicker showTime={{ format: 'HH:mm' }} format="D MMM YYYY, HH:mm" style={{ width: '100%' }} placeholder="Now" />
