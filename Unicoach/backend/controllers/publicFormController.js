@@ -6,6 +6,64 @@ const { findLeadsByContact, linkLeadToDuplicates } = require('../utils/leadMatch
 const { readAttribution } = require('../utils/attribution');
 const { sendMetaEvent } = require('../services/metaConversions');
 const { startLeadCall } = require('../services/bolnaCalls');
+const { sendEmail } = require('../utils/email');
+const { escapeHtml } = require('../utils/escapeHtml');
+
+const SITE = () => (process.env.FRONTEND_URL || 'https://www.unicoach.com').replace(/\/+$/, '');
+const emailShell = (body) => `
+  <div style="font-family: 'Helvetica Neue', Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 30px; background: #ffffff; border-radius: 16px; border: 1px solid #e2e8f0;">
+    <div style="text-align: center; margin-bottom: 24px;">
+      <img src="https://www.unicoach.com/logo-black.png" alt="UniCoach" width="150" style="display:inline-block;width:150px;max-width:150px;height:auto;border:0" />
+    </div>
+    ${body}
+    <p style="color: #94a3b8; font-size: 12px; line-height: 1.5; border-top: 1px solid #f1f5f9; padding-top: 20px; text-align: center;">
+      Need help? Reach us at <a href="mailto:unicoachedu@gmail.com" style="color: #DE5C2B; text-decoration: none;">unicoachedu@gmail.com</a>.
+    </p>
+  </div>`;
+
+// Form owner (mentor / influencer) hears about every new student, account or not. Never blocks the submit.
+const sendOwnerLeadEmail = ({ to, formLabel, studentName, data, fields }) => {
+  const rows = fields
+    .filter((f) => f.type !== 'heading' && data[f.label] !== undefined && data[f.label] !== '')
+    .map((f) => {
+      const v = data[f.label];
+      return `<tr><td style="padding: 6px 10px; color: #64748b; font-size: 13px; vertical-align: top;">${escapeHtml(f.label)}</td>
+        <td style="padding: 6px 10px; color: #1e293b; font-size: 13px; font-weight: 600;">${escapeHtml(Array.isArray(v) ? v.join(', ') : String(v))}</td></tr>`;
+    }).join('');
+  sendEmail({
+    kind: 'mentors',
+    to,
+    subject: `Naya student aaya: ${studentName} (${formLabel})`,
+    html: emailShell(`
+      <h2 style="color: #1e293b; font-size: 20px; font-weight: 700; margin-bottom: 8px;">Aapke form se naya student aaya 🎉</h2>
+      <p style="color: #475569; font-size: 14px; line-height: 1.6; margin-bottom: 16px;">Form: <strong>${escapeHtml(formLabel)}</strong></p>
+      <table style="width: 100%; border-collapse: collapse; background: #f8fafc; border-radius: 12px;">${rows}</table>
+      <p style="color: #475569; font-size: 14px; line-height: 1.6; margin: 20px 0 0;">
+        Apne saare students ek jagah dekhne ke liye isi email (${escapeHtml(to)}) se Google login karke mentor dashboard kholo.
+      </p>
+      <div style="text-align: center; margin: 24px 0;">
+        <a href="${SITE()}/unicoach/dashboard" style="background: #DE5C2B; color: #ffffff; font-weight: 700; text-decoration: none; padding: 13px 26px; border-radius: 12px; font-size: 14px; display: inline-block;">Dashboard kholo →</a>
+      </div>`)
+  }).catch((e) => console.warn('Form owner email non-blocking failed:', e.message));
+};
+
+// Thank-you note to the student who filled the form. Never blocks the submit.
+const sendStudentThanksEmail = ({ to, name, formLabel, successMessage }) => {
+  sendEmail({
+    kind: 'counselling',
+    to,
+    subject: `Thank you, ${name} — UniCoach ko aapki details mil gayi`,
+    html: emailShell(`
+      <h2 style="color: #1e293b; font-size: 20px; font-weight: 700; margin-bottom: 12px;">Thank you, ${escapeHtml(name)}! 🎓</h2>
+      <p style="color: #475569; font-size: 14px; line-height: 1.6;">${escapeHtml(successMessage)}</p>
+      <p style="color: #475569; font-size: 14px; line-height: 1.6;">
+        Aapne <strong>${escapeHtml(formLabel)}</strong> bhara hai. Hamari team jaldi aapse contact karegi.
+      </p>
+      <div style="text-align: center; margin: 24px 0;">
+        <a href="${SITE()}/universities" style="background: #DE5C2B; color: #ffffff; font-weight: 700; text-decoration: none; padding: 13px 26px; border-radius: 12px; font-size: 14px; display: inline-block;">Universities dekho →</a>
+      </div>`)
+  }).catch((e) => console.warn('Form thank-you email non-blocking failed:', e.message));
+};
 
 /**
  * GET /api/forms/:slug
@@ -150,6 +208,10 @@ exports.submitForm = async (req, res) => {
       customData: { content_name: form.name || form.slug }
     });
     startLeadCall(lead);
+    if (ownerEmail) sendOwnerLeadEmail({ to: ownerEmail, formLabel, studentName: name, data, fields: form.fields });
+    if (cleanEmail && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(cleanEmail)) {
+      sendStudentThanksEmail({ to: cleanEmail, name: name === 'New Lead' ? 'there' : name, formLabel, successMessage: form.successMessage || 'Thank you! Your response has been recorded.' });
+    }
 
     return res.status(201).json({
       success: true,
