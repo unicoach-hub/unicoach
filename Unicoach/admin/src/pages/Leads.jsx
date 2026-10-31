@@ -874,8 +874,10 @@ const Leads = ({ view = 'all' }) => {
         const mentorName = record.referralMentorName || record.referralMentor?.name || '';
         return (
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: 4 }}>
+            {/* A long source ("Event: Ireland Career Roadmap 2027: …") wraps to at most 2 lines in a square-cornered badge;
+                fully rounded, the wrapped text turned it into a blob. The full name stays in the tooltip. */}
             <span className="nx-status nx-status--neutral" title={full}
-              style={{ whiteSpace: 'normal', height: 'auto', minHeight: 24, lineHeight: 1.3, padding: '4px 10px', fontSize: 12, textAlign: 'left', display: 'inline-block', maxWidth: '100%', overflowWrap: 'anywhere' }}>
+              style={{ whiteSpace: 'normal', height: 'auto', minHeight: 24, lineHeight: 1.3, padding: '4px 8px', fontSize: 12, textAlign: 'left', maxWidth: '100%', borderRadius: 8, overflow: 'hidden', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflowWrap: 'anywhere' }}>
               {short}
             </span>
             {mentorHandle && (
