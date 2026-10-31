@@ -10,6 +10,7 @@ const PAGE_SECTIONS = [
   ['/universities', 'universities'],
   ['/scholarships', 'scholarships'],
   ['/leads', 'leads'],
+  ['/ai-calls', 'leads'],
   ['/crm', 'crm'],
   ['/users', 'students'],
   ['/requests', 'support'],

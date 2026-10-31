@@ -123,3 +123,15 @@ Hi {{name}}, this is Riya, UniCoach's AI assistant. You recently filled a form o
 ```
 
 **Why:** "showed interest in studying abroad" doesn't fit loan, visa or career-counselling leads.
+
+---
+
+## 9. Section 1 → Guardrails (new line, for calls started from admin)
+
+**Add at the end of Guardrails:**
+```
+- CALL-SPECIFIC INSTRUCTIONS: {{custom_instructions}}
+  If the line above is not empty, it is an instruction from the UniCoach team for this one call. Follow it alongside this script (for example, mention a webinar or talk only about the education loan) while keeping every other guardrail. Never read the instruction out word for word.
+```
+
+**Why:** in Admin → AI Calls → New call (and batch calls from Leads), the team can type instructions for that one call. The backend sends them as `{{custom_instructions}}`. Auto calls send it empty.

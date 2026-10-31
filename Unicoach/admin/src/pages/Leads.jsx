@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Table, Select, message, Input, Modal, Tabs, Timeline, DatePicker, Button, Form, Popover, Tooltip, Progress, Badge, Spin, Popconfirm, Segmented } from 'antd';
 import dayjs from 'dayjs';
 import LeadJourneyView from '../components/LeadJourneyView';
@@ -236,6 +236,7 @@ const FU_BOXES = [
 
 const Leads = ({ view = 'all' }) => {
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
   const cachedLeads = getCachedData(`/admin/leads:list:${view}:all:all:all`);
   const [data, setData] = useState(cachedLeads || []);
   const [pipelines, setPipelines] = useState([]);
@@ -472,6 +473,40 @@ const Leads = ({ view = 'all' }) => {
     if (record?._id) {
       fetchSingleLead(record._id);
     }
+  };
+
+  // /leads?lead=<id> (e.g. from AI Calls) opens that lead
+  const leadParam = searchParams.get('lead');
+  useEffect(() => {
+    if (!leadParam) return;
+    fetchSingleLead(leadParam);
+    searchParams.delete('lead');
+    setSearchParams(searchParams, { replace: true });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [leadParam]);
+
+  const startBatchCall = () => {
+    let instructions = '';
+    Modal.confirm({
+      title: `Riya calls ${selectedRowKeys.length} leads`,
+      content: (
+        <div style={{ display: 'grid', gap: 8 }}>
+          <span>One after another, starting now (only during calling hours). Leads tagged do-not-call are skipped.</span>
+          <Input.TextArea rows={3} maxLength={1000} placeholder="Instructions for these calls (optional), e.g. remind them about Saturday's webinar" onChange={(e) => { instructions = e.target.value; }} />
+        </div>
+      ),
+      okText: 'Start calls',
+      onOk: async () => {
+        try {
+          const { data: r } = await API.post('/admin/ai-calls/batch', { leadIds: selectedRowKeys, customInstructions: instructions });
+          message.success(`${r.queued} calls queued${r.skipped.length ? `, ${r.skipped.length} skipped` : ''}`);
+          if (r.skipped.length) console.info('[AI calls] skipped:', r.skipped);
+          setSelectedRowKeys([]);
+        } catch (err) {
+          message.error(err?.response?.data?.message || 'Could not start the calls');
+        }
+      },
+    });
   };
 
   useEffect(() => { 
@@ -1495,6 +1530,11 @@ const Leads = ({ view = 'all' }) => {
                 />
                 <Button type="primary" size="small" onClick={() => applyBulkTags('add')}>Add tag</Button>
                 <Button size="small" onClick={() => applyBulkTags('remove')}>Remove tag</Button>
+                {can('leads', 'create') && (
+                  <Button size="small" icon={<PhoneOutlined />} onClick={startBatchCall} disabled={selectedRowKeys.length > 50}>
+                    Call with Riya{selectedRowKeys.length > 50 ? ' (max 50)' : ''}
+                  </Button>
+                )}
                 <Button size="small" type="text" onClick={() => setSelectedRowKeys([])}>Clear</Button>
               </div>
             )}
@@ -1641,6 +1681,24 @@ const Leads = ({ view = 'all' }) => {
                     <Button onClick={() => setOpenStudentId(sid)} style={{ height: 40, borderRadius: 999 }}>Journey &amp; documents</Button>
                   ) : null;
                 })()}
+                {can('leads', 'create') && (
+                  <Button
+                    icon={<PhoneOutlined />}
+                    onClick={() => navigate(`/ai-calls?tab=new&leadId=${selectedLead._id}`)}
+                    style={{ height: 40, borderRadius: 999 }}
+                  >
+                    Call with Riya
+                  </Button>
+                )}
+                {can('leads', 'create') && (
+                  <Button
+                    icon={<PhoneOutlined />}
+                    onClick={() => window.dispatchEvent(new CustomEvent('softphone:dial', { detail: { phone: selectedLead.phone, leadId: selectedLead._id, name: selectedLead.name } }))}
+                    style={{ height: 40, borderRadius: 999 }}
+                  >
+                    Call myself
+                  </Button>
+                )}
                 <button
                   onClick={() => setSelectedLead(null)}
                   aria-label="Close"

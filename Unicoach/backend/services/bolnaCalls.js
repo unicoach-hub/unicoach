@@ -1,20 +1,24 @@
 const Lead = require('../models/Lead');
+const AiCall = require('../models/AiCall');
+const Settings = require('../models/Settings');
+const { normalizePhone } = require('../utils/twilio');
 
 /**
- * Bolna AI calls: Riya (the Bolna agent) calls a new website lead a minute after the form,
- * and Bolna's webhook (controllers/bolnaController) writes the call result back onto the lead.
+ * Bolna AI calls by Riya (the Bolna agent):
+ *  - auto: a new website lead is called a minute after the form (startLeadCall)
+ *  - manual / batch: the team starts a call from admin → AI Calls or a lead (queueCall)
+ *  - inbound: students calling the Vobiz number; Bolna answers, the webhook logs it
+ * Every call is an AiCall document; Bolna's webhook (recordExecution) fills in the result and
+ * updates the lead.
  *
- * Needs BOLNA_API_KEY + BOLNA_AGENT_ID, and BOLNA_AUTO_CALL=true to actually dial.
- * Optional BOLNA_FROM_NUMBER (E.164) picks the caller number; otherwise Bolna uses the agent's default.
- * startLeadCall never throws and never delays the response (callers do not await it).
+ * Server env: BOLNA_API_KEY (required), BOLNA_AGENT_ID / BOLNA_FROM_NUMBER (defaults for the admin
+ * settings), BOLNA_AUTO_CALL=false blocks auto calls whatever the admin toggle says.
+ * Admin → AI Calls → Settings: auto-call on/off, agent, caller number, calling hours, daily limit.
  */
 
-const BOLNA_CALL_URL = 'https://api.bolna.ai/call';
+const BOLNA_API = 'https://api.bolna.ai';
 const AGENT_NAME = 'AI Agent (Riya)';
 
-// Calling window in IST, the same as Riya's "Outbound call timing restrictions" in Bolna
-const WINDOW_START_HOUR = 9;
-const WINDOW_END_HOUR = 21;
 const NEXT_DAY_HOUR = 10; // a lead that comes in at night is called at 10 AM
 const LAST_CALL_MINUTES_BEFORE_END = 15; // a 6-minute call should not run past the window
 const FIRST_CALL_DELAY_MINUTES = 1; // gives the student a moment to put the phone down after the form
@@ -27,30 +31,69 @@ const fromIst = (istDate) => new Date(istDate.getTime() - IST_OFFSET_MIN * 60000
 // ISO string with the +05:30 offset, the format Bolna's scheduled_at expects
 const toIstIso = (date) => `${toIst(date).toISOString().slice(0, 19)}+05:30`;
 
-/** When to place the first call for a lead created at `now`. */
-function nextCallTime(now = new Date()) {
-  const earliest = new Date(now.getTime() + FIRST_CALL_DELAY_MINUTES * 60000);
-  const ist = toIst(earliest);
-  const minutesOfDay = ist.getUTCHours() * 60 + ist.getUTCMinutes();
-  const lastStart = WINDOW_END_HOUR * 60 - LAST_CALL_MINUTES_BEFORE_END;
-  if (minutesOfDay >= WINDOW_START_HOUR * 60 && minutesOfDay <= lastStart) return earliest;
+const startOfIstDay = (now = new Date()) => {
+  const ist = toIst(now);
+  ist.setUTCHours(0, 0, 0, 0);
+  return fromIst(ist);
+};
 
+/* ───────────────────────── Config ───────────────────────── */
+
+const DEFAULT_WINDOW = { windowStartHour: 9, windowEndHour: 21 };
+
+async function getConfig() {
+  const settings = await Settings.findOne().select('aiCall').lean().catch(() => null);
+  const a = settings?.aiCall || {};
+  const env = process.env;
+  return {
+    apiKey: env.BOLNA_API_KEY || '',
+    agentId: a.agentId || env.BOLNA_AGENT_ID || '',
+    fromNumber: a.fromNumber || env.BOLNA_FROM_NUMBER || '',
+    autoEnabled: a.autoEnabled === true && env.BOLNA_AUTO_CALL !== 'false',
+    windowStartHour: Number.isFinite(a.windowStartHour) ? a.windowStartHour : DEFAULT_WINDOW.windowStartHour,
+    windowEndHour: Number.isFinite(a.windowEndHour) ? a.windowEndHour : DEFAULT_WINDOW.windowEndHour,
+    dailyAutoLimit: Number.isFinite(a.dailyAutoLimit) ? a.dailyAutoLimit : 100,
+  };
+}
+
+/* ───────────────────────── Timing ───────────────────────── */
+
+const minutesOfIstDay = (date) => {
+  const ist = toIst(date);
+  return ist.getUTCHours() * 60 + ist.getUTCMinutes();
+};
+
+function isWithinWindow(date = new Date(), window = DEFAULT_WINDOW) {
+  const m = minutesOfIstDay(date);
+  return m >= window.windowStartHour * 60 && m <= window.windowEndHour * 60 - LAST_CALL_MINUTES_BEFORE_END;
+}
+
+/** When to place the first call for a lead created at `now`. */
+function nextCallTime(now = new Date(), window = DEFAULT_WINDOW) {
+  const earliest = new Date(now.getTime() + FIRST_CALL_DELAY_MINUTES * 60000);
+  if (isWithinWindow(earliest, window)) return earliest;
+
+  const ist = toIst(earliest);
   const target = new Date(ist);
-  if (minutesOfDay > lastStart) target.setUTCDate(target.getUTCDate() + 1);
-  target.setUTCHours(NEXT_DAY_HOUR, 0, 0, 0);
+  if (minutesOfIstDay(earliest) > window.windowStartHour * 60) target.setUTCDate(target.getUTCDate() + 1);
+  target.setUTCHours(Math.max(NEXT_DAY_HOUR, window.windowStartHour), 0, 0, 0);
   return fromIst(target);
 }
+
+/* ───────────────────────── Placing calls ───────────────────────── */
 
 const isKnown = (value) => {
   const v = String(value || '').trim();
   return v && !/^(undecided|not specified|unsure|n\/a|na|none)$/i.test(v) ? v : '';
 };
 
+const firstName = (name) => String(name || '').trim().split(/\s+/)[0] || '';
+
 // Values the agent prompt reads as {{name}}, {{target_country}} ... (see ai-call-agent/riya-prompt-fixes.md)
 function buildUserData(lead) {
   return {
     lead_id: String(lead._id),
-    name: String(lead.name || '').trim().split(/\s+/)[0] || '',
+    name: firstName(lead.name),
     source: String(lead.latestSource || lead.source || '').replace(/^Form:\s*/i, ''),
     target_country: isKnown(lead.dreamCountry),
     intake_year: isKnown(lead.preferredIntake),
@@ -60,36 +103,48 @@ function buildUserData(lead) {
 }
 
 const isIndianMobile = (phone) => /^\+91[6-9]\d{9}$/.test(String(phone || ''));
+const isIndianNumber = (phone) => /^\+91\d{10}$/.test(String(phone || ''));
 
-/**
- * Queue Riya's call for a lead that was just saved. Skips numbers that asked not to be called
- * and numbers already called in the last day.
- * @param {object} lead  a saved Lead document
- */
-function startLeadCall(lead) {
-  const apiKey = process.env.BOLNA_API_KEY;
-  const agentId = process.env.BOLNA_AGENT_ID;
-  if (process.env.BOLNA_AUTO_CALL !== 'true' || !apiKey || !agentId) return;
-  if (!lead?._id || !isIndianMobile(lead.phone)) return;
-
-  queueCall(lead, { apiKey, agentId }).catch((err) => console.warn('[Bolna] call not queued:', err.message));
+class CallError extends Error {
+  constructor(message, status = 400) {
+    super(message);
+    this.status = status;
+  }
 }
 
-async function queueCall(lead, { apiKey, agentId }) {
-  const since = new Date(Date.now() - REPEAT_CALL_GAP_HOURS * 3600000);
-  const blocker = await Lead.findOne({
-    _id: { $ne: lead._id },
-    phone: lead.phone,
-    $or: [{ tags: 'do-not-call' }, { 'aiCall.queuedAt': { $gte: since } }],
-  }).select('_id tags').lean();
-  if (blocker) return;
+async function bolnaRequest(path, { method = 'GET', body, apiKey } = {}) {
+  const res = await fetch(`${BOLNA_API}${path}`, {
+    method,
+    headers: { Authorization: `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
+    body: body ? JSON.stringify(body) : undefined,
+    signal: AbortSignal.timeout(10000),
+  });
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok) throw new CallError(`Bolna ${res.status}: ${String(data.message || JSON.stringify(data)).slice(0, 200)}`, 502);
+  return data;
+}
 
-  const callAt = nextCallTime();
+/**
+ * Ask Bolna to call one number and keep an AiCall record (plus a note on the lead, if any).
+ * @returns {Promise<object>} the AiCall document
+ */
+async function queueCall({ lead, phone, name, trigger, customInstructions = '', requestedBy = 'System', scheduledAt, config }) {
+  const cfg = config || await getConfig();
+  if (!cfg.apiKey || !cfg.agentId) throw new CallError('AI calling is not set up: BOLNA_API_KEY and an agent ID are needed', 503);
+
+  const to = normalizePhone(String(phone || lead?.phone || ''));
+  if (!isIndianNumber(to)) throw new CallError('Only Indian numbers (+91 and 10 digits) can be called');
+
+  const userData = lead
+    ? buildUserData(lead)
+    : { lead_id: '', name: firstName(name), source: '', target_country: '', intake_year: '', education_level: '', city: '' };
+  if (!lead && name) userData.name = firstName(name);
+  userData.custom_instructions = String(customInstructions || '').trim().slice(0, 1000);
+
   const body = {
-    agent_id: agentId,
-    recipient_phone_number: lead.phone,
-    scheduled_at: toIstIso(callAt),
-    user_data: buildUserData(lead),
+    agent_id: cfg.agentId,
+    recipient_phone_number: to,
+    user_data: userData,
     retry_config: {
       enabled: true,
       max_retries: 2,
@@ -97,39 +152,87 @@ async function queueCall(lead, { apiKey, agentId }) {
       retry_intervals_minutes: [60, 240],
     },
   };
-  if (process.env.BOLNA_FROM_NUMBER) body.from_phone_number = process.env.BOLNA_FROM_NUMBER;
+  if (scheduledAt) body.scheduled_at = toIstIso(scheduledAt);
+  if (cfg.fromNumber) body.from_phone_number = cfg.fromNumber;
 
-  const res = await fetch(BOLNA_CALL_URL, {
-    method: 'POST',
-    headers: { Authorization: `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
-    body: JSON.stringify(body),
-    signal: AbortSignal.timeout(10000),
+  const data = await bolnaRequest('/call', { method: 'POST', body, apiKey: cfg.apiKey });
+  if (!data.execution_id) throw new CallError('Bolna did not return a call id', 502);
+
+  const call = await AiCall.create({
+    executionId: data.execution_id,
+    leadId: lead?._id,
+    direction: 'outbound',
+    trigger,
+    phone: to,
+    name: String(lead?.name || name || '').trim(),
+    agentId: cfg.agentId,
+    status: data.status || 'queued',
+    customInstructions: userData.custom_instructions,
+    requestedBy,
+    scheduledFor: scheduledAt || new Date(),
   });
-  const data = await res.json().catch(() => ({}));
-  if (!res.ok || !data.execution_id) {
-    throw new Error(`Bolna ${res.status}: ${String(data.message || JSON.stringify(data)).slice(0, 200)}`);
-  }
 
-  const timeIst = toIst(callAt).toISOString().slice(11, 16);
-  await Lead.updateOne({ _id: lead._id }, {
-    $set: {
-      'aiCall.executionId': data.execution_id,
-      'aiCall.status': data.status || 'queued',
-      'aiCall.queuedAt': new Date(),
-      'aiCall.scheduledFor': callAt,
-    },
-    $push: {
-      activities: {
-        type: 'note',
-        comment: `AI call by Riya queued for ${timeIst} IST`,
-        date: new Date(),
-        performedBy: 'System',
+  if (lead?._id) {
+    const when = scheduledAt && scheduledAt.getTime() - Date.now() > 90000
+      ? ` for ${toIst(scheduledAt).toISOString().slice(0, 16).replace('T', ' ')} IST`
+      : '';
+    await Lead.updateOne({ _id: lead._id }, {
+      $set: {
+        'aiCall.executionId': data.execution_id,
+        'aiCall.status': call.status,
+        'aiCall.queuedAt': new Date(),
+        'aiCall.scheduledFor': call.scheduledFor,
       },
-    },
-  });
+      $push: {
+        activities: {
+          type: 'note',
+          comment: `AI call by Riya ${trigger === 'auto' ? 'queued' : `started by ${requestedBy}`}${when}`,
+          date: new Date(),
+          performedBy: 'System',
+        },
+      },
+    });
+  }
+  return call;
 }
 
-/* ───────────────────────── Webhook result → lead ───────────────────────── */
+/**
+ * Auto call for a lead that was just saved by a website form. Skips numbers that asked not to be
+ * called, numbers already called in the last day, and anything past the daily limit.
+ * Never throws and never delays the response (callers do not await it).
+ */
+function startLeadCall(lead) {
+  if (!process.env.BOLNA_API_KEY || process.env.BOLNA_AUTO_CALL === 'false') return;
+  if (!lead?._id || !isIndianMobile(lead.phone)) return;
+  autoCall(lead).catch((err) => console.warn('[Bolna] auto call not queued:', err.message));
+}
+
+async function autoCall(lead) {
+  const config = await getConfig();
+  if (!config.autoEnabled || !config.agentId) return;
+
+  const since = new Date(Date.now() - REPEAT_CALL_GAP_HOURS * 3600000);
+  const blocker = await Lead.findOne({
+    _id: { $ne: lead._id },
+    phone: lead.phone,
+    $or: [{ tags: 'do-not-call' }, { 'aiCall.queuedAt': { $gte: since } }],
+  }).select('_id').lean();
+  if (blocker) return;
+
+  const today = await AiCall.countDocuments({ trigger: 'auto', createdAt: { $gte: startOfIstDay() } });
+  if (today >= config.dailyAutoLimit) return;
+
+  await queueCall({ lead, trigger: 'auto', scheduledAt: nextCallTime(new Date(), config), config });
+}
+
+/** Full call record from Bolna (transcript, recording), for calls the webhook missed. */
+async function fetchExecution(executionId) {
+  const { apiKey } = await getConfig();
+  if (!apiKey) throw new CallError('BOLNA_API_KEY is not set', 503);
+  return bolnaRequest(`/executions/${encodeURIComponent(executionId)}`, { apiKey });
+}
+
+/* ───────────────────────── Webhook result → call + lead ───────────────────────── */
 
 // Statuses after which Bolna sends nothing more for this attempt
 const ANSWERED_STATUSES = ['completed', 'call-disconnected'];
@@ -252,6 +355,7 @@ function applyCallResult(lead, payload) {
   if (fields.country && !isKnown(lead.dreamCountry) && !/unsure/i.test(fields.country)) lead.dreamCountry = fields.country.slice(0, 80);
   if (fields.course && !lead.course) lead.course = fields.course.slice(0, 120);
   if (fields.education && !isKnown(lead.highestEducation)) lead.highestEducation = fields.education.slice(0, 120);
+  if (fields.name && /^inbound caller$/i.test(lead.name || '')) lead.name = fields.name.slice(0, 80);
 
   const detailLabels = [
     ['country', 'Country'], ['course', 'Course'], ['intake', 'Intake'], ['education', 'Education'],
@@ -260,8 +364,9 @@ function applyCallResult(lead, payload) {
   ];
   const details = detailLabels.filter(([key]) => fields[key]).map(([key, label]) => `${label}: ${fields[key]}`);
   const minutes = durationSec >= 60 ? `${Math.round(durationSec / 60)} min` : `${durationSec}s`;
+  const isInbound = payload.telephony_data?.call_type === 'inbound';
   const comment = [
-    `AI call by Riya (${minutes}): ${OUTCOME_LABELS[outcome]}`,
+    `${isInbound ? 'Inbound call answered by Riya' : 'AI call by Riya'} (${minutes}): ${OUTCOME_LABELS[outcome]}`,
     summary,
     details.join(' · '),
     recordingUrl ? `Recording: ${recordingUrl}` : '',
@@ -270,4 +375,105 @@ function applyCallResult(lead, payload) {
   return true;
 }
 
-module.exports = { startLeadCall, nextCallTime, buildUserData, readExtractions, applyCallResult, toIstIso };
+const callerPhone = (payload) => {
+  const t = payload.telephony_data || {};
+  const raw = t.call_type === 'inbound' ? t.from_number || payload.user_number : t.to_number || payload.user_number;
+  return normalizePhone(String(raw || ''));
+};
+
+// Outbound calls carry our lead_id; inbound calls are matched by the caller's number
+async function findLead(payload, call) {
+  const ids = [payload.context_details?.recipient_data?.lead_id, call?.leadId].map((v) => String(v || ''));
+  for (const id of ids) {
+    if (/^[a-f0-9]{24}$/i.test(id)) {
+      const lead = await Lead.findById(id);
+      if (lead) return lead;
+    }
+  }
+  const lead = await Lead.findOne({ 'aiCall.executionId': String(payload.id) });
+  if (lead) return lead;
+  const phone = callerPhone(payload);
+  if (!/^\+\d{11,14}$/.test(phone)) return null;
+  return Lead.findOne({ phone }).sort({ createdAt: -1 });
+}
+
+/**
+ * Store one Bolna webhook update: the AiCall record and the lead.
+ * An inbound caller who is not a lead yet becomes one once they have actually talked to Riya.
+ */
+async function recordExecution(payload) {
+  const executionId = String(payload.id || '');
+  const status = String(payload.status || '');
+  const isInbound = payload.telephony_data?.call_type === 'inbound';
+  const phone = callerPhone(payload);
+
+  let call = await AiCall.findOne({ executionId });
+  if (!call) {
+    call = new AiCall({
+      executionId,
+      direction: isInbound ? 'inbound' : 'outbound',
+      trigger: isInbound ? 'inbound' : 'manual',
+      phone,
+      agentId: String(payload.agent_id || ''),
+      requestedBy: isInbound ? 'Caller' : 'Bolna dashboard',
+    });
+  }
+
+  const isFinal = ANSWERED_STATUSES.includes(status) || UNANSWERED_STATUSES.includes(status);
+  const fields = readExtractions(payload.extracted_data);
+  const durationSec = Math.round(Number(payload.conversation_duration) || 0);
+  call.status = status;
+  if (ANSWERED_STATUSES.includes(status)) {
+    Object.assign(call, {
+      outcome: pickOutcome(fields, durationSec),
+      durationSec,
+      recordingUrl: payload.telephony_data?.recording_url || '',
+      transcript: String(payload.transcript || '').slice(0, 100000),
+      summary: String(payload.summary || '').trim().slice(0, 4000),
+      extracted: fields,
+      hangupBy: String(payload.telephony_data?.hangup_by || ''),
+    });
+  }
+  if (isFinal) {
+    call.endedAt = call.endedAt || new Date();
+    if (payload.error_message) call.error = String(payload.error_message).slice(0, 500);
+  }
+
+  let lead = await findLead(payload, call);
+  if (!lead && isInbound && ANSWERED_STATUSES.includes(status) && durationSec > 0 && isIndianNumber(phone)) {
+    lead = new Lead({
+      name: fields.name || 'Inbound caller',
+      phone,
+      email: '',
+      source: 'Inbound call',
+      latestSource: 'Inbound call',
+      verified: false,
+      status: 'new',
+      activities: [{ type: 'note', comment: 'Called the Unicoach number; Riya answered', date: new Date(), performedBy: 'System' }],
+    });
+  }
+
+  if (lead) {
+    if (applyCallResult(lead, payload) || lead.isNew) await lead.save();
+    call.leadId = lead._id;
+    if (!call.name) call.name = lead.name;
+  }
+  await call.save();
+  return { call, lead };
+}
+
+module.exports = {
+  startLeadCall,
+  queueCall,
+  getConfig,
+  isWithinWindow,
+  nextCallTime,
+  buildUserData,
+  readExtractions,
+  applyCallResult,
+  recordExecution,
+  fetchExecution,
+  toIstIso,
+  CallError,
+  OUTCOME_LABELS,
+};

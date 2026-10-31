@@ -2,11 +2,29 @@
 const mockLeadFindOne = jest.fn();
 const mockLeadFindById = jest.fn();
 const mockLeadUpdateOne = jest.fn();
+const mockAiCallFindOne = jest.fn();
+const mockAiCallCreate = jest.fn();
+const mockAiCallCount = jest.fn();
+const mockAiCallSaved = [];
+let mockSettings = null;
 
 jest.mock('../models/Lead', () => ({
   findOne: (...a) => mockLeadFindOne(...a),
   findById: (...a) => mockLeadFindById(...a),
   updateOne: (...a) => mockLeadUpdateOne(...a),
+}));
+jest.mock('../models/AiCall', () => {
+  function AiCall(data) {
+    Object.assign(this, data);
+    this.save = jest.fn(async () => { mockAiCallSaved.push(this); return this; });
+  }
+  AiCall.findOne = (...a) => mockAiCallFindOne(...a);
+  AiCall.create = (...a) => mockAiCallCreate(...a);
+  AiCall.countDocuments = (...a) => mockAiCallCount(...a);
+  return AiCall;
+});
+jest.mock('../models/Settings', () => ({
+  findOne: () => ({ select: () => ({ lean: () => ({ catch: () => Promise.resolve(mockSettings) }) }) }),
 }));
 
 const { nextCallTime, buildUserData, readExtractions, applyCallResult, startLeadCall, toIstIso } = require('../services/bolnaCalls');
@@ -154,27 +172,40 @@ describe('startLeadCall', () => {
   const env = { ...process.env };
   afterEach(() => { process.env = { ...env }; delete global.fetch; jest.clearAllMocks(); });
 
-  test('does nothing until BOLNA_AUTO_CALL is on', () => {
+  test('does nothing until auto-call is switched on in admin', async () => {
     global.fetch = jest.fn();
     process.env.BOLNA_API_KEY = 'key';
     process.env.BOLNA_AGENT_ID = 'agent';
-    delete process.env.BOLNA_AUTO_CALL;
+    mockSettings = { aiCall: { autoEnabled: false } };
     startLeadCall(makeLead());
+    await new Promise((r) => setImmediate(r));
     expect(mockLeadFindOne).not.toHaveBeenCalled();
+    expect(global.fetch).not.toHaveBeenCalled();
+  });
+
+  test('BOLNA_AUTO_CALL=false blocks auto calls even when the admin toggle is on', async () => {
+    global.fetch = jest.fn();
+    process.env.BOLNA_API_KEY = 'key';
+    process.env.BOLNA_AGENT_ID = 'agent';
+    process.env.BOLNA_AUTO_CALL = 'false';
+    mockSettings = { aiCall: { autoEnabled: true } };
+    startLeadCall(makeLead());
+    await new Promise((r) => setImmediate(r));
     expect(global.fetch).not.toHaveBeenCalled();
   });
 
   test('queues the call and logs it on the lead', async () => {
     process.env.BOLNA_API_KEY = 'key';
     process.env.BOLNA_AGENT_ID = 'agent';
-    process.env.BOLNA_AUTO_CALL = 'true';
+    mockSettings = { aiCall: { autoEnabled: true } };
     mockLeadFindOne.mockReturnValue({ select: () => ({ lean: async () => null }) });
+    mockAiCallCount.mockResolvedValue(0);
+    mockAiCallCreate.mockImplementation(async (d) => d);
     global.fetch = jest.fn(async () => ({ ok: true, status: 200, json: async () => ({ status: 'queued', execution_id: 'exec-9' }) }));
     mockLeadUpdateOne.mockResolvedValue({});
 
     startLeadCall(makeLead());
-    await new Promise((r) => setImmediate(r));
-    await new Promise((r) => setImmediate(r));
+    for (let i = 0; i < 6; i += 1) await new Promise((r) => setImmediate(r));
 
     const [url, init] = global.fetch.mock.calls[0];
     expect(url).toBe('https://api.bolna.ai/call');
@@ -182,25 +213,39 @@ describe('startLeadCall', () => {
     const body = JSON.parse(init.body);
     expect(body).toMatchObject({ agent_id: 'agent', recipient_phone_number: '+919812345678' });
     expect(body.user_data.name).toBe('Aarav');
+    expect(body.user_data.custom_instructions).toBe('');
+    expect(mockAiCallCreate.mock.calls[0][0]).toMatchObject({ executionId: 'exec-9', trigger: 'auto', phone: '+919812345678' });
     expect(mockLeadUpdateOne.mock.calls[0][1].$set['aiCall.executionId']).toBe('exec-9');
+  });
+
+  test('stops at the daily auto-call limit', async () => {
+    process.env.BOLNA_API_KEY = 'key';
+    process.env.BOLNA_AGENT_ID = 'agent';
+    mockSettings = { aiCall: { autoEnabled: true, dailyAutoLimit: 5 } };
+    mockLeadFindOne.mockReturnValue({ select: () => ({ lean: async () => null }) });
+    mockAiCallCount.mockResolvedValue(5);
+    global.fetch = jest.fn();
+
+    startLeadCall(makeLead());
+    for (let i = 0; i < 6; i += 1) await new Promise((r) => setImmediate(r));
+    expect(global.fetch).not.toHaveBeenCalled();
   });
 
   test('skips a number that asked not to be called or was called today', async () => {
     process.env.BOLNA_API_KEY = 'key';
     process.env.BOLNA_AGENT_ID = 'agent';
-    process.env.BOLNA_AUTO_CALL = 'true';
+    mockSettings = { aiCall: { autoEnabled: true } };
     mockLeadFindOne.mockReturnValue({ select: () => ({ lean: async () => ({ _id: 'other', tags: ['do-not-call'] }) }) });
     global.fetch = jest.fn();
 
     startLeadCall(makeLead());
-    await new Promise((r) => setImmediate(r));
+    for (let i = 0; i < 6; i += 1) await new Promise((r) => setImmediate(r));
     expect(global.fetch).not.toHaveBeenCalled();
   });
 
   test('skips numbers that are not Indian mobiles', () => {
     process.env.BOLNA_API_KEY = 'key';
     process.env.BOLNA_AGENT_ID = 'agent';
-    process.env.BOLNA_AUTO_CALL = 'true';
     startLeadCall(makeLead({ phone: '+447700900123' }));
     expect(mockLeadFindOne).not.toHaveBeenCalled();
   });
@@ -223,9 +268,11 @@ describe('POST /api/webhooks/bolna', () => {
     expect(res.status).toHaveBeenCalledWith(401);
   });
 
-  test('finds the lead by lead_id and saves the result', async () => {
+  test('finds the lead by lead_id and saves the result and the call', async () => {
     const lead = { ...makeLead(), save: jest.fn() };
     mockLeadFindById.mockResolvedValue(lead);
+    mockAiCallFindOne.mockResolvedValue(null);
+    mockAiCallSaved.length = 0;
     const res = makeRes();
     await receiveWebhook(makeReq('a-long-test-secret-123', completed(
       { outcome: { objective: 'consultation_yes' } },
@@ -235,5 +282,9 @@ describe('POST /api/webhooks/bolna', () => {
     expect(lead.save).toHaveBeenCalled();
     expect(lead.status).toBe('interested');
     expect(res.status).toHaveBeenCalledWith(200);
+    expect(mockAiCallSaved[0]).toMatchObject({
+      executionId: 'exec-1', outcome: 'consultation_yes', durationSec: 142, recordingUrl: 'https://rec.example/1.mp3',
+    });
+    expect(String(mockAiCallSaved[0].leadId)).toBe('64b7f0c2a1b2c3d4e5f60718');
   });
 });

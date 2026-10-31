@@ -354,8 +354,16 @@ app.use('/api/admin/dev', require('./routes/adminDeveloper'));
   app.get('/api/webhooks/whatsapp', wa.verifyWebhook);
   app.post('/api/webhooks/whatsapp', wa.receiveWebhook);
 }
+app.use('/api/admin/ai-calls', require('./routes/adminAiCalls'));
 // Bolna AI call results (public, checked with BOLNA_WEBHOOK_SECRET)
 app.post('/api/webhooks/bolna', require('./controllers/bolnaController').receiveWebhook);
+// Team softphone on Vobiz (public, checked with VOBIZ_WEBHOOK_SECRET in ?key=)
+{
+  const vz = require('./controllers/vobizController');
+  app.all('/api/webhooks/vobiz/answer', vz.answer);
+  app.all('/api/webhooks/vobiz/:event', vz.callback);
+  app.use('/api/admin/softphone', require('./routes/adminSoftphone'));
+}
 
 // CRM — Pipelines, Forms & Bookings (admin)
 app.use('/api/admin/pipelines', require('./routes/adminPipelines'));

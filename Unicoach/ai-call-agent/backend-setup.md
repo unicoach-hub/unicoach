@@ -28,28 +28,38 @@ Code: `backend/services/bolnaCalls.js`, `backend/controllers/bolnaController.js`
    (so the backend can set the lead's Next Follow-up date)
 4. Add the 2 new extractions, **outcome** and **counsellor_call_time** (same as told earlier).
 
+5. Add fix 9 from `riya-prompt-fixes.md` to the prompt (the `{{custom_instructions}}` line).
+
 ### 2. On the server (VPS / Coolify env)
 ```
 BOLNA_API_KEY=<step 1.1>
 BOLNA_AGENT_ID=<step 1.2>
 BOLNA_FROM_NUMBER=+918065356711
-BOLNA_AUTO_CALL=false
 BOLNA_WEBHOOK_SECRET=<a random 32-character string>
 ```
-Then deploy.
+Then deploy. (`BOLNA_AUTO_CALL=false` is an emergency stop only: it blocks auto calls whatever the admin toggle says.)
 
 ### 3. Connect the webhook
 Riya → **Extractions → Webhook URL:**
 ```
-https://<live api domain>/api/webhooks/bolna
+https://api.unicoach.com/api/webhooks/bolna
 ```
 Turn on **Add headers:** `x-unicoach-secret` = the same `BOLNA_WEBHOOK_SECRET`.
 Click **Send test**. The response should be 200 (with "no lead", which is fine for the test).
 
-### 4. Test with one real lead
-1. Turn off the trial limit (add funds to Bolna), or test from your verified number.
-2. Set `BOLNA_AUTO_CALL=true` → redeploy.
-3. Fill a form on the website with **your own number**.
-4. Riya's call should come in about 1 minute. After the call, open the lead in admin: the activity log should show Riya's summary.
+### 4. Test (Admin → AI Calls)
+1. **Manual test first:** AI Calls → **New call**, enter your own number → Start call. Riya calls you; after the call it shows up under **Call history**, with the recording, transcript and summary.
+2. **Auto test:** AI Calls → **Settings** → turn on "Call every new website lead" → Save. Fill a form on the website with your own number; Riya calls within about 1 minute.
+3. Turn off the Bolna trial limit (add funds), otherwise only your verified number can be called.
 
-From then on every new lead gets an automatic call. To stop it: `BOLNA_AUTO_CALL=false`.
+## What's in admin
+
+- **Sidebar → AI Calls**
+  - **Overview:** calls, answered, wants a counsellor, callbacks, talk time and ≈ cost; chart; whether the setup is complete
+  - **Call history:** all calls (auto / manual / batch / inbound), filters, click a row for the 🎧 recording, chat-style transcript, summary, what Riya found out, and a link to the lead
+  - **New call:** number + name + instructions for this call + now or a scheduled time
+  - **Settings** (owner only): auto-call on/off, agent ID, caller number, calling hours, max auto calls per day
+- **Lead popup → "Call with Riya"**: opens New call with that lead filled in (Riya gets their country, intake and education)
+- **Leads table → select leads → "Call with Riya"**: batch call (max 50), with optional instructions
+- **Inbound:** whoever calls +91 80653 56711 is matched to their lead; a new number becomes a new lead ("Inbound call")
+- Staff can see AI Calls if they have Leads permission; placing calls needs Leads → create
