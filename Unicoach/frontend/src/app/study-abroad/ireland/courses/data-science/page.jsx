@@ -6,92 +6,59 @@ import {
 } from 'lucide-react';
 import StudyAbroadCTA from '../../../../../components/StudyAbroadCTA';
 import { getUniversityLogo } from '../../../../../components/logoResolver';
+import { UNIVERSITIES_IRELAND } from '../../../../../data/universities/ireland';
 import { matchesUniversitySearch, getMatchedCoursesForUniversity } from '../../../../../utils/universitySearchMatcher';
 import { HookBand, BarCompare } from '../../../../../components/ui/Infographics';
 import { FinderCard, FinderField, FinderChip, FINDER_FIELD, FIELD_RADIUS } from '../../../../../components/ui/FinderForm';
 
 // ─────────────────────────────────────────────
 // Ireland University Database — Data Science
+// Built from the shared Ireland list (QS 2027 ranks, fees only where checked on the
+// university's own fee page), keeping universities that list a data, analytics or AI master's.
 // ─────────────────────────────────────────────
-const universityDatabase = [
-  {
-    id: 1,
-    name: "University College Dublin (UCD)",
-    city: "Dublin",
-    state: "Leinster",
-    location: "Dublin, Leinster, Ireland",
-    rank: "Rank 118 QS Rankings",
-    rankValue: 118,
-    tuition: null,
-    type: "PUBLIC",
-    logo: "https://logo.clearbit.com/ucd.ie",
-    website: "https://www.ucd.ie",
-    courses: [
-      "Data Science", "Computer Science", "Business Administration", "Engineering Science",
-      "Architecture", "Nursing and midwifery", "Economics", "Psychology",
-      "Biological Sciences", "Environmental science / management", "Law",
-      "Software Engineering", "International / Global Business", "Data Analytics",
-      "Business Analytics", "Artificial Intelligence / Machine Learning"
-    ],
-    degrees: ["Postgraduate", "Ph.D.", "Undergraduate"],
-    intakes: ["SEP"],
-    description: "Ireland's largest university, offering data science and analytics master's programmes close to Dublin's tech sector.",
-    eligibility: "Bachelor's degree + IELTS/TOEFL",
-    deadline: "Varies by course"
-  },
-  {
-    id: 2,
-    name: "Technological University of the Shannon: Midlands Midwest (TUS)",
-    city: "Athlone",
-    state: "Westmeath",
-    location: "Athlone, Westmeath, Ireland",
-    rank: "Rank --",
-    rankValue: 9999,
-    tuition: 20,
-    type: "PUBLIC",
-    logo: "https://logo.clearbit.com/tus.ie",
-    website: "https://www.tus.ie",
-    courses: [
-      "Data Science", "Computer Science", "Engineering Science", "Business Administration",
-      "Business Analytics", "Software Engineering", "Innovation / Entrepreneurship",
-      "Project Management", "Information technology", "Data Analytics"
-    ],
-    degrees: ["Postgraduate", "Undergraduate", "PG Diploma /Certificate"],
-    intakes: ["SEP"],
-    description: "A technological university offering an MSc in Data Analytics at its Athlone and Limerick campuses.",
-    eligibility: "Bachelor's degree, IELTS 6.5+",
-    deadline: "Varies by course"
-  }
+const DATA_TRACKS = [
+  { tag: "Data Science", test: /data science|data & computational/i },
+  { tag: "Data Analytics", test: /data analytics/i },
+  { tag: "Business Analytics", test: /business analytics/i },
+  { tag: "AI / Machine Learning", test: /artificial intelligence|\bAI\b|machine learning|intelligent systems/i },
 ];
+const DEGREE_LABELS = { "Master's": "Postgraduate", "Bachelor's": "Undergraduate", PhD: "Ph.D." };
+const INTAKE_LABELS = { September: "SEP", January: "JAN" };
+
+const universityDatabase = UNIVERSITIES_IRELAND
+  .map((u, i) => {
+    const programmes = u.courses.filter((c) => DATA_TRACKS.some((t) => t.test.test(c)));
+    const fee = u.tuitionVerified ? Number((u.tuition || '').match(/₹\s*(\d+(?:\.\d+)?)\s*Lakh/i)?.[1]) : NaN;
+    return {
+      id: i + 1,
+      name: u.shortName && !u.name.includes(`(${u.shortName})`) ? `${u.name} (${u.shortName})` : u.name,
+      shortName: u.shortName,
+      city: u.city,
+      state: u.state,
+      location: `${u.city}, ${u.state}, Ireland`,
+      rank: u.rank || "--",
+      rankValue: u.rankingNum || 9999,
+      tuition: Number.isFinite(fee) ? fee : null,
+      type: u.type === "PUBLIC" ? "PUBLIC" : "TECH UNIVERSITY",
+      logo: u.domain ? `https://logo.clearbit.com/${u.domain}` : null,
+      website: u.website,
+      courses: DATA_TRACKS.filter((t) => programmes.some((c) => t.test.test(c))).map((t) => t.tag),
+      topCourses: programmes,
+      degrees: u.degreeLevels.map((d) => DEGREE_LABELS[d] || d),
+      intakes: u.intakes.map((m) => INTAKE_LABELS[m] || m),
+      description: u.description,
+    };
+  })
+  .filter((u) => u.topCourses.length > 0);
 
 // ─────────────────────────────────────────────
 // Sidebar Filter Categories
 // ─────────────────────────────────────────────
-const degreeCategories = [
-  "Postgraduate", "Ph.D.", "PG Diploma /Certificate", "Undergraduate", "UG Diploma /Certificate /Associate Degree"
-];
+const degreeCategories = ["Postgraduate", "Ph.D.", "Undergraduate"];
 
-const courseCategories = [
-  "Data Science", "Industrial Engineering", "Physiotherapy", "Animal and Veterinary Studies",
-  "General Engineering And Technology", "Electronics", "Cyber Security", "Robotics",
-  "Information Systems", "Philosophy and Religious Studies", "History",
-  "Civil Engineering", "Mechanical Engineering", "Electrical Engineering",
-  "Biomedical Engineering", "Engineering Science", "Law", "Music", "Banking and Finance",
-  "Teaching / Education studies", "Language and Literature", "Journalism", "Sociology",
-  "Political Science", "Nursing and midwifery", "Chemical Engineering", "Mathematics",
-  "Statistics", "Geography", "Psychology", "Sport / Exercise Science", "Business Analytics",
-  "Physics", "Food / Agricultural Science", "Accounting", "Environmental science / management",
-  "Arts / Fine Art", "Graphic and Design Studies", "Creative Arts", "Biological Sciences",
-  "Architecture", "Construction Management", "Building Technology",
-  "International / Global Business", "Sales And Marketing", "Human resource Management",
-  "Business Administration", "Sports Management", "Project Management",
-  "Innovation / Entrepreneurship", "Chemistry", "Food And Hospitality", "Data Analytics",
-  "Pharmacology / Pharmacy", "Business Management", "Tourism", "Medicine and Medical Studies",
-  "Economics", "Computer Science", "Information technology", "Computer Engineering",
-  "Environmental Engineering", "Software Engineering", "Web Development", "Management"
-];
+const courseCategories = DATA_TRACKS.map((t) => t.tag);
 
-const cityCategories = ["Athlone", "Dublin"];
+const cityCategories = [...new Set(universityDatabase.map((u) => u.city))].sort();
 
 const intakeCategories = ["JAN", "SEP"];
 
@@ -112,7 +79,7 @@ const feeRanges = [
 const IrelandDataSciencePage = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedDegrees, setSelectedDegrees] = useState(["Postgraduate"]);
-  const [selectedCourses, setSelectedCourses] = useState(["Data Science"]);
+  const [selectedCourses, setSelectedCourses] = useState([]);
   const [selectedCities, setSelectedCities] = useState([]);
   const [selectedIntakes, setSelectedIntakes] = useState([]);
   const [selectedFees, setSelectedFees] = useState([]);
@@ -446,13 +413,13 @@ const IrelandDataSciencePage = () => {
                           <p className="text-[9px] text-slate-400 font-bold uppercase tracking-wider">QS Rank</p>
                           <p className="text-xs font-black text-slate-800 mt-0.5 flex items-center gap-1">
                             <Award size={12} className="text-cyan-600" />
-                            {uni.rank.replace("Rank ", "").replace(" QS Rankings", "")}
+                            {uni.rank}
                           </p>
                         </div>
                         <div className="bg-slate-50 p-2.5 rounded-xl border border-slate-100/50">
                           <p className="text-[9px] text-slate-400 font-bold uppercase tracking-wider">1st Year Fees</p>
                           <p className="text-xs font-black text-cyan-600 mt-0.5">
-                            {uni.tuition ? `₹ ${uni.tuition} Lakh` : '-/-'}
+                            {uni.tuition ? `₹ ${uni.tuition} Lakh` : 'See uni site'}
                           </p>
                         </div>
                         <div className="bg-slate-50 p-2.5 rounded-xl border border-slate-100/50">
@@ -479,25 +446,12 @@ const IrelandDataSciencePage = () => {
                             ))}
                           </div>
                         )}
-                        <div className="flex flex-wrap gap-1">
-                          {uni.courses.slice(0, 3).map(c => (
-                            <span key={c} className="text-[9.5px] font-bold text-slate-500 bg-slate-100 px-2 py-0.5 rounded-md">{c}</span>
+                        <p className="text-[9px] text-slate-400 font-bold uppercase tracking-wider mb-1.5">Data programmes</p>
+                        <ul className="flex flex-col gap-1">
+                          {uni.topCourses.map(c => (
+                            <li key={c} className="text-[11px] font-bold text-slate-700 bg-slate-100 px-2 py-1 rounded-md">{c}</li>
                           ))}
-                          {uni.courses.length > 3 && (
-                            <span className="text-[9.5px] font-bold text-slate-400 px-1 py-0.5">+{uni.courses.length - 3} more</span>
-                          )}
-                        </div>
-                      </div>
-
-                      <div className="bg-slate-50 border border-slate-100/50 p-3 rounded-xl mb-4 text-[11px] font-bold text-slate-650 flex flex-col gap-1">
-                        <div className="flex justify-between">
-                          <span>Eligibility:</span>
-                          <span className="text-slate-800 text-right font-semibold">{uni.eligibility}</span>
-                        </div>
-                        <div className="flex justify-between">
-                          <span>Deadline:</span>
-                          <span className="text-cyan-600 font-black">{uni.deadline}</span>
-                        </div>
+                        </ul>
                       </div>
                     </div>
 
