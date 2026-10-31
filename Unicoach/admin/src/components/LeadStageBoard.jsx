@@ -7,7 +7,7 @@ import API from '../api/axios';
 //   • a sales column changes the lead's status
 //   • a journey column starts the journey if needed (creates/links the student account) and sets the
 //     stage on the student account, which the student dashboard and the mentor's My Students also read.
-const COLUMNS = [
+export const COLUMNS = [
   { key: 'new', label: 'New', kind: 'status', color: '#64748b' },
   { key: 'interested', label: 'Interested', kind: 'status', color: '#0ea5e9' },
   { key: 'fifty_fifty', label: '50 / 50', kind: 'status', color: '#f59e0b' },
@@ -28,7 +28,8 @@ const COLUMNS = [
 ];
 
 // Same rule as the Journey view: a journey counts once started from Leads or moved past Walk-in
-const columnOf = (lead) => {
+// (also used by the All Leads dropdown to count and filter leads per stage)
+export const columnOf = (lead) => {
   const j = lead.journey;
   const started = j && (lead.userId || j.stage !== 'registered' || (j.history || []).length > 0);
   if (started) return j.stage;

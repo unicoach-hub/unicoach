@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Table, Select, message, Input, Modal, Tabs, Timeline, DatePicker, Button, Form, Popover, Tooltip, Progress, Badge, Spin, Popconfirm, Segmented } from 'antd';
 import dayjs from 'dayjs';
 import LeadJourneyView from '../components/LeadJourneyView';
-import LeadStageBoard from '../components/LeadStageBoard';
+import LeadStageBoard, { COLUMNS as STAGE_COLUMNS, columnOf } from '../components/LeadStageBoard';
 import Header from '../components/Header';
 import CrmSubNav from '../components/CrmSubNav';
 import StatsCard from '../components/StatsCard';
@@ -242,6 +242,15 @@ const Leads = ({ view = 'all' }) => {
   const [selectedPipelineId, setSelectedPipelineId] = useState('default');
   // Quick filter from the "New leads" card or a follow-up box: '' | 'new' | 'fu_green' | 'fu_yellow' | 'fu_red'
   const [quickFilter, setQuickFilter] = useState('');
+  // Stage picked in the All Leads dropdown (/leads?stage=applied): same stages as the Stage board
+  const [searchParams, setSearchParams] = useSearchParams();
+  const stageFilter = view === 'all' ? searchParams.get('stage') || '' : '';
+  // A stage covers every status, so picking one clears the status and quick filters
+  useEffect(() => {
+    if (!stageFilter) return;
+    setStatusFilter((s) => (s === 'all' ? s : 'all'));
+    setQuickFilter((q) => (q ? '' : q));
+  }, [stageFilter]);
   const [loading, setLoading] = useState(!cachedLeads);
   const [search, setSearch] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
@@ -485,6 +494,14 @@ const Leads = ({ view = 'all' }) => {
     API.get('/admin/leads').then(({ data: rows }) => setAllForCounts(Array.isArray(rows) ? rows : [])).catch(() => {});
   }, [view]);
   const countRows = view === 'all' ? data : (allForCounts || []);
+  // Numbers for the All Leads dropdown: each list, and each stage of the Stage board
+  const leadCounts = (() => {
+    if (!countRows.length && loading) return undefined;
+    const stages = Object.fromEntries(STAGE_COLUMNS.map((c) => [c.key, 0]));
+    for (const l of countRows) { const k = columnOf(l); stages[k in stages ? k : 'new'] += 1; }
+    const byStatus = (st) => countRows.filter((l) => l.status === st).length;
+    return { lists: { all: countRows.length, converted: byStatus('converted'), interested: byStatus('interested'), not_interested: byStatus('not_interested') }, stages };
+  })();
 
   // Set message templates whenever a lead is selected
   useEffect(() => {
@@ -812,6 +829,7 @@ const Leads = ({ view = 'all' }) => {
     return !t.isBefore(dateRange[0].startOf('day')) && !t.isAfter(dateRange[1].endOf('day'));
   };
   const filtered = data.filter(l =>
+    (!stageFilter || columnOf(l) === stageFilter) &&
     (followUpFilter !== 'call_done' || (l.callCount || 0) > 0) &&
     (followUpFilter !== 'call_pending' || !(l.callCount || 0)) &&
     (!quickFilter || (quickFilter === 'new' ? isPendingNew(l) : followUpBucket(l) === quickFilter.slice(3))) &&
@@ -1244,7 +1262,17 @@ const Leads = ({ view = 'all' }) => {
     <div>
       <Header title={VIEW_TITLES[view]?.title || 'Student leads & consultations'} subtitle={VIEW_TITLES[view]?.subtitle || 'All eligibility checks and consultation bookings'} />
       <div className="dashboard-content" style={{ marginTop: 16 }}>
-        <CrmSubNav />
+        <CrmSubNav leadCounts={leadCounts} />
+        {stageFilter && (() => {
+          const col = STAGE_COLUMNS.find((c) => c.key === stageFilter);
+          return (
+            <div style={{ display: 'flex', alignItems: 'center', gap: 10, margin: '4px 0 14px', padding: '8px 14px', borderRadius: 12, background: '#FFF7F2', border: '1px solid #F6D3C2', fontSize: 13.5 }}>
+              <span style={{ width: 9, height: 9, borderRadius: 999, background: col?.color || '#DE5C2B' }} />
+              <span>Stage: <b>{col?.label || stageFilter}</b> · {filtered.length} lead{filtered.length === 1 ? '' : 's'}</span>
+              <Button size="small" style={{ marginLeft: 'auto' }} onClick={() => { searchParams.delete('stage'); setSearchParams(searchParams); }}>Clear</Button>
+            </div>
+          );
+        })()}
         <div className="page-stats-grid page-stats-grid--7">
           <StatsCard icon={<ContactsOutlined />} label="Total leads" value={countRows.length} color="brand" loading={loading} onClick={() => { setQuickFilter(''); setStatusFilter('all'); setDateRange(null); navigate(VIEW_PATHS.all); }} active={view === 'all' && !dateRange && !quickFilter && statusFilter === 'all'} />
           <StatsCard
