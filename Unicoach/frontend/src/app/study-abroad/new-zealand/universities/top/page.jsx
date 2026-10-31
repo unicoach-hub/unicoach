@@ -27,7 +27,7 @@ const topNZUnis = [
   {
     rank: 1,
     name: "University of Auckland",
-    qsRank: "#68",
+    qsRank: "#67",
     popular: "Engineering, IT, MBA, Data Science, Health Sciences",
     feesTotalNZD: 45857,
     feeNote: "2027, per 120 points: most Master's NZ$45,900–NZ$58,300 (Business ~NZ$50,500)",
@@ -35,7 +35,7 @@ const topNZUnis = [
     logo: "/logos/verified-University of Auckland.png",
     website: "https://www.auckland.ac.nz",
     city: "Auckland",
-    desc: "New Zealand's highest-ranked university (QS 2027: #68). Its Business School holds triple-crown accreditation (AACSB, EQUIS and AMBA).",
+    desc: "New Zealand's highest-ranked university (QS 2027: #67). Its Business School holds triple-crown accreditation (AACSB, EQUIS and AMBA).",
     deadlines: "Feb 2027: international applicants advised to apply by 1 Dec 2026 | July 2027: 8 Jun 2027 (international)",
     requirements: UNI_REQ
   },

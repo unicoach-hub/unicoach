@@ -23,7 +23,7 @@ const SECTIONS = [
 ];
 
 const topMphUnisList = [
-  { rank: 1, name: "University of Auckland", qs: "#68", feeNZDMin: 57974, feeNZDMax: 57974, spec: "Digital Health, Global Health, Epidemiology", tagline: "NZ'S TOP-RANKED UNIVERSITY", logo: "/logos/verified-University of Auckland.png" },
+  { rank: 1, name: "University of Auckland", qs: "#67", feeNZDMin: 57974, feeNZDMax: 57974, spec: "Digital Health, Global Health, Epidemiology", tagline: "NZ'S TOP-RANKED UNIVERSITY", logo: "/logos/verified-University of Auckland.png" },
   { rank: 2, name: "University of Otago", qs: "#198", feeNZDMin: 49458, feeNZDMax: 49458, spec: "Health Sciences, Policy, Injury Prevention", tagline: "NZ'S OLDEST UNIVERSITY", logo: "/logos/verified-University of Otago.png" },
   { rank: 3, name: "Victoria University of Wellington", qs: "#241", feeNZDMin: null, feeNZDMax: null, spec: "Policy, Clinical Research, Health Promotion", tagline: "CAPITAL CITY ADVANTAGE", logo: "/logos/verified-Victoria University of Wellington.png" },
   { rank: 4, name: "University of Canterbury", qs: "#257", feeNZDMin: 47600, feeNZDMax: 47600, spec: "Community Engagement, Equity focus", tagline: "CHRISTCHURCH CAMPUS", logo: "/logos/verified-University of Canterbury.png" },

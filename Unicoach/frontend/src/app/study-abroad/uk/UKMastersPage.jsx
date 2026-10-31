@@ -16,11 +16,9 @@ import ImperialLogo from '@/assets/uk/Imperial College London.png';
 import ManchesterLogo from '@/assets/uk/University of Manchester.jpg';
 import KCLLogo from "@/assets/uk/King's College London.png";
 import UOLLogo from '@/assets/uk/University of London.jpg';
-import GlasgowLogo from '@/assets/uk/University of Glasgow.jpeg';
 import BirminghamLogo from '@/assets/uk/University of Birmingham.jpg';
 import EdinburghLogo from '@/assets/uk/University of Edinburgh.jpg';
 import UCLLogo from '@/assets/uk/University College London.jpg';
-import LeedsLogo from '@/assets/uk/University of Leeds.png';
 
 // ─────────────────────────────────────────────
 // Detailed Course Database for UK
@@ -33,11 +31,11 @@ const courseDetails = {
     growth: "+18% (High demand across tech clusters)",
     subjects: ["Machine Learning & Deep Learning", "Advanced Computational Theory", "Software Engineering Foundations", "Data Networks & Security", "Human-Computer Interaction"],
     universities: [
-      { name: "University of Oxford", city: "Oxford", tuition: 35, rank: "3 QS", logo: OxfordLogo, url: "https://www.ox.ac.uk" },
-      { name: "University of Cambridge", city: "Cambridge", tuition: 29, rank: "2 QS", logo: CambridgeLogo, url: "https://www.cam.ac.uk" },
-      { name: "Imperial College London", city: "London", tuition: 49, rank: "2 QS", logo: ImperialLogo, url: "https://www.imperial.ac.uk" },
-      { name: "University College London", city: "London", tuition: 48, rank: "9 QS", logo: UCLLogo, url: "https://www.ucl.ac.uk" },
-      { name: "King's College London", city: "London", tuition: 43, rank: "40 QS", logo: KCLLogo, url: "https://www.kcl.ac.uk" }
+      { name: "University of Oxford", city: "Oxford", tuition: null, rank: "4 QS", logo: OxfordLogo, url: "https://www.ox.ac.uk" },
+      { name: "University of Cambridge", city: "Cambridge", tuition: 65, rank: "6 QS", logo: CambridgeLogo, url: "https://www.cam.ac.uk" },
+      { name: "Imperial College London", city: "London", tuition: 62, rank: "2 QS", logo: ImperialLogo, url: "https://www.imperial.ac.uk" },
+      { name: "University College London", city: "London", tuition: 57, rank: "8 QS", logo: UCLLogo, url: "https://www.ucl.ac.uk" },
+      { name: "King's College London", city: "London", tuition: 55, rank: "37 QS", logo: KCLLogo, url: "https://www.kcl.ac.uk" }
     ]
   },
   physiotherapy: {
@@ -47,11 +45,11 @@ const courseDetails = {
     growth: "+15% (Essential NHS & private sector demand)",
     subjects: ["Clinical Anatomy & Biomechanics", "Neuromuscular Physiotherapy", "Cardiorespiratory Practice", "Rehabilitation & Exercise Therapy", "Clinical Research Methods"],
     universities: [
-      { name: "University of Leeds", city: "Leeds", tuition: 29, rank: "75 QS", logo: LeedsLogo, url: "https://www.leeds.ac.uk" },
-      { name: "Coventry University", city: "Coventry", tuition: 18, rank: "571 QS", logo: "https://logo.clearbit.com/coventry.ac.uk", url: "https://www.coventry.ac.uk" },
-      { name: "University of East London", city: "London", tuition: 15, rank: "900 QS", logo: "https://logo.clearbit.com/uel.ac.uk", url: "https://www.uel.ac.uk" },
-      { name: "University of Glasgow", city: "Glasgow", tuition: 32, rank: "76 QS", logo: GlasgowLogo, url: "https://www.gla.ac.uk" },
-      { name: "University of Birmingham", city: "Birmingham", tuition: 9, rank: "84 QS", logo: BirminghamLogo, url: "https://www.bham.ac.uk" }
+      { name: "King's College London", city: "London", tuition: 55, rank: "37 QS", logo: KCLLogo, url: "https://www.kcl.ac.uk" },
+      { name: "Coventry University", city: "Coventry", tuition: 25, rank: "581 QS", logo: "https://logo.clearbit.com/coventry.ac.uk", url: "https://www.coventry.ac.uk" },
+      { name: "University of East London", city: "London", tuition: 22, rank: "1001-1200 QS", logo: "https://logo.clearbit.com/uel.ac.uk", url: "https://www.uel.ac.uk" },
+      { name: "Brunel University of London", city: "London", tuition: 33, rank: "353 QS", logo: "https://logo.clearbit.com/brunel.ac.uk", url: "https://www.brunel.ac.uk" },
+      { name: "University of Birmingham", city: "Birmingham", tuition: 46, rank: "68 QS", logo: BirminghamLogo, url: "https://www.bham.ac.uk" }
     ]
   },
   data: {
@@ -61,10 +59,10 @@ const courseDetails = {
     growth: "+25% (Pioneering data hub globally)",
     subjects: ["Big Data Analytics", "Statistical Machine Learning", "Data Mining & Databases", "Data Visualization", "Practical Data Analysis"],
     universities: [
-      { name: "University of Edinburgh", city: "Edinburgh", tuition: 42, rank: "22 QS", logo: EdinburghLogo, url: "https://www.ed.ac.uk" },
-      { name: "University College London", city: "London", tuition: 48, rank: "9 QS", logo: UCLLogo, url: "https://www.ucl.ac.uk" },
-      { name: "Imperial College London", city: "London", tuition: 49, rank: "2 QS", logo: ImperialLogo, url: "https://www.imperial.ac.uk" },
-      { name: "University of London", city: "London", tuition: 18, rank: "44 QS", logo: UOLLogo, url: "https://www.london.ac.uk" }
+      { name: "University of Edinburgh", city: "Edinburgh", tuition: null, rank: "35 QS", logo: EdinburghLogo, url: "https://www.ed.ac.uk" },
+      { name: "University College London", city: "London", tuition: 57, rank: "8 QS", logo: UCLLogo, url: "https://www.ucl.ac.uk" },
+      { name: "Imperial College London", city: "London", tuition: 62, rank: "2 QS", logo: ImperialLogo, url: "https://www.imperial.ac.uk" },
+      { name: "University of London", city: "London", tuition: null, rank: "Not QS-ranked", logo: UOLLogo, url: "https://www.london.ac.uk" }
     ]
   },
   management: {
@@ -74,10 +72,10 @@ const courseDetails = {
     growth: "+12% (London financial cluster advantage)",
     subjects: ["Corporate Finance Strategy", "Global Supply Chain Management", "Strategic Leadership", "Organizational Behavior", "Business Analytics for Managers"],
     universities: [
-      { name: "London Business School", city: "London", tuition: 143, rank: "4 QS", logo: "https://logo.clearbit.com/london.edu", url: "https://www.london.edu" },
-      { name: "University of Oxford", city: "Oxford", tuition: 35, rank: "3 QS", logo: OxfordLogo, url: "https://www.ox.ac.uk" },
-      { name: "University of Cambridge", city: "Cambridge", tuition: 29, rank: "2 QS", logo: CambridgeLogo, url: "https://www.cam.ac.uk" },
-      { name: "University of London", city: "London", tuition: 18, rank: "44 QS", logo: UOLLogo, url: "https://www.london.ac.uk" }
+      { name: "London Business School", city: "London", tuition: 143, rank: "Not QS-ranked", logo: "https://logo.clearbit.com/london.edu", url: "https://www.london.edu" },
+      { name: "University of Oxford", city: "Oxford", tuition: null, rank: "4 QS", logo: OxfordLogo, url: "https://www.ox.ac.uk" },
+      { name: "University of Cambridge", city: "Cambridge", tuition: 65, rank: "6 QS", logo: CambridgeLogo, url: "https://www.cam.ac.uk" },
+      { name: "University of London", city: "London", tuition: null, rank: "Not QS-ranked", logo: UOLLogo, url: "https://www.london.ac.uk" }
     ]
   },
   engineering: {
@@ -87,10 +85,10 @@ const courseDetails = {
     growth: "+8% (Steady engineering innovation routes)",
     subjects: ["Advanced Mechanical Design", "Systems Engineering Principles", "Electronics & Microgrids", "Robotics & Controls", "Materials Technology"],
     universities: [
-      { name: "University of Cambridge", city: "Cambridge", tuition: 29, rank: "2 QS", logo: CambridgeLogo, url: "https://www.cam.ac.uk" },
-      { name: "Imperial College London", city: "London", tuition: 49, rank: "2 QS", logo: ImperialLogo, url: "https://www.imperial.ac.uk" },
-      { name: "University of Birmingham", city: "Birmingham", tuition: 9, rank: "84 QS", logo: BirminghamLogo, url: "https://www.bham.ac.uk" },
-      { name: "Brunel University London", city: "London", tuition: 24, rank: "343 QS", logo: "https://logo.clearbit.com/brunel.ac.uk", url: "https://www.brunel.ac.uk" }
+      { name: "University of Cambridge", city: "Cambridge", tuition: 65, rank: "6 QS", logo: CambridgeLogo, url: "https://www.cam.ac.uk" },
+      { name: "Imperial College London", city: "London", tuition: 62, rank: "2 QS", logo: ImperialLogo, url: "https://www.imperial.ac.uk" },
+      { name: "University of Birmingham", city: "Birmingham", tuition: 46, rank: "68 QS", logo: BirminghamLogo, url: "https://www.bham.ac.uk" },
+      { name: "Brunel University of London", city: "London", tuition: 33, rank: "353 QS", logo: "https://logo.clearbit.com/brunel.ac.uk", url: "https://www.brunel.ac.uk" }
     ]
   }
 };
@@ -113,6 +111,7 @@ const UKMastersPage = () => {
 
   // Tuition formatting helper (it's already in INR Lakhs in our universities list)
   const formatTuition = (valInINRLakh) => {
+    if (valInINRLakh == null) return 'See uni site';
     if (currency === 'INR') {
       return `₹ ${valInINRLakh} Lakh`;
     }
@@ -271,7 +270,7 @@ const UKMastersPage = () => {
 
                         <div className="text-right flex-shrink-0">
                           <p className="text-[10px] text-slate-400 font-bold uppercase">Tuition Fee</p>
-                          <p className="text-xs font-black text-indigo-655 mt-0.5">{formatTuition(uni.tuition)}/yr</p>
+                          <p className="text-xs font-black text-indigo-655 mt-0.5">{formatTuition(uni.tuition)}{uni.tuition != null && '/yr'}</p>
                         </div>
                       </div>
                     ))}

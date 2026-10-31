@@ -25,6 +25,21 @@ import { FinderCard, FinderField, FinderChip, FINDER_FIELD, FIELD_RADIUS } from 
 import { Link } from 'react-router-dom';
 import { useLead } from '../../../context/LeadContext';
 import allCSUniversitiesData from '../../../assets/master_in_cs_us/Top Universities in USA for Masters (MS) in Computer Science (2026).json';
+
+// Only College Scorecard rows are trusted: their degree levels and fields of study are official.
+// Rows without a source carry default levels and made-up course lists (beauty schools listed with a PhD).
+const isScorecardMastersRow = (u) => u.dataSource?.provider === 'College Scorecard' && Array.isArray(u.degreeLevels) && u.degreeLevels.includes('Masters');
+
+// College Scorecard field-of-study names mapped to the page's course filters
+const CS_FIELD_TAGS = [
+  [/^(Computer Science|Computer and Information Sciences, General)$/, 'Computer Science'],
+  [/^(Computer Engineering|Electrical and Computer Engineering)$/, 'Computer Engineering'],
+  [/^(Data Science|Data Science & Machine Learning|Data Analytics)$/, 'Data Science'],
+  [/^(Artificial Intelligence|Data Science & Machine Learning)$/, 'Artificial Intelligence / Machine Learning'],
+  [/^(Cybersecurity|Computer Systems Networking and Telecommunications)$/, 'Cyber Security'],
+  [/^(Software Engineering|Software Development)$/, 'Software Engineering'],
+];
+const csTagsFor = (courses = []) => CS_FIELD_TAGS.filter(([re]) => courses.some((c) => re.test(c))).map(([, tag]) => tag);
 import { getUniversityLogo } from '../../../components/logoResolver';
 import { matchesUniversitySearch, getMatchedCoursesForUniversity } from '../../../utils/universitySearchMatcher';
 
@@ -330,11 +345,11 @@ const USACSMastersPage = () => {
         if (res.ok) {
           const data = await res.json();
           if (Array.isArray(data) && data.length > 0) {
-            const mapped = data.map(u => ({
+            const mapped = data.filter(isScorecardMastersRow).filter(u => csTagsFor(u.courses).includes('Computer Science') || csTagsFor(u.courses).length > 1).map(u => ({
               id: u._id,
               name: u.name,
               location: (u.city ? `${u.city}, ` : '') + (u.state || 'USA'),
-              city: u.city || 'Central City',
+              city: u.city || '',
               state: u.state || 'USA',
               // Only official values: fee from an official source (Master's fee preferred), rank from an
               // imported ranking file, acceptance rate from College Scorecard. Unknown stays empty.
@@ -344,6 +359,7 @@ const USACSMastersPage = () => {
               degrees: Array.isArray(u.degreeLevels) ? u.degreeLevels : [],
               courses: Array.isArray(u.courses) ? u.courses : [],
               acceptanceRate: u.dataSource?.provider === 'College Scorecard' && typeof u.acceptanceRate === 'number' ? u.acceptanceRate : null,
+              dataSource: 'scorecard',
               logo: u.logo || '',
               website: u.website || '',
               type: u.type || 'PUBLIC'
@@ -372,9 +388,8 @@ const USACSMastersPage = () => {
       }
 
       // Determine dynamic degrees
-      const nameLower = uni.name.toLowerCase();
       const rawDegrees = Array.isArray(uni.degrees) ? uni.degrees : ['Masters'];
-      const degrees = ['Postgraduate']; // Always include Postgraduate since this is Masters in USA page
+      const degrees = [];
       if (rawDegrees.some(d => String(d).toLowerCase().includes('master') || String(d).toLowerCase().includes('postgrad'))) {
         if (!degrees.includes('Postgraduate')) degrees.push('Postgraduate');
       }
@@ -385,23 +400,8 @@ const USACSMastersPage = () => {
         if (!degrees.includes('Ph.D.')) degrees.push('Ph.D.');
       }
 
-      // Determine dynamic courses specifically for Computer Science
-      const courses = ['Computer Science'];
-      if (nameLower.includes('ai') || nameLower.includes('intel') || nameLower.includes('machine') || nameLower.includes('learning')) {
-        courses.push('Artificial Intelligence / Machine Learning');
-      }
-      if (nameLower.includes('data') || nameLower.includes('analyt')) {
-        courses.push('Data Science');
-      }
-      if (nameLower.includes('secur') || nameLower.includes('cyber')) {
-        courses.push('Cyber Security');
-      }
-      if (nameLower.includes('soft') || nameLower.includes('program')) {
-        courses.push('Software Engineering');
-      }
-      if (nameLower.includes('comput') && (nameLower.includes('engin') || nameLower.includes('ece'))) {
-        courses.push('Computer Engineering');
-      }
+      // Course filters from the university's official fields of study, not guessed from its name
+      const courses = uni.dataSource === 'scorecard' ? csTagsFor(uni.courses) : (Array.isArray(uni.courses) && uni.courses.length ? uni.courses : ['Computer Science']);
 
       // Extract city & state from location
       const parts = (uni.location || uni.city || 'Boston, Massachusetts').split(', ');

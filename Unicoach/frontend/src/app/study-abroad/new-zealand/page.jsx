@@ -203,7 +203,7 @@ const NewZealandOverview = () => {
                 <div>
                   <h4 className="font-extrabold text-slate-900 text-sm">Triple-Accredited Business & Engineering</h4>
                   <p className="text-slate-655 text-xs font-semibold leading-relaxed mt-1">
-                    All 8 of New Zealand's public universities are in the QS World University Rankings 2027 top 500 (Auckland is #68), with internationally recognised qualifications.
+                    All 8 of New Zealand's public universities are in the QS World University Rankings 2027 top 500 (Auckland is #67), with internationally recognised qualifications.
                   </p>
                 </div>
               </div>

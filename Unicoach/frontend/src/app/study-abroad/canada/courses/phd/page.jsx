@@ -14,7 +14,9 @@ import { FinderCard, FinderField, FinderChip, FINDER_FIELD, FIELD_RADIUS } from 
 // ─────────────────────────────────────────────
 // Combined Canada University Database (20 Institutions)
 // ─────────────────────────────────────────────
-const universityDatabase = [
+// Fees in this list are master's fees; PhD fees differ by programme and are often covered by funding,
+// so this page shows no fee rather than the master's figure.
+const mastersListDatabase = [
   {
     id: 1,
     name: "University of Toronto",
@@ -420,6 +422,8 @@ const intakeCategories = [
 ];
 
 // Five lowest first-year fees from the list above, for the fee chart under the results
+const universityDatabase = mastersListDatabase.map((u) => ({ ...u, tuition: null }));
+
 const lowestFeeUnis = [...new Map(universityDatabase.filter((u) => typeof u.tuition === 'number' && u.tuition > 0).map((u) => [u.name, u])).values()]
   .sort((a, b) => a.tuition - b.tuition)
   .slice(0, 5)
@@ -637,41 +641,6 @@ const CanadaPhdCoursePage = () => {
 
             <div className="space-y-6 max-h-[calc(100vh-280px)] overflow-y-auto pr-1">
               
-              {/* Fees */}
-              <div>
-                <button
-                  onClick={() => toggleAccordion('fees')}
-                  className="w-full flex items-center justify-between text-[12.5px] font-semibold text-[#16130F] mb-3.5"
-                >
-                  <span>1st Year Fees</span>
-                  <ChevronDown size={14} className={`transform transition-transform text-[#9A9184] ${openAccordions.fees ? 'rotate-180 text-[#DE5C2B]' : ''}`} />
-                </button>
-                <AnimatePresence initial={false}>
-                  {openAccordions.fees && (
-                    <motion.div
-                      initial={{ height: 0, opacity: 0 }}
-                      animate={{ height: 'auto', opacity: 1 }}
-                      exit={{ height: 0, opacity: 0 }}
-                      className="overflow-hidden space-y-2.5 pl-0.5"
-                    >
-                      {feeRanges.map(range => (
-                        <label key={range.id} className="flex items-center gap-3 text-[13px] text-[#16130F] hover:text-[#DE5C2B] cursor-pointer select-none">
-                          <input 
-                            type="checkbox"
-                            checked={selectedFees.includes(range.id)}
-                            onChange={() => handleFilterToggle(range.id, selectedFees, setSelectedFees)}
-                            className="w-4 h-4 rounded border-[#E6E0D4] accent-[#DE5C2B] cursor-pointer"
-                          />
-                          <span>{range.label}</span>
-                        </label>
-                      ))}
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </div>
-
-              <div className="w-full h-[1px] bg-[#ECE6DA]" />
-
               {/* Degree */}
               <div>
                 <button
@@ -835,7 +804,6 @@ const CanadaPhdCoursePage = () => {
                 <FinderField label="Sort by">
                   <select value={sortBy} onChange={(e) => setSortBy(e.target.value)} className={`${FINDER_FIELD} cursor-pointer`} style={FIELD_RADIUS}>
                     <option value="rank">QS Rankings</option>
-                    <option value="fees">Tuition Fee: Low to High</option>
                     <option value="name">Alphabetical (A-Z)</option>
                   </select>
                 </FinderField>
@@ -919,7 +887,7 @@ const CanadaPhdCoursePage = () => {
                         <div className="bg-slate-550/5 p-2.5 rounded-xl border border-slate-100/50">
                           <p className="text-[9px] text-slate-400 font-bold uppercase tracking-wider">1st Year Fees</p>
                           <p className="text-xs font-black text-indigo-650 mt-0.5">
-                            {uni.tuition ? `₹ ${uni.tuition} Lakh` : '-/-'}
+                            {uni.tuition ? `₹ ${uni.tuition} Lakh` : 'Varies, often funded'}
                           </p>
                         </div>
                         <div className="bg-slate-550/5 p-2.5 rounded-xl border border-slate-100/50">

@@ -25,7 +25,7 @@ const SECTIONS = [
 ];
 
 const topMsUnisList = [
-  { rank: 1, name: "University of Auckland", qs: "#68", feeNZD: 45857, feeINR: "₹25.7L", spec: "Data Science, Engineering, Computer Science", tagline: "NZ'S TOP-RANKED UNIVERSITY", logo: "/logos/verified-University of Auckland.png" },
+  { rank: 1, name: "University of Auckland", qs: "#67", feeNZD: 45857, feeINR: "₹25.7L", spec: "Data Science, Engineering, Computer Science", tagline: "NZ'S TOP-RANKED UNIVERSITY", logo: "/logos/verified-University of Auckland.png" },
   { rank: 2, name: "University of Otago", qs: "#198", feeNZD: 32499, feeINR: "₹18.2L", spec: "Health Sciences, Biotechnology, Psychology", tagline: "NZ'S OLDEST UNIVERSITY", logo: "/logos/verified-University of Otago.png" },
   { rank: 3, name: "Massey University", qs: "#215", feeNZD: 37000, feeINR: "₹20.7L", spec: "Agriculture, Veterinary Science, Food Technology", tagline: "APPLIED LEARNING", logo: "/logos/verified-Massey University.png" },
   { rank: 4, name: "Victoria Univ. Wellington", qs: "#241", feeNZD: 40124, feeINR: "₹22.5L", spec: "Environmental Science, Public Policy", tagline: "IN THE CAPITAL CITY", logo: "/logos/verified-Victoria University of Wellington.png" },

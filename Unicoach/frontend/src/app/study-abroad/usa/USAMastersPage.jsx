@@ -32,6 +32,10 @@ const API_URL = API_BASE_URL;
 
 const allUniversitiesData = getByCountry('usa');
 
+// Only College Scorecard rows are trusted: their degree levels and fields of study are official.
+// Rows without a source carry default levels and made-up course lists (beauty schools listed with a PhD).
+const isScorecardMastersRow = (u) => u.dataSource?.provider === 'College Scorecard' && Array.isArray(u.degreeLevels) && u.degreeLevels.includes('Masters');
+
 // Eagerly import all university logos so Vite resolves them at build time
 const logoModules = import.meta.glob(
   '../../../assets/usa/master_in_usa/usa_masters_logos/*.webp',
@@ -326,11 +330,11 @@ const USAMastersPage = () => {
         if (res.ok) {
           const data = await res.json();
           if (Array.isArray(data) && data.length > 0) {
-            const mapped = data.map(u => ({
+            const mapped = data.filter(isScorecardMastersRow).map(u => ({
               id: u._id,
               name: u.name,
               location: (u.city ? `${u.city}, ` : '') + (u.state || 'USA'),
-              city: u.city || 'Central City',
+              city: u.city || '',
               state: u.state || 'USA',
               // Only official values: fee from an official source (Master's fee preferred), rank from an
               // imported ranking file, acceptance rate from College Scorecard. Unknown stays empty.
@@ -369,7 +373,7 @@ const USAMastersPage = () => {
 
       // Determine dynamic degrees
       const rawDegrees = Array.isArray(uni.degrees) ? uni.degrees : ['Masters'];
-      const degrees = ['Postgraduate']; // Always include Postgraduate since this is Masters in USA page
+      const degrees = [];
       if (rawDegrees.some(d => String(d).toLowerCase().includes('master') || String(d).toLowerCase().includes('postgrad'))) {
         if (!degrees.includes('Postgraduate')) degrees.push('Postgraduate');
       }

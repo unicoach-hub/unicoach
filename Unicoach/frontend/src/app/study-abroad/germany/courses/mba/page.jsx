@@ -19,12 +19,12 @@ const topColleges = [
   { name: "Mannheim Business School", qsRank: "#46", feeEur: 47000, gmat: "620+", spec: "Strategy, General Mgmt", intake: "Sep", logo: "https://logo.clearbit.com/mannheim-business-school.com" },
   { name: "WHU - Otto Beisheim School of Management", qsRank: "#57", feeEur: 45000, gmat: "600+", spec: "Entrepreneurship, Startups", intake: "Sep", logo: "https://logo.clearbit.com/whu.edu" },
   { name: "ESMT Berlin", qsRank: "#78", feeEur: 50000, gmat: "600+", spec: "Innovation, Tech Mgmt", intake: "Sep", logo: "https://logo.clearbit.com/esmt.org" },
-  { name: "TUM School of Management", qsRank: "Public / Top", feeEur: 39000, gmat: "570+", spec: "Engineering, AI Mgmt", intake: "Oct", logo: "https://logo.clearbit.com/tum.de" },
-  { name: "ESCP Business School Berlin", qsRank: "Top 30 (FT)", feeEur: 60500, gmat: "600+", spec: "Luxury, Consulting", intake: "Sep", logo: "https://logo.clearbit.com/escp.eu" },
+  { name: "TUM School of Management", qsRank: "Not ranked", feeEur: 39000, gmat: "570+", spec: "Engineering, AI Mgmt", intake: "Oct", logo: "https://logo.clearbit.com/tum.de" },
+  { name: "ESCP Business School Berlin", qsRank: "Not ranked", feeEur: 60500, gmat: "600+", spec: "Luxury, Consulting", intake: "Sep", logo: "https://logo.clearbit.com/escp.eu" },
   { name: "EU Business School Munich", qsRank: "#101–110", feeEur: 22800, gmat: "Not Required", spec: "International Marketing", intake: "Sep/Jan", logo: "https://logo.clearbit.com/euruni.edu" },
   { name: "HHL Leipzig Graduate School of Management", qsRank: "#151–200", feeEur: 41600, gmat: "570+", spec: "Supply Chain, Logistics", intake: "Sep", logo: "https://logo.clearbit.com/hhl.de" },
-  { name: "University of Cologne", qsRank: "Public / Top", feeEur: 2800, gmat: "Not Required", spec: "Corporate Development", intake: "Oct/Apr", logo: "https://logo.clearbit.com/uni-koeln.de" },
-  { name: "ISM International School of Management", qsRank: "Global Tier", feeEur: 27000, gmat: "Not Required", spec: "Business Data Science", intake: "Sep/Mar", logo: "https://logo.clearbit.com/ism.de" }
+  { name: "University of Cologne", qsRank: "Not ranked", feeEur: 2800, gmat: "Not Required", spec: "Corporate Development", intake: "Oct/Apr", logo: "https://logo.clearbit.com/uni-koeln.de" },
+  { name: "ISM International School of Management", qsRank: "Not ranked", feeEur: 27000, gmat: "Not Required", spec: "Business Data Science", intake: "Sep/Mar", logo: "https://logo.clearbit.com/ism.de" }
 ];
 
 const specialisations = [

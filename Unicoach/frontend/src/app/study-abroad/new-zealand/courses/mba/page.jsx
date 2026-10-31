@@ -24,7 +24,7 @@ const SECTIONS = [
 ];
 
 const topMbaUnisList = [
-  { rank: 1, name: "University of Auckland", qs: "#68", feeNZD: null, tagline: "TRIPLE CROWN: AACSB + EQUIS + AMBA", desc: "Triple-crown accredited Business School in central Auckland. MBA fee not verified — check the official site.", logo: "/logos/verified-University of Auckland.png", website: "https://www.auckland.ac.nz", city: "Auckland" },
+  { rank: 1, name: "University of Auckland", qs: "#67", feeNZD: null, tagline: "TRIPLE CROWN: AACSB + EQUIS + AMBA", desc: "Triple-crown accredited Business School in central Auckland. MBA fee not verified — check the official site.", logo: "/logos/verified-University of Auckland.png", website: "https://www.auckland.ac.nz", city: "Auckland" },
   { rank: 2, name: "University of Otago", qs: "#198", feeNZD: null, tagline: "OTAGO BUSINESS SCHOOL MBA", desc: "MBA from Otago Business School in Dunedin. MBA papers cost NZ$4,538 each (2026); total programme fee not verified.", logo: "/logos/verified-University of Otago.png", website: "https://www.otago.ac.nz", city: "Dunedin" },
   { rank: 3, name: "Massey University", qs: "#215", feeNZD: 65160, tagline: "MBA (180 CREDITS)", desc: "Massey MBA: NZ$65,160 for 180 credits (2027 estimate).", logo: "/logos/verified-Massey University.png", website: "https://www.massey.ac.nz", city: "Palmerston North" },
   { rank: 4, name: "Victoria University of Wellington", qs: "#241", feeNZD: 71400, tagline: "EXECUTIVE MBA - CAPITAL CITY", desc: "No standard MBA; the Executive MBA costs NZ$71,400 for the full programme. Close to government ministries and corporate HQs.", logo: "/logos/verified-Victoria University of Wellington.png", website: "https://www.wgtn.ac.nz", city: "Wellington" },

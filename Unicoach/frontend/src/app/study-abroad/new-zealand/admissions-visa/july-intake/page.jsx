@@ -22,7 +22,7 @@ const SECTIONS = [
 ];
 
 const universityDeadlines = [
-  { name: "University of Auckland", rank: "#68", deadline: "June 8 (international)", popular: "Architecture, Health Sciences, Engineering" },
+  { name: "University of Auckland", rank: "#67", deadline: "June 8 (international)", popular: "Architecture, Health Sciences, Engineering" },
   { name: "University of Otago", rank: "#198", deadline: "April 30", popular: "Research, Data Science, Humanities" },
   { name: "Massey University", rank: "#215", deadline: "May 1", popular: "Aviation, Business, Veterinary Science" },
   { name: "Victoria University of Wellington", rank: "#241", deadline: "May 1 (some programmes March 1)", popular: "Law, Design, Innovation, Business" },

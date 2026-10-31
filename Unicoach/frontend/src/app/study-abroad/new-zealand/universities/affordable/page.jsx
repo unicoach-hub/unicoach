@@ -22,7 +22,7 @@ const SECTIONS = [
 ];
 
 const feeComparisonData = [
-  { rank: 1, name: "University of Auckland", qs: "#68", ugFee: 42236, pgRange: "$45.9K-$58.3K (2027)", logo: "/logos/verified-University of Auckland.png" },
+  { rank: 1, name: "University of Auckland", qs: "#67", ugFee: 42236, pgRange: "$45.9K-$58.3K (2027)", logo: "/logos/verified-University of Auckland.png" },
   { rank: 2, name: "University of Otago", qs: "#198", ugFee: 35621, pgRange: "$32.5K-$51.9K (2026)", logo: "/logos/verified-University of Otago.png" },
   { rank: 3, name: "Massey University", qs: "#215", ugFee: 35250, pgRange: "$37K-$52.7K (2027)", logo: "/logos/verified-Massey University.png" },
   { rank: 4, name: "Victoria Univ. Wellington", qs: "#241", ugFee: 35696, pgRange: "$40.1K-$52.4K (2027)", logo: "/logos/verified-Victoria University of Wellington.png" },
@@ -113,7 +113,7 @@ const detailedBreakdown = [
   {
     name: "University of Auckland",
     label: "👑 FLAGSHIP UNIVERSITY",
-    qs: "#68",
+    qs: "#67",
     desc: "New Zealand's only top-100 university (QS 2027) with a triple-crown accredited Business School.",
     cheapestUG: "$42,236 / year (₹23.7 Lakhs) — Arts (2027)",
     highestUG: "$86,561 / year (₹48.5 Lakhs) — Medicine (2027)",

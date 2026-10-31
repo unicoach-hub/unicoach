@@ -84,10 +84,11 @@ const feeRanges = [
   { id: "above40", label: "₹40 Lacs +", min: 40 }
 ];
 
-const AustraliaMastersPage = () => {
+// `course` turns this into a single-course page (e.g. Public Health) with that course pre-selected
+const AustraliaMastersPage = ({ course } = {}) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedDegrees, setSelectedDegrees] = useState(["Postgraduate"]);
-  const [selectedCourses, setSelectedCourses] = useState([]);
+  const [selectedCourses, setSelectedCourses] = useState(course ? [course] : []);
   const [selectedCities, setSelectedCities] = useState([]);
   const [selectedIntakes, setSelectedIntakes] = useState([]);
   const [selectedFees, setSelectedFees] = useState([]);
@@ -149,13 +150,13 @@ const AustraliaMastersPage = () => {
           <span>/</span>
           <Link to="/study-abroad/australia" className="hover:text-amber-600 transition-colors">Study Abroad in Australia</Link>
           <span>/</span>
-          <span className="text-slate-700">Masters in Australia</span>
+          <span className="text-slate-700">{course ? `Masters in ${course} in Australia` : 'Masters in Australia'}</span>
         </div>
 
         <div className="mb-10 max-w-4xl">
           <h1 className="text-3xl md:text-4xl lg:text-5xl font-black text-slate-900 leading-tight tracking-tight">
-            List of Top Universities & Colleges in Australia for{' '}
-            <span className="bg-gradient-to-r from-amber-500 to-orange-500 bg-clip-text text-transparent">Masters</span>{' '}
+            {course ? 'Top Universities in Australia for Masters in' : 'List of Top Universities & Colleges in Australia for'}{' '}
+            <span className="bg-gradient-to-r from-amber-500 to-orange-500 bg-clip-text text-transparent">{course || 'Masters'}</span>{' '}
             — Ranking & Fees (2026)
           </h1>
           <p className="text-slate-500 font-semibold text-sm mt-3 leading-relaxed">
@@ -163,7 +164,7 @@ const AustraliaMastersPage = () => {
           </p>
         </div>
 
-        <HookBand value={universityDatabase.length} label="Australian universities and colleges on this page. Filter by course, city, fees and intake below." hi="Compare karo" className="mb-10" />
+        <HookBand value={course ? universityDatabase.filter((u) => u.courses.includes(course)).length : universityDatabase.length} label={course ? `Australian universities on this page with a master's in ${course}. Filter by city, fees and intake below.` : "Australian universities and colleges on this page. Filter by course, city, fees and intake below."} hi="Compare karo" className="mb-10" />
 
         <div className="grid grid-cols-1 lg:grid-cols-[290px_1fr] gap-8 items-start">
           {/* Sidebar */}

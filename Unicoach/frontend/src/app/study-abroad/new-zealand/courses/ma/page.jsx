@@ -24,7 +24,7 @@ const SECTIONS = [
 ];
 
 const topMaUnisList = [
-  { rank: 1, name: "University of Auckland", qs: "#68", feeNZD: 45857, spec: "Linguistics, English Literature, Sociology", tagline: "NZ'S TOP-RANKED UNIVERSITY", logo: "/logos/verified-University of Auckland.png" },
+  { rank: 1, name: "University of Auckland", qs: "#67", feeNZD: 45857, spec: "Linguistics, English Literature, Sociology", tagline: "NZ'S TOP-RANKED UNIVERSITY", logo: "/logos/verified-University of Auckland.png" },
   { rank: 2, name: "University of Otago", qs: "#198", feeNZD: 32499, spec: "History, Psychology, Anthropology, Philosophy", tagline: "NZ'S OLDEST UNIVERSITY", logo: "/logos/verified-University of Otago.png" },
   { rank: 3, name: "Massey University", qs: "#215", feeNZD: 40010, spec: "Creative Writing, Applied Linguistics, Social Work", tagline: "PRACTICAL LEARNING", logo: "/logos/verified-Massey University.png" },
   { rank: 4, name: "Victoria University of Wellington", qs: "#241", feeNZD: 40600, spec: "Political Science, Media Studies, Creative Writing", tagline: "CAPITAL CITY ADVANTAGE", logo: "/logos/verified-Victoria University of Wellington.png" },

@@ -24,7 +24,7 @@ const top8Unis = [
   {
     rank: 1,
     name: "University of Auckland",
-    qsRank: "#68",
+    qsRank: "#67",
     popular: "Engineering, IT, Data Science",
     feesTotalNZD: 45857,
     tagline: "NZ'S HIGHEST-RANKED UNIVERSITY (QS 2027)",
@@ -32,7 +32,7 @@ const top8Unis = [
     website: "https://www.auckland.ac.nz",
     city: "Auckland",
     founded: "1883",
-    students: "QS 2027: #68",
+    students: "QS 2027: #67",
     acceptance: "auckland.ac.nz",
     strengths: [
       "Only New Zealand university in the QS 2027 top 100",
@@ -648,7 +648,7 @@ const NewZealandBest = () => {
                 {[
                   { q: "How does the India-NZ FTA benefit international students in 2026?", a: "The FTA increased weekly work hours to 25 hours, introduced IQA qualifications exemptions for most Indian boards, and granted up to 4 years post-study work visa options for PhD researchers." },
                   { q: "What is the IQA assessment exemption?", a: "Immigration NZ no longer requires Indian students from accredited boards to verify high school or college credentials with the NZQA, saving thousands in processing fees and reducing visa timelines." },
-                  { q: "Which NZ university ranks highest globally?", a: "The University of Auckland ranks #68 in the QS World University Rankings 2027, making it the highest-ranked and only top-100 university in New Zealand." },
+                  { q: "Which NZ university ranks highest globally?", a: "The University of Auckland ranks #67 in the QS World University Rankings 2027, making it the highest-ranked and only top-100 university in New Zealand." },
                   { q: "Is the IELTS test mandatory for a visa?", a: "The visa itself doesn't mandate a specific test score; however, institutions require proof of English proficiency (IELTS 6.0/6.5 or PTE 50/58) for admissions." }
                 ].map((faq, idx) => {
                   const isOpen = !!faqOpen[idx];

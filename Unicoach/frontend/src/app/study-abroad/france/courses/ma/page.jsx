@@ -23,9 +23,9 @@ const topMaSchools = [
   { name: "Sorbonne University", qsRank: "#73 Global", field: "Literature, Philosophy, History, Languages", feesEUR: 3950, location: "Paris", website: "https://www.sorbonne-universite.fr" },
   { name: "Université PSL", qsRank: "#34 Global", field: "Fine Arts, Social Sciences, Cinema, Design", feesEUR: 3950, location: "Paris", website: "https://www.psl.eu" },
   { name: "Sciences Po Paris", qsRank: "#354 Global", field: "International Relations, Political Science, Diplomacy", feesEUR: 20640, location: "Paris", website: "https://www.sciencespo.fr" },
-  { name: "IFM (Institut Français de la Mode)", qsRank: "World Class", field: "Fashion Design, Luxury Management", feesEUR: 22000, location: "Paris", website: "https://www.ifmparis.fr" },
+  { name: "IFM (Institut Français de la Mode)", qsRank: "Not QS-ranked", field: "Fashion Design, Luxury Management", feesEUR: 22000, location: "Paris", website: "https://www.ifmparis.fr" },
   { name: "ENS de Lyon", qsRank: "#235 Global", field: "Humanities, Foreign Languages, Modern Arts", feesEUR: 3950, location: "Lyon", website: "https://www.ens-lyon.fr" },
-  { name: "ESMOD Paris", qsRank: "Top Fashion School", field: "Fashion Business, Creative Haute Couture", feesEUR: 15500, location: "Paris", website: "https://www.esmod.com" },
+  { name: "ESMOD Paris", qsRank: "Not QS-ranked", field: "Fashion Business, Creative Haute Couture", feesEUR: 15500, location: "Paris", website: "https://www.esmod.com" },
   { name: "Université Paris Cité", qsRank: "#303 Global", field: "Art History, Cinema Studies, Sociology", feesEUR: 3950, location: "Paris", website: "https://u-paris.fr" }
 ];
 

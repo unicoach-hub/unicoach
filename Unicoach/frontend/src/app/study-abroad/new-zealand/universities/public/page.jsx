@@ -25,7 +25,7 @@ const publicUnisList = [
   {
     rank: 1,
     name: "University of Auckland",
-    qs: "#68",
+    qs: "#67",
     courses: "Engineering, Data Science, Business",
     ugFees: "₹23.6L - 34.1L",
     pgFees: "₹25.7L - 32.6L",

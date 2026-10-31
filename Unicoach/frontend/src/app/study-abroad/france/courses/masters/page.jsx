@@ -28,14 +28,14 @@ const SECTIONS = [
 const topMSUnis = [
   { rank: 1, name: "Université PSL", qsRank: "#34", tuitionEUR: 3950, focus: "Multidisciplinary, Research", tagline: "France's #1 University" },
   { rank: 2, name: "École Polytechnique", qsRank: "#43 (IP Paris)", tuitionEUR: 15000, focus: "Engineering, Data Science, AI", tagline: "France's MIT Equivalent" },
-  { rank: 3, name: "HEC Paris Business School", qsRank: "#1 Masters", tuitionEUR: 31750, focus: "Finance, Management, Business Analytics", tagline: "Top Business School in Europe" },
-  { rank: 4, name: "INSEAD", qsRank: "#2 MBA", tuitionEUR: 25000, focus: "MBA, Management, Strategy", tagline: "Elite Executive Training" },
+  { rank: 3, name: "HEC Paris Business School", qsRank: "Not QS-ranked", tuitionEUR: 31750, focus: "Finance, Management, Business Analytics", tagline: "Top Business School in Europe" },
+  { rank: 4, name: "INSEAD", qsRank: "Not QS-ranked", tuitionEUR: 25000, focus: "MBA, Management, Strategy", tagline: "Elite Executive Training" },
   { rank: 5, name: "Université Paris-Saclay", qsRank: "#76", tuitionEUR: 3950, focus: "Engineering, Technology, Life Sciences", tagline: "Global Scientific Powerhouse" },
-  { rank: 6, name: "Sorbonne University", qsRank: "#72", tuitionEUR: 3950, focus: "Sciences, Humanities, Medicine", tagline: "Centuries of Academic Prestige" },
-  { rank: 7, name: "ESSEC Business School", qsRank: "Top 30", tuitionEUR: 26000, focus: "Business, Finance, Marketing", tagline: "Triple-Accredited Business Leader" },
+  { rank: 6, name: "Sorbonne University", qsRank: "#73", tuitionEUR: 3950, focus: "Sciences, Humanities, Medicine", tagline: "Centuries of Academic Prestige" },
+  { rank: 7, name: "ESSEC Business School", qsRank: "Not QS-ranked", tuitionEUR: 26000, focus: "Business, Finance, Marketing", tagline: "Triple-Accredited Business Leader" },
   { rank: 8, name: "Sciences Po", qsRank: "#354", tuitionEUR: 20640, focus: "Political Science, International Relations", tagline: "Premier School for Public Policy" },
   { rank: 9, name: "CentraleSupélec", qsRank: "Part of Paris-Saclay (#76)", tuitionEUR: 13500, focus: "Engineering, Energy, AI", tagline: "Top Selective Engineering College" },
-  { rank: 10, name: "Université Paris Cité", qsRank: "#300", tuitionEUR: 3950, focus: "Health Sciences, Life Sciences, Medicine", tagline: "Leading Medical Research Center" }
+  { rank: 10, name: "Université Paris Cité", qsRank: "#303", tuitionEUR: 3950, focus: "Health Sciences, Life Sciences, Medicine", tagline: "Leading Medical Research Center" }
 ];
 
 const specialisations = [
