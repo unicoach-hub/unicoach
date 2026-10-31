@@ -249,7 +249,7 @@ const History = ({ reloadKey, openId, setOpenId }) => {
   ];
 
   return (
-    <div className="nx-card" style={{ padding: 14 }}>
+    <div className="nx-card" style={{ padding: 14, minWidth: 0 }}>
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: 12 }}>
         <Input.Search allowClear placeholder="Name, number or summary" style={{ width: 240 }} onSearch={set('q')} />
         <Segmented
@@ -485,8 +485,10 @@ const AiCalls = () => {
         subtitle="Riya (AI voice agent) and the team phone: every call with its recording, transcript and result"
         extra={<Button icon={<ReloadOutlined />} onClick={() => setReloadKey((k) => k + 1)}>Refresh</Button>}
       />
-      <div className="dashboard-content" style={{ display: 'grid', gap: 14 }}>
+      {/* minmax(0, 1fr): a wide table scrolls inside its card instead of stretching the page */}
+      <div className="dashboard-content" style={{ display: 'grid', gap: 14, gridTemplateColumns: 'minmax(0, 1fr)' }}>
         <Segmented
+          style={{ justifySelf: 'start' }}
           value={tab}
           onChange={setTab}
           options={[
