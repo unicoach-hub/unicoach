@@ -8,10 +8,12 @@
 // ════════════════════════════════════════════════════════════════════════════════
 
 import { useEffect, useMemo, useRef, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { motion, AnimatePresence, MotionConfig, useInView } from 'framer-motion';
 import { TEAM_MENTORS, mentorLook } from '../../utils/teamMentors';
 import {
   Check,
+  ArrowRight,
   Search,
   ShieldCheck,
   Video,
@@ -92,7 +94,6 @@ const CHAT_LINES = [
   { from: 'mentor', text: 'Sure, share it here and I\'ll mark it up before Friday.' }
 ];
 
-const INK = '#16130F';
 const MARIGOLD = '#FFC93C';
 const TILE = '#F2F5F9';
 const BLUE = '#14837E';
@@ -545,19 +546,21 @@ export const StudentFlashSection = () => {
       <section
         ref={sectionRef}
         id="how-unicoach-works"
-        className="py-14 sm:py-20 px-4 sm:px-6 lg:px-10 relative overflow-hidden bg-[#F2B705] border-b-[3px] border-[#16130F]"
+        className="py-10 sm:py-14 px-4 sm:px-6 lg:px-10 relative overflow-hidden bg-[#F2B705] border-b-[3px] border-[#16130F]"
       >
         <div className="max-w-[1320px] mx-auto">
           {/* ── SECTION HEADER ── */}
           <div className="text-center max-w-[760px] mx-auto">
             <p className="font-urbanist font-extrabold text-[16px] text-[#B8285B]">3 steps, bas itna hi</p>
-            <h2 className="mt-1.5 font-urbanist text-[34px] sm:text-[52px] font-black text-[#16130F] leading-[0.98] tracking-[-0.045em]">
+            <h2 className="mt-1 font-urbanist text-[32px] sm:text-[44px] font-black text-[#16130F] leading-[0.98] tracking-[-0.045em]">
               How UniCoach works
             </h2>
-            <p className="mt-3 text-[16px] sm:text-[18px] font-medium text-[#16130F]/80">From discovery to expert guidance, in 3 simple steps.</p>
+            <p className="mt-2 text-[16px] sm:text-[17px] font-medium text-[#16130F]/80">From discovery to expert guidance, in 3 simple steps.</p>
           </div>
 
-          <div className="mt-10 grid grid-cols-1 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] gap-6 lg:gap-10 items-center">
+          <div className="mt-7 grid grid-cols-1 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] gap-6 lg:gap-10 items-center">
+            {/* ════════ LEFT: STEPS, then what every booking includes ════════ */}
+            <div className="min-w-0">
             {/* ════════ LEFT: STEPS, THE ACTIVE ONE LIFTED ONTO A WHITE CARD ════════ */}
             <ol className="m-0 p-0 list-none flex flex-col gap-2">
               {STEPS.map((step) => {
@@ -611,6 +614,23 @@ export const StudentFlashSection = () => {
               })}
             </ol>
 
+            <ul className="mt-6 m-0 p-0 list-none flex flex-col gap-2.5 px-1">
+              {panelPoints.map((line) => (
+                <li key={line} className="flex items-center gap-3 text-[15px] sm:text-[16px] font-bold text-[#16130F]">
+                  <span className="grid place-items-center w-6 h-6 rounded-full text-white border-2 border-[#16130F] shrink-0" style={{ background: BLUE }}><Check size={13} strokeWidth={3} /></span>
+                  {line}
+                </li>
+              ))}
+            </ul>
+
+            <Link
+              to="/unicoach/mentors"
+              className="mt-6 inline-flex items-center gap-2 px-6 py-3.5 rounded-full bg-[#16130F] text-white text-[15px] font-bold border-[3px] border-[#16130F] shadow-[5px_5px_0_#DE5C2B] hover:-translate-y-0.5 transition-transform"
+            >
+              Find your mentor <ArrowRight size={16} />
+            </Link>
+            </div>
+
             {/* ════════ RIGHT: THE DEMO ON A WHITE PANEL ════════ */}
             <div
               id="how-it-works-demo"
@@ -618,14 +638,14 @@ export const StudentFlashSection = () => {
               onMouseLeave={() => setHovering(false)}
               onFocusCapture={() => setHovering(true)}
               onBlurCapture={() => setHovering(false)}
-              className="relative overflow-hidden rounded-[24px] bg-white p-5 sm:p-8 border-[3px] border-[#16130F] shadow-[8px_8px_0_#16130F]"
+              className="relative overflow-hidden rounded-[24px] bg-white p-5 sm:p-6 border-[3px] border-[#16130F] shadow-[8px_8px_0_#16130F]"
             >
               <div aria-hidden="true" className="absolute -top-24 -right-24 w-72 h-72 rounded-full bg-[radial-gradient(circle,#FFE7A3_0%,transparent_70%)] pointer-events-none" />
               <p className="relative flex items-center gap-2 text-[14px] sm:text-[15px] font-bold text-[#16130F]/80">
                 <span className="w-3 h-3 rounded-full bg-[#FFC93C]" /> Interactive preview · Step {STEPS[activeStep].number}
               </p>
 
-              <div className="relative mt-5 min-h-[330px] flex items-center" aria-labelledby={`how-step-${activeStep}`} role="region">
+              <div className="relative mt-3 min-h-[300px] flex items-center" aria-labelledby={`how-step-${activeStep}`} role="region">
                 <AnimatePresence mode="wait">
                   {activeStep === 0 && (
                     <motion.div key="step-0" {...panelMotion} className="w-full">
@@ -645,21 +665,6 @@ export const StudentFlashSection = () => {
                 </AnimatePresence>
               </div>
 
-              <ul className="relative mt-6 m-0 p-0 list-none flex flex-col gap-2.5">
-                {panelPoints.map((line) => (
-                  <li key={line} className="flex items-center gap-3 text-[14.5px] sm:text-[15.5px] font-bold text-[#16130F]">
-                    <span className="grid place-items-center w-6 h-6 rounded-full text-white shrink-0" style={{ background: BLUE }}><Check size={14} strokeWidth={3} /></span>
-                    {line}
-                  </li>
-                ))}
-              </ul>
-
-              <div className="relative mt-6 rounded-[18px] px-5 py-4 flex items-center justify-between gap-4" style={{ background: INK }}>
-                <span className="text-[15px] sm:text-[17px] font-extrabold text-white tabular-nums">Step {activeStep + 1} of {STEPS.length}</span>
-                <span className="flex-1 max-w-[200px] h-2 rounded-full bg-white/15 overflow-hidden">
-                  <span className="block h-full rounded-full bg-[#FFC93C] transition-[width] duration-500" style={{ width: `${((activeStep + 1) / STEPS.length) * 100}%` }} />
-                </span>
-              </div>
             </div>
           </div>
         </div>
