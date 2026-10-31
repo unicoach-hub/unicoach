@@ -107,6 +107,8 @@ exports.getStats = async (req, res) => {
         inWindow: isWithinWindow(new Date(), config),
         windowStartHour: config.windowStartHour,
         windowEndHour: config.windowEndHour,
+        riyaNumber: config.fromNumber,
+        teamNumber: process.env.VOBIZ_TEAM_NUMBER || '',
       },
     });
   } catch (err) {
