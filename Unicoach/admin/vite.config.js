@@ -10,6 +10,10 @@ export default defineConfig({
       output: {
         manualChunks(id) {
           if (id.includes('node_modules')) {
+            // Softphone SDK (~1.5 MB) loads only when someone opens the phone
+            if (id.includes('vobiz-webrtc-sdk') || id.includes('vobiz-jssip')) {
+              return undefined;
+            }
             if (id.includes('@ant-design/icons')) {
               return 'vendor-antd-icons';
             }

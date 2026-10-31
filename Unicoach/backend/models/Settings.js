@@ -72,7 +72,17 @@ const settingsSchema = new mongoose.Schema({
   razorpayWebhookSecret: { type: String, default: '' },
   paypalClientId: { type: String, default: '' },
   paypalClientSecret: { type: String, default: '' },
-  paypalMode: { type: String, enum: ['sandbox', 'live'], default: 'sandbox' }
+  paypalMode: { type: String, enum: ['sandbox', 'live'], default: 'sandbox' },
+
+  // 📞 AI calls (Bolna agent Riya). The API key and webhook secret stay in the server env.
+  aiCall: {
+    autoEnabled: { type: Boolean, default: false }, // call every new website lead
+    agentId: { type: String, default: '' }, // outbound agent; empty = BOLNA_AGENT_ID
+    fromNumber: { type: String, default: '' }, // caller number; empty = BOLNA_FROM_NUMBER
+    windowStartHour: { type: Number, default: 9 }, // IST
+    windowEndHour: { type: Number, default: 21 }, // IST
+    dailyAutoLimit: { type: Number, default: 100 }, // auto calls per day; manual calls are not counted
+  }
 }, { timestamps: true });
 
 module.exports = mongoose.model('Settings', settingsSchema);

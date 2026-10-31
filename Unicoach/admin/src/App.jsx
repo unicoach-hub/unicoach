@@ -11,6 +11,7 @@ import './index.css';
 // ── Lazy-loaded Pages for High-Performance Route-based Code Splitting ──
 const Login = lazy(() => import('./pages/Login'));
 const Dashboard = lazy(() => import('./pages/Dashboard'));
+const AiCalls = lazy(() => import('./pages/AiCalls'));
 const ContentHub = lazy(() => import('./pages/ContentHub'));
 const Blogs = lazy(() => import('./pages/Blogs'));
 const BlogForm = lazy(() => import('./pages/BlogForm'));
@@ -145,6 +146,7 @@ const App = () => {
                       {/* Old CRM booking calendar was unused; consultation bookings live under Consultation Calls */}
                       <Route path="/crm/calendar" element={<Navigate to="/crm/consultations" replace />} />
                       <Route path="/crm/consultations" element={<ConsultationCalls />} />
+                      <Route path="/ai-calls" element={<AiCalls />} />
                       {/* Legacy Leads & Users */}
                       <Route path="/users" element={<Users />} />
                       <Route path="/leads" element={<Leads />} />

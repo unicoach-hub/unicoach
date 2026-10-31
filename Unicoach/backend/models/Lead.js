@@ -9,8 +9,8 @@ const leadSchema = new mongoose.Schema({
   currentCity: { type: String, default: 'Not specified' },
   // Step 3
   name: { type: String, required: true },
-  // WhatsApp chatbot leads may not have given an email yet
-  email: { type: String, required: function () { return this.source !== 'WhatsApp'; }, default: '', index: true },
+  // WhatsApp chatbot leads and inbound callers may not have given an email yet
+  email: { type: String, required: function () { return !['WhatsApp', 'Inbound call'].includes(this.source); }, default: '', index: true },
   phone: { type: String, required: true },
   // Student account this lead became (set by "Start journey"); the journey stage lives on that account
   userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', index: true },
@@ -94,6 +94,18 @@ const leadSchema = new mongoose.Schema({
     riskFactors: [{ type: String }],
     scoredAt: { type: Date }
   },
+  // Latest call from the Bolna AI agent (Riya); the full result is also logged in `activities`
+  aiCall: {
+    executionId: { type: String },
+    status: { type: String }, // Bolna call status: queued, completed, no-answer, busy, failed, ...
+    outcome: { type: String }, // consultation_yes | callback | not_interested | do_not_call | wrong_number | no_conversation
+    queuedAt: { type: Date },
+    scheduledFor: { type: Date },
+    endedAt: { type: Date },
+    durationSec: { type: Number },
+    recordingUrl: { type: String },
+    summary: { type: String },
+  },
 }, { timestamps: true });
 
 leadSchema.index({ createdAt: -1 });
@@ -102,6 +114,7 @@ leadSchema.index({ status: 1, createdAt: -1 });
 leadSchema.index({ dreamCountry: 1, createdAt: -1 });
 leadSchema.index({ verified: 1, status: 1 });
 leadSchema.index({ 'attribution.lastTouch.utm_campaign': 1, createdAt: -1 });
+leadSchema.index({ 'aiCall.executionId': 1 }, { sparse: true });
 
 leadSchema.pre('save', function (next) {
   this.autoTags = require('../utils/leadTags').deriveAutoTags(this);

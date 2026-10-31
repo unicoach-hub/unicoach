@@ -104,6 +104,14 @@ const resolveRequest = async (req) => {
     case '/api/admin/leads':
       if (seg === 'bulk-tags') return { module: 'leads', action: 'update' };
       return { module: 'leads', action };
+    case '/api/admin/ai-calls':
+      // Calling hours, auto-call and agent stay with the owner; placing calls needs leads → create
+      if (seg === 'settings') return req.method === 'GET' ? { module: 'leads', action: 'view' } : OWNER_ONLY;
+      if (seg === 'batch' || (req.method === 'POST' && !seg)) return { module: 'leads', action: 'create' };
+      if (req.method === 'POST') return { module: 'leads', action: 'view' }; // :id/sync
+      return { module: 'leads', action };
+    case '/api/admin/softphone':
+      return { module: 'leads', action: 'create' };
     case '/api/ai':
       if (seg === 'generate-blog') return { module: 'blogs', action: 'create' };
       if (seg === 'suggest-lead-reply') return { module: 'leads', action: 'view' };

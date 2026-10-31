@@ -24,6 +24,7 @@ import {
   MessageOutlined,
   CheckSquareOutlined,
   CalendarOutlined,
+  PhoneOutlined,
 } from '@ant-design/icons';
 import { useAuth } from '../context/AuthContext';
 import StaffAvatar from './StaffAvatar';
@@ -47,6 +48,7 @@ const NAV_SECTIONS = [
       // Status views, pipelines and forms open from the Leads page itself
       { path: '/leads', label: 'Leads', icon: <TeamOutlined />, match: ['/leads', '/crm/board', '/crm/pipelines', '/crm/forms'] },
       { path: '/crm/consultations', label: 'Consultation Calls', icon: <CalendarOutlined /> },
+      { path: '/ai-calls', label: 'AI Calls', icon: <PhoneOutlined /> },
       { path: '/students/documents', label: 'Student Documents', icon: <FolderOpenOutlined /> },
       { path: '/students/inbox', label: 'Student Inbox', icon: <MessageOutlined />, badge: 'inbox' },
       { path: '/requests', label: 'Support Requests', icon: <CustomerServiceOutlined />, badge: 'requests' },
