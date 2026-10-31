@@ -16,15 +16,20 @@ import { BarCompare } from '../../../../../components/ui/Infographics';
 
 const topColleges = [
   { name: "Frankfurt School of Finance & Management", qsRank: "#40", feeEur: 42000, gmat: "600+", spec: "Finance, FinTech", intake: "Oct", logo: "https://logo.clearbit.com/frankfurt-school.de" },
-  { name: "Mannheim Business School", qsRank: "#46", feeEur: 47000, gmat: "620+", spec: "Strategy, General Mgmt", intake: "Sep", logo: "https://logo.clearbit.com/mannheim-business-school.com" },
+  { name: "Mannheim Business School", qsRank: "#46", feeEur: 49500, gmat: "620+", spec: "Strategy, General Mgmt", intake: "Sep", logo: "https://logo.clearbit.com/mannheim-business-school.com" },
   { name: "WHU - Otto Beisheim School of Management", qsRank: "#57", feeEur: 45000, gmat: "600+", spec: "Entrepreneurship, Startups", intake: "Sep", logo: "https://logo.clearbit.com/whu.edu" },
   { name: "ESMT Berlin", qsRank: "#78", feeEur: 50000, gmat: "600+", spec: "Innovation, Tech Mgmt", intake: "Sep", logo: "https://logo.clearbit.com/esmt.org" },
   { name: "TUM School of Management", qsRank: "Not ranked", feeEur: 39000, gmat: "570+", spec: "Engineering, AI Mgmt", intake: "Oct", logo: "https://logo.clearbit.com/tum.de" },
   { name: "ESCP Business School Berlin", qsRank: "Not ranked", feeEur: 60500, gmat: "600+", spec: "Luxury, Consulting", intake: "Sep", logo: "https://logo.clearbit.com/escp.eu" },
   { name: "EU Business School Munich", qsRank: "#101–110", feeEur: 22800, gmat: "Not Required", spec: "International Marketing", intake: "Sep/Jan", logo: "https://logo.clearbit.com/euruni.edu" },
-  { name: "HHL Leipzig Graduate School of Management", qsRank: "#151–200", feeEur: 41600, gmat: "570+", spec: "Supply Chain, Logistics", intake: "Sep", logo: "https://logo.clearbit.com/hhl.de" },
-  { name: "University of Cologne", qsRank: "Not ranked", feeEur: 2800, gmat: "Not Required", spec: "Corporate Development", intake: "Oct/Apr", logo: "https://logo.clearbit.com/uni-koeln.de" },
-  { name: "ISM International School of Management", qsRank: "Not ranked", feeEur: 27000, gmat: "Not Required", spec: "Business Data Science", intake: "Sep/Mar", logo: "https://logo.clearbit.com/ism.de" }
+  { name: "HHL Leipzig Graduate School of Management", qsRank: "#151–200", feeEur: 43500, gmat: "570+", spec: "Supply Chain, Logistics", intake: "Sep", logo: "https://logo.clearbit.com/hhl.de" },
+  { name: "University of Cologne (Cologne-Rotterdam Executive MBA)", qsRank: "Not ranked", feeEur: 44900, gmat: "Check site", spec: "Part-time EMBA with RSM, 4+ yrs experience", intake: "Sep", logo: "https://logo.clearbit.com/uni-koeln.de" },
+  { name: "ISM International School of Management", qsRank: "Not ranked", feeEur: 27000, gmat: "Not Required", spec: "Business Data Science", intake: "Sep/Mar", logo: "https://logo.clearbit.com/ism.de" },
+  { name: "Munich Business School", qsRank: "Not ranked", feeEur: 32000, gmat: "Check site", spec: "General Management, 12 months", intake: "Apr/Sep", logo: "https://logo.clearbit.com/munich-business-school.de" },
+  { name: "Kühne Logistics University (KLU)", qsRank: "Not ranked", feeEur: 30750, gmat: "Check site", spec: "Leadership & Supply Chain (part-time, 18 months)", intake: "Check site", logo: "https://logo.clearbit.com/the-klu.org" },
+  { name: "EBS Universität", qsRank: "Not ranked", feeEur: 29780, gmat: "GMAT/GRE or alternative test", spec: "General Management, 2 semesters", intake: "Jan/Aug", logo: "https://logo.clearbit.com/ebs.edu" },
+  { name: "GISMA University of Applied Sciences", qsRank: "Not ranked", feeEur: 22500, gmat: "Not Required", spec: "Global MBA, 3+ yrs experience", intake: "Jan/Apr/Jul/Oct", logo: "https://logo.clearbit.com/gisma.com" },
+  { name: "Pforzheim University (public)", qsRank: "Not ranked", feeEur: null, feeSemEur: 4600, gmat: "550+ (waiver possible)", spec: "MBA International Management, 2 yrs experience", intake: "Sep/Mar", logo: "https://logo.clearbit.com/hs-pforzheim.de" }
 ];
 
 const specialisations = [
@@ -39,7 +44,7 @@ const specialisations = [
 const faqs = [
   {
     q: "Can I get an MBA in Germany without GMAT/GRE?",
-    a: "Yes. Several public universities (like the University of Cologne) and some private business schools (like EU Business School or ISM) waive GMAT requirements, focusing instead on your academic records, interviews, and work experience."
+    a: "Yes. Several private business schools (like GISMA, EU Business School or ISM) do not require the GMAT, and Pforzheim University can waive it for applicants with a very good first-degree GPA. These schools focus instead on your academic records, interviews, and work experience."
   },
   {
     q: "What is the difference between an MBA and an MIM in Germany?",
@@ -234,7 +239,6 @@ const GermanyMBAPage = () => {
                       <ul className="text-xs text-slate-500 font-semibold space-y-1.5 list-disc pl-4">
                         <li>MIM (Master's in Management) - cheaper, designed for pre-experience</li>
                         <li>EU Business School Munich (No experience or GMAT requirements)</li>
-                        <li>University of Cologne (Public/Affordable, flexible entry criteria)</li>
                       </ul>
                     </div>
                     <div className="p-4 rounded-xl bg-slate-50 border border-slate-100/60">
@@ -343,8 +347,8 @@ const GermanyMBAPage = () => {
                         </span>
                       </td>
                       <td className="py-4 px-6 text-center font-bold text-slate-600">{c.gmat}</td>
-                      <td className="py-4 px-6 text-right font-black text-slate-700">€ {c.feeEur.toLocaleString()}</td>
-                      <td className="py-4 px-6 text-right font-black text-indigo-650">{formatPrice(c.feeEur)}</td>
+                      <td className="py-4 px-6 text-right font-black text-slate-700">{c.feeEur != null ? `€ ${c.feeEur.toLocaleString()}` : `€ ${c.feeSemEur.toLocaleString()} / semester`}</td>
+                      <td className="py-4 px-6 text-right font-black text-indigo-650">{c.feeEur != null ? formatPrice(c.feeEur) : `${formatPrice(c.feeSemEur)} / semester`}</td>
                       <td className="py-4 px-6 text-center font-bold text-slate-600">{c.intake}</td>
                     </tr>
                   ))}
@@ -353,7 +357,7 @@ const GermanyMBAPage = () => {
             </div>
             <div className="bg-slate-50 px-6 py-4 border-t border-slate-100 text-center md:text-left flex flex-col md:flex-row justify-between items-center gap-2">
               <span className="text-xs text-slate-400 font-bold">Note: Exchange rate reference is 1 EUR = 109.95 INR</span>
-              <span className="text-xs text-slate-400 font-bold">Source: Official university pages, QS MBA Rankings 2026</span>
+              <span className="text-xs text-slate-400 font-bold">Source: Official programme pages (latest published intake), QS Global MBA Rankings 2026</span>
             </div>
           </div>
         </div>

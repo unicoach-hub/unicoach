@@ -21,8 +21,19 @@ const universities = [
   { name: "RWTH Aachen University", rank: "104", programs: "Mechanical Engineering, Civil Engineering, Computer Science", duration: "3–3.5 Years", logo: "/logos/verified-RWTH Aachen University.png", link: "https://www.rwth-aachen.de" },
   { name: "Karlsruhe Institute of Technology (KIT)", rank: "110", programs: "Mechanical Engineering, Physics, Data Science", duration: "3 Years", logo: "/logos/verified-Karlsruhe Institute of Technology.png", link: "https://www.kit.edu" },
   { name: "Humboldt University of Berlin", rank: "140", programs: "Law, Political Science, Philosophy, Social Sciences", duration: "3 Years", logo: "/logos/verified-Humboldt University of Berlin.png", link: "https://www.hu-berlin.de" },
+  { name: "TU Dresden", rank: "185", programs: "Computer Science (Informatik), Applied Computer Science; most engineering is a 5-year Diplom", duration: "3 Years", logo: "https://www.google.com/s2/favicons?domain=tu-dresden.de&sz=128", link: "https://tu-dresden.de" },
+  { name: "University of Bonn", rank: "209", programs: "Mathematics, Economics, Computer Science, Cyber Security", duration: "3 Years", logo: "https://logo.clearbit.com/uni-bonn.de", link: "https://www.uni-bonn.de" },
+  { name: "FAU Erlangen-Nürnberg", rank: "218", programs: "Mechatronics, Computer Science, Economics", duration: "3 Years", logo: "https://www.google.com/s2/favicons?domain=www.fau.de&sz=128", link: "https://www.fau.eu" },
+  { name: "University of Tübingen", rank: "230", programs: "Computer Science, Psychology, Biology", duration: "3 Years", logo: "https://www.google.com/s2/favicons?domain=uni-tuebingen.de&sz=128", link: "https://uni-tuebingen.de/en/" },
   { name: "University of Freiburg", rank: "245", programs: "Environmental Science, Economics, Computer Science", duration: "3 Years", logo: "/logos/verified-University of Freiburg.png", link: "https://www.uni-freiburg.de" },
-  { name: "University of Bonn", rank: "209", programs: "Mathematics, Economics, Computer Science, Cyber Security", duration: "3 Years", logo: "https://logo.clearbit.com/uni-bonn.de", link: "https://www.uni-bonn.de" }
+  { name: "TU Darmstadt", rank: "250", programs: "Computer Science, Mechanical Engineering, Electrical Engineering", duration: "3 Years", logo: "https://www.google.com/s2/favicons?domain=www.tu-darmstadt.de&sz=128", link: "https://www.tu-darmstadt.de" },
+  { name: "University of Göttingen", rank: "261", programs: "Biology, Physics, Agricultural Sciences", duration: "3 Years", logo: "https://www.google.com/s2/favicons?domain=www.uni-goettingen.de&sz=128", link: "https://www.uni-goettingen.de" },
+  { name: "University of Stuttgart", rank: "318", programs: "Aerospace Engineering, Mechanical Engineering, Computer Science", duration: "3 Years", logo: "https://www.google.com/s2/favicons?domain=www.uni-stuttgart.de&sz=128", link: "https://www.uni-stuttgart.de" },
+  { name: "University of Mannheim", rank: "425", programs: "Business Administration, Economics, Business Informatics", duration: "3 Years", logo: "https://www.google.com/s2/favicons?domain=www.uni-mannheim.de&sz=128", link: "https://www.uni-mannheim.de" },
+  { name: "Rhine-Waal University of Applied Sciences (HSRW)", rank: null, programs: "International Business and Management, International Business Administration (English-taught)", duration: "3.5 Years", logo: "https://www.google.com/s2/favicons?domain=www.hochschule-rhein-waal.de&sz=128", link: "https://www.hochschule-rhein-waal.de/en" },
+  { name: "Deggendorf Institute of Technology (TH Deggendorf)", rank: null, programs: "International Management, Artificial Intelligence, Industrial Engineering (English-taught)", duration: "3.5 Years", logo: "https://www.google.com/s2/favicons?domain=www.th-deg.de&sz=128", link: "https://www.th-deg.de/studying-in-english" },
+  { name: "HAW Hamburg", rank: null, programs: "International Business (English-taught)", duration: "3.5 Years", logo: "https://www.google.com/s2/favicons?domain=www.haw-hamburg.de&sz=128", link: "https://www.haw-hamburg.de/en/bachelor-international-business/" },
+  { name: "SRH University (Berlin, Heidelberg, Leipzig)", rank: null, programs: "Applied Mechatronic Systems (English-taught, private: €5,100–€5,450/semester for non-EU)", duration: "3.5 Years", logo: "https://www.google.com/s2/favicons?domain=www.srh-university.de&sz=128", link: "https://www.srh-university.de/en/" }
 ];
 
 const specialisations = {
@@ -291,7 +302,7 @@ const GermanyBachelorsPage = () => {
         <div className="mb-20">
           <div className="text-left mb-8 max-w-2xl">
             <h2 className="text-3xl font-black text-slate-900 mb-3 tracking-tight">Top Universities for Bachelors in Germany</h2>
-            <p className="text-slate-500 text-sm font-bold">Top traditional research universities (Uni/TU) and structured technical hubs.</p>
+            <p className="text-slate-500 text-sm font-bold">{universities.length} options: research universities (Uni/TU) sorted by QS 2027 rank, then universities of applied sciences with English-taught bachelor's.</p>
           </div>
 
           <div className="bg-white border border-slate-200/60 rounded-3xl shadow-sm overflow-hidden">
@@ -322,7 +333,7 @@ const GermanyBachelorsPage = () => {
                       </td>
                       <td className="py-4 px-6 text-center">
                         <span className="inline-block px-2.5 py-1 rounded-full bg-orange-50 text-[#C04A1D] text-xs font-black">
-                          #{uni.rank}
+                          {uni.rank ? `#${uni.rank}` : 'Not ranked'}
                         </span>
                       </td>
                       <td className="py-4 px-6 font-bold text-slate-600">{uni.programs}</td>
@@ -347,7 +358,7 @@ const GermanyBachelorsPage = () => {
           <div className="mt-4 p-4 rounded-2xl bg-indigo-50/40 border border-indigo-150 text-slate-500 text-[11px] font-bold flex items-start gap-2.5">
             <Info size={16} className="text-indigo-600 shrink-0 mt-0.5" />
             <p>
-              <strong>QS Rankings & FH Options:</strong> Do not fixate only on QS ranks. For immediate employment in IT or Engineering, Universities of Applied Sciences (Fachhochschulen/FH) like FH Aachen are highly respected, mandating practical semesters and direct industry placements.
+              <strong>QS Rankings & FH Options:</strong> Most bachelor's programmes at public research universities are taught in German, so plan for German C1/B2. English-taught bachelor's are found mainly at Universities of Applied Sciences (Fachhochschulen/FH) such as HSRW, TH Deggendorf and HAW Hamburg, which QS does not rank but which include practical semesters and industry placements. Baden-Württemberg universities (Freiburg, Tübingen, Stuttgart, Mannheim, KIT, Heidelberg) charge non-EU students €1,500 per semester.
             </p>
           </div>
         </div>
@@ -458,7 +469,7 @@ const GermanyBachelorsPage = () => {
                   {[
                     { type: "Most Public Universities", eur: 0, desc: "Zero tuition fees regardless of nationality." },
                     { type: "State of Baden-Württemberg (e.g. Heidelberg)", eur: 1500, desc: "Mandatory for international students." },
-                    { type: "Technical University of Munich (TUM)", eur: 2500, desc: "Range of €2,000 to €3,000 for English programs." },
+                    { type: "Technical University of Munich (TUM)", eur: 2500, desc: "Usually €2,000 or €3,000 per semester for non-EU students (since winter 2024/25), plus the semester fee." },
                     { type: "Private Universities", eur: 7500, desc: "Range of €5,000 to €10,000 standard fees." }
                   ].map((row, idx) => (
                     <tr key={idx} className="hover:bg-slate-50/50 transition-colors">

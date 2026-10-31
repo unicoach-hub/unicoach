@@ -24,8 +24,18 @@ const universities = [
   { name: "Karlsruhe Institute of Technology (KIT)", rank: "#110", feeEurMin: 3000, feeEurMax: 3600, logo: "/logos/verified-Karlsruhe Institute of Technology.png", link: "https://www.kit.edu" },
   { name: "Humboldt University of Berlin", rank: "#140", feeEurMin: 700, feeEurMax: 770, logo: "/logos/verified-Humboldt University of Berlin.png", link: "https://www.hu-berlin.de" },
   { name: "Technical University of Berlin", rank: "#158", feeEurMin: 740, feeEurMax: 760, logo: "/logos/verified-Technical University of Berlin.png", link: "https://www.tu.berlin" },
+  { name: "TU Dresden", rank: "#185", feeEurMin: 722, feeEurMax: 722, logo: "https://www.google.com/s2/favicons?domain=tu-dresden.de&sz=128", link: "https://tu-dresden.de" },
   { name: "University of Hamburg", rank: "#209", feeEurMin: 780, feeEurMax: 810, logo: "/logos/verified-University of Hamburg.png", link: "https://www.uni-hamburg.de" },
-  { name: "University of Freiburg", rank: "#245", feeEurMin: 3300, feeEurMax: 3700, logo: "/logos/verified-University of Freiburg.png", link: "https://www.uni-freiburg.de" }
+  { name: "University of Bonn", rank: "#209", feeEurMin: 726, feeEurMax: 726, logo: "https://www.google.com/s2/favicons?domain=www.uni-bonn.de&sz=128", link: "https://www.uni-bonn.de" },
+  { name: "FAU Erlangen-Nürnberg", rank: "#218", feeEurMin: 164, feeEurMax: 164, logo: "https://www.google.com/s2/favicons?domain=www.fau.de&sz=128", link: "https://www.fau.eu" },
+  { name: "University of Freiburg", rank: "#245", feeEurMin: 3300, feeEurMax: 3700, logo: "/logos/verified-University of Freiburg.png", link: "https://www.uni-freiburg.de" },
+  { name: "TU Darmstadt", rank: "#250", feeEurMin: 805, feeEurMax: 841, logo: "https://www.google.com/s2/favicons?domain=www.tu-darmstadt.de&sz=128", link: "https://www.tu-darmstadt.de" },
+  { name: "University of Stuttgart", rank: "#318", feeEurMin: 3368, feeEurMax: 3368, logo: "https://www.google.com/s2/favicons?domain=www.uni-stuttgart.de&sz=128", link: "https://www.uni-stuttgart.de" },
+  { name: "University of Mannheim", rank: "#425", feeEurMin: 3388, feeEurMax: 3388, logo: "https://www.google.com/s2/favicons?domain=www.uni-mannheim.de&sz=128", link: "https://www.uni-mannheim.de" },
+  { name: "Rhine-Waal University of Applied Sciences (HSRW)", rank: "Not ranked", feeEurMin: 730, feeEurMax: 730, logo: "https://www.google.com/s2/favicons?domain=www.hochschule-rhein-waal.de&sz=128", link: "https://www.hochschule-rhein-waal.de/en/academics/prospective-students/current-application-period/masters-programmes" },
+  { name: "Deggendorf Institute of Technology (TH Deggendorf)", rank: "Not ranked", feeEurMin: 1164, feeEurMax: 1164, logo: "https://www.google.com/s2/favicons?domain=www.th-deg.de&sz=128", link: "https://www.th-deg.de/studying-in-english" },
+  { name: "HAW Hamburg", rank: "Not ranked", feeEurMin: 794, feeEurMax: 794, logo: "https://www.google.com/s2/favicons?domain=www.haw-hamburg.de&sz=128", link: "https://www.haw-hamburg.de/en/study/master/" },
+  { name: "SRH University (private)", rank: "Not ranked", feeEurMin: 10900, feeEurMax: 13900, logo: "https://www.google.com/s2/favicons?domain=www.srh-university.de&sz=128", link: "https://www.srh-university.de/en/master/computer-science-big-data-artificial-intelligence/i/" }
 ];
 
 const specialisations = {
@@ -35,7 +45,7 @@ const specialisations = {
     bestFor: "Students with a background in Mechanical, Production, or Mechatronics who want to lead the transition to Electric Vehicles (EVs) and Industry 4.0.",
     insight: "Learn autonomous driving systems, battery technology, and smart manufacturing. Most programs require students to do a 22-week research project or internship in the sector.",
     skills: ["Computational Fluid Dynamics (CFD)", "Smart Manufacturing", "Sustainable Drivetrains"],
-    fees: "Free at RWTH Aachen; €4,000–€12,000/year at TUM."
+    fees: "Semester fee only at RWTH Aachen; at TUM, non-EU students pay €4,000 or €6,000 per semester (€8,000–€12,000/year)."
   },
   cs: {
     title: "Computer Science and AI",
@@ -263,7 +273,7 @@ const GermanyMastersPage = () => {
         <div className="mb-20">
           <div className="text-left mb-8 max-w-2xl">
             <h2 className="text-3xl font-black text-slate-900 mb-3 tracking-tight">Top Universities in Germany (QS 2027 Rankings)</h2>
-            <p className="text-slate-500 text-sm font-bold">Compare elite public universities charging €0 or nominal semester fees, avoiding massive debt common in US/UK.</p>
+            <p className="text-slate-500 text-sm font-bold">{universities.length} options sorted by QS 2027 rank: public universities charging only the semester fee (plus €1,500/semester for non-EU students in Baden-Württemberg, and programme tuition at TUM), then universities of applied sciences and one private option with English-taught master's.</p>
           </div>
 
           <div className="bg-white border border-slate-200/60 rounded-3xl shadow-sm overflow-hidden">
@@ -299,10 +309,14 @@ const GermanyMastersPage = () => {
                         </span>
                       </td>
                       <td className="py-4 px-6 text-right font-black text-slate-700">
-                        € {uni.feeEurMin.toLocaleString()} – € {uni.feeEurMax.toLocaleString()}
+                        {uni.feeEurMin === uni.feeEurMax
+                          ? `€ ${uni.feeEurMin.toLocaleString()}`
+                          : `€ ${uni.feeEurMin.toLocaleString()} – € ${uni.feeEurMax.toLocaleString()}`}
                       </td>
                       <td className="py-4 px-6 text-right font-black text-indigo-650">
-                        {formatPrice(uni.feeEurMin)} – {formatPrice(uni.feeEurMax)}
+                        {uni.feeEurMin === uni.feeEurMax
+                          ? formatPrice(uni.feeEurMin)
+                          : `${formatPrice(uni.feeEurMin)} – ${formatPrice(uni.feeEurMax)}`}
                       </td>
                       <td className="py-4 px-6 text-center">
                         <a 

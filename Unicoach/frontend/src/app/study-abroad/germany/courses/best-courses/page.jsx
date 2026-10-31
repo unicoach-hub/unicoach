@@ -15,9 +15,9 @@ const topCoursesMatrix = [
   { course: "Engineering", spec: "Mechanical, Automotive, Robotics, Mechatronics", salaryRange: "€50,000 – €70,000", keySalary: 50000, demand: "Critical", visa: "EU Blue Card / Skilled Worker" },
   { course: "Computer Science / AI", spec: "Data Science, Cybersecurity, AI & Machine Learning", salaryRange: "€55,000 – €85,000", keySalary: 55000, demand: "Very High", visa: "EU Blue Card / Job Seeker" },
   { course: "Business Management", spec: "Supply Chain, Finance, Sustainability Management", salaryRange: "€45,000 – €75,000", keySalary: 45000, demand: "High", visa: "EU Blue Card / Skilled Worker" },
-  { course: "Medicine & Dentistry", spec: "Public Health, Clinical Medicine, Nursing", salaryRange: "€60,000 – €95,000", keySalary: 60000, demand: "Very High", visa: "Skilled Worker (Recognition Req.)" },
+  { course: "Medicine & Dentistry", spec: "Human Medicine, Dentistry (Staatsexamen, German-taught)", salaryRange: "€60,000 – €95,000", keySalary: 60000, demand: "Very High", visa: "Skilled Worker (Recognition Req.)" },
   { course: "Environmental Science", spec: "Renewable Energy, Climate Policy, Green Engineering", salaryRange: "€50,000 – €65,000", keySalary: 50000, demand: "Rising", visa: "Skilled Worker / Job Seeker" },
-  { course: "Law", spec: "Corporate Law, Intellectual Property, Trade Law", salaryRange: "€40,005 – €75,000", keySalary: 40005, demand: "Medium", visa: "Skilled Worker (Bar Exam Req.)" },
+  { course: "Law", spec: "Corporate Law, Intellectual Property, Trade Law", salaryRange: "€40,000 – €75,000", keySalary: 40000, demand: "Medium", visa: "Skilled Worker (Bar Exam Req.)" },
   { course: "Psychology", spec: "Cognitive Psychology, Business Psychology", salaryRange: "€45,000 – €60,000", keySalary: 45000, demand: "Medium", visa: "Skilled Worker" },
   { course: "Architecture", spec: "Sustainable Design, Smart Cities, Urban Planning", salaryRange: "€40,000 – €55,000", keySalary: 40000, demand: "Medium", visa: "Skilled Worker / Job Seeker" },
   { course: "Social Sciences", spec: "Political Science, Sociology, Policy Advisor", salaryRange: "€38,000 – €50,000", keySalary: 38000, demand: "Niche", visa: "Job Seeker Visa" },
@@ -29,7 +29,7 @@ const courseDetails = {
     title: "Engineering",
     desc: "Germany employs over 1.5 million engineers, making it one of the largest engineering industries in the world. The engineering sector contributes significantly to Germany's GDP, accounting for more than 25%.",
     unis: [
-      { name: "Technical University of Munich", fee: "€4,000 – €12,000/year" },
+      { name: "Technical University of Munich", fee: "Non-EU: €2,000–€3,000/semester (bachelor's), €4,000–€6,000/semester (master's)" },
       { name: "Technical University of Berlin", fee: "~€760/year (semester fee)" },
       { name: "RWTH Aachen University", fee: "~€600–700/year (semester fee)" }
     ],
@@ -44,7 +44,7 @@ const courseDetails = {
     title: "Computer Science",
     desc: "Germany's computing market generates billions in revenue, with a continuous demand for software developers, IT project leads, and cloud architects across all sectors.",
     unis: [
-      { name: "Technical University of Munich", fee: "€4,000 – €12,000/year" },
+      { name: "Technical University of Munich", fee: "Non-EU: €2,000–€3,000/semester (bachelor's), €4,000–€6,000/semester (master's)" },
       { name: "Technical University of Berlin", fee: "~€760/year" },
       { name: "Karlsruhe Institute of Technology", fee: "€3,000/year + €368 semester fees" }
     ],
@@ -59,9 +59,9 @@ const courseDetails = {
     title: "Business Management",
     desc: "With a massive wealth management and corporate logistics system in Germany, companies seek experts who can manage complex global supply chains and lead corporate development.",
     unis: [
-      { name: "Mannheim Business School", fee: "€45,000 (total program fee)" },
-      { name: "TUM School of Management", fee: "€4,000 – €12,000/year" },
-      { name: "HHL Leipzig Graduate School of Management", fee: "€33,000 – €37,500" }
+      { name: "Mannheim Business School", fee: "€49,500 (Full-Time MBA, total programme fee)" },
+      { name: "TUM School of Management", fee: "Non-EU: €4,000/semester (Master in Management & Technology)" },
+      { name: "HHL Leipzig Graduate School of Management", fee: "€43,500 (Full-time MBA, total programme fee)" }
     ],
     jobs: [
       { role: "Financial Analyst", sal: 54400 },

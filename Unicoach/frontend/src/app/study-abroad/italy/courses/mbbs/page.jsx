@@ -16,7 +16,7 @@ import { HookBand, BarCompare } from '../../../../../components/ui/Infographics'
 
 const whyStudyPoints = [
   { icon: GraduationCap, title: 'World-Class Education', desc: 'Sapienza (#111), Bologna (#123), Padua (#204) and Milan (#270) all rank in the QS World University Rankings 2027 top 300.', color: 'blue' },
-  { icon: Coins, title: 'Affordable Tuition', desc: 'Public universities charge roughly ₹16,500 – ₹4.7L/year, depending on the university and your family income or country.', color: 'emerald' },
+  { icon: Coins, title: 'Affordable Tuition', desc: 'Public universities charge roughly ₹14,000 – ₹4L/year, depending on the university and your family income or country.', color: 'emerald' },
   { icon: Globe, title: 'Global Recognition', desc: 'WHO, NMC, US & Europe recognized degrees. Graduates can write FMGE/NEXT and practice globally.', color: 'indigo' },
   { icon: Clock, title: 'Six-Year Program', desc: '5 years of academics + 1 year compulsory clinical internship. 360 ECTS fully integrated program.', color: 'violet' },
   { icon: Building2, title: 'Clinical Exposure', desc: 'Training in top hospitals and research centers. Early patient contact from Year 1 in many universities.', color: 'amber' },
@@ -25,11 +25,27 @@ const whyStudyPoints = [
 
 const topUniversities = [
   { rank: 1, name: 'Sapienza University of Rome', qsRank: '#111 (2027)', type: 'Public', feeEUR: 300, feeText: '€300', location: 'Rome', program: 'Medicine and Surgery (English-taught)', highlight: 'Lowest fixed fee for India', censis: 'Founded 1303', badge: 'bg-violet-50 text-violet-700 border-violet-100' },
-  { rank: 2, name: 'University of Bologna', qsRank: '#123 (2027)', type: 'Public', feeEUR: 1157, feeText: '€1,157 (flat option)', location: 'Bologna', program: 'Medicine and Surgery (Laurea Magistrale CU)', highlight: 'Oldest university in the West', censis: 'Founded 1088', badge: 'bg-emerald-50 text-emerald-700 border-emerald-100' },
+  // Bologna 2026/27: reduced fixed fee for citizens of non-OECD countries (India) with family income only outside Italy = €1,000 + €157.04 first instalment (unibo.it "Reduced fixed fee" page).
+  { rank: 2, name: 'University of Bologna', qsRank: '#123 (2027)', type: 'Public', feeEUR: 1157, feeText: '€1,157 (reduced fixed fee, non-OECD)', location: 'Bologna', program: 'Medicine and Surgery (Laurea Magistrale CU)', highlight: 'Oldest university in the West', censis: 'Founded 1088', badge: 'bg-emerald-50 text-emerald-700 border-emerald-100' },
   { rank: 3, name: 'University of Padua', qsRank: '#204 (2027)', type: 'Public', feeEUR: 3000, feeText: '€0 – ~€3,000', location: 'Padua', program: 'Medicine and Surgery (English-taught)', highlight: 'Fee set by ISEE', censis: 'Founded 1222', badge: 'bg-amber-50 text-amber-700 border-amber-100' },
   { rank: 4, name: 'University of Milan', qsRank: '#270 (2027)', type: 'Public', feeEUR: 4307, feeText: '€346 – €4,307', location: 'Milan', program: 'International Medical School (IMS)', highlight: 'Fee set by country group', censis: 'Founded 1924', badge: 'bg-orange-50 text-[#C04A1D] border-orange-100' },
-  { rank: 5, name: 'University of Turin', qsRank: '#405 (2027)', type: 'Public', feeEUR: 1156, feeText: '€456 – €1,156', location: 'Turin', program: 'Medicine and Surgery (English-taught)', highlight: 'Fee set by country GDP', censis: 'Founded 1404', badge: 'bg-rose-50 text-rose-700 border-rose-100' },
+  // Universities 5–17: course and seats checked on each university's 2026/27 call or course page. feeEUR null = fee not verified on an official page.
+  { rank: 5, name: 'University of Rome Tor Vergata', qsRank: '#342 (2027)', type: 'Public', feeEUR: null, feeText: null, location: 'Rome', program: 'Medicine and Surgery (English-taught)', highlight: '20 non-EU seats in Rome (2026/27)', censis: null, badge: 'bg-violet-50 text-violet-700 border-violet-100' },
+  { rank: 6, name: 'University of Pavia', qsRank: '#395 (2027)', type: 'Public', feeEUR: 400, feeText: '€400', location: 'Pavia', program: 'Medicine and Surgery – Harvey course (English-taught)', highlight: 'Fee listed on UniPV portal', censis: null, badge: 'bg-emerald-50 text-emerald-700 border-emerald-100' },
+  { rank: 7, name: 'University of Naples Federico II', qsRank: '#401 (2027)', type: 'Public', feeEUR: null, feeText: null, location: 'Naples', program: 'Medicine and Surgery (English-taught)', highlight: '45 non-EU seats (2026/27)', censis: null, badge: 'bg-amber-50 text-amber-700 border-amber-100' },
+  { rank: 8, name: 'University of Turin', qsRank: '#405 (2027)', type: 'Public', feeEUR: 1156, feeText: '€456 – €1,156', location: 'Turin', program: 'Medicine and Surgery (English-taught)', highlight: 'Fee set by country GDP', censis: 'Founded 1404', badge: 'bg-rose-50 text-rose-700 border-rose-100' },
+  { rank: 9, name: 'University of Florence', qsRank: '#409 (2027)', type: 'Public', feeEUR: null, feeText: null, location: 'Florence', program: 'Medicine and Surgery (English-taught)', highlight: 'New course from 2026/27', censis: null, badge: 'bg-orange-50 text-[#C04A1D] border-orange-100' },
+  { rank: 10, name: 'University of Milano-Bicocca', qsRank: '#544 (2027)', type: 'Public', feeEUR: null, feeText: null, location: 'Bergamo', program: 'Medicine and Surgery (English-taught)', highlight: 'IMAT-based admission', censis: null, badge: 'bg-violet-50 text-violet-700 border-violet-100' },
+  { rank: 11, name: 'Marche Polytechnic University', qsRank: '#662 (2027)', type: 'Public', feeEUR: null, feeText: null, location: 'Ancona', program: 'Medicine and Surgery – Med Tech (English-taught)', highlight: 'Medicine + technology track', censis: null, badge: 'bg-emerald-50 text-emerald-700 border-emerald-100' },
+  { rank: 12, name: 'University of Bari Aldo Moro', qsRank: '#741-750 (2027)', type: 'Public', feeEUR: null, feeText: null, location: 'Bari', program: 'Medicine and Surgery (English-taught)', highlight: '8 non-EU seats (2026/27)', censis: null, badge: 'bg-amber-50 text-amber-700 border-amber-100' },
+  { rank: 13, name: 'University of Messina', qsRank: '#761-770 (2027)', type: 'Public', feeEUR: null, feeText: null, location: 'Messina', program: 'Medicine and Surgery (English-taught)', highlight: 'IMAT-based admission', censis: null, badge: 'bg-rose-50 text-rose-700 border-rose-100' },
+  { rank: 14, name: 'University of Catania', qsRank: '#851-900 (2027)', type: 'Public', feeEUR: 306, feeText: '€306 (€150 + €156 fixed)', location: 'Catania', program: 'Medicine and Surgery (English-taught)', highlight: '40 non-EU seats (2026/27)', censis: null, badge: 'bg-orange-50 text-[#C04A1D] border-orange-100' },
+  { rank: 15, name: 'University of Campania Luigi Vanvitelli', qsRank: '#951-1000 (2027)', type: 'Public', feeEUR: null, feeText: null, location: 'Naples', program: 'Medicine and Surgery (English-taught)', highlight: 'IMAT-based admission', censis: null, badge: 'bg-violet-50 text-violet-700 border-violet-100' },
+  { rank: 16, name: 'University of Parma', qsRank: '#1001-1200 (2027)', type: 'Public', feeEUR: null, feeText: null, location: 'Piacenza', program: 'Medicine and Surgery (English-taught)', highlight: '50 non-EU seats (2026/27)', censis: null, badge: 'bg-emerald-50 text-emerald-700 border-emerald-100' },
+  { rank: 17, name: 'University of Cagliari', qsRank: '#1201-1400 (2027)', type: 'Public', feeEUR: null, feeText: null, location: 'Cagliari', program: 'Medicine and Surgery (English-taught)', highlight: '98 seats in total (2026/27)', censis: null, badge: 'bg-amber-50 text-amber-700 border-amber-100' },
 ];
+
+const verifiedFeeUniversities = topUniversities.filter((u) => u.feeEUR != null);
 
 const intakeTimeline = [
   { stage: 'Pre-enrollment (Non-EU)', timeline: 'April – June 2026', desc: 'Complete government pre-enrollment on Universitaly portal. Upload all documents.', icon: ClipboardList },
@@ -88,11 +104,14 @@ const scholarships = [
 ];
 
 const costRows = [
-  { university: 'Sapienza Rome', annualINR: '₹33K', annualEUR: '€300', totalINR: '₹2L' },
-  { university: 'University of Bologna', annualINR: '₹1.3L', annualEUR: '€1,157', totalINR: '₹7.6L' },
-  { university: 'University of Padua', annualINR: '₹0 – ₹3.3L', annualEUR: '€0 – ~€3,000', totalINR: 'up to ₹19.8L' },
-  { university: 'University of Milan', annualINR: '₹38K – ₹4.7L', annualEUR: '€346 – €4,307', totalINR: 'up to ₹28.4L' },
-  { university: 'University of Turin', annualINR: '₹50K – ₹1.3L', annualEUR: '€456 – €1,156', totalINR: '₹3L – ₹7.6L' },
+  // INR at the page's exchangeRate (€1 = ₹93.5). Only universities whose fee is verified on an official page.
+  { university: 'Sapienza Rome', annualINR: '₹28K', annualEUR: '€300', totalINR: '₹1.7L' },
+  { university: 'University of Bologna', annualINR: '₹1.1L', annualEUR: '€1,157', totalINR: '₹6.5L' },
+  { university: 'University of Padua', annualINR: '₹0 – ₹2.8L', annualEUR: '€0 – ~€3,000', totalINR: 'up to ₹16.8L' },
+  { university: 'University of Milan', annualINR: '₹32K – ₹4L', annualEUR: '€346 – €4,307', totalINR: 'up to ₹24.2L' },
+  { university: 'University of Pavia', annualINR: '₹37K', annualEUR: '€400', totalINR: '₹2.2L' },
+  { university: 'University of Turin', annualINR: '₹43K – ₹1.1L', annualEUR: '€456 – €1,156', totalINR: '₹2.6L – ₹6.5L' },
+  { university: 'University of Catania', annualINR: '₹29K', annualEUR: '€306', totalINR: '₹1.7L' },
 ];
 
 const livingCosts = [
@@ -129,7 +148,7 @@ const careerPaths = [
 const faqs = [
   { q: 'Is MBBS from Italy recognized in India?', a: 'Yes. Degrees from Italian state universities are fully compliant with NMC (National Medical Commission) guidelines. Indian graduates can write the FMGE/NEXT licensing exams to practice in India.' },
   { q: 'What is the IMAT exam and how do I prepare?', a: 'IMAT (International Medical Admissions Test) is a 100-minute, 60-question English-medium exam held at Pearson VUE centres worldwide. It covers Logical Reasoning, General Knowledge, Biology, Chemistry, and Physics/Maths. A score of 30/60+ is generally required for competitive universities.' },
-  { q: 'How much does it cost to study MBBS in Italy in total?', a: 'Living costs make up most of the total. Public university tuition is roughly ₹16,500 – ₹4.7L/year (about €150 – €4,300), depending on the university and your family income or country, and monthly living costs are ₹45,000 – ₹70,000.' },
+  { q: 'How much does it cost to study MBBS in Italy in total?', a: 'Living costs make up most of the total. Public university tuition is roughly ₹14,000 – ₹4L/year (about €150 – €4,300), depending on the university and your family income or country, and monthly living costs are ₹45,000 – ₹70,000.' },
   { q: 'Do I need to know Italian to study MBBS in Italy?', a: 'English-taught programs exist at all top universities listed. However, basic Italian (A2-B1) is highly recommended for clinical rotations and daily patient interactions in hospitals.' },
   { q: 'Can I get a scholarship for MBBS in Italy?', a: 'Yes. Universities run merit scholarships (for example the University of Milan scholarships for international students), and regional DSU grants (DiSCo Lazio for Sapienza, ESU Padova for Padua) are income-based. Amounts change every year, so check each current call.' },
   { q: 'What is the minimum NEET score required?', a: 'Indian students must have a valid NEET score with a minimum 50% marks (General category). The NEET score is mandatory for Indian students who wish to practice medicine in India after graduation.' },
@@ -212,7 +231,7 @@ const ItalyMBBSCourse = () => {
             {[
               { val: '6 Years', label: 'Program Duration' },
               { val: 'IMAT Exam', label: 'Entrance Metric' },
-              { val: '₹16K – ₹4.7L/yr', label: 'Public Tuition' },
+              { val: '₹14K – ₹4L/yr', label: 'Public Tuition' },
               { val: 'WHO / NMC', label: 'Approved By' },
             ].map((s, i) => (
               <div key={i} className="bg-white/70 border border-white/80 rounded-2xl p-5 shadow-sm backdrop-blur-md">
@@ -223,7 +242,7 @@ const ItalyMBBSCourse = () => {
           </div>
         </motion.div>
 
-        <HookBand value="₹16K – ₹4.7L" label="a year in public university tuition for a WHO & NMC approved 6-year MD" hi="Doctor" className="mb-10" />
+        <HookBand value="₹14K – ₹4L" label="a year in public university tuition for a WHO & NMC approved 6-year MD" hi="Doctor" className="mb-10" />
 
         {/* ── TOC CHIPS ── */}
         <motion.div
@@ -276,8 +295,8 @@ const ItalyMBBSCourse = () => {
               </thead>
               <tbody className="divide-y divide-slate-50">
                 {[
-                  ['Top Medical Universities', 'Milan, Bologna, Sapienza, Padua, Turin'],
-                  ['Annual Tuition (Public)', '₹16K – ₹4.7L'],
+                  ['English-Taught Public Universities', '17 (Sapienza, Bologna, Padua, Milan + 13 more)'],
+                  ['Annual Tuition (Public)', '₹14K – ₹4L'],
                   ['Total Course Cost', '₹75L – ₹90L'],
                   ['Program Duration', '6 Years'],
                   ['Intake', 'August – September'],
@@ -296,9 +315,9 @@ const ItalyMBBSCourse = () => {
           </div>
         </section>
 
-        {/* ── TOP 5 UNIVERSITIES ── */}
+        {/* ── PUBLIC UNIVERSITIES (ENGLISH-TAUGHT) ── */}
         <section className="mb-16">
-          <SectionHeader icon={Building2} title="Top 5 Medical Universities in Italy (2026)" subtitle="All programs listed are English-medium, IMAT-based, and WHO/NMC recognized." iconColor="text-[#DE5C2B]" />
+          <SectionHeader icon={Building2} title="17 Public Universities Teaching Medicine in English (2026/27)" subtitle="Each runs the 6-year Medicine and Surgery degree in English with IMAT admission. Ranked by QS World University Rankings 2027. Fees appear only where the university publishes them." iconColor="text-[#DE5C2B]" />
 
           {/* Currency Switcher */}
           <div className="flex items-center gap-2 mb-6">
@@ -336,7 +355,7 @@ const ItalyMBBSCourse = () => {
                   <span className={`px-3 py-1.5 text-[10px] font-black uppercase tracking-wider rounded-full border ${uni.badge}`}>{uni.highlight}</span>
                   <div className="text-right">
                     <span className="text-[10px] text-slate-400 font-extrabold uppercase tracking-wider block">Annual Fee</span>
-                    <span className="text-sm font-black text-slate-900">{uni.feeText || fmt(uni.feeEUR)}/yr</span>
+                    <span className="text-sm font-black text-slate-900">{uni.feeEUR == null ? 'Not verified – see university fee page' : `${uni.feeText || fmt(uni.feeEUR)}/yr`}</span>
                   </div>
                 </div>
               </motion.div>
@@ -354,13 +373,10 @@ const ItalyMBBSCourse = () => {
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-50">
-                {[
-                  ['Sapienza Rome', '#111', '₹33K', '€300', '✅', '✅'],
-                  ['Univ. of Bologna', '#123', '₹1.3L', '€1,157', '✅', '✅'],
-                  ['Univ. of Padua', '#204', '₹0 – ₹3.3L', '€0 – ~€3,000', '✅', '✅'],
-                  ['Univ. of Milan', '#270', '₹38K – ₹4.7L', '€346 – €4,307', '✅', '✅'],
-                  ['Univ. of Turin', '#405', '₹50K – ₹1.3L', '€456 – €1,156', '✅', '✅'],
-                ].map((row, i) => (
+                {topUniversities.map((u) => {
+                  const cost = costRows.find((r) => r.university.replace('University of ', '') === u.name.replace('University of ', ''));
+                  return [u.name, u.qsRank.replace(' (2027)', ''), cost ? cost.annualINR : 'Not verified', cost ? cost.annualEUR : 'Not verified', '✅', '✅'];
+                }).map((row, i) => (
                   <tr key={i} className="hover:bg-slate-50/50 transition-colors">
                     {row.map((cell, j) => (
                       <td key={j} className={`py-3 pr-4 ${j === 0 ? 'font-extrabold text-slate-900' : 'text-slate-600 font-bold'}`}>{cell}</td>
@@ -637,8 +653,8 @@ const ItalyMBBSCourse = () => {
           <SectionHeader icon={Coins} title="Cost of Studying MBBS in Italy" subtitle="Italy offers some of Europe's most affordable medical education. Here's a complete cost breakdown." iconColor="text-emerald-600" />
           <BarCompare
             kicker="Annual tuition"
-            title="Highest annual fee an Indian student may pay at 5 public universities (EUR)"
-            items={topUniversities.map((u) => ({ label: u.name.replace('University of ', '').replace(' University of Rome', ''), value: u.feeEUR, display: u.feeText || `€${u.feeEUR.toLocaleString()}` }))}
+            title={`Highest annual fee an Indian student may pay at the ${verifiedFeeUniversities.length} public universities with an officially published fee (EUR)`}
+            items={verifiedFeeUniversities.map((u) => ({ label: u.name.replace('University of ', '').replace(' University of Rome', ''), value: u.feeEUR, display: u.feeText || `€${u.feeEUR.toLocaleString()}` }))}
             highlight="Sapienza Rome"
             className="mb-6"
           />

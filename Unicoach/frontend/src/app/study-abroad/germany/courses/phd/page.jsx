@@ -16,13 +16,20 @@ import { BarCompare, Donut } from '../../../../../components/ui/Infographics';
 const universities = [
   { name: "Technical University of Munich (TUM)", rank: "#25", fields: "Engineering, Computer Science, Physics", feeMin: 0, feeMax: 500, link: "https://www.tum.de" },
   { name: "Ludwig Maximilian University of Munich (LMU)", rank: "#61", fields: "Humanities, Physics, Psychology", feeMin: 0, feeMax: 400, link: "https://www.lmu.de" },
-  { name: "Heidelberg University", rank: "#86", fields: "Medicine, Chemistry, Life Sciences", feeMin: 0, feeMax: 1500, link: "https://www.uni-heidelberg.de" },
+  { name: "Heidelberg University", rank: "#86", fields: "Medicine, Chemistry, Life Sciences", feeMin: 190, feeMax: 190, link: "https://www.uni-heidelberg.de" },
   { name: "Free University of Berlin", rank: "#98", fields: "Political Science, Sociology, Humanities", feeMin: 0, feeMax: 700, link: "https://www.fu-berlin.de" },
   { name: "RWTH Aachen University", rank: "#104", fields: "Mechanical & Chemical Engineering", feeMin: 0, feeMax: 600, link: "https://www.rwth-aachen.de" },
   { name: "Karlsruhe Institute of Technology (KIT)", rank: "#110", fields: "Electrical Engineering, Computer Science, Physics", feeMin: 0, feeMax: 600, link: "https://www.kit.edu" },
   { name: "Humboldt University of Berlin", rank: "#140", fields: "Social Sciences, Physics, Economics", feeMin: 0, feeMax: 800, link: "https://www.hu-berlin.de" },
-  { name: "University of Freiburg", rank: "#245", fields: "Biotechnology, Chemistry, Environmental Sciences", feeMin: 0, feeMax: 1500, link: "https://www.uni-freiburg.de" },
-  { name: "University of Tübingen", rank: "#230", fields: "Medicine, Neuroscience, Theology", feeMin: 0, feeMax: 1000, link: "https://www.uni-tuebingen.de" }
+  { name: "TU Dresden", rank: "#185", fields: "Engineering, Computer Science, Life Sciences", feeMin: 361, feeMax: 361, link: "https://tu-dresden.de" },
+  { name: "University of Bonn", rank: "#209", fields: "Mathematics, Economics, Physics", feeMin: 363, feeMax: 363, link: "https://www.uni-bonn.de" },
+  { name: "FAU Erlangen-Nürnberg", rank: "#218", fields: "Engineering, Physics, Medicine", feeMin: 82, feeMax: 82, link: "https://www.fau.eu" },
+  { name: "University of Tübingen", rank: "#230", fields: "Medicine, Neuroscience, Theology", feeMin: 195, feeMax: 195, link: "https://www.uni-tuebingen.de" },
+  { name: "University of Freiburg", rank: "#245", fields: "Biotechnology, Chemistry, Environmental Sciences", feeMin: 190, feeMax: 190, link: "https://www.uni-freiburg.de" },
+  { name: "TU Darmstadt", rank: "#250", fields: "Computer Science, Electrical & Mechanical Engineering", feeMin: 403, feeMax: 421, link: "https://www.tu-darmstadt.de" },
+  { name: "University of Göttingen", rank: "#261", fields: "Life Sciences, Physics, Agricultural Sciences", feeMin: 484, feeMax: 484, link: "https://www.uni-goettingen.de" },
+  { name: "University of Stuttgart", rank: "#318", fields: "Aerospace, Mechanical Engineering, Computer Science", feeMin: 178, feeMax: 178, link: "https://www.uni-stuttgart.de" },
+  { name: "University of Mannheim", rank: "#425", fields: "Economics, Business, Social Sciences", feeMin: 194, feeMax: 194, link: "https://www.uni-mannheim.de" }
 ];
 
 const specialisations = {
@@ -56,7 +63,7 @@ const specialisations = {
     bestFor: "Life Science, Biotech, or MD/MBBS graduates wanting to specialize in molecular biology or neuroscience.",
     insight: "Highly collaborative environment with university clinics (Universitätsklinikum) and German pharma majors.",
     skills: ["Clinical Trial Layouts", "Bioinformatics", "Neuro-Imaging Data Analysis"],
-    fees: "Free (€0) at public universities; minor tuition fees may apply in select states (e.g. Baden-Württemberg)."
+    fees: "Free (€0) at public universities; doctoral candidates are exempt from Baden-Württemberg's €1,500 fee for international students."
   },
   sustainability: {
     title: "Environmental & Sustainability Studies",
@@ -353,7 +360,7 @@ const GermanyPhdPage = () => {
         <div className="mb-20">
           <div className="text-left mb-8 max-w-2xl">
             <h2 className="text-3xl font-black text-slate-900 mb-3 tracking-tight">Top Universities for PhD in Germany</h2>
-            <p className="text-slate-500 text-sm font-bold">Public universities charge €0 tuition. Compare popular fields and estimated semester contributions.</p>
+            <p className="text-slate-500 text-sm font-bold">{universities.length} public universities sorted by QS 2027 rank. Doctoral candidates pay €0 tuition (including at TUM and in Baden-Württemberg); compare popular fields and semester contributions.</p>
           </div>
 
           <div className="bg-white border border-slate-200/60 rounded-3xl shadow-sm overflow-hidden">
@@ -379,10 +386,12 @@ const GermanyPhdPage = () => {
                       </td>
                       <td className="py-4 px-6 text-slate-600 font-medium">{uni.fields}</td>
                       <td className="py-4 px-6 text-right font-black text-slate-700">
-                        € {uni.feeMin} – € {uni.feeMax}
+                        {uni.feeMin === uni.feeMax ? `€ ${uni.feeMin}` : `€ ${uni.feeMin} – € ${uni.feeMax}`}
                       </td>
                       <td className="py-4 px-6 text-right font-black text-indigo-650">
-                        {formatPrice(uni.feeMin)} – {formatPrice(uni.feeMax)}
+                        {uni.feeMin === uni.feeMax
+                          ? formatPrice(uni.feeMin)
+                          : `${formatPrice(uni.feeMin)} – ${formatPrice(uni.feeMax)}`}
                       </td>
                     </tr>
                   ))}
