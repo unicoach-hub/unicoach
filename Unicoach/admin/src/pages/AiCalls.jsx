@@ -327,6 +327,22 @@ const Overview = ({ reloadKey }) => {
           Calling hours {s.windowStartHour}:00–{s.windowEndHour}:00 IST{s.inWindow ? ' · open now' : ' · closed now'}
         </Tag>
       </div>
+      {(s.riyaNumber || s.teamNumber) && (
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))', gap: 12 }}>
+          {s.riyaNumber && (
+            <div className="nx-card" style={{ padding: 14 }}>
+              <div style={{ fontSize: 12.5, color: 'var(--ux-text-2)' }}>Riya (AI) · answers 24×7, calls new leads</div>
+              <div style={{ fontSize: 20, fontWeight: 800 }}>{s.riyaNumber}</div>
+            </div>
+          )}
+          {s.teamNumber && (
+            <div className="nx-card" style={{ padding: 14 }}>
+              <div style={{ fontSize: 12.5, color: 'var(--ux-text-2)' }}>Team phone · rings the 📞 phone in admin</div>
+              <div style={{ fontSize: 20, fontWeight: 800 }}>{s.teamNumber}</div>
+            </div>
+          )}
+        </div>
+      )}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(160px, 1fr))', gap: 12 }}>
         <Metric label="Calls" value={t.calls} sub={`${t.inbound} inbound · ${t.team || 0} team`} />
         <Metric label="Answered" value={t.answered} sub={pct(t.answered, t.calls)} />
