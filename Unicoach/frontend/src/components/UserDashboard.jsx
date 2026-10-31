@@ -10,10 +10,10 @@ import {
   Edit3, RefreshCw, Send, AlertTriangle,
   Zap, FileText, Calculator, Sparkles,
   BookmarkCheck, Trash2, ExternalLink, ShieldCheck, Target,
-  Menu, X, ChevronRight, ChevronDown, Layers, Settings,
+  Menu, X, ChevronDown, Layers, Settings,
   Clock, ArrowRight, ArrowLeft, Check, Plus, MessageCircle, FileCheck, Star, Filter, CheckCircle,
   BookOpen, FileSpreadsheet, Download,
-  Mic, Route, ListChecks, CalendarDays, BookOpenCheck,
+  Mic, ListChecks, BookOpenCheck,
   Landmark, Plane, Headphones
 } from 'lucide-react';
 import UniversityLogo from './UniversityLogo';
@@ -668,45 +668,51 @@ ${name || 'Candidate'}`;
   const navigationGroups = [
     {
       groupTitle: 'MAIN DASHBOARD',
+      kicker: 'Aapka dashboard',
       items: [
-        { id: 'overview', label: 'Dashboard Overview', icon: <LayoutDashboard size={16} /> },
+        { id: 'overview', tone: '#16130F', label: 'Dashboard Overview', icon: <LayoutDashboard size={16} /> },
         { 
           id: 'daily-tasks', 
+          tone: '#DE5C2B',
           label: 'Daily Tasks & Roadmap', 
           icon: <ListChecks size={16} />, 
           badge: checklist.filter(t => !t.done).length > 0 ? `${checklist.filter(t => !t.done).length} Focus` : 'All Done', 
           badgeColor: checklist.filter(t => !t.done).length > 0 ? 'bg-orange-50 text-[#C04A1D] border border-orange-200/60' : 'bg-emerald-50 text-emerald-700 border border-emerald-200/60' 
         },
-        { id: 'saved-unis', label: 'Saved Shortlist', icon: <BookmarkCheck size={16} />, badge: dbSavedUnis.length > 0 ? `${dbSavedUnis.length}` : null, badgeColor: 'bg-orange-50 text-[#C04A1D] border border-orange-200/60' },
-        { id: 'messages', label: 'Messages & Documents', icon: <MessageCircle size={16} />, badge: chatUnread > 0 ? `${chatUnread} new` : null, badgeColor: 'bg-[#DE5C2B] text-white' }
+        { id: 'saved-unis', tone: '#F2B705', label: 'Saved Shortlist', icon: <BookmarkCheck size={16} />, badge: dbSavedUnis.length > 0 ? `${dbSavedUnis.length}` : null, badgeColor: 'bg-orange-50 text-[#C04A1D] border border-orange-200/60' },
+        { id: 'messages', tone: '#14837E', label: 'Messages & Documents', icon: <MessageCircle size={16} />, badge: chatUnread > 0 ? `${chatUnread} new` : null, badgeColor: 'bg-[#DE5C2B] text-white' }
       ]
     },
     {
       groupTitle: 'SHORTLIST & PLAN',
+      kicker: 'Chuno aur plan karo',
       items: [
-        { id: 'course-finder', label: 'Course Finder', icon: <GraduationCap size={16} />, badge: '98K+', badgeColor: 'bg-slate-100 text-slate-600 border border-slate-200/70' },
-        { id: 'scholarships', label: 'Scholarships', icon: <Award size={16} />, badge: 'FUNDING', badgeColor: 'bg-slate-100 text-slate-600 border border-slate-200/70' },
-        { id: 'eligibility-calculator', label: 'Admission Chances', icon: <Calculator size={16} />, badge: 'POPULAR', badgeColor: 'bg-slate-100 text-slate-600 border border-slate-200/70' },
-        { id: 'study-roadmap', label: 'AI 6-Month Roadmap', icon: <Compass size={16} />, badge: 'AI', badgeColor: 'bg-slate-100 text-slate-600 border border-slate-200/70' },
-        { id: 'education-loan', label: 'Education Loan', icon: <Landmark size={16} /> }
+        { id: 'course-finder', tone: '#D0362E', label: 'Course Finder', icon: <GraduationCap size={16} />, badge: '98K+', badgeColor: 'bg-slate-100 text-slate-600 border border-slate-200/70' },
+        { id: 'scholarships', tone: '#14837E', label: 'Scholarships', icon: <Award size={16} />, badge: 'FUNDING', badgeColor: 'bg-slate-100 text-slate-600 border border-slate-200/70' },
+        { id: 'eligibility-calculator', tone: '#B8285B', label: 'Admission Chances', icon: <Calculator size={16} />, badge: 'POPULAR', badgeColor: 'bg-slate-100 text-slate-600 border border-slate-200/70' },
+        { id: 'study-roadmap', tone: '#F2B705', label: 'AI 6-Month Roadmap', icon: <Compass size={16} />, badge: 'AI', badgeColor: 'bg-slate-100 text-slate-600 border border-slate-200/70' },
+        { id: 'education-loan', tone: '#DE5C2B', label: 'Education Loan', icon: <Landmark size={16} /> }
       ]
     },
     {
       groupTitle: 'WRITE & PRACTISE',
+      kicker: 'Likho aur practice karo',
       items: [
-        { id: 'sop-builder', label: 'SOP Writer', icon: <FileText size={16} />, badge: 'AI', badgeColor: 'bg-slate-100 text-slate-600 border border-slate-200/70' },
-        { id: 'visa-mock', label: 'AI Mock Visa Interview', icon: <Mic size={16} />, badge: 'VOICE', badgeColor: 'bg-slate-100 text-slate-600 border border-slate-200/70' },
-        { id: 'ielts-checker', label: 'IELTS Essay Checker', icon: <Sparkles size={16} />, badge: '0-9', badgeColor: 'bg-slate-100 text-slate-600 border border-slate-200/70' },
-        { id: 'visa-departure', label: 'Visa & Pre-Departure', icon: <Plane size={16} /> },
-        { id: 'talk-expert', label: 'Talk to an Expert', icon: <Headphones size={16} />, badge: 'FREE', badgeColor: 'bg-slate-100 text-slate-600 border border-slate-200/70' }
+        { id: 'sop-builder', tone: '#B8285B', label: 'SOP Writer', icon: <FileText size={16} />, badge: 'AI', badgeColor: 'bg-slate-100 text-slate-600 border border-slate-200/70' },
+        { id: 'visa-mock', tone: '#F2B705', label: 'AI Mock Visa Interview', icon: <Mic size={16} />, badge: 'VOICE', badgeColor: 'bg-slate-100 text-slate-600 border border-slate-200/70' },
+        { id: 'ielts-checker', tone: '#DE5C2B', label: 'IELTS Essay Checker', icon: <Sparkles size={16} />, badge: '0-9', badgeColor: 'bg-slate-100 text-slate-600 border border-slate-200/70' },
+        { id: 'visa-departure', tone: '#D0362E', label: 'Visa & Pre-Departure', icon: <Plane size={16} /> },
+        { id: 'talk-expert', tone: '#14837E', label: 'Talk to an Expert', icon: <Headphones size={16} />, badge: 'FREE', badgeColor: 'bg-slate-100 text-slate-600 border border-slate-200/70' }
       ]
     },
     // Mentor Studio entry only for accounts that have a mentor profile
     ...(isMentorAccount ? [{
       groupTitle: 'CREATOR & MENTORSHIP',
+      kicker: 'Mentor bano',
       items: [
         { 
           id: 'mentor-studio', 
+          tone: '#DE5C2B',
           label: 'Mentor Creator Studio', 
           icon: <Zap size={16} className="text-[#DE5C2B]" />, 
           badge: 'STUDIO', 
@@ -716,8 +722,9 @@ ${name || 'Candidate'}`;
     }] : []),
     {
       groupTitle: 'STUDENT ACCOUNT',
+      kicker: 'Aapka account',
       items: [
-        { id: 'profile', label: 'Profile Settings', icon: <Settings size={16} /> }
+        { id: 'profile', tone: '#5B544A', label: 'Profile Settings', icon: <Settings size={16} /> }
       ]
     }
   ];
@@ -734,156 +741,185 @@ ${name || 'Candidate'}`;
   };
 
   return (
-    <div className="min-h-screen bg-[#ECEAE6] pt-20 md:pt-24 pb-36 lg:pb-16 px-3 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-[#F3ECDF] pt-20 md:pt-24 pb-36 lg:pb-16 px-3 sm:px-6 lg:px-8">
       {studentTour.open && <ProductTour steps={STUDENT_TOUR} open onClose={studentTour.close} />}
-      <div className="max-w-7xl mx-auto space-y-4 md:space-y-0 lg:bg-white lg:rounded-[40px] lg:overflow-hidden lg:shadow-[0_30px_80px_-40px_rgba(15,23,42,0.25)]">
+      <div className="max-w-7xl mx-auto space-y-4 md:space-y-0 lg:bg-white lg:rounded-[32px] lg:overflow-hidden lg:border-2 lg:border-[#16130F] lg:shadow-[6px_6px_0_#16130F]">
 
-        {/* DESKTOP TOP COMMAND HEADER (Hidden on mobile) */}
+        {/* DESKTOP TOP HEADER (Hidden on mobile): greeting, the one next step, and the 1-min tour video */}
         <motion.div
           initial={{ opacity: 0, y: -15 }}
           animate={{ opacity: 1, y: 0 }}
-          className="hidden lg:block bg-[#F6F5F2] px-8 pt-7 pb-8"
+          className="hidden lg:block bg-[#FBF4E6] border-b-2 border-[#16130F] px-8 pt-6 pb-7"
         >
-          {/* Row 1: identity, quick actions, account */}
+          {/* Row 1: greeting and account */}
           <div className="flex items-center justify-between gap-6">
-            <div className="flex items-center gap-4">
-              <div className="w-14 h-14 rounded-full bg-[#111] text-white font-black flex items-center justify-center text-xl select-none">
+            <div className="flex items-center gap-4 min-w-0">
+              <div className="w-14 h-14 rounded-2xl bg-[#F2B705] text-[#16130F] border-2 border-[#16130F] shadow-[3px_3px_0_#16130F] font-urbanist font-black flex items-center justify-center text-2xl select-none shrink-0">
                 {name[0].toUpperCase()}
               </div>
-              <div className="leading-tight">
-                <p className="text-xl font-semibold text-slate-900">Student</p>
-                <p className="text-xl text-slate-400">Dashboard</p>
+              <div className="min-w-0">
+                <p className="text-[13px] font-bold text-[#C04A1D]">Aapka student dashboard</p>
+                <h1 className="font-urbanist text-[30px] font-black leading-tight text-[#16130F] truncate">Namaste, {name.split(' ')[0]}</h1>
               </div>
             </div>
 
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-3 shrink-0">
               {isMentorAccount && (
                 <button
                   onClick={handleOpenMentorStudio}
-                  className="h-12 px-5 rounded-full border border-slate-200 bg-white hover:border-orange-200 text-slate-800 font-semibold text-sm flex items-center gap-2 cursor-pointer"
+                  className="h-11 px-5 rounded-full border-2 border-[#16130F] bg-white hover:bg-[#FFF1E6] text-[#16130F] font-bold text-sm flex items-center gap-2 cursor-pointer"
                   title="Switch to Mentor Studio"
                 >
                   <Zap size={15} className="text-[#DE5C2B] fill-[#DE5C2B]" /> Mentor Studio
                 </button>
               )}
-              <div className="flex items-center gap-3 pl-1 pr-2">
-                <div className="w-12 h-12 rounded-full bg-orange-100 text-[#C04A1D] font-black flex items-center justify-center select-none">
-                  {name[0].toUpperCase()}
-                </div>
-                <div className="leading-tight">
-                  <p className="text-sm font-semibold text-slate-900">{name}</p>
-                  <p className="text-xs text-slate-500">{email || displayPhone}</p>
-                </div>
+              <div className="text-right leading-tight">
+                <p className="text-sm font-bold text-[#16130F]">{name}</p>
+                <p className="text-[13px] text-[#5B544A]">{email || displayPhone}</p>
               </div>
               <button
                 onClick={handleLogout}
                 aria-label="Log out"
                 title="Log out"
-                className="w-12 h-12 rounded-full border border-slate-200 bg-white hover:border-rose-200 hover:text-rose-600 text-slate-600 flex items-center justify-center cursor-pointer"
+                className="w-11 h-11 rounded-full border-2 border-[#16130F] bg-white hover:bg-rose-50 hover:text-rose-600 text-[#16130F] flex items-center justify-center cursor-pointer"
               >
                 <LogOut size={17} />
               </button>
             </div>
           </div>
 
-          {/* Row 2: today, tasks CTA and greeting on the left; the 1-min tour video on the right */}
-          <div className="mt-8 grid grid-cols-1 xl:grid-cols-[auto_minmax(0,1fr)] gap-10 items-center">
-          <div className="flex flex-col gap-6 min-w-0">
-            <div className="flex flex-wrap items-center gap-4">
-              <div className="w-[92px] h-[92px] rounded-full border border-slate-200 bg-[#F6F5F2] flex items-center justify-center text-4xl font-medium text-slate-900">
-                {new Date().getDate()}
-              </div>
-              <div className="leading-tight pr-5 border-r border-slate-200">
-                <p className="text-lg text-slate-900">{new Date().toLocaleDateString('en-US', { weekday: 'short' })},</p>
-                <p className="text-lg text-slate-900">{new Date().toLocaleDateString('en-US', { month: 'long' })}</p>
-              </div>
-              <button
-                data-tour="my-tasks"
-                onClick={() => setActiveTab('daily-tasks')}
-                className="h-14 pl-7 pr-6 rounded-full bg-[#DE5C2B] hover:bg-[#C04A1D] text-white font-semibold text-sm whitespace-nowrap flex items-center gap-6 transition-colors cursor-pointer"
-              >
-                Show my tasks <ArrowRight size={18} />
-              </button>
-              <button
-                onClick={() => setActiveTab('daily-tasks')}
-                aria-label="Open roadmap"
-                className="relative w-14 h-14 rounded-full border border-slate-200 bg-white text-slate-700 flex items-center justify-center cursor-pointer"
-              >
-                <CalendarDays size={19} />
-                {checklist.some((t) => !t.done) && <span className="absolute top-1 right-1 w-2 h-2 rounded-full bg-[#DE5C2B]" />}
-              </button>
-              <button
-                type="button"
-                onClick={studentTour.start}
-                className="h-14 px-5 rounded-full border border-slate-200 bg-white text-slate-700 hover:border-[#DE5C2B] hover:text-[#DE5C2B] font-semibold text-sm whitespace-nowrap flex items-center gap-2 transition-colors cursor-pointer"
-              >
-                <Sparkles size={16} /> Take a tour
-              </button>
-            </div>
-
-            <div className="relative w-fit">
-            <button
-              type="button"
-              onClick={() => (chatUnread > 0 ? setChatPopupOpen((v) => !v) : setActiveTab('messages'))}
-              aria-expanded={chatUnread > 0 ? chatPopupOpen : undefined}
-              className="flex items-center gap-6 text-left cursor-pointer group"
-            >
-              <span className="leading-[1.1]">
-                <span className="block text-[24px] xl:text-[28px] font-semibold tracking-tight text-slate-900 whitespace-nowrap">Hey {name.split(' ')[0]}, need help?</span>
-                <span className="block text-[24px] xl:text-[28px] tracking-tight text-slate-400 group-hover:text-slate-500 whitespace-nowrap">Ask your counselor anything</span>
-              </span>
-              <span className={`relative w-[72px] h-[72px] rounded-full flex items-center justify-center shrink-0 transition-colors ${
-                chatUnread > 0 ? 'bg-[#DE5C2B] text-white' : 'bg-white text-slate-900 group-hover:text-[#DE5C2B]'
-              }`}>
-                {chatUnread > 0 && <span className="absolute inset-0 rounded-full bg-[#DE5C2B] animate-ping opacity-30" aria-hidden="true" />}
-                <MessageCircle size={24} className="relative" />
-                {chatUnread > 0 && (
-                  <span className="absolute -top-1 -right-1 min-w-6 h-6 px-1.5 rounded-full bg-[#111] text-white text-xs font-bold flex items-center justify-center ring-4 ring-[#F6F5F2]">{chatUnread}</span>
-                )}
-              </span>
-            </button>
-
-            {/* New message popup */}
-            {chatPopupOpen && chatUnread > 0 && (
-              <div className="absolute right-0 top-full mt-3 w-[340px] bg-white rounded-[24px] shadow-[0_24px_60px_-20px_rgba(15,23,42,0.35)] border border-slate-100 p-4 z-30 text-left">
-                <p className="text-xs text-slate-500">{chatUnread} new message{chatUnread === 1 ? '' : 's'}</p>
-                {chatLast && (
-                  <div className="mt-2 p-3 rounded-2xl bg-[#F6F5F2]">
-                    <p className="text-sm font-semibold text-slate-900">{chatLast.from}</p>
-                    <p className="text-sm text-slate-600 mt-0.5 line-clamp-3">{chatLast.text}</p>
-                    <p className="text-[11px] text-slate-400 mt-1">{new Date(chatLast.at).toLocaleString([], { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })}</p>
+          {/* Row 2: what to do now (left) and the tour video (right) */}
+          <div className="mt-6 grid grid-cols-1 xl:grid-cols-[minmax(0,1fr)_400px] gap-6 items-stretch">
+            {(() => {
+              const pending = checklist.filter((t) => !t.done);
+              const next = pending[0];
+              const doneCount = checklist.length - pending.length;
+              const pct = checklist.length ? Math.round((doneCount / checklist.length) * 100) : 0;
+              return (
+                <div className="flex flex-col gap-4 min-w-0">
+                  {/* The one next step */}
+                  <div data-tour="my-tasks" className="flex-1 rounded-[24px] bg-white border-2 border-[#16130F] shadow-[5px_5px_0_#16130F] p-6 flex flex-col justify-between gap-5">
+                    <div>
+                      <div className="flex items-center justify-between gap-3">
+                        <span className="inline-block px-2.5 py-1 rounded-md bg-[#F2B705] text-[#16130F] text-[12px] font-extrabold tracking-[0.08em] uppercase">Aaj ka agla step</span>
+                        <span className="text-[13px] font-semibold text-[#5B544A]">{doneCount} of {checklist.length} steps done</span>
+                      </div>
+                      {next ? (
+                        <>
+                          <p className="mt-3 font-urbanist text-[26px] font-black leading-tight text-[#16130F]">{next.title || next.text}</p>
+                          {next.subtitle && <p className="mt-1.5 text-[15px] leading-snug text-[#5B544A] max-w-xl">{next.subtitle}</p>}
+                        </>
+                      ) : (
+                        <p className="mt-3 font-urbanist text-[26px] font-black leading-tight text-[#16130F]">Sab steps ho gaye. Shabaash!</p>
+                      )}
+                    </div>
+                    <div>
+                      <div className="h-3 rounded-full bg-[#F2E6CF] border-2 border-[#16130F] overflow-hidden" aria-hidden="true">
+                        <div className="h-full bg-[#DE5C2B]" style={{ width: `${pct}%`, transition: 'width 0.8s ease' }} />
+                      </div>
+                      <div className="mt-4 flex flex-wrap items-center gap-3">
+                        {next?.actionLabel && (
+                          <button
+                            onClick={(e) => handleTaskAction(next, e)}
+                            className="h-12 px-6 rounded-full bg-[#DE5C2B] hover:bg-[#C04A1D] text-white font-bold text-[15px] border-2 border-[#16130F] shadow-[3px_3px_0_#16130F] flex items-center gap-2 cursor-pointer"
+                          >
+                            {next.actionLabel} <ArrowRight size={17} />
+                          </button>
+                        )}
+                        <button
+                          onClick={() => setActiveTab('daily-tasks')}
+                          className="h-12 px-5 rounded-full bg-white hover:bg-[#FFF1E6] text-[#16130F] font-bold text-[15px] border-2 border-[#16130F] flex items-center gap-2 cursor-pointer"
+                        >
+                          <ListChecks size={17} /> Saare steps dekho
+                        </button>
+                      </div>
+                    </div>
                   </div>
-                )}
-                <div className="flex gap-2 mt-3">
-                  <button type="button" onClick={() => { setChatPopupOpen(false); setActiveTab('messages'); }} className="flex-1 h-10 rounded-full bg-[#DE5C2B] hover:bg-[#C04A1D] text-white text-sm font-semibold cursor-pointer">Open chat</button>
-                  <button type="button" onClick={() => setChatPopupOpen(false)} className="h-10 px-4 rounded-full border border-slate-200 text-sm font-semibold text-slate-700 cursor-pointer">Later</button>
+
+                  {/* Help row: counsellor chat and the guided tour */}
+                  <div className="relative grid grid-cols-2 gap-4">
+                    <button
+                      type="button"
+                      onClick={() => (chatUnread > 0 ? setChatPopupOpen((v) => !v) : setActiveTab('messages'))}
+                      aria-expanded={chatUnread > 0 ? chatPopupOpen : undefined}
+                      className="rounded-[20px] bg-[#14837E] text-white border-2 border-[#16130F] shadow-[4px_4px_0_#16130F] p-4 flex items-center gap-3 text-left cursor-pointer hover:-translate-y-0.5 transition-transform"
+                    >
+                      <span className="relative w-12 h-12 rounded-xl bg-white text-[#14837E] border-2 border-[#16130F] flex items-center justify-center shrink-0">
+                        <MessageCircle size={20} />
+                        {chatUnread > 0 && (
+                          <span className="absolute -top-2 -right-2 min-w-6 h-6 px-1.5 rounded-full bg-[#DE5C2B] text-white text-xs font-bold flex items-center justify-center border-2 border-[#16130F]">{chatUnread}</span>
+                        )}
+                      </span>
+                      <span className="min-w-0">
+                        <span className="block font-urbanist text-[18px] font-extrabold leading-tight">{chatUnread > 0 ? `${chatUnread} naya message` : 'Counsellor se baat karo'}</span>
+                        <span className="block text-[13px] opacity-90">Koi bhi sawaal, documents bhi bhejo</span>
+                      </span>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={studentTour.start}
+                      className="rounded-[20px] bg-white text-[#16130F] border-2 border-[#16130F] shadow-[4px_4px_0_#16130F] p-4 flex items-center gap-3 text-left cursor-pointer hover:-translate-y-0.5 transition-transform"
+                    >
+                      <span className="w-12 h-12 rounded-xl bg-[#F2B705] border-2 border-[#16130F] flex items-center justify-center shrink-0">
+                        <Sparkles size={20} />
+                      </span>
+                      <span className="min-w-0">
+                        <span className="block font-urbanist text-[18px] font-extrabold leading-tight">Dashboard ka tour lo</span>
+                        <span className="block text-[13px] text-[#5B544A]">1 minute mein har button samjho</span>
+                      </span>
+                    </button>
+
+                    {/* New message popup */}
+                    {chatPopupOpen && chatUnread > 0 && (
+                      <div className="absolute left-0 top-full mt-3 w-[340px] bg-white rounded-[20px] border-2 border-[#16130F] shadow-[5px_5px_0_#16130F] p-4 z-30 text-left">
+                        <p className="text-[13px] text-[#5B544A]">{chatUnread} new message{chatUnread === 1 ? '' : 's'}</p>
+                        {chatLast && (
+                          <div className="mt-2 p-3 rounded-2xl bg-[#FBF4E6]">
+                            <p className="text-sm font-bold text-[#16130F]">{chatLast.from}</p>
+                            <p className="text-sm text-[#3D3830] mt-0.5 line-clamp-3">{chatLast.text}</p>
+                            <p className="text-[12px] text-[#5B544A] mt-1">{new Date(chatLast.at).toLocaleString([], { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })}</p>
+                          </div>
+                        )}
+                        <div className="flex gap-2 mt-3">
+                          <button type="button" onClick={() => { setChatPopupOpen(false); setActiveTab('messages'); }} className="flex-1 h-10 rounded-full bg-[#DE5C2B] hover:bg-[#C04A1D] text-white text-sm font-bold border-2 border-[#16130F] cursor-pointer">Open chat</button>
+                          <button type="button" onClick={() => setChatPopupOpen(false)} className="h-10 px-4 rounded-full border-2 border-[#16130F] text-sm font-bold text-[#16130F] cursor-pointer">Later</button>
+                        </div>
+                      </div>
+                    )}
+                  </div>
                 </div>
+              );
+            })()}
+
+            {/* Tour video, labelled so a first-timer knows why to watch it */}
+            <div className="rounded-[24px] bg-[#16130F] border-2 border-[#16130F] shadow-[5px_5px_0_#DE5C2B] p-4 flex flex-col gap-3">
+              <div className="px-1">
+                <p className="text-[13px] font-bold text-[#F2B705]">Pehli baar yahan ho?</p>
+                <p className="font-urbanist text-[20px] font-extrabold leading-tight text-white">Ye 1-minute video dekho, sab samajh aa jayega</p>
               </div>
-            )}
+              <TutorialVideo
+                src="/videos/tutorials/student-dashboard.mp4"
+                poster="/videos/tutorials/student-dashboard-poster.jpg"
+                title="Your first steps on UniCoach"
+                duration="1 min"
+                sound
+                className="w-full"
+              />
             </div>
-          </div>
-          <TutorialVideo
-            src="/videos/tutorials/student-dashboard.mp4"
-            poster="/videos/tutorials/student-dashboard-poster.jpg"
-            title="Your first steps on UniCoach"
-            duration="1 min"
-            sound
-            className="w-full max-w-[420px] xl:max-w-[560px] xl:justify-self-end"
-          />
           </div>
         </motion.div>
 
         {/* MOBILE LIGHTWEIGHT HEADER (Only on Home/Overview tab) */}
         {activeTab === 'overview' ? (
-          <div className="lg:hidden flex items-center justify-between bg-white p-3.5 rounded-2xl border border-slate-200/80 shadow-xs">
+          <div className="lg:hidden flex items-center justify-between bg-white p-3.5 rounded-2xl border-2 border-[#16130F] shadow-[3px_3px_0_#16130F]">
             <div className="flex items-center gap-3 min-w-0">
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 to-blue-600 text-white font-black flex items-center justify-center text-base shadow-sm shadow-indigo-200 flex-shrink-0 select-none">
+              <div className="w-10 h-10 rounded-xl bg-[#F2B705] text-[#16130F] border-2 border-[#16130F] font-urbanist font-black flex items-center justify-center text-base flex-shrink-0 select-none">
                 {name[0].toUpperCase()}
               </div>
               <div className="min-w-0">
                 <div className="flex items-center gap-1.5">
-                  <h1 className="text-sm font-black text-slate-900 truncate">
-                    Hi, {name}!
+                  <h1 className="font-urbanist text-[17px] font-black text-[#16130F] truncate">
+                    Namaste, {name.split(' ')[0]}
                   </h1>
                   <span className="w-2 h-2 rounded-full bg-emerald-500 flex-shrink-0" title="Active Student" />
                 </div>
@@ -953,40 +989,41 @@ ${name || 'Candidate'}`;
         )}
 
         {/* MAIN COMMAND CENTER GRID (Sidebar + Content Workspace) */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start lg:p-6">
+        <div className="grid grid-cols-1 lg:grid-cols-[290px_minmax(0,1fr)] gap-6 items-start lg:p-6">
 
           {/* SIDEBAR NAVIGATION PANEL (Desktop only) */}
-          <div className="hidden lg:block lg:col-span-3 space-y-4">
+          <div className="hidden lg:block space-y-4">
 
             {/* Desktop Sidebar Container (Hidden on mobile, uses native bottom navigation instead) */}
-            <div className="bg-[#F6F5F2] p-3.5 rounded-[28px] space-y-4">
+            <div className="bg-[#FBF4E6] border-2 border-[#16130F] p-3.5 rounded-[24px] space-y-5">
               
               {/* Dual Mode Switcher Pill (Student Tools vs Mentor Studio) — only when the account is also a mentor */}
               {isMentorAccount && (
-              <div className="bg-white p-1 rounded-full flex items-center gap-1">
+              <div className="bg-white border-2 border-[#16130F] p-1 rounded-full flex items-center gap-1">
                 <button
                   type="button"
                   onClick={() => setActiveTab('overview')}
-                  className="flex-1 py-1.5 px-2 rounded-xl text-xs font-bold bg-white text-slate-900 shadow-xs flex items-center justify-center gap-1.5 transition-all cursor-pointer"
+                  className="flex-1 py-2 px-2 rounded-full text-[13px] font-bold bg-[#16130F] text-white flex items-center justify-center gap-1.5 transition-all cursor-pointer"
                 >
-                  <GraduationCap size={13} className="text-indigo-600" />
+                  <GraduationCap size={14} />
                   <span>Student</span>
                 </button>
                 <button
                   type="button"
                   onClick={handleOpenMentorStudio}
-                  className="flex-1 py-1.5 px-2 rounded-xl text-xs font-bold text-slate-600 hover:text-slate-900 hover:bg-white/70 flex items-center justify-center gap-1.5 transition-all cursor-pointer"
+                  className="flex-1 py-2 px-2 rounded-full text-[13px] font-bold text-[#16130F] hover:bg-[#FFF1E6] flex items-center justify-center gap-1.5 transition-all cursor-pointer"
                 >
-                  <Zap size={12} className="text-[#DE5C2B] fill-[#DE5C2B]" />
+                  <Zap size={13} className="text-[#DE5C2B] fill-[#DE5C2B]" />
                   <span>Mentor Studio</span>
                 </button>
               </div>
               )}
 
               {navigationGroups.map((group, idx) => (
-                <div key={idx} className="space-y-1">
-                  <div className="px-2.5 py-1">
-                    <p className="text-[10px] font-extrabold uppercase tracking-wider text-slate-400">
+                <div key={idx} className="space-y-1.5">
+                  <div className="px-2 pb-1.5 border-b-2 border-[#16130F]">
+                    <p className="text-[13px] font-bold text-[#C04A1D] leading-tight">{group.kicker}</p>
+                    <p className="text-[10.5px] font-extrabold uppercase tracking-[0.14em] text-[#16130F]">
                       {group.groupTitle}
                     </p>
                   </div>
@@ -1010,29 +1047,24 @@ ${name || 'Candidate'}`;
                             if (item.id === 'saved-unis') fetchDbSavedUniversities();
                             setMobileMenuOpen(false);
                           }}
-                          className={`w-full flex items-center justify-between px-2 py-1.5 rounded-full text-xs transition-all duration-150 cursor-pointer group ${
+                          className={`w-full flex items-center justify-between px-1.5 py-1.5 rounded-2xl text-[14px] transition-all duration-150 cursor-pointer group border-2 ${
                             isActive 
-                              ? 'bg-[#111] text-white font-semibold' 
-                              : 'text-slate-600 hover:text-slate-900 hover:bg-white font-medium'
+                              ? 'bg-white border-[#16130F] shadow-[3px_3px_0_#16130F] text-[#16130F] font-bold' 
+                              : 'border-transparent text-[#3D3830] hover:text-[#16130F] hover:bg-white font-semibold'
                           }`}
                         >
                           <div className="flex items-center gap-2.5 min-w-0 pr-1.5">
-                            <div className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 transition-colors ${
-                              isActive 
-                                ? 'bg-white/15 text-white' 
-                                : 'bg-white text-slate-500 group-hover:text-[#DE5C2B]'
-                            }`}>
+                            <div
+                              className="w-8 h-8 rounded-lg border-2 border-[#16130F] flex items-center justify-center flex-shrink-0 [&_svg]:!text-current"
+                              style={{ background: item.tone || '#16130F', color: item.tone === '#F2B705' ? '#16130F' : '#fff' }}
+                            >
                               {item.icon}
                             </div>
-                            <span className="truncate text-left">{item.label}</span>
+                            <span className="text-left leading-tight">{item.label}</span>
                           </div>
 
                           {item.badge && (
-                            <span className={`px-1.5 py-0.5 rounded-md text-[9px] font-extrabold tracking-wider flex-shrink-0 whitespace-nowrap ${
-                              isActive 
-                                ? 'bg-white/20 text-white' 
-                                : item.badgeColor || 'bg-slate-100 text-slate-600'
-                            }`}>
+                            <span className={`px-1.5 py-0.5 rounded-md text-[10px] font-extrabold tracking-wider flex-shrink-0 whitespace-nowrap ${item.badgeColor || 'bg-slate-100 text-slate-600'}`}>
                               {item.badge}
                             </span>
                           )}
@@ -1044,28 +1076,21 @@ ${name || 'Candidate'}`;
               ))}
 
               {/* Sidebar Footer Callout */}
-              <div className="pt-2 border-t border-slate-100">
-                <div className="p-4 rounded-[22px] bg-white space-y-2">
-                  <div className="flex items-center gap-1.5 text-slate-900 font-bold text-xs">
-                    <Sparkles size={14} className="text-[#DE5C2B]" />
-                    <span>Need Guidance?</span>
-                  </div>
-                  <p className="text-[11px] text-slate-600 font-medium leading-relaxed">
-                    Get free expert university shortlisting & visa counselling.
-                  </p>
-                  <button 
-                    onClick={() => navigate('/contact')}
-                    className="w-full py-2.5 bg-[#DE5C2B] hover:bg-[#C04A1D] text-white rounded-full text-[11px] font-bold transition-all cursor-pointer"
-                  >
-                    Book Free Counselling
-                  </button>
-                </div>
+              <div className="p-4 rounded-[20px] bg-[#16130F] text-white space-y-2">
+                <p className="text-[13px] font-bold text-[#F2B705]">Confuse ho?</p>
+                <p className="font-urbanist text-[17px] font-extrabold leading-tight">Free 30-minute call ek counsellor ke saath</p>
+                <button 
+                  onClick={() => navigate('/book-consultation')}
+                  className="w-full py-2.5 bg-[#DE5C2B] hover:bg-[#C04A1D] text-white rounded-full text-[13px] font-bold border-2 border-white/20 transition-all cursor-pointer"
+                >
+                  Free call book karo
+                </button>
               </div>
             </div>
           </div>
 
           {/* MAIN CONTENT CANVAS */}
-          <div className="lg:col-span-9">
+          <div className="min-w-0">
             <AnimatePresence mode="wait">
 
             
@@ -1585,167 +1610,156 @@ ${name || 'Candidate'}`;
                 initial={{ opacity: 0, y: 15 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -15 }}
-                className="space-y-4"
+                className="space-y-5"
               >
                 {user && user.role !== 'admin' && user.profileCompleted === false && !user.profileCompletedAt && (
                   <Link
                     to="/onboarding?next=/dashboard"
-                    className="flex items-center gap-4 rounded-2xl border border-orange-200 bg-orange-50/70 hover:bg-orange-50 p-4 sm:p-5 transition-colors"
+                    className="flex items-center gap-4 rounded-[20px] border-2 border-[#16130F] bg-[#F2B705] shadow-[4px_4px_0_#16130F] p-4 sm:p-5 hover:-translate-y-0.5 transition-transform"
                   >
-                    <span className="w-10 h-10 rounded-xl bg-[#DE5C2B] text-white grid place-items-center text-lg shrink-0">✍️</span>
+                    <span className="w-11 h-11 rounded-xl bg-white border-2 border-[#16130F] grid place-items-center text-lg shrink-0">✍️</span>
                     <span className="flex-1 min-w-0">
-                      <span className="block text-sm font-bold text-slate-900">Complete your profile</span>
-                      <span className="block text-xs text-slate-600">Dream country, course, intake and marks. 1 minute, and your shortlist and counsellor advice get much better.</span>
+                      <span className="block font-urbanist text-[18px] font-extrabold text-[#16130F]">Pehle apni profile poori karo</span>
+                      <span className="block text-[14px] text-[#3D3830]">Dream country, course, intake aur marks. 1 minute lagega, phir shortlist aur counsellor advice kaafi better ho jayegi.</span>
                     </span>
-                    <span className="shrink-0 rounded-full bg-slate-900 text-white text-xs font-bold px-3.5 py-1.5">Complete</span>
+                    <span className="shrink-0 rounded-full bg-[#16130F] text-white text-[13px] font-bold px-4 py-2">Complete</span>
                   </Link>
                 )}
+                {/* Mobile: the one next step (desktop shows it in the header) */}
+                {(() => {
+                  const next = checklist.find((t) => !t.done);
+                  if (!next) return null;
+                  const doneCount = checklist.filter((t) => t.done).length;
+                  return (
+                    <div className="lg:hidden rounded-[20px] bg-white border-2 border-[#16130F] shadow-[4px_4px_0_#16130F] p-4">
+                      <div className="flex items-center justify-between gap-2">
+                        <span className="px-2 py-0.5 rounded-md bg-[#F2B705] text-[#16130F] text-[11px] font-extrabold tracking-[0.08em] uppercase">Aaj ka agla step</span>
+                        <span className="text-[12px] font-semibold text-[#5B544A]">{doneCount}/{checklist.length} done</span>
+                      </div>
+                      <p className="mt-2 font-urbanist text-[20px] font-black leading-tight text-[#16130F]">{next.title || next.text}</p>
+                      {next.subtitle && <p className="mt-1 text-[14px] leading-snug text-[#5B544A] line-clamp-2">{next.subtitle}</p>}
+                      {next.actionLabel && (
+                        <button onClick={(e) => handleTaskAction(next, e)} className="mt-3 h-11 px-5 rounded-full bg-[#DE5C2B] text-white font-bold text-[14px] border-2 border-[#16130F] flex items-center gap-2 cursor-pointer">
+                          {next.actionLabel} <ArrowRight size={16} />
+                        </button>
+                      )}
+                    </div>
+                  );
+                })()}
                 <JourneyTracker />
                 {(() => {
-                  const doneCount = checklist.filter((t) => t.done).length;
-                  const readiness = checklist.length ? Math.round((doneCount / checklist.length) * 100) : 0;
-                  const ring = 2 * Math.PI * 52;
-                  const tile = 'bg-[#F6F5F2] rounded-[28px] p-5';
+                  const pending = checklist.filter((t) => !t.done);
+                  const card = 'bg-white border-2 border-[#16130F] rounded-[24px] shadow-[4px_4px_0_#16130F]';
+                  const kicker = 'text-[13px] font-bold text-[#C04A1D]';
+                  const quickTools = [
+                    ['course-finder', 'Course Finder', 'Courses dhundo aur shortlist karo', <GraduationCap key="i" size={20} />, '#D0362E'],
+                    ['eligibility-calculator', 'Admission Chances', 'Dekho admit milne ke chances', <Calculator key="i" size={20} />, '#B8285B'],
+                    ['sop-builder', 'SOP Writer', 'Apne course ke liye SOP likho', <FileText key="i" size={20} />, '#14837E'],
+                    ['visa-mock', 'Mock Visa Interview', 'Asli visa sawaalon ki practice', <Mic key="i" size={20} />, '#F2B705'],
+                  ];
                   return (
-                    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-12 gap-4">
-                      {/* Target profile (the "card" tile) */}
-                      <div className="xl:col-span-5 bg-white border border-slate-100 rounded-[28px] p-6 flex flex-col justify-between gap-6">
+                    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-12 gap-5">
+                      {/* Target profile */}
+                      <div className={`xl:col-span-7 ${card} p-6 flex flex-col justify-between gap-5`}>
                         <div className="flex items-start justify-between gap-3">
                           <div>
-                            <p className="text-xs text-slate-400">Target destination</p>
-                            <p className="text-2xl font-semibold text-slate-900 mt-1">{profileForm.dreamCountry || 'Not set yet'}</p>
+                            <p className={kicker}>Aapka target</p>
+                            <p className="font-urbanist text-[28px] font-black leading-tight text-[#16130F]">{profileForm.dreamCountry || 'Abhi set nahi hai'}</p>
                           </div>
-                          <button onClick={() => setActiveTab('profile')} className="h-9 px-4 rounded-full border border-slate-200 text-xs font-semibold text-slate-700 hover:border-orange-200 flex items-center gap-1.5 cursor-pointer">
-                            <Edit3 size={12} /> Edit
+                          <button onClick={() => setActiveTab('profile')} className="h-10 px-4 rounded-full border-2 border-[#16130F] text-[13px] font-bold text-[#16130F] hover:bg-[#FFF1E6] flex items-center gap-1.5 cursor-pointer">
+                            <Edit3 size={13} /> Edit
                           </button>
                         </div>
-                        <div className="grid grid-cols-3 gap-3 text-sm">
+                        <div className="grid grid-cols-3 gap-3">
                           {[
                             ['Course', profileForm.dreamCourse],
                             ['Intake', profileForm.preferredIntake],
                             ['Exam', profileForm.targetExam ? `${profileForm.targetExam}${profileForm.targetScore ? ` ${profileForm.targetScore}` : ''}` : ''],
                           ].map(([k, v]) => (
-                            <div key={k} className="min-w-0">
-                              <p className="text-xs text-slate-400">{k}</p>
-                              <p className="font-semibold text-slate-900 truncate" title={v || ''}>{v || '—'}</p>
+                            <div key={k} className="min-w-0 rounded-xl bg-[#FBF4E6] px-3 py-2.5">
+                              <p className="text-[12px] font-bold uppercase tracking-[0.1em] text-[#5B544A]">{k}</p>
+                              <p className="text-[15px] font-bold text-[#16130F] truncate" title={v || ''}>{v || '—'}</p>
                             </div>
                           ))}
                         </div>
-                        <div className="flex gap-2">
-                          <button onClick={() => setActiveTab('course-finder')} className="h-11 px-6 rounded-full bg-[#111] hover:bg-black text-white text-sm font-semibold cursor-pointer">Find universities</button>
-                          <button onClick={() => { setActiveTab('saved-unis'); fetchDbSavedUniversities(); }} className="h-11 px-6 rounded-full bg-[#F1F0EC] hover:bg-[#E9E7E2] text-slate-800 text-sm font-semibold cursor-pointer">Saved ({dbSavedUnis.length})</button>
-                        </div>
-                      </div>
-
-                      {/* Readiness ring */}
-                      <button onClick={() => setActiveTab('daily-tasks')} className="xl:col-span-3 bg-[#F6F5F2] rounded-[28px] p-5 flex flex-col items-center justify-center gap-3 cursor-pointer">
-                        <span className="relative w-[148px] h-[148px] rounded-full bg-[#111] flex items-center justify-center">
-                          <svg viewBox="0 0 120 120" className="absolute inset-0 w-full h-full -rotate-90" aria-hidden="true">
-                            <circle cx="60" cy="60" r="52" fill="none" stroke="rgba(255,255,255,0.12)" strokeWidth="6" />
-                            <circle cx="60" cy="60" r="52" fill="none" stroke="#DE5C2B" strokeWidth="6" strokeLinecap="round" strokeDasharray={ring} strokeDashoffset={ring * (1 - readiness / 100)} style={{ transition: 'stroke-dashoffset 0.8s ease' }} />
-                          </svg>
-                          <span className="text-center text-white">
-                            <span className="block text-3xl font-semibold">{readiness}%</span>
-                            <span className="block text-[11px] text-slate-400">Ready to apply</span>
-                          </span>
-                        </span>
-                        <span className="text-xs text-slate-500">{doneCount} of {checklist.length} roadmap steps done</span>
-                      </button>
-
-                      {/* Messages */}
-                      <button onClick={() => setActiveTab('messages')} className={`xl:col-span-4 ${tile} text-left flex flex-col justify-between gap-6 cursor-pointer hover:bg-[#F1F0EC] transition-colors`}>
-                        <span className="flex items-center justify-between">
-                          <span className="w-11 h-11 rounded-full bg-white flex items-center justify-center text-slate-800"><MessageCircle size={18} /></span>
-                          {chatUnread > 0 && <span className="h-8 px-3 rounded-full bg-[#DE5C2B] text-white text-xs font-semibold flex items-center">{chatUnread} new</span>}
-                        </span>
-                        <span>
-                          <span className="block text-2xl font-semibold text-slate-900">{chatUnread > 0 ? `${chatUnread} new message${chatUnread === 1 ? '' : 's'}` : 'Your counselor'}</span>
-                          <span className="block text-sm text-slate-500 mt-1">Chat and share documents in one place</span>
-                        </span>
-                        <span className="text-sm font-semibold text-[#DE5C2B] inline-flex items-center gap-1">Open messages <ArrowRight size={14} /></span>
-                      </button>
-
-                      {/* Roadmap dots */}
-                      <div className={`xl:col-span-4 ${tile}`}>
-                        <span className="w-11 h-11 rounded-full bg-white flex items-center justify-center text-slate-800"><ListChecks size={18} /></span>
-                        <p className="text-2xl font-semibold text-slate-900 mt-4">{checklist.length - doneCount} steps left</p>
-                        <p className="text-xs text-slate-500">on your study abroad roadmap</p>
-                        <div className="flex flex-wrap gap-1.5 mt-4" aria-hidden="true">
-                          {checklist.slice(0, 30).map((t) => (
-                            <span key={t.id} className={`w-3.5 h-3.5 rounded-full ${t.done ? 'bg-[#DE5C2B]' : 'bg-[#E4E2DD]'}`} />
-                          ))}
+                        <div className="flex flex-wrap gap-2">
+                          <button onClick={() => setActiveTab('course-finder')} className="h-11 px-6 rounded-full bg-[#16130F] hover:bg-black text-white text-[14px] font-bold cursor-pointer">Universities dhundo</button>
+                          <button onClick={() => setActiveTab('profile')} className="h-11 px-6 rounded-full border-2 border-[#16130F] bg-white hover:bg-[#FFF1E6] text-[#16130F] text-[14px] font-bold cursor-pointer">Profile badlo</button>
                         </div>
                       </div>
 
                       {/* Saved universities */}
-                      <div className={`xl:col-span-4 ${tile} flex flex-col justify-between`}>
-                        <span className="flex items-center justify-between">
-                          <span className="w-11 h-11 rounded-full bg-white flex items-center justify-center text-slate-800"><BookmarkCheck size={18} /></span>
+                      <div className={`xl:col-span-5 rounded-[24px] border-2 border-[#16130F] shadow-[4px_4px_0_#16130F] bg-[#14837E] text-white p-6 flex flex-col justify-between gap-5`}>
+                        <div className="flex items-start justify-between gap-3">
+                          <div>
+                            <p className="text-[13px] font-bold text-[#FFE08A]">Aapki shortlist</p>
+                            <p className="font-urbanist text-[56px] font-black leading-none mt-1">{dbSavedUnis.length}</p>
+                            <p className="text-[15px] font-semibold opacity-90 mt-1">universities save ki hain</p>
+                          </div>
                           {dbSavedUnis.length > 0 && (
-                            <button onClick={handleExportSavedUniversities} className="h-8 px-3 rounded-full border border-slate-200 bg-white text-xs font-semibold text-slate-700 flex items-center gap-1.5 cursor-pointer" title="Download as Excel">
-                              <FileSpreadsheet size={13} /> Excel
+                            <button onClick={handleExportSavedUniversities} className="h-9 px-3 rounded-full border-2 border-[#16130F] bg-white text-[13px] font-bold text-[#16130F] flex items-center gap-1.5 cursor-pointer" title="Download as Excel">
+                              <FileSpreadsheet size={14} /> Excel
                             </button>
                           )}
-                        </span>
-                        <div className="mt-4">
-                          <p className="text-4xl font-semibold text-slate-900">{dbSavedUnis.length}</p>
-                          <p className="text-xs text-slate-500">universities shortlisted</p>
                         </div>
-                        <button onClick={() => { setActiveTab('saved-unis'); fetchDbSavedUniversities(); }} className="mt-4 text-sm font-semibold text-[#DE5C2B] inline-flex items-center gap-1 cursor-pointer">View shortlist <ArrowRight size={14} /></button>
+                        <button onClick={() => { setActiveTab('saved-unis'); fetchDbSavedUniversities(); }} className="h-11 w-fit px-6 rounded-full bg-white text-[#16130F] border-2 border-[#16130F] text-[14px] font-bold inline-flex items-center gap-2 cursor-pointer">
+                          {dbSavedUnis.length ? 'Shortlist kholo' : 'Pehli university save karo'} <ArrowRight size={15} />
+                        </button>
                       </div>
 
-                      {/* Quick AI tools */}
-                      <div className={`xl:col-span-4 ${tile}`}>
-                        <p className="text-sm font-semibold text-slate-900 mb-3">Quick tools</p>
-                        <div className="space-y-2">
-                          {[
-                            ['eligibility-calculator', 'Admission chances', <Calculator key="i" size={15} />],
-                            ['course-finder', 'Course finder', <GraduationCap key="i" size={15} />],
-                            ['daily-tasks', 'Roadmap and tasks', <Route key="i" size={15} />],
-                          ].map(([id, label, icon]) => (
-                            <button key={id} onClick={() => setActiveTab(id)} className="w-full h-11 px-2 rounded-full bg-white hover:bg-[#FDF3EE] flex items-center gap-3 text-sm text-slate-800 cursor-pointer">
-                              <span className="w-8 h-8 rounded-full bg-orange-50 text-[#DE5C2B] flex items-center justify-center">{icon}</span>
-                              <span className="flex-1 text-left">{label}</span>
-                              <ChevronRight size={15} className="text-slate-400 mr-2" />
+                      {/* Quick tools */}
+                      <div className="md:col-span-2 xl:col-span-12">
+                        <p className={kicker}>Kaam ke tools</p>
+                        <p className="font-urbanist text-[22px] font-black text-[#16130F] mb-3">Sabse zyada use hone wale</p>
+                        <div className="grid grid-cols-2 xl:grid-cols-4 gap-4">
+                          {quickTools.map(([id, label, desc, icon, tone]) => (
+                            <button key={id} onClick={() => setActiveTab(id)} className={`${card} p-4 text-left flex flex-col gap-3 cursor-pointer hover:-translate-y-0.5 transition-transform`}>
+                              <span className="w-11 h-11 rounded-xl border-2 border-[#16130F] flex items-center justify-center" style={{ background: tone, color: tone === '#F2B705' ? '#16130F' : '#fff' }}>{icon}</span>
+                              <span>
+                                <span className="block font-urbanist text-[17px] font-extrabold leading-tight text-[#16130F]">{label}</span>
+                                <span className="block text-[13.5px] leading-snug text-[#5B544A] mt-0.5">{desc}</span>
+                              </span>
                             </button>
                           ))}
                         </div>
                       </div>
 
                       {/* Roadmap list */}
-                      <div className="md:col-span-2 xl:col-span-12 bg-white border border-slate-100 rounded-[28px] p-6">
+                      <div className={`md:col-span-2 xl:col-span-12 ${card} p-6`}>
                         <div className="flex items-center justify-between gap-3 mb-4">
                           <div>
-                            <p className="text-lg font-semibold text-slate-900">Next steps</p>
-                            <p className="text-xs text-slate-500">Your top priorities for this application cycle</p>
+                            <p className={kicker}>Aapka roadmap</p>
+                            <p className="font-urbanist text-[22px] font-black text-[#16130F]">{pending.length ? `${pending.length} steps baaki hain` : 'Sab steps ho gaye'}</p>
                           </div>
-                          <button onClick={() => setActiveTab('daily-tasks')} className="h-10 px-5 rounded-full border border-slate-200 text-xs font-semibold text-slate-700 hover:border-orange-200 flex items-center gap-1.5 cursor-pointer">
-                            All tasks <ArrowRight size={13} />
+                          <button onClick={() => setActiveTab('daily-tasks')} className="h-10 px-5 rounded-full border-2 border-[#16130F] text-[13px] font-bold text-[#16130F] hover:bg-[#FFF1E6] flex items-center gap-1.5 cursor-pointer">
+                            Saare steps <ArrowRight size={14} />
                           </button>
                         </div>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                          {checklist.filter((t) => !t.done).slice(0, 6).map((item) => (
-                            <div key={item.id} className="flex items-center gap-3 p-3 rounded-full bg-[#F6F5F2]">
+                          {pending.slice(0, 6).map((item, i) => (
+                            <div key={item.id} className="flex items-center gap-3 p-3 rounded-2xl bg-[#FBF4E6] border-2 border-transparent hover:border-[#16130F] transition-colors">
                               <button
                                 onClick={() => toggleChecklistItem(item.id)}
                                 aria-label={`Mark ${item.title || item.text} done`}
-                                className="w-9 h-9 rounded-full bg-white border border-slate-200 hover:border-[#DE5C2B] flex items-center justify-center shrink-0 cursor-pointer text-transparent hover:text-[#DE5C2B]"
+                                title="Ho gaya? Tick karo"
+                                className="w-9 h-9 rounded-full bg-white border-2 border-[#16130F] hover:bg-[#DE5C2B] flex items-center justify-center shrink-0 cursor-pointer text-[#16130F] hover:text-white font-urbanist font-black text-[14px] group/tick"
                               >
-                                <Check size={15} />
+                                <span className="group-hover/tick:hidden">{i + 1}</span>
+                                <Check size={16} className="hidden group-hover/tick:block" />
                               </button>
                               <span className="min-w-0 flex-1">
-                                <span className="block text-sm font-semibold text-slate-900 truncate">{item.title || item.text}</span>
-                                {item.subtitle && <span className="block text-xs text-slate-500 truncate">{item.subtitle}</span>}
+                                <span className="text-[15px] font-bold leading-snug text-[#16130F] line-clamp-2">{item.title || item.text}</span>
+                                {item.subtitle && <span className="text-[13px] text-[#5B544A] line-clamp-1">{item.subtitle}</span>}
                               </span>
                               {item.actionLabel && (
-                                <button onClick={(e) => handleTaskAction(item, e)} className="h-9 px-4 rounded-full bg-[#DE5C2B] hover:bg-[#C04A1D] text-white text-xs font-semibold shrink-0 cursor-pointer">
+                                <button onClick={(e) => handleTaskAction(item, e)} className="h-9 px-4 rounded-full bg-[#DE5C2B] hover:bg-[#C04A1D] text-white text-[13px] font-bold border-2 border-[#16130F] shrink-0 cursor-pointer">
                                   {item.actionLabel}
                                 </button>
                               )}
                             </div>
                           ))}
-                          {checklist.length > 0 && checklist.every((t) => t.done) && (
-                            <p className="text-sm text-slate-500">All steps done. Great work.</p>
+                          {checklist.length > 0 && !pending.length && (
+                            <p className="text-[15px] text-[#5B544A]">Sab steps ho gaye. Shabaash!</p>
                           )}
                         </div>
                       </div>
@@ -1754,18 +1768,18 @@ ${name || 'Candidate'}`;
                 })()}
 
                 {/* ── MENTOR STUDIO PROMOTION ── */}
-                <div className="bg-[#F6F5F2] rounded-[28px] p-6 md:p-7 flex flex-col lg:flex-row lg:items-center justify-between gap-5">
+                <div className="bg-[#16130F] text-white rounded-[24px] border-2 border-[#16130F] shadow-[4px_4px_0_#DE5C2B] p-6 md:p-7 flex flex-col lg:flex-row lg:items-center justify-between gap-5">
                   <div className="max-w-2xl">
-                    <p className="text-xs text-slate-500">UniCoach mentorship · 0% platform commission</p>
-                    <p className="text-xl md:text-2xl font-semibold text-slate-900 mt-1">Studying abroad already? Guide others and earn.</p>
-                    <p className="text-sm text-slate-500 mt-1">Host 1:1 calls, answer questions and review SOPs. You keep your full fee minus only Razorpay's charge.</p>
+                    <p className="text-[13px] font-bold text-[#F2B705]">Bahar padh rahe ho? Mentor bano</p>
+                    <p className="font-urbanist text-[22px] md:text-[26px] font-black leading-tight mt-1">Dusron ko guide karo aur kamao</p>
+                    <p className="text-[15px] text-white/80 mt-1.5">1:1 calls lo, sawaalon ke jawab do, SOP review karo. Poori fees aapki, sirf Razorpay ka charge katega. 0% platform commission.</p>
                   </div>
                   <button
                     type="button"
                     onClick={isMentorAccount ? handleOpenMentorStudio : () => navigate('/unicoach/apply')}
-                    className="h-12 px-7 rounded-full bg-[#DE5C2B] hover:bg-[#C04A1D] text-white text-sm font-semibold flex items-center gap-2 shrink-0 cursor-pointer"
+                    className="h-12 px-7 rounded-full bg-[#DE5C2B] hover:bg-[#C04A1D] text-white text-[15px] font-bold border-2 border-white/20 flex items-center gap-2 shrink-0 cursor-pointer"
                   >
-                    {isMentorAccount ? 'Open Mentor Studio' : 'Become a mentor'} <ArrowRight size={16} />
+                    {isMentorAccount ? 'Mentor Studio kholo' : 'Mentor bano'} <ArrowRight size={16} />
                   </button>
                 </div>
               </motion.div>
