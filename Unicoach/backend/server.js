@@ -354,6 +354,8 @@ app.use('/api/admin/dev', require('./routes/adminDeveloper'));
   app.get('/api/webhooks/whatsapp', wa.verifyWebhook);
   app.post('/api/webhooks/whatsapp', wa.receiveWebhook);
 }
+// Bolna AI call results (public, checked with BOLNA_WEBHOOK_SECRET)
+app.post('/api/webhooks/bolna', require('./controllers/bolnaController').receiveWebhook);
 
 // CRM — Pipelines, Forms & Bookings (admin)
 app.use('/api/admin/pipelines', require('./routes/adminPipelines'));

@@ -5,6 +5,7 @@ const { normalizePhone } = require('../utils/twilio');
 const { findLeadsByContact, linkLeadToDuplicates } = require('../utils/leadMatching');
 const { readAttribution } = require('../utils/attribution');
 const { sendMetaEvent } = require('../services/metaConversions');
+const { startLeadCall } = require('../services/bolnaCalls');
 
 /**
  * GET /api/forms/:slug
@@ -145,6 +146,7 @@ exports.submitForm = async (req, res) => {
       attribution,
       customData: { content_name: form.name || form.slug }
     });
+    startLeadCall(lead);
 
     return res.status(201).json({
       success: true,

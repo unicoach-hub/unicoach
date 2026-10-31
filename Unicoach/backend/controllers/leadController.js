@@ -3,6 +3,7 @@ const { normalizePhone } = require('../utils/twilio');
 const { findLeadsByContact, linkLeadToDuplicates } = require('../utils/leadMatching');
 const { readAttribution, applyAttributionToLead } = require('../utils/attribution');
 const { sendMetaEvent } = require('../services/metaConversions');
+const { startLeadCall } = require('../services/bolnaCalls');
 
 // Service-page forms → the matching Admin → Support Requests category pill
 const SUPPORT_CATEGORY_BY_SOURCE = {
@@ -68,6 +69,7 @@ exports.submitLead = async (req, res) => {
       attribution: req.body.attribution,
       customData: { content_name: lead.latestSource || lead.source }
     });
+    startLeadCall(lead);
 
     return res.status(200).json({
       success: true,
@@ -164,6 +166,7 @@ exports.bookConsultation = async (req, res) => {
       attribution,
       customData: { content_name: source }
     });
+    startLeadCall(lead);
 
     // ── Also sync to SupportRequest so it appears in Admin -> Support Requests (/requests) ──
     try {
