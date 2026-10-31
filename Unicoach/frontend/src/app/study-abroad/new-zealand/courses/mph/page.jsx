@@ -157,7 +157,7 @@ const NewZealandMPHCourse = () => {
           {/* Right Column: Content Blocks */}
           <div className="lg:col-span-9 space-y-16">
 
-            <HookBand value="NZD 75K-90K" label="starting wage for MPH graduates in New Zealand" hi="सेहत" />
+            <HookBand value="NZD 75K-90K" label="starting wage for MPH graduates in New Zealand" hi="Sehat" />
             
             {/* 1. Why Study MPH Overview */}
             <section id="overview" className="scroll-mt-24">

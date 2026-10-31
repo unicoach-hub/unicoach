@@ -1356,7 +1356,7 @@ const UnicoachApplyPage = () => {
             </div>
           </div>
 
-          <Muhavra hi="आम के आम, गुठलियों के दाम।" en="Juniors ki madad bhi, kamaai bhi." className="justify-center" />
+          <Muhavra hi="Aam ke aam, guthliyon ke daam" en="Juniors ki madad bhi, kamaai bhi." className="justify-center" />
           {/* Submit Button */}
           <button
             type="submit"

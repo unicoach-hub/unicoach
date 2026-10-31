@@ -163,7 +163,7 @@ const AustraliaMastersPage = () => {
           </p>
         </div>
 
-        <HookBand value={universityDatabase.length} label="Australian universities and colleges on this page. Filter by course, city, fees and intake below." hi="तुलना करो" className="mb-10" />
+        <HookBand value={universityDatabase.length} label="Australian universities and colleges on this page. Filter by course, city, fees and intake below." hi="Compare karo" className="mb-10" />
 
         <div className="grid grid-cols-1 lg:grid-cols-[290px_1fr] gap-8 items-start">
           {/* Sidebar */}

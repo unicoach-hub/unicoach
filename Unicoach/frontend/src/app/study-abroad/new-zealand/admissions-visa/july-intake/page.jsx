@@ -180,7 +180,7 @@ const NewZealandJulyIntake = () => {
           {/* Right Column: Content Blocks */}
           <div className="lg:col-span-9 space-y-16">
 
-            <HookBand value="70-80%" label="of all programmes open for the July 2027 intake, with off-peak (faster) visa processing" hi="दूसरा मौका" />
+            <HookBand value="70-80%" label="of all programmes open for the July 2027 intake, with off-peak (faster) visa processing" hi="Doosra mauka" />
             
             {/* 1. Why Choose July Intake */}
             <section id="overview" className="scroll-mt-24">

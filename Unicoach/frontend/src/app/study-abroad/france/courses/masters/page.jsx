@@ -267,7 +267,7 @@ const FranceMastersCourse = () => {
               <HookBand
                 value="90%+"
                 label="of French Master's graduates find a job within 6 months, with starting packages of €40K–€60K"
-                hi="नौकरी"
+                hi="Naukri"
                 className="mb-8"
               />
               <div className="text-left mb-6">

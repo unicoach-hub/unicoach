@@ -158,7 +158,7 @@ const NewZealandMACourse = () => {
           {/* Right Column: Content Blocks */}
           <div className="lg:col-span-9 space-y-16">
 
-            <HookBand value="3 yrs" label="open post-study work visa for MA graduates; 3-year Indian Bachelor's degrees are widely accepted" hi="खुला रास्ता" />
+            <HookBand value="3 yrs" label="open post-study work visa for MA graduates; 3-year Indian Bachelor's degrees are widely accepted" hi="Khula rasta" />
             
             {/* 1. Why Study MA Overview */}
             <section id="overview" className="scroll-mt-24">

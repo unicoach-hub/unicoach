@@ -67,7 +67,7 @@ const IrelandOverview = () => {
           <HookBand
             value="2 Years"
             label="Stay Back Visa after a Level 9 (Master's) programme in Ireland"
-            hi="पढ़ो, फिर कमाओ"
+            hi="Padho, phir kamao"
             className="mb-4"
           />
           <StatStrip

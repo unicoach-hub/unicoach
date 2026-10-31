@@ -129,7 +129,7 @@ const GermanyEngineering = () => {
           className="mb-12"
           value="760,000+"
           label="skilled technical workers Germany is short of: engineers are first in line"
-          hi="इंजीनियर"
+          hi="Engineer"
         />
 
         {/* 1. DISCIPLINE SALARY CHART */}

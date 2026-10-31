@@ -34,7 +34,7 @@ const TeamPage = () => {
         <HookBand
           value={TEAM_MENTORS.length}
           label={`Mentors who have studied and worked abroad${mentorRegions.length ? `: ${mentorRegions.join(', ')}` : ''}.`}
-          hi="गुरु"
+          hi="Guru"
           className="mt-10 max-w-3xl mx-auto"
         />
 

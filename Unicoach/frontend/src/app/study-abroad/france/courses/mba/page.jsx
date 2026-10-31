@@ -261,7 +261,7 @@ const FranceMBACourse = () => {
               <HookBand
                 value="10–16 mo"
                 label="is all most elite French MBA programs take (INSEAD, ESCP, EDHEC), cutting your opportunity cost"
-                hi="फटाफट"
+                hi="Fatafat"
                 className="mb-8"
               />
               <div className="text-left mb-6">

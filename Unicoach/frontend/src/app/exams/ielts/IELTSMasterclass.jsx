@@ -291,7 +291,7 @@ const IELTSMasterclass = () => {
       {/* Hero: mustard poster band with the booking form */}
       <DesiHero
         tone="mustard"
-        sign={{ hi: 'मास्टरक्लास', en: 'IELTS MASTERCLASS' }}
+        sign={{ hi: 'Masterclass', en: 'IELTS MASTERCLASS' }}
         title={(
           <>
             4-Week Online IELTS Course <br />

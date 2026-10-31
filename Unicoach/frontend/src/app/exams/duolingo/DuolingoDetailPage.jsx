@@ -577,7 +577,7 @@ const DuolingoDetailPage = ({ pageKey }) => {
       {/* ── HERO: teal poster band ── */}
       <DesiHero
         tone="teal"
-        sign={{ hi: 'डुओलिंगो', en: 'DUOLINGO DESK' }}
+        sign={{ hi: 'Duolingo', en: 'DUOLINGO DESK' }}
         crumbs={[{ label: 'Home', to: '/' }, { label: 'Duolingo', to: '/exams/duolingo' }, { label: currentName }]}
         title={activeContent.title}
         subtitle={activeContent.subtitle}

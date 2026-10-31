@@ -204,7 +204,7 @@ const AiToolsHubPage = () => {
         <HeroBackButton fallback="/" />
         {/* Desi Pop: STD booth style sign, wide screens only */}
         <div className="hidden 2xl:block absolute left-8 2xl:left-20 top-1/2 -translate-y-1/2 -rotate-6 z-0 pointer-events-none">
-          <StdSign words={['SOP', 'VISA', 'IELTS']} hi="औज़ार" className="w-[180px]" />
+          <StdSign words={['SOP', 'VISA', 'IELTS']} hi="Auzaar" className="w-[180px]" />
         </div>
         
 
@@ -275,7 +275,7 @@ const AiToolsHubPage = () => {
         <HookBand
           value="7"
           label="Specialized AI tools, from university shortlists to SOP drafts and visa interview practice. 100% free access."
-          hi="मुफ़्त"
+          hi="Muft"
           className="mb-8"
         />
         

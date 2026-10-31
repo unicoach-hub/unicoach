@@ -171,7 +171,7 @@ const NewZealandVisa = () => {
           {/* Right Column: Content Blocks */}
           <div className="lg:col-span-9 space-y-16">
 
-            <HookBand value="30-45" label="working days (~6-8 weeks) is the standard NZ student visa processing time" hi="सब्र" />
+            <HookBand value="30-45" label="working days (~6-8 weeks) is the standard NZ student visa processing time" hi="Sabr" />
             
             {/* 1. Types of Student Visas */}
             <section id="visa-types" className="scroll-mt-24">

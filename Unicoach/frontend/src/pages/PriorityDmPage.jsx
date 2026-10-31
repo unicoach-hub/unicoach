@@ -95,7 +95,7 @@ const PriorityDmPage = () => {
               Skip the queue. Submit your specific visa, admission, or job roadmap inquiry directly to our senior international counsellors and immigration consultants.
             </p>
 
-            <HookBand value="2–4 hrs" label="Response time from our senior specialists" hi="सीधी बात" />
+            <HookBand value="2–4 hrs" label="Response time from our senior specialists" hi="Seedhi baat" />
 
             {/* Value Points */}
             <div className="space-y-3 pt-1">
@@ -271,7 +271,7 @@ const PriorityDmPage = () => {
                     />
                   </div>
 
-                  <Muhavra hi="पूछने में क्या शर्म?" en="Seedha senior advisor tak pahunchega." />
+                  <Muhavra hi="Poochhne mein kya sharm?" en="Seedha senior advisor tak pahunchega." />
                   {/* Submit button */}
                   <div className="pt-1">
                     <button

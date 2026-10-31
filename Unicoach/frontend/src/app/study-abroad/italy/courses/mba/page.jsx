@@ -280,7 +280,7 @@ const ItalyMBACourse = () => {
           </div>
         </motion.div>
 
-        <HookBand value="6,100" label="Indian students chose Italy in 2023, out of 93,000+ international students" hi="इटली" className="mb-12" />
+        <HookBand value="6,100" label="Indian students chose Italy in 2023, out of 93,000+ international students" hi="Italy" className="mb-12" />
 
         {/* Currency Switcher Tool */}
         <div className="flex justify-center mb-12">

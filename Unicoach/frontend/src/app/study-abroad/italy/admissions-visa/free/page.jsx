@@ -277,7 +277,7 @@ const ItalyFree = () => {
           </div>
         </motion.div>
 
-        <HookBand value="62%" label="of international students in Italy receive tuition waivers (2023 data)" hi="मुफ़्त" className="mb-12" />
+        <HookBand value="62%" label="of international students in Italy receive tuition waivers (2023 data)" hi="Muft" className="mb-12" />
 
         {/* Currency Tool Switcher */}
         <div className="flex justify-center mb-12">

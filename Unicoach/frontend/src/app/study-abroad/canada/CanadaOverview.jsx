@@ -137,7 +137,7 @@ const CanadaOverview = () => {
           <HookBand
             value="Up to 3 Yrs"
             label="Post-Graduation Work Permit (PGWP) after your studies in Canada"
-            hi="पढ़ो, फिर कमाओ"
+            hi="Padho, phir kamao"
             className="mb-4"
           />
           <StatStrip

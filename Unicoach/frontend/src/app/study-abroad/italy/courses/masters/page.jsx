@@ -318,7 +318,7 @@ const ItalyMastersCourse = () => {
           </div>
         </motion.div>
 
-        <HookBand value="700+" label="Master's programs taught entirely in English across 90+ Italian universities" hi="पढ़ाई" className="mb-12" />
+        <HookBand value="700+" label="Master's programs taught entirely in English across 90+ Italian universities" hi="Padhai" className="mb-12" />
 
         {/* Currency Switcher Tool */}
         <div className="flex justify-center mb-12">

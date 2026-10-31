@@ -153,7 +153,7 @@ const GermanyBestCoursesPage = () => {
           className="mb-10"
           value="760,000+"
           label="skilled-labour shortage in Germany: pick a course that fills it for an easier post-graduation visa path"
-          hi="मांग"
+          hi="Maang"
         />
 
         {/* Global Currency Switcher */}

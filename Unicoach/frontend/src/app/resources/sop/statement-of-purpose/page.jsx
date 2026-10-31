@@ -66,7 +66,7 @@ const StatementOfPurposePage = () => {
             {/* ── HERO: mustard poster band ── */}
             <DesiHero
                 tone="mustard"
-                sign={{ hi: 'एसओपी अड्डा', en: 'SOP ADDA' }}
+                sign={{ hi: 'SOP adda', en: 'SOP ADDA' }}
                 crumbs={[{ label: 'Home', to: '/' }, { label: 'Resources' }, { label: 'SOP Guides' }, { label: 'Statement of Purpose' }]}
                 title="Statement of Purpose (SOP) Guidelines"
                 subtitle="Format, paragraph breakdowns, templates, and successful samples for Indian study abroad applicants."

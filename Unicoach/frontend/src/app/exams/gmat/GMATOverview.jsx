@@ -156,7 +156,7 @@ const GMATOverview = () => {
       {/* Hero: poster band */}
       <DesiHero
         tone="rani"
-        sign={{ hi: 'जीमैट', en: 'GMAT DESK' }}
+        sign={{ hi: 'GMAT', en: 'GMAT DESK' }}
         crumbs={[{ label: 'Home', to: '/' }, { label: 'Exams' }, { label: 'GMAT' }]}
         title="GMAT Exam Focus Edition 2026: The Complete Guide for Indian Students"
         subtitle="Maximize your B-School application with the ultimate breakdown of GMAT registration, syllabus changes, exam fees, slot booking details, and rankings updates."

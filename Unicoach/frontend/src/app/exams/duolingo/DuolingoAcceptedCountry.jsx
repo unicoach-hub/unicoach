@@ -310,7 +310,7 @@ const DuolingoAcceptedCountry = ({ country }) => {
       {/* ── HERO: teal poster band ── */}
       <DesiHero
         tone="teal"
-        sign={{ hi: 'डुओलिंगो', en: 'DUOLINGO DESK' }}
+        sign={{ hi: 'Duolingo', en: 'DUOLINGO DESK' }}
         crumbs={[{ label: 'Home', to: '/' }, { label: 'Duolingo', to: '/exams/duolingo' }, { label: activeData.title }]}
         title={activeData.title}
         subtitle={activeData.subtitle}

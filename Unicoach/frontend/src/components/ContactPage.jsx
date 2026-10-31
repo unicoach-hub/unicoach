@@ -678,7 +678,7 @@ const ContactPage = () => {
                                         </div>
                                     )}
 
-                                    <Muhavra hi="शुभ काम में देरी क्यों?" en="Free counselling, no sales call." />
+                                    <Muhavra hi="Shubh kaam mein deri kyun?" en="Free counselling, no sales call." />
                                     <button
                                         type="submit"
                                         disabled={sending}

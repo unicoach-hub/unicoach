@@ -878,7 +878,7 @@ const ScholarshipShortlister = () => {
 
           <div className="pt-5 border-t border-[#ECE6DA] flex flex-col sm:flex-row items-center justify-between gap-4">
             <div>
-              <Muhavra hi="बूँद-बूँद से घड़ा भरता है।" />
+              <Muhavra hi="Boond boond se ghada bharta hai" />
               <p className="text-[13px] text-[#5B544A]">
                 We check 150+ merit, need-based and government scholarships.
               </p>

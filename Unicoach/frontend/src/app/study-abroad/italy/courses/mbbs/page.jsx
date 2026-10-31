@@ -223,7 +223,7 @@ const ItalyMBBSCourse = () => {
           </div>
         </motion.div>
 
-        <HookBand value="₹16K – ₹4.7L" label="a year in public university tuition for a WHO & NMC approved 6-year MD" hi="डॉक्टर" className="mb-10" />
+        <HookBand value="₹16K – ₹4.7L" label="a year in public university tuition for a WHO & NMC approved 6-year MD" hi="Doctor" className="mb-10" />
 
         {/* ── TOC CHIPS ── */}
         <motion.div

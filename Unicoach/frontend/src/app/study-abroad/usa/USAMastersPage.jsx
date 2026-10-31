@@ -628,7 +628,7 @@ const USAMastersPage = () => {
         <HookBand
           value="36 months"
           label="of US work rights after a STEM Masters: 12 months of OPT plus the 24-month STEM-OPT extension."
-          hi="3 साल"
+          hi="3 saal"
           className="mb-10"
         />
 

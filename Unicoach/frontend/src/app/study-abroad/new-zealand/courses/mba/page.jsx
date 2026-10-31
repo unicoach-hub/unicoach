@@ -159,7 +159,7 @@ const NewZealandMBACourse = () => {
           {/* Right Column: Content Blocks */}
           <div className="lg:col-span-9 space-y-16">
 
-            <HookBand value="12-18" label="months to break even on an MBA in New Zealand, per the ROI projection on this page" hi="वसूल" />
+            <HookBand value="12-18" label="months to break even on an MBA in New Zealand, per the ROI projection on this page" hi="Vasool" />
             
             {/* 1. Why Study MBA Overview */}
             <section id="overview" className="scroll-mt-24">

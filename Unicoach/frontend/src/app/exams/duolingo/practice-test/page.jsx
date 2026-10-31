@@ -689,7 +689,7 @@ const DuolingoPracticeTestPage = () => {
       <section className="bg-[#14837E] px-4 sm:px-6 pt-[88px] sm:pt-[100px] pb-24 sm:pb-28">
         <div className="max-w-3xl mx-auto flex flex-wrap items-center justify-between gap-4">
           <BackButton fallback="/exams/duolingo" />
-          <StationSign hi="डुओलिंगो" en="DUOLINGO DESK" className="rotate-[-1.5deg]" />
+          <StationSign hi="Duolingo" en="DUOLINGO DESK" className="rotate-[-1.5deg]" />
         </div>
       </section>
       <div className="max-w-3xl mx-auto px-4 sm:px-6 -mt-16 sm:-mt-20 relative z-10">

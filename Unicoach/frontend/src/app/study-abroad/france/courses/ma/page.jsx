@@ -202,7 +202,7 @@ const FranceMACourse = () => {
               <HookBand
                 value="< €4,000"
                 label="a year: subsidised public-university tuition for an MA in France (non-EU students)"
-                hi="किफ़ायती"
+                hi="Kifayati"
                 className="mb-8"
               />
               <div className="text-left mb-6">

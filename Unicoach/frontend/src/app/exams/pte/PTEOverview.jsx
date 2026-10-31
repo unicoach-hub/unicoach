@@ -156,7 +156,7 @@ const PTEOverview = () => {
       {/* Hero: poster band */}
       <DesiHero
         tone="teal"
-        sign={{ hi: 'पीटीई', en: 'PTE DESK' }}
+        sign={{ hi: 'PTE', en: 'PTE DESK' }}
         crumbs={[{ label: 'Home', to: '/' }, { label: 'Exams' }, { label: 'PTE' }]}
         title="PTE Exam 2026: Full Form, Fees, Dates, Eligibility & Exam Pattern"
         subtitle="The PTE Academic is the leading computer-based choice for students who value speed and fairness. With results typically out in 48 hours, it’s the fastest way to secure university spots in 2026."

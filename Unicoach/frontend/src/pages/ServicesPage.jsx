@@ -201,7 +201,7 @@ const ServicesPage = () => {
         <HookBand
           value={`${cfg?.durationMin || 60} min`}
           label="One 1:1 call with our team. Counselling, shortlisting, SOPs, funding and visas, all in one place."
-          hi="एक कॉल"
+          hi="Ek call"
           className="mt-12"
         />
 

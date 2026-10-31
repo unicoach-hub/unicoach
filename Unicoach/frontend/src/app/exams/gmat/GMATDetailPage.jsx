@@ -764,7 +764,7 @@ const GMATDetailPage = ({ pageKey }) => {
       {/* Hero: poster band */}
       <DesiHero
         tone="rani"
-        sign={{ hi: 'जीमैट', en: 'GMAT DESK' }}
+        sign={{ hi: 'GMAT', en: 'GMAT DESK' }}
         crumbs={[
           { label: 'Home', to: '/' },
           { label: 'Exams', to: '/exams/gmat' },

@@ -303,7 +303,7 @@ const ItalyPublic = () => {
           </div>
         </motion.div>
 
-        <HookBand value="€7,800" label="yearly DSU stipend on top of 100% cost cover at Italy's public universities" hi="बचत" className="mb-12" />
+        <HookBand value="€7,800" label="yearly DSU stipend on top of 100% cost cover at Italy's public universities" hi="Bachat" className="mb-12" />
 
         {/* Currency Switcher Tool */}
         <div className="flex justify-center mb-12">

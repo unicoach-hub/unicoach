@@ -55,7 +55,7 @@ const SOPMastersPage = () => {
             {/* ── HERO: teal poster band ── */}
             <DesiHero
                 tone="teal"
-                sign={{ hi: 'मास्टर्स एसओपी', en: 'MASTERS SOP' }}
+                sign={{ hi: 'Masters SOP', en: 'MASTERS SOP' }}
                 crumbs={[{ label: 'Home', to: '/' }, { label: 'Resources' }, { label: 'SOP Guides' }, { label: 'SOP for Masters' }]}
                 title="SOP for Masters Guide"
                 subtitle="Writing guidelines, samples for engineering & nursing, and outline drafting tools for MS applicants."
@@ -65,7 +65,7 @@ const SOPMastersPage = () => {
                 aside={(
                     /* Railway board for the Glasgow admits in the samples below, wide screens only */
                     <div className="hidden lg:flex justify-end pointer-events-none">
-                        <RailwayBoard hi="ग्लासगो" en="GLASGOW" codeLeft="MSc" codeRight="UK" className="w-[300px]" />
+                        <RailwayBoard hi="Glasgow" en="GLASGOW" codeLeft="MSc" codeRight="UK" className="w-[300px]" />
                     </div>
                 )}
             />

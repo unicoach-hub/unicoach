@@ -165,7 +165,7 @@ const USAOverview = () => {
           <HookBand
             value="Up to 3 Yrs"
             label="OPT work extension after your US degree"
-            hi="पढ़ो, फिर कमाओ"
+            hi="Padho, phir kamao"
             className="mb-4"
           />
           <StatStrip

@@ -64,7 +64,7 @@ const GermanyPublic = () => {
           className="mb-12"
           value="€0"
           label="tuition at public universities for international students; you pay only a €150 - €350 semester contribution"
-          hi="मुफ़्त"
+          hi="Muft"
         />
 
         {/* 1. WHY PUBLIC UNIVERSITIES ARE FREE BANNER */}

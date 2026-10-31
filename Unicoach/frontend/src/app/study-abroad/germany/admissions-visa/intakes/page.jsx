@@ -207,7 +207,7 @@ const IntakesGermany = () => {
           className="mb-10"
           value="2"
           label="intakes a year: winter starts in October, summer starts in April"
-          hi="दो मौके"
+          hi="Do mauke"
         />
 
         {/* 2-Column Sidebar Layout */}

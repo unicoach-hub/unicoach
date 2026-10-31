@@ -313,7 +313,7 @@ const NewZealandTopUniversities = () => {
           {/* Right Column: Content Blocks */}
           <div className="lg:col-span-9 space-y-16">
 
-            <HookBand value="Top 500" label="All 8 New Zealand universities are in the QS World University Rankings 2027 top 500" hi="टॉप क्लास" />
+            <HookBand value="Top 500" label="All 8 New Zealand universities are in the QS World University Rankings 2027 top 500" hi="Top class" />
             
             {/* 1. Why New Zealand in 2026 */}
             <section id="overview" className="scroll-mt-24">

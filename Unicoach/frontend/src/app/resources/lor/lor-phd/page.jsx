@@ -112,7 +112,7 @@ const LORPhdPage = () => {
             {/* ── HERO: rani poster band ── */}
             <DesiHero
                 tone="rani"
-                sign={{ hi: 'शोध सिफ़ारिश', en: 'PHD LOR' }}
+                sign={{ hi: 'Shodh sifarish', en: 'PHD LOR' }}
                 crumbs={[{ label: 'Home', to: '/' }, { label: 'Resources' }, { label: 'LOR' }, { label: 'LOR for PhD' }]}
                 title="Letter of Recommendation (LOR) for PhD"
                 subtitle="Highlighting independent research capabilities, thesis advisor alignments, publication records, and laboratory expertise."
@@ -122,7 +122,7 @@ const LORPhdPage = () => {
                 aside={(
                     // postage stamp, large screens only
                     <div className="hidden lg:flex justify-center pointer-events-none">
-                        <PostageStamp title="Research" hi="शोध" note="Doctoral LOR" className="w-[170px] rotate-6" />
+                        <PostageStamp title="Research" hi="Shodh" note="Doctoral LOR" className="w-[170px] rotate-6" />
                     </div>
                 )}
             />

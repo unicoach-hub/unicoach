@@ -213,7 +213,7 @@ const IELTSFeesPage = () => {
       {/* ── HERO ── */}
       <DesiHero
         tone="peach"
-        sign={{ hi: 'फ़ीस', en: 'IELTS FEES' }}
+        sign={{ hi: 'Fees', en: 'IELTS FEES' }}
         crumbs={[{ label: 'Home', to: '/' }, { label: 'Exams' }, { label: 'IELTS' }, { label: 'IELTS Exam Fees' }]}
         title="IELTS Exam Fees 2026 in India (Updated April 1)"
         subtitle="Updated registration base fees, rechecking costs, cancellation policies, and rescheduling charges."

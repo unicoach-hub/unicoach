@@ -186,7 +186,7 @@ const FranceMIMCourse = () => {
               <HookBand
                 value="80%+"
                 label="of French MIM students take a gap year between M1 and M2 for two 6-month corporate internships"
-                hi="इंटर्नशिप"
+                hi="Internship"
                 className="mb-8"
               />
               <div className="text-left mb-6">

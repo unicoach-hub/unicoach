@@ -317,7 +317,7 @@ const EventsPage = () => {
             {/* ── HERO: mustard poster band with the live departures board and the next boarding pass ── */}
             <DesiHero
                 tone="mustard"
-                sign={{ hi: 'मेला', en: 'LIVE EVENTS' }}
+                sign={{ hi: 'Mela', en: 'LIVE EVENTS' }}
                 title={(
                     <>
                         Your study abroad journey <br className="hidden sm:block" />

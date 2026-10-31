@@ -160,7 +160,7 @@ const NewZealandIntakes = () => {
           {/* Right Column: Content Blocks */}
           <div className="lg:col-span-9 space-y-16">
 
-            <HookBand value="25 hrs" label="Work allowed per week during term since 3 November 2025, up from 20" hi="काम भी" />
+            <HookBand value="25 hrs" label="Work allowed per week during term since 3 November 2025, up from 20" hi="Kaam bhi" />
             
             {/* 1. Why New Zealand in 2027 */}
             <section id="overview" className="scroll-mt-24">

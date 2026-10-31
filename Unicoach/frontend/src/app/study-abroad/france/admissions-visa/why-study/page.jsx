@@ -179,7 +179,7 @@ const FranceWhyStudy = () => {
               <HookBand
                 value="5 years"
                 label="Schengen alumni visa for Indian students who finish a Master's at a French institution"
-                hi="आज़ादी"
+                hi="Azaadi"
                 className="mb-6"
               />
               <StatStrip

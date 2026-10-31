@@ -461,7 +461,7 @@ const SATDetailPage = ({ pageKey }) => {
       {/* Hero: rani poster band */}
       <DesiHero
         tone="rani"
-        sign={{ hi: 'सैट', en: 'SAT DESK' }}
+        sign={{ hi: 'SAT', en: 'SAT DESK' }}
         crumbs={[{ label: 'Home', to: '/' }, { label: 'SAT', to: '/exams/sat' }, { label: activeLinkName }]}
         title={activeContent.title}
         subtitle={activeContent.subtitle}

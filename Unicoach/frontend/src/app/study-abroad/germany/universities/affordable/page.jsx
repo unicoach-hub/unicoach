@@ -138,7 +138,7 @@ const GermanyAffordable = () => {
           className="mb-12"
           value="15 of 16"
           label="German states charge international students €0 tuition at public universities"
-          hi="मुफ़्त"
+          hi="Muft"
         />
 
         {/* 1. TUITION RANGE COMPARISON */}

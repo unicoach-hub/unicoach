@@ -152,7 +152,7 @@ const WinterIntakeGermany = () => {
           className="mb-10"
           value="1,930+"
           label="English-taught master's programs in Germany (DAAD); most STEM courses open to internationals only in winter"
-          hi="सर्दी"
+          hi="Sardi"
         />
 
         {/* 2-Column Sidebar Layout */}

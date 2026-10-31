@@ -238,7 +238,7 @@ const IELTSSlotBookingPage = () => {
       {/* Hero: teal poster band with the reservation slip */}
       <DesiHero
         tone="teal"
-        sign={{ hi: 'आरक्षण', en: 'SLOT BOOKING' }}
+        sign={{ hi: 'Aarakshan', en: 'SLOT BOOKING' }}
         crumbs={[{ label: 'Home', to: '/' }, { label: 'Exams' }, { label: 'IELTS' }, { label: 'IELTS Slot Booking' }]}
         title="IELTS Slot Booking Guide"
         subtitle="Step-by-step guidelines for reserving test slots online, documents checklists, and policy details."

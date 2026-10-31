@@ -64,7 +64,7 @@ const ExamBooksTemplate = ({ currentExamKey, data }) => {
       {/* ── HERO: poster band with the page's own infographic ── */}
       <DesiHero
         tone={HERO_TONE[currentExamKey] || 'mustard'}
-        sign={{ hi: 'किताब घर', en: 'KITAB GHAR' }}
+        sign={{ hi: 'Kitab ghar', en: 'KITAB GHAR' }}
         crumbs={[{ label: 'Home', to: '/' }, { label: 'Resources' }, { label: 'Prep Books' }, { label: examName }]}
         title={data.title}
         subtitle={data.subtitle}

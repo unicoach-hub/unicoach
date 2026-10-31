@@ -731,7 +731,7 @@ const TOEFLDetailPage = ({ pageKey }) => {
       {/* Hero: peach poster band */}
       <DesiHero
         tone="peach"
-        sign={{ hi: 'टोफ़ल', en: 'TOEFL DESK' }}
+        sign={{ hi: 'TOEFL', en: 'TOEFL DESK' }}
         crumbs={[{ label: 'Home', to: '/' }, { label: 'Exams', to: '/exams/toefl' }, { label: 'TOEFL' }, { label: activeLinkName }]}
         title={activeContent.title}
         subtitle={activeContent.subtitle}

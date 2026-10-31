@@ -56,7 +56,7 @@ const SOPPhdPage = () => {
             {/* ── HERO: peach poster band ── */}
             <DesiHero
                 tone="peach"
-                sign={{ hi: 'शोध एसओपी', en: 'PHD SOP' }}
+                sign={{ hi: 'Shodh SOP', en: 'PHD SOP' }}
                 crumbs={[{ label: 'Home', to: '/' }, { label: 'Resources' }, { label: 'SOP Guides' }, { label: 'SOP for PhD' }]}
                 title="SOP for PhD Guide"
                 subtitle="Research proposals format, literature reviews mapping, and faculty alignment tips for doctoral candidates."

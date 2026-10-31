@@ -249,7 +249,7 @@ const NewZealandAffordable = () => {
           {/* Right Column: Content Blocks */}
           <div className="lg:col-span-9 space-y-16">
 
-            <HookBand value="$32,400" label="Lowest starting UG fee per year (University of Waikato, 2026), and all 8 universities are in the QS 2027 top 500" hi="सस्ता" />
+            <HookBand value="$32,400" label="Lowest starting UG fee per year (University of Waikato, 2026), and all 8 universities are in the QS 2027 top 500" hi="Sasta" />
             
             {/* 1. Quality & Affordability Overview */}
             <section id="overview" className="scroll-mt-24">

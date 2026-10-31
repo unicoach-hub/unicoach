@@ -299,7 +299,7 @@ const IELTSCoachingCentresPage = () => {
       {/* Hero: rani poster band with the centre city board */}
       <DesiHero
         tone="rani"
-        sign={{ hi: 'परीक्षा केंद्र', en: 'TEST CENTRES' }}
+        sign={{ hi: 'Pariksha kendra', en: 'TEST CENTRES' }}
         crumbs={[{ label: 'Home', to: '/' }, { label: 'Exams' }, { label: 'IELTS' }, { label: 'IELTS Test Centres' }]}
         title="IELTS Test Centres in India"
         subtitle="Find physical IDP test centres, contact numbers, directions, and regulations."

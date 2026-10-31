@@ -77,7 +77,7 @@ const NewZealandOverview = () => {
           <HookBand
             value="3 Years"
             label="Open post-study work visa after Level 7+ study in New Zealand"
-            hi="पढ़ो, फिर कमाओ"
+            hi="Padho, phir kamao"
             className="mb-4"
           />
           <StatStrip

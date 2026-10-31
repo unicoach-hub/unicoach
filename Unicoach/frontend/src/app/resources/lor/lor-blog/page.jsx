@@ -129,7 +129,7 @@ const LORBlogPage = () => {
             {/* ── HERO: mustard poster band ── */}
             <DesiHero
                 tone="mustard"
-                sign={{ hi: 'सिफ़ारिश पत्र', en: 'LOR DESK' }}
+                sign={{ hi: 'Sifarish patra', en: 'LOR DESK' }}
                 crumbs={[{ label: 'Home', to: '/' }, { label: 'Resources' }, { label: 'LOR' }, { label: 'General LOR Guide' }]}
                 title="Letter of Recommendation (LOR) Samples & Formats"
                 subtitle="Comprehensive guidelines, interactive draft builders, and sample templates to craft the perfect endorsement for 2025."
@@ -139,7 +139,7 @@ const LORBlogPage = () => {
                 aside={(
                     // postage stamp with the length rule from the tone tips, large screens only
                     <div className="hidden lg:flex justify-center pointer-events-none">
-                        <PostageStamp value="1–2" title="Pages max" hi="सिफ़ारिश" note="LOR length" className="w-[170px] rotate-6" />
+                        <PostageStamp value="1–2" title="Pages max" hi="Sifarish" note="LOR length" className="w-[170px] rotate-6" />
                     </div>
                 )}
             />

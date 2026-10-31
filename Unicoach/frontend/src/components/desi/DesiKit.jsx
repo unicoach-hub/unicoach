@@ -7,10 +7,10 @@ import { INK, DESI } from './desiTokens';
  * Use with BookOkCta for the closing call to action.
  */
 
-// Station-board sign: Hindi on top, English in caps below
+// Station-board sign: Hinglish on top, English in caps below
 export const StationSign = ({ hi, en, className = '' }) => (
   <div className={`inline-flex flex-col items-center px-4 py-2 bg-[#FFF6D6] border-[3px] border-[#16130F] shadow-[4px_4px_0_#16130F] ${className}`} style={{ borderRadius: 6 }}>
-    <span className="font-['Rozha_One',serif] text-[17px] leading-none text-[#16130F]">{hi}</span>
+    <span className="font-urbanist font-black text-[16px] leading-none tracking-[-0.01em] text-[#16130F]">{hi}</span>
     <span className="mt-1 font-['Anton',sans-serif] tracking-[0.12em] text-[12.5px] leading-none text-[#16130F]">{en}</span>
   </div>
 );

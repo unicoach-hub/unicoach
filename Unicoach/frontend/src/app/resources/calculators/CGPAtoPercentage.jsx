@@ -166,7 +166,7 @@ const CGPAtoPercentage = () => {
             {/* ── HERO: rani poster band, the converter is the hero piece ── */}
             <DesiHero
                 tone="rani"
-                sign={{ hi: 'प्रतिशत का हिसाब', en: 'PERCENT CALCULATOR' }}
+                sign={{ hi: 'Percent ka hisaab', en: 'PERCENT CALCULATOR' }}
                 crumbs={[{ label: 'Home', to: '/' }, { label: 'Resources' }, { label: 'CGPA to Percentage' }]}
                 title="CGPA to percentage converter"
                 subtitle="Turn your 10-point CGPA into a percentage using the CBSE or general university rule."

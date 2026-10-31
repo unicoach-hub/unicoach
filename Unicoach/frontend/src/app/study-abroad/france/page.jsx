@@ -115,7 +115,7 @@ const FranceOverview = () => {
           <HookBand
             value="5 Years"
             label="Post-study visa for postgraduate (Master's) graduates in France"
-            hi="पढ़ो, फिर कमाओ"
+            hi="Padho, phir kamao"
             className="mb-4"
           />
           <StatStrip

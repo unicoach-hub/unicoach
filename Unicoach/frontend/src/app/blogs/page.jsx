@@ -135,7 +135,7 @@ const BlogsPage = () => {
             {/* ── HERO: mustard poster band ── */}
             <DesiHero
                 tone="mustard"
-                sign={{ hi: 'पढ़ाई की बातें', en: 'BLOG ADDA' }}
+                sign={{ hi: 'Padhai ki baatein', en: 'BLOG ADDA' }}
                 title={<>Study Abroad Insights <span className="text-[#D0362E]">& Expert Guides</span></>}
                 subtitle="Curated advice on overseas university admissions, verified scholarships, exam prep tips, visa checklists, and post-study work regulations."
                 stickers={(
@@ -149,7 +149,7 @@ const BlogsPage = () => {
                 aside={(
                     <div className="hidden lg:flex justify-center">
                         <div className="-rotate-6">
-                            <StdSign words={['VISA', 'EXAMS', 'COURSES']} hi="पढ़ो" className="w-[220px]" />
+                            <StdSign words={['VISA', 'EXAMS', 'COURSES']} hi="Padho" className="w-[220px]" />
                         </div>
                     </div>
                 )}

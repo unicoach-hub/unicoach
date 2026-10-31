@@ -55,7 +55,7 @@ const SOPMbaPage = () => {
             {/* ── HERO: rani poster band, with the two excerpts below side by side ── */}
             <DesiHero
                 tone="rani"
-                sign={{ hi: 'एमबीए एसओपी', en: 'MBA SOP' }}
+                sign={{ hi: 'MBA SOP', en: 'MBA SOP' }}
                 crumbs={[{ label: 'Home', to: '/' }, { label: 'Resources' }, { label: 'SOP Guides' }, { label: 'SOP for MBA' }]}
                 title="SOP for MBA Guide"
                 subtitle="Structure approved by global business schools, outline generators, and samples for USA, Canada, and UK."

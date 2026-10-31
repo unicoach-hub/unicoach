@@ -167,7 +167,7 @@ const SummerIntakeGermany = () => {
           className="mb-10"
           value="Jan 15"
           label="the hard deadline for most public universities for the April 2027 start"
-          hi="समय पर"
+          hi="Samay par"
         />
 
         {/* 2-Column Sidebar Layout */}

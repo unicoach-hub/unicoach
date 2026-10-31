@@ -174,7 +174,7 @@ const WhyStudyGermany = () => {
           className="mb-10"
           value="€0"
           label="tuition at almost all public universities; you pay only a €150–€350 semester contribution"
-          hi="मुफ़्त पढ़ाई"
+          hi="Muft padhai"
         />
 
         {/* 2-Column Sidebar Layout */}

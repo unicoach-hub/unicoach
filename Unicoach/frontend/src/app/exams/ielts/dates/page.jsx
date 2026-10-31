@@ -272,7 +272,7 @@ const IELTSDatesPage = () => {
       {/* ── HERO ── */}
       <DesiHero
         tone="teal"
-        sign={{ hi: 'तारीख़ें', en: 'IELTS DATES' }}
+        sign={{ hi: 'Tareekhein', en: 'IELTS DATES' }}
         crumbs={[{ label: 'Home', to: '/' }, { label: 'Exams' }, { label: 'IELTS' }, { label: 'IELTS Exam Dates' }]}
         title="IELTS Exam Dates in 2025: September to December"
         subtitle="Find Academic & General Training dates, slots, and schedules for top Indian test locations."

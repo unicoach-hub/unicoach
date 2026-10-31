@@ -696,7 +696,7 @@ const PTEDetailPage = ({ pageKey }) => {
       {/* Hero: poster band */}
       <DesiHero
         tone="teal"
-        sign={{ hi: 'पीटीई', en: 'PTE DESK' }}
+        sign={{ hi: 'PTE', en: 'PTE DESK' }}
         crumbs={[
           { label: 'Home', to: '/' },
           { label: 'Exams', to: '/exams/pte' },

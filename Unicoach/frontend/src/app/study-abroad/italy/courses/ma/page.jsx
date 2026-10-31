@@ -289,7 +289,7 @@ const ItalyMACourse = () => {
           </div>
         </motion.div>
 
-        <HookBand value="1088" label="The year the University of Bologna was founded. Study your MA where the university began." hi="कला" className="mb-12" />
+        <HookBand value="1088" label="The year the University of Bologna was founded. Study your MA where the university began." hi="Kala" className="mb-12" />
 
         {/* Currency Switcher Tool */}
         <div className="flex justify-center mb-12">

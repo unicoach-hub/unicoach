@@ -147,7 +147,7 @@ const LORMastersPage = () => {
             {/* ── HERO: teal poster band ── */}
             <DesiHero
                 tone="teal"
-                sign={{ hi: 'सिफ़ारिश पत्र', en: 'MASTERS LOR' }}
+                sign={{ hi: 'Sifarish patra', en: 'MASTERS LOR' }}
                 crumbs={[{ label: 'Home', to: '/' }, { label: 'Resources' }, { label: 'LOR' }, { label: 'LOR for Masters' }]}
                 title="Letter of Recommendation (LOR) for Masters"
                 subtitle="Detailed formatting structures, academic & professional sample templates, and submission workflows for postgraduate applicants."
@@ -157,7 +157,7 @@ const LORMastersPage = () => {
                 aside={(
                     // STD booth style sign with the 3 submission pathways, large screens only
                     <div className="hidden lg:flex justify-center pointer-events-none">
-                        <StdSign words={['PORTAL', 'EMAIL', 'POST']} hi="सिफ़ारिश" className="w-[210px] rotate-3" />
+                        <StdSign words={['PORTAL', 'EMAIL', 'POST']} hi="Sifarish" className="w-[210px] rotate-3" />
                     </div>
                 )}
             />

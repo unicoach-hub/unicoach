@@ -248,7 +248,7 @@ const FranceIntakes = () => {
               <HookBand
                 value="30,000"
                 label="Indian students France aims to host by 2030, up from close to 9,500 enrolled in 2024"
-                hi="लक्ष्य"
+                hi="Lakshya"
                 className="mb-6"
               />
               <div className="bg-gradient-to-r from-sky-50/40 to-indigo-50/40 border border-indigo-100 rounded-[2rem] p-8">

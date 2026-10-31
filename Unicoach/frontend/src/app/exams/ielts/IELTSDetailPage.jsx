@@ -475,7 +475,7 @@ const IELTSDetailPage = ({ pageKey }) => {
       {/* Hero: mustard poster band */}
       <DesiHero
         tone="mustard"
-        sign={{ hi: 'आइल्ट्स', en: 'IELTS DESK' }}
+        sign={{ hi: 'IELTS', en: 'IELTS DESK' }}
         crumbs={[{ label: 'Home', to: '/' }, { label: 'Exams', to: '/exams/ielts/overview' }, { label: 'IELTS' }, { label: activeName }]}
         title={activeContent.title}
         subtitle={activeContent.subtitle}

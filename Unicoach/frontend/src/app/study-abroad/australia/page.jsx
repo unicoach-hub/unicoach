@@ -137,7 +137,7 @@ const StudyInAustralia = () => {
           <HookBand
             value="Up to 4 Years"
             label="Post-study stay (PSWV) for PhD graduates under the Australia-India agreement (AI-ECTA)"
-            hi="पढ़ो, फिर कमाओ"
+            hi="Padho, phir kamao"
             className="mb-4"
           />
           <StatStrip

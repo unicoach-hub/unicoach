@@ -209,7 +209,7 @@ const IELTSSyllabusPage = () => {
       {/* ── HERO ── */}
       <DesiHero
         tone="mustard"
-        sign={{ hi: 'पाठ्यक्रम', en: 'IELTS SYLLABUS' }}
+        sign={{ hi: 'Pathyakram', en: 'IELTS SYLLABUS' }}
         crumbs={[{ label: 'Home', to: '/' }, { label: 'Exams' }, { label: 'IELTS' }, { label: 'IELTS Syllabus & Pattern' }]}
         title="IELTS Exam Syllabus & Pattern 2024-2025"
         subtitle="Comprehensive overview of the Listening, Reading, Writing, and Speaking modules for Academic, General Training, and Life Skills."

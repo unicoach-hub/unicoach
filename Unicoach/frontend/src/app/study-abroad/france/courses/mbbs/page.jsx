@@ -204,7 +204,7 @@ const FranceMBBSCourse = () => {
               <HookBand
                 value="9–11+ yrs"
                 label="of medical training in France, taught entirely in French at public universities"
-                hi="लंबा सफ़र"
+                hi="Lamba safar"
                 className="mb-8"
               />
               <div className="bg-amber-50 border border-amber-250 rounded-[2rem] p-8">

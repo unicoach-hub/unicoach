@@ -208,7 +208,7 @@ const NewsroomPage = () => {
             {/* ── HERO: teal poster band, railway station board on wide screens ── */}
             <DesiHero
                 tone="teal"
-                sign={{ hi: 'ताज़ा ख़बर', en: 'PRESS & UPDATES' }}
+                sign={{ hi: 'Taaza khabar', en: 'PRESS & UPDATES' }}
                 title="UniCoach Newsroom"
                 subtitle="Official press releases, verified admissions updates, policy insights, and student research indexes."
                 stickers={(
@@ -220,7 +220,7 @@ const NewsroomPage = () => {
                 aside={(
                     <div className="hidden lg:flex justify-end pointer-events-none">
                         <div className="w-[300px]">
-                            <RailwayBoard hi="समाचार" en="NEWSROOM" codeLeft="PRESS" codeRight="UPDATES" />
+                            <RailwayBoard hi="Samachar" en="NEWSROOM" codeLeft="PRESS" codeRight="UPDATES" />
                         </div>
                     </div>
                 )}

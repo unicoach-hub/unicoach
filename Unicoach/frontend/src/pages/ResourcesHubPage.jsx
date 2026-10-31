@@ -127,7 +127,7 @@ const ResourcesHubPage = () => {
       <section className="relative pt-12 pb-16 md:pt-16 md:pb-20 px-4 sm:px-6 lg:px-8 bg-[#F6F3EC] border-b border-[#E6E0D4] overflow-hidden">
         {/* Desi Pop: STD booth style sign, wide screens only */}
         <div className="hidden 2xl:block absolute left-8 2xl:left-20 top-1/2 -translate-y-1/2 -rotate-6 z-0 pointer-events-none">
-          <StdSign words={['SOP', 'LOR', 'GPA']} hi="मुफ़्त" className="w-[180px]" />
+          <StdSign words={['SOP', 'LOR', 'GPA']} hi="Muft" className="w-[180px]" />
         </div>
         
 

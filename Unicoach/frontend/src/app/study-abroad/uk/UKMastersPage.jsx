@@ -152,7 +152,7 @@ const UKMastersPage = () => {
         <HookBand
           value="1 Year"
           label="is all a UK Masters takes in Computer Science, Data Science or Engineering, per the course guide below."
-          hi="बस एक साल"
+          hi="Bas ek saal"
           className="mb-12"
         />
 

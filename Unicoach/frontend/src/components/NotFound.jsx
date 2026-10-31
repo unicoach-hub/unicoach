@@ -9,7 +9,7 @@ const NotFound = () => {
         <main className="min-h-screen w-full bg-[#EFE6D2] text-[#16130F] flex flex-col items-center justify-center px-6 pt-28 pb-16 overflow-hidden">
             <h1 className="sr-only">Page not found (404)</h1>
 
-            <RailwayBoard hi="गलत स्टेशन" en="WRONG STATION" codeLeft="PF 404" codeRight="UNICOACH JN." className="w-[88vw] sm:w-[420px]" />
+            <RailwayBoard hi="Galat station" en="WRONG STATION" codeLeft="PF 404" codeRight="UNICOACH JN." className="w-[88vw] sm:w-[420px]" />
 
             <p className="mt-8 font-['Yatra_One',sans-serif] text-[22px] sm:text-[26px] text-center leading-snug">
                 Yeh station hamare map par nahi hai.

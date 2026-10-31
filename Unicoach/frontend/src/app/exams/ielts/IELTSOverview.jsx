@@ -207,7 +207,7 @@ const IELTSOverview = () => {
       {/* Hero: mustard poster band */}
       <DesiHero
         tone="mustard"
-        sign={{ hi: 'आइल्ट्स', en: 'IELTS DESK' }}
+        sign={{ hi: 'IELTS', en: 'IELTS DESK' }}
         crumbs={[{ label: 'Home', to: '/' }, { label: 'Exams' }, { label: 'IELTS' }]}
         title="IELTS Exam for Study Abroad: Your Ultimate Guide to Success in 2026"
         subtitle="Planning to study abroad in the UK, USA, Canada, Australia, New Zealand, or Ireland? The first step is proving your English proficiency, and the IELTS exam is the most trusted choice worldwide. IELTS (International English Language Testing System) is often the key to starting your professional journey around the globe."

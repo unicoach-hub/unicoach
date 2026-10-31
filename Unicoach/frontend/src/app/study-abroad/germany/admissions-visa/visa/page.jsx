@@ -150,7 +150,7 @@ const GermanyVisaPage = () => {
           className="mb-10"
           value="€11,904"
           label="must sit in your blocked account before the visa; it pays out €992 a month once you arrive"
-          hi="पैसा पक्का"
+          hi="Paisa pakka"
         />
 
         {/* 2-Column Sidebar Layout */}

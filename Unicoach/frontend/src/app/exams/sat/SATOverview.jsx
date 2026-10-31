@@ -70,7 +70,7 @@ const SATOverview = () => {
       {/* Hero: rani poster band, key facts board on the right */}
       <DesiHero
         tone="rani"
-        sign={{ hi: 'सैट', en: 'SAT DESK' }}
+        sign={{ hi: 'SAT', en: 'SAT DESK' }}
         crumbs={[{ label: 'Home', to: '/' }, { label: 'Exams' }, { label: 'SAT' }]}
         title="Digital SAT Exam: The Ultimate Roadmap for Indian Students"
         subtitle="Secure admissions to elite undergraduate programs in the USA, Canada, UK, and leading Indian universities. Get verified details on dates, registration steps, adaptive syllabus, and starting prep methods."

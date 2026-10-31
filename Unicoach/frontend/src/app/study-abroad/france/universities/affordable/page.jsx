@@ -211,7 +211,7 @@ const FranceAffordable = () => {
         <HookBand
           value="€3.30"
           label="buys a complete hot three-course meal at a CROUS student cafeteria (€1.00 on a scholarship)"
-          hi="सस्ता"
+          hi="Sasta"
           className="mb-10"
         />
 

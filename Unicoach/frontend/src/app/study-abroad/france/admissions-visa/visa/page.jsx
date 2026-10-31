@@ -194,7 +194,7 @@ const FranceVisa = () => {
               <HookBand
                 value="€615"
                 label="a month: the minimum living budget you must prove for a France student visa (€7,380 for one year, excluding tuition)"
-                hi="पैसा"
+                hi="Paisa"
                 className="mb-8"
               />
               <div className="text-left mb-6">

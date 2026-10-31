@@ -144,7 +144,7 @@ export const FilmPoster = () => (
   </section>
 );
 
-/** Small muhavra line shown right before an action button, e.g. <Muhavra hi="शुभ काम में देरी क्यों?" en="Bhejo, 2 ghante mein jawab" /> */
+/** Small muhavra line shown right before an action button, e.g. <Muhavra hi="Shubh kaam mein deri kyun?" en="Bhejo, 2 ghante mein jawab" /> */
 export const Muhavra = ({ hi, en, className = '' }) => (
   <p className={`desi-muhavra ${className}`}>
     <span className="hi">{hi}</span>{en && <span className="en"> {en}</span>}

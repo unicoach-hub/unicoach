@@ -238,7 +238,7 @@ const ItalyVisa = () => {
           </div>
         </motion.div>
 
-        <HookBand value="90 days" label="the delay one missing stamp, insurance clause or wrong sponsor can add to your Italy visa" hi="सावधान" className="mb-12" />
+        <HookBand value="90 days" label="the delay one missing stamp, insurance clause or wrong sponsor can add to your Italy visa" hi="Saavdhan" className="mb-12" />
 
         {/* Currency Switcher */}
         <div className="flex justify-center mb-12">

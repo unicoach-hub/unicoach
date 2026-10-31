@@ -156,7 +156,7 @@ const GREOverview = () => {
       {/* Hero: poster band */}
       <DesiHero
         tone="mustard"
-        sign={{ hi: 'जीआरई', en: 'GRE DESK' }}
+        sign={{ hi: 'GRE', en: 'GRE DESK' }}
         crumbs={[{ label: 'Home', to: '/' }, { label: 'Exams' }, { label: 'GRE' }]}
         title="GRE Exam for Indian Students in 2025: A Complete Guide"
         subtitle="Achieve admission to premium MS and MBA programs globally. Get standard details on GRE General & Subject tests, registrations, syllabus updates, pricing schedules, and score validations."

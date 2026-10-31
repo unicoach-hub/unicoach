@@ -130,7 +130,7 @@ const GermanyOverview = () => {
           <HookBand
             value="€0"
             label="Tuition fee at almost all public universities in Germany"
-            hi="मुफ़्त पढ़ाई"
+            hi="Muft padhai"
             className="mb-4"
           />
           <StatStrip

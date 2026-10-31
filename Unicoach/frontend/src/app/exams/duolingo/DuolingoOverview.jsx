@@ -95,7 +95,7 @@ const DuolingoOverview = () => {
       {/* ── HERO: teal poster band ── */}
       <DesiHero
         tone="teal"
-        sign={{ hi: 'डुओलिंगो', en: 'DUOLINGO DESK' }}
+        sign={{ hi: 'Duolingo', en: 'DUOLINGO DESK' }}
         crumbs={[{ label: 'Home', to: '/' }, { label: 'Exams' }, { label: 'Duolingo' }]}
         title="Duolingo English Test (DET) 2026: Fees, Dates, Test Format & Results"
         subtitle="Save up to Rs. 15,000 on registration and scoring. Complete guide on DET fee in rupees, July 2025 interactive upgrades, and 4-week preparation guidelines."

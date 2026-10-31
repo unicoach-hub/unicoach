@@ -597,7 +597,7 @@ const GREDetailPage = ({ pageKey }) => {
       {/* Hero: poster band */}
       <DesiHero
         tone="mustard"
-        sign={{ hi: 'जीआरई', en: 'GRE DESK' }}
+        sign={{ hi: 'GRE', en: 'GRE DESK' }}
         crumbs={[
           { label: 'Home', to: '/' },
           { label: 'Exams', to: '/exams/gre' },

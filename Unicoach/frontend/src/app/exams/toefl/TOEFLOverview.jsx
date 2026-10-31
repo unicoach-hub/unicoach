@@ -162,7 +162,7 @@ const TOEFLOverview = () => {
       {/* Hero: peach poster band, latest updates pinned on the right */}
       <DesiHero
         tone="peach"
-        sign={{ hi: 'टोफ़ल', en: 'TOEFL DESK' }}
+        sign={{ hi: 'TOEFL', en: 'TOEFL DESK' }}
         crumbs={[{ label: 'Home', to: '/' }, { label: 'Exams' }, { label: 'TOEFL' }]}
         title="TOEFL Exam 2025: Dates, Fees, Result, Syllabus & Pattern"
         subtitle="Maximize your admissions chances in the US, UK, and Canada. Study complete guidelines on TOEFL registration, short format updates, slot booking, and B-school acceptance."

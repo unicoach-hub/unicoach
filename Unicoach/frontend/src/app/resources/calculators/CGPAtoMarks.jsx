@@ -152,7 +152,7 @@ const CGPAtoMarks = () => {
             {/* ── HERO: mustard poster band, the calculator is the hero piece ── */}
             <DesiHero
                 tone="mustard"
-                sign={{ hi: 'नंबर का हिसाब', en: 'MARKS CALCULATOR' }}
+                sign={{ hi: 'Number ka hisaab', en: 'MARKS CALCULATOR' }}
                 crumbs={[{ label: 'Home', to: '/' }, { label: 'Resources' }, { label: 'CGPA to Marks' }]}
                 title="CGPA to marks calculator"
                 subtitle="Convert your CGPA to obtained marks, or marks back to CGPA, using your exam total."

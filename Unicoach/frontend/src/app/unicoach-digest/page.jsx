@@ -171,7 +171,7 @@ const UniCoachDigestPage = () => {
             <section className="relative bg-[#F2B705] px-4 sm:px-6 pt-[96px] md:pt-[112px] pb-12 sm:pb-14 mb-12">
                 {/* Desi Pop: railway station board, wide screens only */}
                 <div className="hidden 2xl:block absolute left-8 top-[120px] w-[220px] pointer-events-none">
-                    <RailwayBoard hi="डाइजेस्ट" en="DIGEST" codeLeft="TRENDS" codeRight="REVIEWS" />
+                    <RailwayBoard hi="Digest" en="DIGEST" codeLeft="TRENDS" codeRight="REVIEWS" />
                 </div>
                 <div className="relative max-w-[980px] mx-auto">
                     <div className="bg-[#FFFDF6] border-[3px] border-[#16130F] rounded-[14px] shadow-[7px_7px_0_#16130F] px-4 sm:px-10 py-7 sm:py-9 text-center sm:-rotate-[0.6deg]">

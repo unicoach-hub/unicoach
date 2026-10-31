@@ -276,7 +276,7 @@ const NewZealandPublic = () => {
           {/* Right Column: Content Blocks */}
           <div className="lg:col-span-9 space-y-16">
 
-            <HookBand value="NZD 26,000" label="approximate starting tuition per year (₹13.5 Lakhs) at New Zealand's 8 public universities" hi="सरकारी" />
+            <HookBand value="NZD 26,000" label="approximate starting tuition per year (₹13.5 Lakhs) at New Zealand's 8 public universities" hi="Sarkari" />
             
             {/* 1. Why Choose Public NZ */}
             <section id="overview" className="scroll-mt-24">

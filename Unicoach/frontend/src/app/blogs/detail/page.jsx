@@ -153,7 +153,7 @@ const BlogDetailPage = () => {
                             <span>{copied ? 'Link copied' : 'Share'}</span>
                         </button>
                     </div>
-                    <StationSign hi="पढ़ाई की बातें" en="BLOG ADDA" className="mb-5" />
+                    <StationSign hi="Padhai ki baatein" en="BLOG ADDA" className="mb-5" />
                     <h1 className="font-urbanist font-black text-[32px] sm:text-[46px] lg:text-[56px] leading-[1.02] tracking-[-0.04em] max-w-[1100px]">
                         {blog.title}
                     </h1>

@@ -165,7 +165,7 @@ const UKOverview = () => {
           <HookBand
             value="2 Years"
             label="Post-Study Work Visa after your UK degree"
-            hi="पढ़ो, फिर कमाओ"
+            hi="Padho, phir kamao"
             className="mb-4"
           />
           <StatStrip

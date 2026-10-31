@@ -379,7 +379,7 @@ const ItalyTopUniversities = () => {
           </div>
         </motion.div>
 
-        <HookBand value="5,260" label="Indian students are studying in Italy right now, with 6 universities in the QS World Top 300" hi="भारत" className="mb-12" />
+        <HookBand value="5,260" label="Indian students are studying in Italy right now, with 6 universities in the QS World Top 300" hi="Bharat" className="mb-12" />
 
         {/* Currency Switcher Tool */}
         <div className="flex justify-center mb-12">

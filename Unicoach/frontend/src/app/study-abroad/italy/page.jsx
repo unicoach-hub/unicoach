@@ -113,7 +113,7 @@ const ItalyOverview = () => {
           <HookBand
             value="€500 - €4,000"
             label="Public university tuition per year in Italy"
-            hi="सस्ती पढ़ाई"
+            hi="Sasti padhai"
             className="mb-4"
           />
           <StatStrip

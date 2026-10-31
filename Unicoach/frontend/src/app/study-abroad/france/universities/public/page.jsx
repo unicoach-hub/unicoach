@@ -178,7 +178,7 @@ const FrancePublic = () => {
         <HookBand
           value="80–90%"
           label="of the real cost of your public-university degree is covered by the French state"
-          hi="सब्सिडी"
+          hi="Subsidy"
           className="mb-10"
         />
 

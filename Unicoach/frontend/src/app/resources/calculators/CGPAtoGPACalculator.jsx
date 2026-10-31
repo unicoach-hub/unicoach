@@ -187,7 +187,7 @@ const CGPAtoGPACalculator = () => {
             {/* ── HERO: teal poster band, the calculator is the hero piece ── */}
             <DesiHero
                 tone="teal"
-                sign={{ hi: 'हिसाब किताब', en: 'CGPA CALCULATOR' }}
+                sign={{ hi: 'Hisaab kitaab', en: 'CGPA CALCULATOR' }}
                 crumbs={[{ label: 'Home', to: '/' }, { label: 'Resources' }, { label: 'CGPA to GPA' }]}
                 title="CGPA to GPA calculator"
                 subtitle="Convert your Indian 10-point CGPA to the US 4.0 scale or the German Bavarian grade."
