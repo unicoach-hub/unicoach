@@ -542,30 +542,40 @@ h1.font-bold, h2.font-bold {
   background: #94a3b8;
 }
 
-/* Blog & Article Rendered Story Styles */
+/* Blog & Article Rendered Story Styles (Desi Pop: ink headings, red-pen links) */
 .article-body-content h2 {
-  font-size: 1.75rem;
-  font-weight: 800;
-  color: #0f172a;
-  margin-top: 2rem;
+  font-family: 'Urbanist', sans-serif;
+  font-size: 1.85rem;
+  font-weight: 900;
+  color: #16130F;
+  margin-top: 2.5rem;
   margin-bottom: 1rem;
-  line-height: 1.3;
-  letter-spacing: -0.02em;
+  padding-top: 1.5rem;
+  border-top: 2px dashed rgba(22, 19, 15, 0.18);
+  line-height: 1.15;
+  letter-spacing: -0.03em;
+  scroll-margin-top: 110px;
+}
+.article-body-content h2:first-of-type {
+  margin-top: 1.25rem;
+  padding-top: 0;
+  border-top: 0;
 }
 
 .article-body-content h3 {
-  font-size: 1.4rem;
+  font-family: 'Urbanist', sans-serif;
+  font-size: 1.35rem;
   font-weight: 800;
-  color: #1e293b;
-  margin-top: 1.5rem;
+  color: #16130F;
+  margin-top: 1.75rem;
   margin-bottom: 0.75rem;
-  line-height: 1.35;
+  line-height: 1.25;
 }
 
 .article-body-content h4 {
   font-size: 1.15rem;
   font-weight: 700;
-  color: #334155;
+  color: #3D362E;
   margin-top: 1.25rem;
   margin-bottom: 0.5rem;
 }
@@ -573,8 +583,22 @@ h1.font-bold, h2.font-bold {
 .article-body-content p {
   font-size: 1.0625rem;
   line-height: 1.8;
-  color: #334155;
-  margin-bottom: 1.25rem;
+  color: #3D362E;
+  margin-bottom: 1.1rem;
+}
+.article-body-content strong {
+  color: #16130F;
+}
+.article-body-content a {
+  color: #16130F;
+  font-weight: 700;
+  text-decoration: underline;
+  text-decoration-color: #D0362E;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 3px;
+}
+.article-body-content a:hover {
+  color: #D0362E;
 }
 
 .article-body-content .content-img-wrapper {
@@ -836,22 +860,30 @@ a:active .canva-icon,
   color: #ffffff;
 }
 
-/* Blog FAQ blocks: older articles were saved with dark-theme classes (white text) but render on a white card */
+/* Blog FAQ blocks (saved HTML carries slate classes; restyled here as ink cards) */
 .article-body-content .blog-faq-item {
-  border-color: #e2e8f0;
-  background-color: #f8fafc;
+  border: 3px solid #16130F;
+  border-radius: 12px;
+  background-color: #FFFFFF;
+  box-shadow: 4px 4px 0 #16130F;
+}
+.article-body-content .blog-faq-item[open] {
+  box-shadow: 4px 4px 0 #D0362E;
 }
 .article-body-content .blog-faq-item summary {
-  color: #0f172a;
+  color: #16130F;
 }
 .article-body-content .blog-faq-item summary > span:last-child {
-  background-color: #ffffff;
-  color: #64748b;
-  border: 1px solid #e2e8f0;
+  background-color: #FFFFFF;
+  color: #16130F;
+  border: 2px solid #16130F;
+}
+.article-body-content .blog-faq-item[open] summary > span:last-child {
+  background-color: #F2B705;
 }
 .article-body-content .blog-faq-item > div {
-  color: #475569;
-  border-top-color: #e2e8f0;
+  color: #5B544A;
+  border-top: 2px dashed rgba(22, 19, 15, 0.2);
 }
 
 /* Horizontal scrollers that should scroll without showing a bar */
