@@ -45,23 +45,58 @@ router.get('/:handle/referrals', handleValidatorMiddleware, mentorAuth, async (r
   }
 });
 
-// Form links the mentor can share (each carries ?ref=<handle>) and every submission that came through them
+// Form links the mentor can share (each carries ?ref=<handle>) and every submission that came through them,
+// plus every submission of a form whose owner email is this mentor's verified login email (however old)
 router.get('/:handle/form-referrals', handleValidatorMiddleware, mentorAuth, async (req, res) => {
   try {
     const CustomForm = require('../../models/CustomForm');
     const FormSubmission = require('../../models/FormSubmission');
-    const [forms, subs] = await Promise.all([
-      CustomForm.find({ active: true }).select('name slug headerTitle').sort({ createdAt: -1 }).lean(),
-      FormSubmission.find({ referredBy: req.mentor._id })
-        .select('form data currentStage submittedAt')
-        .populate('form', 'name')
-        .sort({ submittedAt: -1 })
-        .limit(5000)
-        .lean(),
+    const User = require('../../models/User');
+
+    // Owner-email leads hold students' contact details, so match only on an email the user has proven
+    // (Google sign-in or verified) — anyone can type someone else's email at email/password signup.
+    // Admins viewing a studio see the mentor's own profile email.
+    const isAdmin = req.user?.role === 'admin' || req.currentUser?.role === 'admin';
+    let ownerEmail = '';
+    let ownerEmailVerified = false;
+    if (isAdmin) {
+      ownerEmail = (req.mentor.email || '').toLowerCase().trim();
+      ownerEmailVerified = Boolean(ownerEmail);
+    } else {
+      const me = await User.findById(req.currentUser._id).select('email authProvider isEmailVerified').lean();
+      ownerEmail = (me?.email || '').toLowerCase().trim();
+      ownerEmailVerified = Boolean(ownerEmail) && (me.authProvider === 'google' || me.isEmailVerified === true);
+    }
+
+    const [forms, ownedForms] = await Promise.all([
+      CustomForm.find({ active: true }).select('name slug headerTitle ownerEmail').sort({ createdAt: -1 }).lean(),
+      ownerEmailVerified
+        ? CustomForm.find({ ownerEmail }).select('name slug headerTitle active').sort({ createdAt: -1 }).lean()
+        : [],
     ]);
+
+    const match = [{ referredBy: req.mentor._id }];
+    if (ownerEmailVerified) {
+      match.push({ ownerEmail });
+      // Submissions made before the owner email was added to the form carry no snapshot
+      if (ownedForms.length) match.push({ form: { $in: ownedForms.map((f) => f._id) } });
+    }
+    const subs = await FormSubmission.find({ $or: match })
+      .select('form data currentStage submittedAt')
+      .populate('form', 'name')
+      .sort({ submittedAt: -1 })
+      .limit(5000)
+      .lean();
+
+    const ownedSlugs = new Set(ownedForms.map((f) => f.slug));
     return res.json({
       handle: req.mentor.handle,
-      forms: forms.map((f) => ({ name: f.headerTitle || f.name, slug: f.slug })),
+      ownerEmail,
+      ownerEmailVerified,
+      ownedForms: ownedForms.map((f) => ({ name: f.headerTitle || f.name, slug: f.slug, active: f.active })),
+      forms: forms
+        .filter((f) => !ownedSlugs.has(f.slug) && !f.ownerEmail)
+        .map((f) => ({ name: f.headerTitle || f.name, slug: f.slug })),
       submissions: subs.map((s) => ({
         _id: s._id,
         formName: s.form?.name || 'Form',

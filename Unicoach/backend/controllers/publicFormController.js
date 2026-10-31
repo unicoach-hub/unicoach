@@ -74,6 +74,8 @@ exports.submitForm = async (req, res) => {
     const mentorTag = referrer ? `Mentor: ${referrer.handle}` : '';
     const formTags = [formSource];
     if (referrer) formTags.push(`mentor:${referrer.handle}`, mentorTag);
+    const ownerEmail = form.ownerEmail || '';
+    if (ownerEmail) formTags.push(`owner:${ownerEmail}`);
 
     const contactValue = (fieldNames) => {
       const match = Object.entries(data).find(([key]) => fieldNames.some((name) => key.toLowerCase().includes(name.toLowerCase())));
@@ -128,6 +130,7 @@ exports.submitForm = async (req, res) => {
       data,
       referredBy: referrer?._id || null,
       referrerHandle: referrer?.handle || '',
+      ownerEmail,
       tags: formTags,
       submittedAt: new Date()
     });

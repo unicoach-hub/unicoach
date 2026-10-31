@@ -20,7 +20,12 @@ const customFormSchema = new mongoose.Schema({
   successMessage: { type: String, default: 'Thank you! Your response has been recorded.' },
   active: { type: Boolean, default: true },
   submissionCount: { type: Number, default: 0 },
-  createdBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }
+  createdBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+  // Mentor / influencer who shares this form. Leads stay linked to this email even before they have
+  // an account; the mentor dashboard matches on it whenever they sign in with a verified email.
+  ownerEmail: { type: String, default: '', lowercase: true, trim: true }
 }, { timestamps: true });
+
+customFormSchema.index({ ownerEmail: 1 });
 
 module.exports = mongoose.model('CustomForm', customFormSchema);
