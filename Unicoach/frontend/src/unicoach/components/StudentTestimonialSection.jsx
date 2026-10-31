@@ -1,7 +1,7 @@
 // ════════════════════════════════════════════════════════════════════════════════
 // StudentTestimonialSection.jsx — STUDENT SUCCESS STORIES
 // Student perspective testimonials
-// Dark teal bg, compact cards in a single auto-scrolling row.
+// Flat rani-pink Desi Pop bg, ink-bordered cards in a single auto-scrolling row.
 // Native horizontal scroll (touch swipe / trackpad / mouse drag) + a slow
 // rAF auto-scroll that pauses on hover, focus or touch (runs for everyone, owner's choice).
 // ════════════════════════════════════════════════════════════════════════════════
@@ -52,28 +52,28 @@ const RESUME_DELAY_MS = 2500;
 
 const TestimonialCard = ({ item, hidden }) => (
   <div className="shrink-0 pr-3.5 sm:pr-4" aria-hidden={hidden ? 'true' : undefined}>
-    <figure className="w-[248px] sm:w-[290px] h-full bg-[#F1F4F5] rounded-2xl p-4 sm:p-5 flex flex-col justify-between shadow-lg text-left">
+    <figure className="w-[260px] sm:w-[310px] h-full bg-white rounded-[18px] p-4 sm:p-5 flex flex-col justify-between border-[3px] border-[#16130F] shadow-[5px_5px_0_#16130F] text-left">
       <blockquote>
-        <span className="text-2xl font-serif text-slate-300 block leading-none mb-1" aria-hidden="true">
+        <span className="font-urbanist text-[40px] font-black text-[#B8285B] block leading-[0.6] mt-2 mb-1" aria-hidden="true">
           &ldquo;
         </span>
-        <p className="text-slate-900 text-[12.5px] sm:text-[13px] font-semibold leading-relaxed">
+        <p className="text-[#16130F] text-[14px] sm:text-[15px] font-semibold leading-relaxed">
           {item.quote}
         </p>
       </blockquote>
 
-      <figcaption className="flex items-center gap-2.5 pt-3 mt-3 border-t border-slate-200/70">
+      <figcaption className="flex items-center gap-2.5 pt-3 mt-3 border-t-2 border-dashed border-[#16130F]/25">
         <span
-          className="w-8 h-8 rounded-full bg-gradient-to-br from-[#DE5C2B] to-[#B48C42] text-white font-outfit font-black text-[11px] flex items-center justify-center ring-2 ring-white shadow-xs shrink-0 select-none"
+          className="w-9 h-9 rounded-full bg-[#F2B705] text-[#16130F] border-2 border-[#16130F] font-urbanist font-black text-[12px] flex items-center justify-center shrink-0 select-none"
           aria-hidden="true"
         >
           {getInitials(item.name)}
         </span>
         <div className="min-w-0">
-          <div className="font-outfit text-[13px] font-bold text-slate-950 leading-tight truncate">
+          <div className="font-urbanist text-[15px] font-extrabold text-[#16130F] leading-tight truncate">
             {item.name}
           </div>
-          <div className="text-[10.5px] text-slate-500 font-medium truncate">
+          <div className="text-[12px] text-[#5B544A] font-medium truncate">
             {item.role}
           </div>
         </div>
@@ -166,15 +166,16 @@ export const StudentTestimonialSection = () => {
   }, []);
 
   return (
-    <section className="bg-[#182B30] text-white py-14 sm:py-20 relative overflow-hidden">
+    <section className="bg-[#B8285B] text-white py-14 sm:py-20 relative overflow-hidden border-y-[3px] border-[#16130F]">
 
       {/* Background glow highlights */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[500px] bg-teal-900/20 rounded-full blur-[120px] pointer-events-none" />
+      <div aria-hidden="true" className="absolute inset-0 bg-[radial-gradient(circle,rgba(22,19,15,.16)_1.3px,transparent_1.7px)] [background-size:12px_12px] pointer-events-none" />
 
       <div className="relative z-10 text-center">
 
         {/* Title */}
-        <h2 className="font-outfit text-3xl sm:text-5xl lg:text-6xl font-black text-white tracking-tight mb-8 sm:mb-12 px-4">
+        <p className="font-urbanist font-extrabold text-[16px] text-[#F2B705] px-4">Students ki zubaani</p>
+        <h2 className="mt-1.5 font-urbanist text-[34px] sm:text-[52px] lg:text-[60px] font-black text-white tracking-[-0.04em] mb-8 sm:mb-12 px-4 [text-shadow:4px_4px_0_#16130F]">
           What Students Are Saying
         </h2>
 
@@ -184,7 +185,7 @@ export const StudentTestimonialSection = () => {
           role="region"
           aria-label="Student testimonials, scroll horizontally"
           tabIndex={0}
-          className="overflow-x-auto overscroll-x-contain [scrollbar-width:none] [&::-webkit-scrollbar]:hidden cursor-grab active:cursor-grabbing select-none focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-teal-300 [mask-image:linear-gradient(to_right,transparent_0,black_6%,black_94%,transparent_100%)] [-webkit-mask-image:linear-gradient(to_right,transparent_0,black_6%,black_94%,transparent_100%)]"
+          className="overflow-x-auto overscroll-x-contain [scrollbar-width:none] [&::-webkit-scrollbar]:hidden cursor-grab active:cursor-grabbing select-none focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#F2B705] [mask-image:linear-gradient(to_right,transparent_0,black_6%,black_94%,transparent_100%)] [-webkit-mask-image:linear-gradient(to_right,transparent_0,black_6%,black_94%,transparent_100%)]"
         >
           <div className="flex w-max items-stretch py-2">
             {[0, 1].map((copy) =>

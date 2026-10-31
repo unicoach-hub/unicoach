@@ -1,14 +1,15 @@
 import { useState } from 'react';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
+import { StationSign } from '../../components/desi/DesiKit';
 
-// "How it works" for the UniCoach mentor marketplace: a clean five-step row on a soft lavender ground.
+// "How it works" for the UniCoach mentor marketplace: a five-step row on a flat teal Desi Pop ground.
 // A toggle swaps the student's view for the mentor's; the last cards sit at a slight tilt, like cards dealt on a table.
 
 const TILE_COLORS = [
-  { bg: '#2F5BFF', fg: '#FFFFFF' },
-  { bg: '#FF6B57', fg: '#FFFFFF' },
-  { bg: '#FFC93C', fg: '#16130F' },
-  { bg: '#8FD3FF', fg: '#16130F' },
+  { bg: '#DE5C2B', fg: '#FFFFFF' },
+  { bg: '#F2B705', fg: '#16130F' },
+  { bg: '#B8285B', fg: '#FFFFFF' },
+  { bg: '#14837E', fg: '#FFFFFF' },
   { bg: '#16130F', fg: '#FFFFFF' },
 ];
 
@@ -45,22 +46,21 @@ export const HowItWorksSteps = () => {
   const { steps } = VIEWS[view];
 
   return (
-    <section id="how-it-works" className="relative w-full max-w-full overflow-hidden py-14 sm:py-20" style={{ background: 'linear-gradient(160deg, #D4C8FF 0%, #C9BCFF 55%, #D9D0FF 100%)' }}>
-      <div className="max-w-[1320px] mx-auto px-4 sm:px-6 lg:px-10">
+    <section id="how-it-works" className="relative w-full max-w-full overflow-hidden py-14 sm:py-20 bg-[#14837E] border-b-[3px] border-[#16130F]">
+      <div aria-hidden="true" className="absolute inset-0 bg-[radial-gradient(circle,rgba(22,19,15,.16)_1.3px,transparent_1.7px)] [background-size:12px_12px] pointer-events-none" />
+      <div className="relative max-w-[1320px] mx-auto px-4 sm:px-6 lg:px-10">
         <div className="text-center">
-          <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#FFC93C] text-[14px] font-extrabold text-[#16130F] -rotate-3 shadow-[0_8px_18px_-8px_rgba(22,19,15,0.35)]">
-            <span className="w-2.5 h-2.5 rounded-full border-[2.5px] border-[#16130F]" />How it works
-          </span>
-          <h2 className="mt-6 text-[38px] sm:text-[60px] lg:text-[76px] font-black text-[#16130F] leading-[0.95] tracking-[-0.05em] max-w-[900px] mx-auto">
+          <StationSign hi="Kaise kaam karta hai" en="HOW IT WORKS" className="-rotate-2" />
+          <h2 className="mt-6 font-urbanist text-[38px] sm:text-[60px] lg:text-[72px] font-black text-white leading-[0.95] tracking-[-0.05em] max-w-[900px] mx-auto [text-shadow:4px_4px_0_#16130F]">
             Two sides of one session, both sorted.
           </h2>
-          <div className="mt-8 inline-flex p-1.5 rounded-full bg-white/70 backdrop-blur border border-white shadow-[0_10px_30px_-18px_rgba(22,19,15,0.4)]">
+          <div className="mt-8 inline-flex p-1.5 rounded-full bg-white border-[3px] border-[#16130F] shadow-[4px_4px_0_#16130F]">
             {Object.entries(VIEWS).map(([key, v]) => (
               <button
                 key={key}
                 type="button"
                 onClick={() => setView(key)}
-                className={`relative h-11 px-5 sm:px-6 rounded-full text-[14.5px] font-bold cursor-pointer transition-colors no-shine ${view === key ? 'text-white' : 'text-[#16130F] hover:text-[#2F5BFF]'}`}
+                className={`relative h-11 px-5 sm:px-6 rounded-full text-[14.5px] font-bold cursor-pointer transition-colors no-shine ${view === key ? 'text-white' : 'text-[#16130F] hover:text-[#DE5C2B]'}`}
               >
                 {view === key && <motion.span layoutId="hiw-pill" className="absolute inset-0 rounded-full bg-[#16130F]" transition={{ type: 'spring', stiffness: 400, damping: 32 }} />}
                 <span className="relative">{v.label}</span>
@@ -71,7 +71,7 @@ export const HowItWorksSteps = () => {
 
         {/* Steps row, joined by one thin line behind the cards */}
         <div className="relative mt-12">
-          <span aria-hidden="true" className="hidden lg:block absolute left-[6%] right-[6%] top-[66px] h-[3px] bg-[#16130F]/85 rounded-full" />
+          <span aria-hidden="true" className="hidden lg:block absolute left-[6%] right-[6%] top-[66px] h-[3px] bg-[#16130F] rounded-full" />
           <AnimatePresence mode="wait">
             <motion.ol
               key={view}
@@ -91,14 +91,14 @@ export const HowItWorksSteps = () => {
                   transition={{ type: 'spring', stiffness: 220, damping: 22 }}
                 >
                   <div
-                    className="h-full lg:[transform:var(--tilt)] rounded-[28px] bg-white p-6 sm:p-7 shadow-[0_24px_50px_-28px_rgba(40,20,90,0.45)] transition-[translate] duration-300 hover:-translate-y-1"
+                    className="h-full lg:[transform:var(--tilt)] rounded-[20px] bg-white p-6 sm:p-7 border-[3px] border-[#16130F] shadow-[6px_6px_0_#16130F] transition-[translate] duration-300 hover:-translate-y-1"
                     style={{ '--tilt': `translateY(${DROP[i]}px) rotate(${TILT[i]}deg)` }}
                   >
-                    <span className="grid place-items-center w-14 h-14 rounded-[16px] font-urbanist text-[26px] font-black" style={{ background: TILE_COLORS[i].bg, color: TILE_COLORS[i].fg }}>
+                    <span className="grid place-items-center w-14 h-14 rounded-[14px] border-[3px] border-[#16130F] font-urbanist text-[26px] font-black" style={{ background: TILE_COLORS[i].bg, color: TILE_COLORS[i].fg }}>
                       {i + 1}
                     </span>
-                    <h3 className="mt-6 text-[24px] sm:text-[26px] font-black text-[#16130F] tracking-[-0.03em] leading-tight">{title}</h3>
-                    <p className="mt-2.5 text-[15px] leading-relaxed text-slate-600">{text}</p>
+                    <h3 className="mt-6 font-urbanist text-[24px] sm:text-[26px] font-black text-[#16130F] tracking-[-0.03em] leading-tight">{title}</h3>
+                    <p className="mt-2.5 text-[15.5px] leading-relaxed text-[#3D3830]">{text}</p>
                   </div>
                 </motion.li>
               ))}

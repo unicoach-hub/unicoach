@@ -21,10 +21,10 @@ const CreatorCard = ({ item, tabIndex }) => (
   <Link
     to="/events"
     tabIndex={tabIndex}
-    className="bg-white rounded-[22px] p-3 sm:p-3.5 border border-slate-200/90 shadow-[0_4px_16px_rgba(0,0,0,0.06)] hover:shadow-xl transition-all duration-300 hover:scale-[1.02] cursor-pointer block text-left group shrink-0"
+    className="bg-white rounded-[18px] p-3 sm:p-3.5 border-[3px] border-[#16130F] shadow-[5px_5px_0_#16130F] transition-transform duration-300 hover:-translate-y-1 cursor-pointer block text-left group shrink-0 mr-[5px]"
   >
     {/* Image Container with 4:3 Aspect Ratio — anchored to the top so the head is never cropped */}
-    <div className="relative w-full aspect-[4/3] rounded-[16px] overflow-hidden bg-slate-100 mb-2.5 shadow-2xs" style={item.gradient ? { background: item.gradient } : undefined}>
+    <div className="relative w-full aspect-[4/3] rounded-[12px] overflow-hidden bg-slate-100 mb-2.5 border-2 border-[#16130F]" style={item.gradient ? { background: item.gradient } : undefined}>
       <img
         src={item.image}
         alt={item.name}
@@ -32,17 +32,17 @@ const CreatorCard = ({ item, tabIndex }) => (
         loading="lazy"
       />
       {item.badge && (
-        <div className="absolute bottom-2 right-2 bg-white/95 backdrop-blur-md px-2.5 py-0.5 rounded-full text-[10.5px] font-bold text-slate-800 shadow-sm border border-black/5">
+        <div className="absolute bottom-2 right-2 bg-[#F2B705] px-2.5 py-0.5 rounded-md text-[11.5px] font-extrabold text-[#16130F] border-2 border-[#16130F]">
           {item.badge}
         </div>
       )}
     </div>
 
     {/* Text Details */}
-    <h3 className="font-outfit font-black text-sm sm:text-base text-slate-900 group-hover:text-[#DE5C2B] transition-colors leading-tight truncate">
+    <h3 className="font-urbanist font-black text-[16px] sm:text-[18px] text-[#16130F] group-hover:text-[#DE5C2B] transition-colors leading-tight truncate">
       {item.name}
     </h3>
-    <p className="text-xs text-slate-500 font-medium truncate mt-0.5">
+    <p className="text-[13px] text-[#5B544A] font-semibold truncate mt-0.5">
       {item.role}
     </p>
   </Link>

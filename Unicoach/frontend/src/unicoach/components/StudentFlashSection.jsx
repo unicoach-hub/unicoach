@@ -95,7 +95,7 @@ const CHAT_LINES = [
 const INK = '#16130F';
 const MARIGOLD = '#FFC93C';
 const TILE = '#F2F5F9';
-const BLUE = '#2F5BFF';
+const BLUE = '#14837E';
 
 const panelMotion = {
   initial: { opacity: 0, scale: 0.97, y: 10 },
@@ -167,7 +167,7 @@ const BrowseDemo = ({ autoPlay, paused, onInteract }) => {
             placeholder="Search by university, country..."
             className="w-full bg-transparent text-sm text-slate-800 placeholder:text-slate-400 font-medium outline-none"
           />
-          {typing && <span className="w-[2px] h-4 bg-[#2F5BFF] animate-pulse -ml-2 shrink-0" aria-hidden="true" />}
+          {typing && <span className="w-[2px] h-4 bg-[#14837E] animate-pulse -ml-2 shrink-0" aria-hidden="true" />}
           {query && (
             <button
               type="button"
@@ -409,7 +409,7 @@ const BookDemo = ({ autoPlay, onInteract }) => {
           aria-live="polite"
           className={`shrink-0 inline-flex items-center gap-1.5 px-5 py-2.5 rounded-full text-xs font-extrabold transition-colors duration-200 no-shine ${
             bookState === 'booked'
-              ? 'bg-[#2F5BFF] text-white'
+              ? 'bg-[#14837E] text-white'
               : canBook || bookState === 'booking'
                 ? 'bg-[#16130F] text-white cursor-pointer'
                 : 'bg-[#F2F5F9] text-slate-400 cursor-not-allowed'
@@ -432,7 +432,7 @@ const GuidanceDemo = () => (
     <div className="text-left">
       <div className="flex items-center justify-between gap-2 mb-3">
         <div className="flex items-center gap-2 min-w-0">
-          <CalendarCheck className="w-5 h-5 text-[#2F5BFF] shrink-0" aria-hidden="true" />
+          <CalendarCheck className="w-5 h-5 text-[#14837E] shrink-0" aria-hidden="true" />
           <span className="text-sm font-bold text-slate-900 truncate">Session with {PRIMARY_MENTOR.name}</span>
         </div>
         <span className="shrink-0 inline-flex items-center gap-1.5 text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-200">
@@ -460,7 +460,7 @@ const GuidanceDemo = () => (
                 className={`max-w-[85%] px-3 py-2 rounded-2xl text-[11.5px] leading-snug font-medium ${
                   isMentor
                     ? 'bg-white text-slate-800 rounded-bl-md'
-                    : 'bg-[#2F5BFF] text-white rounded-br-md'
+                    : 'bg-[#14837E] text-white rounded-br-md'
                 }`}
               >
                 {line.text}
@@ -545,16 +545,16 @@ export const StudentFlashSection = () => {
       <section
         ref={sectionRef}
         id="how-unicoach-works"
-        className="py-14 sm:py-20 px-4 sm:px-6 lg:px-10 relative overflow-hidden"
-        style={{ background: 'linear-gradient(180deg, #8FD3FF 0%, #A6DCFF 100%)' }}
+        className="py-14 sm:py-20 px-4 sm:px-6 lg:px-10 relative overflow-hidden bg-[#F2B705] border-b-[3px] border-[#16130F]"
       >
         <div className="max-w-[1320px] mx-auto">
           {/* ── SECTION HEADER ── */}
           <div className="text-center max-w-[760px] mx-auto">
-            <h2 className="text-[34px] sm:text-[52px] font-black text-[#16130F] leading-[0.98] tracking-[-0.045em]">
+            <p className="font-urbanist font-extrabold text-[16px] text-[#B8285B]">3 steps, bas itna hi</p>
+            <h2 className="mt-1.5 font-urbanist text-[34px] sm:text-[52px] font-black text-[#16130F] leading-[0.98] tracking-[-0.045em]">
               How UniCoach works
             </h2>
-            <p className="mt-3 text-[16px] sm:text-[18px] text-[#16130F]/75">From discovery to expert guidance, in 3 simple steps.</p>
+            <p className="mt-3 text-[16px] sm:text-[18px] font-medium text-[#16130F]/80">From discovery to expert guidance, in 3 simple steps.</p>
           </div>
 
           <div className="mt-10 grid grid-cols-1 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] gap-6 lg:gap-10 items-center">
@@ -576,14 +576,14 @@ export const StudentFlashSection = () => {
                           setActiveStep(step.id);
                         }}
                         className={`relative overflow-hidden w-full text-left flex items-start gap-4 rounded-[22px] px-4 sm:px-5 py-4 transition-all duration-300 cursor-pointer no-shine ${
-                          isActive ? 'bg-white shadow-[0_18px_40px_-22px_rgba(16,60,110,0.55)] scale-[1.02]' : 'hover:bg-white/40'
+                          isActive ? 'bg-white border-[3px] border-[#16130F] shadow-[5px_5px_0_#16130F]' : 'border-[3px] border-transparent hover:bg-white/40'
                         }`}
                       >
                         <span
-                          className={`shrink-0 grid place-items-center w-11 h-11 rounded-[14px] font-urbanist text-[15px] font-black transition-all ${
-                            isActive ? 'text-[#16130F] -rotate-6' : isDone ? 'bg-white text-[#2F5BFF]' : 'bg-white/70 text-[#16130F]'
+                          className={`shrink-0 grid place-items-center w-11 h-11 rounded-[12px] border-2 border-[#16130F] font-urbanist text-[15px] font-black transition-all ${
+                            isActive ? 'text-[#16130F] -rotate-6' : isDone ? 'bg-white text-[#14837E]' : 'bg-white/70 text-[#16130F]'
                           }`}
-                          style={isActive ? { background: MARIGOLD } : undefined}
+                          style={isActive ? { background: '#DE5C2B', color: '#FFFFFF' } : undefined}
                         >
                           {isDone ? <Check size={18} strokeWidth={3} /> : step.number}
                         </span>
@@ -618,7 +618,7 @@ export const StudentFlashSection = () => {
               onMouseLeave={() => setHovering(false)}
               onFocusCapture={() => setHovering(true)}
               onBlurCapture={() => setHovering(false)}
-              className="relative overflow-hidden rounded-[34px] bg-white p-5 sm:p-8 shadow-[0_30px_70px_-36px_rgba(16,60,110,0.6)]"
+              className="relative overflow-hidden rounded-[24px] bg-white p-5 sm:p-8 border-[3px] border-[#16130F] shadow-[8px_8px_0_#16130F]"
             >
               <div aria-hidden="true" className="absolute -top-24 -right-24 w-72 h-72 rounded-full bg-[radial-gradient(circle,#FFE7A3_0%,transparent_70%)] pointer-events-none" />
               <p className="relative flex items-center gap-2 text-[14px] sm:text-[15px] font-bold text-[#16130F]/80">

@@ -49,7 +49,7 @@ const UnicoachMarketplacePage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#FAF9F6] text-slate-900">
+    <div className="min-h-screen bg-[#FFF6E5] text-slate-900">
       {/* ════════ SECTION 1: STUDENT-FIRST HERO ════════ */}
       <StudentHeroSection />
 
@@ -62,14 +62,11 @@ const UnicoachMarketplacePage = () => {
 
         {/* Section Headline */}
         <div className="text-center max-w-3xl mx-auto mb-7 sm:mb-8">
-          <h2 className="font-outfit text-3xl sm:text-4xl lg:text-[44px] font-black text-[#111111] tracking-tight leading-tight mb-3">
+          <p className="font-urbanist font-extrabold text-[16px] text-[#D0362E]">Gyaan bhi, guidance bhi, seniors wali <CapIcon /></p>
+          <h2 className="mt-1.5 font-urbanist text-[34px] sm:text-[44px] lg:text-[52px] font-black text-[#16130F] tracking-[-0.04em] leading-tight mb-3">
             Meet Our Top Mentors
           </h2>
-          <div className="desi-caption" style={{ alignItems: 'center', margin: '4px auto 14px' }} aria-label="Gyaan bhi, guidance bhi, seniors wali">
-            <span className="top">GYAAN BHI, GUIDANCE BHI,</span>
-            <span className="bar">सीनियर्स वाली <CapIcon /></span>
-          </div>
-          <p className="text-slate-600 text-sm sm:text-base font-normal max-w-xl mx-auto leading-relaxed">
+          <p className="text-[#3D3830] text-[15px] sm:text-[17px] font-medium max-w-xl mx-auto leading-relaxed">
             Verified seniors ranked by student ratings and reviews.
           </p>
         </div>
@@ -78,7 +75,7 @@ const UnicoachMarketplacePage = () => {
         <form onSubmit={handleSearch} className="max-w-xl mx-auto mb-10">
           <div className="relative">
             <div className="absolute left-4.5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none">
-              <Search className="w-4.5 h-4.5 text-slate-400" />
+              <Search className="w-[18px] h-[18px] text-[#16130F]" />
             </div>
             <input
               type="search"
@@ -86,11 +83,11 @@ const UnicoachMarketplacePage = () => {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               aria-label="Search mentors"
-              className="w-full pl-12 pr-28 py-3 sm:py-3.5 rounded-full bg-white border border-slate-200/90 text-xs sm:text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-4 focus:ring-orange-500/10 focus:border-[#DE5C2B] transition-all shadow-xs"
+              className="w-full pl-12 pr-28 py-3.5 sm:py-4 rounded-full bg-white border-[3px] border-[#16130F] shadow-[5px_5px_0_#16130F] text-[14px] sm:text-[15px] font-medium text-[#16130F] placeholder:text-[#8A8275] focus:outline-none focus:ring-4 focus:ring-[#F2B705]/50 transition-all"
             />
             <button
               type="submit"
-              className="absolute right-2 top-1/2 -translate-y-1/2 px-4 py-1.5 sm:py-2 rounded-full bg-[#111111] hover:bg-[#DE5C2B] text-white text-[11px] sm:text-xs font-bold transition-colors cursor-pointer"
+              className="absolute right-2.5 top-1/2 -translate-y-1/2 px-5 py-2 rounded-full bg-[#DE5C2B] hover:bg-[#C04A1D] border-2 border-[#16130F] text-white text-[13px] font-bold transition-colors cursor-pointer"
             >
               Search
             </button>
@@ -108,14 +105,14 @@ const UnicoachMarketplacePage = () => {
         <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mt-10">
           <Link
             to="/unicoach/mentors"
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[#111111] hover:bg-[#DE5C2B] text-white text-sm font-bold transition-colors shadow-sm"
+            className="inline-flex items-center gap-2 px-6 py-3.5 rounded-full bg-[#16130F] text-white text-[15px] font-bold border-[3px] border-[#16130F] shadow-[5px_5px_0_#DE5C2B] hover:-translate-y-0.5 transition-transform"
           >
             See all {allMentorsCount > PREVIEW_COUNT ? `${allMentorsCount} ` : ''}mentors
             <ArrowRight className="w-4 h-4" />
           </Link>
           <Link
             to="/unicoach/apply"
-            className="px-5 py-3 rounded-full bg-orange-50 text-[#DE5C2B] border border-orange-200 text-sm font-bold hover:bg-orange-100 transition-all"
+            className="px-6 py-3.5 rounded-full bg-[#F2B705] text-[#16130F] border-[3px] border-[#16130F] shadow-[5px_5px_0_#16130F] text-[15px] font-bold hover:-translate-y-0.5 transition-transform"
           >
             Become a mentor
           </Link>
