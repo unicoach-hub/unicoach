@@ -4,6 +4,20 @@ import React from 'react';
  * Enterprise Admin Portal Error Boundary
  * Prevents admin dashboard crashes and displays a clean recovery state.
  */
+// After a new deploy, a tab that is still open asks for page files from the old build. Vercel answers
+// those with index.html, so the lazy page fails to load. Reload once to pick up the new build;
+// the time guard stops a reload loop if the page is broken for another reason.
+const CHUNK_ERROR = /Failed to fetch dynamically imported module|error loading dynamically imported module|Importing a module script failed|is not a valid JavaScript MIME type|Loading chunk/i;
+export const reloadForNewBuild = () => {
+  try {
+    const last = Number(sessionStorage.getItem('admin_chunk_reload_at') || 0);
+    if (Date.now() - last < 30000) return false;
+    sessionStorage.setItem('admin_chunk_reload_at', String(Date.now()));
+  } catch { /* storage blocked: reload anyway */ }
+  window.location.reload();
+  return true;
+};
+
 class ErrorBoundary extends React.Component {
   constructor(props) {
     super(props);
@@ -15,6 +29,7 @@ class ErrorBoundary extends React.Component {
   }
 
   componentDidCatch(error, errorInfo) {
+    if (CHUNK_ERROR.test(error?.message || '') && reloadForNewBuild()) return;
     this.setState({ errorInfo });
     console.error('⚠️ Admin Portal Render Error:', error, errorInfo);
     if (typeof window !== 'undefined' && window.Sentry) {
