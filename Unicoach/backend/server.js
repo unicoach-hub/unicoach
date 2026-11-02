@@ -357,6 +357,12 @@ app.use('/api/admin/dev', require('./routes/adminDeveloper'));
 app.use('/api/admin/ai-calls', require('./routes/adminAiCalls'));
 // Bolna AI call results (public, checked with BOLNA_WEBHOOK_SECRET)
 app.post('/api/webhooks/bolna', require('./controllers/bolnaController').receiveWebhook);
+// Riya on ElevenLabs over Vobiz (public, checked with VOBIZ_WEBHOOK_SECRET in ?key=); audio bridge in server.listen below
+{
+  const riya = require('./controllers/riyaController');
+  app.all('/api/webhooks/riya/answer', riya.answer);
+  app.all('/api/webhooks/riya/hangup', riya.hangup);
+}
 // Team softphone on Vobiz (public, checked with VOBIZ_WEBHOOK_SECRET in ?key=)
 {
   const vz = require('./controllers/vobizController');
@@ -412,6 +418,9 @@ if (process.env.NODE_ENV !== 'test') {
   server = app.listen(PORT, () => console.log(`🚀 Backend server running on port ${PORT}`));
   // WhatsApp campaigns: background sender (scheduled and running campaigns)
   require('./services/whatsappCampaigns').startWorker();
+  // Riya on ElevenLabs: Vobiz audio WebSocket (/api/ws/riya) and the worker that dials due calls
+  require('./services/riyaCalls').attachBridge(server);
+  require('./services/riyaCalls').startWorker();
 
   // Graceful Shutdown Handlers for Docker / Coolify zero-downtime redeploys
   // Mongoose 8 has no close() callback (it returns a promise), so the old callback never fired and the

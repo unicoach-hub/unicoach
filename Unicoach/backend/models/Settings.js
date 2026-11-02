@@ -77,6 +77,8 @@ const settingsSchema = new mongoose.Schema({
   // 📞 AI calls (Bolna agent Riya). The API key and webhook secret stay in the server env.
   aiCall: {
     autoEnabled: { type: Boolean, default: false }, // call every new website lead
+    provider: { type: String, enum: ['bolna', 'elevenlabs'], default: 'bolna' }, // who runs Riya
+    elevenAgentId: { type: String, default: '' }, // ElevenLabs agent; empty = ELEVENLABS_AGENT_ID
     agentId: { type: String, default: '' }, // outbound agent; empty = BOLNA_AGENT_ID
     fromNumber: { type: String, default: '' }, // caller number; empty = BOLNA_FROM_NUMBER
     windowStartHour: { type: Number, default: 9 }, // IST

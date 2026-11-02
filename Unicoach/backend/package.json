@@ -37,6 +37,7 @@
     "resend": "^6.31.0",
     "slugify": "^1.6.9",
     "twilio": "^5.2.0",
+    "ws": "^8.18.3",
     "zod": "^3.25.76"
   },
   "devDependencies": {

@@ -5,6 +5,7 @@ const { scopedStaffId, canAccessLead, actorName } = require('../utils/leadAccess
 const {
   queueCall, getConfig, isWithinWindow, fetchExecution, recordExecution, CallError,
 } = require('../services/bolnaCalls');
+const riya = require('../services/riyaCalls');
 
 const OBJECT_ID = /^[a-f0-9]{24}$/i;
 const escapeRegex = (s) => String(s).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
@@ -37,7 +38,7 @@ exports.listCalls = async (req, res) => {
     if (typeof trigger === 'string' && trigger) filter.trigger = trigger;
     if (status === 'answered') filter.durationSec = { $gt: 0 };
     else if (status === 'unanswered') filter.status = { $in: ['no-answer', 'busy', 'failed', 'error', 'canceled', 'stopped', 'balance-low'] };
-    else if (status === 'pending') filter.status = { $in: ['scheduled', 'queued', 'rescheduled', 'initiated', 'ringing', 'in-progress'] };
+    else if (status === 'pending') filter.status = { $in: ['scheduled', 'queued', 'rescheduled', 'initiated', 'dialing', 'ringing', 'in-progress'] };
     if (typeof leadId === 'string' && OBJECT_ID.test(leadId)) filter.leadId = leadId;
     if (from || to) {
       filter.createdAt = {};
@@ -95,11 +96,27 @@ exports.getStats = async (req, res) => {
       { $sort: { _id: 1 } },
     ]);
     const config = await getConfig();
+    const eleven = config.provider === 'elevenlabs';
+    const missing = eleven
+      ? [
+        !process.env.ELEVENLABS_API_KEY && 'ELEVENLABS_API_KEY',
+        !config.elevenAgentId && 'ElevenLabs agent ID (Settings tab or ELEVENLABS_AGENT_ID)',
+        !(process.env.VOBIZ_AUTH_ID && process.env.VOBIZ_AUTH_TOKEN) && 'VOBIZ_AUTH_ID / VOBIZ_AUTH_TOKEN',
+        (process.env.VOBIZ_WEBHOOK_SECRET || '').length < 16 && 'VOBIZ_WEBHOOK_SECRET',
+        !config.fromNumber && "Riya's caller number (Settings tab)",
+      ]
+      : [
+        !config.apiKey && 'BOLNA_API_KEY',
+        !config.agentId && 'agent ID (Settings tab or BOLNA_AGENT_ID)',
+        (process.env.BOLNA_WEBHOOK_SECRET || '').length < 16 && 'BOLNA_WEBHOOK_SECRET',
+      ];
     return res.json({
       days,
       totals: totals || { calls: 0, answered: 0, inbound: 0, team: 0, interested: 0, callbacks: 0, notInterested: 0, seconds: 0 },
       byDay: byDay.map((d) => ({ date: d._id, calls: d.calls, answered: d.answered })),
       setup: {
+        provider: config.provider,
+        missing: missing.filter(Boolean),
         apiKey: Boolean(config.apiKey),
         agentId: Boolean(config.agentId),
         webhookSecret: (process.env.BOLNA_WEBHOOK_SECRET || '').length >= 16,
@@ -138,6 +155,12 @@ exports.syncCall = async (req, res) => {
     const call = await AiCall.findOne({ _id: req.params.id, ...(await scopeFilter(req)) }).lean();
     if (!call) return res.status(404).json({ message: 'Call not found' });
     if (call.kind === 'human') throw new CallError('Team calls update by themselves from Vobiz');
+    if (call.provider === 'elevenlabs') {
+      if (!call.conversationId) throw new CallError('This call has no conversation yet (not answered, or still ringing)');
+      const done = await riya.finalize(call._id, { force: true });
+      if (!done) throw new CallError('ElevenLabs is still processing this call. Try again in a minute.', 409);
+      return res.json(await AiCall.findById(call._id).lean());
+    }
     const execution = await fetchExecution(call.executionId);
     const { call: updated } = await recordExecution({ ...execution, id: call.executionId });
     return res.json(updated);
@@ -235,7 +258,9 @@ exports.getSettings = async (req, res) => {
     const settings = await Settings.findOne().select('aiCall').lean();
     return res.json({
       ...(settings?.aiCall || {}),
+      provider: settings?.aiCall?.provider || process.env.AI_CALL_PROVIDER || 'bolna',
       envAgentId: process.env.BOLNA_AGENT_ID || '',
+      envElevenAgentId: process.env.ELEVENLABS_AGENT_ID || '',
       envFromNumber: process.env.BOLNA_FROM_NUMBER || '',
       autoBlockedByEnv: process.env.BOLNA_AUTO_CALL === 'false',
     });
@@ -255,15 +280,20 @@ exports.updateSettings = async (req, res) => {
     const fromNumber = String(b.fromNumber || '').replace(/\s+/g, '');
     if (fromNumber && !/^\+\d{11,14}$/.test(fromNumber)) throw new CallError('Caller number must look like +918065356711');
 
+    const settings = (await Settings.findOne()) || new Settings();
+    const prev = settings.aiCall || {};
+    // The form shows only the selected provider's agent field; keep the other one as it was
+    const agentField = (key) => String(b[key] === undefined ? prev[key] || '' : b[key]).trim().slice(0, 64);
     const aiCall = {
       autoEnabled: Boolean(b.autoEnabled),
-      agentId: String(b.agentId || '').trim().slice(0, 64),
+      provider: b.provider === 'elevenlabs' ? 'elevenlabs' : 'bolna',
+      elevenAgentId: agentField('elevenAgentId'),
+      agentId: agentField('agentId'),
       fromNumber,
       windowStartHour: start,
       windowEndHour: end,
       dailyAutoLimit: Math.min(Math.max(parseInt(b.dailyAutoLimit, 10) || 100, 1), 2000),
     };
-    const settings = (await Settings.findOne()) || new Settings();
     settings.aiCall = aiCall;
     await settings.save();
     return res.json(aiCall);
