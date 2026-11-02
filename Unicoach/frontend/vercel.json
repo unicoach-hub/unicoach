@@ -76,6 +76,11 @@
   "trailingSlash": false,
   "redirects": [
     {
+      "source": "/logos/:file*",
+      "destination": "https://res.cloudinary.com/slsut3se/image/upload/f_auto,q_auto/site/logos/:file*",
+      "permanent": false
+    },
+    {
       "source": "/universities",
       "destination": "/search-programs",
       "permanent": true

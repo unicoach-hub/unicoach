@@ -48,12 +48,38 @@ function sharePagesPlugin() {
   }
 }
 
+// University logos (public/logos, ~830 files) live on Cloudinary so every Vercel deployment
+// doesn't store another copy. In production builds, '/logos/…' string literals in src point at the
+// CDN and dist/logos is dropped; vercel.json redirects any other /logos/ request (e.g. paths
+// stored in the DB). Dev keeps serving the local files. Upload new logos to site/logos on
+// Cloudinary with the same name minus the extension ('&' written as 'and').
+const LOGO_CDN = process.env.VITE_LOGO_CDN ?? 'https://res.cloudinary.com/slsut3se/image/upload/f_auto,q_auto/site/logos'
+
+function logosCdnPlugin() {
+  let outDir
+  return {
+    name: 'unicoach-logos-cdn',
+    apply: 'build',
+    configResolved(config) {
+      outDir = path.resolve(config.root, config.build.outDir)
+    },
+    transform(code, id) {
+      if (!LOGO_CDN || id.includes('node_modules') || !code.includes('/logos/')) return null
+      return { code: code.replace(/(['"`])\/logos\//g, `$1${LOGO_CDN}/`), map: null }
+    },
+    closeBundle() {
+      if (LOGO_CDN) fs.rmSync(path.join(outDir, 'logos'), { recursive: true, force: true })
+    },
+  }
+}
+
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [
     react(),
     tailwindcss(),
     sharePagesPlugin(),
+    logosCdnPlugin(),
     ViteImageOptimizer({
       failOnError: false,
       png: { quality: 75 },
