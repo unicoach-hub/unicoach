@@ -18,6 +18,8 @@ const EXCLUDE = [
   /^\/(dashboard|login|signin|register|signup|reset-password|priority-dm)(\/|$)/,
   /^\/unicoach\/(dashboard|apply|join|application-status)(\/|$)/,
   /^\/(onboarding|unsubscribe)$/,
+  // Booking confirmation step: only reached after filling the form, nothing to search for
+  /^\/book-consultation\/confirm$/,
   /^\/(book-consultation|privacy|terms-of-service|ielts-evaluator|sop-generator|study-roadmap|visa-prep|course-details)$/,
   /^\/admin/,
   // Redirect to /search-programs (see vercel.json); listing them would duplicate that page
@@ -37,11 +39,12 @@ const priorityFor = (p) => {
   return depth === 1 ? '0.8' : depth === 2 ? '0.7' : '0.6';
 };
 
-const today = new Date().toISOString().slice(0, 10);
+// No <lastmod> here: these pages have no real "last edited" date, and stamping every one with the
+// build date tells Google they all changed on every deploy, so it stops trusting lastmod for the site.
 const xml = [
   '<?xml version="1.0" encoding="UTF-8"?>',
   '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
-  ...unique.map((p) => `  <url><loc>${SITE_URL}${p === '/' ? '/' : p}</loc><lastmod>${today}</lastmod><priority>${priorityFor(p)}</priority></url>`),
+  ...unique.map((p) => `  <url><loc>${SITE_URL}${p === '/' ? '/' : p}</loc><priority>${priorityFor(p)}</priority></url>`),
   '</urlset>',
   '',
 ].join('\n');

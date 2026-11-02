@@ -33,6 +33,7 @@ const TICK_MS = 15000;
 const RING_TIMEOUT_SEC = 40;
 const MAX_CALL_SEC = 900;
 const RETRY_MINUTES = [60, 240]; // after a no-answer / busy: 2 more tries
+const INBOUND_PER_NUMBER_DAY = 5; // more calls than this from one number in 24 h are not answered (spam / credit drain)
 const FRAME_BYTES = 160; // 20 ms of μ-law at 8 kHz
 const PLAYBACK_LEAD_MS = 120; // how far ahead of real time Vobiz gets Riya's audio (absorbs network jitter)
 const FINALIZE_DELAYS_MS = [8000, 20000, 45000, 90000, 180000]; // ElevenLabs needs a moment for the analysis
@@ -264,13 +265,22 @@ async function answerCall(p, callId) {
     const config = await shared().getConfig();
     if (!config.elevenAgentId) return hangupXml;
     const from = numberFrom(p.From || p.from);
+    const executionId = `riya_in_${callUuid || crypto.randomBytes(8).toString('hex')}`;
+    const recent = await AiCall.countDocuments({
+      provider: 'elevenlabs', direction: 'inbound', phone: from, executionId: { $ne: executionId },
+      createdAt: { $gte: new Date(Date.now() - 24 * 3600000) },
+    });
+    if (recent >= INBOUND_PER_NUMBER_DAY) {
+      log(`inbound from ${from || 'hidden number'} not answered: ${recent} calls in the last 24 h`);
+      return hangupXml;
+    }
     const lead = /^\+\d{11,14}$/.test(from) ? await Lead.findOne({ phone: from }).sort({ createdAt: -1 }) : null;
     const userData = lead
       ? shared().buildUserData(lead)
       : { lead_id: '', name: '', source: '', target_country: '', intake_year: '', education_level: '', city: '' };
     userData.custom_instructions = '';
     call = await AiCall.findOneAndUpdate(
-      { executionId: `riya_in_${callUuid || crypto.randomBytes(8).toString('hex')}` },
+      { executionId },
       {
         $setOnInsert: {
           provider: 'elevenlabs',
