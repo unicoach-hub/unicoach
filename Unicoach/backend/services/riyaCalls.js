@@ -291,9 +291,20 @@ async function answerCall(p, callId) {
   }
 
   const wsUrl = `${env().publicUrl.replace(/^http/, 'ws')}${WS_PATH}?call=${call._id}&token=${streamToken(call._id)}`;
+  // Vobiz also records the call as the student heard it (ElevenLabs keeps its own recording too)
+  const record = `<Record recordSession="true" fileFormat="mp3" maxLength="${MAX_CALL_SEC}" playBeep="false" `
+    + `callbackUrl="${xmlEscape(webhookUrl('recording', call._id))}" callbackMethod="POST"/>`;
   return '<?xml version="1.0" encoding="UTF-8"?><Response>'
+    + record
     + `<Stream bidirectional="true" keepCallAlive="true" contentType="audio/x-mulaw;rate=8000">${xmlEscape(wsUrl)}</Stream>`
     + '</Response>';
+}
+
+/** Recording callback: the phone-side recording from Vobiz */
+async function recordRecording(p, callId) {
+  const url = String(p.RecordUrl || p.record_url || p.recording_url || '');
+  if (!url || !/^[a-f0-9]{24}$/i.test(callId)) return;
+  await AiCall.updateOne({ _id: callId, provider: 'elevenlabs' }, { $set: { phoneRecordingUrl: url } });
 }
 
 const unansweredStatus = (cause) => (/busy/.test(cause) ? 'busy' : /no.?answer|timeout|cancel|not.?answer/.test(cause) ? 'no-answer' : 'failed');
@@ -612,6 +623,7 @@ module.exports = {
   createCall,
   answerCall,
   recordHangup,
+  recordRecording,
   finalize,
   fetchRecording,
   secretMatches,

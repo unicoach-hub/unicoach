@@ -14,6 +14,7 @@ const aiCallSchema = new mongoose.Schema({
   conversationId: { type: String, default: '' },
   vobizCallUuid: { type: String, default: '', index: true },
   vobizRequestUuid: { type: String, default: '' },
+  phoneRecordingUrl: { type: String, default: '' }, // Vobiz's recording: what the student heard
   attempts: { type: Number, default: 0 },
   dynamicVars: { type: mongoose.Schema.Types.Mixed, default: {} }, // student details given to the agent
   staffName: { type: String, default: '' }, // team member on a softphone call

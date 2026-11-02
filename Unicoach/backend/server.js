@@ -362,6 +362,7 @@ app.post('/api/webhooks/bolna', require('./controllers/bolnaController').receive
   const riya = require('./controllers/riyaController');
   app.all('/api/webhooks/riya/answer', riya.answer);
   app.all('/api/webhooks/riya/hangup', riya.hangup);
+  app.all('/api/webhooks/riya/recording', riya.recording);
 }
 // Team softphone on Vobiz (public, checked with VOBIZ_WEBHOOK_SECRET in ?key=)
 {

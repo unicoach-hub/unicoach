@@ -18,6 +18,18 @@ exports.answer = async (req, res) => {
   }
 };
 
+/** GET|POST /api/webhooks/riya/recording: Vobiz's recording of the call */
+exports.recording = async (req, res) => {
+  if (!riya.secretMatches(req.query.key)) return res.status(401).json({ error: 'Unauthorized' });
+  try {
+    await riya.recordRecording(paramsOf(req), String(req.query.call || ''));
+    return res.json({ ok: true });
+  } catch (err) {
+    console.error('[Riya] recording error:', err);
+    return res.status(500).json({ error: 'Server error' });
+  }
+};
+
 /** GET|POST /api/webhooks/riya/hangup */
 exports.hangup = async (req, res) => {
   if (!riya.secretMatches(req.query.key)) return res.status(401).json({ error: 'Unauthorized' });

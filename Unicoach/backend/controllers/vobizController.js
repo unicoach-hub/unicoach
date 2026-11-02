@@ -69,7 +69,15 @@ exports.streamRecording = async (req, res) => {
     const filter = { _id: req.params.id };
     const staffId = scopedStaffId(req);
     if (staffId) filter.leadId = { $in: await Lead.find({ assignedTo: staffId }).distinct('_id') };
-    const call = await AiCall.findOne(filter).select('recordingUrl kind').lean();
+    const call = await AiCall.findOne(filter).select('recordingUrl phoneRecordingUrl kind').lean();
+    // ?source=phone: Vobiz's recording of a Riya call on ElevenLabs (what the student heard)
+    if (req.query.source === 'phone') {
+      if (!call?.phoneRecordingUrl) return res.status(404).json({ message: 'No phone recording' });
+      const phone = await vobiz.fetchRecording(call.phoneRecordingUrl);
+      res.set('Content-Type', phone.headers.get('content-type') || 'audio/mpeg');
+      res.set('Cache-Control', 'private, max-age=3600');
+      return Readable.fromWeb(phone.body).pipe(res);
+    }
     if (!call?.recordingUrl) return res.status(404).json({ message: 'No recording' });
     const fromEleven = call.recordingUrl.startsWith('elevenlabs:');
     if (call.kind !== 'human' && !fromEleven) return res.redirect(call.recordingUrl);
