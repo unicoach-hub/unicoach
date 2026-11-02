@@ -520,22 +520,43 @@ function bridgeCall(phoneWs, call) {
     }, wait);
   }
 
-  phoneWs.on('message', (raw) => {
+  // What Vobiz actually sent, logged when the call ends (to debug one-way audio)
+  const stats = { media: 0, bytes: 0, silent: 0, binary: 0, other: {}, tracks: {} };
+
+  const studentAudio = (chunk) => {
+    stats.media += 1;
+    stats.bytes += chunk.length;
+    if (chunk.every((b) => b === 0xff || b === 0x7f)) stats.silent += 1;
+    if (inputFormat) sendEleven({ user_audio_chunk: fromPhone(chunk, inputFormat).toString('base64') });
+    else if (pending.length < 250) pending.push(chunk); // up to 5 s while ElevenLabs connects
+  };
+
+  phoneWs.on('message', (raw, isBinary) => {
+    if (isBinary) {
+      stats.binary += 1;
+      studentAudio(Buffer.from(raw));
+      return;
+    }
     let msg;
     try { msg = JSON.parse(raw.toString()); } catch { return; }
     if (msg.event === 'start') {
       streamId = msg.start?.streamId || msg.streamId || '';
       vobizCallUuid = msg.start?.callId || vobizCallUuid;
+      log(`stream start ${call._id}: tracks=${JSON.stringify(msg.start?.tracks)} format=${JSON.stringify(msg.start?.mediaFormat)}`);
       connectEleven(unknownCaller).catch((err) => { warn('ElevenLabs connect:', err.message); endPhone(); });
-    } else if (msg.event === 'media' && msg.media?.payload) {
-      const chunk = Buffer.from(msg.media.payload, 'base64');
-      if (inputFormat) sendEleven({ user_audio_chunk: fromPhone(chunk, inputFormat).toString('base64') });
-      else if (pending.length < 250) pending.push(chunk); // up to 5 s while ElevenLabs connects
+    } else if (msg.event === 'media') {
+      const payload = msg.media?.payload || msg.payload;
+      const track = msg.media?.track || 'none';
+      stats.tracks[track] = (stats.tracks[track] || 0) + 1;
+      if (payload) studentAudio(Buffer.from(payload, 'base64')); // a bidirectional stream has one track
+    } else {
+      stats.other[msg.event || 'unknown'] = (stats.other[msg.event || 'unknown'] || 0) + 1;
     }
   });
 
   // The student hung up (Vobiz closes the stream; there is no stop event)
   phoneWs.on('close', () => {
+    log(`stream end ${call._id}: in=${inputFormat} out=${outputFormat} ${JSON.stringify(stats)}`);
     const wasOpen = !closed;
     closed = true;
     try { eleven?.close(); } catch { /* already closed */ }
