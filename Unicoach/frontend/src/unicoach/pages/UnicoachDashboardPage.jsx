@@ -2884,6 +2884,7 @@ const UnicoachDashboardPage = () => {
                 poster="/videos/tutorials/mentor-dashboard-poster.jpg"
                 title="How your mentor studio works"
                 duration="1 min"
+                sound
                 className="w-full max-w-[420px]"
               />
               </div>
