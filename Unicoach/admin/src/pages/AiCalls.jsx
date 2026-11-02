@@ -1,10 +1,10 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import {
-  Alert, Button, DatePicker, Drawer, Empty, Form, Input, InputNumber, Segmented, Select, Spin, Switch, Table, Tag, message,
+  Alert, Button, DatePicker, Drawer, Empty, Form, Input, InputNumber, Popconfirm, Segmented, Select, Spin, Switch, Table, Tag, message,
 } from 'antd';
 import {
-  PhoneOutlined, ReloadOutlined, SyncOutlined, ArrowDownOutlined, ArrowUpOutlined, SettingOutlined, UserOutlined,
+  PhoneOutlined, ReloadOutlined, SyncOutlined, ArrowDownOutlined, ArrowUpOutlined, SettingOutlined, UserOutlined, DeleteOutlined,
 } from '@ant-design/icons';
 import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip as ChartTip, Legend } from 'recharts';
 import Header from '../components/Header';
@@ -20,6 +20,7 @@ const OUTCOMES = {
   wrong_number: { label: 'Wrong number', color: 'volcano' },
   no_conversation: { label: 'No conversation', color: 'default' },
 };
+const LIVE = ['dialing', 'ringing', 'in-progress'];
 const PENDING = ['scheduled', 'queued', 'rescheduled', 'initiated', 'dialing', 'ringing', 'in-progress'];
 const TRIGGERS = { auto: 'Auto (form)', manual: 'Manual', batch: 'Batch', inbound: 'Inbound', softphone: 'Team phone' };
 
@@ -28,6 +29,29 @@ const fmtTime = (d) => (d ? new Date(d).toLocaleString('en-IN', {
 }) : '—');
 const fmtDur = (s) => (!s ? '—' : s >= 60 ? `${Math.floor(s / 60)}m ${s % 60}s` : `${s}s`);
 const errText = (e, fallback) => e?.response?.data?.message || fallback;
+
+// Date presets for the history filter → { from, to } ISO strings (browser time, i.e. IST)
+const startOfDay = (offsetDays = 0) => { const d = new Date(); d.setHours(0, 0, 0, 0); d.setDate(d.getDate() - offsetDays); return d; };
+const DATE_PRESETS = {
+  today: () => ({ from: startOfDay(0).toISOString() }),
+  yesterday: () => ({ from: startOfDay(1).toISOString(), to: new Date(startOfDay(0).getTime() - 1).toISOString() }),
+  week: () => ({ from: startOfDay(6).toISOString() }),
+  month: () => ({ from: startOfDay(29).toISOString() }),
+};
+const LENGTHS = {
+  talked: { minSec: 30 }, // a real conversation
+  minute: { minSec: 60 },
+  short: { minSec: 1, maxSec: 15 }, // picked up and dropped
+};
+
+const deleteCalls = async (ids) => {
+  const { data } = ids.length === 1
+    ? await API.delete(`/admin/ai-calls/${ids[0]}`)
+    : await API.post('/admin/ai-calls/delete', { ids });
+  if (data.skippedLive) message.warning(`${data.skippedLive} live call(s) were not deleted`);
+  if (data.deleted) message.success(`${data.deleted} call${data.deleted === 1 ? '' : 's'} deleted`);
+  return data;
+};
 
 const StatusTag = ({ call }) => {
   if (call.kind === 'human' && call.status === 'completed') return <Tag color="blue">Talked</Tag>;
@@ -93,7 +117,7 @@ const Recording = ({ call }) => {
   return <Button onClick={load} loading={loading}>Play recording</Button>;
 };
 
-const CallDrawer = ({ id, onClose, onChanged }) => {
+const CallDrawer = ({ id, onClose, onChanged, canDelete }) => {
   const navigate = useNavigate();
   const [call, setCall] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -136,7 +160,24 @@ const CallDrawer = ({ id, onClose, onChanged }) => {
       onClose={onClose}
       width={Math.min(620, typeof window !== 'undefined' ? window.innerWidth : 620)}
       title={call ? `${call.name || call.phone} · ${call.direction === 'inbound' ? 'Inbound' : 'Outbound'}${call.kind === 'human' ? ` · ${call.staffName || 'Team'}` : ' · Riya'}` : 'Call'}
-      extra={call?.kind !== 'human' && <Button icon={<SyncOutlined spin={syncing} />} onClick={sync} disabled={!call}>{call?.provider === 'elevenlabs' ? 'Update from ElevenLabs' : 'Update from Bolna'}</Button>}
+      extra={(
+        <div style={{ display: 'flex', gap: 8 }}>
+          {call?.kind !== 'human' && <Button icon={<SyncOutlined spin={syncing} />} onClick={sync} disabled={!call}>{call?.provider === 'elevenlabs' ? 'Update from ElevenLabs' : 'Update from Bolna'}</Button>}
+          {canDelete && call && !LIVE.includes(call.status) && (
+            <Popconfirm
+              title="Delete this call?"
+              description="The recording and transcript go from admin. The lead keeps its notes."
+              okText="Delete"
+              okButtonProps={{ danger: true }}
+              onConfirm={async () => {
+                try { await deleteCalls([call._id]); onChanged?.(); onClose(); } catch (e) { message.error(errText(e, 'Could not delete')); }
+              }}
+            >
+              <Button danger icon={<DeleteOutlined />} aria-label="Delete call" />
+            </Popconfirm>
+          )}
+        </div>
+      )}
     >
       {loading && !call ? <Spin /> : call && (
         <div style={{ display: 'grid', gap: 16 }}>
@@ -195,18 +236,30 @@ const CallDrawer = ({ id, onClose, onChanged }) => {
   );
 };
 
-const History = ({ reloadKey, openId, setOpenId }) => {
+const NO_FILTERS = { kind: '', direction: '', status: '', outcome: '', trigger: '', length: '', date: '', range: null, q: '' };
+
+const History = ({ reloadKey, openId, setOpenId, owner }) => {
   const [rows, setRows] = useState([]);
   const [total, setTotal] = useState(0);
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
-  const [filters, setFilters] = useState({ kind: '', direction: '', status: '', outcome: '', q: '' });
+  const [filters, setFilters] = useState(NO_FILTERS);
+  const [selected, setSelected] = useState([]);
+  const [deleting, setDeleting] = useState(false);
 
   const load = useCallback(async () => {
     setLoading(true);
     try {
+      const { length, date, range, ...rest } = filters;
       const params = { page, limit: 25 };
-      Object.entries(filters).forEach(([k, v]) => { if (v) params[k] = v; });
+      Object.entries(rest).forEach(([k, v]) => { if (v) params[k] = v; });
+      Object.assign(params, LENGTHS[length] || {});
+      if (date === 'custom' && range?.[0] && range?.[1]) {
+        params.from = range[0].startOf('day').toISOString();
+        params.to = range[1].endOf('day').toISOString();
+      } else if (DATE_PRESETS[date]) {
+        Object.assign(params, DATE_PRESETS[date]());
+      }
       const { data } = await API.get('/admin/ai-calls', { params });
       setRows(data.items || []);
       setTotal(data.total || 0);
@@ -218,8 +271,23 @@ const History = ({ reloadKey, openId, setOpenId }) => {
   }, [page, filters]);
 
   useEffect(() => { load(); }, [load, reloadKey]);
+  useEffect(() => { setSelected([]); }, [filters, page]);
 
   const set = (k) => (v) => { setPage(1); setFilters((f) => ({ ...f, [k]: v })); };
+  const filtered = Object.entries(filters).some(([k, v]) => (k === 'range' ? Boolean(v) : v !== ''));
+
+  const removeSelected = async () => {
+    setDeleting(true);
+    try {
+      await deleteCalls(selected);
+      setSelected([]);
+      load();
+    } catch (e) {
+      message.error(errText(e, 'Could not delete'));
+    } finally {
+      setDeleting(false);
+    }
+  };
 
   const columns = [
     {
@@ -277,8 +345,51 @@ const History = ({ reloadKey, openId, setOpenId }) => {
           style={{ width: 170 }}
           options={[{ label: 'Any result', value: '' }, ...Object.entries(OUTCOMES).map(([value, o]) => ({ value, label: o.label }))]}
         />
+        <Select
+          value={filters.date}
+          onChange={(v) => { setPage(1); setFilters((f) => ({ ...f, date: v, range: v === 'custom' ? f.range : null })); }}
+          style={{ width: 140 }}
+          options={[
+            { label: 'Any time', value: '' }, { label: 'Today', value: 'today' }, { label: 'Yesterday', value: 'yesterday' },
+            { label: 'Last 7 days', value: 'week' }, { label: 'Last 30 days', value: 'month' }, { label: 'Pick dates…', value: 'custom' },
+          ]}
+        />
+        {filters.date === 'custom' && (
+          <DatePicker.RangePicker value={filters.range} onChange={set('range')} format="D MMM" allowClear={false} />
+        )}
+        <Select
+          value={filters.trigger}
+          onChange={set('trigger')}
+          style={{ width: 150 }}
+          options={[{ label: 'Any source', value: '' }, ...Object.entries(TRIGGERS).map(([value, label]) => ({ value, label }))]}
+        />
+        <Select
+          value={filters.length}
+          onChange={set('length')}
+          style={{ width: 160 }}
+          options={[
+            { label: 'Any length', value: '' }, { label: 'Real talk (30s+)', value: 'talked' },
+            { label: '1 min or more', value: 'minute' }, { label: 'Dropped (under 15s)', value: 'short' },
+          ]}
+        />
+        {filtered && <Button type="link" onClick={() => { setPage(1); setFilters(NO_FILTERS); }}>Clear filters</Button>}
         <Button icon={<ReloadOutlined />} onClick={load}>Refresh</Button>
       </div>
+      {owner && selected.length > 0 && (
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 10 }}>
+          <span style={{ fontSize: 13 }}>{selected.length} selected</span>
+          <Popconfirm
+            title={`Delete ${selected.length} call${selected.length === 1 ? '' : 's'}?`}
+            description="Recordings and transcripts go from admin. Leads keep their notes. Live calls are skipped."
+            okText="Delete"
+            okButtonProps={{ danger: true }}
+            onConfirm={removeSelected}
+          >
+            <Button danger icon={<DeleteOutlined />} loading={deleting}>Delete selected</Button>
+          </Popconfirm>
+          <Button type="link" onClick={() => setSelected([])}>Clear selection</Button>
+        </div>
+      )}
       <Table
         rowKey="_id"
         size="middle"
@@ -287,10 +398,16 @@ const History = ({ reloadKey, openId, setOpenId }) => {
         columns={columns}
         scroll={{ x: true }}
         onRow={(r) => ({ onClick: () => setOpenId(r._id), style: { cursor: 'pointer' } })}
+        rowSelection={owner ? {
+          selectedRowKeys: selected,
+          onChange: setSelected,
+          getCheckboxProps: (r) => ({ disabled: LIVE.includes(r.status) }),
+          columnWidth: 36,
+        } : undefined}
         pagination={{ current: page, total, pageSize: 25, onChange: setPage, showSizeChanger: false }}
         locale={{ emptyText: <Empty description="No calls yet" /> }}
       />
-      <CallDrawer id={openId} onClose={() => setOpenId(null)} onChanged={load} />
+      <CallDrawer id={openId} onClose={() => setOpenId(null)} onChanged={load} canDelete={owner} />
     </div>
   );
 };
@@ -525,7 +642,7 @@ const AiCalls = () => {
           ]}
         />
         {tab === 'overview' && <Overview reloadKey={reloadKey} />}
-        {tab === 'history' && <History reloadKey={reloadKey} openId={openId} setOpenId={setOpenId} />}
+        {tab === 'history' && <History reloadKey={reloadKey} openId={openId} setOpenId={setOpenId} owner={owner} />}
         {tab === 'new' && <NewCall onDone={() => { setReloadKey((k) => k + 1); setTab('history'); }} />}
         {tab === 'settings' && owner && <SettingsTab />}
       </div>

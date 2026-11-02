@@ -24,7 +24,7 @@ const sendError = (res, err, what) => {
   return res.status(500).json({ message: 'Server error' });
 };
 
-/** GET /api/admin/ai-calls?kind=ai|human&direction=&outcome=&status=&q=&from=&to=&page=&limit= */
+/** GET /api/admin/ai-calls?kind=ai|human&direction=&outcome=&status=&trigger=&minSec=&maxSec=&q=&from=&to=&page=&limit= */
 exports.listCalls = async (req, res) => {
   try {
     const { direction, outcome, status, trigger, kind, q, from, to, leadId } = req.query;
@@ -40,6 +40,15 @@ exports.listCalls = async (req, res) => {
     else if (status === 'unanswered') filter.status = { $in: ['no-answer', 'busy', 'failed', 'error', 'canceled', 'stopped', 'balance-low'] };
     else if (status === 'pending') filter.status = { $in: ['scheduled', 'queued', 'rescheduled', 'initiated', 'dialing', 'ringing', 'in-progress'] };
     if (typeof leadId === 'string' && OBJECT_ID.test(leadId)) filter.leadId = leadId;
+    const minSec = parseInt(req.query.minSec, 10);
+    const maxSec = parseInt(req.query.maxSec, 10);
+    // Talk length; combines with status=answered (which already means 1 s or more)
+    if (Number.isFinite(minSec) || Number.isFinite(maxSec)) {
+      const range = filter.durationSec ? { $gte: 1 } : {};
+      if (Number.isFinite(minSec)) range.$gte = Math.max(minSec, range.$gte || 0);
+      if (Number.isFinite(maxSec)) range.$lte = maxSec;
+      filter.durationSec = range;
+    }
     if (from || to) {
       filter.createdAt = {};
       if (from && !Number.isNaN(Date.parse(from))) filter.createdAt.$gte = new Date(from);
@@ -58,6 +67,26 @@ exports.listCalls = async (req, res) => {
     return res.json({ items, total, page, limit });
   } catch (err) {
     return sendError(res, err, 'list');
+  }
+};
+
+const LIVE = ['dialing', 'ringing', 'in-progress'];
+
+/**
+ * DELETE /api/admin/ai-calls/:id  or  POST /api/admin/ai-calls/delete { ids: [] }  (owner only, max 100)
+ * Removes the call records from admin. A scheduled ElevenLabs call is cancelled by this; a call that
+ * is ringing or live can't be deleted. The lead keeps its activity notes.
+ */
+exports.deleteCalls = async (req, res) => {
+  try {
+    const ids = [...new Set((req.params.id ? [req.params.id] : req.body?.ids || []).map(String).filter((id) => OBJECT_ID.test(id)))];
+    if (!ids.length) throw new CallError('Select at least one call');
+    if (ids.length > 100) throw new CallError('At most 100 calls at a time');
+    const live = await AiCall.countDocuments({ _id: { $in: ids }, status: { $in: LIVE } });
+    const { deletedCount } = await AiCall.deleteMany({ _id: { $in: ids }, status: { $nin: LIVE } });
+    return res.json({ deleted: deletedCount, skippedLive: live });
+  } catch (err) {
+    return sendError(res, err, 'delete');
   }
 };
 
