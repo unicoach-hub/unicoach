@@ -117,6 +117,26 @@ const Recording = ({ call }) => {
   return <Button onClick={load} loading={loading}>Play recording</Button>;
 };
 
+// Vobiz's own recording of a Riya call on ElevenLabs, through the server (needs our Vobiz keys)
+const PhoneRecording = ({ call }) => {
+  const [src, setSrc] = useState('');
+  const [loading, setLoading] = useState(false);
+  useEffect(() => () => { if (src) URL.revokeObjectURL(src); }, [src]);
+  if (src) return <audio controls autoPlay src={src} style={{ width: '100%' }} />;
+  const load = async () => {
+    setLoading(true);
+    try {
+      const { data } = await API.get(`/admin/ai-calls/${call._id}/recording`, { params: { source: 'phone' }, responseType: 'blob' });
+      setSrc(URL.createObjectURL(data));
+    } catch {
+      message.error('Could not load the phone recording');
+    } finally {
+      setLoading(false);
+    }
+  };
+  return <Button onClick={load} loading={loading}>Play phone recording</Button>;
+};
+
 const CallDrawer = ({ id, onClose, onChanged, canDelete }) => {
   const navigate = useNavigate();
   const [call, setCall] = useState(null);
@@ -200,6 +220,12 @@ const CallDrawer = ({ id, onClose, onChanged, canDelete }) => {
             <div style={{ fontWeight: 700, marginBottom: 6 }}>Recording</div>
             <Recording call={call} />
           </div>
+          {call.phoneRecordingUrl && (
+            <div>
+              <div style={{ fontWeight: 700, marginBottom: 6 }}>Phone recording <span style={{ fontWeight: 400, fontSize: 12.5, color: 'var(--ux-text-3)' }}>· what the student heard, from Vobiz</span></div>
+              <PhoneRecording call={call} />
+            </div>
+          )}
 
           {call.summary && (
             <div>
