@@ -117,13 +117,15 @@ const BlogsPage = () => {
 
     const currentTabBlogs = filterBlogsByTab(formattedDbBlogs, selectedTab);
 
-    const filteredBlogs = currentTabBlogs.filter(blog => 
+    const featuredBlog = formattedDbBlogs[0];
+
+    // The featured post already sits in the big card above, so the grid skips it (unless someone searches for it)
+    const filteredBlogs = currentTabBlogs.filter(blog =>
+        (searchTerm || blog !== featuredBlog) && (
         blog.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
         blog.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        (blog.category && blog.category.toLowerCase().includes(searchTerm.toLowerCase()))
+        (blog.category && blog.category.toLowerCase().includes(searchTerm.toLowerCase())))
     );
-
-    const featuredBlog = formattedDbBlogs[0];
 
     // Card colour per position (poster colours only)
     const toneFor = (i) => CARD_TONES[i % CARD_TONES.length];
