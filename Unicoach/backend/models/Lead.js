@@ -10,7 +10,7 @@ const leadSchema = new mongoose.Schema({
   // Step 3
   name: { type: String, required: true },
   // WhatsApp chatbot leads and inbound callers may not have given an email yet
-  email: { type: String, required: function () { return !['WhatsApp', 'Inbound call'].includes(this.source); }, default: '', index: true },
+  email: { type: String, required: function () { return !['WhatsApp', 'Inbound call', 'Bulk call list'].includes(this.source); }, default: '', index: true },
   phone: { type: String, required: true },
   // Student account this lead became (set by "Start journey"); the journey stage lives on that account
   userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', index: true },

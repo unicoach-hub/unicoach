@@ -125,7 +125,7 @@ const xmlEscape = (s) => String(s).replace(/[<>&'"]/g, (c) => ({ '<': '&lt;', '>
  * Store an outbound call for the worker (called by bolnaCalls.queueCall when the provider is ElevenLabs).
  * @returns {Promise<object>} the AiCall document
  */
-async function createCall({ lead, to, userData, trigger, requestedBy, scheduledAt, config }) {
+async function createCall({ lead, to, name, userData, trigger, requestedBy, scheduledAt, config }) {
   if (!isConfigured()) {
     throw new (shared().CallError)('Riya on ElevenLabs is not set up: ELEVENLABS_API_KEY, VOBIZ_AUTH_ID, VOBIZ_AUTH_TOKEN and VOBIZ_WEBHOOK_SECRET are needed', 503);
   }
@@ -139,7 +139,7 @@ async function createCall({ lead, to, userData, trigger, requestedBy, scheduledA
     direction: 'outbound',
     trigger,
     phone: to,
-    name: String(lead?.name || userData.name || '').trim(),
+    name: String(lead?.name || name || userData.name || '').trim(), // full name; Riya gets the first name
     agentId: config.elevenAgentId,
     status: 'scheduled',
     customInstructions: userData.custom_instructions || '',
@@ -201,8 +201,8 @@ async function tick() {
       .sort({ scheduledFor: 1 }).limit(free * 2);
     for (const call of due) {
       if (free <= 0) break;
-      // Auto calls and retries wait for calling hours; a time the team picked is kept
-      const holdForWindow = call.trigger === 'auto' || call.attempts > 0;
+      // Auto calls, uploaded lists and retries wait for calling hours; a single call's picked time is kept
+      const holdForWindow = call.trigger === 'auto' || call.trigger === 'batch' || call.attempts > 0;
       if (holdForWindow && !shared().isWithinWindow(now, config)) {
         await AiCall.updateOne({ _id: call._id, status: 'scheduled' }, { $set: { scheduledFor: shared().nextCallTime(now, config) } });
         continue;

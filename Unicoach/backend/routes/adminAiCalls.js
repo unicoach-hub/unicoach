@@ -11,6 +11,7 @@ router.get('/settings', c.getSettings);
 router.put('/settings', c.updateSettings);
 router.post('/', c.startCall);
 router.post('/batch', c.startBatch);
+router.post('/bulk', c.startBulk);
 router.post('/delete', requireOwner, c.deleteCalls);
 router.get('/:id', c.getCall);
 router.get('/:id/recording', require('../controllers/vobizController').streamRecording);
