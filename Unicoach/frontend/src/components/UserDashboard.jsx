@@ -1078,7 +1078,7 @@ ${name || 'Candidate'}`;
               {/* Sidebar Footer Callout */}
               <div className="p-4 rounded-[20px] bg-[#16130F] text-white space-y-2">
                 <p className="text-[13px] font-bold text-[#F2B705]">Confuse ho?</p>
-                <p className="font-urbanist text-[17px] font-extrabold leading-tight">Free 30-minute call ek counsellor ke saath</p>
+                <p className="font-urbanist text-[17px] font-extrabold leading-tight">Free 1 ghante ki call ek counsellor ke saath</p>
                 <button 
                   onClick={() => navigate('/book-consultation')}
                   className="w-full py-2.5 bg-[#DE5C2B] hover:bg-[#C04A1D] text-white rounded-full text-[13px] font-bold border-2 border-white/20 transition-all cursor-pointer"

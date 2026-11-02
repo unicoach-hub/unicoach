@@ -651,7 +651,7 @@ const aiToolsNavData = [
             },
             {
                 name: 'Talk to an Expert',
-                desc: 'A free 30-minute call with a counsellor',
+                desc: 'A free 1-hour call with a counsellor',
                 path: '/book-consultation',
                 badge: 'Free Session',
                 icon: Headphones,
