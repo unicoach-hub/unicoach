@@ -5,6 +5,7 @@ import { ArrowLeft, Search, SlidersHorizontal, UserCheck, X, Download, FileSprea
 import { useAuth } from '../context/AuthContext';
 import { JourneyPills } from '../components/ui/BrandElements';
 import TutorialVideo from '../components/ui/TutorialVideo';
+import { StationSign } from '../components/desi/DesiKit';
 import { getSearchConfig, getHighlights, searchCourses, evaluateEligibility, exportSearch, getCourseDetail, getUniversitiesFacet, suggest } from '../utils/searchApi';
 import { hasScholarship, scholarshipRangeText, scholarshipCheckUrl } from '../utils/scholarship';
 // Excel/PDF export libraries are large; load them only when someone exports
@@ -57,12 +58,12 @@ const Checkbox = ({ checked, onChange, label }) => (
 );
 // Collapsible filter section for the CourseFinder-style left sidebar
 const Accordion = ({ title, open, onToggle, children, count }) => (
-  <div className="bg-white border border-slate-200" style={{ borderRadius: 4 }}>
-    <button onClick={onToggle} className="w-full flex items-center justify-between px-3 py-2.5 text-left">
-      <span className="font-['Onest',sans-serif] font-semibold text-[13.5px] text-slate-700">{title}{count ? <span className="text-slate-400 font-normal"> ({count})</span> : null}</span>
-      <ChevronDown size={15} className={`text-slate-400 transition-transform ${open ? 'rotate-180' : ''}`} />
+  <div className="bg-white border-2 border-[#16130F] overflow-hidden" style={{ borderRadius: 12 }}>
+    <button onClick={onToggle} className="w-full flex items-center justify-between px-3.5 py-3 text-left">
+      <span className="font-urbanist font-extrabold text-[15px] text-[#16130F]">{title}{count ? <span className="text-slate-400 font-normal"> ({count})</span> : null}</span>
+      <ChevronDown size={16} className={`text-[#16130F] transition-transform ${open ? 'rotate-180' : ''}`} />
     </button>
-    {open && <div className="px-3 pb-3 pt-0 border-t border-slate-100">{children}</div>}
+    {open && <div className="px-3.5 pb-3 pt-0 border-t-2 border-dashed border-[#16130F]/20">{children}</div>}
   </div>
 );
 
@@ -84,16 +85,17 @@ const AwardTag = ({ c }) => {
 const SCHOLARSHIP_COUNTRIES = [[1, 'USA'], [4, 'UK'], [3, 'Canada'], [2, 'Australia'], [8, 'Ireland'], [9, 'Germany'], [5, 'New Zealand']];
 
 // ── Program row (CourseFinder program card) ───────────────────────────────────
-const ProgramRow = ({ c, selected, onToggleSelect, onView, eligible, reasons, highlightMap = {}, scholarshipFocus = false }) => (
-  <div className="bg-white border border-slate-200" style={{ borderRadius: 4 }}>
+// `nested`: inside a university group card, so a light border instead of a second ink frame
+const ProgramRow = ({ c, selected, onToggleSelect, onView, eligible, reasons, highlightMap = {}, scholarshipFocus = false, nested = false }) => (
+  <div className={`bg-white border-2 transition-shadow ${nested ? (selected ? 'border-[#DE5C2B]' : 'border-[#16130F]/15') : `border-[#16130F] ${selected ? 'shadow-[5px_5px_0_#DE5C2B]' : 'shadow-[4px_4px_0_#16130F]'}`}`} style={{ borderRadius: 14 }}>
     <div className="p-4">
       <div className="flex items-start gap-3">
         <input type="checkbox" checked={!!selected} onChange={() => onToggleSelect(c)} className="mt-1 accent-[#DE5C2B] w-4 h-4" />
         <div className="flex-1 min-w-0">
           <button onClick={() => onView(c)} className="text-left">
-            <h3 className="font-['Onest',sans-serif] text-[15px] font-semibold text-[#DE5C2B] hover:underline leading-snug">{c.courseName}</h3>
+            <h3 className="font-urbanist text-[17px] font-extrabold text-[#16130F] hover:text-[#DE5C2B] hover:underline leading-snug">{c.courseName}</h3>
           </button>
-          <div className="text-[13px] text-slate-500 mt-0.5">{c.universityName} · {FLAG[c.cfCountryId] || ''} {c.countryName}</div>
+          <div className="text-[14px] font-medium text-[#5B544A] mt-0.5">{c.universityName} · {FLAG[c.cfCountryId] || ''} {c.countryName}</div>
           <div className="flex flex-wrap gap-1.5 mt-2">
             {eligible === true && <Chip color="#E1ECE3" text="#2E4836"><CheckCircle2 size={11} /> Eligible</Chip>}
             {eligible === false && <Chip color="#fee2e2" text="#b91c1c"><AlertCircle size={11} /> Non-Eligible</Chip>}
@@ -104,7 +106,7 @@ const ProgramRow = ({ c, selected, onToggleSelect, onView, eligible, reasons, hi
           )}
         </div>
         {scholarshipFocus && hasScholarship(c) && <AwardTag c={c} />}
-        <button onClick={() => onView(c)} className="shrink-0 text-white text-[13px] font-medium px-4 py-1.5" style={{ background: BLUE, borderRadius: 4 }}>View</button>
+        <button onClick={() => onView(c)} className="shrink-0 text-white text-[14px] font-bold px-5 py-2 border-2 border-[#16130F] shadow-[2px_2px_0_#16130F] hover:-translate-y-0.5 transition-transform" style={{ background: BLUE, borderRadius: 999 }}>View</button>
       </div>
       {/* CourseFinder: a green "Open" status chip leads the intake chips */}
       <div className="flex flex-wrap items-center gap-1 mt-3">
@@ -112,11 +114,11 @@ const ProgramRow = ({ c, selected, onToggleSelect, onView, eligible, reasons, hi
         {(c.intakes || []).slice(0, 8).map((i) => <span key={i} className="px-2 py-0.5 bg-slate-100 text-slate-600 text-[11px]" style={{ borderRadius: 2 }}>{i}</span>)}
       </div>
       {/* CourseFinder stat row: Duration · Tuition/yr · Application Fee · Scholarship (availability + university range, never one amount) */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-3 pt-3 border-t border-slate-100 text-[13px]">
-        <div><div className="text-[11px] text-slate-400">Duration</div><div className="font-medium text-slate-700">{c.duration || '—'}</div></div>
-        <div><div className="text-[11px] text-slate-400">Tuition / yr</div><div className="font-semibold text-[#DE5C2B]">{money(c.annualFee)}</div></div>
-        <div><div className="text-[11px] text-slate-400">Application Fee</div><div className="font-medium text-slate-700">{c.applicationFee?.isWaived ? 'Waived' : money(c.applicationFee)}</div></div>
-        <div><div className="text-[11px] text-slate-400">Scholarship</div>
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-3 p-3 rounded-[10px] bg-[#FFF6E5] text-[14px]">
+        <div><div className="text-[11.5px] font-bold uppercase tracking-[0.06em] text-[#5B544A]">Duration</div><div className="font-bold text-[#16130F]">{c.duration || '—'}</div></div>
+        <div><div className="text-[11.5px] font-bold uppercase tracking-[0.06em] text-[#5B544A]">Tuition / yr</div><div className="font-extrabold text-[#C04A1D]">{money(c.annualFee)}</div></div>
+        <div><div className="text-[11.5px] font-bold uppercase tracking-[0.06em] text-[#5B544A]">Application Fee</div><div className="font-bold text-[#16130F]">{c.applicationFee?.isWaived ? 'Waived' : money(c.applicationFee)}</div></div>
+        <div><div className="text-[11.5px] font-bold uppercase tracking-[0.06em] text-[#5B544A]">Scholarship</div>
           {hasScholarship(c) ? (
             <div className="leading-tight">
               <div className="font-medium text-slate-700">Available</div>
@@ -132,10 +134,21 @@ const ProgramRow = ({ c, selected, onToggleSelect, onView, eligible, reasons, hi
 
 const SHORTLIST_KEY = 'uc_course_shortlist';
 
+// Tour video on a dark card, labelled so a first-timer knows why to watch it
+const TourCard = ({ tour, kicker, title, className = '' }) => (
+  <div className={`rounded-[22px] bg-[#16130F] border-[3px] border-[#16130F] shadow-[6px_6px_0_#DE5C2B] p-4 flex flex-col gap-3 ${className}`}>
+    <div className="px-1">
+      <p className="text-[13px] font-bold text-[#F2B705]">{kicker}</p>
+      <p className="font-urbanist text-[19px] font-extrabold leading-tight text-white">{title}</p>
+    </div>
+    <TutorialVideo {...tour} className="w-full" />
+  </div>
+);
+
 // Back pill for the details steps (Course Finder hides the site-wide floating one)
 const PageBack = ({ onClick }) => (
   <button type="button" onClick={onClick} aria-label="Go back"
-    className="no-shine inline-flex items-center gap-1.5 h-9 pl-3 pr-4 rounded-full bg-white border border-[#E6E0D4] text-[13.5px] font-semibold text-[#16130F] hover:border-[#16130F] transition-colors">
+    className="no-shine inline-flex items-center gap-1.5 h-9 pl-3 pr-4 rounded-full bg-white border-2 border-[#16130F] shadow-[2px_2px_0_#16130F] text-[13.5px] font-bold text-[#16130F] hover:-translate-y-0.5 transition-transform">
     <ArrowLeft size={16} strokeWidth={2.2} /> Back
   </button>
 );
@@ -147,7 +160,7 @@ const INDIA_STATES = ['Andhra Pradesh', 'Assam', 'Bihar', 'Chandigarh', 'Chhatti
 // Field shell for the details-first search card
 const Field = ({ label, children, error }) => (
   <label className="flex flex-col gap-1.5 min-w-0">
-    <span className="text-[12.5px] font-semibold text-[#16130F]">{label}</span>
+    <span className="text-[14px] font-bold text-[#16130F]">{label}</span>
     {children}
     {error && <span className="text-[11.5px] font-medium text-[#984D3D] leading-tight">{error}</span>}
   </label>
@@ -220,7 +233,7 @@ const SuggestBox = ({ value, onChange, onEnter, placeholder, className = '' }) =
     </div>
   );
 };
-const FIELD = 'w-full h-11 px-3 text-[14px] text-[#16130F] bg-[#F8F5EF] border border-[#E6E0D4] outline-none focus:border-[#DE5C2B] focus:bg-white transition-colors';
+const FIELD = 'w-full h-12 px-3 text-[15px] text-[#16130F] bg-white border-2 border-[#16130F] outline-none focus:ring-4 focus:ring-[#F2B705]/50 transition-shadow';
 
 // `highlight` lets the student dashboard open the scholarship view without a URL param
 export default function SearchProgramsPage({ highlight } = {}) {
@@ -522,27 +535,27 @@ export default function SearchProgramsPage({ highlight } = {}) {
     const showAll = () => { setStartMode('search'); setStarted(true); window.scrollTo(0, 0); };
     const set = (k) => (e) => setProfile((p) => ({ ...p, [k]: e.target.value }));
     return (
-      <div className="min-h-screen pt-[76px] pb-20 font-['Onest',sans-serif]" style={{ background: '#F6F3EC' }}>
+      <div className="min-h-screen pt-[76px] pb-20 font-['Onest',sans-serif] bg-[#FFF6E5] bg-[radial-gradient(circle,rgba(22,19,15,.06)_1.3px,transparent_1.7px)] [background-size:12px_12px]">
         <div className="max-w-5xl mx-auto px-4">
           <div className="pt-5"><PageBack onClick={leavePage} /></div>
           <div className="pt-4 sm:pt-6 grid lg:grid-cols-[1.05fr_0.95fr] gap-8 lg:gap-12 items-center">
             <div className="text-center lg:text-left min-w-0">
-              <p className="inline-flex items-center gap-2 text-[13px] font-semibold text-[#977435]"><Award size={15} /> Scholarships</p>
-              <h1 className="mt-3 font-outfit text-[30px] sm:text-[44px] font-black tracking-[-0.035em] leading-[1.05] text-[#16130F]">Find scholarships you qualify for</h1>
-              <p className="mt-3 text-[15px] sm:text-[17px] text-[#5B544A]">30,000+ programs offer an award. Tell us about you and we&apos;ll show the ones whose entry requirements you meet.</p>
+              <StationSign hi="Paisa bachao, scholarship dhundo" en="SCHOLARSHIPS" className="-rotate-2" />
+              <h1 className="mt-5 font-urbanist text-[34px] sm:text-[50px] font-black tracking-[-0.045em] leading-[1] text-[#16130F]">Find scholarships you <span className="inline-block px-2.5 bg-[#F2B705] border-[3px] border-[#16130F] shadow-[4px_4px_0_#16130F] -rotate-1" style={{ borderRadius: 10 }}>qualify for</span></h1>
+              <p className="mt-4 text-[16px] sm:text-[18px] font-medium text-[#3D3830]">30,000+ programs offer an award. Tell us about you and we&apos;ll show the ones whose entry requirements you meet.</p>
             {/* this finder covers universities abroad; Indian colleges have their own scholarship list */}
-            <div className="mt-5 inline-flex p-1 bg-white border border-[#E6E0D4]" style={{ borderRadius: 999 }}>
+            <div className="mt-5 inline-flex p-1 bg-white border-2 border-[#16130F]" style={{ borderRadius: 999 }}>
               <span className="px-4 py-1.5 text-[13px] font-semibold text-white bg-[#16130F]" style={{ borderRadius: 999 }}>Study abroad</span>
               <button type="button" onClick={() => navigate('/scholarships/india')} className="px-4 py-1.5 text-[13px] font-semibold text-[#5B544A]" style={{ borderRadius: 999 }}>Study in India</button>
             </div>
             </div>
-            <TutorialVideo {...TOUR.scholarships} className="hidden lg:block" />
+            <TourCard tour={TOUR.scholarships} kicker="Pehli baar yahan ho?" title="Ye chhota video dekho, scholarship dhundna samajh aa jayega" className="hidden lg:flex" />
           </div>
 
-          <div className="mt-8 bg-white border border-[#EAD8AE] shadow-[0_24px_60px_-36px_rgba(77,60,33,0.4)] overflow-hidden" style={{ borderRadius: 18 }}>
+          <div className="mt-8 bg-white border-[3px] border-[#16130F] shadow-[7px_7px_0_#16130F] overflow-hidden" style={{ borderRadius: 20 }}>
             {/* 1. what they want */}
             <div className="p-5 sm:p-6">
-              <p className="text-[12px] font-bold uppercase tracking-[0.16em] text-[#977435]">1 · What you want to study</p>
+              <p className="font-urbanist text-[17px] font-extrabold text-[#16130F]"><span className="inline-grid place-items-center w-7 h-7 mr-2 rounded-lg bg-[#DE5C2B] text-white border-2 border-[#16130F] text-[14px]">1</span>Kya padhna hai?</p>
               <div className="mt-3 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
                 <Field label="Country">
                   <select value={country} onChange={(e) => setCountry(e.target.value)} className={FIELD} style={{ borderRadius: 10 }}>
@@ -562,7 +575,7 @@ export default function SearchProgramsPage({ highlight } = {}) {
                       <span className="truncate">{intakeArr.length ? intakeArr.join(', ') : 'Any intake'}</span><ChevronDown size={15} className="text-[#5B544A] shrink-0" />
                     </button>
                     {intakeOpen && (
-                      <div className="absolute z-30 mt-1 w-full min-w-[200px] bg-white border border-[#E6E0D4] shadow-lg p-2 max-h-64 overflow-y-auto" style={{ borderRadius: 10 }}>
+                      <div className="absolute z-30 mt-1 w-full min-w-[200px] bg-white border-2 border-[#16130F] shadow-[4px_4px_0_#16130F] p-2 max-h-64 overflow-y-auto" style={{ borderRadius: 10 }}>
                         {intakeOpts.map((i) => <Checkbox key={i.value} checked={intakeArr.includes(i.value)} onChange={() => toggleArr(setIntakeArr)(i.value)} label={i.label} />)}
                       </div>
                     )}
@@ -575,8 +588,8 @@ export default function SearchProgramsPage({ highlight } = {}) {
             </div>
 
             {/* 2. their profile (what scholarship eligibility is checked against) */}
-            <div className="p-5 sm:p-6 border-t border-dashed border-[#EAD8AE]" style={{ background: '#FBF7EE' }}>
-              <p className="text-[12px] font-bold uppercase tracking-[0.16em] text-[#977435]">2 · About you</p>
+            <div className="p-5 sm:p-6 border-t-2 border-dashed border-[#16130F]/30" style={{ background: '#FFF6E5' }}>
+              <p className="font-urbanist text-[17px] font-extrabold text-[#16130F]"><span className="inline-grid place-items-center w-7 h-7 mr-2 rounded-lg bg-[#14837E] text-white border-2 border-[#16130F] text-[14px]">2</span>Aapke baare mein</p>
               <div className="mt-3 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
                 <Field label="Nationality *">
                   <select value={profile.nationalityId} onChange={(e) => setProfile((p) => ({ ...p, nationalityId: e.target.value, stateName: '' }))} className={FIELD} style={{ borderRadius: 10 }}>
@@ -618,17 +631,17 @@ export default function SearchProgramsPage({ highlight } = {}) {
               </div>
             </div>
 
-            <div className="p-5 sm:p-6 border-t border-[#EAD8AE] flex flex-col sm:flex-row items-center gap-3">
-              <p className="text-[12.5px] text-[#614A26] sm:mr-auto">{profileReady ? "We'll check each program's entry requirements against your profile." : 'Fill the * fields to see only programs you meet the requirements for.'}</p>
-              <button onClick={showAll} className="text-[13.5px] font-semibold text-[#977435] hover:underline">Skip, show all scholarships</button>
-              <button onClick={findScholarships} className="h-11 px-6 inline-flex items-center justify-center gap-2 text-white text-[14px] font-semibold bg-[#16130F] hover:bg-[#DE5C2B] transition-colors" style={{ borderRadius: 10 }}>
+            <div className="p-5 sm:p-6 border-t-2 border-[#16130F] flex flex-col sm:flex-row items-center gap-3">
+              <p className="text-[14px] text-[#3D3830] sm:mr-auto">{profileReady ? "We'll check each program's entry requirements against your profile." : 'Fill the * fields to see only programs you meet the requirements for.'}</p>
+              <button onClick={showAll} className="text-[14px] font-bold text-[#16130F] underline decoration-2 underline-offset-4 hover:text-[#DE5C2B]">Skip, show all scholarships</button>
+              <button onClick={findScholarships} className="h-12 px-6 inline-flex items-center justify-center gap-2 text-white text-[15px] font-bold bg-[#16130F] border-[3px] border-[#16130F] shadow-[4px_4px_0_#DE5C2B] hover:-translate-y-0.5 transition-transform" style={{ borderRadius: 999 }}>
                 <Award size={16} /> Find my scholarships
               </button>
             </div>
           </div>
 
           {/* Phones: the tour sits under the form */}
-          <TutorialVideo {...TOUR.scholarships} className="mt-6 lg:hidden" />
+          <TourCard tour={TOUR.scholarships} kicker="Pehli baar yahan ho?" title="Ye chhota video dekho" className="mt-6 lg:hidden" />
         </div>
       </div>
     );
@@ -647,14 +660,14 @@ export default function SearchProgramsPage({ highlight } = {}) {
     const trySearch = () => { if (blocked) { setTried(true); return; } setTried(false); startSearch(); };
     const err = (k) => tried && missing[k];
     return (
-      <div className="min-h-screen pt-[76px] pb-20 font-['Onest',sans-serif]" style={{ background: '#F6F3EC' }}>
+      <div className="min-h-screen pt-[76px] pb-20 font-['Onest',sans-serif] bg-[#FFF6E5] bg-[radial-gradient(circle,rgba(22,19,15,.06)_1.3px,transparent_1.7px)] [background-size:12px_12px]">
         <div className="max-w-6xl mx-auto px-4">
           <div className="pt-5"><PageBack onClick={leavePage} /></div>
           <div className="pt-4 sm:pt-6 grid lg:grid-cols-[1.05fr_0.95fr] gap-8 lg:gap-12 items-center">
             <div className="text-center lg:text-left min-w-0">
-              <p className="inline-flex items-center gap-2 text-[13px] font-semibold text-[#86351A]"><span className="w-6 h-[2px] bg-[#DE5C2B]" /> Course Finder</p>
-              <h1 className="mt-3 font-outfit text-[32px] sm:text-[46px] font-black tracking-[-0.035em] leading-[1.05] text-[#16130F]">Explore 98,000+ programs</h1>
-              <p className="mt-3 text-[15px] sm:text-[17px] text-[#5B544A]">Tell us a little about you, then search. Free to search and shortlist, sign in only to download.</p>
+              <StationSign hi="Duniya bhar ke courses" en="COURSE FINDER" className="-rotate-2" />
+              <h1 className="mt-5 font-urbanist text-[36px] sm:text-[54px] font-black tracking-[-0.045em] leading-[1] text-[#16130F]">Explore <span className="inline-block px-2.5 bg-[#DE5C2B] text-white border-[3px] border-[#16130F] shadow-[4px_4px_0_#16130F] -rotate-1" style={{ borderRadius: 10 }}>98,000+</span> programs</h1>
+              <p className="mt-4 text-[16px] sm:text-[18px] font-medium text-[#3D3830]">Tell us a little about you, then search. Free to search and shortlist, sign in only to download.</p>
               <JourneyPills
                 steps={[
                   { label: 'About you', sub: 'Nationality, state' },
@@ -666,11 +679,11 @@ export default function SearchProgramsPage({ highlight } = {}) {
                 className="mt-5 mx-auto lg:mx-0 w-fit max-w-full"
               />
             </div>
-            <TutorialVideo {...TOUR.finder} className="hidden lg:block" />
+            <TourCard tour={TOUR.finder} kicker="Pehli baar yahan ho?" title="45 second ka video dekho, course dhundna samajh aa jayega" className="hidden lg:flex" />
           </div>
 
           {/* Search card */}
-          <div className="mt-8 bg-white border border-[#E6E0D4] shadow-[0_24px_60px_-36px_rgba(22,19,15,0.35)] p-4 sm:p-5" style={{ borderRadius: 18 }}>
+          <div className="mt-8 bg-white border-[3px] border-[#16130F] shadow-[7px_7px_0_#16130F] p-4 sm:p-6" style={{ borderRadius: 20 }}>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-[1.6fr_1.2fr_0.7fr_1.1fr_1.1fr_auto] gap-3 items-start">
               <Field label="Search programs *" error={err('query') && 'Type a program or university, or pick a filter below'}>
                 <div className={`${FIELD} ${err('query') ? FIELD_ERR : ''} flex items-center gap-2`} style={{ borderRadius: 10 }}>
@@ -684,7 +697,7 @@ export default function SearchProgramsPage({ highlight } = {}) {
                     <span className="truncate">{intakeArr.length ? intakeArr.join(', ') : 'All intakes'}</span><ChevronDown size={15} className="text-[#5B544A] shrink-0" />
                   </button>
                   {intakeOpen && (
-                    <div className="absolute z-30 mt-1 w-full min-w-[200px] bg-white border border-[#E6E0D4] shadow-lg p-2 max-h-64 overflow-y-auto" style={{ borderRadius: 10 }}>
+                    <div className="absolute z-30 mt-1 w-full min-w-[200px] bg-white border-2 border-[#16130F] shadow-[4px_4px_0_#16130F] p-2 max-h-64 overflow-y-auto" style={{ borderRadius: 10 }}>
                       {intakeOpts.map((i) => <Checkbox key={i.value} checked={intakeArr.includes(i.value)} onChange={() => toggleArr(setIntakeArr)(i.value)} label={i.label} />)}
                     </div>
                   )}
@@ -708,24 +721,25 @@ export default function SearchProgramsPage({ highlight } = {}) {
                   {INDIA_STATES.map((st) => <option key={st} value={st}>{st}</option>)}
                 </select>
               </Field>
-              <button onClick={trySearch} className="h-11 px-6 inline-flex items-center justify-center gap-2 text-white text-[14px] font-semibold bg-[#16130F] hover:bg-[#DE5C2B] transition-colors self-start lg:mt-[26px]" style={{ borderRadius: 10 }}>
+              <button onClick={trySearch} className="h-12 px-6 inline-flex items-center justify-center gap-2 text-white text-[15px] font-bold bg-[#16130F] border-[3px] border-[#16130F] shadow-[4px_4px_0_#DE5C2B] hover:-translate-y-0.5 transition-transform self-start lg:mt-[29px]" style={{ borderRadius: 999 }}>
                 <Search size={16} /> Search
               </button>
             </div>
 
             {/* Advanced search */}
             <div className="flex items-center justify-center mt-4">
-              <button onClick={() => setAdvOpen((v) => !v)} className="inline-flex items-center gap-1.5 text-[13.5px] font-semibold text-[#DE5C2B] px-4 py-2 border border-[#F3C9B4] hover:bg-[#FDF4EF]" style={{ borderRadius: 999 }}>
+              <button onClick={() => setAdvOpen((v) => !v)} className="inline-flex items-center gap-1.5 text-[14px] font-bold text-[#16130F] px-5 py-2 bg-[#FFF1B8] border-2 border-[#16130F] hover:bg-[#F2B705]" style={{ borderRadius: 999 }}>
                 Advanced search{advCount ? ` · ${advCount}` : ''} {advOpen ? <ChevronUp size={15} /> : <ChevronDown size={15} />}
               </button>
             </div>
-            {advOpen && <div className="mt-4 pt-5 border-t border-[#ECE6DA]">{advancedPanel}</div>}
+            {advOpen && <div className="mt-4 pt-5 border-t-2 border-dashed border-[#16130F]/30">{advancedPanel}</div>}
           </div>
 
           {/* Quick filters: tap to add, then Search */}
           {highlights.length > 0 && (
-            <div className="mt-6 bg-white/70 border border-[#E6E0D4] p-4 sm:p-5" style={{ borderRadius: 18 }}>
-              <p className="text-[13.5px] font-semibold text-[#16130F] mb-3">Quick filters <span className="font-normal text-[#5B544A]">· tap to add, then press Search</span></p>
+            <div className="mt-7 bg-[#14837E] border-[3px] border-[#16130F] shadow-[6px_6px_0_#16130F] p-4 sm:p-5" style={{ borderRadius: 20 }}>
+              <p className="font-urbanist text-[18px] font-extrabold text-white mb-0.5">Quick filters</p>
+              <p className="text-[14px] text-white/85 mb-3">Tap karke add karo, phir Search dabao</p>
               <div className="flex flex-wrap gap-2">
                 {highlights.map((h) => {
                   const Icon = QUICK_ICONS[h.icon] || Tag;
@@ -733,8 +747,8 @@ export default function SearchProgramsPage({ highlight } = {}) {
                   return (
                     <button key={h.id} type="button" title={h.description}
                       aria-pressed={on} onClick={() => toggleHighlight(h.id)}
-                      className="inline-flex items-center gap-1.5 text-[13px] font-medium px-3 py-2 border transition-colors hover:border-[#16130F]"
-                      style={{ borderRadius: 999, background: on ? '#16130F' : '#fff', borderColor: on ? '#16130F' : '#E6E0D4', color: on ? '#fff' : '#16130F' }}>
+                      className="inline-flex items-center gap-1.5 text-[14px] font-bold px-3.5 py-2 border-2 border-[#16130F] transition-transform hover:-translate-y-0.5"
+                      style={{ borderRadius: 999, background: on ? '#F2B705' : '#fff', color: '#16130F', boxShadow: on ? '2px 2px 0 #16130F' : 'none' }}>
                       <Icon size={14} /> {h.name}
                     </button>
                   );
@@ -744,29 +758,29 @@ export default function SearchProgramsPage({ highlight } = {}) {
           )}
 
           {/* Phones: the tour sits under the form so searching stays first */}
-          <TutorialVideo {...TOUR.finder} className="mt-6 lg:hidden" />
+          <TourCard tour={TOUR.finder} kicker="Pehli baar yahan ho?" title="45 second ka video dekho" className="mt-6 lg:hidden" />
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 pt-[76px] pb-28 font-['Onest',sans-serif]">
+    <div className="min-h-screen bg-[#FFF6E5] pt-[76px] pb-28 font-['Onest',sans-serif]">
       {/* Top search bar (CourseFinder: search • intake • year • nationality • state) */}
-      <div className="bg-white border-b border-slate-200">
+      <div className="bg-white border-b-[3px] border-[#16130F]">
         <div className="max-w-7xl mx-auto px-4 py-3">
           <div className="flex flex-col lg:flex-row gap-2">
             <button type="button" onClick={backToDetails} aria-label="Back to your details"
               className="no-shine self-start lg:self-auto inline-flex items-center gap-1.5 h-[42px] pl-3 pr-4 rounded-full bg-white border border-[#E6E0D4] text-[13.5px] font-semibold text-[#16130F] hover:border-[#16130F] transition-colors shrink-0">
               <ArrowLeft size={16} strokeWidth={2.2} /> Back
             </button>
-            <div className="flex-1 flex items-center gap-2 border border-slate-200 px-3 bg-white" style={{ borderRadius: 4 }}>
-              <Search size={18} className="text-slate-400" />
+            <div className="flex-1 flex items-center gap-2 border-2 border-[#16130F] px-3 bg-white" style={{ borderRadius: 999 }}>
+              <Search size={18} className="text-[#16130F]" />
               <SuggestBox value={searchText} onChange={setSearchText} onEnter={() => runSearch(1)} placeholder="Search Program / University" className="py-2.5 text-[14px]" />
             </div>
             {/* Intake (multi) */}
             <div className="relative">
-              <button onClick={() => setIntakeOpen((v) => !v)} className="w-full lg:w-auto border border-slate-200 px-3 py-2.5 text-[14px] text-slate-700 bg-white flex items-center gap-2 justify-between" style={{ borderRadius: 4, minWidth: 130 }}>
+              <button onClick={() => setIntakeOpen((v) => !v)} className="w-full lg:w-auto border-2 border-[#16130F] px-3 py-2.5 text-[14px] font-semibold text-[#16130F] bg-white flex items-center gap-2 justify-between" style={{ borderRadius: 999, minWidth: 130 }}>
                 {intakeArr.length ? `${intakeArr.length} Intake${intakeArr.length > 1 ? 's' : ''}` : 'All Intakes'} <ChevronDown size={15} className="text-slate-400" />
               </button>
               {intakeOpen && (
@@ -775,19 +789,19 @@ export default function SearchProgramsPage({ highlight } = {}) {
                 </div>
               )}
             </div>
-            <select value={year} onChange={(e) => setYear(e.target.value)} className="border border-slate-200 px-3 py-2.5 text-[14px] text-slate-700 bg-white" style={{ borderRadius: 4 }}>
+            <select value={year} onChange={(e) => setYear(e.target.value)} className="border-2 border-[#16130F] px-3 py-2.5 text-[14px] font-semibold text-[#16130F] bg-white" style={{ borderRadius: 999 }}>
               <option value="">Year</option>
               {(config?.years || []).map((y) => <option key={y.value} value={y.value}>{y.label}</option>)}
             </select>
-            <select value={profile.nationalityId} onChange={(e) => setProfile((p) => ({ ...p, nationalityId: e.target.value }))} className="border border-slate-200 px-3 py-2.5 text-[14px] text-slate-700 bg-white max-w-[180px]" style={{ borderRadius: 4 }}>
+            <select value={profile.nationalityId} onChange={(e) => setProfile((p) => ({ ...p, nationalityId: e.target.value }))} className="border-2 border-[#16130F] px-3 py-2.5 text-[14px] font-semibold text-[#16130F] bg-white max-w-[180px]" style={{ borderRadius: 999 }}>
               <option value="">Student's Nationality</option>
               {nationalities.map((n) => <option key={n.value} value={n.value}>{n.label}</option>)}
             </select>
-            <button onClick={() => runSearch(1)} className="text-white text-[14px] font-semibold px-6 py-2.5" style={{ background: BLUE, borderRadius: 4 }}>Search</button>
-            <button onClick={clearAll} className="text-[14px] font-medium px-4 py-2.5 border text-slate-600 border-slate-200 whitespace-nowrap" style={{ borderRadius: 4 }}>Clear All</button>
+            <button onClick={() => runSearch(1)} className="text-white text-[14px] font-bold px-6 py-2.5 border-2 border-[#16130F] shadow-[3px_3px_0_#16130F]" style={{ background: BLUE, borderRadius: 999 }}>Search</button>
+            <button onClick={clearAll} className="text-[14px] font-bold px-4 py-2.5 border-2 border-[#16130F] text-[#16130F] bg-white whitespace-nowrap" style={{ borderRadius: 999 }}>Clear All</button>
           </div>
           <div className="flex justify-center mt-2.5">
-            <button onClick={() => setAdvOpen((v) => !v)} aria-expanded={advOpen} className="inline-flex items-center gap-1.5 text-[13px] font-semibold text-[#DE5C2B] px-4 py-1.5 border border-[#F3C9B4] hover:bg-[#FDF4EF]" style={{ borderRadius: 999 }}>
+            <button onClick={() => setAdvOpen((v) => !v)} aria-expanded={advOpen} className="inline-flex items-center gap-1.5 text-[13.5px] font-bold text-[#16130F] px-4 py-1.5 bg-[#FFF1B8] border-2 border-[#16130F] hover:bg-[#F2B705]" style={{ borderRadius: 999 }}>
               Advanced search{advCount ? ` · ${advCount}` : ''} {advOpen ? <ChevronUp size={15} /> : <ChevronDown size={15} />}
             </button>
           </div>
@@ -798,8 +812,8 @@ export default function SearchProgramsPage({ highlight } = {}) {
       {/* Body: left filter sidebar + results */}
       <div className="max-w-7xl mx-auto px-4 mt-4 flex gap-5 items-start">
         <aside className={`${mobileFilters ? 'block' : 'hidden'} lg:block w-full lg:w-[290px] shrink-0 space-y-3`}>
-          <div className="bg-white border border-slate-200 px-3 py-2.5 flex items-center gap-2 font-['Onest',sans-serif] font-semibold text-[14px] text-slate-700" style={{ borderRadius: 4 }}>
-            <SlidersHorizontal size={16} color={BLUE} /> Filter
+          <div className="bg-[#16130F] border-2 border-[#16130F] px-3.5 py-3 flex items-center gap-2 font-urbanist font-extrabold text-[16px] text-white" style={{ borderRadius: 12 }}>
+            <SlidersHorizontal size={16} color="#F2B705" /> Filter
           </div>
 
           {/* Eligibility (inline) */}
@@ -1011,12 +1025,12 @@ export default function SearchProgramsPage({ highlight } = {}) {
             <div className="text-center py-16 text-slate-500">No programs match your filters.</div>
           ) : view === 'universities' ? (
             Object.values(result.data.reduce((acc, c) => { (acc[c.cfUniversityId] = acc[c.cfUniversityId] || { uni: c, items: [] }).items.push(c); return acc; }, {})).map((g) => (
-              <div key={g.uni.cfUniversityId} className="bg-white border border-slate-200" style={{ borderRadius: 4 }}>
-                <div className="px-4 py-3 border-b border-slate-100">
-                  <div className="font-['Onest',sans-serif] text-[15px] font-semibold text-[#DE5C2B]">{g.uni.universityName}</div>
-                  <div className="text-[13px] text-slate-500">{FLAG[g.uni.cfCountryId] || ''} {g.uni.countryName} · {g.items.length} program{g.items.length > 1 ? 's' : ''} on this page</div>
+              <div key={g.uni.cfUniversityId} className="bg-white border-2 border-[#16130F] shadow-[4px_4px_0_#16130F] overflow-hidden" style={{ borderRadius: 14 }}>
+                <div className="px-4 py-3 border-b-2 border-[#16130F] bg-[#FFF1B8]">
+                  <div className="font-urbanist text-[18px] font-black text-[#16130F]">{g.uni.universityName}</div>
+                  <div className="text-[13.5px] font-medium text-[#3D3830]">{FLAG[g.uni.cfCountryId] || ''} {g.uni.countryName} · {g.items.length} program{g.items.length > 1 ? 's' : ''} on this page</div>
                 </div>
-                <div className="p-3 space-y-2">{g.items.map((c) => <ProgramRow key={c.cfId} c={c} selected={selected[c.cfId]} onToggleSelect={toggleSelect} onView={openCourse} highlightMap={highlightMap} scholarshipFocus={schMode} />)}</div>
+                <div className="p-3 space-y-2">{g.items.map((c) => <ProgramRow key={c.cfId} c={c} nested selected={selected[c.cfId]} onToggleSelect={toggleSelect} onView={openCourse} highlightMap={highlightMap} scholarshipFocus={schMode} />)}</div>
               </div>
             ))
           ) : (
