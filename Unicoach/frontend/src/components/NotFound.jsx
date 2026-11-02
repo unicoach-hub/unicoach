@@ -14,7 +14,10 @@ const NotFound = () => {
             <p className="mt-8 font-['Yatra_One',sans-serif] text-[22px] sm:text-[26px] text-center leading-snug">
                 Yeh station hamare map par nahi hai.
             </p>
-            <p className="mt-2 text-[14.5px] text-slate-600 text-center max-w-md">
+            <span className="mt-4 inline-block px-3 py-1.5 bg-[#F2B705] border-2 border-[#16130F] shadow-[3px_3px_0_#16130F] rounded-lg -rotate-2 font-urbanist font-extrabold text-[16px]">
+                Lagta hai ye page bhi abroad chala gaya ✈️
+            </span>
+            <p className="mt-4 text-[14.5px] text-slate-600 text-center max-w-md">
                 The page you are looking for has moved or never existed. Take the next train home.
             </p>
 

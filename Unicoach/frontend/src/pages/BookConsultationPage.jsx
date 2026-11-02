@@ -450,6 +450,7 @@ const ConfirmStep = ({ cfg, pick, savedForm }) => {
             className="no-shine mt-6 w-full h-14 rounded-full bg-[#16130F] text-white border-[3px] border-[#16130F] shadow-[4px_4px_0_#DE5C2B] hover:-translate-y-0.5 disabled:opacity-60 disabled:hover:translate-y-0 font-bold text-[15px] flex items-center justify-center gap-2 cursor-pointer transition-transform">
             {busy ? <><Loader2 size={17} className="animate-spin" /> Processing…</> : price ? <>Pay ₹{price} &amp; confirm</> : 'Confirm my free call'}
           </button>
+          {!price && <p className="mt-3 text-center font-urbanist font-extrabold text-[15px] text-[#14837E]">Free hai, sach mein free. Card ki zaroorat nahi.</p>}
           {price > 0 && <p className="mt-3 flex items-center justify-center gap-1.5 text-[14px] text-[#5B544A]"><ShieldCheck size={15} className="text-[#14837E]" /> Secure payment by Razorpay: UPI, cards, net banking. See our <Link to="/refund-policy" className="underline">refund policy</Link>.</p>}
         </form>
       </div>

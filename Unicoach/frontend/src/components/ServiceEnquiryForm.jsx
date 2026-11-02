@@ -144,7 +144,7 @@ const ServiceEnquiryForm = ({
             <div className="w-16 h-16 mx-auto rounded-full bg-[#14837E] text-white border-[3px] border-[#16130F] shadow-[3px_3px_0_#16130F] flex items-center justify-center">
               <CheckCircle2 size={30} />
             </div>
-            <p className="mt-5 font-urbanist font-extrabold text-[15px] text-[#D0362E]">Ho gaya!</p>
+            <p className="mt-5 font-urbanist font-extrabold text-[15px] text-[#D0362E]">Ho gaya! Ab counsellor ki baari</p>
             <h3 className="mt-1 font-urbanist text-[24px] font-black text-[#16130F] tracking-[-0.02em]">{successTitle}</h3>
             <p className="mt-2 text-[15px] text-[#3D3830] leading-relaxed">{successText}</p>
             <p className="mt-4 inline-block px-3 py-1.5 text-[14px] font-semibold text-[#16130F] bg-[#FFF1B8] border-2 border-[#16130F]" style={{ borderRadius: 8 }}>

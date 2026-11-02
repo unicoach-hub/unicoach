@@ -432,10 +432,18 @@ const Footer = () => {
 
         </div>
 
+        {/* Pun stickers, like lines on a delivery bag */}
+        <div className="flex flex-wrap justify-center gap-3 py-6" aria-label="UniCoach lines">
+          {[['Sapne bade, SOP badhiya', '#DE5C2B', '#fff', -2], ['IELTS ka band, tension band', '#F2B705', '#16130F', 1.5], ['Admit card se boarding pass tak', '#14837E', '#fff', -1], ['Papa ki FD safe, sapna bhi', '#B8285B', '#fff', 2]].map(([t, bg, fg, tilt]) => (
+            <span key={t} className="px-3.5 py-2 border-2 border-[#16130F] shadow-[3px_3px_0_#16130F] rounded-lg font-urbanist font-extrabold text-[15px]" style={{ background: bg, color: fg, transform: `rotate(${tilt}deg)` }}>{t}</span>
+          ))}
+        </div>
+
         {/* Bottom Bar: Copyright & Legal */}
         <div className="border-t border-orange-100/80 pt-6 mt-4 flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="text-slate-500 text-xs font-semibold">
             © {new Date().getFullYear()} UniCoach Education. All rights reserved.
+            <span className="block sm:inline sm:ml-2 text-[#16130F] font-bold">Made in India, for the world 🌏</span>
           </p>
 
           <div className="flex items-center gap-5">

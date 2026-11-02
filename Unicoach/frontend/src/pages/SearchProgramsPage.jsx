@@ -1022,7 +1022,10 @@ export default function SearchProgramsPage({ highlight } = {}) {
           ) : !result ? (
             <div className="text-center py-20 text-slate-400">Search for a program to see results.</div>
           ) : result.data?.length === 0 ? (
-            <div className="text-center py-16 text-slate-500">No programs match your filters.</div>
+            <div className="text-center py-16">
+              <p className="font-urbanist text-[22px] font-black text-[#16130F]">Itni picky? 😅 Filter thoda dheela karo</p>
+              <p className="mt-1 text-[15px] text-[#5B544A]">No programs match your filters. Remove one or two and search again.</p>
+            </div>
           ) : view === 'universities' ? (
             Object.values(result.data.reduce((acc, c) => { (acc[c.cfUniversityId] = acc[c.cfUniversityId] || { uni: c, items: [] }).items.push(c); return acc; }, {})).map((g) => (
               <div key={g.uni.cfUniversityId} className="bg-white border-2 border-[#16130F] shadow-[4px_4px_0_#16130F] overflow-hidden" style={{ borderRadius: 14 }}>
