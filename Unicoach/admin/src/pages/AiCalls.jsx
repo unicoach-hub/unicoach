@@ -1,10 +1,11 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import {
-  Alert, Button, DatePicker, Drawer, Empty, Form, Input, InputNumber, Popconfirm, Segmented, Select, Spin, Switch, Table, Tag, message,
+  Alert, Button, DatePicker, Drawer, Empty, Form, Input, InputNumber, Popconfirm, Segmented, Select, Spin, Switch, Table, Tag, Upload, message,
 } from 'antd';
 import {
   PhoneOutlined, ReloadOutlined, SyncOutlined, ArrowDownOutlined, ArrowUpOutlined, SettingOutlined, UserOutlined, DeleteOutlined,
+  InboxOutlined, TeamOutlined, DownloadOutlined,
 } from '@ant-design/icons';
 import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip as ChartTip, Legend } from 'recharts';
 import Header from '../components/Header';
@@ -22,7 +23,7 @@ const OUTCOMES = {
 };
 const LIVE = ['dialing', 'ringing', 'in-progress'];
 const PENDING = ['scheduled', 'queued', 'rescheduled', 'initiated', 'dialing', 'ringing', 'in-progress'];
-const TRIGGERS = { auto: 'Auto (form)', manual: 'Manual', batch: 'Batch', inbound: 'Inbound', softphone: 'Team phone' };
+const TRIGGERS = { auto: 'Auto (form)', manual: 'Manual', batch: 'Batch / list', inbound: 'Inbound', softphone: 'Team phone' };
 
 const fmtTime = (d) => (d ? new Date(d).toLocaleString('en-IN', {
   timeZone: 'Asia/Kolkata', day: 'numeric', month: 'short', hour: 'numeric', minute: '2-digit',
@@ -570,6 +571,185 @@ const NewCall = ({ onDone }) => {
   );
 };
 
+// Bulk call: an Excel / CSV list → one call per number, dialled by Riya a few at a time
+const BULK_MAX = 500;
+const PHONE_HEAD = /phone|mobile|number|contact|whatsapp|cell/i;
+const NAME_HEAD = /name/i;
+// 98765 43210 / 09876543210 / 919876543210 / +91-98765-43210 → +919876543210 ('' if not an Indian mobile)
+const cleanPhone = (v) => {
+  const d = String(v ?? '').replace(/\D/g, '');
+  const ten = d.length === 10 ? d : d.length === 11 && d[0] === '0' ? d.slice(1) : d.length === 12 && d.startsWith('91') ? d.slice(2) : '';
+  return /^[6-9]\d{9}$/.test(ten) ? `+91${ten}` : '';
+};
+
+// Rows of cells → [{ phone, name, raw }]: uses the header row if it has a phone column, else guesses the columns
+const readContacts = (rows) => {
+  const filled = rows.filter((r) => r.some((c) => String(c ?? '').trim()));
+  if (!filled.length) return [];
+  const head = filled[0].map((c) => String(c ?? ''));
+  let phoneCol = head.findIndex((h) => PHONE_HEAD.test(h));
+  let nameCol = head.findIndex((h, i) => i !== phoneCol && NAME_HEAD.test(h));
+  let body = filled;
+  if (phoneCol >= 0) {
+    body = filled.slice(1);
+  } else {
+    const width = Math.max(...filled.map((r) => r.length));
+    const score = (i) => filled.filter((r) => cleanPhone(r[i])).length;
+    phoneCol = [...Array(width).keys()].sort((a, b) => score(b) - score(a))[0];
+    nameCol = [...Array(width).keys()].find((i) => i !== phoneCol && filled.some((r) => /[a-z]/i.test(String(r[i] ?? ''))));
+    if (!cleanPhone(filled[0][phoneCol])) body = filled.slice(1); // first row was a header after all
+  }
+  return body.map((r) => ({
+    raw: String(r[phoneCol] ?? '').trim(),
+    phone: cleanPhone(r[phoneCol]),
+    name: nameCol >= 0 ? String(r[nameCol] ?? '').trim().slice(0, 80) : '',
+  }));
+};
+
+const downloadSample = () => {
+  const csv = 'Name,Phone\nRahul Sharma,9876543210\nPriya Singh,+91 98765 43211\n';
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([csv], { type: 'text/csv' }));
+  a.download = 'riya-call-list-sample.csv';
+  a.click();
+  URL.revokeObjectURL(a.href);
+};
+
+const BulkCall = ({ onDone }) => {
+  const [form] = Form.useForm();
+  const [file, setFile] = useState('');
+  const [contacts, setContacts] = useState([]);
+  const [saving, setSaving] = useState(false);
+  const [result, setResult] = useState(null);
+  const valid = useMemo(() => contacts.filter((c) => c.phone), [contacts]);
+
+  const load = async (f) => {
+    setResult(null);
+    try {
+      const XLSX = await import('xlsx');
+      const book = XLSX.read(await f.arrayBuffer(), { type: 'array' });
+      const rows = XLSX.utils.sheet_to_json(book.Sheets[book.SheetNames[0]], { header: 1, raw: true, defval: '' });
+      const list = readContacts(rows);
+      if (!list.length) throw new Error('empty');
+      setContacts(list);
+      setFile(f.name);
+    } catch {
+      message.error('Could not read that file. Use an Excel or CSV file with a phone number column.');
+    }
+    return false; // we read the file here; nothing is uploaded
+  };
+
+  const submit = async (v) => {
+    if (!valid.length) return;
+    if (valid.length > BULK_MAX) { message.error(`At most ${BULK_MAX} numbers per list. Split the file.`); return; }
+    setSaving(true);
+    try {
+      const { data } = await API.post('/admin/ai-calls/bulk', {
+        contacts: valid.map(({ phone, name }) => ({ phone, name })),
+        customInstructions: v.customInstructions,
+        scheduledAt: v.scheduledAt ? v.scheduledAt.toDate().toISOString() : undefined,
+      });
+      setResult(data);
+      if (data.queued) message.success(`${data.queued} calls queued. Riya will call them one by one.`);
+    } catch (e) {
+      message.error(errText(e, 'Could not queue the calls'));
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const reset = () => { setContacts([]); setFile(''); setResult(null); form.resetFields(); };
+  const bad = contacts.length - valid.length;
+
+  if (result) {
+    return (
+      <div className="nx-card" style={{ padding: 18, maxWidth: 760 }}>
+        <Alert
+          type={result.queued ? 'success' : 'warning'}
+          showIcon
+          message={`${result.queued} calls queued${result.skipped.length ? `, ${result.skipped.length} skipped` : ''}`}
+          description="Riya calls a few students at a time, only during calling hours. Results show up in Call history as each call ends. Students who want a counsellor or a callback are added to Leads."
+        />
+        {result.skipped.length > 0 && (
+          <Table
+            style={{ marginTop: 14 }}
+            size="small"
+            rowKey={(r, i) => `${r.name}-${i}`}
+            dataSource={result.skipped}
+            pagination={{ pageSize: 10, hideOnSinglePage: true }}
+            columns={[{ title: 'Skipped', dataIndex: 'name' }, { title: 'Why', dataIndex: 'reason' }]}
+          />
+        )}
+        <div style={{ display: 'flex', gap: 8, marginTop: 14 }}>
+          <Button type="primary" onClick={onDone}>See call history</Button>
+          <Button onClick={reset}>Upload another list</Button>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="nx-card" style={{ padding: 18, maxWidth: 760 }}>
+      <Form form={form} layout="vertical" onFinish={submit}>
+        {!contacts.length ? (
+          <>
+            <Upload.Dragger accept=".xlsx,.xls,.csv" showUploadList={false} beforeUpload={load} multiple={false}>
+              <p className="ant-upload-drag-icon"><InboxOutlined /></p>
+              <p className="ant-upload-text">Drop an Excel or CSV file here, or click to pick one</p>
+              <p className="ant-upload-hint">One student per row: a phone number column, and a name column if you have one. Up to {BULK_MAX} numbers.</p>
+            </Upload.Dragger>
+            <Button type="link" icon={<DownloadOutlined />} onClick={downloadSample} style={{ paddingLeft: 0, marginTop: 8 }}>Download a sample file</Button>
+          </>
+        ) : (
+          <>
+            <Alert
+              style={{ marginBottom: 14 }}
+              type={bad ? 'warning' : 'info'}
+              showIcon
+              message={`${file}: ${valid.length} numbers to call${bad ? `, ${bad} rows without a valid Indian mobile number (left out)` : ''}`}
+              description="Numbers that are already leads get their lead's details. Numbers twice in the list, with a call already waiting, or tagged do-not-call are skipped."
+              action={<Button size="small" onClick={reset}>Change file</Button>}
+            />
+            <Table
+              size="small"
+              rowKey={(r, i) => `${r.raw}-${i}`}
+              dataSource={contacts}
+              pagination={{ pageSize: 8, hideOnSinglePage: true, showSizeChanger: false }}
+              columns={[
+                { title: 'Name', dataIndex: 'name', render: (n) => n || <span style={{ color: '#999' }}>No name</span> },
+                { title: 'Number', dataIndex: 'raw' },
+                { title: '', key: 'ok', width: 120, render: (_, r) => (r.phone ? <Tag color="green">{r.phone}</Tag> : <Tag color="red">Not valid</Tag>) },
+              ]}
+              style={{ marginBottom: 14 }}
+            />
+          </>
+        )}
+        <Form.Item
+          name="customInstructions"
+          label="Instructions for these calls (optional)"
+          extra="Same for every student in the list, e.g. “Invite them to Saturday's UK webinar at 6 PM”."
+          style={{ marginTop: 14 }}
+        >
+          <Input.TextArea rows={3} maxLength={1000} />
+        </Form.Item>
+        <Form.Item name="scheduledAt" label="Start at" extra="Leave empty to start now. Outside calling hours the list waits for the next morning.">
+          <DatePicker showTime={{ format: 'HH:mm' }} format="D MMM YYYY, HH:mm" style={{ width: '100%' }} placeholder="Now" />
+        </Form.Item>
+        <Popconfirm
+          title={`Riya will call ${valid.length} students. Start?`}
+          okText="Yes, start"
+          onConfirm={() => form.submit()}
+          disabled={!valid.length}
+        >
+          <Button type="primary" icon={<TeamOutlined />} loading={saving} disabled={!valid.length}>
+            {valid.length ? `Call ${valid.length} students` : 'Call the list'}
+          </Button>
+        </Popconfirm>
+      </Form>
+    </div>
+  );
+};
+
 const SettingsTab = () => {
   const [form] = Form.useForm();
   const [info, setInfo] = useState(null);
@@ -664,12 +844,14 @@ const AiCalls = () => {
             { label: 'Overview', value: 'overview' },
             { label: 'Call history', value: 'history' },
             { label: 'New call', value: 'new', icon: <PhoneOutlined /> },
+            { label: 'Bulk call', value: 'bulk', icon: <TeamOutlined /> },
             ...(owner ? [{ label: 'Settings', value: 'settings', icon: <SettingOutlined /> }] : []),
           ]}
         />
         {tab === 'overview' && <Overview reloadKey={reloadKey} />}
         {tab === 'history' && <History reloadKey={reloadKey} openId={openId} setOpenId={setOpenId} owner={owner} />}
         {tab === 'new' && <NewCall onDone={() => { setReloadKey((k) => k + 1); setTab('history'); }} />}
+        {tab === 'bulk' && <BulkCall onDone={() => { setReloadKey((k) => k + 1); setTab('history'); }} />}
         {tab === 'settings' && owner && <SettingsTab />}
       </div>
     </div>

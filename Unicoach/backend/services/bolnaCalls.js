@@ -149,7 +149,7 @@ async function queueCall({ lead, phone, name, trigger, customInstructions = '', 
   userData.custom_instructions = String(customInstructions || '').trim().slice(0, 1000);
 
   if (cfg.provider === 'elevenlabs') {
-    const call = await require('./riyaCalls').createCall({ lead, to, userData, trigger, requestedBy, scheduledAt, config: cfg });
+    const call = await require('./riyaCalls').createCall({ lead, to, name, userData, trigger, requestedBy, scheduledAt, config: cfg });
     if (lead?._id) await noteQueued(lead, call, trigger, requestedBy, scheduledAt);
     return call;
   }
@@ -456,16 +456,24 @@ async function recordExecution(payload) {
   }
 
   let lead = await findLead(payload, call);
-  if (!lead && isInbound && ANSWERED_STATUSES.includes(status) && durationSec > 0 && isIndianNumber(phone)) {
+  // A number from an uploaded list becomes a lead once the student wants a consultation or a callback
+  const fromList = !isInbound && call.trigger === 'batch' && ['consultation_yes', 'callback'].includes(call.outcome);
+  if (!lead && (isInbound || fromList) && ANSWERED_STATUSES.includes(status) && durationSec > 0 && isIndianNumber(phone)) {
+    const source = isInbound ? 'Inbound call' : 'Bulk call list';
     lead = new Lead({
-      name: fields.name || 'Inbound caller',
+      name: fields.name || call.name || (isInbound ? 'Inbound caller' : 'Student'),
       phone,
       email: '',
-      source: 'Inbound call',
-      latestSource: 'Inbound call',
+      source,
+      latestSource: source,
       verified: false,
       status: 'new',
-      activities: [{ type: 'note', comment: 'Called the Unicoach number; Riya answered', date: new Date(), performedBy: 'System' }],
+      activities: [{
+        type: 'note',
+        comment: isInbound ? 'Called the Unicoach number; Riya answered' : `Riya called from an uploaded list (${OUTCOME_LABELS[call.outcome] || call.outcome})`,
+        date: new Date(),
+        performedBy: 'System',
+      }],
     });
   }
 

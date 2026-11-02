@@ -3,8 +3,9 @@ const Lead = require('../models/Lead');
 const Settings = require('../models/Settings');
 const { scopedStaffId, canAccessLead, actorName } = require('../utils/leadAccess');
 const {
-  queueCall, getConfig, isWithinWindow, fetchExecution, recordExecution, CallError,
+  queueCall, getConfig, isWithinWindow, nextCallTime, fetchExecution, recordExecution, CallError,
 } = require('../services/bolnaCalls');
+const { normalizePhone } = require('../utils/twilio');
 const riya = require('../services/riyaCalls');
 
 const OBJECT_ID = /^[a-f0-9]{24}$/i;
@@ -278,6 +279,65 @@ exports.startBatch = async (req, res) => {
     return res.json(results);
   } catch (err) {
     return sendError(res, err, 'batch');
+  }
+};
+
+const PENDING = ['scheduled', 'queued', 'dialing', 'ringing', 'in-progress'];
+const BULK_MAX = 500;
+
+/**
+ * POST /api/admin/ai-calls/bulk  { contacts: [{ phone, name }], customInstructions, scheduledAt } (max 500)
+ * A list uploaded from Excel / CSV. Numbers that are already leads get their lead's details;
+ * the rest are called by name only. Outside calling hours the list waits for the next morning.
+ */
+exports.startBulk = async (req, res) => {
+  try {
+    const contacts = Array.isArray(req.body?.contacts) ? req.body.contacts : [];
+    if (!contacts.length) throw new CallError('The list has no numbers');
+    if (contacts.length > BULK_MAX) throw new CallError(`At most ${BULK_MAX} numbers per list`);
+    const config = await getConfig();
+    const start = readSchedule(req.body || {})
+      || (isWithinWindow(new Date(), config) ? new Date() : nextCallTime(new Date(), config));
+
+    const results = { queued: 0, skipped: [] };
+    const by = actorName(req, 'Admin');
+    const customInstructions = typeof req.body.customInstructions === 'string' ? req.body.customInstructions : '';
+    const seen = new Set();
+    for (const row of contacts) {
+      const name = String(row?.name || '').trim().slice(0, 80);
+      const phone = normalizePhone(String(row?.phone || '').trim());
+      const label = name || String(row?.phone || '');
+      if (!/^\+91\d{10}$/.test(phone)) { results.skipped.push({ name: label, reason: 'not an Indian number' }); continue; }
+      if (seen.has(phone)) { results.skipped.push({ name: label, reason: 'twice in the list' }); continue; }
+      seen.add(phone);
+      try {
+        if (await AiCall.exists({ phone, kind: 'ai', status: { $in: PENDING } })) {
+          results.skipped.push({ name: label, reason: 'already has a call waiting' });
+          continue;
+        }
+        let lead = await Lead.findOne({ phone }).sort({ createdAt: -1 });
+        if (lead && (lead.tags || []).includes('do-not-call')) { results.skipped.push({ name: label, reason: 'do-not-call' }); continue; }
+        if (lead && !canAccessLead(req, lead)) lead = null; // call by name only; staff can't see this lead
+        await queueCall({
+          lead,
+          phone,
+          name,
+          trigger: 'batch',
+          customInstructions,
+          requestedBy: by,
+          // one second apart keeps the list's order in Riya's queue
+          scheduledAt: new Date(start.getTime() + results.queued * 1000),
+          config,
+        });
+        results.queued += 1;
+      } catch (err) {
+        if (err.status === 503 && !results.queued) throw err; // calling isn't set up: say so once
+        results.skipped.push({ name: label, reason: err.message });
+      }
+    }
+    return res.json(results);
+  } catch (err) {
+    return sendError(res, err, 'bulk');
   }
 };
 
