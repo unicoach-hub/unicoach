@@ -33,6 +33,8 @@ const TICK_MS = 15000;
 const RING_TIMEOUT_SEC = 40;
 const MAX_CALL_SEC = 900;
 const RETRY_MINUTES = [60, 240]; // after a no-answer / busy: 2 more tries
+const FRAME_BYTES = 160; // 20 ms of μ-law at 8 kHz
+const PLAYBACK_LEAD_MS = 120; // how far ahead of real time Vobiz gets Riya's audio (absorbs network jitter)
 const FINALIZE_DELAYS_MS = [8000, 20000, 45000, 90000, 180000]; // ElevenLabs needs a moment for the analysis
 
 // Spoken to callers we don't know yet (the agent's own first message asks for {{name}})
@@ -434,12 +436,32 @@ function bridgeCall(phoneWs, call) {
   let inputFormat = '';
   let outputFormat = '';
   const pending = []; // student audio that arrived before ElevenLabs was ready
-  let playbackEndsAt = 0; // when Vobiz will have played everything we sent
   let closed = false;
   let triedWithoutOverride = false;
 
   const sendPhone = (msg) => { if (phoneWs.readyState === WebSocket.OPEN) phoneWs.send(JSON.stringify(msg)); };
   const sendEleven = (msg) => { if (eleven?.readyState === WebSocket.OPEN) eleven.send(JSON.stringify(msg)); };
+
+  /*
+   * Riya's audio goes to Vobiz at real-time speed, 20 ms per frame. ElevenLabs sends a sentence in a
+   * few big bursts; handing those straight to Vobiz made her voice stutter on the phone.
+   */
+  const out = []; // μ-law chunks waiting to be played
+  let sentUntil = 0; // when Vobiz will have played everything sent so far
+  const queuedMs = () => out.reduce((ms, b) => ms + b.length / 8, 0); // 8 bytes per ms
+  const remainingMs = () => queuedMs() + Math.max(sentUntil - Date.now(), 0);
+  const pacer = setInterval(() => {
+    if (!streamId || !out.length) return;
+    const now = Date.now();
+    if (sentUntil < now) sentUntil = now;
+    while (out.length && sentUntil - now < PLAYBACK_LEAD_MS) {
+      const frame = out[0].subarray(0, FRAME_BYTES);
+      out[0] = out[0].subarray(frame.length);
+      if (!out[0].length) out.shift();
+      sendPhone({ event: 'playAudio', streamId, media: { contentType: 'audio/x-mulaw', sampleRate: 8000, payload: frame.toString('base64') } });
+      sentUntil += frame.length / 8;
+    }
+  }, 20);
 
   const vars = Object.fromEntries(DYNAMIC_KEYS.map((k) => [k, String(call.dynamicVars?.[k] || '')]));
   const unknownCaller = call.direction === 'inbound' && !vars.name;
@@ -473,14 +495,13 @@ function bridgeCall(phoneWs, call) {
         case 'audio': {
           const b64 = msg.audio_event?.audio_base_64;
           if (!b64 || !streamId) break;
-          const ulaw = toPhone(Buffer.from(b64, 'base64'), outputFormat);
-          sendPhone({ event: 'playAudio', streamId, media: { contentType: 'audio/x-mulaw', sampleRate: 8000, payload: ulaw.toString('base64') } });
-          playbackEndsAt = Math.max(playbackEndsAt, Date.now()) + ulaw.length / 8; // 8 bytes per ms
+          out.push(toPhone(Buffer.from(b64, 'base64'), outputFormat));
           break;
         }
-        case 'interruption':
+        case 'interruption': // the student spoke over Riya: drop what she hadn't said yet
+          out.length = 0;
+          sentUntil = Date.now();
           if (streamId) sendPhone({ event: 'clearAudio', streamId });
-          playbackEndsAt = Date.now();
           break;
         case 'ping':
           setTimeout(() => sendEleven({ type: 'pong', event_id: msg.ping_event?.event_id }), Number(msg.ping_event?.ping_ms) || 0);
@@ -508,7 +529,7 @@ function bridgeCall(phoneWs, call) {
   function endPhone() {
     if (closed) return;
     closed = true;
-    const wait = Math.min(Math.max(playbackEndsAt - Date.now(), 0) + 600, 15000);
+    const wait = Math.min(remainingMs() + 600, 15000);
     setTimeout(async () => {
       try {
         if (vobizCallUuid) await vobizRequest(`/Call/${encodeURIComponent(vobizCallUuid)}/`, { method: 'DELETE' });
@@ -557,6 +578,7 @@ function bridgeCall(phoneWs, call) {
   // The student hung up (Vobiz closes the stream; there is no stop event)
   phoneWs.on('close', () => {
     log(`stream end ${call._id}: in=${inputFormat} out=${outputFormat} ${JSON.stringify(stats)}`);
+    clearInterval(pacer);
     const wasOpen = !closed;
     closed = true;
     try { eleven?.close(); } catch { /* already closed */ }
