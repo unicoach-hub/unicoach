@@ -10,7 +10,9 @@ const UnicoachMentor = require('../unicoach/models/UnicoachMentor');
 const UnicoachService = require('../unicoach/models/UnicoachService');
 const UnicoachBooking = require('../unicoach/models/UnicoachBooking');
 const UnicoachPayout = require('../unicoach/models/UnicoachPayout');
-const { listWeeklyPayouts, markWeeklyPaid } = require('../unicoach/controllers/weeklyPayoutController');
+const { listWeeklyPayouts, markWeeklyPaid, confirmSessionHappened } = require('../unicoach/controllers/weeklyPayoutController');
+const sessionCheck = require('../unicoach/services/sessionCheckService');
+const { sendEmail } = require('../utils/email');
 const { requestPayout } = require('../unicoach/controllers/mentorController');
 const { payoutState, nextPayoutDate } = require('../unicoach/services/weeklyPayoutService');
 
@@ -47,7 +49,8 @@ const booking = (ids, over = {}) => {
   n += 1;
   return UnicoachBooking.collection.insertOne({
     bookingRef: `UM-${1000 + n}`, idempotencyKey: `key-${n}`, mentorId: ids.mentorId, serviceId: ids.callId, studentName: 'Rahul',
-    state: 'CONFIRMED', amountPaid: 1000, payment: { paymentId: `pay_${n}` },
+    // calls default to "mentor marked it completed"; the session-check tests below cover the other cases
+    state: 'COMPLETED', amountPaid: 1000, payment: { paymentId: `pay_${n}` },
     settlement: { status: 'ROUTE_DISABLED', mentorNetINR: 976.4 },
     weeklyPayout: { payoutId: null, payoutRef: '', paidAt: null },
     createdAt: new Date(), updatedAt: new Date(), ...over,
@@ -153,4 +156,85 @@ test('payout request needs bank details and something ready', async () => {
   expect((await call(requestPayout, req)).code).toBe(400);
   await UnicoachMentor.collection.updateOne({ _id: mentor.insertedId }, { $set: { defaultPayoutDetails: { upiId: 'nb@upi' } } });
   expect((await call(requestPayout, req)).code).toBe(400); // nothing ready yet
+});
+
+// ── "Did the session happen?" ──
+const pastCall = (over = {}) => ({ startUtc: new Date(Date.now() - 72 * H), endUtc: new Date(Date.now() - 71 * H), ...over });
+
+test('call the mentor never marked completed is not paid, even long after it ended', async () => {
+  const ids = await setup();
+  await booking(ids, pastCall({ state: 'CONFIRMED' }));
+  const m = (await call(listWeeklyPayouts)).body.mentors[0];
+  expect(m.ready).toHaveLength(0);
+  expect(m.upcoming).toHaveLength(1);
+  expect(m.upcoming[0].payoutState).toBe('AWAITING_MENTOR');
+  expect(m.upcoming[0].mentorDone).toBe(false);
+});
+
+test('student says yes: ready as soon as the mentor marked it, no 48h wait', async () => {
+  const ids = await setup();
+  await booking(ids, { startUtc: new Date(Date.now() - 3 * H), endUtc: new Date(Date.now() - 2 * H), sessionCheck: { studentAnswer: 'YES', askedAt: new Date(Date.now() - H) } });
+  const m = (await call(listWeeklyPayouts)).body.mentors[0];
+  expect(m.ready).toHaveLength(1);
+  expect(m.ready[0].student).toBe('YES');
+});
+
+test('no reply: the 48h count from when the student was asked', async () => {
+  const ids = await setup();
+  await booking(ids, pastCall({ sessionCheck: { askedAt: new Date(Date.now() - 10 * H) } }));
+  await booking(ids, pastCall({ sessionCheck: { askedAt: new Date(Date.now() - 49 * H) } }));
+  const m = (await call(listWeeklyPayouts)).body.mentors[0];
+  expect(m.upcoming).toHaveLength(1);
+  expect(m.ready).toHaveLength(1);
+});
+
+test('student says no: payout held and cannot be paid; admin confirming releases it', async () => {
+  const ids = await setup();
+  const { insertedId } = await booking(ids, pastCall({ sessionCheck: { studentAnswer: 'NO', askedAt: new Date(Date.now() - 60 * H), note: 'Mentor did not join' } }));
+  let r = await call(listWeeklyPayouts);
+  let m = r.body.mentors[0];
+  expect(m.held).toHaveLength(1);
+  expect(m.ready).toHaveLength(0);
+  expect(r.body.totals.held).toBe(1);
+  const paid = await call(markWeeklyPaid, { params: { mentorId: String(ids.mentorId) }, body: { transactionRef: 'UTR1' } });
+  expect(paid.code).toBe(400);
+
+  const c = await call(confirmSessionHappened, { params: { bookingId: String(insertedId) } });
+  expect(c.body.success).toBe(true);
+  m = (await call(listWeeklyPayouts)).body.mentors[0];
+  expect(m.ready).toHaveLength(1);
+  expect(m.ready[0].adminConfirmed).toBe(true);
+});
+
+test('worker asks each ended paid call once, by email, with a token link', async () => {
+  const ids = await setup();
+  sendEmail.mockClear();
+  await booking(ids, pastCall({ state: 'CONFIRMED', studentEmail: 'rahul@example.com', endUtc: new Date(Date.now() - 2 * H) }));
+  await booking(ids, { studentEmail: 'later@example.com', startUtc: new Date(Date.now() + H), endUtc: new Date(Date.now() + 2 * H) });
+  await booking(ids, pastCall({ studentEmail: 'free@example.com', amountPaid: 0, endUtc: new Date(Date.now() - 2 * H) }));
+  expect(await sessionCheck.askDueSessions()).toBe(1);
+  expect(await sessionCheck.askDueSessions()).toBe(0);
+  expect(sendEmail).toHaveBeenCalledTimes(1);
+  const mail = sendEmail.mock.calls[0][0];
+  expect(mail.to).toBe('rahul@example.com');
+  const b = await UnicoachBooking.findOne({ studentEmail: 'rahul@example.com' });
+  expect(b.sessionCheck.token).toMatch(/^[a-f0-9]{48}$/);
+  expect(mail.html).toContain(`/session-check/${b.sessionCheck.token}?a=no`);
+});
+
+test('student answers through the link; a no alerts the team; settled bookings are locked', async () => {
+  const ids = await setup();
+  const token = 'a'.repeat(48);
+  await booking(ids, pastCall({ studentEmail: 'rahul@example.com', sessionCheck: { token, askedAt: new Date() } }));
+  expect((await sessionCheck.recordAnswer('bad', 'yes')).status).toBe(404);
+  expect((await sessionCheck.recordAnswer(token, 'maybe')).status).toBe(400);
+  sendEmail.mockClear();
+  const r = await sessionCheck.recordAnswer(token, 'no', 'Mentor did not join');
+  expect(r.ok).toBe(true);
+  expect(r.booking.sessionCheck.studentAnswer).toBe('NO');
+  expect(sendEmail).toHaveBeenCalledTimes(1);
+  expect(sendEmail.mock.calls[0][0].subject).toMatch(/Payout held/);
+
+  await UnicoachBooking.updateOne({ 'sessionCheck.token': token }, { $set: { 'weeklyPayout.payoutId': new mongoose.Types.ObjectId() } });
+  expect((await sessionCheck.recordAnswer(token, 'yes')).status).toBe(409);
 });

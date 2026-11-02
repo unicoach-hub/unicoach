@@ -25,20 +25,26 @@ const listWeeklyPayouts = async (req, res) => {
         mentorId: id, name: m.name, handle: m.handle, email: m.email,
         bank: m.defaultPayoutDetails || {},
         request: m.payoutRequest?.requestedAt ? m.payoutRequest : null,
-        ready: [], upcoming: [], readyINR: 0, upcomingINR: 0, paidINR: 0,
+        ready: [], upcoming: [], held: [], readyINR: 0, upcomingINR: 0, heldINR: 0, paidINR: 0,
       };
       const row = {
         _id: b._id, bookingRef: b.bookingRef, service: b.serviceId?.title || '', serviceType: b.serviceId?.type || '',
         studentName: b.studentName, when: b.startUtc || b.createdAt, paidINR: b.amountPaid,
         netINR: b.net.amount, estimated: b.net.estimated,
+        // 1:1 calls: did the mentor mark it done, and what did the student say?
+        isCall: !!(b.endUtc || b.startUtc), payoutState: b.payoutState,
+        mentorDone: b.state === 'COMPLETED',
+        student: b.sessionCheck?.studentAnswer || 'NONE', studentAskedAt: b.sessionCheck?.askedAt || null,
+        studentNote: b.sessionCheck?.note || '', adminConfirmed: !!b.sessionCheck?.adminConfirmedAt,
       };
       if (b.payoutState === 'READY') { byMentor[id].ready.push(row); byMentor[id].readyINR += row.netINR; }
-      else if (b.payoutState === 'UPCOMING') { byMentor[id].upcoming.push(row); byMentor[id].upcomingINR += row.netINR; }
+      else if (b.payoutState === 'ON_HOLD') { byMentor[id].held.push(row); byMentor[id].heldINR += row.netINR; }
+      else if (b.payoutState === 'UPCOMING' || b.payoutState === 'AWAITING_MENTOR') { byMentor[id].upcoming.push(row); byMentor[id].upcomingINR += row.netINR; }
       else if (b.payoutState === 'PAID') byMentor[id].paidINR += row.netINR;
     }
     const list = Object.values(byMentor)
-      .map((m) => ({ ...m, readyINR: round2(m.readyINR), upcomingINR: round2(m.upcomingINR), paidINR: round2(m.paidINR) }))
-      .filter((m) => m.ready.length || m.upcoming.length)
+      .map((m) => ({ ...m, readyINR: round2(m.readyINR), upcomingINR: round2(m.upcomingINR), heldINR: round2(m.heldINR), paidINR: round2(m.paidINR) }))
+      .filter((m) => m.ready.length || m.upcoming.length || m.held.length)
       // Mentors who asked to be paid come first, oldest request first
       .sort((a, b) => (!!b.request - !!a.request)
         || (a.request && b.request ? new Date(a.request.requestedAt) - new Date(b.request.requestedAt) : 0)
@@ -54,6 +60,8 @@ const listWeeklyPayouts = async (req, res) => {
       totals: {
         readyINR: round2(list.reduce((t, m) => t + m.readyINR, 0)),
         upcomingINR: round2(list.reduce((t, m) => t + m.upcomingINR, 0)),
+        heldINR: round2(list.reduce((t, m) => t + m.heldINR, 0)),
+        held: list.reduce((t, m) => t + m.held.length, 0),
         mentorsToPay: list.filter((m) => m.ready.length).length,
         requests: list.filter((m) => m.request).length,
       },
@@ -124,4 +132,21 @@ const markWeeklyPaid = async (req, res) => {
   }
 };
 
-module.exports = { listWeeklyPayouts, markWeeklyPaid };
+/** POST /api/unicoach/admin/bookings/:bookingId/confirm-session
+ *  Admin checked a 1:1 call (student said "No", or the mentor never marked it): it happened, release the payout.
+ *  If it did not happen, refund the student instead (existing refund action). */
+const confirmSessionHappened = async (req, res) => {
+  try {
+    const b = await UnicoachBooking.findById(req.params.bookingId);
+    if (!b) return res.status(404).json({ error: 'Booking not found.' });
+    if (['CANCELLED', 'REFUNDED'].includes(b.state)) return res.status(400).json({ error: `This booking is ${b.state.toLowerCase()}.` });
+    if (b.weeklyPayout?.payoutId) return res.status(400).json({ error: 'This booking is already paid out.' });
+    await UnicoachBooking.updateOne({ _id: b._id }, { $set: { 'sessionCheck.adminConfirmedAt': new Date(), state: 'COMPLETED' } });
+    return res.json({ success: true });
+  } catch (err) {
+    console.error('[Weekly payouts] confirm session failed:', err);
+    return res.status(500).json({ error: 'Could not update this booking.' });
+  }
+};
+
+module.exports = { listWeeklyPayouts, markWeeklyPaid, confirmSessionHappened };

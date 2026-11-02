@@ -418,6 +418,8 @@ if (process.env.NODE_ENV !== 'test') {
   server = app.listen(PORT, () => console.log(`🚀 Backend server running on port ${PORT}`));
   // WhatsApp campaigns: background sender (scheduled and running campaigns)
   require('./services/whatsappCampaigns').startWorker();
+  // Mentor 1:1 calls: email students "did your session happen?" (production only)
+  require('./unicoach/services/sessionCheckService').startWorker();
   // Riya on ElevenLabs: Vobiz audio WebSocket (/api/ws/riya) and the worker that dials due calls
   require('./services/riyaCalls').attachBridge(server);
   require('./services/riyaCalls').startWorker();

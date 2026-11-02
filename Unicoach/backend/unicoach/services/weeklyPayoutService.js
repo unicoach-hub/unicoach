@@ -5,7 +5,9 @@ const UnicoachBooking = require('../models/UnicoachBooking');
  * UniCoach keeps 0% commission: the mentor gets what the student paid minus Razorpay's fee + GST.
  *
  * A paid booking is READY for the next payout once the work is done and the complaint window is over:
- *  - 1:1 call: 48 hours after the session ends
+ *  - 1:1 call: the mentor marked it completed, and the student either said it happened or did not reply
+ *    within 48 hours of being asked. A student's "No" puts it ON_HOLD until an admin confirms it.
+ *    Not marked completed yet: AWAITING_MENTOR.
  *  - Priority DM / SOP review: 48 hours after it is marked completed (answered / delivered)
  *  - Digital product: straight away
  * Until then it is UPCOMING. Refunded / cancelled bookings never count. Bookings already paid out
@@ -35,7 +37,17 @@ function payoutState(b, now = new Date()) {
   if (type === 'DIGITAL_ASSET') return 'READY';
   const windowMs = COMPLAINT_WINDOW_HOURS * 3600 * 1000;
   const end = b.endUtc || b.startUtc;
-  if (end) return now - new Date(end) >= windowMs ? 'READY' : 'UPCOMING';
+  if (end) {
+    const check = b.sessionCheck || {};
+    if (check.adminConfirmedAt) return 'READY';
+    if (check.studentAnswer === 'NO') return 'ON_HOLD';
+    if (now < new Date(end)) return 'UPCOMING';
+    if (b.state !== 'COMPLETED') return 'AWAITING_MENTOR';
+    if (check.studentAnswer === 'YES') return 'READY';
+    // No reply: the 48h run from when the student was asked (or from the session end for older bookings)
+    const from = Math.max(new Date(end).getTime(), check.askedAt ? new Date(check.askedAt).getTime() : 0);
+    return now - from >= windowMs ? 'READY' : 'UPCOMING';
+  }
   // Priority DM / SOP review: ready 48h after the mentor completed it
   if (b.state === 'COMPLETED') return now - new Date(b.updatedAt || b.createdAt) >= windowMs ? 'READY' : 'UPCOMING';
   return 'UPCOMING';
@@ -52,7 +64,7 @@ function nextPayoutDate(now = new Date()) {
 /** Paid bookings for one mentor (or all), each tagged with payoutState and net amount */
 async function payableBookings(match = {}) {
   const rows = await UnicoachBooking.find({ ...match, amountPaid: { $gt: 0 }, 'payment.paymentId': { $nin: ['', null] } })
-    .select('bookingRef mentorId serviceId studentName state startUtc endUtc amountPaid payment.paymentId settlement weeklyPayout createdAt updatedAt')
+    .select('bookingRef mentorId serviceId studentName state startUtc endUtc amountPaid payment.paymentId settlement weeklyPayout sessionCheck.askedAt sessionCheck.studentAnswer sessionCheck.answeredAt sessionCheck.note sessionCheck.adminConfirmedAt createdAt updatedAt')
     .populate('serviceId', 'title type')
     .sort({ startUtc: 1, createdAt: 1 })
     .limit(5000)

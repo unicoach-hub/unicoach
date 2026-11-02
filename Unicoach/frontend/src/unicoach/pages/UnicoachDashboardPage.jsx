@@ -5524,8 +5524,13 @@ const UnicoachDashboardPage = () => {
                                   <span className={`inline-block px-2.5 py-1 rounded-full text-[10px] font-bold border whitespace-nowrap ${
                                     row.payoutState === 'PAID' ? 'bg-emerald-50 text-emerald-700 border-emerald-200'
                                       : row.payoutState === 'READY' ? 'bg-indigo-50 text-indigo-700 border-indigo-200'
-                                        : 'bg-amber-50 text-amber-700 border-amber-200'}`}>
-                                    {row.payoutState === 'PAID' ? 'Paid to your bank' : row.payoutState === 'READY' ? 'In next Monday payout' : 'After session + 48h'}
+                                        : row.payoutState === 'ON_HOLD' ? 'bg-rose-50 text-rose-700 border-rose-200'
+                                          : 'bg-amber-50 text-amber-700 border-amber-200'}`}>
+                                    {row.payoutState === 'PAID' ? 'Paid to your bank'
+                                      : row.payoutState === 'READY' ? 'In next Monday payout'
+                                        : row.payoutState === 'AWAITING_MENTOR' ? 'Mark the session completed'
+                                          : row.payoutState === 'ON_HOLD' ? 'On hold: student reported an issue'
+                                            : 'After session + 48h'}
                                   </span>
                                   {row.payoutState === 'PAID' && row.payoutPaidAt && (
                                     <span className="block text-[10px] text-slate-500 mt-1 whitespace-nowrap">

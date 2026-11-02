@@ -58,6 +58,7 @@ router.get('/ledger', getPlatformLedger);
 const weekly = require('../controllers/weeklyPayoutController');
 router.get('/weekly-payouts', weekly.listWeeklyPayouts);
 router.post('/weekly-payouts/:mentorId/paid', weekly.markWeeklyPaid);
+router.post('/bookings/:bookingId/confirm-session', weekly.confirmSessionHappened);
 
 router.get('/payouts', getAllPayouts);
 router.post('/payouts/:payoutId/process', processPayout);

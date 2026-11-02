@@ -106,6 +106,18 @@ const unicoachBookingSchema = new mongoose.Schema({
     durationSeconds: { type: Number, default: 0 }
   }],
 
+  // "Did the session happen?" for 1:1 calls. After the call the student gets an email with a link;
+  // a "No" holds the mentor's payout until the team looks at it. No reply within 48h counts as fine.
+  sessionCheck: {
+    token: { type: String, default: '' },
+    askedAt: { type: Date, default: null },
+    studentAnswer: { type: String, enum: ['NONE', 'YES', 'NO'], default: 'NONE' },
+    answeredAt: { type: Date, default: null },
+    note: { type: String, default: '' },
+    // Admin looked into it and confirmed the session happened (releases a held payout)
+    adminConfirmedAt: { type: Date, default: null },
+  },
+
   // Priority DM (Paid Async Q&A)
   priorityDm: {
     questionText: { type: String, default: '' },
@@ -174,5 +186,7 @@ const unicoachBookingSchema = new mongoose.Schema({
 
 // Paid-file downloads look bookings up by their download token
 unicoachBookingSchema.index({ 'digitalAssetDelivery.downloadToken': 1 }, { sparse: true });
+// The student's "did the session happen?" link looks bookings up by its token
+unicoachBookingSchema.index({ 'sessionCheck.token': 1 }, { sparse: true });
 
 module.exports = createUniCoachModel('UnicoachBooking', unicoachBookingSchema, 'unicoach_bookings');

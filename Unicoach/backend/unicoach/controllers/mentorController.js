@@ -426,10 +426,11 @@ const getDashboardOverview = async (req, res) => {
     }));
     const weekly = earnings.reduce((acc, e) => {
       if (e.payoutState === 'READY') acc.readyINR += e.payoutNetINR;
-      else if (e.payoutState === 'UPCOMING') acc.upcomingINR += e.payoutNetINR;
+      else if (e.payoutState === 'UPCOMING' || e.payoutState === 'AWAITING_MENTOR') acc.upcomingINR += e.payoutNetINR;
+      else if (e.payoutState === 'ON_HOLD') acc.onHoldINR += e.payoutNetINR;
       else if (e.payoutState === 'PAID') acc.paidOutINR += e.payoutNetINR;
       return acc;
-    }, { readyINR: 0, upcomingINR: 0, paidOutINR: 0 });
+    }, { readyINR: 0, upcomingINR: 0, onHoldINR: 0, paidOutINR: 0 });
     for (const k of Object.keys(weekly)) weekly[k] = Math.round(weekly[k] * 100) / 100;
     weekly.nextPayoutDate = weeklyPayout.nextPayoutDate();
     weekly.request = mentor.payoutRequest?.requestedAt ? mentor.payoutRequest : null;

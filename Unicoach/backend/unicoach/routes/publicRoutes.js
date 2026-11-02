@@ -54,6 +54,32 @@ router.post('/@:handle/create-payment-order', handleValidatorMiddleware, payment
 router.post('/@:handle/verify-payment', handleValidatorMiddleware, idempotencyMiddleware, paymentController.verifyPaymentAndConfirm);
 router.post('/webhooks/razorpay', paymentController.handleRazorpayWebhook);
 
+// ── "Did your session happen?" link from the student's email (token in the link, no login) ──
+const sessionCheck = require('../services/sessionCheckService');
+router.get('/session-check/:token', async (req, res) => {
+  try {
+    const b = await sessionCheck.findByToken(req.params.token);
+    if (!b) return res.status(404).json({ error: 'This link is not valid.' });
+    res.json({
+      mentorName: b.mentorId?.name || '', service: b.serviceId?.title || '', startUtc: b.startUtc,
+      studentName: b.studentName, answer: b.sessionCheck.studentAnswer, settled: !!b.weeklyPayout?.payoutId,
+    });
+  } catch (err) {
+    console.error('[SessionCheck] lookup failed:', err.message);
+    res.status(500).json({ error: 'Could not load this session.' });
+  }
+});
+router.post('/session-check/:token', async (req, res) => {
+  try {
+    const r = await sessionCheck.recordAnswer(req.params.token, String(req.body?.answer || '').toLowerCase(), req.body?.note);
+    if (!r.ok) return res.status(r.status).json({ error: r.error });
+    res.json({ success: true, answer: r.booking.sessionCheck.studentAnswer });
+  } catch (err) {
+    console.error('[SessionCheck] answer failed:', err.message);
+    res.status(500).json({ error: 'Could not save your answer.' });
+  }
+});
+
 // Handle-less verify (course-page bookings: legacy mentor handles may contain '-')
 router.post('/payments/verify', idempotencyMiddleware, paymentController.verifyPaymentAndConfirm);
 

@@ -25,6 +25,7 @@ import RequireProfile from './components/RequireProfile';
 const UnicoachMarketplacePage = lazy(() => import('./unicoach/pages/UnicoachMarketplacePage'));
 const MentorsDirectoryPage = lazy(() => import('./unicoach/pages/MentorsDirectoryPage'));
 const UnicoachApplyPage = lazy(() => import('./unicoach/pages/UnicoachApplyPage'));
+const SessionCheckPage = lazy(() => import('./unicoach/pages/SessionCheckPage'));
 const MentorApplicationStatusPage = lazy(() => import('./unicoach/pages/MentorApplicationStatusPage'));
 const UnicoachProfilePage = lazy(() => import('./unicoach/pages/UnicoachProfilePage'));
 const UnicoachDashboardPage = lazy(() => import('./unicoach/pages/UnicoachDashboardPage'));
@@ -921,6 +922,7 @@ const App = () => {
             <Route path="/unicoach/mentors" element={<MentorsDirectoryPage />} />
             <Route path="/unicoach/application-status" element={<MentorApplicationStatusPage />} />
             <Route path="/unicoach/for-mentors" element={<MentorLandingPage />} />
+            <Route path="/session-check/:token" element={<SessionCheckPage />} />
             <Route path="/unicoach/apply" element={<UnicoachApplyPage />} />
             <Route path="/unicoach/join" element={<UnicoachApplyPage />} />
             <Route path="/unicoach/:handle" element={<UnicoachProfilePage />} />

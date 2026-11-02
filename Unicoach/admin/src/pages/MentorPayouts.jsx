@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
-import { Button, Empty, Input, Modal, Spin, Table, Tag, message } from 'antd';
-import { DownloadOutlined, ReloadOutlined, CheckCircleOutlined, CalendarOutlined, ClockCircleOutlined, BankOutlined, BellOutlined } from '@ant-design/icons';
+import { Button, Empty, Input, Modal, Popconfirm, Spin, Table, Tag, Tooltip, message } from 'antd';
+import { DownloadOutlined, ReloadOutlined, CheckCircleOutlined, CalendarOutlined, ClockCircleOutlined, BankOutlined, BellOutlined, PauseCircleOutlined } from '@ant-design/icons';
 import Header from '../components/Header';
 import API from '../api/axios';
 
@@ -19,7 +19,8 @@ const Stat = ({ icon, label, value, sub, color = '#0F172A', bg = '#F8FAFC' }) =>
   </div>
 );
 
-// Every Monday: pay each mentor what is ready (session done + 48h, nothing refunded), by bank transfer,
+// Every Monday: pay each mentor what is ready (1:1 call marked done by the mentor and not disputed by the
+// student within 48h; nothing refunded), by bank transfer,
 // mentors who tapped "Request payout" listed first,
 // then record the UTR here. UniCoach keeps 0%; the mentor gets the payment minus Razorpay's fee.
 const MentorPayouts = () => {
@@ -72,6 +73,26 @@ const MentorPayouts = () => {
     }
   };
 
+  // 1:1 call checked by the team: it happened (releases the payout) or it did not (refund the student)
+  const confirmSession = async (b) => {
+    try {
+      await API.post(`/admin/unicoach/bookings/${b._id}/confirm-session`);
+      message.success(`${b.bookingRef}: marked as happened, payout released`);
+      load();
+    } catch (e) {
+      message.error(e.response?.data?.error || 'Could not update the booking');
+    }
+  };
+  const refundStudent = async (b) => {
+    try {
+      await API.post(`/admin/unicoach/bookings/${b._id}/refund`, { reason: 'Session did not happen (checked by UniCoach team)' });
+      message.success(`${b.bookingRef}: student refunded`);
+      load();
+    } catch (e) {
+      message.error(e.response?.data?.error || 'Could not refund');
+    }
+  };
+
   const bankLine = (b) => (b.accountNumber ? `${b.accountHolderName || ''} · ${b.accountNumber} · ${b.ifscCode || ''}` : b.upiId ? `UPI: ${b.upiId}` : null);
 
   const columns = [
@@ -96,6 +117,7 @@ const MentorPayouts = () => {
     },
     { title: 'Ready now', key: 'ready', align: 'right', render: (_, m) => <div><b style={{ color: '#047857' }}>{inr(m.readyINR)}</b><div style={{ fontSize: 12, color: 'var(--ux-text-2)' }}>{m.ready.length} booking{m.ready.length === 1 ? '' : 's'}</div></div> },
     { title: 'Upcoming', key: 'up', align: 'right', render: (_, m) => <div>{inr(m.upcomingINR)}<div style={{ fontSize: 12, color: 'var(--ux-text-2)' }}>{m.upcoming.length} not done yet</div></div> },
+    { title: 'On hold', key: 'held', align: 'right', render: (_, m) => (m.held?.length ? <div><b style={{ color: '#B91C1C' }}>{inr(m.heldINR)}</b><div style={{ fontSize: 12, color: 'var(--ux-text-2)' }}>student said no</div></div> : <span style={{ color: 'var(--ux-text-2)' }}>—</span>) },
     {
       title: '', key: 'act', align: 'right', width: 150,
       render: (_, m) => <Button type="primary" disabled={!m.ready.length || !bankLine(m.bank)} onClick={() => setPaying(m)}>Mark paid</Button>,
@@ -109,6 +131,32 @@ const MentorPayouts = () => {
     { title: 'Date', key: 'd', render: (_, b) => day(b.when) },
     { title: 'Student paid', key: 'p', align: 'right', render: (_, b) => inr(b.paidINR) },
     { title: 'Mentor gets', key: 'n', align: 'right', render: (_, b) => <span>{inr(b.netINR)}{b.estimated && <Tag style={{ marginLeft: 6 }}>fee estimated</Tag>}</span> },
+    {
+      // 1:1 calls only: did the mentor mark it done, and did the student say it happened?
+      title: 'Session happened?', key: 'chk', render: (_, b) => (!b.isCall ? <span style={{ color: 'var(--ux-text-2)' }}>—</span> : (
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4 }}>
+          {b.adminConfirmed && <Tag color="green">Confirmed by team</Tag>}
+          <Tag color={b.mentorDone ? 'green' : 'gold'}>Mentor: {b.mentorDone ? 'done' : 'not marked'}</Tag>
+          {b.student === 'YES' && <Tag color="green">Student: yes</Tag>}
+          {b.student === 'NO' && <Tooltip title={b.studentNote || 'No note'}><Tag color="red">Student: no</Tag></Tooltip>}
+          {b.student === 'NONE' && <Tag>{b.studentAskedAt ? 'Student: no reply yet' : 'Student: not asked yet'}</Tag>}
+        </div>
+      )),
+    },
+    {
+      title: '', key: 'act', render: (_, b) => (b.isCall && (b.payoutState === 'ON_HOLD' || b.payoutState === 'AWAITING_MENTOR') ? (
+        <div style={{ display: 'flex', gap: 6, justifyContent: 'flex-end' }}>
+          <Popconfirm title="You checked: the session happened?" description="The mentor's payout becomes ready." okText="Yes, release" onConfirm={() => confirmSession(b)}>
+            <Button size="small">It happened</Button>
+          </Popconfirm>
+          {b.payoutState === 'ON_HOLD' && (
+            <Popconfirm title="Refund the student in full?" description="The mentor will not be paid for this booking." okText="Refund" okButtonProps={{ danger: true }} onConfirm={() => refundStudent(b)}>
+              <Button size="small" danger>Refund student</Button>
+            </Popconfirm>
+          )}
+        </div>
+      ) : null),
+    },
   ];
 
   return (
@@ -130,7 +178,8 @@ const MentorPayouts = () => {
             <Stat icon={<CalendarOutlined />} label="Next payout" value={day(data.nextPayoutDate)} sub="Every Monday" color="#1d4ed8" bg="#EFF6FF" />
             <Stat icon={<CheckCircleOutlined />} label="Ready to pay" value={inr(data.totals.readyINR)} sub={`${data.totals.mentorsToPay} mentor${data.totals.mentorsToPay === 1 ? '' : 's'}`} color="#047857" bg="#ECFDF5" />
             <Stat icon={<BellOutlined />} label="Payout requests" value={data.totals.requests || 0} sub="Mentors who asked to be paid" color="#C2410C" bg="#FFF7ED" />
-            <Stat icon={<ClockCircleOutlined />} label="Upcoming" value={inr(data.totals.upcomingINR)} sub={`Sessions not done or within ${data.complaintWindowHours}h complaint window`} color="#B45309" bg="#FFFBEB" />
+            <Stat icon={<ClockCircleOutlined />} label="Upcoming" value={inr(data.totals.upcomingINR)} sub={`Mentor hasn't marked it done, or within ${data.complaintWindowHours}h of asking the student`} color="#B45309" bg="#FFFBEB" />
+            <Stat icon={<PauseCircleOutlined />} label="On hold" value={inr(data.totals.heldINR)} sub={`${data.totals.held || 0} session${data.totals.held === 1 ? '' : 's'} the student says did not happen`} color="#B91C1C" bg="#FEF2F2" />
             <Stat icon={<BankOutlined />} label="UniCoach commission" value="0%" sub="Mentor gets payment minus Razorpay fee" />
           </div>
 
@@ -142,6 +191,7 @@ const MentorPayouts = () => {
                   expandedRowRender: (m) => (
                     <div style={{ display: 'grid', gap: 12 }}>
                       {m.ready.length > 0 && <><b style={{ color: '#047857' }}>Ready</b><Table size="small" rowKey="_id" dataSource={m.ready} columns={bookingCols} pagination={false} /></>}
+                      {m.held?.length > 0 && <><b style={{ color: '#B91C1C' }}>On hold: student says the session did not happen</b><Table size="small" rowKey="_id" dataSource={m.held} columns={bookingCols} pagination={false} /></>}
                       {m.upcoming.length > 0 && <><b style={{ color: '#B45309' }}>Upcoming</b><Table size="small" rowKey="_id" dataSource={m.upcoming} columns={bookingCols} pagination={false} /></>}
                     </div>
                   ),
