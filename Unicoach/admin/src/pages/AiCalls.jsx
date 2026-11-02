@@ -11,7 +11,7 @@ import Header from '../components/Header';
 import API from '../api/axios';
 import { usePermissions } from '../utils/permissions';
 
-// AI Calls: Riya (Bolna voice agent) — overview, call history with recording + transcript, new calls, settings
+// AI Calls: Riya (voice agent on Bolna or ElevenLabs) — overview, call history with recording + transcript, new calls, settings
 const OUTCOMES = {
   consultation_yes: { label: 'Wants counsellor', color: 'green' },
   callback: { label: 'Callback', color: 'gold' },
@@ -20,7 +20,7 @@ const OUTCOMES = {
   wrong_number: { label: 'Wrong number', color: 'volcano' },
   no_conversation: { label: 'No conversation', color: 'default' },
 };
-const PENDING = ['scheduled', 'queued', 'rescheduled', 'initiated', 'ringing', 'in-progress'];
+const PENDING = ['scheduled', 'queued', 'rescheduled', 'initiated', 'dialing', 'ringing', 'in-progress'];
 const TRIGGERS = { auto: 'Auto (form)', manual: 'Manual', batch: 'Batch', inbound: 'Inbound', softphone: 'Team phone' };
 
 const fmtTime = (d) => (d ? new Date(d).toLocaleString('en-IN', {
@@ -71,13 +71,13 @@ const Transcript = ({ text }) => {
   );
 };
 
-// Riya's recordings are public Bolna links; team-phone recordings come through the server (Vobiz needs our keys)
+// Riya's Bolna recordings are public links; ElevenLabs and team-phone recordings come through the server (they need our keys)
 const Recording = ({ call }) => {
   const [src, setSrc] = useState('');
   const [loading, setLoading] = useState(false);
   useEffect(() => () => { if (src.startsWith('blob:')) URL.revokeObjectURL(src); }, [src]);
   if (!call.recordingUrl) return <span style={{ color: 'var(--ux-text-3)' }}>No recording yet</span>;
-  if (call.kind !== 'human') return <audio controls preload="none" src={call.recordingUrl} style={{ width: '100%' }} />;
+  if (call.kind !== 'human' && !call.recordingUrl.startsWith('elevenlabs:')) return <audio controls preload="none" src={call.recordingUrl} style={{ width: '100%' }} />;
   if (src) return <audio controls autoPlay src={src} style={{ width: '100%' }} />;
   const load = async () => {
     setLoading(true);
@@ -120,9 +120,9 @@ const CallDrawer = ({ id, onClose, onChanged }) => {
       await API.post(`/admin/ai-calls/${id}/sync`);
       await load();
       onChanged?.();
-      message.success('Updated from Bolna');
+      message.success('Updated');
     } catch (e) {
-      message.error(errText(e, 'Could not update from Bolna'));
+      message.error(errText(e, 'Could not update the call'));
     } finally {
       setSyncing(false);
     }
@@ -136,7 +136,7 @@ const CallDrawer = ({ id, onClose, onChanged }) => {
       onClose={onClose}
       width={Math.min(620, typeof window !== 'undefined' ? window.innerWidth : 620)}
       title={call ? `${call.name || call.phone} · ${call.direction === 'inbound' ? 'Inbound' : 'Outbound'}${call.kind === 'human' ? ` · ${call.staffName || 'Team'}` : ' · Riya'}` : 'Call'}
-      extra={call?.kind !== 'human' && <Button icon={<SyncOutlined spin={syncing} />} onClick={sync} disabled={!call}>Update from Bolna</Button>}
+      extra={call?.kind !== 'human' && <Button icon={<SyncOutlined spin={syncing} />} onClick={sync} disabled={!call}>{call?.provider === 'elevenlabs' ? 'Update from ElevenLabs' : 'Update from Bolna'}</Button>}
     >
       {loading && !call ? <Spin /> : call && (
         <div style={{ display: 'grid', gap: 16 }}>
@@ -309,11 +309,7 @@ const Overview = ({ reloadKey }) => {
   const t = stats.totals;
   const pct = (a, b) => (b ? `${Math.round((a / b) * 100)}%` : '—');
   const s = stats.setup;
-  const missing = [
-    !s.apiKey && 'BOLNA_API_KEY',
-    !s.agentId && 'agent ID (Settings tab or BOLNA_AGENT_ID)',
-    !s.webhookSecret && 'BOLNA_WEBHOOK_SECRET',
-  ].filter(Boolean);
+  const missing = s.missing || [];
 
   return (
     <div style={{ display: 'grid', gap: 14 }}>
@@ -323,6 +319,7 @@ const Overview = ({ reloadKey }) => {
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, alignItems: 'center' }}>
         <Segmented value={days} onChange={setDays} options={[{ label: 'Today', value: 1 }, { label: '7 days', value: 7 }, { label: '30 days', value: 30 }]} />
         <Tag color={s.autoEnabled ? 'green' : 'default'}>Auto-call {s.autoEnabled ? 'ON' : 'OFF'}</Tag>
+        <Tag>Riya on {s.provider === 'elevenlabs' ? 'ElevenLabs' : 'Bolna'}</Tag>
         <Tag color={s.inWindow ? 'blue' : 'default'}>
           Calling hours {s.windowStartHour}:00–{s.windowEndHour}:00 IST{s.inWindow ? ' · open now' : ' · closed now'}
         </Tag>
@@ -440,6 +437,8 @@ const SettingsTab = () => {
       setInfo(data);
       form.setFieldsValue({
         autoEnabled: Boolean(data.autoEnabled),
+        provider: data.provider || 'bolna',
+        elevenAgentId: data.elevenAgentId || '',
         agentId: data.agentId || '',
         fromNumber: data.fromNumber || '',
         windowStartHour: data.windowStartHour ?? 9,
@@ -469,8 +468,19 @@ const SettingsTab = () => {
         <Form.Item name="autoEnabled" label="Call every new website lead automatically" valuePropName="checked">
           <Switch />
         </Form.Item>
-        <Form.Item name="agentId" label="Bolna agent ID (outbound)" extra={info.envAgentId ? `Empty = server default ${info.envAgentId}` : 'Agent Studio → Riya → copy ID'}>
-          <Input placeholder={info.envAgentId || '123e4567-…'} />
+        <Form.Item name="provider" label="Riya runs on" extra="ElevenLabs: our Vobiz number streams the call to the ElevenLabs agent through this server">
+          <Select options={[{ value: 'elevenlabs', label: 'ElevenLabs' }, { value: 'bolna', label: 'Bolna' }]} style={{ maxWidth: 240 }} />
+        </Form.Item>
+        <Form.Item noStyle shouldUpdate={(a, b) => a.provider !== b.provider}>
+          {({ getFieldValue }) => (getFieldValue('provider') === 'elevenlabs' ? (
+            <Form.Item name="elevenAgentId" label="ElevenLabs agent ID" extra={info.envElevenAgentId ? `Empty = server default ${info.envElevenAgentId}` : 'ElevenLabs → Agents → Riya → copy ID (agent_…)'}>
+              <Input placeholder={info.envElevenAgentId || 'agent_…'} />
+            </Form.Item>
+          ) : (
+            <Form.Item name="agentId" label="Bolna agent ID (outbound)" extra={info.envAgentId ? `Empty = server default ${info.envAgentId}` : 'Agent Studio → Riya → copy ID'}>
+              <Input placeholder={info.envAgentId || '123e4567-…'} />
+            </Form.Item>
+          ))}
         </Form.Item>
         <Form.Item name="fromNumber" label="Caller number" extra={info.envFromNumber ? `Empty = server default ${info.envFromNumber}` : 'Your Vobiz number'}>
           <Input placeholder={info.envFromNumber || '+918065356711'} />

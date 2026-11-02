@@ -62,7 +62,7 @@ exports.myEndpoint = async (req, res) => {
   }
 };
 
-/** GET /api/admin/ai-calls/:id/recording: plays a softphone recording through the server */
+/** GET /api/admin/ai-calls/:id/recording: plays a softphone or ElevenLabs recording through the server */
 exports.streamRecording = async (req, res) => {
   try {
     if (!/^[a-f0-9]{24}$/i.test(req.params.id)) return res.status(404).json({ message: 'Not found' });
@@ -71,14 +71,18 @@ exports.streamRecording = async (req, res) => {
     if (staffId) filter.leadId = { $in: await Lead.find({ assignedTo: staffId }).distinct('_id') };
     const call = await AiCall.findOne(filter).select('recordingUrl kind').lean();
     if (!call?.recordingUrl) return res.status(404).json({ message: 'No recording' });
-    if (call.kind !== 'human') return res.redirect(call.recordingUrl);
+    const fromEleven = call.recordingUrl.startsWith('elevenlabs:');
+    if (call.kind !== 'human' && !fromEleven) return res.redirect(call.recordingUrl);
 
-    const upstream = await vobiz.fetchRecording(call.recordingUrl);
+    // Riya on ElevenLabs: the recording needs our ElevenLabs key; team calls need our Vobiz keys
+    const upstream = fromEleven
+      ? await require('../services/riyaCalls').fetchRecording(call.recordingUrl.slice('elevenlabs:'.length))
+      : await vobiz.fetchRecording(call.recordingUrl);
     res.set('Content-Type', upstream.headers.get('content-type') || 'audio/mpeg');
     res.set('Cache-Control', 'private, max-age=3600');
     return Readable.fromWeb(upstream.body).pipe(res);
   } catch (err) {
-    if (err instanceof vobiz.SoftphoneError) return res.status(err.status).json({ message: err.message });
+    if (err instanceof vobiz.SoftphoneError || Number.isInteger(err.status)) return res.status(err.status).json({ message: err.message });
     console.error('[Softphone] recording error:', err);
     return res.status(500).json({ message: 'Server error' });
   }

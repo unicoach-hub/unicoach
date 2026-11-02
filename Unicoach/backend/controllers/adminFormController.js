@@ -3,6 +3,13 @@ const CustomForm = require('../models/CustomForm');
 
 const generateSlug = () => crypto.randomBytes(4).toString('hex');
 
+// Owner email is optional; returns '' for blank, null for a malformed address
+const cleanOwnerEmail = (value) => {
+  const email = String(value || '').trim().toLowerCase();
+  if (!email) return '';
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) ? email : null;
+};
+
 /**
  * GET /api/admin/forms
  * GET all forms
@@ -42,6 +49,8 @@ exports.createForm = async (req, res) => {
     if (!name || !pipeline || !fields || fields.length === 0) {
       return res.status(400).json({ message: 'Name, pipeline, and at least one field are required.' });
     }
+    const ownerEmail = cleanOwnerEmail(req.body.ownerEmail);
+    if (ownerEmail === null) return res.status(400).json({ message: 'Owner email is not a valid email address.' });
 
     const slug = generateSlug();
     const form = new CustomForm({
@@ -53,6 +62,7 @@ exports.createForm = async (req, res) => {
       headerDescription: headerDescription || '',
       headerImage: headerImage || '',
       successMessage: successMessage || 'Thank you! Your response has been recorded.',
+      ownerEmail,
       createdBy: req.user?.id
     });
     await form.save();
@@ -81,6 +91,11 @@ exports.updateForm = async (req, res) => {
     if (headerImage !== undefined) form.headerImage = headerImage;
     if (successMessage !== undefined) form.successMessage = successMessage;
     if (active !== undefined) form.active = active;
+    if (req.body.ownerEmail !== undefined) {
+      const ownerEmail = cleanOwnerEmail(req.body.ownerEmail);
+      if (ownerEmail === null) return res.status(400).json({ message: 'Owner email is not a valid email address.' });
+      form.ownerEmail = ownerEmail;
+    }
 
     await form.save();
     return res.json(form);

@@ -68,6 +68,7 @@ const FormBuilder = () => {
 
   // Form builder state
   const [formName, setFormName] = useState('');
+  const [formOwnerEmail, setFormOwnerEmail] = useState('');
   const [formPipeline, setFormPipeline] = useState('');
   const [formHeaderTitle, setFormHeaderTitle] = useState('');
   const [formHeaderDesc, setFormHeaderDesc] = useState('');
@@ -107,6 +108,7 @@ const FormBuilder = () => {
 
   const resetFormState = () => {
     setFormName('');
+    setFormOwnerEmail('');
     setFormPipeline('');
     setFormHeaderTitle('');
     setFormHeaderDesc('');
@@ -128,6 +130,7 @@ const FormBuilder = () => {
   const openEdit = (form) => {
     setEditingForm(form);
     setFormName(form.name);
+    setFormOwnerEmail(form.ownerEmail || '');
     setFormPipeline(form.pipeline?._id || form.pipeline);
     setFormHeaderTitle(form.headerTitle || '');
     setFormHeaderDesc(form.headerDescription || '');
@@ -208,12 +211,15 @@ const FormBuilder = () => {
   };
 
   const handleSubmit = async () => {
+    const ownerEmail = formOwnerEmail.trim().toLowerCase();
+    if (ownerEmail && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(ownerEmail)) return message.warning('Owner email sahi nahi hai');
     if (!formName.trim()) return message.warning('Enter form name');
     if (!formPipeline) return message.warning('Select a pipeline');
     if (fields.length === 0) return message.warning('Add at least one field');
 
     const payload = {
       name: formName.trim(),
+      ownerEmail,
       pipeline: formPipeline,
       fields,
       headerTitle: formHeaderTitle || formName,
@@ -304,6 +310,11 @@ const FormBuilder = () => {
                     <div style={{ fontSize: 12.5, color: 'var(--ux-text-2)' }}>
                       Pipeline: <strong style={{ color: 'var(--ux-ink)', fontWeight: 600 }}>{form.pipeline?.name || '—'}</strong>
                     </div>
+                    <div style={{ fontSize: 12.5, color: 'var(--ux-text-2)', marginTop: 4, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                      Owner: {form.ownerEmail
+                        ? <strong style={{ color: 'var(--ux-ink)', fontWeight: 600 }}>{form.ownerEmail}</strong>
+                        : <span style={{ color: 'var(--ux-text-3)' }}>— (UniCoach)</span>}
+                    </div>
                   </div>
 
                   {/* Shareable Link */}
@@ -357,6 +368,14 @@ const FormBuilder = () => {
         destroyOnHidden
       >
         <div style={{ marginTop: 16, display: 'flex', flexDirection: 'column', gap: 16 }}>
+          <div>
+            <label style={{ fontWeight: 600, color: 'var(--ux-ink)', fontSize: 13, display: 'block', marginBottom: 6 }}>Owner email (mentor / influencer)</label>
+            <Input type="email" value={formOwnerEmail} onChange={e => setFormOwnerEmail(e.target.value)} placeholder="e.g. riya@gmail.com" />
+            <div style={{ fontSize: 12, color: 'var(--ux-text-3)', marginTop: 4 }}>
+              Jo insaan ye link share karega uska email. Is form ki saari leads iske mentor dashboard par dikhengi, chahe account baad mein bane (Google login se). UniCoach ka apna form hai to khaali chhodo.
+            </div>
+          </div>
+
           <div>
             <label style={{ fontWeight: 600, color: 'var(--ux-ink)', fontSize: 13, display: 'block', marginBottom: 6 }}>Form name *</label>
             <Input value={formName} onChange={e => setFormName(e.target.value)} placeholder="e.g. Study Abroad Inquiry" />

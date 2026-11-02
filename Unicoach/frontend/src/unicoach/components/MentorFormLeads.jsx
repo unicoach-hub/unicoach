@@ -6,8 +6,9 @@ import { SITE_URL } from '../../config';
 const fmt = (d) => (d ? new Date(d).toLocaleString('en-IN', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }) : '—');
 const csvCell = (v) => `"${String(Array.isArray(v) ? v.join(', ') : v ?? '').replace(/"/g, '""')}"`;
 
-// Mentor dashboard → "Form leads": the UniCoach forms a mentor can share (each link carries
-// ?ref=<handle>) and a sheet of every student who filled one through the mentor's link.
+// Mentor dashboard → "Form leads": forms UniCoach made for this mentor's (verified) email, the
+// UniCoach forms they can share (each link carries ?ref=<handle>), and a sheet of every student
+// who filled one of their own forms or came through their link.
 const MentorFormLeads = ({ handle }) => {
   const [data, setData] = useState(null);
   const [error, setError] = useState('');
@@ -25,9 +26,10 @@ const MentorFormLeads = ({ handle }) => {
   }, [handle]);
 
   const linkFor = (slug) => `${SITE_URL}/f/${slug}?ref=${encodeURIComponent(data?.handle || handle || '')}`;
-  const copy = async (slug) => {
+  const ownedLinkFor = (slug) => `${SITE_URL}/f/${slug}`;
+  const copy = async (slug, url = linkFor(slug)) => {
     try {
-      await navigator.clipboard.writeText(linkFor(slug));
+      await navigator.clipboard.writeText(url);
       setCopied(slug);
       setTimeout(() => setCopied(''), 1600);
     } catch { /* clipboard blocked; the link is visible to copy by hand */ }
@@ -62,9 +64,39 @@ const MentorFormLeads = ({ handle }) => {
   if (!data) return <div className="py-16 flex justify-center"><Loader2 className="w-6 h-6 animate-spin text-[#DE5C2B]" /></div>;
 
   const formNames = [...new Set((data.submissions || []).map((s) => s.formName))];
+  const ownedForms = data.ownedForms || [];
 
   return (
     <div className="space-y-5">
+      {data.ownerEmail && data.ownerEmailVerified === false && (
+        <div className="rounded-2xl border border-amber-200 bg-amber-50 px-5 py-4 text-[13px] text-amber-900">
+          Agar UniCoach ne aapke email par koi form banaya hai, to uski leads dekhne ke liye <strong>{data.ownerEmail}</strong> wale Google account se login karo. Email verify hone ke baad hi ye leads dikhti hain.
+        </div>
+      )}
+
+      {/* Forms made for this mentor's email */}
+      {ownedForms.length > 0 && (
+        <div className="bg-white rounded-2xl border border-slate-200 p-5">
+          <h3 className="text-[16px] font-semibold text-slate-900">Aapke apne forms</h3>
+          <p className="text-[13px] text-slate-500 mt-0.5">Ye forms aapke email ({data.ownerEmail}) par bane hain. Inki har lead neeche dikhti hai, purani bhi.</p>
+          <div className="mt-4 space-y-2">
+            {ownedForms.map((f) => (
+              <div key={f.slug} className="flex flex-wrap items-center gap-3 rounded-xl border border-slate-100 bg-slate-50 px-3 py-2.5">
+                <FileText className="w-4 h-4 text-[#DE5C2B] shrink-0" />
+                <span className="text-[13.5px] font-semibold text-slate-800">{f.name}</span>
+                {!f.active && <span className="px-2 py-0.5 rounded-full bg-slate-200 text-slate-600 text-[11.5px] font-semibold">Band hai</span>}
+                <span className="text-[12px] text-slate-500 truncate flex-1 min-w-[180px]">{ownedLinkFor(f.slug)}</span>
+                {f.active && (
+                  <button type="button" onClick={() => copy(f.slug, ownedLinkFor(f.slug))} className="inline-flex items-center gap-1.5 h-8 px-3 rounded-full bg-white border border-slate-200 text-[12.5px] font-semibold text-slate-700 hover:border-[#DE5C2B] hover:text-[#DE5C2B] cursor-pointer">
+                    {copied === f.slug ? <><Check className="w-3.5 h-3.5" /> Copied</> : <><Copy className="w-3.5 h-3.5" /> Copy link</>}
+                  </button>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
       {/* Share links */}
       <div className="bg-white rounded-2xl border border-slate-200 p-5">
         <h3 className="text-[16px] font-semibold text-slate-900">Your form links</h3>

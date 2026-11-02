@@ -13,7 +13,9 @@ const { normalizePhone } = require('../utils/twilio');
  *
  * Server env: BOLNA_API_KEY (required), BOLNA_AGENT_ID / BOLNA_FROM_NUMBER (defaults for the admin
  * settings), BOLNA_AUTO_CALL=false blocks auto calls whatever the admin toggle says.
- * Admin → AI Calls → Settings: auto-call on/off, agent, caller number, calling hours, daily limit.
+ * Admin → AI Calls → Settings: auto-call on/off, who runs Riya (Bolna or ElevenLabs), agent, caller
+ * number, calling hours, daily limit. With ElevenLabs, queueCall hands the call to services/riyaCalls
+ * (our own Vobiz ⇄ ElevenLabs bridge); results still come back through recordExecution.
  */
 
 const BOLNA_API = 'https://api.bolna.ai';
@@ -45,7 +47,10 @@ async function getConfig() {
   const settings = await Settings.findOne().select('aiCall').lean().catch(() => null);
   const a = settings?.aiCall || {};
   const env = process.env;
+  const provider = a.provider || env.AI_CALL_PROVIDER || 'bolna';
   return {
+    provider: provider === 'elevenlabs' ? 'elevenlabs' : 'bolna',
+    elevenAgentId: a.elevenAgentId || env.ELEVENLABS_AGENT_ID || '',
     apiKey: env.BOLNA_API_KEY || '',
     agentId: a.agentId || env.BOLNA_AGENT_ID || '',
     fromNumber: a.fromNumber || env.BOLNA_FROM_NUMBER || '',
@@ -130,7 +135,9 @@ async function bolnaRequest(path, { method = 'GET', body, apiKey } = {}) {
  */
 async function queueCall({ lead, phone, name, trigger, customInstructions = '', requestedBy = 'System', scheduledAt, config }) {
   const cfg = config || await getConfig();
-  if (!cfg.apiKey || !cfg.agentId) throw new CallError('AI calling is not set up: BOLNA_API_KEY and an agent ID are needed', 503);
+  if (cfg.provider !== 'elevenlabs' && (!cfg.apiKey || !cfg.agentId)) {
+    throw new CallError('AI calling is not set up: BOLNA_API_KEY and an agent ID are needed', 503);
+  }
 
   const to = normalizePhone(String(phone || lead?.phone || ''));
   if (!isIndianNumber(to)) throw new CallError('Only Indian numbers (+91 and 10 digits) can be called');
@@ -140,6 +147,12 @@ async function queueCall({ lead, phone, name, trigger, customInstructions = '', 
     : { lead_id: '', name: firstName(name), source: '', target_country: '', intake_year: '', education_level: '', city: '' };
   if (!lead && name) userData.name = firstName(name);
   userData.custom_instructions = String(customInstructions || '').trim().slice(0, 1000);
+
+  if (cfg.provider === 'elevenlabs') {
+    const call = await require('./riyaCalls').createCall({ lead, to, userData, trigger, requestedBy, scheduledAt, config: cfg });
+    if (lead?._id) await noteQueued(lead, call, trigger, requestedBy, scheduledAt);
+    return call;
+  }
 
   const body = {
     agent_id: cfg.agentId,
@@ -172,28 +185,31 @@ async function queueCall({ lead, phone, name, trigger, customInstructions = '', 
     scheduledFor: scheduledAt || new Date(),
   });
 
-  if (lead?._id) {
-    const when = scheduledAt && scheduledAt.getTime() - Date.now() > 90000
-      ? ` for ${toIst(scheduledAt).toISOString().slice(0, 16).replace('T', ' ')} IST`
-      : '';
-    await Lead.updateOne({ _id: lead._id }, {
-      $set: {
-        'aiCall.executionId': data.execution_id,
-        'aiCall.status': call.status,
-        'aiCall.queuedAt': new Date(),
-        'aiCall.scheduledFor': call.scheduledFor,
-      },
-      $push: {
-        activities: {
-          type: 'note',
-          comment: `AI call by Riya ${trigger === 'auto' ? 'queued' : `started by ${requestedBy}`}${when}`,
-          date: new Date(),
-          performedBy: 'System',
-        },
-      },
-    });
-  }
+  if (lead?._id) await noteQueued(lead, call, trigger, requestedBy, scheduledAt);
   return call;
+}
+
+// Links the lead to its newest AI call and notes it in the lead's activity
+async function noteQueued(lead, call, trigger, requestedBy, scheduledAt) {
+  const when = scheduledAt && scheduledAt.getTime() - Date.now() > 90000
+    ? ` for ${toIst(scheduledAt).toISOString().slice(0, 16).replace('T', ' ')} IST`
+    : '';
+  await Lead.updateOne({ _id: lead._id }, {
+    $set: {
+      'aiCall.executionId': call.executionId,
+      'aiCall.status': call.status,
+      'aiCall.queuedAt': new Date(),
+      'aiCall.scheduledFor': call.scheduledFor,
+    },
+    $push: {
+      activities: {
+        type: 'note',
+        comment: `AI call by Riya ${trigger === 'auto' ? 'queued' : `started by ${requestedBy}`}${when}`,
+        date: new Date(),
+        performedBy: 'System',
+      },
+    },
+  });
 }
 
 /**
@@ -202,14 +218,14 @@ async function queueCall({ lead, phone, name, trigger, customInstructions = '', 
  * Never throws and never delays the response (callers do not await it).
  */
 function startLeadCall(lead) {
-  if (!process.env.BOLNA_API_KEY || process.env.BOLNA_AUTO_CALL === 'false') return;
+  if (!(process.env.BOLNA_API_KEY || process.env.ELEVENLABS_API_KEY) || process.env.BOLNA_AUTO_CALL === 'false') return;
   if (!lead?._id || !isIndianMobile(lead.phone)) return;
   autoCall(lead).catch((err) => console.warn('[Bolna] auto call not queued:', err.message));
 }
 
 async function autoCall(lead) {
   const config = await getConfig();
-  if (!config.autoEnabled || !config.agentId) return;
+  if (!config.autoEnabled || !(config.provider === 'elevenlabs' ? config.elevenAgentId : config.agentId)) return;
 
   const since = new Date(Date.now() - REPEAT_CALL_GAP_HOURS * 3600000);
   const blocker = await Lead.findOne({
