@@ -1,13 +1,13 @@
 import { useEffect, useMemo, useState } from 'react';
 import { motion } from 'framer-motion';
 import {
-  Landmark, ShieldCheck, Scale, BadgeIndianRupee, FileText, Users, Home as HomeIcon,
+  ShieldCheck, Scale, BadgeIndianRupee, FileText, Users, Home as HomeIcon,
   ChevronDown, PhoneCall, ArrowRight, CircleCheck,
 } from 'lucide-react';
 import ServiceEnquiryForm from '../components/ServiceEnquiryForm';
 import BackButton from '../components/ui/BackButton';
-import { DesiSticker, MemeLine } from '../components/desi/Desi';
 import { CounterBox } from '../components/ui/BrandElements';
+import { StationSign, Sticker, DesiHeading } from '../components/desi/DesiKit';
 
 const formatINR = (n) =>
   new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(Math.max(0, Math.round(n)));
@@ -25,6 +25,9 @@ const LOAN_FIELDS = [
   { name: 'coApplicantIncome', label: 'Co-applicant income (yearly)', type: 'select', half: true,
     options: ['Below ₹5 Lakh', '₹5–10 Lakh', '₹10–20 Lakh', 'Above ₹20 Lakh', 'No co-applicant'] },
 ];
+
+// Icon tile colours for the step and document cards
+const TONES = ['#F2B705', '#14837E', '#B8285B', '#DE5C2B'];
 
 const STEPS = [
   { icon: PhoneCall, title: 'Free profile call', text: 'Share your admit, course and budget. We tell you which loan types you qualify for.' },
@@ -51,8 +54,8 @@ const FAQS = [
 const Slider = ({ label, value, display, min, max, step, onChange }) => (
   <div>
     <div className="flex items-center justify-between mb-2">
-      <span className="text-[13px] font-semibold text-slate-600">{label}</span>
-      <span className="text-[14px] font-black text-slate-900 bg-orange-50 border border-orange-100 rounded-lg px-2.5 py-0.5">{display}</span>
+      <span className="text-[15px] font-bold text-[#16130F]">{label}</span>
+      <span className="font-urbanist text-[16px] font-black text-[#16130F] bg-[#FFF1B8] border-2 border-[#16130F] px-2.5 py-0.5" style={{ borderRadius: 8 }}>{display}</span>
     </div>
     <input
       type="range"
@@ -66,6 +69,8 @@ const Slider = ({ label, value, display, min, max, step, onChange }) => (
     />
   </div>
 );
+
+const PRIMARY_CTA = 'inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full bg-[#16130F] text-white text-[15px] font-bold border-[3px] border-[#16130F] shadow-[4px_4px_0_#DE5C2B] hover:-translate-y-0.5 transition-transform';
 
 const EmiCalculator = () => {
   const [amount, setAmount] = useState(4000000);
@@ -82,26 +87,26 @@ const EmiCalculator = () => {
   const principalShare = Math.round((amount / totalPayable) * 100);
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-5 gap-6 bg-white rounded-3xl border border-slate-200/90 p-5 sm:p-8 shadow-[0_12px_40px_-12px_rgba(15,23,42,0.10)]">
+    <div className="grid grid-cols-1 lg:grid-cols-5 gap-6 bg-white border-[3px] border-[#16130F] shadow-[7px_7px_0_#16130F] p-5 sm:p-8" style={{ borderRadius: 20 }}>
       <div className="lg:col-span-3 space-y-6">
         <Slider label="Loan amount" value={amount} display={formatLakh(amount)} min={500000} max={15000000} step={100000} onChange={setAmount} />
         <Slider label="Interest rate (per year)" value={rate} display={`${rate.toFixed(1)}%`} min={7} max={15} step={0.1} onChange={setRate} />
         <Slider label="Repayment tenure" value={years} display={`${years} years`} min={3} max={15} step={1} onChange={setYears} />
-        <p className="text-[11.5px] text-slate-400">Indicative only. Actual EMI depends on the lender, moratorium and whether interest is paid during the course.</p>
+        <p className="text-[14px] text-[#5B544A]">Indicative only. Actual EMI depends on the lender, moratorium and whether interest is paid during the course.</p>
       </div>
-      <div className="lg:col-span-2 rounded-2xl bg-gradient-to-br from-[#FFF8F4] to-[#FFEFE6] border border-orange-100 p-5 sm:p-6 flex flex-col justify-center">
-        <p className="text-[12px] font-bold uppercase tracking-wider text-[#C04A1D]">Monthly EMI</p>
-        <p className="mt-1 text-[34px] sm:text-[40px] font-black text-slate-900 leading-none tracking-tight">{formatINR(emi)}</p>
-        <div className="mt-5 h-2.5 rounded-full bg-orange-100 overflow-hidden" aria-hidden="true">
-          <div className="h-full bg-[#DE5C2B] rounded-full transition-all duration-300" style={{ width: `${principalShare}%` }} />
+      <div className="lg:col-span-2 bg-[#F2B705] border-[3px] border-[#16130F] p-5 sm:p-6 flex flex-col justify-center" style={{ borderRadius: 16 }}>
+        <p className="font-urbanist text-[15px] font-extrabold text-[#16130F]">Monthly EMI</p>
+        <p className="mt-1 font-urbanist text-[36px] sm:text-[42px] font-black text-[#16130F] leading-none tracking-[-0.03em]">{formatINR(emi)}</p>
+        <div className="mt-5 h-3.5 rounded-full bg-white border-2 border-[#16130F] overflow-hidden" aria-hidden="true">
+          <div className="h-full bg-[#16130F] transition-all duration-300" style={{ width: `${principalShare}%` }} />
         </div>
-        <div className="mt-3 space-y-1.5 text-[13px]">
-          <div className="flex justify-between"><span className="flex items-center gap-1.5 text-slate-600"><span className="w-2 h-2 rounded-full bg-[#DE5C2B]" />Principal</span><span className="font-bold text-slate-900">{formatINR(amount)}</span></div>
-          <div className="flex justify-between"><span className="flex items-center gap-1.5 text-slate-600"><span className="w-2 h-2 rounded-full bg-orange-200" />Total interest</span><span className="font-bold text-slate-900">{formatINR(totalInterest)}</span></div>
-          <div className="flex justify-between pt-1.5 border-t border-orange-100"><span className="text-slate-600">Total payable</span><span className="font-black text-slate-900">{formatINR(totalPayable)}</span></div>
+        <div className="mt-3 space-y-1.5 text-[14px] text-[#16130F]">
+          <div className="flex justify-between"><span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-full bg-[#16130F]" />Principal</span><span className="font-bold">{formatINR(amount)}</span></div>
+          <div className="flex justify-between"><span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-full bg-white border-2 border-[#16130F]" />Total interest</span><span className="font-bold">{formatINR(totalInterest)}</span></div>
+          <div className="flex justify-between pt-1.5 border-t-2 border-[#16130F]"><span>Total payable</span><span className="font-black">{formatINR(totalPayable)}</span></div>
         </div>
-        <a href="#loan-form" className="mt-5 inline-flex items-center justify-center gap-2 py-3 rounded-xl bg-slate-900 hover:bg-[#DE5C2B] text-white text-[13px] font-bold transition-colors">
-          Check my loan options <ArrowRight size={14} />
+        <a href="#loan-form" className={`mt-5 ${PRIMARY_CTA}`}>
+          Check my loan options <ArrowRight size={15} />
         </a>
       </div>
     </div>
@@ -117,42 +122,41 @@ const EducationLoanPage = () => {
   }, []);
 
   return (
-    <main className="bg-[#FAF9F6] pt-[88px] sm:pt-[100px] pb-16">
+    <main className="font-['Onest',sans-serif] bg-[#FFF6E5] bg-[radial-gradient(circle,rgba(22,19,15,.06)_1.3px,transparent_1.7px)] [background-size:12px_12px] pt-[88px] sm:pt-[100px] pb-20">
       {/* ── Hero + Form ── */}
       <section className="max-w-[1240px] mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
         <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} className="lg:col-span-7 pt-2 lg:pt-8">
           <div className="mb-4">
             <BackButton />
           </div>
-          <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white border border-orange-200 text-[12px] font-bold text-[#C04A1D] shadow-2xs">
-            <Landmark size={14} /> Education Loans
-          </span>
-          <h1 className="mt-4 font-outfit text-[34px] sm:text-[46px] lg:text-[52px] font-black text-[#111111] leading-[1.06] tracking-[-0.03em]">
-            Fund your study abroad, <span className="text-[#DE5C2B]">without the paperwork maze</span>
+          <StationSign hi="Paise ki tension kam" en="EDUCATION LOAN" className="-rotate-2" />
+          <h1 className="mt-5 font-urbanist text-[34px] sm:text-[46px] lg:text-[54px] font-black text-[#16130F] leading-[1.05] tracking-[-0.04em]">
+            Fund your study abroad,{' '}
+            <span className="px-2 leading-[1.25] [box-decoration-break:clone] [-webkit-box-decoration-break:clone] bg-[#F2B705] border-[3px] border-[#16130F] shadow-[4px_4px_0_#16130F]" style={{ borderRadius: 10 }}>without the paperwork maze</span>
           </h1>
-          <MemeLine>Papa ki FD मत तोड़ो, education loan ले लो 💸</MemeLine>
-          <p className="mt-4 text-[15px] sm:text-[16.5px] text-slate-600 leading-relaxed max-w-xl">
+          <Sticker bg="#FBD9E6" tilt={-1.5} className="mt-5 !text-[14px]">Papa ki FD mat todo, education loan le lo 💸</Sticker>
+          <p className="mt-5 text-[16px] sm:text-[17px] font-medium text-[#3D3830] leading-relaxed max-w-xl">
             Compare education loans from banks and NBFCs for your university, with or without collateral.
             We guide you from the first call to the sanction letter you need for your visa.
           </p>
           <ul className="mt-6 grid sm:grid-cols-2 gap-2.5 max-w-xl">
             {['Secured & collateral-free options', 'Banks and NBFCs compared side by side', 'Sanction letter for visa proof of funds', 'Free guidance, all fees shown upfront'].map((t) => (
-              <li key={t} className="flex items-center gap-2.5 text-[13.5px] font-medium text-slate-800">
-                <CircleCheck size={17} className="text-[#DE5C2B] shrink-0" /> {t}
+              <li key={t} className="flex items-center gap-2.5 text-[15px] font-semibold text-[#16130F]">
+                <CircleCheck size={19} className="text-[#14837E] shrink-0" /> {t}
               </li>
             ))}
           </ul>
 
           {/* Red-pen proof beside the tall form: one loan, three lenders, how much the rate really costs */}
           <div className="mt-12 max-w-xl">
-            <h2 className="font-outfit text-[24px] sm:text-[30px] font-black text-[#111111] tracking-[-0.03em] leading-[1.08]">1% ka farak, lakhs ka nuksaan.</h2>
-            <p className="mt-3 text-[14.5px] text-slate-600 leading-relaxed">
+            <DesiHeading hi="Rate ka khel samjho">1% ka farak, lakhs ka nuksaan.</DesiHeading>
+            <p className="mt-3 text-[15px] text-[#3D3830] leading-relaxed">
               Same loan, same 10 years. Bas lender alag. Hum tumhare profile pe lenders compare karke sabse sasta raasta dikhate hain.
             </p>
             <div className="mt-9 mr-2">
-              <figure className="relative bg-white border border-slate-200 rounded-md shadow-[0_18px_40px_-18px_rgba(22,19,15,0.35)] px-5 pt-5 pb-10 -rotate-[0.8deg] text-[13.5px] text-slate-800">
-                <figcaption className="text-[13px] font-bold text-slate-900 pb-2 border-b border-slate-200">₹40 lakh education loan · 10 years</figcaption>
-                <div className="mt-2 grid grid-cols-[1fr_64px_96px] gap-x-3 text-[12px] font-semibold text-slate-500 pb-1.5">
+              <figure className="relative bg-white border-[3px] border-[#16130F] shadow-[6px_6px_0_#16130F] px-5 pt-5 pb-10 -rotate-[0.8deg] text-[14px] text-[#16130F]" style={{ borderRadius: 12 }}>
+                <figcaption className="font-urbanist text-[16px] font-black text-[#16130F] pb-2 border-b-2 border-[#16130F]">₹40 lakh education loan · 10 years</figcaption>
+                <div className="mt-2 grid grid-cols-[1fr_64px_96px] gap-x-3 text-[13px] font-bold text-[#5B544A] pb-1.5">
                   <span>Lender</span><span className="text-right">Rate</span><span className="text-right">Total interest</span>
                 </div>
                 {[
@@ -160,7 +164,7 @@ const EducationLoanPage = () => {
                   ['Private bank', '10.75%', '₹25.4 L', false],
                   ['NBFC, no collateral', '12.5%', '₹30.3 L', false],
                 ].map(([name, rate, interest, best]) => (
-                  <div key={name} className="grid grid-cols-[1fr_64px_96px] gap-x-3 items-center py-2 border-t border-slate-100">
+                  <div key={name} className="grid grid-cols-[1fr_64px_96px] gap-x-3 items-center py-2 border-t border-dashed border-[#16130F]/30">
                     <span>{name}</span>
                     <span className="text-right font-semibold">{rate}</span>
                     <span className="text-right font-bold">
@@ -168,23 +172,23 @@ const EducationLoanPage = () => {
                         <span className="relative inline-block">
                           {interest}
                           <svg aria-hidden="true" viewBox="0 0 120 40" preserveAspectRatio="none" className="absolute -inset-x-2.5 -inset-y-1.5 w-[calc(100%+20px)] h-[calc(100%+12px)] overflow-visible pointer-events-none">
-                            <ellipse cx="60" cy="20" rx="58" ry="17" fill="none" stroke="#D0312D" strokeWidth="2.5" transform="rotate(-3 60 20)" vectorEffect="non-scaling-stroke" />
+                            <ellipse cx="60" cy="20" rx="58" ry="17" fill="none" stroke="#D0362E" strokeWidth="2.5" transform="rotate(-3 60 20)" vectorEffect="non-scaling-stroke" />
                           </svg>
                         </span>
                       ) : interest}
                     </span>
                   </div>
                 ))}
-                <p className="mt-2 text-[11.5px] text-slate-500">Example rates for illustration. Your rate depends on the lender, your profile and collateral.</p>
-                <span className="absolute -top-4 right-4 rotate-[4deg] text-[22px] leading-none text-[#D0312D]" style={{ fontFamily: "'Caveat', cursive", fontWeight: 700 }}>
+                <p className="mt-2 text-[13px] text-[#5B544A]">Example rates for illustration. Your rate depends on the lender, your profile and collateral.</p>
+                <span className="absolute -top-4 right-4 rotate-[4deg] text-[22px] leading-none text-[#D0362E]" style={{ fontFamily: "'Caveat', cursive", fontWeight: 700 }}>
                   ₹8 lakh bach gaye!
                 </span>
-                <span className="absolute -bottom-3 left-6 -rotate-2 text-[22px] leading-none text-[#D0312D]" style={{ fontFamily: "'Caveat', cursive", fontWeight: 700 }}>
+                <span className="absolute -bottom-3 left-6 -rotate-2 text-[22px] leading-none text-[#D0362E]" style={{ fontFamily: "'Caveat', cursive", fontWeight: 700 }}>
                   Collateral hai to rate kam
                 </span>
               </figure>
             </div>
-            <a href="#loan-form" className="mt-8 inline-flex items-center gap-2 px-5 py-3 rounded-full bg-[#DE5C2B] hover:bg-[#C04A1D] text-white text-[14px] font-bold transition-colors">
+            <a href="#loan-form" className={`mt-9 ${PRIMARY_CTA}`}>
               Compare lenders for me <ArrowRight size={15} />
             </a>
           </div>
@@ -205,23 +209,23 @@ const EducationLoanPage = () => {
 
       {/* ── EMI calculator ── */}
       <section className="max-w-[1240px] mx-auto px-4 sm:px-6 lg:px-8 mt-16 sm:mt-20">
-        <h2 className="font-outfit text-[26px] sm:text-[32px] font-black text-[#111111] tracking-tight">Education loan EMI calculator</h2>
-        <p className="mt-1.5 text-[14px] text-slate-600 mb-6">See what your monthly repayment could look like after the moratorium.</p>
+        <DesiHeading hi="EMI ka hisaab">Education loan EMI calculator</DesiHeading>
+        <p className="mt-2 text-[15px] text-[#3D3830] mb-7">See what your monthly repayment could look like after the moratorium.</p>
         <EmiCalculator />
       </section>
 
       {/* ── How it works ── */}
       <section className="max-w-[1240px] mx-auto px-4 sm:px-6 lg:px-8 mt-16 sm:mt-20">
-        <h2 className="font-outfit text-[26px] sm:text-[32px] font-black text-[#111111] tracking-tight mb-6">How it works</h2>
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <DesiHeading hi="Kaise hota hai" className="mb-7">How it works</DesiHeading>
+        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
           {STEPS.map((step, i) => (
-            <div key={step.title} className="bg-white rounded-2xl border border-slate-200/90 p-5">
+            <div key={step.title} className="bg-white border-[3px] border-[#16130F] shadow-[5px_5px_0_#16130F] p-5" style={{ borderRadius: 14 }}>
               <div className="flex items-center justify-between">
-                <span className="w-10 h-10 rounded-xl bg-orange-50 text-[#DE5C2B] ring-1 ring-orange-100 flex items-center justify-center"><step.icon size={19} /></span>
+                <span className="w-11 h-11 border-2 border-[#16130F] flex items-center justify-center" style={{ borderRadius: 10, background: TONES[i % TONES.length], color: i % TONES.length === 0 ? '#16130F' : '#FFFFFF' }}><step.icon size={20} /></span>
                 <CounterBox highlight={i === STEPS.length - 1}>{i + 1}</CounterBox>
               </div>
-              <h3 className="mt-4 text-[15px] font-bold text-slate-900">{step.title}</h3>
-              <p className="mt-1.5 text-[13px] text-slate-600 leading-relaxed">{step.text}</p>
+              <h3 className="mt-4 font-urbanist text-[18px] font-black text-[#16130F]">{step.title}</h3>
+              <p className="mt-1.5 text-[14px] text-[#3D3830] leading-relaxed">{step.text}</p>
             </div>
           ))}
         </div>
@@ -229,17 +233,17 @@ const EducationLoanPage = () => {
 
       {/* ── Documents ── */}
       <section className="max-w-[1240px] mx-auto px-4 sm:px-6 lg:px-8 mt-16 sm:mt-20">
-        <h2 className="font-outfit text-[26px] sm:text-[32px] font-black text-[#111111] tracking-tight mb-6">Documents you'll need</h2>
-        <div className="grid md:grid-cols-3 gap-4">
-          {DOCUMENTS.map((doc) => (
-            <div key={doc.group} className="bg-white rounded-2xl border border-slate-200/90 p-5">
+        <DesiHeading hi="Kaagaz ready rakho" className="mb-7">Documents you'll need</DesiHeading>
+        <div className="grid md:grid-cols-3 gap-5">
+          {DOCUMENTS.map((doc, i) => (
+            <div key={doc.group} className="bg-white border-[3px] border-[#16130F] shadow-[5px_5px_0_#16130F] p-5" style={{ borderRadius: 14 }}>
               <div className="flex items-center gap-2.5">
-                <span className="w-9 h-9 rounded-xl bg-orange-50 text-[#DE5C2B] ring-1 ring-orange-100 flex items-center justify-center"><doc.icon size={17} /></span>
-                <h3 className="text-[15px] font-bold text-slate-900">{doc.group}</h3>
+                <span className="w-10 h-10 border-2 border-[#16130F] flex items-center justify-center" style={{ borderRadius: 10, background: TONES[i % TONES.length], color: i % TONES.length === 0 ? '#16130F' : '#FFFFFF' }}><doc.icon size={18} /></span>
+                <h3 className="font-urbanist text-[18px] font-black text-[#16130F]">{doc.group}</h3>
               </div>
               <ul className="mt-4 space-y-2">
                 {doc.items.map((item) => (
-                  <li key={item} className="flex items-start gap-2 text-[13px] text-slate-700"><CircleCheck size={15} className="text-emerald-600 mt-0.5 shrink-0" />{item}</li>
+                  <li key={item} className="flex items-start gap-2 text-[14px] text-[#16130F]"><CircleCheck size={16} className="text-[#14837E] mt-0.5 shrink-0" />{item}</li>
                 ))}
               </ul>
             </div>
@@ -249,25 +253,25 @@ const EducationLoanPage = () => {
 
       {/* ── FAQ ── */}
       <section className="max-w-[880px] mx-auto px-4 sm:px-6 lg:px-8 mt-16 sm:mt-20">
-        <h2 className="font-outfit text-[26px] sm:text-[32px] font-black text-[#111111] tracking-tight mb-6 text-center">Frequently asked questions</h2>
-        <div className="space-y-3">
+        <DesiHeading hi="Aapke sawaal" className="mb-7 text-center">Frequently asked questions</DesiHeading>
+        <div className="space-y-3.5">
           {FAQS.map((faq, i) => (
-            <div key={faq.q} className="bg-white rounded-2xl border border-slate-200/90 overflow-hidden">
+            <div key={faq.q} className={`bg-white border-[3px] border-[#16130F] overflow-hidden ${openFaq === i ? 'shadow-[5px_5px_0_#F2B705]' : 'shadow-[4px_4px_0_#16130F]'}`} style={{ borderRadius: 14 }}>
               <button
                 type="button"
                 onClick={() => setOpenFaq(openFaq === i ? -1 : i)}
                 aria-expanded={openFaq === i}
-                className="w-full flex items-center justify-between gap-4 p-4 sm:p-5 text-left cursor-pointer"
+                className="no-shine w-full flex items-center justify-between gap-4 p-4 sm:p-5 text-left cursor-pointer"
               >
-                <span className="text-[14.5px] font-bold text-slate-900">{faq.q}</span>
-                <ChevronDown size={18} className={`text-slate-400 shrink-0 transition-transform ${openFaq === i ? 'rotate-180' : ''}`} />
+                <span className="font-urbanist text-[16px] font-extrabold text-[#16130F]">{faq.q}</span>
+                <ChevronDown size={20} className={`text-[#16130F] shrink-0 transition-transform ${openFaq === i ? 'rotate-180' : ''}`} />
               </button>
-              {openFaq === i && <p className="px-4 sm:px-5 pb-5 -mt-1 text-[13.5px] text-slate-600 leading-relaxed">{faq.a}</p>}
+              {openFaq === i && <p className="px-4 sm:px-5 pb-5 -mt-1 text-[15px] text-[#3D3830] leading-relaxed">{faq.a}</p>}
             </div>
           ))}
         </div>
         <div className="mt-10 text-center">
-          <a href="#loan-form" className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl bg-[#DE5C2B] hover:bg-[#C04A1D] text-white text-[14px] font-bold shadow-md shadow-orange-500/20 transition-colors">
+          <a href="#loan-form" className={PRIMARY_CTA}>
             Talk to a loan advisor <ArrowRight size={15} />
           </a>
         </div>

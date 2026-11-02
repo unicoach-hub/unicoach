@@ -2,17 +2,18 @@ import React from 'react';
 import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
-  Award, CheckCircle2, AlertTriangle, Sparkles, X, 
-  BookOpen, Layers, Check, Copy, ArrowRight, TrendingUp, RefreshCw, FileText
+  Award, CheckCircle2, AlertTriangle, Sparkles, X,
+  BookOpen, Layers, Check, Copy, ArrowRight, TrendingUp, RefreshCw
 } from 'lucide-react';
 
+// Flat Desi Pop colour per band: chip background + text that reads on it
 const getBandColor = (band) => {
   const num = parseFloat(band) || 0;
-  if (num >= 8.0) return { bg: 'bg-emerald-500', text: 'text-emerald-700', badge: 'bg-emerald-50 border-emerald-200 text-emerald-800', gradient: 'from-emerald-500 to-teal-600' };
-  if (num >= 7.0) return { bg: 'bg-indigo-500', text: 'text-indigo-700', badge: 'bg-indigo-50 border-indigo-200 text-indigo-800', gradient: 'from-indigo-600 to-blue-600' };
-  if (num >= 6.0) return { bg: 'bg-[#DE5C2B]', text: 'text-[#C04A1D]', badge: 'bg-orange-50 border-orange-200 text-blue-800', gradient: 'from-blue-600 to-cyan-600' };
-  if (num >= 5.0) return { bg: 'bg-amber-500', text: 'text-amber-700', badge: 'bg-amber-50 border-amber-200 text-amber-800', gradient: 'from-amber-500 to-orange-600' };
-  return { bg: 'bg-rose-500', text: 'text-rose-700', badge: 'bg-rose-50 border-rose-200 text-rose-800', gradient: 'from-rose-500 to-red-600' };
+  if (num >= 8.0) return { bg: '#14837E', fg: '#FFFFFF' };
+  if (num >= 7.0) return { bg: '#2B3FA0', fg: '#FFFFFF' };
+  if (num >= 6.0) return { bg: '#DE5C2B', fg: '#FFFFFF' };
+  if (num >= 5.0) return { bg: '#F2B705', fg: '#16130F' };
+  return { bg: '#D0362E', fg: '#FFFFFF' };
 };
 
 const getBandDescriptor = (band) => {
@@ -37,29 +38,33 @@ const IeltsAiEvaluationModal = ({ isOpen, onClose, evaluation, essayPrompt, stud
   const criteriaList = [
     {
       title: 'Task Achievement',
+      tone: '#F2B705',
       key: 'taskAchievement',
-      icon: <Award size={18} className="text-indigo-500" />,
+      icon: <Award size={18} />,
       score: criteria.taskAchievement?.score ?? band,
       feedback: criteria.taskAchievement?.feedback || 'Evaluates prompt coverage and position.'
     },
     {
       title: 'Coherence & Cohesion',
+      tone: '#14837E',
       key: 'coherenceCohesion',
-      icon: <Layers size={18} className="text-[#DE5C2B]" />,
+      icon: <Layers size={18} />,
       score: criteria.coherenceCohesion?.score ?? band,
       feedback: criteria.coherenceCohesion?.feedback || 'Evaluates logical flow and paragraph organization.'
     },
     {
       title: 'Lexical Resource',
+      tone: '#B8285B',
       key: 'lexicalResource',
-      icon: <BookOpen size={18} className="text-emerald-500" />,
+      icon: <BookOpen size={18} />,
       score: criteria.lexicalResource?.score ?? band,
       feedback: criteria.lexicalResource?.feedback || 'Evaluates vocabulary range and academic collocations.'
     },
     {
       title: 'Grammar & Accuracy',
+      tone: '#DE5C2B',
       key: 'grammaticalAccuracy',
-      icon: <TrendingUp size={18} className="text-purple-500" />,
+      icon: <TrendingUp size={18} />,
       score: criteria.grammaticalAccuracy?.score ?? band,
       feedback: criteria.grammaticalAccuracy?.feedback || 'Evaluates sentence complexity and grammatical precision.'
     }
@@ -83,65 +88,75 @@ ${evaluation.examinerSummary || ''}`;
 
   return typeof document !== 'undefined' ? createPortal(
     <AnimatePresence>
-      <div className="fixed inset-0 z-[999999] w-screen h-screen min-h-[100dvh] flex items-center justify-center p-4 md:p-6 bg-slate-900/75 backdrop-blur-md overflow-y-auto">
+      <div className="fixed inset-0 z-[999999] w-screen h-screen min-h-[100dvh] flex items-center justify-center p-4 md:p-6 bg-[#16130F]/75 overflow-y-auto font-['Onest',sans-serif]">
         <motion.div
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="ielts-eval-title"
           initial={{ opacity: 0, scale: 0.95, y: 20 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.95, y: 20 }}
           transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
-          className="relative w-full max-w-4xl bg-white rounded-[32px] shadow-2xl border border-slate-200 overflow-hidden my-auto max-h-[92vh] flex flex-col"
+          className="relative w-full max-w-4xl bg-[#FFF6E5] border-[3px] border-[#16130F] shadow-[8px_8px_0_#F2B705] overflow-hidden my-auto max-h-[92vh] flex flex-col"
+          style={{ borderRadius: 24 }}
         >
           {/* Header */}
-          <div className="relative p-6 md:p-8 bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 text-white flex-shrink-0">
+          <div className="relative p-6 md:p-8 bg-[#16130F] text-white flex-shrink-0 border-b-[3px] border-[#16130F]">
             <button
+              type="button"
               onClick={onClose}
-              className="absolute top-6 right-6 p-2.5 rounded-full bg-white/10 hover:bg-white/20 text-white/80 hover:text-white transition-all cursor-pointer"
+              aria-label="Close report"
+              className="no-shine absolute top-5 right-5 w-10 h-10 grid place-items-center rounded-full bg-white text-[#16130F] border-2 border-white hover:bg-[#F2B705] hover:border-[#F2B705] transition-colors cursor-pointer"
             >
               <X size={18} />
             </button>
 
-            <div className="flex flex-wrap items-center gap-3 mb-2">
-              <span className="px-3 py-1 rounded-full text-xs font-black bg-indigo-500/30 text-indigo-300 border border-indigo-400/30 flex items-center gap-1.5">
-                <Sparkles size={13} className="text-amber-400" /> Certified AI Examiner Assessment
+            <div className="flex flex-wrap items-center gap-3 mb-3 pr-12">
+              <span className="px-3 py-1 rounded-full text-[13px] font-bold bg-[#F2B705] text-[#16130F] border-2 border-[#F2B705] flex items-center gap-1.5">
+                <Sparkles size={14} /> Certified AI Examiner Assessment
               </span>
-              <span className="text-xs font-bold text-slate-400">
+              <span className="text-[14px] font-semibold text-white/75">
                 Word Count: {wordCount || evaluation.wordCountAnalysis?.count || 0} words
               </span>
             </div>
 
-            <h2 className="text-2xl md:text-3xl font-black text-white tracking-tight">
+            <p className="font-urbanist font-extrabold text-[15px] text-[#F2B705]">Tumhara result</p>
+            <h2 id="ielts-eval-title" className="mt-1 font-urbanist text-[26px] md:text-[32px] font-black text-white tracking-[-0.03em] leading-[1.1]">
               IELTS Writing Task 2 Evaluation
             </h2>
-            <p className="text-xs md:text-sm text-slate-300 font-medium mt-1 line-clamp-1">
+            <p className="text-[14px] text-white/75 font-medium mt-1.5 line-clamp-1">
               {essayPrompt || 'Academic Writing Simulation'}
             </p>
           </div>
 
           {/* Body Content (Scrollable) */}
-          <div 
+          <div
             data-lenis-prevent
             onWheel={(e) => e.stopPropagation()}
-            className="p-6 md:p-8 space-y-8 overflow-y-auto overscroll-contain custom-scrollbar flex-1 bg-slate-50/50 touch-pan-y"
+            className="p-5 md:p-8 space-y-8 overflow-y-auto overscroll-contain custom-scrollbar flex-1 touch-pan-y"
           >
-            
+
             {/* Overall Band Banner */}
-            <div className="p-6 rounded-3xl bg-white border border-slate-200 shadow-sm flex flex-col md:flex-row items-center justify-between gap-6">
-              <div className="space-y-1.5 text-center md:text-left">
-                <span className="text-xs font-black text-slate-400 uppercase tracking-wider">Estimated Band Score</span>
-                <div className="flex items-center gap-3 justify-center md:justify-start">
-                  <span className={`text-4xl md:text-5xl font-black bg-gradient-to-r ${colors.gradient} bg-clip-text text-transparent`}>
+            <div className="p-5 md:p-6 bg-white border-[3px] border-[#16130F] shadow-[5px_5px_0_#16130F] flex flex-col md:flex-row items-center justify-between gap-6" style={{ borderRadius: 18 }}>
+              <div className="space-y-2 text-center md:text-left">
+                <span className="font-urbanist font-extrabold text-[15px] text-[#D0362E]">Estimated Band Score</span>
+                <div className="flex flex-wrap items-center gap-3 justify-center md:justify-start">
+                  <span
+                    className="inline-block px-3.5 py-1 font-urbanist text-[38px] md:text-[48px] font-black leading-none tracking-[-0.03em] border-[3px] border-[#16130F] shadow-[4px_4px_0_#16130F] -rotate-1"
+                    style={{ background: colors.bg, color: colors.fg, borderRadius: 12 }}
+                  >
                     Band {band}
                   </span>
-                  <span className={`px-3.5 py-1.5 rounded-full text-xs font-black border ${colors.badge}`}>
+                  <span className="px-3.5 py-1.5 rounded-full text-[14px] font-bold bg-white text-[#16130F] border-2 border-[#16130F]">
                     {band >= 7.0 ? '🌟 Highly Competitive' : band >= 6.0 ? '✅ Target Met' : '⚠️ Needs Practice'}
                   </span>
                 </div>
-                <p className="text-xs font-bold text-slate-600 mt-1">{descriptor}</p>
+                <p className="text-[14px] font-semibold text-[#3D3830]">{descriptor}</p>
               </div>
 
               {evaluation.examinerSummary && (
-                <div className="max-w-md p-4 rounded-2xl bg-slate-50 border border-slate-100 text-xs font-semibold text-slate-700 leading-relaxed">
-                  <span className="font-black text-slate-900 block mb-1">👨‍🏫 Examiner Advice:</span>
+                <div className="max-w-md p-4 bg-[#FFF1B8] border-2 border-[#16130F] text-[14px] text-[#16130F] leading-relaxed" style={{ borderRadius: 12 }}>
+                  <span className="font-urbanist font-black text-[#16130F] block mb-1">👨‍🏫 Examiner Advice:</span>
                   {evaluation.examinerSummary}
                 </div>
               )}
@@ -149,8 +164,9 @@ ${evaluation.examinerSummary || ''}`;
 
             {/* 4 Official IELTS Criteria Cards */}
             <div>
-              <h3 className="text-sm font-black text-slate-800 uppercase tracking-wider mb-4 flex items-center gap-2">
-                <Award size={16} className="text-indigo-600" /> Criteria Breakdown (Official Rubric)
+              <p className="font-urbanist font-extrabold text-[15px] text-[#D0362E]">Chaar criteria, ek ek karke</p>
+              <h3 className="mt-1 mb-4 font-urbanist text-[20px] md:text-[22px] font-black text-[#16130F] tracking-[-0.02em] flex items-center gap-2">
+                <Award size={20} /> Criteria Breakdown (Official Rubric)
               </h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {criteriaList.map((item, idx) => (
@@ -159,18 +175,24 @@ ${evaluation.examinerSummary || ''}`;
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: idx * 0.05 }}
-                    className="p-5 rounded-2xl bg-white border border-slate-200 shadow-sm space-y-2 hover:border-indigo-200 transition-colors"
+                    className="p-5 bg-white border-2 border-[#16130F] shadow-[4px_4px_0_#16130F] space-y-2.5"
+                    style={{ borderRadius: 14 }}
                   >
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-2 font-black text-sm text-slate-800">
-                        {item.icon}
+                    <div className="flex items-center justify-between gap-3">
+                      <div className="flex items-center gap-2.5 font-urbanist font-black text-[16px] text-[#16130F]">
+                        <span
+                          className="w-9 h-9 grid place-items-center border-2 border-[#16130F] flex-shrink-0"
+                          style={{ background: item.tone, color: item.tone === '#F2B705' ? '#16130F' : '#FFFFFF', borderRadius: 9 }}
+                        >
+                          {item.icon}
+                        </span>
                         {item.title}
                       </div>
-                      <span className="px-3 py-1 rounded-xl text-xs font-black bg-indigo-50 text-indigo-700 border border-indigo-100">
+                      <span className="px-3 py-1 text-[14px] font-black bg-[#16130F] text-white border-2 border-[#16130F] whitespace-nowrap" style={{ borderRadius: 8 }}>
                         Band {item.score}
                       </span>
                     </div>
-                    <p className="text-xs font-medium text-slate-600 leading-relaxed">
+                    <p className="text-[14px] text-[#3D3830] leading-relaxed">
                       {item.feedback}
                     </p>
                   </motion.div>
@@ -179,17 +201,17 @@ ${evaluation.examinerSummary || ''}`;
             </div>
 
             {/* Strengths & Actionable Improvements Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
               {/* Strengths */}
               {evaluation.strengths && evaluation.strengths.length > 0 && (
-                <div className="p-6 rounded-3xl bg-emerald-50/50 border border-emerald-100 space-y-3">
-                  <h4 className="text-xs font-black text-emerald-800 uppercase tracking-wider flex items-center gap-1.5">
-                    <CheckCircle2 size={16} className="text-emerald-600" /> Key Strengths
+                <div className="p-5 md:p-6 bg-[#DDF3EF] border-2 border-[#16130F] shadow-[4px_4px_0_#14837E] space-y-3" style={{ borderRadius: 16 }}>
+                  <h4 className="font-urbanist text-[17px] font-black text-[#16130F] flex items-center gap-2">
+                    <CheckCircle2 size={18} className="text-[#14837E]" /> Key Strengths
                   </h4>
                   <ul className="space-y-2">
                     {evaluation.strengths.map((str, i) => (
-                      <li key={i} className="text-xs font-semibold text-slate-700 flex items-start gap-2">
-                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 mt-1.5 flex-shrink-0" />
+                      <li key={i} className="text-[14px] text-[#16130F] flex items-start gap-2">
+                        <span className="w-2 h-2 rounded-full bg-[#14837E] mt-2 flex-shrink-0" />
                         {str}
                       </li>
                     ))}
@@ -199,14 +221,14 @@ ${evaluation.examinerSummary || ''}`;
 
               {/* Improvements */}
               {evaluation.improvements && evaluation.improvements.length > 0 && (
-                <div className="p-6 rounded-3xl bg-amber-50/50 border border-amber-100 space-y-3">
-                  <h4 className="text-xs font-black text-amber-800 uppercase tracking-wider flex items-center gap-1.5">
-                    <AlertTriangle size={16} className="text-amber-600" /> Actionable Fixes
+                <div className="p-5 md:p-6 bg-[#FFF1B8] border-2 border-[#16130F] shadow-[4px_4px_0_#F2B705] space-y-3" style={{ borderRadius: 16 }}>
+                  <h4 className="font-urbanist text-[17px] font-black text-[#16130F] flex items-center gap-2">
+                    <AlertTriangle size={18} className="text-[#D0362E]" /> Actionable Fixes
                   </h4>
                   <ul className="space-y-2">
                     {evaluation.improvements.map((imp, i) => (
-                      <li key={i} className="text-xs font-semibold text-slate-700 flex items-start gap-2">
-                        <span className="w-1.5 h-1.5 rounded-full bg-amber-500 mt-1.5 flex-shrink-0" />
+                      <li key={i} className="text-[14px] text-[#16130F] flex items-start gap-2">
+                        <span className="w-2 h-2 rounded-full bg-[#D0362E] mt-2 flex-shrink-0" />
                         {imp}
                       </li>
                     ))}
@@ -217,20 +239,23 @@ ${evaluation.examinerSummary || ''}`;
 
             {/* Vocabulary Power-Up Upgrades Table */}
             {evaluation.vocabularyUpgrades && evaluation.vocabularyUpgrades.length > 0 && (
-              <div className="p-6 rounded-3xl bg-white border border-slate-200 shadow-sm space-y-4">
-                <h4 className="text-sm font-black text-slate-800 uppercase tracking-wider flex items-center gap-2">
-                  <Sparkles size={16} className="text-indigo-600" /> Band 8+ Vocabulary Upgrades
-                </h4>
+              <div className="p-5 md:p-6 bg-white border-2 border-[#16130F] shadow-[4px_4px_0_#16130F] space-y-4" style={{ borderRadius: 16 }}>
+                <div>
+                  <p className="font-urbanist font-extrabold text-[15px] text-[#D0362E]">Behtar shabd, behtar band</p>
+                  <h4 className="mt-1 font-urbanist text-[18px] font-black text-[#16130F] flex items-center gap-2">
+                    <Sparkles size={18} className="text-[#B8285B]" /> Band 8+ Vocabulary Upgrades
+                  </h4>
+                </div>
                 <div className="space-y-2.5">
                   {evaluation.vocabularyUpgrades.map((vocab, i) => (
-                    <div key={i} className="flex flex-col sm:flex-row sm:items-center justify-between p-3 rounded-xl bg-slate-50 border border-slate-100 text-xs gap-2">
-                      <div className="flex items-center gap-2">
-                        <span className="line-through text-rose-500 font-bold">{vocab.original}</span>
-                        <ArrowRight size={14} className="text-slate-400" />
-                        <span className="text-emerald-700 font-black">{vocab.improved}</span>
+                    <div key={i} className="flex flex-col sm:flex-row sm:items-center justify-between p-3 bg-[#FFF6E5] border-2 border-dashed border-[#16130F]/40 text-[14px] gap-2" style={{ borderRadius: 10 }}>
+                      <div className="flex flex-wrap items-center gap-2">
+                        <span className="line-through text-[#D0362E] font-bold">{vocab.original}</span>
+                        <ArrowRight size={15} className="text-[#16130F]" />
+                        <span className="text-[#14837E] font-black">{vocab.improved}</span>
                       </div>
                       {vocab.context && (
-                        <span className="text-[11px] font-medium text-slate-400 italic">
+                        <span className="text-[13px] text-[#5B544A] italic">
                           ({vocab.context})
                         </span>
                       )}
@@ -242,11 +267,11 @@ ${evaluation.examinerSummary || ''}`;
 
             {/* AI Enhanced Model Rewrite */}
             {evaluation.enhancedSampleParagraph && (
-              <div className="p-6 rounded-3xl bg-gradient-to-br from-indigo-50/70 to-blue-50/70 border border-indigo-100 space-y-3">
-                <h4 className="text-xs font-black text-indigo-900 uppercase tracking-wider flex items-center gap-2">
-                  <Sparkles size={15} className="text-indigo-600" /> Band 8.5+ Model Rewrite Sample
+              <div className="p-5 md:p-6 bg-[#FBD9E6] border-2 border-[#16130F] shadow-[4px_4px_0_#B8285B] space-y-3" style={{ borderRadius: 16 }}>
+                <h4 className="font-urbanist text-[17px] font-black text-[#16130F] flex items-center gap-2">
+                  <Sparkles size={17} className="text-[#B8285B]" /> Band 8.5+ Model Rewrite Sample
                 </h4>
-                <p className="text-xs font-medium text-slate-700 leading-relaxed italic bg-white/80 p-4 rounded-2xl border border-indigo-50">
+                <p className="text-[14px] text-[#16130F] leading-relaxed italic bg-white p-4 border-2 border-[#16130F]" style={{ borderRadius: 12 }}>
                   "{evaluation.enhancedSampleParagraph}"
                 </p>
               </div>
@@ -255,30 +280,33 @@ ${evaluation.examinerSummary || ''}`;
           </div>
 
           {/* Footer Actions */}
-          <div className="p-4 md:p-6 bg-white border-t border-slate-100 flex flex-wrap items-center justify-between gap-4 flex-shrink-0">
+          <div className="p-4 md:p-5 bg-white border-t-[3px] border-[#16130F] flex flex-wrap items-center justify-between gap-3 flex-shrink-0">
             <button
+              type="button"
               onClick={handleCopy}
-              className="px-5 py-2.5 rounded-xl text-xs font-bold text-slate-600 hover:text-slate-900 bg-slate-100 hover:bg-slate-200 transition-colors flex items-center gap-2 cursor-pointer"
+              className="no-shine px-5 py-2.5 rounded-full text-[14px] font-bold text-[#16130F] bg-white border-2 border-[#16130F] hover:-translate-y-0.5 transition-transform flex items-center gap-2 cursor-pointer"
             >
-              {copied ? <Check size={15} className="text-emerald-600" /> : <Copy size={15} />}
+              {copied ? <Check size={15} className="text-[#14837E]" /> : <Copy size={15} />}
               {copied ? 'Copied Summary!' : 'Copy Evaluation'}
             </button>
 
-            <div className="flex items-center gap-3">
+            <div className="flex flex-wrap items-center gap-3">
               {onPracticeAgain && (
                 <button
+                  type="button"
                   onClick={() => {
                     onClose();
                     onPracticeAgain();
                   }}
-                  className="px-5 py-2.5 rounded-xl text-xs font-black text-indigo-600 bg-indigo-50 hover:bg-indigo-100 transition-colors flex items-center gap-2 cursor-pointer"
+                  className="no-shine px-5 py-2.5 rounded-full text-[14px] font-bold text-[#16130F] bg-[#F2B705] border-2 border-[#16130F] shadow-[3px_3px_0_#16130F] hover:-translate-y-0.5 transition-transform flex items-center gap-2 cursor-pointer"
                 >
                   <RefreshCw size={14} /> Practice Another Topic
                 </button>
               )}
               <button
+                type="button"
                 onClick={onClose}
-                className="px-6 py-2.5 rounded-xl text-xs font-black bg-indigo-600 hover:bg-indigo-700 text-white shadow-md shadow-indigo-200 transition-all cursor-pointer"
+                className="px-6 py-2.5 rounded-full text-[14px] font-bold bg-[#16130F] text-white border-2 border-[#16130F] shadow-[3px_3px_0_#DE5C2B] hover:-translate-y-0.5 transition-transform cursor-pointer"
               >
                 Close Report
               </button>

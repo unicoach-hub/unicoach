@@ -1,18 +1,19 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Link, useLocation, useNavigate, useSearchParams } from 'react-router-dom';
-import { ArrowLeft, ArrowRight, CalendarDays, Check, ChevronDown, ChevronLeft, ChevronRight, Clock, Compass, FileText, Loader2, Map, MessageCircle, Mic, MonitorUp, PhoneOff, ShieldCheck, Video } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Check, ChevronDown, ChevronLeft, ChevronRight, Clock, Compass, FileText, Loader2, Map, MessageCircle, Mic, MonitorUp, PhoneOff, ShieldCheck, Video } from 'lucide-react';
 import { API_BASE_URL } from '../config';
 import { openRazorpayCheckout } from '../unicoach/utils/razorpayCheckout';
 import { TEAM_MENTORS, mentorLook } from '../utils/teamMentors';
 import { JourneyPills } from '../components/ui/BrandElements';
+import { StationSign } from '../components/desi/DesiKit';
 
 const API = API_BASE_URL.replace(/\/$/, '');
 const DOW = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 const INCLUDED = [
-  { icon: Compass, t: 'Profile check', d: 'What you can realistically aim for.' },
-  { icon: Map, t: 'Clear roadmap', d: 'Step-by-step plan for your case.' },
-  { icon: FileText, t: 'Next steps', d: 'Exactly what to do after the call.' },
-  { icon: MessageCircle, t: 'Open Q&A', d: 'Your questions, answered straight.' },
+  { icon: Compass, t: 'Profile check', d: 'What you can realistically aim for.', tone: ['#D0362E', '#FFFFFF'] },
+  { icon: Map, t: 'Clear roadmap', d: 'Step-by-step plan for your case.', tone: ['#14837E', '#FFFFFF'] },
+  { icon: FileText, t: 'Next steps', d: 'Exactly what to do after the call.', tone: ['#B8285B', '#FFFFFF'] },
+  { icon: MessageCircle, t: 'Open Q&A', d: 'Your questions, answered straight.', tone: ['#F2B705', '#16130F'] },
 ];
 
 // The booking flow on this page, shown as pills above each step
@@ -35,7 +36,7 @@ const monthKey = (ymd) => ymd.slice(0, 7);
 const fee = (price) => (price ? `₹${price}` : 'Free');
 
 const Shell = ({ children }) => (
-  <main className="min-h-screen bg-[#FAF9F6] pt-[110px] pb-20 px-4 sm:px-6">
+  <main className="min-h-screen pt-[110px] pb-20 px-4 sm:px-6 font-['Onest',sans-serif] bg-[#FFF6E5] bg-[radial-gradient(circle,rgba(22,19,15,.06)_1.3px,transparent_1.7px)] [background-size:12px_12px]">
     <div className="max-w-[1180px] mx-auto">{children}</div>
   </main>
 );
@@ -103,26 +104,26 @@ const BookConsultationFlow = () => {
   return (
     <Shell>
       <div className="text-center">
-        <p className="inline-flex items-center gap-2 text-[12px] font-bold tracking-[0.14em] text-[#DE5C2B] uppercase"><CalendarDays size={14} /> Book a consultation</p>
-        <h1 className="mt-3 font-outfit text-[34px] sm:text-[46px] font-black tracking-tight text-[#111] leading-tight">Choose a day and a time</h1>
-        <p className="mt-3 text-[15px] text-slate-600 max-w-xl mx-auto">
+        <StationSign hi="Seedha counsellor se baat" en="BOOK A FREE 1:1 CALL" className="-rotate-2" />
+        <h1 className="mt-5 font-urbanist text-[34px] sm:text-[48px] font-black tracking-[-0.045em] text-[#16130F] leading-[1.05]">Choose a day and <span className="inline-block px-2.5 bg-[#F2B705] border-[3px] border-[#16130F] shadow-[4px_4px_0_#16130F] -rotate-1" style={{ borderRadius: 10 }}>a time</span></h1>
+        <p className="mt-4 text-[15px] sm:text-[16px] font-medium text-[#3D3830] max-w-xl mx-auto">
           A {(cfg?.durationMin || 60) === 60 ? 'one-hour' : `${cfg?.durationMin}-minute`} 1:1 call with our team{cfg ? `, ${fee(cfg.price).toLowerCase()}` : ''}. Pick any open slot, India time.
         </p>
-        <Link to="/services" className="mt-3 inline-flex items-center gap-1.5 text-[13.5px] font-semibold text-[#DE5C2B] hover:underline">Not sure which service? See all services <ArrowRight size={14} /></Link>
+        <Link to="/services" className="mt-3 inline-flex items-center gap-1.5 text-[14px] font-bold text-[#16130F] underline decoration-[#D0362E] decoration-2 underline-offset-4 hover:text-[#D0362E]">Not sure which service? See all services <ArrowRight size={14} /></Link>
         <JourneyPills steps={BOOKING_STEPS} active={0} className="mt-6 mx-auto w-fit max-w-full" />
       </div>
 
-      <div className="mt-8 grid lg:grid-cols-[320px_1fr] rounded-[28px] bg-white border border-slate-200 shadow-[0_30px_80px_-40px_rgba(15,23,42,0.35)] overflow-hidden">
+      <div className="mt-8 grid lg:grid-cols-[320px_1fr] rounded-[22px] bg-white border-[3px] border-[#16130F] shadow-[7px_7px_0_#16130F] overflow-hidden">
         <SidePanel cfg={cfg} />
 
         <section className="p-5 sm:p-7">
           {notice && (
-            <div className="mb-4 flex items-start justify-between gap-3 rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3 text-[13.5px] text-amber-900">
+            <div className="mb-4 flex items-start justify-between gap-3 rounded-xl border-2 border-[#16130F] bg-[#FFF1B8] shadow-[3px_3px_0_#16130F] px-4 py-3 text-[14px] text-[#16130F]">
               <span>{notice}</span>
-              <button type="button" onClick={() => setNotice('')} className="no-shine text-amber-700 font-semibold cursor-pointer">OK</button>
+              <button type="button" onClick={() => setNotice('')} className="no-shine text-[#16130F] font-bold underline underline-offset-2 cursor-pointer">OK</button>
             </div>
           )}
-          {loadError && <p className="text-red-600 text-sm">{loadError}</p>}
+          {loadError && <p className="text-[#D0362E] text-[14px] font-semibold">{loadError}</p>}
           {!cfg && !loadError && <div className="py-20 flex justify-center"><Loader2 className="w-6 h-6 animate-spin text-[#DE5C2B]" /></div>}
           {cfg && (
             <Picker
@@ -143,37 +144,40 @@ const BookConsultationFlow = () => {
 };
 
 const SidePanel = ({ cfg }) => (
-  <aside className="p-6 sm:p-7 bg-gradient-to-b from-[#FFF4EE] to-white border-b lg:border-b-0 lg:border-r border-slate-100 flex flex-col">
+  <aside className="p-6 sm:p-7 bg-[#FFF6E5] border-b-[3px] lg:border-b-0 lg:border-r-[3px] border-[#16130F] flex flex-col">
     <div className="flex -space-x-2.5">
       {TEAM_MENTORS.slice(0, 4).map((m) => (
         <img key={m.src} src={mentorLook(m.name).cutout || m.src} alt="" width="44" height="44"
-          className="w-11 h-11 rounded-full ring-2 ring-white object-cover object-top"
+          className="w-11 h-11 rounded-full border-2 border-[#16130F] bg-white object-cover object-top"
           style={mentorLook(m.name).gradient ? { background: mentorLook(m.name).gradient } : undefined} />
       ))}
     </div>
-    <p className="mt-3 text-[14px] font-bold text-slate-900">The UniCoach team</p>
-    <p className="text-[12.5px] text-slate-500">Counsellors and seniors who have done it</p>
+    <p className="mt-3 font-urbanist text-[16px] font-black text-[#16130F]">The UniCoach team</p>
+    <p className="text-[14px] text-[#5B544A]">Counsellors and seniors who have done it</p>
 
-    <p className="mt-6 text-[11px] font-bold tracking-[0.14em] text-slate-400 uppercase">What&apos;s included</p>
+    <div className="mt-6 pb-2.5 border-b-2 border-[#16130F]">
+      <p className="font-urbanist font-extrabold text-[14px] leading-none text-[#D0362E]">Call mein kya milega</p>
+      <p className="mt-1 text-[11.5px] font-black text-[#16130F] uppercase tracking-[0.12em]">What&apos;s included</p>
+    </div>
     <ul className="mt-3 space-y-3.5">
-      {INCLUDED.map(({ icon: I, t, d }) => (
+      {INCLUDED.map(({ icon: I, t, d, tone }) => (
         <li key={t} className="flex gap-3">
-          <span className="w-8 h-8 rounded-full bg-white border border-orange-100 text-[#DE5C2B] grid place-items-center shrink-0"><I size={15} /></span>
-          <span><span className="block text-[13.5px] font-semibold text-slate-900">{t}</span><span className="block text-[12.5px] text-slate-500">{d}</span></span>
+          <span className="w-9 h-9 rounded-lg border-2 border-[#16130F] grid place-items-center shrink-0" style={{ background: tone[0], color: tone[1] }}><I size={17} /></span>
+          <span><span className="block text-[15px] font-bold text-[#16130F]">{t}</span><span className="block text-[14px] text-[#5B544A]">{d}</span></span>
         </li>
       ))}
     </ul>
 
-    <div className="mt-auto pt-6 border-t border-slate-100 text-[13px]">
-      <p className="flex items-center gap-2 font-semibold text-slate-800"><Clock size={14} className="text-[#DE5C2B]" /> {cfg?.durationMin || 60} min{cfg ? ` · ${cfg.price ? `₹${cfg.price} per call` : 'free call'}` : ''}</p>
-      <p className="mt-1 text-[12px] text-slate-500">Private 1:1 on video. Confirmed by email. All times India time.</p>
+    <div className="mt-auto pt-6 text-[14px]">
+      <p className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white border-2 border-[#16130F] shadow-[2px_2px_0_#16130F] font-bold text-[#16130F]"><Clock size={15} className="text-[#D0362E]" /> {cfg?.durationMin || 60} min{cfg ? ` · ${cfg.price ? `₹${cfg.price} per call` : 'free call'}` : ''}</p>
+      <p className="mt-2.5 text-[14px] text-[#5B544A]">Private 1:1 on video. Confirmed by email. All times India time.</p>
     </div>
   </aside>
 );
 
 const StepLabel = ({ n, label, done }) => (
-  <p className="flex items-center gap-2 text-[11px] font-bold tracking-[0.14em] uppercase text-slate-400">
-    <span className={`w-5 h-5 rounded-full grid place-items-center text-[10.5px] tracking-normal ${done ? 'bg-emerald-500 text-white' : 'bg-slate-100 text-slate-500'}`}>{done ? <Check size={11} strokeWidth={3} /> : n}</span>
+  <p className="flex items-center gap-2 font-urbanist text-[16px] font-extrabold text-[#16130F]">
+    <span className={`w-7 h-7 rounded-lg border-2 border-[#16130F] grid place-items-center text-[13px] ${done ? 'bg-[#14837E] text-white' : 'bg-[#F2B705] text-[#16130F]'}`}>{done ? <Check size={14} strokeWidth={3} /> : n}</span>
     {label}
   </p>
 );
@@ -224,24 +228,24 @@ const Picker = ({ cfg, service, setService, date, setDate, time, setTime, month,
       <StepLabel n={1} label="Service" done={!!service} />
       <div ref={serviceRef} className="relative mt-2">
         <button type="button" onClick={() => setOpen((v) => !v)}
-          className={`w-full flex items-center justify-between gap-3 rounded-2xl border px-4 py-3 text-left cursor-pointer transition-colors ${open ? 'border-[#DE5C2B] ring-4 ring-orange-100' : 'border-slate-200 hover:border-slate-300'}`}>
+          className={`no-shine w-full flex items-center justify-between gap-3 rounded-xl border-2 border-[#16130F] bg-white px-4 py-3 text-left cursor-pointer transition-shadow ${open ? 'ring-4 ring-[#F2B705]/50 shadow-[3px_3px_0_#16130F]' : 'hover:shadow-[3px_3px_0_#16130F]'}`}>
           <span>
-            <span className={`block text-[15px] font-semibold ${svc ? 'text-slate-900' : 'text-slate-400'}`}>{svc ? svc.label : 'Select the service you need'}</span>
-            {svc && <span className="block text-[12.5px] text-slate-500">{svc.desc}</span>}
+            <span className={`block text-[15px] font-bold ${svc ? 'text-[#16130F]' : 'text-[#8A8275]'}`}>{svc ? svc.label : 'Select the service you need'}</span>
+            {svc && <span className="block text-[14px] text-[#5B544A]">{svc.desc}</span>}
           </span>
           <span className="flex items-center gap-3 shrink-0">
-            <span className="text-[13px] font-bold text-[#DE5C2B]">{fee(cfg.price)}</span>
-            <ChevronDown size={18} className={`text-slate-400 transition-transform ${open ? 'rotate-180' : ''}`} />
+            <span className="px-2 py-0.5 rounded-md bg-[#DDF3EF] border-2 border-[#16130F] text-[13px] font-bold text-[#16130F]">{fee(cfg.price)}</span>
+            <ChevronDown size={18} className={`text-[#16130F] transition-transform ${open ? 'rotate-180' : ''}`} />
           </span>
         </button>
         {open && (
-          <ul className="absolute z-20 mt-2 w-full rounded-2xl bg-white border border-slate-200 shadow-[0_20px_50px_-20px_rgba(15,23,42,0.35)] p-1.5 max-h-[340px] overflow-auto" data-lenis-prevent>
+          <ul className="absolute z-20 mt-2 w-full rounded-xl bg-white border-[3px] border-[#16130F] shadow-[5px_5px_0_#16130F] p-1.5 max-h-[340px] overflow-auto" data-lenis-prevent>
             {cfg.services.map((s) => (
               <li key={s.key}>
                 <button type="button" onClick={() => { setService(s.key); setOpen(false); }}
-                  className={`w-full flex items-center justify-between gap-3 rounded-xl px-3.5 py-2.5 text-left cursor-pointer ${service === s.key ? 'bg-orange-50' : 'hover:bg-slate-50'}`}>
-                  <span><span className="block text-[14px] font-semibold text-slate-900">{s.label}</span><span className="block text-[12px] text-slate-500">{s.desc}</span></span>
-                  <span className="flex items-center gap-2 text-[13px] font-bold text-slate-700">{fee(cfg.price)}{service === s.key && <Check size={15} className="text-[#DE5C2B]" />}</span>
+                  className={`no-shine w-full flex items-center justify-between gap-3 rounded-lg px-3.5 py-2.5 text-left cursor-pointer ${service === s.key ? 'bg-[#FFF1B8]' : 'hover:bg-[#FFF6E5]'}`}>
+                  <span><span className="block text-[15px] font-bold text-[#16130F]">{s.label}</span><span className="block text-[14px] text-[#5B544A]">{s.desc}</span></span>
+                  <span className="flex items-center gap-2 text-[14px] font-bold text-[#16130F]">{fee(cfg.price)}{service === s.key && <Check size={16} strokeWidth={3} className="text-[#14837E]" />}</span>
                 </button>
               </li>
             ))}
@@ -255,24 +259,24 @@ const Picker = ({ cfg, service, setService, date, setDate, time, setTime, month,
           <div className="flex items-center justify-between">
             <StepLabel n={2} label="Day" done={!!date} />
             <div className="flex items-center gap-2">
-              <span className="text-[14px] font-semibold text-slate-900">{new Date(`${month}-01T12:00:00Z`).toLocaleDateString('en-IN', { month: 'long', year: 'numeric' })}</span>
-              <button type="button" aria-label="Previous month" disabled={mi <= 0} onClick={() => setMonth(months[mi - 1])} className="w-8 h-8 rounded-full border border-slate-200 grid place-items-center disabled:opacity-30 cursor-pointer"><ChevronLeft size={15} /></button>
-              <button type="button" aria-label="Next month" disabled={mi >= months.length - 1} onClick={() => setMonth(months[mi + 1])} className="w-8 h-8 rounded-full border border-slate-200 grid place-items-center disabled:opacity-30 cursor-pointer"><ChevronRight size={15} /></button>
+              <span className="text-[14px] font-bold text-[#16130F]">{new Date(`${month}-01T12:00:00Z`).toLocaleDateString('en-IN', { month: 'long', year: 'numeric' })}</span>
+              <button type="button" aria-label="Previous month" disabled={mi <= 0} onClick={() => setMonth(months[mi - 1])} className="no-shine w-8 h-8 rounded-full bg-white border-2 border-[#16130F] grid place-items-center disabled:opacity-30 cursor-pointer"><ChevronLeft size={15} /></button>
+              <button type="button" aria-label="Next month" disabled={mi >= months.length - 1} onClick={() => setMonth(months[mi + 1])} className="no-shine w-8 h-8 rounded-full bg-white border-2 border-[#16130F] grid place-items-center disabled:opacity-30 cursor-pointer"><ChevronRight size={15} /></button>
             </div>
           </div>
           <div className="mt-3 grid grid-cols-7 gap-1.5 text-center">
-            {DOW.map((d) => <span key={d} className="text-[11px] font-semibold text-slate-400 py-1">{d}</span>)}
+            {DOW.map((d) => <span key={d} className="text-[12px] font-bold text-[#5B544A] py-1">{d}</span>)}
             {cells.map((d, i) => {
               if (!d) return <span key={`e${i}`} />;
               const open = (byDate[d] || []).length > 0;
               const sel = d === date;
               return (
                 <button key={d} type="button" disabled={!open} onClick={() => setDate(d)}
-                  className={`no-shine aspect-square rounded-xl flex flex-col items-center justify-center text-[14px] font-semibold transition-all ${
-                    sel ? 'bg-[#DE5C2B] text-white shadow-[0_10px_24px_-10px_rgba(222,92,43,0.8)]'
-                      : open ? 'border border-slate-200 text-slate-900 hover:border-[#DE5C2B] cursor-pointer' : 'text-slate-300 cursor-default'}`}>
+                  className={`no-shine aspect-square rounded-lg flex flex-col items-center justify-center text-[14px] font-bold transition-all ${
+                    sel ? 'bg-[#DE5C2B] text-white border-2 border-[#16130F] shadow-[3px_3px_0_#16130F]'
+                      : open ? 'bg-white border-2 border-[#16130F] text-[#16130F] hover:bg-[#FFF1B8] cursor-pointer' : 'text-[#C9C1B3] cursor-default'}`}>
                   {Number(d.slice(8))}
-                  {open && <span className={`mt-0.5 w-1 h-1 rounded-full ${sel ? 'bg-white' : 'bg-emerald-500'}`} />}
+                  {open && <span className={`mt-0.5 w-1.5 h-1.5 rounded-full ${sel ? 'bg-white' : 'bg-[#14837E]'}`} />}
                 </button>
               );
             })}
@@ -282,21 +286,21 @@ const Picker = ({ cfg, service, setService, date, setDate, time, setTime, month,
         {/* Times */}
         <div ref={timeRef} className="p-1 -m-1">
           <StepLabel n={3} label="Time" done={!!time} />
-          {!date && <p className="mt-3 text-[13px] text-slate-500">Pick a day to see the open times.</p>}
+          {!date && <p className="mt-3 text-[14px] text-[#5B544A]">Pick a day to see the open times.</p>}
           {date && (
             <>
-              <p className="mt-3 text-[13px] font-semibold text-slate-700">{longDate(date)}</p>
-              {slots.length === 0 && <p className="mt-3 text-[12.5px] text-slate-400">No open times left on this day.</p>}
+              <p className="mt-3 text-[14px] font-bold text-[#16130F]">{longDate(date)}</p>
+              {slots.length === 0 && <p className="mt-3 text-[14px] text-[#5B544A]">No open times left on this day.</p>}
               {[['Morning', (t) => t < '12:00'], ['Afternoon', (t) => t >= '12:00' && t < '17:00'], ['Evening', (t) => t >= '17:00']].map(([label, test]) => {
                 const list = slots.filter(test);
                 if (!list.length) return null;
                 return (
                   <div key={label} className="mt-3">
-                    <p className="text-[11.5px] text-slate-400">{label}</p>
+                    <p className="text-[13px] font-bold text-[#5B544A]">{label}</p>
                     <div className="mt-1.5 grid grid-cols-2 gap-2">
                       {list.map((t) => (
                         <button key={t} type="button" onClick={() => setTime(t)}
-                          className={`no-shine h-10 rounded-full border text-[13px] font-semibold cursor-pointer transition-colors ${t === time ? 'bg-[#111] border-[#111] text-white' : 'border-slate-200 text-slate-800 hover:border-[#DE5C2B]'}`}>
+                          className={`no-shine h-10 rounded-full border-2 border-[#16130F] text-[14px] font-bold cursor-pointer transition-all ${t === time ? 'bg-[#16130F] text-white shadow-[3px_3px_0_#DE5C2B]' : 'bg-white text-[#16130F] hover:bg-[#FFF1B8]'}`}>
                           {to12h(t)}
                         </button>
                       ))}
@@ -310,11 +314,11 @@ const Picker = ({ cfg, service, setService, date, setDate, time, setTime, month,
       </div>
 
       <button type="button" onClick={next}
-        className={`no-shine mt-7 w-full h-14 rounded-full font-semibold text-[15px] flex items-center justify-between px-6 transition-colors cursor-pointer ${ready ? 'bg-[#DE5C2B] hover:bg-[#C04A1D] text-white' : 'bg-[#FFE7DC] text-[#C04A1D] hover:bg-[#FFDCCB]'}`}>
+        className={`no-shine mt-7 w-full h-14 rounded-full font-bold text-[15px] flex items-center justify-between px-6 border-[3px] border-[#16130F] transition-all cursor-pointer ${ready ? 'bg-[#16130F] text-white shadow-[4px_4px_0_#DE5C2B] hover:-translate-y-0.5' : 'bg-[#FFF1B8] text-[#16130F] shadow-[3px_3px_0_#16130F] hover:bg-[#F2B705]'}`}>
         <span>{ready ? `Book ${longDate(date)}, ${to12h(time)}` : !service ? 'Step 1: choose a service ↑' : !date ? 'Step 2: pick a day ↑' : 'Step 3: pick a time ↑'}</span>
-        <span className="flex items-center gap-2"><span className={`px-2.5 py-0.5 rounded-full text-[12.5px] ${ready ? 'bg-white/20' : 'bg-white'}`}>{fee(cfg.price)}</span><ArrowRight size={17} /></span>
+        <span className="flex items-center gap-2"><span className={`px-2.5 py-0.5 rounded-full text-[13px] ${ready ? 'bg-[#F2B705] text-[#16130F]' : 'bg-white border-2 border-[#16130F]'}`}>{fee(cfg.price)}</span><ArrowRight size={17} /></span>
       </button>
-      <p className="mt-2 text-[12px] text-slate-500 text-center">{cfg.price ? `Next you add a few details and pay ₹${cfg.price} to confirm your slot.` : 'Next you add a few details to confirm your free slot.'}</p>
+      <p className="mt-3 text-[14px] text-[#5B544A] text-center">{cfg.price ? `Next you add a few details and pay ₹${cfg.price} to confirm your slot.` : 'Next you add a few details to confirm your free slot.'}</p>
     </div>
   );
 };
@@ -329,7 +333,7 @@ const ConfirmStep = ({ cfg, pick, savedForm }) => {
   const svc = cfg?.services.find((s) => s.key === pick.service);
   const price = cfg?.price ?? 500;
   const set = (k) => (e) => { setForm((f) => ({ ...f, [k]: e.target.value })); setFieldErr((x) => ({ ...x, [k]: '' })); };
-  const err = (k) => (fieldErr[k] ? <span className="block mt-1 text-[12px] text-red-600">{fieldErr[k]}</span> : null);
+  const err = (k) => (fieldErr[k] ? <span className="block mt-1 text-[13px] font-semibold text-[#D0362E]">{fieldErr[k]}</span> : null);
 
   const pay = async (e) => {
     e.preventDefault();
@@ -397,51 +401,56 @@ const ConfirmStep = ({ cfg, pick, savedForm }) => {
   if (doneRef) {
     return (
       <Shell>
-        <div className="max-w-[560px] mx-auto rounded-[28px] bg-white border border-slate-200 p-8 text-center shadow-[0_30px_80px_-40px_rgba(15,23,42,0.35)]">
-          <span className="mx-auto w-14 h-14 rounded-full bg-emerald-50 text-emerald-600 grid place-items-center"><Check size={26} strokeWidth={3} /></span>
-          <h1 className="mt-4 font-outfit text-[28px] font-black text-[#111]">You&apos;re booked!</h1>
-          <p className="mt-2 text-[15px] text-slate-600">{svc?.label} on <b>{fullDate(pick.date)}, {to12h(pick.time)}</b> (India time).</p>
-          <p className="mt-1 text-[13px] text-slate-500">We have emailed the details to {form.email}. Reference: <b>{doneRef}</b></p>
-          <Link to="/" className="mt-6 inline-flex items-center gap-2 h-12 px-6 rounded-full bg-[#111] text-white font-semibold text-[14px]">Back to home <ArrowRight size={16} /></Link>
+        <div className="max-w-[560px] mx-auto rounded-[22px] bg-white border-[3px] border-[#16130F] p-8 text-center shadow-[7px_7px_0_#16130F]">
+          <span className="mx-auto w-14 h-14 rounded-xl bg-[#14837E] text-white border-[3px] border-[#16130F] shadow-[3px_3px_0_#16130F] grid place-items-center -rotate-3"><Check size={26} strokeWidth={3} /></span>
+          <p className="mt-5 font-urbanist font-extrabold text-[15px] leading-none text-[#D0362E]">Ho gaya, slot pakka!</p>
+          <h1 className="mt-1.5 font-urbanist text-[30px] font-black text-[#16130F]">You&apos;re booked!</h1>
+          <p className="mt-2 text-[15px] text-[#3D3830]">{svc?.label} on <b>{fullDate(pick.date)}, {to12h(pick.time)}</b> (India time).</p>
+          <p className="mt-1 text-[14px] text-[#5B544A]">We have emailed the details to {form.email}. Reference: <b>{doneRef}</b></p>
+          <Link to="/" className="mt-6 inline-flex items-center gap-2 h-12 px-6 rounded-full bg-[#16130F] text-white border-[3px] border-[#16130F] shadow-[4px_4px_0_#DE5C2B] font-bold text-[14px] hover:-translate-y-0.5 transition-transform">Back to home <ArrowRight size={16} /></Link>
         </div>
       </Shell>
     );
   }
 
-  const input = 'w-full h-12 rounded-xl border border-slate-200 px-4 text-[14.5px] outline-none focus:border-[#DE5C2B] focus:ring-4 focus:ring-orange-100';
+  const input = 'w-full h-12 rounded-xl bg-white border-2 border-[#16130F] px-4 text-[15px] text-[#16130F] outline-none focus:ring-4 focus:ring-[#F2B705]/50 transition-shadow';
   return (
     <Shell>
       <style>{`@keyframes bcFlash{0%,100%{box-shadow:0 0 0 0 rgba(222,92,43,0)}30%,70%{box-shadow:0 0 0 6px rgba(222,92,43,.35)}}.bc-flash{animation:bcFlash 1.1s ease 2}`}</style>
       <div className="max-w-[640px] mx-auto">
-        <button type="button" onClick={() => navigate('/book-consultation', { state: { pick, form } })} className="inline-flex items-center gap-1.5 text-[13px] font-semibold text-slate-600 hover:text-[#DE5C2B] cursor-pointer">
+        <button type="button" onClick={() => navigate('/book-consultation', { state: { pick, form } })} className="no-shine inline-flex items-center gap-1.5 h-9 pl-3 pr-4 rounded-full bg-white border-2 border-[#16130F] shadow-[2px_2px_0_#16130F] text-[14px] font-bold text-[#16130F] hover:-translate-y-0.5 transition-transform cursor-pointer">
           <ArrowLeft size={15} /> Back to calendar
         </button>
         <JourneyPills steps={BOOKING_STEPS} active={1} className="mt-5 mx-auto w-fit max-w-full" />
-        <form onSubmit={pay} className="mt-4 rounded-[28px] bg-white border border-slate-200 p-6 sm:p-8 shadow-[0_30px_80px_-40px_rgba(15,23,42,0.35)]">
-          <h1 className="font-outfit text-[28px] sm:text-[32px] font-black text-[#111]">Confirm your consultation</h1>
-          <dl className="mt-5 rounded-2xl bg-[#FFF4EE] p-4 grid grid-cols-[auto_1fr] gap-x-6 gap-y-2 text-[14px]">
-            <dt className="text-slate-500">Service</dt><dd className="text-right font-semibold text-slate-900">{svc?.label || '…'}</dd>
-            <dt className="text-slate-500">When</dt><dd className="text-right font-semibold text-slate-900">{fullDate(pick.date)}, {to12h(pick.time)}</dd>
-            <dt className="text-slate-500">Duration</dt><dd className="text-right font-semibold text-slate-900">{cfg?.durationMin || 60} minutes</dd>
-            <dt className="text-slate-500">Fee</dt><dd className="text-right font-bold text-[#DE5C2B]">{fee(price)}</dd>
+        <form onSubmit={pay} className="mt-4 rounded-[22px] bg-white border-[3px] border-[#16130F] p-6 sm:p-8 shadow-[7px_7px_0_#16130F]">
+          <p className="font-urbanist font-extrabold text-[15px] leading-none text-[#D0362E]">Bas thodi si details</p>
+          <h1 className="mt-1.5 font-urbanist text-[28px] sm:text-[34px] font-black tracking-[-0.03em] text-[#16130F]">Confirm your consultation</h1>
+          <dl className="mt-5 rounded-xl bg-[#FFF6E5] border-2 border-[#16130F] p-4 grid grid-cols-[auto_1fr] gap-x-6 gap-y-2 text-[14px]">
+            <dt className="text-[#5B544A]">Service</dt><dd className="text-right font-bold text-[#16130F]">{svc?.label || '…'}</dd>
+            <dt className="text-[#5B544A]">When</dt><dd className="text-right font-bold text-[#16130F]">{fullDate(pick.date)}, {to12h(pick.time)}</dd>
+            <dt className="text-[#5B544A]">Duration</dt><dd className="text-right font-bold text-[#16130F]">{cfg?.durationMin || 60} minutes</dd>
+            <dt className="text-[#5B544A]">Fee</dt><dd className="text-right"><span className="inline-block px-2 py-0.5 rounded-md bg-[#DDF3EF] border-2 border-[#16130F] font-bold text-[#16130F]">{fee(price)}</span></dd>
           </dl>
 
-          <p className="mt-6 text-[11px] font-bold tracking-[0.14em] text-slate-400 uppercase">Your details</p>
-          <div className="mt-3 grid sm:grid-cols-2 gap-4">
-            <label className="block"><span className="text-[13px] font-semibold text-slate-700">Full name</span><input name="name" className={`${input} mt-1.5 ${fieldErr.name ? 'border-red-400' : ''}`} value={form.name} onChange={set('name')} autoComplete="name" />{err('name')}</label>
-            <label className="block"><span className="text-[13px] font-semibold text-slate-700">Phone (WhatsApp)</span><input name="phone" className={`${input} mt-1.5 ${fieldErr.phone ? 'border-red-400' : ''}`} value={form.phone} onChange={set('phone')} placeholder="+91 …" inputMode="tel" autoComplete="tel" />{err('phone')}</label>
+          <div className="mt-6 pb-2 border-b-2 border-[#16130F]">
+            <p className="font-urbanist font-extrabold text-[14px] leading-none text-[#D0362E]">Aapke baare mein</p>
+            <p className="mt-1 text-[11.5px] font-black text-[#16130F] uppercase tracking-[0.12em]">Your details</p>
           </div>
-          <label className="block mt-4"><span className="text-[13px] font-semibold text-slate-700">Email</span><input name="email" className={`${input} mt-1.5 ${fieldErr.email ? 'border-red-400' : ''}`} type="email" value={form.email} onChange={set('email')} autoComplete="email" />{err('email')}</label>
-          <label className="block mt-4"><span className="text-[13px] font-semibold text-slate-700">Anything we should know <span className="font-normal text-slate-400">(optional)</span></span>
+          <div className="mt-3 grid sm:grid-cols-2 gap-4">
+            <label className="block"><span className="text-[14px] font-bold text-[#16130F]">Full name</span><input name="name" className={`${input} mt-1.5 ${fieldErr.name ? '!border-[#D0362E] !bg-[#FCE3DA]' : ''}`} value={form.name} onChange={set('name')} autoComplete="name" />{err('name')}</label>
+            <label className="block"><span className="text-[14px] font-bold text-[#16130F]">Phone (WhatsApp)</span><input name="phone" className={`${input} mt-1.5 ${fieldErr.phone ? '!border-[#D0362E] !bg-[#FCE3DA]' : ''}`} value={form.phone} onChange={set('phone')} placeholder="+91 …" inputMode="tel" autoComplete="tel" />{err('phone')}</label>
+          </div>
+          <label className="block mt-4"><span className="text-[14px] font-bold text-[#16130F]">Email</span><input name="email" className={`${input} mt-1.5 ${fieldErr.email ? '!border-[#D0362E] !bg-[#FCE3DA]' : ''}`} type="email" value={form.email} onChange={set('email')} autoComplete="email" />{err('email')}</label>
+          <label className="block mt-4"><span className="text-[14px] font-bold text-[#16130F]">Anything we should know <span className="font-normal text-[#5B544A]">(optional)</span></span>
             <textarea className={`${input} mt-1.5 h-28 py-3 resize-none`} value={form.notes} onChange={set('notes')} placeholder="Country, course, marks, budget, questions…" />
           </label>
 
-          {error && <p className="mt-4 text-[13px] text-red-600">{error}</p>}
+          {error && <p className="mt-4 text-[14px] font-semibold text-[#D0362E]">{error}</p>}
           <button type="submit" disabled={busy || !cfg}
-            className="no-shine mt-6 w-full h-14 rounded-full bg-[#DE5C2B] hover:bg-[#C04A1D] disabled:opacity-60 text-white font-semibold text-[15px] flex items-center justify-center gap-2 cursor-pointer">
+            className="no-shine mt-6 w-full h-14 rounded-full bg-[#16130F] text-white border-[3px] border-[#16130F] shadow-[4px_4px_0_#DE5C2B] hover:-translate-y-0.5 disabled:opacity-60 disabled:hover:translate-y-0 font-bold text-[15px] flex items-center justify-center gap-2 cursor-pointer transition-transform">
             {busy ? <><Loader2 size={17} className="animate-spin" /> Processing…</> : price ? <>Pay ₹{price} &amp; confirm</> : 'Confirm my free call'}
           </button>
-          {price > 0 && <p className="mt-3 flex items-center justify-center gap-1.5 text-[12px] text-slate-500"><ShieldCheck size={13} /> Secure payment by Razorpay: UPI, cards, net banking. See our <Link to="/refund-policy" className="underline">refund policy</Link>.</p>}
+          {price > 0 && <p className="mt-3 flex items-center justify-center gap-1.5 text-[14px] text-[#5B544A]"><ShieldCheck size={15} className="text-[#14837E]" /> Secure payment by Razorpay: UPI, cards, net banking. See our <Link to="/refund-policy" className="underline">refund policy</Link>.</p>}
         </form>
       </div>
     </Shell>
@@ -461,18 +470,21 @@ const CALL_STEPS = [
   ['After', 'Shortlist aur next steps tumhare paas, koi pressure nahi.'],
 ];
 
+const CALL_TONES = [['#F2B705', '#16130F'], ['#14837E', '#FFFFFF'], ['#B8285B', '#FFFFFF']];
+
 const CallPreview = () => (
-  <section className="mt-12 grid lg:grid-cols-[0.8fr_1.2fr] gap-8 lg:gap-12 items-center bg-white border border-slate-200 rounded-[28px] p-6 sm:p-10">
+  <section className="mt-12 grid lg:grid-cols-[0.8fr_1.2fr] gap-8 lg:gap-12 items-center bg-white border-[3px] border-[#16130F] shadow-[7px_7px_0_#16130F] rounded-[22px] p-6 sm:p-10">
     <div>
-      <h2 className="font-outfit text-[28px] sm:text-[36px] font-black tracking-[-0.03em] leading-[1.08] text-[#111]">Call pe asli mein kya hota hai</h2>
-      <p className="mt-3 text-[15px] text-slate-600 leading-relaxed max-w-md">1:1 video call, ek ghanta. Koi sales pitch nahi.</p>
+      <p className="font-urbanist font-extrabold text-[15px] leading-none text-[#D0362E]">Pehle se jaan lo</p>
+      <h2 className="mt-1.5 font-urbanist text-[28px] sm:text-[36px] font-black tracking-[-0.03em] leading-[1.08] text-[#16130F]">Call pe asli mein kya hota hai</h2>
+      <p className="mt-3 text-[15px] text-[#3D3830] leading-relaxed max-w-md">1:1 video call, ek ghanta. Koi sales pitch nahi.</p>
       <ol className="mt-6 space-y-4">
         {CALL_STEPS.map(([t, d], i) => (
           <li key={t} className="flex gap-3">
-            <span className="shrink-0 w-7 h-7 rounded-full bg-[#16130F] text-white grid place-items-center text-[12.5px] font-bold">{i + 1}</span>
+            <span className="shrink-0 w-8 h-8 rounded-lg border-2 border-[#16130F] grid place-items-center text-[14px] font-black" style={{ background: CALL_TONES[i][0], color: CALL_TONES[i][1] }}>{i + 1}</span>
             <div>
-              <p className="text-[14.5px] font-bold text-[#16130F]">{t}</p>
-              <p className="text-[13.5px] text-slate-600 leading-snug">{d}</p>
+              <p className="font-urbanist text-[16px] font-extrabold text-[#16130F]">{t}</p>
+              <p className="text-[14px] text-[#5B544A] leading-snug">{d}</p>
             </div>
           </li>
         ))}
@@ -480,7 +492,7 @@ const CallPreview = () => (
     </div>
 
     {/* video call window, an illustration of a typical call */}
-    <figure aria-label="Example of a 1:1 video call" className="relative rounded-[18px] bg-[#1F1F1F] p-3 sm:p-4 shadow-[0_30px_60px_-30px_rgba(15,23,42,0.6)]">
+    <figure aria-label="Example of a 1:1 video call" className="relative rounded-[18px] bg-[#1F1F1F] p-3 sm:p-4 border-[3px] border-[#16130F] shadow-[6px_6px_0_#F2B705]">
       <div className="flex items-center justify-between text-[11.5px] text-white/70 px-1 pb-2.5">
         <span className="inline-flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-[#E5484D]" /> 1:1 session · 24:18</span>
         <span>Mentor is presenting</span>

@@ -1,12 +1,11 @@
-import React, { useState, useMemo } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useState, useMemo } from 'react';
+import { motion } from 'framer-motion';
 import { 
   Sparkles, FileText, Download, Copy, Check, RefreshCw, 
   GraduationCap, BookOpen, Briefcase, Award,
   CheckCircle2, AlertCircle, Compass, Building
 } from 'lucide-react';
 import PremiumDropdown from './PremiumDropdown';
-import { FinderCard, FinderField, FinderButton, FINDER_FIELD, FINDER_TEXTAREA, FIELD_RADIUS } from './ui/FinderForm';
 import { POPULAR_COURSES, ALL_COUNTRY_OPTIONS } from '../utils/shortlistOptions';
 import { getVerifiedRanking } from '../utils/ranking';
 import { ALL_UNIVERSITIES } from '../data/universities';
@@ -14,6 +13,21 @@ import { useAuth } from '../context/AuthContext';
 import { API_BASE_URL } from '../config';
 
 const API_URL = API_BASE_URL;
+
+// Desi Pop form look (same as the Course Finder search card): ink borders, hard shadows, mustard focus ring
+const FIELD = 'w-full h-12 px-3 text-[15px] text-[#16130F] bg-white border-2 border-[#16130F] outline-none focus:ring-4 focus:ring-[#F2B705]/50 transition-shadow placeholder:text-[#8A8173]';
+const TEXTAREA = 'w-full px-3 py-2.5 text-[15px] leading-relaxed text-[#16130F] bg-white border-2 border-[#16130F] outline-none focus:ring-4 focus:ring-[#F2B705]/50 transition-shadow placeholder:text-[#8A8173]';
+const FIELD_RADIUS = { borderRadius: 10 };
+// PremiumDropdown (shared) restyled from outside so its label and trigger match the fields above
+const DROPDOWN = '[&>label]:!text-[14px] [&>label]:!font-bold [&>button]:!h-12 [&>button]:!text-[15px] [&>button]:!bg-white [&>button]:!border-2 [&>button]:!border-[#16130F]';
+const PRIMARY_BTN = 'h-12 px-6 inline-flex items-center justify-center gap-2 text-white text-[15px] font-bold bg-[#16130F] border-[3px] border-[#16130F] shadow-[4px_4px_0_#DE5C2B] hover:-translate-y-0.5 transition-transform disabled:opacity-60 disabled:hover:translate-y-0 disabled:cursor-not-allowed cursor-pointer';
+
+const Field = ({ label, children, className = '' }) => (
+  <label className={`flex flex-col gap-1.5 min-w-0 ${className}`}>
+    {label && <span className="text-[14px] font-bold text-[#16130F]">{label}</span>}
+    {children}
+  </label>
+);
 
 const AiSopGenerator = ({ initialProfile = {} }) => {
   const { user, token, openLoginModal } = useAuth();
@@ -144,7 +158,7 @@ const AiSopGenerator = ({ initialProfile = {} }) => {
           label: u.name,
           shortLabel: u.name,
           description: [`${u.city ? u.city + ', ' : ''}${u.countryName || selectedCountryLabel}`, getVerifiedRanking(u)?.shortLabel].filter(Boolean).join(' • '),
-          icon: <GraduationCap size={14} className="text-indigo-600 flex-shrink-0" />,
+          icon: <GraduationCap size={14} className="text-[#DE5C2B] flex-shrink-0" />,
           aliases: [
             u.city, 
             u.countryName, 
@@ -167,7 +181,7 @@ const AiSopGenerator = ({ initialProfile = {} }) => {
         label: u.name,
         shortLabel: u.name,
         description: [`${u.city ? u.city + ', ' : ''}${u.countryName || ''}`, getVerifiedRanking(u)?.shortLabel].filter(Boolean).join(' • '),
-        icon: <GraduationCap size={14} className="text-indigo-600 flex-shrink-0" />,
+        icon: <GraduationCap size={14} className="text-[#DE5C2B] flex-shrink-0" />,
         aliases: [u.city, u.countryName, u.initials].filter(Boolean)
       }));
     }
@@ -264,12 +278,15 @@ const AiSopGenerator = ({ initialProfile = {} }) => {
   return (
     <div className="space-y-8">
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-start">
-        {/* Form card in the Course Finder look */}
-        <FinderCard className="lg:col-span-6 xl:col-span-5">
+        {/* Form card in the Desi Pop look (ink border, hard shadow) */}
+        <div className="lg:col-span-6 xl:col-span-5 bg-white border-[3px] border-[#16130F] shadow-[6px_6px_0_#16130F] p-4 sm:p-6" style={{ borderRadius: 20 }}>
+          <p className="mb-4 font-urbanist text-[17px] font-extrabold text-[#16130F]">
+            <span className="inline-grid place-items-center w-7 h-7 mr-2 rounded-lg bg-[#DE5C2B] text-white border-2 border-[#16130F] text-[14px]">1</span>Apne baare mein batao
+          </p>
           <form onSubmit={handleGenerate} className="space-y-4">
             {errorMsg && (
-              <div className="p-3.5 rounded-xl bg-rose-50 border border-rose-200 text-xs font-bold text-rose-800 flex items-center gap-2">
-                <AlertCircle size={16} className="text-rose-600 flex-shrink-0" />
+              <div className="p-3.5 bg-[#FCE3DA] border-2 border-[#16130F] text-[14px] font-bold text-[#16130F] flex items-center gap-2" style={{ borderRadius: 12 }}>
+                <AlertCircle size={18} className="text-[#D0362E] flex-shrink-0" />
                 {errorMsg}
               </div>
             )}
@@ -279,7 +296,8 @@ const AiSopGenerator = ({ initialProfile = {} }) => {
                 label="Country *"
                 value={formData.targetCountry}
                 onChange={(val) => handleInputChange('targetCountry', val)}
-                accent="indigo"
+                accent="orange"
+                className={DROPDOWN}
                 searchable={true}
                 searchPlaceholder="Search 160+ countries..."
                 options={ALL_COUNTRY_OPTIONS.filter(c => c.value !== 'All')}
@@ -289,12 +307,13 @@ const AiSopGenerator = ({ initialProfile = {} }) => {
                 label="Degree"
                 value={formData.targetDegree}
                 onChange={(val) => handleInputChange('targetDegree', val)}
-                accent="indigo"
+                accent="orange"
+                className={DROPDOWN}
                 options={[
-                  { value: "Master's", label: "Master's (MS / MA / MSc)", shortLabel: "Master's", icon: <GraduationCap size={14} className="text-indigo-600" /> },
-                  { value: 'MBA', label: 'MBA / Business Master', shortLabel: 'MBA', icon: <Briefcase size={14} className="text-indigo-600" /> },
-                  { value: "Bachelor's", label: "Bachelor's (BS / BA / BEng)", shortLabel: "Bachelor's", icon: <BookOpen size={14} className="text-indigo-600" /> },
-                  { value: 'PhD', label: 'PhD / Doctorate', shortLabel: 'PhD / Doctorate', icon: <Award size={14} className="text-indigo-600" /> },
+                  { value: "Master's", label: "Master's (MS / MA / MSc)", shortLabel: "Master's", icon: <GraduationCap size={14} className="text-[#DE5C2B]" /> },
+                  { value: 'MBA', label: 'MBA / Business Master', shortLabel: 'MBA', icon: <Briefcase size={14} className="text-[#DE5C2B]" /> },
+                  { value: "Bachelor's", label: "Bachelor's (BS / BA / BEng)", shortLabel: "Bachelor's", icon: <BookOpen size={14} className="text-[#DE5C2B]" /> },
+                  { value: 'PhD', label: 'PhD / Doctorate', shortLabel: 'PhD / Doctorate', icon: <Award size={14} className="text-[#DE5C2B]" /> },
                 ]}
               />
 
@@ -303,10 +322,11 @@ const AiSopGenerator = ({ initialProfile = {} }) => {
                   label="Program or major *"
                   value={formData.targetMajor}
                   onChange={(val) => handleInputChange('targetMajor', val)}
-                  accent="indigo"
+                  accent="orange"
+                  className={DROPDOWN}
                   searchable={true}
                   creatable={true}
-                  defaultIcon={<BookOpen size={14} className="text-indigo-600" />}
+                  defaultIcon={<BookOpen size={14} className="text-[#DE5C2B]" />}
                   searchPlaceholder="Search or enter major..."
                   placeholder="e.g. Computer Science"
                   options={POPULAR_COURSES}
@@ -318,10 +338,11 @@ const AiSopGenerator = ({ initialProfile = {} }) => {
                   label="University"
                   value={formData.targetUniversity}
                   onChange={(val) => handleInputChange('targetUniversity', val)}
-                  accent="indigo"
+                  accent="orange"
+                  className={DROPDOWN}
                   searchable={true}
                   creatable={true}
-                  defaultIcon={<GraduationCap size={14} className="text-indigo-600 flex-shrink-0" />}
+                  defaultIcon={<GraduationCap size={14} className="text-[#DE5C2B] flex-shrink-0" />}
                   searchPlaceholder={
                     universityOptions.length > 0
                       ? `Search ${universityOptions.length} universities in ${selectedCountryLabel} or enter custom...`
@@ -335,7 +356,7 @@ const AiSopGenerator = ({ initialProfile = {} }) => {
                   options={universityOptions}
                 />
                 {universityOptions.length > 0 && (
-                  <span className="text-[11.5px] text-[#5B544A] leading-tight">{universityOptions.length} universities in {selectedCountryLabel}</span>
+                  <span className="text-[13px] font-medium text-[#5B544A] leading-tight">{universityOptions.length} universities in {selectedCountryLabel}</span>
                 )}
               </div>
 
@@ -344,81 +365,83 @@ const AiSopGenerator = ({ initialProfile = {} }) => {
                   label="Essay tone"
                   value={formData.tone}
                   onChange={(val) => handleInputChange('tone', val)}
-                  accent="indigo"
+                  accent="orange"
+                  className={DROPDOWN}
                   options={[
-                    { value: 'Academic & Professional', label: 'Academic & Professional', shortLabel: 'Academic & Professional', icon: <Building size={14} className="text-indigo-600" /> },
-                    { value: 'Visionary & Ambitious', label: 'Visionary & Ambitious', shortLabel: 'Visionary & Ambitious', icon: <Compass size={14} className="text-indigo-600" /> },
-                    { value: 'Research & Technical', label: 'Research & Technical', shortLabel: 'Research & Technical', icon: <Sparkles size={14} className="text-indigo-600" /> },
-                    { value: 'Leadership & Storytelling', label: 'Leadership & Storytelling', shortLabel: 'Leadership & Storytelling', icon: <Award size={14} className="text-indigo-600" /> },
+                    { value: 'Academic & Professional', label: 'Academic & Professional', shortLabel: 'Academic & Professional', icon: <Building size={14} className="text-[#DE5C2B]" /> },
+                    { value: 'Visionary & Ambitious', label: 'Visionary & Ambitious', shortLabel: 'Visionary & Ambitious', icon: <Compass size={14} className="text-[#DE5C2B]" /> },
+                    { value: 'Research & Technical', label: 'Research & Technical', shortLabel: 'Research & Technical', icon: <Sparkles size={14} className="text-[#DE5C2B]" /> },
+                    { value: 'Leadership & Storytelling', label: 'Leadership & Storytelling', shortLabel: 'Leadership & Storytelling', icon: <Award size={14} className="text-[#DE5C2B]" /> },
                   ]}
                 />
               </div>
 
-              <FinderField label="Academic background and GPA *" className="sm:col-span-2">
+              <Field label="Academic background and GPA *" className="sm:col-span-2">
                 <input
                   type="text"
                   placeholder="e.g. B.Tech Computer Science, 8.2 CGPA from Anna University"
                   value={formData.academicBackground}
                   onChange={(e) => handleInputChange('academicBackground', e.target.value)}
-                  className={FINDER_FIELD}
+                  className={FIELD}
                   style={FIELD_RADIUS}
                 />
-              </FinderField>
+              </Field>
 
-              <FinderField label="Work or internship experience">
+              <Field label="Work or internship experience">
                 <textarea
                   rows={3}
                   placeholder="e.g. 2 years as Software Engineer at Infosys working on microservices"
                   value={formData.workExperience}
                   onChange={(e) => handleInputChange('workExperience', e.target.value)}
-                  className={`${FINDER_TEXTAREA} resize-none`}
+                  className={`${TEXTAREA} resize-none`}
                   style={FIELD_RADIUS}
                 />
-              </FinderField>
+              </Field>
 
-              <FinderField label="Key projects and achievements">
+              <Field label="Key projects and achievements">
                 <textarea
                   rows={3}
                   placeholder="e.g. Published IEEE paper on NLP, built AI healthcare prediction app"
                   value={formData.keyProjects}
                   onChange={(e) => handleInputChange('keyProjects', e.target.value)}
-                  className={`${FINDER_TEXTAREA} resize-none`}
+                  className={`${TEXTAREA} resize-none`}
                   style={FIELD_RADIUS}
                 />
-              </FinderField>
+              </Field>
 
-              <FinderField label="Career goal *" className="sm:col-span-2">
+              <Field label="Career goal *" className="sm:col-span-2">
                 <input
                   type="text"
                   placeholder="e.g. Become Senior ML Architect driving healthcare AI automation"
                   value={formData.careerGoals}
                   onChange={(e) => handleInputChange('careerGoals', e.target.value)}
-                  className={FINDER_FIELD}
+                  className={FIELD}
                   style={FIELD_RADIUS}
                 />
-              </FinderField>
+              </Field>
             </div>
 
-            <FinderButton type="submit" disabled={loading} className="w-full">
+            <button type="submit" disabled={loading} className={`${PRIMARY_BTN} w-full`} style={{ borderRadius: 999 }}>
               {loading ? (
                 <><RefreshCw size={16} className="animate-spin" /> Drafting your SOP…</>
               ) : (
                 <><Sparkles size={16} /> Generate SOP</>
               )}
-            </FinderButton>
+            </button>
           </form>
-        </FinderCard>
+        </div>
 
         {/* Right Pane: Generated Result / Empty State (6 Cols on lg, 7 on xl) */}
         <div className="lg:col-span-6 xl:col-span-7 space-y-6">
           {loading && (
-            <div className="bg-white border border-slate-200/70 p-10 rounded-[32px] shadow-sm text-center space-y-6">
-              <div className="w-16 h-16 rounded-2xl bg-indigo-50 text-indigo-600 flex items-center justify-center mx-auto animate-pulse">
-                <Sparkles size={32} />
+            <div className="bg-white border-[3px] border-[#16130F] shadow-[6px_6px_0_#16130F] p-6 sm:p-10 text-center space-y-6" style={{ borderRadius: 20 }}>
+              <div className="w-16 h-16 rounded-2xl bg-[#F2B705] border-[3px] border-[#16130F] shadow-[3px_3px_0_#16130F] text-[#16130F] flex items-center justify-center mx-auto animate-pulse">
+                <Sparkles size={30} />
               </div>
               <div className="space-y-2">
-                <h3 className="text-lg font-black text-slate-800">Drafting Your Bespoke SOP</h3>
-                <p className="text-xs text-slate-400 font-semibold">Our AI consultant is weaving your profile into a persuasive academic narrative</p>
+                <p className="font-urbanist font-extrabold text-[15px] text-[#D0362E]">Likh rahe hain, ruko zara</p>
+                <h3 className="font-urbanist text-[22px] font-black tracking-[-0.02em] text-[#16130F]">Drafting Your Bespoke SOP</h3>
+                <p className="text-[14px] text-[#5B544A] font-medium">Our AI consultant is weaving your profile into a persuasive academic narrative</p>
               </div>
 
               {/* Progress Steps */}
@@ -431,16 +454,17 @@ const AiSopGenerator = ({ initialProfile = {} }) => {
                 ].map((step, idx) => (
                   <div
                     key={idx}
-                    className={`flex items-center gap-3 p-3 rounded-xl text-xs font-bold transition-all ${
+                    className={`flex items-center gap-3 p-3 text-[14px] font-bold border-2 transition-all ${
                       generationStep > idx
-                        ? 'bg-emerald-50 text-emerald-800 border border-emerald-200'
+                        ? 'bg-[#DDF3EF] text-[#16130F] border-[#16130F]'
                         : generationStep === idx + 1
-                        ? 'bg-indigo-50 text-indigo-700 border border-indigo-200 animate-pulse'
-                        : 'bg-slate-50 text-slate-400'
+                        ? 'bg-[#FFF1B8] text-[#16130F] border-[#16130F] animate-pulse'
+                        : 'bg-[#FFF6E5] text-[#8A8173] border-[#16130F]/15'
                     }`}
+                    style={{ borderRadius: 12 }}
                   >
                     {generationStep > idx ? (
-                      <CheckCircle2 size={16} className="text-emerald-600 flex-shrink-0" />
+                      <CheckCircle2 size={18} className="text-[#14837E] flex-shrink-0" />
                     ) : (
                       <div className="w-4 h-4 rounded-full border-2 border-current border-t-transparent animate-spin flex-shrink-0" />
                     )}
@@ -452,13 +476,14 @@ const AiSopGenerator = ({ initialProfile = {} }) => {
           )}
 
           {!loading && !sopResult && (
-            <div className="bg-white border border-dashed border-slate-200 p-12 rounded-[32px] text-center space-y-4">
-              <div className="w-16 h-16 rounded-3xl bg-indigo-50 text-indigo-500 flex items-center justify-center mx-auto">
+            <div className="bg-[#FFF1B8] border-[3px] border-dashed border-[#16130F] p-8 sm:p-12 text-center space-y-4" style={{ borderRadius: 20 }}>
+              <div className="w-16 h-16 rounded-2xl bg-white border-[3px] border-[#16130F] shadow-[3px_3px_0_#16130F] text-[#DE5C2B] flex items-center justify-center mx-auto -rotate-3">
                 <FileText size={28} />
               </div>
-              <div className="space-y-1">
-                <h3 className="text-base font-black text-slate-700">No SOP Generated Yet</h3>
-                <p className="text-xs text-slate-400 font-semibold max-w-sm mx-auto">
+              <div className="space-y-1.5">
+                <p className="font-urbanist font-extrabold text-[15px] text-[#D0362E]">Abhi kuch nahi likha</p>
+                <h3 className="font-urbanist text-[22px] font-black tracking-[-0.02em] text-[#16130F]">No SOP Generated Yet</h3>
+                <p className="text-[15px] text-[#3D3830] font-medium max-w-sm mx-auto">
                   Fill in your target university and academic parameters on the left, then click <strong>"Generate SOP"</strong>.
                 </p>
               </div>
@@ -469,61 +494,63 @@ const AiSopGenerator = ({ initialProfile = {} }) => {
             <motion.div
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
-              className="bg-white border border-slate-200/80 rounded-[32px] shadow-sm overflow-hidden space-y-6 p-6 md:p-8"
+              className="bg-white border-[3px] border-[#16130F] shadow-[6px_6px_0_#16130F] overflow-hidden space-y-6 p-5 md:p-8"
+              style={{ borderRadius: 20 }}
             >
               {/* Header Bar */}
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-100 pb-5">
-                <div className="space-y-1">
-                  <div className="flex items-center gap-2">
-                    <span className="px-3 py-1 rounded-full text-xs font-black bg-indigo-50 text-indigo-700 border border-indigo-100">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b-2 border-[#16130F] pb-5">
+                <div className="space-y-2">
+                  <p className="font-urbanist font-extrabold text-[15px] text-[#D0362E]">Tumhara SOP taiyaar hai</p>
+                  <div className="flex flex-wrap items-center gap-2">
+                    <span className="px-3 py-1 rounded-full text-[13px] font-black bg-[#F2B705] text-[#16130F] border-2 border-[#16130F]">
                       {sopResult.wordCount || '850'} Words
                     </span>
-                    <span className="px-3 py-1 rounded-full text-xs font-black bg-slate-100 text-slate-700">
+                    <span className="px-3 py-1 rounded-full text-[13px] font-bold bg-white text-[#16130F] border-2 border-[#16130F]">
                       {sopResult.suggestedTone || formData.tone}
                     </span>
                   </div>
-                  <h3 className="text-lg font-black text-slate-900 leading-tight">
+                  <h3 className="font-urbanist text-[22px] font-black tracking-[-0.02em] text-[#16130F] leading-tight">
                     {sopResult.title || 'Statement of Purpose'}
                   </h3>
                 </div>
 
                 {/* Actions */}
-                <div className="flex items-center gap-2 flex-shrink-0">
+                <div className="flex items-center gap-2.5 flex-shrink-0">
                   <button
                     onClick={handleCopy}
-                    className="px-4 py-2 rounded-xl text-xs font-bold text-slate-700 bg-slate-100 hover:bg-slate-200 transition-all flex items-center gap-1.5 cursor-pointer"
+                    className="h-10 px-4 rounded-full text-[14px] font-bold text-[#16130F] bg-white border-2 border-[#16130F] shadow-[2px_2px_0_#16130F] hover:-translate-y-0.5 transition-transform flex items-center gap-1.5 cursor-pointer"
                   >
-                    {copied ? <Check size={14} className="text-emerald-600" /> : <Copy size={14} />}
+                    {copied ? <Check size={15} className="text-[#14837E]" /> : <Copy size={15} />}
                     {copied ? 'Copied!' : 'Copy'}
                   </button>
                   <button
                     onClick={handleDownload}
-                    className="px-4 py-2 rounded-xl text-xs font-bold text-white bg-indigo-600 hover:bg-indigo-700 transition-all flex items-center gap-1.5 cursor-pointer shadow-md shadow-indigo-100"
+                    className="h-10 px-4 rounded-full text-[14px] font-bold text-white bg-[#16130F] border-2 border-[#16130F] shadow-[3px_3px_0_#DE5C2B] hover:-translate-y-0.5 transition-transform flex items-center gap-1.5 cursor-pointer"
                   >
-                    <Download size={14} /> Download (.txt)
+                    <Download size={15} /> Download (.txt)
                   </button>
                 </div>
               </div>
 
               {/* View Toggle Tabs */}
               {sopResult.sections && sopResult.sections.length > 0 && (
-                <div className="flex items-center gap-2 border-b border-slate-100 pb-2">
+                <div className="flex flex-wrap items-center gap-2">
                   <button
                     onClick={() => setActiveTab('full')}
-                    className={`px-4 py-2 rounded-xl text-xs font-black transition-all cursor-pointer ${
+                    className={`px-4 py-2 rounded-full text-[14px] font-bold border-2 border-[#16130F] transition-colors cursor-pointer ${
                       activeTab === 'full'
-                        ? 'bg-indigo-600 text-white shadow-sm'
-                        : 'text-slate-600 hover:bg-slate-100'
+                        ? 'bg-[#16130F] text-white'
+                        : 'bg-white text-[#16130F] hover:bg-[#FFF1B8]'
                     }`}
                   >
                     Complete Formatted Essay
                   </button>
                   <button
                     onClick={() => setActiveTab('sections')}
-                    className={`px-4 py-2 rounded-xl text-xs font-black transition-all cursor-pointer ${
+                    className={`px-4 py-2 rounded-full text-[14px] font-bold border-2 border-[#16130F] transition-colors cursor-pointer ${
                       activeTab === 'sections'
-                        ? 'bg-indigo-600 text-white shadow-sm'
-                        : 'text-slate-600 hover:bg-slate-100'
+                        ? 'bg-[#16130F] text-white'
+                        : 'bg-white text-[#16130F] hover:bg-[#FFF1B8]'
                     }`}
                   >
                     Section-by-Section Breakdown ({sopResult.sections.length})
@@ -533,18 +560,18 @@ const AiSopGenerator = ({ initialProfile = {} }) => {
 
               {/* Tab 1: Full Formatted Text */}
               {activeTab === 'full' && (
-                <div className="p-6 rounded-2xl bg-slate-50/70 border border-slate-100 text-xs md:text-sm font-medium text-slate-800 leading-relaxed space-y-4 max-h-[500px] overflow-y-auto custom-scrollbar whitespace-pre-line">
+                <div className="p-5 sm:p-6 bg-[#FFF6E5] border-2 border-[#16130F] text-[15px] font-medium text-[#16130F] leading-relaxed space-y-4 max-h-[500px] overflow-y-auto custom-scrollbar whitespace-pre-line" style={{ borderRadius: 14 }}>
                   {sopResult.sopText}
                 </div>
               )}
 
               {/* Tab 2: Section-by-Section */}
               {activeTab === 'sections' && (
-                <div className="space-y-4 max-h-[500px] overflow-y-auto custom-scrollbar pr-2">
+                <div className="space-y-3 max-h-[500px] overflow-y-auto custom-scrollbar pr-2">
                   {sopResult.sections.map((sec, i) => (
-                    <div key={i} className="p-4 rounded-2xl bg-slate-50 border border-slate-200/60 space-y-1.5">
-                      <h4 className="text-xs font-black text-indigo-700 uppercase tracking-wider">{sec.heading}</h4>
-                      <p className="text-xs font-medium text-slate-700 leading-relaxed">{sec.content}</p>
+                    <div key={i} className="p-4 bg-[#FFF6E5] border-2 border-[#16130F] space-y-1.5" style={{ borderRadius: 14 }}>
+                      <h4 className="font-urbanist text-[16px] font-black text-[#B8285B]">{sec.heading}</h4>
+                      <p className="text-[15px] font-medium text-[#16130F] leading-relaxed">{sec.content}</p>
                     </div>
                   ))}
                 </div>
@@ -552,14 +579,15 @@ const AiSopGenerator = ({ initialProfile = {} }) => {
 
               {/* Customization Advice Checklist */}
               {sopResult.customizationAdvice && sopResult.customizationAdvice.length > 0 && (
-                <div className="p-5 rounded-2xl bg-amber-50/60 border border-amber-200/60 space-y-2.5">
-                  <h4 className="text-xs font-black text-amber-900 uppercase tracking-wider flex items-center gap-1.5">
-                    <Sparkles size={14} className="text-amber-600" /> Admissions Counsellor Tailoring Checklist
+                <div className="p-5 bg-[#FFF1B8] border-2 border-[#16130F] shadow-[4px_4px_0_#16130F] space-y-2.5" style={{ borderRadius: 14 }}>
+                  <p className="font-urbanist font-extrabold text-[14px] text-[#D0362E]">Bhejne se pehle ye check karo</p>
+                  <h4 className="font-urbanist text-[17px] font-black text-[#16130F] flex items-center gap-1.5">
+                    <Sparkles size={16} className="text-[#DE5C2B]" /> Admissions Counsellor Tailoring Checklist
                   </h4>
                   <ul className="space-y-1.5">
                     {sopResult.customizationAdvice.map((tip, i) => (
-                      <li key={i} className="text-xs font-semibold text-amber-950 flex items-start gap-2">
-                        <span className="w-1.5 h-1.5 rounded-full bg-amber-500 mt-1.5 flex-shrink-0" />
+                      <li key={i} className="text-[14px] font-semibold text-[#16130F] flex items-start gap-2">
+                        <span className="w-2 h-2 rounded-full bg-[#DE5C2B] border border-[#16130F] mt-1.5 flex-shrink-0" />
                         {tip}
                       </li>
                     ))}

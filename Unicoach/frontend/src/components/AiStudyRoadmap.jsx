@@ -1,18 +1,21 @@
-import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { 
-  Compass, Calendar, CheckCircle2, Clock, Sparkles, 
-  Target, Award, ArrowRight, RefreshCw, FileText, CheckSquare, 
-  Square, Download, AlertCircle, Layers, ChevronRight, Globe,
+import { useState } from 'react';
+import { motion } from 'framer-motion';
+import {
+  Compass, Calendar, CheckCircle2, Clock, Sparkles,
+  Target, Award, ArrowRight, RefreshCw, FileText,
+  Square, AlertCircle, Layers, Globe,
   GraduationCap, Briefcase, BookOpen
 } from 'lucide-react';
 import PremiumDropdown from './PremiumDropdown';
-import { FinderCard, FinderButton } from './ui/FinderForm';
 import { ALL_COUNTRY_OPTIONS, POPULAR_COURSES } from '../utils/shortlistOptions';
 import { useAuth } from '../context/AuthContext';
 import { API_BASE_URL } from '../config';
 
 const API_URL = API_BASE_URL;
+
+// Desi Pop look (same as the Course Finder search card): PremiumDropdown (shared) restyled from outside
+const DROPDOWN = '[&>label]:!text-[14px] [&>label]:!font-bold [&>button]:!h-12 [&>button]:!text-[15px] [&>button]:!bg-white [&>button]:!border-2 [&>button]:!border-[#16130F]';
+const PRIMARY_BTN = 'h-12 px-6 inline-flex items-center justify-center gap-2 text-white text-[15px] font-bold bg-[#16130F] border-[3px] border-[#16130F] shadow-[4px_4px_0_#DE5C2B] hover:-translate-y-0.5 transition-transform disabled:opacity-60 disabled:hover:translate-y-0 disabled:cursor-not-allowed cursor-pointer';
 
 // Upcoming intakes worked out from today (Spring = January, Fall = September), never one that has already started
 const upcomingIntakes = (from = new Date()) => {
@@ -130,27 +133,32 @@ const AiStudyRoadmap = ({ studentProfile = {} }) => {
 
   return (
     <div className="space-y-8">
-      {/* Parameters card, in the Course Finder look: labelled fields in one row, dark action at the end */}
-      <FinderCard>
+      {/* Parameters card in the Desi Pop look: labelled fields in one row, dark action at the end */}
+      <div className="bg-white border-[3px] border-[#16130F] shadow-[6px_6px_0_#16130F] p-4 sm:p-6" style={{ borderRadius: 20 }}>
+        <p className="mb-4 font-urbanist text-[17px] font-extrabold text-[#16130F]">
+          <span className="inline-grid place-items-center w-7 h-7 mr-2 rounded-lg bg-[#DE5C2B] text-white border-2 border-[#16130F] text-[14px]">1</span>Kab aur kahan jaana hai?
+        </p>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-[1fr_1fr_1fr_1.2fr_1.2fr_auto] gap-3 items-start">
           <div>
             <PremiumDropdown
               label="Intake"
-              labelIcon={<Calendar size={14} className="text-indigo-600" />}
+              labelIcon={<Calendar size={14} className="text-[#DE5C2B]" />}
               value={formData.targetIntake}
               onChange={(val) => setFormData(prev => ({ ...prev, targetIntake: val }))}
-              accent="indigo"
-              options={upcomingIntakes().map((i) => ({ value: i.name, label: `${i.name} (${i.months})`, shortLabel: i.name, icon: <Calendar size={14} className="text-indigo-600" /> }))}
+              accent="orange"
+              className={DROPDOWN}
+              options={upcomingIntakes().map((i) => ({ value: i.name, label: `${i.name} (${i.months})`, shortLabel: i.name, icon: <Calendar size={14} className="text-[#DE5C2B]" /> }))}
             />
           </div>
 
           <div>
             <PremiumDropdown
               label="Country"
-              labelIcon={<Globe size={14} className="text-indigo-600" />}
+              labelIcon={<Globe size={14} className="text-[#DE5C2B]" />}
               value={formData.targetCountry}
               onChange={(val) => setFormData(prev => ({ ...prev, targetCountry: val }))}
-              accent="indigo"
+              accent="orange"
+              className={DROPDOWN}
               searchable={true}
               searchPlaceholder="Search 160+ countries..."
               options={ALL_COUNTRY_OPTIONS.filter(c => c.value !== 'All')}
@@ -160,14 +168,15 @@ const AiStudyRoadmap = ({ studentProfile = {} }) => {
           <div>
             <PremiumDropdown
               label="Degree"
-              labelIcon={<GraduationCap size={14} className="text-indigo-600" />}
+              labelIcon={<GraduationCap size={14} className="text-[#DE5C2B]" />}
               value={formData.targetDegree}
               onChange={(val) => setFormData(prev => ({ ...prev, targetDegree: val }))}
-              accent="indigo"
+              accent="orange"
+              className={DROPDOWN}
               options={[
-                { value: "Master's", label: "Master's (MS/MSc)", shortLabel: "Master's", icon: <GraduationCap size={14} className="text-indigo-600" /> },
-                { value: 'MBA', label: 'MBA / Management', shortLabel: 'MBA', icon: <Briefcase size={14} className="text-indigo-600" /> },
-                { value: "Bachelor's", label: "Bachelor's (BS/BA)", shortLabel: "Bachelor's", icon: <BookOpen size={14} className="text-indigo-600" /> }
+                { value: "Master's", label: "Master's (MS/MSc)", shortLabel: "Master's", icon: <GraduationCap size={14} className="text-[#DE5C2B]" /> },
+                { value: 'MBA', label: 'MBA / Management', shortLabel: 'MBA', icon: <Briefcase size={14} className="text-[#DE5C2B]" /> },
+                { value: "Bachelor's", label: "Bachelor's (BS/BA)", shortLabel: "Bachelor's", icon: <BookOpen size={14} className="text-[#DE5C2B]" /> }
               ]}
             />
           </div>
@@ -175,13 +184,14 @@ const AiStudyRoadmap = ({ studentProfile = {} }) => {
           <div>
             <PremiumDropdown
               label="Program or major"
-              labelIcon={<BookOpen size={14} className="text-indigo-600 flex-shrink-0" />}
+              labelIcon={<BookOpen size={14} className="text-[#DE5C2B] flex-shrink-0" />}
               value={formData.targetMajor}
               onChange={(val) => setFormData(prev => ({ ...prev, targetMajor: val }))}
-              accent="indigo"
+              accent="orange"
+              className={DROPDOWN}
               searchable={true}
               creatable={true}
-              defaultIcon={<BookOpen size={14} className="text-indigo-600" />}
+              defaultIcon={<BookOpen size={14} className="text-[#DE5C2B]" />}
               searchPlaceholder="Search or enter major..."
               placeholder="e.g. Computer Science"
               options={POPULAR_COURSES}
@@ -191,61 +201,65 @@ const AiStudyRoadmap = ({ studentProfile = {} }) => {
           <div>
             <PremiumDropdown
               label="Where you are now"
-              labelIcon={<Target size={14} className="text-indigo-600" />}
+              labelIcon={<Target size={14} className="text-[#DE5C2B]" />}
               value={formData.currentStage}
               onChange={(val) => setFormData(prev => ({ ...prev, currentStage: val }))}
-              accent="indigo"
+              accent="orange"
+              className={DROPDOWN}
               options={[
-                { value: 'Exploring & Profile Building', label: 'Exploring & Profile Building', shortLabel: 'Exploring', icon: <Compass size={14} className="text-indigo-600" /> },
-                { value: 'IELTS / GRE Preparation', label: 'IELTS / GRE Preparation', shortLabel: 'Exam Prep', icon: <BookOpen size={14} className="text-indigo-600" /> },
-                { value: 'Shortlisting & SOP Writing', label: 'Shortlisting & SOP Writing', shortLabel: 'Shortlisting & SOP', icon: <FileText size={14} className="text-indigo-600" /> },
-                { value: 'Submitting Applications', label: 'Submitting Applications', shortLabel: 'Submitting Apps', icon: <Award size={14} className="text-indigo-600" /> }
+                { value: 'Exploring & Profile Building', label: 'Exploring & Profile Building', shortLabel: 'Exploring', icon: <Compass size={14} className="text-[#DE5C2B]" /> },
+                { value: 'IELTS / GRE Preparation', label: 'IELTS / GRE Preparation', shortLabel: 'Exam Prep', icon: <BookOpen size={14} className="text-[#DE5C2B]" /> },
+                { value: 'Shortlisting & SOP Writing', label: 'Shortlisting & SOP Writing', shortLabel: 'Shortlisting & SOP', icon: <FileText size={14} className="text-[#DE5C2B]" /> },
+                { value: 'Submitting Applications', label: 'Submitting Applications', shortLabel: 'Submitting Apps', icon: <Award size={14} className="text-[#DE5C2B]" /> }
               ]}
             />
           </div>
-          <FinderButton type="button" onClick={handleGenerateRoadmap} disabled={loading} className="w-full lg:w-auto self-start lg:mt-[26px]">
+          <button type="button" onClick={handleGenerateRoadmap} disabled={loading} className={`${PRIMARY_BTN} w-full lg:w-auto self-start lg:mt-[29px]`} style={{ borderRadius: 999 }}>
             {loading ? <><RefreshCw size={16} className="animate-spin" /> Generating…</> : <><Sparkles size={16} /> Generate</>}
-          </FinderButton>
+          </button>
         </div>
-        <p className="mt-4 pt-4 border-t border-[#ECE6DA] flex items-center justify-center gap-2 text-[13px] text-[#5B544A] text-center">
-          <Sparkles size={14} className="text-[#DE5C2B] shrink-0" />
+        <p className="mt-5 pt-4 border-t-2 border-dashed border-[#16130F]/20 flex items-center justify-center gap-2 text-[14px] font-medium text-[#3D3830] text-center">
+          <Sparkles size={15} className="text-[#DE5C2B] shrink-0" />
           Pick your intake, country and stage, then press Generate for deadlines, exam milestones and visa windows.
         </p>
-      </FinderCard>
+      </div>
 
       {errorMsg && (
-        <div className="p-4 rounded-2xl bg-rose-50 border border-rose-200 text-xs font-bold text-rose-800 flex items-center gap-2">
-          <AlertCircle size={16} className="text-rose-600 flex-shrink-0" />
+        <div className="p-4 bg-[#FCE3DA] border-2 border-[#16130F] text-[14px] font-bold text-[#16130F] flex items-center gap-2" style={{ borderRadius: 14 }}>
+          <AlertCircle size={18} className="text-[#D0362E] flex-shrink-0" />
           {errorMsg}
         </div>
       )}
 
       {loading && (
-        <div className="bg-white border border-slate-200 p-12 rounded-[32px] text-center space-y-4 shadow-sm">
-          <div className="w-14 h-14 rounded-2xl bg-indigo-50 text-indigo-600 flex items-center justify-center mx-auto animate-pulse">
-            <Sparkles size={28} />
+        <div className="bg-white border-[3px] border-[#16130F] shadow-[6px_6px_0_#16130F] p-8 sm:p-12 text-center space-y-4" style={{ borderRadius: 20 }}>
+          <div className="w-14 h-14 rounded-2xl bg-[#F2B705] border-[3px] border-[#16130F] shadow-[3px_3px_0_#16130F] text-[#16130F] flex items-center justify-center mx-auto animate-pulse">
+            <Sparkles size={26} />
           </div>
-          <div className="space-y-1">
-            <h4 className="text-base font-black text-slate-800">Generating Your Strategic 6-Month Roadmap...</h4>
-            <p className="text-xs text-slate-400 font-semibold">Aligning admissions cycles, scholarship priority dates, and visa appointment windows.</p>
+          <div className="space-y-1.5">
+            <p className="font-urbanist font-extrabold text-[15px] text-[#D0362E]">Plan ban raha hai</p>
+            <h4 className="font-urbanist text-[22px] font-black tracking-[-0.02em] text-[#16130F]">Generating Your Strategic 6-Month Roadmap...</h4>
+            <p className="text-[14px] text-[#5B544A] font-medium">Aligning admissions cycles, scholarship priority dates, and visa appointment windows.</p>
           </div>
         </div>
       )}
 
       {!loading && !roadmap && (
-        <div className="bg-white border border-slate-200/90 rounded-[32px] p-8 md:p-12 text-center space-y-5 shadow-sm">
-          <div className="w-16 h-16 rounded-2xl bg-indigo-50 border border-indigo-100 flex items-center justify-center mx-auto text-indigo-600 shadow-sm">
-            <Compass size={32} />
+        <div className="bg-[#DDF3EF] border-[3px] border-[#16130F] shadow-[6px_6px_0_#16130F] p-8 md:p-12 text-center space-y-5" style={{ borderRadius: 20 }}>
+          <div className="w-16 h-16 rounded-2xl bg-white border-[3px] border-[#16130F] shadow-[3px_3px_0_#16130F] flex items-center justify-center mx-auto text-[#14837E] -rotate-3">
+            <Compass size={30} />
           </div>
           <div className="max-w-md mx-auto space-y-2">
-            <h4 className="text-xl font-black text-slate-900">Ready to Map Your Study Abroad Journey?</h4>
-            <p className="text-xs md:text-sm text-slate-500 font-medium leading-relaxed">
+            <p className="font-urbanist font-extrabold text-[15px] text-[#D0362E]">Chalo, raasta banate hain</p>
+            <h4 className="font-urbanist text-[24px] sm:text-[28px] font-black tracking-[-0.03em] leading-tight text-[#16130F]">Ready to Map Your Study Abroad Journey?</h4>
+            <p className="text-[15px] text-[#3D3830] font-medium leading-relaxed">
               Generate an intelligent, month-by-month timeline synchronized with priority scholarship cutoffs, university application portals, and visa interview slots.
             </p>
           </div>
           <button
             onClick={handleGenerateRoadmap}
-            className="px-8 py-4 bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-700 hover:to-blue-700 text-white rounded-2xl text-sm font-black transition-all shadow-lg shadow-indigo-100 inline-flex items-center gap-2 cursor-pointer"
+            className="min-h-12 px-6 py-3 inline-flex items-center justify-center gap-2 text-center text-white text-[15px] font-bold bg-[#16130F] border-[3px] border-[#16130F] shadow-[4px_4px_0_#DE5C2B] hover:-translate-y-0.5 transition-transform cursor-pointer"
+            style={{ borderRadius: 999 }}
           >
             <Sparkles size={16} /> Generate Strategic 6-Month Roadmap <ArrowRight size={16} />
           </button>
@@ -260,32 +274,32 @@ const AiStudyRoadmap = ({ studentProfile = {} }) => {
           <div className="space-y-8">
             {/* Top Highlights Banner */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div className="p-5 rounded-2xl bg-white border border-slate-200 shadow-xs space-y-1">
-                <span className="text-[10px] font-black text-slate-400 uppercase tracking-wider">Plan Horizon</span>
-                <p className="text-base font-black text-slate-800">{roadmap.intakeTitle || `${formData.targetIntake} in ${formData.targetCountry}`}</p>
-                <p className="text-[11px] font-semibold text-slate-400">Customized for {formData.targetMajor || 'Target Degree'}</p>
+              <div className="p-5 bg-[#F2B705] border-[3px] border-[#16130F] shadow-[4px_4px_0_#16130F] space-y-1" style={{ borderRadius: 16 }}>
+                <span className="font-urbanist text-[13px] font-extrabold text-[#16130F]/75">Plan Horizon</span>
+                <p className="font-urbanist text-[19px] font-black leading-tight text-[#16130F]">{roadmap.intakeTitle || `${formData.targetIntake} in ${formData.targetCountry}`}</p>
+                <p className="text-[14px] font-semibold text-[#16130F]/80">Customized for {formData.targetMajor || 'Target Degree'}</p>
               </div>
 
-              <div className="p-5 rounded-2xl bg-white border border-slate-200 shadow-xs space-y-1">
-                <span className="text-[10px] font-black text-slate-400 uppercase tracking-wider">Profile Readiness Rating</span>
-                <div className="flex items-center gap-2">
-                  <span className="text-base font-black text-emerald-600">{roadmap.readinessRating || '78% Profile Maturity'}</span>
-                  <span className="px-2 py-0.5 rounded-full text-[10px] font-black bg-emerald-50 text-emerald-700 border border-emerald-200">On Track</span>
+              <div className="p-5 bg-white border-[3px] border-[#16130F] shadow-[4px_4px_0_#16130F] space-y-1" style={{ borderRadius: 16 }}>
+                <span className="font-urbanist text-[13px] font-extrabold text-[#5B544A]">Profile Readiness Rating</span>
+                <div className="flex flex-wrap items-center gap-2">
+                  <span className="font-urbanist text-[19px] font-black leading-tight text-[#14837E]">{roadmap.readinessRating || '78% Profile Maturity'}</span>
+                  <span className="px-2.5 py-0.5 rounded-full text-[12px] font-black bg-[#DDF3EF] text-[#16130F] border-2 border-[#16130F]">On Track</span>
                 </div>
-                <p className="text-[11px] font-semibold text-slate-400">Targeting {formData.targetExam || 'IELTS'} + {formData.targetDegree}</p>
+                <p className="text-[14px] font-semibold text-[#5B544A]">Targeting {formData.targetExam || 'IELTS'} + {formData.targetDegree}</p>
               </div>
 
-              <div className="p-5 rounded-2xl bg-white border border-slate-200 shadow-xs space-y-1.5">
+              <div className="p-5 bg-white border-[3px] border-[#16130F] shadow-[4px_4px_0_#16130F] space-y-1.5" style={{ borderRadius: 16 }}>
                 <div className="flex items-center justify-between">
-                  <span className="text-[10px] font-black text-slate-400 uppercase tracking-wider">Task Completion</span>
-                  <span className="text-xs font-black text-indigo-600">{progressStats.percent}% Done</span>
+                  <span className="font-urbanist text-[13px] font-extrabold text-[#5B544A]">Task Completion</span>
+                  <span className="text-[13px] font-black text-[#DE5C2B]">{progressStats.percent}% Done</span>
                 </div>
-                <p className="text-base font-black text-indigo-700">
+                <p className="font-urbanist text-[17px] font-black leading-tight text-[#16130F]">
                   {progressStats.completed} of {progressStats.total} Action Items Completed
                 </p>
-                <div className="w-full bg-slate-100 rounded-full h-1.5 overflow-hidden">
-                  <div 
-                    className="bg-gradient-to-r from-indigo-500 to-blue-600 h-full rounded-full transition-all duration-300"
+                <div className="w-full bg-[#FFF6E5] border-2 border-[#16130F] rounded-full h-3 overflow-hidden">
+                  <div
+                    className="bg-[#DE5C2B] h-full transition-all duration-300"
                     style={{ width: `${progressStats.percent}%` }}
                   />
                 </div>
@@ -294,16 +308,17 @@ const AiStudyRoadmap = ({ studentProfile = {} }) => {
 
             {/* Critical Deadlines Banner (if available) */}
             {roadmap.criticalDeadlines && roadmap.criticalDeadlines.length > 0 && (
-              <div className="p-5 rounded-3xl bg-indigo-50/50 border border-indigo-100/80 space-y-3">
-                <h4 className="text-xs font-black text-indigo-900 uppercase tracking-wider flex items-center gap-1.5">
-                  <Clock size={14} className="text-indigo-600" /> Key Admissions Deadlines & Milestone Cutoffs
+              <div className="p-5 bg-[#14837E] border-[3px] border-[#16130F] shadow-[5px_5px_0_#16130F] space-y-3" style={{ borderRadius: 20 }}>
+                <p className="font-urbanist font-extrabold text-[14px] text-[#F2B705]">Ye tareekhen mat bhoolna</p>
+                <h4 className="font-urbanist text-[18px] font-black text-white flex items-center gap-1.5">
+                  <Clock size={17} className="text-[#F2B705]" /> Key Admissions Deadlines & Milestone Cutoffs
                 </h4>
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                   {roadmap.criticalDeadlines.map((item, dIdx) => (
-                    <div key={dIdx} className="p-3.5 bg-white rounded-2xl border border-indigo-100 shadow-2xs space-y-1">
-                      <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">{item.milestone}</span>
-                      <p className="text-xs font-black text-indigo-900 flex items-center gap-1.5">
-                        <Calendar size={13} className="text-indigo-600 flex-shrink-0" />
+                    <div key={dIdx} className="p-3.5 bg-white border-2 border-[#16130F] space-y-1" style={{ borderRadius: 12 }}>
+                      <span className="text-[13px] font-bold text-[#5B544A] block">{item.milestone}</span>
+                      <p className="text-[15px] font-black text-[#16130F] flex items-center gap-1.5">
+                        <Calendar size={15} className="text-[#DE5C2B] flex-shrink-0" />
                         <span>{item.deadline}</span>
                       </p>
                     </div>
@@ -314,14 +329,15 @@ const AiStudyRoadmap = ({ studentProfile = {} }) => {
 
             {/* Urgent Action Items Alert */}
             {roadmap.urgentActionItems && roadmap.urgentActionItems.length > 0 && (
-              <div className="p-5 rounded-3xl bg-amber-50/70 border border-amber-200/80 space-y-2.5">
-                <h4 className="text-xs font-black text-amber-900 uppercase tracking-wider flex items-center gap-1.5">
-                  <Sparkles size={14} className="text-amber-600" /> Immediate Top 3 Action Items for This Week:
+              <div className="p-5 bg-[#FFF1B8] border-[3px] border-[#16130F] shadow-[5px_5px_0_#16130F] space-y-3" style={{ borderRadius: 20 }}>
+                <p className="font-urbanist font-extrabold text-[14px] text-[#D0362E]">Is hafte ka kaam</p>
+                <h4 className="font-urbanist text-[18px] font-black text-[#16130F] flex items-center gap-1.5">
+                  <Sparkles size={17} className="text-[#DE5C2B]" /> Immediate Top 3 Action Items for This Week:
                 </h4>
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
                   {roadmap.urgentActionItems.map((act, i) => (
-                    <div key={i} className="p-3.5 bg-white/95 rounded-2xl text-xs font-bold text-amber-950 border border-amber-200/60 flex items-start gap-2.5 shadow-2xs">
-                      <span className="px-2 py-0.5 rounded-lg bg-amber-200 text-amber-900 text-[10px] font-black flex-shrink-0">{i+1}</span>
+                    <div key={i} className="p-3.5 bg-white text-[14px] font-bold text-[#16130F] border-2 border-[#16130F] flex items-start gap-2.5" style={{ borderRadius: 12 }}>
+                      <span className="w-6 h-6 inline-grid place-items-center rounded-md bg-[#DE5C2B] text-white border-2 border-[#16130F] text-[12px] font-black flex-shrink-0">{i+1}</span>
                       <span className="leading-snug">{act}</span>
                     </div>
                   ))}
@@ -331,32 +347,36 @@ const AiStudyRoadmap = ({ studentProfile = {} }) => {
 
             {/* 6-Month Timeline Phase Cards */}
             <div className="space-y-4">
-              <div className="flex items-center justify-between">
-                <h3 className="text-sm font-black text-slate-800 uppercase tracking-wider flex items-center gap-2">
-                  <Layers size={16} className="text-indigo-600" /> Month-by-Month Strategic Roadmap ({activePhases.length} Months)
-                </h3>
-                <span className="text-xs font-semibold text-slate-400">Click any task to check off progress</span>
+              <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-2">
+                <div>
+                  <p className="font-urbanist font-extrabold text-[15px] text-[#D0362E]">Mahine-dar-mahine</p>
+                  <h3 className="font-urbanist text-[22px] sm:text-[26px] font-black tracking-[-0.03em] leading-tight text-[#16130F] flex items-center gap-2">
+                    <Layers size={20} className="text-[#DE5C2B]" /> Month-by-Month Strategic Roadmap ({activePhases.length} Months)
+                  </h3>
+                </div>
+                <span className="text-[14px] font-semibold text-[#5B544A]">Click any task to check off progress</span>
               </div>
 
-              <div className="grid grid-cols-1 gap-4">
+              <div className="grid grid-cols-1 gap-5">
                 {activePhases.map((phase, idx) => (
                   <motion.div
                     key={idx}
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: idx * 0.05 }}
-                    className="bg-white border border-slate-200/80 rounded-3xl p-6 md:p-7 shadow-sm space-y-4 hover:border-indigo-200 transition-colors"
+                    className="bg-white border-[3px] border-[#16130F] shadow-[5px_5px_0_#16130F] p-5 md:p-7 space-y-4"
+                    style={{ borderRadius: 20 }}
                   >
-                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-3">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b-2 border-[#16130F] pb-3">
                       <div className="flex items-center gap-3 min-w-0">
-                        <span className="px-3.5 py-1.5 rounded-xl text-xs font-black bg-indigo-50 text-indigo-700 border border-indigo-200/70 whitespace-nowrap flex-shrink-0 shadow-2xs tracking-wide">
+                        <span className={`px-3.5 py-1.5 rounded-lg text-[13px] font-black border-2 border-[#16130F] shadow-[2px_2px_0_#16130F] whitespace-nowrap flex-shrink-0 ${['bg-[#F2B705] text-[#16130F]', 'bg-[#14837E] text-white', 'bg-[#B8285B] text-white', 'bg-[#DE5C2B] text-white'][idx % 4]}`}>
                           {phase.month}
                         </span>
-                        <h4 className="text-base font-black text-slate-800 tracking-tight">{phase.title}</h4>
+                        <h4 className="font-urbanist text-[18px] font-black tracking-[-0.01em] text-[#16130F]">{phase.title}</h4>
                       </div>
                       {phase.focus && (
-                        <span className="text-xs font-semibold text-slate-500 italic sm:text-right flex-shrink-0 max-w-md">
-                          <strong className="text-slate-400 not-italic font-bold">Focus:</strong> {phase.focus}
+                        <span className="text-[14px] font-medium text-[#3D3830] sm:text-right flex-shrink-0 max-w-md">
+                          <strong className="text-[#16130F] font-bold">Focus:</strong> {phase.focus}
                         </span>
                       )}
                     </div>
@@ -370,23 +390,24 @@ const AiStudyRoadmap = ({ studentProfile = {} }) => {
                           <div
                             key={tIdx}
                             onClick={() => toggleTask(key)}
-                            className={`p-3.5 rounded-2xl border transition-all flex items-center justify-between gap-3 cursor-pointer ${
+                            className={`p-3.5 border-2 transition-colors flex items-center justify-between gap-3 cursor-pointer ${
                               isDone
-                                ? 'bg-emerald-50/60 border-emerald-200 text-emerald-950 shadow-2xs'
-                                : 'bg-slate-50/70 hover:bg-white border-slate-100 hover:border-indigo-200 text-slate-700'
+                                ? 'bg-[#DDF3EF] border-[#16130F]'
+                                : 'bg-[#FFF6E5] hover:bg-white border-[#16130F]/20 hover:border-[#16130F]'
                             }`}
+                            style={{ borderRadius: 12 }}
                           >
                             <div className="flex items-center gap-3">
-                              <span className="text-indigo-600 flex-shrink-0">
-                                {isDone ? <CheckCircle2 size={18} className="text-emerald-600" /> : <Square size={18} className="text-slate-400" />}
+                              <span className="flex-shrink-0">
+                                {isDone ? <CheckCircle2 size={20} className="text-[#14837E]" /> : <Square size={20} className="text-[#16130F]/50" />}
                               </span>
-                              <span className={`text-xs font-bold leading-snug ${isDone ? 'line-through text-slate-400' : 'text-slate-800'}`}>
+                              <span className={`text-[14px] font-semibold leading-snug ${isDone ? 'line-through text-[#5B544A]' : 'text-[#16130F]'}`}>
                                 {task}
                               </span>
                             </div>
 
-                            <span className={`text-[10px] font-black px-2.5 py-1 rounded-lg whitespace-nowrap flex-shrink-0 ${
-                              isDone ? 'bg-emerald-100 text-emerald-800' : 'bg-slate-200/70 text-slate-600'
+                            <span className={`text-[12px] font-black px-2.5 py-1 rounded-full border-2 whitespace-nowrap flex-shrink-0 ${
+                              isDone ? 'bg-[#14837E] text-white border-[#16130F]' : 'bg-white text-[#5B544A] border-[#16130F]/25'
                             }`}>
                               {isDone ? '✓ Completed' : 'Pending'}
                             </span>

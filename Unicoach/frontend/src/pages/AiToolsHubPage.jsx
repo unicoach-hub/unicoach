@@ -1,12 +1,13 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import {
-  Sparkles, FileText, GraduationCap, ArrowRight, ShieldCheck, Clock, CheckCircle2, Check,
+  Sparkles, FileText, GraduationCap, ArrowRight, ShieldCheck, Clock, CheckCircle2, Check, Mic, Award, Compass, Calculator,
 } from 'lucide-react';
 import { useLead } from '../context/LeadContext';
 import { HeroBackButton } from '../components/ui/BackButton';
 import { StdSign } from '../components/desi/DesiPop';
 import { HookBand } from '../components/ui/Infographics';
+import { StationSign, Sticker } from '../components/desi/DesiKit';
 
 // Small previews of what each tool actually gives you (sample data, labelled as a sample)
 const INK = '#16130F';
@@ -22,7 +23,7 @@ const SopSheet = () => {
   ];
   return (
     <div className="absolute inset-0 grid place-items-center p-5">
-      <div className="w-full max-w-[300px] bg-white rounded-xl border border-[#E6E0D4] shadow-[0_18px_40px_-20px_rgba(22,19,15,0.35)] p-4 -rotate-[1.5deg] group-hover:rotate-0 transition-transform duration-500">
+      <div className="w-full max-w-[300px] bg-white rounded-xl border-2 border-[#16130F] shadow-[4px_4px_0_#16130F] p-4 -rotate-[1.5deg] group-hover:rotate-0 transition-transform duration-500">
         <p className="text-[12px] font-bold" style={{ color: INK }}>Statement of Purpose</p>
         <p className="text-[10px] text-[#8A8275] mb-3">MS Computer Science · Northeastern</p>
         <div className="space-y-2.5">
@@ -46,14 +47,14 @@ const SopSheet = () => {
 const VisaChat = () => (
   <div className="absolute inset-0 px-4 pt-7 pb-3 flex flex-col gap-2 justify-center" style={{ background: '#EEF2FF' }}>
     <Sample />
-    <div className="self-start max-w-[82%] bg-white rounded-2xl rounded-tl-sm px-3 py-2 shadow-sm border border-[#DCE3FA]">
+    <div className="self-start max-w-[82%] bg-white rounded-2xl rounded-tl-sm px-3 py-2 border-2 border-[#16130F]">
       <p className="text-[9.5px] font-bold text-[#2F5BFF] mb-0.5">Visa officer</p>
       <p className="text-[11.5px] leading-snug" style={{ color: INK }}>Why this university?</p>
     </div>
-    <div className="self-end max-w-[82%] rounded-2xl rounded-tr-sm px-3 py-2 shadow-sm" style={{ background: '#2F5BFF' }}>
+    <div className="self-end max-w-[82%] rounded-2xl rounded-tr-sm px-3 py-2 border-2 border-[#16130F]" style={{ background: '#2F5BFF' }}>
       <p className="text-[11.5px] leading-snug text-white">Its co-op term fits my plan to work in data at home.</p>
     </div>
-    <div className="self-end inline-flex items-center gap-1.5 bg-white rounded-full px-2.5 py-1 text-[10px] font-bold border border-[#DCE3FA]" style={{ color: '#0F9F8F' }}>
+    <div className="self-end inline-flex items-center gap-1.5 bg-white rounded-full px-2.5 py-1 text-[10px] font-bold border-2 border-[#16130F]" style={{ color: '#0F9F8F' }}>
       <Check size={11} strokeWidth={3} /> Clear and specific · add one career detail
     </div>
   </div>
@@ -63,7 +64,7 @@ const VisaChat = () => (
 const EssayMarks = () => (
   <div className="absolute inset-0 px-4 pt-7 pb-3 flex flex-col justify-center" style={{ background: '#E9F7F4' }}>
     <Sample />
-    <div className="bg-white rounded-xl border border-[#CDEDE6] p-3 shadow-sm">
+    <div className="bg-white rounded-xl border-2 border-[#16130F] shadow-[3px_3px_0_#16130F] p-3">
       <p className="text-[9.5px] font-bold text-[#0F9F8F] mb-1.5">Task 2 · your essay</p>
       <p className="text-[11.5px] leading-[1.7]" style={{ color: INK }}>
         Many people believe <span className="line-through decoration-[#D9573F] text-[#8A8275]">alot</span>{' '}
@@ -94,7 +95,7 @@ const ShortlistRows = () => {
         ))}
       </div>
       {rows.map((r) => (
-        <div key={r.u} className="bg-white rounded-xl border border-[#F1E2D8] px-3 py-2.5 shadow-sm">
+        <div key={r.u} className="bg-white rounded-xl border-2 border-[#16130F] px-3 py-2.5">
           <div className="flex items-center justify-between gap-2 text-[11.5px]">
             <span className="font-bold truncate" style={{ color: INK }}>{r.u}</span>
             <span className="font-extrabold" style={{ color: r.col }}>{r.fit}% fit</span>
@@ -119,7 +120,7 @@ const ScholarshipTickets = () => {
     <div className="absolute inset-0 px-4 pt-7 pb-3 flex flex-col justify-center gap-1.5" style={{ background: '#FFF6DE' }}>
       <Sample />
       {list.map((x) => (
-        <div key={x.n} className="flex items-center gap-2.5 bg-white rounded-lg border border-[#F2E3B8] pl-0 pr-2.5 py-1.5 overflow-hidden">
+        <div key={x.n} className="flex items-center gap-2.5 bg-white rounded-lg border-2 border-[#16130F] pl-0 pr-2.5 py-1.5 overflow-hidden">
           <span className="w-1.5 self-stretch" style={{ background: x.col }} />
           <span className="min-w-0 flex-1">
             <span className="block text-[11.5px] font-bold truncate" style={{ color: INK }}>{x.n} · {x.c}</span>
@@ -186,6 +187,25 @@ const FILTER_CATEGORIES = [
   { id: 'interview-exams', label: '🎙️ Visa & IELTS Prep' },
 ];
 
+// Desi Pop pieces shared by the tool cards (same look as the Toolkit menu)
+const CARD = 'bg-white rounded-[20px] border-[3px] border-[#16130F] shadow-[5px_5px_0_#16130F] hover:-translate-y-1 hover:shadow-[7px_7px_0_#16130F] transition-all duration-200 flex flex-col justify-between group overflow-hidden';
+const CARD_PAD = `${CARD} p-5 sm:p-6`;
+const CTA = 'inline-flex items-center justify-center gap-2 h-11 px-5 rounded-full bg-[#16130F] text-white border-[3px] border-[#16130F] shadow-[4px_4px_0_#DE5C2B] font-bold text-[14px] hover:-translate-y-0.5 hover:shadow-[5px_5px_0_#DE5C2B] transition-all';
+const PANEL = 'bg-[#FFF6E5] rounded-xl border-2 border-[#16130F]';
+const PREVIEW = 'relative h-44 -mx-5 sm:-mx-6 -mt-5 sm:-mt-6 mb-1 overflow-hidden border-b-[3px] border-[#16130F]';
+
+// Coloured, ink-bordered icon tile
+const ToolTile = ({ icon: Icon, bg, fg = '#FFFFFF', size = 'lg' }) => (
+  <span className={`${size === 'lg' ? 'w-12 h-12 rounded-xl' : 'w-10 h-10 rounded-lg'} border-2 border-[#16130F] grid place-items-center shrink-0`} style={{ background: bg, color: fg }}>
+    <Icon size={size === 'lg' ? 24 : 20} strokeWidth={2} />
+  </span>
+);
+
+// Hinglish kicker in red over the tool name
+const ToolKicker = ({ children }) => (
+  <p className="font-urbanist font-extrabold text-[14px] leading-none text-[#D0362E]">{children}</p>
+);
+
 const AiToolsHubPage = () => {
   const { openEligibilityModal } = useLead();
   const [activeCategory, setActiveCategory] = useState('all');
@@ -197,140 +217,124 @@ const AiToolsHubPage = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-[#F6F3EC] pt-[76px] pb-24 text-slate-900 font-sans">
-      
-      {/* ── 1. CINEMATIC HERO SECTION ── */}
-      <section className="relative pt-12 pb-16 md:pt-16 md:pb-20 px-4 sm:px-6 lg:px-8 bg-[#F6F3EC] border-b border-[#E6E0D4] overflow-hidden">
+    <div className="min-h-screen pt-[76px] pb-24 text-[#16130F] font-['Onest',sans-serif] bg-[#FFF6E5] bg-[radial-gradient(circle,rgba(22,19,15,.06)_1.3px,transparent_1.7px)] [background-size:12px_12px]">
+
+      {/* ── 1. HERO ── */}
+      <section className="relative pt-10 pb-14 md:pt-14 md:pb-16 px-4 sm:px-6 lg:px-8 border-b-[3px] border-[#16130F] overflow-hidden">
         <HeroBackButton fallback="/" />
         {/* Desi Pop: STD booth style sign, wide screens only */}
         <div className="hidden 2xl:block absolute left-8 2xl:left-20 top-1/2 -translate-y-1/2 -rotate-6 z-0 pointer-events-none">
           <StdSign words={['SOP', 'VISA', 'IELTS']} hi="Auzaar" className="w-[180px]" />
         </div>
-        
 
-        <div className="max-w-5xl mx-auto relative z-10 text-center space-y-4">
-          
-          {/* Badge */}
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/95 backdrop-blur-md border border-orange-200/90 shadow-2xs">
-            <span className="flex h-2 w-2 relative">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#DE5C2B] opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-[#DE5C2B]"></span>
-            </span>
-            <span className="text-[12px] font-bold text-[#DE5C2B] tracking-wide uppercase">
-              Next-Gen AI Study Abroad Suite
-            </span>
-          </div>
+        <div className="max-w-5xl mx-auto relative z-10 text-center">
+
+          <StationSign hi="Saare tools ek jagah" en="UNICOACH TOOLKIT" className="-rotate-2" />
 
           {/* Heading */}
-          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-[#0F172A] tracking-tight leading-[1.12]">
+          <h1 className="mt-6 font-urbanist font-black text-[34px] sm:text-[46px] md:text-[54px] lg:text-[60px] text-[#16130F] tracking-[-0.045em] leading-[1.15]">
             Intelligent Tools Built for <br className="hidden sm:inline" />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#DE5C2B] via-orange-600 to-amber-600">
+            <span className="inline-block mt-1 px-2.5 py-0.5 bg-[#F2B705] border-[3px] border-[#16130F] shadow-[4px_4px_0_#16130F] -rotate-1" style={{ borderRadius: 10 }}>
               Global University Aspirants
             </span>
           </h1>
 
           {/* Subtitle */}
-          <p className="max-w-2xl mx-auto text-sm sm:text-base text-slate-600 font-medium leading-relaxed">
+          <p className="mt-6 max-w-2xl mx-auto text-[15px] sm:text-[17px] text-[#3D3830] font-medium leading-relaxed">
             Replace guesswork with algorithmic accuracy. From university shortlists and live scholarship radars to AI SOP drafting and voice-powered consular visa simulations.
           </p>
 
-          {/* Key Metrics Pill */}
-          <div className="pt-4 flex flex-wrap items-center justify-center gap-4 sm:gap-8 text-xs font-bold text-slate-600">
-            <div className="flex items-center gap-1.5 bg-white/80 px-3 py-1.5 rounded-xl border border-slate-200/80 shadow-2xs">
-              <Sparkles size={14} className="text-[#DE5C2B]" />
-              <span>7 Specialized AI Tools</span>
-            </div>
-            <div className="flex items-center gap-1.5 bg-white/80 px-3 py-1.5 rounded-xl border border-slate-200/80 shadow-2xs">
-              <CheckCircle2 size={14} className="text-emerald-500" />
-              <span>50,000+ Profiles Processed</span>
-            </div>
-            <div className="flex items-center gap-1.5 bg-white/80 px-3 py-1.5 rounded-xl border border-slate-200/80 shadow-2xs">
-              <ShieldCheck size={14} className="text-indigo-500" />
-              <span>100% Free Access</span>
-            </div>
+          {/* Key facts as stickers */}
+          <div className="mt-6 flex flex-wrap items-center justify-center gap-2.5 sm:gap-3">
+            <Sticker bg="#FFFFFF" tilt={-2}><Sparkles size={15} className="text-[#DE5C2B]" /> 7 Specialized AI Tools</Sticker>
+            <Sticker bg="#DDF3EF" tilt={1}><CheckCircle2 size={15} className="text-[#14837E]" /> 50,000+ Profiles Processed</Sticker>
+            <Sticker bg="#F2B705" tilt={-1}><ShieldCheck size={15} /> 100% Free Access</Sticker>
           </div>
 
           {/* Filter Pills */}
-          <div className="pt-6 flex items-center justify-center flex-wrap gap-2">
-            {FILTER_CATEGORIES.map((cat) => (
-              <button
-                key={cat.id}
-                onClick={() => setActiveCategory(cat.id)}
-                className={`px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all duration-200 cursor-pointer ${
-                  activeCategory === cat.id
-                    ? 'bg-[#DE5C2B] text-white shadow-md shadow-orange-500/20'
-                    : 'bg-white text-slate-600 hover:bg-slate-100 border border-slate-200/80 shadow-2xs'
-                }`}
-              >
-                {cat.label}
-              </button>
-            ))}
+          <div className="mt-8">
+            <p className="font-urbanist font-extrabold text-[14px] leading-none text-[#D0362E]">Kya chahiye aaj?</p>
+            <div className="mt-3 flex items-center justify-center flex-wrap gap-2.5">
+              {FILTER_CATEGORIES.map((cat) => (
+                <button
+                  key={cat.id}
+                  type="button"
+                  aria-pressed={activeCategory === cat.id}
+                  onClick={() => setActiveCategory(cat.id)}
+                  className={`no-shine px-4 h-10 rounded-full border-2 border-[#16130F] text-[14px] font-bold transition-all duration-200 cursor-pointer ${
+                    activeCategory === cat.id
+                      ? 'bg-[#16130F] text-white shadow-[3px_3px_0_#DE5C2B]'
+                      : 'bg-white text-[#16130F] shadow-[2px_2px_0_#16130F] hover:bg-[#FFF1B8] hover:-translate-y-0.5'
+                  }`}
+                >
+                  {cat.label}
+                </button>
+              ))}
+            </div>
           </div>
 
         </div>
       </section>
 
-      {/* ── 2. VISUAL BENTO GRID WITH IMAGES & INTERACTIVE PREVIEWS ── */}
+      {/* ── 2. TOOL CARDS ── */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-10">
         <HookBand
           value="7"
           label="Specialized AI tools, from university shortlists to SOP drafts and visa interview practice. 100% free access."
           hi="Muft"
-          className="mb-8"
+          className="mb-8 border-[3px] border-[#16130F] shadow-[5px_5px_0_#16130F]"
         />
-        
+
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-7">
 
-          {/* ════ CARD 1: AI SOP WRITER (Bento 2-Col Wide with Split Image) ════ */}
+          {/* ════ CARD 1: AI SOP WRITER (wide) ════ */}
           {(activeCategory === 'all' || activeCategory === 'documents') && (
-            <div className="md:col-span-2 bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/90 shadow-2xs hover:shadow-xl hover:border-slate-300 transition-all duration-300 flex flex-col justify-between group relative overflow-hidden">
-              
+            <div className={`md:col-span-2 ${CARD} p-6 sm:p-8 relative`}>
 
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
-                
+
                 {/* Left content (7 cols) */}
                 <div className="lg:col-span-7 space-y-4">
-                  
+
                   {/* Header Row */}
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                      <div className="w-12 h-12 rounded-2xl bg-purple-50 text-purple-600 border border-purple-200/70 flex items-center justify-center shadow-2xs">
-                        <FileText size={24} />
-                      </div>
-                      <div>
-                        <span className="text-[11px] font-bold text-purple-600 uppercase tracking-wider block">
-                          Admissions Committee Standard
-                        </span>
-                        <h2 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
-                          AI Statement of Purpose (SOP) Writer
-                        </h2>
-                      </div>
+                  <div className="flex items-center gap-3.5">
+                    <ToolTile icon={FileText} bg="#B8285B" />
+                    <div>
+                      <ToolKicker>Apni kahani likho</ToolKicker>
+                      <span className="mt-1 text-[11.5px] font-black text-[#16130F] uppercase tracking-[0.12em] block">
+                        Admissions Committee Standard
+                      </span>
+                      <h2 className="mt-0.5 font-urbanist text-xl sm:text-2xl font-black text-[#16130F] tracking-tight">
+                        AI Statement of Purpose (SOP) Writer
+                      </h2>
                     </div>
                   </div>
 
-                  <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                  <p className="text-[14px] sm:text-[15px] text-[#3D3830] leading-relaxed">
                     Generates committee-ready, university-tailored Statements of Purpose with precise academic hooks, project research alignments, and career trajectory mapping.
                   </p>
 
                   {/* Interactive Simulated UI Preview */}
-                  <div className="bg-[#FBF7F0] rounded-2xl p-4 sm:p-4.5 text-[#16130F] border border-[#ECE6DA] space-y-2.5">
-                    <div className="flex items-center justify-between border-b border-[#ECE6DA] pb-2 text-xs">
+                  <div className={`${PANEL} p-4 text-[#16130F] space-y-2.5`}>
+                    <div className="flex items-center justify-between border-b-2 border-[#16130F] pb-2 text-xs">
                       <div className="flex items-center gap-2">
-                        <div className="w-2.5 h-2.5 rounded-full bg-red-500/80" />
-                        <div className="w-2.5 h-2.5 rounded-full bg-yellow-500/80" />
-                        <div className="w-2.5 h-2.5 rounded-full bg-green-500/80" />
+                        <div className="w-2.5 h-2.5 rounded-full bg-[#D0362E] border border-[#16130F]" />
+                        <div className="w-2.5 h-2.5 rounded-full bg-[#F2B705] border border-[#16130F]" />
+                        <div className="w-2.5 h-2.5 rounded-full bg-[#14837E] border border-[#16130F]" />
                         <span className="text-[11px] text-[#5B544A] ml-1.5 font-sans font-semibold">Opening, drafted for you</span>
                       </div>
                       <div className="flex gap-1.5 font-sans">
-                        <button 
+                        <button
+                          type="button"
                           onClick={() => setSopTopic('cs')}
-                          className={`text-[10px] font-bold px-2 py-0.5 rounded cursor-pointer transition-colors ${sopTopic === 'cs' ? 'bg-[#6D3FE0] text-white' : 'bg-white border border-[#E6E0D4] text-[#5B544A] hover:text-[#16130F]'}`}
+                          className={`no-shine text-[10px] font-bold px-2 py-0.5 rounded border-2 border-[#16130F] cursor-pointer transition-colors ${sopTopic === 'cs' ? 'bg-[#B8285B] text-white' : 'bg-white text-[#16130F] hover:bg-[#FFF1B8]'}`}
                         >
                           MS CS
                         </button>
-                        <button 
+                        <button
+                          type="button"
                           onClick={() => setSopTopic('mba')}
-                          className={`text-[10px] font-bold px-2 py-0.5 rounded cursor-pointer transition-colors ${sopTopic === 'mba' ? 'bg-[#6D3FE0] text-white' : 'bg-white border border-[#E6E0D4] text-[#5B544A] hover:text-[#16130F]'}`}
+                          className={`no-shine text-[10px] font-bold px-2 py-0.5 rounded border-2 border-[#16130F] cursor-pointer transition-colors ${sopTopic === 'mba' ? 'bg-[#B8285B] text-white' : 'bg-white text-[#16130F] hover:bg-[#FFF1B8]'}`}
                         >
                           Global MBA
                         </button>
@@ -340,52 +344,49 @@ const AiToolsHubPage = () => {
                     <div className="text-[11.5px] sm:text-[12.5px] text-[#16130F] leading-relaxed font-sans">
                       {sopTopic === 'cs' ? (
                         <>
-                          <p className="text-[#6D3FE0] font-semibold mb-0.5">
+                          <p className="text-[#B8285B] font-semibold mb-0.5">
                             "Bridging Distributed Systems & Scalable Machine Learning Architectures"
                           </p>
                           <p className="text-[#5B544A] text-xs line-clamp-2">
-                            Having engineered streaming pipelines processing 1.4M events/sec, my aspiration at 
+                            Having engineered streaming pipelines processing 1.4M events/sec, my aspiration at
                             <span className="text-[#16130F] font-semibold"> Northeastern University</span> is to deepen research under Dr. Walker's Distributed AI Lab...
                           </p>
                         </>
                       ) : (
                         <>
-                          <p className="text-[#6D3FE0] font-semibold mb-0.5">
+                          <p className="text-[#B8285B] font-semibold mb-0.5">
                             "Strategic Scaling & Venture Capital in Cross-Border Tech"
                           </p>
                           <p className="text-[#5B544A] text-xs line-clamp-2">
-                            Leading product operations across 4 Southeast Asian markets exposed the critical gap in tech unit economics. My goal at 
+                            Leading product operations across 4 Southeast Asian markets exposed the critical gap in tech unit economics. My goal at
                             <span className="text-[#16130F] font-semibold"> INSEAD</span> is to synthesize venture valuation models...
                           </p>
                         </>
                       )}
                     </div>
 
-                    <div className="flex items-center justify-between text-[10.5px] text-[#5B544A] pt-1 font-sans border-t border-[#ECE6DA]">
-                      <span className="flex items-center gap-1.5 text-[#0F9F8F] font-semibold">
+                    <div className="flex items-center justify-between text-[10.5px] text-[#5B544A] pt-1 font-sans border-t-2 border-dashed border-[#16130F]/30">
+                      <span className="flex items-center gap-1.5 text-[#14837E] font-semibold">
                         <CheckCircle2 size={12} /> 100% Unique • Plagiarism Free
                       </span>
-                      <span className="text-[#8A8275]">About 850 words</span>
+                      <span className="text-[#5B544A]">About 850 words</span>
                     </div>
                   </div>
 
-                  <div className="pt-2 flex items-center justify-between">
-                    <span className="text-xs font-semibold text-slate-500">
+                  <div className="pt-2 flex flex-wrap items-center justify-between gap-3">
+                    <span className="text-[14px] font-semibold text-[#5B544A]">
                       ✓ Instant Word & PDF Copy
                     </span>
-                    <Link
-                      to="/ai-tools/sop-generator"
-                      className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#16130F] hover:bg-[#DE5C2B] text-white font-bold text-xs shadow-sm transition-all"
-                    >
+                    <Link to="/ai-tools/sop-generator" className={CTA}>
                       <span>Launch AI SOP Writer</span>
-                      <ArrowRight size={14} />
+                      <ArrowRight size={16} />
                     </Link>
                   </div>
 
                 </div>
 
                 {/* Right visual: paper panel (5 cols) */}
-                <div className="lg:col-span-5 relative h-[350px] lg:h-full min-h-[330px] rounded-2xl overflow-hidden border border-[#ECE6DA]">
+                <div className="lg:col-span-5 relative h-[350px] lg:h-full min-h-[330px] rounded-xl overflow-hidden border-2 border-[#16130F] bg-[#FBD9E6]">
                   <SopSheet />
                 </div>
 
@@ -394,198 +395,195 @@ const AiToolsHubPage = () => {
             </div>
           )}
 
-          {/* ════ CARD 2: AI VISA MOCK INTERVIEW SIMULATOR (1-Col with Photo Header) ════ */}
+          {/* ════ CARD 2: AI VISA MOCK INTERVIEW ════ */}
           {(activeCategory === 'all' || activeCategory === 'interview-exams') && (
-            <div className="bg-white rounded-3xl p-5 sm:p-6 border border-slate-200/90 shadow-2xs hover:shadow-xl hover:border-slate-300 transition-all duration-300 flex flex-col justify-between group overflow-hidden">
-              
+            <div className={CARD_PAD}>
+
               <div className="space-y-3.5">
-                
+
                 {/* What the tool gives you */}
-                <div className="relative h-44 -mx-5 sm:-mx-6 -mt-5 sm:-mt-6 mb-1 overflow-hidden border-b border-[#ECE6DA]">
+                <div className={PREVIEW}>
                   <VisaChat />
                 </div>
 
-                <div>
-                  <h2 className="text-lg font-black text-slate-900 tracking-tight">
-                    AI Visa Mock Interview
-                  </h2>
-                  <p className="text-xs text-slate-500 mt-0.5 leading-relaxed">
-                    Practice real consular questions with instant scoring on confidence, financial proof, and return-intent.
-                  </p>
+                <div className="flex items-start gap-3">
+                  <ToolTile icon={Mic} bg="#14837E" size="sm" />
+                  <div>
+                    <ToolKicker>Interview ki practice</ToolKicker>
+                    <h2 className="mt-1 font-urbanist text-lg font-black text-[#16130F] tracking-tight">
+                      AI Visa Mock Interview
+                    </h2>
+                  </div>
                 </div>
+                <p className="text-[14px] text-[#5B544A] leading-relaxed">
+                  Practice real consular questions with instant scoring on confidence, financial proof, and return-intent.
+                </p>
 
                 {/* Simulated Consular Voice UI */}
-                <div className="bg-[#F4F6FE] rounded-2xl p-3.5 text-[#16130F] border border-[#DCE3FA] space-y-2.5">
+                <div className={`${PANEL} p-3.5 text-[#16130F] space-y-2.5`}>
                   <div className="flex items-center justify-between text-[11px] text-[#5B544A]">
-                    <span className="flex items-center gap-1.5 text-[#2F5BFF] font-bold text-[10.5px]">
-                      <span className="w-2 h-2 rounded-full bg-[#2F5BFF]" /> After each answer you get
+                    <span className="flex items-center gap-1.5 text-[#14837E] font-bold text-[10.5px]">
+                      <span className="w-2 h-2 rounded-full bg-[#14837E]" /> After each answer you get
                     </span>
-                    <span className="text-[10.5px] bg-white border border-[#DCE3FA] px-1.5 py-0.5 rounded text-[#16130F]">USA F-1</span>
+                    <span className="text-[10.5px] bg-white border-2 border-[#16130F] px-1.5 py-0.5 rounded font-bold text-[#16130F]">USA F-1</span>
                   </div>
 
-
                   {/* Simulated Metrics Card */}
-                  <div className="grid grid-cols-3 gap-1.5 bg-white border border-[#DCE3FA] p-2 rounded-xl text-center text-[10px]">
+                  <div className="grid grid-cols-3 gap-1.5 bg-white border-2 border-[#16130F] p-2 rounded-lg text-center text-[10px]">
                     <div>
                       <span className="block text-[#5B544A] text-[9px] font-bold">Clarity</span>
-                      <span className="font-extrabold text-[#0F9F8F] text-xs">Score</span>
+                      <span className="font-extrabold text-[#14837E] text-xs">Score</span>
                     </div>
                     <div>
                       <span className="block text-[#5B544A] text-[9px] font-bold">Red flags</span>
-                      <span className="font-extrabold text-[#D9573F] text-xs">Spotted</span>
+                      <span className="font-extrabold text-[#D0362E] text-xs">Spotted</span>
                     </div>
                     <div>
                       <span className="block text-[#5B544A] text-[9px] font-bold">Better answer</span>
-                      <span className="font-extrabold text-[#2F5BFF] text-xs">Suggested</span>
+                      <span className="font-extrabold text-[#B8285B] text-xs">Suggested</span>
                     </div>
                   </div>
                 </div>
 
               </div>
 
-              <div className="pt-4 border-t border-slate-100">
-                <Link
-                  to="/ai-tools/visa-prep"
-                  className="w-full inline-flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl bg-[#16130F] hover:bg-[#DE5C2B] text-white font-bold text-xs shadow-sm transition-all"
-                >
+              <div className="pt-5">
+                <Link to="/ai-tools/visa-prep" className={`w-full ${CTA}`}>
                   <span>Start Mock Interview</span>
-                  <ArrowRight size={14} />
+                  <ArrowRight size={16} />
                 </Link>
               </div>
 
             </div>
           )}
 
-          {/* ════ CARD 3: IELTS AI EXAMINER (1-Col with Photo Header) ════ */}
+          {/* ════ CARD 3: IELTS AI EXAMINER ════ */}
           {(activeCategory === 'all' || activeCategory === 'interview-exams') && (
-            <div className="bg-white rounded-3xl p-5 sm:p-6 border border-slate-200/90 shadow-2xs hover:shadow-xl hover:border-slate-300 transition-all duration-300 flex flex-col justify-between group overflow-hidden">
-              
+            <div className={CARD_PAD}>
+
               <div className="space-y-3.5">
-                
+
                 {/* What the tool gives you */}
-                <div className="relative h-44 -mx-5 sm:-mx-6 -mt-5 sm:-mt-6 mb-1 overflow-hidden border-b border-[#ECE6DA]">
+                <div className={PREVIEW}>
                   <EssayMarks />
                 </div>
 
-                <div>
-                  <h2 className="text-lg font-black text-slate-900 tracking-tight">
-                    IELTS Writing AI Examiner
-                  </h2>
-                  <p className="text-xs text-slate-500 mt-0.5 leading-relaxed">
-                    Evaluate essays instantly against official Cambridge descriptors: Task Response, Cohesion, Lexical Resource & Grammar.
-                  </p>
+                <div className="flex items-start gap-3">
+                  <ToolTile icon={Sparkles} bg="#F2B705" fg="#16130F" size="sm" />
+                  <div>
+                    <ToolKicker>Essay check karao</ToolKicker>
+                    <h2 className="mt-1 font-urbanist text-lg font-black text-[#16130F] tracking-tight">
+                      IELTS Writing AI Examiner
+                    </h2>
+                  </div>
                 </div>
+                <p className="text-[14px] text-[#5B544A] leading-relaxed">
+                  Evaluate essays instantly against official Cambridge descriptors: Task Response, Cohesion, Lexical Resource & Grammar.
+                </p>
 
                 {/* Simulated Band Score Card */}
-                <div className="bg-slate-50 rounded-2xl p-3.5 border border-slate-200/80 space-y-2">
+                <div className={`${PANEL} p-3.5 space-y-2`}>
                   <div className="flex items-center justify-between">
-                    <span className="text-xs font-bold text-slate-600">Predicted Score:</span>
-                    <span className="text-xs font-black text-teal-700 bg-teal-50 px-2 py-0.5 rounded-lg border border-teal-200">
+                    <span className="text-xs font-bold text-[#16130F]">Predicted Score:</span>
+                    <span className="text-xs font-black text-[#16130F] bg-[#F2B705] px-2 py-0.5 rounded-md border-2 border-[#16130F]">
                       Band 7.5
                     </span>
                   </div>
 
                   <div className="space-y-1.5 text-[10.5px]">
-                    <div className="flex justify-between text-slate-600">
+                    <div className="flex justify-between text-[#5B544A]">
                       <span>Task Response</span>
-                      <span className="font-bold text-slate-800">8.0</span>
+                      <span className="font-bold text-[#16130F]">8.0</span>
                     </div>
-                    <div className="w-full bg-slate-200 h-1.5 rounded-full overflow-hidden">
-                      <div className="bg-teal-500 h-full rounded-full w-[88%]" />
+                    <div className="w-full bg-white border border-[#16130F] h-2 rounded-full overflow-hidden">
+                      <div className="bg-[#14837E] h-full w-[88%]" />
                     </div>
 
-                    <div className="flex justify-between text-slate-600 pt-0.5">
+                    <div className="flex justify-between text-[#5B544A] pt-0.5">
                       <span>Lexical Resource</span>
-                      <span className="font-bold text-slate-800">7.5</span>
+                      <span className="font-bold text-[#16130F]">7.5</span>
                     </div>
-                    <div className="w-full bg-slate-200 h-1.5 rounded-full overflow-hidden">
-                      <div className="bg-teal-500 h-full rounded-full w-[78%]" />
+                    <div className="w-full bg-white border border-[#16130F] h-2 rounded-full overflow-hidden">
+                      <div className="bg-[#14837E] h-full w-[78%]" />
                     </div>
                   </div>
                 </div>
 
               </div>
 
-              <div className="pt-4 border-t border-slate-100">
-                <Link
-                  to="/ai-tools/ielts-evaluator"
-                  className="w-full inline-flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl bg-[#16130F] hover:bg-[#DE5C2B] text-white font-bold text-xs shadow-sm transition-all"
-                >
+              <div className="pt-5">
+                <Link to="/ai-tools/ielts-evaluator" className={`w-full ${CTA}`}>
                   <span>Evaluate Essay Instantly</span>
-                  <ArrowRight size={14} />
+                  <ArrowRight size={16} />
                 </Link>
               </div>
 
             </div>
           )}
 
-          {/* ════ CARD 4: UNIVERSITY RADAR & SHORTLISTER (2-Col Wide with Split Image) ════ */}
+          {/* ════ CARD 4: UNIVERSITY RADAR & SHORTLISTER (wide) ════ */}
           {(activeCategory === 'all' || activeCategory === 'admissions') && (
-            <div className="md:col-span-2 bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/90 shadow-2xs hover:shadow-xl hover:border-slate-300 transition-all duration-300 flex flex-col justify-between group relative overflow-hidden">
-              
+            <div className={`md:col-span-2 ${CARD} p-6 sm:p-8 relative`}>
+
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
-                
+
                 {/* Left Content (7 cols) */}
                 <div className="lg:col-span-7 space-y-4">
-                  
-                  <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 rounded-2xl bg-orange-50 text-[#DE5C2B] border border-orange-200/70 flex items-center justify-center shadow-2xs">
-                      <GraduationCap size={24} />
-                    </div>
+
+                  <div className="flex items-center gap-3.5">
+                    <ToolTile icon={GraduationCap} bg="#D0362E" />
                     <div>
-                      <span className="text-[11px] font-bold text-[#DE5C2B] uppercase tracking-wider block">
+                      <ToolKicker>Sahi university chuno</ToolKicker>
+                      <span className="mt-1 text-[11.5px] font-black text-[#16130F] uppercase tracking-[0.12em] block">
                         Algorithmic Admissions Engine
                       </span>
-                      <h2 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
+                      <h2 className="mt-0.5 font-urbanist text-xl sm:text-2xl font-black text-[#16130F] tracking-tight">
                         University Finder & Shortlister
                       </h2>
                     </div>
                   </div>
 
-                  <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                  <p className="text-[14px] sm:text-[15px] text-[#3D3830] leading-relaxed">
                     Map your GPA, budget, and test scores across 1,500+ universities in USA, UK, Canada, Germany & Australia. Get a shortlist that fits your marks and budget, with your chance of getting in at each one.
                   </p>
 
                   {/* What the shortlist checks */}
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 pt-1">
-                    
-                    <div className="bg-emerald-50/70 p-3 rounded-2xl border border-emerald-200/80 text-left space-y-0.5">
-                      <span className="text-[10px] font-black text-emerald-800 uppercase block">Your marks</span>
-                      <p className="text-xs font-bold text-slate-800">CGPA • IELTS • GRE</p>
-                      <p className="text-[10px] text-slate-500">Checked against entry requirements</p>
+
+                    <div className="bg-[#DDF3EF] p-3 rounded-xl border-2 border-[#16130F] text-left space-y-0.5">
+                      <span className="text-[10px] font-black text-[#14837E] uppercase block">Your marks</span>
+                      <p className="text-xs font-bold text-[#16130F]">CGPA • IELTS • GRE</p>
+                      <p className="text-[10px] text-[#5B544A]">Checked against entry requirements</p>
                     </div>
 
-                    <div className="bg-orange-50/70 p-3 rounded-2xl border border-orange-200/80 text-left space-y-0.5">
-                      <span className="text-[10px] font-black text-[#C04A1D] uppercase block">Your budget</span>
-                      <p className="text-xs font-bold text-slate-800">Tuition • Living costs</p>
-                      <p className="text-[10px] text-slate-500">Options that fit what you can spend</p>
+                    <div className="bg-[#FCE3DA] p-3 rounded-xl border-2 border-[#16130F] text-left space-y-0.5">
+                      <span className="text-[10px] font-black text-[#D0362E] uppercase block">Your budget</span>
+                      <p className="text-xs font-bold text-[#16130F]">Tuition • Living costs</p>
+                      <p className="text-[10px] text-[#5B544A]">Options that fit what you can spend</p>
                     </div>
 
-                    <div className="bg-purple-50/70 p-3 rounded-2xl border border-purple-200/80 text-left space-y-0.5">
-                      <span className="text-[10px] font-black text-purple-800 uppercase block">Your goals</span>
-                      <p className="text-xs font-bold text-slate-800">Course • Country • Intake</p>
-                      <p className="text-[10px] text-slate-500">Matched to the programs you want</p>
+                    <div className="bg-[#FBD9E6] p-3 rounded-xl border-2 border-[#16130F] text-left space-y-0.5">
+                      <span className="text-[10px] font-black text-[#B8285B] uppercase block">Your goals</span>
+                      <p className="text-xs font-bold text-[#16130F]">Course • Country • Intake</p>
+                      <p className="text-[10px] text-[#5B544A]">Matched to the programs you want</p>
                     </div>
 
                   </div>
 
-                  <div className="pt-2 flex items-center justify-between">
-                    <span className="text-xs font-medium text-slate-500">
+                  <div className="pt-2 flex flex-wrap items-center justify-between gap-3">
+                    <span className="text-[14px] font-medium text-[#5B544A]">
                       Filters: Tuition, QS Rank, GPA, STEM OPT, Co-op
                     </span>
-                    <Link
-                      to="/search-programs"
-                      className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#16130F] hover:bg-[#DE5C2B] text-white font-bold text-xs shadow-sm transition-all"
-                    >
+                    <Link to="/search-programs" className={CTA}>
                       <span>Launch University Radar</span>
-                      <ArrowRight size={14} />
+                      <ArrowRight size={16} />
                     </Link>
                   </div>
 
                 </div>
 
                 {/* Right visual: paper panel (5 cols) */}
-                <div className="lg:col-span-5 relative h-[350px] lg:h-full min-h-[330px] rounded-2xl overflow-hidden border border-[#ECE6DA]">
+                <div className="lg:col-span-5 relative h-[350px] lg:h-full min-h-[330px] rounded-xl overflow-hidden border-2 border-[#16130F]">
                   <ShortlistRows />
                 </div>
 
@@ -594,148 +592,151 @@ const AiToolsHubPage = () => {
             </div>
           )}
 
-          {/* ════ CARD 5: SCHOLARSHIPS TRACKER (1-Col with Photo Header) ════ */}
+          {/* ════ CARD 5: SCHOLARSHIPS TRACKER ════ */}
           {(activeCategory === 'all' || activeCategory === 'admissions') && (
-            <div className="bg-white rounded-3xl p-5 sm:p-6 border border-slate-200/90 shadow-2xs hover:shadow-xl hover:border-slate-300 transition-all duration-300 flex flex-col justify-between group overflow-hidden">
-              
+            <div className={CARD_PAD}>
+
               <div className="space-y-3.5">
-                
+
                 {/* What the tool gives you */}
-                <div className="relative h-44 -mx-5 sm:-mx-6 -mt-5 sm:-mt-6 mb-1 overflow-hidden border-b border-[#ECE6DA]">
+                <div className={PREVIEW}>
                   <ScholarshipTickets />
                 </div>
 
-                <div>
-                  <h2 className="text-lg font-black text-slate-900 tracking-tight">
-                    Scholarships Tracker
-                  </h2>
-                  <p className="text-xs text-slate-500 mt-0.5 leading-relaxed">
-                    Discover merit and need-based international scholarships with live countdown timers and Google Calendar sync.
-                  </p>
+                <div className="flex items-start gap-3">
+                  <ToolTile icon={Award} bg="#DE5C2B" size="sm" />
+                  <div>
+                    <ToolKicker>Paisa bachao</ToolKicker>
+                    <h2 className="mt-1 font-urbanist text-lg font-black text-[#16130F] tracking-tight">
+                      Scholarships Tracker
+                    </h2>
+                  </div>
                 </div>
+                <p className="text-[14px] text-[#5B544A] leading-relaxed">
+                  Discover merit and need-based international scholarships with live countdown timers and Google Calendar sync.
+                </p>
 
                 {/* Simulated Live Scholarship Card */}
-                <div className="bg-slate-50 rounded-2xl p-3 border border-slate-200/80 space-y-1.5">
+                <div className={`${PANEL} p-3 space-y-1.5`}>
                   <div className="flex items-center justify-between text-[11px] font-bold">
-                    <span className="text-slate-900">DAAD Helmut-Schmidt</span>
-                    <span className="text-[#DE5C2B] font-extrabold flex items-center gap-1">
+                    <span className="text-[#16130F]">DAAD Helmut-Schmidt</span>
+                    <span className="text-[#D0362E] font-extrabold flex items-center gap-1">
                       <Clock size={11} /> 14d : 08h left
                     </span>
                   </div>
-                  <p className="text-xs font-bold text-slate-800">100% Tuition Fee Waiver + €934/mo</p>
-                  <p className="text-[10px] text-slate-500">For Master’s in Public Policy & Tech Governance</p>
+                  <p className="text-xs font-bold text-[#16130F]">100% Tuition Fee Waiver + €934/mo</p>
+                  <p className="text-[10px] text-[#5B544A]">For Master’s in Public Policy & Tech Governance</p>
                 </div>
 
               </div>
 
-              <div className="pt-4 border-t border-slate-100">
-                <Link
-                  to="/search-programs?highlight=scholarship"
-                  className="w-full inline-flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl bg-[#16130F] hover:bg-[#DE5C2B] text-white font-bold text-xs shadow-sm transition-all"
-                >
+              <div className="pt-5">
+                <Link to="/search-programs?highlight=scholarship" className={`w-full ${CTA}`}>
                   <span>Track 450+ Scholarships</span>
-                  <ArrowRight size={14} />
+                  <ArrowRight size={16} />
                 </Link>
               </div>
 
             </div>
           )}
 
-          {/* ════ CARD 6: 6-MONTH STRATEGIC ROADMAP (1-Col with Photo Header) ════ */}
+          {/* ════ CARD 6: 6-MONTH STRATEGIC ROADMAP ════ */}
           {(activeCategory === 'all' || activeCategory === 'documents') && (
-            <div className="bg-white rounded-3xl p-5 sm:p-6 border border-slate-200/90 shadow-2xs hover:shadow-xl hover:border-slate-300 transition-all duration-300 flex flex-col justify-between group overflow-hidden">
-              
+            <div className={CARD_PAD}>
+
               <div className="space-y-3.5">
-                
+
                 {/* What the tool gives you */}
-                <div className="relative h-44 -mx-5 sm:-mx-6 -mt-5 sm:-mt-6 mb-1 overflow-hidden border-b border-[#ECE6DA]">
+                <div className={PREVIEW}>
                   <MonthTrack />
                 </div>
 
-                <div>
-                  <h2 className="text-lg font-black text-slate-900 tracking-tight">
-                    AI 6-Month Roadmap
-                  </h2>
-                  <p className="text-xs text-slate-500 mt-0.5 leading-relaxed">
-                    Personalized month-by-month timeline synchronizing test bookings, priority deadlines & embassy slots.
-                  </p>
+                <div className="flex items-start gap-3">
+                  <ToolTile icon={Compass} bg="#B8285B" size="sm" />
+                  <div>
+                    <ToolKicker>Mahine-dar-mahine plan</ToolKicker>
+                    <h2 className="mt-1 font-urbanist text-lg font-black text-[#16130F] tracking-tight">
+                      AI 6-Month Roadmap
+                    </h2>
+                  </div>
                 </div>
+                <p className="text-[14px] text-[#5B544A] leading-relaxed">
+                  Personalized month-by-month timeline synchronizing test bookings, priority deadlines & embassy slots.
+                </p>
 
                 {/* Simulated Milestone Timeline */}
-                <div className="space-y-1.5 text-xs bg-slate-50 p-2.5 rounded-2xl border border-slate-100">
-                  <div className="flex items-center gap-2 text-slate-700 font-semibold text-[11px]">
-                    <span className="w-4 h-4 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center text-[9.5px] font-bold">1</span>
+                <div className={`${PANEL} space-y-1.5 text-xs p-2.5`}>
+                  <div className="flex items-center gap-2 text-[#16130F] font-semibold text-[11px]">
+                    <span className="w-5 h-5 rounded-full bg-[#14837E] text-white border-2 border-[#16130F] flex items-center justify-center text-[9.5px] font-bold">1</span>
                     <span>Month 1: Diagnostic & Shortlisting</span>
                   </div>
-                  <div className="flex items-center gap-2 text-[#DE5C2B] font-bold text-[11px]">
-                    <span className="w-4 h-4 rounded-full bg-orange-100 text-[#DE5C2B] flex items-center justify-center text-[9.5px] font-bold">2</span>
+                  <div className="flex items-center gap-2 text-[#B8285B] font-bold text-[11px]">
+                    <span className="w-5 h-5 rounded-full bg-[#F2B705] text-[#16130F] border-2 border-[#16130F] flex items-center justify-center text-[9.5px] font-bold">2</span>
                     <span>Month 2-3: SOP & LOR Drafts (Active)</span>
                   </div>
-                  <div className="flex items-center gap-2 text-slate-500 text-[11px]">
-                    <span className="w-4 h-4 rounded-full bg-slate-200 text-slate-600 flex items-center justify-center text-[9.5px] font-bold">3</span>
+                  <div className="flex items-center gap-2 text-[#5B544A] text-[11px]">
+                    <span className="w-5 h-5 rounded-full bg-white text-[#16130F] border-2 border-[#16130F] flex items-center justify-center text-[9.5px] font-bold">3</span>
                     <span>Month 4: Visa Prep & Financials</span>
                   </div>
                 </div>
 
               </div>
 
-              <div className="pt-4 border-t border-slate-100">
-                <Link
-                  to="/ai-tools/study-roadmap"
-                  className="w-full inline-flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl bg-[#16130F] hover:bg-[#DE5C2B] text-white font-bold text-xs shadow-sm transition-all"
-                >
+              <div className="pt-5">
+                <Link to="/ai-tools/study-roadmap" className={`w-full ${CTA}`}>
                   <span>Build Custom Timeline</span>
-                  <ArrowRight size={14} />
+                  <ArrowRight size={16} />
                 </Link>
               </div>
 
             </div>
           )}
 
-          {/* ════ CARD 7: ADMISSION & SCHOLARSHIP CALCULATOR (1-Col with Photo Header) ════ */}
+          {/* ════ CARD 7: ADMISSION & SCHOLARSHIP CALCULATOR ════ */}
           {(activeCategory === 'all' || activeCategory === 'admissions') && (
-            <div className="bg-white rounded-3xl p-5 sm:p-6 border border-slate-200/90 shadow-2xs hover:shadow-xl hover:border-slate-300 transition-all duration-300 flex flex-col justify-between group overflow-hidden">
-              
+            <div className={CARD_PAD}>
+
               <div className="space-y-3.5">
-                
+
                 {/* What the tool gives you */}
-                <div className="relative h-44 -mx-5 sm:-mx-6 -mt-5 sm:-mt-6 mb-1 overflow-hidden border-b border-[#ECE6DA]">
+                <div className={PREVIEW}>
                   <FitGauge />
                 </div>
 
-                <div>
-                  <h2 className="text-lg font-black text-slate-900 tracking-tight">
-                    Profile Fit Calculator
-                  </h2>
-                  <p className="text-xs text-slate-500 mt-0.5 leading-relaxed">
-                    Calculate your exact admission probability, expected scholarship aid percentage, and post-graduation ROI.
-                  </p>
+                <div className="flex items-start gap-3">
+                  <ToolTile icon={Calculator} bg="#14837E" size="sm" />
+                  <div>
+                    <ToolKicker>Chance kitna hai?</ToolKicker>
+                    <h2 className="mt-1 font-urbanist text-lg font-black text-[#16130F] tracking-tight">
+                      Profile Fit Calculator
+                    </h2>
+                  </div>
                 </div>
+                <p className="text-[14px] text-[#5B544A] leading-relaxed">
+                  Calculate your exact admission probability, expected scholarship aid percentage, and post-graduation ROI.
+                </p>
 
                 {/* Simulated Metric Sliders */}
-                <div className="bg-slate-50 rounded-2xl p-3 border border-slate-200/80 space-y-1.5">
+                <div className={`${PANEL} p-3 space-y-1.5`}>
                   <div className="flex items-center justify-between text-[11.5px]">
-                    <span className="text-slate-600 font-semibold">Admit Probability:</span>
-                    <span className="text-emerald-700 font-extrabold">86% (High)</span>
+                    <span className="text-[#5B544A] font-semibold">Admit Probability:</span>
+                    <span className="text-[#14837E] font-extrabold">86% (High)</span>
                   </div>
-                  <div className="w-full bg-slate-200 h-1.5 rounded-full overflow-hidden">
-                    <div className="bg-emerald-500 h-full rounded-full w-[86%]" />
+                  <div className="w-full bg-white border border-[#16130F] h-2 rounded-full overflow-hidden">
+                    <div className="bg-[#14837E] h-full w-[86%]" />
                   </div>
-                  <div className="flex items-center justify-between text-[10.5px] pt-0.5 text-slate-600">
+                  <div className="flex items-center justify-between text-[10.5px] pt-0.5 text-[#5B544A]">
                     <span>Expected Aid:</span>
-                    <span className="font-extrabold text-[#DE5C2B]">₹18.5 Lakhs ($22k)</span>
+                    <span className="font-extrabold text-[#D0362E]">₹18.5 Lakhs ($22k)</span>
                   </div>
                 </div>
 
               </div>
 
-              <div className="pt-4 border-t border-slate-100">
-                <Link
-                  to="/eligibility-calculator"
-                  className="w-full inline-flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl bg-[#16130F] hover:bg-[#DE5C2B] text-white font-bold text-xs shadow-sm transition-all"
-                >
+              <div className="pt-5">
+                <Link to="/eligibility-calculator" className={`w-full ${CTA}`}>
                   <span>Check Admission Fit</span>
-                  <ArrowRight size={14} />
+                  <ArrowRight size={16} />
                 </Link>
               </div>
 
@@ -748,21 +749,24 @@ const AiToolsHubPage = () => {
 
       {/* ── 3. BOTTOM COUNSELING STRIP ── */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20">
-        <div className="uc-soft relative rounded-3xl overflow-hidden p-8 sm:p-12">
+        <div className="relative rounded-[22px] overflow-hidden p-8 sm:p-12 bg-[#F2B705] border-[3px] border-[#16130F] shadow-[7px_7px_0_#16130F]">
+          <span aria-hidden="true" className="absolute inset-0 bg-[radial-gradient(circle,rgba(22,19,15,.12)_1.3px,transparent_1.7px)] [background-size:10px_10px]" />
           <div className="relative z-10 max-w-2xl space-y-4">
-            <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#DE5C2B]/20 border border-orange-400/30 text-orange-300 text-xs font-bold">
-              <Sparkles size={14} /> AI Analysis + Human Expertise
+            <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white border-2 border-[#16130F] shadow-[2px_2px_0_#16130F] text-[#16130F] text-[13px] font-bold -rotate-1">
+              <Sparkles size={14} className="text-[#D0362E]" /> AI Analysis + Human Expertise
             </span>
-            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-black tracking-tight leading-tight">
+            <p className="font-urbanist font-extrabold text-[15px] leading-none text-[#D0362E]">Tool ke baad, counsellor se baat</p>
+            <h2 className="font-urbanist text-2xl sm:text-3xl lg:text-4xl font-black text-[#16130F] tracking-tight leading-tight">
               Combine AI Intelligence with Certified Counselor Guidance
             </h2>
-            <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
+            <p className="text-[15px] sm:text-[16px] text-[#3D3830] leading-relaxed">
               Use our AI tools to draft and analyze, then book a 1-on-1 session with our senior advisors to verify university shortlists, deadlines, and visa interview strategies.
             </p>
             <div className="pt-2 flex flex-wrap items-center gap-3">
               <button
+                type="button"
                 onClick={() => openEligibilityModal('AI Tools Hub Bottom Banner')}
-                className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl bg-[#DE5C2B] hover:bg-[#C04A1D] text-white font-bold text-xs sm:text-sm shadow-lg shadow-orange-500/25 transition-all cursor-pointer"
+                className="no-shine inline-flex items-center gap-2 px-6 h-12 rounded-full bg-[#16130F] text-white border-[3px] border-[#16130F] shadow-[4px_4px_0_#DE5C2B] font-bold text-[14px] sm:text-[15px] hover:-translate-y-0.5 transition-all cursor-pointer"
               >
                 <span>Book Free 1-on-1 Strategy Call</span>
                 <ArrowRight size={16} />
@@ -770,7 +774,7 @@ const AiToolsHubPage = () => {
 
               <Link
                 to="/search-programs"
-                className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl bg-white/10 hover:bg-white/15 text-white font-bold text-xs sm:text-sm border border-white/20 transition-all"
+                className="inline-flex items-center gap-2 px-6 h-12 rounded-full bg-white text-[#16130F] border-[3px] border-[#16130F] shadow-[4px_4px_0_#16130F] font-bold text-[14px] sm:text-[15px] hover:-translate-y-0.5 transition-all"
               >
                 <span>Explore 1,500+ Universities</span>
               </Link>

@@ -1,12 +1,10 @@
 import React, { useState, useMemo, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { 
-  Calculator, Sparkles, Award, ShieldCheck, Target, 
-  Compass, CheckCircle2, AlertCircle, ArrowRight, Download, 
-  Calendar, DollarSign, Globe, BookOpen, 
-  HelpCircle, ExternalLink, RefreshCw, FileText, PhoneCall,
-  ChevronRight, BookmarkCheck, SlidersHorizontal, ArrowLeft,
-  Check, AlertTriangle, Printer, Eye, X
+import {
+  Calculator, Sparkles, Award, ShieldCheck, Target,
+  Compass, ArrowRight, Download,
+  BookOpen, ExternalLink, RefreshCw, FileText, PhoneCall,
+  BookmarkCheck, Check, AlertTriangle, Printer, Eye, X
 } from 'lucide-react';
 import ALL_UNIVERSITIES from '../data/universities';
 import PremiumDropdown from '../components/PremiumDropdown';
@@ -21,7 +19,29 @@ import { getVerifiedRanking } from '../utils/ranking';
 import { getOfficialRequirements } from '../utils/requirements';
 import { POPULAR_COURSES, ALL_COUNTRY_OPTIONS } from '../utils/shortlistOptions';
 import { API_BASE_URL } from '../config';
-import { FinderPage, FinderHero, FinderCard, FinderButton, FinderChip, FIELD_RADIUS } from '../components/ui/FinderForm';
+import { JourneyPills } from '../components/ui/BrandElements';
+import { StationSign } from '../components/desi/DesiKit';
+
+// Desi Pop tap chip: white pill with an ink border, mustard when picked
+const Chip = ({ on, children, className = '', ...props }) => (
+  <button
+    type="button"
+    aria-pressed={on}
+    {...props}
+    className={`inline-flex items-center gap-1.5 text-[14px] font-bold px-3.5 py-2 border-2 border-[#16130F] text-[#16130F] transition-transform hover:-translate-y-0.5 cursor-pointer ${on ? 'bg-[#F2B705] shadow-[2px_2px_0_#16130F]' : 'bg-white'} ${className}`}
+    style={{ borderRadius: 999 }}
+  >
+    {children}
+  </button>
+);
+
+// Numbered section label used inside the form card
+const StepLabel = ({ n, tone = '#DE5C2B', children }) => (
+  <p className="font-urbanist text-[17px] font-extrabold text-[#16130F] flex items-center">
+    <span className="inline-grid place-items-center w-7 h-7 mr-2 rounded-lg text-white border-2 border-[#16130F] text-[14px] shrink-0" style={{ background: tone }}>{n}</span>
+    {children}
+  </p>
+);
 
 const API_URL = API_BASE_URL;
 
@@ -684,25 +704,31 @@ const EligibilityCalculatorPage = () => {
 
   return (
     <>
-      <FinderPage className="print:hidden">
-      <FinderHero
-        eyebrow="Scholarship Calculator"
-        title="Find scholarships you qualify for"
-        subtitle="Add your marks, country and budget. See your admission odds, fees after grants and matching scholarships. Free, sign in only to unlock results."
-        steps={[
-          { label: 'Marks', sub: 'Your scores' },
-          { label: 'Country', sub: 'Where to study' },
-          { label: 'Budget', sub: 'Yearly fees' },
-          { label: 'Results', sub: 'Odds, fees after grants' },
-        ]}
-        active={0}
-      />
+      <div className="print:hidden min-h-screen pt-[76px] pb-20 font-['Onest',sans-serif] bg-[#FFF6E5] bg-[radial-gradient(circle,rgba(22,19,15,.06)_1.3px,transparent_1.7px)] [background-size:12px_12px]">
+      <div className="max-w-6xl mx-auto px-4">
+      <div className="text-center pt-4 sm:pt-6">
+        <StationSign hi="Admit milega ya nahi?" en="ADMISSION CHANCES" className="-rotate-2" />
+        <h1 className="mt-5 font-urbanist text-[34px] sm:text-[50px] font-black tracking-[-0.045em] leading-[1] text-[#16130F]">
+          Find scholarships you <span className="inline-block px-2.5 bg-[#F2B705] border-[3px] border-[#16130F] shadow-[4px_4px_0_#16130F] -rotate-1" style={{ borderRadius: 10 }}>qualify for</span>
+        </h1>
+        <p className="mt-4 text-[16px] sm:text-[18px] font-medium text-[#3D3830] max-w-2xl mx-auto">Add your marks, country and budget. See your admission odds, fees after grants and matching scholarships. Free, sign in only to unlock results.</p>
+        <JourneyPills
+          steps={[
+            { label: 'Marks', sub: 'Your scores' },
+            { label: 'Country', sub: 'Where to study' },
+            { label: 'Budget', sub: 'Yearly fees' },
+            { label: 'Results', sub: 'Odds, fees after grants' },
+          ]}
+          active={0}
+          className="mt-5 mx-auto w-fit max-w-full"
+        />
+      </div>
 
-      <div className="mt-8 space-y-6">
-        {/* Calculator card: same field look as the Course Finder search card */}
-        <FinderCard className="space-y-5">
+      <div className="mt-8 space-y-7">
+        {/* Calculator card: ink border + hard shadow, like the Course Finder search card */}
+        <div className="bg-white border-[3px] border-[#16130F] shadow-[7px_7px_0_#16130F] p-4 sm:p-6 space-y-6" style={{ borderRadius: 20 }}>
           <div id="scholarship-form" className="flex items-center justify-between flex-wrap gap-3 scroll-mt-24">
-            <p className="text-[15px] font-semibold text-[#16130F]">Your details</p>
+            <StepLabel n="1">Apne baare mein batao</StepLabel>
             <button
               type="button"
               onClick={() => {
@@ -717,14 +743,15 @@ const EligibilityCalculatorPage = () => {
                 setIeltsScore(6.5);
                 setHasCalculated(false);
               }}
-              className="text-[12.5px] font-medium text-[#5B544A] hover:text-[#DE5C2B] inline-flex items-center gap-1.5 transition-colors cursor-pointer"
+              className="text-[14px] font-bold text-[#16130F] px-3.5 py-1.5 bg-white border-2 border-[#16130F] hover:bg-[#FFF1B8] inline-flex items-center gap-1.5 transition-colors cursor-pointer"
+              style={{ borderRadius: 999 }}
             >
-              <RefreshCw size={13} /> Reset
+              <RefreshCw size={14} /> Reset
             </button>
           </div>
 
-          <div className="flex flex-col gap-1.5">
-            <span className="text-[12.5px] font-semibold text-[#16130F]">Highest completed education *</span>
+          <div className="flex flex-col gap-2">
+            <span className="text-[14px] font-bold text-[#16130F]">Highest completed education *</span>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
               {EDUCATION_LEVELS.map((item) => {
                 const isSelected = educationLevel === item.id;
@@ -734,78 +761,83 @@ const EligibilityCalculatorPage = () => {
                     type="button"
                     aria-pressed={isSelected}
                     onClick={() => handleEducationChange(item.id)}
-                    className={`p-3.5 border text-left transition-colors cursor-pointer ${isSelected ? 'bg-[#16130F] border-[#16130F] text-white' : 'bg-[#F8F5EF] border-[#E6E0D4] text-[#16130F] hover:border-[#16130F]'}`}
-                    style={FIELD_RADIUS}
+                    className={`p-3.5 border-2 border-[#16130F] text-left transition-transform cursor-pointer hover:-translate-y-0.5 ${isSelected ? 'bg-[#16130F] text-white shadow-[4px_4px_0_#DE5C2B]' : 'bg-[#FFF6E5] text-[#16130F]'}`}
+                    style={{ borderRadius: 12 }}
                   >
-                    <span className="text-[13.5px] font-semibold flex items-center justify-between gap-2">
-                      {item.label} {isSelected && <Check size={15} className="shrink-0" />}
+                    <span className="font-urbanist text-[15px] font-extrabold flex items-center justify-between gap-2">
+                      {item.label} {isSelected && <Check size={16} className="shrink-0 text-[#F2B705]" />}
                     </span>
-                    <span className={`block text-[12px] leading-snug mt-0.5 ${isSelected ? 'text-white/75' : 'text-[#5B544A]'}`}>{item.sub}</span>
+                    <span className={`block text-[13.5px] leading-snug mt-1 ${isSelected ? 'text-white/80' : 'text-[#3D3830]'}`}>{item.sub}</span>
                   </button>
                 );
               })}
             </div>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 items-start">
-            <PremiumDropdown
-              label="Country *"
-              value={targetCountry}
-              onChange={setTargetCountry}
-              accent="indigo"
-              searchable={true}
-              searchPlaceholder="Search 160+ countries (e.g. USA, Germany)..."
-              options={ALL_COUNTRY_OPTIONS.filter(c => c.value !== 'All')}
-            />
-            <PremiumDropdown
-              label="Degree abroad *"
-              value={targetDegree}
-              onChange={setTargetDegree}
-              accent="indigo"
-              options={[
-                { value: "Master's", label: "Master's (MS / MSc / MA)", shortLabel: "Master's", icon: '🎓' },
-                { value: 'MBA', label: 'MBA / Business Management', shortLabel: 'MBA', icon: '💼' },
-                { value: "Bachelor's", label: "Bachelor's (BS / BA / BEng)", shortLabel: "Bachelor's", icon: '🏫' }
-              ]}
-            />
-            <PremiumDropdown
-              label="Field of study *"
-              value={targetMajor}
-              onChange={setTargetMajor}
-              accent="indigo"
-              searchable={true}
-              creatable={true}
-              defaultIcon={<BookOpen size={16} className="text-indigo-500" />}
-              searchPlaceholder="Search or type custom course..."
-              placeholder="Select or enter your course..."
-              options={POPULAR_COURSES}
-            />
-            <PremiumDropdown
-              label="IELTS / English score"
-              value={ieltsScore}
-              onChange={(val) => setIeltsScore(parseFloat(val))}
-              accent="indigo"
-              options={[
-                { value: 6.0, label: '6.0 Band (Entry Level)', icon: '📝' },
-                { value: 6.5, label: '6.5 Band (Competent)', icon: '📝' },
-                { value: 7.0, label: '7.0 Band (Good User)', icon: '🌟' },
-                { value: 7.5, label: '7.5+ Band (Very Good)', icon: '👑' },
-                { value: 8.0, label: '8.0+ Band (Expert)', icon: '🏆' }
-              ]}
-            />
+          <div className="pt-5 border-t-2 border-dashed border-[#16130F]/25 space-y-3">
+            <StepLabel n="2" tone="#14837E">Kahan aur kya padhna hai?</StepLabel>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 items-start">
+              <PremiumDropdown
+                label="Country *"
+                value={targetCountry}
+                onChange={setTargetCountry}
+                accent="orange"
+                searchable={true}
+                searchPlaceholder="Search 160+ countries (e.g. USA, Germany)..."
+                options={ALL_COUNTRY_OPTIONS.filter(c => c.value !== 'All')}
+              />
+              <PremiumDropdown
+                label="Degree abroad *"
+                value={targetDegree}
+                onChange={setTargetDegree}
+                accent="orange"
+                options={[
+                  { value: "Master's", label: "Master's (MS / MSc / MA)", shortLabel: "Master's", icon: '🎓' },
+                  { value: 'MBA', label: 'MBA / Business Management', shortLabel: 'MBA', icon: '💼' },
+                  { value: "Bachelor's", label: "Bachelor's (BS / BA / BEng)", shortLabel: "Bachelor's", icon: '🏫' }
+                ]}
+              />
+              <PremiumDropdown
+                label="Field of study *"
+                value={targetMajor}
+                onChange={setTargetMajor}
+                accent="orange"
+                searchable={true}
+                creatable={true}
+                defaultIcon={<BookOpen size={16} className="text-[#DE5C2B]" />}
+                searchPlaceholder="Search or type custom course..."
+                placeholder="Select or enter your course..."
+                options={POPULAR_COURSES}
+              />
+              <PremiumDropdown
+                label="IELTS / English score"
+                value={ieltsScore}
+                onChange={(val) => setIeltsScore(parseFloat(val))}
+                accent="orange"
+                options={[
+                  { value: 6.0, label: '6.0 Band (Entry Level)', icon: '📝' },
+                  { value: 6.5, label: '6.5 Band (Competent)', icon: '📝' },
+                  { value: 7.0, label: '7.0 Band (Good User)', icon: '🌟' },
+                  { value: 7.5, label: '7.5+ Band (Very Good)', icon: '👑' },
+                  { value: 8.0, label: '8.0+ Band (Expert)', icon: '🏆' }
+                ]}
+              />
+            </div>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
+          <div className="pt-5 border-t-2 border-dashed border-[#16130F]/25 space-y-3">
+          <StepLabel n="3" tone="#B8285B">Marks aur budget</StepLabel>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
             {/* Academic score: label and hint follow the education level */}
-            <div className="p-4 bg-[#F8F5EF] border border-[#E6E0D4] space-y-3" style={{ borderRadius: 14 }}>
+            <div className="p-4 bg-[#FFF1B8] border-2 border-[#16130F] space-y-3" style={{ borderRadius: 14 }}>
               <div className="flex items-start justify-between flex-wrap gap-2">
                 <div className="min-w-0">
-                  <p className="text-[12.5px] font-semibold text-[#16130F]">{scoreCardMeta.title}</p>
-                  <p className="text-[11.5px] text-[#5B544A] leading-snug max-w-sm mt-0.5">{scoreCardMeta.subtitle}</p>
+                  <p className="font-urbanist text-[15px] font-extrabold text-[#16130F]">{scoreCardMeta.title}</p>
+                  <p className="text-[14px] text-[#3D3830] leading-snug max-w-sm mt-0.5">{scoreCardMeta.subtitle}</p>
                 </div>
                 <div className="flex items-center gap-1.5">
-                  <FinderChip on={scoreType === 'percentage'} onClick={() => setScoreType('percentage')} className="!py-1.5">Percentage</FinderChip>
-                  <FinderChip on={scoreType === 'cgpa'} onClick={() => setScoreType('cgpa')} className="!py-1.5">CGPA (10)</FinderChip>
+                  <Chip on={scoreType === 'percentage'} onClick={() => setScoreType('percentage')} className="!py-1.5">Percentage</Chip>
+                  <Chip on={scoreType === 'cgpa'} onClick={() => setScoreType('cgpa')} className="!py-1.5">CGPA (10)</Chip>
                 </div>
               </div>
 
@@ -820,13 +852,13 @@ const EligibilityCalculatorPage = () => {
                       value={percentage}
                       onChange={(e) => setPercentage(parseFloat(e.target.value))}
                       aria-label="Percentage"
-                      className="w-full h-2 bg-[#E6E0D4] rounded-lg appearance-none cursor-pointer accent-[#DE5C2B]"
+                      className="w-full h-2.5 bg-white border border-[#16130F] rounded-full appearance-none cursor-pointer accent-[#DE5C2B]"
                     />
-                    <span className="w-20 shrink-0 text-right bg-white px-3 py-1.5 border border-[#E6E0D4] text-[18px] font-bold text-[#16130F]" style={FIELD_RADIUS}>{percentage}%</span>
+                    <span className="w-20 shrink-0 text-right bg-white px-3 py-1.5 border-2 border-[#16130F] shadow-[2px_2px_0_#16130F] font-urbanist text-[19px] font-black text-[#16130F]" style={{ borderRadius: 10 }}>{percentage}%</span>
                   </div>
                   <div className="flex items-center gap-1.5 flex-wrap">
                     {[60, 68, 75, 82, 90, 95].map(val => (
-                      <FinderChip key={val} on={percentage === val} onClick={() => setPercentage(val)} className="!px-2.5 !py-1 !text-[12px]">{val}%</FinderChip>
+                      <Chip key={val} on={percentage === val} onClick={() => setPercentage(val)} className="!px-3 !py-1">{val}%</Chip>
                     ))}
                   </div>
                 </>
@@ -841,25 +873,25 @@ const EligibilityCalculatorPage = () => {
                       value={cgpa}
                       onChange={(e) => setCgpa(parseFloat(e.target.value))}
                       aria-label="CGPA"
-                      className="w-full h-2 bg-[#E6E0D4] rounded-lg appearance-none cursor-pointer accent-[#DE5C2B]"
+                      className="w-full h-2.5 bg-white border border-[#16130F] rounded-full appearance-none cursor-pointer accent-[#DE5C2B]"
                     />
-                    <span className="w-24 shrink-0 text-right bg-white px-3 py-1.5 border border-[#E6E0D4] text-[18px] font-bold text-[#16130F]" style={FIELD_RADIUS}>{cgpa} / 10</span>
+                    <span className="w-24 shrink-0 text-right bg-white px-3 py-1.5 border-2 border-[#16130F] shadow-[2px_2px_0_#16130F] font-urbanist text-[19px] font-black text-[#16130F]" style={{ borderRadius: 10 }}>{cgpa} / 10</span>
                   </div>
-                  <p className="text-[12px] font-medium text-[#5B544A] text-right">≈ {normalizedPercentage}% converted percentage</p>
+                  <p className="text-[14px] font-semibold text-[#3D3830] text-right">≈ {normalizedPercentage}% converted percentage</p>
                 </>
               )}
             </div>
 
             {/* Yearly tuition budget */}
-            <div className="p-4 bg-[#F8F5EF] border border-[#E6E0D4] space-y-3" style={{ borderRadius: 14 }}>
+            <div className="p-4 bg-[#DDF3EF] border-2 border-[#16130F] space-y-3" style={{ borderRadius: 14 }}>
               <div className="flex items-start justify-between flex-wrap gap-2">
                 <div className="min-w-0">
-                  <p className="text-[12.5px] font-semibold text-[#16130F]">Max yearly tuition budget *</p>
-                  <p className="text-[11.5px] text-[#5B544A] leading-snug mt-0.5">How much tuition fees can you afford per year?</p>
+                  <p className="font-urbanist text-[15px] font-extrabold text-[#16130F]">Max yearly tuition budget *</p>
+                  <p className="text-[14px] text-[#3D3830] leading-snug mt-0.5">How much tuition fees can you afford per year?</p>
                 </div>
-                <div className="text-right bg-white px-3 py-1.5 border border-[#E6E0D4]" style={FIELD_RADIUS}>
-                  <span className="text-[18px] font-bold text-[#16130F]">₹{annualBudgetInr} Lakhs</span>
-                  <span className="text-[11px] text-[#5B544A] block">≈ {budgetInNativeCurrency}</span>
+                <div className="text-right bg-white px-3 py-1.5 border-2 border-[#16130F] shadow-[2px_2px_0_#16130F]" style={{ borderRadius: 10 }}>
+                  <span className="font-urbanist text-[19px] font-black text-[#16130F]">₹{annualBudgetInr} Lakhs</span>
+                  <span className="text-[13px] font-semibold text-[#3D3830] block">≈ {budgetInNativeCurrency}</span>
                 </div>
               </div>
               <input
@@ -870,7 +902,7 @@ const EligibilityCalculatorPage = () => {
                 value={annualBudgetInr}
                 onChange={(e) => setAnnualBudgetInr(parseFloat(e.target.value))}
                 aria-label="Yearly tuition budget in lakhs"
-                className="w-full h-2 bg-[#E6E0D4] rounded-lg appearance-none cursor-pointer accent-[#DE5C2B]"
+                className="w-full h-2.5 bg-white border border-[#16130F] rounded-full appearance-none cursor-pointer accent-[#14837E]"
               />
               <div className="flex items-center gap-1.5 flex-wrap">
                 {[
@@ -879,14 +911,21 @@ const EligibilityCalculatorPage = () => {
                   { label: '₹30L (Target)', val: 30 },
                   { label: '₹45L+ (Premium)', val: 45 }
                 ].map(b => (
-                  <FinderChip key={b.val} on={annualBudgetInr === b.val} onClick={() => setAnnualBudgetInr(b.val)} className="!px-2.5 !py-1 !text-[12px]">{b.label}</FinderChip>
+                  <Chip key={b.val} on={annualBudgetInr === b.val} onClick={() => setAnnualBudgetInr(b.val)} className="!px-3 !py-1">{b.label}</Chip>
                 ))}
               </div>
             </div>
           </div>
+          </div>
 
           <div className="flex justify-end">
-            <FinderButton onClick={handleCalculate} disabled={isCalculating} className="w-full sm:w-auto">
+            <button
+              type="button"
+              onClick={handleCalculate}
+              disabled={isCalculating}
+              className="w-full sm:w-auto max-w-full h-12 px-6 inline-flex items-center justify-center gap-2 text-white text-[15px] font-bold bg-[#16130F] border-[3px] border-[#16130F] shadow-[4px_4px_0_#DE5C2B] hover:-translate-y-0.5 disabled:opacity-70 disabled:hover:translate-y-0 transition-transform cursor-pointer"
+              style={{ borderRadius: 999 }}
+            >
               {isCalculating ? (
                 <>
                   <RefreshCw className="animate-spin shrink-0" size={16} />
@@ -901,16 +940,17 @@ const EligibilityCalculatorPage = () => {
                   <Calculator size={16} /> Check eligibility <ArrowRight size={16} />
                 </>
               )}
-            </FinderButton>
+            </button>
           </div>
-        </FinderCard>
+        </div>
 
         {/* Quick starts: one tap fills the form, like Course Finder's quick filters */}
-        <div className="bg-white/70 border border-[#E6E0D4] p-4 sm:p-5" style={{ borderRadius: 18 }}>
-          <p className="text-[13.5px] font-semibold text-[#16130F] mb-3">Quick start <span className="font-normal text-[#5B544A]">· tap one to fill the form</span></p>
+        <div className="bg-[#14837E] border-[3px] border-[#16130F] shadow-[6px_6px_0_#16130F] p-4 sm:p-5" style={{ borderRadius: 20 }}>
+          <p className="font-urbanist text-[18px] font-extrabold text-white mb-0.5">Quick start</p>
+          <p className="text-[14px] text-white/85 mb-3">Ek tap karo, form bhar jayega</p>
           <div className="flex flex-wrap gap-2">
             {QUICK_STARTS.map((q) => (
-              <FinderChip key={q.label} on={false}
+              <Chip key={q.label} on={false}
                 onClick={() => {
                   handleEducationChange(q.level);
                   setTargetDegree(q.degree);
@@ -921,7 +961,7 @@ const EligibilityCalculatorPage = () => {
                   document.getElementById('scholarship-form')?.scrollIntoView({ behavior: 'smooth' });
                 }}>
                 <span aria-hidden>{q.flag}</span> {q.label}
-              </FinderChip>
+              </Chip>
             ))}
           </div>
         </div>
@@ -937,87 +977,86 @@ const EligibilityCalculatorPage = () => {
           <motion.div
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
-            className="uc-clean p-7 md:p-9 rounded-[32px] shadow-2xl space-y-6 relative overflow-hidden"
+            className="bg-[#16130F] text-white border-[3px] border-[#16130F] shadow-[7px_7px_0_#DE5C2B] p-6 md:p-8 space-y-6"
+            style={{ borderRadius: 24 }}
           >
-            <div className="absolute right-0 top-0 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
-
-            <div className="relative z-10 space-y-4">
-              <div className="flex items-center justify-between flex-wrap gap-2">
-                <span className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full text-xs font-black bg-emerald-500/20 text-emerald-300 border border-emerald-400/30">
-                  <Sparkles size={14} className="text-amber-400" /> Instant Potential Grant Estimate
+            <div className="space-y-4">
+              <div className="flex items-center justify-between flex-wrap gap-3">
+                <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 text-[14px] font-bold bg-[#F2B705] text-[#16130F] border-2 border-[#16130F] -rotate-1" style={{ borderRadius: 8 }}>
+                  <Sparkles size={15} /> Kitna scholarship mil sakta hai?
                 </span>
 
                 <div className="flex items-center gap-2 flex-wrap">
                   <button
                     onClick={() => setShowReportPreview(true)}
-                    className="px-3.5 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-xs font-bold text-slate-200 transition-all flex items-center gap-1.5 cursor-pointer"
+                    className="px-4 py-2 bg-transparent hover:bg-white/10 text-[14px] font-bold text-white border-2 border-white transition-colors flex items-center gap-1.5 cursor-pointer"
+                    style={{ borderRadius: 999 }}
                   >
-                    <Eye size={14} className="text-emerald-300" /> Preview Report
+                    <Eye size={15} /> Preview Report
                   </button>
 
                   <button
                     onClick={handlePrintReport}
-                    className="px-4 py-2 rounded-xl bg-white text-[#111111] hover:bg-slate-100 text-xs font-black transition-all flex items-center gap-1.5 shadow-sm cursor-pointer"
+                    className="px-4 py-2 bg-white text-[#16130F] text-[14px] font-bold border-2 border-white shadow-[3px_3px_0_#F2B705] hover:-translate-y-0.5 transition-transform flex items-center gap-1.5 cursor-pointer"
+                    style={{ borderRadius: 999 }}
                   >
-                    <Download size={14} className="text-[#111111]" /> Download Official PDF
+                    <Download size={15} /> Download Official PDF
                   </button>
                 </div>
               </div>
 
-              <div className="space-y-1">
-                <p className="text-xs font-black text-emerald-400 uppercase tracking-widest">
+              <div className="space-y-2">
+                <p className="text-[14px] font-bold text-[#F2B705]">
                   Based on your {normalizedPercentage}% ({educationLevel}) in {targetMajor} for {countryMeta.label}:
                 </p>
                 <div className="flex items-baseline gap-3 flex-wrap">
-                  <span className="text-3xl md:text-5xl font-black text-white tracking-tight">
+                  <span className="font-urbanist text-[34px] md:text-[52px] font-black text-white tracking-[-0.03em] leading-none">
                     {potentialGrant.formattedUsd}
                   </span>
-                  <span className="text-xl md:text-3xl font-black text-emerald-400">
+                  <span className="font-urbanist text-[22px] md:text-[32px] font-black text-[#F2B705] leading-none">
                     ({potentialGrant.formattedInr})
                   </span>
                 </div>
               </div>
 
-              <p className="text-xs md:text-sm text-slate-300 font-semibold leading-relaxed max-w-3xl">
+              <p className="text-[15px] text-white/85 font-medium leading-relaxed max-w-3xl">
                 {potentialGrant.lowTuition
                   ? <>Public universities in {countryMeta.label} charge little or no tuition, so there is no merit discount to estimate. For living costs, look at DAAD and other scholarships.</>
-                  : <>Students with a similar score usually fall in the <strong>{currentTier.title}</strong>, with merit awards of about <strong>{potentialGrant.waiverPct}</strong> at {countryMeta.label} universities. This is an estimate; each university decides its own awards.</>}
+                  : <>Students with a similar score usually fall in the <strong className="text-white">{currentTier.title}</strong>, with merit awards of about <strong className="text-white">{potentialGrant.waiverPct}</strong> at {countryMeta.label} universities. This is an estimate; each university decides its own awards.</>}
               </p>
             </div>
 
-            {/* ──────────────────────────────────────────────────────── */}
-            {/* ASKMAMAVI-INSPIRED MINIMUM THRESHOLD PROGRESS BAR */}
-            {/* ──────────────────────────────────────────────────────── */}
-            <div className="pt-5 border-t border-white/10 space-y-3.5">
-              <div className="flex items-center justify-between text-xs font-black text-slate-300">
+            {/* Score scale: which scholarship tier your marks fall in */}
+            <div className="pt-5 border-t-2 border-dashed border-white/25 space-y-3.5">
+              <div className="flex items-center justify-between flex-wrap gap-2 text-[14px] font-bold text-white">
                 <span className="flex items-center gap-1.5">
-                  <Award size={14} className="text-amber-400" /> Scholarship Unlocking Threshold Scale
+                  <Award size={16} className="text-[#F2B705]" /> Scholarship Unlocking Threshold Scale
                 </span>
-                <span className="text-emerald-400 font-black bg-emerald-950/80 px-3 py-1 rounded-full border border-emerald-500/30">
+                <span className="text-[#16130F] font-black bg-white px-3 py-1 border-2 border-white" style={{ borderRadius: 999 }}>
                   Your Score: {normalizedPercentage}%
                 </span>
               </div>
 
               {/* Progress Bar Container */}
-              <div className="relative w-full h-4 bg-white/10 rounded-full overflow-hidden flex border border-white/10 shadow-inner">
-                <div className="w-[30%] bg-slate-500/50 h-full border-r border-slate-900" title="50-65%: Entry Tier" />
-                <div className="w-[25%] bg-[#DE5C2B]/70 h-full border-r border-slate-900" title="65-75%: Merit Tier" />
-                <div className="w-[25%] bg-indigo-500/80 h-full border-r border-slate-900" title="75-85%: Excellence Tier" />
-                <div className="w-[20%] bg-emerald-500 h-full" title="85%+: Top Merit Tier" />
+              <div className="relative w-full h-5 bg-white rounded-full overflow-hidden flex border-2 border-white">
+                <div className="w-[30%] bg-[#FFF6E5] h-full border-r-2 border-[#16130F]" title="50-65%: Entry Tier" />
+                <div className="w-[25%] bg-[#DE5C2B] h-full border-r-2 border-[#16130F]" title="65-75%: Merit Tier" />
+                <div className="w-[25%] bg-[#B8285B] h-full border-r-2 border-[#16130F]" title="75-85%: Excellence Tier" />
+                <div className="w-[20%] bg-[#14837E] h-full" title="85%+: Top Merit Tier" />
               </div>
 
               {/* Tier Indicator Labels */}
-              <div className="grid grid-cols-4 gap-1 text-[10px] md:text-xs text-center font-bold">
-                <div className={normalizedPercentage < 65 ? 'text-white font-black bg-white/10 py-1 rounded-md' : 'text-slate-400'}>
+              <div className="grid grid-cols-4 gap-1.5 text-[12px] md:text-[14px] text-center font-bold">
+                <div className={normalizedPercentage < 65 ? 'text-[#16130F] font-black bg-[#F2B705] py-1 rounded-md' : 'text-white/70 py-1'}>
                   50-65% (Entry)
                 </div>
-                <div className={normalizedPercentage >= 65 && normalizedPercentage < 75 ? 'text-white font-black bg-white/10 py-1 rounded-md' : 'text-slate-400'}>
+                <div className={normalizedPercentage >= 65 && normalizedPercentage < 75 ? 'text-[#16130F] font-black bg-[#F2B705] py-1 rounded-md' : 'text-white/70 py-1'}>
                   65-75% (Merit)
                 </div>
-                <div className={normalizedPercentage >= 75 && normalizedPercentage < 85 ? 'text-white font-black bg-white/10 py-1 rounded-md' : 'text-slate-400'}>
+                <div className={normalizedPercentage >= 75 && normalizedPercentage < 85 ? 'text-[#16130F] font-black bg-[#F2B705] py-1 rounded-md' : 'text-white/70 py-1'}>
                   75-85% (Excellence)
                 </div>
-                <div className={normalizedPercentage >= 85 ? 'text-emerald-400 font-black bg-emerald-900/40 py-1 rounded-md' : 'text-slate-400'}>
+                <div className={normalizedPercentage >= 85 ? 'text-[#16130F] font-black bg-[#F2B705] py-1 rounded-md' : 'text-white/70 py-1'}>
                   85%+ (Top Merit)
                 </div>
               </div>
@@ -1027,99 +1066,58 @@ const EligibilityCalculatorPage = () => {
           {/* ──────────────────────────────────────────────────────── */}
           {/* ADMISSION ODDS & SHORTLISTED RESULTS TABS */}
           {/* ──────────────────────────────────────────────────────── */}
-          <div className="bg-white rounded-[32px] p-6 md:p-8 border border-slate-200/80 shadow-sm space-y-6">
+          <div className="bg-white border-[3px] border-[#16130F] shadow-[7px_7px_0_#16130F] p-5 md:p-7 space-y-6" style={{ borderRadius: 24 }}>
             
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-100 pb-4">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b-2 border-dashed border-[#16130F]/25 pb-4">
               <div className="space-y-1">
-                <span className="text-[10px] font-black text-indigo-600 uppercase tracking-widest bg-indigo-50 px-2 py-0.5 rounded-md">
-                  Step 2: Shortlist Results
-                </span>
-                <h3 className="text-lg md:text-xl font-black text-slate-900">
+                <p className="font-urbanist font-extrabold text-[15px] leading-none text-[#D0362E]">
+                  Step 2: Shortlist Results · tumhari list taiyaar
+                </p>
+                <h3 className="font-urbanist text-[22px] md:text-[28px] font-black tracking-[-0.03em] leading-[1.1] text-[#16130F]">
                   Qualified Universities & Net Fees for {countryMeta.label}
                 </h3>
               </div>
 
               {/* Strict Budget Filter Toggle */}
-              <label className="flex items-center gap-2 bg-emerald-50 border border-emerald-200 px-3.5 py-2 rounded-xl text-xs font-black text-emerald-900 cursor-pointer select-none">
+              <label className="flex items-center gap-2 bg-[#DDF3EF] border-2 border-[#16130F] px-3.5 py-2 text-[14px] font-bold text-[#16130F] cursor-pointer select-none shrink-0" style={{ borderRadius: 999 }}>
                 <input
                   type="checkbox"
                   checked={strictBudgetFilter}
                   onChange={(e) => setStrictBudgetFilter(e.target.checked)}
-                  className="rounded text-emerald-600 focus:ring-emerald-500 w-4 h-4 cursor-pointer"
+                  className="w-4 h-4 cursor-pointer accent-[#14837E]"
                 />
                 <span>Only within ₹{annualBudgetInr}L Budget</span>
               </label>
             </div>
 
             {/* Tabs */}
-            <div className="flex items-center gap-2 p-1.5 bg-slate-100/80 rounded-2xl overflow-x-auto border border-slate-200/60">
-              <button
-                onClick={() => setActiveResultTab('safe')}
-                className={`px-5 py-3 rounded-xl text-xs font-black transition-all flex items-center gap-2 cursor-pointer whitespace-nowrap ${
-                  activeResultTab === 'safe'
-                    ? 'bg-emerald-600 text-white shadow-md shadow-emerald-200/50 scale-[1.02]'
-                    : 'text-slate-600 hover:text-slate-900 hover:bg-white/60'
-                }`}
-              >
-                <ShieldCheck size={16} /> 
-                <span>Safe Admits</span>
-                <span className={`px-2 py-0.5 rounded-full text-[10px] font-black ${
-                  activeResultTab === 'safe' ? 'bg-emerald-700 text-white' : 'bg-slate-200 text-slate-700'
-                }`}>
-                  {evaluatedUniversities.safe.length}
-                </span>
-              </button>
-
-              <button
-                onClick={() => setActiveResultTab('target')}
-                className={`px-5 py-3 rounded-xl text-xs font-black transition-all flex items-center gap-2 cursor-pointer whitespace-nowrap ${
-                  activeResultTab === 'target'
-                    ? 'bg-indigo-600 text-white shadow-md shadow-indigo-200/50 scale-[1.02]'
-                    : 'text-slate-600 hover:text-slate-900 hover:bg-white/60'
-                }`}
-              >
-                <Compass size={16} /> 
-                <span>Target Admits</span>
-                <span className={`px-2 py-0.5 rounded-full text-[10px] font-black ${
-                  activeResultTab === 'target' ? 'bg-indigo-700 text-white' : 'bg-slate-200 text-slate-700'
-                }`}>
-                  {evaluatedUniversities.target.length}
-                </span>
-              </button>
-
-              <button
-                onClick={() => setActiveResultTab('dream')}
-                className={`px-5 py-3 rounded-xl text-xs font-black transition-all flex items-center gap-2 cursor-pointer whitespace-nowrap ${
-                  activeResultTab === 'dream'
-                    ? 'bg-purple-600 text-white shadow-md shadow-purple-200/50 scale-[1.02]'
-                    : 'text-slate-600 hover:text-slate-900 hover:bg-white/60'
-                }`}
-              >
-                <Target size={16} /> 
-                <span>Dream Reach</span>
-                <span className={`px-2 py-0.5 rounded-full text-[10px] font-black ${
-                  activeResultTab === 'dream' ? 'bg-purple-700 text-white' : 'bg-slate-200 text-slate-700'
-                }`}>
-                  {evaluatedUniversities.dream.length}
-                </span>
-              </button>
-
-              <button
-                onClick={() => setActiveResultTab('scholarships')}
-                className={`px-5 py-3 rounded-xl text-xs font-black transition-all flex items-center gap-2 cursor-pointer whitespace-nowrap ${
-                  activeResultTab === 'scholarships'
-                    ? 'bg-amber-600 text-white shadow-md shadow-amber-200/50 scale-[1.02]'
-                    : 'text-slate-600 hover:text-slate-900 hover:bg-white/60'
-                }`}
-              >
-                <Award size={16} /> 
-                <span>Matching Scholarships</span>
-                <span className={`px-2 py-0.5 rounded-full text-[10px] font-black ${
-                  activeResultTab === 'scholarships' ? 'bg-amber-700 text-white' : 'bg-slate-200 text-slate-700'
-                }`}>
-                  {matchingScholarships.length}
-                </span>
-              </button>
+            <div className="flex items-center gap-2.5 overflow-x-auto pb-1.5 pr-1.5">
+              {[
+                { id: 'safe', label: 'Safe Admits', Icon: ShieldCheck, on: 'bg-[#14837E] text-white', count: evaluatedUniversities.safe.length },
+                { id: 'target', label: 'Target Admits', Icon: Compass, on: 'bg-[#DE5C2B] text-white', count: evaluatedUniversities.target.length },
+                { id: 'dream', label: 'Dream Reach', Icon: Target, on: 'bg-[#B8285B] text-white', count: evaluatedUniversities.dream.length },
+                { id: 'scholarships', label: 'Matching Scholarships', Icon: Award, on: 'bg-[#F2B705] text-[#16130F]', count: matchingScholarships.length },
+              ].map(({ id, label, Icon, on, count }) => {
+                const isOn = activeResultTab === id;
+                return (
+                  <button
+                    key={id}
+                    onClick={() => setActiveResultTab(id)}
+                    className={`px-4 py-2.5 text-[14px] font-bold border-2 border-[#16130F] transition-transform flex items-center gap-2 cursor-pointer whitespace-nowrap ${
+                      isOn ? `${on} shadow-[3px_3px_0_#16130F]` : 'bg-white text-[#16130F] hover:-translate-y-0.5'
+                    }`}
+                    style={{ borderRadius: 999 }}
+                  >
+                    <Icon size={16} />
+                    <span>{label}</span>
+                    <span className={`px-2 py-0.5 rounded-full text-[12px] font-black border ${
+                      isOn ? 'bg-white text-[#16130F] border-[#16130F]' : 'bg-[#FFF6E5] text-[#16130F] border-[#16130F]/30'
+                    }`}>
+                      {count}
+                    </span>
+                  </button>
+                );
+              })}
             </div>
 
             {/* ──────────────────────────────────────────────────────── */}
@@ -1128,50 +1126,52 @@ const EligibilityCalculatorPage = () => {
             {activeResultTab !== 'scholarships' && (
               <div className="space-y-6">
                 {evaluatedUniversities[activeResultTab]?.length === 0 ? (
-                  <div className="py-16 text-center text-slate-400 space-y-3 bg-slate-50/50 rounded-3xl border border-dashed border-slate-200">
-                    <BookOpen size={42} className="mx-auto text-slate-300" />
-                    <p className="text-base font-bold text-slate-700">No universities found matching these criteria and budget filter.</p>
+                  <div className="py-14 px-4 text-center space-y-3 bg-[#FFF6E5] border-2 border-dashed border-[#16130F]/40" style={{ borderRadius: 18 }}>
+                    <BookOpen size={40} className="mx-auto text-[#16130F]/40" />
+                    <p className="font-urbanist text-[17px] font-extrabold text-[#16130F]">No universities found matching these criteria and budget filter.</p>
                     {strictBudgetFilter && (
                       <button
                         onClick={() => setStrictBudgetFilter(false)}
-                        className="px-4 py-2 bg-indigo-50 text-indigo-600 rounded-xl text-xs font-black hover:bg-indigo-100 transition-colors cursor-pointer"
+                        className="px-4 py-2 bg-white text-[#16130F] border-2 border-[#16130F] shadow-[2px_2px_0_#16130F] text-[14px] font-bold hover:-translate-y-0.5 transition-transform cursor-pointer"
+                        style={{ borderRadius: 999 }}
                       >
                         Turn off strict budget filter
                       </button>
                     )}
                   </div>
                 ) : (
-                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
                     {evaluatedUniversities[activeResultTab].map((uni, idx) => {
                       const isBookmarked = savedUniIds.has(uni._id || uni.name);
                       const ranking = getVerifiedRanking(uni);
                       return (
                         <div
                           key={uni._id || idx}
-                          className="p-6 md:p-7 rounded-[28px] bg-white border border-slate-200 hover:border-indigo-300 hover:shadow-xl hover:shadow-indigo-50/70 transition-all duration-200 flex flex-col justify-between space-y-5 group"
+                          className="p-5 md:p-6 bg-white border-2 border-[#16130F] shadow-[4px_4px_0_#16130F] hover:shadow-[5px_5px_0_#DE5C2B] transition-shadow flex flex-col justify-between space-y-5"
+                          style={{ borderRadius: 16 }}
                         >
                           <div className="space-y-4">
                             {/* University Header Row */}
                             <div className="flex items-start justify-between gap-4">
-                              <div className="flex items-start gap-4">
+                              <div className="flex items-start gap-3.5 min-w-0">
                                 <UniversityLogo 
                                   name={uni.name} 
                                   universityName={uni.name} 
                                   logo={uni.logo} 
                                   domain={uni.website} 
                                   size={52} 
-                                  className="shadow-xs border border-slate-200/80 rounded-2xl"
+                                  className="border-2 border-[#16130F] rounded-xl"
                                 />
-                                <div className="space-y-1">
-                                  <h4 className="text-base font-black text-slate-900 group-hover:text-indigo-600 transition-colors leading-snug">
+                                <div className="space-y-1 min-w-0">
+                                  <h4 className="font-urbanist text-[17px] font-black text-[#16130F] leading-snug">
                                     {uni.name}
                                   </h4>
-                                  <div className="flex items-center gap-2 flex-wrap text-xs text-slate-500 font-bold">
+                                  <div className="flex items-center gap-2 flex-wrap text-[14px] text-[#3D3830] font-semibold">
                                     <span>📍 {uni.country}</span>
                                     {ranking && (
                                       <>
                                         <span>•</span>
-                                        <span title={ranking.fullLabel} className="bg-slate-100 text-slate-700 px-2 py-0.5 rounded-md text-[10px] font-black">
+                                        <span title={ranking.fullLabel} className="bg-[#FFF1B8] text-[#16130F] border border-[#16130F] px-2 py-0.5 rounded-md text-[12px] font-bold">
                                           {ranking.shortLabel}
                                         </span>
                                       </>
@@ -1182,9 +1182,10 @@ const EligibilityCalculatorPage = () => {
 
                               <button
                                 onClick={() => handleSaveUniversity(uni)}
-                                className={`p-2.5 rounded-2xl transition-all cursor-pointer flex-shrink-0 ${
-                                  isBookmarked ? 'bg-amber-100 text-amber-600 ring-2 ring-amber-300' : 'bg-slate-50 hover:bg-slate-100 text-slate-400 hover:text-amber-500'
+                                className={`p-2.5 border-2 border-[#16130F] transition-transform cursor-pointer flex-shrink-0 hover:-translate-y-0.5 ${
+                                  isBookmarked ? 'bg-[#F2B705] text-[#16130F] shadow-[2px_2px_0_#16130F]' : 'bg-white text-[#16130F]'
                                 }`}
+                                style={{ borderRadius: 12 }}
                                 title={isBookmarked ? 'Saved to Shortlist' : 'Save to Shortlist'}
                               >
                                 <BookmarkCheck size={18} />
@@ -1192,66 +1193,68 @@ const EligibilityCalculatorPage = () => {
                             </div>
 
                             {/* Badges Row with plenty of breathing room */}
-                            <div className="flex items-center gap-2.5 flex-wrap pt-1">
-                              <span className={`px-3 py-1.5 rounded-xl text-xs font-black border flex items-center gap-1.5 ${
+                            <div className="flex items-center gap-2 flex-wrap">
+                              <span className={`px-3 py-1.5 text-[13.5px] font-bold border-2 border-[#16130F] flex items-center gap-1.5 ${
                                 activeResultTab === 'safe'
-                                  ? 'bg-emerald-50 text-emerald-800 border-emerald-200'
+                                  ? 'bg-[#DDF3EF] text-[#16130F]'
                                   : activeResultTab === 'target'
-                                  ? 'bg-indigo-50 text-indigo-800 border-indigo-200'
-                                  : 'bg-purple-50 text-purple-800 border-purple-200'
-                              }`}>
+                                  ? 'bg-[#FCE3DA] text-[#16130F]'
+                                  : 'bg-[#FBD9E6] text-[#16130F]'
+                              }`} style={{ borderRadius: 8 }}>
                                 🎯 {uni.acceptanceOdds}% Est. Admission Odds
                               </span>
 
                               {/* Budget Status Badge */}
                               {uni.isWithinBudget ? (
-                                <span className="px-3 py-1.5 rounded-xl text-xs font-black bg-emerald-50 text-emerald-700 border border-emerald-200 flex items-center gap-1.5">
-                                  <Check size={13} className="text-emerald-600" /> Fits ₹{annualBudgetInr}L Budget
+                                <span className="px-3 py-1.5 text-[13.5px] font-bold bg-[#14837E] text-white border-2 border-[#16130F] flex items-center gap-1.5" style={{ borderRadius: 8 }}>
+                                  <Check size={14} /> Fits ₹{annualBudgetInr}L Budget
                                 </span>
                               ) : (
-                                <span className="px-3 py-1.5 rounded-xl text-xs font-black bg-rose-50 text-rose-700 border border-rose-200 flex items-center gap-1.5">
-                                  <AlertTriangle size={13} className="text-rose-500" /> +₹{uni.budgetDiff}L Over Budget
+                                <span className="px-3 py-1.5 text-[13.5px] font-bold bg-[#D0362E] text-white border-2 border-[#16130F] flex items-center gap-1.5" style={{ borderRadius: 8 }}>
+                                  <AlertTriangle size={14} /> +₹{uni.budgetDiff}L Over Budget
                                 </span>
                               )}
                             </div>
 
                             {/* Estimated Annual Fees Breakdown Box */}
-                            <div className="p-4 rounded-2xl bg-slate-50/90 border border-slate-200/80 space-y-2">
-                              <div className="flex items-center justify-between text-xs font-bold text-slate-500">
+                            <div className="p-4 bg-[#FFF6E5] border-2 border-[#16130F] space-y-2" style={{ borderRadius: 12 }}>
+                              <div className="flex items-start justify-between gap-3 text-[14px] font-semibold text-[#3D3830]">
                                 <span>Standard Base Tuition Fee:</span>
-                                <span>{countryMeta.currency}{uni.baseTuitionLocal?.toLocaleString()} / yr (₹{uni.baseTuitionInrLakh}L)</span>
+                                <span className="text-right">{countryMeta.currency}{uni.baseTuitionLocal?.toLocaleString()} / yr (₹{uni.baseTuitionInrLakh}L)</span>
                               </div>
-                              <div className="flex items-center justify-between border-t border-slate-200/60 pt-1.5">
-                                <span className="text-xs font-black text-slate-800">Net Fee (After Scholarship):</span>
-                                <span className="text-sm font-black text-emerald-700">
-                                  {countryMeta.currency}{uni.netTuitionLocal?.toLocaleString()} / yr <span className="text-xs font-bold text-emerald-600">(₹{uni.netTuitionInrLakh} Lakhs)</span>
+                              <div className="flex items-start justify-between gap-3 border-t-2 border-dashed border-[#16130F]/25 pt-2">
+                                <span className="text-[14px] font-black text-[#16130F]">Net Fee (After Scholarship):</span>
+                                <span className="text-[15px] font-black text-[#14837E] text-right">
+                                  {countryMeta.currency}{uni.netTuitionLocal?.toLocaleString()} / yr <span className="text-[13px] font-bold">(₹{uni.netTuitionInrLakh} Lakhs)</span>
                                 </span>
                               </div>
                             </div>
 
                             {/* Scholarship Grant Highlight Banner */}
-                            <div className="p-3 rounded-2xl bg-amber-50/90 border border-amber-200/70 text-xs font-bold text-amber-950 flex items-center gap-2.5 shadow-2xs">
-                              <Award size={16} className="text-amber-600 flex-shrink-0" />
+                            <div className="p-3 bg-[#FFF1B8] border-2 border-[#16130F] text-[14px] font-semibold text-[#16130F] flex items-center gap-2.5" style={{ borderRadius: 12 }}>
+                              <Award size={17} className="text-[#16130F] flex-shrink-0" />
                               <span className="leading-snug">{uni.estimatedScholarship}</span>
                             </div>
                           </div>
 
                           {/* Action Buttons */}
-                          <div className="grid grid-cols-2 gap-3 pt-3 border-t border-slate-100">
+                          <div className="grid grid-cols-2 gap-3 pt-4 border-t-2 border-dashed border-[#16130F]/20">
                             <button
                               onClick={() => setExplainingUni(uni)}
-                              className="py-3 px-4 rounded-xl text-xs font-black bg-indigo-50 hover:bg-indigo-600 text-indigo-700 hover:text-white transition-all flex items-center justify-center gap-2 cursor-pointer shadow-2xs"
+                              className="py-2.5 px-3 text-[14px] font-bold bg-[#F2B705] text-[#16130F] border-2 border-[#16130F] shadow-[2px_2px_0_#16130F] hover:-translate-y-0.5 transition-transform flex items-center justify-center gap-1.5 cursor-pointer"
+                              style={{ borderRadius: 999 }}
                             >
-                              <Sparkles size={14} /> Explain Fit (AI 💡)
+                              <Sparkles size={15} /> Explain Fit (AI 💡)
                             </button>
 
                             <a
                               href={cleanPortalUrl(uni.website, `${uni.name} admission portal`)}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="py-3 px-4 rounded-xl text-xs font-bold bg-slate-900 hover:bg-indigo-600 text-white transition-all flex items-center justify-center gap-1.5 shadow-2xs"
+                              className="py-2.5 px-3 text-[14px] font-bold bg-[#16130F] text-white border-2 border-[#16130F] shadow-[2px_2px_0_#DE5C2B] hover:-translate-y-0.5 transition-transform flex items-center justify-center gap-1.5"
+                              style={{ borderRadius: 999 }}
                             >
-                              Official Portal <ExternalLink size={13} />
+                              Official Portal <ExternalLink size={14} />
                             </a>
                           </div>
                         </div>
@@ -1267,31 +1270,33 @@ const EligibilityCalculatorPage = () => {
             {/* ──────────────────────────────────────────────────────── */}
             {activeResultTab === 'scholarships' && (
               <div className="space-y-6">
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
                   {matchingScholarships.map((sch, sIdx) => (
                     <div
                       key={sch._id || sIdx}
-                      className="p-6 md:p-7 rounded-[28px] bg-gradient-to-br from-amber-50/60 via-white to-amber-50/30 border border-amber-200/90 hover:border-amber-400 hover:shadow-xl transition-all space-y-4 shadow-2xs flex flex-col justify-between"
+                      className="p-5 md:p-6 bg-white border-2 border-[#16130F] shadow-[4px_4px_0_#F2B705] hover:shadow-[5px_5px_0_#16130F] transition-shadow space-y-4 flex flex-col justify-between"
+                      style={{ borderRadius: 16 }}
                     >
                       <div className="space-y-3">
-                        <div className="flex items-start justify-between gap-3">
-                          <span className="text-[11px] font-black uppercase tracking-wider px-3 py-1 rounded-xl bg-amber-100 text-amber-900 border border-amber-200">
+                        <div className="flex items-start justify-between gap-3 flex-wrap">
+                          <span className="text-[12px] font-black uppercase tracking-wider px-3 py-1 bg-[#FFF1B8] text-[#16130F] border-2 border-[#16130F]" style={{ borderRadius: 8 }}>
                             {sch.fundingType || 'Merit Waiver'}
                           </span>
-                          <span className="text-sm font-black text-emerald-700 bg-emerald-50 px-3 py-1 rounded-xl border border-emerald-200">
+                          <span className="text-[14px] font-black text-white bg-[#14837E] px-3 py-1 border-2 border-[#16130F]" style={{ borderRadius: 8 }}>
                             {sch.grantAmountUSD ? `$${sch.grantAmountUSD.toLocaleString()}` : sch.coverage || 'Tuition Waiver'}
                           </span>
                         </div>
 
-                        <h4 className="text-base font-black text-slate-900 leading-snug">{sch.name || sch.scholarshipName}</h4>
-                        <p className="text-xs font-medium text-slate-600 leading-relaxed">{sch.description || sch.shortDescription}</p>
+                        <h4 className="font-urbanist text-[17px] font-black text-[#16130F] leading-snug">{sch.name || sch.scholarshipName}</h4>
+                        <p className="text-[14px] font-medium text-[#3D3830] leading-relaxed">{sch.description || sch.shortDescription}</p>
                       </div>
 
                       <button
                         onClick={() => setExplainingScholarship(sch)}
-                        className="w-full py-3 bg-white hover:bg-amber-600 text-amber-900 hover:text-white border border-amber-200 rounded-xl text-xs font-black transition-all flex items-center justify-center gap-2 cursor-pointer shadow-2xs mt-2"
+                        className="w-full py-2.5 bg-[#F2B705] text-[#16130F] border-2 border-[#16130F] shadow-[2px_2px_0_#16130F] hover:-translate-y-0.5 text-[14px] font-bold transition-transform flex items-center justify-center gap-2 cursor-pointer mt-2"
+                        style={{ borderRadius: 999 }}
                       >
-                        <Sparkles size={14} className="text-amber-500 group-hover:text-white" /> Explain Eligibility Match (AI 💡)
+                        <Sparkles size={15} /> Explain Eligibility Match (AI 💡)
                       </button>
                     </div>
                   ))}
@@ -1304,19 +1309,21 @@ const EligibilityCalculatorPage = () => {
           {/* ──────────────────────────────────────────────────────── */}
           {/* BOTTOM CONSULTATION BAR */}
           {/* ──────────────────────────────────────────────────────── */}
-          <div className="p-7 md:p-8 rounded-[32px] bg-gradient-to-r from-[#DE5C2B] via-orange-600 to-[#C04A1D] text-white shadow-xl flex flex-col sm:flex-row items-center justify-between gap-6">
-            <div className="space-y-1 text-center sm:text-left">
-              <h4 className="text-lg md:text-xl font-black text-white">Need Free 1-on-1 Help with Applications & Grants?</h4>
-              <p className="text-xs text-blue-100 font-medium max-w-xl">
+          <div className="p-6 md:p-8 bg-[#DE5C2B] text-white border-[3px] border-[#16130F] shadow-[7px_7px_0_#16130F] flex flex-col sm:flex-row items-center justify-between gap-6" style={{ borderRadius: 24 }}>
+            <div className="space-y-1.5 text-center sm:text-left">
+              <p className="font-urbanist font-extrabold text-[15px] leading-none text-[#FFF1B8]">Akele mat karo, hum saath hain</p>
+              <h4 className="font-urbanist text-[22px] md:text-[26px] font-black tracking-[-0.02em] leading-tight text-white">Need Free 1-on-1 Help with Applications & Grants?</h4>
+              <p className="text-[15px] text-white/90 font-medium max-w-xl">
                 Our certified counsellors review your profile, verify official university scholarship deadlines, and help you draft winning applications.
               </p>
             </div>
 
             <button
               onClick={() => openModal({ source: 'Eligibility Calculator Bottom Bar', dreamCountry: targetCountry })}
-              className="px-6 py-3.5 bg-white text-slate-900 hover:bg-slate-100 rounded-2xl text-xs font-black transition-all shadow-md flex items-center gap-2 cursor-pointer whitespace-nowrap"
+              className="h-12 px-6 bg-[#16130F] text-white border-[3px] border-[#16130F] shadow-[4px_4px_0_#FFF6E5] hover:-translate-y-0.5 text-[15px] font-bold transition-transform flex items-center gap-2 cursor-pointer whitespace-nowrap"
+              style={{ borderRadius: 999 }}
             >
-              <PhoneCall size={14} /> Book Free Counselling
+              <PhoneCall size={15} /> Book Free Counselling
             </button>
           </div>
 
@@ -1339,7 +1346,8 @@ const EligibilityCalculatorPage = () => {
         studentProfile={{ gpaPercent: normalizedPercentage, targetCountry, targetScore: normalizedPercentage }}
       />
 
-      </FinderPage>
+      </div>
+      </div>
 
       {/* ──────────────────────────────────────────────────────── */}
       {/* DEDICATED OFFICIAL PRINTABLE REPORT (Visible only on print) */}
@@ -1353,34 +1361,37 @@ const EligibilityCalculatorPage = () => {
       {/* ──────────────────────────────────────────────────────── */}
       <AnimatePresence>
         {showReportPreview && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-950/75 backdrop-blur-sm print:hidden">
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-[#16130F]/70 print:hidden">
             <motion.div
               initial={{ opacity: 0, scale: 0.96, y: 15 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.96, y: 15 }}
-              className="bg-white rounded-3xl max-w-4xl w-full max-h-[92vh] flex flex-col shadow-2xl overflow-hidden border border-slate-200"
+              className="bg-white max-w-4xl w-full max-h-[92vh] flex flex-col overflow-hidden border-[3px] border-[#16130F] shadow-[7px_7px_0_#DE5C2B]"
+              style={{ borderRadius: 20 }}
             >
               {/* Modal Top Bar */}
-              <div className="p-4 px-6 bg-[#111111] text-white flex items-center justify-between">
+              <div className="p-4 px-5 sm:px-6 bg-[#16130F] text-white flex items-center justify-between gap-3">
                 <div className="flex items-center gap-2.5">
-                  <div className="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center">
-                    <FileText size={18} className="text-orange-300" />
+                  <div className="w-9 h-9 rounded-lg bg-[#F2B705] border-2 border-white flex items-center justify-center shrink-0">
+                    <FileText size={18} className="text-[#16130F]" />
                   </div>
                   <div>
-                    <h3 className="text-sm font-black">Official Eligibility Report Preview</h3>
-                    <p className="text-[10px] text-orange-200 font-medium">Verify your evaluation parameters before downloading or saving</p>
+                    <h3 className="font-urbanist text-[16px] font-black">Official Eligibility Report Preview</h3>
+                    <p className="text-[13px] text-white/75 font-medium">Verify your evaluation parameters before downloading or saving</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-2">
                   <button
                     onClick={handlePrintReport}
-                    className="px-4 py-2 rounded-xl bg-white text-[#111111] hover:bg-orange-50 text-xs font-black transition-all flex items-center gap-1.5 shadow-sm cursor-pointer"
+                    className="px-4 py-2 bg-white text-[#16130F] border-2 border-white shadow-[3px_3px_0_#F2B705] hover:-translate-y-0.5 text-[14px] font-bold transition-transform flex items-center gap-1.5 cursor-pointer whitespace-nowrap"
+                    style={{ borderRadius: 999 }}
                   >
-                    <Printer size={14} /> Print / Save as PDF
+                    <Printer size={15} /> Print / Save as PDF
                   </button>
                   <button
                     onClick={() => setShowReportPreview(false)}
-                    className="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-all cursor-pointer"
+                    aria-label="Close report preview"
+                    className="w-9 h-9 rounded-full bg-transparent border-2 border-white hover:bg-white/15 text-white flex items-center justify-center transition-colors cursor-pointer shrink-0"
                   >
                     <X size={16} />
                   </button>
@@ -1388,8 +1399,8 @@ const EligibilityCalculatorPage = () => {
               </div>
 
               {/* Modal Content Scrollable Area */}
-              <div className="p-4 sm:p-6 overflow-y-auto custom-modal-scrollbar bg-slate-100/70 flex-1">
-                <div className="bg-white p-6 sm:p-8 rounded-2xl shadow-sm border border-slate-200 max-w-3xl mx-auto">
+              <div className="p-4 sm:p-6 overflow-y-auto custom-modal-scrollbar bg-[#FFF6E5] flex-1">
+                <div className="bg-white p-5 sm:p-8 border-2 border-[#16130F] max-w-3xl mx-auto" style={{ borderRadius: 14 }}>
                   {renderReportContent()}
                 </div>
               </div>

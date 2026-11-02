@@ -4,7 +4,6 @@ import { CheckCircle2, ChevronDown, Loader2, Lock, ArrowRight } from 'lucide-rea
 import { API_BASE_URL } from '../config';
 import { useAuth } from '../context/AuthContext';
 import CountrySelect from './ui/CountrySelect';
-import { FINDER_FIELD, FinderButton, FinderChip } from './ui/FinderForm';
 
 /**
  * Lead-capture form used by the service pages (education loan, visa & pre-departure…).
@@ -18,23 +17,26 @@ import { FINDER_FIELD, FinderButton, FinderChip } from './ui/FinderForm';
 
 const INTAKES = ['Fall 2026', 'Spring 2027', 'Fall 2027', 'Later'];
 
-// Fields, labels, chips and button follow the Course Finder form look (ui/FinderForm)
-const inputClass = `${FINDER_FIELD} rounded-[10px]`;
+// Desi Pop fields (as in the Course Finder): white, 2px ink border, mustard focus ring
+const inputClass = 'w-full h-12 px-3 text-[15px] text-[#16130F] bg-white border-2 border-[#16130F] rounded-[10px] outline-none focus:ring-4 focus:ring-[#F2B705]/50 transition-shadow placeholder:text-[#8A8175]';
 
-// Native selects in the same cream field look as the inputs and the country picker, with one chevron
+// The shared country picker has its own soft field look; restyle its trigger and panel from outside
+const COUNTRY_WRAP = '[&>div>button]:!h-12 [&>div>button]:!bg-white [&>div>button]:!border-2 [&>div>button]:!border-[#16130F] [&>div>button]:!text-[15px] [&>div>div]:!border-2 [&>div>div]:!border-[#16130F] [&>div>div]:!shadow-[4px_4px_0_#16130F]';
+
+// Native selects in the same field look, with one chevron
 const Select = ({ value, onChange, placeholder, options }) => (
   <div className="relative">
     <select value={value} onChange={onChange}
-      className={`${inputClass} appearance-none !bg-[#F8F5EF] focus:!bg-white pr-9 cursor-pointer ${value ? '' : '!text-[#9A9184]'}`}>
+      className={`${inputClass} appearance-none pr-9 cursor-pointer ${value ? '' : '!text-[#8A8175]'}`}>
       <option value="">{placeholder}</option>
       {options.map((o) => <option key={o} value={o} className="text-[#16130F]">{o}</option>)}
     </select>
-    <ChevronDown size={15} className="absolute right-3 top-1/2 -translate-y-1/2 text-[#9A9184] pointer-events-none" />
+    <ChevronDown size={16} className="absolute right-3 top-1/2 -translate-y-1/2 text-[#16130F] pointer-events-none" />
   </div>
 );
 
 const Label = ({ children, required }) => (
-  <label className="block text-[12.5px] font-semibold text-[#16130F] mb-1.5">
+  <label className="block text-[14px] font-bold text-[#16130F] mb-1.5">
     {children}{required && ' *'}
   </label>
 );
@@ -130,7 +132,7 @@ const ServiceEnquiryForm = ({
   };
 
   return (
-    <div className="bg-white border border-[#E6E0D4] shadow-[0_24px_60px_-36px_rgba(22,19,15,0.35)] overflow-hidden" style={{ borderRadius: 18 }}>
+    <div className="bg-white border-[3px] border-[#16130F] shadow-[7px_7px_0_#16130F] overflow-hidden" style={{ borderRadius: 20 }}>
       <AnimatePresence mode="wait">
         {done ? (
           <motion.div
@@ -139,19 +141,21 @@ const ServiceEnquiryForm = ({
             animate={{ opacity: 1, scale: 1 }}
             className="p-8 text-center"
           >
-            <div className="w-14 h-14 mx-auto rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center ring-8 ring-emerald-50/50">
-              <CheckCircle2 size={28} />
+            <div className="w-16 h-16 mx-auto rounded-full bg-[#14837E] text-white border-[3px] border-[#16130F] shadow-[3px_3px_0_#16130F] flex items-center justify-center">
+              <CheckCircle2 size={30} />
             </div>
-            <h3 className="mt-5 text-xl font-black text-slate-900">{successTitle}</h3>
-            <p className="mt-2 text-sm text-slate-600 leading-relaxed">{successText}</p>
-            <p className="mt-4 text-xs text-slate-400">
+            <p className="mt-5 font-urbanist font-extrabold text-[15px] text-[#D0362E]">Ho gaya!</p>
+            <h3 className="mt-1 font-urbanist text-[24px] font-black text-[#16130F] tracking-[-0.02em]">{successTitle}</h3>
+            <p className="mt-2 text-[15px] text-[#3D3830] leading-relaxed">{successText}</p>
+            <p className="mt-4 inline-block px-3 py-1.5 text-[14px] font-semibold text-[#16130F] bg-[#FFF1B8] border-2 border-[#16130F]" style={{ borderRadius: 8 }}>
               Reference: {form.name.split(' ')[0]} · {form.phone}
             </p>
           </motion.div>
         ) : (
           <motion.form key="form" onSubmit={handleSubmit} className="p-5 sm:p-7" noValidate>
-            <h3 className="font-outfit text-[20px] sm:text-[22px] font-black text-[#16130F] tracking-[-0.02em]">{title}</h3>
-            <p className="text-[13.5px] text-[#5B544A] mt-1 mb-5">{subtitle}</p>
+            <p className="font-urbanist font-extrabold text-[15px] leading-none text-[#D0362E]">Free call, koi spam nahi</p>
+            <h3 className="mt-1.5 font-urbanist text-[22px] sm:text-[26px] font-black text-[#16130F] tracking-[-0.03em] leading-[1.1]">{title}</h3>
+            <p className="text-[15px] text-[#3D3830] mt-1.5 mb-5">{subtitle}</p>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div className="sm:col-span-2">
@@ -169,12 +173,14 @@ const ServiceEnquiryForm = ({
               <div>
                 <Label required>Study destination</Label>
                 {/* Every country, searchable, with the popular study destinations pinned on top */}
-                <CountrySelect
-                  value={form.destination}
-                  onChange={(name) => setForm((f) => ({ ...f, destination: name }))}
-                  placeholder="Select country"
-                  extraOptions={['Not decided yet']}
-                />
+                <div className={COUNTRY_WRAP}>
+                  <CountrySelect
+                    value={form.destination}
+                    onChange={(name) => setForm((f) => ({ ...f, destination: name }))}
+                    placeholder="Select country"
+                    extraOptions={['Not decided yet']}
+                  />
+                </div>
               </div>
               <div>
                 <Label>Intake</Label>
@@ -201,9 +207,16 @@ const ServiceEnquiryForm = ({
                       {field.options.map((o) => {
                         const active = (answers[field.name] || []).includes(o);
                         return (
-                          <FinderChip key={o} on={active} onClick={() => toggleChip(field.name, o)}>
+                          <button
+                            key={o}
+                            type="button"
+                            aria-pressed={active}
+                            onClick={() => toggleChip(field.name, o)}
+                            className="no-shine inline-flex items-center gap-1.5 text-[14px] font-bold px-3.5 py-2 border-2 border-[#16130F] text-[#16130F] transition-transform hover:-translate-y-0.5"
+                            style={{ borderRadius: 999, background: active ? '#F2B705' : '#fff', boxShadow: active ? '2px 2px 0 #16130F' : 'none' }}
+                          >
                             {o}
-                          </FinderChip>
+                          </button>
                         );
                       })}
                     </div>
@@ -214,17 +227,21 @@ const ServiceEnquiryForm = ({
             </div>
 
             {error && (
-              <p className="mt-4 text-[13px] font-medium text-[#984D3D] bg-[#FBF2EF] border border-[#C97C6A] rounded-[10px] px-3.5 py-2.5">{error}</p>
+              <p className="mt-4 text-[14px] font-semibold text-[#16130F] bg-[#FCE3DA] border-2 border-[#D0362E] rounded-[10px] px-3.5 py-2.5">{error}</p>
             )}
 
-            <FinderButton type="submit" disabled={submitting} className="mt-5 w-full">
+            <button
+              type="submit"
+              disabled={submitting}
+              className="mt-6 w-full h-12 px-6 inline-flex items-center justify-center gap-2 text-white text-[15px] font-bold bg-[#16130F] border-[3px] border-[#16130F] shadow-[4px_4px_0_#DE5C2B] hover:-translate-y-0.5 transition-transform disabled:opacity-60 disabled:hover:translate-y-0 rounded-full"
+            >
               {submitting ? <Loader2 size={16} className="animate-spin" /> : null}
               {submitting ? 'Submitting…' : submitLabel}
               {!submitting && <ArrowRight size={15} />}
-            </FinderButton>
+            </button>
 
-            <p className="mt-3 flex items-center justify-center gap-1.5 text-[11.5px] text-[#5B544A]">
-              <Lock size={12} /> Your details are only shared with your UniCoach advisor. No spam.
+            <p className="mt-4 flex items-center justify-center gap-1.5 text-[13px] text-[#5B544A] text-center">
+              <Lock size={13} className="shrink-0" /> Your details are only shared with your UniCoach advisor. No spam.
             </p>
           </motion.form>
         )}
