@@ -751,7 +751,8 @@ const AiToolsHubPage = () => {
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20">
         <div className="relative rounded-[22px] overflow-hidden p-8 sm:p-12 bg-[#F2B705] border-[3px] border-[#16130F] shadow-[7px_7px_0_#16130F]">
           <span aria-hidden="true" className="absolute inset-0 bg-[radial-gradient(circle,rgba(22,19,15,.12)_1.3px,transparent_1.7px)] [background-size:10px_10px]" />
-          <div className="relative z-10 max-w-2xl space-y-4">
+          <div className="relative z-10 grid lg:grid-cols-[minmax(0,1.25fr)_minmax(0,0.75fr)] gap-10 items-center">
+          <div className="space-y-4 min-w-0">
             <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white border-2 border-[#16130F] shadow-[2px_2px_0_#16130F] text-[#16130F] text-[13px] font-bold -rotate-1">
               <Sparkles size={14} className="text-[#D0362E]" /> AI Analysis + Human Expertise
             </span>
@@ -779,6 +780,27 @@ const AiToolsHubPage = () => {
                 <span>Explore 1,500+ Universities</span>
               </Link>
             </div>
+          </div>
+
+          {/* Right: the AI → counsellor → apply flow as three stacked step cards */}
+          <ol className="m-0 p-0 list-none flex flex-col gap-3">
+            {[
+              { n: 1, icon: Sparkles, tone: '#DE5C2B', hi: 'AI se pehla draft', en: 'SOP, shortlist, roadmap or mock interview in minutes', tilt: '-rotate-1' },
+              { n: 2, icon: ShieldCheck, tone: '#14837E', hi: 'Counsellor check karega', en: 'A senior advisor reviews it with you on a free 1-hour call', tilt: 'rotate-1 lg:ml-6' },
+              { n: 3, icon: CheckCircle2, tone: '#B8285B', hi: 'Bharose se apply karo', en: 'Final list, deadlines and visa plan, sorted', tilt: '-rotate-[0.5deg] lg:ml-12' },
+            ].map(({ n, icon: Icon, tone, hi, en, tilt }) => (
+              <li key={n} className={`flex items-center gap-3 bg-white rounded-[16px] border-[3px] border-[#16130F] shadow-[4px_4px_0_#16130F] p-3.5 ${tilt}`}>
+                <span className="relative shrink-0 w-12 h-12 rounded-xl border-2 border-[#16130F] grid place-items-center text-white" style={{ background: tone }}>
+                  <Icon size={20} />
+                  <span className="absolute -top-2 -left-2 w-6 h-6 rounded-full bg-[#16130F] text-[#F2B705] text-[12px] font-black grid place-items-center">{n}</span>
+                </span>
+                <span className="min-w-0">
+                  <span className="block font-urbanist text-[17px] font-extrabold leading-tight text-[#16130F]">{hi}</span>
+                  <span className="block text-[13.5px] leading-snug text-[#5B544A]">{en}</span>
+                </span>
+              </li>
+            ))}
+          </ol>
           </div>
         </div>
       </section>
