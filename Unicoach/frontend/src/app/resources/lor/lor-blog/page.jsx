@@ -11,7 +11,7 @@ import {
 } from 'lucide-react';
 import { PostageStamp } from '../../../../components/desi/DesiPop';
 import { JourneyPills } from '../../../../components/ui/BrandElements';
-import { DesiHero, DesiHeading, InkCard, Sticker } from '../../../../components/desi/DesiKit';
+import { DesiHero, DesiHeading, InkCard, Sticker, FactBoard } from '../../../../components/desi/DesiKit';
 import { BookOkCta } from '../../../../components/desi/BookOkCta';
 
 // Desi Pop form styling (ink borders, cream fields)
@@ -137,10 +137,18 @@ const LORBlogPage = () => {
                     <Sticker tilt={-2}><Sparkles size={14} className="text-[#D0362E]" />Recommendation Guides</Sticker>
                 )}
                 aside={(
-                    // postage stamp with the length rule from the tone tips, large screens only
-                    <div className="hidden lg:flex justify-center pointer-events-none">
-                        <PostageStamp value="1–2" title="Pages max" hi="Sifarish" note="LOR length" className="w-[170px] rotate-6" />
-                    </div>
+                    // quick LOR rules from this page's tips and FAQ, with the length stamp pinned on; large screens only
+                    <FactBoard
+                        className="hidden lg:block max-w-[400px] ml-auto mr-6"
+                        kicker="Ek nazar mein"
+                        title="LOR ke 3 basic rules"
+                        rows={[
+                            { label: 'Kaun likhe', value: 'Professor or manager who knows your work. Not family or friends.' },
+                            { label: 'Kitne chahiye', value: 'Mostly 2 to 3 letters per application' },
+                            { label: 'Kab maangein', value: 'At least 1 month before the deadline' },
+                        ]}
+                        pin={<PostageStamp value="1–2" title="Pages max" hi="Sifarish" note="LOR length" className="w-[130px] rotate-6" />}
+                    />
                 )}
             />
 

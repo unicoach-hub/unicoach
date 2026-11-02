@@ -12,7 +12,7 @@ import {
 } from 'lucide-react';
 import { PostageStamp } from '../../../../components/desi/DesiPop';
 import { VersusCard } from '../../../../components/ui/Infographics';
-import { DesiHero, DesiHeading, InkCard, Sticker } from '../../../../components/desi/DesiKit';
+import { DesiHero, DesiHeading, InkCard, Sticker, FactBoard } from '../../../../components/desi/DesiKit';
 import { BookOkCta } from '../../../../components/desi/BookOkCta';
 
 // Desi Pop form styling (ink borders, cream fields)
@@ -120,10 +120,18 @@ const LORPhdPage = () => {
                     <Sticker bg="#F2B705" tilt={-2}><Sparkles size={14} />Doctoral Admissions</Sticker>
                 )}
                 aside={(
-                    // postage stamp, large screens only
-                    <div className="hidden lg:flex justify-center pointer-events-none">
-                        <PostageStamp title="Research" hi="Shodh" note="Doctoral LOR" className="w-[170px] rotate-6" />
-                    </div>
+                    // quick PhD LOR facts from this page's FAQ, with the research stamp pinned on; large screens only
+                    <FactBoard
+                        className="hidden lg:block max-w-[400px] ml-auto mr-6"
+                        kicker="Ek nazar mein"
+                        title="PhD LOR alag kyun hai"
+                        rows={[
+                            { label: 'Kaun likhe', value: 'Your research supervisor. A manager only if you did real R&D work.' },
+                            { label: 'Kya dikhaye', value: 'Research skill and independence, not just grades' },
+                            { label: 'Dhyan rahe', value: 'Committees may email or call your recommender' },
+                        ]}
+                        pin={<PostageStamp title="Research" hi="Shodh" note="Doctoral LOR" className="w-[130px] rotate-6" />}
+                    />
                 )}
             />
 

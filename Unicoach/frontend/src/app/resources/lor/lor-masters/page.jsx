@@ -11,7 +11,7 @@ import {
 } from 'lucide-react';
 import { StdSign } from '../../../../components/desi/DesiPop';
 import { TapeHeadline } from '../../../../components/ui/BrandElements';
-import { DesiHero, DesiHeading, InkCard, Sticker } from '../../../../components/desi/DesiKit';
+import { DesiHero, DesiHeading, InkCard, Sticker, FactBoard } from '../../../../components/desi/DesiKit';
 import { BookOkCta } from '../../../../components/desi/BookOkCta';
 
 // Desi Pop form styling (ink borders, cream fields)
@@ -155,10 +155,18 @@ const LORMastersPage = () => {
                     <Sticker bg="#F2B705" tilt={-2}><Sparkles size={14} />Masters Admissions</Sticker>
                 )}
                 aside={(
-                    // STD booth style sign with the 3 submission pathways, large screens only
-                    <div className="hidden lg:flex justify-center pointer-events-none">
-                        <StdSign words={['PORTAL', 'EMAIL', 'POST']} hi="Sifarish" className="w-[210px] rotate-3" />
-                    </div>
+                    // quick Masters LOR facts from this page's FAQ, with the submission sign pinned on; large screens only
+                    <FactBoard
+                        className="hidden lg:block max-w-[400px] ml-auto mr-6"
+                        kicker="Ek nazar mein"
+                        title="Masters LOR, short mein"
+                        rows={[
+                            { label: 'Kitne chahiye', value: 'Mostly 2 to 3 letters' },
+                            { label: 'Kaun likhe', value: '2 professors, or professors plus your manager if you have work experience' },
+                            { label: 'Access waiver', value: "Tick 'waive access': committees trust letters you haven't read" },
+                        ]}
+                        pin={<StdSign words={['PORTAL', 'EMAIL', 'POST']} hi="Sifarish" className="w-[150px] rotate-6" />}
+                    />
                 )}
             />
 

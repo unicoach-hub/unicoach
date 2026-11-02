@@ -68,3 +68,23 @@ export const InkCard = ({ children, className = '', shadow = INK, style, as: Tag
     {children}
   </Tag>
 );
+
+// Hero side card: a few quick facts in a white ink card, with an optional sticker/stamp pinned to its corner.
+// rows: [{ label, value }]. Fills the right side of a DesiHero instead of a lone decoration.
+export const FactBoard = ({ kicker, title, rows, pin, className = '' }) => (
+  <div className={`relative ${className}`}>
+    <InkCard className="p-5 sm:p-6 text-[#16130F]">
+      {kicker && <p className="font-urbanist font-extrabold text-[15px] leading-none text-[#D0362E]">{kicker}</p>}
+      {title && <p className="mt-1.5 font-urbanist font-black text-[22px] leading-tight">{title}</p>}
+      <dl className="mt-4 m-0 divide-y-2 divide-dashed divide-[#16130F]/20">
+        {rows.map((r) => (
+          <div key={r.label} className="py-3 first:pt-0 last:pb-0">
+            <dt className="text-[12px] font-extrabold uppercase tracking-[0.1em] text-[#5B544A]">{r.label}</dt>
+            <dd className="m-0 mt-0.5 text-[16px] font-bold leading-snug">{r.value}</dd>
+          </div>
+        ))}
+      </dl>
+    </InkCard>
+    {pin && <div className="absolute -top-10 -right-6 pointer-events-none" aria-hidden="true">{pin}</div>}
+  </div>
+);
