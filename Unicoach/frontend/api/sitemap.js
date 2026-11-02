@@ -4,9 +4,10 @@
 const SITE = 'https://www.unicoach.com';
 const API = (process.env.SEO_API_URL || 'https://api.unicoach.com/api').replace(/\/+$/, '');
 
-const day = (d) => {
+// Real edit date only; a post with no date gets no <lastmod> rather than today's date
+const lastmod = (d) => {
   const t = d ? new Date(d) : null;
-  return t && !Number.isNaN(t.getTime()) ? t.toISOString().slice(0, 10) : new Date().toISOString().slice(0, 10);
+  return t && !Number.isNaN(t.getTime()) ? `<lastmod>${t.toISOString().slice(0, 10)}</lastmod>` : '';
 };
 
 async function list(path) {
@@ -33,7 +34,7 @@ export default async function handler(req, res) {
 
   const [blogs, news, events] = await Promise.all([list('blogs'), list('news'), list('events')]);
   const entry = (path, item, priority) => (item?.slug && item.published !== false
-    ? `<url><loc>${SITE}/${path}/${encodeURIComponent(item.slug)}</loc><lastmod>${day(item.updatedAt || item.publishDate)}</lastmod><priority>${priority}</priority></url>`
+    ? `<url><loc>${SITE}/${path}/${encodeURIComponent(item.slug)}</loc>${lastmod(item.updatedAt || item.publishDate)}<priority>${priority}</priority></url>`
     : '');
 
   const dynamic = [

@@ -5,7 +5,7 @@ import { getPageMeta } from '../utils/pageMeta';
 import { trackPageView } from '../utils/adTracking';
 
 // Account / transactional pages that should never show up in Google
-const NOINDEX_PREFIXES = ['/dashboard', '/login', '/signin', '/register', '/signup', '/reset-password', '/unicoach/dashboard', '/priority-dm'];
+const NOINDEX_PREFIXES = ['/dashboard', '/login', '/signin', '/register', '/signup', '/reset-password', '/unicoach/dashboard', '/priority-dm', '/book-consultation/confirm'];
 
 const upsertHeadTag = (selector, create) => {
   let el = document.head.querySelector(selector);
