@@ -24,10 +24,10 @@ const CountUp = ({ to, decimals = 0, prefix = '', suffix = '', play }) => {
 };
 
 const Kicker = ({ children, bg = '#F2B705', fg = INK }) => (
-  <span className="inline-block px-2 py-0.5 rounded-md border-2 border-[#16130F] text-[11px] font-extrabold tracking-[0.12em] uppercase" style={{ background: bg, color: fg }}>{children}</span>
+  <span className="inline-block px-2 py-0.5 text-[10.5px] font-bold tracking-[0.12em] uppercase" style={{ background: bg, color: fg }}>{children}</span>
 );
-const Title = ({ children }) => <h4 className="mt-2 font-urbanist text-[18px] sm:text-[21px] font-black leading-tight tracking-[-0.02em] text-[#16130F]">{children}</h4>;
-const Source = ({ children }) => <p className="mt-2.5 sm:mt-3 text-[11px] sm:text-[11.5px] font-medium leading-snug text-[#5B544A]">{children}</p>;
+const Title = ({ children }) => <h4 className="mt-1.5 font-urbanist text-[16.5px] sm:text-[20px] font-extrabold leading-tight text-[#16130F]">{children}</h4>;
+const Source = ({ children }) => <p className="mt-2.5 sm:mt-3 text-[10px] sm:text-[10.5px] leading-snug text-[#5B544A]">{children}</p>;
 
 // Horizontal bars: rows [label, value, display]
 const Bars = ({ rows, color, play, unit = '' }) => {
@@ -36,7 +36,7 @@ const Bars = ({ rows, color, play, unit = '' }) => {
     <ul className="mt-2.5 sm:mt-3 space-y-1.5 sm:space-y-2">
       {rows.map(([label, value, display], n) => (
         <li key={label} className="grid grid-cols-[88px_1fr] sm:grid-cols-[104px_1fr] items-center gap-2">
-          <span className="text-[13px] font-semibold text-[#16130F] truncate">{label}</span>
+          <span className="text-[12.5px] font-semibold text-[#16130F] truncate">{label}</span>
           <span className="flex items-center gap-2 min-w-0">
             <span className="flex-1 min-w-0">
               <motion.span className="block h-5 sm:h-6 rounded-md border-2 border-[#16130F]" style={{ background: n === 0 ? color : '#F2E6CF' }}
@@ -76,7 +76,7 @@ const DonutChart = ({ parts, center, sub, play }) => {
       </svg>
       <ul className="space-y-1.5 min-w-0 w-full min-[420px]:flex-1">
         {parts.map(([label, value, color, display]) => (
-          <li key={label} className="flex items-center justify-between gap-2 text-[13px]">
+          <li key={label} className="flex items-center justify-between gap-2 text-[12.5px]">
             <span className="flex items-center gap-2 font-semibold text-[#16130F] min-w-0">
               <span className="w-3 h-3 rounded-sm border-2 border-[#16130F] shrink-0" style={{ background: color }} /><span className="truncate">{label}</span>
             </span>
@@ -97,7 +97,7 @@ const Tiles = ({ tiles, play }) => (
         <div className="font-urbanist text-[24px] sm:text-[28px] font-black leading-none tracking-[-0.03em]">
           {typeof value === 'string' ? value : <CountUp to={value} decimals={value % 1 ? 1 : 0} prefix={prefix} suffix={suffix} play={play} />}
         </div>
-        <div className="mt-1 text-[12px] font-semibold leading-snug opacity-90">{label}</div>
+        <div className="mt-1 text-[11.5px] font-semibold leading-snug opacity-85">{label}</div>
       </motion.div>
     ))}
   </div>
@@ -107,12 +107,12 @@ const Tiles = ({ tiles, play }) => (
 const Versus = ({ left, right, play }) => (
   <div className="relative mt-3 grid grid-cols-2 gap-2.5">
     {[left, right].map((side, n) => (
-      <motion.div key={side.title} className="rounded-xl border-2 border-[#16130F] p-3" style={{ background: n ? '#DDF3EF' : '#FCE3DA' }}
+      <motion.div key={side.title} className="rounded-xl border-2 border-[#16130F] p-3" style={{ background: n ? '#E6F7F5' : '#FFF1E6' }}
         initial={play ? { opacity: 0, x: n ? 16 : -16 } : false} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.15 + n * 0.15 }}>
-        <span className="font-urbanist text-[16px] font-black text-[#16130F]">{side.title}</span>
+        <span className="font-urbanist text-[15px] font-extrabold text-[#16130F]">{side.title}</span>
         <ul className="mt-1.5 space-y-1">
           {side.points.map((p) => (
-            <li key={p} className="flex gap-1.5 text-[12.5px] leading-snug text-[#16130F]">
+            <li key={p} className="flex gap-1.5 text-[12px] leading-snug text-[#16130F]">
               <span className="mt-[6px] w-1.5 h-1.5 rounded-full shrink-0" style={{ background: n ? '#14837E' : '#DE5C2B' }} />{p}
             </li>
           ))}
@@ -133,7 +133,7 @@ const Steps = ({ steps, color, play }) => (
       <motion.li key={what} className="relative flex items-center gap-3" initial={play ? { opacity: 0, x: 8 } : false} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 + n * 0.3 }}>
         <span className="relative z-10 w-[30px] h-[30px] shrink-0 grid place-items-center rounded-full border-[2.5px] border-[#16130F] font-urbanist text-[12px] font-black" style={{ background: n === steps.length - 1 ? color : '#fff', color: n === steps.length - 1 ? '#fff' : INK }}>{n + 1}</span>
         <span className="min-w-0">
-          <span className="block text-[11px] font-extrabold tracking-wide uppercase text-[#D0362E]">{when}</span>
+          <span className="block text-[10.5px] font-bold tracking-wide uppercase text-[#C04A1D]">{when}</span>
           <span className="block text-[13px] font-semibold leading-snug text-[#16130F]">{what}</span>
         </span>
       </motion.li>
@@ -143,7 +143,7 @@ const Steps = ({ steps, color, play }) => (
 
 /* ── the deck: story-style progress bars + slides ── */
 
-const Deck = ({ slides, bg }) => {
+const Deck = ({ slides, accent, bg }) => {
   const ref = useRef(null);
   const inView = useInView(ref, { margin: '-80px' });
   const reduced = useReducedMotion();
@@ -157,12 +157,12 @@ const Deck = ({ slides, bg }) => {
   const Slide = slides[i];
   return (
     <div ref={ref}
-      className="relative rounded-2xl sm:rounded-3xl border-[3px] border-[#16130F] w-full min-w-0 p-2.5 sm:p-5 font-['Onest',sans-serif]" style={{ background: bg }}>
+      className="relative rounded-2xl sm:rounded-3xl w-full min-w-0 p-2.5 sm:p-5 font-['Onest',sans-serif]" style={{ background: bg }}>
       {/* story progress */}
       <div className="flex gap-1.5 mb-2.5 sm:mb-3">
         {slides.map((_, n) => (
-          <button key={n} type="button" aria-label={`Show infographic ${n + 1}`} onClick={() => setI(n)} className="no-shine flex-1 h-[6px] rounded-full bg-white border-[1.5px] border-[#16130F] overflow-hidden cursor-pointer">
-            <motion.span key={`${n}-${i}`} className="block h-full rounded-full" style={{ background: INK }}
+          <button key={n} type="button" aria-label={`Show infographic ${n + 1}`} onClick={() => setI(n)} className="no-shine flex-1 h-[5px] rounded-full bg-white/70 overflow-hidden cursor-pointer">
+            <motion.span key={`${n}-${i}`} className="block h-full rounded-full" style={{ background: accent }}
               initial={{ width: n < i ? '100%' : '0%' }} animate={{ width: n < i || (n === i && !running) ? '100%' : n === i ? '100%' : '0%' }}
               transition={n === i && running ? { duration: SLIDE_MS / 1000, ease: 'linear' } : { duration: 0 }} />
           </button>
@@ -213,7 +213,7 @@ const PREP_SLIDES = [
   </>),
   ({ play }) => (<>
     <Kicker>6-week plan</Kicker><Title>From first mock to test day</Title>
-    <Steps play={play} color="#14837E" steps={[['Week 1', 'Diagnostic mock, find weak sections'], ['Weeks 2–3', 'Writing and speaking drills'], ['Week 4', 'Free AI band score on your essays'], ['Week 5', 'Full timed mocks'], ['Week 6', 'Test day']]} />
+    <Steps play={play} color="#485A79" steps={[['Week 1', 'Diagnostic mock, find weak sections'], ['Weeks 2–3', 'Writing and speaking drills'], ['Week 4', 'Free AI band score on your essays'], ['Week 5', 'Full timed mocks'], ['Week 6', 'Test day']]} />
   </>),
 ];
 
@@ -222,7 +222,7 @@ const emi = (lakh) => { const P = lakh * 1e5; const r = 0.105 / 12; const n = 12
 const FINANCE_SLIDES = [
   ({ play }) => (<>
     <Kicker>Example plan</Kicker><Title>Paying for a ₹48 L Masters in Canada</Title>
-    <DonutChart play={play} center="₹48L" sub="2 years, total" parts={[['Education loan', 35, '#14837E', '₹35 L'], ['Family savings', 9, '#F2B705', '₹9 L'], ['Scholarship', 4, '#DE5C2B', '₹4 L']]} />
+    <DonutChart play={play} center="₹48L" sub="2 years, total" parts={[['Education loan', 35, '#385942', '₹35 L'], ['Family savings', 9, '#F2B705', '₹9 L'], ['Scholarship', 4, '#DE5C2B', '₹4 L']]} />
     <Source>Example only. Tuition + living, approximate.</Source>
   </>),
   ({ play }) => (<>
@@ -231,7 +231,7 @@ const FINANCE_SLIDES = [
     <Source>We compare several lenders side by side for you.</Source>
   </>),
   ({ play }) => (<>
-    <Kicker bg="#14837E" fg="#fff">Know this</Kicker><Title>Numbers worth knowing</Title>
+    <Kicker bg="#385942" fg="#fff">Know this</Kicker><Title>Numbers worth knowing</Title>
     <Tiles play={play} tiles={[[8, 'years of tax deduction on loan interest (Section 80E)', '', ' yrs', '#F2B705'], [emi(35), 'EMI on ₹35 L at 10.5% over 10 years', '₹', '', '#14837E', '#fff']]} />
     <Source>Income Tax Act, Section 80E. EMI is an example.</Source>
   </>),
@@ -241,22 +241,21 @@ const FINANCE_SLIDES = [
 const VISA_SLIDES = [
   ({ play }) => (<>
     <Kicker>After you graduate</Kicker><Title>How long you can stay to work</Title>
-    <Bars play={play} color="#B8285B" rows={[['USA (STEM)', 36, 'up to 3 yrs'], ['Canada', 36, 'up to 3 yrs'], ['Australia', 24, '2 yrs'], ['Ireland', 24, '2 yrs'], ['Germany', 18, '18 months'], ['UK', 18, '18 months']]} />
+    <Bars play={play} color="#DC0631" rows={[['USA (STEM)', 36, 'up to 3 yrs'], ['Canada', 36, 'up to 3 yrs'], ['Australia', 24, '2 yrs'], ['Ireland', 24, '2 yrs'], ['Germany', 18, '18 months'], ['UK', 18, '18 months']]} />
     <Source>Masters graduates. UK: 18 months for applications from Jan 2027. Official immigration sites.</Source>
   </>),
   ({ play }) => (<>
     <Kicker>The visa path</Kicker><Title>Admit to boarding pass</Title>
-    <Steps play={play} color="#B8285B" steps={[['Step 1', 'Offer letter and fee deposit'], ['Step 2', 'Proof of funds or loan sanction'], ['Step 3', 'Visa form and documents checked'], ['Step 4', 'Biometrics or interview, with a mock first'], ['Step 5', 'Visa, flight, housing, forex']]} />
+    <Steps play={play} color="#DC0631" steps={[['Step 1', 'Offer letter and fee deposit'], ['Step 2', 'Proof of funds or loan sanction'], ['Step 3', 'Visa form and documents checked'], ['Step 4', 'Biometrics or interview, with a mock first'], ['Step 5', 'Visa, flight, housing, forex']]} />
   </>),
   ({ play }) => (<>
-    <Kicker bg="#B8285B" fg="#fff">One country, one rule</Kicker><Title>The document people miss</Title>
+    <Kicker bg="#DC0631" fg="#fff">One country, one rule</Kicker><Title>The document people miss</Title>
     <Tiles play={play} tiles={[[28, 'UK: funds held for 28 days in a row', '', ' days', '#F2B705'], ['APS', 'Germany: certificate needed before the visa', '', '', '#14837E', '#fff'], ['DS-160', 'USA: form filled before the interview', '', '', '#FFF6E5']]} />
     <Source>Your counsellor checks the full list for your country.</Source>
   </>),
 ];
 
-// Deck colours match the solid accent of each card in Services.jsx
-export const ShortlistLoop = () => <Deck slides={SHORTLIST_SLIDES} bg="#DE5C2B" />;
-export const PrepLoop = () => <Deck slides={PREP_SLIDES} bg="#14837E" />;
-export const FinanceLoop = () => <Deck slides={FINANCE_SLIDES} bg="#F2B705" />;
-export const VisaLoop = () => <Deck slides={VISA_SLIDES} bg="#B8285B" />;
+export const ShortlistLoop = () => <Deck slides={SHORTLIST_SLIDES} accent="#DE5C2B" bg="#FED7CE" />;
+export const PrepLoop = () => <Deck slides={PREP_SLIDES} accent="#485A79" bg="#E2DCFE" />;
+export const FinanceLoop = () => <Deck slides={FINANCE_SLIDES} accent="#385942" bg="#9FD368" />;
+export const VisaLoop = () => <Deck slides={VISA_SLIDES} accent="#DC0631" bg="#9DE3DC" />;

@@ -134,7 +134,7 @@ const Skyline = ({ side }) => (
       <g fill="#16130F" opacity="0.12">
         <path d="M30 140 V80 L90 50 L150 80 V140 Z" /><rect x="70" y="90" width="40" height="50" fill="#F2B705" opacity="0.6" />
         <rect x="160" y="40" width="22" height="100" /><path d="M156 40 L171 20 L186 40 Z" />
-        <rect x="200" y="70" width="80" height="70" />{[0, 1, 2, 3].map((i) => <rect key={i} x={208 + i * 18} y="80" width="8" height="50" fill="#FFF6E5" opacity="0.5" />)}
+        <rect x="200" y="70" width="80" height="70" />{[0, 1, 2, 3].map((i) => <rect key={i} x={208 + i * 18} y="80" width="8" height="50" fill="#FAF9F6" opacity="0.5" />)}
         <path d="M290 140 V95 Q330 60 370 95 V140 Z" />
       </g>
     )}
@@ -159,7 +159,7 @@ const SearchBar = ({ tool, t }) => {
         const active = t < T_FORM_END && i === typingIndex;
         return (
           <div key={label} className={`flex-1 min-w-0 rounded-2xl sm:rounded-full px-4 sm:px-5 py-2 transition-colors ${active ? 'bg-[#FFF4CC]' : ''} ${i > 0 ? 'sm:border-l-2 sm:border-[#16130F]/10' : ''}`}>
-            <p className="text-[11.5px] font-black text-[#5B544A] uppercase tracking-[0.12em]">{label}</p>
+            <p className="text-[10.5px] font-extrabold text-slate-500 uppercase tracking-[0.12em]">{label}</p>
             <p className="text-[14.5px] sm:text-[15.5px] font-bold text-[#16130F] h-6 truncate">
               {typed(i, value)}
               {active && <span className="inline-block w-[2px] h-[16px] bg-[#DE5C2B] ml-0.5 align-middle animate-pulse" />}
@@ -170,7 +170,7 @@ const SearchBar = ({ tool, t }) => {
       <motion.div
         animate={{ scale: pressed ? 0.92 : 1 }}
         transition={{ type: 'spring', stiffness: 420, damping: 18 }}
-        className={`relative shrink-0 h-12 sm:h-14 px-6 rounded-full flex items-center justify-center gap-2 text-[15px] font-extrabold border-2 transition-colors ${formDone ? 'bg-[#DE5C2B] text-white border-[#16130F]' : 'bg-[#EFE6D2] text-[#5B544A] border-[#16130F]/20'}`}
+        className={`relative shrink-0 h-12 sm:h-14 px-6 rounded-full flex items-center justify-center gap-2 text-[15px] font-extrabold transition-colors ${formDone ? 'bg-[#DE5C2B] text-white' : 'bg-[#E8E2D6] text-slate-500'}`}
       >
         <Search size={18} /> {tool.button}
         {/* the tap: a finger dot lands on the button and ripples */}
@@ -207,13 +207,13 @@ const Results = ({ tool, t }) => {
                 <span className="h-2.5 w-2/3 rounded-full bg-[#16130F]/10" />
               </div>
             ))}
-            <p className="md:col-span-3 text-center text-[14px] font-bold text-[#16130F]/75">Fill three things. We do the rest.</p>
+            <p className="md:col-span-3 text-center text-[13px] font-bold text-[#16130F]/70">Fill three things. We do the rest.</p>
           </motion.div>
         )}
         {matching && (
           <motion.div key="m" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="grid grid-cols-1 md:grid-cols-3 gap-3">
             {[0, 1, 2].map((i) => <div key={i} className="h-[104px] rounded-2xl border-2 border-dashed border-[#16130F]/30 bg-white/50 animate-pulse" />)}
-            <p className="md:col-span-3 text-center text-[14px] font-bold text-[#16130F]/75 flex items-center justify-center gap-2">
+            <p className="md:col-span-3 text-center text-[13px] font-bold text-[#16130F]/70 flex items-center justify-center gap-2">
               <span className="w-3.5 h-3.5 rounded-full border-2 border-[#16130F] border-t-transparent animate-spin" /> {tool.matching}
             </p>
           </motion.div>
@@ -223,17 +223,17 @@ const Results = ({ tool, t }) => {
             {tool.results.map((r, i) => (
               <motion.div
                 key={r.name}
-                initial={{ opacity: 0, y: 26, rotate: i === 1 ? 0 : i === 0 ? -2 : 2 }}
-                animate={{ opacity: 1, y: 0, rotate: i === 1 ? 0 : i === 0 ? -0.8 : 0.8 }}
+                initial={{ opacity: 0, y: 26, rotate: i === 1 ? 0 : i === 0 ? -3 : 3 }}
+                animate={{ opacity: 1, y: 0, rotate: i === 1 ? 0 : i === 0 ? -1.2 : 1.2 }}
                 transition={{ delay: 0.06 + i * 0.16, type: 'spring', stiffness: 240, damping: 18 }}
                 className="rounded-2xl border-[3px] border-[#16130F] bg-white p-4 shadow-[5px_5px_0_#16130F]"
               >
                 <div className="flex items-start justify-between gap-2">
                   <div className="min-w-0">
-                    <p className="font-urbanist text-[16px] font-black text-[#16130F] leading-snug">{r.name}</p>
-                    <p className="text-[13.5px] text-[#5B544A] truncate">{r.meta}</p>
+                    <p className="text-[14.5px] font-extrabold text-[#16130F] leading-snug">{r.name}</p>
+                    <p className="text-[12px] text-slate-600 truncate">{r.meta}</p>
                   </div>
-                  <span className="shrink-0 text-[12px] font-extrabold px-2.5 py-1 rounded-full border-2 border-[#16130F]" style={{ background: r.tint, color: r.color }}>{r.tag}</span>
+                  <span className="shrink-0 text-[11.5px] font-extrabold px-2.5 py-1 rounded-full border-2 border-[#16130F]" style={{ background: r.tint, color: r.color }}>{r.tag}</span>
                 </div>
                 <div className="mt-3 flex items-center gap-2">
                   <div className="flex-1 h-3 rounded-full border-2 border-[#16130F] bg-[#F6F3EC] overflow-hidden">
@@ -281,26 +281,23 @@ export default function ShortlistShowcase() {
   const moving = !reduce && autoMoving(t);
 
   return (
-    <section ref={ref} className="relative w-full max-w-full overflow-hidden" style={{ background: '#FFD45C' }}>
+    <section ref={ref} className="relative w-full max-w-full overflow-hidden" style={{ background: 'linear-gradient(180deg, #FFE38A 0%, #FFD45C 100%)' }}>
 
       <div
         className="relative max-w-[1240px] mx-auto px-4 sm:px-6 lg:px-10 pt-12 sm:pt-16 pb-6"
       >
         {/* Title */}
         <div className="text-center">
-          <div className="inline-flex flex-col items-center px-4 py-2 bg-[#FFF6E5] border-[3px] border-[#16130F] shadow-[4px_4px_0_#16130F] rounded-[8px]">
-            <span className="font-urbanist font-extrabold text-[15px] leading-none text-[#D0362E]">Muft ke AI tools</span>
-            <span className="mt-1 text-[11.5px] font-black leading-none text-[#16130F] uppercase tracking-[0.12em]">Free AI tools</span>
-          </div>
-          <h2 className="mt-5 font-urbanist text-[32px] sm:text-[46px] lg:text-[54px] font-black text-[#16130F] leading-[1.02] tracking-[-0.035em]">
-            Your shortlist, <span className="text-[#B8285B]">in 60 seconds</span><DesiSticker tone="green" tilt={-4}>Chutki mein</DesiSticker>
+          <span className="inline-block px-3 py-1 rounded-full border-2 border-[#16130F] bg-white text-[12px] font-extrabold text-[#16130F] uppercase tracking-[0.12em]">Free AI tools</span>
+          <h2 className="mt-4 text-[32px] sm:text-[46px] lg:text-[54px] font-black text-[#16130F] leading-[1.02] tracking-[-0.035em]">
+            Your shortlist, <span className="text-[#C2185B]">in 60 seconds</span><DesiSticker tone="green" tilt={-4}>चुटकी में</DesiSticker>
           </h2>
-          <p className="mt-3 text-[15px] sm:text-[17px] font-medium text-[#16130F]/85">Universities, courses and scholarships matched to your profile.</p>
+          <p className="mt-3 text-[15px] sm:text-[17px] font-medium text-[#16130F]/80">Universities, courses and scholarships matched to your profile.</p>
         </div>
 
         {/* Tool switch + step pills */}
         <div className="mt-6 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-5">
-          <div className="flex p-1 rounded-full bg-[#16130F] shadow-[3px_3px_0_#FFF6E5] gap-1">
+          <div className="flex p-1 rounded-full bg-[#16130F] gap-1">
             {TOOLS.map((tl, i) => {
               const TIcon = tl.icon;
               return (
@@ -334,11 +331,11 @@ export default function ShortlistShowcase() {
               <div className="mt-6"><Results tool={tool} t={t} /></div>
             </motion.div>
           </AnimatePresence>
-          <p className="mt-3 text-center text-[13px] font-semibold text-[#16130F]/70">Example results. Yours depend on your profile.</p>
+          <p className="mt-3 text-center text-[11.5px] font-semibold text-[#16130F]/60">Example results. Yours depend on your profile.</p>
         </div>
 
         <div className="mt-5 flex justify-center">
-          <Link to={tool.cta.to} className="inline-flex items-center gap-2 h-12 px-7 rounded-full bg-[#16130F] text-white text-[15px] font-bold border-[3px] border-[#16130F] shadow-[4px_4px_0_#DE5C2B] transition-transform hover:-translate-y-0.5 no-shine">
+          <Link to={tool.cta.to} className="inline-flex items-center gap-2 h-12 px-7 rounded-full bg-[#16130F] hover:bg-[#DE5C2B] text-white text-[15px] font-bold border-2 border-[#16130F] shadow-[4px_4px_0_#FFFFFF] transition-colors no-shine">
             {tool.cta.text} <ArrowRight size={17} />
           </Link>
         </div>

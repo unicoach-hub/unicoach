@@ -1,20 +1,15 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { ArrowRight, Play } from 'lucide-react';
+import { ArrowUpRight, ArrowRight, ArrowDown, Play } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useLead } from '../context/LeadContext';
 // Preloaded critical LCP asset from public directory for instant discovery
 const heroImg = '/image.webp';
 import PriorityDmModal from './PriorityDmModal';
+import { PillButton } from './ui/PillButton';
+import { StatCard } from './ui/BrandElements';
 import { MiniSearchDemo, MiniChatDemo } from './HeroMiniDemos';
 import { TEAM_MENTORS, TEAM_MENTOR_NAMES, mentorLook } from '../utils/teamMentors';
-
-// Trust stats (same figures as before), one poster colour each
-const HERO_STATS = [
-  { value: '100%', label: 'Free guidance', bg: '#F2B705', fg: '#16130F' },
-  { value: '₹24Cr+', label: 'Scholarships', bg: '#14837E', fg: '#FFFFFF' },
-  { value: '98.7%', label: 'Visa success', bg: '#B8285B', fg: '#FFFFFF' },
-];
 
 export const Hero = ({ onOpenModal }) => {
   const { openEligibilityModal } = useLead();
@@ -34,21 +29,24 @@ export const Hero = ({ onOpenModal }) => {
   return (
     <section
       onMouseMove={handleMouseMove}
-      className="relative min-h-[540px] lg:h-screen lg:min-h-[520px] lg:max-h-[680px] xl:max-h-[720px] flex flex-col lg:flex-row lg:items-center overflow-hidden bg-[#FFF6E5] pt-16 sm:pt-20 lg:pt-0 pb-10 sm:pb-12 lg:pb-0"
+      className="relative min-h-[540px] lg:h-screen lg:min-h-[520px] lg:max-h-[680px] xl:max-h-[720px] flex flex-col lg:flex-row lg:items-center overflow-hidden bg-[#F8FAFC] pt-16 sm:pt-20 lg:pt-0 pb-10 sm:pb-12 lg:pb-0"
     >
 
-      {/* ── Desi Pop halftone dots on the cream page ── */}
-      <div aria-hidden="true" className="absolute inset-0 pointer-events-none z-0 bg-[radial-gradient(circle,rgba(22,19,15,.07)_1.3px,transparent_1.7px)] [background-size:12px_12px]" />
+      {/* ── Soft Warm Atmospheric Peach Blush Background on Left ── */}
+      <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
+        <div
+          className="absolute top-[-5%] left-[5%] w-[600px] h-[500px] bg-radial from-[#FFE3D1]/70 via-[#FFF0E5]/40 to-transparent rounded-full blur-[80px] opacity-80"
+        />
+        <div className="absolute top-[10%] left-[30%] w-[400px] h-[350px] bg-radial from-[#FFEDDF]/50 via-[#FFF5ED]/40 to-transparent rounded-full blur-[70px]" />
+        <div className="absolute bottom-[-10%] left-[-5%] w-[450px] h-[400px] bg-radial from-[#FFE3D1]/60 via-[#FFF0E5]/30 to-transparent rounded-full blur-[90px]" />
+      </div>
 
       {/* ── Full-Bleed Right-Side Hero Scene (Zoomed Out Proportions Matching 2nd Image) ── */}
       <div
         className="hidden lg:block absolute top-0 bottom-0 right-0 w-[56%] xl:w-[52%] 2xl:w-[50%] h-full z-0 overflow-hidden pointer-events-none"
-        // the photo melts into the cream on its left edge and at the bottom, so the hero reads as one scene
         style={{
-          WebkitMaskImage: 'linear-gradient(to right, transparent 0%, rgba(0,0,0,0.4) 6%, black 16%, black 100%), linear-gradient(to bottom, black 82%, transparent 100%)',
-          WebkitMaskComposite: 'source-in',
-          maskImage: 'linear-gradient(to right, transparent 0%, rgba(0,0,0,0.4) 6%, black 16%, black 100%), linear-gradient(to bottom, black 82%, transparent 100%)',
-          maskComposite: 'intersect',
+          WebkitMaskImage: 'linear-gradient(to right, transparent 0%, rgba(0,0,0,0.4) 5%, black 12%, black 100%)',
+          maskImage: 'linear-gradient(to right, transparent 0%, rgba(0,0,0,0.4) 5%, black 12%, black 100%)',
         }}
       >
         <img
@@ -89,14 +87,11 @@ export const Hero = ({ onOpenModal }) => {
           to="/search-programs"
           onMouseEnter={() => setHoverCard('search')}
           onMouseLeave={() => setHoverCard(null)}
-          className="group block bg-white border-2 border-[#16130F] rounded-[14px] shadow-[3px_3px_0_#16130F] hover:shadow-[4px_4px_0_#16130F] cursor-pointer overflow-hidden relative transition-all duration-200 hover:-translate-y-1 p-3.5 w-[215px] xl:w-[225px]"
+          className="group block bg-white rounded-[20px] p-3.5 sm:p-4 border border-slate-200 hover:border-orange-200 shadow-[0_10px_28px_-12px_rgba(15,23,42,0.22)] hover:shadow-[0_16px_36px_-12px_rgba(15,23,42,0.28)] w-[200px] sm:w-[215px] cursor-pointer overflow-hidden relative transition-all duration-200 hover:-translate-y-1"
         >
-          <div className="flex items-start justify-between gap-2 mb-2 pb-2 border-b border-[#16130F]/30">
-            <div className="min-w-0">
-              <p className="font-urbanist font-extrabold text-[12px] leading-none text-[#D0362E]">Course dhoondho</p>
-              <p className="mt-1 font-urbanist text-[14px] font-black text-[#16130F] leading-tight">Search programs</p>
-            </div>
-            <span className="shrink-0 px-2 py-0.5 rounded-full bg-[#F2B705] text-[#16130F] border-[1.5px] border-[#16130F] text-[11px] font-black group-hover:-translate-y-0.5 transition-transform">Try &rarr;</span>
+          <div className="flex items-center justify-between mb-2">
+            <span className="text-[11px] font-extrabold text-black leading-tight">Search programs</span>
+            <span className="text-[9.5px] font-extrabold text-[#DE5C2B] group-hover:underline">Try &rarr;</span>
           </div>
           <MiniSearchDemo paused={hoverCard === 'search'} />
         </Link>
@@ -114,47 +109,46 @@ export const Hero = ({ onOpenModal }) => {
       >
         <Link
           to="/unicoach#mentors-grid"
-          className="group block bg-white border-2 border-[#16130F] rounded-[14px] shadow-[3px_3px_0_#16130F] hover:shadow-[4px_4px_0_#16130F] cursor-pointer overflow-hidden relative transition-all duration-200 hover:-translate-y-1 w-[210px] xl:w-[220px] px-3.5 py-3"
+          className="group block w-[215px] sm:w-[235px] p-4 sm:p-4.5 rounded-[22px] bg-white border border-slate-200 hover:border-orange-200 shadow-[0_10px_28px_-12px_rgba(15,23,42,0.22)] hover:shadow-[0_16px_36px_-12px_rgba(15,23,42,0.28)] transition-all duration-200 hover:-translate-y-1 overflow-hidden relative cursor-pointer"
         >
-          <p className="font-urbanist font-extrabold text-[12px] leading-none text-[#D0362E] mb-1.5">Seniors se milo</p>
           {/* Top Row: Title + Pill Badge */}
           <div className="flex items-center justify-between gap-2">
-            <div className="font-urbanist text-[21px] xl:text-[22px] font-extrabold leading-none tracking-[-0.03em] text-[#16130F]">
+            <div className="font-urbanist text-[26px] sm:text-[29px] font-black leading-none tracking-tight text-black">
               Mentors
             </div>
-            <span className="shrink-0 px-2 py-0.5 rounded-full bg-[#14837E] text-white border-[1.5px] border-[#16130F] text-[10.5px] font-black uppercase tracking-wider flex items-center gap-1">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#F2B705]" />
+            <span className="shrink-0 px-2 py-0.5 rounded-full bg-slate-50 text-slate-700 border border-slate-200 text-[9.5px] font-black uppercase tracking-wider flex items-center gap-1">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
               Experts
             </span>
           </div>
 
           {/* Sub-label with clickable text */}
-          <div className="flex items-center justify-between gap-2 mt-2">
-            <span className="text-[12.5px] font-semibold text-[#5B544A] truncate">
+          <div className="flex items-center justify-between mt-1.5">
+            <span className="text-[11px] font-semibold text-slate-600">
               Seniors who&apos;ve done it
             </span>
-            <span className="shrink-0 text-[12px] font-black text-[#D0362E] underline decoration-2 underline-offset-2 decoration-transparent group-hover:decoration-[#D0362E] flex items-center gap-0.5">
+            <span className="text-[10px] font-extrabold text-[#DE5C2B] group-hover:underline flex items-center gap-0.5">
               Meet &rarr;
             </span>
           </div>
 
           {/* The mentors themselves */}
-          <div className="flex items-center mt-2.5 pt-2.5 border-t border-dashed border-[#16130F]/25 min-w-0">
+          <div className="flex items-center mt-3 min-w-0">
             <div className="flex -space-x-2 shrink-0">
               {TEAM_MENTORS.map((mentor) => (
                 <img
                   key={mentor.src}
-                  className="w-7 h-7 rounded-full border-[1.5px] border-[#16130F] object-cover object-top bg-[#FFF1B8]"
+                  className="w-7 h-7 rounded-full ring-2 ring-white object-cover object-top bg-slate-100"
                   src={mentorLook(mentor.name).cutout || mentor.src}
                   style={mentorLook(mentor.name).gradient ? { background: mentorLook(mentor.name).gradient } : undefined}
                   alt=""
-                  width="32"
-                  height="32"
+                  width="28"
+                  height="28"
                   loading="lazy"
                 />
               ))}
             </div>
-            <span className="text-[12px] font-bold text-[#16130F] ml-2 truncate">
+            <span className="text-[10.5px] font-bold text-slate-700 ml-2 truncate">
               {TEAM_MENTOR_NAMES}
             </span>
           </div>
@@ -175,14 +169,12 @@ export const Hero = ({ onOpenModal }) => {
           to="/priority-dm"
           onMouseEnter={() => setHoverCard('chat')}
           onMouseLeave={() => setHoverCard(null)}
-          className="group block bg-white border-2 border-[#16130F] rounded-[14px] shadow-[3px_3px_0_#16130F] hover:shadow-[4px_4px_0_#16130F] cursor-pointer overflow-hidden relative transition-all duration-200 hover:-translate-y-1 w-[225px] xl:w-[240px] p-3.5"
+          className="group block w-[215px] sm:w-[235px] p-4 sm:p-4.5 rounded-[22px] bg-white border border-slate-200 hover:border-orange-200 shadow-[0_10px_28px_-12px_rgba(15,23,42,0.22)] hover:shadow-[0_16px_36px_-12px_rgba(15,23,42,0.28)] cursor-pointer overflow-hidden relative transition-all duration-200 hover:-translate-y-1"
         >
-          <div className="flex items-start justify-between gap-2 mb-2 pb-2 border-b border-[#16130F]/30">
-            <div className="min-w-0">
-              <p className="font-urbanist font-extrabold text-[12px] leading-none text-[#D0362E]">Seedha poocho</p>
-              <p className="mt-1 font-urbanist text-[14px] font-black text-[#16130F] leading-tight">Ask a counsellor</p>
-            </div>
-            <span className="shrink-0 px-2 py-0.5 rounded-full bg-[#F2B705] text-[#16130F] border-[1.5px] border-[#16130F] text-[10.5px] font-black uppercase tracking-wider">
+          <div className="flex items-center justify-between mb-2">
+            <span className="text-[11px] font-extrabold text-black leading-tight">Ask a counsellor</span>
+            <span className="px-2 py-0.5 rounded-full bg-slate-50 text-slate-700 border border-slate-200 text-[9px] font-black uppercase tracking-wider flex items-center gap-1">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
               Free
             </span>
           </div>
@@ -192,10 +184,10 @@ export const Hero = ({ onOpenModal }) => {
 
       {/* ── Mobile Frameless Full-Bleed Hero Scene (Edge-to-Edge, Zero Frame/Borders, Seamless Bottom Fade) ── */}
       <div
-        className="lg:hidden relative z-10 w-full h-[240px] sm:h-[280px] min-h-[240px] sm:min-h-[280px] aspect-[16/10] overflow-hidden shrink-0 pointer-events-none"
+        className="lg:hidden relative w-full h-[240px] sm:h-[280px] min-h-[240px] sm:min-h-[280px] aspect-[16/10] overflow-hidden shrink-0 pointer-events-none"
         style={{
-          WebkitMaskImage: 'linear-gradient(to bottom, black 60%, rgba(0,0,0,0.5) 82%, transparent 100%)',
-          maskImage: 'linear-gradient(to bottom, black 60%, rgba(0,0,0,0.5) 82%, transparent 100%)',
+          WebkitMaskImage: 'linear-gradient(to bottom, black 55%, rgba(0,0,0,0.5) 80%, transparent 100%)',
+          maskImage: 'linear-gradient(to bottom, black 55%, rgba(0,0,0,0.5) 80%, transparent 100%)',
         }}
       >
         <img
@@ -207,13 +199,24 @@ export const Hero = ({ onOpenModal }) => {
           width="700"
           height="450"
         />
+
+        {/* Soft gradient blend into #F8FAFC page background */}
+        <div
+          className="absolute inset-x-0 bottom-0 h-24 pointer-events-none"
+          style={{
+            background: 'linear-gradient(to top, #F8FAFC 0%, rgba(248, 250, 252, 0.9) 35%, transparent 100%)',
+          }}
+        />
       </div>
 
-      <div className="w-full max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-10 relative z-10 -mt-2 sm:-mt-4 lg:mt-0 pt-0 lg:pt-16 pb-4 overflow-hidden">
+      <div className="w-full max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-10 relative z-10 -mt-8 sm:-mt-10 lg:mt-0 pt-0 lg:pt-16 pb-4 overflow-hidden">
         <div className="grid lg:grid-cols-12 gap-6 lg:gap-0 items-center">
 
           {/* ════════════════ LEFT COLUMN: TYPOGRAPHY & BLUSH ════════════════ */}
           <div className="lg:col-span-5 xl:col-span-5 z-20 relative pr-0 lg:pr-4">
+
+            {/* Localized soft glow behind the text */}
+            <div className="absolute -top-10 left-0 w-full h-[120%] bg-gradient-to-br from-orange-100/30 via-amber-50/20 to-transparent rounded-3xl blur-2xl pointer-events-none -z-10" />
 
             {/* ── Flying Airplane with Smooth Curved Contrail (Hidden on mobile to prevent text clash) ── */}
             <motion.div
@@ -227,10 +230,10 @@ export const Hero = ({ onOpenModal }) => {
               <svg className="w-full h-full overflow-visible" viewBox="0 0 140 90" fill="none">
                 <path
                   d="M 12 70 C 32 66, 52 56, 68 40"
-                  stroke="#16130F"
-                  strokeWidth="1.6"
+                  stroke="#DE5C2B"
+                  strokeWidth="1.4"
                   strokeLinecap="round"
-                  opacity="0.7"
+                  opacity="0.6"
                   strokeDasharray="3 3"
                   fill="none"
                 />
@@ -262,34 +265,32 @@ export const Hero = ({ onOpenModal }) => {
               </svg>
             </motion.div>
 
-            {/* ── Eyebrow sticker + Hinglish kicker ── */}
+            {/* ── Eyebrow Pill matching Image 1 ── */}
             <motion.div
               initial={{ opacity: 0, y: -8 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
-              className="inline-flex max-w-full items-center gap-2 px-3 py-1.5 rounded-[8px] bg-white border-2 border-[#16130F] shadow-[3px_3px_0_#16130F] -rotate-1 mb-5"
+              className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/95 border border-orange-200/90 shadow-2xs mb-5"
             >
-              <span className="w-2.5 h-2.5 shrink-0 rounded-full bg-[#DE5C2B] border-2 border-[#16130F]" />
-              <span className="text-[12.5px] sm:text-[13px] font-bold text-[#16130F] tracking-tight">
+              <span className="w-2 h-2 rounded-full bg-[#DE5C2B]" />
+              <span className="text-[12px] sm:text-[12.5px] font-bold text-slate-800 tracking-tight">
                 Study abroad counselling &amp; 1:1 senior mentorship
               </span>
             </motion.div>
-            <p className="font-urbanist font-extrabold text-[15px] sm:text-[16px] leading-none text-[#D0362E] mb-3">
-              Sapna videsh ka, plan yahin se
-            </p>
 
             {/* ── Main Headline matching Image 1 Typography & Peach Underline ── */}
             <motion.h1
               initial={{ opacity: 0, x: -50 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-              className="font-urbanist text-4xl sm:text-5xl lg:text-[54px] xl:text-[62px] font-black leading-[1.04] tracking-[-0.04em] text-[#16130F] mb-6"
+              className="font-outfit text-4xl sm:text-5xl lg:text-[54px] xl:text-[62px] font-black leading-[1.08] tracking-[-0.035em] text-[#111111] mb-5"
             >
               Your Global{' '}
               Future{' '}
               <br />
-              <span className="relative inline-block mt-2 px-3 pb-1 bg-[#DE5C2B] text-white border-[3px] border-[#16130F] shadow-[5px_5px_0_#16130F] -rotate-1" style={{ borderRadius: 10 }}>
+              <span className="relative inline-block">
                 Starts Here
+                <span className="absolute -bottom-1 left-0 w-full h-[7px] bg-[#FED7CE] rounded-full -z-10" />
               </span>
             </motion.h1>
 
@@ -298,7 +299,7 @@ export const Hero = ({ onOpenModal }) => {
               initial={{ opacity: 0, x: -40 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
-              className="text-[15.5px] sm:text-[17px] text-[#3D3830] leading-[1.6] max-w-[480px] mb-8 font-medium"
+              className="text-[15px] sm:text-[16.5px] text-slate-600 leading-[1.65] max-w-[480px] mb-8 font-normal"
             >
               Admissions, scholarships and visas, guided by seniors who&apos;ve already done it.
             </motion.p>
@@ -314,41 +315,34 @@ export const Hero = ({ onOpenModal }) => {
               <button
                 type="button"
                 onClick={handleOpen}
-                className="group inline-flex items-center gap-3 bg-[#16130F] text-white pl-5 sm:pl-6 pr-2.5 py-2.5 rounded-full font-bold text-[15px] border-[3px] border-[#16130F] shadow-[4px_4px_0_#DE5C2B] hover:-translate-y-0.5 hover:shadow-[6px_6px_0_#DE5C2B] active:translate-y-0 active:shadow-[2px_2px_0_#DE5C2B] transition-all duration-200 cursor-pointer"
+                className="group inline-flex items-center gap-3.5 bg-[#111111] hover:bg-black text-white pl-6 sm:pl-7 pr-3 sm:pr-3.5 py-3 sm:py-3.5 rounded-full font-bold text-[14.5px] sm:text-[15px] shadow-[0_10px_24px_-4px_rgba(0,0,0,0.28)] hover:scale-[1.03] active:scale-95 transition-all duration-200 cursor-pointer"
               >
                 <span>Book Free Counselling</span>
-                <span className="w-8 h-8 rounded-full bg-[#F2B705] text-[#16130F] flex items-center justify-center transition-transform duration-200 group-hover:translate-x-0.5">
-                  <ArrowRight className="w-4 h-4 text-[#16130F] stroke-[3]" />
+                <span className="w-7.5 h-7.5 sm:w-8 sm:h-8 rounded-full bg-white text-black flex items-center justify-center transition-all duration-200 group-hover:scale-110 group-hover:translate-x-1">
+                  <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-black stroke-[2.5]" />
                 </span>
               </button>
 
               {/* Secondary White Pill with Orange Border & Down Arrow - goes to Priority DM page */}
               <Link
                 to="/priority-dm"
-                className="group inline-flex items-center gap-2 px-5 sm:px-6 py-3 rounded-full bg-white text-[#16130F] text-[15px] font-bold border-[3px] border-[#16130F] shadow-[4px_4px_0_#16130F] hover:-translate-y-0.5 hover:shadow-[6px_6px_0_#16130F] active:translate-y-0 active:shadow-[2px_2px_0_#16130F] transition-all duration-200 cursor-pointer"
+                className="group inline-flex items-center gap-2 px-5 sm:px-6 py-3 sm:py-3.5 rounded-full bg-white hover:bg-orange-50/50 text-slate-900 text-[14.5px] sm:text-[15px] font-bold border border-orange-200/90 shadow-2xs hover:border-[#DE5C2B] hover:text-[#DE5C2B] hover:scale-[1.02] active:scale-95 transition-all duration-200 cursor-pointer"
               >
                 <span>Send Priority DM</span>
-                <ArrowRight size={17} strokeWidth={3} className="text-[#D0362E] transition-transform group-hover:translate-x-1" />
+                <ArrowRight size={17} strokeWidth={2.4} className="transition-transform group-hover:translate-x-1" />
               </Link>
             </motion.div>
 
-            {/* ── Trust stats as poster-colour stat tiles ── */}
+            {/* ── Trust stats as dark stat cards (JobsMatch style) ── */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.35, ease: [0.16, 1, 0.3, 1] }}
-              className="grid grid-cols-3 gap-2.5 sm:gap-3 max-w-[440px] pr-1"
+              className="grid grid-cols-3 gap-2 sm:gap-2.5 max-w-[440px]"
             >
-              {HERO_STATS.map((stat) => (
-                <div
-                  key={stat.label}
-                  className="min-w-0 rounded-[12px] border-[3px] border-[#16130F] shadow-[3px_3px_0_#16130F] px-2.5 sm:px-3.5 py-2.5"
-                  style={{ background: stat.bg, color: stat.fg }}
-                >
-                  <div className="font-urbanist font-black leading-none text-[20px] sm:text-[24px] tracking-[-0.04em]">{stat.value}</div>
-                  <div className="mt-1 text-[12px] sm:text-[12.5px] font-bold leading-tight">{stat.label}</div>
-                </div>
-              ))}
+              <StatCard compact value="100%" label="Free guidance" />
+              <StatCard compact value="₹24Cr+" label="Scholarships" />
+              <StatCard compact value="98.7%" label="Visa success" />
             </motion.div>
 
             {/* ── Priority DM Modal Instance (Uses createPortal to body z-[999999]) ── */}
@@ -366,12 +360,12 @@ export const Hero = ({ onOpenModal }) => {
             <motion.div
               animate={{ y: [0, 4, 0] }}
               transition={{ duration: 2.2, repeat: Infinity, ease: "easeInOut" }}
-              className="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white border-2 border-[#16130F] shadow-[3px_3px_0_#16130F] cursor-pointer ml-4 xl:ml-8 mb-2"
+              className="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/95 backdrop-blur-md shadow-md border border-slate-200/80 cursor-pointer hover:border-orange-300 transition-colors ml-4 xl:ml-8 mb-2"
             >
-              <div className="w-4 h-4 rounded-full bg-[#DE5C2B] text-white border border-[#16130F] flex items-center justify-center">
+              <div className="w-4 h-4 rounded-full bg-[#DE5C2B] text-white flex items-center justify-center">
                 <Play className="w-1.5 h-1.5 fill-current rotate-90 ml-0.5" />
               </div>
-              <span className="text-[11px] font-black text-[#16130F] uppercase tracking-wider">
+              <span className="text-[9.5px] font-semibold text-slate-700 uppercase tracking-wider">
                 Scroll to explore
               </span>
             </motion.div>
