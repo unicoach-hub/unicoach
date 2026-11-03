@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-// A paid 1:1 consultation call with the UniCoach team, booked from /book-consultation.
+// A 1:1 consultation call with the UniCoach team, booked from /book-consultation or by Nitya on a call.
 // date + time are India time (IST); startsAt is the same moment as a real Date for sorting.
 const consultationSchema = new mongoose.Schema({
   ref: { type: String, required: true, unique: true },
@@ -11,7 +11,8 @@ const consultationSchema = new mongoose.Schema({
   startsAt: { type: Date, required: true },
   durationMin: { type: Number, default: 30 },
   name: { type: String, required: true, trim: true },
-  email: { type: String, required: true, trim: true, lowercase: true },
+  // Bookings Nitya makes on a call may have no email (bulk lists, people who rang us)
+  email: { type: String, required: function () { return this.source !== 'AI call'; }, default: '', trim: true, lowercase: true },
   phone: { type: String, required: true, trim: true },
   notes: { type: String, default: '' },
   amountINR: { type: Number, required: true },
@@ -33,6 +34,8 @@ const consultationSchema = new mongoose.Schema({
   counsellor: { type: String, default: '' },
   teamNotes: { type: String, default: '' },
   source: { type: String, default: '' },
+  aiCallId: { type: String, default: '', index: true }, // AiCall.executionId when Nitya booked it on a call
+  leadId: { type: mongoose.Schema.Types.ObjectId, ref: 'Lead' },
 }, { timestamps: true });
 
 consultationSchema.index({ date: 1, time: 1, status: 1 });
