@@ -4,12 +4,12 @@ import { motion, AnimatePresence, useInView, useReducedMotion, animate } from 'f
 /*
  * Right-hand side of the four homepage service cards (Services.jsx): a deck of infographics that plays like
  * Instagram stories. Each slide draws itself (bars grow, donut fills, numbers count up), then the next one comes in.
- * Pauses off screen and on hover; reduced-motion users get the first slide, drawn and still.
+ * Pauses off screen (keeps playing under the cursor); reduced-motion users get the first slide, drawn and still.
  * Facts carry their source; anything that is advice or an example says so.
  */
 
 const INK = '#16130F';
-const SLIDE_MS = 4200;
+const SLIDE_MS = 3400;
 
 /* ── small animated pieces ── */
 
@@ -148,8 +148,7 @@ const Deck = ({ slides, accent, bg }) => {
   const inView = useInView(ref, { margin: '-80px' });
   const reduced = useReducedMotion();
   const [i, setI] = useState(0);
-  const [paused, setPaused] = useState(false);
-  const running = inView && !reduced && !paused;
+  const running = inView && !reduced;
   useEffect(() => {
     if (!running) return undefined;
     const t = setTimeout(() => setI((n) => (n + 1) % slides.length), SLIDE_MS);
@@ -157,7 +156,7 @@ const Deck = ({ slides, accent, bg }) => {
   }, [running, i, slides.length]);
   const Slide = slides[i];
   return (
-    <div ref={ref} onMouseEnter={() => setPaused(true)} onMouseLeave={() => setPaused(false)}
+    <div ref={ref}
       className="relative rounded-2xl sm:rounded-3xl w-full min-w-0 p-2.5 sm:p-5 font-['Onest',sans-serif]" style={{ background: bg }}>
       {/* story progress */}
       <div className="flex gap-1.5 mb-2.5 sm:mb-3">

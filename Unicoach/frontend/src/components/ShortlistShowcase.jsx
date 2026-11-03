@@ -256,12 +256,11 @@ export default function ShortlistShowcase() {
   const reduce = useReducedMotion();
   const [toolIndex, setToolIndex] = useState(0);
   const [t, setT] = useState(reduce ? T_ARRIVE : 0);
-  const [paused, setPaused] = useState(false);
   const tRef = useRef(t);
 
   // The demo clock: runs while the section is on screen, moves to the other tool at the end
   useEffect(() => {
-    if (reduce || !inView || paused) return undefined;
+    if (reduce || !inView) return undefined;
     const id = setInterval(() => {
       const next = tRef.current + TICK;
       if (next >= CYCLE) {
@@ -274,7 +273,7 @@ export default function ShortlistShowcase() {
       }
     }, TICK);
     return () => clearInterval(id);
-  }, [inView, paused, reduce]);
+  }, [inView, reduce]);
 
   const tool = TOOLS[toolIndex];
   const step = reduce ? 2 : stepAt(t);
@@ -286,8 +285,6 @@ export default function ShortlistShowcase() {
 
       <div
         className="relative max-w-[1240px] mx-auto px-4 sm:px-6 lg:px-10 pt-12 sm:pt-16 pb-6"
-        onMouseEnter={() => setPaused(true)}
-        onMouseLeave={() => setPaused(false)}
       >
         {/* Title */}
         <div className="text-center">

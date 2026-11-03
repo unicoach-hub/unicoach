@@ -191,13 +191,13 @@ export const Services = () => {
                   background: `radial-gradient(120% 120% at 100% 0%, ${service.accentColor}1F 0%, ${service.cardBg} 45%, #FFFFFF 100%)`,
                   borderColor: `${service.accentColor}26`,
                 }}
-                className="relative lg:sticky lg:top-[var(--stick-top)] min-h-0 sm:min-h-[480px] flex flex-col justify-center rounded-[24px] sm:rounded-[36px] border p-4 sm:p-8 lg:p-10 xl:p-12 shadow-[0_16px_40px_rgba(15,23,42,0.06)] mb-4 sm:mb-10 lg:mb-14 last:mb-0 overflow-hidden w-full min-w-0"
+                className="relative lg:sticky lg:top-[var(--stick-top)] [contain:paint] min-h-0 sm:min-h-[480px] flex flex-col justify-center rounded-[24px] sm:rounded-[36px] border p-4 sm:p-8 lg:p-10 xl:p-12 shadow-[0_16px_40px_rgba(15,23,42,0.06)] mb-4 sm:mb-10 lg:mb-14 last:mb-0 overflow-hidden w-full min-w-0"
               >
-                {/* Soft accent glow in the corner */}
+                {/* Soft accent glow in the corner: a plain radial gradient (a 420px blur filter here made the sticky stack stutter on scroll) */}
                 <div
                   aria-hidden="true"
-                  className="pointer-events-none absolute -right-24 -top-24 w-[420px] h-[420px] rounded-full blur-3xl opacity-40"
-                  style={{ background: service.accentColor + '33' }}
+                  className="pointer-events-none absolute -right-24 -top-24 w-[420px] h-[420px] rounded-full opacity-40"
+                  style={{ background: `radial-gradient(circle, ${service.accentColor}33 0%, transparent 70%)` }}
                 />
                 {/* Top Subtle Brand Highlight Bar */}
                 <div
@@ -219,7 +219,7 @@ export const Services = () => {
                   >
                     {/* Step Badge */}
                     <div
-                      className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-[11.5px] font-bold tracking-wide mb-3 sm:mb-4 bg-white/80 backdrop-blur shadow-[0_4px_14px_-6px_rgba(15,23,42,0.18)]"
+                      className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-[11.5px] font-bold tracking-wide mb-3 sm:mb-4 bg-white/90 shadow-[0_4px_14px_-6px_rgba(15,23,42,0.18)]"
                       style={{ color: service.badgeText }}
                     >
                       <span className="font-mono font-black">{service.step}</span>

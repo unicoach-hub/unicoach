@@ -77,7 +77,7 @@ const MentorMarquee = () => {
               </h2>
               {/* Old-film caption, our own line */}
               {/* Desi Pop: the mentors' station board beside "done it", wide screens only */}
-              <div className="hidden lg:block w-[170px] -my-6 -rotate-3" aria-hidden="true">
+              <div className="hidden lg:block w-[170px] -my-6" aria-hidden="true">
                 <RailwayBoard hi="Mentor Junction" en="MENTOR JN." codeLeft="PF 1:1" codeRight="SENIORS · LIVE" />
               </div>
               <div className="lg:hidden"><div className="desi-caption desi-caption--inline" aria-label="Anubhavon ki suno, aage badho">
