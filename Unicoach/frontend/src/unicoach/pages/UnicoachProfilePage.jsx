@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { useMentorProfile } from '../hooks/useMentorProfile';
@@ -59,6 +59,19 @@ const UnicoachProfilePage = () => {
     error: mentorError, 
     refreshProfile 
   } = useMentorProfile(cleanHandle);
+
+  // Each profile gets its own title and description; without this every /@handle page showed the
+  // home page title in Google. ScrollToTop puts the generic tags back when the route changes.
+  useEffect(() => {
+    if (!mentor?.name) return;
+    const about = (mentor.headline || mentor.bio || '').replace(/\s+/g, ' ').trim();
+    const title = `${mentor.name}${mentor.headline ? ` – ${mentor.headline}` : ''} | UniCoach Mentors`;
+    document.title = title.length > 70 ? `${mentor.name} | UniCoach Mentors` : title;
+    const description = about
+      ? `${mentor.name} on UniCoach: ${about}`.slice(0, 160)
+      : `Talk to ${mentor.name} on UniCoach about studying abroad, applications and student life.`;
+    document.querySelector('meta[name="description"]')?.setAttribute('content', description);
+  }, [mentor?.name, mentor?.headline, mentor?.bio]);
 
   const isEmbed = typeof window !== 'undefined' && new URLSearchParams(window.location.search).get('embed') === 'true';
 

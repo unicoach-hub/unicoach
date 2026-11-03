@@ -26,6 +26,24 @@
       ]
     },
     {
+      "source": "/:p(dashboard|login|signin|register|signup|reset-password|priority-dm|home-v2|home-v3)/:rest*",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow"
+        }
+      ]
+    },
+    {
+      "source": "/:p(unicoach/dashboard|book-consultation/confirm)/:rest*",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow"
+        }
+      ]
+    },
+    {
       "source": "/assets/(.*)",
       "headers": [
         {
