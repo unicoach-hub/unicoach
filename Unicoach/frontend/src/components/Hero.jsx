@@ -89,14 +89,14 @@ export const Hero = ({ onOpenModal }) => {
           to="/search-programs"
           onMouseEnter={() => setHoverCard('search')}
           onMouseLeave={() => setHoverCard(null)}
-          className="group block bg-white border-[3px] border-[#16130F] rounded-[14px] shadow-[5px_5px_0_#16130F] hover:shadow-[7px_7px_0_#16130F] cursor-pointer overflow-hidden relative transition-all duration-200 hover:-translate-y-1 p-3.5 w-[215px] xl:w-[225px]"
+          className="group block bg-white border-2 border-[#16130F] rounded-[14px] shadow-[3px_3px_0_#16130F] hover:shadow-[4px_4px_0_#16130F] cursor-pointer overflow-hidden relative transition-all duration-200 hover:-translate-y-1 p-3.5 w-[215px] xl:w-[225px]"
         >
-          <div className="flex items-start justify-between gap-2 mb-2.5 pb-2 border-b-2 border-[#16130F]">
+          <div className="flex items-start justify-between gap-2 mb-2 pb-2 border-b border-[#16130F]/30">
             <div className="min-w-0">
               <p className="font-urbanist font-extrabold text-[12px] leading-none text-[#D0362E]">Course dhoondho</p>
               <p className="mt-1 font-urbanist text-[14px] font-black text-[#16130F] leading-tight">Search programs</p>
             </div>
-            <span className="shrink-0 px-2 py-0.5 rounded-full bg-[#F2B705] text-[#16130F] border-2 border-[#16130F] text-[11px] font-black group-hover:-translate-y-0.5 transition-transform">Try &rarr;</span>
+            <span className="shrink-0 px-2 py-0.5 rounded-full bg-[#F2B705] text-[#16130F] border-[1.5px] border-[#16130F] text-[11px] font-black group-hover:-translate-y-0.5 transition-transform">Try &rarr;</span>
           </div>
           <MiniSearchDemo paused={hoverCard === 'search'} />
         </Link>
@@ -114,15 +114,15 @@ export const Hero = ({ onOpenModal }) => {
       >
         <Link
           to="/unicoach#mentors-grid"
-          className="group block bg-white border-[3px] border-[#16130F] rounded-[14px] shadow-[5px_5px_0_#16130F] hover:shadow-[7px_7px_0_#16130F] cursor-pointer overflow-hidden relative transition-all duration-200 hover:-translate-y-1 w-[225px] xl:w-[240px] p-4"
+          className="group block bg-white border-2 border-[#16130F] rounded-[14px] shadow-[3px_3px_0_#16130F] hover:shadow-[4px_4px_0_#16130F] cursor-pointer overflow-hidden relative transition-all duration-200 hover:-translate-y-1 w-[210px] xl:w-[220px] px-3.5 py-3"
         >
           <p className="font-urbanist font-extrabold text-[12px] leading-none text-[#D0362E] mb-1.5">Seniors se milo</p>
           {/* Top Row: Title + Pill Badge */}
           <div className="flex items-center justify-between gap-2">
-            <div className="font-urbanist text-[27px] xl:text-[29px] font-black leading-none tracking-[-0.03em] text-[#16130F]">
+            <div className="font-urbanist text-[21px] xl:text-[22px] font-extrabold leading-none tracking-[-0.03em] text-[#16130F]">
               Mentors
             </div>
-            <span className="shrink-0 px-2 py-0.5 rounded-full bg-[#14837E] text-white border-2 border-[#16130F] text-[10.5px] font-black uppercase tracking-wider flex items-center gap-1">
+            <span className="shrink-0 px-2 py-0.5 rounded-full bg-[#14837E] text-white border-[1.5px] border-[#16130F] text-[10.5px] font-black uppercase tracking-wider flex items-center gap-1">
               <span className="w-1.5 h-1.5 rounded-full bg-[#F2B705]" />
               Experts
             </span>
@@ -139,12 +139,12 @@ export const Hero = ({ onOpenModal }) => {
           </div>
 
           {/* The mentors themselves */}
-          <div className="flex items-center mt-3 pt-3 border-t-2 border-dashed border-[#16130F]/25 min-w-0">
+          <div className="flex items-center mt-2.5 pt-2.5 border-t border-dashed border-[#16130F]/25 min-w-0">
             <div className="flex -space-x-2 shrink-0">
               {TEAM_MENTORS.map((mentor) => (
                 <img
                   key={mentor.src}
-                  className="w-8 h-8 rounded-full border-2 border-[#16130F] object-cover object-top bg-[#FFF1B8]"
+                  className="w-7 h-7 rounded-full border-[1.5px] border-[#16130F] object-cover object-top bg-[#FFF1B8]"
                   src={mentorLook(mentor.name).cutout || mentor.src}
                   style={mentorLook(mentor.name).gradient ? { background: mentorLook(mentor.name).gradient } : undefined}
                   alt=""
@@ -175,14 +175,14 @@ export const Hero = ({ onOpenModal }) => {
           to="/priority-dm"
           onMouseEnter={() => setHoverCard('chat')}
           onMouseLeave={() => setHoverCard(null)}
-          className="group block bg-white border-[3px] border-[#16130F] rounded-[14px] shadow-[5px_5px_0_#16130F] hover:shadow-[7px_7px_0_#16130F] cursor-pointer overflow-hidden relative transition-all duration-200 hover:-translate-y-1 w-[225px] xl:w-[240px] p-3.5"
+          className="group block bg-white border-2 border-[#16130F] rounded-[14px] shadow-[3px_3px_0_#16130F] hover:shadow-[4px_4px_0_#16130F] cursor-pointer overflow-hidden relative transition-all duration-200 hover:-translate-y-1 w-[225px] xl:w-[240px] p-3.5"
         >
-          <div className="flex items-start justify-between gap-2 mb-2.5 pb-2 border-b-2 border-[#16130F]">
+          <div className="flex items-start justify-between gap-2 mb-2 pb-2 border-b border-[#16130F]/30">
             <div className="min-w-0">
               <p className="font-urbanist font-extrabold text-[12px] leading-none text-[#D0362E]">Seedha poocho</p>
               <p className="mt-1 font-urbanist text-[14px] font-black text-[#16130F] leading-tight">Ask a counsellor</p>
             </div>
-            <span className="shrink-0 px-2 py-0.5 rounded-full bg-[#F2B705] text-[#16130F] border-2 border-[#16130F] text-[10.5px] font-black uppercase tracking-wider">
+            <span className="shrink-0 px-2 py-0.5 rounded-full bg-[#F2B705] text-[#16130F] border-[1.5px] border-[#16130F] text-[10.5px] font-black uppercase tracking-wider">
               Free
             </span>
           </div>
