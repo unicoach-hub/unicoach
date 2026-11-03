@@ -275,7 +275,7 @@ const StudentStory = () => {
   const clock = `${String(Math.floor(secs / 60)).padStart(2, '0')}:${String(secs % 60).padStart(2, '0')}`;
 
   return (
-    <section ref={ref} className="w-full max-w-full overflow-hidden bg-[#FFF6E5] border-b-[3px] border-[#16130F]">
+    <section ref={ref} className="w-full max-w-full overflow-hidden bg-[#FFF6E5]">
       <div className="max-w-[1360px] mx-auto px-4 sm:px-8 lg:px-12 py-12 sm:py-28 grid lg:grid-cols-[0.9fr_1.1fr] gap-5 sm:gap-12 lg:gap-16 items-center">
         {/* Phones: heading, then the call, then the steps that drive it, then the button (the left column dissolves into the grid) */}
         <div className="contents lg:block">

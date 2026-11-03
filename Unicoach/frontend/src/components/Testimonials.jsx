@@ -195,7 +195,7 @@ export const Testimonials = () => {
   return (
     <section
       id="video-testimonials"
-      className="pt-12 sm:pt-16 pb-10 sm:pb-14 bg-[#FFF6E5] border-y-[3px] border-[#16130F] relative overflow-hidden select-none w-full max-w-full"
+      className="pt-12 sm:pt-16 pb-10 sm:pb-14 bg-[#FFF6E5] relative overflow-hidden select-none w-full max-w-full"
     >
       <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-10 relative z-10 w-full min-w-0">
 

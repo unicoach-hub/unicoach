@@ -34,7 +34,7 @@ export const Hero = ({ onOpenModal }) => {
   return (
     <section
       onMouseMove={handleMouseMove}
-      className="relative min-h-[540px] lg:h-screen lg:min-h-[520px] lg:max-h-[680px] xl:max-h-[720px] flex flex-col lg:flex-row lg:items-center overflow-hidden bg-[#FFF6E5] border-b-[3px] border-[#16130F] pt-16 sm:pt-20 lg:pt-0 pb-10 sm:pb-12 lg:pb-0"
+      className="relative min-h-[540px] lg:h-screen lg:min-h-[520px] lg:max-h-[680px] xl:max-h-[720px] flex flex-col lg:flex-row lg:items-center overflow-hidden bg-[#FFF6E5] pt-16 sm:pt-20 lg:pt-0 pb-10 sm:pb-12 lg:pb-0"
     >
 
       {/* ── Desi Pop halftone dots on the cream page ── */}
@@ -42,7 +42,14 @@ export const Hero = ({ onOpenModal }) => {
 
       {/* ── Full-Bleed Right-Side Hero Scene (Zoomed Out Proportions Matching 2nd Image) ── */}
       <div
-        className="hidden lg:block absolute top-0 bottom-0 right-0 w-[56%] xl:w-[52%] 2xl:w-[50%] h-full z-0 overflow-hidden pointer-events-none border-l-[3px] border-[#16130F]"
+        className="hidden lg:block absolute top-0 bottom-0 right-0 w-[56%] xl:w-[52%] 2xl:w-[50%] h-full z-0 overflow-hidden pointer-events-none"
+        // the photo melts into the cream on its left edge and at the bottom, so the hero reads as one scene
+        style={{
+          WebkitMaskImage: 'linear-gradient(to right, transparent 0%, rgba(0,0,0,0.4) 6%, black 16%, black 100%), linear-gradient(to bottom, black 82%, transparent 100%)',
+          WebkitMaskComposite: 'source-in',
+          maskImage: 'linear-gradient(to right, transparent 0%, rgba(0,0,0,0.4) 6%, black 16%, black 100%), linear-gradient(to bottom, black 82%, transparent 100%)',
+          maskComposite: 'intersect',
+        }}
       >
         <img
           src={heroImg}
@@ -185,7 +192,11 @@ export const Hero = ({ onOpenModal }) => {
 
       {/* ── Mobile Frameless Full-Bleed Hero Scene (Edge-to-Edge, Zero Frame/Borders, Seamless Bottom Fade) ── */}
       <div
-        className="lg:hidden relative z-10 w-full h-[240px] sm:h-[280px] min-h-[240px] sm:min-h-[280px] aspect-[16/10] overflow-hidden shrink-0 pointer-events-none border-y-[3px] border-[#16130F]"
+        className="lg:hidden relative z-10 w-full h-[240px] sm:h-[280px] min-h-[240px] sm:min-h-[280px] aspect-[16/10] overflow-hidden shrink-0 pointer-events-none"
+        style={{
+          WebkitMaskImage: 'linear-gradient(to bottom, black 60%, rgba(0,0,0,0.5) 82%, transparent 100%)',
+          maskImage: 'linear-gradient(to bottom, black 60%, rgba(0,0,0,0.5) 82%, transparent 100%)',
+        }}
       >
         <img
           src={heroImg}
@@ -198,7 +209,7 @@ export const Hero = ({ onOpenModal }) => {
         />
       </div>
 
-      <div className="w-full max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-10 relative z-10 mt-7 sm:mt-9 lg:mt-0 pt-0 lg:pt-16 pb-4 overflow-hidden">
+      <div className="w-full max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-10 relative z-10 -mt-2 sm:-mt-4 lg:mt-0 pt-0 lg:pt-16 pb-4 overflow-hidden">
         <div className="grid lg:grid-cols-12 gap-6 lg:gap-0 items-center">
 
           {/* ════════════════ LEFT COLUMN: TYPOGRAPHY & BLUSH ════════════════ */}

@@ -257,7 +257,7 @@ export const UpcomingEvents = ({ onOpenModal }) => {
   };
 
   return (
-    <section id="upcoming-events" className="pt-12 sm:pt-16 pb-12 sm:pb-16 bg-[#FFF6E5] relative overflow-hidden w-full max-w-full border-y-[3px] border-[#16130F]">
+    <section id="upcoming-events" className="pt-12 sm:pt-16 pb-12 sm:pb-16 bg-[#FFF6E5] relative overflow-hidden w-full max-w-full">
 
       <div className="max-w-[1340px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full min-w-0">
 
