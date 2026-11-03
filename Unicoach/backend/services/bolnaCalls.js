@@ -92,7 +92,12 @@ const isKnown = (value) => {
   return v && !/^(undecided|not specified|unsure|n\/a|na|none)$/i.test(v) ? v : '';
 };
 
-const firstName = (name) => String(name || '').trim().split(/\s+/)[0] || '';
+// Names we save for callers we don't know yet; Riya should ask, not say them
+const PLACEHOLDER_NAME = /^(inbound caller|student|unknown|lead|caller)$/i;
+const firstName = (name) => {
+  const n = String(name || '').trim();
+  return PLACEHOLDER_NAME.test(n) ? '' : n.split(/\s+/)[0] || '';
+};
 
 // Values the agent prompt reads as {{name}}, {{target_country}} ... (see ai-call-agent/riya-prompt-fixes.md)
 function buildUserData(lead) {
