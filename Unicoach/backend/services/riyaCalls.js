@@ -445,6 +445,21 @@ async function fetchRecording(conversationId) {
 
 /* ───────────────────────── The bridge ───────────────────────── */
 
+// Today's date and the team's next open consultation slots, so Nitya only offers times that can be booked
+const HI_DAY = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric', timeZone: 'Asia/Kolkata' };
+async function bookingContext() {
+  const hiDate = (ymd) => new Date(`${ymd}T12:00:00+05:30`).toLocaleDateString('hi-IN', HI_DAY);
+  const today = new Date().toLocaleDateString('hi-IN', HI_DAY);
+  try {
+    const days = (await require('../controllers/consultationController').openDays(7)).filter((d) => d.slots.length).slice(0, 4);
+    const slots = days.map((d) => `${hiDate(d.date)} (${d.date}): ${d.slots.join(', ')}`).join(' | ');
+    return { today, open_slots: slots || 'अभी कोई खाली slot नहीं' };
+  } catch (err) {
+    warn('open slots:', err.message);
+    return { today, open_slots: 'अभी कोई खाली slot नहीं' };
+  }
+}
+
 const DYNAMIC_KEYS = ['name', 'source', 'target_country', 'intake_year', 'education_level', 'city', 'custom_instructions'];
 
 /**
@@ -489,6 +504,7 @@ function bridgeCall(phoneWs, call) {
   const vars = Object.fromEntries(DYNAMIC_KEYS.map((k) => [k, String(call.dynamicVars?.[k] || '')]));
 
   async function connectEleven(withOverride) {
+    if (!vars.today) Object.assign(vars, await bookingContext());
     const { signed_url: signedUrl } = await elevenRequest(`/v1/convai/conversation/get-signed-url?agent_id=${encodeURIComponent(call.agentId)}`);
     if (closed) return;
     eleven = new WebSocket(signedUrl);

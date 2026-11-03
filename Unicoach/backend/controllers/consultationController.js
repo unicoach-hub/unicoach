@@ -8,6 +8,7 @@ const {
 const { createRazorpayOrder, verifyRazorpayPayment } = require('../unicoach/services/paymentService');
 const { sendEmail } = require('../utils/email');
 const escapeHtml = require('../utils/escapeHtml');
+const { buildInvite } = require('../utils/ics');
 
 const BLOCKING = ['confirmed', 'completed', 'no_show'];
 
@@ -62,23 +63,28 @@ const slotsForDate = (avail, date) => {
   return cleanTimes(avail.weekly[String(dow)]);
 };
 
+// Open start times for today and the next `ahead` days: team hours minus booked slots, at least an hour from now
+const openDays = async (ahead = BOOK_AHEAD_DAYS) => {
+  const from = istToday();
+  const to = addDays(from, ahead);
+  const taken = await Consultation.find(takenFilter({ date: { $gte: from, $lte: to } })).select('date time').lean();
+  const takenSet = new Set(taken.map((t) => `${t.date} ${t.time}`));
+  const avail = await loadAvailability();
+  const earliest = Date.now() + 60 * 60 * 1000;
+  const days = [];
+  for (let i = 0; i <= ahead; i += 1) {
+    const date = addDays(from, i);
+    const slots = slotsForDate(avail, date).filter((t) => istToDate(date, t).getTime() > earliest && !takenSet.has(`${date} ${t}`));
+    days.push({ date, slots });
+  }
+  return days;
+};
+exports.openDays = openDays;
+
 /** GET /api/consultations/config: services, price and the open slots for the next weeks */
 exports.getConfig = async (req, res) => {
   try {
-    const from = istToday();
-    const to = addDays(from, BOOK_AHEAD_DAYS);
-    const taken = await Consultation.find(takenFilter({ date: { $gte: from, $lte: to } })).select('date time').lean();
-    const takenSet = new Set(taken.map((t) => `${t.date} ${t.time}`));
-    const avail = await loadAvailability();
-    // A slot must start at least an hour from now
-    const earliest = Date.now() + 60 * 60 * 1000;
-
-    const days = [];
-    for (let i = 0; i <= BOOK_AHEAD_DAYS; i += 1) {
-      const date = addDays(from, i);
-      const slots = slotsForDate(avail, date).filter((t) => istToDate(date, t).getTime() > earliest && !takenSet.has(`${date} ${t}`));
-      days.push({ date, slots });
-    }
+    const days = await openDays();
     return res.json({ price: PRICE_INR, durationMin: DURATION_MIN, groups: GROUPS, services: SERVICES, days });
   } catch (err) {
     console.error('Consultation config error:', err);
@@ -159,6 +165,8 @@ exports.create = async (req, res) => {
   }
 };
 
+exports.prettyWhen = prettyWhen;
+
 const sendConfirmation = (c) => sendEmail({
   to: c.email,
   subject: `Your UniCoach consultation is booked: ${prettyWhen(c.date, c.time)}`,
@@ -169,6 +177,128 @@ const sendConfirmation = (c) => sendEmail({
 <p>Team UniCoach</p>`,
   kind: 'transactional',
 }).catch((e) => console.error('Consultation email failed:', e.message));
+
+/* ───────────── Booked by Nitya on an AI call (services/bolnaCalls → recordExecution) ───────────── */
+
+const CALL_SERVICE = SERVICES.find((s) => s.key === 'counselling') || SERVICES[0];
+const istParts = (d) => {
+  const ist = new Date(d.getTime() + 5.5 * 3600 * 1000).toISOString();
+  return { date: ist.slice(0, 10), time: ist.slice(11, 16) };
+};
+// The time Nitya agreed, as ISO with +05:30. A year in the past (the model guessed the year) moves to next year.
+const readCallTime = (when) => {
+  let at = new Date(String(when || '').trim());
+  if (Number.isNaN(at.getTime())) return null;
+  if (at.getTime() < Date.now() - 12 * 3600 * 1000) {
+    const next = new Date(at);
+    next.setUTCFullYear(next.getUTCFullYear() + 1);
+    at = next;
+  }
+  return at;
+};
+
+const teamEmail = async () => {
+  if (process.env.CONSULTATION_TEAM_EMAIL) return process.env.CONSULTATION_TEAM_EMAIL;
+  const s = await require('../models/Settings').findOne().select('supportEmail').lean().catch(() => null);
+  return s?.supportEmail || 'support@unicoach.com';
+};
+
+// Student: confirmation + invite (if we have their email). Team: the same invite, plus who to call and the call summary.
+const sendCallBookingEmails = async (c, summary) => {
+  const team = await teamEmail();
+  const when = prettyWhen(c.date, c.time);
+  const invite = (description, attendee) => [{
+    filename: 'invite.ics',
+    contentType: 'text/calendar; charset=utf-8; method=REQUEST',
+    content: buildInvite({
+      uid: `${c.ref}@unicoach.com`,
+      start: c.startsAt,
+      durationMin: c.durationMin,
+      summary: attendee.team ? `Counsellor call: ${c.name} (${c.phone})` : 'UniCoach counsellor call',
+      description,
+      organizer: { name: 'UniCoach', email: team },
+      attendees: [{ name: attendee.name, email: attendee.email }],
+    }),
+  }];
+  const jobs = [];
+  if (c.email) {
+    jobs.push(sendEmail({
+      to: c.email,
+      subject: `Your free UniCoach counsellor call: ${when}`,
+      html: `<p>Hi ${escapeHtml(c.name)},</p>
+<p>As discussed on the phone with Nitya, your free counsellor call with UniCoach is booked for <b>${when} (India time)</b>.</p>
+<p>Our counsellor will call you on <b>${escapeHtml(c.phone)}</b>. The calendar invite is attached, so you can add it to your calendar.</p>
+<p>Need a different time? Just reply to this email. Booking reference: <b>${c.ref}</b>.</p>
+<p>Team UniCoach</p>`,
+      attachments: invite(`Our counsellor will call you on ${c.phone}. Booking ${c.ref}. To change the time, reply to the confirmation email.`, { name: c.name, email: c.email }),
+      kind: 'transactional',
+    }));
+  }
+  const admin = (process.env.ADMIN_URL || 'https://admin.unicoach.com').replace(/\/$/, '');
+  jobs.push(sendEmail({
+    to: team,
+    subject: `Counsellor call booked by Nitya: ${c.name}, ${when}`,
+    html: `<p>Nitya booked a free counsellor call on an AI call.</p>
+<p><b>${escapeHtml(c.name)}</b> · ${escapeHtml(c.phone)}${c.email ? ` · ${escapeHtml(c.email)}` : ' · no email (the student got no confirmation email)'}<br>
+<b>${when}</b> (India time), ${c.durationMin} minutes · ${c.ref}</p>
+${summary ? `<p><b>Call summary:</b> ${escapeHtml(summary)}</p>` : ''}
+<p><a href="${admin}/crm/consultations">Open Consultation Calls</a></p>`,
+    attachments: invite(`Call ${c.name} on ${c.phone}. ${summary || ''}`.trim(), { name: 'UniCoach team', email: team, team: true }),
+    kind: 'transactional',
+  }));
+  await Promise.all(jobs.map((j) => j.catch((e) => console.error('Call booking email failed:', e.message))));
+};
+
+/**
+ * A student agreed to a counsellor call with Nitya: put it on the team's consultation calendar and email the invite.
+ * Books only a time that is open in the team's hours. Never throws.
+ * @returns {Promise<{ booking?: object, reason?: string, already?: boolean }>}
+ */
+exports.bookFromCall = async ({ lead, call, when }) => {
+  try {
+    if (!call?.executionId) return { reason: 'no call' };
+    const existing = await Consultation.findOne({ aiCallId: call.executionId }).lean();
+    if (existing) return { booking: existing, already: true };
+    const at = readCallTime(when);
+    if (!at) return { reason: `the time "${when}" could not be read` };
+    const { date, time } = istParts(at);
+    if (at.getTime() < Date.now() + 30 * 60 * 1000) return { reason: `${prettyWhen(date, time)} has already passed` };
+    if (!slotsForDate(await loadAvailability(), date).includes(time)) return { reason: `${prettyWhen(date, time)} is not one of the team's open slots` };
+    await releaseExpiredHolds({ date, time });
+    if (await Consultation.exists(takenFilter({ date, time }))) return { reason: `${prettyWhen(date, time)} was already booked by someone else` };
+
+    const email = String(lead?.email || '').trim().toLowerCase();
+    let booking;
+    try {
+      booking = await Consultation.create({
+        ref: `CONS-${crypto.randomBytes(4).toString('hex').toUpperCase()}`,
+        service: CALL_SERVICE.key,
+        serviceLabel: CALL_SERVICE.label,
+        date,
+        time,
+        startsAt: istToDate(date, time),
+        durationMin: DURATION_MIN,
+        name: String(lead?.name || call.name || 'Student').trim().slice(0, 120),
+        email: /^\S+@\S+\.\S+$/.test(email) ? email : '',
+        phone: String(call.phone || lead?.phone || '').slice(0, 30),
+        notes: String(call.summary || '').trim().slice(0, 1500),
+        amountINR: 0,
+        status: 'confirmed',
+        source: 'AI call',
+        aiCallId: call.executionId,
+        leadId: lead?._id,
+      });
+    } catch (e) {
+      if (isDuplicate(e)) return { reason: `${prettyWhen(date, time)} was already booked by someone else` };
+      throw e;
+    }
+    await sendCallBookingEmails(booking, call.summary);
+    return { booking };
+  } catch (err) {
+    console.error('[Consultation] booking from AI call failed:', err);
+    return { reason: 'a server error' };
+  }
+};
 
 // Mark a held booking as paid. Used by the browser (verify) and the Razorpay webhook (tab closed).
 // Returns 'confirmed' | 'already' | 'conflict' | 'not_payable'.

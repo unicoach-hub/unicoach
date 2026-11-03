@@ -19,7 +19,7 @@ const { normalizePhone } = require('../utils/twilio');
  */
 
 const BOLNA_API = 'https://api.bolna.ai';
-const AGENT_NAME = 'AI Agent (Riya)';
+const AGENT_NAME = 'AI Agent (Nitya)';
 
 const NEXT_DAY_HOUR = 10; // a lead that comes in at night is called at 10 AM
 const LAST_CALL_MINUTES_BEFORE_END = 15; // a 6-minute call should not run past the window
@@ -488,7 +488,23 @@ async function recordExecution(payload) {
     if (!call.name) call.name = lead.name;
   }
   await call.save();
+  if (call.outcome === 'consultation_yes' && fields.counsellor_call_time) await bookCounsellorCall(lead, call, fields.counsellor_call_time);
   return { call, lead };
+}
+
+// The student agreed a time with Riya: book it on the team's consultation calendar (with email invites),
+// or, when that time can't be booked, ask the team to call and fix one
+async function bookCounsellorCall(lead, call, when) {
+  const { bookFromCall } = require('../controllers/consultationController'); // lazy: that file loads payment code
+  const { booking, reason, already } = await bookFromCall({ lead, call, when });
+  if (already || !lead?._id) return;
+  const comment = booking
+    ? `Counsellor call booked by ${AGENT_NAME}: ${require('../controllers/consultationController').prettyWhen(booking.date, booking.time)} (${booking.ref})${booking.email ? ', invite emailed' : ', no email on file so no invite sent'}`
+    : `${AGENT_NAME} agreed a counsellor call for "${when}", but it was not booked: ${reason}. Call the student to fix a time.`;
+  await Lead.updateOne({ _id: lead._id }, {
+    $set: { nextFollowUpDate: booking ? booking.startsAt : new Date() },
+    $push: { activities: { type: 'note', comment, date: new Date(), performedBy: 'System' } },
+  });
 }
 
 module.exports = {
