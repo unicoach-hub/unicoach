@@ -38,8 +38,10 @@ const FRAME_BYTES = 160; // 20 ms of μ-law at 8 kHz
 const PLAYBACK_LEAD_MS = 120; // how far ahead of real time Vobiz gets Riya's audio (absorbs network jitter)
 const FINALIZE_DELAYS_MS = [8000, 20000, 45000, 90000, 180000]; // ElevenLabs needs a moment for the analysis
 
-// Spoken to callers we don't know yet (the agent's own first message asks for {{name}})
-const INBOUND_FIRST_MESSAGE = 'नमस्ते, UniCoach से रिया बोल रही हूँ. बताइए, मैं आपकी क्या मदद कर सकती हूँ?';
+// Inbound callers rang us, so they're greeted instead of asked "is this {{name}}?" (the agent's own first message)
+const inboundGreeting = (name) => (name
+  ? `हैलो ${name} जी... UniCoach से Nitya बोल रही हूँ. बताइए?`
+  : 'हैलो... UniCoach से Nitya बोल रही हूँ. बताइए?');
 
 const env = () => ({
   apiKey: process.env.ELEVENLABS_API_KEY || '',
@@ -485,7 +487,6 @@ function bridgeCall(phoneWs, call) {
   }, 20);
 
   const vars = Object.fromEntries(DYNAMIC_KEYS.map((k) => [k, String(call.dynamicVars?.[k] || '')]));
-  const unknownCaller = call.direction === 'inbound' && !vars.name;
 
   async function connectEleven(withOverride) {
     const { signed_url: signedUrl } = await elevenRequest(`/v1/convai/conversation/get-signed-url?agent_id=${encodeURIComponent(call.agentId)}`);
@@ -495,7 +496,7 @@ function bridgeCall(phoneWs, call) {
 
     eleven.on('open', () => {
       const init = { type: 'conversation_initiation_client_data', dynamic_variables: vars };
-      if (withOverride) init.conversation_config_override = { agent: { first_message: INBOUND_FIRST_MESSAGE } };
+      if (withOverride) init.conversation_config_override = { agent: { first_message: inboundGreeting(vars.name) } };
       eleven.send(JSON.stringify(init));
     });
 
@@ -585,7 +586,7 @@ function bridgeCall(phoneWs, call) {
       streamId = msg.start?.streamId || msg.streamId || '';
       vobizCallUuid = msg.start?.callId || vobizCallUuid;
       log(`stream start ${call._id}: tracks=${JSON.stringify(msg.start?.tracks)} format=${JSON.stringify(msg.start?.mediaFormat)}`);
-      connectEleven(unknownCaller).catch((err) => { warn('ElevenLabs connect:', err.message); endPhone(); });
+      connectEleven(call.direction === 'inbound').catch((err) => { warn('ElevenLabs connect:', err.message); endPhone(); });
     } else if (msg.event === 'media') {
       const payload = msg.media?.payload || msg.payload;
       const track = msg.media?.track || 'none';
