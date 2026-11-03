@@ -22,7 +22,7 @@ const FIELDS = [
 const BARS = [3, 1, 2, 1, 1, 3, 1, 2, 2, 1, 3, 1, 1, 2, 1, 3, 2, 1, 1, 2, 3, 1, 2, 1, 1, 3, 1, 2];
 
 // Semicircle notches where the pass "tears"
-const Notch = ({ className }) => <span aria-hidden="true" className={`absolute w-8 h-8 rounded-full bg-[#FAF9F6] border-[3px] border-[#16130F] ${className}`} />;
+const Notch = ({ className }) => <span aria-hidden="true" className={`absolute w-8 h-8 rounded-full bg-[#FFF6E5] border-[3px] border-[#16130F] ${className}`} />;
 
 export const FinalCTA = ({ onOpenModal }) => {
   const { openEligibilityModal } = useLead();
@@ -31,34 +31,35 @@ export const FinalCTA = ({ onOpenModal }) => {
   const reduced = useReducedMotion();
 
   return (
-    <section className="pt-2 sm:pt-4 pb-12 sm:pb-16 bg-[#FAF9F6] w-full max-w-full overflow-hidden">
+    <section className="pt-6 sm:pt-10 pb-12 sm:pb-16 bg-[#FFF6E5] w-full max-w-full overflow-hidden">
       <div className="max-w-[1320px] mx-auto px-4 sm:px-6 lg:px-10 w-full min-w-0">
         <motion.div
           initial={{ opacity: 0, y: 24, rotate: -0.6 }}
           whileInView={{ opacity: 1, y: 0, rotate: 0 }}
           viewport={{ once: true, margin: '-60px' }}
           transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-          className="relative grid lg:grid-cols-[minmax(0,1fr)_340px] rounded-[26px] border-[3px] border-[#16130F] bg-[#FFF6E5] shadow-[7px_7px_0_#16130F]"
+          className="relative grid lg:grid-cols-[minmax(0,1fr)_340px] rounded-[26px] border-[3px] border-[#16130F] bg-white shadow-[6px_6px_0_#16130F] sm:shadow-[8px_8px_0_#16130F]"
         >
           {/* ── main part ── */}
           <div className="relative px-5 py-5 sm:px-9 sm:py-8 lg:px-11 min-w-0">
-            <div className="flex items-center gap-2 text-[11.5px] font-bold tracking-[0.16em] uppercase text-[#C04A1D]">
+            <p className="font-urbanist font-extrabold text-[15px] sm:text-[16px] leading-none text-[#D0362E]">Chalo, shuru karte hain</p>
+            <div className="mt-1.5 flex items-center gap-2 text-[11.5px] font-black tracking-[0.14em] uppercase text-[#16130F]">
               <Plane size={14} className="-rotate-45" /> UniCoach Air · Boarding now
             </div>
-            <h2 className="mt-2.5 font-urbanist font-black text-[27px] sm:text-[44px] lg:text-[48px] leading-[1.05] tracking-[-0.04em] text-[#16130F]">
+            <h2 className="mt-3 font-urbanist font-black text-[27px] sm:text-[44px] lg:text-[48px] leading-[1.05] tracking-[-0.04em] text-[#16130F]">
               Not sure where to start?
             </h2>
-            <p className="mt-2 max-w-[520px] text-[13.5px] sm:text-[15.5px] leading-snug sm:leading-relaxed text-[#5B544A]">
+            <p className="mt-2 max-w-[520px] text-[14.5px] sm:text-[16px] font-medium leading-snug sm:leading-relaxed text-[#3D372F]">
               Tell us your marks, budget and dream country. A counsellor calls you back with a clear plan, free.
             </p>
 
             {/* route: Confused → Clear plan, one slim strip */}
             <div className="mt-3.5 sm:mt-5 max-w-[560px] flex items-center gap-3">
-              <span className="shrink-0 leading-none"><span className="block font-urbanist font-black text-[18px] text-[#16130F]">CNFSD</span><span className="text-[10.5px] font-semibold text-[#8A8275]">Confused</span></span>
+              <span className="shrink-0 leading-none"><span className="block font-urbanist font-black text-[18px] text-[#16130F]">CNFSD</span><span className="text-[11px] font-semibold text-[#5B544A]">Confused</span></span>
               <div className="relative flex-1 h-7">
                 <span aria-hidden="true" className="absolute left-1 right-1 top-1/2 border-t-[3px] border-dashed border-[#16130F]/35" />
                 <span aria-hidden="true" className="absolute left-0 top-1/2 -translate-y-1/2 w-2.5 h-2.5 rounded-full bg-[#16130F]" />
-                <span aria-hidden="true" className="absolute right-0 top-1/2 -translate-y-1/2 w-2.5 h-2.5 rounded-full bg-[#DE5C2B] ring-4 ring-[#DE5C2B]/20" />
+                <span aria-hidden="true" className="absolute right-0 top-1/2 -translate-y-1/2 w-3 h-3 rounded-full bg-[#DE5C2B] border-2 border-[#16130F]" />
                 <motion.span
                   aria-hidden="true"
                   className="absolute top-1/2 -translate-y-1/2 -ml-3 w-7 h-7 grid place-items-center rounded-full bg-[#DE5C2B] text-white border-2 border-[#16130F]"
@@ -69,14 +70,14 @@ export const FinalCTA = ({ onOpenModal }) => {
                   <Plane size={14} className="rotate-45" fill="currentColor" />
                 </motion.span>
               </div>
-              <span className="shrink-0 leading-none text-right"><span className="block font-urbanist font-black text-[18px] text-[#DE5C2B]">PLAN</span><span className="text-[10.5px] font-semibold text-[#8A8275]">Clear plan</span></span>
+              <span className="shrink-0 leading-none text-right"><span className="block font-urbanist font-black text-[18px] text-[#DE5C2B]">PLAN</span><span className="text-[11px] font-semibold text-[#5B544A]">Clear plan</span></span>
             </div>
 
             <div className="mt-4 sm:mt-6 flex items-center gap-2 sm:gap-3">
               <button
                 type="button"
                 onClick={handleOpen}
-                className="no-shine group flex-1 sm:flex-none inline-flex items-center justify-between sm:justify-start gap-2 sm:gap-3 h-11 sm:h-12 pl-4 sm:pl-6 pr-1.5 sm:pr-2 rounded-full bg-[#16130F] hover:bg-[#DE5C2B] text-white text-[13px] sm:text-[14.5px] font-bold whitespace-nowrap border-2 border-[#16130F] shadow-[3px_3px_0_#DE5C2B] hover:shadow-[3px_3px_0_#16130F] transition-colors cursor-pointer"
+                className="no-shine group flex-1 sm:flex-none inline-flex items-center justify-between sm:justify-start gap-2 sm:gap-3 h-11 sm:h-12 pl-4 sm:pl-6 pr-1.5 sm:pr-2 rounded-full bg-[#16130F] hover:bg-[#DE5C2B] text-white text-[13px] sm:text-[14.5px] font-bold whitespace-nowrap border-[3px] border-[#16130F] shadow-[4px_4px_0_#DE5C2B] hover:shadow-[4px_4px_0_#16130F] transition-colors cursor-pointer"
               >
                 Book Free Counselling
                 <span className="w-8 h-8 shrink-0 rounded-full bg-white text-[#16130F] grid place-items-center transition-transform group-hover:rotate-45">
@@ -86,7 +87,7 @@ export const FinalCTA = ({ onOpenModal }) => {
               <button
                 type="button"
                 onClick={() => setIsPriorityDmOpen(true)}
-                className="no-shine shrink-0 inline-flex items-center gap-1.5 sm:gap-2 h-11 sm:h-12 px-3.5 sm:px-5 rounded-full bg-white hover:bg-[#FDF4EF] text-[#16130F] text-[13px] sm:text-[14.5px] font-bold whitespace-nowrap border-2 border-[#16130F] transition-colors cursor-pointer"
+                className="no-shine shrink-0 inline-flex items-center gap-1.5 sm:gap-2 h-11 sm:h-12 px-3.5 sm:px-5 rounded-full bg-white hover:bg-[#FFF1B8] text-[#16130F] text-[13px] sm:text-[14.5px] font-bold whitespace-nowrap border-[3px] border-[#16130F] shadow-[3px_3px_0_#16130F] transition-colors cursor-pointer"
               >
                 <Phone size={15} className="text-[#DE5C2B]" />
                 <span className="sm:hidden">Expert</span><span className="hidden sm:inline">Talk To Expert</span>
@@ -120,14 +121,14 @@ export const FinalCTA = ({ onOpenModal }) => {
               <dl className="mt-2.5 sm:mt-3.5 grid grid-cols-4 lg:grid-cols-2 gap-x-3 sm:gap-x-4 gap-y-2.5">
                 {FIELDS.map(([k, v]) => (
                   <div key={k} className="min-w-0">
-                    <dt className="text-[9px] sm:text-[10px] font-bold tracking-[0.1em] sm:tracking-[0.14em] uppercase text-white/70">{k}</dt>
+                    <dt className="text-[9.5px] sm:text-[10.5px] font-extrabold tracking-[0.1em] sm:tracking-[0.14em] uppercase text-white/80">{k}</dt>
                     <dd className="m-0 font-urbanist text-[14px] sm:text-[17px] font-black leading-tight sm:truncate">{v}</dd>
                   </div>
                 ))}
               </dl>
 
               <div className="mt-3 sm:mt-3.5 pt-3 border-t-2 border-dashed border-white/40">
-                <span className="text-[10px] font-bold tracking-[0.14em] uppercase text-white/70">Your crew · seniors abroad</span>
+                <span className="text-[10.5px] font-extrabold tracking-[0.14em] uppercase text-white/80">Your crew · seniors abroad</span>
                 <div className="mt-2 flex items-center gap-3">
                   <div className="flex -space-x-2.5">
                     {CREW.map((m, i) => (
@@ -135,12 +136,12 @@ export const FinalCTA = ({ onOpenModal }) => {
                         className="w-8 h-8 sm:w-10 sm:h-10 rounded-full object-cover border-[2.5px] border-[#16130F] bg-white" style={{ zIndex: CREW.length - i }} />
                     ))}
                   </div>
-                  <span className="text-[12px] font-semibold leading-tight text-white/90">Ireland, Europe,<br />Australia, USA</span>
+                  <span className="text-[12.5px] font-semibold leading-tight text-white">Ireland, Europe,<br />Australia, USA</span>
                 </div>
               </div>
 
               {/* barcode */}
-              <div aria-hidden="true" className="hidden sm:flex mt-4 items-end h-10 gap-[2px] bg-white rounded-md px-3 py-1.5">
+              <div aria-hidden="true" className="hidden sm:flex mt-4 items-end h-10 gap-[2px] bg-white rounded-md border-2 border-[#16130F] px-3 py-1.5">
                 {BARS.map((w, i) => <span key={i} className="h-full bg-[#16130F]" style={{ width: w * 2 }} />)}
                 <span className="ml-auto self-center font-mono text-[10px] font-bold text-[#16130F]">UC·1ON1</span>
               </div>

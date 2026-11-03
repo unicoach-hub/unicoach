@@ -44,7 +44,7 @@ const VideoCard = ({ item, isClone, onOpen }) => (
         })}
   >
     {/* ── Tall Portrait Video Card ── */}
-    <div className="relative aspect-[9/13] w-full rounded-[22px] sm:rounded-[26px] overflow-hidden bg-slate-900 shadow-md group-hover:shadow-xl transition-all duration-300">
+    <div className="relative aspect-[9/13] w-full rounded-[20px] overflow-hidden bg-[#16130F] border-[3px] border-[#16130F] shadow-[5px_5px_0_#16130F] group-hover:shadow-[7px_7px_0_#DE5C2B] group-hover:-translate-y-1 transition-[transform,box-shadow] duration-200">
       {/* Muted preview plays on hover; the poster shows otherwise */}
       <video
         src={item.videoUrl}
@@ -72,45 +72,42 @@ const VideoCard = ({ item, isClone, onOpen }) => (
         }}
       />
 
-      {/* Subtle Cinematic Vignette Overlay */}
-      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/20 pointer-events-none" />
-
       {/* Tag Pill (Top Left) */}
       <div className="absolute top-3.5 left-3.5 z-10">
-        <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[10.5px] font-bold bg-black/45 backdrop-blur-md text-white border border-white/20">
-          <Sparkles className="w-2.5 h-2.5 text-amber-300" />
+        <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11.5px] font-bold bg-[#F2B705] text-[#16130F] border-2 border-[#16130F]">
+          <Sparkles className="w-3 h-3 text-[#16130F]" />
           {item.tag}
         </span>
       </div>
 
-      {/* Frosted Glass Play Button (Center) */}
+      {/* Play button (center) */}
       <div className="absolute inset-0 flex items-center justify-center z-10">
-        <div className="w-13 h-13 sm:w-14 sm:h-14 rounded-full bg-white/35 backdrop-blur-md border border-white/60 flex items-center justify-center text-white shadow-lg group-hover:scale-110 group-hover:bg-[#DE5C2B] group-hover:border-[#DE5C2B] transition-all duration-300">
-          <Play className="w-5 h-5 sm:w-6 sm:h-6 fill-white text-white ml-0.5" />
+        <div className="w-13 h-13 sm:w-14 sm:h-14 rounded-full bg-white border-[3px] border-[#16130F] shadow-[3px_3px_0_#16130F] flex items-center justify-center text-[#16130F] group-hover:scale-110 group-hover:bg-[#DE5C2B] group-hover:text-white transition-[transform,background-color,color] duration-200">
+          <Play className="w-5 h-5 sm:w-6 sm:h-6 fill-current ml-0.5" />
         </div>
       </div>
 
       {/* Bottom Sound Pill */}
       <div className="absolute bottom-3 right-3 z-10">
-        <div className="w-7 h-7 rounded-full bg-black/40 backdrop-blur-md flex items-center justify-center text-white/80 border border-white/10">
+        <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center text-[#16130F] border-2 border-[#16130F]">
           <Volume2 className="w-3.5 h-3.5" />
         </div>
       </div>
     </div>
 
     {/* ── Author Profile Below Card ── */}
-    <div className="flex items-center gap-3 mt-3 px-1">
+    <div className="flex items-center gap-3 mt-3.5 px-1">
       <img
         src={item.avatar}
         alt=""
-        className="w-9 h-9 sm:w-10 sm:h-10 rounded-full object-cover border border-slate-200/90 shadow-2xs shrink-0"
+        className="w-10 h-10 rounded-full object-cover border-2 border-[#16130F] bg-white shrink-0"
         loading="lazy"
       />
       <div className="min-w-0">
-        <h4 className="font-outfit font-bold text-slate-900 text-[13.5px] sm:text-[14px] leading-tight truncate group-hover:text-[#DE5C2B] transition-colors">
+        <h4 className="font-urbanist font-extrabold text-[#16130F] text-[15px] leading-tight truncate group-hover:text-[#D0362E] transition-colors">
           {item.name}
         </h4>
-        <p className="text-[11px] sm:text-[11.5px] text-slate-500 font-medium leading-tight truncate mt-0.5">
+        <p className="text-[12.5px] text-[#5B544A] font-medium leading-tight truncate mt-0.5">
           {item.role}
         </p>
       </div>
@@ -198,39 +195,26 @@ export const Testimonials = () => {
   return (
     <section
       id="video-testimonials"
-      className="pt-6 sm:pt-8 pb-4 sm:pb-6 bg-[#FAF9F6] border-b border-orange-100/60 relative overflow-hidden select-none w-full max-w-full"
+      className="pt-12 sm:pt-16 pb-10 sm:pb-14 bg-[#FFF6E5] border-y-[3px] border-[#16130F] relative overflow-hidden select-none w-full max-w-full"
     >
-      {/* Background Soft Glow */}
-      <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
-        <div className="absolute top-[10%] left-[-10%] w-[500px] h-[350px] bg-orange-100/25 rounded-full blur-[100px]" />
-        <div className="absolute bottom-[10%] right-[-10%] w-[500px] h-[350px] bg-amber-50/35 rounded-full blur-[100px]" />
-      </div>
-
       <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-10 relative z-10 w-full min-w-0">
 
         {/* ════════ HEADER ROW WITH TOP-RIGHT CONTROLS ════════ */}
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 sm:mb-10 gap-4">
           <div>
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/95 border border-orange-200/90 shadow-2xs mb-2.5">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#DE5C2B] animate-pulse" />
-              <span className="text-[11.5px] font-bold text-slate-800 tracking-tight">
-                STUDENT SUCCESS STORIES
-              </span>
-            </div>
+            <p className="font-urbanist font-extrabold text-[16px] leading-none text-[#D0362E]">Seedha students se suno</p>
+            <p className="mt-1.5 text-[12px] sm:text-[12.5px] font-black text-[#16130F] uppercase tracking-[0.12em]">Student success stories</p>
 
-            <div className="flex items-center gap-3 mb-2" aria-hidden="true">
+            <div className="flex items-center gap-3 mt-4 mb-3" aria-hidden="true">
               <GooglyEyes size={26} />
               <StickerLabel tone="mustard" tilt={-4}>real &amp; unscripted</StickerLabel>
             </div>
-            <h2 className="font-outfit text-[28px] sm:text-[36px] lg:text-[42px] font-black text-[#111111] leading-tight tracking-tight">
+            <h2 className="font-urbanist text-[30px] sm:text-[38px] lg:text-[44px] font-black text-[#16130F] leading-[1.08] tracking-[-0.035em]">
               Hear what our{' '}
-              <span className="relative inline-block text-[#DE5C2B]">
-                students
-                <span className="absolute -bottom-1 left-0 w-full h-[6px] bg-[#FED7CE] rounded-full -z-10" />
-              </span>{' '}
+              <span className="text-[#D0362E]">students</span>{' '}
               are saying
             </h2>
-            <p className="text-[13.5px] sm:text-[14.5px] text-slate-600 mt-2 max-w-xl font-normal">
+            <p className="text-[15px] sm:text-[16px] text-[#5B544A] mt-3 max-w-xl font-medium leading-relaxed">
               Real, unscripted videos from UniCoach students about their study abroad journey.
             </p>
           </div>
@@ -239,17 +223,17 @@ export const Testimonials = () => {
           <div className="flex items-center gap-2 shrink-0">
             <button
               onClick={() => handleScroll('left')}
-              className="w-10 h-10 rounded-full bg-white border border-slate-200/90 hover:border-orange-300 hover:text-[#DE5C2B] text-slate-700 flex items-center justify-center shadow-2xs hover:shadow-xs transition-all cursor-pointer"
+              className="w-11 h-11 rounded-full bg-white border-[3px] border-[#16130F] text-[#16130F] shadow-[3px_3px_0_#16130F] hover:bg-[#F2B705] hover:-translate-y-0.5 active:translate-y-0 active:shadow-[1px_1px_0_#16130F] flex items-center justify-center transition-[transform,background-color,box-shadow] cursor-pointer"
               aria-label="Previous Testimonial"
             >
-              <ChevronLeft className="w-4.5 h-4.5" />
+              <ChevronLeft className="w-5 h-5 stroke-[2.5]" />
             </button>
             <button
               onClick={() => handleScroll('right')}
-              className="w-10 h-10 rounded-full bg-white border border-slate-200/90 hover:border-orange-300 hover:text-[#DE5C2B] text-slate-700 flex items-center justify-center shadow-2xs hover:shadow-xs transition-all cursor-pointer"
+              className="w-11 h-11 rounded-full bg-white border-[3px] border-[#16130F] text-[#16130F] shadow-[3px_3px_0_#16130F] hover:bg-[#F2B705] hover:-translate-y-0.5 active:translate-y-0 active:shadow-[1px_1px_0_#16130F] flex items-center justify-center transition-[transform,background-color,box-shadow] cursor-pointer"
               aria-label="Next Testimonial"
             >
-              <ChevronRight className="w-4.5 h-4.5" />
+              <ChevronRight className="w-5 h-5 stroke-[2.5]" />
             </button>
           </div>
         </div>
@@ -261,7 +245,7 @@ export const Testimonials = () => {
           onMouseLeave={() => { hoverRef.current = false; }}
           onFocus={() => { hoverRef.current = true; }}
           onBlur={() => { hoverRef.current = false; }}
-          className="flex items-start gap-4 sm:gap-5 overflow-x-auto scrollbar-none pb-4 pt-1"
+          className="flex items-start gap-5 sm:gap-6 overflow-x-auto scrollbar-none pb-4 pt-2 pr-2"
         >
           {Array.from({ length: LOOP_COPIES }, (_, copy) =>
             VIDEO_TESTIMONIALS.map((item) => (
@@ -281,7 +265,7 @@ export const Testimonials = () => {
       <AnimatePresence>
         {activeVideo && (
           <div
-            className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-black/80 backdrop-blur-sm"
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-[#16130F]/85"
             onClick={() => setActiveVideo(null)}
           >
             <motion.div
@@ -289,7 +273,7 @@ export const Testimonials = () => {
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.92, y: 20 }}
               transition={{ duration: 0.25, ease: 'easeOut' }}
-              className="relative w-full max-w-sm bg-slate-950 rounded-3xl overflow-hidden shadow-2xl border border-white/10 flex flex-col"
+              className="relative w-full max-w-sm bg-[#16130F] rounded-[22px] overflow-hidden border-[3px] border-[#16130F] shadow-[6px_6px_0_#F2B705] flex flex-col"
               style={{ maxHeight: 'calc(100vh - 48px)' }}
               onClick={(e) => e.stopPropagation()}
             >
@@ -297,7 +281,7 @@ export const Testimonials = () => {
               <button
                 type="button"
                 onClick={() => setActiveVideo(null)}
-                className="absolute top-3.5 right-3.5 z-20 w-8 h-8 rounded-full bg-black/60 hover:bg-black/90 text-white flex items-center justify-center transition-all cursor-pointer"
+                className="absolute top-3.5 right-3.5 z-20 w-9 h-9 rounded-full bg-white text-[#16130F] border-2 border-[#16130F] hover:bg-[#F2B705] flex items-center justify-center transition-colors cursor-pointer"
                 aria-label="Close video"
               >
                 <X className="w-4 h-4" />
@@ -317,23 +301,23 @@ export const Testimonials = () => {
               </div>
 
               {/* Bottom Details Bar */}
-              <div className="p-4 bg-slate-900 flex items-center justify-between text-white border-t border-white/10">
-                <div className="flex items-center gap-3">
+              <div className="p-4 bg-[#FFF6E5] flex items-center justify-between gap-3 text-[#16130F] border-t-[3px] border-[#16130F]">
+                <div className="flex items-center gap-3 min-w-0">
                   <img
                     src={activeVideo.avatar}
                     alt=""
-                    className="w-9 h-9 rounded-full object-cover border border-white/20"
+                    className="w-10 h-10 rounded-full object-cover border-2 border-[#16130F] bg-white shrink-0"
                   />
-                  <div>
-                    <h5 className="font-outfit font-bold text-sm leading-tight">
+                  <div className="min-w-0">
+                    <h5 className="font-urbanist font-extrabold text-[15px] leading-tight truncate">
                       {activeVideo.name}
                     </h5>
-                    <p className="text-slate-400 text-[11px]">
+                    <p className="text-[#5B544A] text-[12.5px] truncate">
                       {activeVideo.role}
                     </p>
                   </div>
                 </div>
-                <span className="text-[11px] font-bold text-emerald-400 bg-emerald-950/70 border border-emerald-500/30 px-2.5 py-1 rounded-full">
+                <span className="shrink-0 text-[11.5px] font-bold text-[#16130F] bg-[#DDF3EF] border-2 border-[#16130F] px-2.5 py-1 rounded-full">
                   {activeVideo.tag}
                 </span>
               </div>

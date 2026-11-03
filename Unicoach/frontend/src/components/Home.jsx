@@ -32,7 +32,7 @@ const FitChecker = lazy(loaders.FitChecker);
 const prefetchSections = () => Object.values(loaders).forEach((load) => load().catch(() => {}));
 
 const SectionPlaceholder = ({ minHeight = '380px' }) => (
-  <div style={{ minHeight }} className="w-full bg-[#FAF9F6]" />
+  <div style={{ minHeight }} className="w-full bg-[#FFF6E5]" />
 );
 
 const Home = () => {
@@ -48,7 +48,7 @@ const Home = () => {
   }, []);
 
   return (
-    <main id="main-content" className="flex flex-col min-h-screen w-full max-w-full overflow-x-clip bg-[#FAF9F6]">
+    <main id="main-content" className="flex flex-col min-h-screen w-full max-w-full overflow-x-clip bg-[#FFF6E5]">
       {/* 01. Hero Section (Airplane Window Scene, Obsidian & White Stat Cards, Parallax, Terracotta Palette) */}
       <Hero />
 
