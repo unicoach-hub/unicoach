@@ -164,6 +164,7 @@ export const UpcomingEvents = ({ onOpenModal }) => {
   const handleOpen = onOpenModal || ((title) => openEligibilityModal(`Event: ${title || 'Masterclass'}`));
 
   const [activeTab, setActiveTab] = useState('All');
+
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
   // Real event without a registration link: registered right here on the homepage
@@ -227,18 +228,19 @@ export const UpcomingEvents = ({ onOpenModal }) => {
   const categories = ['All', ...TAB_ORDER.filter((cat) => events.some((ev) => ev.category === cat))];
   const currentTab = categories.includes(activeTab) ? activeTab : 'All';
 
-  // Up to 6 cards in a 3-column grid: 2 rows of 3 when there are 6, all from Admin → Events
+  // Up to 8 events from Admin → Events, at most 2 rows across the full width:
+  // 4 per row when that fills the rows (4, 7, 8 events), else 3 per row (3, 5, 6)
   const displayedEvents = events
     .filter((ev) => currentTab === 'All' || ev.category === currentTab)
-    .slice(0, 6);
-
-  const gridLayout = loading || displayedEvents.length >= 4
-    ? 'sm:grid-cols-2 lg:grid-cols-3 max-w-[1040px] mx-auto'
-    : displayedEvents.length === 3
-      ? 'md:grid-cols-2 lg:grid-cols-3 max-w-[1040px] mx-auto'
-    : displayedEvents.length === 2
-      ? 'md:grid-cols-2 max-w-[900px] mx-auto'
-      : 'max-w-[440px] mx-auto';
+    .slice(0, 8);
+  const n = displayedEvents.length;
+  const gridLayout = loading || n === 4 || n >= 7
+    ? 'sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'
+    : n >= 3
+      ? 'sm:grid-cols-2 lg:grid-cols-3'
+      : n === 2
+        ? 'sm:grid-cols-2 max-w-[900px] mx-auto'
+        : 'max-w-[440px] mx-auto';
 
   const handleCta = (ev) => {
     // Ended events show "Event ended" instead of a button; never register for one
@@ -257,12 +259,12 @@ export const UpcomingEvents = ({ onOpenModal }) => {
   };
 
   return (
-    <section id="upcoming-events" className="pt-12 sm:pt-16 pb-12 sm:pb-16 bg-[#FFF6E5] relative overflow-hidden w-full max-w-full">
+    <section id="upcoming-events" className="pt-10 sm:pt-12 pb-10 sm:pb-12 bg-[#FFF6E5] relative overflow-hidden w-full max-w-full">
 
       <div className="max-w-[1340px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full min-w-0">
 
         {/* ════════ EXPANSIVE PROFESSIONAL CENTERED HEADER ════════ */}
-        <div className="text-center max-w-4xl xl:max-w-5xl mx-auto mb-10 sm:mb-12 w-full min-w-0">
+        <div className="text-center max-w-5xl xl:max-w-6xl mx-auto mb-6 sm:mb-7 w-full min-w-0">
           <motion.div
             initial={{ opacity: 0, y: 25 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -272,16 +274,16 @@ export const UpcomingEvents = ({ onOpenModal }) => {
             <p className="font-urbanist font-extrabold text-[16px] leading-none text-[#D0362E]">Live sessions, seedha seniors se</p>
             <p className="mt-1.5 text-[12px] sm:text-[12.5px] font-black text-[#16130F] uppercase tracking-[0.12em]">Live admissions masterclasses</p>
 
-            <h2 className="mt-4 font-urbanist text-[32px] sm:text-[42px] lg:text-[48px] xl:text-[52px] font-black text-[#16130F] leading-[1.08] tracking-[-0.035em]">
+            <h2 className="mt-3 font-urbanist text-[30px] sm:text-[38px] lg:text-[42px] xl:text-[46px] font-black text-[#16130F] leading-[1.08] tracking-[-0.035em]">
               Interactive Sessions with{' '}
               <span className="text-[#D0362E]">Senior Mentors &amp; Experts</span>
             </h2>
-            <div className="mt-5 flex flex-wrap items-center justify-center gap-2.5">
+            <div className="mt-4 flex flex-wrap items-center justify-center gap-2.5">
               <Sticker bg="#F2B705" tilt={-3}>Muft hai bhai!</Sticker>
               <Sticker tilt={2}>Seats limited, jaldi register karo.</Sticker>
             </div>
 
-            <p className="text-[15px] sm:text-[17px] text-[#5B544A] mt-5 font-medium leading-relaxed max-w-2xl lg:max-w-3xl mx-auto">
+            <p className="text-[15px] sm:text-[17px] text-[#5B544A] mt-3 font-medium leading-relaxed max-w-2xl lg:max-w-3xl mx-auto">
               Free live sessions with seniors and counsellors on shortlisting, SOPs, scholarships and visas. Ask your questions live.
             </p>
           </motion.div>
@@ -293,7 +295,7 @@ export const UpcomingEvents = ({ onOpenModal }) => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-40px" }}
               transition={{ duration: 0.6, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-              className="flex flex-wrap items-center justify-center gap-2 sm:gap-2.5 mt-6 sm:mt-7"
+              className="flex flex-wrap items-center justify-center gap-2 sm:gap-2.5 mt-5"
             >
               {categories.map((cat) => (
                 <button
@@ -323,10 +325,9 @@ export const UpcomingEvents = ({ onOpenModal }) => {
           </div>
         )}
 
-        {/* ════════ 3-CARD COMPACT BALANCED GRID (Overflow Safe) ════════ */}
-        {/* Phones: one swipeable row (6 stacked cards made this the longest section); wider screens: the grid */}
-        {!noEvents && <div className={`flex overflow-x-auto snap-x snap-mandatory -mx-4 px-4 pt-1 pb-3 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:mx-auto sm:px-0 sm:pt-0 sm:pb-0 sm:overflow-visible sm:grid sm:grid-cols-1 ${gridLayout} gap-4 sm:gap-6 w-full min-w-0`}>
-          {loading && [0, 1, 2].map((k) => (
+        {/* ════════ GRID: up to 2 rows across the full width (phones: one swipeable row) ════════ */}
+        {!noEvents && <div className={`flex overflow-x-auto snap-x snap-mandatory -mx-4 px-4 pt-1 pb-3 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:mx-0 sm:px-0 sm:pt-0 sm:pb-0 sm:overflow-visible sm:grid ${gridLayout} gap-4 sm:gap-6 w-full min-w-0`}>
+          {loading && [0, 1, 2, 3].map((k) => (
             <div key={k} className="w-[84%] shrink-0 sm:w-auto bg-white rounded-[16px] overflow-hidden border-[3px] border-[#16130F]/25 animate-pulse" aria-hidden="true">
               <div className="aspect-[16/9] w-full bg-[#EFE7D6]" />
               <div className="p-4 space-y-3">
@@ -348,12 +349,9 @@ export const UpcomingEvents = ({ onOpenModal }) => {
             const speakerRole = ev.speakerRole || ev.speaker.match(/\((.*?)\)/)?.[1]?.trim() || '';
             const speakerPhotos = [ev.speakerPhoto, getSpeakerPhoto(ev.speaker)].filter(Boolean);
 
-            // Vertical-only entrance (no sideways movement, so phones never get a horizontal scrollbar);
-            // cards in the same row arrive one after another
-            // Left column slides in from the left, right column from the right, middle rises; quick and smooth
-            const col = idx % 3;
-            const initialPos = { opacity: 0, x: col === 0 ? -70 : col === 2 ? 70 : 0, y: col === 1 ? 40 : 0 };
-            const enterDelay = col * 0.06 + Math.floor(idx / 3) * 0.05;
+            // Cards rise in one after another (no sideways movement, so phones never get a horizontal scrollbar)
+            const initialPos = { opacity: 0, y: 36 };
+            const enterDelay = Math.min(idx, 7) * 0.05;
 
             return (
               <motion.div
@@ -368,7 +366,7 @@ export const UpcomingEvents = ({ onOpenModal }) => {
                 whileHover={{ y: -8, transition: { type: 'spring', stiffness: 300, damping: 20 } }}
                 // The rest of the card opens the event page; the CTA button keeps its own action
                 onClick={ev.detailPath ? () => navigate(ev.detailPath) : undefined}
-                className={`bg-white rounded-[16px] overflow-hidden border-[3px] border-[#16130F] shadow-[5px_5px_0_#16130F] hover:shadow-[7px_7px_0_#DE5C2B] transition-shadow duration-200 flex flex-col group w-[84%] shrink-0 snap-start sm:w-full sm:shrink ${ev.detailPath ? 'cursor-pointer' : ''}`}
+                className={`bg-white rounded-[16px] overflow-hidden border-[3px] border-[#16130F] shadow-[5px_5px_0_#16130F] hover:shadow-[7px_7px_0_#DE5C2B] transition-shadow duration-200 flex flex-col group w-[84%] shrink-0 snap-start sm:w-auto sm:shrink ${ev.detailPath ? 'cursor-pointer' : ''}`}
               >
                 {/* ──── TOP COMPACT 2:1 COVER IMAGE (Zero Cropping - Full Text & Expert Visible) ──── */}
                 <motion.div
