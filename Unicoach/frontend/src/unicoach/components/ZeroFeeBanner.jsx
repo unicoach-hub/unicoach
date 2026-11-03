@@ -1,98 +1,82 @@
-import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { Zap, ShieldCheck, ArrowRight, HeartHandshake, Percent } from 'lucide-react';
+import { Zap, ArrowRight, Percent } from 'lucide-react';
+
+// Desi Pop: flat mustard poster card with ink border, hard shadow and coloured fact tiles
+const TILES = [
+  { value: '0%', label: 'Platform Commission', note: 'No hidden cuts or subscriptions', bg: '#14837E', fg: '#FFFFFF' },
+  { value: '100%', label: 'Direct Payout', note: 'Escrow secured to your bank/UPI', bg: '#FFFFFF', fg: '#16130F' },
+  { value: 'Instant', label: 'Calendar & Video', note: 'Google Meet & Zoom automated', bg: '#B8285B', fg: '#FFFFFF' },
+];
 
 export const ZeroFeeBanner = () => {
   return (
-    <section className="py-16 sm:py-20 px-4 sm:px-6 lg:px-12 bg-white select-none">
+    <section className="py-16 sm:py-20 px-4 sm:px-6 lg:px-12 bg-[#FFF6E5] select-none">
       <div className="max-w-[1340px] mx-auto">
-        
-        <div className="rounded-[36px] bg-gradient-to-br from-[#111111] via-[#1E293B] to-[#0F172A] p-8 sm:p-12 lg:p-16 text-white relative overflow-hidden shadow-2xl border border-slate-800">
-          
-          {/* Background Ambient Glows */}
-          <div className="absolute top-0 right-0 w-[420px] h-[420px] bg-[#DE5C2B]/20 rounded-full blur-[100px] pointer-events-none" />
-          <div className="absolute bottom-0 left-0 w-[380px] h-[380px] bg-emerald-500/15 rounded-full blur-[90px] pointer-events-none" />
+
+        <div className="rounded-[28px] bg-[#F2B705] p-6 sm:p-12 lg:p-16 text-[#16130F] relative overflow-hidden border-[3px] border-[#16130F] shadow-[8px_8px_0_#16130F]">
+
+          {/* Halftone dots */}
+          <div aria-hidden="true" className="absolute inset-0 bg-[radial-gradient(circle,rgba(22,19,15,.09)_1.3px,transparent_1.7px)] [background-size:12px_12px] pointer-events-none" />
 
           <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
-            
+
             {/* Left Content */}
-            <div className="lg:col-span-8 text-left">
-              
-              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-500/20 border border-emerald-400/30 text-emerald-300 text-xs font-bold mb-4">
-                <Percent className="w-3.5 h-3.5 text-emerald-400" />
+            <div className="lg:col-span-8 text-left min-w-0">
+
+              <p className="font-urbanist font-extrabold text-[16px] leading-none text-[#D0362E]">Kamai poori, cut zero</p>
+              <div className="mt-3 inline-flex items-center gap-2 px-3 py-1.5 rounded-md bg-white border-2 border-[#16130F] shadow-[2px_2px_0_#16130F] text-[#16130F] text-[12.5px] font-extrabold tracking-[0.08em] mb-5 -rotate-1">
+                <Percent className="w-3.5 h-3.5 text-[#14837E]" strokeWidth={3} />
                 <span>COMMISSION-FREE MENTORSHIP PLATFORM</span>
               </div>
 
-              <h3 className="font-outfit text-3xl sm:text-4xl lg:text-5xl font-black text-white leading-tight mb-4">
-                0% Platform Fee on All Services. <br />
-                <span className="text-[#DE5C2B]">Keep 100% of your earnings.</span>
+              <h3 className="font-urbanist text-[32px] sm:text-[44px] lg:text-[52px] font-black leading-[1.04] tracking-[-0.04em] mb-5">
+                0% Platform Fee on All Services.{' '}
+                <span className="inline-block mt-2 px-3 py-1 bg-[#16130F] text-white rotate-[-0.6deg]" style={{ borderRadius: 10 }}>
+                  Keep 100% of your earnings.
+                </span>
               </h3>
 
-              <p className="text-slate-300 text-sm sm:text-base leading-relaxed max-w-2xl font-normal mb-8">
-                Unlike traditional agencies that take 20% to 40% cuts, UniCoach charges <strong>zero platform fee</strong>. 
+              <p className="text-[#2A251E] text-[15.5px] sm:text-[17px] leading-relaxed max-w-2xl font-medium mb-8">
+                Unlike traditional agencies that take 20% to 40% cuts, UniCoach charges <strong>zero platform fee</strong>.
                 Whether you host 1:1 calls, review SOPs, or sell digital checklists — you receive 100% of your listed price (only standard payment gateway charges like PayPal/Razorpay apply).
               </p>
 
-              {/* Three Pill Advantages */}
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
-                <div className="bg-white/10 backdrop-blur-md rounded-2xl p-4 border border-white/10">
-                  <div className="font-outfit text-2xl font-black text-emerald-400 mb-0.5">
-                    0%
+              {/* Three fact tiles */}
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                {TILES.map((t) => (
+                  <div
+                    key={t.label}
+                    className="rounded-[16px] p-4 border-[3px] border-[#16130F] shadow-[4px_4px_0_#16130F]"
+                    style={{ background: t.bg, color: t.fg }}
+                  >
+                    <div className="font-urbanist text-[30px] font-black leading-none mb-1.5">{t.value}</div>
+                    <div className="text-[15px] font-extrabold">{t.label}</div>
+                    <div className="text-[13.5px] font-medium opacity-90 mt-1">{t.note}</div>
                   </div>
-                  <div className="text-xs font-bold text-white">
-                    Platform Commission
-                  </div>
-                  <div className="text-[11px] text-slate-400 mt-1">
-                    No hidden cuts or subscriptions
-                  </div>
-                </div>
-
-                <div className="bg-white/10 backdrop-blur-md rounded-2xl p-4 border border-white/10">
-                  <div className="font-outfit text-2xl font-black text-white mb-0.5">
-                    100%
-                  </div>
-                  <div className="text-xs font-bold text-white">
-                    Direct Payout
-                  </div>
-                  <div className="text-[11px] text-slate-400 mt-1">
-                    Escrow secured to your bank/UPI
-                  </div>
-                </div>
-
-                <div className="bg-white/10 backdrop-blur-md rounded-2xl p-4 border border-white/10">
-                  <div className="font-outfit text-2xl font-black text-amber-400 mb-0.5">
-                    Instant
-                  </div>
-                  <div className="text-xs font-bold text-white">
-                    Calendar & Video
-                  </div>
-                  <div className="text-[11px] text-slate-400 mt-1">
-                    Google Meet & Zoom automated
-                  </div>
-                </div>
+                ))}
               </div>
 
             </div>
 
             {/* Right Action Box */}
-            <div className="lg:col-span-4 flex flex-col items-start lg:items-center text-left lg:text-center justify-center p-6 sm:p-8 bg-white/5 rounded-3xl border border-white/10 backdrop-blur-sm">
-              <div className="w-16 h-16 rounded-2xl bg-[#DE5C2B] text-white flex items-center justify-center text-3xl font-black shadow-lg mb-4">
+            <div className="lg:col-span-4 flex flex-col items-start lg:items-center text-left lg:text-center justify-center p-6 sm:p-8 bg-white rounded-[20px] border-[3px] border-[#16130F] shadow-[6px_6px_0_#DE5C2B] min-w-0">
+              <div className="w-16 h-16 rounded-[16px] bg-[#DE5C2B] text-white flex items-center justify-center border-[3px] border-[#16130F] shadow-[3px_3px_0_#16130F] mb-4 rotate-[-4deg]">
                 <Zap className="w-8 h-8 fill-white text-white" />
               </div>
 
-              <div className="font-outfit text-xl font-bold text-white mb-2">
+              <div className="font-urbanist text-[24px] font-black leading-tight text-[#16130F] mb-2">
                 Ready to mentor juniors?
               </div>
-              <p className="text-xs text-slate-400 mb-6">
+              <p className="text-[15px] leading-relaxed text-[#3D3830] mb-6">
                 Takes less than 2 minutes to create your public storefront and start accepting bookings.
               </p>
 
               <Link
                 to="/unicoach/apply"
-                className="w-full inline-flex items-center justify-center gap-2 px-6 py-4 rounded-full bg-white hover:bg-slate-100 text-slate-900 font-bold text-sm shadow-xl transition-transform hover:scale-[1.02] cursor-pointer"
+                className="w-full inline-flex items-center justify-center gap-2 px-5 py-3.5 rounded-full bg-[#16130F] text-white font-bold text-[15px] border-[3px] border-[#16130F] shadow-[4px_4px_0_#DE5C2B] transition-transform hover:-translate-y-0.5 cursor-pointer"
               >
                 <span>Create Your Storefront</span>
-                <ArrowRight className="w-4 h-4 text-black stroke-[2.5]" />
+                <ArrowRight className="w-4 h-4 stroke-[2.5]" />
               </Link>
             </div>
 

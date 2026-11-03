@@ -1,8 +1,8 @@
-import { useState, useRef } from 'react';
 import { motion } from 'framer-motion';
-import { ChevronLeft, ChevronRight, ArrowRight, Users, Calendar, Sparkles } from 'lucide-react';
+import { ArrowRight, Calendar, Radio } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { TEAM_MENTORS } from '../../utils/teamMentors';
+import { StationSign } from '../../components/desi/DesiKit';
 
 // Real free sessions run by our team mentors (titles and dates from their published events)
 const SESSIONS = {
@@ -25,148 +25,108 @@ const COHORTS = TEAM_MENTORS.filter((m) => SESSIONS[m.name]).map((m) => ({
   link: '/events',
 }));
 
+// Poster colour for each card's top band
+const TONES = [
+  { bg: '#F2B705', fg: '#16130F' },
+  { bg: '#14837E', fg: '#FFFFFF' },
+  { bg: '#B8285B', fg: '#FFFFFF' },
+  { bg: '#2B3FA0', fg: '#FFFFFF' },
+  { bg: '#D0362E', fg: '#FFFFFF' },
+];
+
+// Grid spans so any count up to 5 fills the row width (2 wide + 3 narrow on desktop)
+const spanFor = (i, n) => {
+  const lg = n === 5 ? (i < 2 ? 'lg:col-span-3' : 'lg:col-span-2') : 'lg:col-span-2';
+  const sm = n % 2 === 1 && i === n - 1 ? 'sm:col-span-2' : '';
+  return `${sm} ${lg}`;
+};
+
 export const CohortSection = () => {
-  const scrollContainerRef = useRef(null);
-  const [canScrollLeft, setCanScrollLeft] = useState(false);
-  const [canScrollRight, setCanScrollRight] = useState(true);
-
-  const checkScroll = () => {
-    if (scrollContainerRef.current) {
-      const { scrollLeft, scrollWidth, clientWidth } = scrollContainerRef.current;
-      setCanScrollLeft(scrollLeft > 20);
-      setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 20);
-    }
-  };
-
-  const handleScroll = (direction) => {
-    if (scrollContainerRef.current) {
-      const scrollAmount = 380;
-      scrollContainerRef.current.scrollBy({
-        left: direction === 'left' ? -scrollAmount : scrollAmount,
-        behavior: 'smooth'
-      });
-      setTimeout(checkScroll, 350);
-    }
-  };
-
   return (
     <section className="bg-[#DE5C2B] text-white py-16 sm:py-20 lg:py-24 px-4 sm:px-6 lg:px-12 relative overflow-hidden select-none">
-      
-      {/* Background radial warmth */}
-      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-white/5 rounded-full blur-3xl pointer-events-none" />
 
-      <div className="max-w-[1400px] mx-auto">
-        
-        {/* Header Row with Title + Navigation Buttons */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10 sm:mb-12">
-          
-          <div className="max-w-2xl text-left">
-            <h2 className="font-outfit text-3xl sm:text-4xl lg:text-5xl font-black text-white tracking-tight leading-tight mb-3">
-              Free live sessions with our mentors
-            </h2>
-            <p className="text-white/85 text-sm sm:text-base lg:text-lg font-normal">
-              Join a session, ask your questions live, then book 1:1 time with the mentor who fits your plans.
-            </p>
-          </div>
+      {/* Halftone dots, as on the other Desi Pop sections */}
+      <div aria-hidden="true" className="absolute inset-0 bg-[radial-gradient(circle,rgba(22,19,15,.12)_1.3px,transparent_1.7px)] [background-size:12px_12px] pointer-events-none" />
 
-          {/* Left / Right Carousel Buttons */}
-          <div className="flex items-center gap-3 self-end md:self-auto">
-            <button
-              type="button"
-              onClick={() => handleScroll('left')}
-              disabled={!canScrollLeft}
-              className={`w-11 h-11 rounded-xl flex items-center justify-center transition-all cursor-pointer ${
-                canScrollLeft
-                  ? 'bg-white text-black hover:bg-slate-100 shadow-md'
-                  : 'bg-white/30 text-white/50 cursor-not-allowed'
-              }`}
-              aria-label="Previous sessions"
-            >
-              <ChevronLeft className="w-5 h-5 stroke-[2.5]" />
-            </button>
-            <button
-              type="button"
-              onClick={() => handleScroll('right')}
-              disabled={!canScrollRight}
-              className={`w-11 h-11 rounded-xl flex items-center justify-center transition-all cursor-pointer ${
-                canScrollRight
-                  ? 'bg-white text-black hover:bg-slate-100 shadow-md'
-                  : 'bg-white/30 text-white/50 cursor-not-allowed'
-              }`}
-              aria-label="Next sessions"
-            >
-              <ChevronRight className="w-5 h-5 stroke-[2.5]" />
-            </button>
-          </div>
+      <div className="relative max-w-[1400px] mx-auto">
 
+        {/* Header */}
+        <div className="max-w-3xl text-left mb-10 sm:mb-12">
+          <StationSign hi="Free mein seekho, live" en="LIVE SESSIONS" className="-rotate-2" />
+          <h2 className="mt-6 font-urbanist text-[34px] sm:text-[48px] lg:text-[56px] font-black text-white tracking-[-0.045em] leading-[1] [text-shadow:3px_3px_0_#16130F]">
+            Free live sessions with our mentors
+          </h2>
+          <p className="mt-4 text-white text-[16px] sm:text-[18px] leading-relaxed font-medium">
+            Join a session, ask your questions live, then book 1:1 time with the mentor who fits your plans.
+          </p>
         </div>
 
-        {/* Horizontal Scrollable Carousel of Sleek Black Cards */}
-        <div
-          ref={scrollContainerRef}
-          onScroll={checkScroll}
-          className="flex gap-5 sm:gap-6 overflow-x-auto pb-6 scrollbar-none snap-x snap-mandatory"
-        >
-          {COHORTS.map((cohort) => (
-            <motion.div
-              key={cohort.id}
-              whileHover={{ y: -6, transition: { duration: 0.2 } }}
-              className="flex-shrink-0 w-[300px] sm:w-[340px] lg:w-[360px] snap-start bg-[#121212] rounded-[28px] p-6 sm:p-7 border border-white/10 flex flex-col justify-between text-left shadow-2xl relative overflow-hidden group"
-            >
-              {/* Subtle top dot grid highlight */}
-              <div className="absolute top-0 right-0 w-32 h-32 bg-white/[0.03] rounded-bl-full pointer-events-none" />
-
-              <div>
-                {/* Cohort Title */}
-                <h3 className="font-outfit text-xl sm:text-2xl font-black text-white leading-tight mb-2.5">
-                  {cohort.title}
-                </h3>
-
-                {/* Cohort Pitch */}
-                <p className="text-white/60 text-xs sm:text-[13px] leading-relaxed mb-6 font-normal min-h-[38px]">
-                  {cohort.subtitle}
-                </p>
-
-                {/* Tags Row */}
-                <div className="flex flex-wrap items-center gap-2 mb-8">
-                  <span className="bg-white/10 text-white/90 text-[11px] font-bold px-3 py-1.5 rounded-lg border border-white/10">
-                    {cohort.statsTag}
-                  </span>
-                  <span className="bg-white/10 text-white/90 text-[11px] font-bold px-3 py-1.5 rounded-lg border border-white/10">
-                    {cohort.durationTag}
-                  </span>
+        {/* Session cards: a grid that fills the width, no sideways scroll */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-5 sm:gap-6">
+          {COHORTS.map((cohort, i) => {
+            const tone = TONES[i % TONES.length];
+            return (
+              <motion.div
+                key={cohort.id}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: '-40px' }}
+                transition={{ duration: 0.45, delay: i * 0.06 }}
+                className={`${spanFor(i, COHORTS.length)} min-w-0 bg-white text-[#16130F] rounded-[20px] border-[3px] border-[#16130F] shadow-[6px_6px_0_#16130F] flex flex-col overflow-hidden text-left transition-transform duration-300 hover:-translate-y-1 group`}
+              >
+                {/* Coloured top band with tags */}
+                <div className="px-5 sm:px-6 pt-5 pb-4 border-b-[3px] border-[#16130F]" style={{ background: tone.bg, color: tone.fg }}>
+                  <div className="flex flex-wrap items-center gap-2">
+                    <span className="inline-flex items-center gap-1.5 bg-white text-[#16130F] text-[12.5px] font-extrabold px-2.5 py-1 rounded-md border-2 border-[#16130F]">
+                      <Radio className="w-3.5 h-3.5 text-[#D0362E]" />
+                      {cohort.statsTag}
+                    </span>
+                    <span className="inline-flex items-center gap-1.5 bg-[#16130F] text-white text-[12.5px] font-extrabold px-2.5 py-1 rounded-md border-2 border-[#16130F]">
+                      <Calendar className="w-3.5 h-3.5" />
+                      {cohort.durationTag}
+                    </span>
+                  </div>
+                  <h3 className="mt-4 font-urbanist text-[22px] sm:text-[24px] font-black leading-[1.1] tracking-[-0.02em]">
+                    {cohort.title}
+                  </h3>
                 </div>
-              </div>
 
-              {/* Bottom Row: Mentor Avatar & View Cohort Link */}
-              <div className="pt-6 border-t border-white/10 flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <img
-                    src={cohort.authorImage}
-                    alt={cohort.authorName}
-                    className="w-11 h-11 rounded-full object-cover ring-2 ring-white/20"
-                  />
-                  <div>
-                    <div className="font-outfit text-sm font-bold text-white leading-snug">
-                      {cohort.authorName}
+                <div className="flex-1 flex flex-col justify-between px-5 sm:px-6 pt-4 pb-5">
+                  {/* Cohort Pitch */}
+                  <p className="text-[15px] leading-relaxed text-[#3D3830] font-medium mb-5">
+                    {cohort.subtitle}
+                  </p>
+
+                  {/* Bottom Row: Mentor Avatar & View Session Link */}
+                  <div className="flex flex-wrap items-center justify-between gap-3">
+                    <div className="flex items-center gap-3 min-w-0">
+                      <img
+                        src={cohort.authorImage}
+                        alt={cohort.authorName}
+                        className="w-11 h-11 rounded-full object-cover border-2 border-[#16130F] shrink-0"
+                      />
+                      <div className="min-w-0">
+                        <div className="font-urbanist text-[16px] font-black text-[#16130F] leading-snug truncate">
+                          {cohort.authorName}
+                        </div>
+                        <div className="text-[12.5px] text-[#5B544A] font-semibold truncate">
+                          {cohort.brandLogoText}
+                        </div>
+                      </div>
                     </div>
-                    <div className="text-[10.5px] text-white/50 font-medium">
-                      {cohort.brandLogoText}
-                    </div>
+
+                    <Link
+                      to={cohort.link}
+                      className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full bg-[#16130F] text-white text-[13px] font-bold border-2 border-[#16130F] shadow-[3px_3px_0_#DE5C2B] hover:-translate-y-0.5 transition-transform cursor-pointer whitespace-nowrap"
+                    >
+                      <span>View session</span>
+                      <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
+                    </Link>
                   </div>
                 </div>
-
-                <Link
-                  to={cohort.link}
-                  className="inline-flex items-center gap-1.5 text-xs font-bold text-white hover:text-orange-300 transition-colors cursor-pointer group-hover:translate-x-1 duration-200"
-                >
-                  <span>View session</span>
-                  <ArrowRight className="w-3.5 h-3.5" />
-                </Link>
-              </div>
-
-            </motion.div>
-          ))}
+              </motion.div>
+            );
+          })}
         </div>
 
       </div>

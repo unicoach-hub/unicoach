@@ -2,6 +2,7 @@
 // MentorFlashSection.jsx — Mentor-facing "Create in a Flash" showcase for /unicoach/for-mentors
 // Left: numbered feature list (auto-advances). Right: a small animated story per feature,
 // built only from things the platform really does.
+// Desi Pop: flat mustard section, ink-bordered active feature and demo panel (no hover pause).
 // ════════════════════════════════════════════════════════════════════════════════
 
 import { useEffect, useRef, useState } from 'react';
@@ -26,6 +27,8 @@ import {
   Bell,
 } from 'lucide-react';
 
+const INK = '#16130F';
+const CARD = 'bg-white rounded-[16px] border-2 border-[#16130F] shadow-[3px_3px_0_#16130F]';
 const SCENE_MS = 4800; // how long each feature plays before auto-advancing
 
 const TABS = [
@@ -74,10 +77,10 @@ const TABS = [
 ];
 
 const THEME_COLORS = [
-  { id: 'coral', bg: 'bg-[#DE5C2B]', hex: '#DE5C2B' },
-  { id: 'yellow', bg: 'bg-[#B48C42]', hex: '#B48C42' },
-  { id: 'purple', bg: 'bg-[#5A7094]', hex: '#5A7094' },
-  { id: 'teal', bg: 'bg-[#558563]', hex: '#558563' },
+  { id: 'orange', hex: '#DE5C2B' },
+  { id: 'rani', hex: '#B8285B' },
+  { id: 'teal', hex: '#14837E' },
+  { id: 'indigo', hex: '#2B3FA0' },
 ];
 
 // Steps 0..count-1 at a fixed pace while `running`; stays on the last step until the scene changes
@@ -126,7 +129,7 @@ const Appear = ({ show, children, className = '', style, from = 12 }) => (
 );
 
 const Initials = ({ name, color = '#DE5C2B', size = 'w-7 h-7 text-[10px]' }) => (
-  <span className={`${size} rounded-full text-white font-black flex items-center justify-center shrink-0`} style={{ backgroundColor: color }}>
+  <span className={`${size} rounded-full text-white font-black flex items-center justify-center shrink-0 border-2 border-[#16130F]`} style={{ backgroundColor: color }}>
     {name.split(' ').map((p) => p[0]).join('').slice(0, 2)}
   </span>
 );
@@ -137,10 +140,10 @@ const SessionScene = ({ accent, running, reduced }) => {
   const slots = ['Fri · 6:00 PM', 'Sat · 7:00 PM', 'Sun · 11:00 AM'];
   return (
     <div className="w-full grid grid-cols-1 sm:grid-cols-2 gap-3 items-start text-left">
-      <div className="bg-white rounded-2xl p-4 shadow-md border border-orange-100">
+      <div className={`${CARD} p-4`}>
         <div className="flex items-center gap-2 mb-3">
           <Video className="w-4 h-4" style={{ color: accent }} />
-          <span className="text-xs font-black text-slate-900">45-min Admit Strategy Call</span>
+          <span className="text-xs font-black text-[#16130F]">45-min Admit Strategy Call</span>
         </div>
         <div className="space-y-1.5">
           {slots.map((s, i) => {
@@ -149,8 +152,8 @@ const SessionScene = ({ accent, running, reduced }) => {
               <motion.div
                 key={s}
                 animate={{ scale: picked ? 1.03 : 1 }}
-                className="flex items-center justify-between px-3 py-2 rounded-xl border text-[11.5px] font-bold transition-colors"
-                style={picked ? { backgroundColor: accent, borderColor: accent, color: '#fff' } : { borderColor: '#E2E8F0', color: '#334155' }}
+                className="flex items-center justify-between px-3 py-2 rounded-xl border-2 text-[11.5px] font-bold transition-colors"
+                style={picked ? { backgroundColor: accent, borderColor: INK, color: '#fff' } : { borderColor: '#16130F26', color: INK }}
               >
                 <span className="flex items-center gap-1.5"><Calendar className="w-3.5 h-3.5" />{s}</span>
                 {picked && <Check className="w-3.5 h-3.5" />}
@@ -158,24 +161,24 @@ const SessionScene = ({ accent, running, reduced }) => {
             );
           })}
         </div>
-        <div className="mt-3 pt-2.5 border-t border-slate-100 flex items-center justify-between">
-          <span className="font-outfit text-base font-black text-slate-900">₹999</span>
-          <span className="text-[10px] font-bold text-slate-400">Asia/Kolkata · 15 min buffer</span>
+        <div className="mt-3 pt-2.5 border-t-2 border-dashed border-[#16130F]/20 flex items-center justify-between">
+          <span className="font-urbanist text-base font-black text-[#16130F]">₹999</span>
+          <span className="text-[10px] font-bold text-[#5B544A]">Asia/Kolkata · 15 min buffer</span>
         </div>
       </div>
 
       <div className="space-y-2">
-        <Appear show={step >= 2} className="bg-white px-3.5 py-2.5 rounded-xl shadow-sm border border-emerald-100 flex items-center gap-2.5">
-          <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0" />
-          <span className="text-[11.5px] font-bold text-slate-800">Payment received · <span className="text-emerald-600">₹999</span></span>
+        <Appear show={step >= 2} className={`${CARD} px-3.5 py-2.5 flex items-center gap-2.5`}>
+          <CheckCircle2 className="w-4 h-4 text-[#14837E] shrink-0" />
+          <span className="text-[11.5px] font-bold text-[#16130F]">Payment received · <span className="text-[#14837E]">₹999</span></span>
         </Appear>
-        <Appear show={step >= 3} className="bg-white px-3.5 py-2.5 rounded-xl shadow-sm border border-orange-100 flex items-center gap-2.5">
+        <Appear show={step >= 3} className={`${CARD} px-3.5 py-2.5 flex items-center gap-2.5`}>
           <Video className="w-4 h-4 shrink-0" style={{ color: accent }} />
-          <span className="text-[11.5px] font-bold text-slate-800">Meeting link sent to Ananya</span>
+          <span className="text-[11.5px] font-bold text-[#16130F]">Meeting link sent to Ananya</span>
         </Appear>
-        <Appear show={step >= 4} className="rounded-xl p-3.5 text-white shadow-md" style={{ backgroundColor: accent }} from={18}>
+        <Appear show={step >= 4} className="rounded-[16px] p-3.5 text-white border-2 border-[#16130F] shadow-[3px_3px_0_#16130F]" style={{ backgroundColor: accent }} from={18}>
           <span className="text-[10px] font-bold uppercase tracking-wide opacity-90">Added to your earnings</span>
-          <div className="font-outfit text-2xl font-black leading-tight">
+          <div className="font-urbanist text-2xl font-black leading-tight">
             <CountUp value={999} prefix="+₹" reduced={reduced} />
           </div>
         </Appear>
@@ -188,9 +191,9 @@ const SessionScene = ({ accent, running, reduced }) => {
 const DmScene = ({ accent, running }) => {
   const step = useSceneStep(5, running, 700);
   return (
-    <div className="w-full bg-white rounded-2xl p-4 sm:p-5 shadow-md border border-orange-100 text-left">
+    <div className={`w-full ${CARD} p-4 sm:p-5 text-left`}>
       <div className="flex items-center justify-between mb-3">
-        <span className="inline-flex items-center gap-1.5 text-xs font-bold text-slate-800 bg-orange-50 px-2.5 py-1 rounded-md border border-orange-200">
+        <span className="inline-flex items-center gap-1.5 text-xs font-bold text-[#16130F] bg-[#FFF1B8] px-2.5 py-1 rounded-md border-2 border-[#16130F]">
           <MessageSquare className="w-3.5 h-3.5" style={{ color: accent }} />
           Priority DM · ₹199
         </span>
@@ -199,7 +202,7 @@ const DmScene = ({ accent, running }) => {
             key={step >= 4 ? 'done' : 'due'}
             initial={{ opacity: 0, y: -4 }}
             animate={{ opacity: 1, y: 0 }}
-            className={`text-[11px] font-bold px-2 py-0.5 rounded-md ${step >= 4 ? 'text-emerald-700 bg-emerald-50' : 'text-amber-700 bg-amber-50'}`}
+            className={`text-[11px] font-bold px-2 py-0.5 rounded-md border-2 border-[#16130F] ${step >= 4 ? 'text-white bg-[#14837E]' : 'text-[#16130F] bg-[#F2B705]'}`}
           >
             {step >= 4 ? '✓ Answered in 6h' : '⏱ Reply within 24h'}
           </motion.span>
@@ -210,29 +213,29 @@ const DmScene = ({ accent, running }) => {
         <div className="flex items-end gap-2">
           <Initials name="Rahul Verma" color="#64748B" />
           {step === 0 ? (
-            <div className="bg-slate-100 rounded-2xl rounded-bl-md px-3.5 py-2.5 flex gap-1">
+            <div className="bg-[#FFF6E5] border-2 border-[#16130F] rounded-2xl rounded-bl-md px-3.5 py-2.5 flex gap-1">
               {[0, 1, 2].map((d) => (
-                <motion.span key={d} className="w-1.5 h-1.5 rounded-full bg-slate-400" animate={{ opacity: [0.3, 1, 0.3] }} transition={{ duration: 0.9, repeat: Infinity, delay: d * 0.15 }} />
+                <motion.span key={d} className="w-1.5 h-1.5 rounded-full bg-[#16130F]/50" animate={{ opacity: [0.3, 1, 0.3] }} transition={{ duration: 0.9, repeat: Infinity, delay: d * 0.15 }} />
               ))}
             </div>
           ) : (
-            <Appear show className="bg-slate-100 rounded-2xl rounded-bl-md px-3.5 py-2.5 text-[11.5px] font-medium text-slate-700 max-w-[85%]">
+            <Appear show className="bg-[#FFF6E5] border-2 border-[#16130F] rounded-2xl rounded-bl-md px-3.5 py-2.5 text-[11.5px] font-medium text-[#16130F] max-w-[85%]">
               Do my 8.2 CGPA and GRE 318 work for TU Munich MSc Informatics?
             </Appear>
           )}
         </div>
 
         <Appear show={step >= 2} className="flex justify-center">
-          <span className="text-[10.5px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 px-2.5 py-1 rounded-full inline-flex items-center gap-1">
+          <span className="text-[10.5px] font-bold text-white bg-[#14837E] border-2 border-[#16130F] px-2.5 py-1 rounded-full inline-flex items-center gap-1">
             <IndianRupee className="w-3 h-3" /> 199 paid · question is in your dashboard
           </span>
         </Appear>
 
         <Appear show={step >= 3} className="flex items-end gap-2 justify-end">
-          <div className="rounded-2xl rounded-br-md px-3.5 py-2.5 text-[11.5px] font-medium text-white max-w-[85%]" style={{ backgroundColor: accent }}>
+          <div className="rounded-2xl rounded-br-md px-3.5 py-2.5 text-[11.5px] font-medium text-white max-w-[85%] border-2 border-[#16130F]" style={{ backgroundColor: accent }}>
             Yes, 8.2 is competitive. Focus your SOP on your systems projects, and here is how to frame them…
           </div>
-          <Initials name="You" color="#111111" />
+          <Initials name="You" color={INK} />
         </Appear>
       </div>
     </div>
@@ -241,30 +244,30 @@ const DmScene = ({ accent, running }) => {
 
 // ── 03 · Dashboard: counters rise, new bookings slide in ──
 const BOOKINGS = [
-  { name: 'Ananya Iyer', what: '1:1 Call · Sat 7 PM', status: 'Confirmed', tone: 'text-emerald-700 bg-emerald-100/80' },
-  { name: 'Rahul Verma', what: 'Priority DM · TU Munich', status: 'Answer due', tone: 'text-amber-700 bg-amber-100/80' },
-  { name: 'Sneha Kapoor', what: 'SOP Review · Oxford', status: 'In review', tone: 'text-indigo-700 bg-indigo-100/80' },
+  { name: 'Ananya Iyer', what: '1:1 Call · Sat 7 PM', status: 'Confirmed', tone: 'text-white bg-[#14837E]' },
+  { name: 'Rahul Verma', what: 'Priority DM · TU Munich', status: 'Answer due', tone: 'text-[#16130F] bg-[#F2B705]' },
+  { name: 'Sneha Kapoor', what: 'SOP Review · Oxford', status: 'In review', tone: 'text-white bg-[#2B3FA0]' },
 ];
 const DashboardScene = ({ accent, running, reduced }) => {
   const step = useSceneStep(4, running, 850);
   const visible = BOOKINGS.slice(0, step);
   return (
-    <div className="w-full bg-white rounded-2xl p-4 sm:p-5 shadow-lg border border-orange-100 text-left space-y-3">
-      <div className="flex items-center justify-between border-b border-slate-100 pb-2.5">
+    <div className={`w-full ${CARD} p-4 sm:p-5 text-left space-y-3`}>
+      <div className="flex items-center justify-between border-b-2 border-dashed border-[#16130F]/20 pb-2.5">
         <div className="flex items-center gap-2 min-w-0">
-          <div className="w-8 h-8 shrink-0 rounded-lg bg-orange-100/80 flex items-center justify-center" style={{ color: accent }}>
+          <div className="w-8 h-8 shrink-0 rounded-lg bg-[#FFF1B8] border-2 border-[#16130F] flex items-center justify-center" style={{ color: accent }}>
             <LayoutDashboard className="w-4 h-4" />
           </div>
           <div className="min-w-0">
-            <span className="text-xs font-black text-slate-900 block leading-tight truncate">Your mentor dashboard</span>
-            <span className="text-[10px] text-slate-400 font-medium block truncate">Bookings, questions & earnings</span>
+            <span className="text-xs font-black text-[#16130F] block leading-tight truncate">Your mentor dashboard</span>
+            <span className="text-[10px] text-[#5B544A] font-medium block truncate">Bookings, questions & earnings</span>
           </div>
         </div>
         <motion.span
           key={step}
           initial={{ scale: 0.8 }}
           animate={{ scale: 1 }}
-          className="shrink-0 whitespace-nowrap inline-flex items-center gap-1.5 text-[10.5px] font-bold text-slate-700 bg-slate-50 px-2.5 py-0.5 rounded-full border border-slate-200"
+          className="shrink-0 whitespace-nowrap inline-flex items-center gap-1.5 text-[10.5px] font-bold text-[#16130F] bg-[#FFF6E5] px-2.5 py-0.5 rounded-full border-2 border-[#16130F]"
         >
           <Bell className="w-3 h-3" style={{ color: accent }} /> {visible.length} new
         </motion.span>
@@ -276,9 +279,9 @@ const DashboardScene = ({ accent, running, reduced }) => {
           { label: 'This month', value: 18400 + visible.length * 999, prefix: '₹' },
           { label: 'Rating', text: '4.9 ★' },
         ].map((k) => (
-          <div key={k.label} className="min-w-0 bg-[#FAF9F6] px-1 py-2 sm:p-2 rounded-xl border border-slate-100 text-center">
-            <span className="text-[8.5px] sm:text-[9px] uppercase font-bold text-slate-400 block whitespace-nowrap">{k.label}</span>
-            <span className="font-outfit text-[13px] sm:text-sm font-black text-slate-900 whitespace-nowrap">
+          <div key={k.label} className="min-w-0 bg-[#FFF6E5] px-1 py-2 sm:p-2 rounded-xl border-2 border-[#16130F] text-center">
+            <span className="text-[8.5px] sm:text-[9px] uppercase font-bold text-[#5B544A] block whitespace-nowrap">{k.label}</span>
+            <span className="font-urbanist text-[13px] sm:text-sm font-black text-[#16130F] whitespace-nowrap">
               {k.text || <CountUp value={k.value} prefix={k.prefix} duration={0.6} reduced={reduced} />}
             </span>
           </div>
@@ -294,16 +297,16 @@ const DashboardScene = ({ accent, running, reduced }) => {
               initial={{ opacity: 0, x: 24 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ type: 'spring', stiffness: 260, damping: 24 }}
-              className="flex items-center justify-between p-2 rounded-xl bg-slate-50/80 border border-slate-100"
+              className="flex items-center justify-between p-2 rounded-xl bg-[#FFF6E5] border-2 border-[#16130F]/20"
             >
               <div className="flex items-center gap-2 min-w-0">
-                <Initials name={b.name} color={i === 0 ? accent : '#94A3B8'} />
+                <Initials name={b.name} color={i === 0 ? accent : '#8A8174'} />
                 <div className="truncate">
-                  <span className="font-bold text-slate-900 block truncate leading-tight text-[11.5px]">{b.name}</span>
-                  <span className="text-[10px] text-slate-500 truncate">{b.what}</span>
+                  <span className="font-bold text-[#16130F] block truncate leading-tight text-[11.5px]">{b.name}</span>
+                  <span className="text-[10px] text-[#5B544A] truncate">{b.what}</span>
                 </div>
               </div>
-              <span className={`text-[10px] font-bold px-2 py-0.5 rounded-md shrink-0 ${b.tone}`}>{b.status}</span>
+              <span className={`text-[10px] font-bold px-2 py-0.5 rounded-md shrink-0 border-2 border-[#16130F] ${b.tone}`}>{b.status}</span>
             </motion.div>
           ))}
         </AnimatePresence>
@@ -325,10 +328,10 @@ const DiscoverScene = ({ accent, running }) => {
   order.splice(Math.max(0, yourRank), 0, { id: 'you', name: 'Your Name', meta: 'Ireland · Trinity' });
   const reviews = [0, 3, 9, 14][step];
   return (
-    <div className="w-full bg-white rounded-2xl p-4 shadow-md border border-orange-100 text-left">
+    <div className={`w-full ${CARD} p-4 text-left`}>
       <div className="flex items-center justify-between mb-3">
-        <span className="text-xs font-black text-slate-900">UniCoach mentor directory</span>
-        <span className="text-[10px] font-bold text-slate-400">Sorted by: Top rated</span>
+        <span className="text-xs font-black text-[#16130F]">UniCoach mentor directory</span>
+        <span className="text-[10px] font-bold text-[#5B544A]">Sorted by: Top rated</span>
       </div>
       <div className="space-y-1.5">
         {order.map((m, i) => {
@@ -338,33 +341,33 @@ const DiscoverScene = ({ accent, running }) => {
               key={m.id}
               layout
               transition={{ type: 'spring', stiffness: 220, damping: 24 }}
-              className={`flex items-center justify-between p-2 rounded-xl border ${you ? 'bg-white shadow-md' : 'bg-slate-50/80 border-slate-100'}`}
+              className={`flex items-center justify-between p-2 rounded-xl border-2 ${you ? 'bg-white shadow-[3px_3px_0_#16130F]' : 'bg-[#FFF6E5] border-[#16130F]/20'}`}
               style={you ? { borderColor: accent } : undefined}
             >
               <div className="flex items-center gap-2 min-w-0">
-                <span className="w-4 text-[10px] font-black text-slate-400">#{i + 1}</span>
-                <Initials name={m.name} color={you ? accent : '#94A3B8'} />
+                <span className="w-4 text-[10px] font-black text-[#5B544A]">#{i + 1}</span>
+                <Initials name={m.name} color={you ? accent : '#8A8174'} />
                 <div className="truncate">
-                  <span className="font-bold text-slate-900 block truncate leading-tight text-[11.5px]">{m.name}</span>
-                  <span className="text-[10px] text-slate-500">{m.meta}</span>
+                  <span className="font-bold text-[#16130F] block truncate leading-tight text-[11.5px]">{m.name}</span>
+                  <span className="text-[10px] text-[#5B544A]">{m.meta}</span>
                 </div>
               </div>
               {you ? (
-                <span className="text-[10.5px] font-bold text-slate-800 inline-flex items-center gap-1 shrink-0">
-                  {reviews > 0 ? (<><Star className="w-3 h-3 fill-amber-400 text-amber-400" /> 4.9 ({reviews})</>) : (
-                    <span className="px-1.5 py-0.5 rounded-full bg-orange-50 border border-orange-200 text-[#DE5C2B]">New</span>
+                <span className="text-[10.5px] font-bold text-[#16130F] inline-flex items-center gap-1 shrink-0">
+                  {reviews > 0 ? (<><Star className="w-3 h-3 fill-[#F2B705] text-[#16130F]" /> 4.9 ({reviews})</>) : (
+                    <span className="px-1.5 py-0.5 rounded-full bg-[#F2B705] border-2 border-[#16130F] text-[#16130F]">New</span>
                   )}
                 </span>
               ) : (
-                <span className="text-[10.5px] font-bold text-slate-500 inline-flex items-center gap-1 shrink-0">
-                  <Star className="w-3 h-3 fill-amber-300 text-amber-300" /> 4.6
+                <span className="text-[10.5px] font-bold text-[#5B544A] inline-flex items-center gap-1 shrink-0">
+                  <Star className="w-3 h-3 fill-[#F2B705] text-[#F2B705]" /> 4.6
                 </span>
               )}
             </motion.div>
           );
         })}
       </div>
-      <Appear show={step >= 1} className="mt-3 flex items-center gap-2 text-[11px] font-bold text-emerald-700">
+      <Appear show={step >= 1} className="mt-3 flex items-center gap-2 text-[11px] font-bold text-[#14837E]">
         <TrendingUp className="w-3.5 h-3.5" /> New 5★ review from a verified booking: you move up
       </Appear>
     </div>
@@ -375,8 +378,8 @@ const DiscoverScene = ({ accent, running }) => {
 const BundleScene = ({ accent, running }) => {
   const step = useSceneStep(4, running, 850);
   return (
-    <div className="w-full bg-white rounded-2xl p-5 shadow-md border border-orange-100 text-left">
-      <div className="inline-flex items-center gap-1 bg-amber-50 text-amber-800 text-[10px] font-bold px-2 py-0.5 rounded-md mb-3">
+    <div className={`w-full ${CARD} p-5 text-left`}>
+      <div className="inline-flex items-center gap-1 bg-[#F2B705] text-[#16130F] border-2 border-[#16130F] text-[10px] font-bold px-2 py-0.5 rounded-md mb-3 -rotate-2">
         <Package className="w-3 h-3" /> SESSION PACK
       </div>
       <div className="flex items-center gap-2 mb-4 min-h-[58px]">
@@ -386,25 +389,25 @@ const BundleScene = ({ accent, running }) => {
             animate={step >= 1 ? { x: (2 - n) * 18, rotate: (n - 2) * 4 } : { x: 0, rotate: 0 }}
             transition={{ type: 'spring', stiffness: 200, damping: 18, delay: n * 0.05 }}
             className="flex-1 rounded-xl border-2 border-dashed px-2.5 py-2 bg-white text-center"
-            style={{ borderColor: step >= 1 ? accent : '#CBD5E1' }}
+            style={{ borderColor: step >= 1 ? accent : '#16130F40' }}
           >
             <Video className="w-3.5 h-3.5 mx-auto mb-0.5" style={{ color: accent }} />
-            <span className="text-[10.5px] font-bold text-slate-700 block">Session {n}</span>
+            <span className="text-[10.5px] font-bold text-[#16130F] block">Session {n}</span>
           </motion.div>
         ))}
       </div>
-      <h4 className="font-outfit text-base font-black text-slate-900 leading-tight mb-1">Germany Admit Mentorship · 3 calls</h4>
-      <p className="text-[11px] text-slate-500 mb-3">Profile review → SOP strategy → Visa & APS prep</p>
-      <div className="flex items-center justify-between pt-2 border-t border-slate-100">
+      <h4 className="font-urbanist text-base font-black text-[#16130F] leading-tight mb-1">Germany Admit Mentorship · 3 calls</h4>
+      <p className="text-[11px] text-[#5B544A] mb-3">Profile review → SOP strategy → Visa & APS prep</p>
+      <div className="flex items-center justify-between pt-2 border-t-2 border-dashed border-[#16130F]/20">
         <div className="flex items-baseline gap-1.5">
-          <motion.span animate={{ opacity: step >= 2 ? 0.5 : 1 }} className={`text-xs text-slate-500 ${step >= 2 ? 'line-through' : ''}`}>₹2,997</motion.span>
-          <Appear show={step >= 2} className="font-outfit text-lg font-black text-slate-900">₹2,499</Appear>
+          <motion.span animate={{ opacity: step >= 2 ? 0.5 : 1 }} className={`text-xs text-[#5B544A] ${step >= 2 ? 'line-through' : ''}`}>₹2,997</motion.span>
+          <Appear show={step >= 2} className="font-urbanist text-lg font-black text-[#16130F]">₹2,499</Appear>
         </div>
         <motion.span
           animate={step >= 3 ? { scale: [1, 1.08, 1] } : {}}
           transition={{ duration: 0.5 }}
-          className="px-4 py-2 rounded-full text-white text-xs font-bold"
-          style={{ backgroundColor: step >= 3 ? '#446D50' : '#111111' }}
+          className="px-4 py-2 rounded-full text-white text-xs font-bold border-2 border-[#16130F] shadow-[2px_2px_0_#16130F]"
+          style={{ backgroundColor: step >= 3 ? '#14837E' : INK }}
         >
           {step >= 3 ? '✓ Pack booked' : 'Book pack'}
         </motion.span>
@@ -418,36 +421,36 @@ const ProductScene = ({ accent, running }) => {
   const step = useSceneStep(4, running, 850);
   const unlocked = step >= 2;
   return (
-    <div className="w-full bg-white rounded-2xl p-5 shadow-md border border-orange-100 text-left">
+    <div className={`w-full ${CARD} p-5 text-left`}>
       <div className="flex items-start gap-3.5 mb-4">
         <motion.div
           animate={unlocked ? { rotate: [0, -8, 8, 0] } : {}}
           transition={{ duration: 0.5 }}
-          className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0 text-white"
-          style={{ backgroundColor: unlocked ? '#446D50' : accent }}
+          className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0 text-white border-2 border-[#16130F]"
+          style={{ backgroundColor: unlocked ? '#14837E' : accent }}
         >
           {unlocked ? <Unlock className="w-5 h-5" /> : <Lock className="w-5 h-5" />}
         </motion.div>
         <div>
-          <h4 className="font-outfit text-sm font-black text-slate-900 leading-tight">Ireland SOP Template Pack 2026</h4>
-          <span className="text-[11px] text-slate-500 font-medium">PDF · 3 sample SOPs + checklist</span>
+          <h4 className="font-urbanist text-sm font-black text-[#16130F] leading-tight">Ireland SOP Template Pack 2026</h4>
+          <span className="text-[11px] text-[#5B544A] font-medium">PDF · 3 sample SOPs + checklist</span>
         </div>
       </div>
       <div className="space-y-1.5 mb-4 min-h-[76px]">
-        <Appear show={step >= 1} className="bg-slate-50 px-3 py-2 rounded-xl border border-slate-100 text-[11px] font-bold text-slate-700 flex items-center gap-2">
-          <IndianRupee className="w-3.5 h-3.5 text-emerald-600" /> Student paid ₹299
+        <Appear show={step >= 1} className="bg-[#FFF6E5] px-3 py-2 rounded-xl border-2 border-[#16130F]/20 text-[11px] font-bold text-[#16130F] flex items-center gap-2">
+          <IndianRupee className="w-3.5 h-3.5 text-[#14837E]" /> Student paid ₹299
         </Appear>
-        <Appear show={step >= 2} className="bg-emerald-50 px-3 py-2 rounded-xl border border-emerald-100 text-[11px] font-bold text-emerald-800 flex items-center gap-2">
+        <Appear show={step >= 2} className="bg-[#DDF3EF] px-3 py-2 rounded-xl border-2 border-[#16130F] text-[11px] font-bold text-[#16130F] flex items-center gap-2">
           <CheckCircle2 className="w-3.5 h-3.5" /> Unlocked for this student only, via a link that expires in minutes
         </Appear>
       </div>
       <div className="flex items-center justify-between">
-        <span className="font-outfit text-base font-black text-slate-900">₹299</span>
+        <span className="font-urbanist text-base font-black text-[#16130F]">₹299</span>
         <motion.span
           animate={step >= 3 ? { y: [0, -3, 0] } : {}}
           transition={{ duration: 0.6, repeat: step >= 3 ? Infinity : 0 }}
-          className="px-4 py-2 rounded-full text-white text-xs font-bold flex items-center gap-1.5"
-          style={{ backgroundColor: unlocked ? '#446D50' : '#CBD5E1' }}
+          className={`px-4 py-2 rounded-full text-xs font-bold flex items-center gap-1.5 border-2 border-[#16130F] ${unlocked ? 'text-white shadow-[2px_2px_0_#16130F]' : 'text-[#16130F]/50'}`}
+          style={{ backgroundColor: unlocked ? '#14837E' : '#EDE4D3' }}
         >
           <Download className="w-3.5 h-3.5" /> Download
         </motion.span>
@@ -460,7 +463,7 @@ const SCENES = [SessionScene, DmScene, DashboardScene, DiscoverScene, BundleScen
 
 export const MentorFlashSection = () => {
   const [activeTab, setActiveTab] = useState(0);
-  const [selectedTheme, setSelectedTheme] = useState('coral');
+  const [selectedTheme, setSelectedTheme] = useState('orange');
   const [autoPlay, setAutoPlay] = useState(true);
   const sectionRef = useRef(null);
   const inView = useInView(sectionRef, { amount: 0.35 });
@@ -485,34 +488,25 @@ export const MentorFlashSection = () => {
   const Scene = SCENES[activeTab];
 
   return (
-    <section ref={sectionRef} className="bg-white py-14 sm:py-20 px-4 sm:px-6 lg:px-12 relative overflow-hidden select-none border-b border-slate-100">
-      <div className="max-w-[1340px] mx-auto">
-        {/* Mobile order: header → animated preview → feature list. Desktop: header + list left, preview right. */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-x-12 gap-y-6 lg:gap-y-6 items-start">
+    <section ref={sectionRef} className="bg-[#F2B705] py-10 sm:py-14 px-4 sm:px-6 lg:px-10 relative overflow-hidden select-none">
+      <div className="max-w-[1320px] mx-auto">
+        {/* ════════ HEADER ════════ */}
+        <div className="text-center max-w-[760px] mx-auto">
+          <p className="font-urbanist font-extrabold text-[16px] text-[#B8285B]">Apna page, jhatpat</p>
+          <h2 className="mt-1 font-urbanist text-[32px] sm:text-[44px] font-black text-[#16130F] leading-[0.98] tracking-[-0.045em]">
+            Create your UniCoach page in a flash
+          </h2>
+          <p className="mt-2 text-[16px] sm:text-[17px] font-medium text-[#16130F]/80">
+            One link for everything you offer juniors: calls, questions, packs and guides.
+          </p>
+        </div>
 
-          {/* ════════ HEADER ════════ */}
-          <div className="order-1 lg:order-none lg:col-span-6 lg:col-start-1 lg:row-start-1 text-left">
-            <div className="max-w-xl">
-              <h2 className="font-outfit text-3xl sm:text-5xl lg:text-5xl font-bold text-[#111111] tracking-[-0.035em] leading-[1.08] mb-3">
-                Create your UniCoach page in a <br className="hidden sm:inline" />
-                <span className="text-[#DE5C2B]">flash</span>
-              </h2>
-              <p className="text-slate-600 text-[15px] sm:text-[17px] leading-relaxed font-normal mb-4">
-                One link for everything you offer juniors: calls, questions, packs and guides.
-              </p>
-              <Link
-                to="/unicoach/apply"
-                className="inline-flex items-center gap-2 h-10 px-4 rounded-full bg-slate-900 hover:bg-[#DE5C2B] text-white text-[14px] font-semibold transition-colors"
-              >
-                <span>Launch your page</span>
-                <ArrowUpRight className="w-4 h-4" />
-              </Link>
-            </div>
-          </div>
+        {/* Mobile order: header → animated preview → feature list. Desktop: list left, preview right. */}
+        <div className="mt-7 grid grid-cols-1 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] gap-6 lg:gap-10 items-center">
 
           {/* ════════ NUMBERED FEATURE LIST ════════ */}
-          <div className="order-3 lg:order-none lg:col-span-6 lg:col-start-1 lg:row-start-2 text-left">
-            <div className="divide-y divide-slate-100 border-y border-slate-100" role="tablist" aria-label="UniCoach mentor features">
+          <div className="order-2 lg:order-1 min-w-0 text-left">
+            <div className="flex flex-col gap-1.5" role="tablist" aria-label="UniCoach mentor features">
               {TABS.map((tab) => {
                 const isActive = activeTab === tab.id;
                 return (
@@ -522,18 +516,22 @@ export const MentorFlashSection = () => {
                     role="tab"
                     aria-selected={isActive}
                     onClick={() => selectTab(tab.id)}
-                    className={`relative w-full text-left rounded-xl transition-colors duration-150 cursor-pointer overflow-hidden px-4 py-3.5 ${
-                      isActive ? 'bg-[#FAF9F6]' : 'hover:bg-slate-50'
+                    className={`relative w-full text-left rounded-[18px] transition-all duration-200 cursor-pointer overflow-hidden px-3.5 sm:px-4 py-2.5 no-shine ${
+                      isActive ? 'bg-white border-[3px] border-[#16130F] shadow-[5px_5px_0_#16130F]' : 'border-[3px] border-transparent hover:bg-white/40'
                     }`}
                   >
                     <div className="flex items-center justify-between gap-3">
-                      <div className="flex items-center gap-3.5">
-                        <span className={`text-[12px] font-semibold tabular-nums ${isActive ? 'text-[#DE5C2B]' : 'text-slate-400'}`}>
+                      <div className="flex items-center gap-3 min-w-0">
+                        <span
+                          className={`shrink-0 grid place-items-center w-9 h-9 rounded-[10px] border-2 border-[#16130F] font-urbanist text-[13px] font-black tabular-nums transition-all ${
+                            isActive ? 'bg-[#DE5C2B] text-white -rotate-6' : 'bg-white/70 text-[#16130F]'
+                          }`}
+                        >
                           {tab.number}
                         </span>
-                        <h3 className={`font-outfit text-[16px] sm:text-[18px] font-semibold tracking-[-0.01em] ${isActive ? 'text-slate-900' : 'text-slate-600'}`}>{tab.title}</h3>
+                        <h3 className="font-urbanist text-[17px] sm:text-[19px] font-black text-[#16130F] tracking-[-0.02em] leading-tight">{tab.title}</h3>
                       </div>
-                      <ChevronDown className={`w-4 h-4 text-slate-500 transition-transform duration-300 ${isActive ? 'rotate-180 text-[#DE5C2B]' : ''}`} />
+                      <ChevronDown className={`w-4 h-4 shrink-0 text-[#16130F] transition-transform duration-300 ${isActive ? 'rotate-180' : 'opacity-60'}`} />
                     </div>
 
                     {isActive && (
@@ -541,40 +539,50 @@ export const MentorFlashSection = () => {
                         initial={{ opacity: 0, y: -4 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.18 }}
-                        className="mt-1.5 pl-[30px] pr-2"
+                        className="mt-1.5 pl-12 pr-1 pb-1"
                       >
-                        <p className="text-[14px] text-slate-600 leading-relaxed">{tab.shortDesc}</p>
-                        <p className="text-[13px] text-slate-400 mt-1 leading-relaxed">{tab.fullDesc}</p>
+                        <p className="text-[15px] font-medium text-[#16130F] leading-snug">{tab.shortDesc}</p>
+                        <p className="text-[15px] text-[#5B544A] mt-1 leading-snug">{tab.fullDesc}</p>
                       </motion.div>
                     )}
 
-                    {/* Auto-play progress bar */}
+                    {/* Auto-play progress along the bottom of the active card */}
                     {isActive && cycling && (
-                      <motion.span
-                        key={`progress-${tab.id}`}
-                        className="absolute left-0 top-0 w-[3px] bg-[#DE5C2B]"
-                        initial={{ height: '0%' }}
-                        animate={{ height: '100%' }}
-                        transition={{ duration: SCENE_MS / 1000, ease: 'linear' }}
-                      />
+                      <span className="absolute left-5 right-5 bottom-0 h-[3px] rounded-full bg-[#FFF6E5]" aria-hidden="true">
+                        <motion.span
+                          key={`progress-${tab.id}`}
+                          className="block h-full rounded-full bg-[#DE5C2B] origin-left"
+                          initial={{ scaleX: 0 }}
+                          animate={{ scaleX: 1 }}
+                          transition={{ duration: SCENE_MS / 1000, ease: 'linear' }}
+                        />
+                      </span>
                     )}
                   </button>
                 );
               })}
             </div>
+
+            <Link
+              to="/unicoach/apply"
+              className="mt-5 inline-flex items-center gap-2 px-6 py-3.5 rounded-full bg-[#16130F] text-white text-[15px] font-bold border-[3px] border-[#16130F] shadow-[4px_4px_0_#DE5C2B] hover:-translate-y-0.5 transition-transform"
+            >
+              <span>Launch your page</span>
+              <ArrowUpRight className="w-4 h-4" />
+            </Link>
           </div>
 
           {/* ════════ ANIMATED STORY FOR THE ACTIVE FEATURE ════════ */}
-          <div className="order-2 lg:order-none lg:col-span-6 lg:col-start-7 lg:row-start-1 lg:row-span-2 lg:sticky lg:top-28">
-            <div className="bg-[#F6F5F1] rounded-[28px] p-5 sm:p-8 sm:min-h-[480px] flex flex-col justify-center relative border border-slate-200/70">
+          <div className="order-1 lg:order-2 min-w-0">
+            <div className="rounded-[24px] bg-[#FFF6E5] p-4 sm:p-6 border-[3px] border-[#16130F] shadow-[8px_8px_0_#16130F] flex flex-col">
 
               {/* Your page bar */}
-              <div className="bg-white rounded-2xl p-3.5 sm:p-4 shadow-[0_4px_20px_rgba(0,0,0,0.04)] mb-5 flex items-center justify-between gap-3 border border-slate-200/70">
+              <div className="bg-white rounded-[16px] p-3 sm:p-3.5 mb-4 flex items-center justify-between gap-3 border-2 border-[#16130F]">
                 <div className="flex items-center gap-3 min-w-0">
                   <Initials name="Your Name" color={activeColorHex} size="w-11 h-11 text-sm" />
                   <div className="min-w-0">
-                    <div className="font-outfit text-sm font-bold text-slate-900 leading-tight">Your Name</div>
-                    <div className="text-[11px] font-semibold text-slate-400 truncate">unicoach.com/@yourname</div>
+                    <div className="font-urbanist text-sm font-black text-[#16130F] leading-tight">Your Name</div>
+                    <div className="text-[11px] font-semibold text-[#5B544A] truncate">unicoach.com/@yourname</div>
                   </div>
                 </div>
                 <div className="flex items-center gap-1.5 shrink-0">
@@ -583,9 +591,10 @@ export const MentorFlashSection = () => {
                       key={t.id}
                       type="button"
                       onClick={() => setSelectedTheme(t.id)}
-                      className={`w-6 h-6 rounded-md ${t.bg} flex items-center justify-center transition-transform cursor-pointer ${
-                        selectedTheme === t.id ? 'scale-110 ring-2 ring-slate-900 shadow-xs' : 'opacity-80 hover:opacity-100'
+                      className={`w-6 h-6 rounded-md border-2 border-[#16130F] flex items-center justify-center transition-transform cursor-pointer no-shine ${
+                        selectedTheme === t.id ? 'scale-110 -rotate-6 shadow-[2px_2px_0_#16130F]' : 'opacity-80 hover:opacity-100'
                       }`}
+                      style={{ backgroundColor: t.hex }}
                       aria-label={`Preview ${t.id} theme`}
                     >
                       {selectedTheme === t.id && <Check className="w-3.5 h-3.5 text-white stroke-[3]" />}
@@ -609,7 +618,7 @@ export const MentorFlashSection = () => {
                 </AnimatePresence>
               </div>
 
-              <p className="text-center text-[12px] text-slate-400 mt-4">Illustrative preview of a mentor page</p>
+              <p className="text-center text-[13px] font-semibold text-[#5B544A] mt-3">Illustrative preview of a mentor page</p>
             </div>
           </div>
 
