@@ -9,6 +9,8 @@ import PageBackButton from './components/PageBackButton';
 import Home from './components/Home'
 // New homepage design, kept on a private demo link (/home-v2) to compare with the live one
 const HomeV2 = lazy(() => import('./components/homeV2/Home'));
+// Same page with a scroll-driven cinematic hero (through the plane window), demo at /home-v3
+const HomeV3 = lazy(() => import('./components/homeV3/Home'));
 import ScrollToTop from './components/ScrollToTop'
 import { LeadProvider, useLead } from './context/LeadContext'
 import { AuthProvider, useAuth } from './context/AuthContext'
@@ -459,7 +461,7 @@ const EditorialPageClass = () => {
   const { pathname } = useLocation();
   useEffect(() => {
     // Every content page; the homepage, dashboards and sign-in screens have their own designs
-    const own = pathname === '/' || pathname === '/home-v2' || /dashboard|^\/(login|signin|signup|register|reset-password|admin)/.test(pathname);
+    const own = pathname === '/' || pathname === '/home-v2' || pathname === '/home-v3' || /dashboard|^\/(login|signin|signup|register|reset-password|admin)/.test(pathname);
     document.body.classList.toggle('editorial-page', !own);
   }, [pathname]);
   return null;
@@ -566,6 +568,7 @@ const App = () => {
               <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/home-v2" element={<HomeV2 />} />
+              <Route path="/home-v3" element={<HomeV3 />} />
               <Route path="/login" element={<LoginPage />} />
               <Route path="/signin" element={<LoginPage />} />
               <Route path="/signup" element={<SignupPage />} />

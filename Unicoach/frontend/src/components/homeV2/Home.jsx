@@ -35,7 +35,8 @@ const SectionPlaceholder = ({ minHeight = '380px' }) => (
   <div style={{ minHeight }} className="w-full bg-[#FFF6E5]" />
 );
 
-const Home = () => {
+// `hero` lets the /home-v3 demo reuse this page with its cinematic hero
+const Home = ({ hero = <Hero /> }) => {
   // Start on the visitor's first scroll or touch (not during page load, where it would slow the first paint)
   useEffect(() => {
     const events = ['scroll', 'pointerdown', 'touchstart', 'keydown'];
@@ -50,7 +51,7 @@ const Home = () => {
   return (
     <main id="main-content" className="flex flex-col min-h-screen w-full max-w-full overflow-x-clip bg-[#FFF6E5]">
       {/* 01. Hero Section (Airplane Window Scene, Obsidian & White Stat Cards, Parallax, Terracotta Palette) */}
-      <Hero />
+      {hero}
 
       {/* 02. Real mentors (event hosts + approved mentors from the UniCoach directory) */}
       <LazySection minHeight="460px" rootMargin="200px">

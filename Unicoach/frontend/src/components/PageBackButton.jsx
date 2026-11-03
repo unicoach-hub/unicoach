@@ -9,7 +9,7 @@ import { ArrowLeft } from 'lucide-react';
 const PageBackButton = () => {
   const { pathname, search } = useLocation();
   const navigate = useNavigate();
-  const hidden = pathname === '/' || pathname === '/home-v2'
+  const hidden = pathname === '/' || pathname === '/home-v2' || pathname === '/home-v3'
     || new URLSearchParams(search).get('embed') === 'true'
     || /dashboard|^\/(login|signin|signup|register|reset-password|f\/)/.test(pathname)
     // Course Finder draws its own Back inside its layout (results -> details step)

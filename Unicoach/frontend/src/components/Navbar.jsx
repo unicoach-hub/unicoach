@@ -720,7 +720,7 @@ const Navbar = () => {
     const [mobileExpandedCountry, setMobileExpandedCountry] = useState(null);
     const location = useLocation();
     const navigate = useNavigate();
-    const isHomePage = location.pathname === '/' || location.pathname === '/home-v2';
+    const isHomePage = location.pathname === '/' || location.pathname === '/home-v2' || location.pathname === '/home-v3';
 
     const handleBack = () => {
         if (window.history.state && window.history.state.idx > 0) {

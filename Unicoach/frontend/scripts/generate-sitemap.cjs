@@ -23,7 +23,7 @@ const EXCLUDE = [
   /^\/(book-consultation|privacy|terms-of-service|ielts-evaluator|sop-generator|study-roadmap|visa-prep|course-details)$/,
   /^\/admin/,
   // Private demo of the new homepage design (noindex)
-  /^\/home-v2$/,
+  /^\/home-v[23]$/,
   // Redirect to /search-programs (see vercel.json); listing them would duplicate that page
   /^\/(universities|scholarships)$/,
 ];
