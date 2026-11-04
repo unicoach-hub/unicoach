@@ -14,9 +14,10 @@ const sections = [
   { id: 'sharing', title: '5. Sharing with Universities & Partners' },
   { id: 'security', title: '6. Data Security & Storage' },
   { id: 'cookies', title: '7. Cookies & Tracking Technologies' },
-  { id: 'user-rights', title: '8. Your Rights & Data Choices' },
-  { id: 'children', title: '9. Children & Minors' },
-  { id: 'contact', title: '10. Data Protection Officer & Contact' },
+  { id: 'mobile-app', title: '8. UniCoach Mobile App' },
+  { id: 'user-rights', title: '9. Your Rights & Data Choices' },
+  { id: 'children', title: '10. Children & Minors' },
+  { id: 'contact', title: '11. Data Protection Officer & Contact' },
 ];
 
 const PrivacyPolicyPage = () => {
@@ -70,7 +71,7 @@ const PrivacyPolicyPage = () => {
           </p>
 
           <div className="mt-6 flex flex-wrap items-center gap-4 text-xs font-semibold text-slate-500">
-            <span>Last Updated: January 2026</span>
+            <span>Last Updated: November 2026</span>
             <span className="w-1.5 h-1.5 rounded-full bg-slate-300" />
             <span>GDPR & DPDP Act Aligned</span>
             <span className="w-1.5 h-1.5 rounded-full bg-slate-300" />
@@ -260,9 +261,30 @@ const PrivacyPolicyPage = () => {
               </div>
             </section>
 
+            <section id="mobile-app" className="bg-white border border-slate-200/80 rounded-2xl p-6 sm:p-8 shadow-xs">
+              <h2 className="text-xl sm:text-2xl font-black text-slate-900 mb-4">
+                8. UniCoach Mobile App
+              </h2>
+              <div className="prose text-slate-600 text-sm leading-relaxed space-y-3">
+                <p>The UniCoach app for Android and iOS uses the same account and the same data as this website. In the app:</p>
+                <ul className="list-disc pl-5 space-y-2 text-slate-700 font-medium">
+                  <li><strong>Sign-in:</strong> with email and password, or with Google (we receive your name, email and profile photo from Google).</li>
+                  <li><strong>Study profile:</strong> the country, course, intake and marks you enter are used to show matching courses and scholarships, and are shared with your counsellor.</li>
+                  <li><strong>Camera and files:</strong> the app opens your camera or files only when you choose to send a document. Documents go privately to your counsellor and are stored in private storage that opens only through short-lived links.</li>
+                  <li><strong>Saved items and chat:</strong> universities, courses and scholarships you save and your messages with your counsellor are stored on our servers so they show on both the app and the website.</li>
+                  <li><strong>Notifications:</strong> if you allow them, we send notifications about counsellor messages and document requests. You can turn them off in your phone settings.</li>
+                  <li><strong>No ads, no selling:</strong> the app has no advertising and we do not sell your data.</li>
+                </ul>
+                <p>
+                  You can delete your account and this data at any time from the app (Profile → "Account delete karo") or from our{' '}
+                  <Link to="/delete-account" className="text-[#DE5C2B] font-bold hover:underline">account deletion page</Link>.
+                </p>
+              </div>
+            </section>
+
             <section id="user-rights" className="bg-white border border-slate-200/80 rounded-2xl p-6 sm:p-8 shadow-xs">
               <h2 className="text-xl sm:text-2xl font-black text-slate-900 mb-4">
-                8. Your Rights & Data Choices
+                9. Your Rights & Data Choices
               </h2>
               <div className="prose text-slate-600 text-sm leading-relaxed space-y-3">
                 <p>You have the right at any time to:</p>
@@ -270,6 +292,7 @@ const PrivacyPolicyPage = () => {
                   <li>Request a copy of your personal data held by UniCoach.</li>
                   <li>Request correction of inaccurate or outdated academic records.</li>
                   <li>Request deletion of your profile and uploaded documents (subject to retention rules for active university applications).</li>
+                  <li>Delete your account yourself: in the app under Profile → "Account delete karo", or through our <Link to="/delete-account" className="text-[#DE5C2B] font-bold hover:underline">account deletion page</Link>.</li>
                   <li>Withdraw communication consent for marketing updates.</li>
                 </ul>
               </div>
@@ -277,7 +300,7 @@ const PrivacyPolicyPage = () => {
 
             <section id="children" className="bg-white border border-slate-200/80 rounded-2xl p-6 sm:p-8 shadow-xs">
               <h2 className="text-xl sm:text-2xl font-black text-slate-900 mb-4">
-                9. Children & Minors
+                10. Children & Minors
               </h2>
               <div className="prose text-slate-600 text-sm leading-relaxed space-y-3">
                 <p>
@@ -288,7 +311,7 @@ const PrivacyPolicyPage = () => {
 
             <section id="contact" className="bg-white border border-slate-200/80 rounded-2xl p-6 sm:p-8 shadow-xs">
               <h2 className="text-xl sm:text-2xl font-black text-slate-900 mb-4">
-                10. Data Protection Officer & Contact
+                11. Data Protection Officer & Contact
               </h2>
               <div className="prose text-slate-600 text-sm leading-relaxed space-y-3">
                 <p>

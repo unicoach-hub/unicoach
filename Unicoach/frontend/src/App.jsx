@@ -272,6 +272,7 @@ const LoginPage = lazy(() => import('./pages/LoginPage'));
 const SignupPage = lazy(() => import('./pages/SignupPage'));
 const TermsPage = lazy(() => import('./pages/TermsPage'));
 const PrivacyPolicyPage = lazy(() => import('./pages/PrivacyPolicyPage'));
+const DeleteAccountPage = lazy(() => import('./pages/DeleteAccountPage'));
 const RefundPolicyPage = lazy(() => import('./pages/RefundPolicyPage'));
 
 // Import GMAT exam pages
@@ -962,6 +963,7 @@ const App = () => {
             <Route path="/terms-of-service" element={<TermsPage />} />
             <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
             <Route path="/privacy" element={<PrivacyPolicyPage />} />
+            <Route path="/delete-account" element={<DeleteAccountPage />} />
             <Route path="/refund-policy" element={<RefundPolicyPage />} />
             <Route path="/cancellation-policy" element={<RefundPolicyPage />} />
 
