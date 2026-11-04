@@ -69,6 +69,10 @@ const setStudentStage = async (userId, stageKey, { by = '', note = '', notify = 
   user.stageUpdatedAt = new Date();
   user.stageHistory.push({ stage: stageKey, by, note: String(note || '').slice(0, 500) });
   await user.save();
+  if (notify) {
+    const stage = stageInfo(stageKey);
+    require('./pushNotify').sendPushToUser(user._id, { title: `Aapka safar: ${stage.label}`, body: stage.message, data: { url: '/journey' } });
+  }
   if (notify && user.email) {
     const stage = stageInfo(stageKey);
     sendEmail({

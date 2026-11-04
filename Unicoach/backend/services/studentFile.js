@@ -101,6 +101,13 @@ const getOrCreateConversation = async (studentId) => {
 // Save a message and bump the other side's unread count
 const postMessage = async (convo, { senderType, senderName, kind = 'text', text = '', document, requestTitles }) => {
   const msg = await StudentMessage.create({ conversation: convo._id, senderType, senderName, kind, text, document, requestTitles });
+  // Counsellor → student: ping the student's phone (the app opens the Counsellor tab on tap)
+  if (senderType === 'staff') {
+    const { sendPushToUser } = require('./pushNotify');
+    const title = kind === 'request' ? 'Counsellor ne documents maange' : `${senderName || 'Aapka counsellor'} ka message`;
+    const body = kind === 'request' ? `Upload karo: ${(requestTitles || []).join(', ')}` : kind === 'file' ? `File bheji: ${text || 'document'}` : text;
+    sendPushToUser(convo.student, { title, body, data: { url: '/chat' } });
+  }
   const preview = kind === 'request' ? `Requested: ${requestTitles.join(', ')}` : kind === 'file' ? `📎 ${text || 'File'}` : text;
   await StudentConversation.updateOne(
     { _id: convo._id },

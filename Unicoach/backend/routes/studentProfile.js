@@ -112,6 +112,38 @@ router.put('/profile', async (req, res) => {
 });
 
 /**
+ * POST /api/student/push-token  { token, platform }
+ * The mobile app registers its Expo push token after the student allows notifications.
+ */
+router.post('/push-token', async (req, res) => {
+  try {
+    const token = str(req.body?.token, 200);
+    if (!/^Expo(nent)?PushToken\[.+\]$/.test(token)) return res.status(400).json({ message: 'Invalid push token' });
+    const platform = str(req.body?.platform, 20);
+    // A phone belongs to one account at a time: drop it from anyone else first
+    await User.updateMany({ _id: { $ne: req.user.id }, 'pushTokens.token': token }, { $pull: { pushTokens: { token } } });
+    await User.updateOne({ _id: req.user.id }, { $pull: { pushTokens: { token } } });
+    await User.updateOne({ _id: req.user.id }, { $push: { pushTokens: { $each: [{ token, platform, updatedAt: new Date() }], $slice: -5 } } });
+    return res.json({ success: true });
+  } catch (err) {
+    console.error('Error saving push token:', err);
+    return res.status(500).json({ error: 'Server error' });
+  }
+});
+
+/** DELETE /api/student/push-token  { token }  (on log out) */
+router.delete('/push-token', async (req, res) => {
+  try {
+    const token = str(req.body?.token, 200);
+    if (token) await User.updateOne({ _id: req.user.id }, { $pull: { pushTokens: { token } } });
+    return res.json({ success: true });
+  } catch (err) {
+    console.error('Error removing push token:', err);
+    return res.status(500).json({ error: 'Server error' });
+  }
+});
+
+/**
  * DELETE /api/student/account  { confirm: "DELETE" }
  * The student deletes their own account (required by Google Play and the App Store): the login, study plan,
  * saved universities and scholarships, chat, uploaded documents (files removed from storage) and test attempts.

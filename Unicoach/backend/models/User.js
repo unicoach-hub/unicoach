@@ -38,6 +38,12 @@ const userSchema = new mongoose.Schema({
   referredBy: { type: mongoose.Schema.Types.ObjectId, ref: 'UnicoachMentor', index: true },
   referredAt: { type: Date },
   // Journey stage (config/studentStages.js), changed by the admin
+  // Expo push tokens of the student's phones (UniCoach mobile app), see services/pushNotify.js
+  pushTokens: [{
+    token: { type: String },
+    platform: { type: String },
+    updatedAt: { type: Date, default: Date.now },
+  }],
   journeyStage: { type: String, enum: ALL_STAGE_KEYS, default: 'registered', index: true },
   stageUpdatedAt: { type: Date },
   stageHistory: [{
