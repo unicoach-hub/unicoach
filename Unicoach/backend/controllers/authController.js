@@ -1,5 +1,5 @@
 const User = require('../models/User');
-const { applyAttributionToLead } = require('../utils/attribution');
+const { applyAttributionToLead, authMethodLabel } = require('../utils/attribution');
 const { sendMetaEvent } = require('../services/metaConversions');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
@@ -257,7 +257,7 @@ exports.register = async (req, res) => {
     const referralMentor = req.body.referral ? await applyReferral(user._id, req.body.referral) : null;
 
     const enrichedUser = await enrichUserWithMentor(user);
-    syncLeadFromAuth(enrichedUser, { method: 'Email', isNewAccount: true, attribution: req.body.attribution, referralMentor });
+    syncLeadFromAuth(enrichedUser, { method: authMethodLabel('Email', req.body.attribution), isNewAccount: true, attribution: req.body.attribution, referralMentor });
     sendMetaEvent({
       eventName: 'CompleteRegistration',
       eventId: req.body.attribution?.eventId,
@@ -322,7 +322,7 @@ exports.login = async (req, res) => {
       }
 
       const enrichedUser = await enrichUserWithMentor(user);
-      syncLeadFromAuth(enrichedUser, { method: 'Email', isNewAccount: false });
+      syncLeadFromAuth(enrichedUser, { method: authMethodLabel('Email', req.body.attribution), isNewAccount: false });
       const token = jwt.sign({ id: user._id, role: enrichedUser.role }, JWT_SECRET, { expiresIn: '7d' });
 
       res.cookie('token', token, {
@@ -523,6 +523,8 @@ exports.googleLogin = async (req, res) => {
     }
 
     const googleClientId = process.env.GOOGLE_CLIENT_ID || '324611777052-7p8vf6php65bdf7eljj753al4lj6d3kp.apps.googleusercontent.com';
+    // The mobile app's iOS sign-in issues tokens for its own iOS client ID; Android tokens use the web ID above.
+    const appClientIds = (process.env.GOOGLE_APP_CLIENT_IDS || '').split(',').map((s) => s.trim()).filter(Boolean);
     let payload;
 
     // Verify token signature & audience with Google's public key servers.
@@ -531,7 +533,7 @@ exports.googleLogin = async (req, res) => {
       const client = new OAuth2Client(googleClientId);
       const ticket = await client.verifyIdToken({
         idToken: credential,
-        audience: googleClientId,
+        audience: [googleClientId, ...appClientIds],
       });
       payload = ticket.getPayload();
     } catch (verifyErr) {
@@ -586,7 +588,7 @@ exports.googleLogin = async (req, res) => {
     }
 
     const enrichedUser = await enrichUserWithMentor(user);
-    syncLeadFromAuth(enrichedUser, { method: 'Google', isNewAccount, attribution: req.body.attribution, referralMentor });
+    syncLeadFromAuth(enrichedUser, { method: authMethodLabel('Google', req.body.attribution), isNewAccount, attribution: req.body.attribution, referralMentor });
     if (isNewAccount) {
       sendWelcomeEmail(user.name, user.email);
       sendMetaEvent({

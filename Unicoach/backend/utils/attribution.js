@@ -61,4 +61,10 @@ const applyAttributionToLead = (lead, attribution) => {
   };
 };
 
-module.exports = { attributionField, readAttribution, applyAttributionToLead };
+/** The mobile app tags every sign-up/login with utm_source "unicoach-app" (unicoach-app/src/lib/auth.tsx). */
+const isFromApp = (attribution) => (attribution?.lastTouch?.utm_source || attribution?.firstTouch?.utm_source) === 'unicoach-app';
+
+/** Sign-in method as shown in the CRM source: "Email", or "App (Email)" when it came from the mobile app. */
+const authMethodLabel = (method, attribution) => (isFromApp(attribution) ? `App (${method})` : method);
+
+module.exports = { attributionField, readAttribution, applyAttributionToLead, isFromApp, authMethodLabel };
