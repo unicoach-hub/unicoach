@@ -20,7 +20,8 @@
       },
       "predictiveBackGestureEnabled": false,
       "package": "in.unicoach.app",
-      "backgroundColor": "#FFF6E5"
+      "backgroundColor": "#FFF6E5",
+      "googleServicesFile": "./google-services.json"
     },
     "web": {
       "output": "single",

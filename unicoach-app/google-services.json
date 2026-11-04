@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "324611777052",
+    "project_id": "uni-coach-510406",
+    "storage_bucket": "uni-coach-510406.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:324611777052:android:0393111210a2c7f46eb5d9",
+        "android_client_info": {
+          "package_name": "in.unicoach.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "324611777052-7p8vf6php65bdf7eljj753al4lj6d3kp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDM5QQ2awflWgRyKFBGUSzwoXDGN-HV1Kw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "324611777052-7p8vf6php65bdf7eljj753al4lj6d3kp.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
