@@ -1,0 +1,17 @@
+# EAS Build uploads from the repository root. Only the mobile app (unicoach-app/) is needed;
+# this file replaces .gitignore for EAS, so the app's own ignores are repeated here.
+/*
+!/unicoach-app
+/unicoach-app/node_modules
+/unicoach-app/.expo
+/unicoach-app/dist
+/unicoach-app/web-build
+/unicoach-app/android
+/unicoach-app/ios
+/unicoach-app/.env*.local
+*.jks
+*.p8
+*.p12
+*.key
+*.mobileprovision
+.DS_Store

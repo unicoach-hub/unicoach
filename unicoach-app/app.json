@@ -1,0 +1,74 @@
+{
+  "expo": {
+    "name": "UniCoach",
+    "slug": "unicoach-app",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/images/icon.png",
+    "scheme": "unicoach",
+    "userInterfaceStyle": "light",
+    "ios": {
+      "bundleIdentifier": "in.unicoach.app",
+      "supportsTablet": false
+    },
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#14837E",
+        "foregroundImage": "./assets/images/android-icon-foreground.png",
+        "backgroundImage": "./assets/images/android-icon-background.png",
+        "monochromeImage": "./assets/images/android-icon-monochrome.png"
+      },
+      "predictiveBackGestureEnabled": false,
+      "package": "in.unicoach.app",
+      "backgroundColor": "#FFF6E5"
+    },
+    "web": {
+      "output": "single",
+      "favicon": "./assets/images/favicon.png"
+    },
+    "plugins": [
+      "expo-router",
+      [
+        "expo-splash-screen",
+        {
+          "backgroundColor": "#FFF6E5",
+          "image": "./assets/images/splash-icon.png",
+          "imageWidth": 150
+        }
+      ],
+      "expo-secure-store",
+      [
+        "@react-native-google-signin/google-signin",
+        {
+          "iosUrlScheme": "com.googleusercontent.apps.ios-client-id-pending"
+        }
+      ],
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Documents ki photo bhejne ke liye UniCoach ko aapki photos chahiye.",
+          "cameraPermission": "Passport ya marksheet ki photo kheenchne ke liye UniCoach ko camera chahiye.",
+          "microphonePermission": false
+        }
+      ]
+    ],
+    "experiments": {
+      "typedRoutes": true,
+      "reactCompiler": true
+    },
+    "backgroundColor": "#FFF6E5",
+    "owner": "unicoach-edu",
+    "extra": {
+      "router": {
+        "asyncRoutes": {
+          "web": true
+        }
+      },
+      "eas": {
+        "projectId": "9f7fbdbf-d33d-4fd7-b848-658d3c7becc5"
+      },
+      "googleWebClientId": "324611777052-7p8vf6php65bdf7eljj753al4lj6d3kp.apps.googleusercontent.com",
+      "googleIosClientId": ""
+    }
+  }
+}
