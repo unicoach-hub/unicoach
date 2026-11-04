@@ -50,6 +50,13 @@
           "cameraPermission": "Passport ya marksheet ki photo kheenchne ke liye UniCoach ko camera chahiye.",
           "microphonePermission": false
         }
+      ],
+      [
+        "expo-notifications",
+        {
+          "icon": "./assets/images/android-icon-monochrome.png",
+          "color": "#14837E"
+        }
       ]
     ],
     "experiments": {

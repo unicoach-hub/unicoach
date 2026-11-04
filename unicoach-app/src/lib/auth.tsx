@@ -3,6 +3,7 @@ import { Platform } from 'react-native';
 
 import { api, setUnauthorizedHandler } from './api';
 import { GoogleCancelled, getGoogleIdToken, googleSignOut } from './googleSignIn';
+import { unregisterPush } from './push';
 import { getToken, setToken } from './tokenStore';
 
 export type User = {
@@ -109,6 +110,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, [finish]);
 
   const logout = useCallback(async () => {
+    await unregisterPush();
     await clear();
     await googleSignOut();
   }, [clear]);

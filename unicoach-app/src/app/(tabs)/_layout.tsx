@@ -1,9 +1,13 @@
+import { router } from 'expo-router';
 import { TabList, TabSlot, TabTrigger, Tabs, type TabTriggerSlotProps } from 'expo-router/ui';
+import { useLastNotificationResponse } from 'expo-notifications';
+import { useEffect } from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { AppText } from '@/components/ui/AppText';
 import { Icon, type IconName } from '@/components/ui/Icon';
+import { registerForPush } from '@/lib/push';
 import { useUnread } from '@/lib/useUnread';
 import { colors, fonts, softShadow, TAB_BAR } from '@/theme/tokens';
 
@@ -19,6 +23,19 @@ const TABS: { name: string; href: '/' | '/search' | '/match' | '/chat' | '/profi
 export default function TabsLayout() {
   const insets = useSafeAreaInsets();
   const unread = useUnread();
+
+  // Ask for notification permission once the student is in the app
+  useEffect(() => {
+    registerForPush();
+  }, []);
+
+  // Tapping a notification opens the screen it is about (chat, journey)
+  const lastResponse = useLastNotificationResponse();
+  useEffect(() => {
+    const url = lastResponse?.notification.request.content.data?.url;
+    if (typeof url === 'string' && url.startsWith('/')) router.push(url as never);
+  }, [lastResponse]);
+
   return (
     <>
       <Tabs style={styles.fill}>
