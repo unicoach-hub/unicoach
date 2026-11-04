@@ -166,7 +166,7 @@ const BlogsPage = () => {
                         className="bg-white border-[3px] border-[#16130F] rounded-[18px] shadow-[7px_7px_0_#16130F] p-4 sm:p-6 lg:p-7 flex flex-col lg:flex-row gap-6 lg:gap-8 group"
                     >
                         {/* Featured Image */}
-                        <div className="lg:w-1/2 relative aspect-[16/10] lg:aspect-auto lg:min-h-[320px] rounded-[12px] overflow-hidden bg-[#FFF1B8] border-[3px] border-[#16130F]">
+                        <div className="lg:w-1/2 lg:self-center relative aspect-[40/21] rounded-[12px] overflow-hidden bg-[#FFF1B8] border-[3px] border-[#16130F]">
                             <CoverImage
                                 src={featuredBlog.image}
                                 alt={featuredBlog.title}
@@ -295,7 +295,7 @@ const BlogsPage = () => {
                             <div key={n} className="bg-white rounded-[14px] border-[3px] border-[#16130F] shadow-[5px_5px_0_#16130F] overflow-hidden animate-pulse">
                                 <div className="h-3 bg-[#F2B705]" />
                                 <div className="p-5 space-y-4">
-                                    <div className="w-full aspect-[16/10] bg-[#FFF1B8] rounded-[10px]" />
+                                    <div className="w-full aspect-[40/21] bg-[#FFF1B8] rounded-[10px]" />
                                     <div className="h-4 bg-[#F3EAD7] rounded w-1/3" />
                                     <div className="h-6 bg-[#F3EAD7] rounded w-full" />
                                     <div className="h-4 bg-[#F3EAD7] rounded w-4/5" />
@@ -326,7 +326,7 @@ const BlogsPage = () => {
                                 </div>
 
                                 {/* Card Thumbnail */}
-                                <div className="relative overflow-hidden aspect-[16/10] border-b-[3px] border-[#16130F]" style={{ background: tone.soft }}>
+                                <div className="relative overflow-hidden aspect-[40/21] border-b-[3px] border-[#16130F]" style={{ background: tone.soft }}>
                                     <CoverImage
                                         src={blog.image}
                                         alt={blog.title}

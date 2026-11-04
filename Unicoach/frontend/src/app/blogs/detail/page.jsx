@@ -198,7 +198,7 @@ const BlogDetailPage = () => {
                         )}
 
                         {blog.imageUrl && (
-                            <div className="w-full aspect-[16/9] sm:aspect-[21/9] overflow-hidden bg-white border-[3px] border-[#16130F] shadow-[6px_6px_0_#16130F]" style={{ borderRadius: 18 }}>
+                            <div className="w-full aspect-[40/21] overflow-hidden bg-white border-[3px] border-[#16130F] shadow-[6px_6px_0_#16130F]" style={{ borderRadius: 18 }}>
                                 <img src={getAbsoluteUrl(blog.imageUrl)} alt={blog.title} className="w-full h-full object-cover" />
                             </div>
                         )}
