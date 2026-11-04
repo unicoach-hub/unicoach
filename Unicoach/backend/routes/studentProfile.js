@@ -111,4 +111,57 @@ router.put('/profile', async (req, res) => {
   }
 });
 
+/**
+ * DELETE /api/student/account  { confirm: "DELETE" }
+ * The student deletes their own account (required by Google Play and the App Store): the login, study plan,
+ * saved universities and scholarships, chat, uploaded documents (files removed from storage) and test attempts.
+ * The CRM enquiry (Lead) stays for the team's records with a note that the account was deleted.
+ * Mentor accounts are not deleted here, since they carry bookings and payouts.
+ */
+router.delete('/account', async (req, res) => {
+  try {
+    if (req.body?.confirm !== 'DELETE') return res.status(400).json({ message: 'Type DELETE to confirm' });
+    const user = await User.findById(req.user.id);
+    if (!user) return res.status(404).json({ message: 'Account not found' });
+    if (user.role === 'admin') return res.status(403).json({ message: 'Admin accounts cannot be deleted here' });
+    const UnicoachMentor = require('../unicoach/models/UnicoachMentor');
+    if (await UnicoachMentor.exists({ userId: user._id })) {
+      return res.status(403).json({ message: 'Mentor accounts are deleted by the UniCoach team. Please contact support.' });
+    }
+
+    const StudentDocument = require('../models/StudentDocument');
+    const StudentConversation = require('../models/StudentConversation');
+    const StudentMessage = require('../models/StudentMessage');
+    const { removeStoredFile } = require('../unicoach/services/fileStorageService');
+
+    const docs = await StudentDocument.find({ student: user._id }).select('file').lean();
+    await Promise.all(docs.map((d) => removeStoredFile(d.file?.url)));
+    const convos = await StudentConversation.find({ student: user._id }).select('_id').lean();
+
+    await Promise.all([
+      StudentMessage.deleteMany({ conversation: { $in: convos.map((c) => c._id) } }),
+      StudentConversation.deleteMany({ student: user._id }),
+      StudentDocument.deleteMany({ student: user._id }),
+      require('../models/SavedUniversity').deleteMany({ user: user._id }),
+      require('../models/UserScholarship').deleteMany({ user: user._id }),
+      require('../models/IeltsAttempt').deleteMany({ user: user._id }),
+      require('../models/WritingSession').deleteMany({ user: user._id }),
+    ]);
+
+    if (user.email) {
+      await Lead.updateMany(
+        { email: user.email.toLowerCase() },
+        { $push: { activities: { type: 'note', comment: 'Student deleted their UniCoach account (app/website)', performedBy: 'System' } } }
+      ).catch((e) => console.warn('[Account delete] lead note failed:', e.message));
+    }
+
+    await User.deleteOne({ _id: user._id });
+    res.clearCookie('token');
+    return res.json({ success: true });
+  } catch (err) {
+    console.error('Error deleting student account:', err);
+    return res.status(500).json({ error: 'Server error' });
+  }
+});
+
 module.exports = router;

@@ -98,4 +98,16 @@ const getAccessUrl = async (url, { expiresInSeconds = 300, attachment = false } 
   });
 };
 
-module.exports = { storeUpload, parseCloudinaryUrl, isPrivateAsset, getAccessUrl };
+/** Permanently delete a stored Cloudinary file (used when a student deletes their account). Never throws. */
+const removeStoredFile = async (url) => {
+  const parsed = parseCloudinaryUrl(url);
+  if (!parsed) return;
+  try {
+    await configureCloudinary();
+    await cloudinary.uploader.destroy(parsed.publicId, { resource_type: parsed.resourceType, type: parsed.deliveryType, invalidate: true });
+  } catch (err) {
+    console.warn('Cloudinary delete warning:', err.message || err);
+  }
+};
+
+module.exports = { storeUpload, parseCloudinaryUrl, isPrivateAsset, getAccessUrl, removeStoredFile };
