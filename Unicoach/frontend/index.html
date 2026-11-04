@@ -95,7 +95,7 @@
 
     <link rel="manifest" href="/manifest.json" />
     <!-- LCP Critical Asset Preload: Hero airplane window scene (Eliminates 1,401ms load delay) -->
-    <link rel="preload" as="image" href="/image.webp" type="image/webp" fetchpriority="high" />
+    <link rel="preload" as="image" href="/image.webp" imagesrcset="/image-800.webp 800w, /image.webp 1200w" imagesizes="(min-width: 1024px) 56vw, 100vw" type="image/webp" fetchpriority="high" />
 
     <!-- Google Fonts: Preconnect & Stabilized Font Delivery (Eliminates font-swap CLS) -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />

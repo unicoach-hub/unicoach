@@ -5,6 +5,8 @@ import { Link } from 'react-router-dom';
 import { useLead } from '../context/LeadContext';
 // Preloaded critical LCP asset from public directory for instant discovery
 const heroImg = '/image.webp';
+// Phones get the 800px copy (22 KB) instead of the 1200px one; matches the preload in index.html
+const heroSrcSet = '/image-800.webp 800w, /image.webp 1200w';
 import PriorityDmModal from './PriorityDmModal';
 import { PillButton } from './ui/PillButton';
 import { StatCard } from './ui/BrandElements';
@@ -52,6 +54,8 @@ export const Hero = ({ onOpenModal }) => {
         <img
           src={heroImg}
           alt="Student looking through airplane window"
+          srcSet={heroSrcSet}
+          sizes="(min-width: 1024px) 56vw, 100vw"
           className="w-full h-full object-cover object-[15%_center]"
           fetchPriority="high"
           decoding="async"
@@ -193,6 +197,8 @@ export const Hero = ({ onOpenModal }) => {
         <img
           src={heroImg}
           alt="Student looking through airplane window"
+          srcSet={heroSrcSet}
+          sizes="(min-width: 1024px) 56vw, 100vw"
           className="w-full h-full object-cover object-[20%_center] block"
           fetchPriority="high"
           decoding="async"

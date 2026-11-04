@@ -141,6 +141,15 @@ async function renderRoute(browser, origin, route, shellScripts) {
         if (!keep) s.remove();
       });
       document.querySelectorAll('#googleidentityservice_button_styles, iframe').forEach((el) => el.remove());
+      // Vite adds a modulepreload (as="script") for every lazy chunk the scroll-through loaded; on a
+      // phone those ~40 downloads compete with the hero image, so drop them and let chunks load on demand
+      document.querySelectorAll('link[rel="modulepreload"][as="script"]').forEach((el) => el.remove());
+      // The shell's onload swap already turned the Google Fonts preload into a stylesheet; put it
+      // back so the snapshot doesn't block first paint on the fonts CSS
+      document.querySelectorAll('link[rel="stylesheet"][as="style"][href*="fonts.googleapis.com"]').forEach((el) => {
+        el.setAttribute('rel', 'preload');
+        el.setAttribute('onload', "this.onload=null;this.rel='stylesheet'");
+      });
       document.documentElement.className = document.documentElement.className.split(/\s+/).filter((c) => c && !c.startsWith('lenis')).join(' ');
       if (!document.documentElement.className) document.documentElement.removeAttribute('class');
       document.documentElement.setAttribute('data-prerendered', 'true');
