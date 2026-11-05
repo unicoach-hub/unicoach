@@ -165,29 +165,36 @@ const BlogDetailPage = () => {
     return (
         <main className="min-h-screen bg-[#FFF6E5] text-[#16130F] pb-20 font-['Onest',sans-serif]">
 
-            {/* Header band */}
-            <section className="bg-[#F2B705] px-4 sm:px-6 pt-[96px] md:pt-[112px] pb-10 sm:pb-14 border-b-[3px] border-[#16130F]">
-                <div className="max-w-[1480px] mx-auto">
-                    {/* the site's floating Back button already sits top-left, so only Share here */}
-                    <div className="flex items-center justify-end gap-3 mb-4">
-                        <button
-                            onClick={handleShare}
-                            className="no-shine inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-white border-2 border-[#16130F] shadow-[3px_3px_0_#16130F] text-[13px] font-bold cursor-pointer transition-transform hover:-translate-y-0.5"
-                        >
-                            {copied ? <Check size={14} className="text-[#14837E]" /> : <Share2 size={14} />}
-                            <span>{copied ? 'Link copied' : 'Share'}</span>
-                        </button>
+            {/* Header band: title on the left, the blog's own banner on the right */}
+            <section className="bg-[#F2B705] px-4 sm:px-6 pt-[92px] md:pt-[104px] pb-8 sm:pb-10 border-b-[3px] border-[#16130F]">
+                <div className={`max-w-[1480px] mx-auto grid grid-cols-1 gap-7 lg:gap-12 items-center ${blog.imageUrl ? 'lg:grid-cols-[minmax(0,1fr)_minmax(0,560px)]' : ''}`}>
+                    <div className="min-w-0">
+                        {/* the site's floating Back button already sits top-left, so only Share here */}
+                        <div className="flex items-center justify-end gap-3 mb-4">
+                            <button
+                                onClick={handleShare}
+                                className="no-shine inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-white border-2 border-[#16130F] shadow-[3px_3px_0_#16130F] text-[13px] font-bold cursor-pointer transition-transform hover:-translate-y-0.5"
+                            >
+                                {copied ? <Check size={14} className="text-[#14837E]" /> : <Share2 size={14} />}
+                                <span>{copied ? 'Link copied' : 'Share'}</span>
+                            </button>
+                        </div>
+                        <StationSign hi="Padhai ki baatein" en="BLOG ADDA" className="mb-5" />
+                        <h1 className="font-urbanist font-black text-[32px] sm:text-[44px] xl:text-[52px] leading-[1.04] tracking-[-0.04em]">
+                            {blog.title}
+                        </h1>
+                        <div className="mt-6 flex flex-wrap items-center gap-2.5">
+                            <Sticker bg="#16130F" fg="#FFFFFF" tilt={-1.5}>{blog.category || 'Guide'}</Sticker>
+                            <Sticker tilt={1}><CheckCircle2 size={14} className="text-[#14837E]" />Facts checked</Sticker>
+                            <Sticker tilt={-1}><Calendar size={14} />{dateLabel}</Sticker>
+                            <Sticker bg="#FCE38A" tilt={1.5}><Clock size={14} />{readMinutes} min read</Sticker>
+                        </div>
                     </div>
-                    <StationSign hi="Padhai ki baatein" en="BLOG ADDA" className="mb-5" />
-                    <h1 className="font-urbanist font-black text-[32px] sm:text-[46px] lg:text-[56px] leading-[1.02] tracking-[-0.04em] max-w-[1100px]">
-                        {blog.title}
-                    </h1>
-                    <div className="mt-6 flex flex-wrap items-center gap-2.5">
-                        <Sticker bg="#16130F" fg="#FFFFFF" tilt={-1.5}>{blog.category || 'Guide'}</Sticker>
-                        <Sticker tilt={1}><CheckCircle2 size={14} className="text-[#14837E]" />Facts checked</Sticker>
-                        <Sticker tilt={-1}><Calendar size={14} />{dateLabel}</Sticker>
-                        <Sticker bg="#FCE38A" tilt={1.5}><Clock size={14} />{readMinutes} min read</Sticker>
-                    </div>
+                    {blog.imageUrl && (
+                        <div className="w-full aspect-[40/21] overflow-hidden bg-white border-[3px] border-[#16130F] shadow-[6px_6px_0_#16130F] lg:rotate-[1.2deg]" style={{ borderRadius: 18 }}>
+                            <img src={getAbsoluteUrl(blog.imageUrl)} alt={blog.title} className="w-full h-full object-cover" />
+                        </div>
+                    )}
                 </div>
             </section>
 
@@ -225,12 +232,6 @@ const BlogDetailPage = () => {
                             <div className="relative p-5 sm:p-6 bg-white border-[3px] border-[#16130F] shadow-[5px_5px_0_#F2B705]" style={{ borderRadius: 14 }}>
                                 <p className="font-urbanist font-extrabold text-[13px] text-[#D0362E]">Short mein</p>
                                 <p className="mt-1.5 text-[15px] sm:text-[17px] font-semibold leading-relaxed">{blog.metaDescription}</p>
-                            </div>
-                        )}
-
-                        {blog.imageUrl && (
-                            <div className="w-full aspect-[40/21] overflow-hidden bg-white border-[3px] border-[#16130F] shadow-[6px_6px_0_#16130F]" style={{ borderRadius: 18 }}>
-                                <img src={getAbsoluteUrl(blog.imageUrl)} alt={blog.title} className="w-full h-full object-cover" />
                             </div>
                         )}
 
