@@ -51,7 +51,7 @@ const BlogDetailPage = () => {
                     if (allRes.ok) {
                         const allData = await allRes.json();
                         if (Array.isArray(allData)) {
-                            setRelatedBlogs(allData.filter(b => b._id !== data._id).slice(0, 4));
+                            setRelatedBlogs(allData.filter(b => b._id !== data._id).slice(0, 10));
                         }
                     }
                 } catch (e) {
@@ -135,6 +135,31 @@ const BlogDetailPage = () => {
         );
     }
 
+    // Small blog card with its cover banner, used to fill the side columns.
+    // `row` puts a small banner beside the title so sticky columns stay shorter than the screen.
+    const BlogThumb = ({ item, row = false }) => (
+        <Link
+            to={`/blogs/${item.slug || item._id}`}
+            className={`group rounded-xl bg-[#FFF6E5] border-2 border-[#16130F1A] hover:border-[#16130F] hover:bg-white transition-colors overflow-hidden ${row ? 'flex items-stretch' : 'block'}`}
+        >
+            {item.imageUrl && (
+                <span className={`block aspect-[40/21] overflow-hidden flex-shrink-0 ${row ? 'w-[118px] self-center border-r-2' : 'border-b-2'} border-[#16130F1A]`}>
+                    <img src={getAbsoluteUrl(item.imageUrl)} alt="" loading="lazy" className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+                </span>
+            )}
+            <span className={`block min-w-0 ${row ? 'p-2.5' : 'p-3'}`}>
+                <span className="text-[10.5px] font-black uppercase tracking-wider text-[#14837E] block mb-1">{item.category || 'Guide'}</span>
+                <span className="flex items-start justify-between gap-2">
+                    <span className={`font-bold leading-snug line-clamp-2 ${row ? 'text-[12.5px]' : 'text-[13px]'}`}>{item.title}</span>
+                    {!row && <ArrowRight size={14} className="mt-0.5 flex-shrink-0 transition-transform group-hover:translate-x-0.5" />}
+                </span>
+            </span>
+        </Link>
+    );
+    const relatedTop = relatedBlogs.slice(0, 3);
+    const relatedMore = relatedBlogs.slice(3, 6);
+    const relatedLeft = relatedBlogs.slice(6, 7);
+
     const dateLabel = new Date(blog.publishDate || blog.createdAt).toLocaleDateString('en-IN', { month: 'long', day: 'numeric', year: 'numeric' });
 
     return (
@@ -166,12 +191,12 @@ const BlogDetailPage = () => {
                 </div>
             </section>
 
-            <div className="max-w-[1480px] mx-auto px-4 sm:px-6 pt-10 sm:pt-12">
+            <div className="max-w-[1480px] mx-auto px-4 sm:px-6 pt-8 sm:pt-10">
                 <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_340px] xl:grid-cols-[250px_minmax(0,1fr)_330px] gap-8 xl:gap-10 items-start">
 
                     {/* Left: contents list (wide screens) */}
                     {toc.length > 2 && (
-                        <nav aria-label="In this blog" className="hidden xl:block sticky top-28">
+                        <nav aria-label="In this blog" className="hidden xl:block sticky top-28 max-h-[calc(100vh-8rem)] overflow-y-auto space-y-5 pb-2 [scrollbar-width:thin]">
                             <InkCard className="p-4">
                                 <p className="flex items-center gap-2 font-urbanist font-extrabold text-[14px] text-[#D0362E]"><ListOrdered size={15} />Is blog mein</p>
                                 <ol className="mt-3 space-y-1">
@@ -185,6 +210,12 @@ const BlogDetailPage = () => {
                                     ))}
                                 </ol>
                             </InkCard>
+                            {relatedLeft.length > 0 && (
+                                <div className="space-y-3">
+                                    <p className="font-urbanist font-extrabold text-[14px] text-[#D0362E] px-1">Ye bhi padho</p>
+                                    {relatedLeft.map((item) => <BlogThumb key={item._id} item={item} />)}
+                                </div>
+                            )}
                         </nav>
                     )}
 
@@ -221,7 +252,7 @@ const BlogDetailPage = () => {
                     </article>
 
                     {/* Right sidebar */}
-                    <aside className="space-y-6 min-w-0">
+                    <aside className="space-y-6 min-w-0 lg:self-stretch">
                         <InkCard className="p-5">
                             <div className="flex items-center gap-3">
                                 <span className="w-12 h-12 rounded-xl bg-[#D0362E] text-white border-2 border-[#16130F] font-urbanist font-black text-[15px] grid place-items-center flex-shrink-0">UC</span>
@@ -244,24 +275,13 @@ const BlogDetailPage = () => {
                                     <DesiHeading hi="Aage padho" className="[&_h2]:text-[20px] [&_h2]:sm:text-[20px]">Related guides</DesiHeading>
                                     <Link to="/blogs" className="text-[12.5px] font-bold underline decoration-[#D0362E] decoration-2 underline-offset-4 whitespace-nowrap">View all</Link>
                                 </div>
-                                <div className="mt-4 space-y-2.5">
-                                    {relatedBlogs.map((item) => (
-                                        <Link
-                                            key={item._id}
-                                            to={`/blogs/${item.slug || item._id}`}
-                                            className="group block p-3 rounded-xl bg-[#FFF6E5] border-2 border-transparent hover:border-[#16130F] hover:bg-white transition-colors"
-                                        >
-                                            <span className="text-[10.5px] font-black uppercase tracking-wider text-[#14837E] block mb-1">{item.category || 'Guide'}</span>
-                                            <span className="flex items-start justify-between gap-2">
-                                                <span className="font-bold text-[13px] leading-snug line-clamp-2">{item.title}</span>
-                                                <ArrowRight size={14} className="mt-0.5 flex-shrink-0 transition-transform group-hover:translate-x-0.5" />
-                                            </span>
-                                        </Link>
-                                    ))}
+                                <div className="mt-4 space-y-3">
+                                    {relatedTop.map((item) => <BlogThumb key={item._id} item={item} />)}
                                 </div>
                             </InkCard>
                         )}
 
+                        <div className="lg:sticky lg:top-28 space-y-6">
                         <div className="p-5 bg-[#14837E] text-white border-[3px] border-[#16130F] shadow-[5px_5px_0_#16130F]" style={{ borderRadius: 14 }}>
                             <p className="font-urbanist font-extrabold text-[14px] text-[#F2B705]">Free counselling</p>
                             <p className="mt-1 font-urbanist font-black text-[20px] leading-tight">Confused? Ask a senior who has done it.</p>
@@ -271,6 +291,15 @@ const BlogDetailPage = () => {
                             >
                                 Book a free call <ArrowRight size={15} />
                             </button>
+                        </div>
+                        {relatedMore.length > 0 && (
+                            <InkCard className="p-5">
+                                <p className="font-urbanist font-extrabold text-[14px] text-[#D0362E]">Aur blogs</p>
+                                <div className="mt-3 grid grid-cols-1 gap-3">
+                                    {relatedMore.map((item) => <BlogThumb key={item._id} item={item} row />)}
+                                </div>
+                            </InkCard>
+                        )}
                         </div>
                     </aside>
                 </div>
