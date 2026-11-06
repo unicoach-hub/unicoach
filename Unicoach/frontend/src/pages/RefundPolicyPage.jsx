@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { RefreshCw, Clock, UserX, FileText, MessageSquare, Gift, Mail } from 'lucide-react';
 
-const UPDATED = '20 October 2026';
+const UPDATED = '5 November 2026';
 
 const Section = ({ id, icon: Icon, title, children }) => (
   <section id={id} className="scroll-mt-28 border-t border-slate-200 pt-8 mt-8 first:border-0 first:pt-0 first:mt-0">
@@ -27,8 +27,9 @@ const RefundPolicyPage = () => {
 
         <div className="mt-6 rounded-2xl bg-white border border-slate-200 p-5 text-[15px] text-slate-700 leading-relaxed">
           UniCoach is a platform where students book paid services (1:1 video calls, SOP / resume reviews and Priority DMs)
-          with verified mentors. Payments are collected securely through Razorpay. This policy explains when you can cancel
-          a booking and when you get your money back. Free counselling with the UniCoach team has no charge, so no refund applies.
+          with verified mentors. Payments are collected securely through Razorpay. <b>All payments are final and non-refundable once
+          you pay.</b> You get your money back only if the service is not delivered at all, as listed below. Free counselling with the
+          UniCoach team has no charge, so no refund applies.
         </div>
 
         <div className="mt-8 rounded-2xl bg-white border border-slate-200 p-6 sm:p-8">
@@ -39,8 +40,9 @@ const RefundPolicyPage = () => {
                   <tr><th className="p-3 font-semibold">Situation</th><th className="p-3 font-semibold">What you get</th></tr>
                 </thead>
                 <tbody className="divide-y divide-slate-200">
-                  <tr><td className="p-3">You cancel a 1:1 call 24 hours or more before it starts</td><td className="p-3">Full refund</td></tr>
-                  <tr><td className="p-3">You cancel less than 24 hours before, or don't join</td><td className="p-3">No refund (one free reschedule if the mentor agrees)</td></tr>
+                  <tr><td className="p-3">You cancel a 1:1 call, at any time</td><td className="p-3">No refund (one reschedule if you ask 24 hours or more before and the mentor agrees)</td></tr>
+                  <tr><td className="p-3">You don't join the call</td><td className="p-3">No refund</td></tr>
+                  <tr><td className="p-3">You change your mind or are unhappy after the service</td><td className="p-3">No refund (one revision for SOP / resume reviews)</td></tr>
                   <tr><td className="p-3">The mentor cancels or doesn't join within 15 minutes</td><td className="p-3">Full refund, or a free reschedule if you prefer</td></tr>
                   <tr><td className="p-3">SOP / resume review not delivered in the promised time</td><td className="p-3">Full refund</td></tr>
                   <tr><td className="p-3">Priority DM not answered within 24 hours</td><td className="p-3">Full refund</td></tr>
@@ -51,8 +53,8 @@ const RefundPolicyPage = () => {
           </Section>
 
           <Section id="calls" icon={Clock} title="1:1 video calls">
-            <p>You can cancel from your dashboard or by writing to us. If you cancel <b>24 hours or more</b> before the session, you get a full refund.</p>
-            <p>If you cancel <b>less than 24 hours</b> before the session, or do not join, the session is treated as used and is not refunded, because the mentor kept that time for you. You may ask for one reschedule, which the mentor can accept.</p>
+            <p>Once you book and pay, the mentor keeps that time for you, so <b>cancellations are not refunded</b>, whenever you cancel.</p>
+            <p>If you can't make it, ask for a reschedule from your dashboard or by writing to us <b>24 hours or more</b> before the session. You get one reschedule, if the mentor agrees. If you do not join, the session is treated as used.</p>
           </Section>
 
           <Section id="mentor" icon={UserX} title="If the mentor cancels or misses the session">
@@ -60,8 +62,8 @@ const RefundPolicyPage = () => {
           </Section>
 
           <Section id="reviews" icon={FileText} title="SOP / resume reviews">
-            <p>Once the mentor has started working on your document, the review cannot be cancelled. If the review is not delivered within the time shown on the mentor's page (usually 48 hours), you get a full refund.</p>
-            <p>If you are unhappy with the quality, write to us within 7 days. We will ask the mentor for one revision, and if the work clearly does not match what was offered, we will refund you.</p>
+            <p>Once you pay, the review cannot be cancelled. If the review is not delivered within the time shown on the mentor's page (usually 48 hours), you get a full refund.</p>
+            <p>If you are unhappy with the quality, write to us within 7 days and we will ask the mentor for one revision. A delivered review is not refunded.</p>
           </Section>
 
           <Section id="dm" icon={MessageSquare} title="Priority DMs">
@@ -73,7 +75,7 @@ const RefundPolicyPage = () => {
           </Section>
 
           <Section id="how" icon={RefreshCw} title="How refunds are paid">
-            <p>Approved refunds go back to the <b>original payment method</b> (UPI, card, net banking or wallet) through Razorpay. We start the refund within 2 working days of approval; your bank usually takes <b>5 to 7 working days</b> to show it.</p>
+            <p>Refunds happen only in the cases above. They go back to the <b>original payment method</b> (UPI, card, net banking or wallet) through Razorpay. We start the refund within 2 working days of approval; your bank usually takes <b>5 to 7 working days</b> to show it.</p>
             <p>Payment gateway charges are not deducted from refunds that are due to a cancellation by the mentor or by UniCoach.</p>
           </Section>
 

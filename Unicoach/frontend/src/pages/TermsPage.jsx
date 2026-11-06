@@ -240,6 +240,7 @@ const TermsPage = () => {
                 </p>
                 <ul className="list-disc pl-5 space-y-2 text-slate-700 font-medium">
                   <li><strong>Third-Party Fees:</strong> University application fees, embassy visa fees, courier charges, and third-party standardized test fees are paid directly to those respective organizations and are non-refundable by UniCoach.</li>
+                  <li><strong>Mentor Services:</strong> Payments for 1:1 calls, SOP / resume reviews and Priority DMs are final and non-refundable, except when the mentor cancels or does not deliver the service. See the <a href="/refund-policy" className="text-[#DE5C2B] font-semibold underline">Refund &amp; Cancellation Policy</a>.</li>
                   <li><strong>Consulting Fees:</strong> Customized consulting packages are governed by individual service schedules provided at enrollment.</li>
                 </ul>
               </div>

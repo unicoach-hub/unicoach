@@ -4,6 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { submitMentorApplication, uploadMentorVerificationDoc } from '../api/unicoachApi';
 import { PillButton } from '../../components/ui/PillButton';
 import CountrySelect from '../../components/ui/CountrySelect';
+import TutorialVideo from '../../components/ui/TutorialVideo';
 import SuggestInput from '../../components/ui/SuggestInput';
 import { API_BASE_URL } from '../../config';
 import { 
@@ -564,6 +565,19 @@ const UnicoachApplyPage = () => {
           <p className="text-xs sm:text-sm text-slate-600 leading-relaxed font-normal">
             UniCoach features verified people living abroad: international students, alumni, working professionals and creators. Share your proof or social profile below. Upon admin verification, you'll receive the official <strong>Blue Tick badge</strong> and your creator profile will be published on the global marketplace.
           </p>
+        </div>
+
+        {/* Creator Program explainer: what mentors/influencers get, before they fill the form */}
+        <div className="mb-8">
+          <p className="text-[13px] font-bold text-[#DE5C2B] mb-2">2 minute mein samjho: page, earnings, form aur student tracking</p>
+          <TutorialVideo
+            src="/videos/tutorials/creator-program.mp4"
+            poster="/videos/tutorials/creator-program-poster.jpg"
+            title="UniCoach Creator Program: how it works"
+            duration="2 min"
+            sound
+            className="w-full"
+          />
         </div>
 
         {/* ── Step-by-Step Onboarding Roadmap ── */}

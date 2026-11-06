@@ -467,7 +467,7 @@ const CheckoutModal = ({
                 </li>
                 <li className="flex items-start gap-2.5">
                   <span className="w-1.5 h-1.5 rounded-full bg-[#DE5C2B] mt-1.5 flex-shrink-0" />
-                  <span>Direct contact with admitted senior with escrow refund protection</span>
+                  <span>Direct contact with an admitted senior; your payment is held safely until the session is done</span>
                 </li>
               </ul>
             </div>
@@ -1033,7 +1033,7 @@ const CheckoutModal = ({
               </p>
 
               <p className="text-[11px] text-slate-400 leading-relaxed">
-                By clicking Confirm and Pay, I agree to the <span className="underline cursor-pointer">Terms & Refund Policies</span>
+                By clicking Confirm and Pay, I agree to the <a href="/terms" target="_blank" rel="noopener noreferrer" className="underline">Terms</a> and the <a href="/refund-policy" target="_blank" rel="noopener noreferrer" className="underline">Refund Policy</a>. Payments are non-refundable unless the mentor cancels or does not deliver.
               </p>
 
               <div className="flex items-center justify-center gap-1.5 text-[11px] text-slate-400 pt-1">

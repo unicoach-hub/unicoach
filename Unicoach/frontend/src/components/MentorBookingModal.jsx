@@ -718,7 +718,7 @@ export default function MentorBookingModal({
               <div className="flex items-center gap-2 text-slate-500 text-[11px] bg-emerald-50/60 border border-emerald-200/60 p-2.5 rounded-xl">
                 <ShieldCheck size={16} className="text-emerald-600 shrink-0" />
                 <span>
-                  <strong>100% Satisfaction Guarantee:</strong> If your mentor fails to join the call, you get a full instant refund.
+                  <strong>No-show protection:</strong> Payments are non-refundable, but if your mentor fails to join the call, you get a full refund.
                 </span>
               </div>
 
