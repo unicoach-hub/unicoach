@@ -25,7 +25,7 @@ const MentorLandingPage = () => {
 
       {/* ════════ SECTION 1A: EXPLAINER VIDEO (how the creator program works) ════════ */}
       <section id="how-it-works-video" className="py-12 sm:py-16 px-4 sm:px-6 lg:px-12 bg-white">
-        <div className="max-w-[960px] mx-auto">
+        <div className="max-w-[1240px] mx-auto">
           <div className="text-center mb-6">
             <p className="font-urbanist font-extrabold text-[16px] leading-none text-[#D0362E]">2 minute mein samjho</p>
             <h2 className="mt-2 font-urbanist text-[28px] sm:text-[40px] font-black text-[#16130F] tracking-[-0.04em] leading-[1.06]">
