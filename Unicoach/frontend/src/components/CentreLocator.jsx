@@ -122,7 +122,7 @@ const centres = [
     city: 'Panipat',
     slug: 'panipat',
     address: '1st Floor, Gali No. 4, Sahil Colony, Jattal road, Sondhapur Village, Panipat, Haryana, India, 132105',
-    hours: 'Mon - Sat: 9:30 AM - 6:30 PM',
+    hours: 'Mon - Sat: 10:00 AM - 7:00 PM',
     phone: '+91 95186 57944',
     bgColor: 'bg-indigo-50/70',
     textColor: 'text-indigo-700',

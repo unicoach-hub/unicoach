@@ -18,7 +18,7 @@ const offices = [
     landmarkTag: 'Kala Amb & War Memorial Heritage',
     address: '1st Floor, Gali No. 4, Sahil Colony, Jattal road, Sondhapur Village, Panipat, Haryana, India, 132105',
     phone: '+91 95186 57944',
-    hours: 'Mon - Sat: 9:30 AM - 6:30 PM',
+    hours: 'Mon - Sat: 10:00 AM - 7:00 PM',
     lat: 29.39,
     lon: 76.97,
     accent: 'from-indigo-600 to-blue-600',

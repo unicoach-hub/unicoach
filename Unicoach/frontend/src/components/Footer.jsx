@@ -273,7 +273,7 @@ const Footer = () => {
               <li className="flex gap-2.5 items-center">
                 <Clock className="w-4 h-4 text-[#DE5C2B] flex-shrink-0" />
                 <span className="text-slate-600 font-medium text-[12px]">
-                  Mon - Sat: 9:30 AM - 6:30 PM
+                  Mon - Sat: 10:00 AM - 7:00 PM
                 </span>
               </li>
               <li className="pt-2">
