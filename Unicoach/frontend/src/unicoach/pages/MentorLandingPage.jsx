@@ -14,6 +14,7 @@ import { UnicoachFeatureBentoGrid } from '../components/UnicoachFeatureBentoGrid
 import { ZeroFeeBanner } from '../components/ZeroFeeBanner';
 import { MentorTestimonialSection } from '../components/MentorTestimonialSection';
 import { StationSign } from '../../components/desi/DesiKit';
+import TutorialVideo from '../../components/ui/TutorialVideo';
 
 const MentorLandingPage = () => {
   return (
@@ -21,6 +22,28 @@ const MentorLandingPage = () => {
       
       {/* ════════ SECTION 1: MENTOR HERO (Original Creator Storefront) ════════ */}
       <MentorHeroSection />
+
+      {/* ════════ SECTION 1A: EXPLAINER VIDEO (how the creator program works) ════════ */}
+      <section id="how-it-works-video" className="py-12 sm:py-16 px-4 sm:px-6 lg:px-12 bg-white">
+        <div className="max-w-[960px] mx-auto">
+          <div className="text-center mb-6">
+            <p className="font-urbanist font-extrabold text-[16px] leading-none text-[#D0362E]">2 minute mein samjho</p>
+            <h2 className="mt-2 font-urbanist text-[28px] sm:text-[40px] font-black text-[#16130F] tracking-[-0.04em] leading-[1.06]">
+              How the UniCoach Creator Program works
+            </h2>
+            <p className="text-[#3D3830] text-[15px] sm:text-[16.5px] font-medium leading-relaxed max-w-xl mx-auto mt-3">
+              Your page, your earnings, your forms and how you track every student, step by step.
+            </p>
+          </div>
+          <TutorialVideo src="/videos/tutorials/creator-program.mp4" poster="/videos/tutorials/creator-program-poster.jpg"
+            title="UniCoach Creator Program: how it works" duration="2 min" sound className="w-full" />
+          <div className="text-center mt-6">
+            <Link to="/unicoach/apply" className="inline-flex items-center gap-2 bg-[#16130F] text-white font-bold text-[15px] px-6 py-3 rounded-full hover:bg-[#2b261f] transition">
+              Apply as a mentor <ArrowRight className="w-4 h-4" />
+            </Link>
+          </div>
+        </div>
+      </section>
 
       {/* ════════ SECTION 1B: MENTORS ALREADY HERE ════════ */}
       <MentorPeersSection />
