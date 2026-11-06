@@ -7,7 +7,6 @@
 import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
 import { MentorHeroSection } from '../components/MentorHeroSection';
-import { CohortSection } from '../components/CohortSection';
 import { MentorPeersSection } from '../components/MentorPeersSection';
 import { MentorFlashSection } from '../components/MentorFlashSection';
 import { MentorDashboardPreview } from '../components/MentorDashboardPreview';
@@ -25,9 +24,6 @@ const MentorLandingPage = () => {
 
       {/* ════════ SECTION 1B: MENTORS ALREADY HERE ════════ */}
       <MentorPeersSection />
-
-      {/* ════════ SECTION 2: COHORTS WALL (Mentor Programs) ════════ */}
-      <CohortSection />
 
       {/* ════════ SECTION 3: CREATE IN A FLASH (Mentor Setup Guide) ════════ */}
       <MentorFlashSection />
