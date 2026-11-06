@@ -102,6 +102,18 @@ const enrichUserWithMentor = async (userDoc) => {
 const syncLeadFromAuth = async (enrichedUser, { method, isNewAccount, attribution, referralMentor }) => {
   try {
     if (!enrichedUser || enrichedUser.role === 'admin' || enrichedUser.isMentor) return;
+    if (isNewAccount) {
+      require('../utils/teamAlert').sendTeamAlert({
+        subject: `Naya account: ${enrichedUser.name || enrichedUser.email} (${method})`,
+        heading: 'Website par naya student account bana',
+        details: {
+          Naam: enrichedUser.name, Email: enrichedUser.email, Phone: enrichedUser.phone, Tarika: method,
+          'Mentor link se': referralMentor ? `${referralMentor.name} (@${referralMentor.handle})` : '',
+        },
+        adminPath: '/users',
+        replyTo: enrichedUser.email,
+      });
+    }
 
     const Lead = require('../models/Lead');
     const email = (enrichedUser.email || '').toLowerCase().trim();

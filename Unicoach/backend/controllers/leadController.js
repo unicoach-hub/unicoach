@@ -4,6 +4,7 @@ const { findLeadsByContact, linkLeadToDuplicates } = require('../utils/leadMatch
 const { readAttribution, applyAttributionToLead } = require('../utils/attribution');
 const { sendMetaEvent } = require('../services/metaConversions');
 const { startLeadCall } = require('../services/bolnaCalls');
+const { sendTeamAlert } = require('../utils/teamAlert');
 
 // Service-page forms → the matching Admin → Support Requests category pill
 const SUPPORT_CATEGORY_BY_SOURCE = {
@@ -70,6 +71,16 @@ exports.submitLead = async (req, res) => {
       customData: { content_name: lead.latestSource || lead.source }
     });
     startLeadCall(lead);
+    sendTeamAlert({
+      subject: `Naya lead: ${name} (${sourceDesc})`,
+      heading: `${isRepeat ? 'Purane student ne phir se form bhara' : 'Website par naya lead aaya'}`,
+      details: {
+        Naam: name, Phone: normalizedPhone, Email: cleanEmail, Form: sourceDesc, University: uniName,
+        Country: dreamCountry, Intake: preferredIntake, Education: highestEducation, City: currentCity,
+      },
+      adminPath: '/leads',
+      replyTo: cleanEmail,
+    });
 
     return res.status(200).json({
       success: true,
@@ -167,6 +178,17 @@ exports.bookConsultation = async (req, res) => {
       customData: { content_name: source }
     });
     startLeadCall(lead);
+    sendTeamAlert({
+      subject: `Consultation request: ${name.trim()} (${source})`,
+      heading: `${isRepeat ? 'Purane student ne' : 'Naye student ne'} consultation maangi`,
+      details: {
+        Naam: name.trim(), Phone: normalizedPhone, Email: cleanEmail, Form: source,
+        Country: destination, Intake: intake, University: university,
+        Sawaal: String(query || '').split(' | ').join('\n'),
+      },
+      adminPath: '/requests',
+      replyTo: cleanEmail,
+    });
 
     // ── Also sync to SupportRequest so it appears in Admin -> Support Requests (/requests) ──
     try {

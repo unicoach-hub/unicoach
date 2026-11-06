@@ -8,6 +8,7 @@ const { sendMetaEvent } = require('../services/metaConversions');
 const { startLeadCall } = require('../services/bolnaCalls');
 const { sendEmail } = require('../utils/email');
 const { escapeHtml } = require('../utils/escapeHtml');
+const { sendTeamAlert } = require('../utils/teamAlert');
 
 const SITE = () => (process.env.FRONTEND_URL || 'https://www.unicoach.com').replace(/\/+$/, '');
 const emailShell = (body) => `
@@ -208,6 +209,15 @@ exports.submitForm = async (req, res) => {
       customData: { content_name: form.name || form.slug }
     });
     startLeadCall(lead);
+    sendTeamAlert({
+      subject: `Form bhara: ${name} (${formLabel})`,
+      heading: `"${formLabel}" form mein naya response`,
+      details: Object.fromEntries(form.fields
+        .filter((f) => f.type !== 'heading' && data[f.label] !== undefined)
+        .map((f) => [f.label, data[f.label]])),
+      adminPath: '/crm/forms',
+      replyTo: cleanEmail,
+    });
     if (ownerEmail) sendOwnerLeadEmail({ to: ownerEmail, formLabel, studentName: name, data, fields: form.fields });
     if (cleanEmail && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(cleanEmail)) {
       sendStudentThanksEmail({ to: cleanEmail, name: name === 'New Lead' ? 'there' : name, formLabel, successMessage: form.successMessage || 'Thank you! Your response has been recorded.' });

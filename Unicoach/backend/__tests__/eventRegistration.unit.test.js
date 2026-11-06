@@ -56,6 +56,8 @@ jest.mock('../utils/aiService', () => ({
   cleanJsonResponse: jest.fn(),
 }));
 jest.mock('../utils/email', () => ({ sendEmail: (...a) => mockSendEmail(...a) }));
+const mockTeamAlert = jest.fn();
+jest.mock('../utils/teamAlert', () => ({ sendTeamAlert: (...a) => mockTeamAlert(...a), teamInbox: () => 'team@example.com' }));
 jest.mock('../utils/cache', () => ({ clearCache: jest.fn() }));
 jest.mock('../utils/docxParser', () => ({ parseDocx: jest.fn() }));
 
@@ -250,6 +252,7 @@ describe('POST /api/events/:id/register', () => {
     expect(lead.aiScoring).toMatchObject({ score: 82, category: 'Hot' });
 
     expect(mockSendEmail).toHaveBeenCalledTimes(1);
+    expect(mockTeamAlert).toHaveBeenCalledWith(expect.objectContaining({ replyTo: 'priya@example.com', adminPath: '/events' }));
     const mail = mockSendEmail.mock.calls[0][0];
     expect(mail.to).toBe('priya@example.com');
     expect(mail.subject).toBe("You're registered: Ireland Career Webinar");

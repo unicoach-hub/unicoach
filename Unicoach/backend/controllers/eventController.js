@@ -248,6 +248,14 @@ exports.registerForEvent = async (req, res) => {
       throw srErr;
     }
 
+    require('../utils/teamAlert').sendTeamAlert({
+      subject: `Event registration: ${name} → ${event.title}`,
+      heading: 'Event ke liye naya registration',
+      details: { Event: event.title, Kab: when, Naam: name, Phone: phone, Email: email, Intake: intake },
+      adminPath: '/events',
+      replyTo: email,
+    });
+
     res.status(201).json({
       success: true,
       alreadyRegistered: false,

@@ -118,6 +118,13 @@ exports.createSupportRequest = async (req, res) => {
     });
 
     const saved = await newRequest.save();
+    require('../utils/teamAlert').sendTeamAlert({
+      subject: `Support request: ${saved.name} (${saved.category})`,
+      heading: 'Website par naya support request aaya',
+      details: { Naam: saved.name, Phone: saved.phone, Email: saved.email, Category: saved.category, Message: saved.message },
+      adminPath: '/requests',
+      replyTo: saved.email,
+    });
 
     try {
       await sendEmail({

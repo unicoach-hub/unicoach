@@ -20,17 +20,18 @@ const fold = (line) => {
 
 /**
  * @param {{ uid: string, start: Date, durationMin: number, summary: string, description?: string,
- *   location?: string, organizer: { name?: string, email: string }, attendees?: { name?: string, email: string }[] }} e
- * @returns {string} an iCalendar REQUEST
+ *   location?: string, method?: 'REQUEST'|'CANCEL', organizer: { name?: string, email: string }, attendees?: { name?: string, email: string }[] }} e
+ * @returns {string} an iCalendar REQUEST (or CANCEL, which takes the event off calendars with the same uid)
  */
 function buildInvite(e) {
+  const cancel = e.method === 'CANCEL';
   const end = new Date(new Date(e.start).getTime() + (e.durationMin || 30) * 60000);
   const lines = [
     'BEGIN:VCALENDAR',
     'PRODID:-//UniCoach//Consultations//EN',
     'VERSION:2.0',
     'CALSCALE:GREGORIAN',
-    'METHOD:REQUEST',
+    cancel ? 'METHOD:CANCEL' : 'METHOD:REQUEST',
     'BEGIN:VEVENT',
     `UID:${e.uid}`,
     `DTSTAMP:${stamp(Date.now())}`,
@@ -41,8 +42,8 @@ function buildInvite(e) {
     e.location ? `LOCATION:${text(e.location)}` : '',
     `ORGANIZER;CN=${text(e.organizer.name || 'UniCoach')}:mailto:${e.organizer.email}`,
     ...(e.attendees || []).map((a) => `ATTENDEE;CN=${text(a.name || a.email)};ROLE=REQ-PARTICIPANT;PARTSTAT=NEEDS-ACTION;RSVP=TRUE:mailto:${a.email}`),
-    'STATUS:CONFIRMED',
-    'SEQUENCE:0',
+    cancel ? 'STATUS:CANCELLED' : 'STATUS:CONFIRMED',
+    cancel ? 'SEQUENCE:1' : 'SEQUENCE:0',
     'BEGIN:VALARM',
     'ACTION:DISPLAY',
     'DESCRIPTION:Reminder',

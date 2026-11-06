@@ -9,6 +9,7 @@ const { createRazorpayOrder, verifyRazorpayPayment } = require('../unicoach/serv
 const { sendEmail } = require('../utils/email');
 const escapeHtml = require('../utils/escapeHtml');
 const { buildInvite } = require('../utils/ics');
+const { sendTeamAlert, teamInbox } = require('../utils/teamAlert');
 
 const BLOCKING = ['confirmed', 'completed', 'no_show'];
 
@@ -167,16 +168,44 @@ exports.create = async (req, res) => {
 
 exports.prettyWhen = prettyWhen;
 
-const sendConfirmation = (c) => sendEmail({
-  to: c.email,
-  subject: `Your UniCoach consultation is booked: ${prettyWhen(c.date, c.time)}`,
-  html: `<p>Hi ${escapeHtml(c.name)},</p>
-<p>Your <b>${escapeHtml(c.serviceLabel)}</b> call with the UniCoach team is confirmed for <b>${prettyWhen(c.date, c.time)} (India time)</b>, ${c.durationMin} minutes.</p>
-<p>We will send the call link before the session. Booking reference: <b>${c.ref}</b>.${c.amountINR > 0 ? ` Amount paid: ₹${c.amountINR}.` : ''}</p>
+// Never throws: a bad email or invite must not undo a confirmed booking
+const sendConfirmation = (c) => { try {
+  const when = prettyWhen(c.date, c.time);
+  sendTeamAlert({
+    subject: `Call booked on website: ${c.name}, ${when}`,
+    heading: 'Website se naya counsellor call book hua',
+    details: {
+      Kab: `${when} (India time), ${c.durationMin} min`, Naam: c.name, Phone: c.phone, Email: c.email,
+      Service: c.serviceLabel, Notes: c.notes, Ref: c.ref, Paid: c.amountINR > 0 ? `₹${c.amountINR}` : 'Free',
+    },
+    adminPath: '/crm/consultations',
+    replyTo: c.email,
+  });
+  return sendEmail({
+    to: c.email,
+    subject: `Your UniCoach consultation is booked: ${when}`,
+    html: `<p>Hi ${escapeHtml(c.name)},</p>
+<p>Your <b>${escapeHtml(c.serviceLabel)}</b> call with the UniCoach team is confirmed for <b>${when} (India time)</b>, ${c.durationMin} minutes.</p>
+<p>Our counsellor will call you on <b>${escapeHtml(c.phone)}</b> at that time. The calendar invite is attached, and we will remind you a day before and an hour before the call.</p>
+<p>Booking reference: <b>${c.ref}</b>.${c.amountINR > 0 ? ` Amount paid: ₹${c.amountINR}.` : ''}</p>
 <p>Need to change the time? Just reply to this email.</p>
 <p>Team UniCoach</p>`,
-  kind: 'transactional',
-}).catch((e) => console.error('Consultation email failed:', e.message));
+    attachments: [{
+      filename: 'invite.ics',
+      contentType: 'text/calendar; charset=utf-8; method=REQUEST',
+      content: buildInvite({
+        uid: `${c.ref}@unicoach.com`,
+        start: c.startsAt,
+        durationMin: c.durationMin,
+        summary: 'UniCoach counsellor call',
+        description: `Our counsellor will call you on ${c.phone}. Booking ${c.ref}. To change the time, reply to the confirmation email.`,
+        organizer: { name: 'UniCoach', email: teamInbox().split(',')[0].trim() },
+        attendees: [{ name: c.name, email: c.email }],
+      }),
+    }],
+    kind: 'counselling',
+  }).catch((e) => console.error('Consultation email failed:', e.message));
+} catch (e) { console.error('Consultation email failed:', e.message); } };
 
 /* ───────────── Booked by Nitya on an AI call (services/bolnaCalls → recordExecution) ───────────── */
 
@@ -197,11 +226,7 @@ const readCallTime = (when) => {
   return at;
 };
 
-const teamEmail = async () => {
-  if (process.env.CONSULTATION_TEAM_EMAIL) return process.env.CONSULTATION_TEAM_EMAIL;
-  const s = await require('../models/Settings').findOne().select('supportEmail').lean().catch(() => null);
-  return s?.supportEmail || 'support@unicoach.com';
-};
+const teamEmail = async () => process.env.CONSULTATION_TEAM_EMAIL || teamInbox();
 
 // Student: confirmation + invite (if we have their email). Team: the same invite, plus who to call and the call summary.
 const sendCallBookingEmails = async (c, summary) => {
@@ -416,6 +441,33 @@ exports.adminList = async (req, res) => {
 };
 
 /** PATCH /api/admin/consultations/:id: status, counsellor and team notes */
+const sendCancelledEmail = (c) => { try {
+  const site = (process.env.FRONTEND_URL || 'https://www.unicoach.com').replace(/\/+$/, '');
+  sendEmail({
+    to: c.email,
+    subject: `Your UniCoach call on ${prettyWhen(c.date, c.time)} is cancelled`,
+    html: `<p>Hi ${escapeHtml(c.name)},</p>
+<p>Your <b>${escapeHtml(c.serviceLabel)}</b> call with UniCoach on <b>${prettyWhen(c.date, c.time)} (India time)</b> has been cancelled. Booking reference: <b>${c.ref}</b>.</p>
+<p>You can pick a new time here: <a href="${site}/book-consultation">${site.replace(/^https?:\/\//, '')}/book-consultation</a>. Or just reply to this email and we will find a time that works for you.</p>
+<p>Team UniCoach</p>`,
+    attachments: [{
+      filename: 'cancel.ics',
+      contentType: 'text/calendar; charset=utf-8; method=CANCEL',
+      content: buildInvite({
+        uid: `${c.ref}@unicoach.com`,
+        start: c.startsAt,
+        durationMin: c.durationMin,
+        summary: 'UniCoach counsellor call (cancelled)',
+        description: `Booking ${c.ref} was cancelled.`,
+        organizer: { name: 'UniCoach', email: teamInbox().split(',')[0].trim() },
+        attendees: [{ name: c.name, email: c.email }],
+        method: 'CANCEL',
+      }),
+    }],
+    kind: 'counselling',
+  }).catch((e) => console.error('Consultation cancel email failed:', e.message));
+} catch (e) { console.error('Consultation cancel email failed:', e.message); } };
+
 exports.adminUpdate = async (req, res) => {
   try {
     const update = {};
@@ -428,6 +480,7 @@ exports.adminUpdate = async (req, res) => {
     if (teamNotes !== undefined) update.teamNotes = String(teamNotes).slice(0, 3000);
     // Cancelling frees the slot; bringing a call back takes the slot again (if nobody else has it)
     if (status) update.active = status !== 'cancelled';
+    const before = status ? await Consultation.findById(req.params.id).select('status').lean() : null;
     let c;
     try {
       c = await Consultation.findByIdAndUpdate(req.params.id, update, { new: true }).lean();
@@ -436,6 +489,9 @@ exports.adminUpdate = async (req, res) => {
       throw e;
     }
     if (!c) return res.status(404).json({ message: 'Not found' });
+    if (status === 'cancelled' && before && before.status !== 'cancelled' && c.email && new Date(c.startsAt) > new Date()) {
+      sendCancelledEmail(c);
+    }
     return res.json(c);
   } catch (err) {
     console.error('Admin consultation update error:', err);

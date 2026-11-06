@@ -36,6 +36,12 @@ const consultationSchema = new mongoose.Schema({
   source: { type: String, default: '' },
   aiCallId: { type: String, default: '', index: true }, // AiCall.executionId when Nitya booked it on a call
   leadId: { type: mongoose.Schema.Types.ObjectId, ref: 'Lead' },
+  // When each reminder email went out (services/consultationReminders), so none is sent twice
+  reminders: {
+    dayBefore: { type: Date },
+    hourBefore: { type: Date },
+    team: { type: Date },
+  },
 }, { timestamps: true });
 
 consultationSchema.index({ date: 1, time: 1, status: 1 });

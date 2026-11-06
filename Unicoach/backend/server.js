@@ -421,6 +421,7 @@ if (process.env.NODE_ENV !== 'test') {
   require('./services/whatsappCampaigns').startWorker();
   // Mentor 1:1 calls: email students "did your session happen?" (production only)
   require('./unicoach/services/sessionCheckService').startWorker();
+  require('./services/consultationReminders').startWorker();
   // Riya on ElevenLabs: Vobiz audio WebSocket (/api/ws/riya) and the worker that dials due calls
   require('./services/riyaCalls').attachBridge(server);
   require('./services/riyaCalls').startWorker();

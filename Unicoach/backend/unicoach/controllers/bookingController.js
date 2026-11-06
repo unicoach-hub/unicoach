@@ -994,6 +994,13 @@ const applyAsMentor = async (req, res) => {
     }
 
     require('../services/mentorEmails').sendApplicationReceived(mentor);
+    require('../../utils/teamAlert').sendTeamAlert({
+      subject: `Mentor application: ${mentor.name} (@${mentor.handle})`,
+      heading: 'Naye mentor ne apply kiya',
+      details: { Naam: mentor.name, Handle: '@' + mentor.handle, Email: mentor.email, Phone: mentor.phone, University: mentor.university },
+      adminPath: '/unicoach',
+      replyTo: mentor.email,
+    });
 
     res.status(201).json({
       success: true,

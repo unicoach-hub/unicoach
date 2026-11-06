@@ -194,6 +194,17 @@ exports.bookSlot = async (req, res) => {
       console.error('Lead auto-create error:', e);
     }
 
+    require('../utils/teamAlert').sendTeamAlert({
+      subject: `Slot booked: ${studentName}, ${dateObj.toLocaleDateString('en-IN')} ${timeSlot}`,
+      heading: `"${event.title}" mein slot book hua`,
+      details: {
+        Naam: studentName, Phone: studentPhone, Email: studentEmail,
+        Date: dateObj.toLocaleDateString('en-IN'), Time: timeSlot, Country: dreamCountry, Intake: preferredIntake,
+      },
+      adminPath: '/crm/calendar',
+      replyTo: studentEmail,
+    });
+
     return res.status(201).json({
       success: true,
       message: `Booking confirmed for ${timeSlot} on ${dateObj.toLocaleDateString()}!`,
