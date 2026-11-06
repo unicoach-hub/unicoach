@@ -24,6 +24,7 @@ import {
   CheckCircle2,
   Globe2,
   Lock,
+  GraduationCap,
 } from 'lucide-react';
 
 const ACCENT = '#DE5C2B';
@@ -32,6 +33,7 @@ const VIEW_MS = 6500;
 const NAV = [
   { id: 'overview', label: 'Home', icon: Home, caption: 'Your week at a glance: profile views, earnings and bookings.' },
   { id: 'bookings', label: 'Bookings & Sessions', icon: Calendar, badge: 3, caption: 'Every upcoming call with the student’s intake answers and a join button.' },
+  { id: 'my_students', label: 'My Students', icon: GraduationCap, caption: 'Every student who joined through your link, and how far they have got: documents, offer, visa.' },
   { id: 'priority_dms', label: 'Priority DMs & Requests', icon: MessageSquare, badge: 2, caption: 'Paid questions waiting for you, sorted by reply deadline.' },
   { id: 'calendar', label: 'Calendar & Slots', icon: CalendarDays, caption: 'Open slots in your own time zone; students see them in theirs.' },
   { id: 'payouts', label: 'Earnings', icon: Wallet, caption: 'What each booking earned you and the status of every payout.' },
@@ -141,6 +143,60 @@ const BookingsView = () => (
           )}
         </motion.div>
       ))}
+    </div>
+  </Panel>
+);
+
+// ── My Students: same journey stages as the real dashboard (config/studentStages.js) ──
+const PHASES = ['Walk-in', 'Documents', 'Application', 'Offer', 'Fees', 'Visa'];
+const STUDENTS = [
+  { name: 'Ananya Iyer', course: 'MSc Data Analytics · TCD', phase: 3, stage: 'Offer received', tone: 'good' },
+  { name: 'Rohit Sinha', course: 'MSc Cyber Security · UCD', phase: 5, stage: 'Visa submitted' },
+  { name: 'Meera Nair', course: 'MBA · University of Galway', phase: 1, stage: 'Documents pending', tone: 'wait' },
+  { name: 'Karan Mehta', course: 'MSc Computer Science · DCU', phase: 5, stage: 'Visa approved', tone: 'good' },
+];
+const StudentsView = () => (
+  <Panel title="My Students" subtitle="Joined through your link · updated by the UniCoach team" right={<span className="shrink-0 text-[10px] font-bold text-white bg-[#2B3FA0] border-2 border-[#16130F] px-2 py-0.5 rounded-full">12 students</span>}>
+    <div className="grid grid-cols-3 gap-2 mb-2.5">
+      {[
+        { label: 'In process', value: '8', tone: 'text-[#16130F]' },
+        { label: 'Offers', value: '5', tone: 'text-[#14837E]' },
+        { label: 'Visas approved', short: 'Visas', value: '3', tone: 'text-[#DE5C2B]' },
+      ].map((k) => (
+        <div key={k.label} className="min-w-0 rounded-xl border-2 border-[#16130F] bg-[#FFF6E5] px-2.5 py-1.5">
+          <div className="text-[9.5px] sm:text-[10px] font-bold text-[#5B544A] truncate"><span className="sm:hidden">{k.short || k.label}</span><span className="hidden sm:inline">{k.label}</span></div>
+          <div className={`font-urbanist text-base font-black ${k.tone}`}>{k.value}</div>
+        </div>
+      ))}
+    </div>
+    <div className="space-y-1.5">
+      {STUDENTS.map((s, i) => (
+        <motion.div
+          key={s.name}
+          initial={{ opacity: 0, y: 6 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: i * 0.07 }}
+          className="rounded-xl border-2 border-[#16130F] bg-white px-2.5 py-1.5 flex items-center gap-2.5"
+        >
+          <Initials name={s.name} color={s.tone === 'good' ? '#14837E' : undefined} />
+          <div className="flex-1 min-w-0">
+            <div className="flex items-center justify-between gap-2">
+              <span className="text-[12px] font-black text-[#16130F] truncate">{s.name}</span>
+              <span className={`shrink-0 text-[9.5px] font-bold px-1.5 py-0.5 rounded-md border-[1.5px] border-[#16130F] ${s.tone === 'good' ? 'text-white bg-[#14837E]' : s.tone === 'wait' ? 'text-[#16130F] bg-[#F2B705]' : 'text-[#16130F] bg-[#FFF6E5]'}`}>{s.stage}</span>
+            </div>
+            <div className="text-[10px] text-[#5B544A] truncate">{s.course}</div>
+            {/* Journey bar: one segment per phase */}
+            <div className="mt-1 flex gap-[3px]" title={`${PHASES[s.phase]} · ${s.stage}`}>
+              {PHASES.map((ph, j) => (
+                <span key={ph} className="h-[5px] flex-1 rounded-full" style={{ backgroundColor: j <= s.phase ? (s.tone === 'good' ? '#14837E' : ACCENT) : '#16130F1F' }} />
+              ))}
+            </div>
+          </div>
+        </motion.div>
+      ))}
+    </div>
+    <div className="hidden sm:flex gap-[3px] mt-1.5 pl-[54px] pr-3 text-[8.5px] font-bold uppercase tracking-wide text-[#5B544A]">
+      {PHASES.map((ph) => <span key={ph} className="flex-1 text-center">{ph}</span>)}
     </div>
   </Panel>
 );
@@ -325,6 +381,7 @@ const ShareView = () => (
 const VIEWS = {
   overview: OverviewView,
   bookings: BookingsView,
+  my_students: StudentsView,
   priority_dms: DmsView,
   calendar: CalendarView,
   payouts: EarningsView,
@@ -364,7 +421,7 @@ export const MentorDashboardPreview = () => {
 
   return (
     <section ref={ref} id="mentor-dashboard" className="py-10 sm:py-14 px-4 sm:px-6 lg:px-12 bg-[#FFF6E5] overflow-hidden">
-      <div className="max-w-[980px] mx-auto">
+      <div className="max-w-[1240px] mx-auto">
         <div className="text-center max-w-2xl mx-auto mb-6 sm:mb-7">
           <p className="font-urbanist font-extrabold text-[16px] text-[#D0362E]">Andar se dekh lo</p>
           <div className="mt-2 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-[#14837E] text-white border-2 border-[#16130F] shadow-[2px_2px_0_#16130F] text-[12px] font-extrabold uppercase tracking-[0.08em] -rotate-1">
@@ -374,7 +431,7 @@ export const MentorDashboardPreview = () => {
             See exactly what you get, <span className="text-[#DE5C2B]">before you sign up</span>
           </h2>
           <p className="text-[#16130F]/80 text-[15px] sm:text-[16px] font-medium mt-2">
-            Bookings, paid questions, your calendar and every rupee you earn, in one dashboard. Click around: this is the same layout you will use.
+            Bookings, paid questions, your students' progress, your calendar and every rupee you earn, in one dashboard. Click around: this is the same layout you will use.
           </p>
         </div>
 
@@ -393,7 +450,7 @@ export const MentorDashboardPreview = () => {
             <span className="hidden sm:block w-12" />
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-[200px_1fr]">
+          <div className="grid grid-cols-1 md:grid-cols-[230px_1fr] lg:grid-cols-[250px_1fr]">
             {/* Sidebar (horizontal tabs on mobile) */}
             <nav className="min-w-0 border-b-2 md:border-b-0 md:border-r-2 border-[#16130F] p-2 md:p-2.5 bg-[#FFF6E5]" aria-label="Dashboard preview sections">
               <div className="hidden md:flex items-center gap-2 px-1.5 pb-2.5 mb-1.5 border-b-2 border-dashed border-[#16130F]/20">
@@ -413,12 +470,12 @@ export const MentorDashboardPreview = () => {
                       data-tab={i}
                       onClick={() => pick(i)}
                       aria-pressed={isActive}
-                      className={`relative shrink-0 flex items-center justify-between gap-2 px-2.5 py-2 rounded-xl text-[12px] font-bold transition-colors cursor-pointer whitespace-nowrap overflow-hidden no-shine border-2 ${
+                      className={`relative shrink-0 flex items-center justify-between gap-2 px-2.5 py-2 rounded-xl text-[12px] font-bold transition-colors cursor-pointer whitespace-nowrap md:whitespace-normal text-left overflow-hidden no-shine border-2 ${
                         isActive ? 'bg-white text-[#16130F] border-[#16130F] shadow-[2px_2px_0_#16130F]' : 'text-[#16130F]/75 border-transparent hover:bg-white/60'
                       }`}
                     >
-                      <span className="flex items-center gap-2.5">
-                        <n.icon className="w-4 h-4" style={{ color: isActive ? ACCENT : '#5B544A' }} />
+                      <span className="flex items-center gap-2.5 leading-tight">
+                        <n.icon className="w-4 h-4 shrink-0" style={{ color: isActive ? ACCENT : '#5B544A' }} />
                         {n.label}
                       </span>
                       {n.badge && (
@@ -443,7 +500,7 @@ export const MentorDashboardPreview = () => {
             </nav>
 
             {/* Main view */}
-            <div className="min-w-0 p-4 sm:p-5 bg-white relative min-h-[330px]">
+            <div className="min-w-0 p-4 sm:p-5 bg-white relative min-h-[370px]">
               <AnimatePresence mode="wait">
                 <motion.div
                   key={item.id}
