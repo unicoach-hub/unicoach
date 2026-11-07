@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { Segmented, Table, Tag, Spin, Alert, Button, Input, Drawer, Empty, Tooltip } from 'antd';
 import {
   ReloadOutlined, UserOutlined, BugOutlined, FileTextOutlined, AimOutlined, MobileOutlined, DesktopOutlined,
-  TabletOutlined, LinkOutlined, CheckCircleFilled, WarningFilled, EnvironmentOutlined,
+  TabletOutlined, LinkOutlined, ArrowLeftOutlined, CheckCircleFilled, WarningFilled, EnvironmentOutlined,
 } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
 import Header from '../components/Header';
@@ -269,6 +269,7 @@ const WebsiteVisitors = () => {
         extra={(
           <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
             <Segmented value={days} onChange={(d) => { setDays(d); setPage(1); }} options={[{ value: 7, label: '7 days' }, { value: 30, label: '30 days' }, { value: 90, label: '90 days' }]} />
+            <Link to="/developer"><Button icon={<ArrowLeftOutlined />}>Developer</Button></Link>
             <Button icon={<ReloadOutlined />} loading={loading} onClick={load}>Refresh</Button>
           </div>
         )}
