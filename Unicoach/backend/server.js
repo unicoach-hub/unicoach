@@ -162,7 +162,8 @@ const generalLimiter = rateLimit({
   max: 600, // Generous 600 requests / 15 min for shared campus Wi-Fi
   standardHeaders: true,
   legacyHeaders: false,
-  skip: (req) => req.method === 'GET', // Never block students merely reading articles/universities
+  // Never block students merely reading articles/universities; visitor beacons (/api/t) have their own limit
+  skip: (req) => req.method === 'GET' || req.path === '/t',
   message: { error: 'Too many requests from this IP, please try again after 15 minutes.' }
 });
 
@@ -193,6 +194,10 @@ const aiLimiter = rateLimit({
   legacyHeaders: false,
   message: { error: 'You have reached the AI generation limit for this session. Please try again after 10 minutes.' }
 });
+
+// Anonymous visitor beacons from the website (Admin → Developer → Visitors). sendBeacon posts text/plain.
+const trackLimiter = rateLimit({ windowMs: 15 * 60 * 1000, max: 400, standardHeaders: false, legacyHeaders: false, handler: (req, res) => res.status(204).end() });
+app.post('/api/t', trackLimiter, express.text({ type: 'text/plain', limit: '64kb' }), require('./controllers/visitorController').track);
 
 // Apply rate limits
 app.use('/api', generalLimiter);

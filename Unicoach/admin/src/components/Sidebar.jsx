@@ -4,6 +4,7 @@ import { Tooltip } from 'antd';
 import {
   FolderOpenOutlined,
   CodeOutlined,
+  EyeOutlined,
   AppstoreOutlined,
   TeamOutlined,
   CustomerServiceOutlined,
@@ -95,7 +96,8 @@ const NAV_SECTIONS = [
       },
       { path: '/staff', label: 'Staff & Roles', icon: <SafetyCertificateOutlined /> },
       { path: '/settings', label: 'Settings', icon: <SettingOutlined /> },
-      { path: '/developer', label: 'Developer', icon: <CodeOutlined /> },
+      { path: '/developer', label: 'Developer', icon: <CodeOutlined />, exact: true },
+      { path: '/developer/visitors', label: 'Website Visitors', icon: <EyeOutlined /> },
     ],
   },
 ];

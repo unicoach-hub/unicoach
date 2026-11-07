@@ -5,6 +5,7 @@ import { Analytics } from '@vercel/analytics/react'
 import App from './App.jsx'
 import { installApiFetch } from './utils/installApiFetch'
 import { initAdTracking } from './utils/adTracking'
+import { initVisitorTracking } from './utils/visitorTracking'
 import { captureReferral } from './utils/referral'
 import { installButtonRipple } from './utils/buttonRipple'
 
@@ -13,6 +14,8 @@ installApiFetch()
 
 // Google Ads / Meta Pixel, campaign attribution and lead/signup/purchase conversions
 initAdTracking()
+// Anonymous visitor analytics for Admin → Developer → Visitors (live site only)
+initVisitorTracking()
 captureReferral()
 installButtonRipple()
 

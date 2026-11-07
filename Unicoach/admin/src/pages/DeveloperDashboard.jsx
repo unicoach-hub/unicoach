@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Segmented, Table, Progress, Tag, Spin, Alert, Button, Tooltip as AntTooltip } from 'antd';
 import { ReloadOutlined, CloudServerOutlined, ApiOutlined, DatabaseOutlined, UserAddOutlined, LinkOutlined } from '@ant-design/icons';
 import { ResponsiveContainer, AreaChart, Area, XAxis, YAxis, Tooltip, CartesianGrid } from 'recharts';
+import { Link } from 'react-router-dom';
 import Header from '../components/Header';
 import API from '../api/axios';
 
@@ -112,7 +113,7 @@ const DeveloperDashboard = () => {
       <Header
         title="Developer"
         subtitle="Server health, API traffic, database and outside services, refreshed every 30 seconds"
-        extra={<Button icon={<ReloadOutlined />} loading={loading} onClick={() => load()}>Refresh</Button>}
+        extra={<div style={{ display: 'flex', gap: 8 }}><Link to="/developer/visitors"><Button>Website visitors</Button></Link><Button icon={<ReloadOutlined />} loading={loading} onClick={() => load()}>Refresh</Button></div>}
       />
       <div className="dashboard-content" style={{ display: 'grid', gap: 14 }}>
         {/* Top numbers */}

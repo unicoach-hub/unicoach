@@ -258,6 +258,9 @@ const PrivacyPolicyPage = () => {
                 <p>
                   We use essential session cookies to remember your login state, study program bookmarks, and application form progress. We also utilize anonymized analytics to gauge platform speed and optimize page loading times. You can manage cookie preferences directly through your browser settings.
                 </p>
+                <p>
+                  <strong>Website usage analytics.</strong> To understand which pages help students and where they get stuck, our website keeps a random visitor ID in your browser and records which pages you open, how long you stay, your device and browser type, your approximate city (worked out from your IP address, which we do not store), and technical problems such as page errors. This is anonymous: we do not record what you type into forms, and it is linked to your name or email only if you submit one of our forms. This data is deleted 90 days after your last visit. We also use the Meta pixel and Google Analytics so we can show UniCoach ads to people who have visited our website. You can opt out of our analytics at any time by clearing your browser storage, or by opening <a href="/?uc_notrack=1" className="text-[#DE5C2B] underline">unicoach.com/?uc_notrack=1</a> once in your browser.
+                </p>
               </div>
             </section>
 

@@ -12,4 +12,10 @@ router.get('/services', c.services);
 router.get('/database', c.database);
 router.get('/coolify', c.coolify);
 
+// Anonymous website visitors (controllers/visitorController)
+const visitors = require('../controllers/visitorController');
+router.get('/visitors', visitors.list);
+router.get('/visitors/summary', visitors.summary);
+router.get('/visitors/:id', visitors.detail);
+
 module.exports = router;
