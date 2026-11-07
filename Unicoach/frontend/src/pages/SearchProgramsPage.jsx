@@ -336,7 +336,7 @@ export default function SearchProgramsPage({ highlight } = {}) {
   }, [showCompare, selected]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
-    document.title = 'Course Finder | UniCoach';
+    document.title = 'Course Finder: Search Courses Abroad by Country, Fees & Intake | UniCoach';
     window.scrollTo(0, 0);
     // load CourseFinder-style fonts for this portal
     getSearchConfig().then(setConfig).catch(() => {});

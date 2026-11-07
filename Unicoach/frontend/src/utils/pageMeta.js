@@ -38,7 +38,7 @@ const STATIC = {
   '/scholarship-calculator': ['Scholarship Calculator for Study Abroad | UniCoach', 'Estimate the scholarships you could qualify for abroad based on your academics, test scores and target country.'],
   '/eligibility-calculator': ['Study Abroad Eligibility Calculator | Check Your Chances | UniCoach', 'Check your eligibility for universities abroad using your marks, test scores and target course.'],
   '/resources/calculators/admission-eligibility': ['University Admission Eligibility Calculator | UniCoach', 'See which universities abroad match your academic profile, English test score and budget.'],
-  '/search-programs': ['Course Finder: Search Study Abroad Programs | UniCoach', 'Find and shortlist courses at universities abroad by subject, country, fees and intake. Free, no login needed to search.'],
+  '/search-programs': ['Course Finder: Search Courses Abroad by Country, Fees & Intake | UniCoach', 'Find and shortlist courses at universities abroad by subject, country, fees and intake. Free, no login needed to search.'],
   '/blogs/rhodes-scholarship': ['Rhodes Scholarship for Indian Students: Eligibility & Process | UniCoach', 'How Indian students can apply for the Rhodes Scholarship to Oxford: eligibility, selection process and tips.'],
   '/privacy-policy': ['Privacy Policy | UniCoach', 'How UniCoach collects, uses and protects your personal information.'],
   '/terms': ['Terms of Service | UniCoach', 'Terms that apply when you use UniCoach services, tools and mentorship sessions.'],
@@ -83,6 +83,12 @@ export function getPageMeta(path) {
   const exam = path.match(/^\/exams\/([a-z]+)\/([a-z-]+)$/);
   if (exam && EXAMS[exam[1]]) {
     const [, slug, page] = exam;
+    if (slug === 'duolingo' && page === 'australia') {
+      return {
+        title: 'Is Duolingo Accepted in Australia? Yes for Unis, Not for Visa | UniCoach',
+        description: 'Yes, many Australian universities accept the Duolingo English Test for admission, but the Subclass 500 student visa does not. See minimum DET scores and which test to take for the visa.',
+      };
+    }
     if (slug === 'duolingo' && COUNTRY_NAMES[page]) {
       const c = COUNTRY_NAMES[page];
       return {

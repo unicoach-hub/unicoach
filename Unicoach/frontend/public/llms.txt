@@ -1,13 +1,14 @@
 # UniCoach
 
-> UniCoach is an Indian study abroad platform. It offers study abroad counselling (university shortlisting, applications, scholarships, education loans and student visas) and 1:1 sessions with verified senior students and alumni who have studied abroad. It also publishes free country guides, exam guides and AI tools for Indian students planning to study abroad.
+> UniCoach is a career counselling and study abroad guidance company based in Panipat, Haryana, India. It helps Indian students choose a career first, then the right course, country and university, and guides them on applications, scholarships, education loans and student visas. The first consultation is free, online or at the Panipat office. It also publishes free country guides, exam guides and online tools for Indian students planning to study abroad.
 
 Key facts:
 - Website: https://www.unicoach.com
 - Audience: Indian students planning bachelor's, master's or PhD study abroad
 - Destinations covered: USA, UK, Canada, Australia, Germany, Ireland, France, Italy and New Zealand
-- Services: study abroad counselling, university shortlisting, SOP and LOR help, scholarship guidance, education loan guidance, student visa assistance, test preparation guidance
-- UniCoach mentors: verified seniors and alumni from universities abroad who host 1:1 video calls, SOP reviews and visa guidance sessions
+- Services: career counselling, study abroad counselling, university shortlisting, SOP and LOR help, scholarship guidance, education loan guidance, student visa guidance, English test guidance (IELTS, PTE, Duolingo)
+- First consultation: free (online or at the Panipat office): https://www.unicoach.com/book-consultation
+- Serves students from Panipat, Karnal, Sonipat, Kurukshetra, Jind and Delhi in person, and students across India online
 - Office: 1st Floor, Gali No. 4, Sahil Colony, Jattal Road, Sondhapur Village, Panipat, Haryana 132105, India
 - Contact: info@unicoach.in, +91 95186 57944 (Mon to Sat, 10:00 AM to 7:00 PM IST)
 
@@ -68,7 +69,7 @@ Key facts:
 
 ## Mentorship
 
-- [UniCoach mentorship marketplace](https://www.unicoach.com/unicoach): book 1:1 sessions with verified seniors studying abroad
+- [UniCoach mentorship](https://www.unicoach.com/unicoach): a new section where students and alumni who studied abroad can offer 1:1 sessions
 - [Browse mentors](https://www.unicoach.com/unicoach/mentors)
 - [Become a mentor](https://www.unicoach.com/unicoach/for-mentors)
 
@@ -79,3 +80,5 @@ Key facts:
 - [Events and webinars](https://www.unicoach.com/events)
 - [Newsroom](https://www.unicoach.com/newsroom)
 - [Contact and free counselling](https://www.unicoach.com/contact)
+- [Career counselling](https://www.unicoach.com/career-counselling)
+- [How to choose a study abroad consultant in Panipat](https://www.unicoach.com/blogs/best-study-abroad-consultant-panipat)
