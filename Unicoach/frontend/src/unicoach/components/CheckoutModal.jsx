@@ -119,6 +119,8 @@ const CheckoutModal = ({
 
   const [formErrors, setFormErrors] = useState({});
   const [customAnswers, setCustomAnswers] = useState({});
+  // Student must tick the Terms & Refund Policy box before paying (stored on the booking as proof)
+  const [agreeTerms, setAgreeTerms] = useState(false);
   const [isOrderSummaryOpen, setIsOrderSummaryOpen] = useState(true);
   const [showDiscountInput, setShowDiscountInput] = useState(false);
 
@@ -281,6 +283,10 @@ const CheckoutModal = ({
 
   // Execute Final Payment & Order Confirmation
   const handleCompletePayment = async () => {
+    if (!agreeTerms) {
+      setPaymentError('Please tick the box to agree to the Terms & Refund Policy before paying.');
+      return;
+    }
     setIsProcessingPayment(true);
     setPaymentError(null);
     setPaymentNotice(null);
@@ -312,6 +318,7 @@ const CheckoutModal = ({
               customAnswers: formattedAnswers,
               couponCode: appliedCoupon?.code || null,
               paymentGateway: 'RAZORPAY',
+              acceptedTerms: true,
               priorityDmQuery: isPriorityDm ? priorityDmQuery : undefined
             },
             {
@@ -331,7 +338,8 @@ const CheckoutModal = ({
 
       const orderRes = await createPaymentOrder(mentor.handle, {
         bookingRef,
-        gateway: 'RAZORPAY'
+        gateway: 'RAZORPAY',
+        acceptedTerms: true
       });
 
       let verifyPayload = { bookingRef };
@@ -1032,9 +1040,17 @@ const CheckoutModal = ({
                 Facing Issues? email <a href="mailto:support@unicoach.in" className="font-bold text-slate-800 underline">support@unicoach.in</a>
               </p>
 
-              <p className="text-[11px] text-slate-400 leading-relaxed">
-                By clicking Confirm and Pay, I agree to the <a href="/terms" target="_blank" rel="noopener noreferrer" className="underline">Terms</a> and the <a href="/refund-policy" target="_blank" rel="noopener noreferrer" className="underline">Refund Policy</a>. Payments are non-refundable unless the mentor cancels or does not deliver.
-              </p>
+              <label className="flex items-start gap-2.5 text-left text-[12px] text-slate-700 leading-relaxed bg-slate-50 border border-slate-200 rounded-xl p-3 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={agreeTerms}
+                  onChange={(e) => { setAgreeTerms(e.target.checked); if (e.target.checked) setPaymentError(null); }}
+                  className="mt-0.5 w-4 h-4 shrink-0 accent-slate-900 cursor-pointer"
+                />
+                <span>
+                  I agree to the <a href="/terms" target="_blank" rel="noopener noreferrer" className="underline font-semibold">Terms &amp; Conditions</a> and the <a href="/refund-policy" target="_blank" rel="noopener noreferrer" className="underline font-semibold">Refund Policy</a>. I understand that payments are <strong>non-refundable</strong>, unless the mentor cancels or does not deliver the service.
+                </span>
+              </label>
 
               <div className="flex items-center justify-center gap-1.5 text-[11px] text-slate-400 pt-1">
                 <Lock className="w-3.5 h-3.5 text-emerald-600" />
@@ -1049,7 +1065,7 @@ const CheckoutModal = ({
             <button
               type="button"
               onClick={handleCompletePayment}
-              disabled={isProcessingPayment || isConfirming || isDirectPurchasing}
+              disabled={!agreeTerms || isProcessingPayment || isConfirming || isDirectPurchasing}
               className="w-full py-4 rounded-2xl bg-gradient-to-r from-[#DE5C2B] via-orange-600 to-[#C04A1D] hover:from-[#C04A1D] hover:to-[#A73D14] hover:via-[#B8431A] text-white font-black text-sm shadow-xl shadow-[#DE5C2B]/25 transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-60 hover:scale-[1.01] active:scale-[0.99]"
             >
               {isProcessingPayment || isConfirming || isDirectPurchasing ? (

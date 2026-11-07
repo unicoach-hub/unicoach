@@ -46,13 +46,15 @@ const userRegisterSchema = z.object({
   phone: z.string().regex(phoneRegex, 'Invalid phone number').optional(),
   password: z.string().length(6, 'Password must be exactly 6 characters'),
   attribution: attributionField,
+  acceptedTerms: z.boolean().optional().catch(undefined),
   referral: z.string().trim().max(60).optional().catch(undefined)
 });
 
 const userLoginSchema = z.object({
   email: z.string().email('Invalid email address'),
   password: z.string().min(1, 'Password is required'),
-  attribution: attributionField
+  attribution: attributionField,
+  acceptedTerms: z.boolean().optional().catch(undefined)
 });
 
 const forgotPasswordSchema = z.object({
@@ -68,6 +70,7 @@ const resetPasswordSchema = z.object({
 const googleAuthSchema = z.object({
   credential: z.string().min(10, 'Google credential token is required'),
   attribution: attributionField,
+  acceptedTerms: z.boolean().optional().catch(undefined),
   referral: z.string().trim().max(60).optional().catch(undefined)
 });
 

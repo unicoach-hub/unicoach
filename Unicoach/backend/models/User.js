@@ -10,6 +10,13 @@ const userSchema = new mongoose.Schema({
   email: { type: String, unique: true, sparse: true },
   phone: { type: String, unique: true, sparse: true },
   passwordHash: { type: String }, // used for email/password and admin login
+  // Proof that the user ticked "I agree to the Terms & Refund Policy" (sign-up / login). Latest acceptance wins.
+  termsAcceptance: {
+    acceptedAt: Date,
+    version: String, // date of the Terms / Refund Policy they agreed to
+    via: String,     // signup | login | google
+    ip: String,
+  },
   authProvider: { type: String, enum: ['local', 'google', 'apple', 'phone'], default: 'local' },
   googleId: { type: String, unique: true, sparse: true },
   appleId: { type: String, unique: true, sparse: true },

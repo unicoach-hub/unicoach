@@ -221,6 +221,16 @@ const sendWelcomeEmail = (name, to) => {
   }).catch(e => console.warn('Welcome email non-blocking failed:', e.message));
 };
 
+// Terms & Refund Policy version the site currently shows (matches "Last updated" on /refund-policy)
+const TERMS_VERSION = '2026-11-05';
+// Saves that this user ticked the Terms & Refund Policy box, so a later refund dispute has a record.
+const recordTermsAcceptance = (user, req, via) => {
+  if (req.body?.acceptedTerms !== true || !user?._id) return Promise.resolve();
+  const ip = (req.headers['x-forwarded-for'] || '').split(',')[0].trim() || req.ip;
+  return User.updateOne({ _id: user._id }, { $set: { termsAcceptance: { acceptedAt: new Date(), version: TERMS_VERSION, via, ip } } })
+    .catch((e) => console.warn('termsAcceptance save failed:', e.message));
+};
+
 /**
  * POST /api/auth/register
  * Register user via Email + Password (phone is optional contact info, never a login method)
@@ -266,6 +276,7 @@ exports.register = async (req, res) => {
     });
 
     await user.save();
+    await recordTermsAcceptance(user, req, 'signup');
     const referralMentor = req.body.referral ? await applyReferral(user._id, req.body.referral) : null;
 
     const enrichedUser = await enrichUserWithMentor(user);
@@ -333,6 +344,7 @@ exports.login = async (req, res) => {
         return res.status(401).json({ message: 'Invalid email or password' });
       }
 
+      await recordTermsAcceptance(user, req, 'login');
       const enrichedUser = await enrichUserWithMentor(user);
       syncLeadFromAuth(enrichedUser, { method: authMethodLabel('Email', req.body.attribution), isNewAccount: false });
       const token = jwt.sign({ id: user._id, role: enrichedUser.role }, JWT_SECRET, { expiresIn: '7d' });
@@ -599,6 +611,7 @@ exports.googleLogin = async (req, res) => {
       if (changed) await user.save();
     }
 
+    await recordTermsAcceptance(user, req, 'google');
     const enrichedUser = await enrichUserWithMentor(user);
     syncLeadFromAuth(enrichedUser, { method: authMethodLabel('Google', req.body.attribution), isNewAccount, attribution: req.body.attribution, referralMentor });
     if (isNewAccount) {

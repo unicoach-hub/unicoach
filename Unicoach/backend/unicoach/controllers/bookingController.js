@@ -446,6 +446,12 @@ const cancelReservation = async (req, res) => {
  * POST /api/unicoach/@:handle/purchase-direct
  * Direct checkout for Digital Products & Priority DMs (No slot selection needed)
  */
+// Student ticked "I agree to the Terms & Refund Policy" at checkout -> stored on the booking
+const TERMS_VERSION = '2026-11-05';
+const termsAcceptanceFrom = (req) => (req.body?.acceptedTerms === true
+  ? { acceptedAt: new Date(), version: TERMS_VERSION, ip: (req.headers['x-forwarded-for'] || '').split(',')[0].trim() || req.ip }
+  : undefined);
+
 const purchaseDirectService = async (req, res) => {
   let claimedCoupon = null;
   let bookingSaved = false;
@@ -521,6 +527,7 @@ const purchaseDirectService = async (req, res) => {
     // Created as PAYMENT_PENDING: nothing is delivered until Razorpay confirms the payment
     const booking = new UnicoachBooking({
       bookingRef,
+      termsAcceptance: termsAcceptanceFrom(req),
       mentorId: mentor._id,
       serviceId: service._id,
       slotId: null,

@@ -4,6 +4,7 @@ import { useAuth } from '../context/AuthContext';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate, Link } from 'react-router-dom';
 import { GoogleLogin } from '@react-oauth/google';
+import { TermsConsent, TermsGate, TERMS_REQUIRED_MESSAGE } from './TermsConsent';
 import withGoogleAuth from './auth/withGoogleAuth';
 import brandLogo from '@/assets/blackunicoachlogo.webp';
 
@@ -32,6 +33,7 @@ const LoginModal = () => {
 
   // Status
   const [error, setError] = useState('');
+  const [agreeTerms, setAgreeTerms] = useState(false);
   const [successMsg, setSuccessMsg] = useState('');
   const [loading, setLoading] = useState(false);
 
@@ -63,10 +65,11 @@ const LoginModal = () => {
       setError('Please provide both email and password');
       return;
     }
+    if (!agreeTerms) { setError(TERMS_REQUIRED_MESSAGE); return; }
     setError('');
     setLoading(true);
 
-    const result = await loginWithEmail(email, password);
+    const result = await loginWithEmail(email, password, { acceptedTerms: true });
     setLoading(false);
 
     if (result.success) {
@@ -87,10 +90,11 @@ const LoginModal = () => {
       setError('Password must be exactly 6 characters');
       return;
     }
+    if (!agreeTerms) { setError(TERMS_REQUIRED_MESSAGE); return; }
     setError('');
     setLoading(true);
 
-    const result = await registerWithEmail({ name, email, password });
+    const result = await registerWithEmail({ name, email, password, acceptedTerms: true });
     setLoading(false);
 
     if (result.success) {
@@ -130,7 +134,7 @@ const LoginModal = () => {
     setError('');
     setLoading(true);
 
-    const result = await loginWithGoogle(credentialResponse.credential);
+    const result = await loginWithGoogle(credentialResponse.credential, { acceptedTerms: true });
     setLoading(false);
 
     if (result.success) {
@@ -191,8 +195,9 @@ const LoginModal = () => {
 
               {/* 1-Click Social Sign-in Options */}
               <div className="space-y-2.5 pt-1">
+                <TermsConsent checked={agreeTerms} onChange={(v) => { setAgreeTerms(v); if (v) setError(''); }} />
                 {/* Google 1-Click Button */}
-                <div className="flex justify-center w-full">
+                <TermsGate agreed={agreeTerms} onBlocked={() => setError(TERMS_REQUIRED_MESSAGE)} className="flex justify-center w-full">
                   <div ref={measureGoogleSlot} className="w-full flex justify-center">
                     <GoogleLogin
                       onSuccess={handleGoogleSuccess}
@@ -204,7 +209,7 @@ const LoginModal = () => {
                       width={googleWidth}
                     />
                   </div>
-                </div>
+                </TermsGate>
               </div>
 
               {/* Divider */}
@@ -323,8 +328,9 @@ const LoginModal = () => {
                 </p>
               </div>
 
+              <TermsConsent checked={agreeTerms} onChange={(v) => { setAgreeTerms(v); if (v) setError(''); }} className="pt-1" />
               {/* 1-Click Google Sign-up */}
-              <div className="flex justify-center w-full pt-1">
+              <TermsGate agreed={agreeTerms} onBlocked={() => setError(TERMS_REQUIRED_MESSAGE)} className="flex justify-center w-full pt-2">
                 <div ref={measureGoogleSlot} className="w-full flex justify-center">
                   <GoogleLogin
                     onSuccess={handleGoogleSuccess}
@@ -336,7 +342,7 @@ const LoginModal = () => {
                     width={googleWidth}
                   />
                 </div>
-              </div>
+              </TermsGate>
 
               <div className="relative flex items-center justify-center my-3">
                 <div className="border-t border-slate-200 w-full" />

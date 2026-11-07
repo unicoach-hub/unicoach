@@ -100,6 +100,12 @@ const buildConfirmedResponse = (result) => {
  * POST /api/unicoach/@:handle/create-payment-order
  * Creates a Razorpay order for a PAYMENT_PENDING booking. Amount always comes from the booking in the DB.
  */
+// Student ticked "I agree to the Terms & Refund Policy" at checkout -> stored on the booking
+const TERMS_VERSION = '2026-11-05';
+const termsAcceptanceFrom = (req) => (req.body?.acceptedTerms === true
+  ? { acceptedAt: new Date(), version: TERMS_VERSION, ip: (req.headers['x-forwarded-for'] || '').split(',')[0].trim() || req.ip }
+  : undefined);
+
 const createPaymentOrder = async (req, res) => {
   try {
     const { bookingRef, gateway = 'RAZORPAY' } = req.body;
@@ -117,6 +123,12 @@ const createPaymentOrder = async (req, res) => {
     }
     if (booking.state !== 'PAYMENT_PENDING') {
       return res.status(400).json({ error: `Cannot create payment order for booking in '${booking.state}' state.` });
+    }
+
+    const termsAcceptance = termsAcceptanceFrom(req);
+    if (termsAcceptance) {
+      await UnicoachBooking.updateOne({ _id: booking._id }, { $set: { termsAcceptance } })
+        .catch((e) => console.warn('termsAcceptance save failed:', e.message));
     }
 
     if (booking.amountPaid === 0) {

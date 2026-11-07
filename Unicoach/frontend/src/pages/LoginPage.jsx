@@ -6,6 +6,7 @@ import {
   Sparkles, CheckCircle2, ShieldCheck, HelpCircle, GraduationCap, Users
 } from 'lucide-react';
 import { GoogleLogin } from '@react-oauth/google';
+import { TermsConsent, TermsGate, TERMS_REQUIRED_MESSAGE } from '../components/TermsConsent';
 import withGoogleAuth from '../components/auth/withGoogleAuth';
 import RolePicker from '../components/auth/RolePicker';
 import { roleRedirect, useRole } from '../components/auth/role';
@@ -46,6 +47,7 @@ const LoginPage = () => {
   // Status & Feedback
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [agreeTerms, setAgreeTerms] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
 
   // Forgot Password View
@@ -76,10 +78,14 @@ const LoginPage = () => {
       setError('Please fill in both email and password.');
       return;
     }
+    if (!agreeTerms) {
+      setError(TERMS_REQUIRED_MESSAGE);
+      return;
+    }
     setError('');
     setLoading(true);
     try {
-      const res = await loginWithEmail(email, password);
+      const res = await loginWithEmail(email, password, { acceptedTerms: true });
       if (res.success) {
         handlePostAuthSuccess();
       } else {
@@ -100,7 +106,7 @@ const LoginPage = () => {
     setLoading(true);
     setError('');
     try {
-      const res = await loginWithGoogle(credentialResponse.credential);
+      const res = await loginWithGoogle(credentialResponse.credential, { acceptedTerms: true });
       if (res.success) {
         handlePostAuthSuccess();
       } else {
@@ -283,9 +289,11 @@ const LoginPage = () => {
               <>
                 <RolePicker value={role} onChange={setRole} />
 
+                <TermsConsent checked={agreeTerms} onChange={(v) => { setAgreeTerms(v); if (v) setError(''); }} className="mb-4" />
+
                 {/* ── 1. Fast & Simple Google 1-Click Sign In ── */}
                 <div className="mb-5">
-                  <div className="flex justify-center w-full">
+                  <TermsGate agreed={agreeTerms} onBlocked={() => setError(TERMS_REQUIRED_MESSAGE)} className="flex justify-center w-full">
                     <div ref={measureGoogleSlot} className="w-full flex justify-center">
                       <GoogleLogin
                         onSuccess={handleGoogleSuccess}
@@ -297,7 +305,7 @@ const LoginPage = () => {
                         width={googleWidth}
                       />
                     </div>
-                  </div>
+                  </TermsGate>
                 </div>
 
                 {/* ── Divider ── */}

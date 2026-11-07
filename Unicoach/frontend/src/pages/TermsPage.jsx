@@ -70,7 +70,7 @@ const TermsPage = () => {
           </p>
 
           <div className="mt-6 flex flex-wrap items-center gap-4 text-xs font-semibold text-slate-500">
-            <span>Last Updated: January 2026</span>
+            <span>Last Updated: November 2026</span>
             <span className="w-1.5 h-1.5 rounded-full bg-slate-300" />
             <span>Effective Immediately</span>
             <span className="w-1.5 h-1.5 rounded-full bg-slate-300" />
@@ -237,6 +237,9 @@ const TermsPage = () => {
               <div className="prose text-slate-600 text-sm leading-relaxed space-y-3">
                 <p>
                   While initial university search, exploratory tool access, and standard discovery on UniCoach are free, specialized premium services (such as Priority 1-on-1 Visa Coaching, comprehensive application dispatch, or expedited SOP writing) are subject to published service fees.
+                </p>
+                <p className="p-4 bg-slate-50 border border-slate-200 rounded-xl text-slate-800 font-semibold">
+                  All payments made on UniCoach are final and non-refundable. No refund is given to students for change of mind, missed sessions, rescheduling requests or dissatisfaction with an outcome. The only exception is when the mentor or UniCoach cancels or does not deliver the service, as set out in the <a href="/refund-policy" className="underline">Refund &amp; Cancellation Policy</a>. You accept these terms by ticking the agreement box when you sign up, log in or make a booking, and that acceptance is recorded with the date and time.
                 </p>
                 <ul className="list-disc pl-5 space-y-2 text-slate-700 font-medium">
                   <li><strong>Third-Party Fees:</strong> University application fees, embassy visa fees, courier charges, and third-party standardized test fees are paid directly to those respective organizations and are non-refundable by UniCoach.</li>

@@ -82,6 +82,13 @@ const unicoachBookingSchema = new mongoose.Schema({
   currency: { type: String, default: 'INR' },
 
   // Payment Tracking
+  // Proof the student ticked "I agree to the Terms & Refund Policy" before paying
+  termsAcceptance: {
+    acceptedAt: Date,
+    version: String,
+    ip: String,
+  },
+
   payment: {
     orderId: { type: String, default: '' },
     paymentId: { type: String, default: '' },

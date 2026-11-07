@@ -80,13 +80,13 @@ export const AuthProvider = ({ children }) => {
   /**
    * Log in with Email + Password
    */
-  const loginWithEmail = async (email, password) => {
+  const loginWithEmail = async (email, password, { acceptedTerms } = {}) => {
     try {
       const res = await fetch(`${API_URL}/auth/login`, {
         method: 'POST',
         credentials: 'include',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ email, password, acceptedTerms }),
       });
       const data = await res.json();
       if (res.ok) {
@@ -106,13 +106,13 @@ export const AuthProvider = ({ children }) => {
   /**
    * Register with Email + Password
    */
-  const registerWithEmail = async ({ name, email, password, phone }) => {
+  const registerWithEmail = async ({ name, email, password, phone, acceptedTerms }) => {
     try {
       const res = await fetch(`${API_URL}/auth/register`, {
         method: 'POST',
         credentials: 'include',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, email, password, phone, referral: getReferral() }),
+        body: JSON.stringify({ name, email, password, phone, acceptedTerms, referral: getReferral() }),
       });
       const data = await res.json();
       if (res.ok) {
@@ -174,13 +174,13 @@ export const AuthProvider = ({ children }) => {
   /**
    * 1-Click Google OAuth Sign-In
    */
-  const loginWithGoogle = async (credential) => {
+  const loginWithGoogle = async (credential, { acceptedTerms } = {}) => {
     try {
       const res = await fetch(`${API_URL}/auth/google`, {
         method: 'POST',
         credentials: 'include',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ credential, referral: getReferral() }),
+        body: JSON.stringify({ credential, acceptedTerms, referral: getReferral() }),
       });
       const data = await res.json();
       if (res.ok) {
