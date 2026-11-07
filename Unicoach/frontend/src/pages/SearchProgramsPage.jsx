@@ -45,6 +45,10 @@ const toProg = (c) => ({
 const QUALIFICATIONS = [{ value: '8', label: 'Grade 12 / equivalent' }, { value: '13', label: 'Senior Secondary (SSE)' }, { value: '1', label: 'Undergraduate degree' }, { value: '2', label: 'Postgraduate degree' }];
 const GRADING = [{ value: 'OutOf100', label: 'Out of 100 (%)' }, { value: 'OutOf10', label: 'Out of 10 (CGPA)' }, { value: 'OutOf4', label: 'Out of 4 (GPA)' }, { value: 'OutOf5', label: 'Out of 5' }, { value: 'OutOf7', label: 'Out of 7' }, { value: 'OutOf45', label: 'Out of 45' }];
 const ENGLISH = [{ value: 'later', label: "I'll provide this later" }, { value: 'none', label: "I don't have this yet" }, { value: 'IELTS', label: 'IELTS' }, { value: 'TOEFL', label: 'TOEFL' }, { value: 'PTE', label: 'PTE' }, { value: 'DET', label: 'Duolingo (DET)' }];
+const EN_SCORE_HINT = { IELTS: 'e.g. 6.5', TOEFL: 'e.g. 90', PTE: 'e.g. 58', DET: 'e.g. 110' };
+// Tuition slider works in approximate rupees (fees come in many currencies), ₹0–80 lakh a year
+const TUITION_MAX_INR = 8000000;
+const tuitionLabel = (v) => (v === 0 ? 'Any' : `Up to ₹${(v / 100000).toLocaleString('en-IN')} lakh / year (approx.)`);
 
 // ── small UI atoms (CourseFinder look: blue, 4px radius, Poppins/DM Sans) ─────
 const Chip = ({ children, color = '#FAE5DA', text = '#6B2C17' }) => (
@@ -108,9 +112,9 @@ const ProgramRow = ({ c, selected, onToggleSelect, onView, eligible, reasons, hi
         {scholarshipFocus && hasScholarship(c) && <AwardTag c={c} />}
         <button onClick={() => onView(c)} className="shrink-0 text-white text-[14px] font-bold px-5 py-2 border-2 border-[#16130F] shadow-[2px_2px_0_#16130F] hover:-translate-y-0.5 transition-transform" style={{ background: BLUE, borderRadius: 999 }}>View</button>
       </div>
-      {/* CourseFinder: a green "Open" status chip leads the intake chips */}
+      {/* CourseFinder: a green "Open" status chip (only when the program lists an open intake) leads the intake chips */}
       <div className="flex flex-wrap items-center gap-1 mt-3">
-        <Chip color="#ddffe5" text="#2E4836">Open</Chip>
+        {c.intakes?.length > 0 && <Chip color="#ddffe5" text="#2E4836">Open</Chip>}
         {(c.intakes || []).slice(0, 8).map((i) => <span key={i} className="px-2 py-0.5 bg-slate-100 text-slate-600 text-[11px]" style={{ borderRadius: 2 }}>{i}</span>)}
       </div>
       {/* CourseFinder stat row: Duration · Tuition/yr · Application Fee · Scholarship (availability + university range, never one amount) */}
@@ -249,7 +253,6 @@ export default function SearchProgramsPage({ highlight } = {}) {
   const [requirements, setRequirements] = useState([]);
   const [studyAreas, setStudyAreas] = useState([]);
   const [intakeArr, setIntakeArr] = useState([]);
-  const [year, setYear] = useState('');
   const [universities, setUniversities] = useState([]);  // selected cfUniversityId[]
   const [uniSearch, setUniSearch] = useState('');
   const [uniList, setUniList] = useState([]);             // faceted [{id,name,count}]
@@ -294,7 +297,7 @@ export default function SearchProgramsPage({ highlight } = {}) {
 
   // eligibility
   const [searchParams, setSearchParams] = useSearchParams();
-  const [profile, setProfile] = useState({ nationalityId: INDIA_ID, stateName: '', highestQualificationId: '', gradingSystem: 'OutOf100', score: '', englishExam: 'later', backlogs: '', workExperience: '' });
+  const [profile, setProfile] = useState({ nationalityId: INDIA_ID, stateName: '', highestQualificationId: '', gradingSystem: 'OutOf100', score: '', englishExam: 'later', englishScore: '', backlogs: '', workExperience: '' });
   const [eligResult, setEligResult] = useState(null);
   const [eligBucket, setEligBucket] = useState('eligible');
   const [eligPage, setEligPage] = useState(1);
@@ -357,14 +360,16 @@ export default function SearchProgramsPage({ highlight } = {}) {
     highlights: activeHighlights.length ? activeHighlights : undefined,
     studyArea: studyAreas.length ? studyAreas : undefined,
     university: universities.length ? universities : undefined,
-    tuitionMax: tuitionMax > 0 ? tuitionMax : undefined,
+    tuitionMaxInr: tuitionMax > 0 ? tuitionMax : undefined,
     duration: durations.length ? durations : undefined,
-  }), [searchText, country, programLevels, requirements, intakeArr, activeHighlights, studyAreas, universities, tuitionMax, durations]);
+    nationalityId: Number(profile.nationalityId) || undefined,
+  }), [searchText, country, programLevels, requirements, intakeArr, activeHighlights, studyAreas, universities, tuitionMax, durations, profile.nationalityId]);
 
   const profilePayload = useMemo(() => ({
     nationalityId: Number(profile.nationalityId) || undefined, highestQualificationId: profile.highestQualificationId || undefined,
     gradingSystem: profile.gradingSystem, score: profile.score === '' ? undefined : Number(profile.score),
-    englishExam: profile.englishExam, backlogs: profile.backlogs === '' ? undefined : Number(profile.backlogs),
+    englishExam: profile.englishExam, englishScore: EN_SCORE_HINT[profile.englishExam] && profile.englishScore !== '' && profile.englishScore != null ? Number(profile.englishScore) : undefined,
+    backlogs: profile.backlogs === '' ? undefined : Number(profile.backlogs),
     workExperience: profile.workExperience === '' ? undefined : Number(profile.workExperience),
   }), [profile]);
 
@@ -382,7 +387,7 @@ export default function SearchProgramsPage({ highlight } = {}) {
     if (eligResult) { runEligibility(eligBucket, 1); return; }
     if (result) runSearch(1);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [country, programLevels, requirements, intakeArr, activeHighlights, studyAreas, universities, tuitionMax, durations, sort]);
+  }, [country, programLevels, requirements, intakeArr, activeHighlights, studyAreas, universities, tuitionMax, durations, sort, profile.nationalityId]);
 
   // First search runs when the page moves to results: links that already carry a search,
   // "Search" on the details card, or a quick filter tap (no sign-in needed to browse)
@@ -413,7 +418,7 @@ export default function SearchProgramsPage({ highlight } = {}) {
   const openCourse = (c) => navigate(`/program/${c.cfId}`);
   const clearAll = () => {
     setSearchText(''); setCountry(''); setProgramLevels([]); setRequirements([]); setStudyAreas([]);
-    setIntakeArr([]); setYear(''); setUniversities([]); setUniSearch(''); setTuitionMax(0); setDurations([]);
+    setIntakeArr([]); setUniversities([]); setUniSearch(''); setTuitionMax(0); setDurations([]);
     setActiveHighlights([]); setEligResult(null);
   };
 
@@ -500,9 +505,9 @@ export default function SearchProgramsPage({ highlight } = {}) {
         </div>
       </div>
       <div>
-        <span className="text-[12.5px] font-semibold text-[#16130F]">Max tuition / year (country currency)</span>
-        <input type="range" min={0} max={100000} step={1000} value={tuitionMax} onChange={(e) => setTuitionMax(Number(e.target.value))} className="w-full accent-[#DE5C2B] mt-2" />
-        <div className="text-[12.5px] text-[#5B544A]">{tuitionMax === 0 ? 'Any' : `Up to ${tuitionMax.toLocaleString()}`}</div>
+        <span className="text-[12.5px] font-semibold text-[#16130F]">Max tuition / year (in ₹, approx.)</span>
+        <input type="range" min={0} max={TUITION_MAX_INR} step={100000} value={tuitionMax} onChange={(e) => setTuitionMax(Number(e.target.value))} className="w-full accent-[#DE5C2B] mt-2" />
+        <div className="text-[12.5px] text-[#5B544A]">{tuitionLabel(tuitionMax)}</div>
       </div>
     </div>
     <div>
@@ -614,6 +619,11 @@ export default function SearchProgramsPage({ highlight } = {}) {
                     {ENGLISH.map((o) => <option key={o.value} value={o.value}>{o.label}</option>)}
                   </select>
                 </Field>
+                {EN_SCORE_HINT[profile.englishExam] && (
+                  <Field label={`${profile.englishExam === 'DET' ? 'Duolingo' : profile.englishExam} score`}>
+                    <input type="number" inputMode="decimal" step="any" value={profile.englishScore} onChange={set('englishScore')} placeholder={EN_SCORE_HINT[profile.englishExam]} className={FIELD} style={{ borderRadius: 10 }} />
+                  </Field>
+                )}
                 <Field label="Grading system">
                   <select value={profile.gradingSystem} onChange={set('gradingSystem')} className={FIELD} style={{ borderRadius: 10 }}>
                     {GRADING.map((o) => <option key={o.value} value={o.value}>{o.label}</option>)}
@@ -703,12 +713,6 @@ export default function SearchProgramsPage({ highlight } = {}) {
                   )}
                 </div>
               </Field>
-              <Field label="Year">
-                <select value={year} onChange={(e) => setYear(e.target.value)} className={FIELD} style={{ borderRadius: 10 }}>
-                  <option value="">Any</option>
-                  {(config?.years || []).map((y) => <option key={y.value} value={y.value}>{y.label}</option>)}
-                </select>
-              </Field>
               <Field label="Your nationality *" error={err('nationality') && 'Required'}>
                 <select value={profile.nationalityId} onChange={(e) => setProfile((p) => ({ ...p, nationalityId: e.target.value, stateName: '' }))} className={`${FIELD} ${err('nationality') ? FIELD_ERR : ''}`} style={{ borderRadius: 10 }}>
                   <option value="">Select</option>
@@ -766,7 +770,7 @@ export default function SearchProgramsPage({ highlight } = {}) {
 
   return (
     <div className="min-h-screen bg-[#FFF6E5] pt-[76px] pb-28 font-['Onest',sans-serif]">
-      {/* Top search bar (CourseFinder: search • intake • year • nationality • state) */}
+      {/* Top search bar (CourseFinder: search • intake • nationality • state) */}
       <div className="bg-white border-b-[3px] border-[#16130F]">
         <div className="max-w-7xl mx-auto px-4 py-3">
           <div className="flex flex-col lg:flex-row gap-2">
@@ -789,10 +793,6 @@ export default function SearchProgramsPage({ highlight } = {}) {
                 </div>
               )}
             </div>
-            <select value={year} onChange={(e) => setYear(e.target.value)} className="border-2 border-[#16130F] px-3 py-2.5 text-[14px] font-semibold text-[#16130F] bg-white" style={{ borderRadius: 999 }}>
-              <option value="">Year</option>
-              {(config?.years || []).map((y) => <option key={y.value} value={y.value}>{y.label}</option>)}
-            </select>
             <select value={profile.nationalityId} onChange={(e) => setProfile((p) => ({ ...p, nationalityId: e.target.value }))} className="border-2 border-[#16130F] px-3 py-2.5 text-[14px] font-semibold text-[#16130F] bg-white max-w-[180px]" style={{ borderRadius: 999 }}>
               <option value="">Student's Nationality</option>
               {nationalities.map((n) => <option key={n.value} value={n.value}>{n.label}</option>)}
@@ -826,12 +826,12 @@ export default function SearchProgramsPage({ highlight } = {}) {
                     {opts.map((o) => <option key={o.value} value={o.value}>{o.label}</option>)}
                   </select></label>
               ))}
-              {[['Score *', 'score'], ['Backlogs', 'backlogs'], ['Work Experience (Years)', 'workExperience']].map(([label, key]) => (
+              {[['Score *', 'score'], ...(EN_SCORE_HINT[profile.englishExam] ? [[`${profile.englishExam === 'DET' ? 'Duolingo' : profile.englishExam} Score`, 'englishScore']] : []), ['Backlogs', 'backlogs'], ['Work Experience (Years)', 'workExperience']].map(([label, key]) => (
                 <label key={key} className="flex flex-col gap-1"><span className="text-slate-500">{label}</span>
                   <input type="number" value={profile[key]} onChange={(e) => setProfile((p) => ({ ...p, [key]: e.target.value }))} className="border border-slate-200 px-2 py-2" style={{ borderRadius: 4 }} /></label>
               ))}
               <div className="flex gap-2 pt-1">
-                <button onClick={() => { setProfile({ nationalityId: '', highestQualificationId: '', gradingSystem: 'OutOf100', score: '', englishExam: 'later', backlogs: '', workExperience: '' }); setEligResult(null); }} className="flex-1 px-3 py-2 text-[13px] text-slate-600 border border-slate-200" style={{ borderRadius: 4 }}>Reset</button>
+                <button onClick={() => { setProfile({ nationalityId: '', highestQualificationId: '', gradingSystem: 'OutOf100', score: '', englishExam: 'later', englishScore: '', backlogs: '', workExperience: '' }); setEligResult(null); }} className="flex-1 px-3 py-2 text-[13px] text-slate-600 border border-slate-200" style={{ borderRadius: 4 }}>Reset</button>
                 <button disabled={!profile.nationalityId || !profile.highestQualificationId || profile.score === ''} onClick={() => runEligibility('eligible', 1)} className="flex-1 px-3 py-2 text-[13px] font-semibold text-white disabled:opacity-40" style={{ background: BLUE, borderRadius: 4 }}>Apply</button>
               </div>
             </div>
@@ -870,10 +870,10 @@ export default function SearchProgramsPage({ highlight } = {}) {
           </Accordion>
 
           {/* Tuition Fees slider */}
-          <Accordion title="Tuition Fees (as per Country's Currency)" open={openSec.tuition} onToggle={() => toggleSec('tuition')}>
+          <Accordion title="Tuition Fees (in ₹, approx.)" open={openSec.tuition} onToggle={() => toggleSec('tuition')}>
             <div className="pt-3">
-              <input type="range" min={0} max={100000} step={1000} value={tuitionMax} onChange={(e) => setTuitionMax(Number(e.target.value))} className="w-full accent-[#DE5C2B]" />
-              <div className="text-[12.5px] text-slate-600 mt-1">{tuitionMax === 0 ? 'Any' : `Up to ${tuitionMax.toLocaleString()}`}</div>
+              <input type="range" min={0} max={TUITION_MAX_INR} step={100000} value={tuitionMax} onChange={(e) => setTuitionMax(Number(e.target.value))} className="w-full accent-[#DE5C2B]" />
+              <div className="text-[12.5px] text-slate-600 mt-1">{tuitionLabel(tuitionMax)}</div>
             </div>
           </Accordion>
         </aside>

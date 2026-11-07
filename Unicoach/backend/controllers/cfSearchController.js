@@ -37,6 +37,22 @@ const REQUIREMENT_PREDICATE = {
 };
 const DURATION_BUCKET = { 1: [0, 12], 2: [12, 24], 3: [24, 36], 4: [36, 48], 5: [48, 100000] };
 
+// Fees come in ~28 currencies, so the tuition filter and sort compare an approximate INR figure
+// instead of raw amounts (GBP 20,000 and VND 20,000 are not the same fee). Rough rates, INR per unit.
+const INR_PER = {
+  INR: 1, USD: 88, GBP: 116, EUR: 102, CAD: 63, AUD: 57, NZD: 51, SGD: 68, AED: 24, MYR: 21, CHF: 110,
+  SEK: 9.3, CNY: 12.3, TRY: 2.1, GEL: 32, VND: 0.0034, LKR: 0.29, MUR: 1.9, THB: 2.7, KRW: 0.062,
+  KZT: 0.17, JPY: 0.58, SAR: 23.5, CZK: 4.1, HRK: 13.5, BHD: 234, IDR: 0.0053, RUB: 1.1,
+};
+// annual fee in INR, or null when the amount or currency is unknown
+const FEE_INR = {
+  $cond: [
+    { $gt: ['$annualFee.amount', 0] },
+    { $multiply: ['$annualFee.amount', { $switch: { branches: Object.entries(INR_PER).map(([c, r]) => ({ case: { $eq: ['$annualFee.currency', c] }, then: r })), default: null } }] },
+    null,
+  ],
+};
+
 // CourseFinder "study-area" taxonomy (CategoryId 1..22). Typing a discipline surfaces its
 // whole study area (near-100% course coverage), the way CourseFinder's broad search does.
 const STUDY_AREA_TRIGGERS = [
@@ -113,10 +129,15 @@ function buildMatch(f = {}) {
   // Universities filter (multi-select by cfUniversityId)
   const unis = arr(f.university).map(Number).filter(Boolean);
   if (unis.length) m.cfUniversityId = { $in: unis };
-  // Tuition Fees range (annual fee amount, "as per country's currency")
-  const tMin = Number(f.tuitionMin), tMax = Number(f.tuitionMax);
-  if (Number.isFinite(tMin) && tMin > 0) m['annualFee.amount'] = { ...(m['annualFee.amount'] || {}), $gte: tMin };
-  if (Number.isFinite(tMax) && tMax > 0) m['annualFee.amount'] = { ...(m['annualFee.amount'] || {}), $lte: tMax };
+  // Tuition Fees range, in approximate INR per year (programs with no listed fee drop out once a range is set)
+  const tMin = Number(f.tuitionMinInr), tMax = Number(f.tuitionMaxInr);
+  const feeCond = [];
+  if (Number.isFinite(tMin) && tMin > 0) feeCond.push({ $gte: [FEE_INR, tMin] });
+  if (Number.isFinite(tMax) && tMax > 0) feeCond.push({ $lte: [FEE_INR, tMax] }, { $ne: [FEE_INR, null] });
+  if (feeCond.length) m.$expr = { $and: feeCond };
+  // Student nationality: programs open to all (0) or to that country
+  const nat = Number(f.nationalityId);
+  if (Number.isInteger(nat) && nat > 0) m.eligibleCountryIds = { $in: [0, nat] };
   if (f.eslElpAvailable === 'yes') m.$or = [{ 'cf.EslAvailable': true }, { 'cf.ElpAvailable': true }];
   const reqs = arr(f.requirements).map(Number);
   for (const r of reqs) if (REQUIREMENT_PREDICATE[r]) Object.assign(m, REQUIREMENT_PREDICATE[r]);
@@ -141,8 +162,9 @@ function buildMatch(f = {}) {
 // ---------- SORT ----------
 function buildSort(sortBy) {
   switch (sortBy) {
-    case 'tuition-low': return { 'annualFee.amount': 1 };
-    case 'tuition-high': return { 'annualFee.amount': -1 };
+    // feeSort is the INR fee with unknown fees pushed last; see sortStages
+    case 'tuition-low': return { feeSort: 1, cfId: 1 };
+    case 'tuition-high': return { feeSort: -1, cfId: 1 };
     // rankSort is QS rank with unranked (null/0) pushed last; see withRankSort
     case 'ranking': return { rankSort: 1, 'cf.UniversityOrder': 1, cfId: 1 };
     default: return { 'cf.UniversityOrder': 1, cfId: 1 }; // Featured
@@ -152,6 +174,8 @@ function buildSort(sortBy) {
 function sortStages(sortBy) {
   const stages = [];
   if (sortBy === 'ranking') stages.push({ $addFields: { rankSort: { $cond: [{ $gt: ['$cf.QSRanking', 0] }, '$cf.QSRanking', 1e9] } } });
+  if (sortBy === 'tuition-low') stages.push({ $addFields: { feeSort: { $ifNull: [FEE_INR, 1e15] } } });
+  if (sortBy === 'tuition-high') stages.push({ $addFields: { feeSort: { $ifNull: [FEE_INR, -1] } } });
   stages.push({ $sort: buildSort(sortBy) });
   return stages;
 }
@@ -283,7 +307,7 @@ exports.searchCourses = async (req, res) => {
         { $skip: skip },
         { $limit: limit },
         { $addFields: { avgScholarship: '$cf.AverageScholarship', scholarshipAvailable: '$cf.ScholarshipAvailable' } },
-        { $project: { cf: 0, rankSort: 0 } },
+        { $project: { cf: 0, rankSort: 0, feeSort: 0 } },
       ], { allowDiskUse: true }),
       CfCourse.countDocuments(match),
       // highlight facet counts over the current (non-highlight) match
@@ -317,6 +341,8 @@ exports.getUniversities = async (req, res) => {
     const { filters = {}, search = '' } = req.body || {};
     // count by university ignoring the university filter itself (so the list stays stable while selecting)
     const match = buildMatch({ ...filters, university: undefined });
+    // search inside the query, so universities beyond the top 400 by program count can still be found
+    if (search && search.trim()) match.universityName = new RegExp(search.trim().slice(0, 60).replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'i');
     const agg = await CfCourse.aggregate([
       { $match: match },
       { $group: { _id: '$cfUniversityId', name: { $first: '$universityName' }, count: { $sum: 1 } } },
@@ -397,8 +423,10 @@ function evaluate(course, p) {
   const isPg = PG_LEVELS.includes(course.cfStudyLevelId);
   const band = p.gradingSystem; // 'OutOf100' | 'OutOf10' ...
   const key = isPg ? `EntryRequirementUg${band}` : `EntryRequirementTwelfth${band}`;
-  const req = cf[key] != null ? Number(cf[key]) : null;
-  if (req != null && p.score != null && Number(p.score) < req)
+  const req = Number(cf[key]) > 0 ? Number(cf[key]) : null;
+  if (p.score != null && req == null)
+    reasons.push('Entry score not listed for your grading system; confirm with the university');
+  else if (req != null && p.score != null && Number(p.score) < req)
     reasons.push(`Academic score below requirement (needs ${req} ${band})`);
   // 4) backlogs
   if (p.backlogs != null && cf.backlog != null && Number(p.backlogs) > Number(cf.backlog))
@@ -410,6 +438,11 @@ function evaluate(course, p) {
   const needsEnglish = cf.IeltsRequired || cf.ToeflRequired || cf.PteRequired || cf.DETRequired;
   if (p.englishExam === 'none' && needsEnglish && !cf.IsMOIWaiver && !cf.WithoutEnglishProficiency)
     reasons.push('English proficiency required');
+  // 7) english score vs the program's minimum for the declared test (0/missing = not listed, so not checked)
+  const EN_MIN = { IELTS: ['IeltsOverall', 'IELTS'], TOEFL: ['ToeflScore', 'TOEFL'], PTE: ['PteScore', 'PTE'], DET: ['DETScore', 'Duolingo'] };
+  const en = EN_MIN[p.englishExam];
+  if (en && p.englishScore != null && Number(cf[en[0]]) > 0 && Number(p.englishScore) < Number(cf[en[0]]))
+    reasons.push(`${en[1]} score below requirement (needs ${cf[en[0]]})`);
   return { eligible: reasons.length === 0, reasons };
 }
 
@@ -418,7 +451,8 @@ function evaluate(course, p) {
 exports.evaluateEligibility = async (req, res) => {
   try {
     const { filters = {}, profile = {}, bucket = 'eligible', page = 1, pageSize = 20, sort = 'featured' } = req.body || {};
-    const match = buildMatch(filters);
+    // nationality is judged per program by evaluate() (so mismatches land in "non-eligible"), not filtered out here
+    const match = buildMatch({ ...filters, nationalityId: undefined });
     // Eligibility only applies to study levels matching the student's qualification.
     const allowed = QUALIFICATION_LEVELS[String(profile.highestQualificationId)];
     if (allowed) match.cfStudyLevelId = { $in: allowed };
@@ -428,7 +462,7 @@ exports.evaluateEligibility = async (req, res) => {
       'degreeLevel', 'duration', 'annualFee', 'applicationFee', 'initialDeposit', 'highlightIds', 'intakes', 'eligibleCountryIds',
       'cf.AverageScholarship', 'cf.ScholarshipAvailable', 'cf.QSRanking', 'cf.UniversityOrder', `cf.EntryRequirementUg${band}`,
       `cf.EntryRequirementTwelfth${band}`, 'cf.backlog', 'cf.WorkExp', 'cf.IeltsRequired', 'cf.ToeflRequired', 'cf.PteRequired',
-      'cf.DETRequired', 'cf.IsMOIWaiver', 'cf.WithoutEnglishProficiency'];
+      'cf.DETRequired', 'cf.IsMOIWaiver', 'cf.WithoutEnglishProficiency', 'cf.IeltsOverall', 'cf.ToeflScore', 'cf.PteScore', 'cf.DETScore'];
     const courses = await CfCourse.aggregate([
       { $match: match },
       { $project: Object.fromEntries(fields.map((f) => [f, 1])) },
