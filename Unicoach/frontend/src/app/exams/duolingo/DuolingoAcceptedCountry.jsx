@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
 import {
   Compass,
   Sparkles,
@@ -38,52 +38,68 @@ const DuolingoAcceptedCountry = ({ country }) => {
 
   const countryData = {
     australia: {
-      title: "Duolingo Accepted Universities in Australia 2026",
-      hook: { value: "100 – 120", label: "Duolingo score range most Australian universities ask for (UG & PG). The student visa still needs IELTS, PTE or TOEFL.", hi: "Dhyaan do" },
-      subtitle: "Australian universities that accept Duolingo for admission, UG & PG score requirements, and why your student visa still needs IELTS, PTE or TOEFL.",
-      highlights: [
-        { label: "Top Accepted Universities", value: "Uni of Melbourne, UNSW, Uni of Sydney, Monash Uni" },
-        { label: "Average Tuition Fees", value: "₹22 L – ₹28 L (AUD 39,000 – 50,000) per year" },
-        { label: "Minimum Score Range", value: "100 – 120 (UG & PG)" },
-        { label: "Student Visa (Subclass 500)", value: "DET NOT accepted for the visa (needs IELTS, PTE or TOEFL iBT)" }
-      ],
-      description: "Yes, many Australian universities accept the Duolingo English Test (DET) for admission, but the Australian student visa (Subclass 500) does not. The Department of Home Affairs only accepts English tests taken at a secure test centre, so a fully online test like Duolingo cannot be used for the visa. Use DET to get your offer if your university accepts it, then take IELTS Academic, PTE Academic or TOEFL iBT for the visa (unless you are exempt).",
-      universities: [
-        { name: "University of Melbourne", rank: "19", score: "120 (130+ for Law/Med)" },
-        { name: "University of New South Wales (UNSW)", rank: "20", score: "110 (125+ for Eng/Law)" },
-        { name: "University of Sydney", rank: "25", score: "115 (125+ for Medicine)" },
-        { name: "Australian National University (ANU)", rank: "32", score: "110" },
-        { name: "Monash University", rank: "36", score: "115" },
-        { name: "University of Queensland (UQ)", rank: "42", score: "105" },
-        { name: "University of Western Australia (UWA)", rank: "77", score: "100" },
-        { name: "University of Adelaide", rank: "82", score: "105" },
-        { name: "University of Technology Sydney (UTS)", rank: "96", score: "100" },
-        { name: "RMIT University", rank: "125", score: "100" }
-      ],
-      programScores: {
-        ug: [
-          { range: "115+", courses: "Medicine, Engineering, Law" },
-          { range: "110–114", courses: "Business, Computer Science, Psychology" },
-          { range: "105–109", courses: "Humanities, Social Sciences, Education" }
-        ],
-        pg: [
-          { range: "120+", courses: "MBA, MS Computer Science" },
-          { range: "115–119", courses: "Engineering, Medicine, Law" },
-          { range: "110–114", courses: "Business, Psychology, Data Science" }
-        ]
+      // Checked 10 Nov 2026 against each university's official English-requirements page and the
+      // Home Affairs instrument F2025L00906 (Subclass 500 English tests, in force from 7 Aug 2025).
+      title: "Is Duolingo Accepted in Australia? (2027 Check)",
+      overviewTitle: { hi: "Sach kya hai", en: "What this means for you" },
+      tableTitle: "Do top Australian universities accept Duolingo?",
+      scoreHeader: "Duolingo for degree entry?",
+      quickAnswer: {
+        q: "Is Duolingo accepted in Australia?",
+        a: "Mostly no. Of the 10 top Australian universities we checked, only the University of Western Australia (UWA) lists the Duolingo English Test for degree entry (minimum 125). The others ask for IELTS, PTE, TOEFL iBT or similar. And Duolingo is never accepted for the Australian student visa (Subclass 500), so you need one of the tests below for the visa anyway.",
+        table: {
+          head: ["English test", "Student visa (Subclass 500)", "Minimum overall for the visa"],
+          rows: [
+            ["IELTS Academic / General", "Accepted", "6.0"],
+            ["PTE Academic", "Accepted", "47"],
+            ["TOEFL iBT", "Accepted", "67"],
+            ["Cambridge C1 Advanced", "Accepted", "161"],
+            ["OET", "Accepted", "1210"],
+            ["LanguageCert Academic", "Accepted", "61"],
+            ["Michigan English Test (MET)", "Accepted", "53"],
+            ["CELPIP General", "Accepted", "7"],
+            ["Duolingo English Test", "Not accepted", "–"]
+          ]
+        },
+        source: "Visa scores: Migration (English Language Tests and Evidence Exemptions for Subclass 500 (Student) Visas) Instrument 2025, in force from 7 August 2025. Lower scores apply if you also take 10+ or 20+ weeks of ELICOS. Your university may ask for a higher score than the visa minimum."
       },
+      hook: { value: "1 of 10", label: "top Australian universities we checked list Duolingo for degree entry (UWA, minimum 125). The student visa does not accept it at all.", hi: "Dhyaan do" },
+      subtitle: "Which Australian universities accept the Duolingo English Test, which do not, and which English test you need for the Australian student visa.",
+      highlights: [
+        { label: "Accepts DET for degrees", value: "University of Western Australia (min 125)" },
+        { label: "Do not list DET", value: "Melbourne, UNSW, Sydney, ANU, Monash, UQ, Adelaide, UTS, RMIT" },
+        { label: "Visa minimum (IELTS / PTE)", value: "IELTS 6.0 or PTE 47 overall" },
+        { label: "Student Visa (Subclass 500)", value: "DET NOT accepted for the visa" }
+      ],
+      description: "Duolingo is popular in India because it is cheap and taken from home, but Australia is one of the countries where it works least. Most leading Australian universities only accept tests taken at a test centre, such as IELTS, PTE Academic or TOEFL iBT, and the Department of Home Affairs never accepts Duolingo for the student visa. Some pathway and English-language programmes (for example Monash College and RMIT English courses) use DET for placement, but for a degree and the visa, plan on IELTS or PTE. If you already have a strong DET score, UWA is the main option to check, and you will still need an IELTS, PTE or TOEFL score for the visa.",
+      universities: [
+        { name: "University of Western Australia (UWA)", rank: "77", score: "Yes: 125 (coursework degrees)" },
+        { name: "University of Melbourne", rank: "19", score: "No" },
+        { name: "University of New South Wales (UNSW)", rank: "20", score: "No" },
+        { name: "University of Sydney", rank: "25", score: "No" },
+        { name: "Australian National University (ANU)", rank: "32", score: "Not listed" },
+        { name: "Monash University", rank: "36", score: "No (only Monash College pathways)" },
+        { name: "University of Queensland (UQ)", rank: "42", score: "No" },
+        { name: "Adelaide University", rank: "82", score: "No" },
+        { name: "University of Technology Sydney (UTS)", rank: "96", score: "No" },
+        { name: "RMIT University", rank: "125", score: "No (only RMIT English courses)" }
+      ],
+      tableNote: "Checked on each university's official English language requirements page, November 2026. Rules change, so confirm on the course page before you apply.",
+      programScores: null,
       visa: {
         type: "Student Visa (Subclass 500)",
         fee: "AUD 2,500 from 1 July 2026 (confirm on Home Affairs)",
         time: "Varies: check Home Affairs processing times",
         proof: "AUD 29,710 living costs + first-year tuition + travel",
         insurance: "Overseas Student Health Cover (OSHC) mandatory",
-        note: "Duolingo is not an accepted English test for the Australian student visa. Your university may accept DET for admission, but plan an IELTS Academic, PTE Academic or TOEFL iBT score for the visa unless you are exempt."
+        note: "Duolingo is not an accepted English test for the Australian student visa. Minimum overall scores: IELTS 6.0, PTE Academic 47, TOEFL iBT 67 (lower if you add 10+ weeks of ELICOS). Tests must be less than 2 years old."
       },
       faqs: [
-        { q: "Is Duolingo accepted for Australian student visas?", a: "No. The Department of Home Affairs only accepts English tests taken at a secure test centre, and Duolingo is fully online, so it cannot be used for the Student visa (Subclass 500). Use an accepted test such as IELTS Academic, PTE Academic or TOEFL iBT for the visa, even if your university accepted your Duolingo score for admission." },
-        { q: "Is Duolingo accepted in Australia?", a: "Yes, for admission at many Australian universities, usually with an overall score of 100 to 120 depending on the course and university. Always check the course page, because requirements differ by program, and remember that the student visa needs a different test." },
-        { q: "Can I get conditional admission with DET in Australia?", a: "Yes, some universities accepting the DET in Australia may grant conditional admission, allowing you to complete additional English language support courses." }
+        { q: "Is Duolingo accepted for the Australian student visa?", a: "No. Duolingo is not on the Department of Home Affairs list of English tests for the Student visa (Subclass 500). Accepted tests include IELTS (6.0 overall), PTE Academic (47), TOEFL iBT (67), Cambridge C1 Advanced (161), OET, LanguageCert Academic, the Michigan English Test and CELPIP General." },
+        { q: "Which universities in Australia accept Duolingo?", a: "Very few. Of the top 10 we checked, only the University of Western Australia (UWA) lists the Duolingo English Test for coursework degrees, with a minimum overall score of 125. Melbourne, UNSW, Sydney, ANU, Monash, UQ, Adelaide, UTS and RMIT do not list it for degree entry." },
+        { q: "What Duolingo score is needed for Australia?", a: "At UWA the minimum is 125 overall (with sub-scores of 115 Speaking, 125 Writing, 115 Reading and 110 Listening). Even with that score, you still need IELTS, PTE, TOEFL iBT or another approved test for the student visa." },
+        { q: "Should I take Duolingo or IELTS for Australia?", a: "For Australia, take IELTS Academic or PTE Academic. One test then covers both your university admission and your student visa. Duolingo would only cover admission at a few places and never the visa, so you would end up paying for two tests." },
+        { q: "Is PTE or IELTS better for an Australian student visa?", a: "Both are accepted. The visa minimum is IELTS 6.0 or PTE Academic 47 overall, but most universities ask for more, often IELTS 6.5 or PTE 58 to 65. Pick the test you score better in on a practice test." }
       ]
     },
     canada: {
@@ -293,7 +309,28 @@ const DuolingoAcceptedCountry = ({ country }) => {
     label: uni.name.match(/\(([^)]+)\)$/)?.[1] || uni.name.replace(/^University of /, ''),
     value: parseInt(uni.score, 10),
     display: uni.score.match(/^[\d–+-]+/)?.[0] || uni.score,
-  }));
+  })).filter((b) => !Number.isNaN(b.value));
+
+  // FAQPage structured data so Google can read the answers (the accordion hides them visually only)
+  useEffect(() => {
+    const script = document.createElement('script');
+    script.type = 'application/ld+json';
+    script.id = 'duolingo-country-faq';
+    script.textContent = JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'FAQPage',
+      mainEntity: [...(activeData.quickAnswer ? [{ q: activeData.quickAnswer.q, a: activeData.quickAnswer.a }] : []), ...activeData.faqs].map((f) => ({
+        '@type': 'Question',
+        name: f.q,
+        acceptedAnswer: { '@type': 'Answer', text: f.a },
+      })),
+    });
+    document.getElementById('duolingo-country-faq')?.remove();
+    document.head.appendChild(script);
+    return () => script.remove();
+  // countryData is rebuilt every render, so key the effect on the country
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [country]);
 
   const countryName = country === 'usa' ? 'USA' : country === 'uk' ? 'UK' : country.charAt(0).toUpperCase() + country.slice(1);
 
@@ -324,6 +361,40 @@ const DuolingoAcceptedCountry = ({ country }) => {
 
       <div className="max-w-[1240px] mx-auto px-4 md:px-8 pt-10 sm:pt-12 space-y-12">
 
+        {/* Direct answer first (AEO): question as heading, 2-line answer, then a small comparison table */}
+        {activeData.quickAnswer && (
+          <InkCard className="p-5 sm:p-8 space-y-4" shadow="#D0362E">
+            <p className="font-urbanist font-extrabold text-[14px] text-[#D0362E] leading-none">Seedha jawab</p>
+            <h2 className="font-urbanist font-black text-[22px] sm:text-[28px] text-[#16130F] leading-tight">{activeData.quickAnswer.q}</h2>
+            <p className="text-[15px] sm:text-[16px] text-[#3D362E] leading-relaxed">{activeData.quickAnswer.a}</p>
+            {activeData.quickAnswer.table && (
+              <div className="overflow-x-auto border-[3px] border-[#16130F] bg-white" style={{ borderRadius: 12 }}>
+                <table className="w-full min-w-[520px] text-left border-collapse">
+                  <thead className="bg-[#FFF1B8]">
+                    <tr>
+                      {activeData.quickAnswer.table.head.map((h) => (
+                        <th key={h} className="py-3 px-4 text-[11.5px] font-extrabold uppercase tracking-wider border-b-[3px] border-[#16130F]">{h}</th>
+                      ))}
+                    </tr>
+                  </thead>
+                  <tbody className="text-[13.5px] text-[#3D362E]">
+                    {activeData.quickAnswer.table.rows.map((row, idx) => (
+                      <tr key={row[0]} className={`border-t-2 border-[#16130F1A] first:border-t-0 ${idx % 2 ? 'bg-[#FFF6E5]' : ''}`}>
+                        {row.map((cell, ci) => (
+                          <td key={ci} className={`py-3 px-4 ${ci === 0 ? 'font-extrabold text-[#16130F]' : ''}`}>{cell}</td>
+                        ))}
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+            {activeData.quickAnswer.source && (
+              <p className="text-[12px] text-[#8A7F70]">{activeData.quickAnswer.source}</p>
+            )}
+          </InkCard>
+        )}
+
         {/* Visual hook */}
         <HookBand value={activeData.hook.value} label={activeData.hook.label} hi={activeData.hook.hi} />
 
@@ -346,33 +417,35 @@ const DuolingoAcceptedCountry = ({ country }) => {
             <span className="w-10 h-10 rounded-full border-2 border-[#16130F] bg-[#14837E] text-white grid place-items-center shrink-0 shadow-[2px_2px_0_#16130F]">
               <Sparkles size={18} />
             </span>
-            <DesiHeading hi="Badhti acceptance">Overview & Growing Acceptance</DesiHeading>
+            <DesiHeading hi={activeData.overviewTitle?.hi || 'Badhti acceptance'}>{activeData.overviewTitle?.en || 'Overview & Growing Acceptance'}</DesiHeading>
           </div>
           <p className="text-[14.5px] text-[#5B544A] leading-relaxed">
             {activeData.description}
           </p>
         </InkCard>
 
-        <BarCompare
-          kicker="Score check"
-          title="Minimum Duolingo score at top universities"
-          items={scoreBars}
-          highlight={scoreBars[0].label}
-        />
+        {scoreBars.length >= 2 && (
+          <BarCompare
+            kicker="Score check"
+            title="Minimum Duolingo score at top universities"
+            items={scoreBars}
+            highlight={scoreBars[0].label}
+          />
+        )}
 
         {/* Tables and Requirements Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
 
           {/* Universities Table */}
           <section className="lg:col-span-8 min-w-0">
-            <DesiHeading hi="Kaunsi university">Top Duolingo Accepted Universities</DesiHeading>
+            <DesiHeading hi="Kaunsi university">{activeData.tableTitle || 'Top Duolingo Accepted Universities'}</DesiHeading>
             <div className="mt-5 overflow-x-auto bg-white border-[3px] border-[#16130F] shadow-[5px_5px_0_#16130F]" style={{ borderRadius: 12 }}>
               <table className="w-full min-w-[520px] text-left border-collapse">
                 <thead className="bg-[#14837E] text-white">
                   <tr>
                     <th className="py-3 px-4 text-[11.5px] font-extrabold uppercase tracking-wider border-b-[3px] border-[#16130F]">University</th>
                     <th className="py-3 px-4 text-[11.5px] font-extrabold uppercase tracking-wider border-b-[3px] border-[#16130F] text-center">QS Ranking 2026</th>
-                    <th className="py-3 px-4 text-[11.5px] font-extrabold uppercase tracking-wider border-b-[3px] border-[#16130F] text-center">Minimum DET Score</th>
+                    <th className="py-3 px-4 text-[11.5px] font-extrabold uppercase tracking-wider border-b-[3px] border-[#16130F] text-center">{activeData.scoreHeader || 'Minimum DET Score'}</th>
                   </tr>
                 </thead>
                 <tbody className="text-[13px] text-[#3D362E]">
@@ -386,12 +459,14 @@ const DuolingoAcceptedCountry = ({ country }) => {
                 </tbody>
               </table>
             </div>
+            {activeData.tableNote && <p className="mt-3 text-[12px] text-[#8A7F70]">{activeData.tableNote}</p>}
           </section>
 
           {/* Program requirements & Visa Info */}
           <div className="lg:col-span-4 space-y-6 min-w-0">
 
             {/* Program Requirements */}
+            {activeData.programScores && (
             <InkCard className="p-5 sm:p-6 space-y-4">
               <div>
                 <p className="font-urbanist font-extrabold text-[14px] text-[#D0362E] leading-none">Course ke hisaab se</p>
@@ -401,6 +476,7 @@ const DuolingoAcceptedCountry = ({ country }) => {
               <div className="border-t-2 border-dashed border-[#16130F33]" />
               <ScoreList label="Postgraduate (PG)" items={activeData.programScores.pg} chip={DESI_TONES[2]} />
             </InkCard>
+            )}
 
             {/* Visa Card */}
             <InkCard className="p-5 sm:p-6 space-y-4" shadow="#B8285B">
@@ -444,20 +520,16 @@ const DuolingoAcceptedCountry = ({ country }) => {
                       <ChevronDown size={15} />
                     </span>
                   </button>
-                  <AnimatePresence>
-                    {isOpen && (
-                      <motion.div
-                        initial={{ height: 0 }}
-                        animate={{ height: "auto" }}
-                        exit={{ height: 0 }}
-                        className="overflow-hidden"
-                      >
-                        <p className="px-4 pb-4 pt-3 text-[#5B544A] text-[14px] border-t-2 border-dashed border-[#16130F33] leading-relaxed">
-                          {faq.a}
-                        </p>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
+                  <motion.div
+                    initial={false}
+                    animate={{ height: isOpen ? 'auto' : 0 }}
+                    className="overflow-hidden"
+                    aria-hidden={!isOpen}
+                  >
+                    <p className="px-4 pb-4 pt-3 text-[#5B544A] text-[14px] border-t-2 border-dashed border-[#16130F33] leading-relaxed">
+                      {faq.a}
+                    </p>
+                  </motion.div>
                 </div>
               );
             })}

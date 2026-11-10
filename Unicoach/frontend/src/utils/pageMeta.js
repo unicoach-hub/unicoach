@@ -85,8 +85,8 @@ export function getPageMeta(path) {
     const [, slug, page] = exam;
     if (slug === 'duolingo' && page === 'australia') {
       return {
-        title: 'Is Duolingo Accepted in Australia? Yes for Unis, Not for Visa | UniCoach',
-        description: 'Yes, many Australian universities accept the Duolingo English Test for admission, but the Subclass 500 student visa does not. See minimum DET scores and which test to take for the visa.',
+        title: 'Is Duolingo Accepted in Australia? Mostly No, Never for the Visa | UniCoach',
+        description: 'Only a few Australian universities accept the Duolingo English Test (UWA: 125), and the Subclass 500 student visa never does. See which unis accept it and the IELTS, PTE and TOEFL scores you need.',
       };
     }
     if (slug === 'duolingo' && COUNTRY_NAMES[page]) {
