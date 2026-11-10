@@ -659,14 +659,13 @@ export default function SearchProgramsPage({ highlight } = {}) {
 
   // ── STEP 1: details first (search + student details, advanced filters, quick filters) ──
   if (!started) {
-    // Required before searching: something to search for, nationality, and state for Indian students
+    // Required before searching: something to search for and nationality. State is optional (only offered to Indian students)
     const needsState = String(profile.nationalityId) === INDIA_ID;
     const missing = {
       query: !(searchText.trim() || intakeArr.length || advCount || activeHighlights.length),
       nationality: !profile.nationalityId,
-      state: needsState && !profile.stateName,
     };
-    const blocked = missing.query || missing.nationality || missing.state;
+    const blocked = missing.query || missing.nationality;
     const trySearch = () => { if (blocked) { setTried(true); return; } setTried(false); startSearch(); };
     const err = (k) => tried && missing[k];
     return (
@@ -719,8 +718,8 @@ export default function SearchProgramsPage({ highlight } = {}) {
                   {nationalities.map((n) => <option key={n.value} value={n.value}>{n.label}</option>)}
                 </select>
               </Field>
-              <Field label={needsState ? 'Your state *' : 'Your state'} error={err('state') && 'Required'}>
-                <select value={profile.stateName} disabled={!needsState} onChange={(e) => setProfile((p) => ({ ...p, stateName: e.target.value }))} className={`${FIELD} ${err('state') ? FIELD_ERR : ''} disabled:opacity-50`} style={{ borderRadius: 10 }}>
+              <Field label="Your state (optional)">
+                <select value={profile.stateName} disabled={!needsState} onChange={(e) => setProfile((p) => ({ ...p, stateName: e.target.value }))} className={`${FIELD} disabled:opacity-50`} style={{ borderRadius: 10 }}>
                   <option value="">{String(profile.nationalityId) === INDIA_ID ? 'Select state' : 'Not needed'}</option>
                   {INDIA_STATES.map((st) => <option key={st} value={st}>{st}</option>)}
                 </select>
