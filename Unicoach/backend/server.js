@@ -56,8 +56,8 @@ if (!fs.existsSync(uploadsDir)) {
 
 const app = express();
 
-// Trust proxy (required if running behind a reverse proxy like Nginx or on VPS for accurate IP rate limiting)
-app.set('trust proxy', 1);
+// The visitor's real IP behind Traefik (Coolify) and, when it's switched on, Cloudflare (utils/trustProxy.js)
+app.set('trust proxy', require('./utils/trustProxy').trustProxy);
 
 // Custom lightweight HTTP Request Logger
 app.use((req, res, next) => {
