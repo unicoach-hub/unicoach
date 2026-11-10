@@ -98,16 +98,22 @@ const cacheMiddleware = (durationInSeconds = 300) => {
 };
 
 /**
- * Clear cache by pattern or key
+ * Clear cached responses whose URL starts with keyPattern (e.g. '/api/courses').
+ * No pattern clears every cached response: admin edits to blogs, news, universities and
+ * scholarships call clearCache() so the site shows the change straight away.
  */
-const clearCache = async (keyPattern) => {
+const clearCache = async (keyPattern = '') => {
   memoryCache.clear();
   if (redisClient && redisClient.status === 'ready') {
     try {
-      const keys = await redisClient.keys(`express_cache:${keyPattern}*`);
-      if (keys.length > 0) {
-        await redisClient.del(...keys);
-      }
+      // SCAN in batches instead of KEYS, so a big cache never blocks Redis
+      const match = 'express_cache:' + String(keyPattern || '') + '*';
+      let cursor = '0';
+      do {
+        const [next, keys] = await redisClient.scan(cursor, 'MATCH', match, 'COUNT', 500);
+        cursor = next;
+        if (keys.length > 0) await redisClient.del(...keys);
+      } while (cursor !== '0');
     } catch (err) {
       console.warn('Error clearing Redis keys:', err.message);
     }
