@@ -4,6 +4,7 @@ import { ReloadOutlined, CloudServerOutlined, ApiOutlined, DatabaseOutlined, Use
 import { ResponsiveContainer, AreaChart, Area, XAxis, YAxis, Tooltip, CartesianGrid } from 'recharts';
 import { Link } from 'react-router-dom';
 import Header from '../components/Header';
+import BackupsCard from '../components/developer/BackupsCard';
 import API from '../api/axios';
 
 // Developer Dashboard (owner only): server, API traffic, outside services, database, sign-ups, Coolify
@@ -261,6 +262,9 @@ const DeveloperDashboard = () => {
             </div>
           )}
         </Card>
+
+        {/* Backups */}
+        <BackupsCard Card={Card} />
 
         {/* Database */}
         <Card title={`Database "${overview.database.name || ''}": ${overview.database.collections || 0} collections`} icon={<DatabaseOutlined />}

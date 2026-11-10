@@ -18,4 +18,10 @@ router.get('/visitors', visitors.list);
 router.get('/visitors/summary', visitors.summary);
 router.get('/visitors/:id', visitors.detail);
 
+// Database backups (controllers/backupController)
+const backups = require('../controllers/backupController');
+router.get('/backups', backups.status);
+router.post('/backups/run', backups.runNow);
+router.get('/backups/download', backups.download);
+
 module.exports = router;

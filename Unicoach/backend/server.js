@@ -427,6 +427,8 @@ if (process.env.NODE_ENV !== 'test') {
   // Mentor 1:1 calls: email students "did your session happen?" (production only)
   require('./unicoach/services/sessionCheckService').startWorker();
   require('./services/consultationReminders').startWorker();
+  // Nightly encrypted database backup to Cloudinary (production only)
+  require('./services/dbBackup').startSchedule();
   // Riya on ElevenLabs: Vobiz audio WebSocket (/api/ws/riya) and the worker that dials due calls
   require('./services/riyaCalls').attachBridge(server);
   require('./services/riyaCalls').startWorker();
