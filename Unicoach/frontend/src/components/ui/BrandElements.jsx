@@ -158,10 +158,14 @@ export const StepCounter = ({ items, className = '' }) => (
 );
 
 /* 7. Dark stat card (JobsMatch) */
-export const StatCard = ({ value, label, compact = false, className = '' }) => (
-  <div className={`border border-[#2C3249] bg-[#1D2133] text-white ${compact ? 'rounded-xl px-3.5 py-2.5' : 'rounded-2xl px-5 py-4'} ${className}`}>
+// `bg`/`fg` give a card its own colour; without them it stays the dark navy card
+export const StatCard = ({ value, label, compact = false, className = '', bg, fg }) => (
+  <div
+    className={`border ${bg ? 'border-[#16130F]/10 shadow-[0_6px_18px_-8px_rgba(22,19,15,0.35)]' : 'border-[#2C3249] bg-[#1D2133] text-white'} ${compact ? 'rounded-xl px-3.5 py-2.5' : 'rounded-2xl px-5 py-4'} ${className}`}
+    style={bg ? { background: bg, color: fg || '#FFFFFF' } : undefined}
+  >
     <div className={`font-urbanist font-black leading-none ${compact ? 'text-[20px] sm:text-[24px]' : 'text-[30px] sm:text-[36px]'}`} style={{ letterSpacing: '-0.04em' }}>{value}</div>
-    <div className={`mt-1 text-[#B7BCCD] ${compact ? 'text-[11.5px]' : 'text-[13px]'}`}>{label}</div>
+    <div className={`mt-1 ${bg ? 'opacity-80' : 'text-[#B7BCCD]'} ${compact ? 'text-[11.5px]' : 'text-[13px]'}`}>{label}</div>
   </div>
 );
 

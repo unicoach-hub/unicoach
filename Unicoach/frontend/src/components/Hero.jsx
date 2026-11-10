@@ -339,16 +339,16 @@ export const Hero = ({ onOpenModal }) => {
               </Link>
             </motion.div>
 
-            {/* ── Trust stats as dark stat cards (JobsMatch style) ── */}
+            {/* ── Trust stats: one colour per card ── */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.35, ease: [0.16, 1, 0.3, 1] }}
               className="grid grid-cols-3 gap-2 sm:gap-2.5 max-w-[440px]"
             >
-              <StatCard compact value="100%" label="Free guidance" />
-              <StatCard compact value="₹24Cr+" label="Scholarships" />
-              <StatCard compact value="98.7%" label="Visa success" />
+              <StatCard compact value="100%" label="Free guidance" bg="#F2B705" fg="#16130F" />
+              <StatCard compact value="₹24Cr+" label="Scholarships" bg="#14837E" />
+              <StatCard compact value="98.7%" label="Visa success" bg="#B8285B" />
             </motion.div>
 
             {/* ── Priority DM Modal Instance (Uses createPortal to body z-[999999]) ── */}
