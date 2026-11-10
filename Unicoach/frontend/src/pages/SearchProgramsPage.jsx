@@ -434,7 +434,11 @@ export default function SearchProgramsPage({ highlight } = {}) {
   };
 
   const fetchScopeData = async (scope) => {
-    if (scope === 'selected') return selectedList.map(toProg);
+    if (scope === 'selected') {
+      // full course details (scores, deposit, links) come from the export API; card data is the fallback
+      const r = await exportSearch(filters, selectedList.map((c) => c.cfId)).catch(() => null);
+      return r?.data?.length ? r.data : selectedList.map(toProg);
+    }
     const r = await exportSearch(filters);
     const data = r.data || [];
     return scope === 'top25' ? data.slice(0, 25) : data;

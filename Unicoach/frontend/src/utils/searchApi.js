@@ -37,12 +37,13 @@ export const getUniversitiesFacet = (filters = {}, search = '') =>
   }).then(json).then((d) => d.data || []);
 
 // all matching results (capped) mapped for the Excel exporter
-export const exportSearch = (filters = {}) =>
+// cfIds: export exactly these programs (the "Selected" list) instead of the filter results
+export const exportSearch = (filters = {}, cfIds) =>
   fetch(`${API_BASE_URL}/search/export`, {
     method: 'POST',
     credentials: 'include', // export needs the signed-in student's cookie
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ filters }),
+    body: JSON.stringify(cfIds ? { filters, cfIds } : { filters }),
   }).then(json);
 
 // profile: { nationalityId, stateId, highestQualificationId, gradingSystem, score, englishExam, backlogs, workExperience }

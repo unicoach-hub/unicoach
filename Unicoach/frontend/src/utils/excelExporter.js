@@ -12,45 +12,44 @@ import { getOfficialRequirements, getGreText, CHECK_SITE } from './requirements'
  * Matches the CourseFinder & UniCoach standard study-abroad export checklist.
  */
 export const STANDARD_DOWNLOAD_FIELDS = [
-  // Column 1 (12 items)
+  // Same order as a counsellor's shortlist sheet: course first, then entry scores, then money
   { id: 'University', label: 'University', defaultChecked: true },
-  { id: 'Website URL', label: 'Website URL', defaultChecked: true },
-  { id: 'Study Level', label: 'Study Level', defaultChecked: true },
-  { id: 'Entry Requirements', label: 'Entry Requirements', defaultChecked: true },
-  { id: 'TOEFL Score', label: 'TOEFL Score', defaultChecked: true },
-  { id: 'PTE No Band Less Than', label: 'PTE No Band Less Than', defaultChecked: false },
-  { id: 'GRE Score', label: 'GRE Score', defaultChecked: true },
-  { id: 'Application Fee', label: 'Application Fee', defaultChecked: true },
-  { id: 'Scholarship Detail', label: 'Scholarship Detail', defaultChecked: true },
-  { id: 'ESL/ELP Detail', label: 'ESL/ELP Detail', defaultChecked: false },
   { id: 'Program Name', label: 'Program Name', defaultChecked: true },
+  { id: 'Website URL', label: 'Official Course Page', defaultChecked: true },
+  { id: 'UniCoach Course Page', label: 'UniCoach Course Page', defaultChecked: true },
   { id: 'Campus', label: 'Campus', defaultChecked: true },
-
-  // Column 2 (12 items)
-  { id: 'Duration', label: 'Duration', defaultChecked: true },
-  { id: 'IELTS Score', label: 'IELTS Score', defaultChecked: true },
-  { id: 'TOEFL No Band Less Than', label: 'TOEFL No Band Less Than', defaultChecked: false },
-  { id: 'SAT Score', label: 'SAT Score', defaultChecked: false },
-  { id: 'GMAT Score', label: 'GMAT Score', defaultChecked: false },
-  { id: 'Yearly Tuition Fee', label: 'Yearly Tuition Fee', defaultChecked: true },
-  { id: 'Deposit', label: 'Deposit', defaultChecked: true },
-  { id: 'Backlog Range', label: 'Backlog Range', defaultChecked: false },
-  { id: 'Concentration', label: 'Concentration', defaultChecked: true },
   { id: 'Country', label: 'Country', defaultChecked: true },
+  { id: 'Study Level', label: 'Study Level', defaultChecked: true },
+  { id: 'Duration', label: 'Duration', defaultChecked: true },
   { id: 'Open Intakes', label: 'Open Intakes', defaultChecked: true },
   { id: 'Intake Year', label: 'Intake Year', defaultChecked: true },
+  { id: 'Entry Requirements', label: 'Entry Requirements', defaultChecked: true },
+  { id: 'Concentration', label: 'Concentration', defaultChecked: false },
 
-  // Column 3 (11 items)
+  { id: 'IELTS Score', label: 'IELTS Score', defaultChecked: true },
   { id: 'IELTS No Band Less Than', label: 'IELTS No Band Less Than', defaultChecked: true },
-  { id: 'PTE Score', label: 'PTE Score', defaultChecked: false },
-  { id: 'DET Score', label: 'DET Score', defaultChecked: false },
+  { id: 'TOEFL Score', label: 'TOEFL Score', defaultChecked: true },
+  { id: 'TOEFL No Band Less Than', label: 'TOEFL No Band Less Than', defaultChecked: true },
+  { id: 'PTE Score', label: 'PTE Score', defaultChecked: true },
+  { id: 'PTE No Band Less Than', label: 'PTE No Band Less Than', defaultChecked: true },
+  { id: 'DET Score', label: 'DET Score', defaultChecked: true },
+  { id: 'GRE Score', label: 'GRE Score', defaultChecked: false },
+  { id: 'GMAT Score', label: 'GMAT Score', defaultChecked: false },
+  { id: 'SAT Score', label: 'SAT Score', defaultChecked: false },
   { id: 'ACT Score', label: 'ACT Score', defaultChecked: false },
+  { id: 'English Proficiency Exam Waiver', label: 'English Proficiency Exam Waiver', defaultChecked: false },
+
   { id: 'Application Deadline', label: 'Application Deadline', defaultChecked: true },
+  { id: 'Application Fee', label: 'Application Fee', defaultChecked: true },
+  { id: 'Deposit', label: 'Deposit', defaultChecked: true },
+  { id: 'Yearly Tuition Fee', label: 'Yearly Tuition Fee', defaultChecked: true },
   { id: 'Scholarship Available', label: 'Scholarship Available', defaultChecked: true },
   { id: 'Scholarship', label: 'Scholarship', defaultChecked: true },
+  { id: 'Scholarship Detail', label: 'Scholarship Detail', defaultChecked: false },
+  { id: 'Backlog Range', label: 'Backlog Range', defaultChecked: true },
   { id: 'Remarks', label: 'Remarks', defaultChecked: true },
+  { id: 'ESL/ELP Detail', label: 'ESL/ELP Detail', defaultChecked: false },
   { id: 'Application Mode', label: 'Application Mode', defaultChecked: false },
-  { id: 'English Proficiency Exam Waiver', label: 'English Proficiency Exam Waiver', defaultChecked: true },
   { id: 'University Ranking', label: 'University Ranking', defaultChecked: true },
 ];
 
@@ -376,53 +375,85 @@ export async function exportUniversitiesToExcel(universities = [], options = {})
 export function programToExportRow(prog, idx = 0) {
   const u = prog.university || {};
   const rankingStr = formatUniversityRankings(u);
-  const websiteUrl = u.website || (u.name ? `https://www.google.com/search?q=${encodeURIComponent(u.name + ' official portal')}` : 'N/A');
-  const countryStr = u.countryName || u.country || 'Global';
+  const uniName = u.name || prog.universityName || '';
+  // Official course page: the export API sends a search for this exact course on the university's own site
+  const websiteUrl = prog.officialUrl || prog.courseUrl
+    || (prog.title && uniName ? `https://www.google.com/search?q=${encodeURIComponent(`${prog.title} ${uniName}`)}` : (u.website || ''));
+  const countryStr = u.countryName || u.country || '';
   const req = getOfficialRequirements(u);
+  const v = (x) => (x === null || x === undefined ? '' : x);
 
   return {
     'Serial No.': idx + 1,
-        // Column 1
-        'University': u.name || prog.universityName || 'N/A',
-        'Website URL': websiteUrl,
-        'Study Level': prog.degreeLevel || prog.level || u.degreeLevels || "Postgraduate (Master's)",
-        'Entry Requirements': prog.requirements || 'Check official site',
-        'TOEFL Score': req.source && u.minToeflScore ? `${u.minToeflScore} iBT` : CHECK_SITE,
-        'PTE No Band Less Than': prog.pteSubscore || 'Check official site',
-        'GRE Score': getGreText(req) || CHECK_SITE,
-        'Application Fee': prog.applicationFee || u.applicationFee || 'Check official site',
-        'Scholarship Detail': prog.avgScholarship ? `Scholarship: ${prog.avgScholarship}` : 'Check official site',
-        'ESL/ELP Detail': 'Check official site',
-        'Program Name': prog.title || 'N/A',
-        'Campus': u.city ? `${u.city}${u.state ? ', ' + u.state : ''}` : (u.state || 'Main Campus'),
+    'University': uniName || 'N/A',
+    'Program Name': prog.title || 'N/A',
+    'Website URL': websiteUrl,
+    'UniCoach Course Page': prog.unicoachUrl || '',
+    'Campus': prog.campus || (u.city ? `${u.city}${u.state ? ', ' + u.state : ''}` : (u.state || '')),
+    'Country': countryStr,
+    'Study Level': prog.degreeLevel || prog.level || u.degreeLevels || '',
+    'Duration': prog.durationText || (prog.durationMonths ? `${prog.durationMonths} Months` : ''),
+    'Open Intakes': prog.intake || (Array.isArray(u.intakes) ? u.intakes.join(', ') : ''),
+    'Intake Year': prog.intakeYear || '2027',
+    'Entry Requirements': v(prog.requirements),
+    'Concentration': v(prog.concentration),
 
-        // Column 2
-        'Duration': prog.durationText || (prog.durationMonths ? `${prog.durationMonths} Months` : 'Varies by program'),
-        'IELTS Score': prog.minIeltsScore ? `${prog.minIeltsScore} Band` : 'Check official site',
-        'TOEFL No Band Less Than': 'Check official site',
-        'SAT Score': 'Check official site',
-        'GMAT Score': prog.gmatScore || 'Check official site',
-        'Yearly Tuition Fee': prog.tuitionPerYear || (u.tuitionFeeUSD ? `$${u.tuitionFeeUSD.toLocaleString()}/yr` : (u.tuition || 'N/A')),
-        'Deposit': prog.initialDeposit || 'Check official site',
-        'Backlog Range': 'Check official site',
-        'Concentration': prog.concentration || 'Check official site',
-        'Country': countryStr,
-        'Open Intakes': prog.intake || (Array.isArray(u.intakes) ? u.intakes.join(', ') : 'Check official site'),
-        'Intake Year': prog.intakeYear || '2026 - 2027',
+    'IELTS Score': v(prog.minIeltsScore),
+    'IELTS No Band Less Than': v(prog.ieltsNoBand),
+    'TOEFL Score': v(prog.minToeflScore) || (req.source && u.minToeflScore ? u.minToeflScore : ''),
+    'TOEFL No Band Less Than': v(prog.toeflNoBand),
+    'PTE Score': v(prog.minPteScore),
+    'PTE No Band Less Than': v(prog.pteSubscore),
+    'DET Score': v(prog.minDetScore),
+    'GRE Score': v(prog.greScore) || getGreText(req) || '',
+    'GMAT Score': v(prog.gmatScore),
+    'SAT Score': v(prog.satScore),
+    'ACT Score': v(prog.actScore),
+    'English Proficiency Exam Waiver': v(prog.englishWaiver),
 
-        // Column 3
-        'IELTS No Band Less Than': 'Check official site',
-        'PTE Score': prog.minPteScore || 'Check official site',
-        'DET Score': prog.minDetScore || 'Check official site',
-        'ACT Score': 'Check official site',
-        'Application Deadline': prog.deadline || 'Check official site',
-        'Scholarship Available': 'Check official site',
-        'Scholarship': prog.avgScholarship || u.avgScholarship || 'Check official site',
-    'Remarks': prog.isStem ? 'STEM designated' : (prog.status ? `Status: ${prog.status}` : ''),
+    'Application Deadline': v(prog.deadline),
+    'Application Fee': prog.applicationFee || u.applicationFee || '',
+    'Deposit': v(prog.initialDeposit),
+    'Yearly Tuition Fee': prog.tuitionPerYear || (u.tuitionFeeUSD ? `USD ${u.tuitionFeeUSD.toLocaleString()}` : (u.tuition || '')),
+    'Scholarship Available': v(prog.scholarshipAvailable),
+    'Scholarship': prog.avgScholarship || u.avgScholarship || '',
+    'Scholarship Detail': v(prog.scholarshipDetail),
+    'Backlog Range': v(prog.backlogRange),
+    'Remarks': prog.remarks !== undefined ? prog.remarks : (prog.isStem ? 'STEM designated' : ''),
+    'ESL/ELP Detail': '',
     'Application Mode': 'Apply through UniCoach or the official portal',
-    'English Proficiency Exam Waiver': 'Check official site',
-    'University Ranking': rankingStr
+    'University Ranking': rankingStr === 'N/A' ? '' : rankingStr
   };
+}
+
+// Columns whose cells are clickable links, and the text shown in them
+const LINK_COLUMNS = {
+  'Website URL': 'Open official course page',
+  'UniCoach Course Page': 'View on UniCoach',
+};
+
+/**
+ * Turn link columns into real Excel hyperlinks. The course name links to the official course page too,
+ * so a counsellor can click straight from the course.
+ */
+function addHyperlinks(ws, rows, fullRows = rows) {
+  if (!ws || !ws['!ref'] || !rows.length) return;
+  const headers = Object.keys(rows[0]);
+  const linkStyle = (cell) => {
+    cell.s = { ...(cell.s || {}), font: { ...((cell.s || {}).font || {}), color: { rgb: '1D4ED8' }, underline: true } };
+  };
+  rows.forEach((row, i) => {
+    const r = i + 1; // row 0 is the header
+    headers.forEach((h, c) => {
+      const cell = ws[XLSX.utils.encode_cell({ r, c })];
+      if (!cell) return;
+      const url = LINK_COLUMNS[h] ? row[h] : (h === 'Program Name' ? fullRows[i]['Website URL'] || fullRows[i]['UniCoach Course Page'] : null);
+      if (!url || !/^https?:\/\//.test(String(url))) return;
+      cell.l = { Target: String(url), Tooltip: LINK_COLUMNS[h] || 'Open official course page' };
+      if (LINK_COLUMNS[h]) { cell.v = LINK_COLUMNS[h]; cell.t = 's'; }
+      linkStyle(cell);
+    });
+  });
 }
 
 export async function exportSelectedProgramsToExcel(programs = [], options = {}) {
@@ -441,25 +472,27 @@ export async function exportSelectedProgramsToExcel(programs = [], options = {})
 
     const excelRows = programs.map((prog, idx) => programToExportRow(prog, idx));
 
-    // Filter columns if selectedColumnKeys provided (Serial No. always first)
-    let finalRows = excelRows;
-    if (Array.isArray(options.selectedColumnKeys) && options.selectedColumnKeys.length > 0) {
-      finalRows = excelRows.map((row, idx) => {
-        const filtered = { 'Serial No.': idx + 1 };
-        options.selectedColumnKeys.forEach(colKey => {
-          if (row[colKey] !== undefined) {
-            filtered[colKey] = row[colKey];
-          }
-        });
-        return filtered;
-      });
-    }
+    // Columns in the standard order (not the order boxes were ticked). Each row is a course, so
+    // University and Program Name are always included.
+    const picked = Array.isArray(options.selectedColumnKeys) && options.selectedColumnKeys.length > 0
+      ? new Set([...options.selectedColumnKeys, 'University', 'Program Name'])
+      : null;
+    const keys = STANDARD_DOWNLOAD_FIELDS.map((f) => f.id).filter((k) => !picked || picked.has(k));
+    const finalRows = excelRows.map((row) => {
+      const out = { 'Serial No.': row['Serial No.'] };
+      keys.forEach((k) => { if (row[k] !== undefined) out[k] = row[k]; });
+      return out;
+    });
 
     const wb = XLSX.utils.book_new();
 
     const wsPrograms = XLSX.utils.json_to_sheet(finalRows);
-    wsPrograms['!cols'] = getColumnWidths(finalRows);
+    wsPrograms['!cols'] = getColumnWidths(finalRows).map((w, i) => {
+      const k = Object.keys(finalRows[0])[i];
+      return LINK_COLUMNS[k] ? { wch: 26 } : (k === 'Entry Requirements' || k === 'Remarks' ? { wch: 48 } : w);
+    });
     applyUniCoachExcelStyles(wsPrograms, finalRows);
+    addHyperlinks(wsPrograms, finalRows, excelRows);
     XLSX.utils.book_append_sheet(wb, wsPrograms, sheetName.substring(0, 31));
 
     if (studentProfile) {

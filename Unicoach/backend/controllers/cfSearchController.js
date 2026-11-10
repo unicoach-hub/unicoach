@@ -7,6 +7,7 @@ const fs = require('fs');
 const path = require('path');
 const CfCourse = require('../models/CfCourse');
 const CfUniversity = require('../models/CfUniversity');
+const University = require('../models/University');
 
 const DATA = path.join(__dirname, '..', 'data', 'coursefinder');
 const readJson = f => { try { return JSON.parse(fs.readFileSync(path.join(DATA, f), 'utf8')); } catch { return null; } };
@@ -227,39 +228,118 @@ exports.getHighlights = async (req, res) => {
   } catch (e) { res.status(500).json({ error: e.message }); }
 };
 
+// University name -> official website domain. cf_universities has no websites, so this comes from the
+// main universities collection (matched by name). Cached like the scholarship ranges.
+const normUni = (s) => String(s || '').toLowerCase().replace(/\(.*?\)/g, '').replace(/\bthe\b/g, '').replace(/[^a-z0-9]/g, '');
+let domainCache = { at: 0, promise: null };
+function uniDomains() {
+  if (domainCache.promise && Date.now() - domainCache.at < RANGE_TTL_MS) return domainCache.promise;
+  const promise = University.find({ website: { $nin: [null, ''] } }).select('name website').lean()
+    .then((rows) => {
+      const map = {};
+      for (const r of rows) {
+        try { map[normUni(r.name)] = new URL(r.website).hostname.replace(/^www\./, ''); } catch { /* bad url */ }
+      }
+      return map;
+    })
+    .catch((e) => { domainCache = { at: 0, promise: null }; throw e; });
+  domainCache = { at: Date.now(), promise };
+  return promise;
+}
+// "University of Galway, Ireland" also tries "University of Galway"
+const domainFor = (map, name) => map[normUni(name)] || map[normUni(String(name || '').split(',')[0])] || null;
+
+// Official course page link. The catalogue has no per-course URL, so this is a search for the exact
+// course name on the university's own site (top result is the course page); without a known site it
+// searches the course + university name.
+function officialCourseLink(c, domain) {
+  // no quotes: catalogue names differ slightly from the university's wording ("Finance - MSc" vs "MSc Finance")
+  const q = domain ? `${c.courseName} site:${domain}` : `${c.courseName} ${c.universityName}`;
+  return `https://www.google.com/search?q=${encodeURIComponent(q)}`;
+}
+
+const SITE_URL = process.env.PUBLIC_SITE_URL || 'https://www.unicoach.com';
+// "6.50" -> 6.5, null/0 -> null (numbers, so Excel cells are numeric)
+const num = (v) => (Number(v) > 0 ? Number(v) : null);
+
 // map a cf_course -> the program shape expected by the frontend Excel exporter
-function toExportProgram(c) {
+function toExportProgram(c, domains = {}) {
   const cf = c.cf || {};
-  const money = (m) => (m && m.amount ? `${m.currency || ''} ${Number(m.amount).toLocaleString()}`.trim() : 'Check official site');
+  // "EUR 27,300 (Approx INR 27,84,600)", the way counsellor sheets show fees
+  const money = (m) => {
+    if (!m || !m.amount) return '';
+    const base = `${m.currency || ''} ${Number(m.amount).toLocaleString('en-US')}`.trim();
+    const rate = INR_PER[m.currency];
+    return rate && m.currency !== 'INR' ? `${base} (Approx INR ${Math.round(m.amount * rate).toLocaleString('en-IN')})` : base;
+  };
+  const isPg = PG_LEVELS.includes(c.cfStudyLevelId);
+  const pre = isPg ? 'EntryRequirementUg' : 'EntryRequirementTwelfth';
+  const bands = [
+    num(cf[`${pre}OutOf100`]) && `${num(cf[`${pre}OutOf100`])}%`,
+    num(cf[`${pre}OutOf10`]) && `${num(cf[`${pre}OutOf10`])}/10 CGPA`,
+    num(cf[`${pre}OutOf4`]) && `${num(cf[`${pre}OutOf4`])}/4 GPA`,
+  ].filter(Boolean);
+  const entry = [
+    bands.length ? `${isPg ? "Bachelor's degree" : 'Class 12'} with min ${bands.join(' / ')}` : '',
+    num(cf.WorkExp) ? `${num(cf.WorkExp)} year(s) work experience` : '',
+    isPg && cf.FifteenYearsEducation ? '3-year (15 years) degree accepted' : '',
+  ].filter(Boolean).join('. ');
+  const remarks = [
+    c.isStem && 'STEM designated',
+    cf.IsMOIWaiver && 'English test can be waived with MOI',
+    cf.WithoutEnglishProficiency && 'Admission possible without English test',
+    cf.AppFeeWaiverAvailable && 'Application fee waiver available',
+    cf.InternshipAvailable && 'Internship available',
+    cf.WithoutMaths && isPg === false && 'Maths not required',
+  ].filter(Boolean).join('. ');
+  const domain = domainFor(domains, c.universityName);
+  const scholarship = cf.ScholarshipAvailable || (c.highlightIds || []).includes(2) || Number(cf.AverageScholarship) > 0;
   return {
+    cfId: c.cfId,
     title: c.courseName,
     universityName: c.universityName,
-    degreeLevel: c.degreeLevel,
+    degreeLevel: cf.Studylvl || c.degreeLevel,
     durationText: c.duration,
+    campus: cf.Campus || c.city,
     tuitionPerYear: money(c.annualFee),
     applicationFee: c.applicationFee?.isWaived ? 'Waived' : money(c.applicationFee),
     initialDeposit: money(c.initialDeposit),
-    intake: (c.intakes || []).join(', '),
+    intake: (cf.DisplayIntakes && cf.DisplayIntakes.length ? cf.DisplayIntakes : c.intakes || []).join(', '),
     intakeYear: '2027',
-    minIeltsScore: cf.IeltsOverall, minPteScore: cf.PteScore, minDetScore: cf.DETScore, gmatScore: cf.GmatScore,
-    pteSubscore: cf.PteNoSectionLessThan,
+    minIeltsScore: num(cf.IeltsOverall), ieltsNoBand: num(cf.IeltsNoBandLessThan),
+    minToeflScore: num(cf.ToeflScore), toeflNoBand: num(cf.ToeflNoSectionLessThan),
+    minPteScore: num(cf.PteScore), pteSubscore: num(cf.PteNoSectionLessThan),
+    minDetScore: num(cf.DETScore), greScore: num(cf.GreScore), gmatScore: num(cf.GmatScore),
+    satScore: num(cf.SatScore), actScore: num(cf.ActScore),
+    backlogRange: cf.backlog != null ? `0-${cf.backlog}` : '',
+    scholarshipAvailable: scholarship ? 'Yes' : 'No',
     // catalogue amounts are rough, so exports say "available" and point to the university instead of a number
-    avgScholarship: (cf.ScholarshipAvailable || (c.highlightIds || []).includes(2) || Number(cf.AverageScholarship) > 0) ? 'Available (confirm amount with university)' : undefined,
-    deadline: cf.ApplicationDeadline,
+    avgScholarship: scholarship ? 'Available (confirm amount with university)' : undefined,
+    deadline: cf.ApplicationDeadline || c.applicationDeadline,
     concentration: cf.Concentration,
-    requirements: cf.EntryRequirement,
+    requirements: cf.EntryRequirement || entry,
+    remarks,
     isStem: c.isStem,
-    university: { name: c.universityName, countryName: c.countryName, city: c.universityCity || c.city, state: c.universityState },
+    officialUrl: officialCourseLink(c, domain),
+    unicoachUrl: `${SITE_URL}/program/${c.cfId}`,
+    university: { name: c.universityName, countryName: c.countryName, city: c.universityCity || c.city, state: c.universityState, website: domain ? `https://${domain}` : undefined },
   };
 }
 
-// POST /api/search/export  { filters }  -> all matching results (capped) ready for the Excel exporter
+// POST /api/search/export  { filters, cfIds? }  -> all matching results (capped) ready for the Excel exporter.
+// cfIds exports exactly those programs (the student's "Selected" list), in that order.
 exports.exportCourses = async (req, res) => {
   try {
-    const { filters = {} } = req.body || {};
+    const { filters = {}, cfIds } = req.body || {};
     const CAP = 5000;
-    const rows = await CfCourse.find(buildMatch(filters)).sort(buildSort('featured')).limit(CAP).lean();
-    res.json({ data: rows.map(toExportProgram), total: rows.length, capped: rows.length >= CAP });
+    const ids = Array.isArray(cfIds) ? cfIds.map(Number).filter(Number.isInteger).slice(0, CAP) : null;
+    const [rows, domains] = await Promise.all([
+      ids && ids.length
+        ? CfCourse.find({ cfId: { $in: ids } }).lean().then((r) => { const pos = new Map(ids.map((id, i) => [id, i])); return r.sort((a, b) => pos.get(a.cfId) - pos.get(b.cfId)); })
+        : CfCourse.find(buildMatch(filters)).sort(buildSort('featured')).limit(CAP).lean(),
+      uniDomains().catch(() => ({})), // links still work (broader search) if this lookup fails
+    ]);
+    res.json({ data: rows.map((c) => toExportProgram(c, domains)), total: rows.length, capped: rows.length >= CAP });
   } catch (e) { res.status(500).json({ error: e.message }); }
 };
 
