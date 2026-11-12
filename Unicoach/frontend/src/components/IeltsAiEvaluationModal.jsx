@@ -18,11 +18,13 @@ const getBandColor = (band) => {
 
 const getBandDescriptor = (band) => {
   const num = parseFloat(band) || 0;
-  if (num >= 8.5) return 'Expert / Native-level Academic User';
-  if (num >= 7.5) return 'Very Good User — Meets 95%+ Top Global University Cutoffs';
-  if (num >= 6.5) return 'Competent Academic User — Meets Standard University Requirements';
-  if (num >= 5.5) return 'Modest User — Meets Select Foundation & Pathway Programs';
-  return 'Limited User — Requires Pre-sessional English Language Prep';
+  // IELTS's own band names; the score is a practice estimate, not an official result
+  if (num >= 9) return 'Expert user';
+  if (num >= 8) return 'Very good user';
+  if (num >= 7) return 'Good user';
+  if (num >= 6) return 'Competent user';
+  if (num >= 5) return 'Modest user';
+  return 'Limited user';
 };
 
 const IeltsAiEvaluationModal = ({ isOpen, onClose, evaluation, essayPrompt, studentEssay, wordCount, onPracticeAgain }) => {
@@ -78,8 +80,10 @@ Coherence & Cohesion: ${criteria.coherenceCohesion?.score}
 Lexical Resource: ${criteria.lexicalResource?.score}
 Grammar & Accuracy: ${criteria.grammaticalAccuracy?.score}
 
-Examiner Summary:
-${evaluation.examinerSummary || ''}`;
+Summary:
+${evaluation.examinerSummary || ''}
+
+Practice estimate from unicoach.com, not an official IELTS score.`;
 
     navigator.clipboard.writeText(text);
     setCopied(true);
@@ -113,7 +117,7 @@ ${evaluation.examinerSummary || ''}`;
 
             <div className="flex flex-wrap items-center gap-3 mb-3 pr-12">
               <span className="px-3 py-1 rounded-full text-[13px] font-bold bg-[#F2B705] text-[#16130F] border-2 border-[#F2B705] flex items-center gap-1.5">
-                <Sparkles size={14} /> Certified AI Examiner Assessment
+                <Sparkles size={14} /> Practice band estimate
               </span>
               <span className="text-[14px] font-semibold text-white/75">
                 Word Count: {wordCount || evaluation.wordCountAnalysis?.count || 0} words
@@ -156,7 +160,7 @@ ${evaluation.examinerSummary || ''}`;
 
               {evaluation.examinerSummary && (
                 <div className="max-w-md p-4 bg-[#FFF1B8] border-2 border-[#16130F] text-[14px] text-[#16130F] leading-relaxed" style={{ borderRadius: 12 }}>
-                  <span className="font-urbanist font-black text-[#16130F] block mb-1">👨‍🏫 Examiner Advice:</span>
+                  <span className="font-urbanist font-black text-[#16130F] block mb-1">👨‍🏫 Summary:</span>
                   {evaluation.examinerSummary}
                 </div>
               )}
@@ -166,7 +170,7 @@ ${evaluation.examinerSummary || ''}`;
             <div>
               <p className="font-urbanist font-extrabold text-[15px] text-[#D0362E]">Chaar criteria, ek ek karke</p>
               <h3 className="mt-1 mb-4 font-urbanist text-[20px] md:text-[22px] font-black text-[#16130F] tracking-[-0.02em] flex items-center gap-2">
-                <Award size={20} /> Criteria Breakdown (Official Rubric)
+                <Award size={20} /> Criteria breakdown (public IELTS band descriptors)
               </h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {criteriaList.map((item, idx) => (

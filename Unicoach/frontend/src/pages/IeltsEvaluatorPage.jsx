@@ -110,7 +110,7 @@ const IeltsEvaluatorPage = () => {
     if (!user && !token) {
       openLoginModal({
         title: 'Cambridge AI IELTS Essay Examiner',
-        subtitle: 'Sign in free with Google or email to unlock official Cambridge Band 0–9 criteria scoring and detailed lexical feedback.',
+        subtitle: 'Sign in free with Google or email to see your band (0–9) on the four IELTS criteria, with feedback on what to fix.',
         preventRedirect: true,
         onSuccess: () => {
           executeEvaluation();
@@ -227,7 +227,7 @@ const IeltsEvaluatorPage = () => {
               className="w-full sm:w-auto h-12 px-6 inline-flex items-center justify-center gap-2 text-white text-[15px] font-bold bg-[#16130F] border-[3px] border-[#16130F] shadow-[4px_4px_0_#DE5C2B] hover:-translate-y-0.5 transition-transform disabled:opacity-60 disabled:hover:translate-y-0 rounded-full"
             >
               {loading ? (
-                <><RefreshCw size={16} className="animate-spin" /> Evaluating with AI Examiner...</>
+                <><RefreshCw size={16} className="animate-spin" /> Checking your essay...</>
               ) : (
                 <><Sparkles size={16} /> Grade my essay</>
               )}

@@ -174,15 +174,27 @@ function ieltsOverallBand(scores) {
   return Math.floor(mean * 2 + 0.5) / 2;
 }
 
-// AI markers squeeze bands toward 5-6: on the 10 official IELTS.org Task 2 samples (28 Oct 2026),
-// gpt-4o-mini scored Band 4 essays about right but Band 8-8.5 essays at 6-7. This line stretches each
-// criterion back out (leave-one-out check: 90% within half a band, against 27% before).
-// Re-fit it if the model or prompt changes.
-const IELTS_CALIBRATION = { slope: 1.75, intercept: -3 };
+// The model squeezes bands toward 5-6. Re-checked 12 Nov 2026 on 12 official ielts.org Task 2 samples
+// (bands 4-8.5): raw criterion scores ran 4-7, and examiner band 8-8.5 essays came out at 6-6.5.
+// Below raw 6.5 the old straight line (1.75x - 3) still fits: 9 of 12 samples within half a band.
+// Above raw 6.5 there is no data, and the line pushed every good typed essay to 9 (raw 7 -> 9.25),
+// so the top is flattened: raw 6.5-8.5 maps to 8-8.5, and only a raw 9 stays 9.
+// Points are [raw, calibrated]; values in between are interpolated. Re-check if the model or prompt changes.
+const IELTS_CALIBRATION = {
+  enabled: true,
+  points: [[1, 1], [4, 4], [5, 5.75], [6, 7.5], [6.5, 8.25], [8.5, 8.5], [9, 9]],
+};
 const calibrateBand = (score) => {
   const n = Number(score);
   if (!Number.isFinite(n)) return score;
-  const v = IELTS_CALIBRATION.slope * n + IELTS_CALIBRATION.intercept;
+  if (!IELTS_CALIBRATION.enabled) return n;
+  const pts = IELTS_CALIBRATION.points;
+  let v = n <= pts[0][0] ? pts[0][1] : pts[pts.length - 1][1];
+  for (let i = 1; i < pts.length; i++) {
+    const [x0, y0] = pts[i - 1];
+    const [x1, y1] = pts[i];
+    if (n >= x0 && n <= x1) { v = y0 + ((n - x0) * (y1 - y0)) / (x1 - x0); break; }
+  }
   return Math.min(9, Math.max(1, Math.round(v * 2) / 2));
 };
 
@@ -1154,6 +1166,7 @@ ${customPrompt ? `- Custom Instruction: ${customPrompt}` : ''}`;
 }
 
 module.exports = {
+  IELTS_CALIBRATION, // exported so a calibration script can switch it off and read raw model bands
   callLLM,
   cleanJsonResponse,
   gradeIeltsEssay,
