@@ -1928,6 +1928,15 @@ body::after {
 }
 .leads-sheet .ant-table-tbody > tr:nth-child(even) > td { background: #fcfbfa; }
 .leads-sheet .ant-table-tbody > tr:hover > td { background: #fff6f1 !important; }
+
+/* Creators & Mentors table: tighter rows and columns */
+.ant-table-wrapper.creators-sheet .ant-table-thead > tr > th {
+  padding: 10px 12px !important;
+}
+.ant-table-wrapper.creators-sheet .ant-table-tbody > tr > td {
+  padding: 10px 12px !important;
+  vertical-align: middle;
+}
 .leads-sheet .ant-table-sticky-holder { z-index: 5; box-shadow: 0 2px 6px rgba(15, 23, 42, 0.06); }
 
 @media (max-width: 768px) {

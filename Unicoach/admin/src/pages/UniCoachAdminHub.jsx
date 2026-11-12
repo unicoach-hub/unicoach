@@ -574,12 +574,12 @@ const UniCoachAdminHub = () => {
     {
       title: 'Creator / Mentor',
       key: 'creator',
-      width: 260,
+      width: 240,
       render: (_, r) => (
-        <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
           <div style={{
-            width: 38,
-            height: 38,
+            width: 32,
+            height: 32,
             borderRadius: '50%',
             background: 'var(--ux-surface-3)',
             color: INK,
@@ -626,24 +626,22 @@ const UniCoachAdminHub = () => {
     {
       title: 'Registered On',
       key: 'createdAt',
-      width: 150,
+      width: 110,
       sorter: (a, b) => new Date(a.createdAt || 0) - new Date(b.createdAt || 0),
       defaultSortOrder: 'descend',
       render: (_, r) => r.createdAt ? (
-        <div style={{ fontSize: 11.5, color: TEXT_2 }}>
-          <div style={{ fontWeight: 600, color: TEXT }}>
-            {new Date(r.createdAt).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}
-          </div>
-          <div style={{ fontSize: 11, color: TEXT_3 }}>
-            {new Date(r.createdAt).toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' })}
-          </div>
-        </div>
+        <span
+          style={{ fontSize: 12, fontWeight: 600, color: TEXT, whiteSpace: 'nowrap' }}
+          title={new Date(r.createdAt).toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' })}
+        >
+          {new Date(r.createdAt).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}
+        </span>
       ) : <span style={{ fontSize: 11.5, color: TEXT_3 }}>—</span>
     },
     {
       title: 'Students referred',
       key: 'referred',
-      width: 140,
+      width: 100,
       sorter: (a, b) => (referralSummary[a._id]?.total || 0) - (referralSummary[b._id]?.total || 0),
       render: (_, r) => {
         const sum = referralSummary[r._id];
@@ -659,24 +657,23 @@ const UniCoachAdminHub = () => {
     {
       title: 'University & course',
       key: 'academic',
-      width: 260,
+      width: 230,
       render: (_, r) => {
         // Names come from a free-text form ("dublin scholl"): show them title-cased so the column reads cleanly
         const tidy = (v) => String(v || '').trim().replace(/\s+/g, ' ').replace(/(^|\s)(\S)/g, (m, sp, ch) => sp + ch.toUpperCase());
         return (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 6, minWidth: 220 }}>
-            <div style={{ fontWeight: 700, color: TEXT, fontSize: 13, lineHeight: 1.3 }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 2, minWidth: 0 }}>
+            <div style={{ fontWeight: 600, color: TEXT, fontSize: 12.5, lineHeight: 1.3 }}>
               {r.university ? tidy(r.university) : <span style={{ color: TEXT_3, fontWeight: 500 }}>University not set</span>}
             </div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 6, flexWrap: 'wrap' }}>
-              {r.country && (
-                <span className="nx-status nx-status--neutral" style={{ height: 22, fontSize: 11.5 }}>{r.country}</span>
-              )}
-              {r.graduationYear && (
-                <span className="nx-status nx-status--neutral" style={{ height: 22, fontSize: 11.5 }}>Batch {r.graduationYear}</span>
-              )}
-            </div>
-            {r.course && <div style={{ fontSize: 12, color: TEXT_2, lineHeight: 1.35 }}>{tidy(r.course)}</div>}
+            {(r.country || r.graduationYear || r.course) && (
+              <div
+                style={{ fontSize: 11.5, color: TEXT_2, lineHeight: 1.35, display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}
+                title={[r.country, r.graduationYear && `Batch ${r.graduationYear}`, r.course && tidy(r.course)].filter(Boolean).join(' · ')}
+              >
+                {[r.country, r.graduationYear && `Batch ${r.graduationYear}`, r.course && tidy(r.course)].filter(Boolean).join(' · ')}
+              </div>
+            )}
           </div>
         );
       }
@@ -684,20 +681,20 @@ const UniCoachAdminHub = () => {
     {
       title: 'Verification & ID',
       key: 'proof',
-      width: 160,
+      width: 150,
       render: (_, r) => (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+        <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: 4 }}>
           {r.verificationDocUrl ? (
             <Button
               size="small"
               icon={<FilePdfOutlined />}
               onClick={() => setSelectedProofMentor(r)}
-              style={{ width: 'max-content' }}
+              style={{ width: 'max-content', fontSize: 12, height: 24 }}
             >
-              Inspect ID
+              ID
             </Button>
           ) : (
-            <span style={{ fontSize: 11.5, color: TEXT_3 }}>No doc attached</span>
+            <span style={{ fontSize: 11.5, color: TEXT_3 }}>No ID</span>
           )}
           {r.socialLinks?.linkedin && (
             <a
@@ -706,20 +703,20 @@ const UniCoachAdminHub = () => {
               rel="noreferrer"
               style={{ fontSize: 11.5, color: INK, display: 'inline-flex', alignItems: 'center', gap: 4, fontWeight: 600 }}
             >
-              <LinkedinOutlined /> LinkedIn
+              <LinkedinOutlined />
             </a>
           )}
           {r.defaultPayoutDetails?.accountNumber ? (
             <span className="nx-status nx-status--neutral" style={SMALL_PILL_STYLE}>
-              <BankOutlined /> Bank Linked
+              <BankOutlined /> Bank
             </span>
           ) : r.defaultPayoutDetails?.upiId ? (
             <span className="nx-status nx-status--neutral" style={SMALL_PILL_STYLE}>
-              UPI Linked
+              UPI
             </span>
           ) : (
             <span className="nx-status nx-status--warning" style={SMALL_PILL_STYLE}>
-              No Bank Info
+              No bank
             </span>
           )}
         </div>
@@ -728,7 +725,7 @@ const UniCoachAdminHub = () => {
     {
       title: 'Approval Status',
       key: 'approvalStatus',
-      width: 130,
+      width: 110,
       render: (_, r) => {
         const isApproved = r.isVerified || r.applicationStatus === 'APPROVED';
         const isRejected = r.applicationStatus === 'REJECTED';
@@ -756,7 +753,7 @@ const UniCoachAdminHub = () => {
     {
       title: 'Payout account',
       key: 'routeAccount',
-      width: 210,
+      width: 180,
       render: (_, r) => {
         const ra = r.routeAccount || {};
         const status = ra.status || 'NOT_STARTED';
@@ -769,32 +766,28 @@ const UniCoachAdminHub = () => {
             {style.label}
           </span>
         );
+        const details = [
+          maskedAcc ? `${maskedAcc}${bank.ifscCode ? ` · ${bank.ifscCode}` : ''}` : 'No bank details',
+          maskedPan ? `PAN ${maskedPan}` : 'No PAN',
+          ra.lastError ? `Error: ${ra.lastError}` : null,
+        ].filter(Boolean).join('\n');
         return (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
-            {ra.lastError ? <Tooltip title={ra.lastError}>{tag}</Tooltip> : tag}
-            {ra.lastError && (
-              <span
-                style={{ fontSize: 11, color: DANGER, maxWidth: 190, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}
-                title={ra.lastError}
-              >
-                {ra.lastError}
-              </span>
-            )}
-            <span style={{ fontSize: 11.5, color: TEXT_2, fontFamily: 'monospace' }}>
-              {maskedAcc ? `${maskedAcc}${bank.ifscCode ? ` · ${bank.ifscCode}` : ''}` : <span style={{ color: TEXT_3, fontFamily: 'inherit' }}>No bank details</span>}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+              <Tooltip title={<span style={{ whiteSpace: 'pre-line' }}>{details}</span>}>{tag}</Tooltip>
+              <Tooltip title={ra.accountId ? 'Refresh payout account' : 'Set up payout account'}>
+                <Button
+                  size="small"
+                  type="text"
+                  icon={<ReloadOutlined />}
+                  loading={routeAccountBusyId === r._id}
+                  onClick={() => handleSetupRouteAccount(r)}
+                />
+              </Tooltip>
+            </div>
+            <span style={{ fontSize: 11, color: ra.lastError ? DANGER : TEXT_3, fontFamily: maskedAcc && !ra.lastError ? 'monospace' : 'inherit', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: 165 }} title={details}>
+              {ra.lastError ? 'Setup failed' : (maskedAcc || 'No bank details')}
             </span>
-            <span style={{ fontSize: 11.5, color: TEXT_2, fontFamily: 'monospace' }}>
-              {maskedPan ? `PAN ${maskedPan}` : <span style={{ color: TEXT_3, fontFamily: 'inherit' }}>No PAN</span>}
-            </span>
-            <Button
-              size="small"
-              icon={<ReloadOutlined />}
-              loading={routeAccountBusyId === r._id}
-              onClick={() => handleSetupRouteAccount(r)}
-              style={{ fontSize: 12, width: 'fit-content', marginTop: 2 }}
-            >
-              {ra.accountId ? 'Refresh payout account' : 'Set up payout account'}
-            </Button>
           </div>
         );
       }
@@ -802,7 +795,7 @@ const UniCoachAdminHub = () => {
     {
       title: 'Services & Slots',
       key: 'services',
-      width: 130,
+      width: 110,
       render: (_, r) => (
         <div>
           <button
@@ -814,16 +807,17 @@ const UniCoachAdminHub = () => {
               color: INK,
               fontWeight: 600,
               fontSize: 12.5,
+              lineHeight: 1.4,
               cursor: 'pointer',
               display: 'inline-flex',
               alignItems: 'center',
               gap: 5
             }}
           >
-            <EyeOutlined /> {r.servicesCount || 0} Offerings
+            <EyeOutlined /> {r.servicesCount || 0} offers
           </button>
-          <div style={{ fontSize: 11.5, color: TEXT_2, marginTop: 2 }}>
-            {r.availableSlotsCount || 0} Slots Open
+          <div style={{ fontSize: 11, color: TEXT_2, lineHeight: 1.3 }}>
+            {r.availableSlotsCount || 0} slots open
           </div>
         </div>
       )
@@ -831,7 +825,7 @@ const UniCoachAdminHub = () => {
     {
       title: 'Financials',
       key: 'financials',
-      width: 140,
+      width: 120,
       render: (_, r) => (
         <div>
           <div style={{ fontWeight: 700, color: INK, fontSize: 13 }}>
@@ -846,7 +840,7 @@ const UniCoachAdminHub = () => {
     {
       title: 'Active',
       key: 'active',
-      width: 75,
+      width: 64,
       render: (_, r) => (
         <Tooltip title={r.active ? 'Account Active (Publicly visible)' : 'Account Suspended'}>
           <Switch
@@ -860,7 +854,7 @@ const UniCoachAdminHub = () => {
     {
       title: 'Actions',
       key: 'actions',
-      width: 130,
+      width: 110,
       render: (_, r) => {
         const isApproved = r.isVerified || r.applicationStatus === 'APPROVED';
         const menuItems = [
@@ -1732,13 +1726,15 @@ const UniCoachAdminHub = () => {
                       rowKey="_id"
                       columns={mentorColumns}
                       dataSource={filteredMentors}
+                      size="small"
+                      className="creators-sheet"
                       onRow={(r) => ({
                         // Whole row opens the mentor's details; buttons, links and dropdowns inside keep working
                         onClick: (e) => { if (!e.target.closest('a, button, input, .ant-select, .ant-switch, .ant-dropdown-trigger, .ant-popover')) setDetailMentor(r); },
                         style: { cursor: 'pointer' },
                       })}
                       loading={loading}
-                      scroll={{ x: 2040 }}
+                      scroll={{ x: 1530 }}
                       pagination={{ pageSize: 10, showSizeChanger: true, pageSizeOptions: ['10', '20', '50'] }}
                     />
                   </div>
