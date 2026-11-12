@@ -109,7 +109,7 @@ const IeltsEvaluatorPage = () => {
 
     if (!user && !token) {
       openLoginModal({
-        title: 'Cambridge AI IELTS Essay Examiner',
+        title: 'Free IELTS Writing Checker',
         subtitle: 'Sign in free with Google or email to see your band (0–9) on the four IELTS criteria, with feedback on what to fix.',
         preventRedirect: true,
         onSuccess: () => {
