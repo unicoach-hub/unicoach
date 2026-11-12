@@ -20,6 +20,7 @@ import LazySection from './components/LazySection'
 // Lazy-load Global Modals, Footer and Widgets (Non-blocking for initial page load)
 const Footer = lazy(() => import('./components/Footer'));
 const SuccessModal = lazy(() => import('./components/SuccessModal'));
+const LeadPopup = lazy(() => import('./components/LeadPopup'));
 const LoginModal = lazy(() => import('./components/LoginModal'));
 const UniBotChatWidget = lazy(() => import('./components/UniBotChatWidget'));
 const UserDashboard = lazy(() => import('./components/UserDashboard'));
@@ -411,6 +412,8 @@ const GlobalModals = () => {
       {isModalOpen && <ConsultRedirect />}
       {isSubmitted && <SuccessModal />}
       {loginModalOpen && <LoginModal />}
+      {/* Exit-intent / half-page lead popup (its own rules decide if and when it opens) */}
+      <LeadPopup />
     </Suspense>
   );
 };
