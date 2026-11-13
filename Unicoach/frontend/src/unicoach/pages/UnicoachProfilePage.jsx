@@ -37,6 +37,9 @@ const CATEGORY_TABS = [
   { id: 'PACKAGE', label: 'Package' }
 ];
 
+// Keep this in step with MAX_COMMENT_LENGTH in backend/unicoach/controllers/featureController.js
+const MAX_REVIEW_LENGTH = 1000;
+
 // Colours for the badges the UniCoach team gives a mentor
 const BADGE_STYLES = [
   'bg-amber-100/90 text-amber-900 border-amber-200',
@@ -793,11 +796,15 @@ const UnicoachProfilePage = () => {
                 <div>
                   <label className="block text-xs font-bold text-slate-700 mb-1">
                     Your Review & Feedback
+                    <span className={`ml-2 font-normal ${writeComment.length >= MAX_REVIEW_LENGTH ? 'text-rose-600 font-semibold' : 'text-slate-400'}`}>
+                      {writeComment.length}/{MAX_REVIEW_LENGTH}
+                    </span>
                   </label>
                   <textarea
                     rows={3}
+                    maxLength={MAX_REVIEW_LENGTH}
                     value={writeComment}
-                    onChange={(e) => setWriteComment(e.target.value)}
+                    onChange={(e) => setWriteComment(e.target.value.slice(0, MAX_REVIEW_LENGTH))}
                     placeholder="Share how helpful the mentor was with your university application, visa questions, or profile review..."
                     className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-950/20 focus:border-slate-950 resize-none"
                   />

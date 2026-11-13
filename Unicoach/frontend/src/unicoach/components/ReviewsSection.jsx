@@ -2,6 +2,9 @@ import React, { useState } from 'react';
 import { Star, ShieldCheck, MessageSquare, CheckCircle2, AlertCircle, Loader2, ChevronDown, ChevronUp } from 'lucide-react';
 import { submitReview } from '../api/unicoachApi';
 
+// Keep this in step with MAX_COMMENT_LENGTH in backend/unicoach/controllers/featureController.js
+const MAX_COMMENT_LENGTH = 1000;
+
 const ReviewsSection = ({ mentor, reviews = [], ratingStats = { averageRating: 5.0, totalReviews: 0 }, onReviewSubmitted }) => {
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [bookingRef, setBookingRef] = useState('');
@@ -233,14 +236,20 @@ const ReviewsSection = ({ mentor, reviews = [], ratingStats = { averageRating: 5
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-700 mb-1">
-                Your Review & Experience
-              </label>
+              <div className="flex items-center justify-between mb-1">
+                <label className="block text-xs font-semibold text-slate-700">
+                  Your Review & Experience
+                </label>
+                <span className={`text-[11px] ${comment.length >= MAX_COMMENT_LENGTH ? 'text-rose-600 font-semibold' : 'text-slate-400'}`}>
+                  {comment.length}/{MAX_COMMENT_LENGTH}
+                </span>
+              </div>
               <textarea
                 rows="3"
+                maxLength={MAX_COMMENT_LENGTH}
                 placeholder="How helpful was this call? What key insights or university guidance did you gain?"
                 value={comment}
-                onChange={(e) => setComment(e.target.value)}
+                onChange={(e) => setComment(e.target.value.slice(0, MAX_COMMENT_LENGTH))}
                 className="w-full px-3.5 py-2 rounded-xl border border-slate-200 text-xs bg-white resize-none focus:outline-none focus:ring-2 focus:ring-indigo-600/20 focus:border-indigo-600"
               />
             </div>

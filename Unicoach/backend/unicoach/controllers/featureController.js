@@ -5,6 +5,9 @@ const UnicoachCoupon = require('../models/UnicoachCoupon');
 const UnicoachReview = require('../models/UnicoachReview');
 const { refreshMentorStats } = require('../services/mentorStatsService');
 
+// Longest review text a student can leave; the form stops them earlier, this guards the API
+const MAX_COMMENT_LENGTH = 1000;
+
 /**
  * POST /api/unicoach/@:handle/validate-coupon
  * Validates promo code and computes dynamic discount (100% In-House)
@@ -185,7 +188,7 @@ const submitReview = async (req, res) => {
       bookingId: booking._id,
       studentName: booking.studentName,
       rating: Math.min(5, Math.max(1, Number(rating))),
-      comment: comment || '',
+      comment: String(comment || '').trim().slice(0, MAX_COMMENT_LENGTH),
       serviceTitle: booking.serviceId?.title || '1:1 Session',
       verifiedPurchase: true
     });

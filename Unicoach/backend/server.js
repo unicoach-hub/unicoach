@@ -218,6 +218,10 @@ const consultationLimiter = rateLimit({
 app.use('/api/consultations', (req, res, next) => (req.method === 'POST' ? consultationLimiter(req, res, next) : next()));
 app.use('/api/events/:id/register', authFormLimiter);
 app.use('/api/admin/auth/login', adminLoginLimiter);
+// CSRF guard: the admin cookie is SameSite=None, so a cross-site form POST would otherwise carry it.
+// Every admin write must come from one of our own origins (or an explicit Bearer token).
+const { sameOriginOnly } = require('./middleware/sameOrigin');
+app.use('/api/admin', sameOriginOnly({ allowedOrigins, trustedPattern: TRUSTED_ORIGIN_PATTERN }));
 // Public mentor application + document upload: no login required, so throttle per IP
 app.use('/api/unicoach/apply', authFormLimiter);
 app.use('/api/unicoach/upload-verification-doc', authFormLimiter);

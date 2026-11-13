@@ -34,7 +34,8 @@ const unicoachReviewSchema = new mongoose.Schema({
   comment: { 
     type: String, 
     default: '', 
-    trim: true 
+    trim: true,
+    maxlength: 1000
   },
   serviceTitle: { 
     type: String, 

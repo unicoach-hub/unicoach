@@ -15,6 +15,8 @@ const {
   getAllNotifications,
   sendMentorNotification,
   deleteNotification,
+  getAllReviews,
+  deleteReview,
   setupMentorRouteAccount,
   retryBookingTransfer,
   refundBookingByAdmin
@@ -67,5 +69,9 @@ router.post('/payouts/:payoutId/process', processPayout);
 router.get('/notifications', getAllNotifications);
 router.post('/notifications', sendMentorNotification);
 router.delete('/notifications/:notificationId', deleteNotification);
+
+// Student Reviews (read and remove abusive ones)
+router.get('/reviews', getAllReviews);
+router.delete('/reviews/:reviewId', deleteReview);
 
 module.exports = router;

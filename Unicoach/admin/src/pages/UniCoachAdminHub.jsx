@@ -37,7 +37,8 @@ import {
   BellOutlined,
   AlertOutlined,
   InfoCircleOutlined,
-  ArrowRightOutlined
+  ArrowRightOutlined,
+  StarFilled
 } from '@ant-design/icons';
 import Header from '../components/Header';
 import API from '../api/axios';
@@ -147,6 +148,11 @@ const UniCoachAdminHub = () => {
   // Ledger Data
   const [ledger, setLedger] = useState([]);
   const [ledgerSearch, setLedgerSearch] = useState('');
+
+  // Student Reviews (read-only, with a delete for abusive ones)
+  const [reviews, setReviews] = useState([]);
+  const [reviewSearch, setReviewSearch] = useState('');
+  const [deletingReviewId, setDeletingReviewId] = useState(null);
 
   // Payouts Data (Free Direct Payout Management)
   const [payouts, setPayouts] = useState([]);
@@ -313,6 +319,35 @@ const UniCoachAdminHub = () => {
     else if (key === 'ledger') loadLedger();
     else if (key === 'payouts') loadPayouts();
     else if (key === 'notifications') loadNotifications();
+    else if (key === 'reviews') loadReviews();
+  };
+
+  // Load student reviews
+  const loadReviews = async () => {
+    setLoading(true);
+    try {
+      const res = await API.get('/admin/unicoach/reviews');
+      setReviews(Array.isArray(res.data) ? res.data : []);
+    } catch (err) {
+      message.error(apiErrorMessage(err, 'Failed to load reviews'));
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Delete one review; the mentor's rating is recomputed on the server
+  const handleDeleteReview = async (review) => {
+    setDeletingReviewId(review._id);
+    try {
+      await API.delete(`/admin/unicoach/reviews/${review._id}`);
+      message.success('Review deleted. Mentor rating updated.');
+      setReviews((prev) => prev.filter((r) => r._id !== review._id));
+      loadOverview();
+    } catch (err) {
+      message.error(apiErrorMessage(err, 'Failed to delete review'));
+    } finally {
+      setDeletingReviewId(null);
+    }
   };
 
   // Process Payout Action (Approve with UTR or Reject with Refund)
@@ -468,6 +503,23 @@ const UniCoachAdminHub = () => {
   };
 
   // Toggle Active Status
+  // Taking a creator offline hides their public profile at once, so always ask first.
+  // The confirm lives here rather than in a Popconfirm around the Switch: antd's Switch calls
+  // onClick with (checked, event), so Popconfirm's own click handler never fires on it.
+  const confirmToggleStatus = (mentor) => {
+    const suspending = mentor.active;
+    Modal.confirm({
+      title: suspending ? `Suspend @${mentor.handle}?` : `Make @${mentor.handle} live again?`,
+      content: suspending
+        ? `${mentor.name}'s public profile and booking page go offline straight away.`
+        : `${mentor.name}'s profile becomes publicly visible and bookable again.`,
+      okText: suspending ? 'Yes, suspend' : 'Yes, make live',
+      okType: suspending ? 'danger' : 'primary',
+      cancelText: 'Cancel',
+      onOk: () => handleToggleStatus(mentor),
+    });
+  };
+
   const handleToggleStatus = async (mentor) => {
     try {
       const nextVal = !mentor.active;
@@ -549,6 +601,20 @@ const UniCoachAdminHub = () => {
       l.bookingId?.bookingRef?.toLowerCase().includes(s) ||
       l.mentorId?.name?.toLowerCase().includes(s) ||
       l.mentorId?.handle?.toLowerCase().includes(s)
+    );
+  });
+
+  // Filtered Reviews
+  const filteredReviews = reviews.filter((r) => {
+    if (!reviewSearch) return true;
+    const q = reviewSearch.toLowerCase();
+    return (
+      r.studentName?.toLowerCase().includes(q) ||
+      r.comment?.toLowerCase().includes(q) ||
+      r.serviceTitle?.toLowerCase().includes(q) ||
+      r.mentorId?.name?.toLowerCase().includes(q) ||
+      r.mentorId?.handle?.toLowerCase().includes(q) ||
+      r.bookingId?.bookingRef?.toLowerCase().includes(q)
     );
   });
 
@@ -846,7 +912,7 @@ const UniCoachAdminHub = () => {
           <Switch
             size="small"
             checked={r.active}
-            onChange={() => handleToggleStatus(r)}
+            onChange={() => confirmToggleStatus(r)}
           />
         </Tooltip>
       )
@@ -923,14 +989,21 @@ const UniCoachAdminHub = () => {
         return (
           <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
             {!isApproved ? (
-              <Button
-                type="primary"
-                size="small"
-                icon={<SafetyCertificateOutlined />}
-                onClick={() => handleApproveApplication(r)}
+              <Popconfirm
+                title="Approve this creator?"
+                description={`${r.name} goes live on the public directory with a verified tick, and payout setup begins.`}
+                okText="Yes, approve"
+                cancelText="Cancel"
+                onConfirm={() => handleApproveApplication(r)}
               >
-                Approve
-              </Button>
+                <Button
+                  type="primary"
+                  size="small"
+                  icon={<SafetyCertificateOutlined />}
+                >
+                  Approve
+                </Button>
+              </Popconfirm>
             ) : null}
 
             <Dropdown menu={{ items: menuItems }} trigger={['click']} placement="bottomRight">
@@ -939,6 +1012,96 @@ const UniCoachAdminHub = () => {
           </div>
         );
       }
+    }
+  ];
+
+  // Student Review Columns
+  const reviewColumns = [
+    {
+      title: 'Student & review',
+      key: 'review',
+      width: 420,
+      render: (_, r) => (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 3, minWidth: 0 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+            <span style={{ fontWeight: 600, color: INK, fontSize: 13 }}>{r.studentName || 'Student'}</span>
+            {r.verifiedPurchase && (
+              <span className="nx-status nx-status--success" style={SMALL_PILL_STYLE}>
+                <CheckCircleOutlined style={{ fontSize: 10 }} /> Verified booking
+              </span>
+            )}
+          </div>
+          {r.comment
+            ? <span style={{ fontSize: 12.5, color: TEXT_2, lineHeight: 1.45, whiteSpace: 'pre-wrap' }}>{r.comment}</span>
+            : <span style={{ fontSize: 12, color: TEXT_3, fontStyle: 'italic' }}>No written feedback, rating only</span>}
+        </div>
+      )
+    },
+    {
+      title: 'Rating',
+      key: 'rating',
+      width: 110,
+      sorter: (a, b) => (a.rating || 0) - (b.rating || 0),
+      render: (_, r) => (
+        <span style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontWeight: 700, color: INK, fontSize: 13 }}>
+          <StarFilled style={{ color: '#F2B705', fontSize: 13 }} /> {r.rating}/5
+        </span>
+      )
+    },
+    {
+      title: 'Mentor',
+      key: 'mentor',
+      width: 180,
+      render: (_, r) => (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 2, minWidth: 0 }}>
+          <span style={{ fontWeight: 600, color: TEXT, fontSize: 12.5 }}>{r.mentorId?.name || 'Deleted mentor'}</span>
+          {r.mentorId?.handle && (
+            <a
+              href={`${frontendUrl}/@${r.mentorId.handle}`}
+              target="_blank"
+              rel="noreferrer"
+              style={{ fontSize: 11.5, color: 'var(--ux-brand-strong)', fontWeight: 600 }}
+            >
+              @{r.mentorId.handle} <ExportOutlined style={{ fontSize: 10 }} />
+            </a>
+          )}
+        </div>
+      )
+    },
+    {
+      title: 'Session & date',
+      key: 'session',
+      width: 200,
+      sorter: (a, b) => new Date(a.createdAt || 0) - new Date(b.createdAt || 0),
+      defaultSortOrder: 'descend',
+      render: (_, r) => (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+          <span style={{ fontSize: 12.5, color: TEXT }}>{r.serviceTitle || '1:1 Session'}</span>
+          <span style={{ fontSize: 11.5, color: TEXT_3 }}>
+            {r.createdAt ? new Date(r.createdAt).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }) : '—'}
+            {r.bookingId?.bookingRef ? ` · ${r.bookingId.bookingRef}` : ''}
+          </span>
+        </div>
+      )
+    },
+    {
+      title: 'Actions',
+      key: 'actions',
+      width: 110,
+      render: (_, r) => (
+        <Popconfirm
+          title="Delete this review?"
+          description="The review is removed for good and the mentor's rating is recalculated."
+          okText="Yes, delete"
+          okButtonProps={{ danger: true }}
+          cancelText="Cancel"
+          onConfirm={() => handleDeleteReview(r)}
+        >
+          <Button size="small" danger icon={<DeleteOutlined />} loading={deletingReviewId === r._id}>
+            Delete
+          </Button>
+        </Popconfirm>
+      )
     }
   ];
 
@@ -1167,14 +1330,21 @@ const UniCoachAdminHub = () => {
         return (
           <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
             {canRetry && (
-              <Button
-                size="small"
-                icon={<ReloadOutlined />}
-                loading={bookingActionBusyId === r._id}
-                onClick={() => handleRetryTransfer(r)}
+              <Popconfirm
+                title="Send this transfer again?"
+                description={`${formatINR(r.settlement?.mentorShareINR ?? r.settlement?.grossINR ?? r.amountPaid)} goes to ${r.mentorId?.name || 'the mentor'}. Only do this if the earlier transfer really failed.`}
+                okText="Yes, retry"
+                cancelText="Cancel"
+                onConfirm={() => handleRetryTransfer(r)}
               >
-                Retry transfer
-              </Button>
+                <Button
+                  size="small"
+                  icon={<ReloadOutlined />}
+                  loading={bookingActionBusyId === r._id}
+                >
+                  Retry transfer
+                </Button>
+              </Popconfirm>
             )}
             {canRefund && (
               <Button
@@ -1543,6 +1713,7 @@ const UniCoachAdminHub = () => {
                 else if (activeTab === 'ledger') loadLedger();
                 else if (activeTab === 'payouts') loadPayouts();
                 else if (activeTab === 'notifications') loadNotifications();
+                else if (activeTab === 'reviews') loadReviews();
               }}
             >
               Refresh Data
@@ -1808,6 +1979,49 @@ const UniCoachAdminHub = () => {
                       loading={loading}
                       scroll={{ x: 1050 }}
                       pagination={{ pageSize: 15 }}
+                    />
+                  </div>
+                )
+              },
+              {
+                key: 'reviews',
+                label: (
+                  <span style={{ fontWeight: 600, fontSize: 14, display: 'inline-flex', alignItems: 'center', gap: 8 }}>
+                    <StarFilled /> Student Reviews
+                    <span className="nx-tab-count">
+                      {reviews.length}
+                    </span>
+                  </span>
+                ),
+                children: (
+                  <div>
+                    <div style={{ ...INNER_BLOCK_STYLE, display: 'flex', alignItems: 'flex-start', gap: 8, padding: '10px 14px', fontSize: 12.5, color: TEXT_2, marginBottom: 12 }}>
+                      <InfoCircleOutlined style={{ color: INK, marginTop: 3 }} />
+                      <span>Students can only review a session they actually booked. Delete a review if it is abusive or was left by mistake; the mentor&apos;s rating updates straight away.</span>
+                    </div>
+                    <div className="nx-toolbar" style={TOOLBAR_STYLE}>
+                      <Input
+                        prefix={<SearchOutlined style={{ color: TEXT_3 }} />}
+                        placeholder="Search student, mentor, booking ref, or review text..."
+                        value={reviewSearch}
+                        onChange={(e) => setReviewSearch(e.target.value)}
+                        style={{ width: '100%', maxWidth: 360 }}
+                        allowClear
+                      />
+                      <span style={{ fontSize: 12.5, color: TEXT_2, fontWeight: 500 }}>
+                        {filteredReviews.length} reviews
+                      </span>
+                    </div>
+                    <Table
+                      rowKey="_id"
+                      columns={reviewColumns}
+                      dataSource={filteredReviews}
+                      loading={loading}
+                      size="small"
+                      className="creators-sheet"
+                      locale={{ emptyText: 'No student reviews yet.' }}
+                      scroll={{ x: 1020 }}
+                      pagination={{ pageSize: 12 }}
                     />
                   </div>
                 )
@@ -2266,16 +2480,21 @@ const UniCoachAdminHub = () => {
             Close
           </Button>,
           selectedProofMentor && !selectedProofMentor.isVerified && (
-            <Button
+            <Popconfirm
               key="approve"
-              type="primary"
-              onClick={() => {
+              title="Approve this creator?"
+              description={`${selectedProofMentor.name} goes live on the public directory with a verified tick.`}
+              okText="Yes, approve"
+              cancelText="Cancel"
+              onConfirm={() => {
                 handleApproveApplication(selectedProofMentor);
                 setSelectedProofMentor(null);
               }}
             >
-              Approve & Grant Blue Tick
-            </Button>
+              <Button type="primary">
+                Approve & Grant Blue Tick
+              </Button>
+            </Popconfirm>
           )
         ]}
         width={650}

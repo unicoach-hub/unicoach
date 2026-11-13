@@ -8,6 +8,7 @@ const UnicoachReview = require('../models/UnicoachReview');
 const UnicoachPayout = require('../models/UnicoachPayout');
 const UnicoachNotification = require('../models/UnicoachNotification');
 const { getAccessUrl } = require('../services/fileStorageService');
+const { refreshMentorStats } = require('../services/mentorStatsService');
 
 // Private files (verification docs, paid products) open for admins through 1-hour signed links
 const ADMIN_LINK_TTL_SECONDS = 3600;
@@ -622,6 +623,41 @@ const deleteNotification = async (req, res) => {
 };
 
 /**
+ * GET /api/admin/unicoach/reviews
+ * Every student review, newest first, with the mentor it belongs to
+ */
+const getAllReviews = async (req, res) => {
+  try {
+    const reviews = await UnicoachReview.find()
+      .sort({ createdAt: -1 })
+      .limit(500)
+      .populate('mentorId', 'name handle')
+      .populate('bookingId', 'bookingRef studentEmail')
+      .lean();
+    res.json(reviews);
+  } catch (err) {
+    console.error('Error fetching reviews:', err);
+    res.status(500).json({ error: 'Failed to fetch reviews.' });
+  }
+};
+
+/**
+ * DELETE /api/admin/unicoach/reviews/:reviewId
+ * Remove an abusive or mistaken review; the mentor's rating is recomputed at once
+ */
+const deleteReview = async (req, res) => {
+  try {
+    const review = await UnicoachReview.findByIdAndDelete(req.params.reviewId);
+    if (!review) return res.status(404).json({ error: 'Review not found.' });
+    await refreshMentorStats(review.mentorId);
+    res.json({ success: true, message: 'Review deleted and rating updated.' });
+  } catch (err) {
+    console.error('Error deleting review:', err);
+    res.status(500).json({ error: 'Failed to delete review.' });
+  }
+};
+
+/**
  * POST /api/admin/unicoach/mentors/:mentorId/route-account
  * Create / finish / refresh the mentor's Razorpay Route payout account
  */
@@ -723,6 +759,8 @@ module.exports = {
   processPayout,
   getAllNotifications,
   sendMentorNotification,
-  deleteNotification
+  deleteNotification,
+  getAllReviews,
+  deleteReview
 };
 

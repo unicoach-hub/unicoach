@@ -17,6 +17,9 @@ const userSchema = new mongoose.Schema({
     via: String,     // signup | login | google
     ip: String,
   },
+  // Bumped whenever the admin password changes or the owner signs out everywhere: admin tokens
+  // issued before the bump stop working, so a stolen token cannot outlive the password.
+  tokenVersion: { type: Number, default: 0 },
   authProvider: { type: String, enum: ['local', 'google', 'apple', 'phone'], default: 'local' },
   googleId: { type: String, unique: true, sparse: true },
   appleId: { type: String, unique: true, sparse: true },

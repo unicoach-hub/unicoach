@@ -5,11 +5,14 @@ const jwt = require('jsonwebtoken');
 const { JWT_SECRET } = require('../config/jwt');
 const { MODULES } = require('../config/staffPermissions');
 
+// Admin sessions last half a day, not a week: the panel can refund money and delete creators, so a
+// token that leaks should die the same day. Staff keep the same window.
+const ADMIN_SESSION = '12h';
 const ADMIN_COOKIE_OPTIONS = {
   httpOnly: true,
   secure: process.env.NODE_ENV === 'production',
   sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
-  maxAge: 7 * 24 * 60 * 60 * 1000
+  maxAge: 12 * 60 * 60 * 1000
 };
 
 // What the admin panel needs to know about a staff member: who they are and what they may do
@@ -38,7 +41,7 @@ async function staffLogin(email, password, res) {
   staff.lastLoginAt = new Date();
   await staff.save();
 
-  const token = jwt.sign({ id: staff._id, role: 'staff', tv: staff.tokenVersion || 0 }, JWT_SECRET, { expiresIn: '7d' });
+  const token = jwt.sign({ id: staff._id, role: 'staff', tv: staff.tokenVersion || 0 }, JWT_SECRET, { expiresIn: ADMIN_SESSION });
   res.cookie('admin_token', token, ADMIN_COOKIE_OPTIONS);
   return res.json({ token, user: staffProfile(staff) });
 }
@@ -82,9 +85,9 @@ exports.adminLogin = async (req, res) => {
     }
 
     const token = jwt.sign(
-      { id: user._id, role: user.role },
+      { id: user._id, role: user.role, tv: user.tokenVersion || 0 },
       JWT_SECRET,
-      { expiresIn: '7d' }
+      { expiresIn: ADMIN_SESSION }
     );
 
     // Admin session gets its OWN cookie name so a student login on the same browser can't replace it
@@ -160,6 +163,8 @@ exports.updateAdminProfile = async (req, res) => {
       }
       const salt = await bcrypt.genSalt(10);
       user.passwordHash = await bcrypt.hash(password, salt);
+      // Sign every other device out: tokens minted with the old password stop verifying
+      user.tokenVersion = (user.tokenVersion || 0) + 1;
     }
 
     await user.save();

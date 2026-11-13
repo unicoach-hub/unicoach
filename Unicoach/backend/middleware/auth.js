@@ -45,12 +45,33 @@ async function loadStaff(req) {
 
 const isOwner = (req) => Boolean(req.user && req.user.role === 'admin');
 
+// Owner session: like staff, the token must match the account's current tokenVersion, so changing
+// the admin password signs every other device out instead of leaving old tokens valid for days.
+// Tokens minted before tokenVersion existed carry no `tv`; those are accepted only while the
+// account is still on version 0, so nobody is locked out by the upgrade itself.
+async function ownerSessionValid(req) {
+  if (req.ownerValid !== undefined) return req.ownerValid;
+  try {
+    const User = require('../models/User');
+    const user = await User.findById(req.user.id).select('role tokenVersion').lean();
+    const current = user?.tokenVersion || 0;
+    req.ownerValid = Boolean(user) && user.role === 'admin' && (req.user.tv || 0) === current;
+  } catch (err) {
+    console.error('Owner session check failed:', err);
+    req.ownerValid = false;
+  }
+  return req.ownerValid;
+}
+
 /**
  * Admin-portal guard. The owner (role 'admin') can do everything. Staff can only do what their
  * own permissions allow for the section + action this request maps to (config/staffPermissions.js).
  */
 async function requireAdmin(req, res, next) {
-  if (isOwner(req)) return next();
+  if (isOwner(req)) {
+    if (await ownerSessionValid(req)) return next();
+    return res.status(401).json({ error: 'Unauthorized', message: 'Your session has expired. Please sign in again.' });
+  }
   if (!req.user || req.user.role !== 'staff') {
     return res.status(403).json({ message: 'Admin access required' });
   }
@@ -82,7 +103,10 @@ async function requireAdmin(req, res, next) {
  * Any signed-in admin-portal account (owner or active staff), e.g. for "my profile".
  */
 async function requireAdminSession(req, res, next) {
-  if (isOwner(req)) return next();
+  if (isOwner(req)) {
+    if (await ownerSessionValid(req)) return next();
+    return res.status(401).json({ error: 'Unauthorized', message: 'Your session has expired. Please sign in again.' });
+  }
   if (req.user?.role === 'staff') {
     try {
       if (await loadStaff(req)) return next();
@@ -98,8 +122,11 @@ async function requireAdminSession(req, res, next) {
 /**
  * Owner only (settings, staff and roles).
  */
-function requireOwner(req, res, next) {
-  if (isOwner(req)) return next();
+async function requireOwner(req, res, next) {
+  if (isOwner(req)) {
+    if (await ownerSessionValid(req)) return next();
+    return res.status(401).json({ error: 'Unauthorized', message: 'Your session has expired. Please sign in again.' });
+  }
   return res.status(403).json({ code: 'NO_PERMISSION', message: 'Only the account owner can do this' });
 }
 
