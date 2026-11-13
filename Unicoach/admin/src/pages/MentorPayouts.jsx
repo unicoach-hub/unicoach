@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
+import SecretValue from '../components/SecretValue';
 import { Button, Empty, Input, Modal, Popconfirm, Spin, Table, Tag, Tooltip, message } from 'antd';
 import { DownloadOutlined, ReloadOutlined, CheckCircleOutlined, CalendarOutlined, ClockCircleOutlined, BankOutlined, BellOutlined, PauseCircleOutlined } from '@ant-design/icons';
 import Header from '../components/Header';
@@ -93,7 +94,25 @@ const MentorPayouts = () => {
     }
   };
 
-  const bankLine = (b) => (b.accountNumber ? `${b.accountHolderName || ''} · ${b.accountNumber} · ${b.ifscCode || ''}` : b.upiId ? `UPI: ${b.upiId}` : null);
+  // Masked on screen with a click to reveal; the bulk-transfer CSV below still carries the real
+  // numbers, since that file is what gets uploaded to the bank.
+  const hasBank = (b) => Boolean(b?.accountNumber || b?.upiId);
+
+  const bankCell = (b) => {
+    if (b?.accountNumber) {
+      return (
+        <span style={{ fontSize: 12.5 }}>
+          {b.accountHolderName || ''}{' · '}
+          <SecretValue value={b.accountNumber} copyLabel="Account number" style={{ fontSize: 12.5 }} />
+          {b.ifscCode ? ` · ${b.ifscCode}` : ''}
+        </span>
+      );
+    }
+    if (b?.upiId) {
+      return <span style={{ fontSize: 12.5 }}>UPI: <SecretValue value={b.upiId} kind="upi" copyLabel="UPI ID" style={{ fontSize: 12.5 }} /></span>;
+    }
+    return null;
+  };
 
   const columns = [
     {
@@ -111,16 +130,14 @@ const MentorPayouts = () => {
       ),
     },
     {
-      title: 'Bank', key: 'bank', render: (_, m) => bankLine(m.bank)
-        ? <span style={{ fontSize: 12.5 }}>{bankLine(m.bank)}</span>
-        : <Tag color="red">No bank details</Tag>,
+      title: 'Bank', key: 'bank', render: (_, m) => bankCell(m.bank) || <Tag color="red">No bank details</Tag>,
     },
     { title: 'Ready now', key: 'ready', align: 'right', render: (_, m) => <div><b style={{ color: '#047857' }}>{inr(m.readyINR)}</b><div style={{ fontSize: 12, color: 'var(--ux-text-2)' }}>{m.ready.length} booking{m.ready.length === 1 ? '' : 's'}</div></div> },
     { title: 'Upcoming', key: 'up', align: 'right', render: (_, m) => <div>{inr(m.upcomingINR)}<div style={{ fontSize: 12, color: 'var(--ux-text-2)' }}>{m.upcoming.length} not done yet</div></div> },
     { title: 'On hold', key: 'held', align: 'right', render: (_, m) => (m.held?.length ? <div><b style={{ color: '#B91C1C' }}>{inr(m.heldINR)}</b><div style={{ fontSize: 12, color: 'var(--ux-text-2)' }}>student said no</div></div> : <span style={{ color: 'var(--ux-text-2)' }}>—</span>) },
     {
       title: '', key: 'act', align: 'right', width: 150,
-      render: (_, m) => <Button type="primary" disabled={!m.ready.length || !bankLine(m.bank)} onClick={() => setPaying(m)}>Mark paid</Button>,
+      render: (_, m) => <Button type="primary" disabled={!m.ready.length || !hasBank(m.bank)} onClick={() => setPaying(m)}>Mark paid</Button>,
     },
   ];
 
@@ -223,7 +240,7 @@ const MentorPayouts = () => {
           <div style={{ display: 'grid', gap: 10 }}>
             <div style={{ background: 'var(--ux-surface-2)', borderRadius: 12, padding: 12, fontSize: 13.5 }}>
               <div>Send <b>{inr(paying.readyINR)}</b> for {paying.ready.length} booking{paying.ready.length === 1 ? '' : 's'} to:</div>
-              <div style={{ marginTop: 4 }}><b>{bankLine(paying.bank)}</b></div>
+              <div style={{ marginTop: 4 }}><b>{bankCell(paying.bank)}</b></div>
             </div>
             <div style={{ fontSize: 12.5, color: 'var(--ux-text-2)' }}>Make the transfer from your bank first, then paste its reference here. The mentor gets an email and sees it under Earnings.</div>
             <Input placeholder="Bank reference / UTR" value={utr} onChange={(e) => setUtr(e.target.value)} />

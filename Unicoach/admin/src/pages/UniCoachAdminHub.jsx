@@ -43,6 +43,7 @@ import {
 import Header from '../components/Header';
 import API from '../api/axios';
 import MentorDetailDrawer from '../components/MentorDetailDrawer';
+import SecretValue from '../components/SecretValue';
 import { getFrontendUrl } from '../config';
 
 // --- Razorpay Route helpers ---------------------------------------------------
@@ -1465,28 +1466,21 @@ const UniCoachAdminHub = () => {
             {r.payoutMethod === 'UPI' ? <><ThunderboltOutlined /> UPI</> : <><BankOutlined /> Bank Transfer</>}
           </span>
           {r.payoutMethod === 'UPI' ? (
-            <div style={{ marginTop: 6, display: 'flex', alignItems: 'center', gap: 6 }}>
-              <span style={{ fontFamily: 'monospace', fontWeight: 600, fontSize: 12.5, color: INK }}>
-                {r.payoutDetails?.upiId}
-              </span>
-              {r.payoutDetails?.upiId && (
-                <Button
-                  size="small"
-                  type="text"
-                  shape="circle"
-                  icon={<CopyOutlined />}
-                  onClick={() => {
-                    navigator.clipboard.writeText(r.payoutDetails?.upiId);
-                    message.success('UPI ID copied to clipboard!');
-                  }}
-                  title="Copy UPI ID"
-                />
-              )}
+            <div style={{ marginTop: 6 }}>
+              <SecretValue
+                value={r.payoutDetails?.upiId}
+                kind="upi"
+                copyLabel="UPI ID"
+                style={{ fontWeight: 600, fontSize: 12.5, color: INK }}
+              />
             </div>
           ) : (
             <div style={{ marginTop: 6, fontSize: 11.5, color: TEXT_2, lineHeight: 1.6 }}>
               <div><strong style={{ color: TEXT, fontWeight: 600 }}>Name:</strong> {r.payoutDetails?.accountHolderName}</div>
-              <div><strong style={{ color: TEXT, fontWeight: 600 }}>A/C:</strong> {r.payoutDetails?.accountNumber}</div>
+              <div>
+                <strong style={{ color: TEXT, fontWeight: 600 }}>A/C:</strong>{' '}
+                <SecretValue value={r.payoutDetails?.accountNumber} copyLabel="Account number" style={{ fontSize: 11.5 }} />
+              </div>
               <div><strong style={{ color: TEXT, fontWeight: 600 }}>IFSC:</strong> {r.payoutDetails?.ifscCode}</div>
             </div>
           )}
@@ -2394,7 +2388,7 @@ const UniCoachAdminHub = () => {
                   <div style={{ minWidth: 0, wordBreak: 'break-all' }}>
                     <span style={{ fontSize: 12, color: TEXT_2, fontWeight: 500 }}>UPI ID (VPA): </span>
                     <strong style={{ fontFamily: 'monospace', fontSize: 13, color: INK, fontWeight: 600 }}>
-                      {selectedPayoutForAction?.payoutDetails?.upiId || 'N/A'}
+                      <SecretValue value={selectedPayoutForAction?.payoutDetails?.upiId} kind="upi" placeholder="N/A" />
                     </strong>
                   </div>
                   {selectedPayoutForAction?.payoutDetails?.upiId && (
@@ -2543,7 +2537,9 @@ const UniCoachAdminHub = () => {
                   </div>
                   <div>
                     <span style={{ color: TEXT_2 }}>Account Number:</span>
-                    <div style={{ fontWeight: 600, fontFamily: 'monospace', color: INK }}>{selectedProofMentor.defaultPayoutDetails.accountNumber}</div>
+                    <div style={{ fontWeight: 600, color: INK }}>
+                      <SecretValue value={selectedProofMentor.defaultPayoutDetails.accountNumber} copyLabel="Account number" />
+                    </div>
                   </div>
                   <div>
                     <span style={{ color: TEXT_2 }}>IFSC Code:</span>
@@ -2553,7 +2549,7 @@ const UniCoachAdminHub = () => {
               ) : selectedProofMentor.defaultPayoutDetails?.upiId ? (
                 <div style={{ fontSize: 13, wordBreak: 'break-all' }}>
                   <span style={{ color: TEXT_2 }}>UPI Virtual Payment Address: </span>
-                  <strong style={{ fontFamily: 'monospace', color: INK, fontSize: 14, fontWeight: 600 }}>{selectedProofMentor.defaultPayoutDetails.upiId}</strong>
+                  <SecretValue value={selectedProofMentor.defaultPayoutDetails.upiId} kind="upi" copyLabel="UPI ID" style={{ color: INK, fontSize: 14, fontWeight: 600 }} />
                 </div>
               ) : (
                 <div style={{ fontSize: 12.5, color: WARNING }}>

@@ -2,6 +2,12 @@
 const fs = require('fs');
 const { uploadToCloudinary } = require('../utils/cloudinary');
 
+// Folders the admin panel uploads into. Anything else falls back to media/documents.
+const ALLOWED_FOLDERS = new Set([
+  'media', 'documents', 'blogs', 'news', 'events', 'digest', 'universities', 'scholarships',
+  'courses', 'countries', 'staff', 'templates', 'forms', 'chat-flows', 'whatsapp', 'mentors', 'ads',
+]);
+
 /**
  * POST /api/upload
  * Handles file uploads directly to Cloudinary CDN (Images, Videos, PDFs, Academic Documents)
@@ -15,7 +21,11 @@ exports.uploadFile = async (req, res) => {
 
     const localFilePath = req.file.path;
     const mimetype = req.file.mimetype || '';
-    const folder = req.body.folder || (mimetype.includes('pdf') || mimetype.includes('document') ? 'documents' : 'media');
+    // `folder` comes from the request body, so keep it to known names: anything else could write
+    // outside our own Cloudinary folders, or build a path out of slashes and dots.
+    const fallback = mimetype.includes('pdf') || mimetype.includes('document') ? 'documents' : 'media';
+    const asked = String(req.body.folder || '').trim();
+    const folder = ALLOWED_FOLDERS.has(asked) ? asked : fallback;
 
     let fileUrl = `/uploads/${req.file.filename}`;
     let isCdn = false;

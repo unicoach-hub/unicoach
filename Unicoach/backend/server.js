@@ -222,6 +222,8 @@ app.use('/api/admin/auth/login', adminLoginLimiter);
 // Every admin write must come from one of our own origins (or an explicit Bearer token).
 const { sameOriginOnly } = require('./middleware/sameOrigin');
 app.use('/api/admin', sameOriginOnly({ allowedOrigins, trustedPattern: TRUSTED_ORIGIN_PATTERN }));
+// Record admin actions that matter (money, deletions, approvals, access) in AdminAudit
+app.use('/api/admin', require('./middleware/adminAudit').adminAudit);
 // Public mentor application + document upload: no login required, so throttle per IP
 app.use('/api/unicoach/apply', authFormLimiter);
 app.use('/api/unicoach/upload-verification-doc', authFormLimiter);

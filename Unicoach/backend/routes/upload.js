@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const multer = require('multer');
 const path = require('path');
-const { verifyToken } = require('../middleware/auth');
+const { verifyToken, requireAdmin } = require('../middleware/auth');
 const uploadController = require('../controllers/uploadController');
 
 // Multer storage configuration (temp staging before cloud dispatch)
@@ -43,8 +43,10 @@ const upload = multer({
   limits: { fileSize: 50 * 1024 * 1024 } // 50MB limit
 });
 
-// POST /api/upload - Requires authenticated session (via HttpOnly cookie or token)
-router.post('/', verifyToken, upload.single('file'), uploadController.uploadFile, (error, req, res, next) => {
+// POST /api/upload (and /api/admin/upload) - admin panel only.
+// Nothing on the student site uploads here; leaving it open to any signed-in account let a student
+// push 50MB files into our Cloudinary quota.
+router.post('/', verifyToken, requireAdmin, upload.single('file'), uploadController.uploadFile, (error, req, res, next) => {
   res.status(400).json({ error: error.message });
 });
 

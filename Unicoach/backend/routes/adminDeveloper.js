@@ -20,6 +20,10 @@ router.get('/visitors/:id', visitors.detail);
 
 // Database backups (controllers/backupController)
 const backups = require('../controllers/backupController');
+// Who did what in the admin panel (middleware/adminAudit.js writes these)
+const audit = require('../controllers/auditController');
+router.get('/audit', audit.list);
+
 router.get('/backups', backups.status);
 router.post('/backups/run', backups.runNow);
 router.get('/backups/download', backups.download);

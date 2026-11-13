@@ -4,6 +4,10 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { JWT_SECRET } = require('../config/jwt');
 const { MODULES } = require('../config/staffPermissions');
+const loginThrottle = require('../services/loginThrottle');
+
+// The owner can refund money and delete creators, so hold them to the staff minimum and then some
+const MIN_OWNER_PASSWORD = 10;
 
 // Admin sessions last half a day, not a week: the panel can refund money and delete creators, so a
 // token that leaks should die the same day. Staff keep the same window.
@@ -33,8 +37,11 @@ const staffProfile = (staff) => ({
 async function staffLogin(email, password, res) {
   const staff = await Staff.findOne({ email: email.toLowerCase() });
   if (!staff || !(await bcrypt.compare(password, staff.passwordHash))) {
+    const lockedFor = await loginThrottle.recordFailure(email);
+    if (lockedFor) return res.status(429).json({ message: loginThrottle.lockMessage(lockedFor) });
     return res.status(401).json({ message: 'Invalid username or password' });
   }
+  await loginThrottle.recordSuccess(email);
   if (!staff.active) {
     return res.status(403).json({ message: 'Your staff access is switched off. Please contact the admin.' });
   }
@@ -61,6 +68,10 @@ exports.adminLogin = async (req, res) => {
     const cleanUsername = username.toString().trim();
     const cleanPassword = password.toString().trim();
 
+    // Locked out after too many wrong passwords for THIS account, from any address
+    const wait = await loginThrottle.retryAfter(cleanUsername);
+    if (wait) return res.status(429).json({ message: loginThrottle.lockMessage(wait) });
+
     // Case-insensitive lookup by username or email
     const safeRegex = new RegExp(`^${cleanUsername.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}$`, 'i');
     const user = await User.findOne({
@@ -81,8 +92,11 @@ exports.adminLogin = async (req, res) => {
 
     const isMatch = await bcrypt.compare(cleanPassword, user.passwordHash);
     if (!isMatch) {
+      const lockedFor = await loginThrottle.recordFailure(cleanUsername);
+      if (lockedFor) return res.status(429).json({ message: loginThrottle.lockMessage(lockedFor) });
       return res.status(401).json({ message: 'Invalid username or password' });
     }
+    await loginThrottle.recordSuccess(cleanUsername);
 
     const token = jwt.sign(
       { id: user._id, role: user.role, tv: user.tokenVersion || 0 },
@@ -158,8 +172,8 @@ exports.updateAdminProfile = async (req, res) => {
     }
 
     if (password) {
-      if (password.length < 6) {
-        return res.status(400).json({ message: 'Password must be at least 6 characters' });
+      if (password.length < MIN_OWNER_PASSWORD) {
+        return res.status(400).json({ message: `Password must be at least ${MIN_OWNER_PASSWORD} characters` });
       }
       const salt = await bcrypt.genSalt(10);
       user.passwordHash = await bcrypt.hash(password, salt);

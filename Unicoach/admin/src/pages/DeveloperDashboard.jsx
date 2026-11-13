@@ -5,6 +5,7 @@ import { ResponsiveContainer, AreaChart, Area, XAxis, YAxis, Tooltip, CartesianG
 import { Link } from 'react-router-dom';
 import Header from '../components/Header';
 import BackupsCard from '../components/developer/BackupsCard';
+import AuditLogCard from '../components/developer/AuditLogCard';
 import API from '../api/axios';
 
 // Developer Dashboard (owner only): server, API traffic, outside services, database, sign-ups, Coolify
@@ -265,6 +266,9 @@ const DeveloperDashboard = () => {
 
         {/* Backups */}
         <BackupsCard Card={Card} />
+
+        {/* Who did what in the admin panel */}
+        <AuditLogCard Card={Card} />
 
         {/* Database */}
         <Card title={`Database "${overview.database.name || ''}": ${overview.database.collections || 0} collections`} icon={<DatabaseOutlined />}
