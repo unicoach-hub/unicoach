@@ -45,6 +45,24 @@ const StepLabel = ({ n, tone = '#DE5C2B', children }) => (
 
 const API_URL = API_BASE_URL;
 
+// Country codes the public universities API expects (/api/public/universities-data/universities)
+const COUNTRY_API_CODES = {
+  USA: 'usa', UK: 'uk', Canada: 'canada', Germany: 'germany', Australia: 'australia',
+  Ireland: 'ireland', France: 'france', Italy: 'italy', Singapore: 'singapore',
+  Netherlands: 'netherlands', 'New Zealand': 'new-zealand', Spain: 'spain',
+};
+
+// Fees from the API are in USD, whatever the country, so they convert at the USD rate
+const USD_TO_INR = 87;
+
+// The API nests the country as an object; the cards print these fields straight out, so flatten it
+// to the plain strings the rest of this page expects.
+const normaliseApiUniversity = (u) => ({
+  ...u,
+  country: u?.country?.code || u?.country?.name || (typeof u?.country === 'string' ? u.country : ''),
+  countryName: u?.country?.name || u?.countryName || '',
+});
+
 const COUNTRY_CURRENCIES = {
   USA: { currency: '$', rateToInr: 87, avgTuition: 35000 },
   UK: { currency: '£', rateToInr: 110, avgTuition: 22000 },
@@ -153,6 +171,8 @@ const EligibilityCalculatorPage = () => {
   const [targetCountry, setTargetCountry] = useState('USA');
   const [targetDegree, setTargetDegree] = useState("Master's");
   const [targetMajor, setTargetMajor] = useState('Computer Science');
+  const [apiUniversities, setApiUniversities] = useState(null);
+  const [unisLoading, setUnisLoading] = useState(false);
   const [ieltsScore, setIeltsScore] = useState(6.5);
   const [annualBudgetInr, setAnnualBudgetInr] = useState(25); // In Lakhs INR
   const [strictBudgetFilter, setStrictBudgetFilter] = useState(false);
@@ -210,6 +230,42 @@ const EligibilityCalculatorPage = () => {
     }
     return Math.min(100, Math.max(0, parseFloat(percentage) || 70));
   }, [scoreType, percentage, cgpa]);
+
+  // Real universities from the database: rankings, acceptance rates, fees and course lists per
+  // university. The bundled file in src/data is only a fallback for when this call fails; its
+  // course lists are generic, so the shortlist it produces is far rougher.
+  useEffect(() => {
+    let cancelled = false;
+    const controller = new AbortController();
+    const code = COUNTRY_API_CODES[targetCountry];
+
+    if (!code) {
+      // No API coverage for this country: fall back to the bundled list
+      Promise.resolve().then(() => { if (!cancelled) setApiUniversities(null); });
+      return () => { cancelled = true; };
+    }
+
+    // set after the current render, not during it
+    Promise.resolve().then(() => { if (!cancelled) setUnisLoading(true); });
+    const params = new URLSearchParams({ countryCode: code });
+    if (targetMajor) params.set('course', targetMajor);
+
+    fetch(`${API_URL}/public/universities-data/universities?${params}`, { signal: controller.signal })
+      .then((r) => (r.ok ? r.json() : Promise.reject(new Error(`HTTP ${r.status}`))))
+      .then((data) => {
+        if (cancelled) return;
+        const rows = Array.isArray(data) ? data : data?.universities || data?.data || [];
+        setApiUniversities(rows.length ? rows.map(normaliseApiUniversity) : null);
+      })
+      .catch((err) => {
+        if (cancelled || err.name === 'AbortError') return;
+        console.warn('Falling back to the bundled university list:', err.message);
+        setApiUniversities(null);
+      })
+      .finally(() => { if (!cancelled) setUnisLoading(false); });
+
+    return () => { cancelled = true; controller.abort(); };
+  }, [targetCountry, targetMajor]);
 
   // Fetch Scholarships from backend or use fallback
   useEffect(() => {
@@ -279,7 +335,11 @@ const EligibilityCalculatorPage = () => {
 
   // Evaluate Universities into Safe / Target / Dream with Financial Affordability Modeling
   const evaluatedUniversities = useMemo(() => {
-    const unisForCountry = ALL_UNIVERSITIES.filter(u => {
+    // The API already filtered by country and course, and its rows carry real acceptance rates and
+    // fees, so they are used as they come.
+    const fromApi = Array.isArray(apiUniversities) && apiUniversities.length > 0;
+
+    const unisForCountry = fromApi ? apiUniversities : ALL_UNIVERSITIES.filter(u => {
       if (!u.country) return false;
       const c = (u.countryName || u.country || '').toLowerCase();
       const target = targetCountry.toLowerCase();
@@ -293,9 +353,10 @@ const EligibilityCalculatorPage = () => {
     });
 
     // Keep the universities that actually teach the chosen subject.
+    // (Skipped for API rows: the server already matched the course.)
     // Some records carry the same generic course list for every university in that country (USA today),
     // and those tell us nothing, so they are left in rather than filtered on meaningless data.
-    const countryCourseListsDiffer = new Set(
+    const countryCourseListsDiffer = !fromApi && new Set(
       unisForCountry.map((u) => JSON.stringify(u.courses || null))
     ).size > 1;
 
@@ -331,13 +392,20 @@ const EligibilityCalculatorPage = () => {
       const scoreDiff = normalizedPercentage - minGpa;
       const ieltsDiff = ieltsScore - minIelts;
 
-      // Approximate Base Annual Tuition in Local Currency & INR
-      let baseTuitionLocal = countryMeta.avgTuition;
-      if (rankNum < 30) baseTuitionLocal = Math.round(countryMeta.avgTuition * 1.35);
-      else if (rankNum > 100) baseTuitionLocal = Math.round(countryMeta.avgTuition * 0.75);
+      // Real published fee when we have one (API rows, in USD); otherwise a rank-adjusted country average
+      const realFeeUsd = Number(uni.tuitionFeeUSD) || 0;
+      const useRealFee = fromApi && realFeeUsd > 0;
+      const currency = useRealFee ? '$' : countryMeta.currency;
+      const rateToInr = useRealFee ? USD_TO_INR : countryMeta.rateToInr;
+
+      let baseTuitionLocal = useRealFee ? realFeeUsd : countryMeta.avgTuition;
+      if (!useRealFee) {
+        if (rankNum < 30) baseTuitionLocal = Math.round(countryMeta.avgTuition * 1.35);
+        else if (rankNum > 100) baseTuitionLocal = Math.round(countryMeta.avgTuition * 0.75);
+      }
 
       // Germany: public universities charge little or no tuition, so there is no merit discount to estimate
-      const lowTuitionCountry = targetCountry === 'Germany';
+      const lowTuitionCountry = targetCountry === 'Germany' && !useRealFee;
       if (lowTuitionCountry) baseTuitionLocal = countryMeta.avgTuition;
 
       // Estimated merit discount from the same tier as the banner (a range, not a named award)
@@ -347,19 +415,31 @@ const EligibilityCalculatorPage = () => {
         ? 'Low or no tuition at public universities; see DAAD scholarships'
         : currentTier.pctMax <= 10
           ? 'Merit scholarships are less common at this score'
-          : `Est. ${currentTier.percentWaiver} (about ${countryMeta.currency}${scholarshipDiscountLocal.toLocaleString()})`;
+          : `Est. ${currentTier.percentWaiver} (about ${currency}${scholarshipDiscountLocal.toLocaleString()})`;
 
       const netTuitionLocal = Math.max(0, baseTuitionLocal - scholarshipDiscountLocal);
-      const netTuitionInrLakh = Math.round((netTuitionLocal * countryMeta.rateToInr) / 100000 * 10) / 10;
-      const baseTuitionInrLakh = Math.round((baseTuitionLocal * countryMeta.rateToInr) / 100000 * 10) / 10;
+      const netTuitionInrLakh = Math.round((netTuitionLocal * rateToInr) / 100000 * 10) / 10;
+      const baseTuitionInrLakh = Math.round((baseTuitionLocal * rateToInr) / 100000 * 10) / 10;
 
       // Budget Fit Check
       const isWithinBudget = netTuitionInrLakh <= annualBudgetInr;
       const budgetDiff = Math.round(Math.abs(annualBudgetInr - netTuitionInrLakh) * 10) / 10;
 
+      // Admission odds: start from the university's own published acceptance rate, then move it with
+      // the student's profile — a strong profile beats the average applicant, a weak one does not.
+      // Without a real rate we fall back to the old cutoff estimate, which is far rougher.
+      const publishedRate = Number(uni.acceptanceRate) || 0;
+      const profileStrength = Math.max(-0.6, Math.min(1.2, (normalizedPercentage - 70) / 30 + ieltsDiff * 0.1));
+      const oddsFromRate = Math.round(publishedRate * (1 + profileStrength));
+      const acceptanceOdds = publishedRate > 0
+        ? Math.min(95, Math.max(2, oddsFromRate))
+        : Math.min(85, Math.max(10, Math.round(50 + scoreDiff * 1.8 + ieltsDiff * 6)));
+
       const itemWithMeta = {
         ...uni,
         scoreDiff,
+        currency,
+        publishedRate,
         baseTuitionLocal,
         baseTuitionInrLakh,
         netTuitionLocal,
@@ -367,15 +447,19 @@ const EligibilityCalculatorPage = () => {
         isWithinBudget,
         budgetDiff,
         estimatedScholarship: uniScholarship,
-        // Typical cutoffs, not official data: keep the estimate away from near-certain numbers
-        acceptanceOdds: Math.min(85, Math.max(10, Math.round(50 + scoreDiff * 1.8 + ieltsDiff * 6)))
+        acceptanceOdds
       };
 
       if (strictBudgetFilter && !isWithinBudget) {
         return;
       }
 
-      if (scoreDiff >= 5 && ieltsDiff >= 0) {
+      if (publishedRate > 0) {
+        // A selective university is a reach however good the marks are
+        if (acceptanceOdds >= 45) safe.push(itemWithMeta);
+        else if (acceptanceOdds >= 18) target.push(itemWithMeta);
+        else dream.push(itemWithMeta);
+      } else if (scoreDiff >= 5 && ieltsDiff >= 0) {
         safe.push(itemWithMeta);
       } else if (scoreDiff >= -5 && ieltsDiff >= -0.5) {
         target.push(itemWithMeta);
@@ -389,7 +473,7 @@ const EligibilityCalculatorPage = () => {
       target: target.slice(0, 16),
       dream: dream.slice(0, 16)
     };
-  }, [normalizedPercentage, targetCountry, targetMajor, ieltsScore, annualBudgetInr, strictBudgetFilter, countryMeta, currentTier]);
+  }, [normalizedPercentage, targetCountry, targetMajor, ieltsScore, annualBudgetInr, strictBudgetFilter, countryMeta, currentTier, apiUniversities]);
 
   // Matching Scholarships List
   const matchingScholarships = useMemo(() => {
@@ -668,14 +752,14 @@ const EligibilityCalculatorPage = () => {
                   {uni.acceptanceOdds}%
                 </td>
                 <td className="p-2 border border-slate-200 text-right text-slate-600 font-medium">
-                  {countryMeta.currency}{uni.baseTuitionLocal?.toLocaleString()}
+                  {uni.currency || countryMeta.currency}{uni.baseTuitionLocal?.toLocaleString()}
                   <span className="block text-[8px] text-slate-400">(₹{uni.baseTuitionInrLakh}L)</span>
                 </td>
                 <td className="p-2 border border-slate-200 text-right text-emerald-700 font-semibold">
-                  -{countryMeta.currency}{(uni.baseTuitionLocal - uni.netTuitionLocal)?.toLocaleString()}
+                  -{uni.currency || countryMeta.currency}{(uni.baseTuitionLocal - uni.netTuitionLocal)?.toLocaleString()}
                 </td>
                 <td className="p-2 border border-slate-200 text-right font-black text-[#111111]">
-                  {countryMeta.currency}{uni.netTuitionLocal?.toLocaleString()}
+                  {uni.currency || countryMeta.currency}{uni.netTuitionLocal?.toLocaleString()}
                   <span className="block text-[8px] text-emerald-700 font-bold">(₹{uni.netTuitionInrLakh}L)</span>
                 </td>
                 <td className="p-2 border border-slate-200 text-center">
@@ -1108,6 +1192,13 @@ const EligibilityCalculatorPage = () => {
                 <h3 className="font-urbanist text-[22px] md:text-[28px] font-black tracking-[-0.03em] leading-[1.1] text-[#16130F]">
                   Qualified Universities & Net Fees for {countryMeta.label}
                 </h3>
+                {unisLoading ? (
+                  <p className="mt-1 text-[13px] font-semibold text-[#16130F]/60">Latest university list laa rahe hain…</p>
+                ) : !apiUniversities ? (
+                  <p className="mt-1 text-[13px] font-semibold text-[#16130F]/60">
+                    Showing our offline list for now; fees and odds here are rough estimates.
+                  </p>
+                ) : null}
               </div>
 
               {/* Strict Budget Filter Toggle */}
@@ -1252,12 +1343,12 @@ const EligibilityCalculatorPage = () => {
                             <div className="p-4 bg-[#FFF6E5] border-2 border-[#16130F] space-y-2" style={{ borderRadius: 12 }}>
                               <div className="flex items-start justify-between gap-3 text-[14px] font-semibold text-[#3D3830]">
                                 <span>Standard Base Tuition Fee:</span>
-                                <span className="text-right">{countryMeta.currency}{uni.baseTuitionLocal?.toLocaleString()} / yr (₹{uni.baseTuitionInrLakh}L)</span>
+                                <span className="text-right">{uni.currency || countryMeta.currency}{uni.baseTuitionLocal?.toLocaleString()} / yr (₹{uni.baseTuitionInrLakh}L)</span>
                               </div>
                               <div className="flex items-start justify-between gap-3 border-t-2 border-dashed border-[#16130F]/25 pt-2">
                                 <span className="text-[14px] font-black text-[#16130F]">Net Fee (After Scholarship):</span>
                                 <span className="text-[15px] font-black text-[#14837E] text-right">
-                                  {countryMeta.currency}{uni.netTuitionLocal?.toLocaleString()} / yr <span className="text-[13px] font-bold">(₹{uni.netTuitionInrLakh} Lakhs)</span>
+                                  {uni.currency || countryMeta.currency}{uni.netTuitionLocal?.toLocaleString()} / yr <span className="text-[13px] font-bold">(₹{uni.netTuitionInrLakh} Lakhs)</span>
                                 </span>
                               </div>
                             </div>
