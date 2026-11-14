@@ -254,8 +254,8 @@ const Footer = () => {
               </li>
               <li className="flex gap-2.5 items-center">
                 <Phone className="w-4 h-4 text-[#DE5C2B] flex-shrink-0" />
-                <a href="tel:+919518657944" className="text-slate-700 hover:text-[#DE5C2B] transition-colors font-medium text-[12px]">
-                  +91 95186 57944
+                <a href="tel:+919799994524" className="text-slate-700 hover:text-[#DE5C2B] transition-colors font-medium text-[12px]">
+                  +91 97999 94524
                 </a>
               </li>
               <li className="flex gap-2.5 items-center">
@@ -407,7 +407,7 @@ const Footer = () => {
             <div className="flex flex-wrap items-center gap-3 text-[12px] text-slate-600 font-medium">
               <div className="flex gap-1.5 items-center">
                 <Phone className="w-3.5 h-3.5 text-[#DE5C2B] flex-shrink-0" />
-                <a href="tel:+919518657944" className="text-slate-700 font-semibold">+91 95186 57944</a>
+                <a href="tel:+919799994524" className="text-slate-700 font-semibold">+91 97999 94524</a>
               </div>
               <span>·</span>
               <div className="flex gap-1.5 items-center">

@@ -802,7 +802,7 @@ const EligibilityCalculatorPage = () => {
         <div>
           <p className="font-black text-slate-900 text-[10px] text-[#111111]">UniCoach Overseas Education Advisory Desk</p>
           <p className="font-medium text-slate-600 mt-0.5">1st Floor, Gali No. 4, Sahil Colony, Jattal road, Sondhapur Village, Panipat, Haryana, India, 132105</p>
-          <p className="font-medium text-slate-600">Helpline: <strong className="text-slate-800">+91 95186 57944</strong> | Email: <strong className="text-slate-800">info@unicoach.in</strong> | Web: <strong className="text-slate-800">www.unicoach.com</strong></p>
+          <p className="font-medium text-slate-600">Helpline: <strong className="text-slate-800">+91 97999 94524</strong> | Email: <strong className="text-slate-800">info@unicoach.in</strong> | Web: <strong className="text-slate-800">www.unicoach.com</strong></p>
         </div>
         <div className="text-right">
           <p className="italic text-slate-400 text-[8px]">Confidential Student Advisory Document</p>

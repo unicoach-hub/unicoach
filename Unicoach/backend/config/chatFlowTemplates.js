@@ -3,7 +3,7 @@
 
 const SITE = 'https://www.unicoach.com';
 // Counsellor students can save and call (sent as a WhatsApp contact card before handing over)
-const COUNSELLOR = { name: 'UniCoach Counsellor', phone: '+919518657944' };
+const COUNSELLOR = { name: 'UniCoach Counsellor', phone: '+919799994524' };
 
 // Lays nodes out in columns so the builder opens tidy
 const at = (col, row) => ({ x: 80 + col * 340, y: 60 + row * 170 });

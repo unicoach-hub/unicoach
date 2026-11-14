@@ -40,7 +40,7 @@ const Settings = () => {
   const [formState, setFormState] = useState({
     siteName: 'UniCoach',
     supportEmail: 'support@unicoach.com',
-    supportPhone: '+91 95186 57944',
+    supportPhone: '+91 97999 94524',
 
     // Twilio & Meta WABA
     twilioAccountSid: '',
