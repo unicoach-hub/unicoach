@@ -79,6 +79,15 @@ const QUICK_STARTS = [
   { label: 'Budget under ₹12L', flag: '💰', level: "Bachelor's Degree", degree: "Master's", country: 'Germany', major: 'Computer Science', budget: 12 },
 ];
 
+// "BSc (Hons) Software Engineering" and "Software Engineering" should match, so drop the
+// degree prefixes, punctuation and bracketed notes before comparing.
+const normaliseCourse = (value) => String(value || '')
+  .toLowerCase()
+  .replace(/\([^)]*\)/g, ' ')
+  .replace(/\b(b|m)(sc|a|eng|tech|com|ba|s)\b|\bhons?\b|\bphd\b|\bmba\b|\btop-?up\b|\bwith\b|\bprofessional\b|\bplacement\b|\bdegree\b/g, ' ')
+  .replace(/[^a-z0-9]+/g, ' ')
+  .trim();
+
 const SCHOLARSHIP_TIERS = [
   {
     minScore: 55,
@@ -155,7 +164,7 @@ const EligibilityCalculatorPage = () => {
   const [activeResultTab, setActiveResultTab] = useState('safe'); // 'safe', 'target', 'dream', 'scholarships'
   const [savedUniIds, setSavedUniIds] = useState(new Set());
 
-  // AI Modal States
+  // Explainer modal states
   const [explainingUni, setExplainingUni] = useState(null);
   const [explainingScholarship, setExplainingScholarship] = useState(null);
   const [allScholarships, setAllScholarships] = useState([]);
@@ -283,11 +292,34 @@ const EligibilityCalculatorPage = () => {
       return c.includes(target) || target.includes(c);
     });
 
+    // Keep the universities that actually teach the chosen subject.
+    // Some records carry the same generic course list for every university in that country (USA today),
+    // and those tell us nothing, so they are left in rather than filtered on meaningless data.
+    const countryCourseListsDiffer = new Set(
+      unisForCountry.map((u) => JSON.stringify(u.courses || null))
+    ).size > 1;
+
+    const matchesMajor = (uni) => {
+      if (!countryCourseListsDiffer) return true;
+      const courses = Array.isArray(uni.courses) ? uni.courses : [];
+      if (!courses.length) return true; // no list for this university: don't hide it on missing data
+      const wanted = normaliseCourse(targetMajor);
+      if (!wanted) return true;
+      return courses.some((c) => {
+        const have = normaliseCourse(c);
+        return have.includes(wanted) || wanted.includes(have);
+      });
+    };
+
+    const unisMatchingMajor = unisForCountry.filter(matchesMajor);
+    // If nothing matches, show the country list rather than an empty screen
+    const unisForStudent = unisMatchingMajor.length > 0 ? unisMatchingMajor : unisForCountry;
+
     const safe = [];
     const target = [];
     const dream = [];
 
-    const unisToUse = unisForCountry.length > 0 ? unisForCountry : ALL_UNIVERSITIES.slice(0, 20);
+    const unisToUse = unisForStudent.length > 0 ? unisForStudent : ALL_UNIVERSITIES.slice(0, 20);
 
     unisToUse.forEach(uni => {
       // No published cut-off: estimate from the QS rank (unranked counts as the lowest band)
@@ -357,7 +389,7 @@ const EligibilityCalculatorPage = () => {
       target: target.slice(0, 16),
       dream: dream.slice(0, 16)
     };
-  }, [normalizedPercentage, targetCountry, ieltsScore, annualBudgetInr, strictBudgetFilter, countryMeta, currentTier]);
+  }, [normalizedPercentage, targetCountry, targetMajor, ieltsScore, annualBudgetInr, strictBudgetFilter, countryMeta, currentTier]);
 
   // Matching Scholarships List
   const matchingScholarships = useMemo(() => {
@@ -690,7 +722,7 @@ const EligibilityCalculatorPage = () => {
         </div>
         <div className="text-right">
           <p className="italic text-slate-400 text-[8px]">Confidential Student Advisory Document</p>
-          <p className="font-bold text-slate-600">Generated via UniCoach AI Engine</p>
+          <p className="font-bold text-slate-600">Prepared by UniCoach</p>
         </div>
       </div>
     </div>
@@ -1244,7 +1276,7 @@ const EligibilityCalculatorPage = () => {
                               className="py-2.5 px-3 text-[14px] font-bold bg-[#F2B705] text-[#16130F] border-2 border-[#16130F] shadow-[2px_2px_0_#16130F] hover:-translate-y-0.5 transition-transform flex items-center justify-center gap-1.5 cursor-pointer"
                               style={{ borderRadius: 999 }}
                             >
-                              <Sparkles size={15} /> Explain Fit (AI 💡)
+                              <Sparkles size={15} /> Why this fits
                             </button>
 
                             <a
@@ -1296,7 +1328,7 @@ const EligibilityCalculatorPage = () => {
                         className="w-full py-2.5 bg-[#F2B705] text-[#16130F] border-2 border-[#16130F] shadow-[2px_2px_0_#16130F] hover:-translate-y-0.5 text-[14px] font-bold transition-transform flex items-center justify-center gap-2 cursor-pointer mt-2"
                         style={{ borderRadius: 999 }}
                       >
-                        <Sparkles size={15} /> Explain Eligibility Match (AI 💡)
+                        <Sparkles size={15} /> Why you match
                       </button>
                     </div>
                   ))}
@@ -1331,7 +1363,7 @@ const EligibilityCalculatorPage = () => {
 
       </div>
 
-      {/* AI Modals */}
+      {/* Explainer modals */}
       <UniversityAiExplainerModal
         isOpen={!!explainingUni}
         onClose={() => setExplainingUni(null)}
