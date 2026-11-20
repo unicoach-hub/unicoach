@@ -217,6 +217,12 @@ const SAMPLE_VALUES = {
   preferred_intake: 'September 2027',
   booking_date: '15 Aug 2026',
   slot_time: '11:30 AM',
+  // Session reminders (mentor + student)
+  mentor_name: 'Prachi',
+  service_title: '1:1 Video Consultation Call',
+  booking_ref: 'UM-MUEB741H-B514C1',
+  when: 'tomorrow at 4:30 PM',
+  session_when: 'tomorrow at 4:30 PM',
 };
 
 const toMetaBody = (body) => {
