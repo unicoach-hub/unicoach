@@ -430,6 +430,8 @@ if (process.env.NODE_ENV !== 'test') {
   require('./services/whatsappCampaigns').startWorker();
   // Mentor 1:1 calls: email students "did your session happen?" (production only)
   require('./unicoach/services/sessionCheckService').startWorker();
+  // WhatsApp reminders to mentor and student, a day before and an hour before (production only)
+  require('./unicoach/services/sessionReminders').startWorker();
   require('./services/consultationReminders').startWorker();
   // Nightly encrypted database backup to Cloudinary (production only)
   require('./services/dbBackup').startSchedule();

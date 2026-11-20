@@ -39,6 +39,15 @@ const unicoachBookingSchema = new mongoose.Schema({
 
   // Session Timing in UTC
   startUtc: { type: Date, default: null },
+
+  // WhatsApp session reminders already sent (unicoach/services/sessionReminders.js). Each field is
+  // written before its message goes out, so a restart or a second server never sends one twice.
+  reminders: {
+    dayBeforeMentor: { type: Date },
+    dayBeforeStudent: { type: Date },
+    hourBeforeMentor: { type: Date },
+    hourBeforeStudent: { type: Date },
+  },
   endUtc: { type: Date, default: null },
 
   // Finite State Machine (FSM) Lifecycle (Pillar #5)
