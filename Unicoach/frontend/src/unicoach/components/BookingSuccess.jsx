@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { CheckCircle2, Video, Calendar, ArrowRight, Download, Share2, FileText, MessageSquare, ExternalLink, Sparkles } from 'lucide-react';
+import { CheckCircle2, Video, Calendar, ArrowRight, Download, Share2, FileText, MessageSquare, ExternalLink, Sparkles, Bell } from 'lucide-react';
 import { getAssetDownloadUrl } from '../api/unicoachApi';
 
 const BookingSuccess = ({ booking, onClose }) => {
@@ -112,6 +112,17 @@ const BookingSuccess = ({ booking, onClose }) => {
           <strong className="text-emerald-700 font-bold">₹{booking.amountPaid}</strong>
         </div>
       </div>
+
+      {/* A session is easy to forget once the tab is closed: say plainly that we will nudge them */}
+      {!isDigitalAsset && !isPriorityDm && (
+        <div className="mb-4 p-3 rounded-xl bg-emerald-50 border border-emerald-200/70 text-left flex items-start gap-2">
+          <Bell className="w-4 h-4 text-emerald-700 mt-0.5 shrink-0" />
+          <p className="text-[11.5px] text-emerald-900 leading-relaxed">
+            <strong className="font-semibold">You&apos;ll get a WhatsApp reminder</strong> a day before and an hour
+            before your session, so you don&apos;t miss it.
+          </p>
+        </div>
+      )}
 
       {/* Action Buttons */}
       <div className="space-y-3">

@@ -4607,6 +4607,15 @@ const UnicoachDashboardPage = () => {
                 </button>
               </div>
 
+                {/* So a mentor knows a nudge is coming and does not sit watching the calendar */}
+                <p className="mt-2 inline-flex items-start gap-1.5 text-[11.5px] text-slate-500">
+                  <Bell className="w-3.5 h-3.5 mt-px shrink-0 text-emerald-600" />
+                  <span>
+                    We send you a <strong className="font-semibold text-slate-700">WhatsApp reminder</strong> a day before
+                    and an hour before every session, so none of them slip by.
+                  </span>
+                </p>
+
               {/* Filter Pills - Responsive Wrapped Without Scroller */}
               <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
                 {[
