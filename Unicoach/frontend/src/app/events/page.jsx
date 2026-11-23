@@ -28,6 +28,7 @@ const SPEAKER_PORTRAITS = {
     nitya: '/images/mentors/headshots/nitya.webp',
     manan: '/images/mentors/headshots/manan.webp',
     prachi: '/images/mentors/headshots/prachi.webp',
+    manvi: '/images/mentors/headshots/manvi.webp',
     munish: '/images/mentors/headshots/munish.webp',
     rishi: '/images/mentors/headshots/rishi.webp',
 };

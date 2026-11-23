@@ -43,6 +43,7 @@ const SPEAKER_PHOTOS = {
   nitya: '/images/mentors/thumbs/nitya_ireland_career.webp',
   manan: '/images/mentors/thumbs/manan_australia.webp',
   prachi: '/images/mentors/thumbs/prachi_cybersecurity.webp',
+  manvi: '/images/mentors/thumbs/manvi_europe.webp',
   munish: '/images/mentors/thumbs/munish_rana.webp',
   rishi: '/images/mentors/thumbs/rishi_usa.webp',
   joshua: '/images/mentors/thumbs/speaker_joshua.webp',
