@@ -94,9 +94,12 @@ Alternative: add `require('./services/permitWatchService').startWorker();` next 
 
 ## Notes on the site
 
-- `employmentpermits.enterprise.gov.ie` is the application portal (EPOS) and returns 403 to every
-  non-browser client, so it is not watched. Its public content now lives on `enterprise.gov.ie`
-  under `/what-we-do/workplace-and-skills/employment-permits/`.
+- `employmentpermits.enterprise.gov.ie` is the online application portal. It is down: a real
+  browser gets the same "Employment Permits Online – Service unavailable" holding page the fetcher
+  does, served with HTTP 403. It is watched anyway, with `"acceptStatus": [403, 503, 404]`, so the
+  day the portal returns the page text changes and that is the alert. Any page can carry
+  `acceptStatus` when its error body is real content. The permit *content* lives on
+  `enterprise.gov.ie` under `/what-we-do/workplace-and-skills/employment-permits/`.
 - The site is ASP.NET WebForms: the whole page sits inside one `<form>`, so that tag must not be
   stripped, and the content is in `div#main`, not `<main>`.
 - Politeness: one page at a time, 3s between pages, a descriptive User-Agent, 3 retries with

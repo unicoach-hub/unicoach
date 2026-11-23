@@ -162,7 +162,7 @@ async function isDue(page, cfg, now = Date.now()) {
 // ---------------------------------------------------------------- fetching
 
 /** One GET with a timeout. Throws on a non-2xx response so the retry loop can back off. */
-async function fetchOnce(url, cfg, accept) {
+async function fetchOnce(url, cfg, accept, acceptStatus) {
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), cfg.requestTimeoutMs);
   try {
@@ -175,7 +175,9 @@ async function fetchOnce(url, cfg, accept) {
         'Accept-Language': 'en-IE,en;q=0.9',
       },
     });
-    if (!res.ok) {
+    // A page may declare the codes whose body still counts as content: the Employment Permits
+    // portal answers 403 with a real "service unavailable" page, and the day it comes back is news.
+    if (!res.ok && !(acceptStatus || []).includes(res.status)) {
       const err = new Error(`HTTP ${res.status}`);
       err.status = res.status;
       throw err;
@@ -187,11 +189,11 @@ async function fetchOnce(url, cfg, accept) {
 }
 
 /** Retries with exponential back-off. Returns the HTML, or throws the last error. */
-async function fetchWithRetries(url, cfg, accept) {
+async function fetchWithRetries(url, cfg, accept, acceptStatus) {
   let lastErr;
   for (let attempt = 1; attempt <= cfg.retriesPerPage; attempt += 1) {
     try {
-      return await fetchOnce(url, cfg, accept);
+      return await fetchOnce(url, cfg, accept, acceptStatus);
     } catch (err) {
       lastErr = err;
       if (attempt < cfg.retriesPerPage) await sleep(2000 * 2 ** (attempt - 1));
@@ -238,6 +240,7 @@ function extract(html, pageUrl, cfg) {
       break;
     }
   }
+  // A short holding page ("service unavailable") has less text than that floor but is still the page.
   if (!$scope) $scope = $('body');
 
   // Minified HTML has no newlines of its own, so mark the block boundaries before reading the text,
@@ -485,7 +488,7 @@ async function checkPage(page, cfg, { dryRun = false } = {}) {
 
   let html;
   try {
-    html = await fetchWithRetries(page.url, cfg);
+    html = await fetchWithRetries(page.url, cfg, undefined, page.acceptStatus);
   } catch (err) {
     const failingSince = prev?.failingSince || nowIso();
     const hours = Math.round(((Date.now() - new Date(failingSince).getTime()) / 3600000) * 10) / 10;

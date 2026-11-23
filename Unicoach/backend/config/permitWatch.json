@@ -5,9 +5,10 @@
     "To stop watching a page without deleting it: set \"enabled\": false.",
     "intervalMinutes: default gap between checks of one page. newsIntervalMinutes is the faster gap",
     "used by the news pages (marked everyMinutes: 5). Add everyMinutes to any page to give it its own gap.",
-    "The old employmentpermits.enterprise.gov.ie subdomain is the login portal (EPOS) and blocks",
-    "all non-browser clients with 403, so it is not watched. Its public content now lives on",
-    "enterprise.gov.ie under /what-we-do/workplace-and-skills/employment-permits/."
+    "employmentpermits.enterprise.gov.ie is the online application portal. It is currently down and",
+    "answers 403 with a holding page, so it is watched with acceptStatus so the day it returns shows",
+    "up as a change. The permit CONTENT lives on enterprise.gov.ie under",
+    "/what-we-do/workplace-and-skills/employment-permits/."
   ],
 
   "intervalMinutes": 30,
@@ -62,6 +63,14 @@
   },
 
   "pages": [
+    {
+      "label": "Employment Permits Online portal (employmentpermits.enterprise.gov.ie)",
+      "_note": "The portal itself. It answers 403 with a 'service unavailable' holding page, so 403 is accepted as content: the day the portal comes back, that is the change.",
+      "url": "https://employmentpermits.enterprise.gov.ie/",
+      "enabled": true,
+      "everyMinutes": 5,
+      "acceptStatus": [403, 503, 404]
+    },
     {
       "label": "Employment Permits - home",
       "url": "https://enterprise.gov.ie/en/what-we-do/workplace-and-skills/employment-permits/",
