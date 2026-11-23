@@ -54,15 +54,19 @@ Alerts also go to WhatsApp when `ALERT_WHATSAPP_TO` is set. They go through the 
 the credentials already in Settings → WhatsApp Business, so no new setup is needed — but the
 database has to be reachable (email does not need it).
 
-**Meta's 24-hour rule:** a free-form text message is only accepted within 24 hours of that person's
-last message to the business number. A monitor fires at random times, so most alerts fall outside
-that window and plain text gets rejected. For alerts that always arrive, create a template in
-Settings → WhatsApp Business with a single body variable, for example:
+**Meta's 24-hour rule — the thing that actually bites.** A free-form text message only reaches
+someone within 24 hours of *their* last message to the business number. Outside it, the Cloud API
+still answers 200 with a message id, so the send looks fine, and the message then quietly fails;
+the status webhook records it as `failed` with `"Re-engagement message"` (visible in the
+`whatsappevents` collection). Accepted is not delivered.
 
-> UniCoach alert: {{1}}
+So alerts go through an approved template: `permit_update_alert` (UTILITY, one body variable),
+submitted on 23 Nov 2026. `DEFAULT_WA_TEMPLATE` in the service holds that name;
+`PERMIT_WATCH_WA_TEMPLATE` overrides it, and `PERMIT_WATCH_WA_TEMPLATE=''` forces plain text.
+While a template is still under review the send falls back to plain text, so nothing is lost.
 
-and once Meta approves it set `PERMIT_WATCH_WA_TEMPLATE` to its name. Without that, WhatsApp is
-best-effort: a rejected message is logged, and the email still goes out.
+Template parameters may not contain newlines, so the WhatsApp text is flattened to one line with
+` · ` separators and cut to 900 characters. Email always carries the full diff.
 
 ## Two speeds, and why
 

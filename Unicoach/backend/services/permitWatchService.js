@@ -22,6 +22,7 @@ const { sendEmail } = require('../utils/email');
 const CONFIG_PATH = path.join(__dirname, '..', 'config', 'permitWatch.json');
 const STATE_DIR = path.join(__dirname, '..', 'data', 'permit-watch');
 
+const DEFAULT_WA_TEMPLATE = 'permit_update_alert';   // UTILITY template, one body variable
 const MAX_DIFF_LINES = 40;      // per direction, in the email
 const MAX_LINE_CHARS = 300;     // trim very long table rows in the email
 
@@ -449,7 +450,10 @@ async function sendWhatsApp(text, { dryRun = false, phones = null } = {}) {
   const settings = await wabaSettings();
   if (!settings) return false;
 
-  const templateName = (process.env.PERMIT_WATCH_WA_TEMPLATE || '').trim();
+  // An approved template is the only way a WhatsApp alert arrives outside Meta's 24-hour window.
+  // DEFAULT_WA_TEMPLATE is the one submitted for this monitor; set the variable to '' to force
+  // plain text, or to another name to use a different approved template.
+  const templateName = (process.env.PERMIT_WATCH_WA_TEMPLATE ?? DEFAULT_WA_TEMPLATE).trim();
   const payload = templateName
     ? {
       messaging_product: 'whatsapp',
@@ -468,18 +472,46 @@ async function sendWhatsApp(text, { dryRun = false, phones = null } = {}) {
       text: { body: text.slice(0, 3500) },
     };
 
+  // While the template is still waiting for Meta's review it does not exist yet, so fall back to
+  // plain text rather than sending nothing at all.
+  const notApprovedYet = (msg) => /template name does not exist|does not exist|not been approved|no matching template|template_not_found/i.test(String(msg || ''));
+  const textPayload = {
+    messaging_product: 'whatsapp',
+    recipient_type: 'individual',
+    type: 'text',
+    text: { body: text.slice(0, 3500) },
+  };
+
+  const post = (body) => fetch(`https://graph.facebook.com/v20.0/${settings.wabaPhoneNumberId}/messages`, {
+    method: 'POST',
+    headers: { Authorization: `Bearer ${settings.wabaAccessToken}`, 'Content-Type': 'application/json' },
+    body: JSON.stringify(body),
+  });
+
   let sentAny = false;
   for (const [i, phone] of numbers.entries()) {
     if (i > 0) await sleep(700);           // stay under Meta's per-second limit
     try {
-      const res = await fetch(`https://graph.facebook.com/v20.0/${settings.wabaPhoneNumberId}/messages`, {
-        method: 'POST',
-        headers: { Authorization: `Bearer ${settings.wabaAccessToken}`, 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...payload, to: phone }),
-      });
+      let res = await post({ ...payload, to: phone });
+      let usedTemplate = Boolean(templateName);
+      if (!res.ok && templateName) {
+        const why = (await res.clone().json().catch(() => ({})))?.error?.message;
+        if (notApprovedYet(why)) {
+          console.warn(`[PermitWatch] template "${templateName}" is not approved yet, falling back to plain text`);
+          res = await post({ ...textPayload, to: phone });
+          usedTemplate = false;
+        }
+      }
       const data = await res.json().catch(() => ({}));
       if (!res.ok) throw new Error(data?.error?.message || `Meta API error ${res.status}`);
-      console.log(`[PermitWatch] WhatsApp sent to ${phone}`);
+      // Meta accepting the call is NOT delivery. A plain text sent outside the 24-hour window is
+      // accepted here and then fails with "Re-engagement message" in the status webhook, so say
+      // what actually happened instead of claiming the message arrived.
+      if (usedTemplate) {
+        console.log(`[PermitWatch] WhatsApp template "${templateName}" accepted for ${phone}`);
+      } else {
+        console.log(`[PermitWatch] WhatsApp text accepted by Meta for ${phone} — it only reaches them if they messaged the business number in the last 24h; set PERMIT_WATCH_WA_TEMPLATE for alerts that always arrive`);
+      }
       sentAny = true;
     } catch (err) {
       const hint = /re-?engag|24 hour|outside|template/i.test(err.message)
