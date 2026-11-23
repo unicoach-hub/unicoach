@@ -35,7 +35,10 @@ function loadConfig() {
   const pages = (cfg.pages || []).filter((p) => p && p.url && p.enabled !== false);
   if (!pages.length) throw new Error('permitWatch.json has no enabled pages');
   return {
-    intervalMinutes: Number(process.env.PERMIT_WATCH_INTERVAL_MINUTES || cfg.intervalMinutes) || 20,
+    intervalMinutes: Number(process.env.PERMIT_WATCH_INTERVAL_MINUTES || cfg.intervalMinutes) || 30,
+    newsIntervalMinutes: Number(process.env.PERMIT_WATCH_NEWS_MINUTES || cfg.newsIntervalMinutes) || 5,
+    tickMinutes: Number(process.env.PERMIT_WATCH_TICK_MINUTES || cfg.tickMinutes) || 5,
+    discovery: cfg.discovery || { enabled: false },
     requestTimeoutMs: Number(cfg.requestTimeoutMs) || 30000,
     delayBetweenPagesMs: Number(cfg.delayBetweenPagesMs) || 3000,
     retriesPerPage: Number(cfg.retriesPerPage) || 3,
@@ -71,10 +74,95 @@ async function writeState(url, state) {
   await fsp.writeFile(statePath(url), JSON.stringify(state, null, 2));
 }
 
+// ---------------------------------------------------------------- discovery
+
+const SITEMAP_STATE = path.join(STATE_DIR, '_sitemap.json');
+
+/**
+ * The Department's own sitemap, filtered down to the employment-permit section, so a page it
+ * publishes tomorrow is watched without anyone editing the config. The sitemap is big, so it is
+ * cached on disk and only refetched every `refreshHours`.
+ */
+async function discoverPages(cfg, { force = false } = {}) {
+  const d = cfg.discovery || {};
+  if (!d.enabled || !d.sitemapUrl) return { pages: [], fresh: [] };
+
+  let cached = null;
+  try {
+    cached = JSON.parse(await fsp.readFile(SITEMAP_STATE, 'utf8'));
+  } catch {
+    /* no cache yet */
+  }
+
+  const stale = !cached?.fetchedAt
+    || (Date.now() - new Date(cached.fetchedAt).getTime()) / 3600000 >= (Number(d.refreshHours) || 12);
+
+  if (!force && !stale && Array.isArray(cached.urls)) {
+    return { pages: cached.urls.map(toDiscoveredPage), fresh: [] };
+  }
+
+  let xml;
+  try {
+    xml = await fetchWithRetries(d.sitemapUrl, cfg, 'application/xml,text/xml,*/*');
+  } catch (err) {
+    console.warn('[PermitWatch] sitemap could not be read:', err.message);
+    return { pages: (cached?.urls || []).map(toDiscoveredPage), fresh: [] };
+  }
+
+  const include = (d.includePrefixes || []).map((x) => x.toLowerCase());
+  const exclude = (d.excludePatterns || []).map((x) => new RegExp(x, 'i'));
+  const all = [...xml.matchAll(/<loc>\s*([^<\s]+)\s*<\/loc>/gi)].map((m) => m[1].trim());
+
+  const urls = [...new Set(all.filter((u) => {
+    const low = u.toLowerCase();
+    return include.some((pre) => low.startsWith(pre)) && !exclude.some((re) => re.test(low));
+  }))].sort().slice(0, Number(d.maxPages) || 40);
+
+  // A URL the sitemap did not have last time is itself news worth an alert.
+  const known = new Set(cached?.urls || []);
+  const fresh = cached?.urls ? urls.filter((u) => !known.has(u)) : [];
+
+  await fsp.mkdir(STATE_DIR, { recursive: true });
+  await fsp.writeFile(SITEMAP_STATE, JSON.stringify({ fetchedAt: nowIso(), urls }, null, 2));
+  console.log(`[PermitWatch] sitemap: ${urls.length} page(s) in the watched section${fresh.length ? `, ${fresh.length} brand new` : ''}`);
+
+  return { pages: urls.map(toDiscoveredPage), fresh };
+}
+
+/** A sitemap URL turned into a watchable page, labelled from its last path segment. */
+function toDiscoveredPage(url) {
+  const slug = url.replace(/\/+$/, '').split('/').pop().replace(/\.html?$/i, '');
+  const label = slug
+    .replace(/[-_]+/g, ' ')
+    .replace(/\b\w/g, (c) => c.toUpperCase())
+    .trim() || 'Employment permits';
+  return { label, url, discovered: true };
+}
+
+/** The configured pages plus the discovered ones, with the config winning on a duplicate URL. */
+function mergePages(configured, discovered) {
+  const seen = new Set(configured.map((p) => p.url.replace(/\/+$/, '').toLowerCase()));
+  return [...configured, ...discovered.filter((p) => !seen.has(p.url.replace(/\/+$/, '').toLowerCase()))];
+}
+
+/** How often this page should be checked: its own setting, else the news or the default gap. */
+function gapFor(page, cfg) {
+  if (Number(page.everyMinutes) > 0) return Number(page.everyMinutes);
+  if (/latest-updates|department-news|news-and-events/i.test(page.url)) return cfg.newsIntervalMinutes;
+  return cfg.intervalMinutes;
+}
+
+/** A page is due when its own gap has passed since the last check. */
+async function isDue(page, cfg, now = Date.now()) {
+  const prev = await readState(page.url);
+  if (!prev?.lastCheckedAt) return true;
+  return now - new Date(prev.lastCheckedAt).getTime() >= gapFor(page, cfg) * 60000 - 15000;
+}
+
 // ---------------------------------------------------------------- fetching
 
 /** One GET with a timeout. Throws on a non-2xx response so the retry loop can back off. */
-async function fetchOnce(url, cfg) {
+async function fetchOnce(url, cfg, accept) {
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), cfg.requestTimeoutMs);
   try {
@@ -83,7 +171,7 @@ async function fetchOnce(url, cfg) {
       signal: controller.signal,
       headers: {
         'User-Agent': cfg.userAgent,
-        Accept: 'text/html,application/xhtml+xml',
+        Accept: accept || 'text/html,application/xhtml+xml',
         'Accept-Language': 'en-IE,en;q=0.9',
       },
     });
@@ -99,11 +187,11 @@ async function fetchOnce(url, cfg) {
 }
 
 /** Retries with exponential back-off. Returns the HTML, or throws the last error. */
-async function fetchWithRetries(url, cfg) {
+async function fetchWithRetries(url, cfg, accept) {
   let lastErr;
   for (let attempt = 1; attempt <= cfg.retriesPerPage; attempt += 1) {
     try {
-      return await fetchOnce(url, cfg);
+      return await fetchOnce(url, cfg, accept);
     } catch (err) {
       lastErr = err;
       if (attempt < cfg.retriesPerPage) await sleep(2000 * 2 ** (attempt - 1));
@@ -492,11 +580,48 @@ async function checkPage(page, cfg, { dryRun = false } = {}) {
 
 // ---------------------------------------------------------------- one pass
 
-/** Checks every enabled page, one at a time with a pause in between. */
-async function runOnce({ dryRun = false } = {}) {
+/**
+ * One pass. Every page has its own gap (news pages 5 min, the rest 30), so a pass only fetches the
+ * pages that are actually due — that is what keeps a 5-minute tick gentle on the site.
+ * `all: true` ignores the gaps and checks everything.
+ */
+async function runOnce({ dryRun = false, all = false } = {}) {
   const cfg = loadConfig();
+
+  const { pages: discovered, fresh } = await discoverPages(cfg);
+  const everything = mergePages(cfg.pages, discovered);
+
+  // A page the Department has just published is news in itself.
+  if (fresh.length) {
+    const list = fresh.map((u) => `• ${u}`).join('\n');
+    try {
+      await deliver({
+        subject: `Irish permits: ${fresh.length} new page(s) published`,
+        html: `<!doctype html><html><body style="font-family:Arial,Helvetica,sans-serif;background:#F4F4F2;margin:0">
+        <div style="max-width:620px;margin:24px auto;background:#fff;border:1px solid #DDD8D0;border-radius:12px;padding:26px">
+          <p style="margin:0;font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:#14837E;font-weight:700">New page(s) on the permits section</p>
+          <h1 style="margin:8px 0 12px;font-size:20px;color:#16130F">${fresh.length} new page(s) appeared</h1>
+          <ul style="margin:0;padding-left:18px;font-size:14px;line-height:1.6">${fresh.map((u) => `<li><a href="${esc(u)}" style="color:#14837E">${esc(u)}</a></li>`).join('')}</ul>
+          <p style="margin:20px 0 0;font-size:12px;color:#8A8278">Found in the Department's sitemap. They are now watched like the rest.</p>
+        </div></body></html>`,
+        dryRun,
+      });
+      await sendWhatsApp(`🇮🇪 Irish permits par ${fresh.length} naya page aaya hai:\n${list}`, { dryRun });
+    } catch (err) {
+      console.warn('[PermitWatch] new-page alert could not be sent:', err.message);
+    }
+  }
+
+  const due = [];
+  for (const page of everything) {
+    if (all || await isDue(page, cfg)) due.push(page);
+  }
+
+  const skipped = everything.length - due.length;
+  console.log(`[PermitWatch] ${everything.length} page(s) watched (${cfg.pages.length} from config, ${discovered.length} from sitemap) — checking ${due.length} now, ${skipped} not due yet`);
+
   const results = [];
-  for (const [index, page] of cfg.pages.entries()) {
+  for (const [index, page] of due.entries()) {
     if (index > 0) await sleep(cfg.delayBetweenPagesMs);
     try {
       results.push(await checkPage(page, cfg, { dryRun }));
@@ -543,11 +668,11 @@ function startWorker() {
     console.warn('[PermitWatch] not started: both ALERT_EMAIL_TO and ALERT_WHATSAPP_TO are empty');
     return;
   }
-  timer = setInterval(tick, cfg.intervalMinutes * 60 * 1000);
+  timer = setInterval(tick, cfg.tickMinutes * 60 * 1000);
   if (timer.unref) timer.unref();
   setTimeout(tick, 60 * 1000).unref?.();
   const targets = [recipient(), waRecipient() && `WhatsApp ${waRecipient()}`].filter(Boolean).join(' + ');
-  console.log(`[PermitWatch] watching ${cfg.pages.length} page(s) every ${cfg.intervalMinutes} min → ${targets}`);
+  console.log(`[PermitWatch] ticking every ${cfg.tickMinutes} min (news pages ${cfg.newsIntervalMinutes} min, rest ${cfg.intervalMinutes} min) → ${targets}`);
 }
 
-module.exports = { runOnce, checkPage, startWorker, loadConfig, extract, diffLines, sendWhatsApp };
+module.exports = { runOnce, checkPage, startWorker, loadConfig, extract, diffLines, sendWhatsApp, discoverPages };

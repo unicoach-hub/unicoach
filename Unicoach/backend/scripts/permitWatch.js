@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 // Run the Irish employment-permit page watcher by hand.
 //
-//   node scripts/permitWatch.js --once        one pass; emails if something changed
+//   node scripts/permitWatch.js --once        one pass; checks the pages that are due now
+//   node scripts/permitWatch.js --once --all  one pass; checks every page, ignoring the gaps
 //   node scripts/permitWatch.js --once --dry  one pass; prints what it would email, sends nothing
 //   node scripts/permitWatch.js --list        show the watched links
 //   node scripts/permitWatch.js --reset       delete the stored snapshots (next run is a fresh baseline)
@@ -40,12 +41,12 @@ async function main() {
   }
 
   if (!has('--once')) {
-    console.log('Nothing to do. Use --once (or --once --dry), --list, --reset, --help.');
+    console.log('Nothing to do. Use --once (also --all, --dry), --list, --reset, --help.');
     process.exitCode = 1;
     return;
   }
 
-  await runOnce({ dryRun: has('--dry', '--dry-run') });
+  await runOnce({ dryRun: has('--dry', '--dry-run'), all: has('--all') });
 }
 
 main()

@@ -3,13 +3,16 @@
     "Irish employment-permit pages to watch for changes.",
     "To add a link: copy one block in 'pages', change url + label, save. Nothing else to do.",
     "To stop watching a page without deleting it: set \"enabled\": false.",
-    "intervalMinutes: how often every page is checked. 15-30 is sensible for a government site.",
+    "intervalMinutes: default gap between checks of one page. newsIntervalMinutes is the faster gap",
+    "used by the news pages (marked everyMinutes: 5). Add everyMinutes to any page to give it its own gap.",
     "The old employmentpermits.enterprise.gov.ie subdomain is the login portal (EPOS) and blocks",
     "all non-browser clients with 403, so it is not watched. Its public content now lives on",
     "enterprise.gov.ie under /what-we-do/workplace-and-skills/employment-permits/."
   ],
 
-  "intervalMinutes": 20,
+  "intervalMinutes": 30,
+  "newsIntervalMinutes": 5,
+  "tickMinutes": 5,
   "requestTimeoutMs": 30000,
   "delayBetweenPagesMs": 3000,
   "retriesPerPage": 3,
@@ -45,16 +48,31 @@
     "^share this page"
   ],
 
+  "discovery": {
+    "_note": "Pulls the whole employment-permits section out of the site's sitemap, so a brand-new page the Department publishes is watched automatically (and that new page itself is an alert).",
+    "enabled": true,
+    "sitemapUrl": "https://enterprise.gov.ie/sitemap.xml",
+    "refreshHours": 12,
+    "maxPages": 40,
+    "includePrefixes": [
+      "https://enterprise.gov.ie/en/what-we-do/workplace-and-skills/employment-permits/",
+      "https://enterprise.gov.ie/en/what-we-do/workplace-and-skills/economic-migration-policy/"
+    ],
+    "excludePatterns": ["\\.pdf$", "\\.docx?$", "\\.xlsx?$", "/ga/"]
+  },
+
   "pages": [
     {
       "label": "Employment Permits - home",
       "url": "https://enterprise.gov.ie/en/what-we-do/workplace-and-skills/employment-permits/",
-      "enabled": true
+      "enabled": true,
+      "everyMinutes": 5
     },
     {
       "label": "Employment Permits - latest updates",
       "url": "https://enterprise.gov.ie/en/what-we-do/workplace-and-skills/employment-permits/latest-updates/",
-      "enabled": true
+      "enabled": true,
+      "everyMinutes": 5
     },
     {
       "label": "Critical Skills Occupations List (CSOL)",
@@ -94,7 +112,8 @@
     {
       "label": "Department news (announcements)",
       "url": "https://enterprise.gov.ie/en/news-and-events/department-news/",
-      "enabled": true
+      "enabled": true,
+      "everyMinutes": 5
     }
   ]
 }
