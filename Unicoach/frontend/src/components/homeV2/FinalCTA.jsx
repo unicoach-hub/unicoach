@@ -11,7 +11,7 @@ import { TEAM_MENTORS } from '../../utils/teamMentors';
  * Perforation runs down the middle on wide screens and across on phones.
  */
 
-const CREW = ['Prachi', 'Nitya', 'Manan', 'Manvi', 'Rishi Gandhi'].map((n) => TEAM_MENTORS.find((m) => m.name === n)).filter(Boolean);
+const CREW = ['Prachi', 'Nitya', 'Manan', 'Rishi Gandhi'].map((n) => TEAM_MENTORS.find((m) => m.name === n)).filter(Boolean);
 const FIELDS = [
   ['Passenger', 'You'],
   ['Fare', '₹0'],
