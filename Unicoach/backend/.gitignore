@@ -6,3 +6,6 @@ backups/
 
 # Data-sync dry-run reports (may contain bulk data)
 reports/
+
+# Permit-watch page snapshots (rebuilt on the next run)
+data/permit-watch/

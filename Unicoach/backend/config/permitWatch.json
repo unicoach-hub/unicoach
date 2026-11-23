@@ -1,0 +1,100 @@
+{
+  "_readme": [
+    "Irish employment-permit pages to watch for changes.",
+    "To add a link: copy one block in 'pages', change url + label, save. Nothing else to do.",
+    "To stop watching a page without deleting it: set \"enabled\": false.",
+    "intervalMinutes: how often every page is checked. 15-30 is sensible for a government site.",
+    "The old employmentpermits.enterprise.gov.ie subdomain is the login portal (EPOS) and blocks",
+    "all non-browser clients with 403, so it is not watched. Its public content now lives on",
+    "enterprise.gov.ie under /what-we-do/workplace-and-skills/employment-permits/."
+  ],
+
+  "intervalMinutes": 20,
+  "requestTimeoutMs": 30000,
+  "delayBetweenPagesMs": 3000,
+  "retriesPerPage": 3,
+  "failAlertAfterHours": 4,
+  "failAlertRepeatHours": 24,
+  "userAgent": "Mozilla/5.0 (compatible; UniCoach-PermitWatch/1.0; +https://www.unicoach.com) change-monitor, contact via website",
+
+  "stripSelectors": [
+    "script", "style", "noscript", "iframe", "svg",
+    "nav", "header", "footer",
+    "input", "select", "textarea", "button",
+    "[class*='cookie']", "[id*='cookie']", "[class*='Cookie']", "[id*='Cookie']",
+    "[class*='breadcrumb']", "[class*='carousel']", "[class*='slider']",
+    "[class*='social']", "[class*='share']", "[class*='search']",
+    "[class*='skip-link']", "[class*='back-to-top']",
+    "[class*='site-header']", "[class*='sub-header']", "[class*='utility-section']",
+    "[class*='language-switcher']", "[class*='logo-and-tagline']", "[class*='burger']",
+    "[class*='site-footer']", "[class*='aspNetHidden']",
+    "[role='navigation']", "[role='banner']", "[role='contentinfo']", "[role='search']"
+  ],
+
+  "contentSelectors": ["main", "#main", "[role='main']", ".mainArea", "#main-content", ".main-content", "article", "#content", "body"],
+
+  "ignoreLinePatterns": [
+    "^last updated",
+    "^page last reviewed",
+    "^published:?\\s",
+    "^\\d+\\s+views?$",
+    "^©",
+    "^copyright",
+    "^cookies?\\b",
+    "^accept all",
+    "^share this page"
+  ],
+
+  "pages": [
+    {
+      "label": "Employment Permits - home",
+      "url": "https://enterprise.gov.ie/en/what-we-do/workplace-and-skills/employment-permits/",
+      "enabled": true
+    },
+    {
+      "label": "Employment Permits - latest updates",
+      "url": "https://enterprise.gov.ie/en/what-we-do/workplace-and-skills/employment-permits/latest-updates/",
+      "enabled": true
+    },
+    {
+      "label": "Critical Skills Occupations List (CSOL)",
+      "url": "https://enterprise.gov.ie/en/what-we-do/workplace-and-skills/economic-migration-policy/occupations-lists-and-reviews/csol.html",
+      "enabled": true
+    },
+    {
+      "label": "Ineligible Occupations List (IOL)",
+      "url": "https://enterprise.gov.ie/en/what-we-do/workplace-and-skills/economic-migration-policy/occupations-lists-and-reviews/iol.html",
+      "enabled": true
+    },
+    {
+      "label": "Employment permit fees",
+      "url": "https://enterprise.gov.ie/en/what-we-do/workplace-and-skills/employment-permits/fees/",
+      "enabled": true
+    },
+    {
+      "label": "Current application processing dates",
+      "url": "https://enterprise.gov.ie/en/what-we-do/workplace-and-skills/employment-permits/current-application-processing-dates/",
+      "enabled": true
+    },
+    {
+      "label": "Permit types",
+      "url": "https://enterprise.gov.ie/en/what-we-do/workplace-and-skills/employment-permits/permit-types/",
+      "enabled": true
+    },
+    {
+      "label": "Employment permit eligibility",
+      "url": "https://enterprise.gov.ie/en/what-we-do/workplace-and-skills/employment-permits/employment-permit-eligibility/",
+      "enabled": true
+    },
+    {
+      "label": "Trusted Partner Initiative",
+      "url": "https://enterprise.gov.ie/en/what-we-do/workplace-and-skills/employment-permits/trusted-partner-initiative/",
+      "enabled": true
+    },
+    {
+      "label": "Department news (announcements)",
+      "url": "https://enterprise.gov.ie/en/news-and-events/department-news/",
+      "enabled": true
+    }
+  ]
+}
