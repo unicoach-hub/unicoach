@@ -9,7 +9,6 @@ const SESSIONS = {
   Prachi: { title: 'Study in Ireland: Cyber Security Masters', subtitle: 'Cyber Security Masters, tech hubs and high-demand jobs in Ireland.' },
   Manan: { title: 'Study in Australia 2026', subtitle: 'Complete roadmap to Go8 universities, student visas and PR.' },
   Nitya: { title: 'Ireland Career Roadmap 2027', subtitle: 'From job search to getting settled after your studies.' },
-  Manvi: { title: 'Europe Scholarships & Sponsorship', subtitle: 'How to study in Europe with scholarships and sponsorship.' },
   'Munish Rana': { title: 'Ask a Visa Expert: Ireland', subtitle: 'Your Ireland study, work and family visa questions answered live.' },
 };
 
