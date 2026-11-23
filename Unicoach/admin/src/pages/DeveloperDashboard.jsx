@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Segmented, Table, Progress, Tag, Spin, Alert, Button, Tooltip as AntTooltip } from 'antd';
-import { ReloadOutlined, CloudServerOutlined, ApiOutlined, DatabaseOutlined, UserAddOutlined, LinkOutlined } from '@ant-design/icons';
+import { Segmented, Table, Progress, Tag, Spin, Alert, Button, Tooltip as AntTooltip, Select, Switch, InputNumber, Space, message } from 'antd';
+import { ReloadOutlined, CloudServerOutlined, ApiOutlined, DatabaseOutlined, UserAddOutlined, LinkOutlined, BellOutlined } from '@ant-design/icons';
 import { ResponsiveContainer, AreaChart, Area, XAxis, YAxis, Tooltip, CartesianGrid } from 'recharts';
 import { Link } from 'react-router-dom';
 import Header from '../components/Header';
@@ -45,6 +45,128 @@ const Gauge = ({ label, percent, detail }) => (
     <Progress percent={Math.min(100, Math.round(percent || 0))} showInfo={false} strokeColor={pctColor(percent || 0)} size="small" />
   </div>
 );
+
+/**
+ * Irish employment-permit alerts: who hears about a change. Several people can be on the list,
+ * and it is saved in the database, so adding a teammate needs no deploy.
+ */
+const PermitWatchCard = () => {
+  const [data, setData] = useState(null);
+  const [emails, setEmails] = useState([]);
+  const [phones, setPhones] = useState([]);
+  const [enabled, setEnabled] = useState(true);
+  const [news, setNews] = useState(null);
+  const [slow, setSlow] = useState(null);
+  const [busy, setBusy] = useState('');
+
+  const load = async () => {
+    try {
+      const { data: d } = await API.get('/admin/dev/permit-watch');
+      setData(d);
+      setEmails(d.emails || []);
+      setPhones(d.phones || []);
+      setEnabled(d.enabled !== false);
+      setNews(d.newsIntervalMinutes || null);
+      setSlow(d.intervalMinutes || null);
+    } catch (err) {
+      setData({ error: err.response?.data?.message || err.message });
+    }
+  };
+  useEffect(() => { load(); }, []);
+
+  const act = async (what, fn, done) => {
+    setBusy(what);
+    try {
+      const { data: r } = await fn();
+      message.success(done(r));
+      await load();
+    } catch (err) {
+      message.error(err.response?.data?.message || err.message);
+    } finally {
+      setBusy('');
+    }
+  };
+
+  const save = () => act('save',
+    () => API.put('/admin/dev/permit-watch', { emails, phones, enabled, newsIntervalMinutes: news, intervalMinutes: slow }),
+    () => 'Alert list saved');
+
+  const test = () => act('test',
+    () => API.post('/admin/dev/permit-watch/test'),
+    (r) => `Test sent${r.emailed ? ' by email' : ''}${r.whatsapped ? ' and WhatsApp' : ''}`);
+
+  const runNow = () => act('run',
+    () => API.post('/admin/dev/permit-watch/run'),
+    (r) => `Checked ${r.checked} page(s): ${r.changed} changed, ${r.failed} failed`);
+
+  if (!data) return <Card title="Irish permit alerts" icon={<BellOutlined />}><Spin /></Card>;
+  if (data.error) return <Card title="Irish permit alerts" icon={<BellOutlined />}><Alert type="error" showIcon message={data.error} /></Card>;
+
+  const eff = data.effective || {};
+  const nobody = !(eff.emails || []).length && !(eff.phones || []).length;
+
+  return (
+    <Card
+      title="Irish permit alerts"
+      icon={<BellOutlined />}
+      extra={<span style={{ fontSize: 12.5, color: 'var(--ux-text-2)' }}>
+        {eff.pagesWatched || 0} pages · last run {data.lastRunAt ? new Date(data.lastRunAt).toLocaleString('en-IN') : 'never'}
+        {data.lastChangeAt ? ` · last change ${new Date(data.lastChangeAt).toLocaleString('en-IN')}` : ''}
+      </span>}
+    >
+      <p style={{ margin: '0 0 14px', fontSize: 13.5, color: 'var(--ux-text-2)' }}>
+        Everyone listed here gets an email and a WhatsApp whenever an Irish employment-permit page
+        changes. Type an address or a number and press Enter to add it.
+      </p>
+
+      {nobody && <Alert type="warning" showIcon style={{ marginBottom: 14 }} message="Nobody is on the list, so no alerts are going out." />}
+
+      <div style={{ display: 'grid', gap: 14 }}>
+        <div>
+          <div style={{ fontSize: 12.5, fontWeight: 600, marginBottom: 6 }}>Email addresses</div>
+          <Select mode="tags" value={emails} onChange={setEmails} style={{ width: '100%' }}
+            placeholder="sagar@visawebs.com" tokenSeparators={[',', ' ']} open={false} />
+        </div>
+
+        <div>
+          <div style={{ fontSize: 12.5, fontWeight: 600, marginBottom: 6 }}>WhatsApp numbers</div>
+          <Select mode="tags" value={phones} onChange={setPhones} style={{ width: '100%' }}
+            placeholder="8307967782" tokenSeparators={[',', ' ']} open={false} />
+          <div style={{ fontSize: 12, color: 'var(--ux-text-2)', marginTop: 5 }}>
+            10-digit numbers become +91. For another country, type the full number with its code.
+          </div>
+        </div>
+
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 18, alignItems: 'center' }}>
+          <Space size={8}>
+            <Switch checked={enabled} onChange={setEnabled} />
+            <span style={{ fontSize: 13 }}>{enabled ? 'Alerts on' : 'Paused'}</span>
+          </Space>
+          <Space size={8}>
+            <span style={{ fontSize: 13 }}>News pages every</span>
+            <InputNumber min={1} max={1440} value={news} onChange={setNews} placeholder={String(eff.newsIntervalMinutes ?? 5)} style={{ width: 90 }} addonAfter="min" />
+          </Space>
+          <Space size={8}>
+            <span style={{ fontSize: 13 }}>Other pages every</span>
+            <InputNumber min={1} max={1440} value={slow} onChange={setSlow} placeholder={String(eff.intervalMinutes ?? 30)} style={{ width: 90 }} addonAfter="min" />
+          </Space>
+        </div>
+
+        {(eff.fromEnvEmails || []).length > 0 && (
+          <div style={{ fontSize: 12, color: 'var(--ux-text-2)' }}>
+            Also alerted from the server environment: {eff.fromEnvEmails.join(', ')}
+          </div>
+        )}
+
+        <Space wrap>
+          <Button type="primary" onClick={save} loading={busy === 'save'}>Save list</Button>
+          <Button onClick={test} loading={busy === 'test'} disabled={nobody}>Send a test alert</Button>
+          <Button onClick={runNow} loading={busy === 'run'}>Check the pages now</Button>
+        </Space>
+      </div>
+    </Card>
+  );
+};
 
 const DeveloperDashboard = () => {
   const [range, setRange] = useState('24h');
@@ -265,6 +387,9 @@ const DeveloperDashboard = () => {
 
         {/* Backups */}
         <BackupsCard Card={Card} />
+
+        {/* Irish permit alerts */}
+        <PermitWatchCard />
 
         {/* Database */}
         <Card title={`Database "${overview.database.name || ''}": ${overview.database.collections || 0} collections`} icon={<DatabaseOutlined />}

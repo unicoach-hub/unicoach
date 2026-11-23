@@ -24,4 +24,10 @@ router.get('/backups', backups.status);
 router.post('/backups/run', backups.runNow);
 router.get('/backups/download', backups.download);
 
+// Irish employment-permit alerts: who gets them, and a way to test or run a pass now
+router.get('/permit-watch', c.permitWatch);
+router.put('/permit-watch', c.savePermitWatch);
+router.post('/permit-watch/test', c.testPermitWatch);
+router.post('/permit-watch/run', c.runPermitWatch);
+
 module.exports = router;

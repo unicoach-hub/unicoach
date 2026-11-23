@@ -263,3 +263,99 @@ exports.coolify = async (req, res) => {
     return res.json({ configured: true, error: err.status === 401 ? 'Coolify rejected the token (check COOLIFY_API_TOKEN)' : `Could not reach Coolify: ${err.message}` });
   }
 };
+
+// ---------------------------------------------------------------- Permit watch
+// Who gets the Irish employment-permit alerts. Several people can be on the list, and the owner
+// edits it here instead of in the environment, so adding a teammate needs no deploy.
+const PermitWatchConfig = require('../models/PermitWatchConfig');
+
+const cleanEmails = (list) => [...new Set((Array.isArray(list) ? list : [])
+  .map((e) => String(e || '').trim().toLowerCase())
+  .filter((e) => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(e)))].slice(0, 20);
+
+// Indian numbers arrive as 10 digits; anything else keeps its own country code
+const cleanPhones = (list) => [...new Set((Array.isArray(list) ? list : [])
+  .map((p) => String(p || '').replace(/[^\d+]/g, ''))
+  .filter((p) => p.replace(/\D/g, '').length >= 10)
+  .map((p) => require('../utils/twilio').normalizePhone(p)))].slice(0, 20);
+
+exports.permitWatch = async (req, res) => {
+  try {
+    const cfg = await PermitWatchConfig.get();
+    const svc = require('../services/permitWatchService');
+    const fileCfg = svc.loadConfig();
+    const { emails, phones } = await svc.recipients();
+
+    res.json({
+      ...cfg,
+      // What the next pass will actually use, environment included
+      effective: {
+        emails,
+        phones,
+        newsIntervalMinutes: Number(cfg.newsIntervalMinutes) > 0 ? Number(cfg.newsIntervalMinutes) : fileCfg.newsIntervalMinutes,
+        intervalMinutes: Number(cfg.intervalMinutes) > 0 ? Number(cfg.intervalMinutes) : fileCfg.intervalMinutes,
+        pagesWatched: fileCfg.pages.length,
+        fromEnvEmails: emails.filter((e) => !(cfg.emails || []).map((x) => x.toLowerCase()).includes(e)),
+      },
+      pages: fileCfg.pages.map((p) => ({ label: p.label, url: p.url, everyMinutes: p.everyMinutes || null })),
+    });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+exports.savePermitWatch = async (req, res) => {
+  try {
+    const { emails, phones, enabled, newsIntervalMinutes, intervalMinutes } = req.body || {};
+    const set = {
+      emails: cleanEmails(emails),
+      phones: cleanPhones(phones),
+      enabled: enabled !== false,
+      updatedBy: req.user?.email || req.user?.name || '',
+    };
+    const news = Number(newsIntervalMinutes);
+    const slow = Number(intervalMinutes);
+    set.newsIntervalMinutes = news > 0 ? Math.max(1, Math.min(1440, news)) : null;
+    set.intervalMinutes = slow > 0 ? Math.max(1, Math.min(1440, slow)) : null;
+
+    await PermitWatchConfig.updateOne({ key: 'default' }, { $set: set }, { upsert: true });
+    res.json({ ok: true, ...set });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+/** Sends one test alert to everyone on the list, so the owner can see it arrive. */
+exports.testPermitWatch = async (req, res) => {
+  try {
+    const svc = require('../services/permitWatchService');
+    const { emails, phones } = await svc.recipients();
+    if (!emails.length && !phones.length) return res.status(400).json({ message: 'Add an email or a WhatsApp number first' });
+
+    const when = new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' });
+    const html = `<!doctype html><html><body style="font-family:Arial,Helvetica,sans-serif;background:#F4F4F2;margin:0">
+      <div style="max-width:560px;margin:24px auto;background:#fff;border:1px solid #DDD8D0;border-radius:12px;padding:26px">
+        <p style="margin:0;font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:#14837E;font-weight:700">Test alert</p>
+        <h1 style="margin:8px 0 10px;font-size:20px;color:#16130F">Irish permit watch is set up</h1>
+        <p style="margin:0;font-size:14px;color:#3D3830">You are on the alert list. Real alerts look like this and carry the page, the link and what changed.</p>
+        <p style="margin:16px 0 0;font-size:12px;color:#8A8278">Sent ${when} IST from admin → Developer.</p>
+      </div></body></html>`;
+
+    const emailed = await svc.deliver({ subject: 'Test: Irish permit watch', html, emails });
+    const whatsapped = await svc.sendWhatsApp('🇮🇪 Test: Irish permit watch chaalu hai. Asli alert aise hi aayega, page aur link ke saath.', { phones });
+    res.json({ ok: true, emailed, whatsapped, emails, phones });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+/** Runs a pass now instead of waiting for the next tick. */
+exports.runPermitWatch = async (req, res) => {
+  try {
+    const results = await require('../services/permitWatchService').runOnce({ all: req.query.all === 'true' });
+    const count = (s) => results.filter((r) => r.status === s).length;
+    res.json({ ok: true, checked: results.length, changed: count('changed'), unchanged: count('unchanged'), baseline: count('baseline'), failed: count('failed') + count('error') });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};

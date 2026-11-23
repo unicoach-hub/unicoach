@@ -19,13 +19,24 @@ node scripts/permitWatch.js --reset        # forget the snapshots, next run is a
 
 The first run on a page only stores a baseline — no email.
 
+## Who gets the alerts
+
+Several people can be on the list, and it is edited in **admin → Developer → "Irish permit alerts"**:
+email addresses, WhatsApp numbers, an on/off switch, the two gaps, a "send a test alert" button and
+a "check the pages now" button. It is saved in the `permitwatchconfigs` collection, so adding a
+teammate needs no deploy and no restart — the next pass picks it up.
+
+`ALERT_EMAIL_TO` / `ALERT_WHATSAPP_TO` still work and may hold several values separated by commas.
+Both lists are merged and de-duplicated, so the environment is the fallback for a standalone run
+with no database.
+
 ## Environment
 
 | Variable | What it does |
 | --- | --- |
-| `ALERT_EMAIL_TO` | Where alerts go. **Required** — nothing is hardcoded. |
+| `ALERT_EMAIL_TO` | Fallback recipients, comma separated. Nothing is hardcoded. |
 | `PERMIT_WATCH_EMAIL_TO` | Optional, overrides `ALERT_EMAIL_TO` for this monitor only. |
-| `ALERT_WHATSAPP_TO` | WhatsApp number for the same alert. Empty = email only. |
+| `ALERT_WHATSAPP_TO` | Fallback WhatsApp numbers, comma separated. |
 | `PERMIT_WATCH_WHATSAPP_TO` | Optional, overrides `ALERT_WHATSAPP_TO` for this monitor only. |
 | `PERMIT_WATCH_WA_TEMPLATE` | Approved WhatsApp template name (one body variable). See below. |
 | `PERMIT_WATCH_WA_TEMPLATE_LANG` | Template language code, default `en`. |

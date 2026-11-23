@@ -52,11 +52,55 @@ function loadConfig() {
   };
 }
 
-/** Where the alert goes. Never hardcoded: it has to be in the environment. */
-const recipient = () => (process.env.PERMIT_WATCH_EMAIL_TO || process.env.ALERT_EMAIL_TO || '').trim();
+// ---------------------------------------------------------------- recipients
 
-/** WhatsApp number for the same alert. Empty = WhatsApp off, email only. */
-const waRecipient = () => (process.env.PERMIT_WATCH_WHATSAPP_TO || process.env.ALERT_WHATSAPP_TO || '').trim();
+const splitList = (v) => String(v || '').split(/[,;\s]+/).map((x) => x.trim()).filter(Boolean);
+
+/** From the environment. Several addresses / numbers may be listed, comma separated. */
+const envEmails = () => splitList(process.env.PERMIT_WATCH_EMAIL_TO || process.env.ALERT_EMAIL_TO);
+const envPhones = () => splitList(process.env.PERMIT_WATCH_WHATSAPP_TO || process.env.ALERT_WHATSAPP_TO);
+
+/** Try to open the database, for the recipients saved from the admin Developer section. */
+async function connectDb() {
+  const mongoose = require('mongoose');
+  if (mongoose.connection.readyState === 1) return mongoose;
+  const uri = process.env.MONGO_URI || process.env.MONGODB_URI;
+  if (!uri) return null;
+  try {
+    await mongoose.connect(uri, { serverSelectionTimeoutMS: 10000 });
+    return mongoose;
+  } catch (err) {
+    console.warn('[PermitWatch] database not reachable:', err.message);
+    return null;
+  }
+}
+
+/**
+ * Everyone who should hear about a change: the lists saved in the admin Developer section, plus
+ * anything in the environment, de-duplicated. The database is the place to add a teammate; the
+ * environment is the fallback so a standalone run still works with no database.
+ */
+async function recipients() {
+  let emails = envEmails();
+  let phones = envPhones();
+  let enabled = true;
+
+  if (await connectDb()) {
+    try {
+      const cfg = await require('../models/PermitWatchConfig').get();
+      if (cfg) {
+        enabled = cfg.enabled !== false;
+        emails = [...emails, ...(cfg.emails || [])];
+        phones = [...phones, ...(cfg.phones || [])];
+      }
+    } catch (err) {
+      console.warn('[PermitWatch] could not read the saved recipients:', err.message);
+    }
+  }
+
+  const clean = (list) => [...new Set(list.map((x) => String(x).trim()).filter(Boolean))];
+  return { emails: clean(emails), phones: clean(phones), enabled };
+}
 
 const slugFor = (url) => url.replace(/^https?:\/\//, '').replace(/[^a-z0-9]+/gi, '-').replace(/^-|-$/g, '').slice(0, 120).toLowerCase();
 const statePath = (url) => path.join(STATE_DIR, `${slugFor(url)}.json`);
@@ -389,16 +433,16 @@ async function wabaSettings() {
  * approved template name (one body variable, no newlines) to have alerts arrive at any time.
  * A WhatsApp failure is logged and never stops the email.
  */
-async function sendWhatsApp(text, { dryRun = false } = {}) {
-  const to = waRecipient();
-  if (!to) return false;
+async function sendWhatsApp(text, { dryRun = false, phones = null } = {}) {
+  const list = phones || (await recipients()).phones;
+  if (!list.length) return false;
 
   const { normalizePhone } = require('../utils/twilio');
-  const phone = normalizePhone(to).replace(/^\+/, '');
+  const numbers = [...new Set(list.map((p) => normalizePhone(p).replace(/^\+/, '')))].filter(Boolean);
   const oneLine = text.replace(/\s*\n\s*/g, ' · ').trim();
 
   if (dryRun) {
-    console.log(`[PermitWatch] (dry run) would WhatsApp ${phone}: ${oneLine.slice(0, 160)}`);
+    console.log(`[PermitWatch] (dry run) would WhatsApp ${numbers.join(', ')}: ${oneLine.slice(0, 160)}`);
     return false;
   }
 
@@ -410,7 +454,6 @@ async function sendWhatsApp(text, { dryRun = false } = {}) {
     ? {
       messaging_product: 'whatsapp',
       recipient_type: 'individual',
-      to: phone,
       type: 'template',
       template: {
         name: templateName,
@@ -421,28 +464,31 @@ async function sendWhatsApp(text, { dryRun = false } = {}) {
     : {
       messaging_product: 'whatsapp',
       recipient_type: 'individual',
-      to: phone,
       type: 'text',
       text: { body: text.slice(0, 3500) },
     };
 
-  try {
-    const res = await fetch(`https://graph.facebook.com/v20.0/${settings.wabaPhoneNumberId}/messages`, {
-      method: 'POST',
-      headers: { Authorization: `Bearer ${settings.wabaAccessToken}`, 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload),
-    });
-    const data = await res.json().catch(() => ({}));
-    if (!res.ok) throw new Error(data?.error?.message || `Meta API error ${res.status}`);
-    console.log(`[PermitWatch] WhatsApp sent to ${phone}`);
-    return true;
-  } catch (err) {
-    const hint = /re-?engag|24 hour|outside|template/i.test(err.message)
-      ? ' — outside the 24-hour window; set PERMIT_WATCH_WA_TEMPLATE to an approved template'
-      : '';
-    console.warn(`[PermitWatch] WhatsApp not sent: ${err.message}${hint}`);
-    return false;
+  let sentAny = false;
+  for (const [i, phone] of numbers.entries()) {
+    if (i > 0) await sleep(700);           // stay under Meta's per-second limit
+    try {
+      const res = await fetch(`https://graph.facebook.com/v20.0/${settings.wabaPhoneNumberId}/messages`, {
+        method: 'POST',
+        headers: { Authorization: `Bearer ${settings.wabaAccessToken}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ...payload, to: phone }),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(data?.error?.message || `Meta API error ${res.status}`);
+      console.log(`[PermitWatch] WhatsApp sent to ${phone}`);
+      sentAny = true;
+    } catch (err) {
+      const hint = /re-?engag|24 hour|outside|template/i.test(err.message)
+        ? ' — outside the 24-hour window; set PERMIT_WATCH_WA_TEMPLATE to an approved template'
+        : '';
+      console.warn(`[PermitWatch] WhatsApp not sent to ${phone}: ${err.message}${hint}`);
+    }
   }
+  return sentAny;
 }
 
 // ---------------------------------------------------------------- delivery
@@ -466,14 +512,14 @@ function whatsappChangeText({ page, diff, linkDiff }) {
   return parts.join('\n');
 }
 
-async function deliver({ subject, html, dryRun }) {
-  const to = recipient();
-  if (!to) {
-    console.warn('[PermitWatch] No ALERT_EMAIL_TO / PERMIT_WATCH_EMAIL_TO set — email not sent:', subject);
+async function deliver({ subject, html, dryRun, emails = null }) {
+  const to = emails || (await recipients()).emails;
+  if (!to.length) {
+    console.warn('[PermitWatch] nobody to email (add addresses in admin → Developer, or ALERT_EMAIL_TO):', subject);
     return false;
   }
   if (dryRun) {
-    console.log(`[PermitWatch] (dry run) would email ${to}: ${subject}`);
+    console.log(`[PermitWatch] (dry run) would email ${to.join(', ')}: ${subject}`);
     return false;
   }
   await sendEmail({ kind: 'updates', to, subject, html });
@@ -591,6 +637,24 @@ async function checkPage(page, cfg, { dryRun = false } = {}) {
 async function runOnce({ dryRun = false, all = false } = {}) {
   const cfg = loadConfig();
 
+  // The admin Developer section can pause the alerts and override the two gaps.
+  let saved = null;
+  if (await connectDb()) {
+    try {
+      saved = await require('../models/PermitWatchConfig').get();
+    } catch {
+      /* fall back to the file */
+    }
+  }
+  if (saved) {
+    if (saved.enabled === false) {
+      console.log('[PermitWatch] paused in admin → Developer, nothing checked');
+      return [];
+    }
+    if (Number(saved.newsIntervalMinutes) > 0) cfg.newsIntervalMinutes = Number(saved.newsIntervalMinutes);
+    if (Number(saved.intervalMinutes) > 0) cfg.intervalMinutes = Number(saved.intervalMinutes);
+  }
+
   const { pages: discovered, fresh } = await discoverPages(cfg);
   const everything = mergePages(cfg.pages, discovered);
 
@@ -635,6 +699,17 @@ async function runOnce({ dryRun = false, all = false } = {}) {
   }
   const count = (s) => results.filter((r) => r.status === s).length;
   console.log(`[PermitWatch] pass done — ${count('changed')} changed, ${count('unchanged')} unchanged, ${count('baseline')} baseline, ${count('failed') + count('error')} failed`);
+
+  // So the admin panel can show when it last ran and when it last saw something
+  if (saved && !dryRun) {
+    try {
+      const update = { lastRunAt: new Date() };
+      if (count('changed')) update.lastChangeAt = new Date();
+      await require('../models/PermitWatchConfig').updateOne({ key: 'default' }, { $set: update });
+    } catch {
+      /* not worth failing a pass over */
+    }
+  }
   return results;
 }
 
@@ -667,15 +742,17 @@ function startWorker() {
     console.error('[PermitWatch] not started:', err.message);
     return;
   }
-  if (!recipient() && !waRecipient()) {
-    console.warn('[PermitWatch] not started: both ALERT_EMAIL_TO and ALERT_WHATSAPP_TO are empty');
-    return;
-  }
+  // Recipients are looked up on each pass, so a teammate added in the admin panel is picked up
+  // without a restart. Nothing is sent while the list is empty.
+  recipients().then(({ emails, phones }) => {
+    if (!emails.length && !phones.length) {
+      console.warn('[PermitWatch] nobody to alert yet — add an email or number in admin → Developer');
+    }
+  }).catch(() => {});
   timer = setInterval(tick, cfg.tickMinutes * 60 * 1000);
   if (timer.unref) timer.unref();
   setTimeout(tick, 60 * 1000).unref?.();
-  const targets = [recipient(), waRecipient() && `WhatsApp ${waRecipient()}`].filter(Boolean).join(' + ');
-  console.log(`[PermitWatch] ticking every ${cfg.tickMinutes} min (news pages ${cfg.newsIntervalMinutes} min, rest ${cfg.intervalMinutes} min) → ${targets}`);
+  console.log(`[PermitWatch] ticking every ${cfg.tickMinutes} min (news pages ${cfg.newsIntervalMinutes} min, rest ${cfg.intervalMinutes} min)`);
 }
 
-module.exports = { runOnce, checkPage, startWorker, loadConfig, extract, diffLines, sendWhatsApp, discoverPages };
+module.exports = { runOnce, checkPage, startWorker, loadConfig, extract, diffLines, sendWhatsApp, discoverPages, recipients, deliver };
