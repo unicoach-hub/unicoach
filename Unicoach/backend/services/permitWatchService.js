@@ -52,6 +52,9 @@ function loadConfig() {
 /** Where the alert goes. Never hardcoded: it has to be in the environment. */
 const recipient = () => (process.env.PERMIT_WATCH_EMAIL_TO || process.env.ALERT_EMAIL_TO || '').trim();
 
+/** WhatsApp number for the same alert. Empty = WhatsApp off, email only. */
+const waRecipient = () => (process.env.PERMIT_WATCH_WHATSAPP_TO || process.env.ALERT_WHATSAPP_TO || '').trim();
+
 const slugFor = (url) => url.replace(/^https?:\/\//, '').replace(/[^a-z0-9]+/gi, '-').replace(/^-|-$/g, '').slice(0, 120).toLowerCase();
 const statePath = (url) => path.join(STATE_DIR, `${slugFor(url)}.json`);
 
@@ -261,6 +264,117 @@ function failureEmailHtml({ page, url, hours, lastError }) {
   </div></body></html>`;
 }
 
+// ---------------------------------------------------------------- WhatsApp
+
+/**
+ * The WhatsApp credentials live in the Settings collection (same place the admin UI writes them),
+ * so a standalone run has to open the database first. Email needs no database at all.
+ */
+async function wabaSettings() {
+  const mongoose = require('mongoose');
+  if (mongoose.connection.readyState !== 1) {
+    const uri = process.env.MONGO_URI || process.env.MONGODB_URI;
+    if (!uri) return null;
+    try {
+      await mongoose.connect(uri, { serverSelectionTimeoutMS: 10000 });
+    } catch (err) {
+      console.warn('[PermitWatch] WhatsApp skipped, database not reachable:', err.message);
+      return null;
+    }
+  }
+  const s = await require('../models/Settings').findOne().lean();
+  if (!s || !s.wabaAccessToken || !s.wabaPhoneNumberId) {
+    console.warn('[PermitWatch] WhatsApp skipped: not connected in Settings → WhatsApp Business');
+    return null;
+  }
+  return s;
+}
+
+/**
+ * One WhatsApp alert through the Meta Cloud API, the same way the admin bulk sender does it.
+ *
+ * Meta only allows free-form text within 24 hours of the person's last message to the business
+ * number. Outside that window a plain text send is rejected, so set PERMIT_WATCH_WA_TEMPLATE to an
+ * approved template name (one body variable, no newlines) to have alerts arrive at any time.
+ * A WhatsApp failure is logged and never stops the email.
+ */
+async function sendWhatsApp(text, { dryRun = false } = {}) {
+  const to = waRecipient();
+  if (!to) return false;
+
+  const { normalizePhone } = require('../utils/twilio');
+  const phone = normalizePhone(to).replace(/^\+/, '');
+  const oneLine = text.replace(/\s*\n\s*/g, ' · ').trim();
+
+  if (dryRun) {
+    console.log(`[PermitWatch] (dry run) would WhatsApp ${phone}: ${oneLine.slice(0, 160)}`);
+    return false;
+  }
+
+  const settings = await wabaSettings();
+  if (!settings) return false;
+
+  const templateName = (process.env.PERMIT_WATCH_WA_TEMPLATE || '').trim();
+  const payload = templateName
+    ? {
+      messaging_product: 'whatsapp',
+      recipient_type: 'individual',
+      to: phone,
+      type: 'template',
+      template: {
+        name: templateName,
+        language: { code: process.env.PERMIT_WATCH_WA_TEMPLATE_LANG || 'en' },
+        components: [{ type: 'body', parameters: [{ type: 'text', text: oneLine.slice(0, 900) }] }],
+      },
+    }
+    : {
+      messaging_product: 'whatsapp',
+      recipient_type: 'individual',
+      to: phone,
+      type: 'text',
+      text: { body: text.slice(0, 3500) },
+    };
+
+  try {
+    const res = await fetch(`https://graph.facebook.com/v20.0/${settings.wabaPhoneNumberId}/messages`, {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${settings.wabaAccessToken}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) throw new Error(data?.error?.message || `Meta API error ${res.status}`);
+    console.log(`[PermitWatch] WhatsApp sent to ${phone}`);
+    return true;
+  } catch (err) {
+    const hint = /re-?engag|24 hour|outside|template/i.test(err.message)
+      ? ' — outside the 24-hour window; set PERMIT_WATCH_WA_TEMPLATE to an approved template'
+      : '';
+    console.warn(`[PermitWatch] WhatsApp not sent: ${err.message}${hint}`);
+    return false;
+  }
+}
+
+// ---------------------------------------------------------------- delivery
+
+/** Short WhatsApp version of a change: what changed, a couple of lines of it, and the link. */
+function whatsappChangeText({ page, diff, linkDiff }) {
+  const parts = [`🇮🇪 *${page.label}* par kuch badla hai`];
+  const bits = [];
+  if (diff.added.length) bits.push(`+${diff.added.length} line`);
+  if (diff.removed.length) bits.push(`-${diff.removed.length} line`);
+  if (linkDiff.added.length) bits.push(`+${linkDiff.added.length} PDF/doc`);
+  if (linkDiff.removed.length) bits.push(`-${linkDiff.removed.length} PDF/doc`);
+  if (bits.length) parts.push(bits.join(', '));
+
+  const sample = [...linkDiff.added.slice(0, 2), ...diff.added.slice(0, 3)]
+    .map((l) => `• ${l.length > 140 ? `${l.slice(0, 140)}…` : l}`);
+  if (sample.length) parts.push(sample.join('\n'));
+
+  parts.push(page.url);
+  parts.push('Pura diff email mein hai.');
+  return parts.join('\n');
+}
+
 async function deliver({ subject, html, dryRun }) {
   const to = recipient();
   if (!to) {
@@ -300,6 +414,10 @@ async function checkPage(page, cfg, { dryRun = false } = {}) {
           html: failureEmailHtml({ page, url: page.url, hours, lastError }),
           dryRun,
         });
+        await sendWhatsApp(
+          `⚠️ Permit watch: "${page.label}" ${hours}h se khul nahi raha (${lastError}). Ye content change nahi hai — URL check karo.\n${page.url}`,
+          { dryRun },
+        );
         if (sent) failAlertSentAt = nowIso();
       } catch (mailErr) {
         console.error('[PermitWatch] failure email could not be sent:', mailErr.message);
@@ -363,6 +481,8 @@ async function checkPage(page, cfg, { dryRun = false } = {}) {
     console.error('[PermitWatch] change email could not be sent:', mailErr.message);
   }
 
+  await sendWhatsApp(whatsappChangeText({ page, diff, linkDiff }), { dryRun });
+
   // The new snapshot is stored either way, so the next tick diffs against what is live now.
   await writeState(page.url, { ...base, baselineAt: prev.baselineAt, lastChangedAt: nowIso(), lastEmailedAt: emailed ? nowIso() : prev.lastEmailedAt || null });
 
@@ -419,14 +539,15 @@ function startWorker() {
     console.error('[PermitWatch] not started:', err.message);
     return;
   }
-  if (!recipient()) {
-    console.warn('[PermitWatch] not started: ALERT_EMAIL_TO is empty');
+  if (!recipient() && !waRecipient()) {
+    console.warn('[PermitWatch] not started: both ALERT_EMAIL_TO and ALERT_WHATSAPP_TO are empty');
     return;
   }
   timer = setInterval(tick, cfg.intervalMinutes * 60 * 1000);
   if (timer.unref) timer.unref();
   setTimeout(tick, 60 * 1000).unref?.();
-  console.log(`[PermitWatch] watching ${cfg.pages.length} page(s) every ${cfg.intervalMinutes} min → ${recipient()}`);
+  const targets = [recipient(), waRecipient() && `WhatsApp ${waRecipient()}`].filter(Boolean).join(' + ');
+  console.log(`[PermitWatch] watching ${cfg.pages.length} page(s) every ${cfg.intervalMinutes} min → ${targets}`);
 }
 
-module.exports = { runOnce, checkPage, startWorker, loadConfig, extract, diffLines };
+module.exports = { runOnce, checkPage, startWorker, loadConfig, extract, diffLines, sendWhatsApp };

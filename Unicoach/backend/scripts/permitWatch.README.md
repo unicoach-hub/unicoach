@@ -24,11 +24,31 @@ The first run on a page only stores a baseline — no email.
 | --- | --- |
 | `ALERT_EMAIL_TO` | Where alerts go. **Required** — nothing is hardcoded. |
 | `PERMIT_WATCH_EMAIL_TO` | Optional, overrides `ALERT_EMAIL_TO` for this monitor only. |
+| `ALERT_WHATSAPP_TO` | WhatsApp number for the same alert. Empty = email only. |
+| `PERMIT_WATCH_WHATSAPP_TO` | Optional, overrides `ALERT_WHATSAPP_TO` for this monitor only. |
+| `PERMIT_WATCH_WA_TEMPLATE` | Approved WhatsApp template name (one body variable). See below. |
+| `PERMIT_WATCH_WA_TEMPLATE_LANG` | Template language code, default `en`. |
 | `PERMIT_WATCH_ENABLED` | `true` to let the in-process worker start with the server. Off by default. |
 | `PERMIT_WATCH_INTERVAL_MINUTES` | Overrides `intervalMinutes` from the config file. |
 
 Email goes out through the existing sender in `utils/email.js` (Resend, verified domain), so no new
 mail setup is needed. Without `RESEND_API_KEY` outside production it prints to the console instead.
+
+## WhatsApp alerts
+
+Alerts also go to WhatsApp when `ALERT_WHATSAPP_TO` is set. They go through the Meta Cloud API with
+the credentials already in Settings → WhatsApp Business, so no new setup is needed — but the
+database has to be reachable (email does not need it).
+
+**Meta's 24-hour rule:** a free-form text message is only accepted within 24 hours of that person's
+last message to the business number. A monitor fires at random times, so most alerts fall outside
+that window and plain text gets rejected. For alerts that always arrive, create a template in
+Settings → WhatsApp Business with a single body variable, for example:
+
+> UniCoach alert: {{1}}
+
+and once Meta approves it set `PERMIT_WATCH_WA_TEMPLATE` to its name. Without that, WhatsApp is
+best-effort: a rejected message is logged, and the email still goes out.
 
 ## Adding a link
 

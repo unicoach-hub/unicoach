@@ -24,7 +24,9 @@ async function main() {
 
   if (has('--list')) {
     const cfg = loadConfig();
-    console.log(`Every ${cfg.intervalMinutes} min → ${process.env.PERMIT_WATCH_EMAIL_TO || process.env.ALERT_EMAIL_TO || '(no ALERT_EMAIL_TO set)'}\n`);
+    const email = process.env.PERMIT_WATCH_EMAIL_TO || process.env.ALERT_EMAIL_TO || '(no ALERT_EMAIL_TO set)';
+    const wa = process.env.PERMIT_WATCH_WHATSAPP_TO || process.env.ALERT_WHATSAPP_TO || '(WhatsApp off)';
+    console.log(`Every ${cfg.intervalMinutes} min\n  email    → ${email}\n  whatsapp → ${wa}\n`);
     cfg.pages.forEach((p, i) => console.log(`${String(i + 1).padStart(2)}. ${p.label}\n    ${p.url}`));
     return;
   }
