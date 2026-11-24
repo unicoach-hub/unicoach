@@ -5,7 +5,8 @@ text or the PDF/doc links on a page change. Built for the Irish immigration cont
 
 - Links, interval and noise filters: `config/permitWatch.json`
 - Code: `services/permitWatchService.js`
-- Snapshots: `data/permit-watch/*.json` (git-ignored, rebuilt on the next run)
+- Snapshots: the `permitwatchsnapshots` collection on a server, `data/permit-watch/*.json` on a
+  laptop (see "Where snapshots live")
 
 ## Run it by hand
 
@@ -18,6 +19,19 @@ node scripts/permitWatch.js --reset        # forget the snapshots, next run is a
 ```
 
 The first run on a page only stores a baseline — no email.
+
+## Where snapshots live
+
+The monitor has to remember the last copy of each page. The deployed container's filesystem is
+read-only — `mkdir /app/data/permit-watch` fails with `EACCES` — so on the server the snapshots go
+into the **database** (`permitwatchsnapshots`, one document per page plus `_sitemap`), which also
+means they survive a redeploy. On a laptop the folder is writable, so disk wins and a local run
+never disturbs the live snapshots. `PERMIT_WATCH_DATA_DIR` points at a mounted volume if you ever
+add one.
+
+With neither a writable folder nor a database every page looks new, so each pass just stores a
+baseline and sends nothing. A missing store can never cause false alarms, only silence — and it
+says so loudly in the log.
 
 ## Who gets the alerts
 
@@ -41,6 +55,7 @@ with no database.
 | `PERMIT_WATCH_WA_TEMPLATE` | Approved WhatsApp template name (one body variable). See below. |
 | `PERMIT_WATCH_WA_TEMPLATE_LANG` | Template language code, default `en`. |
 | `PERMIT_WATCH_ENABLED` | `true` to let the in-process worker start with the server. Off by default. |
+| `PERMIT_WATCH_DATA_DIR` | Folder for snapshots. Unset and unwritable means the database. |
 | `PERMIT_WATCH_INTERVAL_MINUTES` | Overrides `intervalMinutes` (the slow gap). |
 | `PERMIT_WATCH_NEWS_MINUTES` | Overrides `newsIntervalMinutes` (the fast gap). |
 | `PERMIT_WATCH_TICK_MINUTES` | Overrides `tickMinutes` (how often the worker wakes up). |

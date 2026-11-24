@@ -33,10 +33,21 @@ async function main() {
   }
 
   if (has('--reset')) {
-    const dir = path.join(__dirname, '..', 'data', 'permit-watch');
-    const files = fs.existsSync(dir) ? fs.readdirSync(dir).filter((f) => f.endsWith('.json')) : [];
-    files.forEach((f) => fs.unlinkSync(path.join(dir, f)));
-    console.log(`Removed ${files.length} snapshot(s). The next run stores fresh baselines and sends no email.`);
+    const { storage } = require('../services/permitWatchService');
+    const mode = await storage();
+    let removed = 0;
+    if (mode === 'db') {
+      const mongoose = require('mongoose');
+      const res = await require('../models/PermitWatchSnapshot').deleteMany({});
+      removed = res.deletedCount || 0;
+      await mongoose.disconnect().catch(() => {});
+    } else if (mode === 'disk') {
+      const dir = process.env.PERMIT_WATCH_DATA_DIR || path.join(__dirname, '..', 'data', 'permit-watch');
+      const files = fs.existsSync(dir) ? fs.readdirSync(dir).filter((f) => f.endsWith('.json')) : [];
+      files.forEach((f) => fs.unlinkSync(path.join(dir, f)));
+      removed = files.length;
+    }
+    console.log(`Removed ${removed} snapshot(s) from ${mode}. The next run stores fresh baselines and sends no email.`);
     return;
   }
 

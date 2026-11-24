@@ -20,7 +20,9 @@ const cheerio = require('cheerio');
 const { sendEmail } = require('../utils/email');
 
 const CONFIG_PATH = path.join(__dirname, '..', 'config', 'permitWatch.json');
-const STATE_DIR = path.join(__dirname, '..', 'data', 'permit-watch');
+// PERMIT_WATCH_DATA_DIR points this at a mounted volume when there is one; otherwise snapshots
+// fall back to the database, which is what happens on the server.
+const STATE_DIR = process.env.PERMIT_WATCH_DATA_DIR || path.join(__dirname, '..', 'data', 'permit-watch');
 
 const DEFAULT_WA_TEMPLATE = 'permit_update_alert';   // UTILITY template, one body variable
 const MAX_DIFF_LINES = 40;      // per direction, in the email
@@ -104,24 +106,76 @@ async function recipients() {
 }
 
 const slugFor = (url) => url.replace(/^https?:\/\//, '').replace(/[^a-z0-9]+/gi, '-').replace(/^-|-$/g, '').slice(0, 120).toLowerCase();
-const statePath = (url) => path.join(STATE_DIR, `${slugFor(url)}.json`);
+const blobPath = (key) => path.join(STATE_DIR, `${slugFor(key)}.json`);
 
-async function readState(url) {
+/**
+ * Where snapshots are kept. On a server the container's filesystem is read-only
+ * (EACCES on /app/data), so the database is used instead and the snapshots survive a redeploy.
+ * On a laptop the folder is writable, so disk wins and a local run never touches the live
+ * snapshots. Decided once per process.
+ */
+let storageMode = null;
+async function storage() {
+  if (storageMode) return storageMode;
   try {
-    return JSON.parse(await fsp.readFile(statePath(url), 'utf8'));
+    await fsp.mkdir(STATE_DIR, { recursive: true });
+    await fsp.access(STATE_DIR, fs.constants.W_OK);
+    storageMode = 'disk';
+  } catch (diskErr) {
+    if (await connectDb()) {
+      storageMode = 'db';
+      console.log(`[PermitWatch] snapshots in the database (disk not writable: ${diskErr.code || diskErr.message})`);
+    } else {
+      // Without somewhere to remember the last copy every page looks new, so each pass stores a
+      // baseline and sends nothing. Noisy false alarms are impossible; alerts simply never fire.
+      storageMode = 'none';
+      console.error('[PermitWatch] nowhere to store snapshots — no writable folder and no database. No change can be detected.');
+    }
+  }
+  return storageMode;
+}
+
+/** One stored object, by key (a page URL, or "_sitemap"). */
+async function loadBlob(key) {
+  const mode = await storage();
+  if (mode === 'none') return null;
+  if (mode === 'db') {
+    try {
+      const row = await require('../models/PermitWatchSnapshot').findOne({ key }).lean();
+      return row?.data || null;
+    } catch (err) {
+      console.warn('[PermitWatch] could not read a snapshot:', err.message);
+      return null;
+    }
+  }
+  try {
+    return JSON.parse(await fsp.readFile(blobPath(key), 'utf8'));
   } catch {
     return null;
   }
 }
 
-async function writeState(url, state) {
+async function saveBlob(key, value) {
+  const mode = await storage();
+  if (mode === 'none') return;
+  if (mode === 'db') {
+    try {
+      await require('../models/PermitWatchSnapshot').updateOne({ key }, { $set: { data: value } }, { upsert: true });
+    } catch (err) {
+      console.warn('[PermitWatch] could not store a snapshot:', err.message);
+    }
+    return;
+  }
   await fsp.mkdir(STATE_DIR, { recursive: true });
-  await fsp.writeFile(statePath(url), JSON.stringify(state, null, 2));
+  await fsp.writeFile(blobPath(key), JSON.stringify(value, null, 2));
 }
+
+const readState = (url) => loadBlob(url);
+const writeState = (url, state) => saveBlob(url, state);
 
 // ---------------------------------------------------------------- discovery
 
-const SITEMAP_STATE = path.join(STATE_DIR, '_sitemap.json');
+const SITEMAP_KEY = '_sitemap';
 
 /**
  * The Department's own sitemap, filtered down to the employment-permit section, so a page it
@@ -132,12 +186,7 @@ async function discoverPages(cfg, { force = false } = {}) {
   const d = cfg.discovery || {};
   if (!d.enabled || !d.sitemapUrl) return { pages: [], fresh: [] };
 
-  let cached = null;
-  try {
-    cached = JSON.parse(await fsp.readFile(SITEMAP_STATE, 'utf8'));
-  } catch {
-    /* no cache yet */
-  }
+  const cached = await loadBlob(SITEMAP_KEY);
 
   const stale = !cached?.fetchedAt
     || (Date.now() - new Date(cached.fetchedAt).getTime()) / 3600000 >= (Number(d.refreshHours) || 12);
@@ -167,8 +216,7 @@ async function discoverPages(cfg, { force = false } = {}) {
   const known = new Set(cached?.urls || []);
   const fresh = cached?.urls ? urls.filter((u) => !known.has(u)) : [];
 
-  await fsp.mkdir(STATE_DIR, { recursive: true });
-  await fsp.writeFile(SITEMAP_STATE, JSON.stringify({ fetchedAt: nowIso(), urls }, null, 2));
+  await saveBlob(SITEMAP_KEY, { fetchedAt: nowIso(), urls });
   console.log(`[PermitWatch] sitemap: ${urls.length} page(s) in the watched section${fresh.length ? `, ${fresh.length} brand new` : ''}`);
 
   return { pages: urls.map(toDiscoveredPage), fresh };
@@ -787,4 +835,4 @@ function startWorker() {
   console.log(`[PermitWatch] ticking every ${cfg.tickMinutes} min (news pages ${cfg.newsIntervalMinutes} min, rest ${cfg.intervalMinutes} min)`);
 }
 
-module.exports = { runOnce, checkPage, startWorker, loadConfig, extract, diffLines, sendWhatsApp, discoverPages, recipients, deliver };
+module.exports = { runOnce, checkPage, startWorker, loadConfig, extract, diffLines, sendWhatsApp, discoverPages, recipients, deliver, storage };
