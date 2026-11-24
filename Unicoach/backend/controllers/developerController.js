@@ -279,12 +279,39 @@ const cleanPhones = (list) => [...new Set((Array.isArray(list) ? list : [])
   .filter((p) => p.replace(/\D/g, '').length >= 10)
   .map((p) => require('../utils/twilio').normalizePhone(p)))].slice(0, 20);
 
+// Only real web links, http(s) and nothing else, so a typo can never make the watcher fetch
+// something odd. The label is free text; an empty one is filled in from the URL at run time.
+const cleanPages = (list) => {
+  const seen = new Set();
+  return (Array.isArray(list) ? list : []).map((p) => {
+    const url = String(p?.url || '').trim();
+    let parsed;
+    try {
+      parsed = new URL(url);
+    } catch {
+      return null;
+    }
+    if (!/^https?:$/.test(parsed.protocol)) return null;
+    const key = parsed.toString().replace(/\/+$/, '').toLowerCase();
+    if (seen.has(key)) return null;
+    seen.add(key);
+    const every = Number(p?.everyMinutes);
+    return {
+      url: parsed.toString(),
+      label: String(p?.label || '').trim().slice(0, 120),
+      everyMinutes: every > 0 ? Math.max(1, Math.min(1440, every)) : null,
+      enabled: p?.enabled !== false,
+    };
+  }).filter(Boolean).slice(0, 50);
+};
+
 exports.permitWatch = async (req, res) => {
   try {
     const cfg = await PermitWatchConfig.get();
     const svc = require('../services/permitWatchService');
     const fileCfg = svc.loadConfig();
     const { emails, phones } = await svc.recipients();
+    const watched = await svc.watchedPages(fileCfg, cfg);
 
     res.json({
       ...cfg,
@@ -294,10 +321,19 @@ exports.permitWatch = async (req, res) => {
         phones,
         newsIntervalMinutes: Number(cfg.newsIntervalMinutes) > 0 ? Number(cfg.newsIntervalMinutes) : fileCfg.newsIntervalMinutes,
         intervalMinutes: Number(cfg.intervalMinutes) > 0 ? Number(cfg.intervalMinutes) : fileCfg.intervalMinutes,
-        pagesWatched: fileCfg.pages.length,
+        pagesWatched: watched.length,
+        fromConfigFile: fileCfg.pages.length,
+        fromSitemap: watched.filter((p) => p.discovered).length,
         fromEnvEmails: emails.filter((e) => !(cfg.emails || []).map((x) => x.toLowerCase()).includes(e)),
       },
-      pages: fileCfg.pages.map((p) => ({ label: p.label, url: p.url, everyMinutes: p.everyMinutes || null })),
+      // Everything being watched, so the panel can show where each link came from.
+      // Only the "admin" ones are editable there; the rest are the built-in list and the sitemap.
+      watched: watched.map((p) => ({
+        label: p.label,
+        url: p.url,
+        everyMinutes: p.everyMinutes || null,
+        source: p.fromAdmin ? 'admin' : p.discovered ? 'sitemap' : 'built-in',
+      })),
     });
   } catch (err) {
     res.status(500).json({ message: err.message });
@@ -306,10 +342,11 @@ exports.permitWatch = async (req, res) => {
 
 exports.savePermitWatch = async (req, res) => {
   try {
-    const { emails, phones, enabled, newsIntervalMinutes, intervalMinutes } = req.body || {};
+    const { emails, phones, pages, enabled, newsIntervalMinutes, intervalMinutes } = req.body || {};
     const set = {
       emails: cleanEmails(emails),
       phones: cleanPhones(phones),
+      pages: cleanPages(pages),
       enabled: enabled !== false,
       updatedBy: req.user?.email || req.user?.name || '',
     };

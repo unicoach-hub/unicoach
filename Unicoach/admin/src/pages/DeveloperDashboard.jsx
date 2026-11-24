@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Segmented, Table, Progress, Tag, Spin, Alert, Button, Tooltip as AntTooltip, Select, Switch, InputNumber, Space, message } from 'antd';
-import { ReloadOutlined, CloudServerOutlined, ApiOutlined, DatabaseOutlined, UserAddOutlined, LinkOutlined, BellOutlined } from '@ant-design/icons';
+import { Segmented, Table, Progress, Tag, Spin, Alert, Button, Tooltip as AntTooltip, Select, Switch, InputNumber, Space, message, Input, Collapse } from 'antd';
+import { ReloadOutlined, CloudServerOutlined, ApiOutlined, DatabaseOutlined, UserAddOutlined, LinkOutlined, BellOutlined, PlusOutlined, DeleteOutlined } from '@ant-design/icons';
 import { ResponsiveContainer, AreaChart, Area, XAxis, YAxis, Tooltip, CartesianGrid } from 'recharts';
 import { Link } from 'react-router-dom';
 import Header from '../components/Header';
@@ -55,6 +55,7 @@ const PermitWatchCard = () => {
   const [emails, setEmails] = useState([]);
   const [phones, setPhones] = useState([]);
   const [enabled, setEnabled] = useState(true);
+  const [pages, setPages] = useState([]);
   const [news, setNews] = useState(null);
   const [slow, setSlow] = useState(null);
   const [busy, setBusy] = useState('');
@@ -66,6 +67,7 @@ const PermitWatchCard = () => {
       setEmails(d.emails || []);
       setPhones(d.phones || []);
       setEnabled(d.enabled !== false);
+      setPages(d.pages || []);
       setNews(d.newsIntervalMinutes || null);
       setSlow(d.intervalMinutes || null);
     } catch (err) {
@@ -88,8 +90,8 @@ const PermitWatchCard = () => {
   };
 
   const save = () => act('save',
-    () => API.put('/admin/dev/permit-watch', { emails, phones, enabled, newsIntervalMinutes: news, intervalMinutes: slow }),
-    () => 'Alert list saved');
+    () => API.put('/admin/dev/permit-watch', { emails, phones, pages, enabled, newsIntervalMinutes: news, intervalMinutes: slow }),
+    () => 'Saved');
 
   const test = () => act('test',
     () => API.post('/admin/dev/permit-watch/test'),
@@ -151,6 +153,80 @@ const PermitWatchCard = () => {
             <InputNumber min={1} max={1440} value={slow} onChange={setSlow} placeholder={String(eff.intervalMinutes ?? 30)} style={{ width: 90 }} addonAfter="min" />
           </Space>
         </div>
+
+        <div>
+          <div style={{ fontSize: 12.5, fontWeight: 600, marginBottom: 6 }}>Links to watch</div>
+          <p style={{ margin: '0 0 8px', fontSize: 12.5, color: 'var(--ux-text-2)' }}>
+            Add any page you want checked. Leave the minutes empty to use the gaps above.
+            {' '}The built-in list and the pages found in the Department's sitemap are watched anyway — see below.
+          </p>
+
+          {pages.map((p, i) => (
+            <div key={i} style={{ display: 'flex', gap: 8, marginBottom: 8, flexWrap: 'wrap', alignItems: 'center' }}>
+              <Input
+                style={{ flex: '2 1 280px' }}
+                placeholder="https://example.ie/page"
+                value={p.url}
+                onChange={(e) => setPages(pages.map((x, j) => (j === i ? { ...x, url: e.target.value } : x)))}
+              />
+              <Input
+                style={{ flex: '1 1 150px' }}
+                placeholder="Name (optional)"
+                value={p.label || ''}
+                onChange={(e) => setPages(pages.map((x, j) => (j === i ? { ...x, label: e.target.value } : x)))}
+              />
+              <InputNumber
+                min={1}
+                max={1440}
+                style={{ width: 110 }}
+                addonAfter="min"
+                placeholder="auto"
+                value={p.everyMinutes}
+                onChange={(v) => setPages(pages.map((x, j) => (j === i ? { ...x, everyMinutes: v } : x)))}
+              />
+              <AntTooltip title={p.enabled === false ? 'Paused' : 'Watching'}>
+                <Switch
+                  size="small"
+                  checked={p.enabled !== false}
+                  onChange={(v) => setPages(pages.map((x, j) => (j === i ? { ...x, enabled: v } : x)))}
+                />
+              </AntTooltip>
+              <Button icon={<DeleteOutlined />} onClick={() => setPages(pages.filter((_, j) => j !== i))} />
+            </div>
+          ))}
+
+          <Button icon={<PlusOutlined />} onClick={() => setPages([...pages, { url: '', label: '', everyMinutes: null, enabled: true }])}>
+            Add a link
+          </Button>
+        </div>
+
+        <Collapse
+          ghost
+          size="small"
+          items={[{
+            key: 'watched',
+            label: <span style={{ fontSize: 13 }}>All {(data.watched || []).length} pages being watched</span>,
+            children: (
+              <Table
+                size="small"
+                rowKey="url"
+                dataSource={data.watched || []}
+                pagination={{ pageSize: 10, hideOnSinglePage: true }}
+                columns={[
+                  { title: 'Page', dataIndex: 'label' },
+                  { title: 'Link', dataIndex: 'url', render: (v) => <a href={v} target="_blank" rel="noreferrer" style={{ fontSize: 12 }}>{v.replace(/^https?:\/\//, '').slice(0, 60)}</a> },
+                  { title: 'Every', dataIndex: 'everyMinutes', align: 'right', width: 90, render: (v) => (v ? `${v} min` : '—') },
+                  {
+                    title: 'From',
+                    dataIndex: 'source',
+                    width: 110,
+                    render: (v) => <Tag color={v === 'admin' ? 'blue' : v === 'sitemap' ? 'green' : 'default'}>{v}</Tag>,
+                  },
+                ]}
+              />
+            ),
+          }]}
+        />
 
         {(eff.fromEnvEmails || []).length > 0 && (
           <div style={{ fontSize: 12, color: 'var(--ux-text-2)' }}>

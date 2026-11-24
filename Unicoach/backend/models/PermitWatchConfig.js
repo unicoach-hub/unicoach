@@ -13,6 +13,19 @@ const permitWatchConfigSchema = new mongoose.Schema({
   // false pauses the alerts without removing anybody
   enabled: { type: Boolean, default: true },
 
+  // Links added from the admin panel, on top of the ones in config/permitWatch.json.
+  // everyMinutes empty means the page follows the normal gap for its kind.
+  pages: {
+    type: [{
+      _id: false,
+      url: { type: String, required: true },
+      label: { type: String, default: '' },
+      everyMinutes: { type: Number, default: null },
+      enabled: { type: Boolean, default: true },
+    }],
+    default: [],
+  },
+
   // Minutes between checks. Empty falls back to config/permitWatch.json
   newsIntervalMinutes: { type: Number, default: null },
   intervalMinutes: { type: Number, default: null },
@@ -22,7 +35,7 @@ const permitWatchConfigSchema = new mongoose.Schema({
   updatedBy: { type: String, default: '' },
 }, { timestamps: true });
 
-const EMPTY = { key: 'default', emails: [], phones: [], enabled: true, newsIntervalMinutes: null, intervalMinutes: null };
+const EMPTY = { key: 'default', emails: [], phones: [], pages: [], enabled: true, newsIntervalMinutes: null, intervalMinutes: null };
 
 /**
  * The single document, or sensible defaults when nobody has saved anything yet.

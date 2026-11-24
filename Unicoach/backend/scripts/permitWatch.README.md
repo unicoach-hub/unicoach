@@ -106,8 +106,17 @@ sitemap before, **that itself is an alert**, and the page joins the watch list a
 
 ## Adding a link
 
-Open `config/permitWatch.json`, copy one block inside `pages`, change `url` and `label`, save.
-To pause a page without deleting it, set `"enabled": false`.
+Easiest: **admin → Developer → "Irish permit alerts" → Links to watch**. Paste the URL, give it a
+name if you want, optionally set its own gap in minutes, Save. The pause switch keeps a link in the
+list without checking it. These are stored in `permitwatchconfigs.pages`, so no deploy is needed,
+and the panel also lists every page in the watch list with where it came from (built-in / admin /
+sitemap).
+
+In code: open `config/permitWatch.json`, copy one block inside `pages`, change `url` and `label`.
+To pause one there, set `"enabled": false`.
+
+A URL that appears in more than one place is checked once; the config file wins over an admin link,
+and both win over the sitemap.
 
 ## Running it continuously
 

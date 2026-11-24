@@ -182,7 +182,7 @@ const SITEMAP_KEY = '_sitemap';
  * publishes tomorrow is watched without anyone editing the config. The sitemap is big, so it is
  * cached on disk and only refetched every `refreshHours`.
  */
-async function discoverPages(cfg, { force = false } = {}) {
+async function discoverPages(cfg, { force = false, cacheOnly = false } = {}) {
   const d = cfg.discovery || {};
   if (!d.enabled || !d.sitemapUrl) return { pages: [], fresh: [] };
 
@@ -191,9 +191,10 @@ async function discoverPages(cfg, { force = false } = {}) {
   const stale = !cached?.fetchedAt
     || (Date.now() - new Date(cached.fetchedAt).getTime()) / 3600000 >= (Number(d.refreshHours) || 12);
 
-  if (!force && !stale && Array.isArray(cached.urls)) {
+  if ((cacheOnly || (!force && !stale)) && Array.isArray(cached?.urls)) {
     return { pages: cached.urls.map(toDiscoveredPage), fresh: [] };
   }
+  if (cacheOnly) return { pages: [], fresh: [] };
 
   let xml;
   try {
@@ -232,10 +233,51 @@ function toDiscoveredPage(url) {
   return { label, url, discovered: true };
 }
 
-/** The configured pages plus the discovered ones, with the config winning on a duplicate URL. */
-function mergePages(configured, discovered) {
-  const seen = new Set(configured.map((p) => p.url.replace(/\/+$/, '').toLowerCase()));
-  return [...configured, ...discovered.filter((p) => !seen.has(p.url.replace(/\/+$/, '').toLowerCase()))];
+/** What the admin Developer section has saved, or null when there is no database. */
+async function savedConfig() {
+  if (!(await connectDb())) return null;
+  try {
+    return await require('../models/PermitWatchConfig').get();
+  } catch (err) {
+    console.warn('[PermitWatch] could not read the saved settings:', err.message);
+    return null;
+  }
+}
+
+/** Links added in the admin panel, shaped like the ones from the config file. */
+const savedPages = (saved) => (saved?.pages || [])
+  .filter((p) => p && p.url && p.enabled !== false)
+  .map((p) => ({
+    label: p.label || p.url.replace(/^https?:\/\//, '').replace(/\/+$/, ''),
+    url: p.url,
+    everyMinutes: p.everyMinutes || undefined,
+    fromAdmin: true,
+  }));
+
+/**
+ * Every page being watched: the config file, the links added in the admin panel, and whatever the
+ * sitemap turned up. Uses the cached sitemap, so it is cheap enough for the admin screen.
+ */
+async function watchedPages(cfg = loadConfig(), saved = null) {
+  const s = saved || await savedConfig();
+  const { pages: discovered } = await discoverPages(cfg, { cacheOnly: true });
+  return mergePages([...cfg.pages, ...savedPages(s)], discovered);
+}
+
+/**
+ * One entry per URL. The first mention wins, so the config file beats an admin link and both beat
+ * the sitemap — and the same page added twice is still checked once.
+ */
+function mergePages(...lists) {
+  const seen = new Set();
+  const out = [];
+  for (const page of lists.flat()) {
+    const key = String(page.url || '').replace(/\/+$/, '').toLowerCase();
+    if (!key || seen.has(key)) continue;
+    seen.add(key);
+    out.push(page);
+  }
+  return out;
 }
 
 /** How often this page should be checked: its own setting, else the news or the default gap. */
@@ -725,14 +767,7 @@ async function runOnce({ dryRun = false, all = false } = {}) {
   const cfg = loadConfig();
 
   // The admin Developer section can pause the alerts and override the two gaps.
-  let saved = null;
-  if (await connectDb()) {
-    try {
-      saved = await require('../models/PermitWatchConfig').get();
-    } catch {
-      /* fall back to the file */
-    }
-  }
+  const saved = await savedConfig();
   if (saved) {
     if (saved.enabled === false) {
       console.log('[PermitWatch] paused in admin → Developer, nothing checked');
@@ -743,7 +778,8 @@ async function runOnce({ dryRun = false, all = false } = {}) {
   }
 
   const { pages: discovered, fresh } = await discoverPages(cfg);
-  const everything = mergePages(cfg.pages, discovered);
+  const fromAdmin = savedPages(saved);
+  const everything = mergePages([...cfg.pages, ...fromAdmin], discovered);
 
   // A page the Department has just published is news in itself.
   if (fresh.length) {
@@ -772,7 +808,7 @@ async function runOnce({ dryRun = false, all = false } = {}) {
   }
 
   const skipped = everything.length - due.length;
-  console.log(`[PermitWatch] ${everything.length} page(s) watched (${cfg.pages.length} from config, ${discovered.length} from sitemap) — checking ${due.length} now, ${skipped} not due yet`);
+  console.log(`[PermitWatch] ${everything.length} page(s) watched (${cfg.pages.length} from config, ${fromAdmin.length} from admin, ${discovered.length} from sitemap) — checking ${due.length} now, ${skipped} not due yet`);
 
   const results = [];
   for (const [index, page] of due.entries()) {
@@ -842,4 +878,4 @@ function startWorker() {
   console.log(`[PermitWatch] ticking every ${cfg.tickMinutes} min (news pages ${cfg.newsIntervalMinutes} min, rest ${cfg.intervalMinutes} min)`);
 }
 
-module.exports = { runOnce, checkPage, startWorker, loadConfig, extract, diffLines, sendWhatsApp, discoverPages, recipients, deliver, storage, openButton };
+module.exports = { runOnce, checkPage, startWorker, loadConfig, extract, diffLines, sendWhatsApp, discoverPages, recipients, deliver, storage, openButton, watchedPages, savedConfig };
