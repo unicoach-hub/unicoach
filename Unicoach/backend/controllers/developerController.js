@@ -333,16 +333,36 @@ exports.testPermitWatch = async (req, res) => {
     if (!emails.length && !phones.length) return res.status(400).json({ message: 'Add an email or a WhatsApp number first' });
 
     const when = new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' });
+    const esc = (v) => String(v ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+
+    // The pages everyone on the list is watching, so the test mail is useful on its own:
+    // the portal first, then the pages where announcements land.
+    const pages = svc.loadConfig().pages;
+    const pick = (re) => pages.find((p) => re.test(p.url));
+    const headline = [pick(/employmentpermits\.enterprise\.gov\.ie/), pick(/latest-updates/), pick(/department-news/)]
+      .filter(Boolean);
+    const links = headline
+      .map((p) => `<li style="margin-bottom:6px"><a href="${esc(p.url)}" style="color:#14837E">${esc(p.label)}</a></li>`)
+      .join('');
+    const portalUrl = (headline[0] || pages[0] || {}).url || '';
+
     const html = `<!doctype html><html><body style="font-family:Arial,Helvetica,sans-serif;background:#F4F4F2;margin:0">
       <div style="max-width:560px;margin:24px auto;background:#fff;border:1px solid #DDD8D0;border-radius:12px;padding:26px">
         <p style="margin:0;font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:#14837E;font-weight:700">Test alert</p>
         <h1 style="margin:8px 0 10px;font-size:20px;color:#16130F">Irish permit watch is set up</h1>
-        <p style="margin:0;font-size:14px;color:#3D3830">You are on the alert list. Real alerts look like this and carry the page, the link and what changed.</p>
-        <p style="margin:16px 0 0;font-size:12px;color:#8A8278">Sent ${when} IST from admin → Developer.</p>
+        <p style="margin:0 0 14px;font-size:14px;color:#3D3830">You are on the alert list. A real alert names the page, links straight to it and shows exactly what changed.</p>
+        <p style="margin:0 0 6px;font-size:13.5px;font-weight:700;color:#16130F">Watching ${pages.length} pages, including:</p>
+        <ul style="margin:0;padding-left:18px;font-size:14px;line-height:1.5">${links}</ul>
+        ${portalUrl ? svc.openButton(portalUrl, 'Open the permits portal') : ''}
+        <p style="margin:20px 0 0;font-size:12px;color:#8A8278">Sent ${when} IST from admin → Developer.</p>
       </div></body></html>`;
 
+    const waText = ['🇮🇪 Test: Irish permit watch chaalu hai. Asli alert aise hi aayega — page ka naam, link aur kya badla.']
+      .concat(headline.map((p) => `${p.label}\n${p.url}`))
+      .join('\n\n');
+
     const emailed = await svc.deliver({ subject: 'Test: Irish permit watch', html, emails });
-    const whatsapped = await svc.sendWhatsApp('🇮🇪 Test: Irish permit watch chaalu hai. Asli alert aise hi aayega, page aur link ke saath.', { phones });
+    const whatsapped = await svc.sendWhatsApp(waText, { phones });
     res.json({ ok: true, emailed, whatsapped, emails, phones });
   } catch (err) {
     res.status(500).json({ message: err.message });

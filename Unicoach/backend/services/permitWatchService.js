@@ -411,6 +411,11 @@ function diffLines(oldLines = [], newLines = []) {
 
 const trim = (l) => (l.length > MAX_LINE_CHARS ? `${l.slice(0, MAX_LINE_CHARS)}…` : l);
 
+/** A big tappable button, so the page is one click away from the email. */
+const openButton = (url, label = 'Open the page') => `<p style="margin:18px 0 0">
+    <a href="${esc(url)}" style="display:inline-block;padding:12px 22px;border-radius:999px;background:#14837E;color:#fff;font-weight:700;font-size:15px;text-decoration:none">${esc(label)} →</a>
+  </p>`;
+
 function block(heading, items, colour) {
   if (!items.length) return '';
   const shown = items.slice(0, MAX_DIFF_LINES);
@@ -433,6 +438,7 @@ function changeEmailHtml({ page, title, url, diff, linkDiff }) {
     ${block('PDF / document links removed', linkDiff.removed, '#D0362E')}
     ${block('Text added', diff.added, '#14837E')}
     ${block('Text removed', diff.removed, '#D0362E')}
+    ${openButton(url)}
     <p style="margin:24px 0 0;font-size:12px;color:#8A8278">Watched by permitWatch (backend/config/permitWatch.json). Official source: Department of Enterprise, Tourism and Employment.</p>
   </div></body></html>`;
 }
@@ -445,6 +451,7 @@ function failureEmailHtml({ page, url, hours, lastError }) {
     <p style="margin:0 0 10px;font-size:14px"><a href="${esc(url)}" style="color:#14837E">${esc(url)}</a></p>
     <p style="margin:0 0 6px;font-size:14px;color:#16130F">Failing for about ${esc(hours)} hour(s). Last error: <strong>${esc(lastError)}</strong></p>
     <p style="margin:0;font-size:13px;color:#5B544A">This is not a content change — the page may have moved or be blocking us. Check the URL in config/permitWatch.json.</p>
+    ${openButton(url, 'Try the page yourself')}
   </div></body></html>`;
 }
 
@@ -835,4 +842,4 @@ function startWorker() {
   console.log(`[PermitWatch] ticking every ${cfg.tickMinutes} min (news pages ${cfg.newsIntervalMinutes} min, rest ${cfg.intervalMinutes} min)`);
 }
 
-module.exports = { runOnce, checkPage, startWorker, loadConfig, extract, diffLines, sendWhatsApp, discoverPages, recipients, deliver, storage };
+module.exports = { runOnce, checkPage, startWorker, loadConfig, extract, diffLines, sendWhatsApp, discoverPages, recipients, deliver, storage, openButton };
