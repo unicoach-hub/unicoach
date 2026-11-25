@@ -119,6 +119,9 @@ const Footer = () => {
   ];
 
   const resourceLinks = [
+    { label: 'Career Counselling', path: '/career-counselling' },
+    { label: 'Course Finder', path: '/course-finder' },
+    { label: 'Admission Checker', path: '/eligibility-calculator' },
     { label: 'CGPA to GPA', path: '/resources/calculators/cgpa-to-gpa' },
     { label: 'CGPA to %', path: '/resources/calculators/cgpa-to-percentage' },
     { label: 'CGPA to Marks', path: '/resources/calculators/cgpa-to-marks' },

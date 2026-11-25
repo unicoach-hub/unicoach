@@ -118,13 +118,31 @@ async function renderRoute(browser, origin, route, shellScripts) {
   });
   try {
     await page.goto(`${origin}${route}`, { waitUntil: 'networkidle2', timeout: PAGE_TIMEOUT }).catch(() => {});
-    // Scroll through the page so lazy and in-view sections mount, then back to the top
+    // Scroll through the page so lazy and in-view sections mount, then back to the top.
+    // The page keeps growing as those sections mount, so re-read the height each pass and keep
+    // going until it stops growing. Smooth-scroll libraries can swallow window.scrollTo, so set
+    // scrollTop directly as well. Without this the footer never mounts on long pages (the home
+    // page), and every link it holds is missing from the snapshot.
     await page.evaluate(async () => {
-      for (let y = 0; y < document.body.scrollHeight; y += 700) {
+      const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+      const height = () => Math.max(document.body.scrollHeight, document.documentElement.scrollHeight);
+      const to = (y) => {
         window.scrollTo(0, y);
-        await new Promise((r) => setTimeout(r, 120));
+        document.documentElement.scrollTop = y;
+        document.body.scrollTop = y;
+      };
+      for (let pass = 0; pass < 6; pass += 1) {
+        const before = height();
+        for (let y = 0; y <= before; y += 700) {
+          to(y);
+          await sleep(120);
+        }
+        to(before);
+        await sleep(400);
+        // Done once the page stopped growing and the footer has mounted
+        if (height() <= before && document.querySelector('footer')) break;
       }
-      window.scrollTo(0, 0);
+      to(0);
     }).catch(() => {});
     await page.waitForNetworkIdle({ idleTime: 600, timeout: 15000 }).catch(() => {});
     await new Promise((r) => setTimeout(r, 400));
@@ -141,15 +159,6 @@ async function renderRoute(browser, origin, route, shellScripts) {
         if (!keep) s.remove();
       });
       document.querySelectorAll('#googleidentityservice_button_styles, iframe').forEach((el) => el.remove());
-      // Vite adds a modulepreload (as="script") for every lazy chunk the scroll-through loaded; on a
-      // phone those ~40 downloads compete with the hero image, so drop them and let chunks load on demand
-      document.querySelectorAll('link[rel="modulepreload"][as="script"]').forEach((el) => el.remove());
-      // The shell's onload swap already turned the Google Fonts preload into a stylesheet; put it
-      // back so the snapshot doesn't block first paint on the fonts CSS
-      document.querySelectorAll('link[rel="stylesheet"][as="style"][href*="fonts.googleapis.com"]').forEach((el) => {
-        el.setAttribute('rel', 'preload');
-        el.setAttribute('onload', "this.onload=null;this.rel='stylesheet'");
-      });
       document.documentElement.className = document.documentElement.className.split(/\s+/).filter((c) => c && !c.startsWith('lenis')).join(' ');
       if (!document.documentElement.className) document.documentElement.removeAttribute('class');
       document.documentElement.setAttribute('data-prerendered', 'true');
