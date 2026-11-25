@@ -356,6 +356,7 @@ app.use('/api/admin/messaging', require('./routes/adminMessaging'));
 app.use('/api/admin/whatsapp', require('./routes/adminWhatsapp'));
 app.use('/api/admin/campaigns', require('./routes/adminCampaigns'));
 app.use('/api/admin/chat-flows', require('./routes/adminChatFlows'));
+app.use('/api/admin/workflows', require('./routes/adminWorkflows'));
 app.use('/api/admin/dev', require('./routes/adminDeveloper'));
 // Meta WhatsApp webhook (public, signed with the Meta App Secret)
 {
@@ -428,6 +429,7 @@ if (process.env.NODE_ENV !== 'test') {
   server = app.listen(PORT, () => console.log(`🚀 Backend server running on port ${PORT}`));
   // WhatsApp campaigns: background sender (scheduled and running campaigns)
   require('./services/whatsappCampaigns').startWorker();
+  require('./services/workflowEngine').startWorker();
   // Mentor 1:1 calls: email students "did your session happen?" (production only)
   require('./unicoach/services/sessionCheckService').startWorker();
   // WhatsApp reminders to mentor and student, a day before and an hour before (production only)

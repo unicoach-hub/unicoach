@@ -292,6 +292,12 @@ exports.receiveWebhook = async (req, res) => {
             if (STOP_WORDS.test(text)) lead.whatsappOptOut = true;
             await lead.save();
           }
+          // Automation workflows that start on a student's reply
+          if (lead && !STOP_WORDS.test(text)) {
+            require('../services/workflowEngine')
+              .fireTrigger('whatsapp_reply', { lead, context: { lastMessage: String(text || '').slice(0, 500) } })
+              .catch((e) => console.error('[Workflows] reply trigger failed:', e.message));
+          }
           // Chatbot: button presses, keywords, default reply. Never for someone who just said STOP.
           if (!STOP_WORDS.test(text)) {
             const replyId = m.interactive?.button_reply?.id || m.interactive?.list_reply?.id || m.button?.payload || '';

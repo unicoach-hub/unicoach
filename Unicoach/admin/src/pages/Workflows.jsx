@@ -1,11 +1,13 @@
-import React, { useState, useEffect } from 'react';
-import { Card, Button, Tag, Modal, Select, Input, message, Space, Tooltip, Row, Col, Badge, Switch, Drawer, Form } from 'antd';
-import { 
-  PlusOutlined, ThunderboltOutlined, DeleteOutlined,
-  MailOutlined, MessageOutlined, ClockCircleOutlined, UserAddOutlined,
-  BranchesOutlined, SaveOutlined, ApartmentOutlined,
-  EditOutlined, ApiOutlined, CalendarOutlined, SettingOutlined,
-  CheckCircleOutlined, ArrowRightOutlined, CloseOutlined, FormOutlined
+import React, { useState, useEffect, useCallback } from 'react';
+import {
+  Button, Tag, Modal, Select, Input, InputNumber, message, Space, Badge, Drawer,
+  Switch, Row, Col, Empty, Spin, Popconfirm, Alert, Timeline, Checkbox,
+} from 'antd';
+import {
+  PlusOutlined, ThunderboltOutlined, DeleteOutlined, MailOutlined, MessageOutlined,
+  ClockCircleOutlined, UserAddOutlined, BranchesOutlined, SaveOutlined, ApartmentOutlined,
+  ApiOutlined, RobotOutlined, TagOutlined, FileTextOutlined, StarOutlined,
+  CheckCircleOutlined, PlayCircleOutlined, HistoryOutlined,
 } from '@ant-design/icons';
 import Header from '../components/Header';
 import API from '../api/axios';
@@ -13,80 +15,124 @@ import API from '../api/axios';
 const { Option } = Select;
 const { TextArea } = Input;
 
-// ─── Node Type Definitions ────────────────────────────────────
+// ─── Step types ───────────────────────────────────────────────
+// Must stay in step with NODE_CATALOG in backend/controllers/workflowController.js
 const NODE_TYPES = {
-  trigger:   { label: 'Trigger',            icon: <ThunderboltOutlined /> },
-  email:     { label: 'Send Email',         icon: <MailOutlined /> },
-  whatsapp:  { label: 'Send WhatsApp',      icon: <MessageOutlined /> },
-  pipeline:  { label: 'Move Pipeline Stage',icon: <ApartmentOutlined /> },
-  counselor: { label: 'Assign Counselor',   icon: <UserAddOutlined /> },
-  calendar:  { label: 'Calendar / Schedule',icon: <CalendarOutlined /> },
-  delay:     { label: 'Wait / Delay',       icon: <ClockCircleOutlined /> },
-  condition: { label: 'If / Condition',     icon: <BranchesOutlined /> },
-  webhook:   { label: 'Webhook',            icon: <ApiOutlined /> },
+  trigger:     { label: 'Trigger',                 icon: <ThunderboltOutlined />, group: 'trigger' },
+  email:       { label: 'Send Email',              icon: <MailOutlined />,        group: 'Messages' },
+  whatsapp:    { label: 'Send WhatsApp',           icon: <MessageOutlined />,     group: 'Messages' },
+  ai_message:  { label: 'AI: Write & Send',        icon: <RobotOutlined />,       group: 'AI' },
+  ai_classify: { label: 'AI: Read Reply',          icon: <RobotOutlined />,       group: 'AI' },
+  ai_score:    { label: 'AI: Score Lead',          icon: <StarOutlined />,        group: 'AI' },
+  pipeline:    { label: 'Move Stage',              icon: <ApartmentOutlined />,   group: 'CRM' },
+  counselor:   { label: 'Assign Counselor',        icon: <UserAddOutlined />,     group: 'CRM' },
+  tag:         { label: 'Add Tag',                 icon: <TagOutlined />,         group: 'CRM' },
+  note:        { label: 'Add Note',                icon: <FileTextOutlined />,    group: 'CRM' },
+  delay:       { label: 'Wait / Delay',            icon: <ClockCircleOutlined />, group: 'Flow' },
+  condition:   { label: 'If / Condition',          icon: <BranchesOutlined />,    group: 'Flow' },
+  webhook:     { label: 'Webhook',                 icon: <ApiOutlined />,         group: 'Flow' },
+  calendar:    { label: 'Note (old step)',         icon: <FileTextOutlined />,    group: 'Flow' },
 };
 
-const DEFAULT_WORKFLOWS = [
-  {
-    id: 'wf-1',
-    name: 'Welcome Lead Sequence',
-    description: 'Auto-greet new leads with email + WhatsApp follow-up when form is submitted',
-    active: true,
-    executedCount: 482,
-    lastRun: '2 hours ago',
-    nodes: [
-      { id: 'n1', type: 'trigger',  x: 60, y: 40,  config: { label: 'Form: Study Abroad Inquiry', triggerType: 'form', details: 'Triggers when student fills Study Abroad form' } },
-      { id: 'n2', type: 'email',    x: 60, y: 180, config: { label: 'Send Welcome Email', template: 'welcome', subject: 'Welcome to UniCoach!' } },
-      { id: 'n3', type: 'delay',    x: 60, y: 320, config: { label: 'Wait 2 Hours', duration: '2', unit: 'hours' } },
-      { id: 'n4', type: 'whatsapp', x: 60, y: 460, config: { label: 'WhatsApp Greeting', template: 'welcome_wa', message: 'Hi! Thanks for choosing UniCoach.' } },
-    ],
-    edges: [{ from: 'n1', to: 'n2' }, { from: 'n2', to: 'n3' }, { from: 'n3', to: 'n4' }]
-  },
-  {
-    id: 'wf-2',
-    name: 'Pipeline Stage Auto-Nudge',
-    description: 'When lead moves to "Contacted" stage, auto-assign counselor and schedule calendar reminder',
-    active: true,
-    executedCount: 194,
-    lastRun: '5 hours ago',
-    nodes: [
-      { id: 'n1', type: 'trigger',   x: 60, y: 40,  config: { label: 'Pipeline Stage: Contacted', triggerType: 'pipeline', details: 'Triggers on stage change to Contacted' } },
-      { id: 'n2', type: 'counselor', x: 60, y: 180, config: { label: 'Assign Counselor', counselor: 'Pooja Sharma' } },
-      { id: 'n3', type: 'calendar',  x: 60, y: 320, config: { label: 'Schedule Counseling Call', eventType: 'counseling_call' } },
-      { id: 'n4', type: 'whatsapp',  x: 60, y: 460, config: { label: 'Send Counselor Contact Card', template: 'counselor_card' } },
-    ],
-    edges: [{ from: 'n1', to: 'n2' }, { from: 'n2', to: 'n3' }, { from: 'n3', to: 'n4' }]
-  }
+const TRIGGERS = [
+  { type: 'lead_created',       label: 'New lead comes in' },
+  { type: 'lead_stage_changed', label: 'Lead moves to a stage' },
+  { type: 'followup_due',       label: 'Follow-up date is due' },
+  { type: 'no_reply',           label: 'Lead goes quiet for N days' },
+  { type: 'whatsapp_reply',     label: 'Student replies on WhatsApp' },
+  { type: 'manual',             label: 'Only when I run it by hand' },
 ];
 
-// ─── Workflow Canvas ──────────────────────────────────────────
-const WorkflowCanvas = ({ workflow, onAddNode, onDeleteNode, onNodeClick }) => {
+const STAGES = ['new', 'contacted', 'qualified', 'interested', 'fifty_fifty', 'not_interested', 'converted', 'closed'];
+const INTENTS = ['interested', 'wants_price', 'wants_call', 'not_now', 'not_interested', 'wrong_number', 'question', 'other'];
+
+
+// Ready-made automations, so a new workflow does not start from an empty canvas.
+const STARTERS = {
+  blank: { label: 'Blank — I will build it myself', trigger: { type: 'lead_created', config: {} }, nodes: [], edges: [] },
+  chaser: {
+    label: 'Follow-up chaser — chase a lead when its follow-up date is due',
+    trigger: { type: 'followup_due', config: {} },
+    nodes: [
+      { id: 'n2', type: 'ai_score', x: 60, y: 180, config: { label: 'AI: score this lead' } },
+      { id: 'n3', type: 'condition', x: 60, y: 320, config: { label: 'Hot lead?', field: 'score', op: 'gt', value: '75' } },
+      { id: 'n4', type: 'ai_message', x: 60, y: 460, config: { label: 'AI writes a nudge', channel: 'whatsapp', goal: 'book_call' } },
+      { id: 'n5', type: 'note', x: 400, y: 460, config: { label: 'Note for the counsellor', message: 'Follow-up due for {{name}} — please call.' } },
+    ],
+    edges: [
+      { from: 'n1', to: 'n2', branch: '' },
+      { from: 'n2', to: 'n3', branch: '' },
+      { from: 'n3', to: 'n4', branch: 'yes' },
+      { from: 'n3', to: 'n5', branch: 'no' },
+    ],
+  },
+  reader: {
+    label: 'Reply reader — read every WhatsApp reply and sort the lead',
+    trigger: { type: 'whatsapp_reply', config: {} },
+    nodes: [
+      { id: 'n2', type: 'ai_classify', x: 60, y: 180, config: { label: 'AI reads the reply', expectIntent: 'interested', apply: true } },
+      { id: 'n3', type: 'pipeline', x: 60, y: 320, config: { label: 'Move to interested', stage: 'interested' } },
+      { id: 'n4', type: 'tag', x: 400, y: 320, config: { label: 'Tag for later', tag: 'needs-a-human' } },
+    ],
+    edges: [
+      { from: 'n1', to: 'n2', branch: '' },
+      { from: 'n2', to: 'n3', branch: 'yes' },
+      { from: 'n2', to: 'n4', branch: 'no' },
+    ],
+  },
+  reviver: {
+    label: 'Quiet lead reviver — one nudge when a lead goes quiet',
+    trigger: { type: 'no_reply', config: { days: 5 } },
+    nodes: [
+      { id: 'n2', type: 'ai_message', x: 60, y: 180, config: { label: 'AI writes a check-in', channel: 'whatsapp', goal: 're_engage' } },
+      { id: 'n3', type: 'delay', x: 60, y: 320, config: { label: 'Wait 2 days', duration: 2, unit: 'days' } },
+      { id: 'n4', type: 'tag', x: 60, y: 460, config: { label: 'Tag: revive attempted', tag: 'revive-sent' } },
+    ],
+    edges: [
+      { from: 'n1', to: 'n2', branch: '' },
+      { from: 'n2', to: 'n3', branch: '' },
+      { from: 'n3', to: 'n4', branch: '' },
+    ],
+  },
+};
+
+const triggerLabel = (type) => TRIGGERS.find((t) => t.type === type)?.label || 'Trigger';
+const timeAgo = (date) => {
+  if (!date) return 'Never run';
+  const mins = Math.round((Date.now() - new Date(date).getTime()) / 60000);
+  if (mins < 1) return 'just now';
+  if (mins < 60) return `${mins} min ago`;
+  if (mins < 1440) return `${Math.round(mins / 60)} h ago`;
+  return `${Math.round(mins / 1440)} d ago`;
+};
+
+// ─── Canvas ───────────────────────────────────────────────────
+const WorkflowCanvas = ({ workflow, onDeleteNode, onNodeClick }) => {
   const NODE_W = 270;
   const NODE_H = 76;
+  const height = Math.max(420, ...workflow.nodes.map((n) => (n.y || 0) + 160));
 
   const renderEdge = (edge, idx) => {
-    const fromNode = workflow.nodes.find(n => n.id === edge.from);
-    const toNode = workflow.nodes.find(n => n.id === edge.to);
-    if (!fromNode || !toNode) return null;
-
-    const x1 = fromNode.x + NODE_W / 2;
-    const y1 = fromNode.y + NODE_H;
-    const x2 = toNode.x + NODE_W / 2;
-    const y2 = toNode.y;
+    const from = workflow.nodes.find((n) => n.id === edge.from);
+    const to = workflow.nodes.find((n) => n.id === edge.to);
+    if (!from || !to) return null;
+    const x1 = from.x + NODE_W / 2;
+    const y1 = from.y + NODE_H;
+    const x2 = to.x + NODE_W / 2;
+    const y2 = to.y;
     const midY = (y1 + y2) / 2;
-
+    const path = `M ${x1} ${y1} C ${x1} ${midY}, ${x2} ${midY}, ${x2} ${y2}`;
+    const colour = edge.branch === 'no' ? '#b0aea6' : edge.branch === 'yes' ? '#2e9e6b' : '#d6d3ca';
     return (
       <g key={idx}>
-        <path
-          d={`M ${x1} ${y1} C ${x1} ${midY}, ${x2} ${midY}, ${x2} ${y2}`}
-          fill="none" stroke="#d6d3ca" strokeWidth="2"
-        />
-        {/* Animated dot */}
+        <path d={path} fill="none" stroke={colour} strokeWidth="2" strokeDasharray={edge.branch === 'no' ? '5 4' : ''} />
+        {edge.branch && (
+          <text x={(x1 + x2) / 2 + 10} y={midY - 4} fontSize="11" fill={colour} fontWeight="600">
+            {edge.branch.toUpperCase()}
+          </text>
+        )}
         <circle r="4" fill="#DE5C2B">
-          <animateMotion
-            dur="2.5s" repeatCount="indefinite"
-            path={`M ${x1} ${y1} C ${x1} ${midY}, ${x2} ${midY}, ${x2} ${y2}`}
-          />
+          <animateMotion dur="2.5s" repeatCount="indefinite" path={path} />
         </circle>
         <circle cx={x1} cy={y1} r="5" fill="#ffffff" stroke="#d6d3ca" strokeWidth="2" />
         <circle cx={x2} cy={y2} r="5" fill="#111111" stroke="#ffffff" strokeWidth="2" />
@@ -94,308 +140,539 @@ const WorkflowCanvas = ({ workflow, onAddNode, onDeleteNode, onNodeClick }) => {
     );
   };
 
-  const renderNode = (node, index) => {
-    const type = NODE_TYPES[node.type] || NODE_TYPES.trigger;
-    const isFirst = index === 0;
-
+  const renderNode = (node) => {
+    const type = NODE_TYPES[node.type] || NODE_TYPES.note;
+    const isTrigger = node.type === 'trigger';
     return (
       <div
         key={node.id}
         onClick={() => onNodeClick(node)}
         style={{
-          position: 'absolute',
-          left: node.x,
-          top: node.y,
-          width: NODE_W,
-          height: NODE_H,
-          background: '#ffffff',
-          border: '1px solid var(--ux-line)',
-          borderRadius: 18,
-          display: 'flex',
-          alignItems: 'center',
-          gap: 12,
-          padding: '0 14px',
-          cursor: 'pointer',
-          zIndex: 10,
-          transition: 'border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease',
-          boxShadow: '0 1px 2px rgba(17,17,17,0.03)',
-        }}
-        onMouseEnter={e => {
-          e.currentTarget.style.boxShadow = '0 12px 28px -18px rgba(17,17,17,0.25)';
-          e.currentTarget.style.borderColor = 'rgba(17,17,17,0.25)';
-          e.currentTarget.style.transform = 'translateY(-2px)';
-        }}
-        onMouseLeave={e => {
-          e.currentTarget.style.boxShadow = '0 1px 2px rgba(17,17,17,0.03)';
-          e.currentTarget.style.borderColor = 'var(--ux-line)';
-          e.currentTarget.style.transform = 'translateY(0)';
+          position: 'absolute', left: node.x, top: node.y, width: NODE_W, height: NODE_H,
+          background: '#ffffff', border: `1px solid ${isTrigger ? 'var(--ux-ink)' : 'var(--ux-line)'}`,
+          borderRadius: 18, display: 'flex', alignItems: 'center', gap: 12, padding: '0 14px',
+          cursor: 'pointer', zIndex: 10,
         }}
       >
-        {/* Icon Badge */}
-        <span className="nx-icon-circle">
-          {type.icon}
-        </span>
-
-        {/* Node Content */}
-        <div style={{ flex: 1, overflow: 'hidden' }}>
-          <div style={{ fontSize: 11, fontWeight: 500, color: 'var(--ux-text-3)', lineHeight: 1.1 }}>
-            {type.label}
-          </div>
-          <div style={{ fontSize: 13.5, fontWeight: 600, color: 'var(--ux-ink)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', marginTop: 3 }}>
+        <span className="nx-icon-circle" style={{ flexShrink: 0 }}>{type.icon}</span>
+        <div style={{ minWidth: 0, flex: 1 }}>
+          <div style={{ fontSize: 13.5, fontWeight: 600, color: 'var(--ux-ink)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
             {node.config?.label || type.label}
           </div>
-          {node.config?.details && (
-            <div style={{ fontSize: 11, color: 'var(--ux-text-3)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-              {node.config.details}
-            </div>
-          )}
+          <div style={{ fontSize: 11.5, color: 'var(--ux-text-3)' }}>{type.label}</div>
         </div>
-
-        {/* Configure settings hint icon */}
-        <SettingOutlined style={{ fontSize: 13, color: 'var(--ux-text-3)' }} />
-
-        {/* Step number badge */}
-        <div style={{
-          width: 24, height: 24, borderRadius: '50%',
-          background: isFirst ? 'var(--ux-brand)' : 'var(--ux-ink)', color: '#ffffff',
-          display: 'flex', alignItems: 'center', justifyContent: 'center',
-          fontSize: 11, fontWeight: 700, flexShrink: 0,
-        }}>
-          {index + 1}
-        </div>
-
-        {/* Delete button (not on trigger) */}
-        {!isFirst && (
-          <button
+        {!isTrigger && (
+          <Button
+            type="text" size="small" danger icon={<DeleteOutlined />}
             onClick={(e) => { e.stopPropagation(); onDeleteNode(node.id); }}
-            style={{
-              position: 'absolute', top: -8, right: -8,
-              width: 22, height: 22, borderRadius: '50%',
-              background: '#ffffff', border: '1px solid var(--ux-line)',
-              color: 'var(--ux-text-3)', fontSize: 10,
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
-              cursor: 'pointer', transition: 'all 0.15s ease',
-              opacity: 0, pointerEvents: 'auto',
-            }}
-            onMouseEnter={e => { e.currentTarget.style.background = '#fff1f0'; e.currentTarget.style.borderColor = '#fecaca'; e.currentTarget.style.color = '#dc2626'; }}
-            onMouseLeave={e => { e.currentTarget.style.background = '#ffffff'; e.currentTarget.style.borderColor = 'var(--ux-line)'; e.currentTarget.style.color = 'var(--ux-text-3)'; }}
-            className="node-delete-btn"
-          >
-            <DeleteOutlined />
-          </button>
+          />
         )}
       </div>
     );
   };
 
-  const lastNode = workflow.nodes[workflow.nodes.length - 1];
-  const addBtnY = lastNode ? lastNode.y + NODE_H + 40 : 60;
-  const canvasH = Math.max(addBtnY + 80, 520);
-
   return (
-    <div style={{
-      position: 'relative', width: '100%', height: canvasH,
-      background: 'var(--ux-surface-2)', border: '1px solid var(--ux-line-2)', borderRadius: 18, overflow: 'hidden',
-    }}>
-      {/* Dot grid */}
-      <div style={{
-        position: 'absolute', inset: 0,
-        backgroundImage: 'radial-gradient(circle, #d6d3ca 0.8px, transparent 0.8px)',
-        backgroundSize: '20px 20px', opacity: 0.7,
-      }} />
-
-      {/* SVG Edges */}
-      <svg style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', pointerEvents: 'none', zIndex: 1 }}>
-        {workflow.edges.map((edge, idx) => renderEdge(edge, idx))}
+    <div className="nx-card" style={{ position: 'relative', height, overflow: 'auto', background: '#faf9f6' }}>
+      <svg width="100%" height={height} style={{ position: 'absolute', inset: 0 }}>
+        {workflow.edges.map(renderEdge)}
       </svg>
-
-      {/* Nodes */}
-      {workflow.nodes.map((node, idx) => renderNode(node, idx))}
-
-      {/* Add Step (+) */}
-      <div style={{ position: 'absolute', left: 60 + NODE_W / 2 - 18, top: addBtnY, zIndex: 20 }}>
-        <Tooltip title="Add next step">
-          <button
-            onClick={onAddNode}
-            style={{
-              width: 36, height: 36, borderRadius: '50%',
-              background: 'var(--ux-ink)',
-              border: 'none', color: '#ffffff', fontSize: 16,
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
-              cursor: 'pointer', boxShadow: 'none',
-              transition: 'transform 0.2s ease',
-            }}
-            onMouseEnter={e => { e.currentTarget.style.transform = 'scale(1.15)'; }}
-            onMouseLeave={e => { e.currentTarget.style.transform = 'scale(1)'; }}
-          >
-            <PlusOutlined />
-          </button>
-        </Tooltip>
-      </div>
-
-      <style>{`
-        div:hover > .node-delete-btn { opacity: 1 !important; }
-      `}</style>
+      {workflow.nodes.map(renderNode)}
     </div>
   );
 };
 
-// ─── Main Workflows Page ──────────────────────────────────────
+// ─── Page ─────────────────────────────────────────────────────
 const Workflows = () => {
-  const [workflows, setWorkflows] = useState(DEFAULT_WORKFLOWS);
-  const [selectedWf, setSelectedWf] = useState(null);
-  const [addNodeModal, setAddNodeModal] = useState(false);
-  const [newNodeType, setNewNodeType] = useState('email');
-  const [newNodeLabel, setNewNodeLabel] = useState('');
-  const [createWfModal, setCreateWfModal] = useState(false);
-  const [newWfName, setNewWfName] = useState('');
-  const [newWfDesc, setNewWfDesc] = useState('');
+  const [workflows, setWorkflows] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
+  const [selected, setSelected] = useState(null);
+  const [dirty, setDirty] = useState(false);
 
-  // Node Configuration Drawer
-  const [configDrawerOpen, setConfigDrawerOpen] = useState(false);
+  const [templates, setTemplates] = useState([]);
+  const [staff, setStaff] = useState([]);
+  const [leads, setLeads] = useState([]);
+
+  const [createOpen, setCreateOpen] = useState(false);
+  const [newName, setNewName] = useState('');
+  const [newDesc, setNewDesc] = useState('');
+  const [starter, setStarter] = useState('chaser');
+
+  const [drawerOpen, setDrawerOpen] = useState(false);
   const [activeNode, setActiveNode] = useState(null);
 
-  // Dynamic Integration Data from backend
-  const [formsList, setFormsList] = useState([]);
-  const [pipelinesList, setPipelinesList] = useState([]);
-  const [templatesList, setTemplatesList] = useState([]);
+  const [testOpen, setTestOpen] = useState(false);
+  const [testLead, setTestLead] = useState(null);
+  const [testing, setTesting] = useState(false);
+  const [lastRun, setLastRun] = useState(null);
+  const [historyOpen, setHistoryOpen] = useState(false);
+  const [runs, setRuns] = useState([]);
 
-  // Fetch Forms, Pipelines, and Templates
-  useEffect(() => {
-    const fetchIntegrations = async () => {
-      try {
-        const [fRes, pRes, tRes] = await Promise.all([
-          API.get('/admin/forms').catch(() => ({ data: [] })),
-          API.get('/admin/pipelines').catch(() => ({ data: [] })),
-          API.get('/admin/templates').catch(() => ({ data: [] }))
-        ]);
-        setFormsList(fRes.data || []);
-        setPipelinesList(pRes.data || []);
-        setTemplatesList(tRes.data || []);
-      } catch (err) {
-        console.error('Error loading integrations data:', err);
-      }
-    };
-    fetchIntegrations();
+  const loadWorkflows = useCallback(async () => {
+    try {
+      const { data } = await API.get('/admin/workflows');
+      setWorkflows(data || []);
+      return data || [];
+    } catch (err) {
+      message.error(err.response?.data?.error || 'Could not load workflows');
+      return [];
+    } finally {
+      setLoading(false);
+    }
   }, []);
 
-  const handleSelectWorkflow = (wf) => {
-    setSelectedWf({ ...wf, nodes: [...wf.nodes], edges: [...wf.edges] });
+  useEffect(() => { loadWorkflows(); }, [loadWorkflows]);
+
+  useEffect(() => {
+    (async () => {
+      const [t, s, l] = await Promise.all([
+        API.get('/admin/templates').catch(() => ({ data: [] })),
+        API.get('/admin/staff/assignable').catch(() => ({ data: [] })),
+        API.get('/admin/leads').catch(() => ({ data: [] })),
+      ]);
+      setTemplates(Array.isArray(t.data) ? t.data : t.data?.templates || []);
+      setStaff(Array.isArray(s.data) ? s.data : []);
+      setLeads((Array.isArray(l.data) ? l.data : l.data?.leads || []).slice(0, 100));
+    })();
+  }, []);
+
+  const openWorkflow = async (wf) => {
+    if (dirty && !window.confirm('You have unsaved changes. Leave them?')) return;
+    const { data } = await API.get(`/admin/workflows/${wf._id}`);
+    setSelected(data);
+    setDirty(false);
+    setLastRun(null);
   };
 
-  const handleAddNode = () => {
-    setNewNodeType('email');
-    setNewNodeLabel('');
-    setAddNodeModal(true);
+  const patchSelected = (patch) => {
+    setSelected((prev) => ({ ...prev, ...patch }));
+    setDirty(true);
   };
 
-  const confirmAddNode = () => {
-    if (!selectedWf) return;
-    const lastNode = selectedWf.nodes[selectedWf.nodes.length - 1];
-    const newId = `n${Date.now()}`;
-    const typeObj = NODE_TYPES[newNodeType];
-    const newNode = {
-      id: newId,
-      type: newNodeType,
-      x: lastNode.x,
-      y: lastNode.y + 140,
-      config: { label: newNodeLabel || typeObj.label, details: typeObj.label }
-    };
-    const updated = {
-      ...selectedWf,
-      nodes: [...selectedWf.nodes, newNode],
-      edges: [...selectedWf.edges, { from: lastNode.id, to: newId }],
-    };
-    setSelectedWf(updated);
-    setWorkflows(prev => prev.map(w => w.id === updated.id ? updated : w));
-    setAddNodeModal(false);
-    message.success(`Added "${typeObj.label}" step`);
+  const addNode = (type) => {
+    if (!selected) return;
+    const last = selected.nodes[selected.nodes.length - 1];
+    const id = `n${Date.now()}`;
+    const node = { id, type, x: last?.x ?? 60, y: (last?.y ?? 40) + 140, config: { label: NODE_TYPES[type].label } };
+    patchSelected({
+      nodes: [...selected.nodes, node],
+      edges: last ? [...selected.edges, { from: last.id, to: id, branch: '' }] : selected.edges,
+    });
   };
 
-  const handleDeleteNode = (nodeId) => {
-    if (!selectedWf) return;
-    const updated = {
-      ...selectedWf,
-      nodes: selectedWf.nodes.filter(n => n.id !== nodeId),
-      edges: selectedWf.edges.filter(e => e.from !== nodeId && e.to !== nodeId),
-    };
-    setSelectedWf(updated);
-    setWorkflows(prev => prev.map(w => w.id === updated.id ? updated : w));
+  const deleteNode = (nodeId) => {
+    patchSelected({
+      nodes: selected.nodes.filter((n) => n.id !== nodeId),
+      edges: selected.edges.filter((e) => e.from !== nodeId && e.to !== nodeId),
+    });
   };
 
-  const handleCreateWorkflow = () => {
-    if (!newWfName.trim()) return message.warning('Enter workflow name');
-    const newWf = {
-      id: `wf-${Date.now()}`,
-      name: newWfName.trim(),
-      description: newWfDesc.trim() || 'Custom automation workflow',
-      active: false,
-      executedCount: 0,
-      lastRun: 'Never',
-      nodes: [{ id: 'n1', type: 'trigger', x: 60, y: 40, config: { label: 'Select Trigger Source', triggerType: 'form', details: 'Click to configure trigger' } }],
-      edges: []
-    };
-    setWorkflows(prev => [...prev, newWf]);
-    setSelectedWf(newWf);
-    setCreateWfModal(false);
-    setNewWfName('');
-    setNewWfDesc('');
-    message.success(`Workflow "${newWf.name}" created`);
+  const save = async () => {
+    if (!selected) return;
+    setSaving(true);
+    try {
+      const { data } = await API.put(`/admin/workflows/${selected._id}`, {
+        name: selected.name,
+        description: selected.description,
+        trigger: selected.trigger,
+        nodes: selected.nodes,
+        edges: selected.edges,
+      });
+      setSelected((prev) => ({ ...data, recentRuns: prev?.recentRuns || [] }));
+      setDirty(false);
+      await loadWorkflows();
+      message.success('Workflow saved');
+    } catch (err) {
+      message.error(err.response?.data?.error || 'Could not save');
+    } finally {
+      setSaving(false);
+    }
   };
 
-  const toggleWorkflowActive = (wfId) => {
-    setWorkflows(prev => prev.map(w => w.id === wfId ? { ...w, active: !w.active } : w));
-    if (selectedWf?.id === wfId) setSelectedWf(prev => ({ ...prev, active: !prev.active }));
+  const toggleActive = async (wf) => {
+    const turningOn = !wf.active;
+    if (turningOn && dirty) return message.warning('Save your changes first');
+    if (turningOn && wf.trigger?.type === 'manual') {
+      return message.warning('This workflow only runs by hand — pick a real trigger first');
+    }
+    try {
+      const { data } = await API.post(`/admin/workflows/${wf._id}/toggle`);
+      message.success(data.active ? 'Workflow is live — it will run on its own now' : 'Workflow paused');
+      await loadWorkflows();
+      if (selected?._id === wf._id) setSelected((p) => ({ ...p, active: data.active }));
+    } catch (err) {
+      message.error(err.response?.data?.error || 'Could not change this');
+    }
   };
 
-  const openNodeConfig = (node) => {
-    setActiveNode({ ...node, config: { ...node.config } });
-    setConfigDrawerOpen(true);
+  const createWorkflow = async () => {
+    if (!newName.trim()) return message.warning('Give it a name');
+    try {
+      const { data } = await API.post('/admin/workflows', { name: newName.trim(), description: newDesc.trim() });
+      const preset = STARTERS[starter];
+      let created = data;
+      if (preset && preset.nodes.length) {
+        const trigNode = { ...data.nodes[0], config: { label: triggerLabel(preset.trigger.type) } };
+        const res = await API.put(`/admin/workflows/${data._id}`, {
+          trigger: preset.trigger,
+          nodes: [trigNode, ...preset.nodes],
+          edges: preset.edges,
+        });
+        created = res.data;
+      }
+      setCreateOpen(false);
+      setNewName('');
+      setNewDesc('');
+      await loadWorkflows();
+      openWorkflow(created);
+    } catch (err) {
+      message.error(err.response?.data?.error || 'Could not create');
+    }
   };
 
-  const saveNodeConfig = () => {
-    if (!selectedWf || !activeNode) return;
-    const updatedNodes = selectedWf.nodes.map(n => n.id === activeNode.id ? activeNode : n);
-    const updatedWf = { ...selectedWf, nodes: updatedNodes };
-    setSelectedWf(updatedWf);
-    setWorkflows(prev => prev.map(w => w.id === updatedWf.id ? updatedWf : w));
-    setConfigDrawerOpen(false);
-    message.success('Node configuration saved');
+  const removeWorkflow = async (wf) => {
+    await API.delete(`/admin/workflows/${wf._id}`);
+    if (selected?._id === wf._id) setSelected(null);
+    await loadWorkflows();
+    message.success('Workflow deleted');
   };
+
+  const runTest = async () => {
+    if (!testLead) return message.warning('Pick a lead to test with');
+    setTesting(true);
+    try {
+      const { data } = await API.post(`/admin/workflows/${selected._id}/test-run`, { leadId: testLead });
+      setLastRun(data.run);
+      setTestOpen(false);
+      message.success('Test finished — see the step log below');
+    } catch (err) {
+      message.error(err.response?.data?.error || 'Test failed');
+    } finally {
+      setTesting(false);
+    }
+  };
+
+  const openHistory = async () => {
+    const { data } = await API.get('/admin/workflows/runs', { params: { workflow: selected._id, limit: 30 } });
+    setRuns(data || []);
+    setHistoryOpen(true);
+  };
+
+  const saveNode = () => {
+    if (activeNode.type === 'trigger') {
+      patchSelected({
+        trigger: activeNode.trigger,
+        nodes: selected.nodes.map((n) => (n.id === activeNode.id ? { ...n, config: activeNode.config } : n)),
+      });
+    } else {
+      patchSelected({ nodes: selected.nodes.map((n) => (n.id === activeNode.id ? { ...n, config: activeNode.config } : n)) });
+    }
+    setDrawerOpen(false);
+  };
+
+  const setCfg = (patch) => setActiveNode((n) => ({ ...n, config: { ...n.config, ...patch } }));
+
+  const waTemplates = templates.filter((t) => t.type === 'whatsapp');
+
+  // ── node config forms ──
+  const renderNodeConfig = () => {
+    if (!activeNode) return null;
+    const cfg = activeNode.config || {};
+
+    switch (activeNode.type) {
+      case 'trigger': {
+        const trig = activeNode.trigger || { type: 'lead_created', config: {} };
+        const setTrig = (patch) => setActiveNode((n) => ({ ...n, trigger: { ...trig, ...patch } }));
+        return (
+          <>
+            <div>
+              <label className="nx-label">What starts this workflow</label>
+              <Select
+                value={trig.type}
+                style={{ width: '100%' }}
+                onChange={(type) => { setTrig({ type, config: {} }); setCfg({ label: triggerLabel(type) }); }}
+              >
+                {TRIGGERS.map((t) => <Option key={t.type} value={t.type}>{t.label}</Option>)}
+              </Select>
+            </div>
+            {trig.type === 'lead_stage_changed' && (
+              <div>
+                <label className="nx-label">Which stage</label>
+                <Select
+                  value={trig.config?.stage} style={{ width: '100%' }} placeholder="Any stage"
+                  onChange={(stage) => setTrig({ config: { ...trig.config, stage } })}
+                >
+                  {STAGES.map((s) => <Option key={s} value={s}>{s}</Option>)}
+                </Select>
+              </div>
+            )}
+            {trig.type === 'no_reply' && (
+              <div>
+                <label className="nx-label">Quiet for how many days</label>
+                <InputNumber
+                  min={1} max={90} value={trig.config?.days ?? 3} style={{ width: '100%' }}
+                  onChange={(days) => setTrig({ config: { ...trig.config, days } })}
+                />
+              </div>
+            )}
+            {trig.type === 'lead_created' && (
+              <div>
+                <label className="nx-label">Only from this source (optional)</label>
+                <Input
+                  value={trig.config?.source || ''} placeholder="e.g. book-consultation"
+                  onChange={(e) => setTrig({ config: { ...trig.config, source: e.target.value } })}
+                />
+              </div>
+            )}
+          </>
+        );
+      }
+
+      case 'email':
+        return (
+          <>
+            <div>
+              <label className="nx-label">Subject</label>
+              <Input value={cfg.subject || ''} onChange={(e) => setCfg({ subject: e.target.value })} placeholder="Your study abroad plan" />
+            </div>
+            <div>
+              <label className="nx-label">Message</label>
+              <TextArea rows={8} value={cfg.body || ''} onChange={(e) => setCfg({ body: e.target.value })} placeholder={'Hi {{name}},\n\n…'} />
+            </div>
+            <Alert type="info" showIcon message="Use {{name}}, {{dreamCountry}}, {{preferredIntake}} — they get filled in per lead." />
+          </>
+        );
+
+      case 'whatsapp':
+        return (
+          <>
+            <div>
+              <label className="nx-label">Approved WhatsApp template</label>
+              <Select
+                value={cfg.template} style={{ width: '100%' }} placeholder="Pick a template"
+                onChange={(template) => {
+                  const t = waTemplates.find((x) => x._id === template);
+                  setCfg({ template, label: t ? `WhatsApp: ${t.name}` : cfg.label });
+                }}
+              >
+                {waTemplates.map((t) => (
+                  <Option key={t._id} value={t._id} disabled={t.metaStatus !== 'APPROVED'}>
+                    {t.name} {t.metaStatus !== 'APPROVED' ? `(${t.metaStatus})` : ''}
+                  </Option>
+                ))}
+              </Select>
+            </div>
+            <div>
+              <label className="nx-label">Values for the template, separated by |</label>
+              <Input value={cfg.params || ''} placeholder="{{name}}|{{dreamCountry}}" onChange={(e) => setCfg({ params: e.target.value })} />
+            </div>
+            <Alert type="warning" showIcon message="Only Meta-approved templates can be sent to someone who has not written to us in the last 24 hours." />
+          </>
+        );
+
+      case 'ai_message':
+        return (
+          <>
+            <div>
+              <label className="nx-label">Send as</label>
+              <Select value={cfg.channel || 'whatsapp'} style={{ width: '100%' }} onChange={(channel) => setCfg({ channel })}>
+                <Option value="whatsapp">WhatsApp</Option>
+                <Option value="email">Email</Option>
+              </Select>
+            </div>
+            <div>
+              <label className="nx-label">What should the message do</label>
+              <Select value={cfg.goal || 'book_call'} style={{ width: '100%' }} onChange={(goal) => setCfg({ goal })}>
+                <Option value="book_call">Get them on a counselling call</Option>
+                <Option value="re_engage">Wake up a quiet lead</Option>
+                <Option value="answer_query">Answer their question</Option>
+                <Option value="share_documents">Ask for documents</Option>
+              </Select>
+            </div>
+            <div>
+              <label className="nx-label">Extra instruction for the AI (optional)</label>
+              <TextArea rows={4} value={cfg.customPrompt || ''} onChange={(e) => setCfg({ customPrompt: e.target.value })}
+                placeholder="Mention that the consultation is free. Keep it under 4 lines." />
+            </div>
+            <Alert
+              type="info" showIcon
+              message="On WhatsApp this only sends if the student wrote to us in the last 24 hours. Otherwise the AI's message is saved on the lead as a draft for the counsellor."
+            />
+          </>
+        );
+
+      case 'ai_classify':
+        return (
+          <>
+            <div>
+              <label className="nx-label">Branch YES when the intent is</label>
+              <Select value={cfg.expectIntent} style={{ width: '100%' }} placeholder="No branching — just read it"
+                allowClear onChange={(expectIntent) => setCfg({ expectIntent })}>
+                {INTENTS.map((i) => <Option key={i} value={i}>{i.replace(/_/g, ' ')}</Option>)}
+              </Select>
+            </div>
+            <Checkbox checked={cfg.apply !== false} onChange={(e) => setCfg({ apply: e.target.checked })}>
+              Also tag the lead and update its stage from what the AI read
+            </Checkbox>
+          </>
+        );
+
+      case 'ai_score':
+        return <Alert type="info" showIcon message="Scores the lead Hot / Warm / Cold and writes it on the lead. Use an If / Condition on 'score' right after to split hot leads from the rest." />;
+
+      case 'pipeline':
+        return (
+          <div>
+            <label className="nx-label">Move the lead to</label>
+            <Select value={cfg.stage} style={{ width: '100%' }} onChange={(stage) => setCfg({ stage, label: `Move to ${stage}` })}>
+              {STAGES.map((s) => <Option key={s} value={s}>{s}</Option>)}
+            </Select>
+          </div>
+        );
+
+      case 'counselor':
+        return (
+          <div>
+            <label className="nx-label">Assign to</label>
+            <Select value={cfg.counselor} style={{ width: '100%' }} showSearch optionFilterProp="children"
+              onChange={(counselor) => setCfg({ counselor, label: `Assign to ${counselor}` })}>
+              {staff.map((s) => <Option key={s._id} value={s.name}>{s.name}</Option>)}
+            </Select>
+          </div>
+        );
+
+      case 'tag':
+        return (
+          <div>
+            <label className="nx-label">Tag to add</label>
+            <Input value={cfg.tag || ''} onChange={(e) => setCfg({ tag: e.target.value })} placeholder="hot-lead" />
+          </div>
+        );
+
+      case 'note':
+      case 'calendar':
+        return (
+          <div>
+            <label className="nx-label">Note to write on the lead</label>
+            <TextArea rows={4} value={cfg.message || ''} onChange={(e) => setCfg({ message: e.target.value })} placeholder="Follow-up due — call {{name}}" />
+          </div>
+        );
+
+      case 'delay':
+        return (
+          <Space.Compact style={{ width: '100%' }}>
+            <InputNumber min={1} value={cfg.duration ?? 2} style={{ width: '50%' }} onChange={(duration) => setCfg({ duration, label: `Wait ${duration} ${cfg.unit || 'hours'}` })} />
+            <Select value={cfg.unit || 'hours'} style={{ width: '50%' }} onChange={(unit) => setCfg({ unit, label: `Wait ${cfg.duration ?? 2} ${unit}` })}>
+              <Option value="minutes">minutes</Option>
+              <Option value="hours">hours</Option>
+              <Option value="days">days</Option>
+            </Select>
+          </Space.Compact>
+        );
+
+      case 'condition':
+        return (
+          <>
+            <div>
+              <label className="nx-label">Check this</label>
+              <Select value={cfg.field || 'status'} style={{ width: '100%' }} onChange={(field) => setCfg({ field })}>
+                <Option value="status">Stage</Option>
+                <Option value="dreamCountry">Dream country</Option>
+                <Option value="preferredIntake">Intake</Option>
+                <Option value="tags">Tags</Option>
+                <Option value="score">AI score (needs an AI: Score step first)</Option>
+                <Option value="ai.intent">AI intent (needs an AI: Read Reply step first)</Option>
+              </Select>
+            </div>
+            <div>
+              <label className="nx-label">Is</label>
+              <Select value={cfg.op || 'eq'} style={{ width: '100%' }} onChange={(op) => setCfg({ op })}>
+                <Option value="eq">equal to</Option>
+                <Option value="ne">not equal to</Option>
+                <Option value="gt">greater than</Option>
+                <Option value="lt">less than</Option>
+                <Option value="contains">contains</Option>
+                <Option value="exists">filled in</Option>
+              </Select>
+            </div>
+            {cfg.op !== 'exists' && (
+              <div>
+                <label className="nx-label">This value</label>
+                <Input value={cfg.value || ''} onChange={(e) => setCfg({ value: e.target.value })} placeholder="e.g. Canada or 80" />
+              </div>
+            )}
+            <Alert type="info" showIcon message="Add the next two steps, then set one line to YES and the other to NO below." />
+            <div>
+              <label className="nx-label">Branches out of this step</label>
+              {selected.edges.filter((e) => e.from === activeNode.id).map((e, i) => (
+                <div key={i} style={{ display: 'flex', gap: 8, alignItems: 'center', marginTop: 8 }}>
+                  <span style={{ fontSize: 12.5, flex: 1 }}>
+                    → {selected.nodes.find((n) => n.id === e.to)?.config?.label || e.to}
+                  </span>
+                  <Select
+                    size="small" value={e.branch || ''} style={{ width: 110 }}
+                    onChange={(branch) => patchSelected({
+                      edges: selected.edges.map((x) => (x.from === e.from && x.to === e.to ? { ...x, branch } : x)),
+                    })}
+                  >
+                    <Option value="">always</Option>
+                    <Option value="yes">YES</Option>
+                    <Option value="no">NO</Option>
+                  </Select>
+                </div>
+              ))}
+            </div>
+          </>
+        );
+
+      case 'webhook':
+        return (
+          <div>
+            <label className="nx-label">POST the lead to this URL</label>
+            <Input value={cfg.url || ''} onChange={(e) => setCfg({ url: e.target.value })} placeholder="https://hooks.example.com/uc" />
+          </div>
+        );
+
+      default:
+        return null;
+    }
+  };
+
+  const groups = ['Messages', 'AI', 'CRM', 'Flow'];
 
   return (
     <div>
       <Header
         title="Automation Workflows"
-        subtitle="Build visual node-to-node automated outreach sequences — connect triggers, forms, pipelines, calendars, emails, WhatsApp"
-        extra={
-          <Button type="primary" icon={<PlusOutlined />} onClick={() => setCreateWfModal(true)}>
-            Create workflow
-          </Button>
-        }
+        subtitle="Draw an automation once — a trigger, then the steps. Live workflows run on their own, AI steps write and read the messages."
+        extra={<Button type="primary" icon={<PlusOutlined />} onClick={() => setCreateOpen(true)}>Create workflow</Button>}
       />
 
       <div className="dashboard-content">
         <Row gutter={[16, 16]}>
-
-          {/* ── Left Panel: Workflow List ── */}
+          {/* list */}
           <Col xs={24} lg={7}>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-              <div className="nx-label" style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '0 4px', marginBottom: 2 }}>
+              <div className="nx-label" style={{ padding: '0 4px' }}>
                 Workflows <span className="nx-tab-count">{workflows.length}</span>
               </div>
-              {workflows.map(wf => {
-                const isSelected = selectedWf?.id === wf.id;
+
+              {loading && <Spin />}
+              {!loading && !workflows.length && (
+                <div className="nx-card" style={{ padding: 24 }}>
+                  <Empty description="No workflows yet. Create one to automate follow-ups." />
+                </div>
+              )}
+
+              {workflows.map((wf) => {
+                const isSelected = selected?._id === wf._id;
                 return (
                   <div
-                    key={wf.id}
-                    onClick={() => handleSelectWorkflow(wf)}
+                    key={wf._id}
+                    onClick={() => openWorkflow(wf)}
                     style={{
-                      padding: '16px 18px', borderRadius: 20, cursor: 'pointer',
-                      background: '#ffffff',
+                      padding: '16px 18px', borderRadius: 20, cursor: 'pointer', background: '#fff',
                       border: isSelected ? '1px solid var(--ux-ink)' : '1px solid var(--ux-line-2)',
-                      boxShadow: isSelected ? '0 0 0 1px var(--ux-ink)' : '0 1px 2px rgba(17,17,17,0.03)',
-                      transition: 'border-color 0.2s ease, box-shadow 0.2s ease',
                     }}
                   >
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 10 }}>
@@ -403,19 +680,14 @@ const Workflows = () => {
                         <span style={{ width: 6, height: 6, borderRadius: '50%', background: 'currentColor' }} />
                         {wf.active ? 'Live' : 'Draft'}
                       </span>
-                      <Badge count={wf.nodes.length} style={{ backgroundColor: isSelected ? '#111111' : '#96958e', fontSize: 10, boxShadow: 'none' }} />
+                      <Badge count={wf.nodes?.length || 0} style={{ backgroundColor: isSelected ? '#111' : '#96958e', fontSize: 10, boxShadow: 'none' }} />
                     </div>
-
-                    <h4 style={{ fontSize: 14.5, fontWeight: 600, letterSpacing: '-0.01em', color: 'var(--ux-ink)', margin: '0 0 4px' }}>{wf.name}</h4>
-                    <p style={{ fontSize: 12.5, color: 'var(--ux-text-2)', margin: '0 0 10px', lineHeight: '1.45' }}>{wf.description}</p>
-
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                      <span style={{ fontSize: 11.5, color: 'var(--ux-text-3)', fontWeight: 500 }}>
-                        <ThunderboltOutlined style={{ marginRight: 4 }} />{wf.executedCount} runs
-                      </span>
-                      <span style={{ fontSize: 11.5, color: 'var(--ux-text-3)', fontWeight: 500 }}>
-                        {wf.lastRun}
-                      </span>
+                    <h4 style={{ fontSize: 14.5, fontWeight: 600, margin: '0 0 4px', color: 'var(--ux-ink)' }}>{wf.name}</h4>
+                    <p style={{ fontSize: 12.5, color: 'var(--ux-text-2)', margin: '0 0 8px' }}>{wf.description || triggerLabel(wf.trigger?.type)}</p>
+                    <Tag bordered={false} style={{ fontSize: 11, marginBottom: 8 }}>{triggerLabel(wf.trigger?.type)}</Tag>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 11.5, color: 'var(--ux-text-3)' }}>
+                      <span><ThunderboltOutlined /> {wf.stats?.runs || 0} runs</span>
+                      <span>{timeAgo(wf.stats?.lastRunAt)}</span>
                     </div>
                   </div>
                 );
@@ -423,445 +695,155 @@ const Workflows = () => {
             </div>
           </Col>
 
-          {/* ── Right Panel: Canvas ── */}
+          {/* canvas */}
           <Col xs={24} lg={17}>
-            {selectedWf ? (
+            {!selected ? (
+              <div className="nx-card" style={{ height: 500, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 12, borderStyle: 'dashed' }}>
+                <span className="nx-icon-circle" style={{ width: 56, height: 56, fontSize: 22 }}><ApartmentOutlined /></span>
+                <h3 style={{ margin: 0 }}>Select a workflow</h3>
+                <p style={{ fontSize: 13, color: 'var(--ux-text-3)', margin: 0 }}>Pick one on the left, or create a new one.</p>
+              </div>
+            ) : (
               <div>
-                {/* Canvas Toolbar */}
-                <div className="nx-card" style={{
-                  display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 12,
-                  padding: '14px 20px', marginBottom: 16,
-                }}>
+                <div className="nx-card" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 12, padding: '14px 20px', marginBottom: 16 }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 12, minWidth: 0 }}>
                     <span className="nx-icon-circle"><ApartmentOutlined /></span>
                     <div style={{ minWidth: 0 }}>
-                      <h3 style={{ fontSize: 16, fontWeight: 600, letterSpacing: '-0.02em', color: 'var(--ux-ink)', margin: 0, lineHeight: 1.25 }}>{selectedWf.name}</h3>
-                      <span style={{ fontSize: 12.5, color: 'var(--ux-text-3)' }}>{selectedWf.nodes.length} steps · click any node to configure</span>
+                      <h3 style={{ fontSize: 16, fontWeight: 600, margin: 0 }}>{selected.name}</h3>
+                      <span style={{ fontSize: 12.5, color: 'var(--ux-text-3)' }}>
+                        {triggerLabel(selected.trigger?.type)} · {selected.nodes.length} steps{dirty ? ' · unsaved changes' : ''}
+                      </span>
                     </div>
                   </div>
-                  <Space size="middle">
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                      <span className={`nx-status ${selectedWf.active ? 'nx-status--success' : 'nx-status--neutral'}`}>
-                        {selectedWf.active ? 'Live' : 'Off'}
-                      </span>
-                      <Switch
-                        checked={selectedWf.active}
-                        onChange={() => toggleWorkflowActive(selectedWf.id)}
-                        size="small"
-                      />
-                    </div>
-                    <Button icon={<SaveOutlined />}>Save</Button>
+                  <Space size="middle" wrap>
+                    <Space size={8}>
+                      <span className={`nx-status ${selected.active ? 'nx-status--success' : 'nx-status--neutral'}`}>{selected.active ? 'Live' : 'Off'}</span>
+                      <Switch size="small" checked={selected.active} onChange={() => toggleActive(selected)} />
+                    </Space>
+                    <Button icon={<HistoryOutlined />} onClick={openHistory}>History</Button>
+                    <Button icon={<PlayCircleOutlined />} onClick={() => setTestOpen(true)}>Test run</Button>
+                    <Popconfirm title="Delete this workflow?" onConfirm={() => removeWorkflow(selected)}>
+                      <Button danger icon={<DeleteOutlined />} />
+                    </Popconfirm>
+                    <Button type="primary" icon={<SaveOutlined />} loading={saving} onClick={save} disabled={!dirty}>Save</Button>
                   </Space>
                 </div>
 
-                {/* Node Palette */}
-                <div style={{ display: 'flex', gap: 8, marginBottom: 16, flexWrap: 'wrap' }} role="group" aria-label="Add a step">
-                  {Object.entries(NODE_TYPES).filter(([k]) => k !== 'trigger').map(([key, type]) => (
-                    <button
-                      key={key}
-                      onClick={() => {
-                        setNewNodeType(key);
-                        setNewNodeLabel('');
-                        setAddNodeModal(true);
-                      }}
-                      type="button"
-                      className="nx-btn nx-btn--light nx-btn--sm"
-                      style={{ fontWeight: 500 }}
-                    >
-                      {type.icon} {type.label}
-                    </button>
+                {selected.active && dirty && (
+                  <Alert style={{ marginBottom: 12 }} type="warning" showIcon
+                    message="This workflow is live. Your edits only start running once you press Save." />
+                )}
+
+                <div style={{ display: 'flex', gap: 14, marginBottom: 16, flexWrap: 'wrap' }}>
+                  {groups.map((g) => (
+                    <div key={g} style={{ display: 'flex', gap: 6, alignItems: 'center', flexWrap: 'wrap' }}>
+                      <span className="nx-label" style={{ marginRight: 2 }}>{g}</span>
+                      {Object.entries(NODE_TYPES).filter(([, t]) => t.group === g).map(([key, t]) => (
+                        <button key={key} type="button" className="nx-btn nx-btn--light nx-btn--sm" onClick={() => addNode(key)}>
+                          {t.icon} {t.label}
+                        </button>
+                      ))}
+                    </div>
                   ))}
                 </div>
 
-                {/* Canvas */}
                 <WorkflowCanvas
-                  workflow={selectedWf}
-                  onAddNode={handleAddNode}
-                  onDeleteNode={handleDeleteNode}
-                  onNodeClick={openNodeConfig}
+                  workflow={selected}
+                  onDeleteNode={deleteNode}
+                  onNodeClick={(node) => {
+                    setActiveNode(node.type === 'trigger'
+                      ? { ...node, config: { ...node.config }, trigger: selected.trigger || { type: 'lead_created', config: {} } }
+                      : { ...node, config: { ...node.config } });
+                    setDrawerOpen(true);
+                  }}
                 />
-              </div>
-            ) : (
-              <div className="nx-card" style={{
-                height: 500, padding: 24,
-                borderStyle: 'dashed', borderColor: 'var(--ux-line)',
-                display: 'flex', flexDirection: 'column',
-                alignItems: 'center', justifyContent: 'center', gap: 12,
-              }}>
-                <span className="nx-icon-circle" style={{ width: 56, height: 56, fontSize: 22 }}><ApartmentOutlined /></span>
-                <h3 style={{ fontSize: 18, fontWeight: 600, letterSpacing: '-0.02em', color: 'var(--ux-ink)', margin: 0 }}>Select a workflow</h3>
-                <p style={{ fontSize: 13, color: 'var(--ux-text-3)', margin: 0, textAlign: 'center', maxWidth: 320 }}>
-                  Choose a workflow from the left panel to view its automation steps, or create a new one
-                </p>
+
+                {lastRun && (
+                  <div className="nx-card" style={{ marginTop: 16, padding: 18 }}>
+                    <h4 style={{ margin: '0 0 12px' }}>Test run — {lastRun.status}</h4>
+                    <Timeline
+                      items={(lastRun.steps || []).map((s) => ({
+                        color: s.ok ? 'green' : 'red',
+                        children: <span><strong>{s.label || s.type}</strong>{s.info ? ` — ${s.info}` : ''}</span>,
+                      }))}
+                    />
+                    {lastRun.error && <Alert type="error" showIcon message={lastRun.error} />}
+                  </div>
+                )}
               </div>
             )}
           </Col>
-
         </Row>
       </div>
 
-      {/* ── Node Configuration Drawer ── */}
+      {/* node config */}
       <Drawer
-        title={activeNode ? `Configure node: ${NODE_TYPES[activeNode.type]?.label || 'Node'}` : 'Configure node'}
-        placement="right"
-        styles={{ wrapper: { width: 440 } }}
-        open={configDrawerOpen}
-        onClose={() => setConfigDrawerOpen(false)}
-        destroyOnClose
-        extra={
-          <Button type="primary" icon={<CheckCircleOutlined />} onClick={saveNodeConfig}>
-            Save node
-          </Button>
-        }
+        title={activeNode ? `Configure: ${NODE_TYPES[activeNode.type]?.label}` : ''}
+        placement="right" styles={{ wrapper: { width: 460 } }}
+        open={drawerOpen} onClose={() => setDrawerOpen(false)} destroyOnClose
+        extra={<Button type="primary" icon={<CheckCircleOutlined />} onClick={saveNode}>Done</Button>}
       >
         {activeNode && (
           <div style={{ display: 'flex', flexDirection: 'column', gap: 18 }}>
-            
-            {/* Display Node Label */}
             <div>
-              <label className="nx-label" style={{ display: 'block', marginBottom: 6 }}>Step Title / Name</label>
-              <Input
-                value={activeNode.config.label || ''}
-                onChange={e => setActiveNode({
-                  ...activeNode,
-                  config: { ...activeNode.config, label: e.target.value }
-                })}
-                placeholder="Enter title"
-              />
+              <label className="nx-label">Step name</label>
+              <Input value={activeNode.config?.label || ''} onChange={(e) => setCfg({ label: e.target.value })} />
             </div>
-
-            {/* ── 1. TRIGGER NODE CONFIG ── */}
-            {activeNode.type === 'trigger' && (
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
-                <div>
-                  <label className="nx-label" style={{ display: 'block', marginBottom: 6 }}>Trigger Source Event</label>
-                  <Select
-                    value={activeNode.config.triggerType || 'form'}
-                    onChange={val => setActiveNode({
-                      ...activeNode,
-                      config: { ...activeNode.config, triggerType: val, details: `Trigger: ${val}` }
-                    })}
-                    style={{ width: '100%' }}
-                  >
-                    <Option value="form">Custom form submission</Option>
-                    <Option value="pipeline">Pipeline stage move</Option>
-                    <Option value="calendar">Counseling / calendar booking</Option>
-                    <Option value="lead">New lead created</Option>
-                    <Option value="webhook">External webhook event</Option>
-                  </Select>
-                </div>
-
-                {activeNode.config.triggerType === 'form' && (
-                  <div>
-                    <label className="nx-label" style={{ display: 'block', marginBottom: 6 }}>Select Custom Form</label>
-                    <Select
-                      value={activeNode.config.formId || (formsList[0]?._id)}
-                      onChange={(fId) => {
-                        const selectedForm = formsList.find(f => f._id === fId);
-                        setActiveNode({
-                          ...activeNode,
-                          config: {
-                            ...activeNode.config,
-                            formId: fId,
-                            label: `Form: ${selectedForm?.name || 'Inquiry Form'}`,
-                            details: `Triggers on form submit`
-                          }
-                        });
-                      }}
-                      style={{ width: '100%' }}
-                      placeholder="Select Form"
-                    >
-                      {formsList.map(f => (
-                        <Option key={f._id} value={f._id}>{f.name} ({f.fields?.length} fields)</Option>
-                      ))}
-                    </Select>
-                  </div>
-                )}
-
-                {activeNode.config.triggerType === 'pipeline' && (
-                  <div>
-                    <label className="nx-label" style={{ display: 'block', marginBottom: 6 }}>Select Pipeline & Stage</label>
-                    <Select
-                      value={activeNode.config.pipelineId || (pipelinesList[0]?._id)}
-                      onChange={(pId) => {
-                        const selectedP = pipelinesList.find(p => p._id === pId);
-                        const firstStage = selectedP?.stages?.[0]?.name || 'Stage 1';
-                        setActiveNode({
-                          ...activeNode,
-                          config: {
-                            ...activeNode.config,
-                            pipelineId: pId,
-                            stageName: firstStage,
-                            label: `Pipeline: ${selectedP?.name}`,
-                            details: `Stage: ${firstStage}`
-                          }
-                        });
-                      }}
-                      style={{ width: '100%' }}
-                      placeholder="Select Pipeline"
-                    >
-                      {pipelinesList.map(p => (
-                        <Option key={p._id} value={p._id}>{p.name} ({p.stages?.length} stages)</Option>
-                      ))}
-                    </Select>
-                  </div>
-                )}
-              </div>
-            )}
-
-            {/* ── 2. EMAIL NODE CONFIG ── */}
-            {activeNode.type === 'email' && (
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
-                <div>
-                  <label className="nx-label" style={{ display: 'block', marginBottom: 6 }}>Email Template</label>
-                  <Select
-                    value={activeNode.config.template || 'welcome'}
-                    onChange={val => setActiveNode({
-                      ...activeNode,
-                      config: { ...activeNode.config, template: val, details: `Template: ${val}` }
-                    })}
-                    style={{ width: '100%' }}
-                  >
-                    <Option value="welcome">Welcome & eligibility greeting</Option>
-                    <Option value="consultation">Counseling session invitation</Option>
-                    <Option value="custom">Custom email message</Option>
-                  </Select>
-                </div>
-                <div>
-                  <label className="nx-label" style={{ display: 'block', marginBottom: 6 }}>Subject Line</label>
-                  <Input
-                    value={activeNode.config.subject || 'Welcome to UniCoach Study Abroad'}
-                    onChange={e => setActiveNode({
-                      ...activeNode,
-                      config: { ...activeNode.config, subject: e.target.value }
-                    })}
-                    placeholder="Enter email subject"
-                  />
-                </div>
-              </div>
-            )}
-
-            {/* ── 3. WHATSAPP NODE CONFIG ── */}
-            {activeNode.type === 'whatsapp' && (
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
-                <div>
-                  <label className="nx-label" style={{ display: 'block', marginBottom: 6 }}>WhatsApp Message Template</label>
-                  <Select
-                    value={activeNode.config.template || 'welcome_wa'}
-                    onChange={val => setActiveNode({
-                      ...activeNode,
-                      config: { ...activeNode.config, template: val, details: `WA: ${val}` }
-                    })}
-                    style={{ width: '100%' }}
-                  >
-                    <Option value="welcome_wa">Welcome message & document request</Option>
-                    <Option value="counselor_card">Counselor intro card</Option>
-                    <Option value="followup">24h follow-up nudge</Option>
-                    <Option value="custom_wa">Custom WhatsApp text</Option>
-                  </Select>
-                </div>
-                <div>
-                  <label className="nx-label" style={{ display: 'block', marginBottom: 6 }}>Message Content</label>
-                  <TextArea
-                    rows={4}
-                    value={activeNode.config.message || 'Hi {name}, thanks for reaching out to UniCoach!'}
-                    onChange={e => setActiveNode({
-                      ...activeNode,
-                      config: { ...activeNode.config, message: e.target.value }
-                    })}
-                    placeholder="WhatsApp message body"
-                  />
-                </div>
-              </div>
-            )}
-
-            {/* ── 4. PIPELINE MOVE NODE CONFIG ── */}
-            {activeNode.type === 'pipeline' && (
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
-                <div>
-                  <label className="nx-label" style={{ display: 'block', marginBottom: 6 }}>Target Pipeline</label>
-                  <Select
-                    value={activeNode.config.targetPipelineId || (pipelinesList[0]?._id)}
-                    onChange={(pId) => {
-                      const selectedP = pipelinesList.find(p => p._id === pId);
-                      const targetStage = selectedP?.stages?.[0]?.name || 'New Lead';
-                      setActiveNode({
-                        ...activeNode,
-                        config: {
-                          ...activeNode.config,
-                          targetPipelineId: pId,
-                          targetStage: targetStage,
-                          details: `Move to ${targetStage}`
-                        }
-                      });
-                    }}
-                    style={{ width: '100%' }}
-                  >
-                    {pipelinesList.map(p => (
-                      <Option key={p._id} value={p._id}>{p.name}</Option>
-                    ))}
-                  </Select>
-                </div>
-              </div>
-            )}
-
-            {/* ── 5. COUNSELOR ASSIGN NODE CONFIG ── */}
-            {activeNode.type === 'counselor' && (
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
-                <div>
-                  <label className="nx-label" style={{ display: 'block', marginBottom: 6 }}>Assign To Counselor</label>
-                  <Select
-                    value={activeNode.config.counselor || 'Pooja Sharma'}
-                    onChange={val => setActiveNode({
-                      ...activeNode,
-                      config: { ...activeNode.config, counselor: val, details: `Assign: ${val}` }
-                    })}
-                    style={{ width: '100%' }}
-                  >
-                    <Option value="Pooja Sharma">Pooja Sharma</Option>
-                    <Option value="Rohan Verma">Rohan Verma</Option>
-                    <Option value="Amit Patel">Amit Patel</Option>
-                    <Option value="Sara Khan">Sara Khan</Option>
-                    <Option value="round_robin">Auto round-robin assignment</Option>
-                  </Select>
-                </div>
-              </div>
-            )}
-
-            {/* ── 6. CALENDAR NODE CONFIG ── */}
-            {activeNode.type === 'calendar' && (
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
-                <div>
-                  <label className="nx-label" style={{ display: 'block', marginBottom: 6 }}>Event / Calendar Action</label>
-                  <Select
-                    value={activeNode.config.eventType || 'counseling_call'}
-                    onChange={val => setActiveNode({
-                      ...activeNode,
-                      config: { ...activeNode.config, eventType: val, details: `Event: ${val}` }
-                    })}
-                    style={{ width: '100%' }}
-                  >
-                    <Option value="counseling_call">Schedule 1-on-1 counseling call</Option>
-                    <Option value="webinar_invite">Send webinar calendar invite</Option>
-                    <Option value="followup_reminder">Set follow-up reminder</Option>
-                  </Select>
-                </div>
-              </div>
-            )}
-
-            {/* ── 7. DELAY NODE CONFIG ── */}
-            {activeNode.type === 'delay' && (
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
-                <Row gutter={12}>
-                  <Col span={12}>
-                    <label className="nx-label" style={{ display: 'block', marginBottom: 6 }}>Duration</label>
-                    <Input
-                      type="number"
-                      value={activeNode.config.duration || '2'}
-                      onChange={e => setActiveNode({
-                        ...activeNode,
-                        config: { ...activeNode.config, duration: e.target.value, details: `Wait ${e.target.value} ${activeNode.config.unit || 'hours'}` }
-                      })}
-                    />
-                  </Col>
-                  <Col span={12}>
-                    <label className="nx-label" style={{ display: 'block', marginBottom: 6 }}>Time Unit</label>
-                    <Select
-                      value={activeNode.config.unit || 'hours'}
-                      onChange={val => setActiveNode({
-                        ...activeNode,
-                        config: { ...activeNode.config, unit: val, details: `Wait ${activeNode.config.duration || 2} ${val}` }
-                      })}
-                      style={{ width: '100%' }}
-                    >
-                      <Option value="minutes">Minutes</Option>
-                      <Option value="hours">Hours</Option>
-                      <Option value="days">Days</Option>
-                    </Select>
-                  </Col>
-                </Row>
-              </div>
-            )}
-
+            {renderNodeConfig()}
           </div>
         )}
       </Drawer>
 
-      {/* ── Add Node Modal ── */}
-      <Modal
-        title="Add automation step"
-        open={addNodeModal}
-        onOk={confirmAddNode}
-        onCancel={() => setAddNodeModal(false)}
-        okText="Add step"
-        className="premium-modal"
-        destroyOnHidden
-        width={520}
-      >
-        <div style={{ marginTop: 16, display: 'flex', flexDirection: 'column', gap: 16 }}>
+      {/* create */}
+      <Modal title="New workflow" open={createOpen} onCancel={() => setCreateOpen(false)} onOk={createWorkflow} okText="Create">
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 12, marginTop: 12 }}>
+          <Input placeholder="Name, e.g. Follow-up chaser" value={newName} onChange={(e) => setNewName(e.target.value)} />
+          <TextArea rows={3} placeholder="What it does" value={newDesc} onChange={(e) => setNewDesc(e.target.value)} />
           <div>
-            <label className="nx-label" style={{ display: 'block', marginBottom: 8 }}>Choose action / step type</label>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10, maxHeight: 300, overflowY: 'auto', paddingRight: 4 }}>
-              {Object.entries(NODE_TYPES).filter(([k]) => k !== 'trigger').map(([key, type]) => (
-                <div
-                  key={key}
-                  onClick={() => setNewNodeType(key)}
-                  style={{
-                    padding: '12px 14px', borderRadius: 16, cursor: 'pointer',
-                    background: newNodeType === key ? 'var(--ux-surface-2)' : '#ffffff',
-                    border: newNodeType === key ? '1px solid var(--ux-ink)' : '1px solid var(--ux-line)',
-                    boxShadow: newNodeType === key ? '0 0 0 1px var(--ux-ink)' : 'none',
-                    display: 'flex', alignItems: 'center', gap: 10,
-                    transition: 'border-color 0.15s ease, background 0.15s ease',
-                  }}
-                >
-                  <span style={{ color: 'var(--ux-ink)', fontSize: 17 }}>{type.icon}</span>
-                  <span style={{ fontSize: 12.5, fontWeight: 600, color: 'var(--ux-ink)' }}>{type.label}</span>
-                </div>
-              ))}
-            </div>
+            <label className="nx-label">Start from</label>
+            <Select value={starter} style={{ width: '100%' }} onChange={setStarter}>
+              {Object.entries(STARTERS).map(([key, v]) => <Option key={key} value={key}>{v.label}</Option>)}
+            </Select>
           </div>
-          <div>
-            <label className="nx-label" style={{ display: 'block', marginBottom: 6 }}>Step title</label>
-            <Input
-              value={newNodeLabel}
-              onChange={e => setNewNodeLabel(e.target.value)}
-              placeholder={`e.g. ${NODE_TYPES[newNodeType]?.label}`}
-            />
-          </div>
+          <Alert type="info" showIcon message="A new workflow is always a draft. Nothing runs until you switch it to Live." />
         </div>
       </Modal>
 
-      {/* ── Create Workflow Modal ── */}
+      {/* test run */}
       <Modal
-        title="Create new workflow"
-        open={createWfModal}
-        onOk={handleCreateWorkflow}
-        onCancel={() => setCreateWfModal(false)}
-        okText="Create workflow"
-        className="premium-modal"
-        destroyOnHidden
-        width={480}
+        title="Test this workflow on one lead" open={testOpen} onCancel={() => setTestOpen(false)}
+        onOk={runTest} okText="Run it" confirmLoading={testing}
       >
-        <div style={{ marginTop: 16, display: 'flex', flexDirection: 'column', gap: 16 }}>
-          <div>
-            <label className="nx-label" style={{ display: 'block', marginBottom: 6 }}>Workflow name</label>
-            <Input
-              value={newWfName}
-              onChange={e => setNewWfName(e.target.value)}
-              placeholder="e.g. Welcome Sequence, Application Follow-up"
-            />
-          </div>
-          <div>
-            <label className="nx-label" style={{ display: 'block', marginBottom: 6 }}>Description (optional)</label>
-            <Input
-              value={newWfDesc}
-              onChange={e => setNewWfDesc(e.target.value)}
-              placeholder="Brief description of what this workflow does"
-            />
-          </div>
-        </div>
+        <Alert type="warning" showIcon style={{ margin: '12px 0' }}
+          message="This is a real run: messages in it really go out to that lead." />
+        <Select
+          showSearch optionFilterProp="children" style={{ width: '100%' }} placeholder="Pick a lead"
+          value={testLead} onChange={setTestLead}
+        >
+          {leads.map((l) => <Option key={l._id} value={l._id}>{l.name} — {l.phone}</Option>)}
+        </Select>
       </Modal>
+
+      {/* history */}
+      <Drawer title="Recent runs" placement="right" styles={{ wrapper: { width: 520 } }} open={historyOpen} onClose={() => setHistoryOpen(false)}>
+        {!runs.length && <Empty description="No runs yet" />}
+        {runs.map((r) => (
+          <div key={r._id} className="nx-card" style={{ padding: 14, marginBottom: 12 }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 6 }}>
+              <strong style={{ fontSize: 13.5 }}>{r.leadName || 'Lead'}</strong>
+              <Tag color={{ done: 'green', failed: 'red', waiting: 'gold', running: 'blue', stopped: 'default' }[r.status]}>{r.status}</Tag>
+            </div>
+            <div style={{ fontSize: 11.5, color: 'var(--ux-text-3)', marginBottom: 8 }}>{timeAgo(r.createdAt)}</div>
+            <Timeline
+              items={(r.steps || []).map((s) => ({
+                color: s.ok ? 'green' : 'red',
+                children: <span style={{ fontSize: 12.5 }}>{s.label || s.type}{s.info ? ` — ${s.info}` : ''}</span>,
+              }))}
+            />
+            {r.error && <div style={{ fontSize: 12, color: '#c0392b' }}>{r.error}</div>}
+          </div>
+        ))}
+      </Drawer>
     </div>
   );
 };

@@ -121,4 +121,27 @@ leadSchema.pre('save', function (next) {
   next();
 });
 
+// Automation workflows listen here: a new lead, or a lead that just moved to another stage.
+// The trigger is fired after the save and never awaited, so a slow or broken automation can never
+// hold up (or fail) the form submission that created the lead.
+leadSchema.pre('save', function captureChanges(next) {
+  this.$locals.wasNew = this.isNew;
+  this.$locals.stageChangedTo = !this.isNew && this.isModified('status') ? this.status : '';
+  next();
+});
+
+leadSchema.post('save', function fireWorkflowTriggers(doc) {
+  const { wasNew, stageChangedTo, skipWorkflowTriggers } = this.$locals || {};
+  if (skipWorkflowTriggers) return;
+  if (!wasNew && !stageChangedTo) return;
+  let engine;
+  try {
+    engine = require('../services/workflowEngine');
+  } catch {
+    return;
+  }
+  if (wasNew) engine.fireTrigger('lead_created', { lead: doc, source: doc.source });
+  else if (stageChangedTo) engine.fireTrigger('lead_stage_changed', { lead: doc, stage: stageChangedTo });
+});
+
 module.exports = mongoose.model('Lead', leadSchema);
