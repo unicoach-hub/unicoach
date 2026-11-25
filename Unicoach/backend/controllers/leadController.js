@@ -157,7 +157,7 @@ exports.bookConsultation = async (req, res) => {
 
     try {
       const { scoreLeadAI } = require('../utils/aiService');
-      const aiScore = await scoreLeadAI(lead);
+      const aiScore = await scoreLeadAI({ lead });
       if (aiScore && aiScore.score) {
         lead.aiScoring = aiScore;
       }
