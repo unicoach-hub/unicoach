@@ -238,11 +238,39 @@ function toResendAttachments(attachments) {
 
 const htmlToText = (html) => (html ? html.replace(/<[^>]*>/g, '') : '');
 
+// Every email we send is written to EmailLog, so there is still a record after Resend's own logs
+// age out at 30 days. Writing the row must never break (or slow down) the sending itself.
+function recordEmail(row) {
+  try {
+    const mongoose = require('mongoose');
+    if (mongoose.connection.readyState !== 1) return;
+    const EmailLog = require('../models/EmailLog');
+    const recipients = [].concat(row.to || []).map((t) => String(t || '').trim()).filter(Boolean);
+    EmailLog.create({
+      to: recipients[0] || '',
+      recipients,
+      subject: String(row.subject || '').slice(0, 300),
+      kind: row.kind || '',
+      from: row.from || '',
+      sentBy: row.sentBy || '',
+      provider: row.provider || 'resend',
+      providerMessageId: row.messageId || undefined,
+      status: row.status || 'sent',
+      error: String(row.error || '').slice(0, 300),
+      events: [{ type: row.status || 'sent', at: new Date(), info: String(row.error || '').slice(0, 200) }],
+    }).catch((err) => console.warn('[EmailLog] could not write:', err.message));
+  } catch (err) {
+    console.warn('[EmailLog] skipped:', err.message);
+  }
+}
+
+
+
 /**
  * Sends one email through Resend (see delivery policy above).
  * `smtpConfig` is only honoured when EMAIL_SMTP_FALLBACK=true; otherwise Resend sends it from the verified domain.
  */
-async function sendEmail({ to, cc, bcc, subject, html, text, from: customFrom, replyTo: customReplyTo, attachments = [], smtpConfig = null, kind }) {
+async function sendEmail({ to, cc, bcc, subject, html, text, from: customFrom, replyTo: customReplyTo, attachments = [], smtpConfig = null, kind, sentBy }) {
   const resendSetup = await getResendSetup();
 
   if (resendSetup) {
@@ -274,6 +302,7 @@ async function sendEmail({ to, cc, bcc, subject, html, text, from: customFrom, r
       }
       if (data && data.id) {
         console.log(`✅ [Resend] Email sent in ${Date.now() - t0}ms: <${data.id}> to ${to}`);
+        recordEmail({ to: payload.to, subject, kind, from: payload.from, sentBy, provider: 'resend', messageId: data.id, status: 'sent' });
         return { messageId: data.id, service: 'resend', accepted: payload.to };
       }
       failure = error?.message || 'Unknown Resend error';
@@ -282,6 +311,7 @@ async function sendEmail({ to, cc, bcc, subject, html, text, from: customFrom, r
     }
 
     console.error(`❌ [Resend] Could not send "${subject}" to ${to}: ${failure}`);
+    recordEmail({ to: payload.to, subject, kind, from: payload.from, sentBy, provider: 'resend', status: 'failed', error: failure });
     if (!smtpFallbackEnabled()) {
       throw new Error(`Resend: ${failure}`);
     }
@@ -369,9 +399,11 @@ async function sendEmail({ to, cc, bcc, subject, html, text, from: customFrom, r
     const t0 = Date.now();
     const info = await transporter.sendMail(mailOptions);
     console.log(`✅ [SMTP] Live email dispatched in ${Date.now() - t0}ms: ${info.messageId} to ${to}`);
+    recordEmail({ to, subject, kind, from: resolvedFrom, sentBy, provider: 'smtp', messageId: info.messageId, status: 'sent' });
     return info;
   } catch (error) {
     console.error('❌ [SMTP] Error sending live email:', error.message);
+    recordEmail({ to, subject, kind, from: resolvedFrom, sentBy, provider: 'smtp', status: 'failed', error: error.message });
     throw error;
   }
 }
@@ -408,11 +440,21 @@ async function sendEmailBatch(messages, { from: customFrom, replyTo: customReply
       const { data, error } = await resendSetup.client.batch.send(payload);
       if (error) throw new Error(error.message);
       const ids = (data && data.data) || [];
-      chunk.forEach((_, j) => results.push(ids[j] ? { ok: true, id: ids[j].id } : { ok: false, error: 'No id returned' }));
+      chunk.forEach((m, j) => {
+        results.push(ids[j] ? { ok: true, id: ids[j].id } : { ok: false, error: 'No id returned' });
+        recordEmail({
+          to: m.to, subject: m.subject, kind, from: identity.from, sentBy: 'Bulk send',
+          provider: 'resend', messageId: ids[j]?.id, status: ids[j] ? 'sent' : 'failed',
+          error: ids[j] ? '' : 'No id returned',
+        });
+      });
       console.log(`✅ [Resend] Batch of ${chunk.length} emails accepted`);
     } catch (err) {
       console.error(`❌ [Resend] Batch of ${chunk.length} emails failed: ${err.message}`);
-      chunk.forEach(() => results.push({ ok: false, error: `Resend: ${err.message}` }));
+      chunk.forEach((m) => {
+        results.push({ ok: false, error: `Resend: ${err.message}` });
+        recordEmail({ to: m.to, subject: m.subject, kind, from: identity.from, sentBy: 'Bulk send', provider: 'resend', status: 'failed', error: err.message });
+      });
     }
     // Stay well under Resend's default rate limit between batch calls
     if (i + 100 < messages.length) await new Promise((r) => setTimeout(r, 600));
@@ -425,4 +467,4 @@ async function isResendConfigured() {
   return Boolean(await getResendSetup());
 }
 
-module.exports = { sendEmail, sendEmailBatch, isResendConfigured, getTransporter, clearTransporterCache };
+module.exports = { sendEmail, sendEmailBatch, isResendConfigured, getTransporter, clearTransporterCache, recordEmail };

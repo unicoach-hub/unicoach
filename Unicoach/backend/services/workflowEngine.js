@@ -73,7 +73,7 @@ const RUNNERS = {
     return { wait: new Date(Date.now() + ms), info: `waiting ${node.config?.duration} ${node.config?.unit || 'hours'}` };
   },
 
-  async email({ node, lead }) {
+  async email({ node, lead, run }) {
     if (!lead.email) return { info: 'skipped: no email address' };
     if (lead.unsubscribed) return { info: 'skipped: unsubscribed' };
     const { sendEmail } = require('../utils/email');
@@ -86,6 +86,7 @@ const RUNNERS = {
       html: body.includes('<') ? body : `<p>${body.replace(/\n/g, '<br>')}</p>`,
       text: body.replace(/<[^>]+>/g, ''),
       kind: 'automation',
+      sentBy: `Automation: ${run.workflowName || 'workflow'}`,
     });
     lead.activities.push({ type: 'email', comment: clip(`Automation email: ${subject}`, 500), performedBy: 'Automation' });
     await lead.save();
@@ -157,6 +158,7 @@ const RUNNERS = {
         html: `<p>${text.replace(/\n/g, '<br>')}</p>`,
         text,
         kind: 'automation',
+        sentBy: `Automation (AI): ${run.workflowName || 'workflow'}`,
       });
       lead.activities.push({ type: 'email', comment: clip(`AI email: ${text}`, 800), performedBy: 'Automation (AI)' });
       await lead.save();

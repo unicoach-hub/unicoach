@@ -514,3 +514,43 @@ exports.replyWabaConversation = async (req, res) => {
 
 // Shared with WhatsApp campaigns (services/whatsappCampaigns.js)
 exports.helpers = { LEAD_FIELDS, eventVariables, readCampaignVariables, resolveTemplateKey, compileTemplate };
+
+/**
+ * GET /api/admin/messaging/email-log
+ * Every email we have sent, newest first, with what happened to it. Resend keeps its own logs for
+ * 30 days only; this list is ours and does not expire.
+ */
+exports.getEmailLog = async (req, res) => {
+  try {
+    const EmailLog = require('../models/EmailLog');
+    const { q, status, kind, days } = req.query;
+    const page = Math.max(1, Number(req.query.page) || 1);
+    const limit = Math.min(200, Math.max(1, Number(req.query.limit) || 50));
+
+    const filter = {};
+    if (status) filter.status = status;
+    if (kind) filter.kind = kind;
+    if (days) filter.at = { $gte: new Date(Date.now() - Number(days) * 86400000) };
+    if (q) {
+      const rx = new RegExp(String(q).replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'i');
+      filter.$or = [{ to: rx }, { subject: rx }, { sentBy: rx }];
+    }
+
+    const [rows, total, byStatus] = await Promise.all([
+      EmailLog.find(filter).sort({ at: -1 }).skip((page - 1) * limit).limit(limit).lean(),
+      EmailLog.countDocuments(filter),
+      EmailLog.aggregate([{ $match: filter }, { $group: { _id: '$status', n: { $sum: 1 } } }]),
+    ]);
+
+    res.json({
+      rows,
+      total,
+      page,
+      limit,
+      counts: Object.fromEntries(byStatus.map((r) => [r._id, r.n])),
+    });
+  } catch (err) {
+    console.error('Email log failed:', err.message);
+    res.status(500).json({ error: 'Could not load the email log' });
+  }
+};

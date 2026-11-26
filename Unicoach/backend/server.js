@@ -367,6 +367,9 @@ app.use('/api/admin/dev', require('./routes/adminDeveloper'));
 app.use('/api/admin/ai-calls', require('./routes/adminAiCalls'));
 // Bolna AI call results (public, checked with BOLNA_WEBHOOK_SECRET)
 app.post('/api/webhooks/bolna', require('./controllers/bolnaController').receiveWebhook);
+
+// Resend: what happened to the emails we sent (delivered, opened, bounced, spam)
+app.post('/api/webhooks/resend', require('./controllers/emailWebhookController').receiveWebhook);
 // Riya on ElevenLabs over Vobiz (public, checked with VOBIZ_WEBHOOK_SECRET in ?key=); audio bridge in server.listen below
 {
   const riya = require('./controllers/riyaController');

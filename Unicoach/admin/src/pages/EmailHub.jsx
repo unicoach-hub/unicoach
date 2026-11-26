@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { Table, Button, Modal, Form, Input, Select, Space, Popconfirm, message, Row, Col, Statistic, Progress, Alert, Tabs } from 'antd';
+import { Table, Button, Modal, Form, Input, Select, Space, Popconfirm, message, Row, Col, Statistic, Progress, Alert, Tabs, Tag, Tooltip, Empty } from 'antd';
 import { 
   PlusOutlined, EditOutlined, DeleteOutlined, InfoCircleOutlined, 
   MailOutlined, SendOutlined, CheckCircleOutlined, SyncOutlined,
-  SafetyCertificateOutlined, ExclamationCircleOutlined
+  SafetyCertificateOutlined, ExclamationCircleOutlined, HistoryOutlined, ReloadOutlined
 } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
@@ -18,6 +18,13 @@ const EmailHub = () => {
   // Templates state
   const cachedData = getCachedData('/admin/email-hub:bundle');
   const [templates, setTemplates] = useState(cachedData?.templates || []);
+
+  // Sent emails: our own log, so it survives Resend's 30-day window
+  const [log, setLog] = useState({ rows: [], total: 0, counts: {} });
+  const [logLoading, setLogLoading] = useState(false);
+  const [logQuery, setLogQuery] = useState('');
+  const [logStatus, setLogStatus] = useState();
+  const [logPage, setLogPage] = useState(1);
   const [loading, setLoading] = useState(!cachedData);
   const [modalOpen, setModalOpen] = useState(false);
   const [form] = Form.useForm();
@@ -252,6 +259,59 @@ const EmailHub = () => {
 
   const smtpStatusClass = smtpStatus === 'active' ? 'nx-status--success' : smtpStatus === 'error' ? 'nx-status--danger' : 'nx-status--warning';
 
+
+  const loadEmailLog = React.useCallback(async () => {
+    setLogLoading(true);
+    try {
+      const { data } = await API.get('/admin/messaging/email-log', {
+        params: { q: logQuery || undefined, status: logStatus || undefined, page: logPage, limit: 20 },
+      });
+      setLog(data || { rows: [], total: 0, counts: {} });
+    } catch {
+      setLog({ rows: [], total: 0, counts: {} });
+    } finally {
+      setLogLoading(false);
+    }
+  }, [logQuery, logStatus, logPage]);
+
+  useEffect(() => { loadEmailLog(); }, [loadEmailLog]);
+
+  const STATUS_COLOUR = {
+    sent: 'default', delivered: 'green', opened: 'blue', clicked: 'geekblue',
+    delayed: 'gold', bounced: 'red', complained: 'volcano', failed: 'red',
+  };
+  const WHAT_IT_MEANS = {
+    sent: 'Handed to Resend. No word back yet.',
+    delivered: 'The mailbox accepted it.',
+    opened: 'They opened it.',
+    clicked: 'They clicked a link in it.',
+    delayed: 'Being retried — the mailbox is busy or greylisting us.',
+    bounced: 'It could not be delivered. The address is wrong or blocking us.',
+    complained: 'They pressed "spam". The lead is now unsubscribed.',
+    failed: 'It never left — see the reason.',
+  };
+
+  const logColumns = [
+    {
+      title: 'Sent',
+      dataIndex: 'at',
+      width: 150,
+      render: (v) => (v ? new Date(v).toLocaleString('en-IN', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' }) : '—'),
+    },
+    { title: 'To', dataIndex: 'to', render: (v) => <span style={{ fontSize: 13 }}>{v || '—'}</span> },
+    { title: 'Subject', dataIndex: 'subject', render: (v) => <span style={{ fontSize: 13 }}>{v || '—'}</span> },
+    {
+      title: 'What happened',
+      dataIndex: 'status',
+      width: 150,
+      render: (v, row) => (
+        <Tooltip title={row.error || WHAT_IT_MEANS[v]}>
+          <Tag color={STATUS_COLOUR[v] || 'default'}>{v}</Tag>
+        </Tooltip>
+      ),
+    },
+    { title: 'Sent by', dataIndex: 'sentBy', width: 140, render: (v, row) => <span style={{ fontSize: 12.5, color: 'var(--ux-text-3)' }}>{v || row.kind || '—'}</span> },
+  ];
   return (
     <div>
       <Header
@@ -360,6 +420,50 @@ const EmailHub = () => {
         {/* Email Templates Table */}
         <div className="page-table-card">
           <Table dataSource={templates} columns={columns} rowKey="_id" loading={loading} pagination={{ pageSize: 8 }} />
+        </div>
+
+        {/* Sent emails — our own record, Resend only keeps 30 days */}
+        <div className="nx-card p-5" style={{ marginBottom: 16 }}>
+          <div className="flex items-center justify-between gap-3 mb-4" style={{ flexWrap: 'wrap' }}>
+            <div className="flex items-center gap-3">
+              <span className="nx-icon-circle"><HistoryOutlined /></span>
+              <div>
+                <h4 className="nx-section-title" style={{ margin: 0, fontSize: 15 }}>Sent emails</h4>
+                <span style={{ fontSize: 12.5, color: 'var(--ux-text-3)' }}>
+                  Every email we send, and what happened to it. Kept here for good — Resend's own logs stop at 30 days.
+                </span>
+              </div>
+            </div>
+            <Space wrap>
+              <Input.Search
+                allowClear placeholder="Search address or subject" style={{ width: 240 }}
+                onSearch={(v) => { setLogQuery(v); setLogPage(1); }}
+              />
+              <Select
+                allowClear placeholder="Any outcome" style={{ width: 160 }} value={logStatus}
+                onChange={(v) => { setLogStatus(v); setLogPage(1); }}
+                options={['sent', 'delivered', 'opened', 'clicked', 'delayed', 'bounced', 'complained', 'failed']
+                  .map((v) => ({ value: v, label: `${v}${log.counts?.[v] ? ` (${log.counts[v]})` : ''}` }))}
+              />
+              <Button icon={<ReloadOutlined />} onClick={loadEmailLog} loading={logLoading}>Refresh</Button>
+            </Space>
+          </div>
+
+          {!logLoading && !log.rows.length ? (
+            <Empty
+              image={Empty.PRESENTED_IMAGE_SIMPLE}
+              description="Nothing logged yet. Emails sent from now on will appear here."
+            />
+          ) : (
+            <Table
+              size="small"
+              dataSource={log.rows}
+              columns={logColumns}
+              rowKey="_id"
+              loading={logLoading}
+              pagination={{ current: logPage, pageSize: 20, total: log.total, showSizeChanger: false, onChange: setLogPage }}
+            />
+          )}
         </div>
 
         {/* Create/Edit Modal */}
