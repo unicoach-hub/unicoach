@@ -47,6 +47,9 @@ function loadConfig() {
     retriesPerPage: Number(cfg.retriesPerPage) || 3,
     failAlertAfterHours: Number(cfg.failAlertAfterHours) || 4,
     failAlertRepeatHours: Number(cfg.failAlertRepeatHours) || 24,
+    alertCooldownMinutes: Number(process.env.PERMIT_WATCH_COOLDOWN_MINUTES ?? cfg.alertCooldownMinutes ?? 120),
+    confirmChecks: Number(cfg.confirmChecks) || 1,
+    whatsappQuietHours: cfg.whatsappQuietHours || null,
     userAgent: cfg.userAgent || 'UniCoach-PermitWatch/1.0 (+https://www.unicoach.com)',
     stripSelectors: cfg.stripSelectors || [],
     contentSelectors: cfg.contentSelectors || ['main', 'body'],
@@ -524,6 +527,33 @@ async function wabaSettings() {
 }
 
 /**
+ * Night silence for WhatsApp only.
+ *
+ * A page can change at 3am, and a phone buzzing then helps nobody. Between `from` and `to`
+ * (hours, in the configured time zone) the WhatsApp is skipped and the email still goes out, so
+ * nothing is missed — it is simply read in the morning. `from` greater than `to` means the window
+ * crosses midnight, which is the normal case. Returns the window when it is quiet now, else null.
+ */
+function quietNow(cfg = null) {
+  let q;
+  try {
+    q = (cfg || loadConfig()).whatsappQuietHours;
+  } catch {
+    return null;
+  }
+  if (!q || q.enabled === false) return null;
+
+  const from = Number(q.from);
+  const to = Number(q.to);
+  if (!Number.isFinite(from) || !Number.isFinite(to) || from === to) return null;
+
+  const zone = q.timeZone || 'Asia/Kolkata';
+  const hour = Number(new Intl.DateTimeFormat('en-GB', { timeZone: zone, hour: 'numeric', hour12: false }).format(new Date()));
+  const quiet = from > to ? (hour >= from || hour < to) : (hour >= from && hour < to);
+  return quiet ? { from, to, timeZone: zone } : null;
+}
+
+/**
  * One WhatsApp alert through the Meta Cloud API, the same way the admin bulk sender does it.
  *
  * Meta only allows free-form text within 24 hours of the person's last message to the business
@@ -541,6 +571,12 @@ async function sendWhatsApp(text, { dryRun = false, phones = null } = {}) {
 
   if (dryRun) {
     console.log(`[PermitWatch] (dry run) would WhatsApp ${numbers.join(', ')}: ${oneLine.slice(0, 160)}`);
+    return false;
+  }
+
+  const quiet = quietNow();
+  if (quiet) {
+    console.log(`[PermitWatch] WhatsApp held: quiet hours ${quiet.from}:00-${quiet.to}:00 ${quiet.timeZone}. The email went out as usual.`);
     return false;
   }
 
@@ -729,8 +765,50 @@ async function checkPage(page, cfg, { dryRun = false } = {}) {
   }
 
   if (prev.hash === snap.hash) {
-    await writeState(page.url, { ...prev, ...base, baselineAt: prev.baselineAt, lastChangedAt: prev.lastChangedAt });
+    // Back to what we last alerted about: a flap that undid itself, so forget the candidate.
+    await writeState(page.url, { ...prev, ...base, baselineAt: prev.baselineAt, lastChangedAt: prev.lastChangedAt, pending: null });
     return { url: page.url, label: page.label, status: 'unchanged' };
+  }
+
+  // The page is different from the last one we alerted about. Two guards stand between that and
+  // a message, because a page that flaps — the permits portal dropping offline and coming back —
+  // would otherwise alert every few minutes, all night, and Meta starts blocking the numbers.
+  //
+  // Both guards deliberately leave the stored snapshot alone. The baseline only moves when an
+  // alert actually goes out, so whatever changed in the meantime is still in the next alert's
+  // diff. Holding a message never loses one.
+  const keepBaseline = (pending) => writeState(page.url, {
+    ...prev,
+    lastCheckedAt: nowIso(),
+    lastOkAt: nowIso(),
+    consecutiveFailures: 0,
+    failingSince: null,
+    failAlertSentAt: null,
+    lastError: null,
+    pending,
+  });
+
+  // 1. It has to still be there next time. A blip that undoes itself never reaches anybody.
+  const needed = Number(page.confirmChecks ?? cfg.confirmChecks ?? 1);
+  const pending = prev.pending && prev.pending.hash === snap.hash
+    ? { ...prev.pending, seen: (prev.pending.seen || 0) + 1 }
+    : { hash: snap.hash, seen: 1, firstSeenAt: nowIso() };
+
+  if (pending.seen < needed) {
+    await keepBaseline(pending);
+    console.log(`[PermitWatch] ${page.label}: changed, waiting for it to hold (seen ${pending.seen} of ${needed})`);
+    return { url: page.url, label: page.label, status: 'pending' };
+  }
+
+  // 2. One page alerts at most once every cooldown, however often it changes inside it.
+  const cooldown = Number(page.alertCooldownMinutes ?? cfg.alertCooldownMinutes ?? 0);
+  const lastAlertAt = prev.lastAlertAt ? new Date(prev.lastAlertAt).getTime() : 0;
+  const sinceAlert = lastAlertAt ? Date.now() - lastAlertAt : Infinity;
+  if (cooldown > 0 && sinceAlert < cooldown * 60000) {
+    await keepBaseline(pending);
+    const waitMin = Math.ceil((cooldown * 60000 - sinceAlert) / 60000);
+    console.log(`[PermitWatch] ${page.label}: changed, holding the alert ${waitMin} more min (one per ${cooldown} min)`);
+    return { url: page.url, label: page.label, status: 'held' };
   }
 
   const diff = diffLines(prev.lines || [], snap.lines);
@@ -750,7 +828,14 @@ async function checkPage(page, cfg, { dryRun = false } = {}) {
   await sendWhatsApp(whatsappChangeText({ page, diff, linkDiff }), { dryRun });
 
   // The new snapshot is stored either way, so the next tick diffs against what is live now.
-  await writeState(page.url, { ...base, baselineAt: prev.baselineAt, lastChangedAt: nowIso(), lastEmailedAt: emailed ? nowIso() : prev.lastEmailedAt || null });
+  await writeState(page.url, {
+    ...base,
+    baselineAt: prev.baselineAt,
+    lastChangedAt: nowIso(),
+    lastAlertAt: nowIso(),
+    pending: null,
+    lastEmailedAt: emailed ? nowIso() : prev.lastEmailedAt || null,
+  });
 
   console.log(`[PermitWatch] ${page.label}: CHANGED (+${diff.added.length}/-${diff.removed.length} lines, +${linkDiff.added.length}/-${linkDiff.removed.length} docs)${emailed ? ', emailed' : ''}`);
   return { url: page.url, label: page.label, status: 'changed', added: diff.added.length, removed: diff.removed.length, docsAdded: linkDiff.added.length, docsRemoved: linkDiff.removed.length };
@@ -878,4 +963,4 @@ function startWorker() {
   console.log(`[PermitWatch] ticking every ${cfg.tickMinutes} min (news pages ${cfg.newsIntervalMinutes} min, rest ${cfg.intervalMinutes} min)`);
 }
 
-module.exports = { runOnce, checkPage, startWorker, loadConfig, extract, diffLines, sendWhatsApp, discoverPages, recipients, deliver, storage, openButton, watchedPages, savedConfig };
+module.exports = { runOnce, checkPage, startWorker, loadConfig, extract, diffLines, sendWhatsApp, discoverPages, recipients, deliver, storage, openButton, watchedPages, savedConfig, quietNow };

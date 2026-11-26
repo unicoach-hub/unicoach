@@ -59,6 +59,7 @@ with no database.
 | `PERMIT_WATCH_INTERVAL_MINUTES` | Overrides `intervalMinutes` (the slow gap). |
 | `PERMIT_WATCH_NEWS_MINUTES` | Overrides `newsIntervalMinutes` (the fast gap). |
 | `PERMIT_WATCH_TICK_MINUTES` | Overrides `tickMinutes` (how often the worker wakes up). |
+| `PERMIT_WATCH_COOLDOWN_MINUTES` | Overrides `alertCooldownMinutes` (one alert per page per this many minutes). |
 
 Email goes out through the existing sender in `utils/email.js` (Resend, verified domain), so no new
 mail setup is needed. Without `RESEND_API_KEY` outside production it prints to the console instead.
@@ -82,6 +83,38 @@ While a template is still under review the send falls back to plain text, so not
 
 Template parameters may not contain newlines, so the WhatsApp text is flattened to one line with
 ` · ` separators and cut to 900 characters. Email always carries the full diff.
+
+## Not alerting twice for the same thing
+
+On the night of 25 November the permits portal dropped offline and came back over and over. Every
+flip was a real change to the page, so eight alerts went out in an hour, and Meta then blocked
+three of the four numbers with *"not delivered to maintain healthy ecosystem engagement"*. Three
+guards now stand between a change and a message.
+
+**It has to hold.** `confirmChecks` on a page (2 on the portal) means a change must still be there
+on the next check before anybody hears about it. A blip that undoes itself reaches nobody.
+
+**One page, one alert per `alertCooldownMinutes`** (120 by default, 180 on the portal). Inside that
+window the page can change ten times and it stays quiet.
+
+Both guards leave the stored snapshot **alone**. The baseline only moves when an alert actually
+goes out, so the next alert's diff still carries everything that changed while it was held.
+Holding a message never loses one. If the page goes back to what it looked like at the last alert
+— the portal coming back up — there is nothing left to say, and nothing is sent.
+
+**No WhatsApp at night.** `whatsappQuietHours` (22:00–08:00 IST) skips the WhatsApp and still
+sends the email, so a 3am change is read over breakfast instead of waking four people. Set
+`enabled: false` there to turn the silence off.
+
+Replaying that night against the new code gives **one** alert instead of eight:
+
+```
+portal comes UP          -> pending      (waiting for it to hold)
+UP again, confirmed      -> changed      <- the one alert
+drops back DOWN          -> pending
+DOWN again, confirmed    -> held         (inside the cooldown)
+UP once more             -> unchanged    (same as the last alert, nothing to say)
+```
 
 ## Two speeds, and why
 

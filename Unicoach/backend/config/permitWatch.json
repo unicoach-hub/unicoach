@@ -19,6 +19,17 @@
   "retriesPerPage": 3,
   "failAlertAfterHours": 4,
   "failAlertRepeatHours": 24,
+
+  "_quiet": [
+    "Guards against alert storms. On 25 Nov the portal flapped on and off and sent eight",
+    "alerts in an hour, after which Meta blocked three of the four numbers. A change must",
+    "survive confirmChecks checks, and a page alerts at most once per alertCooldownMinutes.",
+    "The stored snapshot only moves when an alert goes out, so a held change is still in the",
+    "next alert's diff. whatsappQuietHours silences WhatsApp overnight; email still goes."
+  ],
+  "alertCooldownMinutes": 120,
+  "confirmChecks": 1,
+  "whatsappQuietHours": { "enabled": true, "from": 22, "to": 8, "timeZone": "Asia/Kolkata" },
   "userAgent": "Mozilla/5.0 (compatible; UniCoach-PermitWatch/1.0; +https://www.unicoach.com) change-monitor, contact via website",
 
   "stripSelectors": [
@@ -69,7 +80,9 @@
       "url": "https://employmentpermits.enterprise.gov.ie/",
       "enabled": true,
       "everyMinutes": 5,
-      "acceptStatus": [403, 503, 404]
+      "acceptStatus": [403, 503, 404],
+      "confirmChecks": 2,
+      "alertCooldownMinutes": 180
     },
     {
       "label": "Employment Permits - home",
