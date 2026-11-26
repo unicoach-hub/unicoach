@@ -554,3 +554,111 @@ exports.getEmailLog = async (req, res) => {
     res.status(500).json({ error: 'Could not load the email log' });
   }
 };
+
+/**
+ * GET /api/admin/messaging/email-stats
+ * One view of the email we send: how much of today's and this month's allowance is used, how much
+ * actually reached people, and what went wrong. Counted from our own EmailLog, in IST days.
+ *
+ * The allowances are Resend's plan limits (free: 100 a day, 3,000 a month); override them with
+ * EMAIL_DAILY_LIMIT / EMAIL_MONTHLY_LIMIT after an upgrade.
+ */
+exports.getEmailStats = async (req, res) => {
+  try {
+    const EmailLog = require('../models/EmailLog');
+    const IST = 'Asia/Kolkata';
+    const days = Math.min(60, Math.max(7, Number(req.query.days) || 14));
+
+    // 0 means "no limit" (Resend's Pro plan has no daily cap)
+    const limitFrom = (name, fallback) => {
+      const raw = process.env[name];
+      if (raw === undefined || raw === '') return fallback;
+      const n = Number(raw);
+      return Number.isFinite(n) && n >= 0 ? n : fallback;
+    };
+    const limits = { daily: limitFrom('EMAIL_DAILY_LIMIT', 100), monthly: limitFrom('EMAIL_MONTHLY_LIMIT', 3000) };
+
+    // IST day and month starts, expressed in UTC
+    const nowIst = new Date(new Date().toLocaleString('en-US', { timeZone: IST }));
+    const offsetMs = Date.now() - nowIst.getTime();
+    const dayStart = new Date(new Date(nowIst.getFullYear(), nowIst.getMonth(), nowIst.getDate()).getTime() + offsetMs);
+    const monthStart = new Date(new Date(nowIst.getFullYear(), nowIst.getMonth(), 1).getTime() + offsetMs);
+    const windowStart = new Date(dayStart.getTime() - (days - 1) * 86400000);
+
+    // "left our hands" — what Resend counts against the plan. A failed send never reached Resend.
+    const accepted = { status: { $ne: 'failed' } };
+
+    const tally = async (since) => {
+      const rows = await EmailLog.aggregate([
+        { $match: { at: { $gte: since } } },
+        { $group: { _id: '$status', n: { $sum: 1 } } },
+      ]);
+      const by = Object.fromEntries(rows.map((r) => [r._id, r.n]));
+      const total = Object.values(by).reduce((a, b) => a + b, 0);
+      const failed = by.failed || 0;
+      const reached = (by.delivered || 0) + (by.opened || 0) + (by.clicked || 0);
+      return {
+        total,
+        accepted: total - failed,
+        reached,
+        opened: (by.opened || 0) + (by.clicked || 0),
+        clicked: by.clicked || 0,
+        bounced: by.bounced || 0,
+        complained: by.complained || 0,
+        failed,
+        waiting: by.sent || 0,
+        delayed: by.delayed || 0,
+      };
+    };
+
+    const [today, month, window] = await Promise.all([tally(dayStart), tally(monthStart), tally(windowStart)]);
+
+    const [daily, problems, byKind] = await Promise.all([
+      EmailLog.aggregate([
+        { $match: { at: { $gte: windowStart } } },
+        {
+          $group: {
+            _id: { $dateToString: { format: '%Y-%m-%d', date: '$at', timezone: IST } },
+            sent: { $sum: 1 },
+            reached: { $sum: { $cond: [{ $in: ['$status', ['delivered', 'opened', 'clicked']] }, 1, 0] } },
+            bounced: { $sum: { $cond: [{ $eq: ['$status', 'bounced'] }, 1, 0] } },
+            failed: { $sum: { $cond: [{ $eq: ['$status', 'failed'] }, 1, 0] } },
+          },
+        },
+        { $sort: { _id: 1 } },
+      ]),
+      EmailLog.aggregate([
+        { $match: { at: { $gte: windowStart }, status: { $in: ['bounced', 'failed'] }, error: { $gt: '' } } },
+        { $group: { _id: '$error', n: { $sum: 1 } } },
+        { $sort: { n: -1 } },
+        { $limit: 5 },
+      ]),
+      EmailLog.aggregate([
+        { $match: { at: { $gte: windowStart } } },
+        {
+          $group: {
+            _id: { $ifNull: ['$kind', ''] },
+            sent: { $sum: 1 },
+            bounced: { $sum: { $cond: [{ $in: ['$status', ['bounced', 'failed', 'complained']] }, 1, 0] } },
+          },
+        },
+        { $sort: { sent: -1 } },
+        { $limit: 8 },
+      ]),
+    ]);
+
+    res.json({
+      limits,
+      today: { ...today, limit: limits.daily, left: limits.daily ? Math.max(0, limits.daily - today.accepted) : null },
+      month: { ...month, limit: limits.monthly, left: limits.monthly ? Math.max(0, limits.monthly - month.accepted) : null },
+      window: { days, ...window },
+      daily: daily.map((d) => ({ date: d._id, sent: d.sent, reached: d.reached, bounced: d.bounced, failed: d.failed })),
+      problems: problems.map((p) => ({ error: p._id, n: p.n })),
+      byKind: byKind.map((k) => ({ kind: k._id || 'other', sent: k.sent, bounced: k.bounced })),
+      note: 'Counted from UniCoach\'s own log, in IST days. Anything sent from the Resend dashboard itself is not included.',
+    });
+  } catch (err) {
+    console.error('Email stats failed:', err.message);
+    res.status(500).json({ error: 'Could not load the email numbers' });
+  }
+};

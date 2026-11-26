@@ -11,6 +11,7 @@ router.post('/send-bulk', adminMessagingController.sendBulk);
 router.post('/audience-preview', adminMessagingController.previewAudience);
 router.get('/email-status', adminMessagingController.getEmailStatus);
 router.get('/email-log', adminMessagingController.getEmailLog);
+router.get('/email-stats', adminMessagingController.getEmailStats);
 router.get('/waba-conversations', adminMessagingController.getWabaConversations);
 router.post('/waba-conversations/:id/reply', adminMessagingController.replyWabaConversation);
 

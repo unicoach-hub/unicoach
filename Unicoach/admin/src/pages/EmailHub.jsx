@@ -5,6 +5,7 @@ import {
   MailOutlined, SendOutlined, CheckCircleOutlined, SyncOutlined,
   SafetyCertificateOutlined, ExclamationCircleOutlined, HistoryOutlined, ReloadOutlined
 } from '@ant-design/icons';
+import { ResponsiveContainer, AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip as ChartTip, Legend } from 'recharts';
 import { useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
 import API from '../api/axios';
@@ -25,6 +26,7 @@ const EmailHub = () => {
   const [logQuery, setLogQuery] = useState('');
   const [logStatus, setLogStatus] = useState();
   const [logPage, setLogPage] = useState(1);
+  const [stats, setStats] = useState(null);
   const [loading, setLoading] = useState(!cachedData);
   const [modalOpen, setModalOpen] = useState(false);
   const [form] = Form.useForm();
@@ -260,6 +262,41 @@ const EmailHub = () => {
   const smtpStatusClass = smtpStatus === 'active' ? 'nx-status--success' : smtpStatus === 'error' ? 'nx-status--danger' : 'nx-status--warning';
 
 
+  const loadEmailStats = React.useCallback(async () => {
+    try {
+      const { data } = await API.get('/admin/messaging/email-stats');
+      setStats(data);
+    } catch {
+      setStats(null);
+    }
+  }, []);
+
+  useEffect(() => { loadEmailStats(); }, [loadEmailStats]);
+
+  // one allowance card: used, left, and how close to the limit
+  const Allowance = ({ title, used, limit, left, hint }) => {
+    const pct = limit ? Math.min(100, Math.round((used / limit) * 100)) : 0;
+    const tone = !limit ? 'var(--ux-text-3)' : pct >= 90 ? '#B91C1C' : pct >= 70 ? '#B45309' : '#047857';
+    return (
+      <div className="nx-card p-5 h-full">
+        <div className="flex items-center justify-between mb-2">
+          <span className="nx-section-title" style={{ fontSize: 14 }}>{title}</span>
+          <span style={{ fontSize: 12.5, fontWeight: 600, color: tone }}>
+            {limit ? `${pct}% used` : 'No limit'}
+          </span>
+        </div>
+        <div style={{ fontSize: 30, fontWeight: 700, letterSpacing: '-0.02em', color: 'var(--ux-ink)', lineHeight: 1.1 }}>
+          {used}
+          {limit ? <span style={{ fontSize: 16, color: 'var(--ux-text-3)', fontWeight: 500 }}> / {limit}</span> : null}
+        </div>
+        {limit ? <Progress percent={pct} showInfo={false} strokeColor={tone} style={{ marginTop: 8, marginBottom: 4 }} /> : null}
+        <div style={{ fontSize: 12.5, color: 'var(--ux-text-3)' }}>
+          {limit ? `${left} left — ${hint}` : hint}
+        </div>
+      </div>
+    );
+  };
+
   const loadEmailLog = React.useCallback(async () => {
     setLogLoading(true);
     try {
@@ -325,6 +362,112 @@ const EmailHub = () => {
       />
 
       <div className="dashboard-content">
+
+        {/* How much we have sent, and how much of it arrived */}
+        {stats && (
+          <>
+            <Row gutter={[16, 16]} style={{ marginBottom: 16 }}>
+              <Col xs={24} md={8}>
+                <Allowance
+                  title="Today" used={stats.today.accepted} limit={stats.today.limit} left={stats.today.left}
+                  hint="resets at midnight IST"
+                />
+              </Col>
+              <Col xs={24} md={8}>
+                <Allowance
+                  title="This month" used={stats.month.accepted} limit={stats.month.limit} left={stats.month.left}
+                  hint="resets on the 1st"
+                />
+              </Col>
+              <Col xs={24} md={8}>
+                <div className="nx-card p-5 h-full">
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="nx-section-title" style={{ fontSize: 14 }}>Reached the inbox</span>
+                    <span style={{ fontSize: 12.5, color: 'var(--ux-text-3)' }}>last {stats.window.days} days</span>
+                  </div>
+                  <div style={{ fontSize: 30, fontWeight: 700, letterSpacing: '-0.02em', color: 'var(--ux-ink)', lineHeight: 1.1 }}>
+                    {stats.window.total
+                      ? `${Math.round((stats.window.reached / stats.window.total) * 100)}%`
+                      : '—'}
+                    <span style={{ fontSize: 16, color: 'var(--ux-text-3)', fontWeight: 500 }}>
+                      {' '}of {stats.window.total}
+                    </span>
+                  </div>
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginTop: 10 }}>
+                    <Tag color="green">{stats.window.reached} reached</Tag>
+                    {stats.window.waiting ? <Tag>{stats.window.waiting} no word yet</Tag> : null}
+                    {stats.window.bounced ? <Tag color="red">{stats.window.bounced} bounced</Tag> : null}
+                    {stats.window.complained ? <Tag color="volcano">{stats.window.complained} spam</Tag> : null}
+                    {stats.window.failed ? <Tag color="red">{stats.window.failed} never left</Tag> : null}
+                  </div>
+                </div>
+              </Col>
+            </Row>
+
+            <Row gutter={[16, 16]} style={{ marginBottom: 16 }}>
+              <Col xs={24} lg={16}>
+                <div className="nx-card p-5 h-full">
+                  <div className="flex items-center justify-between mb-3">
+                    <span className="nx-section-title" style={{ fontSize: 14 }}>Day by day</span>
+                    <span style={{ fontSize: 12.5, color: 'var(--ux-text-3)' }}>sent vs reached vs bounced</span>
+                  </div>
+                  <div style={{ height: 230 }}>
+                    <ResponsiveContainer width="100%" height="100%">
+                      <AreaChart data={stats.daily} margin={{ top: 6, right: 8, left: -18, bottom: 0 }}>
+                        <CartesianGrid strokeDasharray="3 3" stroke="#ECEBE6" vertical={false} />
+                        <XAxis dataKey="date" tick={{ fontSize: 11, fill: '#96958E' }} tickFormatter={(d) => String(d).slice(5)} />
+                        <YAxis tick={{ fontSize: 11, fill: '#96958E' }} allowDecimals={false} />
+                        <ChartTip />
+                        <Legend wrapperStyle={{ fontSize: 12 }} />
+                        <Area type="monotone" dataKey="sent" name="Sent" stroke="#DE5C2B" fill="#FBE4DA" strokeWidth={2} />
+                        <Area type="monotone" dataKey="reached" name="Reached" stroke="#2E9E6B" fill="#DFF1E8" strokeWidth={2} />
+                        <Area type="monotone" dataKey="bounced" name="Bounced" stroke="#B91C1C" fill="#FBE2E2" strokeWidth={2} />
+                      </AreaChart>
+                    </ResponsiveContainer>
+                  </div>
+                </div>
+              </Col>
+              <Col xs={24} lg={8}>
+                <div className="nx-card p-5 h-full">
+                  <span className="nx-section-title" style={{ fontSize: 14 }}>What goes wrong</span>
+                  {stats.problems.length ? (
+                    <div style={{ marginTop: 10 }}>
+                      {stats.problems.map((pr) => (
+                        <div key={pr.error} style={{ display: 'flex', justifyContent: 'space-between', gap: 10, padding: '7px 0', borderBottom: '1px solid var(--ux-line-2)' }}>
+                          <span style={{ fontSize: 12.5, color: 'var(--ux-text-2)' }}>{pr.error}</span>
+                          <strong style={{ fontSize: 12.5 }}>{pr.n}</strong>
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <p style={{ fontSize: 13, color: 'var(--ux-text-3)', marginTop: 10 }}>
+                      Nothing bounced or failed in the last {stats.window.days} days.
+                    </p>
+                  )}
+                  {stats.byKind.length ? (
+                    <>
+                      <div className="nx-label" style={{ marginTop: 16, marginBottom: 6 }}>Who sends the most</div>
+                      {stats.byKind.slice(0, 5).map((k) => (
+                        <div key={k.kind} style={{ display: 'flex', justifyContent: 'space-between', fontSize: 12.5, padding: '4px 0' }}>
+                          <span style={{ color: 'var(--ux-text-2)' }}>{k.kind}</span>
+                          <span>{k.sent}{k.bounced ? <span style={{ color: '#B91C1C' }}> · {k.bounced} bad</span> : null}</span>
+                        </div>
+                      ))}
+                    </>
+                  ) : null}
+                </div>
+              </Col>
+            </Row>
+
+            {stats.today.limit && stats.today.accepted >= stats.today.limit * 0.8 && (
+              <Alert
+                type="warning" showIcon style={{ marginBottom: 16 }}
+                message={`Today's allowance is nearly used: ${stats.today.accepted} of ${stats.today.limit}. Anything past the limit will not go out until midnight IST.`}
+              />
+            )}
+            <p style={{ fontSize: 11.5, color: 'var(--ux-text-3)', margin: '-4px 0 16px' }}>{stats.note}</p>
+          </>
+        )}
 
         {/* SMTP + Quick Stats Row with Skeleton Screen */}
         <Row gutter={[16, 16]} style={{ marginBottom: 16 }}>
