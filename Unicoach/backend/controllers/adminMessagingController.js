@@ -613,7 +613,41 @@ exports.getEmailStats = async (req, res) => {
 
     const [today, month, window] = await Promise.all([tally(dayStart), tally(monthStart), tally(windowStart)]);
 
-    const [daily, problems, byKind] = await Promise.all([
+    // Opens are only meaningful once Resend's open tracking is switched on for the domain.
+    // Anything sent before the first open we ever saw could never be counted, so leave it out
+    // of the rate instead of making the number look worse than it is.
+    const openRate = async () => {
+      const first = await EmailLog.findOne({ status: { $in: ['opened', 'clicked'] } })
+        .sort({ at: 1 })
+        .select('at')
+        .lean();
+      // count from the start of that day, so mail sent earlier the same morning still counts
+      const istDayStart = (d) => {
+        const ist = new Date(d.toLocaleString('en-US', { timeZone: IST }));
+        return new Date(new Date(ist.getFullYear(), ist.getMonth(), ist.getDate()).getTime() + (d.getTime() - ist.getTime()));
+      };
+      const trackedFrom = first ? istDayStart(new Date(first.at)) : null;
+      const partial = Boolean(trackedFrom && trackedFrom > windowStart);
+      const since = partial ? trackedFrom : windowStart;
+      const rows = await EmailLog.aggregate([
+        { $match: { at: { $gte: since }, status: { $in: ['delivered', 'opened', 'clicked'] } } },
+        { $group: { _id: '$status', n: { $sum: 1 } } },
+      ]);
+      const by = Object.fromEntries(rows.map((r) => [r._id, r.n]));
+      const delivered = (by.delivered || 0) + (by.opened || 0) + (by.clicked || 0);
+      const opened = (by.opened || 0) + (by.clicked || 0);
+      return {
+        tracking: Boolean(trackedFrom),
+        since: since.toISOString(),
+        partial,
+        delivered,
+        opened,
+        clicked: by.clicked || 0,
+        rate: delivered ? Math.round((opened / delivered) * 100) : null,
+      };
+    };
+
+    const [daily, problems, byKind, opens] = await Promise.all([
       EmailLog.aggregate([
         { $match: { at: { $gte: windowStart } } },
         {
@@ -621,6 +655,7 @@ exports.getEmailStats = async (req, res) => {
             _id: { $dateToString: { format: '%Y-%m-%d', date: '$at', timezone: IST } },
             sent: { $sum: 1 },
             reached: { $sum: { $cond: [{ $in: ['$status', ['delivered', 'opened', 'clicked']] }, 1, 0] } },
+            opened: { $sum: { $cond: [{ $in: ['$status', ['opened', 'clicked']] }, 1, 0] } },
             bounced: { $sum: { $cond: [{ $eq: ['$status', 'bounced'] }, 1, 0] } },
             failed: { $sum: { $cond: [{ $eq: ['$status', 'failed'] }, 1, 0] } },
           },
@@ -645,6 +680,7 @@ exports.getEmailStats = async (req, res) => {
         { $sort: { sent: -1 } },
         { $limit: 8 },
       ]),
+      openRate(),
     ]);
 
     res.json({
@@ -652,7 +688,8 @@ exports.getEmailStats = async (req, res) => {
       today: { ...today, limit: limits.daily, left: limits.daily ? Math.max(0, limits.daily - today.accepted) : null },
       month: { ...month, limit: limits.monthly, left: limits.monthly ? Math.max(0, limits.monthly - month.accepted) : null },
       window: { days, ...window },
-      daily: daily.map((d) => ({ date: d._id, sent: d.sent, reached: d.reached, bounced: d.bounced, failed: d.failed })),
+      opens,
+      daily: daily.map((d) => ({ date: d._id, sent: d.sent, reached: d.reached, opened: d.opened, bounced: d.bounced, failed: d.failed })),
       problems: problems.map((p) => ({ error: p._id, n: p.n })),
       byKind: byKind.map((k) => ({ kind: k._id || 'other', sent: k.sent, bounced: k.bounced })),
       note: 'Counted from UniCoach\'s own log, in IST days. Anything sent from the Resend dashboard itself is not included.',

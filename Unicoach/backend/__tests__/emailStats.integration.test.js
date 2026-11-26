@@ -95,3 +95,55 @@ test('it says where the numbers come from', async () => {
   const s = await ask();
   expect(s.note).toMatch(/own log/i);
 });
+
+const daysAgo = (d) => new Date(Date.now() - d * 86400000);
+
+test('the open rate is measured against the mail that reached an inbox', async () => {
+  await log('delivered');
+  await log('delivered');
+  await log('opened');
+  await log('clicked');
+  await log('bounced');       // never reached anyone, so it is not in the denominator
+  await log('sent');          // no word yet
+
+  const s = await ask();
+  expect(s.opens.tracking).toBe(true);
+  expect(s.opens.delivered).toBe(4);
+  expect(s.opens.opened).toBe(2);
+  expect(s.opens.clicked).toBe(1);
+  expect(s.opens.rate).toBe(50);
+});
+
+test('mail sent before tracking was switched on is left out of the rate', async () => {
+  // ten older ones that could never report an open
+  for (let i = 0; i < 10; i += 1) await log('delivered', daysAgo(10));
+  // and since tracking started: two delivered, one of them opened
+  await log('opened', daysAgo(2));
+  await log('delivered', daysAgo(1));
+
+  const s = await ask();
+  expect(s.opens.partial).toBe(true);
+  expect(s.opens.delivered).toBe(2);
+  expect(s.opens.rate).toBe(50);          // not 1 in 12
+});
+
+test('with no open ever recorded the card says tracking is off', async () => {
+  await log('delivered');
+  await log('bounced');
+
+  const s = await ask();
+  expect(s.opens.tracking).toBe(false);
+  expect(s.opens.opened).toBe(0);
+  expect(s.opens.rate).toBe(0);
+});
+
+test('the day by day line carries opens too', async () => {
+  await log('opened');
+  await log('delivered');
+
+  const s = await ask();
+  const today = s.daily[s.daily.length - 1];
+  expect(today.sent).toBe(2);
+  expect(today.reached).toBe(2);
+  expect(today.opened).toBe(1);
+});

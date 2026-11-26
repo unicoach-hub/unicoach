@@ -273,6 +273,9 @@ const EmailHub = () => {
 
   useEffect(() => { loadEmailStats(); }, [loadEmailStats]);
 
+  // "26 Nov" — the day open tracking started counting
+  const sinceLabel = (iso) => new Date(iso).toLocaleDateString('en-IN', { day: 'numeric', month: 'short' });
+
   // one allowance card: used, left, and how close to the limit
   const Allowance = ({ title, used, limit, left, hint }) => {
     const pct = limit ? Math.min(100, Math.round((used / limit) * 100)) : 0;
@@ -367,19 +370,19 @@ const EmailHub = () => {
         {stats && (
           <>
             <Row gutter={[16, 16]} style={{ marginBottom: 16 }}>
-              <Col xs={24} md={8}>
+              <Col xs={24} sm={12} xl={6}>
                 <Allowance
                   title="Today" used={stats.today.accepted} limit={stats.today.limit} left={stats.today.left}
                   hint="resets at midnight IST"
                 />
               </Col>
-              <Col xs={24} md={8}>
+              <Col xs={24} sm={12} xl={6}>
                 <Allowance
                   title="This month" used={stats.month.accepted} limit={stats.month.limit} left={stats.month.left}
                   hint="resets on the 1st"
                 />
               </Col>
-              <Col xs={24} md={8}>
+              <Col xs={24} sm={12} xl={6}>
                 <div className="nx-card p-5 h-full">
                   <div className="flex items-center justify-between mb-2">
                     <span className="nx-section-title" style={{ fontSize: 14 }}>Reached the inbox</span>
@@ -402,6 +405,35 @@ const EmailHub = () => {
                   </div>
                 </div>
               </Col>
+              <Col xs={24} sm={12} xl={6}>
+                <div className="nx-card p-5 h-full">
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="nx-section-title" style={{ fontSize: 14 }}>Opened</span>
+                    <span style={{ fontSize: 12.5, color: 'var(--ux-text-3)' }}>
+                      {stats.opens.partial ? `since ${sinceLabel(stats.opens.since)}` : `last ${stats.window.days} days`}
+                    </span>
+                  </div>
+                  <div style={{ fontSize: 30, fontWeight: 700, letterSpacing: '-0.02em', color: 'var(--ux-ink)', lineHeight: 1.1 }}>
+                    {stats.opens.rate === null ? '—' : `${stats.opens.rate}%`}
+                    <span style={{ fontSize: 16, color: 'var(--ux-text-3)', fontWeight: 500 }}>
+                      {' '}of {stats.opens.delivered}
+                    </span>
+                  </div>
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginTop: 10 }}>
+                    {stats.opens.tracking ? (
+                      <>
+                        <Tag color="purple">{stats.opens.opened} opened</Tag>
+                        {stats.opens.clicked ? <Tag color="blue">{stats.opens.clicked} clicked a link</Tag> : null}
+                      </>
+                    ) : (
+                      <Tag>open tracking is off</Tag>
+                    )}
+                  </div>
+                  <div style={{ fontSize: 11.5, color: 'var(--ux-text-3)', marginTop: 8, lineHeight: 1.4 }}>
+                    Out of the mail that reached an inbox. Treat it as a floor &mdash; people who block images never show up.
+                  </div>
+                </div>
+              </Col>
             </Row>
 
             <Row gutter={[16, 16]} style={{ marginBottom: 16 }}>
@@ -409,7 +441,7 @@ const EmailHub = () => {
                 <div className="nx-card p-5 h-full">
                   <div className="flex items-center justify-between mb-3">
                     <span className="nx-section-title" style={{ fontSize: 14 }}>Day by day</span>
-                    <span style={{ fontSize: 12.5, color: 'var(--ux-text-3)' }}>sent vs reached vs bounced</span>
+                    <span style={{ fontSize: 12.5, color: 'var(--ux-text-3)' }}>sent vs reached vs opened vs bounced</span>
                   </div>
                   <div style={{ height: 230 }}>
                     <ResponsiveContainer width="100%" height="100%">
@@ -421,6 +453,7 @@ const EmailHub = () => {
                         <Legend wrapperStyle={{ fontSize: 12 }} />
                         <Area type="monotone" dataKey="sent" name="Sent" stroke="#DE5C2B" fill="#FBE4DA" strokeWidth={2} />
                         <Area type="monotone" dataKey="reached" name="Reached" stroke="#2E9E6B" fill="#DFF1E8" strokeWidth={2} />
+                        <Area type="monotone" dataKey="opened" name="Opened" stroke="#7C5CD6" fill="#EBE5FA" strokeWidth={2} />
                         <Area type="monotone" dataKey="bounced" name="Bounced" stroke="#B91C1C" fill="#FBE2E2" strokeWidth={2} />
                       </AreaChart>
                     </ResponsiveContainer>
